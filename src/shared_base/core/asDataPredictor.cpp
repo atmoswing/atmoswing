@@ -42,6 +42,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_product = wxEmptyString;
     m_subFolder = wxEmptyString;
     m_isPreprocessed = false;
+    m_isEnsemble = false;
     m_transformedBy = wxEmptyString;
     m_canBeClipped = true;
     m_latPtsnb = 0;
@@ -871,21 +872,42 @@ void asDataPredictor::AssignGribCode(const int arr[])
 
 size_t *asDataPredictor::GetIndexesStartNcdf(int i_area) const
 {
-    if (m_fileStructure.hasLevelDimension) {
-        static size_t array[4] = {0, 0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeStart;
-        array[1] = (size_t) m_fileIndexes.level;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].latStart;
-        array[3] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+    if (!m_isEnsemble) {
+        if (m_fileStructure.hasLevelDimension) {
+            static size_t array[4] = {0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeStart;
+            array[1] = (size_t) m_fileIndexes.level;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].latStart;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].lonStart;
 
-        return array;
+            return array;
+        } else {
+            static size_t array[3] = {0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeStart;
+            array[1] = (size_t) m_fileIndexes.areas[i_area].latStart;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+
+            return array;
+        }
     } else {
-        static size_t array[3] = {0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeStart;
-        array[1] = (size_t) m_fileIndexes.areas[i_area].latStart;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+        if (m_fileStructure.hasLevelDimension) {
+            static size_t array[5] = {0, 0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeStart;
+            array[1] = (size_t) m_fileIndexes.member;
+            array[2] = (size_t) m_fileIndexes.level;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].latStart;
+            array[4] = (size_t) m_fileIndexes.areas[i_area].lonStart;
 
-        return array;
+            return array;
+        } else {
+            static size_t array[4] = {0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeStart;
+            array[1] = (size_t) m_fileIndexes.member;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].latStart;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].lonStart;
+
+            return array;
+        }
     }
 
     return NULL;
@@ -893,21 +915,42 @@ size_t *asDataPredictor::GetIndexesStartNcdf(int i_area) const
 
 size_t *asDataPredictor::GetIndexesCountNcdf(int i_area) const
 {
-    if (m_fileStructure.hasLevelDimension) {
-        static size_t array[4] = {0, 0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeCount;
-        array[1] = 1;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].latCount;
-        array[3] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+    if (!m_isEnsemble) {
+        if (m_fileStructure.hasLevelDimension) {
+            static size_t array[4] = {0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeCount;
+            array[1] = 1;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].latCount;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].lonCount;
 
-        return array;
+            return array;
+        } else {
+            static size_t array[3] = {0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeCount;
+            array[1] = (size_t) m_fileIndexes.areas[i_area].latCount;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+
+            return array;
+        }
     } else {
-        static size_t array[3] = {0, 0, 0};
-        array[0] = (size_t) m_fileIndexes.timeCount;
-        array[1] = (size_t) m_fileIndexes.areas[i_area].latCount;
-        array[2] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+        if (m_fileStructure.hasLevelDimension) {
+            static size_t array[5] = {0, 0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeCount;
+            array[1] = 1;
+            array[2] = 1;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].latCount;
+            array[4] = (size_t) m_fileIndexes.areas[i_area].lonCount;
 
-        return array;
+            return array;
+        } else {
+            static size_t array[4] = {0, 0, 0, 0};
+            array[0] = (size_t) m_fileIndexes.timeCount;
+            array[1] = 1;
+            array[2] = (size_t) m_fileIndexes.areas[i_area].latCount;
+            array[3] = (size_t) m_fileIndexes.areas[i_area].lonCount;
+
+            return array;
+        }
     }
 
     return NULL;
@@ -915,22 +958,44 @@ size_t *asDataPredictor::GetIndexesCountNcdf(int i_area) const
 
 ptrdiff_t *asDataPredictor::GetIndexesStrideNcdf(int i_area) const
 {
-    if (m_fileStructure.hasLevelDimension) {
-        static ptrdiff_t array[4] = {0, 0, 0, 0};
-        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
-        array[1] = 1;
-        array[2] = (ptrdiff_t) m_fileIndexes.latStep;
-        array[3] = (ptrdiff_t) m_fileIndexes.lonStep;
+    if (!m_isEnsemble) {
+        if (m_fileStructure.hasLevelDimension) {
+            static ptrdiff_t array[4] = {0, 0, 0, 0};
+            array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+            array[1] = 1;
+            array[2] = (ptrdiff_t) m_fileIndexes.latStep;
+            array[3] = (ptrdiff_t) m_fileIndexes.lonStep;
 
-        return array;
+            return array;
+        } else {
+            static ptrdiff_t array[3] = {0, 0, 0};
+            array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+            array[1] = (ptrdiff_t) m_fileIndexes.latStep;
+            array[2] = (ptrdiff_t) m_fileIndexes.lonStep;
+
+            return array;
+        }
     } else {
-        static ptrdiff_t array[3] = {0, 0, 0};
-        array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
-        array[1] = (ptrdiff_t) m_fileIndexes.latStep;
-        array[2] = (ptrdiff_t) m_fileIndexes.lonStep;
+        if (m_fileStructure.hasLevelDimension) {
+            static ptrdiff_t array[5] = {0, 0, 0, 0, 0};
+            array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+            array[1] = 1;
+            array[2] = 1;
+            array[3] = (ptrdiff_t) m_fileIndexes.latStep;
+            array[4] = (ptrdiff_t) m_fileIndexes.lonStep;
 
-        return array;
+            return array;
+        } else {
+            static ptrdiff_t array[4] = {0, 0, 0, 0};
+            array[0] = (ptrdiff_t) m_fileIndexes.timeStep;
+            array[1] = 1;
+            array[2] = (ptrdiff_t) m_fileIndexes.latStep;
+            array[3] = (ptrdiff_t) m_fileIndexes.lonStep;
+
+            return array;
+        }
     }
+
 
     return NULL;
 }
