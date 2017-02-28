@@ -114,7 +114,7 @@ public:
 
     float GetMaxValue() const;
 
-    VArray2DFloat &GetData()
+    VArray2DFloat GetData()
     {
         wxASSERT((int) m_data.size() == (int) m_time.size());
         wxASSERT(m_data.size() > 1);
@@ -126,7 +126,7 @@ public:
         return m_data;
     }
 
-    Array1DDouble &GetTime()
+    Array1DDouble GetTime()
     {
         return m_time;
     }
