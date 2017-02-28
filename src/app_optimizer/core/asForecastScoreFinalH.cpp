@@ -45,7 +45,7 @@ asForecastScoreFinalH::~asForecastScoreFinalH()
     //dtor
 }
 
-float asForecastScoreFinalH::Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const
+float asForecastScoreFinalH::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);

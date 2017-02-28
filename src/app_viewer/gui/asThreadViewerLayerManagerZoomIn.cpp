@@ -27,9 +27,6 @@
 
 #include "asThreadViewerLayerManagerZoomIn.h"
 
-#include <asTimeArray.h>
-#include <asThreadsManager.h>
-
 
 asThreadViewerLayerManagerZoomIn::asThreadViewerLayerManagerZoomIn(vrViewerLayerManager *viewerLayerManager,
                                                                    wxCriticalSection *critSectionViewerLayerManager,

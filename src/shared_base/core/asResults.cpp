@@ -28,10 +28,7 @@
 
 #include "asResults.h"
 
-#include "wx/fileconf.h"
-
 #include <asFileNetcdf.h>
-#include <asTime.h>
 
 
 asResults::asResults()

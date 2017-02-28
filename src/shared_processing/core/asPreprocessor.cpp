@@ -120,9 +120,9 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
 
     // Get sizes
     wxASSERT(predictors[0]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -189,9 +189,9 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
 
     // Get sizes
     wxASSERT(predictors[0]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -225,9 +225,9 @@ bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors
 
     // Get sizes
     wxASSERT(predictors[0]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -263,9 +263,9 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -296,9 +296,9 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
 
     // Get sizes
     wxASSERT(predictors[0]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -325,7 +325,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
 bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
 {
     // More than one predictor
-    int inputSize = predictors.size();
+    unsigned int inputSize = (unsigned int) predictors.size();
     if (inputSize != 4) {
         wxLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
         return false;
@@ -365,8 +365,8 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
         wxASSERT(colsNb2 > 0);
         wxASSERT(timeSize > 0);
 
-        bool putBelow;
-        int rowsNew, colsNew;
+        bool putBelow = false;
+        int rowsNew = 0, colsNew = 0;
         if (colsNb1 == colsNb2) {
             colsNew = colsNb1;
             rowsNew = rowsNb1 + rowsNb2;
@@ -397,9 +397,9 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
     }
 
     // Get sizes
-    int rowsNb = copyData[0][0].rows();
-    int colsNb = copyData[0][0].cols();
-    int timeSize = copyData[0].size();
+    unsigned int rowsNb = (unsigned int) copyData[0][0].rows();
+    unsigned int colsNb = (unsigned int) copyData[0][0].cols();
+    unsigned int timeSize = (unsigned int) copyData[0].size();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -432,7 +432,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
                                                       asDataPredictor *result)
 {
     // More than one predictor
-    int inputSize = predictors.size();
+    int inputSize = (int) predictors.size();
     int factorSize = inputSize / 2;
     if (inputSize < 2) {
         wxLogError(_("The number of predictors must be superior to 2 in asPreprocessor::PreprocessMergeByHalfAndMultiply"));
@@ -445,9 +445,9 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
 
     // Handle sizes
     wxASSERT(predictors[0]);
-    int originalRowsNb = predictors[0]->GetLatPtsnb();
-    int originalColsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int originalRowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int originalColsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
     wxASSERT(originalRowsNb > 0);
     wxASSERT(originalColsNb > 0);
     wxASSERT(timeSize > 0);
@@ -497,7 +497,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
 bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
 {
     // More than one predictor
-    int inputSize = predictors.size();
+    int inputSize = (int) predictors.size();
     if (inputSize != 4) {
         wxLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessHumidityFlux"));
         return false;
@@ -513,9 +513,9 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
 #endif
 
     // Get sizes
-    int rowsNb = predictors[0]->GetData()[0].rows();
-    int colsNb = predictors[0]->GetData()[0].cols();
-    int timeSize = predictors[0]->GetData().size();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetData()[0].rows();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetData()[0].cols();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetData().size();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -531,10 +531,10 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
 
         for (int i_row = 0; i_row < rowsNb; i_row++) {
             for (int i_col = 0; i_col < colsNb; i_col++) {
-                wind = sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
-                            predictors[0]->GetData()[i_time](i_row, i_col) +
-                            predictors[1]->GetData()[i_time](i_row, i_col) *
-                            predictors[1]->GetData()[i_time](i_row, i_col));
+                wind = (float) sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
+                                    predictors[0]->GetData()[i_time](i_row, i_col) +
+                                    predictors[1]->GetData()[i_time](i_row, i_col) *
+                                    predictors[1]->GetData()[i_time](i_row, i_col));
                 multi[i_time](i_row, i_col) = wind * predictors[2]->GetData()[i_time](i_row, i_col) *
                                               predictors[3]->GetData()[i_time](i_row, i_col);
             }
@@ -552,7 +552,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
 bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
 {
     // More than one predictor
-    int inputSize = predictors.size();
+    int inputSize = (int) predictors.size();
     if (inputSize != 2) {
         wxLogError(_("The number of predictors must be equal to 2 in asPreprocessor::PreprocessWindSpeed"));
         return false;
@@ -561,9 +561,9 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
-    int rowsNb = predictors[0]->GetLatPtsnb();
-    int colsNb = predictors[0]->GetLonPtsnb();
-    int timeSize = predictors[0]->GetTimeSize();
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
     wxASSERT(timeSize > 0);
@@ -579,10 +579,10 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
         for (int i_row = 0; i_row < rowsNb; i_row++) {
             for (int i_col = 0; i_col < colsNb; i_col++) {
                 // Get wind value
-                wind = sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
-                            predictors[0]->GetData()[i_time](i_row, i_col) +
-                            predictors[1]->GetData()[i_time](i_row, i_col) *
-                            predictors[1]->GetData()[i_time](i_row, i_col));
+                wind = (float) sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
+                                    predictors[0]->GetData()[i_time](i_row, i_col) +
+                                    predictors[1]->GetData()[i_time](i_row, i_col) *
+                                    predictors[1]->GetData()[i_time](i_row, i_col));
                 multi[i_time](i_row, i_col) = wind;
             }
         }

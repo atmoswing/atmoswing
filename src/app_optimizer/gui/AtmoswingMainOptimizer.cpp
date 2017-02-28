@@ -36,28 +36,6 @@
 
 #include "AtmoswingMainOptimizer.h"
 
-#include "asGeo.h"
-#include "asGeoArea.h"
-#include "asGeoAreaCompositeGrid.h"
-#include "asGeoPoint.h"
-#include "asTime.h"
-#include "asTimeArray.h"
-#include "asDataPredictand.h"
-#include "asDataPredictorArchive.h"
-#include "asResults.h"
-#include "asResultsAnalogsDates.h"
-#include "asResultsAnalogsValues.h"
-#include "asResultsAnalogsForecastScores.h"
-#include "asResultsAnalogsForecastScoreFinal.h"
-#include "asResultsAnalogsScoresMap.h"
-#include "asFileNetcdf.h"
-#include "asFileXml.h"
-#include "asFileAscii.h"
-#include "asFileDat.h"
-#include "asPredictorCriteria.h"
-#include "asProcessor.h"
-#include "asConfig.h"
-
 
 AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
         : asFrameOptimizer(frame)

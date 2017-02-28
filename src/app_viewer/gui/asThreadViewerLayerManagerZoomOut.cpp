@@ -27,9 +27,6 @@
 
 #include "asThreadViewerLayerManagerZoomOut.h"
 
-#include <asTimeArray.h>
-#include <asThreadsManager.h>
-
 
 asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
                                                                      wxCriticalSection *critSectionViewerLayerManager,

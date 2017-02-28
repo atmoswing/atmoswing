@@ -30,7 +30,6 @@
 #include "asGeoAreaCompositeRegularGrid.h"
 #include "asGeoAreaGaussianGrid.h"
 #include "asGeoAreaCompositeGaussianGrid.h"
-#include "asTypeDefs.h"
 
 asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep,
                                                             double Ymin, int Yptsnb, double Ystep, float Level,
@@ -144,7 +143,7 @@ asGeoAreaCompositeGrid::asGeoAreaCompositeGrid(float Level, float Height)
     m_gridType = Regular;
 }
 
-int asGeoAreaCompositeGrid::GetXaxisPtsnb() const
+int asGeoAreaCompositeGrid::GetXaxisPtsnb()
 {
     int ptsLon = 0;
 
@@ -167,7 +166,7 @@ int asGeoAreaCompositeGrid::GetXaxisPtsnb() const
     return ptsLon;
 }
 
-int asGeoAreaCompositeGrid::GetYaxisPtsnb() const
+int asGeoAreaCompositeGrid::GetYaxisPtsnb()
 {
     int ptsLat = 0;
 
@@ -228,7 +227,7 @@ double asGeoAreaCompositeGrid::GetYaxisWidth() const
     return widthLat;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetXaxis() const
+Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
 {
     Array1DDouble Xaxis;
 
@@ -265,7 +264,7 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis() const
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetYaxis() const
+Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
 {
     Array1DDouble Yaxis;
 

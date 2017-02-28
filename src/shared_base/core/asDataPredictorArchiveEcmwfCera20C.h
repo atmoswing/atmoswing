@@ -22,32 +22,37 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFORECASTSCOREFINALRMSE_H
-#define ASFORECASTSCOREFINALRMSE_H
+#ifndef ASDATAPREDICTORARCHIVEECMWFCERA20C_H
+#define ASDATAPREDICTORARCHIVEECMWFCERA20C_H
 
 #include <asIncludes.h>
-#include <asForecastScoreFinal.h>
+#include <asDataPredictorArchive.h>
 
-class asForecastScoreFinalRMSE
-        : public asForecastScoreFinal
+class asGeoArea;
+
+class asDataPredictorArchiveEcmwfCera20C
+        : public asDataPredictorArchive
 {
 public:
-    asForecastScoreFinalRMSE(Period period);
+    asDataPredictorArchiveEcmwfCera20C(const wxString &dataId);
 
-    asForecastScoreFinalRMSE(const wxString &periodString);
+    virtual ~asDataPredictorArchiveEcmwfCera20C();
 
-    virtual ~asForecastScoreFinalRMSE();
-
-    float Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const;
+    bool Init();
 
 protected:
+    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+
+    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+                                 VVArray2DFloat &compositeData);
+
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
 private:
 
 };
 
-#endif // ASFORECASTSCOREFINALRMSE_H
+#endif // ASDATAPREDICTORARCHIVEECMWFCERA20C_H

@@ -26,7 +26,6 @@
  */
 
 #include "asResultsAnalogsForecastAggregator.h"
-#include "asFileXml.h"
 
 
 asResultsAnalogsForecastAggregator::asResultsAnalogsForecastAggregator()

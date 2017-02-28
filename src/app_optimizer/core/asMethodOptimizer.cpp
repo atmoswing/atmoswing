@@ -1,13 +1,5 @@
 #include "asMethodOptimizer.h"
 
-#include <asResultsParametersArray.h>
-#include <asResultsAnalogsDates.h>
-#include <asResultsAnalogsValues.h>
-#include <asResultsAnalogsForecastScores.h>
-#include <asResultsAnalogsForecastScoreFinal.h>
-#include <asForecastScore.h>
-#include <asDataPredictand.h>
-
 asMethodOptimizer::asMethodOptimizer()
         : asMethodCalibrator()
 {

@@ -29,7 +29,6 @@
 #include "asResultsAnalogsScoresMap.h"
 
 #include <asParametersCalibration.h>
-#include <asParametersScoring.h>
 #include <asFileNetcdf.h>
 
 

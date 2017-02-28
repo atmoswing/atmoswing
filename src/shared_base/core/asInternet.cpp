@@ -29,8 +29,6 @@
 #include "asInternet.h"
 
 #include <asThreadInternetDownload.h>
-#include <asThreadsManager.h>
-#include <wx/app.h>
 
 asInternet::asInternet()
 {

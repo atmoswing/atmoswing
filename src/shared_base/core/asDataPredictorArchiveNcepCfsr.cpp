@@ -26,11 +26,9 @@
  */
 
 #include "asDataPredictorArchiveNcepCfsr.h"
-#include "asTypeDefs.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &dataId)
