@@ -207,7 +207,7 @@ public:
         return m_exclusionDays;
     }
 
-    Array1DDouble &GetTimeArray()
+    Array1DDouble GetTimeArray() const
     {
         return m_timeArray;
     }

@@ -28,9 +28,6 @@
 
 #include "asFramePreferencesViewer.h"
 
-#include "wx/fileconf.h"
-#include "wx/thread.h"
-
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
         : asFramePreferencesViewerVirtual(parent, id)
 {

@@ -36,20 +36,6 @@
 
 #include "AtmoswingMainViewer.h"
 
-#include "asGeo.h"
-#include "asGeoArea.h"
-#include "asGeoAreaRegularGrid.h"
-#include "asGeoAreaComposite.h"
-#include "asGeoAreaCompositeGrid.h"
-#include "asGeoPoint.h"
-#include "asTime.h"
-#include "asTimeArray.h"
-#include "asFileNetcdf.h"
-#include "asFileXml.h"
-#include "asFileAscii.h"
-#include "asFileDat.h"
-#include "asConfig.h"
-
 
 AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
         : asFrameForecast(frame)

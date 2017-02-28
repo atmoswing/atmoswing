@@ -104,7 +104,7 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
     return otherareaGaussian->GetGridType() == GetGridType();
 }
 
-Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb) const
+Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
 {
     double Xmin = GetComposite(compositeNb).GetXmin();
     double Xmax = GetComposite(compositeNb).GetXmax();
@@ -119,7 +119,7 @@ Array1DDouble asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
     return m_fullAxisX.segment(XminIndex, XmaxIndex - XminIndex + 1);
 }
 
-Array1DDouble asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb) const
+Array1DDouble asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
 {
     double Ymin = GetComposite(compositeNb).GetYmin();
     double Ymax = GetComposite(compositeNb).GetYmax();
@@ -134,7 +134,7 @@ Array1DDouble asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
     return m_fullAxisY.segment(YminIndex, YmaxIndex - YminIndex + 1);
 }
 
-int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb) const
+int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
     double Xmin = GetComposite(compositeNb).GetXmin();
     double Xmax = GetComposite(compositeNb).GetXmax();
@@ -160,7 +160,7 @@ int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb) cons
     return ptsnb;
 }
 
-int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb) const
+int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
     double Ymin = GetComposite(compositeNb).GetYmin();
     double Ymax = GetComposite(compositeNb).GetYmax();

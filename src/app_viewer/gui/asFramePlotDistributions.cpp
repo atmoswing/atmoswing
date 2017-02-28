@@ -29,7 +29,6 @@
 #include "asFramePlotDistributions.h"
 
 #include "asForecastManager.h"
-#include "asResultsAnalogsForecast.h"
 
 BEGIN_EVENT_TABLE(asFramePlotDistributions, wxFrame)
     EVT_CLOSE(asFramePlotDistributions::OnClose)
@@ -134,8 +133,8 @@ void asFramePlotDistributions::RebuildChoiceForecast()
                 m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
-        m_choiceForecast->SetString(index, val);
+        wxString val = " --> " + m_choiceForecast->GetString((unsigned int) index) + " <-- ";
+        m_choiceForecast->SetString((unsigned int) index, val);
     }
 }
 
@@ -344,7 +343,7 @@ bool asFramePlotDistributions::PlotPredictands()
     bool DoPlotClassicReturnPeriod = false;
     bool DoPlotClassicQuantiles = false;
 
-    for (int curve = 0; curve <= 8; curve++) {
+    for (unsigned int curve = 0; curve <= 8; curve++) {
         if (m_checkListTocPredictands->IsChecked(curve)) {
             switch (curve) {
                 case (AllAnalogsPoints):

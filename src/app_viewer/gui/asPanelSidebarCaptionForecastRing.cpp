@@ -28,8 +28,6 @@
 
 #include "asPanelSidebarCaptionForecastRing.h"
 
-#include "images.h"
-
 /*
  * asPanelSidebarCaptionForecastRing
  */
@@ -272,7 +270,7 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateDatesText(wxGraphicsContext
 {
     // Get geometric elements
     const wxDouble radiusMean = 70 * scale;
-    wxDouble segmentMean = -0.5 * M_PI + ((double) (segmentNb + 0.5) / (double) segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + 0.5) / segmentsTotNb) * (1.5 * M_PI);
     wxDouble centerX = (wxDouble) center.x;
     wxDouble centerY = (wxDouble) center.y;
 

@@ -363,7 +363,7 @@ bool asDataPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &tim
         }
 
         // Extract composite data from files
-        VVArray2DFloat compositeData(compositesNb);
+        VVArray2DFloat compositeData((unsigned long) compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
             wxLogWarning(_("Extracting data from files failed."));
             wxDELETE(dataArea);
@@ -769,7 +769,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                     // If the last value corresponds to the maximum value of the reference system, create a new composite
                     if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
                         dataArea->SetLastRowAsNewComposite();
-                        compositeData = VVArray2DFloat(dataArea->GetNbComposites());
+                        compositeData = VVArray2DFloat((unsigned long) dataArea->GetNbComposites());
 					} else if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() > 1) {
                         dataArea->RemoveLastRowOnComposite(i_comp);
                     } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
@@ -854,7 +854,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                          wxString::Format("m_axisLat.size()=%d, m_latPtsnb=%d", (int) m_axisLat.size(), m_latPtsnb));
         }
 
-        compositeData = VVArray2DFloat(dataArea->GetNbComposites());
+        compositeData = VVArray2DFloat((unsigned long) dataArea->GetNbComposites());
         m_axesChecked = true;
     }
 
@@ -955,7 +955,7 @@ size_t *asDataPredictor::GetIndexesCountNcdf(int i_area) const
     return NULL;
 }
 
-ptrdiff_t *asDataPredictor::GetIndexesStrideNcdf(int i_area) const
+ptrdiff_t *asDataPredictor::GetIndexesStrideNcdf() const
 {
     if (!m_isEnsemble) {
         if (m_fileStructure.hasLevelDimension) {
@@ -1047,7 +1047,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
         VectorShort dataS;
 
         // Resize the arrays to store the new data
-        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+        unsigned int totLength = (unsigned int) m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
         if (isShort) {
@@ -1081,10 +1081,10 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
         // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
         if (isFloat) {
             ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                GetIndexesStrideNcdf(i_area), &dataF[indexBegining]);
+                                GetIndexesStrideNcdf(), &dataF[indexBegining]);
         } else if (isShort) {
             ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
-                                GetIndexesStrideNcdf(i_area), &dataS[indexBegining]);
+                                GetIndexesStrideNcdf(), &dataS[indexBegining]);
             for (int i = 0; i < dataS.size(); i++) {
                 dataF[i] = (float) dataS[i];
             }
@@ -1096,7 +1096,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
 
     // Allocate space into compositeData if not already done
     if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
+        unsigned int totSize = 0;
         for (int i_area = 0; i_area < compositeData.size(); i_area++) {
             totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount
                        * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
@@ -1112,8 +1112,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
         // Loop to extract the data from the array
         int ind = 0;
         for (int i_time = 0; i_time < m_fileIndexes.timeArrayCount; i_time++) {
-            Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount,
-                                                   m_fileIndexes.areas[i_area].lonCount);
+            Array2DFloat latlonData(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
 
             for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
                 for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
@@ -1163,7 +1162,7 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compo
         VectorFloat dataF;
 
         // Resize the arrays to store the new data
-        int totLength = m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
+        unsigned int totLength = (unsigned int) m_fileIndexes.timeArrayCount * m_fileIndexes.areas[i_area].latCount * m_fileIndexes.areas[i_area].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
 
@@ -1176,7 +1175,7 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compo
 
     // Allocate space into compositeData if not already done
     if (compositeData[0].capacity() == 0) {
-        int totSize = 0;
+        unsigned int totSize = 0;
         for (int i_area = 0; i_area < compositeData.size(); i_area++) {
             totSize += m_time.size() * m_fileIndexes.areas[i_area].latCount * (m_fileIndexes.areas[i_area].lonCount + 1); // +1 in case of a border
         }
@@ -1190,8 +1189,7 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compo
 
         // Loop to extract the data from the array
         int ind = 0;
-        Array2DFloat latlonData = Array2DFloat(m_fileIndexes.areas[i_area].latCount,
-                                               m_fileIndexes.areas[i_area].lonCount);
+        Array2DFloat latlonData(m_fileIndexes.areas[i_area].latCount, m_fileIndexes.areas[i_area].lonCount);
 
         for (int i_lat = 0; i_lat < m_fileIndexes.areas[i_area].latCount; i_lat++) {
             for (int i_lon = 0; i_lon < m_fileIndexes.areas[i_area].lonCount; i_lon++) {
@@ -1228,14 +1226,14 @@ bool asDataPredictor::Inline()
 
     wxASSERT(m_data.size() > 0);
 
-    int timeSize = m_data.size();
-    int cols = m_data[0].cols();
-    int rows = m_data[0].rows();
+    unsigned int timeSize = (unsigned int) m_data.size();
+    unsigned int cols = (unsigned int) m_data[0].cols();
+    unsigned int rows = (unsigned int) m_data[0].rows();
 
     Array2DFloat inlineData = Array2DFloat::Zero(1, cols * rows);
 
     VArray2DFloat newData;
-    newData.reserve(m_time.size() * m_lonPtsnb * m_latPtsnb);
+    newData.reserve((unsigned int)(m_time.size() * m_lonPtsnb * m_latPtsnb));
     newData.resize(timeSize);
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
@@ -1247,8 +1245,8 @@ bool asDataPredictor::Inline()
 
     m_data = newData;
 
-    m_latPtsnb = m_data[0].rows();
-    m_lonPtsnb = m_data[0].cols();
+    m_latPtsnb = (int) m_data[0].rows();
+    m_lonPtsnb = (int) m_data[0].cols();
     Array1DFloat emptyAxis(1);
     emptyAxis[0] = NaNFloat;
     m_axisLat = emptyAxis;
@@ -1262,7 +1260,7 @@ bool asDataPredictor::MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCo
     if (area) {
         // Get a container with the final size
         int sizeTime = compositeData[0].size();
-        m_data = VArray2DFloat(sizeTime, Array2DFloat(m_latPtsnb, m_lonPtsnb));
+        m_data = VArray2DFloat((unsigned long) sizeTime, Array2DFloat(m_latPtsnb, m_lonPtsnb));
 
         Array2DFloat blockUL, blockLL, blockUR, blockLR;
         int isblockUL = asNONE, isblockLL = asNONE, isblockUR = asNONE, isblockLR = asNONE;

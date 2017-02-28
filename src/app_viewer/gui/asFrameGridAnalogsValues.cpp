@@ -29,7 +29,6 @@
 #include "asFrameGridAnalogsValues.h"
 
 #include "asForecastManager.h"
-#include "asResultsAnalogsForecast.h"
 
 
 asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow,
@@ -88,8 +87,8 @@ void asFrameGridAnalogsValues::RebuildChoiceForecast()
                 m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
-        m_choiceForecast->SetString(index, val);
+        wxString val = " --> " + m_choiceForecast->GetString((unsigned int) index) + " <-- ";
+        m_choiceForecast->SetString((unsigned int) index, val);
     }
 }
 

@@ -27,9 +27,6 @@
 
 #include "asThreadViewerLayerManagerReload.h"
 
-#include <asTimeArray.h>
-#include <asThreadsManager.h>
-
 
 asThreadViewerLayerManagerReload::asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
                                                                    wxCriticalSection *critSectionViewerLayerManager)

@@ -128,7 +128,7 @@ private:
     bool m_waitingUntilAllDone;
     bool m_cancelled;
     int m_maxThreadsNb;
-    unsigned int m_priority;
+    int m_priority;
 };
 
 #endif // ASTHREADSMANAGER_H

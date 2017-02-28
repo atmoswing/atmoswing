@@ -29,7 +29,6 @@
 #include "asResultsAnalogsForecast.h"
 
 #include "asFileNetcdf.h"
-#include "asThreadsManager.h"
 #include <wx/tokenzr.h>
 
 asResultsAnalogsForecast::asResultsAnalogsForecast()
@@ -149,10 +148,10 @@ bool asResultsAnalogsForecast::Save()
     wxLogVerbose(_("Saving forecast file: %s"), m_filePath);
 
     // Get the elements size
-    size_t Nleadtime = m_targetDates.size();
-    size_t Nanalogstot = m_analogsNb.sum();
-    size_t Nstations = m_stationIds.size();
-    size_t Nreferenceaxis = m_referenceAxis.size();
+    size_t Nleadtime = (size_t) m_targetDates.size();
+    size_t Nanalogstot = (size_t) m_analogsNb.sum();
+    size_t Nstations = (size_t) m_stationIds.size();
+    size_t Nreferenceaxis = (size_t) m_referenceAxis.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -418,9 +417,9 @@ bool asResultsAnalogsForecast::Load()
     }
 
     // Get the elements size
-    int Nleadtime;
-    int Nanalogstot;
-    int Nstations;
+    size_t Nleadtime;
+    size_t Nanalogstot;
+    size_t Nstations;
     if (versionMajor == 1 && versionMinor == 0) {
         Nleadtime = ncFile.GetDimLength("leadtime");
         Nanalogstot = ncFile.GetDimLength("analogstot");
@@ -479,7 +478,7 @@ bool asResultsAnalogsForecast::Load()
     // Get return periods properties
     if (m_hasReferenceValues) {
         if (versionMajor == 1 && versionMinor == 0) {
-            int referenceAxisLength = ncFile.GetDimLength("returnperiods");
+            size_t referenceAxisLength = ncFile.GetDimLength("returnperiods");
             m_referenceAxis.resize(referenceAxisLength);
             ncFile.GetVar("returnperiods", &m_referenceAxis[0]);
             size_t startReferenceValues[2] = {0, 0};
@@ -488,7 +487,7 @@ bool asResultsAnalogsForecast::Load()
             ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues,
                                &m_referenceValues(0, 0));
         } else {
-            int referenceAxisLength = ncFile.GetDimLength("reference_axis");
+            size_t referenceAxisLength = ncFile.GetDimLength("reference_axis");
             m_referenceAxis.resize(referenceAxisLength);
             ncFile.GetVar("reference_axis", &m_referenceAxis[0]);
             size_t startReferenceValues[2] = {0, 0};
@@ -536,7 +535,7 @@ bool asResultsAnalogsForecast::Load()
 
     // Set data into the matrices
     int ind = 0;
-    for (int i_time = 0; i_time < (int) Nleadtime; i_time++) {
+    for (int i_time = 0; i_time < Nleadtime; i_time++) {
         Array1DFloat analogsCriteriaLeadTime(m_analogsNb[i_time]);
         Array1DFloat analogsDatesLeadTime(m_analogsNb[i_time]);
 
@@ -660,7 +659,7 @@ void asResultsAnalogsForecast::SetPredictandStationIds(wxString val)
         wxString token = tokenizer.GetNextToken();
         long stationId;
         token.ToLong(&stationId);
-        m_predictandStationIds.push_back(stationId);
+        m_predictandStationIds.push_back(int(stationId));
     }
 }
 

@@ -40,7 +40,7 @@ asDialogProgressBar::asDialogProgressBar(const wxString &DialogMessage, int Valu
     if (!g_silentMode) {
         if (ValueMax > 2 * m_steps) {
             m_delayUpdate = true;
-            m_vectorSteps.resize(m_steps + 1);
+            m_vectorSteps.resize((unsigned long) (m_steps + 1));
             for (int i = 0; i <= m_steps; i++) {
                 m_vectorSteps[i] = i * ValueMax / m_steps;
             }
