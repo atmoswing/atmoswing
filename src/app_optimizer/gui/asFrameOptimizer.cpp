@@ -28,9 +28,6 @@
 
 #include "asFrameOptimizer.h"
 
-#include "wx/fileconf.h"
-
-#include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassicVarExplo.h"
 #include "asMethodCalibratorSingle.h"

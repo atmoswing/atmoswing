@@ -200,7 +200,7 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
     return std::abs(YmaxIndex - YminIndex) + 1;
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetXaxis() const
+Array1DDouble asGeoAreaGaussianGrid::GetXaxis()
 {
     double Xmin = GetXmin();
     int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
@@ -210,7 +210,7 @@ Array1DDouble asGeoAreaGaussianGrid::GetXaxis() const
     return m_fullAxisX.segment(XminIndex, XmaxIndex - XminIndex + 1);
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetYaxis() const
+Array1DDouble asGeoAreaGaussianGrid::GetYaxis()
 {
     double Ymin = GetYmin();
     int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);

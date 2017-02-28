@@ -55,14 +55,14 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
 {
     ParamsPredictorVect predictor;
 
-    predictor.dataId.push_back(wxEmptyString);
+    predictor.dataId.push_back("");
     predictor.level.push_back(0);
     predictor.xMin.push_back(0);
     predictor.xPtsNb.push_back(0);
     predictor.yMin.push_back(0);
     predictor.yPtsNb.push_back(0);
     predictor.timeHours.push_back(0);
-    predictor.criteria.push_back(wxEmptyString);
+    predictor.criteria.push_back("");
     predictor.weight.push_back(1);
 
     step.predictors.push_back(predictor);
@@ -370,14 +370,14 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
         return false;
     }
 
-    int iLeft, iRight;
+    unsigned int iLeft, iRight;
     wxString strVal;
 
     // Check that the score is similar
-    iLeft = stringVals.Find("Score");
+    iLeft = (unsigned int) stringVals.Find("Score");
     stringVals = stringVals.SubString(iLeft + 7, stringVals.Length());
     iLeft = 0;
-    iRight = stringVals.Find("\t");
+    iRight = (unsigned int) stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetForecastScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName(),

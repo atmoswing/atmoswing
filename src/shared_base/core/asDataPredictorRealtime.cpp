@@ -99,8 +99,8 @@ double asDataPredictorRealtime::UpdateRunDateInUse()
     // TODO (Pascal#1#): Fix the use of m_timeZoneHours
 
     // Round time to the last available data
-    double runHourStart = (double) m_runHourStart;
-    double runUpdate = (double) m_runUpdate;
+    double runHourStart = m_runHourStart;
+    double runUpdate = m_runUpdate;
     double hourNow = (m_runDateInUse - floor(m_runDateInUse)) * 24;
     if (runUpdate > 0) {
         double factorUpdate = floor((hourNow - runHourStart) / runUpdate);
@@ -129,7 +129,7 @@ double asDataPredictorRealtime::DecrementRunDateInUse()
 {
     m_fileNames.clear();
     m_urls.clear();
-    m_runDateInUse -= (double) m_runUpdate / (double) 24;
+    m_runDateInUse -= m_runUpdate / (double) 24;
 
     return m_runDateInUse;
 }
@@ -156,15 +156,15 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
     while (thisCommand.Find("CURRENTDATE") != wxNOT_FOUND) {
         int posStart = thisCommand.Find("CURRENTDATE");
         posStart--;
-        thisCommand.Remove(posStart, 13); // Removes '[CURRENTDATE-'
+        thisCommand.Remove((size_t) posStart, 13); // Removes '[CURRENTDATE-'
         // Find end
-        int posEnd = thisCommand.find("]", posStart);
+        int posEnd = thisCommand.find("]", (size_t) posStart);
 
         if (posEnd != wxNOT_FOUND && posEnd > posStart) {
-            thisCommand.Remove(posEnd, 1); // Removes ']'
-            wxString dateFormat = thisCommand.SubString(posStart, posEnd);
+            thisCommand.Remove((size_t) posEnd, 1); // Removes ']'
+            wxString dateFormat = thisCommand.SubString((size_t) posStart, (size_t) posEnd);
             wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
-            thisCommand.replace(posStart, date.Length(), date);
+            thisCommand.replace((size_t) posStart, date.Length(), date);
         }
     }
 
@@ -176,8 +176,8 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
         double diff = desiredTime - m_runDateInUse;
         m_forecastLeadTimeStart = (int) (diff * 24.0);
         m_forecastLeadTimeStep = m_restrictTimeStepHours;
-        m_forecastLeadTimeEnd = floor(((double) m_forecastLeadTimeEnd - (double) m_forecastLeadTimeStart) /
-                                      (double) m_forecastLeadTimeStep) * (double) m_forecastLeadTimeStep +
+        m_forecastLeadTimeEnd = floor((m_forecastLeadTimeEnd - m_forecastLeadTimeStart) /
+                                      m_forecastLeadTimeStep) * m_forecastLeadTimeStep +
                                 m_forecastLeadTimeStart;
     }
 
@@ -193,7 +193,7 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
         // Manage if ledtime if negative -> get previous download
         while (currentLeadtime < 0) {
             currentLeadtime += m_runUpdate;
-            runDateInUse -= (double) m_runUpdate / 24.0;
+            runDateInUse -= m_runUpdate / 24.0;
         }
 
         wxString thisCommandLeadTime = thisCommand;

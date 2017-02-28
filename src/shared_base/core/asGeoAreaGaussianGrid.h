@@ -53,9 +53,9 @@ public:
 
     int GetYaxisPtsnb() const;
 
-    Array1DDouble GetXaxis() const;
+    Array1DDouble GetXaxis();
 
-    Array1DDouble GetYaxis() const;
+    Array1DDouble GetYaxis();
 
 protected:
 
