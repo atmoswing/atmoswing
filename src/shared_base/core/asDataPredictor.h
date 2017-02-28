@@ -399,7 +399,7 @@ protected:
 
     size_t *GetIndexesCountNcdf(int i_area) const;
 
-    ptrdiff_t *GetIndexesStrideNcdf(int i_area) const;
+    ptrdiff_t *GetIndexesStrideNcdf() const;
 
     int *GetIndexesStartGrib(int i_area) const;
 
