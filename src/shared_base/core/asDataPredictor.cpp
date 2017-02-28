@@ -30,8 +30,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <wx/filename.h>
-#include <wx/filefn.h>
 #include <wx/dir.h>
 
 

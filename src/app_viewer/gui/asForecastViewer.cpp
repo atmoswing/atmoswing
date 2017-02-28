@@ -29,12 +29,9 @@
 #include "asForecastViewer.h"
 
 #include "asForecastManager.h"
-#include "asResultsAnalogsForecast.h"
 #include "asFrameForecast.h"
 #include "vrLayerVectorFcstRing.h"
 #include "vrLayerVectorFcstDots.h"
-#include "vrlayervector.h"
-#include "vrrender.h"
 
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);

@@ -29,7 +29,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxString &dataId)

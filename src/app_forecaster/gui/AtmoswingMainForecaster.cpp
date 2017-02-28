@@ -36,27 +36,6 @@
 
 #include "AtmoswingMainForecaster.h"
 
-#include "asGeo.h"
-#include "asGeoArea.h"
-#include "asGeoAreaCompositeGrid.h"
-#include "asGeoPoint.h"
-#include "asTime.h"
-#include "asTimeArray.h"
-#include "asDataPredictand.h"
-#include "asDataPredictandPrecipitation.h"
-#include "asDataPredictandTemperature.h"
-#include "asDataPredictorArchive.h"
-#include "asResults.h"
-#include "asResultsAnalogsDates.h"
-#include "asResultsAnalogsValues.h"
-#include "asFileNetcdf.h"
-#include "asFileXml.h"
-#include "asFileAscii.h"
-#include "asFileDat.h"
-#include "asPredictorCriteria.h"
-#include "asProcessor.h"
-#include "asConfig.h"
-
 
 AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
         : asFrameMain(frame)
@@ -79,9 +58,10 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrame/x", 50), y = pConfig->Read("/MainFrame/y", 50), w = pConfig->Read("/MainFrame/w",
-                                                                                                        minWidth), h = pConfig->Read(
-            "/MainFrame/h", minHeight);
+    int x = (int)pConfig->Read("/MainFrame/x", 50),
+        y = (int)pConfig->Read("/MainFrame/y", 50),
+        w = (int)pConfig->Read("/MainFrame/w",  minWidth),
+        h = (int)pConfig->Read( "/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;

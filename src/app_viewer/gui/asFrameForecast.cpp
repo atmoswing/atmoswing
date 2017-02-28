@@ -42,7 +42,6 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
-#include "asPanelPlot.h"
 #include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
 #include "asFileWorkspace.h"

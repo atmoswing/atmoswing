@@ -29,7 +29,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 #include <wx/dir.h>
 
 

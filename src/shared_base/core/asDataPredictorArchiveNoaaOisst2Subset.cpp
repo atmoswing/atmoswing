@@ -30,7 +30,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveNoaaOisst2Subset::asDataPredictorArchiveNoaaOisst2Subset(const wxString &dataId)

@@ -26,11 +26,9 @@
  */
 
 #include "asDataPredictorArchiveNasaMerra2.h"
-#include "asTypeDefs.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxString &dataId)
