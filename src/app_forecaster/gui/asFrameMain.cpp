@@ -33,7 +33,6 @@
 #include "asFrameAbout.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
-#include "images.h"
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
@@ -153,8 +152,8 @@ void asFrameMain::OnInit()
 
     // Check provided files
     if (!g_cmdFilename.IsEmpty()) {
-        int strSize = g_cmdFilename.size();
-        int strExt = g_cmdFilename.size() - 4;
+        unsigned long strSize = g_cmdFilename.size();
+        unsigned long strExt = g_cmdFilename.size() - 4;
         wxString ext = g_cmdFilename.SubString(strExt - 1, strSize - 1);
         if (ext.IsSameAs(".asfb", false)) {
             batchFilePath = g_cmdFilename;

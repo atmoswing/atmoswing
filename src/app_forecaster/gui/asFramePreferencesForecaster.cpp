@@ -28,8 +28,6 @@
 
 #include "asFramePreferencesForecaster.h"
 
-#include "wx/fileconf.h"
-#include "wx/thread.h"
 
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
                                                            wxWindowID id)

@@ -30,7 +30,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(const wxString &dataId)
