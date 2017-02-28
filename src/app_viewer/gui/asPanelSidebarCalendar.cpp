@@ -29,7 +29,6 @@
 #include "asPanelSidebarCalendar.h"
 
 #include "images.h"
-#include <wx/calctrl.h>
 
 asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size,
                                                long style)

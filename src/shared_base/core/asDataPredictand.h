@@ -182,48 +182,48 @@ public:
         return m_timeLength;
     }
 
-    VectorString &GetStationNamesArray()
+    VectorString GetStationNamesArray()
     {
         return m_stationNames;
     }
 
-    VectorString &GetStationOfficialIdsArray()
+    VectorString GetStationOfficialIdsArray()
     {
         return m_stationOfficialIds;
     }
 
-    Array1DFloat &GetStationHeightsArray()
+    Array1DFloat GetStationHeightsArray()
     {
         return m_stationHeights;
     }
 
-    Array1DInt &GetStationsIdArray()
+    Array1DInt GetStationsIdArray()
     {
         return m_stationIds;
     }
 
-    Array1DDouble &GetStationXCoordsArray()
+    Array1DDouble GetStationXCoordsArray()
     {
         return m_stationXCoords;
     }
 
-    Array1DDouble &GetStationYCoordsArray()
+    Array1DDouble GetStationYCoordsArray()
     {
         return m_stationYCoords;
     }
 
-    Array2DFloat &GetDataGross()
+    Array2DFloat GetDataGross()
     {
         return m_dataGross;
     }
 
-    Array1DFloat GetDataGrossStation(int predictandStationId) const
+    Array1DFloat GetDataGrossStation(int predictandStationId)
     {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataGross.col(indexStation);
     }
 
-    Array2DFloat &GetDataNormalized()
+    Array2DFloat GetDataNormalized()
     {
         if (m_hasNormalizedData) {
             return m_dataNormalized;
@@ -232,7 +232,7 @@ public:
         }
     }
 
-    Array1DFloat GetDataNormalizedStation(int predictandStationId) const
+    Array1DFloat GetDataNormalizedStation(int predictandStationId)
     {
         int indexStation = GetStationIndex(predictandStationId);
         if (m_hasNormalizedData) {
@@ -242,7 +242,7 @@ public:
         }
     }
 
-    Array1DDouble &GetTime()
+    Array1DDouble GetTime()
     {
         return m_time;
     }

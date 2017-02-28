@@ -28,10 +28,7 @@
 
 #include "asCatalogPredictands.h"
 
-#include "wx/fileconf.h"
-
 #include <asFileXml.h>
-#include <asTime.h>
 
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)

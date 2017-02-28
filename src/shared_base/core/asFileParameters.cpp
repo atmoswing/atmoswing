@@ -48,7 +48,7 @@ VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    int stepsnb = 1 + (max - min) / step;
+    unsigned int stepsnb = (unsigned int) 1 + (max - min) / step;
     VectorInt vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + i * step;
@@ -88,8 +88,8 @@ VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    int stepsnb = 1 + (max - min) / step;
-    VectorFloat vect(stepsnb);
+    int stepsnb = (int) (1 + (max - min) / step);
+    VectorFloat vect((unsigned long) stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (float) i * step;
     }
@@ -128,7 +128,7 @@ VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double 
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    int stepsnb = 1 + (max - min) / step;
+    int stepsnb = (int) (1 + (max - min) / step);
     VectorDouble vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (double) i * step;
@@ -187,7 +187,7 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
         if (!valueStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        vect.push_back((int) value);
+        vect.push_back(int(value));
     } else if (method.IsSameAs("array")) {
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
@@ -236,7 +236,7 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
         if (!valueStr.ToDouble(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        vect.push_back((float) value);
+        vect.push_back(float(value));
     } else if (method.IsSameAs("array")) {
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
@@ -365,7 +365,7 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
             int startBracket = value.Find('(');
             if (startBracket != wxNOT_FOUND && startBracket < value.Find(separator)) {
                 int endBracket = value.Find(')');
-                wxString bracketContent = value.SubString(startBracket, endBracket);
+                wxString bracketContent = value.SubString((size_t) startBracket, (size_t) endBracket);
                 VectorInt ids = GetStationIds(bracketContent);
                 vect.push_back(ids);
 

@@ -59,13 +59,13 @@ public:
         return 0.0;
     }
 
-    Array1DDouble GetXaxisComposite(int compositeNb) const;
+    Array1DDouble GetXaxisComposite(int compositeNb);
 
-    Array1DDouble GetYaxisComposite(int compositeNb) const;
+    Array1DDouble GetYaxisComposite(int compositeNb);
 
-    int GetXaxisCompositePtsnb(int compositeNb) const;
+    int GetXaxisCompositePtsnb(int compositeNb);
 
-    int GetYaxisCompositePtsnb(int compositeNb) const;
+    int GetYaxisCompositePtsnb(int compositeNb);
 
     double GetXaxisCompositeWidth(int compositeNb) const;
 

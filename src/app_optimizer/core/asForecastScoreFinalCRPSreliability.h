@@ -42,13 +42,13 @@ public:
 
     virtual ~asForecastScoreFinalCRPSreliability();
 
-    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const
+    float Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
     {
         wxLogError(_("The CRPS reliability score needs a 2D array as input !"));
         return NaNFloat;
     }
 
-    float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const;
+    float Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores, const asTimeArray &timeArray) const;
 
 protected:
 

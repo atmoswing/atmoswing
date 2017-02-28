@@ -28,9 +28,6 @@
 
 #include "asFramePreferencesOptimizer.h"
 
-#include "wx/fileconf.h"
-#include "wx/thread.h"
-
 asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id)
         : asFramePreferencesOptimizerVirtual(parent, id)
 {

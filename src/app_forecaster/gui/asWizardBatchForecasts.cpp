@@ -28,8 +28,6 @@
 #include "asWizardBatchForecasts.h"
 #include "asFramePreferencesForecaster.h"
 
-#include <wx/statline.h>
-#include <wx/stdpaths.h>
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
 

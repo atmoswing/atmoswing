@@ -64,8 +64,8 @@ asForecastScoreFinal::asForecastScoreFinal(const wxString &periodString)
         m_period = asForecastScoreFinal::SpecificPeriod;
     } else if (periodString.CmpNoCase("Summer") == 0) {
         m_period = asForecastScoreFinal::Summer;
-    } else if (periodString.CmpNoCase("Automn") == 0) {
-        m_period = asForecastScoreFinal::Automn;
+    } else if (periodString.CmpNoCase("Fall") == 0) {
+        m_period = asForecastScoreFinal::Fall;
     } else if (periodString.CmpNoCase("Winter") == 0) {
         m_period = asForecastScoreFinal::Winter;
     } else if (periodString.CmpNoCase("Spring") == 0) {
@@ -180,14 +180,14 @@ asForecastScoreFinal::~asForecastScoreFinal()
     //dtor
 }
 
-Array1DFloat asForecastScoreFinal::AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores,
-                                                 asTimeArray &timeArray) const
+Array1DFloat asForecastScoreFinal::AssessOnArray(const Array1DFloat &targetDates, const Array1DFloat &forecastScores,
+                                                 const asTimeArray &timeArray) const
 {
     wxLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
     return Array1DFloat();
 }
 
-float asForecastScoreFinal::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const
+float asForecastScoreFinal::Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores, const asTimeArray &timeArray) const
 {
     wxLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
     return NaNFloat;

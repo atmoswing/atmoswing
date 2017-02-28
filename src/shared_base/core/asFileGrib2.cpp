@@ -116,7 +116,7 @@ bool asFileGrib2::ParseStructure()
 
         // Read block of data from stream
         unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
-        fread(cgrib, sizeof(unsigned char), currentMessageSize, m_filtPtr);
+        fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
         seekPosition = offset + currentMessageSize;
 
         // Get the number of gridded fields and the number (and maximum size) of Local Use Sections.
@@ -168,9 +168,9 @@ bool asFileGrib2::ParseStructure()
             }
 
             m_parameterDisciplines.push_back(0);
-            m_parameterCategories.push_back((int) gfld->ipdtmpl[0]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
-            m_parameterNums.push_back((int) gfld->ipdtmpl[1]); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
-            m_forecastTimes.push_back(gfld->ipdtmpl[8]);
+            m_parameterCategories.push_back(int(gfld->ipdtmpl[0])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
+            m_parameterNums.push_back(int(gfld->ipdtmpl[1])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
+            m_forecastTimes.push_back(double(gfld->ipdtmpl[8]));
             GetLevel(gfld);
 
             g2_free(gfld);
@@ -198,7 +198,7 @@ void asFileGrib2::GetLevel(const gribfield *gfld)
         surfVal /= 100; // Pa to hPa
     }
 
-    m_levelTypes.push_back(gfld->ipdtmpl[9]);
+    m_levelTypes.push_back(int(gfld->ipdtmpl[9]));
     m_levels.push_back(surfVal);
 }
 
@@ -365,7 +365,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
 
     // Read block of data from stream
     unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
-    fread(cgrib, sizeof(unsigned char), m_messageSizes[m_index], m_filtPtr);
+    fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
 
     // Get the data
     gribfield *gfld;

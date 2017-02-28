@@ -28,8 +28,6 @@
 
 #include "asPanelSidebarAlarms.h"
 
-#include "images.h"
-
 /*
  * asPanelSidebarAlarms
  */

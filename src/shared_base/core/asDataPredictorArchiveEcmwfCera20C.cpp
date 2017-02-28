@@ -22,27 +22,28 @@
  */
 
 /*
- * Portions Copyright 2016 Pascal Horton, University of Bern.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#include "asDataPredictorArchiveEcmwfEra20C.h"
+#include "asDataPredictorArchiveEcmwfCera20C.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 
 
-asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxString &dataId)
+asDataPredictorArchiveEcmwfCera20C::asDataPredictorArchiveEcmwfCera20C(const wxString &dataId)
         : asDataPredictorArchive(dataId)
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_ERA_20C";
+    m_datasetId = "ECMWF_CERA_20C";
     m_originalProvider = "ECMWF";
-    m_datasetName = "ERA 20th Century";
-    m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
+    m_datasetName = "Coupled ERA 20th Century";
+    m_isEnsemble = true;
+    m_originalProviderStart = asTime::GetMJD(1901, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
     m_timeZoneHours = 0;
-    m_timeStepHours = 6;
+    m_timeStepHours = 3;
     m_firstTimeStepHours = 0;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
@@ -50,22 +51,23 @@ asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxStr
     m_fileStructure.dimLonName = "longitude";
     m_fileStructure.dimTimeName = "time";
     m_fileStructure.dimLevelName = "level";
+    m_fileStructure.dimMemberName = "number";
     m_subFolder = wxEmptyString;
 }
 
-asDataPredictorArchiveEcmwfEra20C::~asDataPredictorArchiveEcmwfEra20C()
+asDataPredictorArchiveEcmwfCera20C::~asDataPredictorArchiveEcmwfCera20C()
 {
 
 }
 
-bool asDataPredictorArchiveEcmwfEra20C::Init()
+bool asDataPredictorArchiveEcmwfCera20C::Init()
 {
     CheckLevelTypeIsDefined();
 
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_levels", false) || m_product.IsSameAs("pressure", false) ||
+    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
         m_fileStructure.hasLevelDimension = true;
         m_subFolder = "pressure_level";
@@ -148,7 +150,7 @@ bool asDataPredictorArchiveEcmwfEra20C::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
+VectorString asDataPredictorArchiveEcmwfCera20C::GetListOfFiles(asTimeArray &timeArray) const
 {
     VectorString files;
 
@@ -157,13 +159,13 @@ VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &time
     return files;
 }
 
-bool asDataPredictorArchiveEcmwfEra20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asDataPredictorArchiveEcmwfCera20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
-double asDataPredictorArchiveEcmwfEra20C::ConvertToMjd(double timeValue, double refValue) const
+double asDataPredictorArchiveEcmwfCera20C::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span

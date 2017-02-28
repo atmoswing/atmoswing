@@ -37,11 +37,8 @@
 #include <asResultsAnalogsForecastScoreFinal.h>
 #include <asResultsAnalogsScoresMap.h>
 //#include <asDialogProgressBar.h>
-#include <asFileAscii.h>
 
 #ifndef UNIT_TESTING
-
-#include <AtmoswingAppOptimizer.h>
 
 #endif
 

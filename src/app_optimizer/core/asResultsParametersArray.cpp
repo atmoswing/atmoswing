@@ -28,8 +28,6 @@
 
 #include "asResultsParametersArray.h"
 
-#include "wx/fileconf.h"
-
 #include <asFileAscii.h>
 
 

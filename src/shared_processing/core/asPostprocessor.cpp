@@ -25,7 +25,6 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#include "asPostprocessor.h"
 /*
 #include <asParametersScoring.h>
 

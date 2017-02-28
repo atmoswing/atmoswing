@@ -30,7 +30,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileGrib2.h>
 
 
 asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxString &dataId)
