@@ -33,8 +33,6 @@
 #include <asPreprocessor.h>
 #include <asPredictorCriteria.h>
 #include <asDataPredictorArchive.h>
-#include <asDataPredictorRealtime.h>
-#include <asDataPredictand.h>
 #include <asResultsAnalogsDates.h>
 #include <asResultsAnalogsValues.h>
 #include <asThreadProcessorGetAnalogsDates.h>
@@ -94,10 +92,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
     // Extract some data
     Array1DDouble timeTargetSelection = timeArrayTargetSelection.GetTimeArray();
-    int timeTargetSelectionSize = timeTargetSelection.size();
+    int timeTargetSelectionSize = (int) timeTargetSelection.size();
     wxASSERT(criteria[0]);
     bool isasc = (criteria[0]->GetOrder() == Asc);
-    int predictorsNb = params.GetPredictorsNb(step);
+    unsigned int predictorsNb = (unsigned int) params.GetPredictorsNb(step);
     wxASSERT(predictorsArchive.size() > 0);
     wxASSERT_MSG((int) predictorsArchive.size() == predictorsNb,
                  wxString::Format("predictorsArchive.size() = %d, predictorsNb = %d", (int) predictorsArchive.size(),
@@ -122,8 +120,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
         wxASSERT(predictorsArchive[i_ptor]->GetData().size() > 0);
         wxASSERT(vRowsNb.size() > i_ptor);
         wxASSERT(vColsNb.size() > i_ptor);
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
+        vRowsNb[i_ptor] = (int) predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = (int) predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if (isasc != (criteria[i_ptor]->GetOrder() == Asc)) {
@@ -833,17 +831,17 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
 
     // Extract some data
     Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
-    int timeArchiveDataSize = timeArchiveData.size();
+    unsigned int timeArchiveDataSize = (unsigned int) timeArchiveData.size();
     wxASSERT(timeArchiveDataSize > 0);
     Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
-    int timeTargetDataSize = timeTargetData.size();
+    unsigned int timeTargetDataSize = (unsigned int) timeTargetData.size();
     wxASSERT(timeTargetDataSize > 0);
     Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
-    int timeTargetSelectionSize = timeTargetSelection.size();
+    unsigned int timeTargetSelectionSize = (unsigned int) timeTargetSelection.size();
     wxASSERT(timeTargetSelectionSize > 0);
     Array2DFloat analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder() == Asc);
-    int predictorsNb = params.GetPredictorsNb(step);
+    unsigned int predictorsNb = (unsigned int) params.GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
 
     // Check the analogs number. Correct if superior to the time serie
@@ -862,8 +860,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     Array1DInt vColsNb(predictorsNb);
 
     for (int i_ptor = 0; i_ptor < predictorsNb; i_ptor++) {
-        vRowsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].rows();
-        vColsNb[i_ptor] = predictorsArchive[i_ptor]->GetData()[0].cols();
+        vRowsNb[i_ptor] = (int) predictorsArchive[i_ptor]->GetData()[0].rows();
+        vColsNb[i_ptor] = (int) predictorsArchive[i_ptor]->GetData()[0].cols();
 
         // Check criteria ordering
         if (isasc != (criteria[i_ptor]->GetOrder() == Asc)) {
@@ -1108,17 +1106,17 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
     Array2DFloat analogsCriteria = anaDates.GetAnalogsCriteria();
     Array1DDouble predictandTime = predictand.GetTime();
     VectorInt stations = params.GetPredictandStationIds();
-    int stationsNb = stations.size();
-    VArray1DFloat predictandDataNorm(stationsNb);
-    VArray1DFloat predictandDataGross(stationsNb);
+    int stationsNb = (int) stations.size();
+    VArray1DFloat predictandDataNorm((unsigned long) stationsNb);
+    VArray1DFloat predictandDataGross((unsigned long) stationsNb);
     for (int i_st = 0; i_st < stationsNb; i_st++) {
         predictandDataNorm[i_st] = predictand.GetDataNormalizedStation(stations[i_st]);
         predictandDataGross[i_st] = predictand.GetDataGrossStation(stations[i_st]);
     }
 
     int predictandTimeLength = predictand.GetTimeLength();
-    int timeTargetSelectionLength = timeTargetSelection.size();
-    int analogsNb = analogsDates.cols();
+    int timeTargetSelectionLength = (int) timeTargetSelection.size();
+    int analogsNb = (int) analogsDates.cols();
 
     wxASSERT(timeTargetSelectionLength > 0);
 

@@ -42,7 +42,7 @@ public:
 
     void Init(asParameters &params);
 
-    Array1DFloat &GetTargetDates()
+    Array1DFloat GetTargetDates()
     {
         return m_targetDates;
     }
@@ -62,7 +62,7 @@ public:
         m_targetDates = refDates;
     }
 
-    Array2DFloat &GetAnalogsCriteria()
+    Array2DFloat GetAnalogsCriteria()
     {
         return m_analogsCriteria;
     }
@@ -73,7 +73,7 @@ public:
         m_analogsCriteria = analogsCriteria;
     }
 
-    Array2DFloat &GetAnalogsDates()
+    Array2DFloat GetAnalogsDates()
     {
         return m_analogsDates;
     }

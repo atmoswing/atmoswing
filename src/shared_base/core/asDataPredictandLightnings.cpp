@@ -28,8 +28,6 @@
 
 #include "asDataPredictandLightnings.h"
 
-#include "wx/fileconf.h"
-
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
 #include <asCatalogPredictands.h>

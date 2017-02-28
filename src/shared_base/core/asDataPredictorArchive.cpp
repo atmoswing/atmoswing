@@ -40,6 +40,7 @@
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 #include <asDataPredictorArchiveEcmwfEraInterim.h>
 #include <asDataPredictorArchiveEcmwfEra20C.h>
+#include <asDataPredictorArchiveEcmwfCera20C.h>
 #include <asDataPredictorArchiveNasaMerra2.h>
 #include <asDataPredictorArchiveNasaMerra2Subset.h>
 #include <asDataPredictorArchiveJmaJra55Subset.h>
@@ -81,6 +82,8 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
         predictor = new asDataPredictorArchiveEcmwfEra20C(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
+        predictor = new asDataPredictorArchiveEcmwfCera20C(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asDataPredictorArchiveNasaMerra2(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {

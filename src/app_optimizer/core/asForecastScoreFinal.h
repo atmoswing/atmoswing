@@ -43,7 +43,7 @@ public:
         Total, // total mean
         SpecificPeriod, // partial mean
         Summer, // partial mean on summer only
-        Automn, // partial mean on fall only
+        Fall, // partial mean on fall only
         Winter, // partial mean on winter only
         Spring, // partial mean on spring only
     };
@@ -56,11 +56,11 @@ public:
 
     static asForecastScoreFinal *GetInstance(const wxString &scoreString, const wxString &periodString);
 
-    virtual float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const = 0;
+    virtual float Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const = 0;
 
-    virtual float Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores, asTimeArray &timeArray) const;
+    virtual float Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores, const asTimeArray &timeArray) const;
 
-    virtual Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
+    virtual Array1DFloat AssessOnArray(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const;
 
     bool SingleValue() const
     {

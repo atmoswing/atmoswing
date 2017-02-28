@@ -28,8 +28,6 @@
 
 #include "asDataPredictandPrecipitation.h"
 
-#include "wx/fileconf.h"
-
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
 #include <asCatalogPredictands.h>
@@ -123,7 +121,7 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
 
     if (m_temporalResolution != SixHourlyMovingDailyTemporalWindow) {
         // Define specific dimensions.
-        ncFile.DefDim("return_periods", (int) m_returnPeriods.size());
+        ncFile.DefDim("return_periods", (const size_t &) m_returnPeriods.size());
 
         // The dimensions name array is used to pass the dimensions to the variable.
         VectorStdString DimNames2D;
@@ -334,7 +332,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     return true;
 }
 
-float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const
+float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod)
 {
     float F = 1 - (1 / returnPeriod); // Probability of not overtaking
     float u = -log(-log(F)); // Gumbel variable

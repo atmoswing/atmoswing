@@ -25,15 +25,9 @@
  * Portions Copyright 2015 Pascal Horton, Terranum.
  */
 
-#include <wx/wxprec.h>
-
 #ifndef WX_PRECOMP
 
-#	include <wx/wx.h>
-
 #endif
-
-#include <wx/mstream.h>
 
 #include "images.h"
 

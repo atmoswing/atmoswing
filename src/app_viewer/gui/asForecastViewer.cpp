@@ -29,12 +29,9 @@
 #include "asForecastViewer.h"
 
 #include "asForecastManager.h"
-#include "asResultsAnalogsForecast.h"
 #include "asFrameForecast.h"
 #include "vrLayerVectorFcstRing.h"
 #include "vrLayerVectorFcstDots.h"
-#include "vrlayervector.h"
-#include "vrrender.h"
 
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
@@ -175,7 +172,7 @@ void asForecastViewer::SetForecastDisplay(int i)
 {
     m_forecastDisplaySelection = i;
 
-    wxString display = m_displayForecast.Item(m_forecastDisplaySelection);
+    wxString display = m_displayForecast.Item((size_t) m_forecastDisplaySelection);
     wxLogVerbose(_("Selected display : %s."), display);
 
     Redraw();
@@ -185,7 +182,7 @@ void asForecastViewer::SetQuantile(int i)
 {
     m_quantileSelection = i;
 
-    wxString quantile = m_displayQuantiles.Item(m_quantileSelection);
+    wxString quantile = m_displayQuantiles.Item((size_t) m_quantileSelection);
     wxLogVerbose(_("Selected quantile : %s."), quantile);
 
     Redraw();
@@ -239,7 +236,7 @@ void asForecastViewer::Redraw()
 
     // Check if memory layer already added
     m_viewerLayerManager->FreezeBegin();
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -249,7 +246,7 @@ void asForecastViewer::Redraw()
             m_layerManager->Close(layer);
         }
     }
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -388,7 +385,7 @@ void asForecastViewer::Redraw()
             }
 
             // Loop over the lead times
-            for (int i_leadtime = 0; i_leadtime < leadTimeSize; i_leadtime++) {
+            for (unsigned int i_leadtime = 0; i_leadtime < leadTimeSize; i_leadtime++) {
                 Array1DFloat values = forecast->GetAnalogsValuesGross(i_leadtime, i_stat);
 
                 if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {

@@ -44,7 +44,7 @@ public:
 
     void Init(asParametersScoring &params);
 
-    Array1DFloat &GetTargetDates()
+    Array1DFloat GetTargetDates()
     {
         return m_targetDates;
     }
@@ -64,12 +64,12 @@ public:
         m_targetDates = refDates;
     }
 
-    Array1DFloat &GetForecastScores()
+    Array1DFloat GetForecastScores()
     {
         return m_forecastScores;
     }
 
-    Array2DFloat &GetForecastScores2DArray()
+    Array2DFloat GetForecastScores2DArray()
     {
         return m_forecastScores2DArray;
     }

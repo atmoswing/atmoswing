@@ -42,7 +42,7 @@ public:
 
     virtual ~asForecastScoreFinalGSS();
 
-    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
+    float Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const;
 
 protected:
 

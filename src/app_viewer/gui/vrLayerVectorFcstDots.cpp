@@ -30,7 +30,6 @@
 #include "vrLayerVectorFcstDots.h"
 #include "vrlabel.h"
 #include "vrrender.h"
-#include "asTools.h"
 
 
 vrLayerVectorFcstDots::vrLayerVectorFcstDots()

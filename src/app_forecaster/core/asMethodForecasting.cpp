@@ -28,10 +28,8 @@
 
 #include "asMethodForecasting.h"
 
-#include "asDataPredictand.h"
 #include "asResultsAnalogsDates.h"
 #include "asResultsAnalogsValues.h"
-#include "asPredictorCriteria.h"
 #include "asTimeArray.h"
 #include "asGeoAreaCompositeGrid.h"
 #include "asProcessor.h"

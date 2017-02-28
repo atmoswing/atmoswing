@@ -219,7 +219,7 @@ public:
 
     wxString GetStationNameAndHeight(int i_stat) const;
 
-    void SetStationNames(VectorString &stationsNames)
+    void SetStationNames(const VectorString &stationsNames)
     {
         m_stationNames = stationsNames;
     }
@@ -236,7 +236,7 @@ public:
         m_stationIds = stationsIds;
     }
 
-    void SetStationOfficialIds(VectorString &stationsOfficialIds)
+    void SetStationOfficialIds(const VectorString &stationsOfficialIds)
     {
         m_stationOfficialIds = stationsOfficialIds;
     }
@@ -248,7 +248,7 @@ public:
         return m_stationHeights[i];
     }
 
-    void SetStationHeights(Array1DFloat &stationsHeights)
+    void SetStationHeights(const Array1DFloat &stationsHeights)
     {
         m_stationHeights = stationsHeights;
     }
@@ -265,7 +265,7 @@ public:
         return m_stationXCoords[i];
     }
 
-    void SetStationXCoords(Array1DDouble &stationsXCoords)
+    void SetStationXCoords(const Array1DDouble &stationsXCoords)
     {
         m_stationXCoords = stationsXCoords;
     }
@@ -282,7 +282,7 @@ public:
         return m_stationYCoords[i];
     }
 
-    void SetStationYCoords(Array1DDouble &stationsYCoords)
+    void SetStationYCoords(const Array1DDouble &stationsYCoords)
     {
         m_stationYCoords = stationsYCoords;
     }
@@ -333,12 +333,12 @@ public:
         return (int) m_targetDates.size();
     }
 
-    Array1DFloat &GetTargetDates()
+    Array1DFloat GetTargetDates()
     {
         return m_targetDates;
     }
 
-    void SetTargetDates(Array1DDouble &refDates)
+    void SetTargetDates(const Array1DDouble &refDates)
     {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
@@ -347,19 +347,19 @@ public:
         }
     }
 
-    void SetTargetDates(Array1DFloat &refDates)
+    void SetTargetDates(const Array1DFloat &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    Array1DFloat &GetAnalogsCriteria(unsigned int i)
+    Array1DFloat GetAnalogsCriteria(int i)
     {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(unsigned int i, Array1DFloat &analogsCriteria)
+    void SetAnalogsCriteria(int i, Array1DFloat &analogsCriteria)
     {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
@@ -370,13 +370,13 @@ public:
         }
     }
 
-    Array2DFloat &GetAnalogsValuesGross(unsigned int i_leadtime)
+    Array2DFloat GetAnalogsValuesGross(int i_leadtime)
     {
         wxASSERT(m_analogsValuesGross.size() > i_leadtime);
         return m_analogsValuesGross[i_leadtime];
     }
 
-    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station) const
+    Array1DFloat GetAnalogsValuesGross(int i_leadtime, int i_station) const
     {
         wxASSERT(m_analogsValuesGross.size() > i_leadtime);
         wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
@@ -384,7 +384,7 @@ public:
         return vals;
     }
 
-    void SetAnalogsValuesGross(unsigned int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
     {
         if (m_analogsValuesGross.size() >= i_leadtime + 1) {
             wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
@@ -414,13 +414,13 @@ public:
         return (int) m_analogsDates[i].size();
     }
 
-    Array1DFloat &GetAnalogsDates(int i)
+    Array1DFloat GetAnalogsDates(int i)
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(unsigned int i, Array1DFloat &analogsDates)
+    void SetAnalogsDates(int i, Array1DFloat &analogsDates)
     {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;

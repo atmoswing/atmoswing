@@ -29,7 +29,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 
 
 asDataPredictorArchiveNoaa20Cr2cEnsemble::asDataPredictorArchiveNoaa20Cr2cEnsemble(const wxString &dataId)

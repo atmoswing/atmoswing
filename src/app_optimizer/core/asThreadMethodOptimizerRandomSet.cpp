@@ -1,7 +1,5 @@
 #include "asThreadMethodOptimizerRandomSet.h"
 
-#include "asMethodCalibratorSingle.h"
-
 asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer,
                                                                    asParametersOptimization *params,
                                                                    float *finalScoreCalib,

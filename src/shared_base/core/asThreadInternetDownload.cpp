@@ -28,9 +28,6 @@
 
 #include "asThreadInternetDownload.h"
 
-#include <asTimeArray.h>
-#include <asThreadsManager.h>
-
 
 asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames,
                                                    const wxString &destinationDir, bool usesProxy,

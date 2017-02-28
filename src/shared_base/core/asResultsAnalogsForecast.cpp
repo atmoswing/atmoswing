@@ -29,7 +29,6 @@
 #include "asResultsAnalogsForecast.h"
 
 #include "asFileNetcdf.h"
-#include "asThreadsManager.h"
 #include <wx/tokenzr.h>
 
 asResultsAnalogsForecast::asResultsAnalogsForecast()
