@@ -63,13 +63,13 @@ public:
 
     virtual double GetYstep() const = 0;
 
-    virtual Array1DDouble GetXaxisComposite(int compositeNb) const = 0;
+    virtual Array1DDouble GetXaxisComposite(int compositeNb) = 0;
 
-    virtual Array1DDouble GetYaxisComposite(int compositeNb) const = 0;
+    virtual Array1DDouble GetYaxisComposite(int compositeNb) = 0;
 
-    virtual int GetXaxisCompositePtsnb(int compositeNb)  const= 0;
+    virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
 
-    virtual int GetYaxisCompositePtsnb(int compositeNb) const = 0;
+    virtual int GetYaxisCompositePtsnb(int compositeNb) = 0;
 
     virtual double GetXaxisCompositeWidth(int compositeNb) const = 0;
 
@@ -83,17 +83,17 @@ public:
 
     virtual double GetYaxisCompositeEnd(int compositeNb) const = 0;
 
-    int GetXaxisPtsnb() const;
+    int GetXaxisPtsnb();
 
-    int GetYaxisPtsnb() const;
+    int GetYaxisPtsnb();
 
     double GetXaxisWidth() const;
 
     double GetYaxisWidth() const;
 
-    Array1DDouble GetXaxis() const;
+    Array1DDouble GetXaxis();
 
-    Array1DDouble GetYaxis() const;
+    Array1DDouble GetYaxis();
 
 protected:
 

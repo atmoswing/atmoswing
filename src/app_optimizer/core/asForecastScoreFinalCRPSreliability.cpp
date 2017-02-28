@@ -45,8 +45,8 @@ asForecastScoreFinalCRPSreliability::~asForecastScoreFinalCRPSreliability()
     //dtor
 }
 
-float asForecastScoreFinalCRPSreliability::Assess(Array1DFloat &targetDates, Array2DFloat &forecastScores,
-                                                  asTimeArray &timeArray) const
+float asForecastScoreFinalCRPSreliability::Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores,
+                                                  const asTimeArray &timeArray) const
 {
     wxASSERT(forecastScores.rows() > 1);
     wxASSERT(forecastScores.cols() > 1);

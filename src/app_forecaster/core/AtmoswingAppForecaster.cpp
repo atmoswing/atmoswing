@@ -44,13 +44,7 @@
 
 IMPLEMENT_APP(AtmoswingAppForecaster);
 
-#include <wx/debug.h>
-#include "wx/fileconf.h"
-#include "wx/cmdline.h"
-#include <asIncludes.h>
-#include <asThreadsManager.h>
 #include <asInternet.h>
-#include <asMethodForecasting.h>
 #include <asFileAscii.h>
 
 #if wxUSE_GUI

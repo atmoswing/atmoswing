@@ -42,18 +42,10 @@
 #include "asFramePlotTimeSeries.h"
 #include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
-#include "asPanelPlot.h"
-#include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
-#include "asFileWorkspace.h"
 #include "asWizardWorkspace.h"
 #include "images.h"
-#include <wx/colour.h>
-#include <wx/statline.h>
-#include <wx/app.h>
-#include <wx/event.h>
 #include <wx/dir.h>
-#include "vrrender.h"
 #include "vrlayervector.h"
 
 
@@ -382,7 +374,7 @@ void asFrameForecast::Init()
     if (!g_cmdFilename.IsEmpty()) {
         int strSize = g_cmdFilename.size();
         int strExt = g_cmdFilename.size() - 4;
-        wxString ext = g_cmdFilename.SubString(strExt - 1, strSize - 1);
+        wxString ext = g_cmdFilename.SubString((size_t) (strExt - 1), (size_t) (strSize - 1));
         if (ext.IsSameAs(".asff", false)) {
             forecastFilesProvided = true;
         } else if (ext.IsSameAs(".asvw", false)) {
@@ -538,7 +530,7 @@ bool asFrameForecast::SaveWorkspace()
     // Update the GIS layers
     m_workspace.ClearLayers();
     int counter = -1;
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         wxFileName fileName = m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
         wxString path = fileName.GetFullPath();
 
@@ -652,7 +644,7 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
     m_forecastViewer->ResetForecastSelection();
 
     // Remove all layers
-    for (int i = (signed) m_viewerLayerManager->GetCount() - 1; i >= 0; i--) {
+    for (unsigned int i = (unsigned int) m_viewerLayerManager->GetCount() - 1; i >= 0; i--) {
         // Remove from viewer manager (TOC and Display)
         vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
         vrLayer *layer = renderer->GetLayer();
@@ -1092,7 +1084,7 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
 
     // Creates the list of layers
     wxArrayString layersName;
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
         wxASSERT(renderer);
         layersName.Add(renderer->GetLayer()->GetDisplayName().GetFullName());
@@ -1129,10 +1121,10 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
 
     // Remove layer(s)
     m_viewerLayerManager->FreezeBegin();
-    for (int i = (signed) layerToRemoveIndex.GetCount() - 1; i >= 0; i--) {
+    for (unsigned int i = (unsigned int) (layerToRemoveIndex.GetCount() - 1); i >= 0; i--) {
 
         // Remove from viewer manager (TOC and Display)
-        vrRenderer *renderer = m_viewerLayerManager->GetRenderer(layerToRemoveIndex.Item(i));
+        vrRenderer *renderer = m_viewerLayerManager->GetRenderer((const unsigned int &) layerToRemoveIndex.Item(i));
         vrLayer *layer = renderer->GetLayer();
         wxASSERT(renderer);
         m_viewerLayerManager->Remove(renderer);
@@ -1589,7 +1581,7 @@ void asFrameForecast::OnMoveLayer(wxCommandEvent &event)
     // Contextual menu
     wxMenu posMenu;
     posMenu.SetTitle(_("Move layer to following position"));
-    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         posMenu.Append(asID_MENU_POPUP_LAYER + i, wxString::Format("%d - %s", i + 1, m_viewerLayerManager->GetRenderer(
                 i)->GetLayer()->GetDisplayName().GetFullName()));
     }
@@ -2001,7 +1993,7 @@ void asFrameForecast::UpdatePanelAnalogDates()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
                                                                         m_forecastViewer->GetForecastSelection());
     Array1DFloat arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
-    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria(m_forecastViewer->GetLeadTimeIndex());
+    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
     m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
 }
 

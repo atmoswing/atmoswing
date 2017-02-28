@@ -50,8 +50,8 @@ void asPanelsManagerForecasts::AddPanel(asPanelForecast *panel)
     panel->SetPanelsManager(this);
 
     // Add to the array
-    int arraylength = m_arrayPanels.size();
-    panel->SetId(arraylength);
+    unsigned long arraylength = m_arrayPanels.size();
+    panel->SetId((wxWindowID)arraylength);
     m_arrayPanels.push_back(panel);
 }
 

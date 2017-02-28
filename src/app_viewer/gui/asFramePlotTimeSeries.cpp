@@ -29,7 +29,6 @@
 #include "asFramePlotTimeSeries.h"
 
 #include "asForecastManager.h"
-#include "asResultsAnalogsForecast.h"
 #include "asFileAscii.h"
 
 BEGIN_EVENT_TABLE(asFramePlotTimeSeries, wxFrame)
@@ -124,13 +123,12 @@ void asFramePlotTimeSeries::InitCheckListBox()
 
     wxArrayString listPast;
     for (int i = 0; i < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); i++) {
-        asResultsAnalogsForecast *forecast = m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast,
-                                                                                i);
+        asResultsAnalogsForecast *forecast = m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast, i);
         listPast.Add(forecast->GetLeadTimeOriginString());
     }
     m_checkListPast->Set(listPast);
 
-    for (int i = 0; i < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); i++) {
+    for (unsigned int i = 0; i < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); i++) {
         m_checkListPast->Check(i);
     }
 }
@@ -164,7 +162,7 @@ void asFramePlotTimeSeries::InitPlotCtrl()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     int length = forecast->GetTargetDatesLength();
     Array1DFloat dates = forecast->GetTargetDates();
-    m_leadTimes.resize(length);
+    m_leadTimes.resize((unsigned long) length);
     for (int i = 0; i < length; i++) {
         m_leadTimes[i] = dates[i];
     }
@@ -775,7 +773,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
 void asFramePlotTimeSeries::PlotPastForecasts()
 {
     for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
-        if (m_checkListPast->IsChecked(past)) {
+        if (m_checkListPast->IsChecked((unsigned int) past)) {
             PlotPastForecast(past);
         }
     }
@@ -887,7 +885,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
                 m_maxVal = pcVal;
         }
         // Right to left
-        for (int i_leadtime = m_leadTimes.size() - 1; i_leadtime >= 0; i_leadtime--) {
+        for (int i_leadtime = (int) m_leadTimes.size() - 1; i_leadtime >= 0; i_leadtime--) {
             Array1DFloat analogs = forecast->GetAnalogsValuesGross(i_leadtime, m_selectedStation);
             float pcVal = asTools::GetValueForQuantile(analogs, thisQuantileDown);
             plotData.SetValue(counter, m_leadTimes[i_leadtime], pcVal);

@@ -29,7 +29,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
 #include <wx/dir.h>
 
 
@@ -264,7 +263,7 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
                                                       filePattern));
                 }
 
-                files.push_back(listFiles.Item(0));
+                files.push_back(wxString(listFiles.Item(0)));
             }
         } else {
             wxString filePattern = wxString::Format(m_fileNamePattern, i_year, firstMonth);
@@ -278,7 +277,7 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
                                                   filePattern));
             }
 
-            files.push_back(listFiles.Item(0));
+            files.push_back(wxString(listFiles.Item(0)));
         }
     }
 

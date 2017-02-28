@@ -29,8 +29,6 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asFileNetcdf.h>
-#include <wx/dir.h>
 
 
 asDataPredictorArchiveJmaJra55CSubset::asDataPredictorArchiveJmaJra55CSubset(const wxString &dataId)

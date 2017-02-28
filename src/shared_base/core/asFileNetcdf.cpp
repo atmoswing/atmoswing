@@ -28,8 +28,6 @@
 
 #include "asFileNetcdf.h"
 
-#include <stdint.h> // To get  int32_t and int64_t
-
 asFileNetcdf::asFileNetcdf(const wxString &fileName, const ListFileMode &fileMode)
         : asFile(fileName, fileMode)
 {
@@ -1710,7 +1708,7 @@ bool asFileNetcdf::ParseStruct()
     m_struct.uDimIds[0] = unlimDimIds[0];
 
     // Resize array to store the global attributes
-    m_struct.atts.resize(nAtts);
+    m_struct.atts.resize((unsigned long) nAtts);
 
     // Get the global attributes
     for (int attId = 0; attId < nAtts; attId++) {
@@ -1789,7 +1787,7 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Resize arrays to store the variables information
-    m_struct.vars.resize(nVars);
+    m_struct.vars.resize((unsigned long) nVars);
 
     // Get information about the variables and get limited variables (1D)
     for (int varId = 0; varId < nVars; varId++) {
@@ -1803,7 +1801,7 @@ bool asFileNetcdf::ParseStruct()
         m_struct.vars[varId].name = wxString(varNameChar, wxConvUTF8);
         m_struct.vars[varId].length = 0;
 
-        m_struct.vars[varId].dimIds.resize(nDimsVar);
+        m_struct.vars[varId].dimIds.resize((unsigned long) nDimsVar);
         for (int j = 0; j < nDimsVar; j++) {
             m_struct.vars[varId].dimIds[j] = dimIds[j];
         }
@@ -1816,7 +1814,7 @@ bool asFileNetcdf::ParseStruct()
         }
 
         // Resize array to store the attributes information
-        m_struct.vars[varId].atts.resize(nAttsVar);
+        m_struct.vars[varId].atts.resize((unsigned long) nAttsVar);
 
         // Get the attributes information
         for (int attId = 0; attId < nAttsVar; attId++) {

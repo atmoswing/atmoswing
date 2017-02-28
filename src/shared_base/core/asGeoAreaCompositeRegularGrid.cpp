@@ -71,11 +71,11 @@ bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherar
     return true;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb) const
+Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetXaxisCompositePtsnb(compositeNb);
-    Array1DDouble Xaxis = Array1DDouble(size);
+    Array1DDouble Xaxis(size);
 
     // Build array
     double Xmin = GetComposite(compositeNb).GetXmin();
@@ -94,11 +94,11 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb) 
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb) const
+Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetYaxisCompositePtsnb(compositeNb);
-    Array1DDouble Yaxis = Array1DDouble(size);
+    Array1DDouble Yaxis(size);
 
     // Build array
     double Ymin = GetComposite(compositeNb).GetYmin();
@@ -118,7 +118,7 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb) 
     return Yaxis;
 }
 
-int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb) const
+int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
     double diff = std::abs((GetComposite(compositeNb).GetXmax() - GetComposite(compositeNb).GetXmin())) / m_xStep;
     double size;
@@ -142,7 +142,7 @@ int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb) const
     }
 }
 
-int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb) const
+int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
     double diff = std::abs((GetComposite(compositeNb).GetYmax() - GetComposite(compositeNb).GetYmin())) / m_yStep;
     double size;

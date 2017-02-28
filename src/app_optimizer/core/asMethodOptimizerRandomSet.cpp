@@ -1,6 +1,5 @@
 #include "asMethodOptimizerRandomSet.h"
 
-#include "asFileAscii.h"
 #include <asThreadMethodOptimizerRandomSet.h>
 
 #ifndef UNIT_TESTING
@@ -275,7 +274,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     params.InitRandomValues();
 
     // Create the corresponding number of parameters
-    m_scoresCalib.resize(m_paramsNb);
+    m_scoresCalib.resize((unsigned long) m_paramsNb);
     for (int i_var = 0; i_var < m_paramsNb; i_var++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;

@@ -31,8 +31,6 @@
 
 #ifndef UNIT_TESTING
 
-#include "AtmoswingAppOptimizer.h"
-
 #endif
 
 asMethodCalibrator::asMethodCalibrator()
