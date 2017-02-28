@@ -41,9 +41,9 @@ public:
 
     virtual ~asForecastScoreFinalRankHistogram();
 
-    float Assess(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
+    float Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const;
 
-    Array1DFloat AssessOnArray(Array1DFloat &targetDates, Array1DFloat &forecastScores, asTimeArray &timeArray) const;
+    Array1DFloat AssessOnArray(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const;
 
 protected:
 
