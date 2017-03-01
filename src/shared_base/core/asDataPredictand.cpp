@@ -338,9 +338,9 @@ bool asDataPredictand::InitBaseContainers()
         wxLogError(_("The time length is inferior to 1."));
         return false;
     }
-    m_stationNames.resize((unsigned long) m_stationsNb);
+    m_stationNames.resize(m_stationsNb);
     m_stationIds.resize(m_stationsNb);
-    m_stationOfficialIds.resize((unsigned long) m_stationsNb);
+    m_stationOfficialIds.resize(m_stationsNb);
     m_stationXCoords.resize(m_stationsNb);
     m_stationYCoords.resize(m_stationsNb);
     m_stationHeights.resize(m_stationsNb);
@@ -373,16 +373,16 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     m_datasetId = ncFile.GetAttString("dataset_id");
 
     // Get time
-    m_timeLength = (int) ncFile.GetDimLength("time");
+    m_timeLength = ncFile.GetDimLength("time");
     m_time.resize(m_timeLength);
     ncFile.GetVar("time", &m_time[0]);
 
     // Get stations properties
-    m_stationsNb = (int) ncFile.GetDimLength("stations");
+    m_stationsNb = ncFile.GetDimLength("stations");
     wxASSERT(m_stationsNb > 0);
-    m_stationNames.resize((unsigned long) m_stationsNb);
+    m_stationNames.resize(m_stationsNb);
     m_stationIds.resize(m_stationsNb);
-    m_stationOfficialIds.resize((unsigned long) m_stationsNb);
+    m_stationOfficialIds.resize(m_stationsNb);
     m_stationHeights.resize(m_stationsNb);
     m_stationXCoords.resize(m_stationsNb);
     m_stationYCoords.resize(m_stationsNb);
@@ -390,7 +390,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     m_stationEnds.resize(m_stationsNb);
 
     if (version <= 1.2) {
-        ncFile.GetVar("stations_name", &m_stationNames[0], (const size_t) m_stationsNb);
+        ncFile.GetVar("stations_name", &m_stationNames[0], m_stationsNb);
         ncFile.GetVar("stations_ids", &m_stationIds[0]);
         ncFile.GetVar("stations_height", &m_stationHeights[0]);
         ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
@@ -398,7 +398,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
         ncFile.GetVar("start", &m_stationStarts[0]);
         ncFile.GetVar("end", &m_stationEnds[0]);
     } else if (version <= 1.3) {
-        ncFile.GetVar("stations_name", &m_stationNames[0], (const size_t) m_stationsNb);
+        ncFile.GetVar("stations_name", &m_stationNames[0], m_stationsNb);
         ncFile.GetVar("stations_ids", &m_stationIds[0]);
         ncFile.GetVar("stations_height", &m_stationHeights[0]);
         ncFile.GetVar("loc_coord_x", &m_stationXCoords[0]);
@@ -406,9 +406,9 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
         ncFile.GetVar("start", &m_stationStarts[0]);
         ncFile.GetVar("end", &m_stationEnds[0]);
     } else {
-        ncFile.GetVar("station_names", &m_stationNames[0], (const size_t) m_stationsNb);
+        ncFile.GetVar("station_names", &m_stationNames[0], m_stationsNb);
         ncFile.GetVar("station_ids", &m_stationIds[0]);
-        ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], (const size_t) m_stationsNb);
+        ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], m_stationsNb);
         ncFile.GetVar("station_heights", &m_stationHeights[0]);
         ncFile.GetVar("station_x_coords", &m_stationXCoords[0]);
         ncFile.GetVar("station_y_coords", &m_stationYCoords[0]);
@@ -433,7 +433,7 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
 void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
 {
     // Define dimensions. Time is the unlimited dimension.
-    ncFile.DefDim("stations", (const size_t &) m_stationsNb);
+    ncFile.DefDim("stations", m_stationsNb);
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
@@ -562,7 +562,7 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
     catalog.Load();
 
     // Get the stations list
-    for (unsigned int i_station = 0; i_station < catalog.GetStationsNb(); i_station++) {
+    for (int i_station = 0; i_station < catalog.GetStationsNb(); i_station++) {
 #if wxUSE_GUI
         // Update the progress bar.
         wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
@@ -574,11 +574,11 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
 #endif
 
         // Get station information
-        if (!SetStationProperties(catalog, (size_t) i_station))
+        if (!SetStationProperties(catalog, i_station))
             return false;
 
         // Get file content
-        if (!GetFileContent(catalog, (size_t) i_station, AlternateDataDir, AlternatePatternDir))
+        if (!GetFileContent(catalog, i_station, AlternateDataDir, AlternatePatternDir))
             return false;
     }
 
@@ -606,7 +606,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
     // Get the parsing format
     wxString stationFilePattern = currentData.GetStationFilepattern(stationIndex);
     asFileDat::Pattern filePattern = asFileDat::GetPattern(stationFilePattern, AlternatePatternDir);
-    unsigned int maxCharWidth = (unsigned int) (size_t) asFileDat::GetPatternLineMaxCharWidth(filePattern);
+    size_t maxCharWidth = asFileDat::GetPatternLineMaxCharWidth(filePattern);
 
     // Jump the header
     datFile.SkipLines(filePattern.headerLines);
@@ -646,14 +646,14 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         if (filePattern.timeYearBegin != 0 && filePattern.timeYearEnd != 0 &&
                             filePattern.timeMonthBegin != 0 && filePattern.timeMonthEnd != 0 &&
                             filePattern.timeDayBegin != 0 && filePattern.timeDayEnd != 0) {
-                            lineContent.Mid((size_t) (filePattern.timeYearBegin - 1),
-                                            (size_t) (filePattern.timeYearEnd - filePattern.timeYearBegin + 1)).ToDouble(
+                            lineContent.Mid(filePattern.timeYearBegin - 1,
+                                            filePattern.timeYearEnd - filePattern.timeYearBegin + 1).ToDouble(
                                     &valTimeYear);
-                            lineContent.Mid((size_t) (filePattern.timeMonthBegin - 1),
-                                            (size_t) (filePattern.timeMonthEnd - filePattern.timeMonthBegin + 1)).ToDouble(
+                            lineContent.Mid(filePattern.timeMonthBegin - 1,
+                                            filePattern.timeMonthEnd - filePattern.timeMonthBegin + 1).ToDouble(
                                     &valTimeMonth);
-                            lineContent.Mid((size_t) (filePattern.timeDayBegin - 1),
-                                            (size_t) (filePattern.timeDayEnd - filePattern.timeDayBegin + 1)).ToDouble(
+                            lineContent.Mid(filePattern.timeDayBegin - 1,
+                                            filePattern.timeDayEnd - filePattern.timeDayBegin + 1).ToDouble(
                                     &valTimeDay);
                         } else {
                             wxLogError(_("The data file pattern is not correctly defined."));
@@ -661,13 +661,13 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                         }
 
                         if (filePattern.timeHourBegin != 0 && filePattern.timeHourEnd != 0) {
-                            lineContent.Mid((size_t) (filePattern.timeHourBegin - 1),
-                                            (size_t) (filePattern.timeHourEnd - filePattern.timeHourBegin + 1)).ToDouble(
+                            lineContent.Mid(filePattern.timeHourBegin - 1,
+                                            filePattern.timeHourEnd - filePattern.timeHourBegin + 1).ToDouble(
                                     &valTimeHour);
                         }
                         if (filePattern.timeMinuteBegin != 0 && filePattern.timeMinuteEnd != 0) {
-                            lineContent.Mid((size_t) (filePattern.timeMinuteBegin - 1),
-                                            (size_t) (filePattern.timeMinuteEnd - filePattern.timeMinuteBegin + 1)).ToDouble(
+                            lineContent.Mid(filePattern.timeMinuteBegin - 1,
+                                            filePattern.timeMinuteEnd - filePattern.timeMinuteBegin + 1).ToDouble(
                                     &valTimeMinute);
                         }
 
@@ -687,8 +687,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                     }
 
                     // Get predictand value
-                    wxString dataStr = lineContent.Mid((size_t) (filePattern.dataBegin - 1),
-                                                       (size_t) (filePattern.dataEnd - filePattern.dataBegin + 1));
+                    wxString dataStr = lineContent.Mid(filePattern.dataBegin - 1,
+                                                       filePattern.dataEnd - filePattern.dataBegin + 1);
 
                     // Put value in the matrix
                     m_dataGross(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
@@ -703,8 +703,8 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
                     wxString tmpLineContent = lineContent;
                     while (tmpLineContent.Find("\t") != wxNOT_FOUND) {
                         int foundCol = tmpLineContent.Find("\t");
-                        vColumns.push_back(tmpLineContent.Mid(0, (size_t) foundCol));
-                        tmpLineContent = tmpLineContent.Mid((size_t) (foundCol + 1));
+                        vColumns.push_back(tmpLineContent.Mid(0, foundCol));
+                        tmpLineContent = tmpLineContent.Mid(foundCol + 1);
                     }
                     if (!tmpLineContent.IsEmpty()) {
                         vColumns.push_back(tmpLineContent);
