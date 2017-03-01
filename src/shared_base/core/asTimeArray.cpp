@@ -715,7 +715,7 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     // Get the time arrays
     Array1DDouble predictandTimeArray = predictand.GetTime();
     Array1DDouble fullTimeArray = m_timeArray;
-    Array1DDouble finalTimeArray(fullTimeArray.size());
+    Array1DDouble finalTimeArray = Array1DDouble(fullTimeArray.size());
 
     // Get data
     Array1DFloat predictandData;

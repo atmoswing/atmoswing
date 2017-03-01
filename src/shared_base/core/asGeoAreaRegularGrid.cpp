@@ -72,7 +72,7 @@ Array1DDouble asGeoAreaRegularGrid::GetXaxis() const
 {
     // Get axis size
     int ptsnb = GetXaxisPtsnb();
-    Array1DDouble Xaxis(ptsnb);
+    Array1DDouble Xaxis = Array1DDouble(ptsnb);
 
     // Build array
     double Xmin = GetXmin();
@@ -88,7 +88,7 @@ Array1DDouble asGeoAreaRegularGrid::GetYaxis() const
 {
     // Get axis size
     int ptsnb = GetYaxisPtsnb();
-    Array1DDouble Yaxis(ptsnb);
+    Array1DDouble Yaxis = Array1DDouble(ptsnb);
 
     // Build array
     double vmin = GetYmin();
