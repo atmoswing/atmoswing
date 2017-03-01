@@ -217,7 +217,7 @@ public:
         return m_dataGross;
     }
 
-    Array1DFloat GetDataGrossStation(int predictandStationId)
+    Array1DFloat GetDataGrossStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataGross.col(indexStation);
@@ -232,7 +232,7 @@ public:
         }
     }
 
-    Array1DFloat GetDataNormalizedStation(int predictandStationId)
+    Array1DFloat GetDataNormalizedStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         if (m_hasNormalizedData) {
