@@ -374,15 +374,7 @@ int asTools::CountNotNaN(const double *pArrStart, const double *pArrEnd)
 
 bool asTools::HasNaN(const Array2DFloat &data)
 {
-    for (int i = 0; i < data.rows(); i++) {
-        for (int j = 0; j < data.cols(); j++) {
-            if (asTools::IsNaN(data(i, j))) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return !((data == data)).all();
 }
 
 bool asTools::HasNaN(const float *pArrStart, const float *pArrEnd)
