@@ -261,6 +261,7 @@ bool asDataPredictor::SetData(VArray2DFloat &val)
     m_latPtsnb = (int) val[0].rows();
     m_lonPtsnb = (int) val[0].cols();
     m_data.clear();
+    m_data.reserve((unsigned long) (m_time.size() * m_latPtsnb * m_lonPtsnb));
     m_data = val;
 
     return true;
@@ -1085,9 +1086,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
         } else if (isShort) {
             ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(i_area), GetIndexesCountNcdf(i_area),
                                 GetIndexesStrideNcdf(), &dataS[indexBegining]);
-            for (int i = 0; i < dataS.size(); i++) {
-                dataF[i] = (float) dataS[i];
-            }
+            dataF = VectorFloat(dataS.begin(), dataS.end());
         }
 
         // Keep data for later treatment
@@ -1126,11 +1125,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
                               + i_time * m_fileIndexes.areas[i_area].lonCount * m_fileIndexes.areas[i_area].latCount;
                     }
 
-                    if (scalingNeeded) {
-                        latlonData(i_lat, i_lon) = data[ind] * dataScaleFactor + dataAddOffset;
-                    } else {
-                        latlonData(i_lat, i_lon) = data[ind];
-                    }
+                    latlonData(i_lat, i_lon) = data[ind];
 
                     // Check if not NaN
                     bool notNan = true;
@@ -1144,6 +1139,11 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &comp
                     }
                 }
             }
+
+            if (scalingNeeded) {
+                latlonData = latlonData * dataScaleFactor + dataAddOffset;
+            }
+
             compositeData[i_area].push_back(latlonData);
         }
         data.clear();
