@@ -86,7 +86,7 @@ public:
         return m_predictandStationIds;
     }
 
-    void SetPredictandStationIds(VectorInt val)
+    void SetPredictandStationIds(const VectorInt val)
     {
         m_predictandStationIds = val;
     }
@@ -98,7 +98,7 @@ public:
         return m_predictandParameter;
     }
 
-    void SetPredictandParameter(asDataPredictand::Parameter val)
+    void SetPredictandParameter(const asDataPredictand::Parameter val)
     {
         m_predictandParameter = val;
     }
@@ -108,7 +108,7 @@ public:
         return m_predictandTemporalResolution;
     }
 
-    void SetPredictandTemporalResolution(asDataPredictand::TemporalResolution val)
+    void SetPredictandTemporalResolution(const asDataPredictand::TemporalResolution val)
     {
         m_predictandTemporalResolution = val;
     }
@@ -118,7 +118,7 @@ public:
         return m_predictandSpatialAggregation;
     }
 
-    void SetPredictandSpatialAggregation(asDataPredictand::SpatialAggregation val)
+    void SetPredictandSpatialAggregation(const asDataPredictand::SpatialAggregation val)
     {
         m_predictandSpatialAggregation = val;
     }
@@ -231,7 +231,7 @@ public:
         return m_stationIds[i];
     }
 
-    void SetStationIds(Array1DInt &stationsIds)
+    void SetStationIds(const Array1DInt &stationsIds)
     {
         m_stationIds = stationsIds;
     }
@@ -292,7 +292,7 @@ public:
         return m_referenceAxis;
     }
 
-    void SetReferenceAxis(Array1DFloat &referenceAxis)
+    void SetReferenceAxis(const Array1DFloat &referenceAxis)
     {
         m_referenceAxis = referenceAxis;
         m_hasReferenceValues = true;
@@ -323,7 +323,7 @@ public:
         return m_referenceValues;
     }
 
-    void SetReferenceValues(Array2DFloat &referenceValues)
+    void SetReferenceValues(const Array2DFloat &referenceValues)
     {
         m_referenceValues = referenceValues;
     }
@@ -333,7 +333,7 @@ public:
         return (int) m_targetDates.size();
     }
 
-    Array1DFloat GetTargetDates()
+    Array1DFloat &GetTargetDates()
     {
         return m_targetDates;
     }
@@ -353,13 +353,13 @@ public:
         m_targetDates = refDates;
     }
 
-    Array1DFloat GetAnalogsCriteria(int i)
+    Array1DFloat &GetAnalogsCriteria(unsigned int i)
     {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(int i, Array1DFloat &analogsCriteria)
+    void SetAnalogsCriteria(unsigned int i, const Array1DFloat &analogsCriteria)
     {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
@@ -370,13 +370,13 @@ public:
         }
     }
 
-    Array2DFloat GetAnalogsValuesGross(int i_leadtime)
+    Array2DFloat &GetAnalogsValuesGross(unsigned int i_leadtime)
     {
         wxASSERT(m_analogsValuesGross.size() > i_leadtime);
         return m_analogsValuesGross[i_leadtime];
     }
 
-    Array1DFloat GetAnalogsValuesGross(int i_leadtime, int i_station) const
+    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station) const
     {
         wxASSERT(m_analogsValuesGross.size() > i_leadtime);
         wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
@@ -384,7 +384,7 @@ public:
         return vals;
     }
 
-    void SetAnalogsValuesGross(int i_leadtime, int i_station, Array1DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(unsigned int i_leadtime, int i_station, const Array1DFloat &analogsValuesGross)
     {
         if (m_analogsValuesGross.size() >= i_leadtime + 1) {
             wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
@@ -414,13 +414,13 @@ public:
         return (int) m_analogsDates[i].size();
     }
 
-    Array1DFloat GetAnalogsDates(int i)
+    Array1DFloat &GetAnalogsDates(int i)
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(int i, Array1DFloat &analogsDates)
+    void SetAnalogsDates(unsigned int i, const Array1DFloat &analogsDates)
     {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;
