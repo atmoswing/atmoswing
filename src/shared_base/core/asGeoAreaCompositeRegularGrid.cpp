@@ -75,7 +75,7 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetXaxisCompositePtsnb(compositeNb);
-    Array1DDouble Xaxis = Array1DDouble(size);
+    Array1DDouble Xaxis(size);
 
     // Build array
     double Xmin = GetComposite(compositeNb).GetXmin();
@@ -98,7 +98,7 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetYaxisCompositePtsnb(compositeNb);
-    Array1DDouble Yaxis = Array1DDouble(size);
+    Array1DDouble Yaxis(size);
 
     // Build array
     double Ymin = GetComposite(compositeNb).GetYmin();
