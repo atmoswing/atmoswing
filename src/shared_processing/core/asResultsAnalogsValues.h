@@ -42,7 +42,7 @@ public:
 
     void Init(asParameters &params);
 
-    Array1DFloat GetTargetDates()
+    Array1DFloat &GetTargetDates()
     {
         return m_targetDates;
     }
@@ -62,7 +62,7 @@ public:
         m_targetDates = refDates;
     }
 
-    VArray1DFloat GetTargetValues()
+    VArray1DFloat &GetTargetValues()
     {
         return m_targetValuesNorm;
     }
@@ -72,7 +72,7 @@ public:
         m_targetValuesNorm = targetValues;
     }
 
-    VArray1DFloat GetTargetValuesNorm()
+    VArray1DFloat &GetTargetValuesNorm()
     {
         return m_targetValuesNorm;
     }
@@ -82,7 +82,7 @@ public:
         m_targetValuesNorm = targetValuesNorm;
     }
 
-    VArray1DFloat GetTargetValuesGross()
+    VArray1DFloat &GetTargetValuesGross()
     {
         return m_targetValuesGross;
     }
@@ -92,7 +92,7 @@ public:
         m_targetValuesGross = targetValuesGross;
     }
 
-    Array2DFloat GetAnalogsCriteria()
+    Array2DFloat &GetAnalogsCriteria()
     {
         return m_analogsCriteria;
     }
@@ -103,7 +103,7 @@ public:
         m_analogsCriteria = analogsCriteria;
     }
 
-    VArray2DFloat GetAnalogsValues()
+    VArray2DFloat &GetAnalogsValues()
     {
         return m_analogsValuesNorm;
     }
@@ -135,7 +135,7 @@ public:
 
     int GetTargetDatesLength() const
     {
-        return int(m_targetDates.size());
+        return m_targetDates.size();
     }
 
     bool Save();
