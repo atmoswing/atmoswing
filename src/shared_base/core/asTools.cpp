@@ -721,7 +721,7 @@ double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, con
     int j = 0;
 
     // Copy data to not alter original array
-    Array1DDouble copyData = Array1DDouble(nbNotNans);
+    Array1DDouble copyData(nbNotNans);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -795,7 +795,7 @@ Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd
 
 Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
+    unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -835,7 +835,7 @@ Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *p
 
 Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
+    unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -864,7 +864,7 @@ Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double
     }
 
     // Copy data to the final container
-    Array1DDouble resultArray = Array1DDouble(copyDataUniques.size());
+    Array1DDouble resultArray(copyDataUniques.size());
 
     for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
@@ -1086,7 +1086,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
             } else {
                 // Return found index
                 IndexMid = (int) (pMid - pArrStart);
-                return (int) IndexMid;
+                return IndexMid;
             }
         }
 
@@ -1125,7 +1125,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
             } else {
                 // Return found index
                 IndexMid = (int) (pMid - pArrStart);
-                return (int) IndexMid;
+                return IndexMid;
             }
         }
 
