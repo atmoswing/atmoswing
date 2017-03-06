@@ -39,7 +39,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_staticTextMethod->Wrap( -1 );
 	bSizer5->Add( m_staticTextMethod, 0, wxALL, 5 );
 	
-	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Evaluate all scores"), _("Only predictand values") };
+	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Genetic algorithms"), _("Evaluate all scores"), _("Only predictand values") };
 	int m_choiceMethodNChoices = sizeof( m_choiceMethodChoices ) / sizeof( wxString );
 	m_choiceMethod = new wxChoice( m_panelControls, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodNChoices, m_choiceMethodChoices, 0 );
 	m_choiceMethod->SetSelection( 0 );
@@ -202,6 +202,387 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_panelSingle->Layout();
 	fgSizer3->Fit( m_panelSingle );
 	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), false );
+	m_panelGeneticAlgoritms = new wxPanel( m_notebookOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer111;
+	bSizer111 = new wxBoxSizer( wxVERTICAL );
+	
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxStaticBoxSizer* sbSizer5;
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneticAlgoritms, wxID_ANY, _("Operators") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer11;
+	fgSizer11 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer11->SetFlexibleDirection( wxBOTH );
+	fgSizer11->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsNaturalSelectionOperator = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Natural selection"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsNaturalSelectionOperator->Wrap( -1 );
+	fgSizer11->Add( m_staticTextGAsNaturalSelectionOperator, 0, wxALL, 5 );
+	
+	wxString m_choiceGAsNaturalSelectionOperatorChoices[] = { _("Ratio elitism"), _("Tournament") };
+	int m_choiceGAsNaturalSelectionOperatorNChoices = sizeof( m_choiceGAsNaturalSelectionOperatorChoices ) / sizeof( wxString );
+	m_choiceGAsNaturalSelectionOperator = new wxChoice( sbSizer5->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceGAsNaturalSelectionOperatorNChoices, m_choiceGAsNaturalSelectionOperatorChoices, 0 );
+	m_choiceGAsNaturalSelectionOperator->SetSelection( 0 );
+	fgSizer11->Add( m_choiceGAsNaturalSelectionOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticTextGAsCouplesSelectionOperator = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Couples selection"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCouplesSelectionOperator->Wrap( -1 );
+	fgSizer11->Add( m_staticTextGAsCouplesSelectionOperator, 0, wxALL, 5 );
+	
+	wxString m_choiceGAsCouplesSelectionOperatorChoices[] = { _("Rank pairing"), _("Randomly"), _("Roulette wheel on rank"), _("Roulette wheel on score"), _("Tournament") };
+	int m_choiceGAsCouplesSelectionOperatorNChoices = sizeof( m_choiceGAsCouplesSelectionOperatorChoices ) / sizeof( wxString );
+	m_choiceGAsCouplesSelectionOperator = new wxChoice( sbSizer5->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceGAsCouplesSelectionOperatorNChoices, m_choiceGAsCouplesSelectionOperatorChoices, 0 );
+	m_choiceGAsCouplesSelectionOperator->SetSelection( 0 );
+	fgSizer11->Add( m_choiceGAsCouplesSelectionOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticTextGAsCrossoverOperator = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Crossover"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverOperator->Wrap( -1 );
+	fgSizer11->Add( m_staticTextGAsCrossoverOperator, 0, wxALL, 5 );
+	
+	wxString m_choiceGAsCrossoverOperatorChoices[] = { _("Single point crossover"), _("Double points crossover"), _("Multiple points crossover"), _("Uniform crossover"), _("Limited blending"), _("Linear crossover"), _("Heuristic crossover"), _("Binary-like crossover"), _("Linear interpolation"), _("Free interpolation") };
+	int m_choiceGAsCrossoverOperatorNChoices = sizeof( m_choiceGAsCrossoverOperatorChoices ) / sizeof( wxString );
+	m_choiceGAsCrossoverOperator = new wxChoice( sbSizer5->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceGAsCrossoverOperatorNChoices, m_choiceGAsCrossoverOperatorChoices, 0 );
+	m_choiceGAsCrossoverOperator->SetSelection( 0 );
+	fgSizer11->Add( m_choiceGAsCrossoverOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	m_staticTextGAsMutationOperator = new wxStaticText( sbSizer5->GetStaticBox(), wxID_ANY, _("Mutation"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationOperator->Wrap( -1 );
+	fgSizer11->Add( m_staticTextGAsMutationOperator, 0, wxALL, 5 );
+	
+	wxString m_choiceGAsMutationOperatorChoices[] = { _("Uniform constant"), _("Uniform variable"), _("Normal constant"), _("Normal variable"), _("Non-uniform"), _("Self adaptation rate"), _("Self adaptation radius"), _("Self adaptation rate chromosome"), _("Self adaptation radius chromosome"), _("Multi scale") };
+	int m_choiceGAsMutationOperatorNChoices = sizeof( m_choiceGAsMutationOperatorChoices ) / sizeof( wxString );
+	m_choiceGAsMutationOperator = new wxChoice( sbSizer5->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceGAsMutationOperatorNChoices, m_choiceGAsMutationOperatorChoices, 0 );
+	m_choiceGAsMutationOperator->SetSelection( 0 );
+	fgSizer11->Add( m_choiceGAsMutationOperator, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	sbSizer5->Add( fgSizer11, 1, wxEXPAND, 5 );
+	
+	
+	bSizer12->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	
+	wxStaticBoxSizer* sbSizer6;
+	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneticAlgoritms, wxID_ANY, _("General options") ), wxVERTICAL );
+	
+	wxFlexGridSizer* fgSizer121;
+	fgSizer121 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer121->SetFlexibleDirection( wxBOTH );
+	fgSizer121->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsRunNumbers = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("Runs number"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsRunNumbers->Wrap( -1 );
+	fgSizer121->Add( m_staticTextGAsRunNumbers, 0, wxALL, 5 );
+	
+	m_textCtrlGAsRunNumbers = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer121->Add( m_textCtrlGAsRunNumbers, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsPopulationSize = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("Population's size"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsPopulationSize->Wrap( -1 );
+	fgSizer121->Add( m_staticTextGAsPopulationSize, 0, wxALL, 5 );
+	
+	m_textCtrlGAsPopulationSize = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer121->Add( m_textCtrlGAsPopulationSize, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsConvergenceNb = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("Convergence after"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsConvergenceNb->Wrap( -1 );
+	fgSizer121->Add( m_staticTextGAsConvergenceNb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsConvergenceNb = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer121->Add( m_textCtrlGAsConvergenceNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsRatioIntermGen = new wxStaticText( sbSizer6->GetStaticBox(), wxID_ANY, _("Ratio interm. gen."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsRatioIntermGen->Wrap( -1 );
+	fgSizer121->Add( m_staticTextGAsRatioIntermGen, 0, wxALL, 5 );
+	
+	m_textCtrlGAsRatioIntermGen = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer121->Add( m_textCtrlGAsRatioIntermGen, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	sbSizer6->Add( fgSizer121, 0, wxEXPAND, 5 );
+	
+	m_checkBoxGAsAllowElitism = new wxCheckBox( sbSizer6->GetStaticBox(), wxID_ANY, _("Allow elitism for the best"), wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer6->Add( m_checkBoxGAsAllowElitism, 0, wxALL, 5 );
+	
+	
+	bSizer12->Add( sbSizer6, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer111->Add( bSizer12, 0, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer14;
+	bSizer14 = new wxBoxSizer( wxVERTICAL );
+	
+	m_notebookGAoptions = new wxNotebook( m_panelGeneticAlgoritms, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_panelSelections = new wxPanel( m_notebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer141;
+	fgSizer141 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer141->SetFlexibleDirection( wxBOTH );
+	fgSizer141->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsNaturalSlctTournamentProb = new wxStaticText( m_panelSelections, wxID_ANY, _("Natural slct tournament: prob"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsNaturalSlctTournamentProb->Wrap( -1 );
+	fgSizer141->Add( m_staticTextGAsNaturalSlctTournamentProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsNaturalSlctTournamentProb = new wxTextCtrl( m_panelSelections, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer141->Add( m_textCtrlGAsNaturalSlctTournamentProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer13->Add( fgSizer141, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer151;
+	fgSizer151 = new wxFlexGridSizer( 2, 2, 0, 0 );
+	fgSizer151->SetFlexibleDirection( wxBOTH );
+	fgSizer151->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsCouplesSlctTournamentNb = new wxStaticText( m_panelSelections, wxID_ANY, _("Couples slct tournament: nb ind."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCouplesSlctTournamentNb->Wrap( -1 );
+	fgSizer151->Add( m_staticTextGAsCouplesSlctTournamentNb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCouplesSlctTournamentNb = new wxTextCtrl( m_panelSelections, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer151->Add( m_textCtrlGAsCouplesSlctTournamentNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer13->Add( fgSizer151, 1, wxEXPAND|wxALL, 5 );
+	
+	
+	m_panelSelections->SetSizer( bSizer13 );
+	m_panelSelections->Layout();
+	bSizer13->Fit( m_panelSelections );
+	m_notebookGAoptions->AddPage( m_panelSelections, _("Natural and couple selections"), false );
+	m_panelCrossover = new wxPanel( m_notebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer10;
+	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer14;
+	fgSizer14 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer14->SetFlexibleDirection( wxBOTH );
+	fgSizer14->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsCrossoverMultipleNbPts = new wxStaticText( m_panelCrossover, wxID_ANY, _("Multiple crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverMultipleNbPts->Wrap( -1 );
+	fgSizer14->Add( m_staticTextGAsCrossoverMultipleNbPts, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCrossoverMultipleNbPts = new wxTextCtrl( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer14->Add( m_textCtrlGAsCrossoverMultipleNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsCrossoverBlendingNbPts = new wxStaticText( m_panelCrossover, wxID_ANY, _("Blending crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverBlendingNbPts->Wrap( -1 );
+	fgSizer14->Add( m_staticTextGAsCrossoverBlendingNbPts, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCrossoverBlendingNbPts = new wxTextCtrl( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer14->Add( m_textCtrlGAsCrossoverBlendingNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsCrossoverBlendingShareBeta = new wxStaticText( m_panelCrossover, wxID_ANY, _("Blending crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverBlendingShareBeta->Wrap( -1 );
+	fgSizer14->Add( m_staticTextGAsCrossoverBlendingShareBeta, 0, wxALL, 5 );
+	
+	m_checkBoxGAsCrossoverBlendingShareBeta = new wxCheckBox( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer14->Add( m_checkBoxGAsCrossoverBlendingShareBeta, 0, wxALL, 5 );
+	
+	m_staticTextGAsCrossoverLinearNbPts = new wxStaticText( m_panelCrossover, wxID_ANY, _("Linear crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverLinearNbPts->Wrap( -1 );
+	fgSizer14->Add( m_staticTextGAsCrossoverLinearNbPts, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCrossoverLinearNbPts = new wxTextCtrl( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer14->Add( m_textCtrlGAsCrossoverLinearNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer10->Add( fgSizer14, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer15;
+	fgSizer15 = new wxFlexGridSizer( 4, 2, 0, 0 );
+	fgSizer15->SetFlexibleDirection( wxBOTH );
+	fgSizer15->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsCrossoverHeuristicNbPts = new wxStaticText( m_panelCrossover, wxID_ANY, _("Heuristic crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverHeuristicNbPts->Wrap( -1 );
+	fgSizer15->Add( m_staticTextGAsCrossoverHeuristicNbPts, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCrossoverHeuristicNbPts = new wxTextCtrl( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer15->Add( m_textCtrlGAsCrossoverHeuristicNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsCrossoverHeuristicShareBeta = new wxStaticText( m_panelCrossover, wxID_ANY, _("Heuristic crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverHeuristicShareBeta->Wrap( -1 );
+	fgSizer15->Add( m_staticTextGAsCrossoverHeuristicShareBeta, 0, wxALL, 5 );
+	
+	m_checkBoxGAsCrossoverHeuristicShareBeta = new wxCheckBox( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer15->Add( m_checkBoxGAsCrossoverHeuristicShareBeta, 0, wxALL, 5 );
+	
+	m_staticTextGAsCrossoverBinLikeNbPts = new wxStaticText( m_panelCrossover, wxID_ANY, _("Binary-like crossover: nb points"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverBinLikeNbPts->Wrap( -1 );
+	fgSizer15->Add( m_staticTextGAsCrossoverBinLikeNbPts, 0, wxALL, 5 );
+	
+	m_textCtrlGAsCrossoverBinLikeNbPts = new wxTextCtrl( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer15->Add( m_textCtrlGAsCrossoverBinLikeNbPts, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsCrossoverBinLikeShareBeta = new wxStaticText( m_panelCrossover, wxID_ANY, _("Binary-like crossover: share beta"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsCrossoverBinLikeShareBeta->Wrap( -1 );
+	fgSizer15->Add( m_staticTextGAsCrossoverBinLikeShareBeta, 0, wxALL, 5 );
+	
+	m_checkBoxGAsCrossoverBinLikeShareBeta = new wxCheckBox( m_panelCrossover, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	fgSizer15->Add( m_checkBoxGAsCrossoverBinLikeShareBeta, 0, wxALL, 5 );
+	
+	
+	bSizer10->Add( fgSizer15, 0, wxEXPAND|wxALL, 5 );
+	
+	
+	m_panelCrossover->SetSizer( bSizer10 );
+	m_panelCrossover->Layout();
+	bSizer10->Fit( m_panelCrossover );
+	m_notebookGAoptions->AddPage( m_panelCrossover, _("Crossover"), false );
+	m_panelMutation = new wxPanel( m_notebookGAoptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
+	
+	wxFlexGridSizer* fgSizer13;
+	fgSizer13 = new wxFlexGridSizer( 7, 2, 0, 0 );
+	fgSizer13->SetFlexibleDirection( wxBOTH );
+	fgSizer13->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsMutationsUniformCstProb = new wxStaticText( m_panelMutation, wxID_ANY, _("Uniform constant: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsUniformCstProb->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsUniformCstProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsUniformCstProb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsUniformCstProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalCstProb = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal constant: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalCstProb->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsNormalCstProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalCstProb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsNormalCstProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalCstStdDev = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal constant: std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalCstStdDev->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsNormalCstStdDev, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalCstStdDev = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsNormalCstStdDev, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsUniformVarMaxGensNb = new wxStaticText( m_panelMutation, wxID_ANY, _("Uniform variable: on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsUniformVarMaxGensNb->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsUniformVarMaxGensNb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsUniformVarMaxGensNb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsUniformVarMaxGensNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsUniformVarProbStart = new wxStaticText( m_panelMutation, wxID_ANY, _("Uniform variable: starting probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsUniformVarProbStart->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsUniformVarProbStart, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsUniformVarProbStart = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsUniformVarProbStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsUniformVarProbEnd = new wxStaticText( m_panelMutation, wxID_ANY, _("Uniform variable: ending probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsUniformVarProbEnd->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsUniformVarProbEnd, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsUniformVarProbEnd = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsUniformVarProbEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsMultiScaleProb = new wxStaticText( m_panelMutation, wxID_ANY, _("Multi-scale: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsMultiScaleProb->Wrap( -1 );
+	fgSizer13->Add( m_staticTextGAsMutationsMultiScaleProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsMultiScaleProb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer13->Add( m_textCtrlGAsMutationsMultiScaleProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer11->Add( fgSizer13, 1, wxEXPAND|wxALL, 5 );
+	
+	wxFlexGridSizer* fgSizer191;
+	fgSizer191 = new wxFlexGridSizer( 9, 2, 0, 0 );
+	fgSizer191->SetFlexibleDirection( wxBOTH );
+	fgSizer191->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	
+	m_staticTextGAsMutationsNormalVarMaxGensNbProb = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: prob on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarMaxGensNbProb->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarMaxGensNbProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarMaxGensNbProb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarMaxGensNbProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalVarMaxGensNbStdDev = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: std dev on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarMaxGensNbStdDev->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarMaxGensNbStdDev, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalVarProbStart = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: starting probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarProbStart->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarProbStart, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarProbStart = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarProbStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalVarProbEnd = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: ending probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarProbEnd->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarProbEnd, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarProbEnd = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarProbEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalVarStdDevStart = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: starting std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarStdDevStart->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarStdDevStart, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarStdDevStart = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarStdDevStart, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNormalVarStdDevEnd = new wxStaticText( m_panelMutation, wxID_ANY, _("Normal variable: ending std dev"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNormalVarStdDevEnd->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNormalVarStdDevEnd, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNormalVarStdDevEnd = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNormalVarStdDevEnd, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNonUniformProb = new wxStaticText( m_panelMutation, wxID_ANY, _("Non-uniform: probability"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNonUniformProb->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNonUniformProb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNonUniformProb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNonUniformProb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNonUniformGensNb = new wxStaticText( m_panelMutation, wxID_ANY, _("Non-uniform: on # generations"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNonUniformGensNb->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNonUniformGensNb, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNonUniformGensNb = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNonUniformGensNb, 0, wxRIGHT|wxLEFT, 5 );
+	
+	m_staticTextGAsMutationsNonUniformMinRate = new wxStaticText( m_panelMutation, wxID_ANY, _("Non-uniform: minimum rate"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextGAsMutationsNonUniformMinRate->Wrap( -1 );
+	fgSizer191->Add( m_staticTextGAsMutationsNonUniformMinRate, 0, wxALL, 5 );
+	
+	m_textCtrlGAsMutationsNonUniformMinRate = new wxTextCtrl( m_panelMutation, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
+	fgSizer191->Add( m_textCtrlGAsMutationsNonUniformMinRate, 0, wxRIGHT|wxLEFT, 5 );
+	
+	
+	bSizer11->Add( fgSizer191, 1, wxEXPAND|wxALL, 5 );
+	
+	
+	m_panelMutation->SetSizer( bSizer11 );
+	m_panelMutation->Layout();
+	bSizer11->Fit( m_panelMutation );
+	m_notebookGAoptions->AddPage( m_panelMutation, _("Mutation"), true );
+	
+	bSizer14->Add( m_notebookGAoptions, 0, wxALL|wxEXPAND, 5 );
+	
+	
+	bSizer111->Add( bSizer14, 0, wxEXPAND, 5 );
+	
+	
+	m_panelGeneticAlgoritms->SetSizer( bSizer111 );
+	m_panelGeneticAlgoritms->Layout();
+	bSizer111->Fit( m_panelGeneticAlgoritms );
+	m_notebookOptions->AddPage( m_panelGeneticAlgoritms, _("Genetic algoritms"), false );
 	
 	bSizer28->Add( m_notebookOptions, 1, wxEXPAND | wxALL, 5 );
 	

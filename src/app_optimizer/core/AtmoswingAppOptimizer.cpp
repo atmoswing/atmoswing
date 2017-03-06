@@ -45,6 +45,7 @@
 #include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassicVarExplo.h"
 #include "asMethodOptimizerRandomSet.h"
+#include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 
@@ -83,6 +84,39 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     { wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially" },
     { wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step" },
     { wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: options MonteCarloRandomNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel", "GAs: options NaturalSelectionOperator" },
+    { wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: options CouplesSelectionOperator" },
+    { wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: options CrossoverOperator" },
+    { wxCMD_LINE_OPTION, NULL, "ga-ope-mut", "GAs: options MutationOperator" },
+    { wxCMD_LINE_OPTION, NULL, "ga-pop-size", "GAs: options GAsPopulationSize" },
+    { wxCMD_LINE_OPTION, NULL, "ga-conv-steps", "GAs: options GAsConvergenceStepsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-interm-gen", "GAs: options GAsRatioIntermediateGeneration" },
+    { wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p", "GAs: options GAsNaturalSelectionTournamentProbability" },
+    { wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb", "GAs: options GAsCouplesSelectionTournamentNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb", "GAs: options GAsCrossoverMultiplePointsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb", "GAs: options GAsCrossoverBlendingPointsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b", "GAs: options GAsCrossoverBlendingShareBeta" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb", "GAs: options GAsCrossoverLinearPointsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb", "GAs: options GAsCrossoverHeuristicPointsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b", "GAs: options GAsCrossoverHeuristicShareBeta" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb", "GAs: options GAsCrossoverBinaryLikePointsNb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b", "GAs: options GAsCrossoverBinaryLikeShareBeta" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p", "GAs: options GAsMutationsUniformConstantProbability" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p", "GAs: options GAsMutationsNormalConstantProbability" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev", "GAs: options GAsMutationsNormalConstantStdDevRatioRange" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens", "GAs: options GAsMutationsUniformVariableMaxGensNbVar" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt", "GAs: options GAsMutationsUniformVariableProbabilityStart" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end", "GAs: options GAsMutationsUniformVariableProbabilityEnd" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p", "GAs: options GAsMutationsNormalVariableMaxGensNbVarProb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d", "GAs: options GAsMutationsNormalVariableMaxGensNbVarStdDev" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt", "GAs: options GAsMutationsNormalVariableProbabilityStart" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end", "GAs: options GAsMutationsNormalVariableProbabilityEnd" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt", "GAs: options GAsMutationsNormalVariableStdDevStart" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end", "GAs: options GAsMutationsNormalVariableStdDevEnd" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p", "GAs: options GAsMutationsNonUniformProb" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: options GAsMutationsNonUniformMaxGensNbVar" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: options GAsMutationsNonUniformMinRate" },
+    { wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: options GAsMutationsMultiScaleProb" },
 
     { wxCMD_LINE_OPTION, NULL, "log-level", "Set a log level"
                                  "\n \t\t\t\t 1: errors"
@@ -231,6 +265,10 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
+        if (m_calibMethod.IsSameAs("ga", false)) {
+            pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
+            pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+        }
         if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
             pConfig->Write("/Optimizer/ParallelEvaluations", true);
         }
@@ -486,6 +524,139 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxFileConfig::Get()->Write("/Optimizer/MonteCarlo/RandomNb", option);
     }
 
+    // Genetic algorithms
+    if (parser.Found("ga-ope-nat-sel", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", option);
+    }
+
+    if (parser.Found("ga-ope-coup-sel", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", option);
+    }
+
+    if (parser.Found("ga-ope-cross", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", option);
+    }
+
+    if (parser.Found("ga-ope-mut", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", option);
+    }
+
+    if (parser.Found("ga-pop-size", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", option);
+    }
+
+    if (parser.Found("ga-conv-steps", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", option);
+    }
+
+    if (parser.Found("ga-interm-gen", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", option);
+    }
+
+    if (parser.Found("ga-nat-sel-tour-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
+    }
+
+    if (parser.Found("ga-coup-sel-tour-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
+    }
+
+    if (parser.Found("ga-cross-mult-pt-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
+    }
+
+    if (parser.Found("ga-cross-blen-pt-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
+    }
+
+    if (parser.Found("ga-cross-blen-share-b", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
+    }
+
+    if (parser.Found("ga-cross-lin-pt-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", option);
+    }
+
+    if (parser.Found("ga-cross-heur-pt-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
+    }
+
+    if (parser.Found("ga-cross-heur-share-b", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
+    }
+
+    if (parser.Found("ga-cross-bin-pt-nb", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
+    }
+
+    if (parser.Found("ga-cross-bin-share-b", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
+    }
+
+    if (parser.Found("ga-mut-unif-cst-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", option);
+    }
+
+    if (parser.Found("ga-mut-norm-cst-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", option);
+    }
+
+    if (parser.Found("ga-mut-norm-cst-dev", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
+    }
+
+    if (parser.Found("ga-mut-unif-var-gens", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
+    }
+
+    if (parser.Found("ga-mut-unif-var-p-strt", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
+    }
+
+    if (parser.Found("ga-mut-unif-var-p-end", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-gens-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-gens-d", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-p-strt", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-p-end", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-d-strt", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
+    }
+
+    if (parser.Found("ga-mut-norm-var-d-end", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
+    }
+
+    if (parser.Found("ga-mut-non-uni-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", option);
+    }
+
+    if (parser.Found("ga-mut-non-uni-gens", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
+    }
+
+    if (parser.Found("ga-mut-non-uni-min-r", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", option);
+    }
+
+    if (parser.Found("ga-mut-multi-scale-p", &option)) {
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", option);
+    }
+
     // Skip validation option
     if (parser.Found("skip-valid", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
@@ -572,6 +743,13 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.Manager();
             } else if (m_calibMethod.IsSameAs("montecarlo", false)) {
                 asMethodOptimizerRandomSet optimizer;
+                optimizer.SetParamsFilePath(m_calibParamsFile);
+                optimizer.SetPredictandDBFilePath(m_predictandDB);
+                optimizer.SetPredictandStationIds(m_predictandStationIds);
+                optimizer.SetPredictorDataDir(m_predictorsDir);
+                optimizer.Manager();
+            } else if (m_calibMethod.IsSameAs("ga", false)) {
+                asMethodOptimizerGeneticAlgorithms optimizer;
                 optimizer.SetParamsFilePath(m_calibParamsFile);
                 optimizer.SetPredictandDBFilePath(m_predictandDB);
                 optimizer.SetPredictandStationIds(m_predictandStationIds);

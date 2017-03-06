@@ -1008,7 +1008,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     Array1DDouble timeArrayTargetVectUnique(1);
 
     // Loop over the lead times
-    for (unsigned int i_leadtime = 0; i_leadtime < timeArrayTarget.GetSize(); i_leadtime++) {
+    for (int i_leadtime = 0; i_leadtime < timeArrayTarget.GetSize(); i_leadtime++) {
         // Set the corresponding analogs number
         params.SetAnalogsNumber(i_step, params.GetAnalogsNumberLeadTime(i_step, i_leadtime));
 
@@ -1475,7 +1475,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     Array1DFloat leadTimes = resultsPrev.GetTargetDates();
 
     // Loop over the lead times
-    for (unsigned int i_leadtime = 0; i_leadtime < timeArrayTarget.GetSize(); i_leadtime++) {
+    for (int i_leadtime = 0; i_leadtime < timeArrayTarget.GetSize(); i_leadtime++) {
         // Create a analogs date object for previous results
         asResultsAnalogsDates anaDatesPrev;
         anaDatesPrev.SetCurrentStep(i_step - 1);
@@ -1563,7 +1563,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
 
     // Loop over the lead times
-    for (unsigned int i_leadtime = 0; i_leadtime < leadTimes.size(); i_leadtime++) {
+    for (int i_leadtime = 0; i_leadtime < leadTimes.size(); i_leadtime++) {
         // Set the corresponding analogs number
         params.SetAnalogsNumber(i_step, params.GetAnalogsNumberLeadTime(i_step, i_leadtime));
 
