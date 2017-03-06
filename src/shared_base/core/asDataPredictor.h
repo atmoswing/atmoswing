@@ -106,6 +106,8 @@ public:
 
     bool LoadFullArea(double date, float level);
 
+    bool TransformData(VVArray2DFloat &compositeData);
+
     bool Inline();
 
     bool SetData(VArray2DFloat &val);
@@ -139,6 +141,11 @@ public:
     Array1DFloat GetAxisLat() const
     {
         return m_axisLat;
+    }
+
+    Parameter GetParameter() const
+    {
+        return m_parameter;
     }
 
     void SetDirectoryPath(wxString directoryPath)
