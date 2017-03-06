@@ -485,6 +485,12 @@ bool asDataPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaC
     ncFile.Close();
     ThreadsManager().CritSectionNetCDF().Leave();
 
+    // Transform data
+    if (!TransformData(compositeData)) {
+        wxFAIL;
+        return false;
+    }
+
     return true;
 }
 
@@ -541,6 +547,12 @@ bool asDataPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCom
     // Close the nc file
     gbFile.Close();
     ThreadsManager().CritSectionGrib().Leave();
+
+    // Transform data
+    if (!TransformData(compositeData)) {
+        wxFAIL;
+        return false;
+    }
 
     return true;
 }
@@ -1217,9 +1229,26 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compo
     return true;
 }
 
+bool asDataPredictor::TransformData(VVArray2DFloat &compositeData)
+{
+    // See http://www.ecmwf.int/en/faq/geopotential-defined-units-m2/s2-both-pressure-levels-and-surface-orography-how-can-height
+    if (m_parameter == Geopotential) {
+        for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+            for (int i_time = 0; i_time < compositeData[i_area].size(); i_time++) {
+                compositeData[i_area][i_time] = compositeData[i_area][i_time] / 9.80665;
+            }
+        }
+        m_parameter = GeopotentialHeight;
+        m_parameterName = "Geopotential height";
+        m_unit = m;
+    }
+
+    return true;
+}
+
 bool asDataPredictor::Inline()
 {
-    //Already inlined
+    // Already inlined
     if (m_lonPtsnb == 1 || m_latPtsnb == 1) {
         return true;
     }
