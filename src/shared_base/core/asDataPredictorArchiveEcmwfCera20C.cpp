@@ -97,7 +97,7 @@ bool asDataPredictorArchiveEcmwfCera20C::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + ".nc";
+        m_fileNamePattern = m_fileVariableName + "_%d.nc";
 
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
                m_product.IsSameAs("sfc", false)) {
@@ -124,7 +124,7 @@ bool asDataPredictorArchiveEcmwfCera20C::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + ".nc";
+        m_fileNamePattern = m_fileVariableName + "_%d.nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
@@ -154,7 +154,9 @@ VectorString asDataPredictorArchiveEcmwfCera20C::GetListOfFiles(asTimeArray &tim
 {
     VectorString files;
 
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
+        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year));
+    }
 
     return files;
 }
