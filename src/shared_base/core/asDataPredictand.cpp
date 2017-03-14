@@ -133,10 +133,14 @@ asDataPredictand::TemporalResolution asDataPredictand::StringToTemporalResolutio
         return Hourly;
     } else if (temporalResolution.CmpNoCase("1 hour") == 0) {
         return Hourly;
-    } else if (temporalResolution.CmpNoCase("SixHourlyMovingDailyTemporalWindow") == 0) {
-        return SixHourlyMovingDailyTemporalWindow;
-    } else if (temporalResolution.CmpNoCase("MovingTemporalWindow") == 0) {
-        return SixHourlyMovingDailyTemporalWindow;
+    } else if (temporalResolution.CmpNoCase("OneHourlyMTW") == 0) {
+        return OneHourlyMTW;
+    } else if (temporalResolution.CmpNoCase("ThreeHourlyMTW") == 0) {
+        return ThreeHourlyMTW;
+    } else if (temporalResolution.CmpNoCase("SixHourlyMTW") == 0) {
+        return SixHourlyMTW;
+    } else if (temporalResolution.CmpNoCase("TwelveHourlyMTW") == 0) {
+        return TwelveHourlyMTW;
     } else if (temporalResolution.CmpNoCase("TwoDays") == 0) {
         return TwoDays;
     } else if (temporalResolution.CmpNoCase("2 days") == 0) {
@@ -165,8 +169,14 @@ wxString asDataPredictand::TemporalResolutionEnumToString(asDataPredictand::Temp
             return "SixHourly";
         case (Hourly):
             return "Hourly";
-        case (SixHourlyMovingDailyTemporalWindow):
-            return "SixHourlyMovingDailyTemporalWindow";
+        case (OneHourlyMTW):
+            return "OneHourlyMTW";
+        case (ThreeHourlyMTW):
+            return "ThreeHourlyMTW";
+        case (SixHourlyMTW):
+            return "SixHourlyMTW";
+        case (TwelveHourlyMTW):
+            return "TwelveHourlyMTW";
         case (TwoDays):
             return "TwoDays";
         case (ThreeDays):

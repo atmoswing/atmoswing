@@ -55,7 +55,7 @@ public:
 
     enum TemporalResolution
     {
-        Daily, SixHourly, Hourly, SixHourlyMovingDailyTemporalWindow, TwoDays, ThreeDays, Weekly
+        Daily, SixHourly, Hourly, OneHourlyMTW, ThreeHourlyMTW, SixHourlyMTW, TwelveHourlyMTW, TwoDays, ThreeDays, Weekly
     };
 
     enum SpatialAggregation
