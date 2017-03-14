@@ -97,7 +97,7 @@ bool asDataPredictorArchiveEcmwfCera20C::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + "_%d.nc";
+        m_fileNamePattern = m_fileVariableName + ".%d.nc";
 
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
                m_product.IsSameAs("sfc", false)) {
@@ -124,7 +124,7 @@ bool asDataPredictorArchiveEcmwfCera20C::Init()
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + "_%d.nc";
+        m_fileNamePattern = m_fileVariableName + ".%d.nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
