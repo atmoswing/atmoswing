@@ -186,8 +186,17 @@ bool asCatalogPredictands::Load()
         case (asDataPredictand::Hourly):
             m_timeStepHours = 1.0;
             break;
-        case (asDataPredictand::SixHourlyMovingDailyTemporalWindow):
+        case (asDataPredictand::OneHourlyMTW):
+            m_timeStepHours = 1.0;
+            break;
+        case (asDataPredictand::ThreeHourlyMTW):
+            m_timeStepHours = 3.0;
+            break;
+        case (asDataPredictand::SixHourlyMTW):
             m_timeStepHours = 6.0;
+            break;
+        case (asDataPredictand::TwelveHourlyMTW):
+            m_timeStepHours = 12.0;
             break;
         case (asDataPredictand::TwoDays):
             m_timeStepHours = 48.0;

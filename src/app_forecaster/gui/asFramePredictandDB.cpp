@@ -174,9 +174,24 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 temporalResolution = asDataPredictand::SixHourly;
                 break;
             }
-            case 2: // Moving temporal window (6/24 hours)
+            case 2: // Moving temporal window (1-hourly)
             {
-                temporalResolution = asDataPredictand::SixHourlyMovingDailyTemporalWindow;
+                temporalResolution = asDataPredictand::OneHourlyMTW;
+                break;
+            }
+            case 3: // Moving temporal window (3-hourly)
+            {
+                temporalResolution = asDataPredictand::ThreeHourlyMTW;
+                break;
+            }
+            case 4: // Moving temporal window (6-hourly)
+            {
+                temporalResolution = asDataPredictand::SixHourlyMTW;
+                break;
+            }
+            case 5: // Moving temporal window (12-hourly)
+            {
+                temporalResolution = asDataPredictand::OneHourlyMTW;
                 break;
             }
             default:
