@@ -309,7 +309,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	m_staticTextDataTempResol->Wrap( -1 );
 	fgSizer2->Add( m_staticTextDataTempResol, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	wxString m_choiceDataTempResolChoices[] = { _("24 hours"), _("6 hours"), _("Moving temporal window (6/24 hours)") };
+	wxString m_choiceDataTempResolChoices[] = { _("24 hours"), _("6 hours"), _("1-hr MTW"), _("3-hr MTW"), _("6-hr MTW"), _("12-hr MTW") };
 	int m_choiceDataTempResolNChoices = sizeof( m_choiceDataTempResolChoices ) / sizeof( wxString );
 	m_choiceDataTempResol = new wxChoice( m_panel2, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDataTempResolNChoices, m_choiceDataTempResolChoices, 0 );
 	m_choiceDataTempResol->SetSelection( 0 );

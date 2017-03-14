@@ -44,7 +44,8 @@ asDataPredictandPrecipitation::asDataPredictandPrecipitation(Parameter dataParam
     m_returnPeriodNormalization = 10;
     m_isSqrt = false;
 
-    if (dataTemporalResolution == SixHourlyMovingDailyTemporalWindow) {
+    if (dataTemporalResolution == OneHourlyMTW || dataTemporalResolution == ThreeHourlyMTW ||
+        dataTemporalResolution == SixHourlyMTW || dataTemporalResolution == TwelveHourlyMTW) {
         m_hasNormalizedData = false;
         m_hasReferenceValues = false;
     }
@@ -75,7 +76,8 @@ bool asDataPredictandPrecipitation::Load(const wxString &filePath)
     // Load common data
     LoadCommonData(ncFile);
 
-    if (m_temporalResolution != SixHourlyMovingDailyTemporalWindow) {
+    if (m_temporalResolution != OneHourlyMTW && m_temporalResolution != ThreeHourlyMTW &&
+        m_temporalResolution != SixHourlyMTW && m_temporalResolution != TwelveHourlyMTW) {
         // Get global attributes
         m_returnPeriodNormalization = ncFile.GetAttFloat("return_period_normalization");
         m_isSqrt = false;
@@ -119,7 +121,8 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     // Set common definitions
     SetCommonDefinitions(ncFile);
 
-    if (m_temporalResolution != SixHourlyMovingDailyTemporalWindow) {
+    if (m_temporalResolution != OneHourlyMTW && m_temporalResolution != ThreeHourlyMTW &&
+        m_temporalResolution != SixHourlyMTW && m_temporalResolution != TwelveHourlyMTW) {
         // Define specific dimensions.
         ncFile.DefDim("return_periods", (int) m_returnPeriods.size());
 
@@ -169,7 +172,8 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
     // Save common data
     SaveCommonData(ncFile);
 
-    if (m_temporalResolution != SixHourlyMovingDailyTemporalWindow) {
+    if (m_temporalResolution != OneHourlyMTW && m_temporalResolution != ThreeHourlyMTW &&
+        m_temporalResolution != SixHourlyMTW && m_temporalResolution != TwelveHourlyMTW) {
         // Provide sizes for specific variables
         size_t start2[] = {0, 0};
         size_t count2[] = {size_t(m_timeLength), size_t(m_stationsNb)};
@@ -211,7 +215,8 @@ bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFil
     if (!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir))
         return false;
 
-    if (m_temporalResolution != SixHourlyMovingDailyTemporalWindow) {
+    if (m_temporalResolution != OneHourlyMTW && m_temporalResolution != ThreeHourlyMTW &&
+        m_temporalResolution != SixHourlyMTW && m_temporalResolution != TwelveHourlyMTW) {
         // Make the Gumbel adjustment
         if (!MakeGumbelAdjustment())
             return false;
