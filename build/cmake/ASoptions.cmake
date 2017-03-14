@@ -17,6 +17,16 @@ endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER)
 # Output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
+# MSYS condition
+if (WIN32)
+    set(USE_MSYS2 ON CACHE BOOL "Do you want to use MSYS2 ?" )
+    if(USE_MSYS2)
+        set(MINGW false)
+        set(MSYS true)
+        set(MINGW_PATH "C:/msys64/mingw64" CACHE PATH "Path to installed libraries in MINGW")
+    endif()
+endif ()
+
 # Enable Visual Leak Detector
 if (WIN32)
     set(USE_VLD OFF CACHE BOOL "Sould we use Visual Leak Detector (https://vld.codeplex.com) ?" )
