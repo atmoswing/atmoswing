@@ -35,9 +35,9 @@
 //---------------------------------
 
 #ifdef _MSC_VER
-#pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
-#pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
-#pragma warning( disable : 4515 ) // C4515: namespace uses itself
+#   pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+#   pragma warning( disable : 4100 ) // C4100: unreferenced formal parameter
+#   pragma warning( disable : 4515 ) // C4515: namespace uses itself
 #endif
 
 
@@ -49,14 +49,12 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-#pragma hdrstop
+#   pragma hdrstop
 #endif
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
-
-#include "wx/wx.h"
-
+#   include "wx/wx.h"
 #endif
 
 
@@ -65,17 +63,15 @@
 //---------------------------------
 
 #ifndef WX_PRECOMP
-
-#include "wx/log.h"
+#   include "wx/log.h"
 #include "wx/string.h"
 #include "wx/arrstr.h"
 #include "wx/utils.h"
 #include "wx/fileconf.h"
-
 #endif
 
 #if defined (__WIN32__)
-#include "wx/msw/regconf.h"   // wxRegConfig class
+#   include "wx/msw/regconf.h"   // wxRegConfig class
 #endif
 
 
@@ -85,7 +81,7 @@
 
 #define EIGEN_DEFAULT_TO_ROW_MAJOR
 #ifndef EIGEN_NO_DEBUG
-#define EIGEN_NO_DEBUG
+#   define EIGEN_NO_DEBUG
 #endif
 
 // Modules and Header files: http://eigen.tuxfamily.org/dox-3.0/QuickRefPage.html#QuickRef_Headers
@@ -110,22 +106,21 @@
 
 #ifdef _DEBUG
 
-#include <stdlib.h>
-#include <wx/debug.h> // wxASSERT
+#   include <stdlib.h>
+#   include <wx/debug.h> // wxASSERT
 
-#ifdef __WXMSW__
-#include <crtdbg.h>
-#include <wx/msw/msvcrt.h> // redefines the new() operator
+#   ifdef __WXMSW__
+#       include <crtdbg.h>
+#       include <wx/msw/msvcrt.h> // redefines the new() operator
 
-#if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
-#error Debug CRT functions have not been included!
-#endif
-#endif
+#       if !defined(_INC_CRTDBG) || !defined(_CRTDBG_MAP_ALLOC)
+#           error Debug CRT functions have not been included!
+#       endif
+#   endif
 
-#ifdef USE_VLD
-#include <vld.h> // Visual Leak Detector (https://vld.codeplex.com/)
-#endif
-
+#   ifdef USE_VLD
+#       include <vld.h> // Visual Leak Detector (https://vld.codeplex.com/)
+#   endif
 
 #endif
 
@@ -150,25 +145,22 @@
 #include "asThreadsManager.h"
 
 #if wxUSE_GUI
-
-#include "asDialogFilePicker.h"
-#include "asDialogFileSaver.h"
-#include "asDialogProgressBar.h"
-
+#   include "asDialogFilePicker.h"
+#   include "asDialogFileSaver.h"
+#   include "asDialogProgressBar.h"
 #endif
+
 #ifdef APP_FORECASTER
-
-#include "asGlobVarsForecaster.h"
-
+#   include "asGlobVarsForecaster.h"
 #endif
 #ifdef APP_VIEWER
-#include "asGlobVarsViewer.h"
+#   include "asGlobVarsViewer.h"
 #endif
 #ifdef APP_OPTIMIZER
-#include "asGlobVarsOptimizer.h"
+#   include "asGlobVarsOptimizer.h"
 #endif
 #ifdef UNIT_TESTING
-#include "asGlobVarsOptimizer.h"
+#   include "asGlobVarsOptimizer.h"
 #endif
 
 #endif // ATMOSWINGINC_H_INCLUDED
