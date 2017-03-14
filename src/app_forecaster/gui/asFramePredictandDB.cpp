@@ -191,7 +191,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 5: // Moving temporal window (12-hourly)
             {
-                temporalResolution = asDataPredictand::OneHourlyMTW;
+                temporalResolution = asDataPredictand::TwelveHourlyMTW;
                 break;
             }
             default:
