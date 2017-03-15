@@ -171,6 +171,9 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                 } else if (nodeParam->GetName() == "end") {
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "time_step") {
+                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                        return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
