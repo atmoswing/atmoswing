@@ -42,7 +42,7 @@ asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxStr
     m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
     m_timeZoneHours = 0;
-    m_timeStepHours = 6;
+    m_timeStepHours = 3;
     m_firstTimeStepHours = 0;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
