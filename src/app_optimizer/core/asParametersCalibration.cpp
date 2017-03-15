@@ -166,6 +166,9 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                 } else if (nodeParam->GetName() == "end") {
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "time_step") {
+                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                        return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -185,6 +188,9 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                         return false;
                 } else if (nodeParam->GetName() == "end") {
                     if (!SetCalibrationEnd(fileParams.GetString(nodeParam)))
+                        return false;
+                } else if (nodeParam->GetName() == "time_step") {
+                    if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
