@@ -369,6 +369,9 @@ bool asParametersForecast::ParseAnalogValuesParams(asFileParametersForecast &fil
                         return false;
                 } else if (nodeParam->GetName() == "database") {
                     SetPredictandDatabase(fileParams.GetString(nodeParam));
+                } else if (nodeParam->GetName() == "time") {
+                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam)))
+                        return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
