@@ -403,6 +403,9 @@ bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibratio
                 if (nodeParam->GetName() == "station_id") {
                     if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "time") {
+                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam)))
+                        return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }

@@ -436,6 +436,9 @@ bool asParameters::ParseAnalogValuesParams(asFileParametersStandard &fileParams,
                 if (nodeParam->GetName() == "station_id") {
                     if (!SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam))))
                         return false;
+                } else if (nodeParam->GetName() == "time") {
+                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam)))
+                        return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
