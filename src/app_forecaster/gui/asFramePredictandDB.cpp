@@ -244,28 +244,23 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                     }
                 }
 
-                // Sqrt option
-                bool makeSqrt = false;
-                if (m_checkBoxSqrt->GetValue()) {
-                    makeSqrt = true;
-                }
-
-                // Instiantiate a predictand object
+                // Instantiate a predictand object
                 asDataPredictandPrecipitation predictand(asDataPredictand::Precipitation, temporalResolution, spatialAggregation);
-                predictand.SetIsSqrt(makeSqrt);
+                predictand.SetHasReferenceValues(m_checkBoxReturnPeriod->GetValue());
+                predictand.SetIsSqrt(m_checkBoxSqrt->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 1: // Temperature
             {
-                // Instiantiate a predictand object
+                // Instantiate a predictand object
                 asDataPredictandTemperature predictand(asDataPredictand::AirTemperature, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
-                // Instiantiate a predictand object
+                // Instantiate a predictand object
                 asDataPredictandLightnings predictand(asDataPredictand::Lightnings, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
