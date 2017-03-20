@@ -570,6 +570,23 @@ int asFileNetcdf::GetDimId(const wxString &dimName)
     return id;
 }
 
+bool asFileNetcdf::HasVariable(const wxString &varName)
+{
+    wxASSERT(m_opened);
+
+    // Check that the file is not in define mode
+    CheckDefModeClosed();
+
+    // Get the variable id
+    for (int i_var = 0; i_var < GetVarsNb(); i_var++) {
+        if (m_struct.vars[i_var].name.IsSameAs(varName)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int asFileNetcdf::GetVarId(const wxString &varName)
 {
     wxASSERT(m_opened);
