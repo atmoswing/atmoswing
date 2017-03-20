@@ -381,6 +381,8 @@ bool asDataPredictand::LoadCommonData(asFileNetcdf &ncFile)
     m_temporalResolution = (TemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
     m_spatialAggregation = (SpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
     m_datasetId = ncFile.GetAttString("dataset_id");
+    m_hasNormalizedData = ncFile.HasVariable("data_normalized");
+    m_hasReferenceValues = m_hasNormalizedData;
 
     // Get time
     m_timeLength = ncFile.GetDimLength("time");

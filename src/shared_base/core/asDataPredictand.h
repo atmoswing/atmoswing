@@ -157,6 +157,12 @@ public:
         return m_hasNormalizedData;
     }
 
+    void SetHasReferenceValues(bool val)
+    {
+        m_hasReferenceValues = val;
+        m_hasNormalizedData = val;
+    }
+
     bool HasReferenceValues() const
     {
         return m_hasReferenceValues;

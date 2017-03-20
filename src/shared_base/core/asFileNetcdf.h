@@ -98,6 +98,8 @@ public:
 
     int GetDimId(const wxString &dimName);
 
+    bool HasVariable(const wxString &varName);
+
     int GetVarId(const wxString &varName);
 
     bool HasAttribute(const wxString &attName, const wxString &varName = wxEmptyString);
