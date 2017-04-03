@@ -1330,9 +1330,9 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
     Array1DDouble predictandTime = m_predictandDB->GetTime();
     float predictandTimeDays = float(params.GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0], params.GetArchiveStart());
+    timeStart = wxMax(predictandTime[0], params.GetCalibrationStart());
     timeStart = floor(timeStart) + predictandTimeDays;
-    timeEnd = wxMin(predictandTime[predictandTime.size() - 1], params.GetArchiveEnd());
+    timeEnd = wxMin(predictandTime[predictandTime.size() - 1], params.GetCalibrationEnd());
     timeEnd = floor(timeEnd) + predictandTimeDays;
 
     // Check if data are effectively available for this period
