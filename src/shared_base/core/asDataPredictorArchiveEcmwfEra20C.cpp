@@ -36,7 +36,7 @@ asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxStr
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_ERA_20C";
+    m_datasetId = "ECMWF_ERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA 20th Century";
     m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
