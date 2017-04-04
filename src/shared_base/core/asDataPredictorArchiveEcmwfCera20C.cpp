@@ -36,7 +36,7 @@ asDataPredictorArchiveEcmwfCera20C::asDataPredictorArchiveEcmwfCera20C(const wxS
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_CERA_20C";
+    m_datasetId = "ECMWF_CERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "Coupled ERA 20th Century";
     m_isEnsemble = true;
