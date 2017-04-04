@@ -51,7 +51,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C_6h", "press/z",
                                                                             predictorDataDir);
     predictor->SetTimeStepHours(3);
 
@@ -133,7 +133,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C_6h", "press/z",
                                                                             predictorDataDir);
     predictor->SetTimeStepHours(3);
 
@@ -216,7 +216,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C_6h", "press/z",
                                                                             predictorDataDir);
     predictor->SetTimeStepHours(3);
 
@@ -297,7 +297,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C", "press/z",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_ERA_20C_6h", "press/z",
                                                                             predictorDataDir);
     predictor->SetTimeStepHours(3);
 

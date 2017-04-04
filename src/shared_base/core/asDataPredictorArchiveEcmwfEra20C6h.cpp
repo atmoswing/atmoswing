@@ -39,7 +39,7 @@ asDataPredictorArchiveEcmwfEra20C6h::asDataPredictorArchiveEcmwfEra20C6h(const w
     m_timeStepHours = 6;
 }
 
-asDataPredictorArchiveEcmwfEra20C::~asDataPredictorArchiveEcmwfEra20C()
+asDataPredictorArchiveEcmwfEra20C6h::~asDataPredictorArchiveEcmwfEra20C6h()
 {
 
 }

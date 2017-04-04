@@ -51,7 +51,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, Load1stMember)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C", "press/r",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C_3h", "press/r",
                                                                             predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
@@ -118,7 +118,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, Load3rdMember)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C", "press/r",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C_3h", "press/r",
                                                                             predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
@@ -185,7 +185,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C", "press/r",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C_3h", "press/r",
                                                                             predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
@@ -253,7 +253,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C", "press/r",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C_3h", "press/r",
                                                                             predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
@@ -319,7 +319,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C", "press/r",
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("ECMWF_CERA_20C_3h", "press/r",
                                                                             predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
