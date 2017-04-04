@@ -40,6 +40,7 @@
 #include <asDataPredictorArchiveNoaaOisst2Subset.h>
 #include <asDataPredictorArchiveEcmwfEraInterim.h>
 #include <asDataPredictorArchiveEcmwfEra20C.h>
+#include <asDataPredictorArchiveEcmwfEra20C6h.h>
 #include <asDataPredictorArchiveEcmwfCera20C.h>
 #include <asDataPredictorArchiveNasaMerra2.h>
 #include <asDataPredictorArchiveNasaMerra2Subset.h>
@@ -80,9 +81,11 @@ asDataPredictorArchive *asDataPredictorArchive::GetInstance(const wxString &data
         predictor = new asDataPredictorArchiveNcepCfsrSubset(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
         predictor = new asDataPredictorArchiveEcmwfEraInterim(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_ERA_20C_3h", false)) {
         predictor = new asDataPredictorArchiveEcmwfEra20C(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_ERA_20C_6h", false)) {
+        predictor = new asDataPredictorArchiveEcmwfEra20C6h(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_CERA_20C_3h", false)) {
         predictor = new asDataPredictorArchiveEcmwfCera20C(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asDataPredictorArchiveNasaMerra2(dataId);
