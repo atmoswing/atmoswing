@@ -697,6 +697,11 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
                 return false;
             }
 
+            // Select the number of members for ensemble data.
+            if (predictor->IsEnsemble()) {
+                predictor->SelectMembers(params.GetPredictorMembersNb(i_step, i_ptor));
+            }
+
             // Date array object instantiation for the data loading.
             // The array has the same length than timeArrayArchive, and the predictor dates are aligned with the
             // target dates, but the dates are not the same.
@@ -897,6 +902,11 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                     return false;
                 }
 
+                // Select the number of members for ensemble data.
+                if (predictorPreprocess->IsEnsemble()) {
+                    predictorPreprocess->SelectMembers(params.GetPreprocessMembersNb(i_step, i_ptor, i_prepro));
+                }
+
                 asGeo geo;
                 double Ymax = params.GetPreloadYmin(i_step, i_ptor) + params.GetPredictorYstep(i_step, i_ptor) *
                                                                       double(params.GetPreloadYptsnb(i_step, i_ptor) - 1);
@@ -943,6 +953,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
 
             wxLogVerbose(_("Preprocessing data."));
             asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+
             try {
                 if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(i_step, i_ptor),
                                                 predictor)) {
@@ -1201,6 +1212,11 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
         return false;
     }
 
+    // Select the number of members for ensemble data.
+    if (predictor->IsEnsemble()) {
+        predictor->SelectMembers(params.GetPredictorMembersNb(i_step, i_ptor));
+    }
+
     // Area object instantiation
     asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(i_step, i_ptor),
                                                                        params.GetPredictorXmin(i_step, i_ptor),
@@ -1261,6 +1277,11 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
+        }
+
+        // Select the number of members for ensemble data.
+        if (predictorPreprocess->IsEnsemble()) {
+            predictorPreprocess->SelectMembers(params.GetPreprocessMembersNb(i_step, i_ptor, i_prep));
         }
 
         // Area object instantiation

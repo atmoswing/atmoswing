@@ -292,6 +292,9 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                 } else if (nodeParam->GetName() == "time") {
                     if (!SetPredictorTimeHoursVector(i_step, i_ptor, fileParams.GetVectorDouble(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "members") {
+                    if (!SetPredictorMembersNb(i_step, i_ptor, fileParams.GetInt(nodeParam)))
+                        return false;
                 } else if (nodeParam->GetName() == "spatial_window") {
                     wxXmlNode *nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
@@ -376,6 +379,9 @@ bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibr
                         return false;
                     if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset,
                                                 fileParams.GetVectorDouble(nodeParamPreprocess)[0]))
+                        return false;
+                } else if (nodeParamPreprocess->GetName() == "members") {
+                    if (!SetPreprocessMembersNb(i_step, i_ptor, i_dataset, fileParams.GetInt(nodeParamPreprocess)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParamPreprocess);

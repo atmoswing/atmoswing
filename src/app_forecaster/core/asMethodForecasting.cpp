@@ -725,6 +725,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 return false;
             }
 
+            // Select the number of members for ensemble data.
+            if (predictorArchive->IsEnsemble()) {
+                predictorArchive->SelectMembers(params.GetPredictorArchiveMembersNb(i_step, i_ptor));
+            }
+
             // Instanciate an realtime predictor object
             asDataPredictorRealtime *predictorRealtime = asDataPredictorRealtime::GetInstance(
                     params.GetPredictorRealtimeDatasetId(i_step, i_ptor),
@@ -735,6 +740,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_forecastDate);
+
+            // Select the number of members for ensemble data.
+            if (predictorRealtime->IsEnsemble()) {
+                predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(i_step, i_ptor));
+            }
 
             // Restriction needed
             wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
@@ -845,6 +855,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                     return false;
                 }
 
+                // Select the number of members for ensemble data.
+                if (predictorArchivePreprocess->IsEnsemble()) {
+                    predictorArchivePreprocess->SelectMembers(params.GetPreprocessArchiveMembersNb(i_step, i_ptor, i_prepro));
+                }
+
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime *predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(
                         params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro),
@@ -856,6 +871,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(
                         m_batchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
+
+                // Select the number of members for ensemble data.
+                if (predictorRealtimePreprocess->IsEnsemble()) {
+                    predictorRealtimePreprocess->SelectMembers(params.GetPreprocessRealtimeMembersNb(i_step, i_ptor, i_prepro));
+                }
 
                 // Restriction needed
                 wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
@@ -1197,6 +1217,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 return false;
             }
 
+            // Select the number of members for ensemble data.
+            if (predictorArchive->IsEnsemble()) {
+                predictorArchive->SelectMembers(params.GetPredictorArchiveMembersNb(i_step, i_ptor));
+            }
+
             // Instanciate an realtime predictor object
             asDataPredictorRealtime *predictorRealtime = asDataPredictorRealtime::GetInstance(
                     params.GetPredictorRealtimeDatasetId(i_step, i_ptor),
@@ -1207,6 +1232,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_forecastDate);
+
+            // Select the number of members for ensemble data.
+            if (predictorRealtime->IsEnsemble()) {
+                predictorRealtime->SelectMembers(params.GetPredictorRealtimeMembersNb(i_step, i_ptor));
+            }
 
             // Restriction needed
             wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
@@ -1306,6 +1336,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                     return false;
                 }
 
+                // Select the number of members for ensemble data.
+                if (predictorArchivePreprocess->IsEnsemble()) {
+                    predictorArchivePreprocess->SelectMembers(params.GetPreprocessArchiveMembersNb(i_step, i_ptor, i_prepro));
+                }
+
                 // Instanciate an realtime predictor object
                 asDataPredictorRealtime *predictorRealtimePreprocess = asDataPredictorRealtime::GetInstance(
                         params.GetPreprocessRealtimeDatasetId(i_step, i_ptor, i_prepro),
@@ -1317,6 +1352,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(
                         m_batchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
+
+                // Select the number of members for ensemble data.
+                if (predictorRealtimePreprocess->IsEnsemble()) {
+                    predictorRealtimePreprocess->SelectMembers(params.GetPreprocessRealtimeMembersNb(i_step, i_ptor, i_prepro));
+                }
 
                 // Restriction needed
                 wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);

@@ -260,6 +260,9 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                 } else if (nodeParam->GetName() == "time") {
                     if (!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetDouble(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "members") {
+                    if (!SetPredictorMembersNb(i_step, i_ptor, fileParams.GetInt(nodeParam)))
+                        return false;
                 } else if (nodeParam->GetName() == "spatial_window") {
                     wxXmlNode *nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
@@ -342,6 +345,9 @@ bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast 
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
                     if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess)))
+                        return false;
+                } else if (nodeParamPreprocess->GetName() == "members") {
+                    if (!SetPreprocessMembersNb(i_step, i_ptor, i_dataset, fileParams.GetInt(nodeParamPreprocess)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParamPreprocess);

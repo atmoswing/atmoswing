@@ -43,12 +43,16 @@ public:
     {
         wxString archiveDatasetId;
         wxString archiveDataId;
+        int archiveMembersNb;
         wxString realtimeDatasetId;
         wxString realtimeDataId;
+        int realtimeMembersNb;
         VectorString preprocessArchiveDatasetIds;
         VectorString preprocessArchiveDataIds;
+        int preprocessArchiveMembersNb;
         VectorString preprocessRealtimeDatasetIds;
         VectorString preprocessRealtimeDataIds;
+        int preprocessRealtimeMembersNb;
     } ParamsPredictorForecast;
 
     typedef std::vector<ParamsPredictorForecast> VectorParamsPredictorsForecast;
@@ -168,6 +172,46 @@ public:
     wxString GetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset) const;
 
     bool SetPreprocessRealtimeDataId(int i_step, int i_predictor, int i_dataset, const wxString &val);
+
+    void SetPredictorArchiveMembersNb(int i_step, int i_predictor, int val)
+    {
+        m_stepsForecast[i_step].predictors[i_predictor].archiveMembersNb = val;
+    }
+
+    int GetPredictorArchiveMembersNb(int i_step, int i_predictor) const
+    {
+        return m_stepsForecast[i_step].predictors[i_predictor].archiveMembersNb;
+    }
+
+    void SetPredictorRealtimeMembersNb(int i_step, int i_predictor, int val)
+    {
+        m_stepsForecast[i_step].predictors[i_predictor].realtimeMembersNb = val;
+    }
+
+    int GetPredictorRealtimeMembersNb(int i_step, int i_predictor) const
+    {
+        return m_stepsForecast[i_step].predictors[i_predictor].realtimeMembersNb;
+    }
+
+    void SetPreprocessArchiveMembersNb(int i_step, int i_predictor, int i_dataset, int val)
+    {
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveMembersNb = val;
+    }
+
+    int GetPreprocessArchiveMembersNb(int i_step, int i_predictor, int i_dataset) const
+    {
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessArchiveMembersNb;
+    }
+
+    void SetPreprocessRealtimeMembersNb(int i_step, int i_predictor, int i_dataset, int val)
+    {
+        m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeMembersNb = val;
+    }
+
+    int GetPreprocessRealtimeMembersNb(int i_step, int i_predictor, int i_dataset) const
+    {
+        return m_stepsForecast[i_step].predictors[i_predictor].preprocessRealtimeMembersNb;
+    }
 
 protected:
 
