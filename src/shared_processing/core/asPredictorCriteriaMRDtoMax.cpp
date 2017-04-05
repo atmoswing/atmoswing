@@ -36,7 +36,7 @@ asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax(int linAlgebraMethod)
     m_fullName = _("Mean Relative Differences to the Maximum");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaMRDtoMax::~asPredictorCriteriaMRDtoMax()
     //dtor
 }
 
-float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+float asPredictorCriteriaMRDtoMax::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
                                           int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
@@ -69,7 +69,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
                     } else {
                         if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
                             wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNFloat;
+                            return NaNf;
                         }
                     }
                 }
@@ -91,7 +91,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
                     } else {
                         if (dividend != 0) {
                             wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNFloat;
+                            return NaNf;
                         }
                     }
                 }
@@ -102,7 +102,7 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
 
         default: {
             wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
+            return NaNf;
         }
     }
 

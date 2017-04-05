@@ -44,7 +44,7 @@ asForecastScoreFinalRankHistogramReliability::~asForecastScoreFinalRankHistogram
     //dtor
 }
 
-float asForecastScoreFinalRankHistogramReliability::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores,
+float asForecastScoreFinalRankHistogramReliability::Assess(const a1f &targetDates, const a1f &forecastScores,
                                                            const asTimeArray &timeArray) const
 {
     wxLogWarning(_("Calling asForecastScoreFinalRankHistogramReliability::Assess means it doesn't do bootstraping."));
@@ -53,7 +53,7 @@ float asForecastScoreFinalRankHistogramReliability::Assess(const Array1DFloat &t
     wxASSERT(forecastScores.rows() > 1);
     wxASSERT(m_ranksNb > 1);
 
-    Array1DInt histogram = Array1DInt::Zero(m_ranksNb);
+    a1i histogram = a1i::Zero(m_ranksNb);
 
     switch (m_period) {
         case (asForecastScoreFinal::Total): {
@@ -83,12 +83,12 @@ float asForecastScoreFinalRankHistogramReliability::Assess(const Array1DFloat &t
     return reliability;
 }
 
-float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(Array1DFloat &histogramPercent,
+float asForecastScoreFinalRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent,
                                                                       int forecastScoresSize) const
 {
     wxASSERT(m_ranksNb > 1);
 
-    Array1DFloat histogramReal;
+    a1f histogramReal;
     histogramReal = forecastScoresSize * histogramPercent / 100.0f;
 
     // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction

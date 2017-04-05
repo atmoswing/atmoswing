@@ -45,23 +45,23 @@ public:
 
     virtual ~asGeoAreaGaussianGrid();
 
-    static void BuildLonAxis(Array1DDouble &axis, const asGeo::GridType &type);
+    static void BuildLonAxis(a1d &axis, const asGeo::GridType &type);
 
-    static void BuildLatAxis(Array1DDouble &axis, const asGeo::GridType &type);
+    static void BuildLatAxis(a1d &axis, const asGeo::GridType &type);
 
     int GetXaxisPtsnb() const;
 
     int GetYaxisPtsnb() const;
 
-    Array1DDouble GetXaxis();
+    a1d GetXaxis();
 
-    Array1DDouble GetYaxis();
+    a1d GetYaxis();
 
 protected:
 
 private:
-    Array1DDouble m_fullAxisX;
-    Array1DDouble m_fullAxisY;
+    a1d m_fullAxisX;
+    a1d m_fullAxisY;
 
     bool IsOnGrid(const Coo &point) const;
 

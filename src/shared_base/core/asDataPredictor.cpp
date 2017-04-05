@@ -254,7 +254,7 @@ asDataPredictor::Unit asDataPredictor::StringToUnitEnum(const wxString &UnitStr)
     return m;
 }
 
-bool asDataPredictor::SetData(VVArray2DFloat &val)
+bool asDataPredictor::SetData(vva2f &val)
 {
     wxASSERT(m_time.size() > 0);
     wxASSERT((int) m_time.size() == (int) val.size());
@@ -268,7 +268,7 @@ bool asDataPredictor::SetData(VVArray2DFloat &val)
     return true;
 }
 
-bool asDataPredictor::CheckFilesPresence(VectorString &filesList)
+bool asDataPredictor::CheckFilesPresence(vwxs &filesList)
 {
     if (filesList.size() == 0) {
         wxLogError(_("Empty files list."));
@@ -561,8 +561,8 @@ bool asDataPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCom
 bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
 {
     // Get full axes from the netcdf file
-    m_fileStructure.axisLon = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLonName));
-    m_fileStructure.axisLat = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLatName));
+    m_fileStructure.axisLon = a1f(ncFile.GetVarLength(m_fileStructure.dimLonName));
+    m_fileStructure.axisLat = a1f(ncFile.GetVarLength(m_fileStructure.dimLatName));
 
     wxASSERT(ncFile.GetVarType(m_fileStructure.dimLonName) == ncFile.GetVarType(m_fileStructure.dimLatName));
     nc_type ncTypeAxes = ncFile.GetVarType(m_fileStructure.dimLonName);
@@ -572,8 +572,8 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
             ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
             break;
         case NC_DOUBLE: {
-            Array1DDouble axisLonDouble(ncFile.GetVarLength(m_fileStructure.dimLonName));
-            Array1DDouble axisLatDouble(ncFile.GetVarLength(m_fileStructure.dimLatName));
+            a1d axisLonDouble(ncFile.GetVarLength(m_fileStructure.dimLonName));
+            a1d axisLatDouble(ncFile.GetVarLength(m_fileStructure.dimLatName));
             ncFile.GetVar(m_fileStructure.dimLonName, &axisLonDouble[0]);
             ncFile.GetVar(m_fileStructure.dimLatName, &axisLatDouble[0]);
             for (int i = 0; i < axisLonDouble.size(); ++i) {
@@ -590,7 +590,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
     }
 
     if (m_fileStructure.hasLevelDimension) {
-        m_fileStructure.axisLevel = Array1DFloat(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+        m_fileStructure.axisLevel = a1f(ncFile.GetVarLength(m_fileStructure.dimLevelName));
 
         nc_type ncTypeLevel = ncFile.GetVarType(m_fileStructure.dimLevelName);
         switch (ncTypeLevel) {
@@ -598,7 +598,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
                 ncFile.GetVar(m_fileStructure.dimLevelName, &m_fileStructure.axisLevel[0]);
                 break;
             case NC_INT: {
-                Array1DInt axisLevelInt(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+                a1i axisLevelInt(ncFile.GetVarLength(m_fileStructure.dimLevelName));
                 ncFile.GetVar(m_fileStructure.dimLevelName, &axisLevelInt[0]);
                 for (int i = 0; i < axisLevelInt.size(); ++i) {
                     m_fileStructure.axisLevel[i] = (float) axisLevelInt[i];
@@ -606,7 +606,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
             }
                 break;
             case NC_DOUBLE: {
-                Array1DDouble axisLevelDouble(ncFile.GetVarLength(m_fileStructure.dimLevelName));
+                a1d axisLevelDouble(ncFile.GetVarLength(m_fileStructure.dimLevelName));
                 ncFile.GetVar(m_fileStructure.dimLevelName, &axisLevelDouble[0]);
                 for (int i = 0; i < axisLevelDouble.size(); ++i) {
                     m_fileStructure.axisLevel[i] = (float) axisLevelDouble[i];
@@ -642,7 +642,7 @@ bool asDataPredictor::ParseFileStructure(asFileNetcdf &ncFile)
             return false;
     }
 
-    double refValue = NaNDouble;
+    double refValue = NaNd;
     if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
         wxString refValueStr = ncFile.GetAttString("units", "time");
         refValueStr = refValueStr.Remove(0, 14);
@@ -770,7 +770,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
         } else {
             // Check that requested data do not overtake the file
             for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
-                Array1DDouble axisLonComp = dataArea->GetXaxisComposite(iComp);
+                a1d axisLonComp = dataArea->GetXaxisComposite(iComp);
 
                 wxASSERT(m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] > m_fileStructure.axisLon[0]);
                 wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
@@ -801,7 +801,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                 }
             }
 
-            Array1DDouble axisLon = dataArea->GetXaxis();
+            a1d axisLon = dataArea->GetXaxis();
             m_axisLon.resize(axisLon.size());
             for (int i = 0; i < axisLon.size(); i++) {
                 m_axisLon[i] = (float) axisLon[i];
@@ -812,7 +812,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
 
             // Check that requested data do not overtake the file
             for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
-                Array1DDouble axisLatComp = dataArea->GetYaxisComposite(iComp);
+                a1d axisLatComp = dataArea->GetYaxisComposite(iComp);
 
                 if (m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] > m_fileStructure.axisLat[0]) {
                     wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
@@ -855,7 +855,7 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
                 }
             }
 
-            Array1DDouble axisLat = dataArea->GetYaxis();
+            a1d axisLat = dataArea->GetYaxis();
             m_axisLat.resize(axisLat.size());
             for (int i = 0; i < axisLat.size(); i++) {
                 // Latitude axis in reverse order
@@ -1050,13 +1050,13 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
     if (dataAddOffset == 0 && dataScaleFactor == 1)
         scalingNeeded = false;
 
-    VVectorFloat vectData;
+    vvf vectData;
 
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
 
         // Create the arrays to receive the data
-        VectorFloat dataF;
-        VectorShort dataS;
+        vf dataF;
+        vs dataS;
 
         // Resize the arrays to store the new data
         unsigned int totLength = (unsigned int) m_fileIndexes.memberCount * m_fileIndexes.timeArrayCount *
@@ -1073,7 +1073,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
             int latlonlength = m_fileIndexes.memberCount * m_fileIndexes.areas[iArea].latCount * m_fileIndexes.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fileIndexes.cutStart; iEmpty++) {
                 for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
-                    dataF[indexBegining] = NaNFloat;
+                    dataF[indexBegining] = NaNf;
                     indexBegining++;
                 }
             }
@@ -1086,7 +1086,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
             for (int iEmpty = 0; iEmpty < m_fileIndexes.cutEnd; iEmpty++) {
                 for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
                     indexEnd++;
-                    dataF[indexEnd] = NaNFloat;
+                    dataF[indexEnd] = NaNf;
                 }
             }
         }
@@ -1098,7 +1098,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
         } else if (isShort) {
             ncFile.GetVarSample(m_fileVariableName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
                                 GetIndexesStrideNcdf(), &dataS[indexBegining]);
-            dataF = VectorFloat(dataS.begin(), dataS.end());
+            dataF = vf(dataS.begin(), dataS.end());
         }
 
         // Keep data for later treatment
@@ -1118,14 +1118,14 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
     // Transfer data
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
         // Extract data
-        VectorFloat data = vectData[iArea];
+        vf data = vectData[iArea];
 
         // Loop to extract the data from the array
         int ind = 0;
         for (int iTime = 0; iTime < m_fileIndexes.timeArrayCount; iTime++) {
-            VArray2DFloat memlatlonData;
+            va2f memlatlonData;
             for (int iMem = 0; iMem < m_fileIndexes.memberCount; iMem++) {
-                Array2DFloat latlonData(m_fileIndexes.areas[iArea].latCount, m_fileIndexes.areas[iArea].lonCount);
+                a2f latlonData(m_fileIndexes.areas[iArea].latCount, m_fileIndexes.areas[iArea].lonCount);
 
                 for (int iLat = 0; iLat < m_fileIndexes.areas[iArea].latCount; iLat++) {
                     for (int iLon = 0; iLon < m_fileIndexes.areas[iArea].lonCount; iLon++) {
@@ -1149,7 +1149,7 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
                             }
                         }
                         if (!notNan) {
-                            latlonData(iLat, iLon) = NaNFloat;
+                            latlonData(iLat, iLon) = NaNf;
                         }
                     }
                 }
@@ -1169,12 +1169,12 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
 
 bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
 {
-    VVectorFloat vectData;
+    vvf vectData;
 
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
 
         // Create the arrays to receive the data
-        VectorFloat dataF;
+        vf dataF;
 
         // Resize the arrays to store the new data
         unsigned int totLength = (unsigned int) m_fileIndexes.memberCount * m_fileIndexes.timeArrayCount *
@@ -1202,14 +1202,14 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData
     // Transfer data
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
         // Extract data
-        VectorFloat data = vectData[iArea];
-        VArray2DFloat memlatlonData;
+        vf data = vectData[iArea];
+        va2f memlatlonData;
 
         for (int iMem = 0; iMem < m_fileIndexes.memberCount; iMem++) {
 
             // Loop to extract the data from the array
             int ind = 0;
-            Array2DFloat latlonData(m_fileIndexes.areas[iArea].latCount, m_fileIndexes.areas[iArea].lonCount);
+            a2f latlonData(m_fileIndexes.areas[iArea].latCount, m_fileIndexes.areas[iArea].lonCount);
 
             for (int iLat = 0; iLat < m_fileIndexes.areas[iArea].latCount; iLat++) {
                 for (int iLon = 0; iLon < m_fileIndexes.areas[iArea].lonCount; iLon++) {
@@ -1225,7 +1225,7 @@ bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData
                         }
                     }
                     if (!notNan) {
-                        latlonData(iLat, iLon) = NaNFloat;
+                        latlonData(iLat, iLon) = NaNf;
                     }
                 }
             }
@@ -1272,9 +1272,9 @@ bool asDataPredictor::Inline()
     unsigned int cols = (unsigned int) m_data[0][0].cols();
     unsigned int rows = (unsigned int) m_data[0][0].rows();
 
-    Array2DFloat inlineData = Array2DFloat::Zero(1, cols * rows);
+    a2f inlineData = a2f::Zero(1, cols * rows);
 
-    VVArray2DFloat newData;
+    vva2f newData;
     newData.reserve((unsigned int)(membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
     newData.resize(timeSize);
 
@@ -1291,8 +1291,8 @@ bool asDataPredictor::Inline()
 
     m_latPtsnb = (int) m_data[0][0].rows();
     m_lonPtsnb = (int) m_data[0][0].cols();
-    Array1DFloat emptyAxis(1);
-    emptyAxis[0] = NaNFloat;
+    a1f emptyAxis(1);
+    emptyAxis[0] = NaNf;
     m_axisLat = emptyAxis;
     m_axisLon = emptyAxis;
 
@@ -1305,9 +1305,9 @@ bool asDataPredictor::MergeComposites(vvva2f &compositeData, asGeoAreaCompositeG
         // Get a container with the final size
         unsigned long sizeTime = compositeData[0].size();
         unsigned long membersNb = compositeData[0][0].size();
-        m_data = VVArray2DFloat(sizeTime, VArray2DFloat(membersNb, Array2DFloat(m_latPtsnb, m_lonPtsnb)));
+        m_data = vva2f(sizeTime, va2f(membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
 
-        Array2DFloat blockUL, blockLL, blockUR, blockLR;
+        a2f blockUL, blockLL, blockUR, blockLR;
         int isblockUL = asNONE, isblockLL = asNONE, isblockUR = asNONE, isblockLR = asNONE;
 
         // Resize containers for composite areas
@@ -1398,21 +1398,21 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
         // Containers for results
         int finalLengthLon = desiredArea->GetXaxisPtsnb();
         int finalLengthLat = desiredArea->GetYaxisPtsnb();
-        VVArray2DFloat latlonTimeData(m_data.size(), VArray2DFloat(m_data[0].size(), Array2DFloat(finalLengthLat, finalLengthLon)));
+        vva2f latlonTimeData(m_data.size(), va2f(m_data[0].size(), a2f(finalLengthLat, finalLengthLon)));
 
         // Creation of the axes
-        Array1DFloat axisDataLon;
+        a1f axisDataLon;
         if (dataArea->GetXaxisPtsnb() > 1) {
-            axisDataLon = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(),
+            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(),
                                                   dataArea->GetAbsoluteXmin(), dataArea->GetAbsoluteXmax());
         } else {
             axisDataLon.resize(1);
             axisDataLon << dataArea->GetAbsoluteXmin();
         }
 
-        Array1DFloat axisDataLat;
+        a1f axisDataLat;
         if (dataArea->GetYaxisPtsnb() > 1) {
-            axisDataLat = Array1DFloat::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(),
+            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(),
                                                   dataArea->GetAbsoluteYmax(),
                                                   dataArea->GetAbsoluteYmin()); // From top to bottom
         } else {
@@ -1420,18 +1420,18 @@ bool asDataPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoA
             axisDataLat << dataArea->GetAbsoluteYmax();
         }
 
-        Array1DFloat axisFinalLon;
+        a1f axisFinalLon;
         if (desiredArea->GetXaxisPtsnb() > 1) {
-            axisFinalLon = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetXaxisPtsnb(),
+            axisFinalLon = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetXaxisPtsnb(),
                                                    desiredArea->GetAbsoluteXmin(), desiredArea->GetAbsoluteXmax());
         } else {
             axisFinalLon.resize(1);
             axisFinalLon << desiredArea->GetAbsoluteXmin();
         }
 
-        Array1DFloat axisFinalLat;
+        a1f axisFinalLat;
         if (desiredArea->GetYaxisPtsnb() > 1) {
-            axisFinalLat = Array1DFloat::LinSpaced(Eigen::Sequential, desiredArea->GetYaxisPtsnb(),
+            axisFinalLat = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetYaxisPtsnb(),
                                                    desiredArea->GetAbsoluteYmax(),
                                                    desiredArea->GetAbsoluteYmin()); // From top to bottom
         } else {

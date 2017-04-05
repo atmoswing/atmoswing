@@ -45,7 +45,7 @@ asForecastScoreFinalHSS::~asForecastScoreFinalHSS()
     //dtor
 }
 
-float asForecastScoreFinalHSS::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
+float asForecastScoreFinalHSS::Assess(const a1f &targetDates, const a1f &forecastScores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);
@@ -66,7 +66,7 @@ float asForecastScoreFinalHSS::Assess(const Array1DFloat &targetDates, const Arr
                     countD++;
                 } else {
                     wxLogError(_("The HSS score (%f) is not an authorized value."), forecastScores[i]);
-                    return NaNFloat;
+                    return NaNf;
                 }
             }
             break;
@@ -91,7 +91,7 @@ float asForecastScoreFinalHSS::Assess(const Array1DFloat &targetDates, const Arr
             score = 0;
         }
     } else {
-        score = NaNFloat;
+        score = NaNf;
     }
 
     return score;

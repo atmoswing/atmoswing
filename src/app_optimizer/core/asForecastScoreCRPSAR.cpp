@@ -37,7 +37,7 @@ asForecastScoreCRPSAR::asForecastScoreCRPSAR()
     m_fullName = _("Continuous Ranked Probability Score approximation with the rectangle method");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreCRPSAR::~asForecastScoreCRPSAR()
@@ -45,7 +45,7 @@ asForecastScoreCRPSAR::~asForecastScoreCRPSAR()
     //dtor
 }
 
-float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -53,21 +53,21 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
         wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
     float x0 = ObservedVal;
 
     // Remove the NaNs and copy content
     int n = CleanNans(ForcastVals, x, nbElements);
     if (n == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNFloat;
+        return NaNf;
     } else if (n <= 2) {
         wxLogWarning(_("Not enough elements to process the CRPS."));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Sort the forcast array
@@ -76,7 +76,7 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
     float CRPS = 0;
 
     // Cumulative frequency
-    Array1DFloat Fx = asTools::GetCumulativeFrequency(n);
+    a1f Fx = asTools::GetCumulativeFrequency(n);
 
     // Add rectangle on right side if observed value is on the right of the distribution
     if (x0 > x[n - 1]) {
@@ -112,7 +112,7 @@ float asForecastScoreCRPSAR::Assess(float ObservedVal, const Array1DFloat &Forca
     return CRPS;
 }
 
-bool asForecastScoreCRPSAR::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

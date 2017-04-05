@@ -49,7 +49,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -100,7 +100,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -151,7 +151,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -202,7 +202,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -253,7 +253,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -304,7 +304,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -355,7 +355,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -408,7 +408,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -461,7 +461,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -514,7 +514,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -567,7 +567,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -620,7 +620,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -673,7 +673,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -725,7 +725,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -777,7 +777,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -829,7 +829,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
 
     // Resize the containers
     int nanalogs = 50;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -881,7 +881,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -933,7 +933,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 
     // Resize the containers
     int nanalogs = 30;
-    Array1DFloat ForcastVals;
+    a1f ForcastVals;
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
@@ -969,16 +969,16 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-void InitConstantDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
+void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
 {
     // Time
     int timeLength = 410;
 
     // Resize the containers
     int nanalogs = 50;
-    vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    vecForecast = a2f::Zero(timeLength, nanalogs);
+    vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
@@ -1071,7 +1071,7 @@ void InitConstantDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     vecObs[373] = 0.69f;
 }
 
-void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
+void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 {
     // Data from Wilks (2006)
 
@@ -1080,9 +1080,9 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
 
     // Resize the containers
     int nanalogs = 50;
-    vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    vecForecast = a2f::Zero(timeLength, nanalogs);
+    vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
@@ -1095,7 +1095,7 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     }
 
     // Add 28 events forecasted and observed
-    Array1DInt indicesA(28);
+    a1i indicesA(28);
     indicesA <<
     11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701, 1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
     for (int i = 0; i < indicesA.size(); i++) {
@@ -1112,7 +1112,7 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     }
 
     // Add 17 events forecasted but not observed
-    Array1DInt indicesB(72);
+    a1i indicesB(72);
     indicesB <<
     12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942, 952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132, 2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
     for (int i = 0; i < indicesB.size(); i++) {
@@ -1129,7 +1129,7 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     }
 
     // Add 9 events not forecasted but observed
-    Array1DInt indicesC(23);
+    a1i indicesC(23);
     indicesC <<
     13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213, 1223, 1233;
     for (int i = 0; i < indicesC.size(); i++) {
@@ -1142,8 +1142,8 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
 TEST(ForecastScore, ProcessPCwithConstantDistribution)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitConstantDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1151,8 +1151,8 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1174,8 +1174,8 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
 TEST(ForecastScore, ProcessPC)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1183,8 +1183,8 @@ TEST(ForecastScore, ProcessPC)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1206,8 +1206,8 @@ TEST(ForecastScore, ProcessPC)
 TEST(ForecastScore, ProcessTS)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1215,8 +1215,8 @@ TEST(ForecastScore, ProcessTS)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1238,8 +1238,8 @@ TEST(ForecastScore, ProcessTS)
 TEST(ForecastScore, ProcessBIAS)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1247,8 +1247,8 @@ TEST(ForecastScore, ProcessBIAS)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1270,8 +1270,8 @@ TEST(ForecastScore, ProcessBIAS)
 TEST(ForecastScore, ProcessFARA)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1279,8 +1279,8 @@ TEST(ForecastScore, ProcessFARA)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1302,8 +1302,8 @@ TEST(ForecastScore, ProcessFARA)
 TEST(ForecastScore, ProcessH)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1311,8 +1311,8 @@ TEST(ForecastScore, ProcessH)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1334,8 +1334,8 @@ TEST(ForecastScore, ProcessH)
 TEST(ForecastScore, ProcessF)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1343,8 +1343,8 @@ TEST(ForecastScore, ProcessF)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1366,8 +1366,8 @@ TEST(ForecastScore, ProcessF)
 TEST(ForecastScore, ProcessHSS)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1375,8 +1375,8 @@ TEST(ForecastScore, ProcessHSS)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1398,8 +1398,8 @@ TEST(ForecastScore, ProcessHSS)
 TEST(ForecastScore, ProcessPSS)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1407,8 +1407,8 @@ TEST(ForecastScore, ProcessPSS)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1430,8 +1430,8 @@ TEST(ForecastScore, ProcessPSS)
 TEST(ForecastScore, ProcessGSS)
 {
     // Create data
-    Array2DFloat vecForecast;
-    Array1DFloat vecObs;
+    a2f vecForecast;
+    a1f vecObs;
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
@@ -1439,8 +1439,8 @@ TEST(ForecastScore, ProcessGSS)
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1466,9 +1466,9 @@ TEST(ForecastScore, ProcessMAE)
     int nanalogs = 20;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1498,8 +1498,8 @@ TEST(ForecastScore, ProcessMAE)
     asForecastScore *score = asForecastScore::GetInstance("MAE");
     score->SetQuantile(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1525,9 +1525,9 @@ TEST(ForecastScore, ProcessRMSE)
     int nanalogs = 20;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1557,8 +1557,8 @@ TEST(ForecastScore, ProcessRMSE)
     asForecastScore *score = asForecastScore::GetInstance("RMSE");
     score->SetQuantile(0.6f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1584,9 +1584,9 @@ TEST(ForecastScore, ProcessBS)
     int nanalogs = 20;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1617,8 +1617,8 @@ TEST(ForecastScore, ProcessBS)
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1644,9 +1644,9 @@ TEST(ForecastScore, ProcessBSS)
     int nanalogs = 20;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
-    Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nanalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1679,8 +1679,8 @@ TEST(ForecastScore, ProcessBSS)
 
     score->ProcessScoreClimatology(vecObs, vecObs);
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1706,8 +1706,8 @@ TEST(ForecastScore, ProcessRankHistogram)
     int nanalogs = 30;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
     0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
@@ -1756,8 +1756,8 @@ TEST(ForecastScore, ProcessRankHistogram)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("RankHistogram");
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1793,7 +1793,7 @@ TEST(ForecastScore, ProcessRankHistogram)
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
     finalScore->SetRanksNb(nanalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
-    Array1DFloat scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
+    a1f scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
 
     float total = scoreVal.sum();
     EXPECT_FLOAT_EQ(100, total);
@@ -1820,8 +1820,8 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     int nanalogs = 30;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
     0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
@@ -1870,8 +1870,8 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("RankHistogramReliability");
 
-    Array1DFloat results = Array1DFloat::Zero(vecObs.size());
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
@@ -1899,8 +1899,8 @@ TEST(ForecastScore, ProcessCRPSreliability)
     int nanalogs = 21;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
     1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
@@ -1938,12 +1938,12 @@ TEST(ForecastScore, ProcessCRPSreliability)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSreliability");
 
-    Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        Array1DFloat res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
         results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
@@ -1966,8 +1966,8 @@ TEST(ForecastScore, ProcessCRPSpotential)
     int nanalogs = 21;
 
     // Resize the containers
-    Array2DFloat vecForecast = Array2DFloat::Zero(timeLength, nanalogs);
-    Array1DFloat vecObs = Array1DFloat::Zero(timeLength);
+    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
     1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
@@ -2005,12 +2005,12 @@ TEST(ForecastScore, ProcessCRPSpotential)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSpotential");
 
-    Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
-    Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
+    a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
+    a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        Array1DFloat res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
         results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }

@@ -528,7 +528,7 @@ void asParametersForecast::InitValues()
     FixAnalogsNb();
 }
 
-bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
+bool asParametersForecast::SetLeadTimeDaysVector(vi val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided 'lead time (days)' vector is empty."));
@@ -545,7 +545,7 @@ bool asParametersForecast::SetLeadTimeDaysVector(VectorInt val)
     return true;
 }
 
-bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, VectorInt val)
+bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided analogs numbers vector (fct of the lead time) is empty."));

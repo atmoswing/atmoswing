@@ -71,7 +71,7 @@ void asPanelSidebarAlarms::Update()
 
     m_header->SetLabelText(wxString::Format(_("Alarms (T=%d, q=%g)"), returnPeriodRef, quantileThreshold));
 
-    Array1DFloat dates = m_forecastManager->GetFullTargetDates();
+    a1f dates = m_forecastManager->GetFullTargetDates();
 
     switch (m_mode) {
         case (1): {
@@ -85,12 +85,12 @@ void asPanelSidebarAlarms::Update()
             if (quantileThreshold > 1)
                 quantileThreshold = (float) 0.9;
 
-            Array2DFloat values = Array2DFloat::Ones(m_forecastManager->GetMethodsNb(), dates.size());
-            values *= NaNFloat;
+            a2f values = a2f::Ones(m_forecastManager->GetMethodsNb(), dates.size());
+            values *= NaNf;
 
             for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
 
-                Array1DFloat methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow,
+                a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow,
                                                                                                       returnPeriodRef,
                                                                                                       quantileThreshold);
                 values.row(methodRow) = methodMaxValues;
@@ -106,9 +106,9 @@ void asPanelSidebarAlarms::Update()
     }
 }
 
-void asPanelSidebarAlarms::SetData(Array1DFloat &dates, Array2DFloat &values)
+void asPanelSidebarAlarms::SetData(a1f &dates, a2f &values)
 {
-    VectorString names = m_forecastManager->GetAllMethodNames();
+    vwxs names = m_forecastManager->GetAllMethodNames();
 
     // Required size
     int rows = values.rows();
@@ -157,7 +157,7 @@ void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms *parent)
     m_parent = parent;
 }
 
-void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorString &names, Array2DFloat &values)
+void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f &values)
 {
     // Get sizes
     int cols = dates.size();

@@ -125,8 +125,8 @@ private:
     vrViewerLayerManager *m_viewerLayerManager;
     wxArrayString m_displayForecast;
     wxArrayString m_displayQuantiles;
-    VectorFloat m_returnPeriods;
-    VectorFloat m_quantiles;
+    vf m_returnPeriods;
+    vf m_quantiles;
     int m_forecastDisplaySelection;
     int m_quantileSelection;
     int m_methodSelection;

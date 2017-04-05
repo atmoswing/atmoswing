@@ -66,7 +66,7 @@ public:
         m_forecastDate = val;
     }
 
-    VectorString GetResultsFilePaths() const
+    vwxs GetResultsFilePaths() const
     {
         return m_resultsFilePaths;
     }
@@ -89,7 +89,7 @@ private:
     asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
     asResultsAnalogsForecastAggregator m_aggregator;
-    VectorString m_resultsFilePaths;
+    vwxs m_resultsFilePaths;
     wxWindow *m_parent;
     std::vector<asDataPredictorArchive *> m_storagePredictorsArchivePreprocess;
     std::vector<asDataPredictorRealtime *> m_storagePredictorsRealtimePreprocess;

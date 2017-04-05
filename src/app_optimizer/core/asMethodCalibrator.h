@@ -112,7 +112,7 @@ public:
 
     bool SetBestParameters(asResultsParametersArray &results);
 
-    wxString GetPredictandStationIdsList(VectorInt &stationIds) const;
+    wxString GetPredictandStationIdsList(vi &stationIds) const;
 
     bool Manager();
 
@@ -130,12 +130,12 @@ public:
         m_scoreOrder = val;
     }
 
-    VectorFloat GetScoreClimatology() const
+    vf GetScoreClimatology() const
     {
         return m_scoreClimatology;
     }
 
-    void SetScoreClimatology(VectorFloat val)
+    void SetScoreClimatology(vf val)
     {
         m_scoreClimatology = val;
     }
@@ -145,7 +145,7 @@ public:
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-    void SetPredictandStationIds(VectorInt val)
+    void SetPredictandStationIds(vi val)
     {
         m_predictandStationIds = val;
     }
@@ -163,12 +163,12 @@ protected:
         int yPtsNbStart;
         int yPtsNbEnd;
     };
-    VectorInt m_predictandStationIds;
-    VectorFloat m_scoresCalib;
-    VectorFloat m_scoresCalibTemp;
+    vi m_predictandStationIds;
+    vf m_scoresCalib;
+    vf m_scoresCalibTemp;
     Order m_scoreOrder;
     float m_scoreValid;
-    VectorFloat m_scoreClimatology;
+    vf m_scoreClimatology;
     std::vector<asParametersCalibration> m_parameters;
     std::vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
@@ -182,11 +182,11 @@ protected:
     bool LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
                   double timeStartData, double timeEndData);
 
-    VArray1DFloat GetClimatologyData(asParametersScoring &params);
+    va1f GetClimatologyData(asParametersScoring &params);
 
 private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > > m_preloadedArchive;
-    std::vector<VVectorBool> m_preloadedArchivePointerCopy;
+    std::vector<vvb> m_preloadedArchivePointerCopy;
 
     bool PointersShared(asParametersScoring &params, int iStep, int iPtor, int iPre);
 

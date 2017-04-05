@@ -65,7 +65,7 @@ void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib)
 {
     m_parameters.push_back(params);
     m_scoresCalib.push_back(scoreCalib);
-    m_scoresValid.push_back(NaNFloat);
+    m_scoresValid.push_back(NaNf);
 }
 
 void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib, float scoreValid)
@@ -75,7 +75,7 @@ void asResultsParametersArray::Add(asParametersScoring params, float scoreCalib,
     m_scoresValid.push_back(scoreValid);
 }
 
-void asResultsParametersArray::Add(asParametersScoring params, Array1DFloat scoreCalib, Array1DFloat scoreValid)
+void asResultsParametersArray::Add(asParametersScoring params, a1f scoreCalib, a1f scoreValid)
 {
     m_parametersForScoreOnArray.push_back(params);
     m_scoresCalibForScoreOnArray.push_back(scoreCalib);

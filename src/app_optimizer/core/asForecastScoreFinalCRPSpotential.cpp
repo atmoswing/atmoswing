@@ -45,7 +45,7 @@ asForecastScoreFinalCRPSpotential::~asForecastScoreFinalCRPSpotential()
     //dtor
 }
 
-float asForecastScoreFinalCRPSpotential::Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores,
+float asForecastScoreFinalCRPSpotential::Assess(const a1f &targetDates, const a2f &forecastScores,
                                                 const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
@@ -53,20 +53,20 @@ float asForecastScoreFinalCRPSpotential::Assess(const Array1DFloat &targetDates,
     wxASSERT(forecastScores.cols() > 1);
 
     // Process average on every column
-    Array1DFloat means = forecastScores.colwise().mean();
+    a1f means = forecastScores.colwise().mean();
 
     // Extract corresponding arrays
     int binsNbs = means.size() / 3;
-    Array1DFloat alpha = means.segment(0, binsNbs);
-    Array1DFloat beta = means.segment(binsNbs, binsNbs);
-    Array1DFloat g = means.segment(2 * binsNbs, binsNbs);
+    a1f alpha = means.segment(0, binsNbs);
+    a1f beta = means.segment(binsNbs, binsNbs);
+    a1f g = means.segment(2 * binsNbs, binsNbs);
 
     // Compute o (coefficent-wise operations)
-    Array1DFloat o = beta / (alpha + beta);
+    a1f o = beta / (alpha + beta);
     wxASSERT(o.size() == alpha.size());
 
     // Create the p array (coefficent-wise operations)
-    Array1DFloat p = Array1DFloat::LinSpaced(binsNbs, 0, binsNbs - 1);
+    a1f p = a1f::LinSpaced(binsNbs, 0, binsNbs - 1);
     p = p / (binsNbs - 1);
 
     // Compute CRPS potential

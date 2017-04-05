@@ -81,18 +81,18 @@ private:
     bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int iStep);
 
     void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo,
-                        Array1DDouble &xAxis, Array1DDouble &yAxis) const;
+                        a1d &xAxis, a1d &yAxis) const;
 
-    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis,
                   int iStep, int iPtor, int multipleFactor = 1) const;
 
-    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis,
                    int iStep, int iPtor, int multipleFactor = 1) const;
 
-    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &xAxis,
+    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis,
                   int iStep, int iPtor, int multipleFactor = 1) const;
 
-    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const Array1DDouble &yAxis,
+    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis,
                    int iStep, int iPtor, int multipleFactor = 1) const;
 
     void WidenEast(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,

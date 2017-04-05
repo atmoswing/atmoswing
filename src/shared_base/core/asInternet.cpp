@@ -64,7 +64,7 @@ size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stre
     return fwrite(buffer, size, nmemb, out->stream);
 }
 
-int asInternet::Download(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir)
+int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir)
 {
     // Proxy
     bool usesProxy;

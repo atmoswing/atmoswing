@@ -45,13 +45,13 @@
 bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &anaValues,
                                                         asForecastScore *forecastScore, asParametersScoring &params,
                                                         asResultsAnalogsForecastScores &results,
-                                                        VectorFloat &scoresClimatology)
+                                                        vf &scoresClimatology)
 {
     // Extract Data
-    Array1DFloat timeTargetSelection = anaValues.GetTargetDates();
-    VArray1DFloat targetValues = anaValues.GetTargetValues();
-    Array2DFloat analogsCriteria = anaValues.GetAnalogsCriteria();
-    VArray2DFloat analogsValues = anaValues.GetAnalogsValues();
+    a1f timeTargetSelection = anaValues.GetTargetDates();
+    va1f targetValues = anaValues.GetTargetValues();
+    a2f analogsCriteria = anaValues.GetAnalogsCriteria();
+    va2f analogsValues = anaValues.GetAnalogsValues();
     wxASSERT(timeTargetSelection.size()>0);
     wxASSERT(analogsValues.size()>0);
     int timeTargetSelectionLength = anaValues.GetTargetDatesLength();
@@ -69,8 +69,8 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
 
     if (forecastScore->SingleValue()) {
         // Containers for final results
-        Array1DFloat finalForecastScores = Array1DFloat::Zero(timeTargetSelectionLength);
-        VArray1DFloat vectForecastScores(stationsNb, Array1DFloat(timeTargetSelectionLength));
+        a1f finalForecastScores = a1f::Zero(timeTargetSelectionLength);
+        va1f vectForecastScores(stationsNb, a1f(timeTargetSelectionLength));
 
         for (int iStat = 0; iStat < stationsNb; iStat++) {
             if (forecastScore->UsesClimatology()) {
@@ -80,7 +80,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
             for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
                 if (!asTools::IsNaN(targetValues[iStat](iTargetTime))) {
                     if (params.ForecastScoreNeedsPostprocessing()) {
-                        //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                        //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
                         //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
                     } else {
                         vectForecastScores[iStat](iTargetTime) = forecastScore->Assess(targetValues[iStat](iTargetTime),
@@ -88,7 +88,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
                                                                                      params.GetForecastScoreAnalogsNumber());
                     }
                 } else {
-                    vectForecastScores[iStat](iTargetTime) = NaNFloat;
+                    vectForecastScores[iStat](iTargetTime) = NaNf;
                 }
             }
         }
@@ -117,12 +117,12 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
         }
 
         // Containers for final results
-        Array2DFloat forecastScores(timeTargetSelectionLength, 3 * (params.GetForecastScoreAnalogsNumber() + 1));
+        a2f forecastScores(timeTargetSelectionLength, 3 * (params.GetForecastScoreAnalogsNumber() + 1));
 
         for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
             if (!asTools::IsNaN(targetValues[0](iTargetTime))) {
                 if (params.ForecastScoreNeedsPostprocessing()) {
-                    //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                    //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
                     //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
                 } else {
                     forecastScores.row(iTargetTime) = forecastScore->AssessOnArray(targetValues[0](iTargetTime),
@@ -131,7 +131,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
                 }
             } else {
                 forecastScores.row(iTargetTime) =
-                        Array1DFloat::Ones(3 * (params.GetForecastScoreAnalogsNumber() + 1)) * NaNFloat;
+                        a1f::Ones(3 * (params.GetForecastScoreAnalogsNumber() + 1)) * NaNf;
             }
         }
 
@@ -160,7 +160,7 @@ bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsFore
             float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
             results.SetForecastScore(result);
         } else {
-            Array1DFloat result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetForecastScores(),
+            a1f result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetForecastScores(),
                                                             timeArray);
             results.SetForecastScore(result);
         }

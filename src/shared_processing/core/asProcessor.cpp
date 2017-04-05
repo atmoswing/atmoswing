@@ -91,7 +91,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     wxStopWatch sw;
 
     // Extract some data
-    Array1DDouble timeTargetSelection = timeArrayTargetSelection.GetTimeArray();
+    a1d timeTargetSelection = timeArrayTargetSelection.GetTimeArray();
     int timeTargetSelectionSize = (int) timeTargetSelection.size();
     wxASSERT(criteria[0]);
     bool isasc = (criteria[0]->GetOrder() == Asc);
@@ -111,10 +111,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     }
 
     // Matrices containers
-    VpArray2DFloat vTargData = VpArray2DFloat(predictorsNb);
-    VpArray2DFloat vArchData = VpArray2DFloat(predictorsNb);
-    Array1DInt vRowsNb(predictorsNb);
-    Array1DInt vColsNb(predictorsNb);
+    vpa2f vTargData = vpa2f(predictorsNb);
+    vpa2f vArchData = vpa2f(predictorsNb);
+    a1i vRowsNb(predictorsNb);
+    a1i vColsNb(predictorsNb);
 
     for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         wxASSERT((int) predictorsArchive.size() > iPtor);
@@ -138,8 +138,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
     }
 
     // Containers for final results
-    Array2DFloat finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
-    Array2DFloat finalAnalogsDates(timeTargetSelectionSize, analogsNb);
+    a2f finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
+    a2f finalAnalogsDates(timeTargetSelectionSize, analogsNb);
 
     // The progress bar
     wxString dialogmessage = _("Processing the data comparison.\n");
@@ -241,10 +241,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             }
 
             // Extract some data
-            Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
+            a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
             wxASSERT(timeArchiveDataSize==predictorsArchive[0]->GetData().size());
-            Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
+            a1d timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
             wxASSERT(timeTargetDataSize==predictorsTarget[0]->GetData().size());
 
@@ -270,23 +270,23 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             }
 
             // Containers for the results
-            std::vector < VectorFloat > resultingCriteria(timeTargetSelectionSize);
-            std::vector < VectorFloat > resultingDates(timeTargetSelectionSize);
-            //std::fill(resultingDates.begin(), resultingDates.end(), NaNFloat);
+            std::vector < vf > resultingCriteria(timeTargetSelectionSize);
+            std::vector < vf > resultingDates(timeTargetSelectionSize);
+            //std::fill(resultingDates.begin(), resultingDates.end(), NaNf);
 
             // Containers for daily results
-            Array1DFloat ScoreArrayOneDay(analogsNb);
-            Array1DFloat DateArrayOneDay(analogsNb);
+            a1f ScoreArrayOneDay(analogsNb);
+            a1f DateArrayOneDay(analogsNb);
 
             // Containers for the indices
-            VectorInt lengths(timeTargetSelectionSize);
-            VectorInt indicesTarg(timeTargetSelectionSize);
-            std::vector < VectorInt > indicesArch(timeTargetSelectionSize);
+            vi lengths(timeTargetSelectionSize);
+            vi indicesTarg(timeTargetSelectionSize);
+            std::vector < vi > indicesArch(timeTargetSelectionSize);
 
             // Constant data
-            VectorFloat weights(predictorsNb);
-            VectorInt colsNb(predictorsNb);
-            VectorInt rowsNb(predictorsNb);
+            vf weights(predictorsNb);
+            vi colsNb(predictorsNb);
+            vi rowsNb(predictorsNb);
 
             for (int iPtor=0; iPtor<predictorsNb; iPtor++)
             {
@@ -335,8 +335,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
                     int iTimeArchStart = 0;
 
                     // Get a new container for variable vectors
-                    VectorInt currentIndices(dateArrayArchiveSelection.GetSize());
-                    VectorFloat currentDates(dateArrayArchiveSelection.GetSize());
+                    vi currentIndices(dateArrayArchiveSelection.GetSize());
+                    vf currentDates(dateArrayArchiveSelection.GetSize());
 
                     // Loop through the dateArrayArchiveSelection for candidate data
                     for (int iDateArch=0; iDateArch<dateArrayArchiveSelection.GetSize(); iDateArch++)
@@ -466,7 +466,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
         case (asINSERT): {
             // Extract some data
-            Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
+            a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
             wxASSERT(timeArchiveDataSize > 0);
             wxASSERT(predictorsArchive.size() > 0);
@@ -474,14 +474,14 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
             wxASSERT_MSG(timeArchiveDataSize == (int) predictorsArchive[0]->GetData().size(),
                          wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d",
                                           timeArchiveDataSize, (int) predictorsArchive[0]->GetData().size()));
-            Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
+            a1d timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
             wxASSERT(predictorsTarget[0]);
             wxASSERT(timeTargetDataSize == (int) predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
-            Array1DFloat ScoreArrayOneDay(analogsNb);
-            Array1DFloat DateArrayOneDay(analogsNb);
+            a1f ScoreArrayOneDay(analogsNb);
+            a1f DateArrayOneDay(analogsNb);
 
             // Some other variables
             float tmpscore, thisscore;
@@ -647,16 +647,16 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
         case (asFULL_ARRAY): {
             // Extract some data
-            Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
+            a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
             int timeArchiveDataSize = timeArchiveData.size();
             wxASSERT(timeArchiveDataSize == (int) predictorsArchive[0]->GetData().size());
-            Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
+            a1d timeTargetData = timeArrayTargetData.GetTimeArray();
             int timeTargetDataSize = timeTargetData.size();
             wxASSERT(timeTargetDataSize == (int) predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
-            Array1DFloat ScoreArrayOneDay(timeArrayArchiveSelection.GetSize());
-            Array1DFloat DateArrayOneDay(timeArrayArchiveSelection.GetSize());
+            a1f ScoreArrayOneDay(timeArrayArchiveSelection.GetSize());
+            a1f DateArrayOneDay(timeArrayArchiveSelection.GetSize());
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
@@ -845,16 +845,16 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     wxStopWatch sw;
 
     // Extract some data
-    Array1DDouble timeArchiveData = timeArrayArchiveData.GetTimeArray();
+    a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
     unsigned int timeArchiveDataSize = (unsigned int) timeArchiveData.size();
     wxASSERT(timeArchiveDataSize > 0);
-    Array1DDouble timeTargetData = timeArrayTargetData.GetTimeArray();
+    a1d timeTargetData = timeArrayTargetData.GetTimeArray();
     unsigned int timeTargetDataSize = (unsigned int) timeTargetData.size();
     wxASSERT(timeTargetDataSize > 0);
-    Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
+    a1f timeTargetSelection = anaDates.GetTargetDates();
     unsigned int timeTargetSelectionSize = (unsigned int) timeTargetSelection.size();
     wxASSERT(timeTargetSelectionSize > 0);
-    Array2DFloat analogsDates = anaDates.GetAnalogsDates();
+    a2f analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder() == Asc);
     unsigned int predictorsNb = (unsigned int) params.GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
@@ -870,10 +870,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     }
 
     // Matrices containers
-    VpArray2DFloat vTargData = VpArray2DFloat(predictorsNb);
-    VpArray2DFloat vArchData = VpArray2DFloat(predictorsNb);
-    Array1DInt vRowsNb(predictorsNb);
-    Array1DInt vColsNb(predictorsNb);
+    vpa2f vTargData = vpa2f(predictorsNb);
+    vpa2f vArchData = vpa2f(predictorsNb);
+    a1i vRowsNb(predictorsNb);
+    a1i vColsNb(predictorsNb);
 
     for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         vRowsNb[iPtor] = (int) predictorsArchive[iPtor]->GetData()[0][0].rows();
@@ -892,11 +892,11 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
     }
 
     // Containers for daily results
-    Array1DFloat currentAnalogsDates(analogsNbPrevious);
+    a1f currentAnalogsDates(analogsNbPrevious);
 
     // Containers for final results
-    Array2DFloat finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
-    Array2DFloat finalAnalogsDates(timeTargetSelectionSize, analogsNb);
+    a2f finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
+    a2f finalAnalogsDates(timeTargetSelectionSize, analogsNb);
 
 #if wxUSE_GUI
     // The progress bar
@@ -974,8 +974,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
         case (asFULL_ARRAY): // Not implemented
         case (asINSERT): {
             // Containers for daily results
-            Array1DFloat ScoreArrayOneDay(analogsNb);
-            Array1DFloat DateArrayOneDay(analogsNb);
+            a1f ScoreArrayOneDay(analogsNb);
+            a1f DateArrayOneDay(analogsNb);
 
             // Loop through every timestep as target data
             for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
@@ -1131,14 +1131,14 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                                    asResultsAnalogsValues &results)
 {
     // Extract Data
-    Array1DFloat timeTargetSelection = anaDates.GetTargetDates();
-    Array2DFloat analogsDates = anaDates.GetAnalogsDates();
-    Array2DFloat analogsCriteria = anaDates.GetAnalogsCriteria();
-    Array1DDouble predictandTime = predictand.GetTime();
-    VectorInt stations = params.GetPredictandStationIds();
+    a1f timeTargetSelection = anaDates.GetTargetDates();
+    a2f analogsDates = anaDates.GetAnalogsDates();
+    a2f analogsCriteria = anaDates.GetAnalogsCriteria();
+    a1d predictandTime = predictand.GetTime();
+    vi stations = params.GetPredictandStationIds();
     int stationsNb = (int) stations.size();
-    VArray1DFloat predictandDataNorm((unsigned long) stationsNb);
-    VArray1DFloat predictandDataGross((unsigned long) stationsNb);
+    va1f predictandDataNorm((unsigned long) stationsNb);
+    va1f predictandDataGross((unsigned long) stationsNb);
     for (int iStat = 0; iStat < stationsNb; iStat++) {
         predictandDataNorm[iStat] = predictand.GetDataNormalizedStation(stations[iStat]);
         predictandDataGross[iStat] = predictand.GetDataGrossStation(stations[iStat]);
@@ -1212,12 +1212,12 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
     // Resize containers
     wxASSERT(targTimeLength > 0);
     wxASSERT(analogsNb > 0);
-    VArray2DFloat finalAnalogValuesNorm(stationsNb, Array2DFloat(targTimeLength, analogsNb));
-    VArray2DFloat finalAnalogValuesGross(stationsNb, Array2DFloat(targTimeLength, analogsNb));
-    Array2DFloat finalAnalogCriteria(targTimeLength, analogsNb);
-    Array1DFloat finalTargetDates(targTimeLength);
-    VArray1DFloat finalTargetValuesNorm(stationsNb, Array1DFloat(targTimeLength));
-    VArray1DFloat finalTargetValuesGross(stationsNb, Array1DFloat(targTimeLength));
+    va2f finalAnalogValuesNorm(stationsNb, a2f(targTimeLength, analogsNb));
+    va2f finalAnalogValuesGross(stationsNb, a2f(targTimeLength, analogsNb));
+    a2f finalAnalogCriteria(targTimeLength, analogsNb);
+    a1f finalTargetDates(targTimeLength);
+    va1f finalTargetValuesNorm(stationsNb, a1f(targTimeLength));
+    va1f finalTargetValuesGross(stationsNb, a1f(targTimeLength));
 
     // Get predictand values
     for (int iTargetDate = indexTargDatesStart; iTargetDate <= indexTargDatesEnd; iTargetDate++) {
@@ -1231,8 +1231,8 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                                                                 asHIDE_WARNINGS);
         if (ignoreTargetValues | (predictandIndex == asOUT_OF_RANGE) | (predictandIndex == asNOT_FOUND)) {
             for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
-                finalTargetValuesNorm[iStat](iTargetDatenew) = NaNFloat;
-                finalTargetValuesGross[iStat](iTargetDatenew) = NaNFloat;
+                finalTargetValuesNorm[iStat](iTargetDatenew) = NaNf;
+                finalTargetValuesGross[iStat](iTargetDatenew) = NaNf;
             }
         } else {
             for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
@@ -1257,8 +1257,8 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                         wxLogWarning(_("The current analog date (%s) was not found in the predictand time array (%s-%s)."),
                                      currDate, startDate, endDate);
                         for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
-                            finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNFloat;
-                            finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNFloat;
+                            finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNf;
+                            finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNf;
                         }
                     } else {
                         for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
@@ -1277,15 +1277,15 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                                asTime::GetStringTime(timeStart, "DD.MM.YYYY"),
                                asTime::GetStringTime(timeEnd, "DD.MM.YYYY"));
                     for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
-                        finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNFloat;
-                        finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNFloat;
+                        finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNf;
+                        finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNf;
                     }
                 }
                 finalAnalogCriteria(iTargetDatenew, iAnalogDate) = analogsCriteria(iTargetDate, iAnalogDate);
 
             } else {
                 wxLogError(_("The current analog date is a NaN."));
-                finalAnalogCriteria(iTargetDatenew, iAnalogDate) = NaNFloat;
+                finalAnalogCriteria(iTargetDatenew, iAnalogDate) = NaNf;
             }
         }
 

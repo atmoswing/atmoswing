@@ -25,19 +25,19 @@ public:
 
     void InitChromosomeSelfAdaptationMutationRadius();
 
-    void SimpleCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints);
+    void SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints);
 
-    void BlendingCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta,
+    void BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
                            double betaMin = 0.0, double betaMax = 1.0);
 
-    void HeuristicCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta,
+    void HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
                             double betaMin = 0.0, double betaMax = 1.0);
 
-    void BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints, bool shareBeta,
+    void BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
                              double betaMin = 0.0, double betaMax = 1.0);
 
     void LinearCrossover(asParametersOptimizationGAs &otherParam, asParametersOptimizationGAs &thirdParam,
-                         VectorInt &crossingPoints);
+                         vi &crossingPoints);
 
     void LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta);
 
@@ -67,9 +67,9 @@ protected:
 private:
     float m_individualSelfAdaptationMutationRate;
     float m_individualSelfAdaptationMutationRadius;
-    VectorInt m_chromosomeIndices;
-    VectorFloat m_chromosomeSelfAdaptationMutationRate;
-    VectorFloat m_chromosomeSelfAdaptationMutationRadius;
+    vi m_chromosomeIndices;
+    vf m_chromosomeSelfAdaptationMutationRate;
+    vf m_chromosomeSelfAdaptationMutationRadius;
     bool m_hasChromosomeSelfAdaptationMutationRate;
     bool m_hasChromosomeSelfAdaptationMutationRadius;
     int m_timeArrayAnalogsIntervalDaysIteration;

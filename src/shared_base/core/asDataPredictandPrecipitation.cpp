@@ -125,12 +125,12 @@ bool asDataPredictandPrecipitation::Save(const wxString &AlternateDestinationDir
         ncFile.DefDim("return_periods", (int) m_returnPeriods.size());
 
         // The dimensions name array is used to pass the dimensions to the variable.
-        VectorStdString DimNames2D;
+        vstds DimNames2D;
         DimNames2D.push_back("time");
         DimNames2D.push_back("stations");
-        VectorStdString DimNameReturnPeriods;
+        vstds DimNameReturnPeriods;
         DimNameReturnPeriods.push_back("return_periods");
-        VectorStdString DimNames2DReturnPeriods;
+        vstds DimNames2DReturnPeriods;
         DimNames2DReturnPeriods.push_back("stations");
         DimNames2DReturnPeriods.push_back("return_periods");
 
@@ -244,7 +244,7 @@ bool asDataPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFil
 bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
 {
     // Duration of the Precipitation
-    Array1DDouble duration;
+    a1d duration;
     if (m_timeStepDays == 1) {
         duration.resize(7);
         duration << 1, 2, 3, 4, 5, 7, 10;
@@ -291,7 +291,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
 
     for (float iDuration = 0; iDuration < duration.size(); iDuration++) {
         // Get the annual max
-        Array2DFloat annualMax = GetAnnualMax(duration[iDuration]);
+        a2f annualMax = GetAnnualMax(duration[iDuration]);
 
 #if wxUSE_GUI
         if (!ProgressBar.Update(iDuration)) {
@@ -301,7 +301,7 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
 #endif
 
         for (int iStat = 0; iStat < m_stationsNb; iStat++) {
-            Array1DFloat currentAnnualMax = annualMax.row(iStat);
+            a1f currentAnnualMax = annualMax.row(iStat);
             int arrayEnd = currentAnnualMax.size() - 1;
 
             // Check the length of the data
@@ -337,7 +337,7 @@ float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int iStat, d
 {
     float F = 1 - (1 / returnPeriod); // Probability of not overtaking
     float u = -log(-log(F)); // Gumbel variable
-    Array1DFloat durations = m_gumbelDuration.row(iStat);
+    a1f durations = m_gumbelDuration.row(iStat);
     int iDuration = asTools::SortedArraySearch(&durations(0), &durations(durations.size() - 1), duration, 0.00001f);
     return m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
 }

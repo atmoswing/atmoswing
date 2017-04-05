@@ -45,7 +45,7 @@ asForecastScoreFinalMean::~asForecastScoreFinalMean()
     //dtor
 }
 
-float asForecastScoreFinalMean::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
+float asForecastScoreFinalMean::Assess(const a1f &targetDates, const a1f &forecastScores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);
@@ -74,7 +74,7 @@ float asForecastScoreFinalMean::Assess(const Array1DFloat &targetDates, const Ar
             // Get first and last common days
             double FirstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
             double LastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
-            Array1DDouble DateTime = timeArray.GetTimeArray();
+            a1d DateTime = timeArray.GetTimeArray();
             int IndexStart = asTools::SortedArraySearchClosest(&DateTime(0), &DateTime(timeArrayLength - 1), FirstDay);
             int IndexEnd = asTools::SortedArraySearchClosest(&DateTime(0), &DateTime(timeArrayLength - 1), LastDay);
 

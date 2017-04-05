@@ -91,17 +91,17 @@ bool asResultsAnalogsValues::Save()
     ncFile.DefDim("analogs", Nanalogs);
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString dimS;
+    vstds dimS;
     dimS.push_back("stations");
-    VectorStdString dimT;
+    vstds dimT;
     dimT.push_back("time");
-    VectorStdString dimTA;
+    vstds dimTA;
     dimTA.push_back("time");
     dimTA.push_back("analogs");
-    VectorStdString dimST;
+    vstds dimST;
     dimST.push_back("stations");
     dimST.push_back("time");
-    VectorStdString dimSTA;
+    vstds dimSTA;
     dimSTA.push_back("stations");
     dimSTA.push_back("time");
     dimSTA.push_back("analogs");
@@ -193,11 +193,11 @@ bool asResultsAnalogsValues::Load()
 
     // Resize containers
     m_predictandStationIds.resize(Nstations);
-    m_targetValuesNorm.resize(Nstations, Array1DFloat(Ntime));
-    m_targetValuesGross.resize(Nstations, Array1DFloat(Ntime));
+    m_targetValuesNorm.resize(Nstations, a1f(Ntime));
+    m_targetValuesGross.resize(Nstations, a1f(Ntime));
     m_analogsCriteria.resize(Ntime, Nanalogs);
-    m_analogsValuesNorm.resize(Nstations, Array2DFloat(Ntime, Nanalogs));
-    m_analogsValuesGross.resize(Nstations, Array2DFloat(Ntime, Nanalogs));
+    m_analogsValuesNorm.resize(Nstations, a2f(Ntime, Nanalogs));
+    m_analogsValuesGross.resize(Nstations, a2f(Ntime, Nanalogs));
 
     // Get data
     ncFile.GetVar("stations", &m_predictandStationIds[0]);

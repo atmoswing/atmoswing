@@ -48,12 +48,12 @@ asForecastScore::asForecastScore()
 {
     m_score = Undefined;
     m_scoreClimatology = 0;
-    m_threshold = NaNFloat;
-    m_quantile = NaNFloat;
+    m_threshold = NaNf;
+    m_quantile = NaNf;
     m_usesClimatology = false;
     m_singleValue = true;
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScore *asForecastScore::GetInstance(Score scoreEnum)
@@ -282,14 +282,14 @@ asForecastScore::~asForecastScore()
     //dtor
 }
 
-Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const
+a1f asForecastScore::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const
 {
     wxLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
 
-    return Array1DFloat();
+    return a1f();
 }
 
-bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+bool asForecastScore::CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     // Check the element numbers vs vector length
     wxASSERT_MSG(ForcastVals.rows() >= nbElements,
@@ -309,7 +309,7 @@ bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &Forcast
     return true;
 }
 
-int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements) const
+int asForecastScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const
 {
     // Remove the NaNs and copy content
     int nbForecasts = 0, nbNans = 0;

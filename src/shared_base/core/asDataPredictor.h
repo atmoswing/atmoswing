@@ -94,7 +94,7 @@ public:
 
     void CheckLevelTypeIsDefined();
 
-    bool CheckFilesPresence(VectorString &filesList);
+    bool CheckFilesPresence(vwxs &filesList);
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
@@ -110,13 +110,13 @@ public:
 
     bool Inline();
 
-    bool SetData(VVArray2DFloat &val);
+    bool SetData(vva2f &val);
 
     float GetMinValue() const;
 
     float GetMaxValue() const;
 
-    VVArray2DFloat &GetData()
+    vva2f &GetData()
     {
         wxASSERT((int) m_data.size() == (int) m_time.size());
         wxASSERT(m_data.size() >= 1);
@@ -129,17 +129,17 @@ public:
         return m_data;
     }
 
-    Array1DDouble &GetTime()
+    a1d &GetTime()
     {
         return m_time;
     }
 
-    Array1DFloat GetAxisLon() const
+    a1f GetAxisLon() const
     {
         return m_axisLon;
     }
 
-    Array1DFloat GetAxisLat() const
+    a1f GetAxisLat() const
     {
         return m_axisLat;
     }
@@ -342,10 +342,10 @@ protected:
         wxString dimMemberName;
         bool hasLevelDimension;
         bool singleLevel;
-        Array1DFloat axisLon;
-        Array1DFloat axisLat;
-        Array1DFloat axisLevel;
-        Array1DInt axisMember;
+        a1f axisLon;
+        a1f axisLat;
+        a1f axisLevel;
+        a1i axisMember;
         double axisTimeFirstValue;
         double axisTimeLastValue;
         size_t axisTimeLength;
@@ -385,10 +385,10 @@ protected:
     double m_timeZoneHours;
     double m_timeStepHours;
     double m_firstTimeStepHours;
-    VectorDouble m_nanValues;
+    vd m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
-    VectorInt m_gribCode;
+    vi m_gribCode;
     wxString m_product;
     wxString m_fileVariableName;
     Unit m_unit;
@@ -397,24 +397,24 @@ protected:
     float m_xAxisShift;
     float m_yAxisShift;
     float m_level;
-    Array1DDouble m_time;
-    VVArray2DFloat m_data;
+    a1d m_time;
+    vva2f m_data;
     int m_latPtsnb;
     int m_lonPtsnb;
-    Array1DFloat m_axisLat;
-    Array1DFloat m_axisLon;
+    a1f m_axisLat;
+    a1f m_axisLon;
     bool m_isPreprocessed;
     bool m_isEnsemble;
     bool m_canBeClipped;
     wxString m_fileExtension;
     wxString m_preprocessMethod;
 
-    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const = 0;
+    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const = 0;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  vvva2f &compositeData) = 0;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const = 0;
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 

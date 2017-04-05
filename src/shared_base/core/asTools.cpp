@@ -212,7 +212,7 @@ float asTools::StDev(const int *pArrStart, const int *pArrEnd, const int sample)
     } else if (sample == asENTIRE_POPULATION) {
         return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNFloat;
+        return NaNf;
     }
 }
 
@@ -232,7 +232,7 @@ float asTools::StDev(const float *pArrStart, const float *pArrEnd, const int sam
     } else if (sample == asENTIRE_POPULATION) {
         return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNFloat;
+        return NaNf;
     }
 }
 
@@ -252,13 +252,13 @@ double asTools::StDev(const double *pArrStart, const double *pArrEnd, const int 
     } else if (sample == asENTIRE_POPULATION) {
         return sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
-        return NaNDouble;
+        return NaNd;
     }
 }
 
-Array1DFloat asTools::GetCumulativeFrequency(const int size)
+a1f asTools::GetCumulativeFrequency(const int size)
 {
-    Array1DFloat F(size);
+    a1f F(size);
 
     // Parameters for the estimated distribution from Gringorten (a=0.44, b=0.12).
     // Choice based on [Cunnane, C., 1978, Unbiased plotting positions—A review: Journal of Hydrology, v. 37, p. 205–222.]
@@ -280,18 +280,18 @@ Array1DFloat asTools::GetCumulativeFrequency(const int size)
     return F;
 }
 
-float asTools::GetValueForQuantile(const Array1DFloat &values, const float quantile)
+float asTools::GetValueForQuantile(const a1f &values, const float quantile)
 {
-    float value = NaNFloat;
+    float value = NaNf;
     int size = values.size();
 
-    Array1DFloat valuesCopy = values;
+    a1f valuesCopy = values;
 
     // Sort the forcast array
     asTools::SortArray(&valuesCopy[0], &valuesCopy[size - 1], Asc);
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(size);
+    a1f F = asTools::GetCumulativeFrequency(size);
 
     // Check limits
     if (quantile <= F[0])
@@ -318,7 +318,7 @@ float asTools::GetValueForQuantile(const Array1DFloat &values, const float quant
 
 bool asTools::IsNaN(const int value)
 {
-    return value == NaNInt;
+    return value == NaNi;
 }
 
 bool asTools::IsNaN(const float value)
@@ -333,17 +333,17 @@ bool asTools::IsNaN(const double value)
 
 bool asTools::IsInf(const float value)
 {
-    return value == InfFloat;
+    return value == Inff;
 }
 
 bool asTools::IsInf(const double value)
 {
-    return value == InfDouble;
+    return value == Infd;
 }
 
 bool asTools::IsInf(const long double value)
 {
-    return value == InfLongDouble;
+    return value == Infld;
 }
 
 int asTools::CountNotNaN(const float *pArrStart, const float *pArrEnd)
@@ -372,7 +372,7 @@ int asTools::CountNotNaN(const double *pArrStart, const double *pArrEnd)
     return counter;
 }
 
-bool asTools::HasNaN(const Array2DFloat &data)
+bool asTools::HasNaN(const a2f &data)
 {
     return !((data == data)).all();
 }
@@ -635,7 +635,7 @@ int asTools::MaxArrayIndex(const double *pArrStart, const double *pArrEnd)
 int asTools::MinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     // Copy data to not alter original array
-    Array1DInt copyData(pArrEnd - pArrStart + 1);
+    a1i copyData(pArrEnd - pArrStart + 1);
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
         copyData[i] = *(pArrStart + i);
@@ -672,7 +672,7 @@ float asTools::MinArrayStep(const float *pArrStart, const float *pArrEnd, const 
     int j = 0;
 
     // Copy data to not alter original array
-    Array1DFloat copyData(nbNotNans);
+    a1f copyData(nbNotNans);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -713,7 +713,7 @@ double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, con
     int j = 0;
 
     // Copy data to not alter original array
-    Array1DDouble copyData(nbNotNans);
+    a1d copyData(nbNotNans);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -748,12 +748,12 @@ double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, con
     return minstep;
 }
 
-Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance)
+a1i asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     int j = 0;
 
     // Copy data to not alter original array
-    VectorInt copyData(pArrEnd - pArrStart + 1);
+    vi copyData(pArrEnd - pArrStart + 1);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -765,7 +765,7 @@ Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd
     asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
-    VectorInt copyDataUniques;
+    vi copyDataUniques;
     copyDataUniques.reserve(pArrEnd - pArrStart + 1);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
@@ -776,7 +776,7 @@ Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd
     }
 
     // Copy data to the final container
-    Array1DInt resultArray(copyDataUniques.size());
+    a1i resultArray(copyDataUniques.size());
 
     for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
@@ -785,13 +785,13 @@ Array1DInt asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd
     return resultArray;
 }
 
-Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
+a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
     unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
-    VectorFloat copyData(nbNotNans);
+    vf copyData(nbNotNans);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -805,7 +805,7 @@ Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *p
     asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
-    VectorFloat copyDataUniques;
+    vf copyDataUniques;
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
@@ -816,7 +816,7 @@ Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *p
     }
 
     // Copy data to the final container
-    Array1DFloat resultArray(copyDataUniques.size());
+    a1f resultArray(copyDataUniques.size());
 
     for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
@@ -825,13 +825,13 @@ Array1DFloat asTools::ExtractUniqueValues(const float *pArrStart, const float *p
     return resultArray;
 }
 
-Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
+a1d asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
     unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
-    VectorDouble copyData = VectorDouble(nbNotNans);
+    vd copyData = vd(nbNotNans);
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -845,7 +845,7 @@ Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double
     asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
-    VectorDouble copyDataUniques;
+    vd copyDataUniques;
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
@@ -856,7 +856,7 @@ Array1DDouble asTools::ExtractUniqueValues(const double *pArrStart, const double
     }
 
     // Copy data to the final container
-    Array1DDouble resultArray(copyDataUniques.size());
+    a1d resultArray(copyDataUniques.size());
 
     for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];

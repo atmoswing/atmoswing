@@ -60,7 +60,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadEasy)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -141,7 +141,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadComposite)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -224,7 +224,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -305,7 +305,7 @@ TEST(DataPredictorArchiveEcmwfEra20CRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)

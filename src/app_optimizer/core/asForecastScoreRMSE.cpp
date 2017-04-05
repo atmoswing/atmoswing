@@ -36,7 +36,7 @@ asForecastScoreRMSE::asForecastScoreRMSE()
     m_fullName = _("Root mean square error");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreRMSE::~asForecastScoreRMSE()
@@ -44,7 +44,7 @@ asForecastScoreRMSE::~asForecastScoreRMSE()
     //dtor
 }
 
-float asForecastScoreRMSE::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreRMSE::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -53,19 +53,19 @@ float asForecastScoreRMSE::Assess(float ObservedVal, const Array1DFloat &Forcast
     wxASSERT(m_quantile < 1);
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNFloat;
+        return NaNf;
     } else if (nbForecasts <= 2) {
         wxLogWarning(_("Not enough elements to process the CRPS."));
-        return NaNFloat;
+        return NaNf;
     }
 
-    Array1DFloat cleanValues = x.head(nbForecasts);
+    a1f cleanValues = x.head(nbForecasts);
 
     // Get value for quantile
     float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
@@ -75,7 +75,7 @@ float asForecastScoreRMSE::Assess(float ObservedVal, const Array1DFloat &Forcast
     return score;
 }
 
-bool asForecastScoreRMSE::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreRMSE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

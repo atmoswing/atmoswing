@@ -48,7 +48,7 @@ public:
 
     void Add(asParametersScoring params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring params, Array1DFloat scoreCalib, Array1DFloat scoreValid);
+    void Add(asParametersScoring params, a1f scoreCalib, a1f scoreValid);
 
     void Clear();
 
@@ -86,11 +86,11 @@ protected:
 
 private:
     std::vector<asParametersScoring> m_parameters;
-    VectorFloat m_scoresCalib;
-    VectorFloat m_scoresValid;
+    vf m_scoresCalib;
+    vf m_scoresValid;
     std::vector<asParametersScoring> m_parametersForScoreOnArray;
-    std::vector<Array1DFloat> m_scoresCalibForScoreOnArray;
-    std::vector<Array1DFloat> m_scoresValidForScoreOnArray;
+    std::vector<a1f> m_scoresCalibForScoreOnArray;
+    std::vector<a1f> m_scoresValidForScoreOnArray;
 };
 
 #endif // ASRESULTSPARAMETERSARRAY_H

@@ -300,7 +300,7 @@ TEST(GeoAreaCompositeRegularGrid, GetAxes)
     double step = 2.5;
     asGeoAreaCompositeRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
 
-    Array1DDouble uaxis0, vaxis0;
+    a1d uaxis0, vaxis0;
     uaxis0.resize(geoArea.GetXaxisCompositePtsnb(0));
     vaxis0.resize(geoArea.GetYaxisCompositePtsnb(0));
 
@@ -316,7 +316,7 @@ TEST(GeoAreaCompositeRegularGrid, GetAxes)
     EXPECT_DOUBLE_EQ(32.5, vaxis0(1));
     EXPECT_DOUBLE_EQ(40, vaxis0(4));
 
-    Array1DDouble uaxis1, vaxis1;
+    a1d uaxis1, vaxis1;
     uaxis1.resize(geoArea.GetXaxisCompositePtsnb(1));
     vaxis1.resize(geoArea.GetYaxisCompositePtsnb(1));
 

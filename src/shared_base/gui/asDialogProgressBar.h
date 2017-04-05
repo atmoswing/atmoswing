@@ -52,7 +52,7 @@ private:
     int m_steps;
     int m_delayUpdate;
     int m_valueMax;
-    VectorInt m_vectorSteps;
+    vi m_vectorSteps;
     int m_currentStepIndex;
 
 };

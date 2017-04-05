@@ -36,7 +36,7 @@ asPredictorCriteriaRSE::asPredictorCriteriaRSE(int linAlgebraMethod)
     m_fullName = _("Root Squared Error");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaRSE::~asPredictorCriteriaRSE()
     //dtor
 }
 
-float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
+float asPredictorCriteriaRSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
@@ -76,7 +76,7 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
 
         default: {
             wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
+            return NaNf;
         }
     }
 

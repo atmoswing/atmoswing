@@ -45,7 +45,7 @@ asMethodForecasting::asMethodForecasting(asBatchForecasts *batchForecasts, wxWin
         : asMethodStandard()
 {
     m_batchForecasts = batchForecasts;
-    m_forecastDate = NaNDouble;
+    m_forecastDate = NaNd;
     m_paramsFilePath = wxEmptyString;
     m_predictandDBFilePath = wxEmptyString;
     m_parent = parent;
@@ -631,8 +631,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     }
 
     // Target time array
-    VectorInt leadTime = params.GetLeadTimeDaysVector();
-    VectorDouble tmpTimeArray;
+    vi leadTime = params.GetLeadTimeDaysVector();
+    vd tmpTimeArray;
     for (unsigned int i = 0; i < leadTime.size(); i++) {
         if (leadTime[i] > lastLeadTime)
             break;
@@ -759,7 +759,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             }
 
             // Check time array for real-time data
-            VectorDouble listTimeArray = predictorRealtime->GetDataDates();
+            vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
                          wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
@@ -890,7 +890,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                 }
 
                 // Check time array for real-time data
-                VectorDouble listTimeArray = predictorRealtimePreprocess->GetDataDates();
+                vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
                              wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                               (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
@@ -1024,8 +1024,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
     // Send data and criteria to processor
     wxLogVerbose(_("Start processing the comparison."));
 
-    Array1DDouble timeArrayTargetVect = timeArrayTarget.GetTimeArray();
-    Array1DDouble timeArrayTargetVectUnique(1);
+    a1d timeArrayTargetVect = timeArrayTarget.GetTimeArray();
+    a1d timeArrayTargetVectUnique(1);
 
     // Loop over the lead times
     for (int iLead = 0; iLead < timeArrayTarget.GetSize(); iLead++) {
@@ -1049,14 +1049,14 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
             return false;
         }
 
-        Array2DFloat dates = anaDates.GetAnalogsDates();
+        a2f dates = anaDates.GetAnalogsDates();
         wxASSERT(dates.rows() == 1);
-        Array1DFloat rowDates = dates.row(0);
+        a1f rowDates = dates.row(0);
         results.SetAnalogsDates(iLead, rowDates);
 
-        Array2DFloat criteriaVal = anaDates.GetAnalogsCriteria();
+        a2f criteriaVal = anaDates.GetAnalogsCriteria();
         wxASSERT(criteriaVal.rows() == 1);
-        Array1DFloat rowCriteria = criteriaVal.row(0);
+        a1f rowCriteria = criteriaVal.row(0);
         results.SetAnalogsCriteria(iLead, rowCriteria);
     }
 
@@ -1128,8 +1128,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     }
 
     // Target time array
-    VectorInt leadTime = params.GetLeadTimeDaysVector();
-    VectorDouble tmpTimeArray;
+    vi leadTime = params.GetLeadTimeDaysVector();
+    vd tmpTimeArray;
     for (unsigned int i = 0; i < leadTime.size(); i++) {
         if (leadTime[i] > lastLeadTime)
             break;
@@ -1251,7 +1251,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             }
 
             // Check time array for real-time data
-            VectorDouble listTimeArray = predictorRealtime->GetDataDates();
+            vd listTimeArray = predictorRealtime->GetDataDates();
             wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
                          wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
@@ -1371,7 +1371,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                 }
 
                 // Check time array for real-time data
-                VectorDouble listTimeArray = predictorRealtimePreprocess->GetDataDates();
+                vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
                 wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
                              wxString::Format("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
                                               (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
@@ -1512,7 +1512,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
     // Send data and criteria to processor
     wxLogVerbose(_("Start processing the comparison."));
 
-    Array1DFloat leadTimes = resultsPrev.GetTargetDates();
+    a1f leadTimes = resultsPrev.GetTargetDates();
 
     // Loop over the lead times
     for (int iLead = 0; iLead < timeArrayTarget.GetSize(); iLead++) {
@@ -1530,15 +1530,15 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         anaDates.SetCurrentStep(iStep);
         anaDates.Init(params);
 
-        Array1DFloat datesPrev = resultsPrev.GetAnalogsDates(iLead);
-        Array2DFloat datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
+        a1f datesPrev = resultsPrev.GetAnalogsDates(iLead);
+        a2f datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
         datesPrev2D.row(0) = datesPrev;
 
-        Array1DFloat criteriaPrev = resultsPrev.GetAnalogsCriteria(iLead);
-        Array2DFloat criteriaPrev2D(1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
+        a1f criteriaPrev = resultsPrev.GetAnalogsCriteria(iLead);
+        a2f criteriaPrev2D(1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
         criteriaPrev2D.row(0) = criteriaPrev;
 
-        Array1DDouble leadTimeArray(1);
+        a1d leadTimeArray(1);
         leadTimeArray[0] = leadTimes[iLead];
         anaDatesPrev.SetTargetDates(leadTimeArray);
         anaDatesPrev.SetAnalogsDates(datesPrev2D);
@@ -1552,14 +1552,14 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
             return false;
         }
 
-        Array2DFloat dates = anaDates.GetAnalogsDates();
+        a2f dates = anaDates.GetAnalogsDates();
         wxASSERT(dates.rows() == 1);
-        Array1DFloat rowDates = dates.row(0);
+        a1f rowDates = dates.row(0);
         results.SetAnalogsDates(iLead, rowDates);
 
-        Array2DFloat criteriaVal = anaDates.GetAnalogsCriteria();
+        a2f criteriaVal = anaDates.GetAnalogsCriteria();
         wxASSERT(criteriaVal.rows() == 1);
-        Array1DFloat rowCriteria = criteriaVal.row(0);
+        a1f rowCriteria = criteriaVal.row(0);
         results.SetAnalogsCriteria(iLead, rowCriteria);
     }
 
@@ -1585,7 +1585,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 
     // Extract the stations IDs and coordinates
     wxASSERT(m_predictandDB->GetStationsNb() > 0);
-    Array1DInt stationsId = m_predictandDB->GetStationsIdArray();
+    a1i stationsId = m_predictandDB->GetStationsIdArray();
     wxASSERT(stationsId.size() > 0);
     results.SetStationIds(stationsId);
     results.SetStationOfficialIds(m_predictandDB->GetStationOfficialIdsArray());
@@ -1593,12 +1593,12 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
     results.SetStationHeights(m_predictandDB->GetStationHeightsArray());
     results.SetStationXCoords(m_predictandDB->GetStationXCoordsArray());
     results.SetStationYCoords(m_predictandDB->GetStationYCoordsArray());
-    Array1DFloat refAxis = m_predictandDB->GetReferenceAxis();
+    a1f refAxis = m_predictandDB->GetReferenceAxis();
     results.SetReferenceAxis(refAxis);
-    Array2DFloat refValues = m_predictandDB->GetReferenceValuesArray();
+    a2f refValues = m_predictandDB->GetReferenceValuesArray();
     results.SetReferenceValues(refValues);
 
-    Array1DFloat leadTimes = results.GetTargetDates();
+    a1f leadTimes = results.GetTargetDates();
 
     wxLogVerbose(_("Start setting the predictand values to the corresponding analog dates."));
 
@@ -1611,15 +1611,15 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
         anaDates.SetCurrentStep(iStep);
         anaDates.Init(params);
 
-        Array1DFloat datesPrev = results.GetAnalogsDates(iLead);
-        Array2DFloat datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep, iLead));
+        a1f datesPrev = results.GetAnalogsDates(iLead);
+        a2f datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep, iLead));
         datesPrev2D.row(0) = datesPrev;
 
-        Array1DFloat criteriaPrev = results.GetAnalogsCriteria(iLead);
-        Array2DFloat criteriaPrev2D(1, params.GetAnalogsNumberLeadTime(iStep, iLead));
+        a1f criteriaPrev = results.GetAnalogsCriteria(iLead);
+        a2f criteriaPrev2D(1, params.GetAnalogsNumberLeadTime(iStep, iLead));
         criteriaPrev2D.row(0) = criteriaPrev;
 
-        Array1DDouble leadTimeArray(1);
+        a1d leadTimeArray(1);
         leadTimeArray[0] = leadTimes[iLead];
         anaDates.SetTargetDates(leadTimeArray);
         anaDates.SetAnalogsDates(datesPrev2D);
@@ -1627,7 +1627,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
 
         // Process for every station
         for (int iStat = 0; iStat < stationsId.size(); iStat++) {
-            VectorInt stationId(1);
+            vi stationId(1);
             stationId[0] = stationsId[iStat];
 
             // Set the next station ID
@@ -1643,9 +1643,9 @@ bool asMethodForecasting::GetAnalogsValues(asResultsAnalogsForecast &results, as
                 return false;
             }
 
-            VArray2DFloat valuesGross = anaValues.GetAnalogsValuesGross();
+            va2f valuesGross = anaValues.GetAnalogsValuesGross();
             wxASSERT(valuesGross[0].rows() == 1);
-            Array1DFloat rowValuesGross = valuesGross[0].row(0);
+            a1f rowValuesGross = valuesGross[0].row(0);
             results.SetAnalogsValuesGross(iLead, iStat, rowValuesGross);
         }
     }

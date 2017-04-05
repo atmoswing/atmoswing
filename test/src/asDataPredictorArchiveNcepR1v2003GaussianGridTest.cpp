@@ -59,7 +59,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadEasy)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat air = predictor->GetData();
+    vva2f air = predictor->GetData();
     // air[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -148,7 +148,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadComposite)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat air = predictor->GetData();
+    vva2f air = predictor->GetData();
     // air[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -229,7 +229,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderLeft)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat air = predictor->GetData();
+    vva2f air = predictor->GetData();
     // air[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -298,7 +298,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderLeftOn720)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat air = predictor->GetData();
+    vva2f air = predictor->GetData();
     // air[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -367,7 +367,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, LoadBorderRight)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat air = predictor->GetData();
+    vva2f air = predictor->GetData();
     // air[time](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -443,7 +443,7 @@ TEST(DataPredictorArchiveNcepR1v2003Gaussian, SetData)
 
     ASSERT_TRUE(predictor->Load(geoarea, timearray));
 
-    VVArray2DFloat newdata(5, VArray2DFloat(1, Array2DFloat::Zero(1, 4)));
+    vva2f newdata(5, va2f(1, a2f::Zero(1, 4)));
 
     newdata[0][0] << 1, 2, 3, 4;
     newdata[1][0] << 11, 12, 13, 14;

@@ -43,17 +43,17 @@ public:
 
     static double NowMJD(int timezone = 0);
 
-    static TimeStruct NowTimeStruct(int timezone);
+    static Time NowTimeStruct(int timezone);
 
     static wxDateTime NowWxDateTime(int timezone);
 
     static wxString GetStringTime(double mjd, const wxString &format);
 
-    static wxString GetStringTime(const TimeStruct &date, const wxString &format);
+    static wxString GetStringTime(const Time &date, const wxString &format);
 
     static wxString GetStringTime(double mjd, TimeFormat format = full);
 
-    static wxString GetStringTime(const TimeStruct &date, TimeFormat format = full);
+    static wxString GetStringTime(const Time &date, TimeFormat format = full);
 
     static double GetTimeFromString(const wxString &datestr, TimeFormat format = guess);
 
@@ -70,7 +70,7 @@ public:
      * \author David Burki
      * \link http://www.xmission.com/~tknarr/code/Date.html
      */
-    static double GetMJD(const TimeStruct &date, int method = asUSE_NORMAL_METHOD);
+    static double GetMJD(const Time &date, int method = asUSE_NORMAL_METHOD);
 
     /** Transform a wxDateTime to a MJD date
      * \author David Burki
@@ -84,9 +84,9 @@ public:
      * \author David Burki
      * \link http://www.xmission.com/~tknarr/code/Date.html
      */
-    static TimeStruct GetTimeStruct(double mjd, int method = asUSE_NORMAL_METHOD);
+    static Time GetTimeStruct(double mjd, int method = asUSE_NORMAL_METHOD);
 
-    static TimeStruct GetTimeStruct(int year, int month, int day, int hour = 0, int minute = 0, int second = 0);
+    static Time GetTimeStruct(int year, int month, int day, int hour = 0, int minute = 0, int second = 0);
 
     static int GetYear(double mjd, int method = asUSE_NORMAL_METHOD);
 
@@ -105,15 +105,15 @@ public:
     static double SubtractYear(double mjd);
 
 protected:
-    static void TimeStructInit(TimeStruct &date);
+    static void TimeStructInit(Time &date);
 
-    static TimeStruct TimeTmToTimeStruct(const struct tm &date);
+    static Time TimeTmToTimeStruct(const struct tm &date);
 
     static double TimeTmToMJD(const struct tm &date);
 
-    static TimeStruct GetSeasonStart(Season season);
+    static Time GetSeasonStart(Season season);
 
-    static TimeStruct GetSeasonEnd(Season season, int year);
+    static Time GetSeasonEnd(Season season, int year);
 
     static Season GetSeason(int month);
     

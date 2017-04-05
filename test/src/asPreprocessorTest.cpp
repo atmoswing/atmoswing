@@ -72,7 +72,7 @@ TEST(Preprocessor, Gradients)
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
-    VVArray2DFloat arrayData = predictor->GetData();
+    vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
     std::vector<asDataPredictorArchive *> vdata;
@@ -82,7 +82,7 @@ TEST(Preprocessor, Gradients)
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
-    VVArray2DFloat grads = gradients->GetData();
+    vva2f grads = gradients->GetData();
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     176.0	175.0	170.0	162.0	151.0
@@ -239,7 +239,7 @@ TEST(Preprocessor, GradientsMultithreading)
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
-    VVArray2DFloat arrayData = predictor->GetData();
+    vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
     std::vector<asDataPredictorArchive *> vdata;
@@ -249,7 +249,7 @@ TEST(Preprocessor, GradientsMultithreading)
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
-    VVArray2DFloat hgt = gradients->GetData();
+    vva2f hgt = gradients->GetData();
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     176.0	175.0	170.0	162.0	151.0
@@ -391,7 +391,7 @@ TEST(Preprocessor, Addition)
     asDataPredictorArchive *addition = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, addition);
 
-    VVArray2DFloat adds = addition->GetData();
+    vva2f adds = addition->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -506,7 +506,7 @@ TEST(Preprocessor, Average)
     asDataPredictorArchive *average = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, average);
 
-    VVArray2DFloat avg = average->GetData();
+    vva2f avg = average->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -616,7 +616,7 @@ TEST(Preprocessor, Difference)
     asDataPredictorArchive *difference = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, difference);
 
-    VVArray2DFloat diffs = difference->GetData();
+    vva2f diffs = difference->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -715,7 +715,7 @@ TEST(Preprocessor, Multiplication)
     asDataPredictorArchive *multiplication = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, multiplication);
 
-    VVArray2DFloat multi = multiplication->GetData();
+    vva2f multi = multiplication->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9

@@ -41,7 +41,7 @@ asDataPredictorArchiveNoaaOisst2::asDataPredictorArchiveNoaaOisst2(const wxStrin
     m_originalProvider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 12;
@@ -99,9 +99,9 @@ bool asDataPredictorArchiveNoaaOisst2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaaOisst2::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNoaaOisst2::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)

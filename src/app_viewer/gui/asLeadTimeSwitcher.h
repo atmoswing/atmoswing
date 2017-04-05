@@ -45,7 +45,7 @@ public:
 
     ~asLeadTimeSwitcher();
 
-    void Draw(Array1DFloat &dates);
+    void Draw(a1f &dates);
 
     void SetLeadTime(int leadTime);
 

@@ -29,7 +29,7 @@
 #include <asParametersScoring.h>
 
 
-Array1DFloat asPostprocessor::Postprocess(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params)
+a1f asPostprocessor::Postprocess(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params)
 {
     wxString method(params.GetForecastScorePostprocessMethod());
 
@@ -47,10 +47,10 @@ Array1DFloat asPostprocessor::Postprocess(const Array1DFloat &analogsValues, con
     }
 }
 
-Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteria(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria)
+a1f asPostprocessor::PostprocessDuplicationOnCriteria(const a1f &analogsValues, const a1f &analogsCriteria)
 {
     float sum=0, range=0;
-    Array1DFloat analogsWeight(analogsValues.rows());
+    a1f analogsWeight(analogsValues.rows());
 
     // Process ranges
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
@@ -71,7 +71,7 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteria(const Array1DFloa
 
     // Duplicate analogs based on the weights
     int counter=0;
-    Array1DFloat analogsValuesModified(nbtot);
+    a1f analogsValuesModified(nbtot);
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
         int number = asTools::Round(analogsWeight[iDay]);
@@ -86,10 +86,10 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteria(const Array1DFloa
     return analogsValuesModified;
 }
 
-Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params)
+a1f asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params)
 {
     float sum1=0, sum2=0, range=0;
-    Array1DFloat analogsWeight(analogsValues.rows());
+    a1f analogsWeight(analogsValues.rows());
 
     // Process ranges
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
@@ -118,7 +118,7 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const Arr
 
     // Duplicate analogs based on the weights
     int counter=0;
-    Array1DFloat analogsValuesModified(nbtot);
+    a1f analogsValuesModified(nbtot);
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
         int number = asTools::Round(analogsWeight[iDay]);

@@ -42,8 +42,8 @@ asParametersScoring::asParametersScoring()
     m_forecastScore.postprocess = false;
     m_forecastScore.postprocessDupliExp = 0;
     m_forecastScore.postprocessMethod = wxEmptyString;
-    m_forecastScore.threshold = NaNFloat; // initialization required
-    m_forecastScore.quantile = NaNFloat; // initialization required
+    m_forecastScore.threshold = NaNf; // initialization required
+    m_forecastScore.quantile = NaNf; // initialization required
 }
 
 asParametersScoring::~asParametersScoring()
@@ -117,7 +117,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         wxXmlNode *nodeTimeValidationPeriod = new wxXmlNode(wxXML_ELEMENT_NODE, "validation_period");
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
-        VectorInt validationYearsVect = GetValidationYearsVector();
+        vi validationYearsVect = GetValidationYearsVector();
         for (int i = 0; i < (int) validationYearsVect.size(); i++) {
             validationYears << validationYearsVect[i];
             if (i != (int) validationYearsVect.size() - 1) {
@@ -220,7 +220,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode *nodePredictand = new wxXmlNode(wxXML_ELEMENT_NODE, "predictand");
     nodeAnalogValues->AddChild(nodePredictand);
 
-    VVectorInt predictandStationIdsVect = GetPredictandStationIdsVector();
+    vvi predictandStationIdsVect = GetPredictandStationIdsVector();
     wxString predictandStationIds = GetPredictandStationIdsVectorString(predictandStationIdsVect);
     nodePredictand->AddChild(fileParams.CreateNodeWithValue("station_id", predictandStationIds));
 
@@ -315,12 +315,12 @@ bool asParametersScoring::PreprocessingPropertiesOk()
     return true;
 }
 
-wxString asParametersScoring::GetPredictandStationIdsVectorString(VVectorInt &predictandStationIdsVect) const
+wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const
 {
     wxString Ids;
 
     for (int i = 0; i < (int) predictandStationIdsVect.size(); i++) {
-        VectorInt predictandStationIds = predictandStationIdsVect[i];
+        vi predictandStationIds = predictandStationIdsVect[i];
 
         if (predictandStationIds.size() == 1) {
             Ids << predictandStationIds[0];

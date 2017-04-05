@@ -57,7 +57,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadEasy)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -173,7 +173,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadComposite)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -267,7 +267,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeft)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -333,7 +333,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderLeftOn720)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -399,7 +399,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadBorderRight)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -472,7 +472,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLon)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -546,7 +546,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonMoved)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -601,7 +601,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLat)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -665,7 +665,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, LoadCompositeStepLonLatTime)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -718,7 +718,7 @@ TEST(DataPredictorArchiveNcepR1v2014Regular, SetData)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat newdata(5, VArray2DFloat(1, Array2DFloat::Zero(1, 4)));
+    vva2f newdata(5, va2f(1, a2f::Zero(1, 4)));
 
     newdata[0][0] << 1, 2, 3, 4;
     newdata[1][0] << 11, 12, 13, 14;

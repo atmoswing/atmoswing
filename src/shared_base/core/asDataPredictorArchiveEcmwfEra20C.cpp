@@ -148,9 +148,9 @@ bool asDataPredictorArchiveEcmwfEra20C::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 

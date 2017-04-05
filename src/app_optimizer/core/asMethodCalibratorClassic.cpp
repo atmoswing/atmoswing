@@ -50,7 +50,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     GetPlusOptions();
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationIdsVector();
+    vvi stationsId = params.GetPredictandStationIdsVector();
 
     // Preload data
     if(!DoPreloadData(params))
@@ -67,7 +67,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     asResultsAnalogsDates anaDatesPrevious;
 
     for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
-        VectorInt stationId = stationsId[iStat];
+        vi stationId = stationsId[iStat];
 
         wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
 
@@ -282,7 +282,7 @@ asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBounda
 void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &params, int iStep) const
 {
     int initalAnalogsNb = 0;
-    VectorInt initalAnalogsNbVect = params.GetAnalogsNumberVector(iStep);
+    vi initalAnalogsNbVect = params.GetAnalogsNumberVector(iStep);
     if (initalAnalogsNbVect.size() > 1) {
         int indexAnb = floor(initalAnalogsNbVect.size() / 2.0);
         initalAnalogsNb = initalAnalogsNbVect[indexAnb]; // Take the median
@@ -316,8 +316,8 @@ void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, 
 }
 
 void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &params, int iStep,
-                                               const asMethodCalibrator::ParamExploration &explo, Array1DDouble &xAxis,
-                                               Array1DDouble &yAxis) const
+                                               const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
+                                               a1d &yAxis) const
 {
     xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
                                              params.GetPredictorXstep(iStep, 0));
@@ -330,8 +330,8 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
 {
     ClearTemp();
 
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
+    a1d xAxis;
+    a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     for (int iX = 0; iX < xAxis.size(); iX += m_stepsLonPertinenceMap) {
@@ -382,7 +382,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                     return false;
             }
             if (containsNaNs) {
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 continue;
             }
             if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, iStep))
@@ -407,7 +407,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 }
                 if (containsNaNs) {
                     continueLoop = false;
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                     continue;
                 }
                 anaDatesPreviousSubRuns = anaDates;
@@ -443,8 +443,8 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     wxStopWatch swEnlarge;
 
     // Get axes
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
+    a1d xAxis;
+    a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     bool isover = false;
@@ -577,8 +577,8 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     wxStopWatch swResize;
 
     // Get axes
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
+    a1d xAxis;
+    a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     // Try other moves. No while loop but reinitialize the for loops
@@ -800,7 +800,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 }
 
 void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &xAxis,
+                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
@@ -811,7 +811,7 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
 }
 
 void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &yAxis,
+                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
@@ -822,7 +822,7 @@ void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
 }
 
 void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &xAxis,
+                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
@@ -833,7 +833,7 @@ void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
 }
 
 void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &yAxis,
+                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);

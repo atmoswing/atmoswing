@@ -72,7 +72,7 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event)
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
+void asLeadTimeSwitcher::Draw(a1f &dates)
 {
     // Required size
     int margin = 5 * g_ppiScaleDc;
@@ -82,7 +82,7 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
     // Get color values
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
     float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
-    Array1DFloat values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef,
+    a1f values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef,
                                                                                   quantileThreshold);
     wxASSERT(values.size() == dates.size());
 

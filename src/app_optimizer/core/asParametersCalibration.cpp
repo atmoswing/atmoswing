@@ -486,8 +486,8 @@ bool asParametersCalibration::SetSpatialWindowProperties()
                     return false;
             }
 
-            VectorInt uptsnbs = GetPredictorXptsnbVector(iStep, iPtor);
-            VectorInt vptsnbs = GetPredictorYptsnbVector(iStep, iPtor);
+            vi uptsnbs = GetPredictorXptsnbVector(iStep, iPtor);
+            vi vptsnbs = GetPredictorYptsnbVector(iStep, iPtor);
             if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size() - 1]) <= 1 ||
                 asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size() - 1]) <= 1) {
                 SetPredictorFlatAllowed(iStep, iPtor, asFLAT_ALLOWED);
@@ -542,8 +542,8 @@ bool asParametersCalibration::SetPreloadingProperties()
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
-                VectorFloat preprocLevels;
-                VectorDouble preprocTimeHours;
+                vf preprocLevels;
+                vd preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
                 if (method.IsSameAs("Gradients") || method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
@@ -559,7 +559,7 @@ bool asParametersCalibration::SetPreloadingProperties()
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
                     preprocTimeHours = GetPreprocessTimeHoursVector(iStep, iPtor, 0);
-                    VectorDouble preprocTimeHours2 = GetPreprocessTimeHoursVector(iStep, iPtor, 1);
+                    vd preprocTimeHours2 = GetPreprocessTimeHoursVector(iStep, iPtor, 1);
                     preprocTimeHours.insert(preprocTimeHours.end(), preprocTimeHours2.begin(), preprocTimeHours2.end());
                 } else {
                     wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
@@ -576,11 +576,11 @@ bool asParametersCalibration::SetPreloadingProperties()
     return true;
 }
 
-void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPtor, VectorFloat &preprocLevels,
-                                                             VectorDouble &preprocTimeHours) const
+void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels,
+                                                             vd &preprocTimeHours) const
 {
     for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); ++iPre) {
-        VectorFloat preprocLevelsTmp = GetPreprocessLevelVector(iStep, iPtor, iPre);
+        vf preprocLevelsTmp = GetPreprocessLevelVector(iStep, iPtor, iPre);
         for (int i = 0; i < preprocLevelsTmp.size(); ++i) {
             bool sameFound = false;
             for (int k = 0; k < preprocLevels.size(); ++k) {
@@ -592,7 +592,7 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
                 preprocLevels.push_back(preprocLevelsTmp[i]);
             }
         }
-        VectorDouble preprocTimeHoursTmp = GetPreprocessTimeHoursVector(iStep, iPtor, iPre);
+        vd preprocTimeHoursTmp = GetPreprocessTimeHoursVector(iStep, iPtor, iPre);
         for (int i = 0; i < preprocTimeHoursTmp.size(); ++i) {
             bool sameFound = false;
             for (int k = 0; k < preprocTimeHours.size(); ++k) {
@@ -607,9 +607,9 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
     }
 }
 
-VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
+vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
 {
-    VectorDouble vect;
+    vd vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
@@ -630,7 +630,7 @@ VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration 
                 wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
-            Array1DDouble xAxis = asGeoAreaCompositeGrid::GetXaxis(GetPredictorGridType(iStep, iPtor), min, max);
+            a1d xAxis = asGeoAreaCompositeGrid::GetXaxis(GetPredictorGridType(iStep, iPtor), min, max);
             for (int i = 0; i < xAxis.size(); ++i) {
                 vect.push_back(xAxis[i]);
             }
@@ -645,9 +645,9 @@ VectorDouble asParametersCalibration::GetVectorXmin(asFileParametersCalibration 
     return vect;
 }
 
-VectorDouble asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
+vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
 {
-    VectorDouble vect;
+    vd vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
@@ -668,7 +668,7 @@ VectorDouble asParametersCalibration::GetVectorYmin(asFileParametersCalibration 
                 wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
-            Array1DDouble yAxis = asGeoAreaCompositeGrid::GetYaxis(GetPredictorGridType(iStep, iPtor), min, max);
+            a1d yAxis = asGeoAreaCompositeGrid::GetYaxis(GetPredictorGridType(iStep, iPtor), min, max);
             for (int i = 0; i < yAxis.size(); ++i) {
                 vect.push_back(yAxis[i]);
             }
@@ -928,7 +928,7 @@ void asParametersCalibration::InitValues()
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
+bool asParametersCalibration::SetPredictandStationIdsVector(vvi val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided predictand ID vector is empty."));
@@ -954,7 +954,7 @@ bool asParametersCalibration::SetPredictandStationIdsVector(VVectorInt val)
     return true;
 }
 
-bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt val)
+bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided 'interval days' vector is empty."));
@@ -971,7 +971,7 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(VectorInt va
     return true;
 }
 
-bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
+bool asParametersCalibration::SetForecastScoreNameVector(vwxs val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided forecast scores vector is empty."));
@@ -993,7 +993,7 @@ bool asParametersCalibration::SetForecastScoreNameVector(VectorString val)
     return true;
 }
 
-bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(VectorString val)
+bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(vwxs val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided time array mode vector for the forecast score is empty."));
@@ -1021,7 +1021,7 @@ double asParametersCalibration::GetPreprocessTimeHoursLowerLimit(int iStep, int 
         return val;
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessTimeHours (lower limit) in the parameters object."));
-        return NaNDouble;
+        return NaNd;
     }
 }
 
@@ -1086,7 +1086,7 @@ double asParametersCalibration::GetPreprocessTimeHoursUpperLimit(int iStep, int 
         return val;
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessTimeHours (upper limit) in the parameters object."));
-        return NaNDouble;
+        return NaNd;
     }
 }
 

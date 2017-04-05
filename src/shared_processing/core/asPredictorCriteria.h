@@ -64,7 +64,7 @@ public:
 
     virtual ~asPredictorCriteria();
 
-    virtual float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const = 0;
+    virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
     bool NeedsDataRange() const
     {

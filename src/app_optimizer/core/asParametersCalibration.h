@@ -63,45 +63,45 @@ public:
         return (int) GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
     }
 
-    VVectorInt GetPredictandStationIdsVector() const
+    vvi GetPredictandStationIdsVector() const
     {
         return m_predictandStationIdsVect;
     }
 
-    bool SetPredictandStationIdsVector(VVectorInt val);
+    bool SetPredictandStationIdsVector(vvi val);
 
-    VectorInt GetTimeArrayAnalogsIntervalDaysVector() const
+    vi GetTimeArrayAnalogsIntervalDaysVector() const
     {
         return m_timeArrayAnalogsIntervalDaysVect;
     }
 
-    bool SetTimeArrayAnalogsIntervalDaysVector(VectorInt val);
+    bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
 
-    VectorString GetForecastScoreNameVector() const
+    vwxs GetForecastScoreNameVector() const
     {
         return m_forecastScoreVect.name;
     }
 
-    bool SetForecastScoreNameVector(VectorString val);
+    bool SetForecastScoreNameVector(vwxs val);
 
-    VectorString GetForecastScoreTimeArrayModeVector() const
+    vwxs GetForecastScoreTimeArrayModeVector() const
     {
         return m_forecastScoreVect.timeArrayMode;
     }
 
-    bool SetForecastScoreTimeArrayModeVector(VectorString val);
+    bool SetForecastScoreTimeArrayModeVector(vwxs val);
 
-    VectorDouble GetForecastScoreTimeArrayDateVector() const
+    vd GetForecastScoreTimeArrayDateVector() const
     {
         return m_forecastScoreVect.timeArrayDate;
     }
 
-    VectorInt GetForecastScoreTimeArrayIntervalDaysVector() const
+    vi GetForecastScoreTimeArrayIntervalDaysVector() const
     {
         return m_forecastScoreVect.timeArrayIntervalDays;
     }
 
-    VectorFloat GetForecastScorePostprocessDupliExpVector() const
+    vf GetForecastScorePostprocessDupliExpVector() const
     {
         return m_forecastScoreVect.postprocessDupliExp;
     }
@@ -139,17 +139,17 @@ public:
     int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
 protected:
-    VectorDouble GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
+    vd GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
-    VectorDouble GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
+    vd GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
 private:
-    VVectorInt m_predictandStationIdsVect;
-    VectorInt m_timeArrayAnalogsIntervalDaysVect;
+    vvi m_predictandStationIdsVect;
+    vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsForecastScoreVect m_forecastScoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, VectorFloat &preprocLevels,
-                                        VectorDouble &preprocTimeHours) const;
+    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels,
+                                        vd &preprocTimeHours) const;
 
     bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 

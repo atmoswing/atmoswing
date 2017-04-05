@@ -63,14 +63,14 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
     }
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep)
+a1d asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep)
 {
-    Array1DDouble axis;
+    a1d axis;
 
     if (type.IsSameAs("Regular", false)) {
         wxASSERT(Xstep > 0);
         int ni = (int) asTools::Round(360 / Xstep);
-        axis = Array1DDouble::LinSpaced(ni * 3 + 1, -360, 720);
+        axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
     } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);
     } else if (type.IsSameAs("GaussianT382", false)) {
@@ -93,14 +93,14 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double Xmin
     return axis.segment(start, end - start + 1);
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep)
+a1d asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep)
 {
-    Array1DDouble axis;
+    a1d axis;
 
     if (type.IsSameAs("Regular", false)) {
         wxASSERT(Ystep > 0);
         int ni = (int) asTools::Round(180 / Ystep);
-        axis = Array1DDouble::LinSpaced(ni + 1, -90, 90);
+        axis = a1d::LinSpaced(ni + 1, -90, 90);
     } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT62);
     } else if (type.IsSameAs("GaussianT382", false)) {
@@ -227,9 +227,9 @@ double asGeoAreaCompositeGrid::GetYaxisWidth() const
     return widthLat;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
+a1d asGeoAreaCompositeGrid::GetXaxis()
 {
-    Array1DDouble Xaxis;
+    a1d Xaxis;
 
     wxASSERT(GetNbComposites() > 0);
 
@@ -240,17 +240,17 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
             // Do nothing here
         } else {
             if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
-                Array1DDouble Xaxisbis = GetXaxisComposite(iArea);
+                a1d Xaxisbis = GetXaxisComposite(iArea);
 
                 if (GetXaxisCompositeEnd(iArea) == m_axisXmax) {
-                    Array1DDouble Xaxisfinal(Xaxisbis.size() + Xaxis.size() - 1);
+                    a1d Xaxisfinal(Xaxisbis.size() + Xaxis.size() - 1);
                     Xaxisfinal.head(Xaxisbis.size()) = Xaxisbis;
                     for (int i = 1; i < Xaxis.size(); i++) {
                         Xaxisfinal[Xaxisbis.size() - 1 + i] = Xaxis[i] + m_axisXmax;
                     }
                     return Xaxisfinal;
                 } else {
-                    Array1DDouble Xaxisfinal(Xaxisbis.size() + Xaxis.size());
+                    a1d Xaxisfinal(Xaxisbis.size() + Xaxis.size());
                     Xaxisfinal.head(Xaxisbis.size()) = Xaxisbis;
                     for (int i = 0; i < Xaxis.size(); i++) {
                         Xaxisfinal[Xaxisbis.size() + i] = Xaxis[i] + m_axisXmax;
@@ -264,9 +264,9 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
+a1d asGeoAreaCompositeGrid::GetYaxis()
 {
-    Array1DDouble Yaxis;
+    a1d Yaxis;
 
     wxASSERT(GetNbComposites() > 0);
 
@@ -279,17 +279,17 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
             if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
                 wxLogError(_("This function has not been tested"));
 
-                Array1DDouble Yaxisbis = GetYaxisComposite(iArea);
+                a1d Yaxisbis = GetYaxisComposite(iArea);
 
                 if (GetXaxisCompositeEnd(iArea) == m_axisXmax) {
-                    Array1DDouble Yaxisfinal(Yaxisbis.size() + Yaxis.size() - 1);
+                    a1d Yaxisfinal(Yaxisbis.size() + Yaxis.size() - 1);
                     Yaxisfinal.head(Yaxisbis.size()) = Yaxisbis;
                     for (int i = 1; i < Yaxis.size(); i++) {
                         Yaxisfinal[Yaxisbis.size() - 1 + i] = Yaxis[i] + m_axisYmax;
                     }
                     return Yaxisfinal;
                 } else {
-                    Array1DDouble Yaxisfinal(Yaxisbis.size() + Yaxis.size());
+                    a1d Yaxisfinal(Yaxisbis.size() + Yaxis.size());
                     Yaxisfinal.head(Yaxisbis.size()) = Yaxisbis;
                     for (int i = 0; i < Yaxis.size(); i++) {
                         Yaxisfinal[Yaxisbis.size() + i] = Yaxis[i] + m_axisYmax;
@@ -310,7 +310,7 @@ void asGeoAreaCompositeGrid::SetLastRowAsNewComposite()
     Coo cornerLR1 = area1.GetCornerLR();
     Coo cornerUR1 = area1.GetCornerUR();
 
-    Array1DDouble xAxis = GetXaxisComposite(0);
+    a1d xAxis = GetXaxisComposite(0);
     cornerLR1.x = xAxis[xAxis.size()-2];
     cornerUR1.x = xAxis[xAxis.size()-2];
 
@@ -341,7 +341,7 @@ void asGeoAreaCompositeGrid::RemoveLastRowOnComposite(int i)
     Coo cornerLR = area.GetCornerLR();
     Coo cornerUR = area.GetCornerUR();
 
-    Array1DDouble xAxis = GetXaxisComposite(i);
+    a1d xAxis = GetXaxisComposite(i);
     cornerLR.x = xAxis[xAxis.size()-2];
     cornerUR.x = xAxis[xAxis.size()-2];
 

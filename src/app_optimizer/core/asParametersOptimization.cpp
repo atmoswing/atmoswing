@@ -407,7 +407,7 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
             if (IsPredictorTimeHoursLocked(iStep, iPtor)) {
                 if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                     return false;
-                VectorDouble vTimeHours;
+                vd vTimeHours;
                 vTimeHours.push_back(GetPredictorTimeHours(iStep, iPtor));
                 if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
                     return false;
@@ -819,7 +819,7 @@ bool asParametersOptimization::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevelVector(iStep, iPtor)))
                     return false;
-                VectorDouble vTimeHours;
+                vd vTimeHours;
                 for (double h = GetPredictorTimeHoursLowerLimit(iStep, iPtor);
                      h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor); h += GetPredictorTimeHoursIteration(iStep,
                                                                                                                iPtor)) {
@@ -830,8 +830,8 @@ bool asParametersOptimization::SetPreloadingProperties()
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
-                VectorFloat preprocLevels;
-                VectorDouble preprocTimeHours;
+                vf preprocLevels;
+                vd preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
                 if (method.IsSameAs("Gradients")) {
@@ -1317,7 +1317,7 @@ void asParametersOptimization::LockAll()
 }
 
 // TODO (Pascal#1#): Can be optimized by looping on the given vector (sorted first) instead
-void asParametersOptimization::Unlock(VectorInt &indices)
+void asParametersOptimization::Unlock(vi &indices)
 {
     int counter = 0;
     int length = indices.size();

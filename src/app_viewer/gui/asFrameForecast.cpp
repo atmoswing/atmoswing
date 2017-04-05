@@ -759,7 +759,7 @@ void asFrameForecast::UpdateLeadTimeSwitch()
     m_leadTimeSwitcher->SetBackgroundColour(wxColour(77, 77, 77));
     m_leadTimeSwitcher->SetMinSize(wxSize(width, height));
     m_leadTimeSwitcher->Layout();
-    Array1DFloat dates = m_forecastManager->GetFullTargetDates();
+    a1f dates = m_forecastManager->GetFullTargetDates();
     m_leadTimeSwitcher->Draw(dates);
 
     m_sizerLeadTimeSwitch->Add(m_leadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5);
@@ -1230,7 +1230,7 @@ bool asFrameForecast::OpenRecentForecasts()
 
     // Identify the most recent forecasts
     long mostRecentDate = 0;
-    VectorInt mostRecentRows;
+    vi mostRecentRows;
     for (int i = 0; i < (int) files.GetCount(); i++) {
         wxFileName fileName(files[i]);
         wxString fileDate = fileName.GetFullName().SubString(0, 9);
@@ -1968,7 +1968,7 @@ void asFrameForecast::UpdatePanelCaptionAll()
         }
 
         asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
-        Array1DFloat dates = forecast->GetTargetDates();
+        a1f dates = forecast->GetTargetDates();
         m_panelSidebarCaptionForecastRing->SetDates(dates);
     }
 }
@@ -1992,8 +1992,8 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
                                                                         m_forecastViewer->GetForecastSelection());
-    Array1DFloat arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
-    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
+    a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
+    a1f arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
     m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
 }
 

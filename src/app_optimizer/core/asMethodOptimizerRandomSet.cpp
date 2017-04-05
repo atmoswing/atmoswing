@@ -43,7 +43,7 @@ bool asMethodOptimizerRandomSet::Manager()
     m_scoreClimatology.clear();
 
     // Create a result object to save the parameters sets
-    VectorInt stationId = params.GetPredictandStationIds();
+    vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
     results_all.Init(
@@ -95,7 +95,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 if (m_cancel)
                     return false;
 
-                VectorFloat scoreClim = m_scoreClimatology;
+                vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerRandomSet *firstThread = new asThreadMethodOptimizerRandomSet(this, nextParams,

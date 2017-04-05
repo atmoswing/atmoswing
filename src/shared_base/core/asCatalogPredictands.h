@@ -107,7 +107,7 @@ public:
         return m_dataPath;
     }
 
-    VectorString GetNan() const
+    vwxs GetNan() const
     {
         return m_nan;
     }
@@ -190,7 +190,7 @@ private:
     double m_timeStepHours;
     double m_firstTimeStepHour;
     wxString m_dataPath;
-    VectorString m_nan;
+    vwxs m_nan;
     wxString m_coordSys;
     asDataPredictand::Parameter m_parameter;
     asDataPredictand::Unit m_unit;

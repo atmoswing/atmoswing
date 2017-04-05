@@ -63,25 +63,25 @@ public:
 
     wxString GetMethodName(int methodRow) const;
 
-    VectorString GetAllMethodIds() const;
+    vwxs GetAllMethodIds() const;
 
-    VectorString GetAllMethodNames() const;
+    vwxs GetAllMethodNames() const;
 
-    VectorString GetAllForecastNames() const;
+    vwxs GetAllForecastNames() const;
 
     wxArrayString GetAllForecastNamesWxArray() const;
 
-    VectorString GetFilePaths() const;
+    vwxs GetFilePaths() const;
 
     wxString GetFilePath(int methodRow, int forecastRow) const;
 
     wxArrayString GetFilePathsWxArray() const;
 
-    Array1DFloat GetTargetDates(int methodRow) const;
+    a1f GetTargetDates(int methodRow) const;
 
-    Array1DFloat GetTargetDates(int methodRow, int forecastRow) const;
+    a1f GetTargetDates(int methodRow, int forecastRow) const;
 
-    Array1DFloat GetFullTargetDates() const;
+    a1f GetFullTargetDates() const;
 
     int GetForecastRowSpecificForStationId(int methodRow, int stationId) const;
 
@@ -101,9 +101,9 @@ public:
 
     wxArrayString GetLeadTimes(int methodRow, int forecastRow) const;
 
-    Array1DFloat GetMethodMaxValues(Array1DFloat &dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
+    a1f GetMethodMaxValues(a1f &dates, int methodRow, int returnPeriodRef, float quantileThreshold) const;
 
-    Array1DFloat GetOverallMaxValues(Array1DFloat &dates, int returnPeriodRef, float quantileThreshold) const;
+    a1f GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const;
 
     bool ExportSyntheticXml(const wxString &dirPath) const;
 

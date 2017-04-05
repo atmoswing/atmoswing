@@ -40,7 +40,7 @@ asMethodCalibrator::asMethodCalibrator()
     m_paramsFilePath = wxEmptyString;
     m_preloaded = false;
     m_validationMode = false;
-    m_scoreValid = NaNFloat;
+    m_scoreValid = NaNf;
 
     // Seeds the random generator
     asTools::InitRandom();
@@ -68,7 +68,7 @@ bool asMethodCalibrator::Manager()
         return false;
     }
     if (m_predictandStationIds.size() > 0) {
-        VVectorInt idsVect;
+        vvi idsVect;
         idsVect.push_back(m_predictandStationIds);
         params.SetPredictandStationIdsVector(idsVect);
     }
@@ -117,7 +117,7 @@ void asMethodCalibrator::ClearAll()
     m_scoresCalibTemp.clear();
     m_parameters.clear();
     m_scoresCalib.clear();
-    m_scoreValid = NaNFloat;
+    m_scoreValid = NaNf;
 }
 
 void asMethodCalibrator::ClearTemp()
@@ -137,7 +137,7 @@ void asMethodCalibrator::RemoveNaNsInTemp()
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
 
     std::vector<asParametersCalibration> copyParametersTemp;
-    VectorFloat copyScoresCalibTemp;
+    vf copyScoresCalibTemp;
 
     for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
         if (!asTools::IsNaN(m_scoresCalibTemp[i])) {
@@ -188,7 +188,7 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
         return;
 
     // Sort according to the score
-    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
+    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
                                                     m_scoresCalibTemp.size() - 1);
     asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
@@ -309,7 +309,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     return true;
 }
 
-wxString asMethodCalibrator::GetPredictandStationIdsList(VectorInt &stationIds) const
+wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 {
     wxString id;
 
@@ -473,9 +473,9 @@ void asMethodCalibrator::InitializePreloadedDataContainer(asParametersScoring &p
 
             for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 
-                VectorString preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
-                VectorFloat preloadLevels = params.GetPreloadLevels(iStep, iPtor);
-                VectorDouble preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
+                vwxs preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
+                vf preloadLevels = params.GetPreloadLevels(iStep, iPtor);
+                vd preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
 
                 unsigned long preloadDataIdsSize = wxMax(preloadDataIds.size(), 1);
                 unsigned long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
@@ -594,8 +594,8 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
             if (params.GetPredictorFlatAllowed(iStep, iPtor) != params.GetPredictorFlatAllowed(prev_step, prev_ptor))
                 share = false;
 
-            VectorFloat levels1 = params.GetPreloadLevels(iStep, iPtor);
-            VectorFloat levels2 = params.GetPreloadLevels(prev_step, prev_ptor);
+            vf levels1 = params.GetPreloadLevels(iStep, iPtor);
+            vf levels2 = params.GetPreloadLevels(prev_step, prev_ptor);
             if (levels1.size() != levels2.size()) {
                 share = false;
             } else {
@@ -605,8 +605,8 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
                 }
             }
 
-            VectorDouble hours1 = params.GetPreloadTimeHours(iStep, iPtor);
-            VectorDouble hours2 = params.GetPreloadTimeHours(prev_step, prev_ptor);
+            vd hours1 = params.GetPreloadTimeHours(iStep, iPtor);
+            vd hours2 = params.GetPreloadTimeHours(prev_step, prev_ptor);
             if (hours1.size() != hours2.size()) {
                 share = false;
             } else {
@@ -617,8 +617,8 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
             }
 
             bool dataIdFound = false;
-            VectorString preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
-            VectorString preloadDataIdsPrev = params.GetPreloadDataIds(prev_step, prev_ptor);
+            vwxs preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
+            vwxs preloadDataIdsPrev = params.GetPreloadDataIds(prev_step, prev_ptor);
             for (unsigned int i = 0; i < preloadDataIdsPrev.size(); i++) {
                 // Vector can be empty in case of preprocessing
                 if (preloadDataIds.size() > iPre && preloadDataIdsPrev.size() > i) {
@@ -645,8 +645,8 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
     if (share) {
         wxLogVerbose(_("Share data pointer"));
 
-        VectorFloat preloadLevels = params.GetPreloadLevels(iStep, iPtor);
-        VectorDouble preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
+        vf preloadLevels = params.GetPreloadLevels(iStep, iPtor);
+        vd preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
         wxASSERT(preloadLevels.size() > 0);
         wxASSERT(preloadTimeHours.size() > 0);
 
@@ -680,9 +680,9 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
 
-    VectorString preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
-    VectorFloat preloadLevels = params.GetPreloadLevels(iStep, iPtor);
-    VectorDouble preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
+    vwxs preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
+    vf preloadLevels = params.GetPreloadLevels(iStep, iPtor);
+    vd preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
     wxASSERT(preloadDataIds.size() > iPre);
     wxASSERT(preloadLevels.size() > 0);
     wxASSERT(preloadTimeHours.size() > 0);
@@ -803,8 +803,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     int preprocessSize = params.GetPreprocessSize(iStep, iPtor);
 
     // Levels and time arrays
-    VectorFloat preloadLevels = params.GetPreloadLevels(iStep, iPtor);
-    VectorDouble preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
+    vf preloadLevels = params.GetPreloadLevels(iStep, iPtor);
+    vd preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
 
     // Check on which variable to loop
     unsigned long preloadLevelsSize = preloadLevels.size();
@@ -1050,14 +1050,14 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     bool doPreprocessGradients = false;
 
     // Get preload arrays
-    VectorFloat preloadLevels = params.GetPreloadLevels(iStep, iPtor);
-    VectorDouble preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
+    vf preloadLevels = params.GetPreloadLevels(iStep, iPtor);
+    vd preloadTimeHours = params.GetPreloadTimeHours(iStep, iPtor);
     float level;
     double time;
     int iLevel = 0, iHour = 0, iPre = 0;
 
     // Get data ID
-    VectorString preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
+    vwxs preloadDataIds = params.GetPreloadDataIds(iStep, iPtor);
     for (int i = 0; i < preloadDataIds.size(); i++) {
         if (preloadDataIds[i].IsSameAs(params.GetPredictorDataId(iStep, iPtor))) {
             iPre = i;
@@ -1343,12 +1343,12 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
     return true;
 }
 
-VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
+va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
 {
-    VectorInt stationIds = params.GetPredictandStationIds();
+    vi stationIds = params.GetPredictandStationIds();
 
     // Get start and end dates
-    Array1DDouble predictandTime = m_predictandDB->GetTime();
+    a1d predictandTime = m_predictandDB->GetTime();
     float predictandTimeDays = float(params.GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0], params.GetCalibrationStart());
@@ -1365,7 +1365,7 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
                                                                  timeEnd);
 
     for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
-        Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
+        a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
 
         while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
@@ -1393,9 +1393,9 @@ VArray1DFloat asMethodCalibrator::GetClimatologyData(asParametersScoring &params
     int dataLength = (indexPredictandTimeEnd - indexPredictandTimeStart) / indexStep + 1;
 
     // Process the climatology score
-    VArray1DFloat climatologyData(stationIds.size(), Array1DFloat(dataLength));
+    va1f climatologyData(stationIds.size(), a1f(dataLength));
     for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
-        Array1DFloat predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
+        a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
 
         // Set data
         int counter = 0;
@@ -1495,7 +1495,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 
     if (params.GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
         params.GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
-        VectorInt stations = params.GetPredictandStationIds();
+        vi stations = params.GetPredictandStationIds();
         if (stations.size() > 1) {
             wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));
             return false;
@@ -1729,8 +1729,8 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
     if (forecastScore->UsesClimatology() && m_scoreClimatology.size() == 0) {
         wxLogVerbose(_("Processing the score of the climatology."));
 
-        VArray1DFloat climatologyData = GetClimatologyData(params);
-        VectorInt stationIds = params.GetPredictandStationIds();
+        va1f climatologyData = GetClimatologyData(params);
+        vi stationIds = params.GetPredictandStationIds();
         m_scoreClimatology.resize(stationIds.size());
 
         for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
@@ -1791,7 +1791,7 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
 bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params,
                                                  asResultsAnalogsDates &anaDatesPrevious, int iStep)
 {
-    VectorInt analogsNbVect = params.GetAnalogsNumberVector(iStep);
+    vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
     // Cannot be superior to previous analogs nb
     int rowEnd = int(analogsNbVect.size() - 1);
@@ -1830,7 +1830,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
         asResultsAnalogsForecastScores anaScores;
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
         asResultsAnalogsDates anaDatesTmp(anaDates);
-        Array2DFloat dates = anaDates.GetAnalogsDates();
+        a2f dates = anaDates.GetAnalogsDates();
 
         for (int i = 0; i <= rowEnd; i++) {
             params.SetAnalogsNumber(iStep, analogsNbVect[i]);
@@ -1839,7 +1839,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
             params.FixAnalogsNb();
 
             // Extract analogs dates from former results
-            Array2DFloat subDates = dates.leftCols(params.GetAnalogsNumber(iStep));
+            a2f subDates = dates.leftCols(params.GetAnalogsNumber(iStep));
             anaDatesTmp.SetAnalogsDates(subDates);
 
             if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
@@ -1987,7 +1987,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
 
 bool asMethodCalibrator::GetRandomValidData(asParametersScoring &params, int iStep, int iPtor, int iPre)
 {
-    VectorInt levels, hours;
+    vi levels, hours;
 
     for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
         for (int iHour = 0; iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {

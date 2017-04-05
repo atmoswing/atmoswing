@@ -41,10 +41,10 @@ asThreadProcessorGetAnalogsDates::asThreadProcessorGetAnalogsDates(std::vector<a
                                                                    asTimeArray *timeArrayTargetSelection,
                                                                    std::vector<asPredictorCriteria *> criteria,
                                                                    asParameters &params, int step,
-                                                                   VpArray2DFloat &vTargData, VpArray2DFloat &vArchData,
-                                                                   Array1DInt &vRowsNb, Array1DInt &vColsNb, int start,
-                                                                   int end, Array2DFloat *finalAnalogsCriteria,
-                                                                   Array2DFloat *finalAnalogsDates, bool *containsNaNs)
+                                                                   vpa2f &vTargData, vpa2f &vArchData,
+                                                                   a1i &vRowsNb, a1i &vColsNb, int start,
+                                                                   int end, a2f *finalAnalogsCriteria,
+                                                                   a2f *finalAnalogsDates, bool *containsNaNs)
         : asThread(),
           m_pPredictorsArchive(predictorsArchive),
           m_pPredictorsTarget(predictorsTarget),
@@ -82,9 +82,9 @@ asThreadProcessorGetAnalogsDates::~asThreadProcessorGetAnalogsDates()
 wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
 {
     // Extract time arrays
-    Array1DDouble timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
-    Array1DDouble timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
-    Array1DDouble timeTargetSelection = m_pTimeArrayTargetSelection->GetTimeArray();
+    a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
+    a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
+    a1d timeTargetSelection = m_pTimeArrayTargetSelection->GetTimeArray();
 
     // Some other variables
     float tmpscore, thisscore;
@@ -103,8 +103,8 @@ wxThread::ExitCode asThreadProcessorGetAnalogsDates::Entry()
     wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
-    Array1DFloat ScoreArrayOneDay(analogsNb);
-    Array1DFloat DateArrayOneDay(analogsNb);
+    a1f ScoreArrayOneDay(analogsNb);
+    a1f DateArrayOneDay(analogsNb);
 
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
     asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),

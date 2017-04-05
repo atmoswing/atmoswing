@@ -35,7 +35,7 @@
 asResultsAnalogsForecastScoreFinal::asResultsAnalogsForecastScoreFinal()
         : asResults(),
           m_hasSingleValue(true),
-          m_forecastScore(NaNFloat)
+          m_forecastScore(NaNf)
 {
 }
 
@@ -46,7 +46,7 @@ asResultsAnalogsForecastScoreFinal::~asResultsAnalogsForecastScoreFinal()
 void asResultsAnalogsForecastScoreFinal::Init(asParametersScoring &params)
 {
     // Set to nan to avoid keeping old results
-    m_forecastScore = NaNFloat;
+    m_forecastScore = NaNf;
     m_forecastScoreArray.resize(0);
 }
 
@@ -82,7 +82,7 @@ bool asResultsAnalogsForecastScoreFinal::Save()
     ncFile.DefDim("forecast_score");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNames1;
+    vstds DimNames1;
     DimNames1.push_back("forecast_score");
 
     // Define variables
