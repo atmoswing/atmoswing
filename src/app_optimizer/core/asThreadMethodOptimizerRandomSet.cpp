@@ -3,7 +3,7 @@
 asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer,
                                                                    asParametersOptimization *params,
                                                                    float *finalScoreCalib,
-                                                                   VectorFloat *scoreClimatology)
+                                                                   vf *scoreClimatology)
         : asThread(),
           m_optimizer(optimizer),
           m_params(params),

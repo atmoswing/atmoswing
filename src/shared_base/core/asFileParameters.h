@@ -44,31 +44,31 @@ public:
 
     virtual bool CheckRootElement() const = 0;
 
-    static VectorInt BuildVectorInt(int min, int max, int step);
+    static vi BuildVectorInt(int min, int max, int step);
 
-    static VectorInt BuildVectorInt(wxString str);
+    static vi BuildVectorInt(wxString str);
 
-    static VectorFloat BuildVectorFloat(float min, float max, float step);
+    static vf BuildVectorFloat(float min, float max, float step);
 
-    static VectorFloat BuildVectorFloat(wxString str);
+    static vf BuildVectorFloat(wxString str);
 
-    static VectorDouble BuildVectorDouble(double min, double max, double step);
+    static vd BuildVectorDouble(double min, double max, double step);
 
-    static VectorDouble BuildVectorDouble(wxString str);
+    static vd BuildVectorDouble(wxString str);
 
-    static VectorString BuildVectorString(wxString str);
+    static vwxs BuildVectorString(wxString str);
 
-    static VectorInt GetVectorInt(wxXmlNode *node);
+    static vi GetVectorInt(wxXmlNode *node);
 
-    static VectorFloat GetVectorFloat(wxXmlNode *node);
+    static vf GetVectorFloat(wxXmlNode *node);
 
-    static VectorDouble GetVectorDouble(wxXmlNode *node);
+    static vd GetVectorDouble(wxXmlNode *node);
 
-    static VectorString GetVectorString(wxXmlNode *node);
+    static vwxs GetVectorString(wxXmlNode *node);
 
-    static VVectorInt GetStationIdsVector(wxXmlNode *node);
+    static vvi GetStationIdsVector(wxXmlNode *node);
 
-    static VectorInt GetStationIds(wxString stationIdsString);
+    static vi GetStationIds(wxString stationIdsString);
 
 protected:
 

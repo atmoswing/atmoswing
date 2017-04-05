@@ -236,11 +236,11 @@ private:
     wxString m_filePath;
     wxString m_coordinateSys;
     wxString m_forecastsDirectory;
-    VectorString m_layerPaths;
-    VectorString m_layerTypes;
-    VectorInt m_layerTransparencies;
-    VectorBool m_layerVisibilities;
-    VectorInt m_layerLineWidths;
+    vwxs m_layerPaths;
+    vwxs m_layerTypes;
+    vi m_layerTransparencies;
+    vb m_layerVisibilities;
+    vi m_layerLineWidths;
 #if wxUSE_GUI
     std::vector < wxColour > m_layerLineColors;
     std::vector < wxColour > m_layerFillColors;

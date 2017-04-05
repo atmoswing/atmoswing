@@ -52,13 +52,13 @@ public:
 
     virtual bool Close();
 
-    bool SetIndexPosition(const VectorInt gribCode, const float level);
+    bool SetIndexPosition(const vi gribCode, const float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
-    bool GetXaxis(Array1DFloat &uaxis) const;
+    bool GetXaxis(a1f &uaxis) const;
 
-    bool GetYaxis(Array1DFloat &vaxis) const;
+    bool GetYaxis(a1f &vaxis) const;
 
     double GetTime() const;
 
@@ -69,17 +69,17 @@ private:
     int m_index;
     std::vector<g2int> m_messageOffsets;
     std::vector<g2int> m_messageSizes;
-    VectorLong m_fieldNum;
-    VectorInt m_parameterDisciplines;
-    VectorInt m_parameterCategories;
-    VectorInt m_parameterNums;
-    VectorInt m_levelTypes;
-    VectorDouble m_refTimes;
-    VectorDouble m_times;
-    VectorDouble m_forecastTimes;
-    VectorFloat m_levels;
-    VArray1DFloat m_xAxes;
-    VArray1DFloat m_yAxes;
+    vl m_fieldNum;
+    vi m_parameterDisciplines;
+    vi m_parameterCategories;
+    vi m_parameterNums;
+    vi m_levelTypes;
+    vd m_refTimes;
+    vd m_times;
+    vd m_forecastTimes;
+    vf m_levels;
+    va1f m_xAxes;
+    va1f m_yAxes;
 
     bool OpenDataset();
 

@@ -31,7 +31,7 @@
 #include <asDataPredictor.h>
 
 
-asThreadPreprocessorGradients::asThreadPreprocessorGradients(VVArray2DFloat *gradients,
+asThreadPreprocessorGradients::asThreadPreprocessorGradients(vva2f *gradients,
                                                              std::vector<asDataPredictor *> predictors, int start,
                                                              int end)
         : asThread(),
@@ -55,7 +55,7 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
     int timeSize = m_pPredictors[0]->GetTimeSize();
     int membersNb = m_pPredictors[0]->GetMembersNb();
 
-    Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb - 1) * colsNb + rowsNb * (colsNb - 1), NaNFloat);
+    a1f tmpgrad = a1f::Constant((rowsNb - 1) * colsNb + rowsNb * (colsNb - 1), NaNf);
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         int counter = 0;

@@ -88,7 +88,7 @@ bool asResultsAnalogsForecastScores::Save()
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNames1;
+    vstds DimNames1;
     DimNames1.push_back("time");
 
     // Define variables: the scores and the corresponding dates

@@ -38,7 +38,7 @@ asForecastScoreCRPSaccuracyAR::asForecastScoreCRPSaccuracyAR()
     m_fullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreCRPSaccuracyAR::~asForecastScoreCRPSaccuracyAR()
@@ -46,7 +46,7 @@ asForecastScoreCRPSaccuracyAR::~asForecastScoreCRPSaccuracyAR()
     //dtor
 }
 
-float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -59,8 +59,8 @@ float asForecastScoreCRPSaccuracyAR::Assess(float ObservedVal, const Array1DFloa
     return CRPS - CRPSsharpness;
 }
 
-bool asForecastScoreCRPSaccuracyAR::ProcessScoreClimatology(const Array1DFloat &refVals,
-                                                            const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSaccuracyAR::ProcessScoreClimatology(const a1f &refVals,
+                                                            const a1f &climatologyData)
 {
     return true;
 }

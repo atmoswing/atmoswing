@@ -50,7 +50,7 @@ class asProcessorForecastScore
 public:
     static bool GetAnalogsForecastScores(asResultsAnalogsValues &anaValues, asForecastScore *forecastScore,
                                          asParametersScoring &params, asResultsAnalogsForecastScores &results,
-                                         VectorFloat &scoresClimatology);
+                                         vf &scoresClimatology);
 
     static bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores, asTimeArray &timeArray,
                                              asParametersScoring &params, asResultsAnalogsForecastScoreFinal &results);

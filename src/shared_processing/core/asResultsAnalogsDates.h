@@ -42,12 +42,12 @@ public:
 
     void Init(asParameters &params);
 
-    Array1DFloat &GetTargetDates()
+    a1f &GetTargetDates()
     {
         return m_targetDates;
     }
 
-    void SetTargetDates(Array1DDouble &refDates)
+    void SetTargetDates(a1d &refDates)
     {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
@@ -56,29 +56,29 @@ public:
         }
     }
 
-    void SetTargetDates(Array1DFloat &refDates)
+    void SetTargetDates(a1f &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    Array2DFloat &GetAnalogsCriteria()
+    a2f &GetAnalogsCriteria()
     {
         return m_analogsCriteria;
     }
 
-    void SetAnalogsCriteria(Array2DFloat &analogsCriteria)
+    void SetAnalogsCriteria(a2f &analogsCriteria)
     {
         m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
         m_analogsCriteria = analogsCriteria;
     }
 
-    Array2DFloat &GetAnalogsDates()
+    a2f &GetAnalogsDates()
     {
         return m_analogsDates;
     }
 
-    void SetAnalogsDates(Array2DFloat &analogsDates)
+    void SetAnalogsDates(a2f &analogsDates)
     {
         m_analogsDates.resize(analogsDates.rows(), analogsDates.cols());
         m_analogsDates = analogsDates;
@@ -102,9 +102,9 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_targetDates;
-    Array2DFloat m_analogsCriteria;
-    Array2DFloat m_analogsDates;
+    a1f m_targetDates;
+    a2f m_analogsCriteria;
+    a2f m_analogsDates;
 
 };
 

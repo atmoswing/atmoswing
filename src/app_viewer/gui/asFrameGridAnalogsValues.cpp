@@ -162,10 +162,10 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         return false;
 
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    Array1DFloat dates = forecast->GetAnalogsDates(m_selectedDate);
-    Array1DFloat values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
-    Array1DFloat criteria = forecast->GetAnalogsCriteria(m_selectedDate);
-    Array1DFloat analogNb = Array1DFloat::LinSpaced(dates.size(), 1, dates.size());
+    a1f dates = forecast->GetAnalogsDates(m_selectedDate);
+    a1f values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
+    a1f analogNb = a1f::LinSpaced(dates.size(), 1, dates.size());
 
     m_grid->Hide();
 
@@ -176,14 +176,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
     if (m_sortAfterCol > 0 || m_sortOrder == Desc) {
         if (m_sortAfterCol == 0) // Analog nb
         {
-            Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
             asTools::SortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0],
                                 &vIndices[analogNb.size() - 1], m_sortOrder);
 
-            Array1DFloat copyDates = dates;
-            Array1DFloat copyValues = values;
-            Array1DFloat copyCriteria = criteria;
+            a1f copyDates = dates;
+            a1f copyValues = values;
+            a1f copyCriteria = criteria;
 
             for (int i = 0; i < dates.size(); i++) {
                 int index = vIndices(i);
@@ -193,14 +193,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
             }
         } else if (m_sortAfterCol == 1) // date
         {
-            Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
             asTools::SortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1],
                                 m_sortOrder);
 
-            Array1DFloat copyAnalogNb = analogNb;
-            Array1DFloat copyValues = values;
-            Array1DFloat copyCriteria = criteria;
+            a1f copyAnalogNb = analogNb;
+            a1f copyValues = values;
+            a1f copyCriteria = criteria;
 
             for (int i = 0; i < dates.size(); i++) {
                 int index = vIndices(i);
@@ -210,14 +210,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
             }
         } else if (m_sortAfterCol == 2) // value
         {
-            Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
             asTools::SortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
                                 m_sortOrder);
 
-            Array1DFloat copyAnalogNb = analogNb;
-            Array1DFloat copyDates = dates;
-            Array1DFloat copyCriteria = criteria;
+            a1f copyAnalogNb = analogNb;
+            a1f copyDates = dates;
+            a1f copyCriteria = criteria;
 
             for (int i = 0; i < values.size(); i++) {
                 int index = vIndices(i);
@@ -228,14 +228,14 @@ bool asFrameGridAnalogsValues::UpdateGrid()
 
         } else if (m_sortAfterCol == 3) // criteria
         {
-            Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
+            a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
             asTools::SortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0],
                                 &vIndices[criteria.size() - 1], m_sortOrder);
 
-            Array1DFloat copyAnalogNb = analogNb;
-            Array1DFloat copyValues = values;
-            Array1DFloat copyDates = dates;
+            a1f copyAnalogNb = analogNb;
+            a1f copyValues = values;
+            a1f copyDates = dates;
 
             for (int i = 0; i < dates.size(); i++) {
                 int index = vIndices(i);

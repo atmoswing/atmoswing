@@ -167,9 +167,9 @@ bool asDataPredictorArchiveNoaa20Cr2cEnsemble::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaa20Cr2cEnsemble::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNoaa20Cr2cEnsemble::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));

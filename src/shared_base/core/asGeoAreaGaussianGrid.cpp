@@ -82,7 +82,7 @@ asGeoAreaGaussianGrid::~asGeoAreaGaussianGrid()
     //dtor
 }
 
-void asGeoAreaGaussianGrid::BuildLonAxis(Array1DDouble &axis, const asGeo::GridType &type)
+void asGeoAreaGaussianGrid::BuildLonAxis(a1d &axis, const asGeo::GridType &type)
 {
     int ni = 0;
     switch (type) {
@@ -99,10 +99,10 @@ void asGeoAreaGaussianGrid::BuildLonAxis(Array1DDouble &axis, const asGeo::GridT
         }
     }
 
-    axis = Array1DDouble::LinSpaced(ni * 3 + 1, -360, 720);
+    axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
 }
 
-void asGeoAreaGaussianGrid::BuildLatAxis(Array1DDouble &axis, const asGeo::GridType &type)
+void asGeoAreaGaussianGrid::BuildLatAxis(a1d &axis, const asGeo::GridType &type)
 {
     switch (type) {
         case (GaussianT62): {
@@ -200,7 +200,7 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
     return std::abs(YmaxIndex - YminIndex) + 1;
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetXaxis()
+a1d asGeoAreaGaussianGrid::GetXaxis()
 {
     double Xmin = GetXmin();
     int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
@@ -210,7 +210,7 @@ Array1DDouble asGeoAreaGaussianGrid::GetXaxis()
     return m_fullAxisX.segment(XminIndex, XmaxIndex - XminIndex + 1);
 }
 
-Array1DDouble asGeoAreaGaussianGrid::GetYaxis()
+a1d asGeoAreaGaussianGrid::GetYaxis()
 {
     double Ymin = GetYmin();
     int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);

@@ -40,7 +40,7 @@ asPredictorCriteriaNS1grads::~asPredictorCriteriaNS1grads()
     //dtor
 }
 
-float asPredictorCriteriaNS1grads::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+float asPredictorCriteriaNS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
                                          int colsNb) const
 {
     return asPredictorCriteriaS1grads::Assess(refData, evalData, rowsNb, colsNb) / m_scaleWorst;

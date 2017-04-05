@@ -61,7 +61,7 @@ public:
 
     void DefDim(const wxString &dimName, const size_t &dimSize = 0);
 
-    void DefVar(const wxString &varName, nc_type dataType, const int &varSize, const VectorStdString &dimNames);
+    void DefVar(const wxString &varName, nc_type dataType, const int &varSize, const vstds &dimNames);
 
     void DefVarDeflate(const wxString &varName, int shuffle = 0, int deflateLevel = 2);
 
@@ -217,13 +217,13 @@ private:
         wxString name;
         size_t length;
         nc_type type;
-        VectorInt dimIds;
+        vi dimIds;
         std::vector<NcAttStruct> atts;
     };
 
     struct NcStruct
     {
-        VectorInt uDimIds;
+        vi uDimIds;
         asFileNetcdf::Format format;
         std::vector<NcDimStruct> dims;
         std::vector<NcVarStruct> vars;

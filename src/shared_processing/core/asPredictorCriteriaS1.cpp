@@ -45,7 +45,7 @@ asPredictorCriteriaS1::~asPredictorCriteriaS1()
     //dtor
 }
 
-float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
+float asPredictorCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
@@ -87,10 +87,10 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
         }
 
         case (asLIN_ALGEBRA): {
-            Array2DFloat RefGradCols(rowsNb, colsNb - 1);
-            Array2DFloat RefGradRows(rowsNb - 1, colsNb);
-            Array2DFloat EvalGradCols(evalData.rows(), evalData.cols() - 1);
-            Array2DFloat EvalGradRows(evalData.rows() - 1, evalData.cols());
+            a2f RefGradCols(rowsNb, colsNb - 1);
+            a2f RefGradRows(rowsNb - 1, colsNb);
+            a2f EvalGradCols(evalData.rows(), evalData.cols() - 1);
+            a2f EvalGradRows(evalData.rows() - 1, evalData.cols());
 
             RefGradCols = (refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1));
             RefGradRows = (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb));
@@ -154,7 +154,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
 
         default: {
             wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
+            return NaNf;
         }
     }
 
@@ -165,7 +165,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNFloat;
+            return NaNf;
         }
     }
 

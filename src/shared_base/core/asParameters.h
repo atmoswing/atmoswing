@@ -44,20 +44,20 @@ public:
         wxString datasetId;
         wxString dataId;
         bool preload;
-        VectorString preloadDataIds;
-        VectorDouble preloadTimeHours;
-        VectorFloat preloadLevels;
+        vwxs preloadDataIds;
+        vd preloadTimeHours;
+        vf preloadLevels;
         double preloadXmin;
         int preloadXptsnb;
         double preloadYmin;
         int preloadYptsnb;
         bool preprocess;
         wxString preprocessMethod;
-        VectorString preprocessDatasetIds;
-        VectorString preprocessDataIds;
-        VectorFloat preprocessLevels;
-        VectorDouble preprocessTimeHours;
-        VectorInt preprocessMembersNb;
+        vwxs preprocessDatasetIds;
+        vwxs preprocessDataIds;
+        vf preprocessLevels;
+        vd preprocessTimeHours;
+        vi preprocessMembersNb;
         float level;
         wxString gridType;
         double xMin;
@@ -109,7 +109,7 @@ public:
 
     virtual bool InputsOK() const;
 
-    static VectorInt GetFileStationIds(wxString stationIdsString);
+    static vi GetFileStationIds(wxString stationIdsString);
 
     wxString GetPredictandStationIdsString() const;
 
@@ -320,19 +320,19 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDays(int val);
 
-    VectorInt GetPredictandStationIds() const
+    vi GetPredictandStationIds() const
     {
         return m_predictandStationIds;
     }
 
-    virtual VVectorInt GetPredictandStationIdsVector() const
+    virtual vvi GetPredictandStationIdsVector() const
     {
-        VVectorInt vec;
+        vvi vec;
         vec.push_back(m_predictandStationIds);
         return vec;
     }
 
-    bool SetPredictandStationIds(VectorInt val);
+    bool SetPredictandStationIds(vi val);
 
     wxString GePredictandtDatasetId() const
     {
@@ -395,30 +395,30 @@ public:
         m_steps[iStep].predictors[iPtor].preload = val;
     }
 
-    VectorString GetPreloadDataIds(int iStep, int iPtor) const
+    vwxs GetPreloadDataIds(int iStep, int iPtor) const
     {
         return m_steps[iStep].predictors[iPtor].preloadDataIds;
     }
 
-    bool SetPreloadDataIds(int iStep, int iPtor, VectorString val);
+    bool SetPreloadDataIds(int iStep, int iPtor, vwxs val);
 
     bool SetPreloadDataIds(int iStep, int iPtor, wxString val);
 
-    VectorDouble GetPreloadTimeHours(int iStep, int iPtor) const
+    vd GetPreloadTimeHours(int iStep, int iPtor) const
     {
         return m_steps[iStep].predictors[iPtor].preloadTimeHours;
     }
 
-    bool SetPreloadTimeHours(int iStep, int iPtor, VectorDouble val);
+    bool SetPreloadTimeHours(int iStep, int iPtor, vd val);
 
     bool SetPreloadTimeHours(int iStep, int iPtor, double val);
 
-    VectorFloat GetPreloadLevels(int iStep, int iPtor) const
+    vf GetPreloadLevels(int iStep, int iPtor) const
     {
         return m_steps[iStep].predictors[iPtor].preloadLevels;
     }
 
-    bool SetPreloadLevels(int iStep, int iPtor, VectorFloat val);
+    bool SetPreloadLevels(int iStep, int iPtor, vf val);
 
     bool SetPreloadLevels(int iStep, int iPtor, float val);
 
@@ -631,7 +631,7 @@ protected:
     double m_archiveStart;
     double m_archiveEnd;
     int m_timeArrayAnalogsIntervalDays;
-    VectorInt m_predictandStationIds;
+    vi m_predictandStationIds;
     double m_timeMinHours;
     double m_timeMaxHours;
 

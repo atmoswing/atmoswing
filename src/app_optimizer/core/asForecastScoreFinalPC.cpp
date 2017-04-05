@@ -45,7 +45,7 @@ asForecastScoreFinalPC::~asForecastScoreFinalPC()
     //dtor
 }
 
-float asForecastScoreFinalPC::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
+float asForecastScoreFinalPC::Assess(const a1f &targetDates, const a1f &forecastScores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);
@@ -66,7 +66,7 @@ float asForecastScoreFinalPC::Assess(const Array1DFloat &targetDates, const Arra
                     countD++;
                 } else {
                     wxLogError(_("The PC score (%f) is not an authorized value."), forecastScores[i]);
-                    return NaNFloat;
+                    return NaNf;
                 }
             }
             break;
@@ -82,7 +82,7 @@ float asForecastScoreFinalPC::Assess(const Array1DFloat &targetDates, const Arra
     if (countTot > 0) {
         score = static_cast<float>(countA + countD) / static_cast<float>(countTot);
     } else {
-        score = NaNFloat;
+        score = NaNf;
     }
 
     return score;

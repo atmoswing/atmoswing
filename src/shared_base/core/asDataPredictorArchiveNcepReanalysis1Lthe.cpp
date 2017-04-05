@@ -42,7 +42,7 @@ asDataPredictorArchiveNcepReanalysis1Lthe::asDataPredictorArchiveNcepReanalysis1
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 0;
@@ -125,9 +125,9 @@ bool asDataPredictorArchiveNcepReanalysis1Lthe::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 

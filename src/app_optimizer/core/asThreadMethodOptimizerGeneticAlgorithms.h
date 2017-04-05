@@ -12,7 +12,7 @@ class asThreadMethodOptimizerGeneticAlgorithms
 public:
     asThreadMethodOptimizerGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
                                              asParametersOptimization *params, float *finalScoreCalib,
-                                             VectorFloat *scoreClimatology);
+                                             vf *scoreClimatology);
 
     virtual ~asThreadMethodOptimizerGeneticAlgorithms();
 
@@ -23,7 +23,7 @@ private:
     asMethodOptimizerGeneticAlgorithms *m_optimizer;
     asParametersOptimization *m_params;
     float *m_finalScoreCalib;
-    VectorFloat *m_scoreClimatology;
+    vf *m_scoreClimatology;
 };
 
 #endif // ASTHREADMETHODOPTIMIZERGENETICALGORITHMS_H

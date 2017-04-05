@@ -54,18 +54,18 @@ public:
         m_forecastScore = val;
     }
 
-    Array1DFloat GetForecastScoreArray() const
+    a1f GetForecastScoreArray() const
     {
         return m_forecastScoreArray;
     }
 
-    void SetForecastScore(Array1DFloat val)
+    void SetForecastScore(a1f val)
     {
         m_forecastScoreArray = val;
         m_hasSingleValue = false;
     }
 
-    void SetForecastScoreArray(Array1DFloat val)
+    void SetForecastScoreArray(a1f val)
     {
         m_forecastScoreArray = val;
         m_hasSingleValue = false;
@@ -82,7 +82,7 @@ protected:
 private:
     bool m_hasSingleValue;
     float m_forecastScore;
-    Array1DFloat m_forecastScoreArray;
+    a1f m_forecastScoreArray;
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCOREFINAL_H

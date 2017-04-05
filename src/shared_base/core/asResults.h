@@ -90,7 +90,7 @@ protected:
     int m_fileVersionMajor;
     int m_fileVersionMinor;
     int m_currentStep;
-    VectorInt m_predictandStationIds;
+    vi m_predictandStationIds;
     double m_dateProcessed;
     wxString m_subFolder;
     wxString m_filePath;

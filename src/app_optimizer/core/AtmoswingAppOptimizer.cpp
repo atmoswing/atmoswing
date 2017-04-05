@@ -142,7 +142,7 @@ bool AtmoswingAppOptimizer::OnInit()
     g_local = false;
     m_calibParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
-    m_predictandStationIds = VectorInt(0);
+    m_predictandStationIds = vi(0);
     m_predictorsDir = wxEmptyString;
     m_calibMethod = wxEmptyString;
     m_forceQuit = false;

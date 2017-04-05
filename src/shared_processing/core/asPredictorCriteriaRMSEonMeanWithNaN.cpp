@@ -36,7 +36,7 @@ asPredictorCriteriaRMSEonMeanWithNaN::asPredictorCriteriaRMSEonMeanWithNaN(int l
     m_fullName = _("Root Mean Square Error on the mean value of the grid, with NaNs management");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaRMSEonMeanWithNaN::~asPredictorCriteriaRMSEonMeanWithNaN()
     //dtor
 }
 
-float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, const Array2DFloat &evalData,
+float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const a2f &refData, const a2f &evalData,
                                                    int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
@@ -84,7 +84,7 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
 
         default: {
             wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
+            return NaNf;
         }
     }
 
@@ -93,7 +93,7 @@ float asPredictorCriteriaRMSEonMeanWithNaN::Assess(const Array2DFloat &refData, 
 
     if (finalsize == 0) {
         wxLogVerbose(_("Only NaNs in the criteria calculation."));
-        return NaNFloat;
+        return NaNf;
     }
 
     evalMean /= finalsize;

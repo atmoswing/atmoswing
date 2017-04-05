@@ -170,12 +170,12 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     bool processRankHistogramScores = true;
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationIdsVector();
+    vvi stationsId = params.GetPredictandStationIdsVector();
 
     for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
         ClearAll();
 
-        VectorInt stationId = stationsId[iStat];
+        vi stationId = stationsId[iStat];
         wxLogMessage(_("Processing station %s"), GetPredictandStationIdsList(stationId));
 
         // Create result objects to save the parameters sets
@@ -267,7 +267,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
          */
 
         if (processContingencyScores) {
-            VectorString scoresContingency;
+            vwxs scoresContingency;
             scoresContingency.push_back("PC"); // PC - Proportion correct
             scoresContingency.push_back("TS"); // TS - Threat score
             scoresContingency.push_back("BIAS"); // BIAS - Bias
@@ -278,12 +278,12 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresContingency.push_back("PSS"); // PSS - Pierce skill score
             scoresContingency.push_back("GSS"); // GSS - Gilbert skill score
 
-            VectorFloat thresholds;
+            vf thresholds;
             thresholds.push_back(0.0001f);
             thresholds.push_back(0.5f); // 1/2 of P10 (if data are normalized)
             thresholds.push_back(1);  // P10 (if data are normalized)
 
-            VectorFloat quantiles;
+            vf quantiles;
             quantiles.push_back(0.2f);
             quantiles.push_back(0.6f);
             quantiles.push_back(0.9f);
@@ -309,7 +309,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 }
             }
 
-            VectorString scoresQuantile;
+            vwxs scoresQuantile;
             scoresQuantile.push_back("MAE"); // MAE - Mean absolute error
             scoresQuantile.push_back("RMSE"); // RMSE - Root mean squared error
             scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
@@ -332,7 +332,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 }
             }
 
-            VectorString scoresThreshold;
+            vwxs scoresThreshold;
             scoresThreshold.push_back("BS"); // BS - Brier score
             scoresThreshold.push_back("BSS"); // BSS - Brier skill score
 
@@ -360,7 +360,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
          */
 
         if (processContinuousScores) {
-            VectorString scoresContinuous;
+            vwxs scoresContinuous;
             scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
             scoresContinuous.push_back("CRPS"); // CRPSAR - approximation with the rectangle method
             scoresContinuous.push_back(
@@ -399,8 +399,8 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             params.SetForecastScoreName("RankHistogram");
             m_parameters[0] = params;
 
-            std::vector<Array1DFloat> histoCalib;
-            std::vector<Array1DFloat> histoValid;
+            std::vector<a1f> histoCalib;
+            std::vector<a1f> histoValid;
 
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
                 if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
@@ -418,8 +418,8 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             }
 
             // Average all histograms assessments
-            Array1DFloat averageHistoCalib = Array1DFloat::Zero(histoCalib[0].size());
-            Array1DFloat averageHistoValid = Array1DFloat::Zero(histoValid[0].size());
+            a1f averageHistoCalib = a1f::Zero(histoCalib[0].size());
+            a1f averageHistoValid = a1f::Zero(histoValid[0].size());
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
                 averageHistoCalib += histoCalib[iBoot];
                 averageHistoValid += histoValid[iBoot];

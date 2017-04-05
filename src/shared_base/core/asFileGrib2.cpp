@@ -259,8 +259,8 @@ void asFileGrib2::BuildAxes(const gribfield *gfld)
         lonEnd += 360;
     }
 
-    Array1DFloat xAxis = Array1DFloat::LinSpaced(nX, lonStart, lonEnd);
-    Array1DFloat yAxis = Array1DFloat::LinSpaced(nY, latStart, latEnd);
+    a1f xAxis = a1f::LinSpaced(nX, lonStart, lonEnd);
+    a1f yAxis = a1f::LinSpaced(nY, latStart, latEnd);
 
     m_xAxes.push_back(xAxis);
     m_yAxes.push_back(yAxis);
@@ -294,7 +294,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
     }
 }
 
-bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
+bool asFileGrib2::GetXaxis(a1f &uaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -305,7 +305,7 @@ bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
     return true;
 }
 
-bool asFileGrib2::GetYaxis(Array1DFloat &vaxis) const
+bool asFileGrib2::GetYaxis(a1f &vaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -325,7 +325,7 @@ double asFileGrib2::GetTime() const
     return m_times[m_index];
 }
 
-bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
+bool asFileGrib2::SetIndexPosition(const vi gribCode, const float level)
 {
     wxASSERT(gribCode.size() == 4);
 

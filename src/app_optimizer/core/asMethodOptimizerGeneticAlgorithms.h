@@ -67,8 +67,8 @@ private:
     int m_crossoverType;
     int m_mutationsModeType;
     bool m_allowElitismForTheBest;
-    VectorFloat m_bestScores;
-    VectorFloat m_meanScores;
+    vf m_bestScores;
+    vf m_meanScores;
 
     void ClearAll();
 

@@ -27,7 +27,7 @@ asParametersOptimizationGAs::~asParametersOptimizationGAs()
 void asParametersOptimizationGAs::BuildChromosomes()
 {
     int counter = 0;
-    VectorInt indices;
+    vi indices;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         indices.push_back(counter);
@@ -434,7 +434,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         if (counter == index) {
                             wxString dat = GetPreprocessDataId(i, j, k);
-                            VectorString vect = GetPreprocessDataIdVector(i, j, k);
+                            vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             int iPre = -1;
                             for (unsigned int r = 0; r < vect.size(); r++) {
                                 if (vect[r].IsSameAs(dat, false))
@@ -450,7 +450,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         if (counter == index) {
                             float dat = GetPreprocessLevel(i, j, k);
-                            VectorFloat vect = GetPreprocessLevelVector(i, j, k);
+                            vf vect = GetPreprocessLevelVector(i, j, k);
                             int iPre = -1;
                             for (unsigned int r = 0; r < vect.size(); r++) {
                                 if (vect[r] == dat)
@@ -474,7 +474,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     if (counter == index) {
                         wxString dat = GetPredictorDataId(i, j);
-                        VectorString vect = GetPredictorDataIdVector(i, j);
+                        vwxs vect = GetPredictorDataIdVector(i, j);
                         int iPre = -1;
                         for (unsigned int r = 0; r < vect.size(); r++) {
                             if (vect[r].IsSameAs(dat, false))
@@ -490,7 +490,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 if (!m_stepsLocks[i].predictors[j].level) {
                     if (counter == index) {
                         float dat = GetPredictorLevel(i, j);
-                        VectorFloat vect = GetPredictorLevelVector(i, j);
+                        vf vect = GetPredictorLevelVector(i, j);
                         int iPre = -1;
                         for (unsigned int r = 0; r < vect.size(); r++) {
                             if (vect[r] == dat)
@@ -549,7 +549,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
                     wxString dat = GetPredictorCriteria(i, j);
-                    VectorString vect = GetPredictorCriteriaVector(i, j);
+                    vwxs vect = GetPredictorCriteriaVector(i, j);
                     int iPre = -1;
                     for (unsigned int r = 0; r < vect.size(); r++) {
                         if (vect[r].IsSameAs(dat, false))
@@ -569,7 +569,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                                   m_allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
-    return NaNDouble;
+    return NaNd;
 }
 
 double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
@@ -597,7 +597,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         if (counter == index) {
-                            VectorString vect = GetPreprocessDataIdVector(i, j, k);
+                            vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             return (double) (vect.size() - 1);
                         }
                     }
@@ -605,7 +605,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
 
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         if (counter == index) {
-                            VectorFloat vect = GetPreprocessLevelVector(i, j, k);
+                            vf vect = GetPreprocessLevelVector(i, j, k);
                             return (double) (vect.size() - 1);
                         }
                     }
@@ -621,7 +621,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             } else {
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     if (counter == index) {
-                        VectorString vect = GetPredictorDataIdVector(i, j);
+                        vwxs vect = GetPredictorDataIdVector(i, j);
                         return (double) (vect.size() - 1);
                     }
                 }
@@ -629,7 +629,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
 
                 if (!m_stepsLocks[i].predictors[j].level) {
                     if (counter == index) {
-                        VectorFloat vect = GetPredictorLevelVector(i, j);
+                        vf vect = GetPredictorLevelVector(i, j);
                         return (double) (vect.size() - 1);
                     }
                 }
@@ -680,7 +680,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
-                    VectorString vect = GetPredictorCriteriaVector(i, j);
+                    vwxs vect = GetPredictorCriteriaVector(i, j);
                     return (double) (vect.size() - 1);
                 }
             }
@@ -693,7 +693,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                                   m_allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
-    return NaNDouble;
+    return NaNd;
 }
 
 double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
@@ -812,7 +812,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                                   m_allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
-    return NaNDouble;
+    return NaNd;
 }
 
 double asParametersOptimizationGAs::GetParameterIteration(int index)
@@ -931,7 +931,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                                   m_allParametersCount));
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
-    return NaNDouble;
+    return NaNd;
 }
 
 void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
@@ -964,7 +964,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         if (counter == index) {
                             int val = asTools::Round(newVal);
 
-                            VectorString vect = GetPreprocessDataIdVector(i, j, k);
+                            vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             if (val < 0)
                                 val = 0;
                             if ((unsigned) val >= vect.size())
@@ -981,7 +981,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         if (counter == index) {
                             int val = asTools::Round(newVal);
 
-                            VectorFloat vect = GetPreprocessLevelVector(i, j, k);
+                            vf vect = GetPreprocessLevelVector(i, j, k);
                             if (val < 0)
                                 val = 0;
                             if ((unsigned) val >= vect.size())
@@ -1008,7 +1008,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     if (counter == index) {
                         int val = asTools::Round(newVal);
 
-                        VectorString vect = GetPredictorDataIdVector(i, j);
+                        vwxs vect = GetPredictorDataIdVector(i, j);
                         if (val < 0)
                             val = 0;
                         if ((unsigned) val >= vect.size())
@@ -1025,7 +1025,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     if (counter == index) {
                         int val = asTools::Round(newVal);
 
-                        VectorFloat vect = GetPredictorLevelVector(i, j);
+                        vf vect = GetPredictorLevelVector(i, j);
                         if (val < 0)
                             val = 0;
                         if ((unsigned) val >= vect.size())
@@ -1095,7 +1095,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 if (counter == index) {
                     int val = asTools::Round(newVal);
 
-                    VectorString vect = GetPredictorCriteriaVector(i, j);
+                    vwxs vect = GetPredictorCriteriaVector(i, j);
                     if (val < 0)
                         val = 0;
                     if ((unsigned) val >= vect.size())
@@ -1118,7 +1118,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
     return;
 }
 
-void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints)
+void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints)
 {
     wxASSERT(crossingPoints.size() > 0);
 
@@ -1173,7 +1173,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints,
+void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
                                                     bool shareBeta, double betaMin, double betaMax)
 {
     wxASSERT(crossingPoints.size() > 0);
@@ -1236,7 +1236,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, VectorInt &crossingPoints,
+void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
                                                      bool shareBeta, double betaMin, double betaMax)
 {
     wxASSERT(crossingPoints.size() > 0);
@@ -1301,7 +1301,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
 }
 
 void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam,
-                                                      VectorInt &crossingPoints, bool shareBeta, double betaMin,
+                                                      vi &crossingPoints, bool shareBeta, double betaMin,
                                                       double betaMax)
 {
     wxASSERT(crossingPoints.size() > 0);
@@ -1389,7 +1389,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
 }
 
 void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &otherParam,
-                                                  asParametersOptimizationGAs &thirdParam, VectorInt &crossingPoints)
+                                                  asParametersOptimizationGAs &thirdParam, vi &crossingPoints)
 {
     wxASSERT(crossingPoints.size() > 0);
 

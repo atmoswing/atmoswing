@@ -34,7 +34,7 @@ void asMethodOptimizerGeneticAlgorithms::ClearAll()
     m_scoresCalibTemp.clear();
     m_parameters.clear();
     m_scoresCalib.clear();
-    m_scoreValid = NaNFloat;
+    m_scoreValid = NaNf;
     m_bestScores.clear();
     m_meanScores.clear();
 }
@@ -55,7 +55,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParameters()
         return;
 
     // Sort according to the score
-    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, m_paramsNb, 0, m_paramsNb - 1);
+    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_paramsNb, 0, m_paramsNb - 1);
     asTools::SortArrays(&m_scoresCalib[0], &m_scoresCalib[m_paramsNb - 1], &vIndices[0], &vIndices[m_paramsNb - 1],
                         m_scoreOrder);
 
@@ -80,7 +80,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
         return;
 
     // Sort according to the score
-    Array1DFloat vIndices = Array1DFloat::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
+    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
                                                     m_scoresCalibTemp.size() - 1);
     asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
@@ -207,7 +207,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Create a result object to save the parameters sets
-    VectorInt stationId = params.GetPredictandStationIds();
+    vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
     results_final_population.Init(
@@ -289,7 +289,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 if (m_cancel)
                     return false;
 
-                VectorFloat scoreClim = m_scoreClimatology;
+                vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
                 asThreadMethodOptimizerGeneticAlgorithms *firstThread = new asThreadMethodOptimizerGeneticAlgorithms(
@@ -545,7 +545,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             wxLogWarning(_("The directory %s could not be opened."), resultsDir.c_str());
         } else {
             // Check if the resulting file is already present
-            VectorInt stationId = params.GetPredictandStationIds();
+            vi stationId = params.GetPredictandStationIds();
             wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt",
                                                          GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(finalFilePattern)) {
@@ -772,9 +772,9 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
         }
 
         m_parameters[iVar] = paramsCopy;
-        m_scoresCalib[iVar] = NaNFloat;
+        m_scoresCalib[iVar] = NaNf;
     }
-    m_scoreValid = NaNFloat;
+    m_scoreValid = NaNf;
 }
 
 asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParameters()
@@ -1082,7 +1082,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
     int counter = 0;
     int counterSame = 0;
     bool initialized = false;
-    VectorDouble probabilities;
+    vd probabilities;
 
     while (m_parametersTemp.size() < (unsigned) m_popSize) {
         // Couples selection only in the parents pool
@@ -1283,7 +1283,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     crossingPoints.push_back(crossingPoint);
@@ -1302,12 +1302,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
 
                 break;
@@ -1322,7 +1322,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1356,12 +1356,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1383,7 +1383,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                     return false;
                 }
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1417,12 +1417,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1433,7 +1433,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 bool previouslyCrossed = false; // flag
 
                 for (int iGene = 0; iGene < chromosomeLength; iGene++) {
@@ -1471,12 +1471,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1497,7 +1497,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1531,12 +1531,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1553,7 +1553,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1589,7 +1589,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                     param1.CheckRange();
 
                     m_parametersTemp.push_back(param1);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
 
                 // Add the other parameters if ther is enough room
@@ -1598,7 +1598,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                         param2.CheckRange();
 
                         m_parametersTemp.push_back(param2);
-                        m_scoresCalibTemp.push_back(NaNFloat);
+                        m_scoresCalibTemp.push_back(NaNf);
                     }
                 }
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
@@ -1606,7 +1606,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                         param3.CheckRange();
 
                         m_parametersTemp.push_back(param3);
-                        m_scoresCalibTemp.push_back(NaNFloat);
+                        m_scoresCalibTemp.push_back(NaNf);
                     }
                 }
 
@@ -1629,7 +1629,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1663,12 +1663,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1689,7 +1689,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get points
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
-                VectorInt crossingPoints;
+                vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
@@ -1723,12 +1723,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1749,12 +1749,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1775,12 +1775,12 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Add the new parameters if ther is enough room
                 m_parametersTemp.push_back(param1);
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 if (m_popSize - m_parametersTemp.size() > (unsigned) 0) {
                     param2.CheckRange();
 
                     m_parametersTemp.push_back(param2);
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                 }
                 break;
             }
@@ -1829,7 +1829,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1856,7 +1856,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1881,7 +1881,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1916,7 +1916,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1941,7 +1941,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 m_parameters[iInd].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
                                                      hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1957,7 +1957,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRate(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1973,7 +1973,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRadius(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -1989,7 +1989,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRateChromosome(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2005,7 +2005,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateSelfAdaptationRadiusChromosome(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();
@@ -2026,7 +2026,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 bool hasMutated = false;
                 m_parameters[iInd].MutateMultiScale(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[iInd] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNf;
 
                 m_parameters[iInd].FixWeights();
                 m_parameters[iInd].FixCoordinates();

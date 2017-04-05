@@ -42,7 +42,7 @@ asDataPredictorArchiveNoaaOisst2Subset::asDataPredictorArchiveNoaaOisst2Subset(c
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 12;
@@ -104,9 +104,9 @@ bool asDataPredictorArchiveNoaaOisst2Subset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaaOisst2Subset::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNoaaOisst2Subset::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 

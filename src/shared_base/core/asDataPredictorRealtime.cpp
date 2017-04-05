@@ -248,7 +248,7 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
 bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                                vvva2f &compositeData)
 {
-    VectorString filesList = GetListOfFiles(timeArray);
+    vwxs filesList = GetListOfFiles(timeArray);
 
     if(!CheckFilesPresence(filesList)) {
         return false;
@@ -265,9 +265,9 @@ bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea
     return true;
 }
 
-VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString filesList;
+    vwxs filesList;
 
     for (int iFile = 0; iFile < m_fileNames.size(); iFile++) {
         wxString filePath = wxEmptyString;
@@ -380,5 +380,5 @@ bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAre
 
 double asDataPredictorRealtime::ConvertToMjd(double timeValue, double refValue) const
 {
-    return NaNDouble;
+    return NaNd;
 }

@@ -35,10 +35,10 @@
 
 asThreadProcessorGetAnalogsSubDates::asThreadProcessorGetAnalogsSubDates(
         std::vector<asDataPredictor *> predictorsArchive, std::vector<asDataPredictor *> predictorsTarget,
-        asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData, Array1DFloat *timeTargetSelection,
-        std::vector<asPredictorCriteria *> criteria, asParameters &params, int step, VpArray2DFloat &vTargData,
-        VpArray2DFloat &vArchData, Array1DInt &vRowsNb, Array1DInt &vColsNb, int start, int end,
-        Array2DFloat *finalAnalogsCriteria, Array2DFloat *finalAnalogsDates, Array2DFloat *previousAnalogsDates,
+        asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
+        std::vector<asPredictorCriteria *> criteria, asParameters &params, int step, vpa2f &vTargData,
+        vpa2f &vArchData, a1i &vRowsNb, a1i &vColsNb, int start, int end,
+        a2f *finalAnalogsCriteria, a2f *finalAnalogsDates, a2f *previousAnalogsDates,
         bool *containsNaNs)
         : asThread(),
           m_pPredictorsArchive(predictorsArchive),
@@ -77,8 +77,8 @@ asThreadProcessorGetAnalogsSubDates::~asThreadProcessorGetAnalogsSubDates()
 wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
 {
     // Extract time arrays
-    Array1DDouble timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
-    Array1DDouble timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
+    a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
+    a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
 
     // Some other variables
     float tmpscore, thisscore;
@@ -96,9 +96,9 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
     wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
-    Array1DFloat currentAnalogsDates(analogsNbPrevious);
-    Array1DFloat ScoreArrayOneDay(analogsNb);
-    Array1DFloat DateArrayOneDay(analogsNb);
+    a1f currentAnalogsDates(analogsNbPrevious);
+    a1f ScoreArrayOneDay(analogsNb);
+    a1f DateArrayOneDay(analogsNb);
 
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end); iDateTarg++)

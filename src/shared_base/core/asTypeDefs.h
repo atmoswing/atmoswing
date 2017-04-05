@@ -49,7 +49,7 @@ typedef struct
     int hour;
     int min;
     int sec;
-} TimeStruct;
+} Time;
 
 
 
@@ -57,45 +57,37 @@ typedef struct
 // std vector
 //---------------------------------
 
-typedef std::vector<bool> VectorBool;
-typedef std::vector<short> VectorShort;
-typedef std::vector<int> VectorInt;
-typedef std::vector<long> VectorLong;
-typedef std::vector<float> VectorFloat;
-typedef std::vector<double> VectorDouble;
-typedef std::vector<std::string> VectorStdString;
-typedef std::vector<wxString> VectorString;
+typedef std::vector<bool> vb;
+typedef std::vector<short> vs;
+typedef std::vector<int> vi;
+typedef std::vector<long> vl;
+typedef std::vector<float> vf;
+typedef std::vector<double> vd;
+typedef std::vector<std::string> vstds;
+typedef std::vector<wxString> vwxs;
 
-typedef std::vector<VectorBool> VVectorBool;
-typedef std::vector<VectorShort> VVectorShort;
-typedef std::vector<VectorInt> VVectorInt;
-typedef std::vector<VectorFloat> VVectorFloat;
-typedef std::vector<VectorDouble> VVectorDouble;
-typedef std::vector<VectorString> VVectorString;
+typedef std::vector<vb> vvb;
+typedef std::vector<vi> vvi;
+typedef std::vector<vf> vvf;
+typedef std::vector<vd> vvd;
+typedef std::vector<vwxs> vvwxs;
 
 
 
 //---------------------------------
-// Eigen3 matrices
+// Eigen3 arrays
 //---------------------------------
-
-// Matrices are used for real linear algebra.
-typedef Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Matrix2DInt;
-typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Matrix2DFloat;
-typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Matrix2DDouble;
 
 // Arrays are used for element-wise calculations. It is often the case here.
-typedef Eigen::Array<int, Eigen::Dynamic, 1> Array1DInt;
-
-typedef Eigen::Array<float, Eigen::Dynamic, 1> Array1DFloat;
-typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Array2DFloat;
-typedef std::vector<Array1DFloat> VArray1DFloat;
-typedef std::vector<Array2DFloat> VArray2DFloat;
-typedef std::vector<Array2DFloat *> VpArray2DFloat;
-typedef std::vector<std::vector<Array2DFloat> > VVArray2DFloat;
-typedef std::vector<std::vector<std::vector<Array2DFloat> > > vvva2f;
-
-typedef Eigen::Array<double, Eigen::Dynamic, 1> Array1DDouble;
+typedef Eigen::Array<int, Eigen::Dynamic, 1> a1i;
+typedef Eigen::Array<float, Eigen::Dynamic, 1> a1f;
+typedef Eigen::Array<double, Eigen::Dynamic, 1> a1d;
+typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> a2f;
+typedef std::vector<a1f> va1f;
+typedef std::vector<a2f> va2f;
+typedef std::vector<a2f *> vpa2f;
+typedef std::vector<std::vector<a2f> > vva2f;
+typedef std::vector<std::vector<std::vector<a2f> > > vvva2f;
 
 
 
@@ -104,15 +96,15 @@ typedef Eigen::Array<double, Eigen::Dynamic, 1> Array1DDouble;
 //---------------------------------
 
 /* NaN (http://www.cplusplus.com/reference/limits/numeric_limits/) */
-static const short NaNShort = std::numeric_limits<short>::max();
-static const int NaNInt = std::numeric_limits<int>::max();
-static const float NaNFloat = std::numeric_limits<float>::quiet_NaN();
-static const double NaNDouble = std::numeric_limits<double>::quiet_NaN();
+static const short NaNs = std::numeric_limits<short>::max();
+static const int NaNi = std::numeric_limits<int>::max();
+static const float NaNf = std::numeric_limits<float>::quiet_NaN();
+static const double NaNd = std::numeric_limits<double>::quiet_NaN();
 
 /* Inf (http://msdn.microsoft.com/en-us/library/6hthw3cb%28VS.80%29.aspx) */
-const float InfFloat = std::numeric_limits<float>::infinity();
-const double InfDouble = std::numeric_limits<double>::infinity();
-const long double InfLongDouble = std::numeric_limits<long double>::infinity();
+const float Inff = std::numeric_limits<float>::infinity();
+const double Infd = std::numeric_limits<double>::infinity();
+const long double Infld = std::numeric_limits<long double>::infinity();
 
 
 #endif

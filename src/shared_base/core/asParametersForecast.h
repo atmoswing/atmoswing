@@ -47,11 +47,11 @@ public:
         wxString realtimeDatasetId;
         wxString realtimeDataId;
         int realtimeMembersNb;
-        VectorString preprocessArchiveDatasetIds;
-        VectorString preprocessArchiveDataIds;
+        vwxs preprocessArchiveDatasetIds;
+        vwxs preprocessArchiveDataIds;
         int preprocessArchiveMembersNb;
-        VectorString preprocessRealtimeDatasetIds;
-        VectorString preprocessRealtimeDataIds;
+        vwxs preprocessRealtimeDatasetIds;
+        vwxs preprocessRealtimeDataIds;
         int preprocessRealtimeMembersNb;
     } ParamsPredictorForecast;
 
@@ -59,7 +59,7 @@ public:
 
     typedef struct
     {
-        VectorInt analogsNumberLeadTime;
+        vi analogsNumberLeadTime;
         VectorParamsPredictorsForecast predictors;
     } ParamsStepForecast;
 
@@ -94,9 +94,9 @@ public:
         return (int) m_leadTimeDaysVect.size();
     }
 
-    bool SetLeadTimeDaysVector(VectorInt val);
+    bool SetLeadTimeDaysVector(vi val);
 
-    VectorInt GetLeadTimeDaysVector() const
+    vi GetLeadTimeDaysVector() const
     {
         return m_leadTimeDaysVect;
     }
@@ -111,9 +111,9 @@ public:
         return (int) (m_leadTimeDaysVect[iLead] * 24.0);
     }
 
-    bool SetAnalogsNumberLeadTimeVector(int iStep, VectorInt val);
+    bool SetAnalogsNumberLeadTimeVector(int iStep, vi val);
 
-    VectorInt GetAnalogsNumberLeadTimeVector(int iStep) const
+    vi GetAnalogsNumberLeadTimeVector(int iStep) const
     {
         return m_stepsForecast[iStep].analogsNumberLeadTime;
     }
@@ -216,7 +216,7 @@ public:
 protected:
 
 private:
-    VectorInt m_leadTimeDaysVect;
+    vi m_leadTimeDaysVect;
     VectorParamsStepForecast m_stepsForecast;
     wxString m_predictandDatabase;
 

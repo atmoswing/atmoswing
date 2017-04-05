@@ -58,7 +58,7 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, LoadEasy)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -124,7 +124,7 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, Around360)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)

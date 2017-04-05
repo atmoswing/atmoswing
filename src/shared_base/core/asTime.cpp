@@ -38,7 +38,7 @@ asTime::~asTime()
     //dtor
 }
 
-void asTime::TimeStructInit(TimeStruct &date)
+void asTime::TimeStructInit(Time &date)
 {
     date.year = 0;
     date.month = 0;
@@ -48,9 +48,9 @@ void asTime::TimeStructInit(TimeStruct &date)
     date.sec = 0;
 }
 
-TimeStruct asTime::TimeTmToTimeStruct(const struct tm &date)
+Time asTime::TimeTmToTimeStruct(const struct tm &date)
 {
-    TimeStruct timeSt;
+    Time timeSt;
     TimeStructInit(timeSt);
 
     timeSt.year = date.tm_year + 1900;
@@ -89,7 +89,7 @@ double asTime::NowMJD(int timezone)
     return TimeTmToMJD(todaytm);
 }
 
-TimeStruct asTime::NowTimeStruct(int timezone)
+Time asTime::NowTimeStruct(int timezone)
 {
     struct tm todaytm;
     time_t todayepoch;
@@ -112,7 +112,7 @@ TimeStruct asTime::NowTimeStruct(int timezone)
 
 wxDateTime asTime::NowWxDateTime(int timezone)
 {
-    TimeStruct now = NowTimeStruct(timezone);
+    Time now = NowTimeStruct(timezone);
 
     wxDateTime::Month month;
 
@@ -165,13 +165,13 @@ wxDateTime asTime::NowWxDateTime(int timezone)
 
 wxString asTime::GetStringTime(double mjd, const wxString &format)
 {
-    TimeStruct date = GetTimeStruct(mjd);
+    Time date = GetTimeStruct(mjd);
     wxString datestr = GetStringTime(date, format);
 
     return datestr;
 }
 
-wxString asTime::GetStringTime(const TimeStruct &date, const wxString &format)
+wxString asTime::GetStringTime(const Time &date, const wxString &format)
 {
     wxString datestr = format;
 
@@ -203,13 +203,13 @@ wxString asTime::GetStringTime(const TimeStruct &date, const wxString &format)
 
 wxString asTime::GetStringTime(double mjd, TimeFormat format)
 {
-    TimeStruct date = GetTimeStruct(mjd);
+    Time date = GetTimeStruct(mjd);
     wxString datestr = GetStringTime(date, format);
 
     return datestr;
 }
 
-wxString asTime::GetStringTime(const TimeStruct &date, TimeFormat format)
+wxString asTime::GetStringTime(const Time &date, TimeFormat format)
 {
     wxString datestr = wxEmptyString;
 
@@ -628,7 +628,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             asThrowException(_("The date format is not correctly set"));
     }
 
-    return NaNFloat;
+    return NaNf;
 }
 
 bool asTime::IsLeapYear(int year)
@@ -691,7 +691,7 @@ double asTime::GetMJD(int year, int month, int day, int hour, int minute, int se
     return mjd;
 }
 
-double asTime::GetMJD(const TimeStruct &date, int method)
+double asTime::GetMJD(const Time &date, int method)
 {
     return GetMJD(date.year, date.month, date.day, date.hour, date.min, date.sec, method);
 }
@@ -710,7 +710,7 @@ double asTime::GetMJD(wxDateTime &date, int method)
 
 wxDateTime asTime::GetWxDateTime(double mjd, int method)
 {
-    TimeStruct datestruct = GetTimeStruct(mjd, method);
+    Time datestruct = GetTimeStruct(mjd, method);
 
     wxDateTime::Month month = (wxDateTime::Month) (datestruct.month - 1);
     wxDateTime datewx(datestruct.day, month, datestruct.year, datestruct.hour, datestruct.min, datestruct.sec);
@@ -718,7 +718,7 @@ wxDateTime asTime::GetWxDateTime(double mjd, int method)
     return datewx;
 }
 
-TimeStruct asTime::GetTimeStruct(int year, int month, int day, int hour, int minute, int second)
+Time asTime::GetTimeStruct(int year, int month, int day, int hour, int minute, int second)
 {
     wxASSERT(year >= 0);
     wxASSERT(month >= 0);
@@ -727,7 +727,7 @@ TimeStruct asTime::GetTimeStruct(int year, int month, int day, int hour, int min
     wxASSERT(minute >= 0);
     wxASSERT(second >= 0);
 
-    TimeStruct time;
+    Time time;
 
     time.year = year;
     time.month = month;
@@ -739,14 +739,14 @@ TimeStruct asTime::GetTimeStruct(int year, int month, int day, int hour, int min
     return time;
 }
 
-TimeStruct asTime::GetTimeStruct(double mjd, int method)
+Time asTime::GetTimeStruct(double mjd, int method)
 {
     wxASSERT(mjd > 0);
 
     // To Julian day
     mjd += 2400001; // And not 2400000.5 (don't know why)
 
-    TimeStruct date;
+    Time date;
     TimeStructInit(date);
 
     // Remaining seconds
@@ -812,43 +812,43 @@ TimeStruct asTime::GetTimeStruct(double mjd, int method)
 
 int asTime::GetYear(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.year;
 }
 
 int asTime::GetMonth(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.month;
 }
 
 int asTime::GetDay(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.day;
 }
 
 int asTime::GetHour(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.hour;
 }
 
 int asTime::GetMinute(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.min;
 }
 
 int asTime::GetSecond(double mjd, int method)
 {
-    TimeStruct date = asTime::GetTimeStruct(mjd, method);
+    Time date = asTime::GetTimeStruct(mjd, method);
     return date.sec;
 }
 
 double asTime::AddYear(double mjd)
 {
-    TimeStruct timest = GetTimeStruct(mjd);
+    Time timest = GetTimeStruct(mjd);
     int year = timest.year;
 
     // Check which year to assess as leap or not
@@ -868,7 +868,7 @@ double asTime::AddYear(double mjd)
 
 double asTime::SubtractYear(double mjd)
 {
-    TimeStruct timest = GetTimeStruct(mjd);
+    Time timest = GetTimeStruct(mjd);
     int year = timest.year;
 
     // Check which year to assess as leap or not
@@ -890,9 +890,9 @@ double asTime::SubtractYear(double mjd)
     return mjd;
 }
 
-TimeStruct asTime::GetSeasonStart(Season season)
+Time asTime::GetSeasonStart(Season season)
 {
-    TimeStruct ret;
+    Time ret;
     TimeStructInit(ret);
 
     switch (season) {
@@ -917,9 +917,9 @@ TimeStruct asTime::GetSeasonStart(Season season)
     return ret;
 }
 
-TimeStruct asTime::GetSeasonEnd(Season season, int year)
+Time asTime::GetSeasonEnd(Season season, int year)
 {
-    TimeStruct ret;
+    Time ret;
     TimeStructInit(ret);
 
     switch (season) {

@@ -47,7 +47,7 @@ public:
 
     ~asPanelSidebarAlarmsDrawing();
 
-    void DrawAlarms(Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values);
+    void DrawAlarms(a1f &dates, const vwxs &forecasts, a2f &values);
 
     void SetParent(asPanelSidebarAlarms *parent);
 
@@ -80,7 +80,7 @@ public:
 
     ~asPanelSidebarAlarms();
 
-    void SetData(Array1DFloat &dates, Array2DFloat &values);
+    void SetData(a1f &dates, a2f &values);
 
     void Update();
 

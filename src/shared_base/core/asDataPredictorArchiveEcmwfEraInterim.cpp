@@ -40,7 +40,7 @@ asDataPredictorArchiveEcmwfEraInterim::asDataPredictorArchiveEcmwfEraInterim(con
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA-interim";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -149,9 +149,9 @@ bool asDataPredictorArchiveEcmwfEraInterim::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveEcmwfEraInterim::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 

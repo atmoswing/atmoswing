@@ -41,7 +41,7 @@ asPredictorCriteriaNMD::~asPredictorCriteriaNMD()
     //dtor
 }
 
-float asPredictorCriteriaNMD::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
+float asPredictorCriteriaNMD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     return asPredictorCriteriaMD::Assess(refData, evalData, rowsNb, colsNb) / (m_dataMax - m_dataMin);
 }

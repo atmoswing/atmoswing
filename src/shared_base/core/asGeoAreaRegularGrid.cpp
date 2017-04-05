@@ -68,11 +68,11 @@ int asGeoAreaRegularGrid::GetYaxisPtsnb() const
     return asTools::Round(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
 }
 
-Array1DDouble asGeoAreaRegularGrid::GetXaxis() const
+a1d asGeoAreaRegularGrid::GetXaxis() const
 {
     // Get axis size
     int ptsnb = GetXaxisPtsnb();
-    Array1DDouble Xaxis(ptsnb);
+    a1d Xaxis(ptsnb);
 
     // Build array
     double Xmin = GetXmin();
@@ -84,11 +84,11 @@ Array1DDouble asGeoAreaRegularGrid::GetXaxis() const
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaRegularGrid::GetYaxis() const
+a1d asGeoAreaRegularGrid::GetYaxis() const
 {
     // Get axis size
     int ptsnb = GetYaxisPtsnb();
-    Array1DDouble Yaxis(ptsnb);
+    a1d Yaxis(ptsnb);
 
     // Build array
     double vmin = GetYmin();

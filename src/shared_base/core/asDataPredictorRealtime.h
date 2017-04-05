@@ -132,7 +132,7 @@ public:
         return urlsNb;
     }
 
-    VectorString GetUrls() const
+    vwxs GetUrls() const
     {
         return m_urls;
     }
@@ -145,17 +145,17 @@ public:
         return m_urls[i];
     }
 
-    void SetUrls(const VectorString &val)
+    void SetUrls(const vwxs &val)
     {
         m_urls = val;
     }
 
-    VectorString GetFileNames() const
+    vwxs GetFileNames() const
     {
         return m_fileNames;
     }
 
-    void SetFileNames(const VectorString &val)
+    void SetFileNames(const vwxs &val)
     {
         m_fileNames = val;
     }
@@ -176,7 +176,7 @@ public:
         return datesNb;
     }
 
-    VectorDouble GetDataDates() const
+    vd GetDataDates() const
     {
         return m_dataDates;
     }
@@ -219,11 +219,11 @@ protected:
     bool m_restrictDownloads;
     double m_restrictTimeHours;
     double m_restrictTimeStepHours;
-    VectorString m_fileNames;
-    VectorString m_urls;
-    VectorDouble m_dataDates;
+    vwxs m_fileNames;
+    vwxs m_urls;
+    vd m_dataDates;
 
-    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
 
     int *GetIndexesStartGrib(int iArea) const;
 
@@ -235,7 +235,7 @@ protected:
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  vvva2f &compositeData);
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 

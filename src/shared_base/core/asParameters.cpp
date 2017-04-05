@@ -531,8 +531,8 @@ bool asParameters::SetPreloadingProperties()
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
-                VectorFloat preprocLevels;
-                VectorDouble preprocTimeHours;
+                vf preprocLevels;
+                vd preprocTimeHours;
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
@@ -768,13 +768,13 @@ void asParameters::SortLevelsAndTime()
     }
 }
 
-VectorInt asParameters::GetFileStationIds(wxString stationIdsString)
+vi asParameters::GetFileStationIds(wxString stationIdsString)
 {
     // Trim
     stationIdsString.Trim(true);
     stationIdsString.Trim(false);
 
-    VectorInt ids;
+    vi ids;
 
     if (stationIdsString.IsEmpty()) {
         wxLogError(_("The station ID was not provided."));
@@ -1241,7 +1241,7 @@ bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
     return true;
 }
 
-bool asParameters::SetPredictandStationIds(VectorInt val)
+bool asParameters::SetPredictandStationIds(vi val)
 {
     for (int i = 0; i < (int) val.size(); i++) {
         if (asTools::IsNaN(val[i])) {
@@ -1295,7 +1295,7 @@ bool asParameters::SetAnalogsNumber(int iStep, int val)
     return true;
 }
 
-bool asParameters::SetPreloadDataIds(int iStep, int iPtor, VectorString val)
+bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided preload data IDs vector is empty."));
@@ -1325,7 +1325,7 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val)
     return true;
 }
 
-bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, VectorDouble val)
+bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided preload time (hours) vector is empty."));
@@ -1354,7 +1354,7 @@ bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, double val)
     return true;
 }
 
-bool asParameters::SetPreloadLevels(int iStep, int iPtor, VectorFloat val)
+bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val)
 {
     if (val.size() < 1) {
         wxLogError(_("The provided 'preload levels' vector is empty."));
@@ -1493,7 +1493,7 @@ float asParameters::GetPreprocessLevel(int iStep, int iPtor, int iPre) const
         return m_steps[iStep].predictors[iPtor].preprocessLevels[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
-        return NaNFloat;
+        return NaNf;
     }
 }
 
@@ -1520,7 +1520,7 @@ double asParameters::GetPreprocessTimeHours(int iStep, int iPtor, int iPre) cons
         return m_steps[iStep].predictors[iPtor].preprocessTimeHours[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessTimeHours (std) in the parameters object."));
-        return NaNDouble;
+        return NaNd;
     }
 }
 
@@ -1547,7 +1547,7 @@ int asParameters::GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const
         return m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessMembersNb (std) in the parameters object."));
-        return NaNInt;
+        return NaNi;
     }
 }
 

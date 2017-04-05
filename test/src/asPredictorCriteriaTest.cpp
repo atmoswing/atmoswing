@@ -47,10 +47,10 @@ TEST(PredictorCriteria, ProcessS1)
     // Resize the containers
     int lons = 9;
     int lats = 5;
-    Array2DFloat RefZ1000, CandZ1000;
+    a2f RefZ1000, CandZ1000;
     RefZ1000.resize(lats, lons);
     CandZ1000.resize(lats, lons);
-    Array2DFloat RefZ500, CandZ500;
+    a2f RefZ500, CandZ500;
     RefZ500.resize(lats, lons);
     CandZ500.resize(lats, lons);
 
@@ -85,7 +85,7 @@ TEST(PredictorCriteria, ProcessS1)
 
     // Vectors for candidates results
     int candidatesNb = 10;
-    VectorFloat checkZ1000, checkZ500, critS1;
+    vf checkZ1000, checkZ500, critS1;
     checkZ1000.resize(candidatesNb);
     checkZ500.resize(candidatesNb);
     critS1.resize(candidatesNb);
@@ -200,10 +200,10 @@ TEST(PredictorCriteria, ProcessNS1)
     // Resize the containers
     int lons = 9;
     int lats = 5;
-    Array2DFloat RefZ1000, CandZ1000;
+    a2f RefZ1000, CandZ1000;
     RefZ1000.resize(lats, lons);
     CandZ1000.resize(lats, lons);
-    Array2DFloat RefZ500, CandZ500;
+    a2f RefZ500, CandZ500;
     RefZ500.resize(lats, lons);
     CandZ500.resize(lats, lons);
 
@@ -238,7 +238,7 @@ TEST(PredictorCriteria, ProcessNS1)
 
     // Vectors for candidates results
     int candidatesNb = 10;
-    VectorFloat checkZ1000, checkZ500, critS1;
+    vf checkZ1000, checkZ500, critS1;
     checkZ1000.resize(candidatesNb);
     checkZ500.resize(candidatesNb);
     critS1.resize(candidatesNb);
@@ -367,23 +367,23 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
-    VVArray2DFloat hgtOriginal = predictor->GetData();
+    vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
-    VVArray2DFloat hgtPreproc = gradients->GetData();
+    vva2f hgtPreproc = gradients->GetData();
 
     // Resize the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    Array2DFloat RefOriginal, CandOriginal;
+    a2f RefOriginal, CandOriginal;
     RefOriginal.resize(latsOriginal, lonsOriginal);
     CandOriginal.resize(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    Array2DFloat RefPreproc, CandPreproc;
+    a2f RefPreproc, CandPreproc;
     RefPreproc.resize(latsPreproc, lonsPreproc);
     CandPreproc.resize(latsPreproc, lonsPreproc);
 
@@ -393,7 +393,7 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
-    VectorFloat critS1;
+    vf critS1;
     critS1.resize(candidatesNb);
     EXPECT_TRUE(candidatesNb > 1);
 
@@ -465,23 +465,23 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
-    VVArray2DFloat hgtOriginal = predictor->GetData();
+    vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
-    VVArray2DFloat hgtPreproc = gradients->GetData();
+    vva2f hgtPreproc = gradients->GetData();
 
     // Resize the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    Array2DFloat RefOriginal, CandOriginal;
+    a2f RefOriginal, CandOriginal;
     RefOriginal.resize(latsOriginal, lonsOriginal);
     CandOriginal.resize(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    Array2DFloat RefPreproc, CandPreproc;
+    a2f RefPreproc, CandPreproc;
     RefPreproc.resize(latsPreproc, lonsPreproc);
     CandPreproc.resize(latsPreproc, lonsPreproc);
 
@@ -491,7 +491,7 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
-    VectorFloat critS1;
+    vf critS1;
     critS1.resize(candidatesNb);
     EXPECT_TRUE(candidatesNb > 1);
 
@@ -549,13 +549,13 @@ TEST(PredictorCriteria, ProcessRSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    Array2DFloat RefPRWTR, CandPRWTR;
+    a2f RefPRWTR, CandPRWTR;
     RefPRWTR.resize(lats, 2 * lons);
     CandPRWTR.resize(lats, 2 * lons);
-    Array2DFloat RefRHUM850, CandRHUM850;
+    a2f RefRHUM850, CandRHUM850;
     RefRHUM850.resize(lats, 2 * lons);
     CandRHUM850.resize(lats, 2 * lons);
-    Array2DFloat RefMulti, CandMulti;
+    a2f RefMulti, CandMulti;
     RefMulti.resize(lats, 2 * lons);
     CandMulti.resize(lats, 2 * lons);
 
@@ -624,7 +624,7 @@ TEST(PredictorCriteria, ProcessRSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    VectorFloat checkPRWTR, checkRHUM850, critRMSE;
+    vf checkPRWTR, checkRHUM850, critRMSE;
     checkPRWTR.resize(candidatesNb);
     checkRHUM850.resize(candidatesNb);
     critRMSE.resize(candidatesNb);
@@ -749,17 +749,17 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    Array2DFloat RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
+    a2f RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
     RefPRWTR12h.resize(lats, lons);
     RefPRWTR24h.resize(lats, lons);
     CandPRWTR12h.resize(lats, lons);
     CandPRWTR24h.resize(lats, lons);
-    Array2DFloat RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
+    a2f RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
     RefRHUM85012h.resize(lats, lons);
     RefRHUM85024h.resize(lats, lons);
     CandRHUM85012h.resize(lats, lons);
     CandRHUM85024h.resize(lats, lons);
-    Array2DFloat RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
+    a2f RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
     RefMulti12h.resize(lats, lons);
     RefMulti24h.resize(lats, lons);
     CandMulti12h.resize(lats, lons);
@@ -827,7 +827,7 @@ TEST(PredictorCriteria, ProcessRMSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    VectorFloat checkPRWTR12h, checkRHUM85012h, critRMSE;
+    vf checkPRWTR12h, checkRHUM85012h, critRMSE;
     checkPRWTR12h.resize(candidatesNb);
     checkRHUM85012h.resize(candidatesNb);
     critRMSE.resize(candidatesNb);
@@ -957,17 +957,17 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    Array2DFloat RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
+    a2f RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
     RefPRWTR12h.resize(lats, lons);
     RefPRWTR24h.resize(lats, lons);
     CandPRWTR12h.resize(lats, lons);
     CandPRWTR24h.resize(lats, lons);
-    Array2DFloat RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
+    a2f RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
     RefRHUM85012h.resize(lats, lons);
     RefRHUM85024h.resize(lats, lons);
     CandRHUM85012h.resize(lats, lons);
     CandRHUM85024h.resize(lats, lons);
-    Array2DFloat RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
+    a2f RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
     RefMulti12h.resize(lats, lons);
     RefMulti24h.resize(lats, lons);
     CandMulti12h.resize(lats, lons);
@@ -1035,7 +1035,7 @@ TEST(PredictorCriteria, ProcessNRMSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    VectorFloat checkPRWTR12h, checkRHUM85012h, critRMSE;
+    vf checkPRWTR12h, checkRHUM85012h, critRMSE;
     checkPRWTR12h.resize(candidatesNb);
     checkRHUM85012h.resize(candidatesNb);
     critRMSE.resize(candidatesNb);
@@ -1159,8 +1159,8 @@ TEST(PredictorCriteria, ProcessDifferences)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
 
-    VArray2DFloat RefData;
-    Array2DFloat Datatmp;
+    va2f RefData;
+    a2f Datatmp;
     Datatmp.resize(2, 2);
 
     Datatmp(0, 0) = 12;
@@ -1219,7 +1219,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Datatmp(1, 1) = -475;
     RefData.push_back(Datatmp);
 
-    VArray2DFloat CandData;
+    va2f CandData;
     Datatmp(0, 0) = 634;
     Datatmp(0, 1) = 234;
     Datatmp(1, 0) = 3465;
@@ -1278,7 +1278,7 @@ TEST(PredictorCriteria, ProcessDifferences)
 
     // SAD
 
-    VectorFloat Results;
+    vf Results;
     Results.resize(11);
     Results[0] = 4765;
     Results[1] = 8790;
@@ -1385,7 +1385,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[1] = 0.9929f;
     Results[2] = 1;
     Results[3] = 0;
-    Results[4] = NaNFloat;
+    Results[4] = NaNf;
     Results[5] = 1;
     Results[6] = 1.1098f;
     Results[7] = 1;
@@ -1433,12 +1433,12 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[1] = 1.972f;
     Results[2] = 2;
     Results[3] = 0;
-    Results[4] = NaNFloat;
+    Results[4] = NaNf;
     Results[5] = 2;
     Results[6] = 2.532f;
     Results[7] = 2;
     Results[8] = 2;
-    Results[9] = NaNFloat;
+    Results[9] = NaNf;
     Results[10] = 0.543f;
 
     asPredictorCriteria *criteriaMRDtoMean = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMean);

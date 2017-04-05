@@ -64,7 +64,7 @@ TEST(CatalogPredictand, LoadCatalogProp)
     EXPECT_EQ(endreal, catalog.GetEnd());
     EXPECT_EQ(24, catalog.GetTimeStepHours());
     EXPECT_EQ(0, catalog.GetFirstTimeStepHours());
-    VectorString nans = catalog.GetNan();
+    vwxs nans = catalog.GetNan();
     EXPECT_EQ(true, nans[0].IsSameAs("32767"));
     samestr = catalog.GetCoordSys().CompareTo(_T("EPSG:3857"));
     EXPECT_EQ(0, samestr);

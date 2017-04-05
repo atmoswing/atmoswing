@@ -59,7 +59,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, Load1stMember)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -126,7 +126,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, Load3rdMember)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -196,7 +196,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, Load3Members)
     ASSERT_EQ(4, predictor->GetData().size());
     ASSERT_EQ(3, predictor->GetData()[0].size());
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     // 1st member
@@ -300,7 +300,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadComposite)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -368,7 +368,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadBorderLeft)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -434,7 +434,7 @@ TEST(DataPredictorArchiveEcmwfCera20CRegular, LoadBorderRight)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat rh = predictor->GetData();
+    vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)

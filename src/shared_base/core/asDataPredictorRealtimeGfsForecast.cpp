@@ -48,8 +48,8 @@ asDataPredictorRealtimeGfsForecast::asDataPredictorRealtimeGfsForecast(const wxS
     m_runHourStart = 0;
     m_runUpdate = 6;
     m_firstTimeStepHours = 0;
-    m_nanValues.push_back(NaNDouble);
-    m_nanValues.push_back(NaNFloat);
+    m_nanValues.push_back(NaNd);
+    m_nanValues.push_back(NaNf);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_xAxisStep = 0.5;

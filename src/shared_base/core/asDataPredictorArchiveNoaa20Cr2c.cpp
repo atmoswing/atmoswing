@@ -136,8 +136,8 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
                m_product.IsSameAs("gaussian", false) || m_product.IsSameAs("flux", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "gaussian";
-        m_xAxisStep = NaNFloat;
-        m_yAxisStep = NaNFloat;
+        m_xAxisStep = NaNf;
+        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
@@ -174,9 +174,9 @@ bool asDataPredictorArchiveNoaa20Cr2c::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNoaa20Cr2c::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNoaa20Cr2c::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));

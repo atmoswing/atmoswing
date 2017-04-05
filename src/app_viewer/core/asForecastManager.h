@@ -122,12 +122,12 @@ public:
         return m_aggregator->GetMethodName(methodRow);
     }
 
-    VectorString GetAllMethodNames() const
+    vwxs GetAllMethodNames() const
     {
         return m_aggregator->GetAllMethodNames();
     }
 
-    VectorString GetAllForecastNames() const
+    vwxs GetAllForecastNames() const
     {
         return m_aggregator->GetAllForecastNames();
     }
@@ -137,7 +137,7 @@ public:
         return m_aggregator->GetAllForecastNamesWxArray();
     }
 
-    VectorString GetFilePaths() const
+    vwxs GetFilePaths() const
     {
         return m_aggregator->GetFilePaths();
     }
@@ -152,17 +152,17 @@ public:
         return m_aggregator->GetFilePathsWxArray();
     }
 
-    Array1DFloat GetTargetDates(int methodRow) const
+    a1f GetTargetDates(int methodRow) const
     {
         return m_aggregator->GetTargetDates(methodRow);
     }
 
-    Array1DFloat GetTargetDates(int methodRow, int forecastRow) const
+    a1f GetTargetDates(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetTargetDates(methodRow, forecastRow);
     }
 
-    Array1DFloat GetFullTargetDates() const
+    a1f GetFullTargetDates() const
     {
         return m_aggregator->GetFullTargetDates();
     }

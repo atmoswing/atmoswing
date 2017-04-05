@@ -35,7 +35,7 @@
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -64,7 +64,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -126,7 +126,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasySmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -155,7 +155,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -217,7 +217,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadEasyLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -246,7 +246,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -272,7 +272,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -301,7 +301,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -327,7 +327,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -356,7 +356,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -382,7 +382,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -411,7 +411,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -437,7 +437,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -466,7 +466,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -492,7 +492,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720SmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -521,7 +521,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -547,7 +547,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderLeftOn720LargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -576,7 +576,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -602,7 +602,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -631,7 +631,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -657,7 +657,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadBorderRightLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -687,7 +687,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -713,7 +713,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -743,7 +743,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -769,7 +769,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -799,7 +799,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -823,7 +823,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -853,7 +853,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -877,7 +877,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -907,7 +907,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -934,7 +934,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmal
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -964,7 +964,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -991,7 +991,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLarg
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -1021,7 +1021,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1043,7 +1043,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -1073,7 +1073,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1095,7 +1095,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -1125,7 +1125,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -1145,7 +1145,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -1175,7 +1175,7 @@ TEST(DataPredictorRealtimeNwsGfsRegular, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)

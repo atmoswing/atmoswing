@@ -131,7 +131,7 @@ wxString asForecastViewer::GetStationName(int iStat) const
 
 float asForecastViewer::GetSelectedTargetDate()
 {
-    Array1DFloat targetDates;
+    a1f targetDates;
 
     if (m_methodSelection < 0) {
         m_methodSelection = 0;
@@ -153,7 +153,7 @@ float asForecastViewer::GetSelectedTargetDate()
 void asForecastViewer::SetLeadTimeDate(float date)
 {
     if (date > 0 && (m_methodSelection > 0)) {
-        Array1DFloat targetDates;
+        a1f targetDates;
 
         if (m_forecastSelection > 0) {
             targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
@@ -264,7 +264,7 @@ void asForecastViewer::Redraw()
     // Get reference axis index
     int indexReferenceAxis = asNOT_FOUND;
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
-        Array1DFloat forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
+        a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
         indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0],
                                                         &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
@@ -386,10 +386,10 @@ void asForecastViewer::Redraw()
 
             // Loop over the lead times
             for (unsigned int iLead = 0; iLead < leadTimeSize; iLead++) {
-                Array1DFloat values = forecast->GetAnalogsValuesGross(iLead, iStat);
+                a1f values = forecast->GetAnalogsValuesGross(iLead, iStat);
 
                 if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
-                    data.Add(NaNDouble);
+                    data.Add(NaNd);
                 } else {
                     if (quantile >= 0) {
                         double forecastVal = asTools::GetValueForQuantile(values, quantile);
@@ -545,11 +545,11 @@ void asForecastViewer::Redraw()
                 m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 
-            Array1DFloat values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, iStat);
+            a1f values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, iStat);
 
             if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
-                data.Add(NaNDouble); // 1st real value
-                data.Add(NaNDouble); // 2nd normalized
+                data.Add(NaNd); // 1st real value
+                data.Add(NaNd); // 2nd normalized
             } else {
                 if (quantile >= 0) {
                     double forecastVal = asTools::GetValueForQuantile(values, quantile);

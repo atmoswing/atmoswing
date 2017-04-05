@@ -58,7 +58,7 @@ TEST(DataPredictorArchiveNasaMerra2Regular, LoadEasy)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
@@ -123,7 +123,7 @@ TEST(DataPredictorArchiveNasaMerra2Regular, LoadComposite)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VVArray2DFloat hgt = predictor->GetData();
+    vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)

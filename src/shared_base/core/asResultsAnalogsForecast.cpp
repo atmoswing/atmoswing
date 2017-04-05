@@ -193,17 +193,17 @@ bool asResultsAnalogsForecast::Save()
     }
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNamesLeadTime;
+    vstds DimNamesLeadTime;
     DimNamesLeadTime.push_back("lead_time");
-    VectorStdString DimNamesAnalogsTot;
+    vstds DimNamesAnalogsTot;
     DimNamesAnalogsTot.push_back("analogs_tot");
-    VectorStdString DimNamesStations;
+    vstds DimNamesStations;
     DimNamesStations.push_back("stations");
-    VectorStdString DimNamesAnalogsStations;
+    vstds DimNamesAnalogsStations;
     DimNamesAnalogsStations.push_back("stations");
     DimNamesAnalogsStations.push_back("analogs_tot");
-    VectorStdString DimNameReferenceAxis;
-    VectorStdString DimNameReferenceValues;
+    vstds DimNameReferenceAxis;
+    vstds DimNameReferenceValues;
     if (m_hasReferenceValues) {
         DimNameReferenceAxis.push_back("reference_axis");
         DimNameReferenceValues.push_back("stations");
@@ -269,9 +269,9 @@ bool asResultsAnalogsForecast::Save()
     size_t countAnalogsStations[] = {Nstations, Nanalogstot};
 
     // Set the matrices in vectors
-    VectorFloat analogsCriteria(Nanalogstot);
-    VectorFloat analogsDates(Nanalogstot);
-    VectorFloat analogsValuesGross(Nanalogstot * Nstations);
+    vf analogsCriteria(Nanalogstot);
+    vf analogsDates(Nanalogstot);
+    vf analogsValuesGross(Nanalogstot * Nstations);
 
     int ind = 0;
     for (unsigned int iTime = 0; iTime < Nleadtime; iTime++) {
@@ -506,9 +506,9 @@ bool asResultsAnalogsForecast::Load()
     }
 
     // Create vectors for matrices data
-    VectorFloat analogsCriteria(Nanalogstot);
-    VectorFloat analogsDates(Nanalogstot);
-    VectorFloat analogsValuesGross(Nanalogstot * Nstations);
+    vf analogsCriteria(Nanalogstot);
+    vf analogsDates(Nanalogstot);
+    vf analogsValuesGross(Nanalogstot * Nstations);
 
     // Get data
     size_t IndexStart1D[] = {0};
@@ -536,8 +536,8 @@ bool asResultsAnalogsForecast::Load()
     // Set data into the matrices
     int ind = 0;
     for (int iTime = 0; iTime < (int) Nleadtime; iTime++) {
-        Array1DFloat analogsCriteriaLeadTime(m_analogsNb[iTime]);
-        Array1DFloat analogsDatesLeadTime(m_analogsNb[iTime]);
+        a1f analogsCriteriaLeadTime(m_analogsNb[iTime]);
+        a1f analogsDatesLeadTime(m_analogsNb[iTime]);
 
         for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
             analogsCriteriaLeadTime(iAnalog) = analogsCriteria[ind];
@@ -552,7 +552,7 @@ bool asResultsAnalogsForecast::Load()
     int indVal = 0;
     if (versionMajor == 1 && versionMinor == 0) {
         for (int iTime = 0; iTime < Nleadtime; iTime++) {
-            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
+            a2f analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
 
             for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
                 for (int iStat = 0; iStat < Nstations; iStat++) {
@@ -566,8 +566,8 @@ bool asResultsAnalogsForecast::Load()
     } else {
         // Create containers
         for (int iTime = 0; iTime < Nleadtime; iTime++) {
-            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
-            analogsValuesGrossLeadTime.fill(NaNFloat);
+            a2f analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
+            analogsValuesGrossLeadTime.fill(NaNf);
             m_analogsValuesGross.push_back(analogsValuesGrossLeadTime);
         }
 
@@ -684,7 +684,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
     if (m_leadTimeOrigin != otherForecast->GetLeadTimeOrigin())
         compatible = false;
 
-    Array1DFloat targetDates = otherForecast->GetTargetDates();
+    a1f targetDates = otherForecast->GetTargetDates();
     if (m_targetDates.size() != targetDates.size()) {
         compatible = false;
     } else {
@@ -694,7 +694,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
         }
     }
 
-    Array1DInt stationsIds = otherForecast->GetStationIds();
+    a1i stationsIds = otherForecast->GetStationIds();
     if (m_stationIds.size() != stationsIds.size()) {
         compatible = false;
     } else {
@@ -704,7 +704,7 @@ bool asResultsAnalogsForecast::IsCompatibleWith(asResultsAnalogsForecast *otherF
         }
     }
 
-    Array1DFloat referenceAxis = otherForecast->GetReferenceAxis();
+    a1f referenceAxis = otherForecast->GetReferenceAxis();
     if (m_referenceAxis.size() != referenceAxis.size()) {
         compatible = false;
     } else {
@@ -731,7 +731,7 @@ bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast *otherForecast)
     if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false))
         return false;
 
-    VectorInt predictandStationIds = otherForecast->GetPredictandStationIds();
+    vi predictandStationIds = otherForecast->GetPredictandStationIds();
     if (m_predictandStationIds.size() != predictandStationIds.size()) {
         return false;
     }
@@ -741,7 +741,7 @@ bool asResultsAnalogsForecast::IsSameAs(asResultsAnalogsForecast *otherForecast)
             return false;
     }
 
-    Array1DFloat targetDates = otherForecast->GetTargetDates();
+    a1f targetDates = otherForecast->GetTargetDates();
     if (m_targetDates.size() != targetDates.size()) {
         return false;
     }

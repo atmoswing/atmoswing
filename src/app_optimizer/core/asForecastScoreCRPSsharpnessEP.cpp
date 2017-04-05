@@ -37,7 +37,7 @@ asForecastScoreCRPSsharpnessEP::asForecastScoreCRPSsharpnessEP()
     m_fullName = _("Continuous Ranked Probability Score Sharpness exact solution");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreCRPSsharpnessEP::~asForecastScoreCRPSsharpnessEP()
@@ -45,7 +45,7 @@ asForecastScoreCRPSsharpnessEP::~asForecastScoreCRPSsharpnessEP()
     //dtor
 }
 
-float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -53,14 +53,14 @@ float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const Array1DFlo
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(0, ForcastVals, nbElements)) {
         wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
-        return NaNFloat;
+        return NaNf;
     }
 
     // The median
     float xmed = 0;
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
@@ -86,8 +86,8 @@ float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const Array1DFlo
     return CRPSsharpness;
 }
 
-bool asForecastScoreCRPSsharpnessEP::ProcessScoreClimatology(const Array1DFloat &refVals,
-                                                             const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSsharpnessEP::ProcessScoreClimatology(const a1f &refVals,
+                                                             const a1f &climatologyData)
 {
     return true;
 }

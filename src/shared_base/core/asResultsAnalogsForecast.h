@@ -81,12 +81,12 @@ public:
         m_predictandDatabase = val;
     }
 
-    VectorInt GetPredictandStationIds() const
+    vi GetPredictandStationIds() const
     {
         return m_predictandStationIds;
     }
 
-    void SetPredictandStationIds(const VectorInt val)
+    void SetPredictandStationIds(const vi val)
     {
         m_predictandStationIds = val;
     }
@@ -194,7 +194,7 @@ public:
         return (int) m_stationIds.size();
     }
 
-    Array1DInt GetStationIds() const
+    a1i GetStationIds() const
     {
         return m_stationIds;
     }
@@ -219,7 +219,7 @@ public:
 
     wxString GetStationNameAndHeight(int iStat) const;
 
-    void SetStationNames(const VectorString &stationsNames)
+    void SetStationNames(const vwxs &stationsNames)
     {
         m_stationNames = stationsNames;
     }
@@ -231,12 +231,12 @@ public:
         return m_stationIds[i];
     }
 
-    void SetStationIds(const Array1DInt &stationsIds)
+    void SetStationIds(const a1i &stationsIds)
     {
         m_stationIds = stationsIds;
     }
 
-    void SetStationOfficialIds(const VectorString &stationsOfficialIds)
+    void SetStationOfficialIds(const vwxs &stationsOfficialIds)
     {
         m_stationOfficialIds = stationsOfficialIds;
     }
@@ -248,12 +248,12 @@ public:
         return m_stationHeights[i];
     }
 
-    void SetStationHeights(const Array1DFloat &stationsHeights)
+    void SetStationHeights(const a1f &stationsHeights)
     {
         m_stationHeights = stationsHeights;
     }
 
-    Array1DDouble GetStationXCoords() const
+    a1d GetStationXCoords() const
     {
         return m_stationXCoords;
     }
@@ -265,12 +265,12 @@ public:
         return m_stationXCoords[i];
     }
 
-    void SetStationXCoords(const Array1DDouble &stationsXCoords)
+    void SetStationXCoords(const a1d &stationsXCoords)
     {
         m_stationXCoords = stationsXCoords;
     }
 
-    Array1DDouble GetStationYCoords() const
+    a1d GetStationYCoords() const
     {
         return m_stationYCoords;
     }
@@ -282,17 +282,17 @@ public:
         return m_stationYCoords[i];
     }
 
-    void SetStationYCoords(const Array1DDouble &stationsYCoords)
+    void SetStationYCoords(const a1d &stationsYCoords)
     {
         m_stationYCoords = stationsYCoords;
     }
 
-    Array1DFloat GetReferenceAxis() const
+    a1f GetReferenceAxis() const
     {
         return m_referenceAxis;
     }
 
-    void SetReferenceAxis(const Array1DFloat &referenceAxis)
+    void SetReferenceAxis(const a1f &referenceAxis)
     {
         m_referenceAxis = referenceAxis;
         m_hasReferenceValues = true;
@@ -302,7 +302,7 @@ public:
     {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
-            return NaNFloat;
+            return NaNf;
         }
 
         wxASSERT(iStat >= 0);
@@ -312,18 +312,18 @@ public:
         return m_referenceValues(iStat, iRef);
     }
 
-    Array2DFloat GetReferenceValues() const
+    a2f GetReferenceValues() const
     {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
-            Array2DFloat nodata(0, 0);
+            a2f nodata(0, 0);
             return nodata;
         }
 
         return m_referenceValues;
     }
 
-    void SetReferenceValues(const Array2DFloat &referenceValues)
+    void SetReferenceValues(const a2f &referenceValues)
     {
         m_referenceValues = referenceValues;
     }
@@ -333,12 +333,12 @@ public:
         return (int) m_targetDates.size();
     }
 
-    Array1DFloat &GetTargetDates()
+    a1f &GetTargetDates()
     {
         return m_targetDates;
     }
 
-    void SetTargetDates(const Array1DDouble &refDates)
+    void SetTargetDates(const a1d &refDates)
     {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
@@ -347,19 +347,19 @@ public:
         }
     }
 
-    void SetTargetDates(const Array1DFloat &refDates)
+    void SetTargetDates(const a1f &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    Array1DFloat &GetAnalogsCriteria(unsigned int i)
+    a1f &GetAnalogsCriteria(unsigned int i)
     {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(unsigned int i, const Array1DFloat &analogsCriteria)
+    void SetAnalogsCriteria(unsigned int i, const a1f &analogsCriteria)
     {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
@@ -370,28 +370,28 @@ public:
         }
     }
 
-    Array2DFloat &GetAnalogsValuesGross(unsigned int iLead)
+    a2f &GetAnalogsValuesGross(unsigned int iLead)
     {
         wxASSERT(m_analogsValuesGross.size() > iLead);
         return m_analogsValuesGross[iLead];
     }
 
-    Array1DFloat GetAnalogsValuesGross(unsigned int iLead, int iStat) const
+    a1f GetAnalogsValuesGross(unsigned int iLead, int iStat) const
     {
         wxASSERT(m_analogsValuesGross.size() > iLead);
         wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
-        Array1DFloat vals = m_analogsValuesGross[iLead].row(iStat);
+        a1f vals = m_analogsValuesGross[iLead].row(iStat);
         return vals;
     }
 
-    void SetAnalogsValuesGross(unsigned int iLead, int iStat, const Array1DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(unsigned int iLead, int iStat, const a1f &analogsValuesGross)
     {
         if (m_analogsValuesGross.size() >= iLead + 1) {
             wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
             wxASSERT(m_analogsValuesGross[iLead].cols() == analogsValuesGross.size());
             m_analogsValuesGross[iLead].row(iStat) = analogsValuesGross;
         } else if (m_analogsValuesGross.size() == iLead) {
-            Array2DFloat emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
+            a2f emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
             m_analogsValuesGross.push_back(emptyBlock);
 
             wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
@@ -414,13 +414,13 @@ public:
         return (int) m_analogsDates[i].size();
     }
 
-    Array1DFloat &GetAnalogsDates(int i)
+    a1f &GetAnalogsDates(int i)
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(unsigned int i, const Array1DFloat &analogsDates)
+    void SetAnalogsDates(unsigned int i, const a1f &analogsDates)
     {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;
@@ -451,23 +451,23 @@ private:
     asDataPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     wxString m_predictandDatabase;
-    VectorInt m_predictandStationIds;
+    vi m_predictandStationIds;
     wxString m_forecastsDirectory;
     bool m_hasReferenceValues;
     double m_leadTimeOrigin;
-    Array1DFloat m_targetDates;
-    Array1DInt m_analogsNb;
-    VectorString m_stationNames;
-    VectorString m_stationOfficialIds;
-    Array1DInt m_stationIds;
-    Array1DFloat m_stationHeights;
-    Array1DDouble m_stationXCoords;
-    Array1DDouble m_stationYCoords;
-    Array1DFloat m_referenceAxis;
-    Array2DFloat m_referenceValues;
-    VArray1DFloat m_analogsCriteria;
-    VArray2DFloat m_analogsValuesGross;
-    VArray1DFloat m_analogsDates;
+    a1f m_targetDates;
+    a1i m_analogsNb;
+    vwxs m_stationNames;
+    vwxs m_stationOfficialIds;
+    a1i m_stationIds;
+    a1f m_stationHeights;
+    a1d m_stationXCoords;
+    a1d m_stationYCoords;
+    a1f m_referenceAxis;
+    a2f m_referenceValues;
+    va1f m_analogsCriteria;
+    va2f m_analogsValuesGross;
+    va1f m_analogsDates;
 };
 
 #endif // ASRESULTSANALOGSFORECAST_H

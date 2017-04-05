@@ -46,7 +46,7 @@ public:
 
     void LockAll();
 
-    void Unlock(VectorInt &indices);
+    void Unlock(vi &indices);
 
     int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre)
     {

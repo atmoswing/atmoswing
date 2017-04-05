@@ -29,7 +29,7 @@
 #include "asThreadInternetDownload.h"
 
 
-asThreadInternetDownload::asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames,
+asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames,
                                                    const wxString &destinationDir, bool usesProxy,
                                                    const wxString &proxyAddress, const long proxyPort,
                                                    const wxString &proxyUser, const wxString &proxyPasswd, int start,

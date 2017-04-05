@@ -47,11 +47,11 @@ public:
     asThreadProcessorGetAnalogsSubDates(std::vector<asDataPredictor *> predictorsArchive,
                                         std::vector<asDataPredictor *> predictorsTarget,
                                         asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData,
-                                        Array1DFloat *timeTargetSelection, std::vector<asPredictorCriteria *> criteria,
-                                        asParameters &params, int step, VpArray2DFloat &vRefData,
-                                        VpArray2DFloat &vEvalData, Array1DInt &vRowsNb, Array1DInt &vColsNb, int start,
-                                        int end, Array2DFloat *finalAnalogsCriteria, Array2DFloat *finalAnalogsDates,
-                                        Array2DFloat *previousAnalogsDates, bool *containsNaNs);
+                                        a1f *timeTargetSelection, std::vector<asPredictorCriteria *> criteria,
+                                        asParameters &params, int step, vpa2f &vRefData,
+                                        vpa2f &vEvalData, a1i &vRowsNb, a1i &vColsNb, int start,
+                                        int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
+                                        a2f *previousAnalogsDates, bool *containsNaNs);
 
     virtual ~asThreadProcessorGetAnalogsSubDates();
 
@@ -64,19 +64,19 @@ private:
     std::vector<asDataPredictor *> m_pPredictorsTarget;
     asTimeArray *m_pTimeArrayArchiveData;
     asTimeArray *m_pTimeArrayTargetData;
-    Array1DFloat *m_pTimeTargetSelection;
+    a1f *m_pTimeTargetSelection;
     std::vector<asPredictorCriteria *> m_criteria;
     asParameters m_params;
     int m_step;
-    VpArray2DFloat m_vTargData;
-    VpArray2DFloat m_vArchData;
-    Array1DInt m_vRowsNb;
-    Array1DInt m_vColsNb;
+    vpa2f m_vTargData;
+    vpa2f m_vArchData;
+    a1i m_vRowsNb;
+    a1i m_vColsNb;
     int m_start;
     int m_end;
-    Array2DFloat *m_pFinalAnalogsCriteria;
-    Array2DFloat *m_pFinalAnalogsDates;
-    Array2DFloat *m_pPreviousAnalogsDates;
+    a2f *m_pFinalAnalogsCriteria;
+    a2f *m_pFinalAnalogsDates;
+    a2f *m_pPreviousAnalogsDates;
     bool *m_pContainsNaNs;
 
 };

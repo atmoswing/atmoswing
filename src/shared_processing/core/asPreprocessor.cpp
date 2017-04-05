@@ -131,10 +131,10 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat gradients(timeSize);
+    vva2f gradients(timeSize);
     gradients.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
-    Array2DFloat tmpgrad = Array2DFloat::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
+    a2f tmpgrad = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
     /*
     Illustration of the data arrangement
@@ -204,7 +204,7 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat addition(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
+    vva2f addition(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -244,7 +244,7 @@ bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat average(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
+    vva2f average(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -286,7 +286,7 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat resdiff(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
+    vva2f resdiff(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -323,7 +323,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Constant(rowsNb, colsNb, 1)));
+    vva2f multi(timeSize, va2f(membersNb, a2f::Constant(rowsNb, colsNb, 1)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -402,7 +402,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
             asThrowException(_("The predictors sizes make them impossible to merge."));
         }
 
-        VArray2DFloat tmp((unsigned long) membersNb, Array2DFloat(rowsNew, colsNew));
+        va2f tmp((unsigned long) membersNb, a2f(rowsNew, colsNew));
 
         for (int iTime = 0; iTime < timeSize; iTime++) {
             for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -433,7 +433,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Constant(rowsNb, colsNb, 1)));
+    vva2f multi(timeSize, va2f(membersNb, a2f::Constant(rowsNb, colsNb, 1)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -487,7 +487,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
 
     // Initialize
     wxASSERT(predictors[0]);
-    vvva2f copyData = vvva2f(2, VVArray2DFloat(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(newRowsNb, newColsNb))));
+    vvva2f copyData = vvva2f(2, vva2f(timeSize, va2f(membersNb, a2f::Zero(newRowsNb, newColsNb))));
 
     // Merge
     for (unsigned int iHalf = 0; iHalf < 2; iHalf++) {
@@ -510,7 +510,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
     }
 
     // Create container
-    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(newRowsNb, newColsNb)));
+    vva2f multi(timeSize, va2f(membersNb, a2f::Zero(newRowsNb, newColsNb)));
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
         for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -561,7 +561,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
+    vva2f multi(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
     float wind;
 
@@ -611,7 +611,7 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
     wxASSERT(membersNb > 0);
 
     // Create container
-    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
+    vva2f multi(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
     float wind;
 

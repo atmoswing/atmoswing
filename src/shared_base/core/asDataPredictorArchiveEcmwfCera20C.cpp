@@ -150,9 +150,9 @@ bool asDataPredictorArchiveEcmwfCera20C::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfCera20C::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveEcmwfCera20C::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));

@@ -4,7 +4,7 @@
 
 asThreadMethodOptimizerGeneticAlgorithms::asThreadMethodOptimizerGeneticAlgorithms(
         asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params, float *finalScoreCalib,
-        VectorFloat *scoreClimatology)
+        vf *scoreClimatology)
         : asThread(),
           m_optimizer(optimizer),
           m_params(params),
@@ -28,7 +28,7 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
     asResultsAnalogsForecastScores anaScores;
     asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
-    *m_finalScoreCalib = NaNFloat;
+    *m_finalScoreCalib = NaNf;
 
     // Set the climatology score value
     if (m_scoreClimatology->size() != 0) {

@@ -36,7 +36,7 @@ asPredictorCriteriaRMSEwithNaN::asPredictorCriteriaRMSEwithNaN(int linAlgebraMet
     m_fullName = _("Root Mean Square Error with NaNs management");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaRMSEwithNaN::~asPredictorCriteriaRMSEwithNaN()
     //dtor
 }
 
-float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+float asPredictorCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
                                              int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
@@ -83,7 +83,7 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
 
         default: {
             wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
+            return NaNf;
         }
     }
 
@@ -92,7 +92,7 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
 
     if (finalsize == 0) {
         wxLogVerbose(_("Only NaNs in the criteria calculation."));
-        return NaNFloat;
+        return NaNf;
     }
 
     mse /= finalsize;

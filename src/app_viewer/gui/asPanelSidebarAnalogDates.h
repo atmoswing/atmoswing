@@ -42,7 +42,7 @@ public:
 
     ~asPanelSidebarAnalogDates();
 
-    void SetChoices(Array1DFloat &arrayDate, Array1DFloat &arrayCriteria);
+    void SetChoices(a1f &arrayDate, a1f &arrayCriteria);
 
 private:
     wxListCtrl *m_listCtrl;
