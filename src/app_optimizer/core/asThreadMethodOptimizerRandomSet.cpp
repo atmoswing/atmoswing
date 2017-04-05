@@ -2,8 +2,7 @@
 
 asThreadMethodOptimizerRandomSet::asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer,
                                                                    asParametersOptimization *params,
-                                                                   float *finalScoreCalib,
-                                                                   vf *scoreClimatology)
+                                                                   float *finalScoreCalib, vf *scoreClimatology)
         : asThread(),
           m_optimizer(optimizer),
           m_params(params),

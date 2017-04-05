@@ -148,8 +148,7 @@ private:
     vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsForecastScoreVect m_forecastScoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels,
-                                        vd &preprocTimeHours) const;
+    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocTimeHours) const;
 
     bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 

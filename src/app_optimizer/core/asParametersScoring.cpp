@@ -176,10 +176,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                     wxXmlNode *nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
                     nodePreprocessing->AddChild(nodePreprocessingData);
 
-                    nodePreprocessingData->AddChild(fileParams.CreateNodeWithValue("dataset_id",
-                                                                                   GetPreprocessDatasetId(iStep,
-                                                                                                          iPtor,
-                                                                                                          iPre)));
+                    nodePreprocessingData->AddChild(
+                            fileParams.CreateNodeWithValue("dataset_id", GetPreprocessDatasetId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
                             fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(

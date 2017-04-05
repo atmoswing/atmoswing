@@ -127,9 +127,9 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
     MakeMap();
 
     // Get the elements size
-    size_t Nlon = (size_t)m_mapLon.size();
-    size_t Nlat = (size_t)m_mapLat.size();
-    size_t Nlevel = (size_t)m_mapLevel.size();
+    size_t Nlon = (size_t) m_mapLon.size();
+    size_t Nlat = (size_t) m_mapLat.size();
+    size_t Nlevel = (size_t) m_mapLevel.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 

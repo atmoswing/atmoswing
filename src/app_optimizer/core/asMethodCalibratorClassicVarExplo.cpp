@@ -70,14 +70,12 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
 
                 vd vPredictorTimeHours = params.GetPredictorTimeHoursVector(iStep, iPtor);
 
-                for (unsigned int iPtorTime = 0;
-                     iPtorTime < vPredictorTimeHours.size(); iPtorTime++) {
+                for (unsigned int iPtorTime = 0; iPtorTime < vPredictorTimeHours.size(); iPtorTime++) {
                     params.SetPredictorTimeHours(iStep, iPtor, vPredictorTimeHours[iPtorTime]);
 
                     vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
 
-                    for (unsigned int iPtorLevel = 0;
-                         iPtorLevel < vPredictorLevels.size(); iPtorLevel++) {
+                    for (unsigned int iPtorLevel = 0; iPtorLevel < vPredictorLevels.size(); iPtorLevel++) {
                         params.SetPredictorLevel(iStep, iPtor, vPredictorLevels[iPtorLevel]);
 
                         vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);

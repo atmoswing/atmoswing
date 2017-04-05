@@ -86,8 +86,7 @@ float asForecastScoreCRPSsharpnessEP::Assess(float ObservedVal, const a1f &Forca
     return CRPSsharpness;
 }
 
-bool asForecastScoreCRPSsharpnessEP::ProcessScoreClimatology(const a1f &refVals,
-                                                             const a1f &climatologyData)
+bool asForecastScoreCRPSsharpnessEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

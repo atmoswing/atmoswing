@@ -70,10 +70,10 @@ bool asResultsAnalogsForecastScores::Save()
 {
     BuildFileName();
 
-    wxLogVerbose(_("Saving intermediate file: %s") , m_filePath);
+    wxLogVerbose(_("Saving intermediate file: %s"), m_filePath);
 
     // Get the elements size
-    size_t Ntime = (size_t)m_forecastScores.rows();
+    size_t Ntime = (size_t) m_forecastScores.rows();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 

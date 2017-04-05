@@ -80,8 +80,8 @@ private:
 
     bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int iStep);
 
-    void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo,
-                        a1d &xAxis, a1d &yAxis) const;
+    void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo, a1d &xAxis,
+                        a1d &yAxis) const;
 
     void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis,
                   int iStep, int iPtor, int multipleFactor = 1) const;

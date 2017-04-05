@@ -59,8 +59,7 @@ float asForecastScoreCRPSaccuracyEP::Assess(float ObservedVal, const a1f &Forcas
     return CRPS - CRPSsharpness;
 }
 
-bool asForecastScoreCRPSaccuracyEP::ProcessScoreClimatology(const a1f &refVals,
-                                                            const a1f &climatologyData)
+bool asForecastScoreCRPSaccuracyEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

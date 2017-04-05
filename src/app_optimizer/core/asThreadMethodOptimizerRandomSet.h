@@ -10,9 +10,8 @@ class asThreadMethodOptimizerRandomSet
         : public asThread
 {
 public:
-    asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer,
-                                     asParametersOptimization *params, float *finalScoreCalib,
-                                     vf *scoreClimatology);
+    asThreadMethodOptimizerRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params,
+                                     float *finalScoreCalib, vf *scoreClimatology);
 
     virtual ~asThreadMethodOptimizerRandomSet();
 

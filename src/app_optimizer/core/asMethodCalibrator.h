@@ -151,7 +151,8 @@ public:
     }
 
 protected:
-    struct ParamExploration {
+    struct ParamExploration
+    {
         double xMinStart;
         double xMinEnd;
         int xPtsNbStart;

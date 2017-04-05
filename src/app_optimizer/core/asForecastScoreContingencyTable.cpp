@@ -91,8 +91,7 @@ float asForecastScoreContingencyTable::Assess(float ObservedVal, const a1f &Forc
     return score;
 }
 
-bool asForecastScoreContingencyTable::ProcessScoreClimatology(const a1f &refVals,
-                                                              const a1f &climatologyData)
+bool asForecastScoreContingencyTable::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }
