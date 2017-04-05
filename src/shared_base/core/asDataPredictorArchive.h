@@ -47,7 +47,7 @@ public:
 
     virtual bool Init();
 
-    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, VVArray2DFloat &compositeData);
+    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
@@ -69,14 +69,14 @@ protected:
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData);
+                                 vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                VVArray2DFloat &compositeData);
+                                vvva2f &compositeData);
 
 private:
 

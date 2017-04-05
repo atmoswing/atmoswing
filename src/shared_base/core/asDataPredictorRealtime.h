@@ -230,17 +230,17 @@ protected:
     int *GetIndexesCountGrib(int i_area) const;
 
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                VVArray2DFloat &compositeData);
+                                vvva2f &compositeData);
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData);
+                                 vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  VVArray2DFloat &compositeData);
+                                  vvva2f &compositeData);
 
 private:
 

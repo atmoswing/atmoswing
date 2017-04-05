@@ -158,7 +158,7 @@ VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &time
 }
 
 bool asDataPredictorArchiveEcmwfEra20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

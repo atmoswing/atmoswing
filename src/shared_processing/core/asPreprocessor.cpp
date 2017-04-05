@@ -123,14 +123,16 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat gradients(timeSize);
-    gradients.reserve(timeSize * 2 * rowsNb * colsNb);
+    VVArray2DFloat gradients(timeSize);
+    gradients.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
     Array2DFloat tmpgrad = Array2DFloat::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
@@ -150,25 +152,27 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     */
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        // Vertical gradients
-        tmpgrad.block(0, 0, rowsNb - 1, colsNb) = predictors[0]->GetData()[i_time].block(1, 0, rowsNb - 1, colsNb) -
-                                                  predictors[0]->GetData()[i_time].block(0, 0, rowsNb - 1, colsNb);
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            // Vertical gradients
+            tmpgrad.block(0, 0, rowsNb - 1, colsNb) = predictors[0]->GetData()[i_time][i_mem].block(1, 0, rowsNb - 1, colsNb) -
+                                                      predictors[0]->GetData()[i_time][i_mem].block(0, 0, rowsNb - 1, colsNb);
 
-        // Horizontal gradients
-        tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
-                predictors[0]->GetData()[i_time].block(0, 1, rowsNb, colsNb - 1) -
-                predictors[0]->GetData()[i_time].block(0, 0, rowsNb, colsNb - 1);
+            // Horizontal gradients
+            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
+                    predictors[0]->GetData()[i_time][i_mem].block(0, 1, rowsNb, colsNb - 1) -
+                    predictors[0]->GetData()[i_time][i_mem].block(0, 0, rowsNb, colsNb - 1);
 
-        if (asTools::HasNaN(tmpgrad)) {
-            // std::cout << tmpgrad << std::endl;
-            // std::cout << "\n" << std::endl;
-            // std::cout << predictors[0]->GetData()[i_time] << std::endl;
+            if (asTools::HasNaN(tmpgrad)) {
+                // std::cout << tmpgrad << std::endl;
+                // std::cout << "\n" << std::endl;
+                // std::cout << predictors[0]->GetData()[i_time] << std::endl;
 
-            wxLogError(_("NaN found during gradients preprocessing !"));
-            return false;
+                wxLogError(_("NaN found during gradients preprocessing !"));
+                return false;
+            }
+
+            gradients[i_time].push_back(tmpgrad);
         }
-
-        gradients[i_time] = tmpgrad;
     }
 
     // Overwrite the data in the predictor object
@@ -192,18 +196,22 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat addition(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
+    VVArray2DFloat addition(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-            wxASSERT(predictors[i_dat]);
-            addition[i_time] += predictors[i_dat]->GetData()[i_time];
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+                wxASSERT(predictors[i_dat]);
+                addition[i_time][i_mem] += predictors[i_dat]->GetData()[i_time][i_mem];
+            }
         }
     }
 
@@ -228,20 +236,24 @@ bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat average(timeSize, Array2DFloat::Zero(rowsNb, colsNb));
+    VVArray2DFloat average(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-            wxASSERT(predictors[i_dat]);
-            average[i_time] += predictors[i_dat]->GetData()[i_time];
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+                wxASSERT(predictors[i_dat]);
+                average[i_time][i_mem] += predictors[i_dat]->GetData()[i_time][i_mem];
+            }
+            average[i_time][i_mem] /= float(predictors.size());
         }
-        average[i_time] /= predictors.size();
     }
 
     // Overwrite the data in the predictor object
@@ -266,16 +278,20 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat resdiff(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
+    VVArray2DFloat resdiff(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        resdiff[i_time] = predictors[0]->GetData()[i_time] - predictors[1]->GetData()[i_time];
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            resdiff[i_time][i_mem] = predictors[0]->GetData()[i_time][i_mem] - predictors[1]->GetData()[i_time][i_mem];
+        }
     }
 
     // Overwrite the data in the predictor object
@@ -299,18 +315,22 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Ones(rowsNb, colsNb));
+    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Constant(rowsNb, colsNb, 1)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
-            wxASSERT(predictors[i_dat]);
-            multi[i_time] *= predictors[i_dat]->GetData()[i_time];
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (unsigned int i_dat = 0; i_dat < predictors.size(); i_dat++) {
+                wxASSERT(predictors[i_dat]);
+                multi[i_time][i_mem] *= predictors[i_dat]->GetData()[i_time][i_mem];
+            }
         }
     }
 
@@ -333,10 +353,11 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
 
     // Merge
     wxASSERT(predictors[0]);
-    VVArray2DFloat copyData = VVArray2DFloat(inputSize / 2);
-    copyData.reserve(
-            2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() * predictors[0]->GetTimeSize() * inputSize);
+    vvva2f copyData = vvva2f(inputSize / 2);
+    copyData.reserve(2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() *
+                     predictors[0]->GetTimeSize() * predictors[0]->GetMembersNb() * inputSize);
     int counter = 0;
+
 #ifdef _DEBUG
     int prevTimeSize = 0;
 #endif // _DEBUG
@@ -351,6 +372,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
         int rowsNb2 = predictors[i_dat + 1]->GetLatPtsnb();
         int colsNb2 = predictors[i_dat + 1]->GetLonPtsnb();
         int timeSize = predictors[i_dat]->GetTimeSize();
+        int membersNb = predictors[i_dat]->GetMembersNb();
 
 #ifdef _DEBUG
         if (i_dat > 0) {
@@ -364,6 +386,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
         wxASSERT(rowsNb2 > 0);
         wxASSERT(colsNb2 > 0);
         wxASSERT(timeSize > 0);
+        wxASSERT(membersNb > 0);
 
         bool putBelow = false;
         int rowsNew = 0, colsNew = 0;
@@ -379,42 +402,46 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
             asThrowException(_("The predictors sizes make them impossible to merge."));
         }
 
-        Array2DFloat tmp(rowsNew, colsNew);
+        VArray2DFloat tmp((unsigned long) membersNb, Array2DFloat(rowsNew, colsNew));
 
         for (int i_time = 0; i_time < timeSize; i_time++) {
-            tmp.topLeftCorner(rowsNb1, colsNb1) = predictors[i_dat]->GetData()[i_time];
+            for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+                tmp[i_mem].topLeftCorner(rowsNb1, colsNb1) = predictors[i_dat]->GetData()[i_time][i_mem];
 
-            if (putBelow) {
-                tmp.block(rowsNb1, 0, rowsNb2, colsNb2) = predictors[i_dat + 1]->GetData()[i_time];
-            } else {
-                tmp.block(0, colsNb1, rowsNb2, colsNb2) = predictors[i_dat + 1]->GetData()[i_time];
+                if (putBelow) {
+                    tmp[i_mem].block(rowsNb1, 0, rowsNb2, colsNb2) = predictors[i_dat + 1]->GetData()[i_time][i_mem];
+                } else {
+                    tmp[i_mem].block(0, colsNb1, rowsNb2, colsNb2) = predictors[i_dat + 1]->GetData()[i_time][i_mem];
+                }
+
+                copyData[counter].push_back(tmp);
             }
-
-            copyData[counter].push_back(tmp);
         }
 
         counter++;
     }
 
     // Get sizes
-    unsigned int rowsNb = (unsigned int) copyData[0][0].rows();
-    unsigned int colsNb = (unsigned int) copyData[0][0].cols();
+    unsigned int rowsNb = (unsigned int) copyData[0][0][0].rows();
+    unsigned int colsNb = (unsigned int) copyData[0][0][0].cols();
     unsigned int timeSize = (unsigned int) copyData[0].size();
+    unsigned int membersNb = (unsigned int) copyData[0][0].size();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Constant(rowsNb, colsNb, 1)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        multi[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                for (unsigned int i_dat = 0; i_dat < copyData.size(); i_dat++) {
-                    multi[i_time](i_row, i_col) *= copyData[i_dat][i_time](i_row, i_col);
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (int i_row = 0; i_row < rowsNb; i_row++) {
+                for (int i_col = 0; i_col < colsNb; i_col++) {
+                    for (unsigned int i_dat = 0; i_dat < copyData.size(); i_dat++) {
+                        multi[i_time][i_mem](i_row, i_col) *= copyData[i_dat][i_time][i_mem](i_row, i_col);
+                    }
                 }
             }
         }
@@ -448,40 +475,49 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
     unsigned int originalRowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int originalColsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+
     wxASSERT(originalRowsNb > 0);
     wxASSERT(originalColsNb > 0);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     int newRowsNb = originalRowsNb * factorSize;
     int newColsNb = originalColsNb;
 
     // Initialize
     wxASSERT(predictors[0]);
-    VVArray2DFloat copyData = VVArray2DFloat(2, VArray2DFloat(timeSize, Array2DFloat(newRowsNb, newColsNb)));
+    vvva2f copyData = vvva2f(2, VVArray2DFloat(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(newRowsNb, newColsNb))));
 
     // Merge
     for (unsigned int i_half = 0; i_half < 2; i_half++) {
         for (int i_time = 0; i_time < timeSize; i_time++) {
-            for (int i_dat = 0; i_dat < inputSize / 2; i_dat++) {
-                int i_curr = i_half * inputSize / 2 + i_dat;
-                wxASSERT(predictors[i_curr]);
-                wxASSERT(predictors[i_curr]->GetLatPtsnb() == originalRowsNb);
-                wxASSERT(predictors[i_curr]->GetLonPtsnb() == originalColsNb);
-                wxASSERT(predictors[i_curr]->GetTimeSize() == timeSize);
+            for (int i_mem = 0; i_mem < membersNb; i_mem++) {
 
-                copyData[i_half][i_time].block(i_dat * originalRowsNb, 0, originalRowsNb,
-                                               originalColsNb) = predictors[i_curr]->GetData()[i_time];
+                for (int i_dat = 0; i_dat < inputSize / 2; i_dat++) {
+                    int i_curr = i_half * inputSize / 2 + i_dat;
+                    wxASSERT(predictors[i_curr]);
+                    wxASSERT(predictors[i_curr]->GetLatPtsnb() == originalRowsNb);
+                    wxASSERT(predictors[i_curr]->GetLonPtsnb() == originalColsNb);
+                    wxASSERT(predictors[i_curr]->GetTimeSize() == timeSize);
+                    wxASSERT(predictors[i_curr]->GetMembersNb() == membersNb);
+
+                    copyData[i_half][i_time][i_mem].block(i_dat * originalRowsNb, 0, originalRowsNb,
+                                                   originalColsNb) = predictors[i_curr]->GetData()[i_time][i_mem];
+                }
             }
         }
     }
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Zero(newRowsNb, newColsNb));
+    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(newRowsNb, newColsNb)));
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        for (int i_row = 0; i_row < newRowsNb; i_row++) {
-            for (int i_col = 0; i_col < newColsNb; i_col++) {
-                multi[i_time](i_row, i_col) = copyData[0][i_time](i_row, i_col) * copyData[1][i_time](i_row, i_col);
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (int i_row = 0; i_row < newRowsNb; i_row++) {
+                for (int i_col = 0; i_col < newColsNb; i_col++) {
+                    multi[i_time][i_mem](i_row, i_col) = copyData[0][i_time][i_mem](i_row, i_col) * copyData[1][i_time][i_mem](i_row, i_col);
+                }
             }
         }
     }
@@ -506,37 +542,40 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
 
 #ifdef _DEBUG
     for (unsigned int i_dat = 0; i_dat < predictors.size() - 1; i_dat++) {
-        wxASSERT(predictors[i_dat]->GetData()[0].rows() == predictors[i_dat + 1]->GetData()[0].rows());
-        wxASSERT(predictors[i_dat]->GetData()[0].cols() == predictors[i_dat + 1]->GetData()[0].cols());
+        wxASSERT(predictors[i_dat]->GetData()[0][0].rows() == predictors[i_dat + 1]->GetData()[0][0].rows());
+        wxASSERT(predictors[i_dat]->GetData()[0][0].cols() == predictors[i_dat + 1]->GetData()[0][0].cols());
         wxASSERT(predictors[i_dat]->GetData().size() == predictors[i_dat + 1]->GetData().size());
     }
 #endif
 
     // Get sizes
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetData()[0].rows();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetData()[0].cols();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetData().size();
+    wxASSERT(predictors[0]);
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
 
     float wind;
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        multi[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                wind = (float) sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
-                                    predictors[0]->GetData()[i_time](i_row, i_col) +
-                                    predictors[1]->GetData()[i_time](i_row, i_col) *
-                                    predictors[1]->GetData()[i_time](i_row, i_col));
-                multi[i_time](i_row, i_col) = wind * predictors[2]->GetData()[i_time](i_row, i_col) *
-                                              predictors[3]->GetData()[i_time](i_row, i_col);
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (int i_row = 0; i_row < rowsNb; i_row++) {
+                for (int i_col = 0; i_col < colsNb; i_col++) {
+                    wind = (float) sqrt(predictors[0]->GetData()[i_time][i_mem](i_row, i_col) *
+                                        predictors[0]->GetData()[i_time][i_mem](i_row, i_col) +
+                                        predictors[1]->GetData()[i_time][i_mem](i_row, i_col) *
+                                        predictors[1]->GetData()[i_time][i_mem](i_row, i_col));
+                    multi[i_time][i_mem](i_row, i_col) = wind * predictors[2]->GetData()[i_time][i_mem](i_row, i_col) *
+                                                  predictors[3]->GetData()[i_time][i_mem](i_row, i_col);
+                }
             }
         }
     }
@@ -564,26 +603,29 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predicto
     unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
     unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
     unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
     wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
 
     // Create container
-    VArray2DFloat multi(timeSize, Array2DFloat::Constant(rowsNb, colsNb, 1));
+    VVArray2DFloat multi(timeSize, VArray2DFloat(membersNb, Array2DFloat::Zero(rowsNb, colsNb)));
 
     float wind;
 
     for (int i_time = 0; i_time < timeSize; i_time++) {
-        multi[i_time].fill(1);
-
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                // Get wind value
-                wind = (float) sqrt(predictors[0]->GetData()[i_time](i_row, i_col) *
-                                    predictors[0]->GetData()[i_time](i_row, i_col) +
-                                    predictors[1]->GetData()[i_time](i_row, i_col) *
-                                    predictors[1]->GetData()[i_time](i_row, i_col));
-                multi[i_time](i_row, i_col) = wind;
+        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+            for (int i_row = 0; i_row < rowsNb; i_row++) {
+                for (int i_col = 0; i_col < colsNb; i_col++) {
+                    // Get wind value
+                    wind = (float) sqrt(predictors[0]->GetData()[i_time][i_mem](i_row, i_col) *
+                                        predictors[0]->GetData()[i_time][i_mem](i_row, i_col) +
+                                        predictors[1]->GetData()[i_time][i_mem](i_row, i_col) *
+                                        predictors[1]->GetData()[i_time][i_mem](i_row, i_col));
+                    multi[i_time][i_mem](i_row, i_col) = wind;
+                }
             }
         }
     }

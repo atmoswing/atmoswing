@@ -126,7 +126,7 @@ bool asDataPredictorArchive::Init()
 }
 
 bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                              VVArray2DFloat &compositeData)
+                                              vvva2f &compositeData)
 {
     VectorString filesList = GetListOfFiles(timeArray);
 
@@ -158,7 +158,7 @@ bool asDataPredictorArchive::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea,
 }
 
 bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                            VVArray2DFloat &compositeData)
+                                            vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -335,7 +335,7 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     // Check if already the correct size
     if (YstartIndexReal == 0 && XstartIndex == 0 && Ylength == m_axisLat.size() && Xlength == m_axisLon.size()) {
         if (IsPreprocessed()) {
-            if (m_data[0].cols() == m_axisLon.size() && m_data[0].rows() == 2 * m_axisLat.size()) {
+            if (m_data[0][0].cols() == m_axisLon.size() && m_data[0][0].rows() == 2 * m_axisLat.size()) {
                 // Nothing to do
                 return true;
             } else {
@@ -368,12 +368,12 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         if (IsPreprocessed()) {
             wxString method = GetPreprocessMethod();
             if (method.IsSameAs("Gradients")) {
-                VArray2DFloat originalData = m_data;
+                VVArray2DFloat originalData = m_data;
 
-                if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != 2 * m_axisLat.size()) {
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != 2 * m_axisLat.size()) {
                     wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
                     wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
                                (int) m_axisLat.size());
                     return false;
                 }
@@ -394,12 +394,16 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 */
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
-                    Array2DFloat dat1 = originalData[i].block(YstartIndexReal, XstartIndex, Ylength - 1, Xlength);
-                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength, Xlength - 1);
-                    Array2DFloat datMerged = Array2DFloat::Zero(2 * Ylength, Xlength); // Needs to be 0-filled for further simplification.
-                    datMerged.block(0, 0, Ylength - 1, Xlength) = dat1;
-                    datMerged.block(Ylength, 0, Ylength, Xlength - 1) = dat2;
-                    m_data[i] = datMerged;
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        Array2DFloat dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength - 1, Xlength);
+                        Array2DFloat dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex,
+                                                                  Ylength, Xlength - 1);
+                        // Needs to be 0-filled for further simplification.
+                        Array2DFloat datMerged = Array2DFloat::Zero(2 * Ylength, Xlength);
+                        datMerged.block(0, 0, Ylength - 1, Xlength) = dat1;
+                        datMerged.block(Ylength, 0, Ylength, Xlength - 1) = dat2;
+                        m_data[i][j] = datMerged;
+                    }
                 }
 
                 Array1DFloat newAxisLon(Xlength);
@@ -420,23 +424,26 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 return true;
 
             } else if (method.IsSameAs("FormerHumidityIndex")) {
-                VArray2DFloat originalData = m_data;
+                VVArray2DFloat originalData = m_data;
 
-                if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != 2 * m_axisLat.size()) {
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != 2 * m_axisLat.size()) {
                     wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
                     wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
                                (int) m_axisLat.size());
                     return false;
                 }
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
-                    Array2DFloat dat1 = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
-                    Array2DFloat dat2 = originalData[i].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength, Xlength);
-                    Array2DFloat datMerged(2 * Ylength, Xlength);
-                    datMerged.block(0, 0, Ylength, Xlength) = dat1;
-                    datMerged.block(Ylength, 0, Ylength, Xlength) = dat2;
-                    m_data[i] = datMerged;
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        Array2DFloat dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+                        Array2DFloat dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex,
+                                                                  Ylength, Xlength);
+                        Array2DFloat datMerged(2 * Ylength, Xlength);
+                        datMerged.block(0, 0, Ylength, Xlength) = dat1;
+                        datMerged.block(Ylength, 0, Ylength, Xlength) = dat2;
+                        m_data[i][j] = datMerged;
+                    }
                 }
 
                 Array1DFloat newAxisLon(Xlength);
@@ -459,18 +466,20 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
             } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
                        method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex") ||
                        method.IsSameAs("Addition") || method.IsSameAs("Average")) {
-                VArray2DFloat originalData = m_data;
+                VVArray2DFloat originalData = m_data;
 
-                if (originalData[0].cols() != m_axisLon.size() || originalData[0].rows() != m_axisLat.size()) {
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != m_axisLat.size()) {
                     wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
                     wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
-                               (int) originalData[0].cols(), (int) m_axisLon.size(), (int) originalData[0].rows(),
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
                                (int) m_axisLat.size());
                     return false;
                 }
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
-                    m_data[i] = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        m_data[i][j] = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+                    }
                 }
 
                 Array1DFloat newAxisLon(Xlength);
@@ -497,9 +506,11 @@ bool asDataPredictorArchive::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
         }
     }
 
-    VArray2DFloat originalData = m_data;
+    VVArray2DFloat originalData = m_data;
     for (unsigned int i = 0; i < originalData.size(); i++) {
-        m_data[i] = originalData[i].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+        for (unsigned int j = 0; j < originalData[i].size(); j++) {
+            m_data[i][j] = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+        }
     }
 
     Array1DFloat newAxisLon(Xlength);
@@ -570,7 +581,7 @@ VectorString asDataPredictorArchive::GetListOfFiles(asTimeArray &timeArray) cons
 }
 
 bool asDataPredictorArchive::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return false;
 }

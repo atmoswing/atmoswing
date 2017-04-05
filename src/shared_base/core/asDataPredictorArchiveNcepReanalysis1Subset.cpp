@@ -158,7 +158,7 @@ VectorString asDataPredictorArchiveNcepReanalysis1Subset::GetListOfFiles(asTimeA
 }
 
 bool asDataPredictorArchiveNcepReanalysis1Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

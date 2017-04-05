@@ -246,7 +246,7 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
 }
 
 bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                              VVArray2DFloat &compositeData)
+                                               vvva2f &compositeData)
 {
     VectorString filesList = GetListOfFiles(timeArray);
 
@@ -287,7 +287,7 @@ VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) con
 }
 
 bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                             VVArray2DFloat &compositeData)
+                                             vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -373,7 +373,7 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
 }
 
 bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                             asTimeArray &timeArray, vvva2f &compositeData)
 {
     return false;
 }

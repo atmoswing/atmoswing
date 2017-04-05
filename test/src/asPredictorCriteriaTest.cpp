@@ -367,29 +367,29 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
-    VArray2DFloat hgtOriginal = predictor->GetData();
+    VVArray2DFloat hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
-    VArray2DFloat hgtPreproc = gradients->GetData();
+    VVArray2DFloat hgtPreproc = gradients->GetData();
 
     // Resize the containers
-    int lonsOriginal = hgtOriginal[0].cols();
-    int latsOriginal = hgtOriginal[0].rows();
+    int lonsOriginal = hgtOriginal[0][0].cols();
+    int latsOriginal = hgtOriginal[0][0].rows();
     Array2DFloat RefOriginal, CandOriginal;
     RefOriginal.resize(latsOriginal, lonsOriginal);
     CandOriginal.resize(latsOriginal, lonsOriginal);
 
-    int lonsPreproc = hgtPreproc[0].cols();
-    int latsPreproc = hgtPreproc[0].rows();
+    int lonsPreproc = hgtPreproc[0][0].cols();
+    int latsPreproc = hgtPreproc[0][0].rows();
     Array2DFloat RefPreproc, CandPreproc;
     RefPreproc.resize(latsPreproc, lonsPreproc);
     CandPreproc.resize(latsPreproc, lonsPreproc);
 
     // Set target data
-    RefOriginal = hgtOriginal[0];
-    RefPreproc = hgtPreproc[0];
+    RefOriginal = hgtOriginal[0][0];
+    RefPreproc = hgtPreproc[0][0];
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
@@ -406,8 +406,8 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
         float S1Original, S1Preproc;
 
         // Get candidate data
-        CandOriginal = hgtOriginal[i_cand];
-        CandPreproc = hgtPreproc[i_cand];
+        CandOriginal = hgtOriginal[i_cand][0];
+        CandPreproc = hgtPreproc[i_cand][0];
 
         // Process the score
         wxConfigBase *pConfig = wxFileConfig::Get();
@@ -465,29 +465,29 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
-    VArray2DFloat hgtOriginal = predictor->GetData();
+    VVArray2DFloat hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
-    VArray2DFloat hgtPreproc = gradients->GetData();
+    VVArray2DFloat hgtPreproc = gradients->GetData();
 
     // Resize the containers
-    int lonsOriginal = hgtOriginal[0].cols();
-    int latsOriginal = hgtOriginal[0].rows();
+    int lonsOriginal = hgtOriginal[0][0].cols();
+    int latsOriginal = hgtOriginal[0][0].rows();
     Array2DFloat RefOriginal, CandOriginal;
     RefOriginal.resize(latsOriginal, lonsOriginal);
     CandOriginal.resize(latsOriginal, lonsOriginal);
 
-    int lonsPreproc = hgtPreproc[0].cols();
-    int latsPreproc = hgtPreproc[0].rows();
+    int lonsPreproc = hgtPreproc[0][0].cols();
+    int latsPreproc = hgtPreproc[0][0].rows();
     Array2DFloat RefPreproc, CandPreproc;
     RefPreproc.resize(latsPreproc, lonsPreproc);
     CandPreproc.resize(latsPreproc, lonsPreproc);
 
     // Set target data
-    RefOriginal = hgtOriginal[0];
-    RefPreproc = hgtPreproc[0];
+    RefOriginal = hgtOriginal[0][0];
+    RefPreproc = hgtPreproc[0][0];
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
@@ -504,8 +504,8 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
         float S1Original, S1Preproc;
 
         // Get candidate data
-        CandOriginal = hgtOriginal[i_cand];
-        CandPreproc = hgtPreproc[i_cand];
+        CandOriginal = hgtOriginal[i_cand][0];
+        CandPreproc = hgtPreproc[i_cand][0];
 
         // Process the score
         wxConfigBase *pConfig = wxFileConfig::Get();
