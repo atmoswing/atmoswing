@@ -75,10 +75,10 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 20);
 
-        for (int i_file = m_start; i_file <= m_end; i_file++) {
-            wxString fileName = m_fileNames[i_file];
+        for (int iFile = m_start; iFile <= m_end; iFile++) {
+            wxString fileName = m_fileNames[iFile];
             wxString filePath = m_destinationDir + DS + fileName;
-            wxString url = m_urls[i_file];
+            wxString url = m_urls[iFile];
             wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 
             // Use of a wxFileName object to create the directory.

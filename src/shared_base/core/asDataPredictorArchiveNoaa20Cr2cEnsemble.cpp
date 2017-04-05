@@ -171,8 +171,8 @@ VectorString asDataPredictorArchiveNoaa20Cr2cEnsemble::GetListOfFiles(asTimeArra
 {
     VectorString files;
 
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year));
+    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
+        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 
     return files;

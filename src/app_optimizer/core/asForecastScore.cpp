@@ -313,11 +313,11 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
 {
     // Remove the NaNs and copy content
     int nbForecasts = 0, nbNans = 0;
-    int i_val = 0;
+    int iVal = 0;
     while (nbForecasts < nbElements) {
         // Add a check to not overflow the array
-        if (i_val >= nbElements) {
-            if (i_val == ForcastVals.rows()) {
+        if (iVal >= nbElements) {
+            if (iVal == ForcastVals.rows()) {
                 wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
                 wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
                              nbForecasts, nbNans);
@@ -325,13 +325,13 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
             }
         }
 
-        if (!asTools::IsNaN(ForcastVals[i_val])) {
-            ForcastValsSorted(nbForecasts) = ForcastVals[i_val];
+        if (!asTools::IsNaN(ForcastVals[iVal])) {
+            ForcastValsSorted(nbForecasts) = ForcastVals[iVal];
             nbForecasts++;
         } else {
             nbNans++;
         }
-        i_val++;
+        iVal++;
     }
 
     if (nbForecasts < 1) {

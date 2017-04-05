@@ -57,9 +57,9 @@ float asForecastScoreFinalRMSE::Assess(const Array1DFloat &targetDates, const Ar
             // Loop through the targetDates
             float score = 0, divisor = 0;
 
-            for (int i_time = 0; i_time < targetDatesLength; i_time++) {
-                if (!asTools::IsNaN(forecastScores(i_time))) {
-                    score += forecastScores(i_time);
+            for (int iTime = 0; iTime < targetDatesLength; iTime++) {
+                if (!asTools::IsNaN(forecastScores(iTime))) {
+                    score += forecastScores(iTime);
                     divisor++;
                 }
             }
@@ -82,10 +82,10 @@ float asForecastScoreFinalRMSE::Assess(const Array1DFloat &targetDates, const Ar
             // Loop through the timeArray
             float score = 0, divisor = 0;
 
-            for (int i_time = IndexStart; i_time <= IndexEnd; i_time++) {
+            for (int iTime = IndexStart; iTime <= IndexEnd; iTime++) {
                 int indexCurrent = asTools::SortedArraySearchClosest(&targetDates(0),
                                                                      &targetDates(targetDatesLength - 1),
-                                                                     DateTime(i_time));
+                                                                     DateTime(iTime));
                 if ((indexCurrent != asNOT_FOUND) & (indexCurrent != asOUT_OF_RANGE)) {
                     if (!asTools::IsNaN(forecastScores(indexCurrent))) {
                         score += forecastScores(indexCurrent);

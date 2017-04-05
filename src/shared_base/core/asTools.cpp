@@ -1399,21 +1399,21 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
     int vlength = pArrEnd - pArrStart;
 
     // Index where to insert the new element
-    int i_next = 0;
+    int iNext = 0;
 
     // Check order
     switch (order) {
         case (Asc): {
-            i_next = asTools::SortedArraySearchCeil(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
-            if (i_next == asOUT_OF_RANGE) {
-                i_next = 0;
+            iNext = asTools::SortedArraySearchCeil(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            if (iNext == asOUT_OF_RANGE) {
+                iNext = 0;
             }
             break;
         }
         case (Desc): {
-            i_next = asTools::SortedArraySearchFloor(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
-            if (i_next == asOUT_OF_RANGE) {
-                i_next = 0;
+            iNext = asTools::SortedArraySearchFloor(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            if (iNext == asOUT_OF_RANGE) {
+                iNext = 0;
             }
             break;
         }
@@ -1424,13 +1424,13 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
     }
 
     // Swap next elements
-    for (int i = vlength - 1; i >= i_next; i--) // Minus 1 becuase we overwrite the last element by the previous one
+    for (int i = vlength - 1; i >= iNext; i--) // Minus 1 becuase we overwrite the last element by the previous one
     {
         pArrStart[i + 1] = pArrStart[i];
     }
 
     // Insert new element
-    pArrStart[i_next] = val;
+    pArrStart[iNext] = val;
 
     return true;
 }
@@ -1478,21 +1478,21 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     }
 
     // Index where to insert the new element
-    int i_next = 0;
+    int iNext = 0;
 
     // Check order
     switch (order) {
         case (Asc): {
-            i_next = asTools::SortedArraySearchCeil(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
-            if (i_next == asOUT_OF_RANGE) {
-                i_next = 0;
+            iNext = asTools::SortedArraySearchCeil(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            if (iNext == asOUT_OF_RANGE) {
+                iNext = 0;
             }
             break;
         }
         case (Desc): {
-            i_next = asTools::SortedArraySearchFloor(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
-            if (i_next == asOUT_OF_RANGE) {
-                i_next = 0;
+            iNext = asTools::SortedArraySearchFloor(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            if (iNext == asOUT_OF_RANGE) {
+                iNext = 0;
             }
             break;
         }
@@ -1503,15 +1503,15 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     }
 
     // Swap next elements
-    for (int i = vlength - 1; i >= i_next; i--) // Minus 1 because we overwrite the last element by the previous one
+    for (int i = vlength - 1; i >= iNext; i--) // Minus 1 because we overwrite the last element by the previous one
     {
         pArrRefStart[i + 1] = pArrRefStart[i];
         pArrOtherStart[i + 1] = pArrOtherStart[i];
     }
 
     // Insert new element
-    pArrRefStart[i_next] = valRef;
-    pArrOtherStart[i_next] = valOther;
+    pArrRefStart[iNext] = valRef;
+    pArrOtherStart[iNext] = valOther;
 
     return true;
 }

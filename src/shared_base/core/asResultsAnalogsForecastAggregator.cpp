@@ -626,8 +626,8 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
             relevantStations = forecast->GetPredictandStationIds();
         }
 
-        for (int i_st = 0; i_st < (int) relevantStations.size(); i_st++) {
-            int indexStation = forecast->GetStationRowFromId(relevantStations[i_st]);
+        for (int iStat = 0; iStat < (int) relevantStations.size(); iStat++) {
+            int indexStation = forecast->GetStationRowFromId(relevantStations[iStat]);
 
             // Get values for return period
             float factor = 1;
@@ -639,15 +639,15 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
                 wxASSERT(factor > 0);
             }
 
-            for (int i_leadtime = leadtimeMin; i_leadtime <= leadtimeMax; i_leadtime++) {
-                if (asTools::IsNaN(maxValues[i_leadtime])) {
-                    maxValues[i_leadtime] = -999999;
+            for (int iLead = leadtimeMin; iLead <= leadtimeMax; iLead++) {
+                if (asTools::IsNaN(maxValues[iLead])) {
+                    maxValues[iLead] = -999999;
                 }
 
                 float thisVal = 0;
 
                 // Get values
-                Array1DFloat theseVals = forecast->GetAnalogsValuesGross(i_leadtime, indexStation);
+                Array1DFloat theseVals = forecast->GetAnalogsValuesGross(iLead, indexStation);
 
                 // Process quantiles
                 if (asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
@@ -659,8 +659,8 @@ Array1DFloat asResultsAnalogsForecastAggregator::GetMethodMaxValues(Array1DFloat
                 }
 
                 // Keep it if higher
-                if (thisVal > maxValues[i_leadtime]) {
-                    maxValues[i_leadtime] = thisVal;
+                if (thisVal > maxValues[iLead]) {
+                    maxValues[iLead] = thisVal;
                 }
             }
         }

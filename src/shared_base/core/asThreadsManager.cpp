@@ -83,13 +83,13 @@ int asThreadsManager::GetRunningThreadsNb(int type)
 
     int counter = 0;
 
-    for (unsigned int i_threads = 0; i_threads < m_threads.size(); i_threads++) {
-        if (m_threads[i_threads] != NULL) {
-            if (m_threads[i_threads]->IsRunning()) {
+    for (unsigned int iThread = 0; iThread < m_threads.size(); iThread++) {
+        if (m_threads[iThread] != NULL) {
+            if (m_threads[iThread]->IsRunning()) {
                 if (type == -1) {
                     counter++;
                 } else {
-                    if (m_threads[i_threads]->GetType() == type) {
+                    if (m_threads[iThread]->GetType() == type) {
                         counter++;
                     }
                 }
@@ -176,12 +176,12 @@ void asThreadsManager::SetNull(wxThreadIdType id)
 {
     m_critSectionManager.Enter();
 
-    for (unsigned int i_threads = 0; i_threads < m_threads.size(); i_threads++) {
-        if (m_threads[i_threads] != NULL) {
-            wxThreadIdType thisid = m_threads[i_threads]->GetId();
+    for (unsigned int iThread = 0; iThread < m_threads.size(); iThread++) {
+        if (m_threads[iThread] != NULL) {
+            wxThreadIdType thisid = m_threads[iThread]->GetId();
 
             if (thisid == id) {
-                m_threads[i_threads] = NULL;
+                m_threads[iThread] = NULL;
                 m_critSectionManager.Leave();
                 return;
             }
@@ -200,8 +200,8 @@ bool asThreadsManager::CleanArray()
     m_critSectionManager.Enter();
 
     if (GetTotalThreadsNb() > 0) {
-        for (unsigned int i_threads = 0; i_threads < m_threads.size(); i_threads++) {
-            if (m_threads[i_threads] != NULL) {
+        for (unsigned int iThread = 0; iThread < m_threads.size(); iThread++) {
+            if (m_threads[iThread] != NULL) {
                 m_critSectionManager.Leave();
                 return true;
             }
@@ -250,10 +250,10 @@ void asThreadsManager::WaitForFreeThread(int type)
 
 void asThreadsManager::PauseAll()
 {
-    for (int i_threads = 0; i_threads < GetTotalThreadsNb(); i_threads++) {
-        if (m_threads[i_threads] != NULL) {
-            if (m_threads[i_threads]->IsRunning()) {
-                //                m_threads[i_threads]->Pause();
+    for (int iThread = 0; iThread < GetTotalThreadsNb(); iThread++) {
+        if (m_threads[iThread] != NULL) {
+            if (m_threads[iThread]->IsRunning()) {
+                //                m_threads[iThread]->Pause();
             }
         }
     }
@@ -261,10 +261,10 @@ void asThreadsManager::PauseAll()
 
 void asThreadsManager::ResumeAll()
 {
-    for (int i_threads = 0; i_threads < GetTotalThreadsNb(); i_threads++) {
-        if (m_threads[i_threads] != NULL) {
-            if (m_threads[i_threads]->IsPaused()) {
-                m_threads[i_threads]->Resume();
+    for (int iThread = 0; iThread < GetTotalThreadsNb(); iThread++) {
+        if (m_threads[iThread] != NULL) {
+            if (m_threads[iThread]->IsPaused()) {
+                m_threads[iThread]->Resume();
             }
         }
     }

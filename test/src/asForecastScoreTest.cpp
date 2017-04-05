@@ -55,7 +55,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -63,9 +63,9 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -106,7 +106,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSEP");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -114,9 +114,9 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -157,7 +157,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSAR");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -165,9 +165,9 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -208,7 +208,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -216,9 +216,9 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -259,7 +259,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -267,9 +267,9 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -310,7 +310,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -318,9 +318,9 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -361,7 +361,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -369,9 +369,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -414,7 +414,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessEP");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -422,9 +422,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -467,7 +467,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessAR");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -475,9 +475,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -520,7 +520,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -528,9 +528,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -573,7 +573,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -581,9 +581,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -626,7 +626,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -634,9 +634,9 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -679,7 +679,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -687,9 +687,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -731,7 +731,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyEP");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -739,9 +739,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -783,7 +783,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyAR");
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -791,9 +791,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -835,7 +835,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -843,9 +843,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -887,7 +887,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -895,9 +895,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -939,7 +939,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     // Instantiate the score
     asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -947,9 +947,9 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         file.SkipElements(3);
         float ObservedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -981,13 +981,13 @@ void InitConstantDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    for (int i_time = 0; i_time < timeLength; i_time++) {
-        vecObs[i_time] = (float) asTools::Random(0.0, 0.4999999);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            singleDay[i_ana] = (float) asTools::Random(0.0, 0.4999999);
+    for (int iTime = 0; iTime < timeLength; iTime++) {
+        vecObs[iTime] = (float) asTools::Random(0.0, 0.4999999);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.4999999);
         }
         asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
-        vecForecast.row(i_time) = singleDay;
+        vecForecast.row(iTime) = singleDay;
     }
 
     // Add 28 events forecasted and observed
@@ -1085,13 +1085,13 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     Array1DFloat singleDay = Array1DFloat::Zero(nanalogs);
 
     // Not forecasted and no event
-    for (int i_time = 0; i_time < timeLength; i_time++) {
-        vecObs[i_time] = (float) asTools::Random(0.0, 0.5999999);
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
+    for (int iTime = 0; iTime < timeLength; iTime++) {
+        vecObs[iTime] = (float) asTools::Random(0.0, 0.5999999);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
         }
         asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
-        vecForecast.row(i_time) = singleDay;
+        vecForecast.row(iTime) = singleDay;
     }
 
     // Add 28 events forecasted and observed
@@ -1099,16 +1099,16 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     indicesA <<
     11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701, 1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
     for (int i = 0; i < indicesA.size(); i++) {
-        int i_time = indicesA[i];
-        vecObs[i_time] = (float) asTools::Random(0.6, 1.0);
-        for (int i_ana = 0; i_ana < 20; i_ana++) {
-            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
+        int iTime = indicesA[i];
+        vecObs[iTime] = (float) asTools::Random(0.6, 1.0);
+        for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
+            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
         }
-        for (int i_ana = 20; i_ana < 50; i_ana++) {
-            singleDay[i_ana] = asTools::Random(0.6, 1.0);
+        for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
+            singleDay[iAnalog] = asTools::Random(0.6, 1.0);
         }
         asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
-        vecForecast.row(i_time) = singleDay;
+        vecForecast.row(iTime) = singleDay;
     }
 
     // Add 17 events forecasted but not observed
@@ -1116,16 +1116,16 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     indicesB <<
     12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942, 952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132, 2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
     for (int i = 0; i < indicesB.size(); i++) {
-        int i_time = indicesB[i];
-        vecObs[i_time] = (float) asTools::Random(0.0, 0.5999999);
-        for (int i_ana = 0; i_ana < 20; i_ana++) {
-            singleDay[i_ana] = (float) asTools::Random(0.0, 0.5999999);
+        int iTime = indicesB[i];
+        vecObs[iTime] = (float) asTools::Random(0.0, 0.5999999);
+        for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
+            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
         }
-        for (int i_ana = 20; i_ana < 50; i_ana++) {
-            singleDay[i_ana] = (float) asTools::Random(0.6, 1.0);
+        for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
+            singleDay[iAnalog] = (float) asTools::Random(0.6, 1.0);
         }
         asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
-        vecForecast.row(i_time) = singleDay;
+        vecForecast.row(iTime) = singleDay;
     }
 
     // Add 9 events not forecasted but observed
@@ -1133,8 +1133,8 @@ void InitRealisticDistribution(Array2DFloat &vecForecast, Array1DFloat &vecObs)
     indicesC <<
     13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213, 1223, 1233;
     for (int i = 0; i < indicesC.size(); i++) {
-        int i_time = indicesC[i];
-        vecObs[i_time] = (float) asTools::Random(0.6, 1.0);
+        int iTime = indicesC[i];
+        vecObs[iTime] = (float) asTools::Random(0.6, 1.0);
     }
 
 }
@@ -1154,10 +1154,10 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
@@ -1186,10 +1186,10 @@ TEST(ForecastScore, ProcessPC)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
@@ -1218,10 +1218,10 @@ TEST(ForecastScore, ProcessTS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("TS", "Total");
@@ -1250,10 +1250,10 @@ TEST(ForecastScore, ProcessBIAS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
@@ -1282,10 +1282,10 @@ TEST(ForecastScore, ProcessFARA)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
@@ -1314,10 +1314,10 @@ TEST(ForecastScore, ProcessH)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("H", "Total");
@@ -1346,10 +1346,10 @@ TEST(ForecastScore, ProcessF)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("F", "Total");
@@ -1378,10 +1378,10 @@ TEST(ForecastScore, ProcessHSS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("HSS", "Total");
@@ -1410,10 +1410,10 @@ TEST(ForecastScore, ProcessPSS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PSS", "Total");
@@ -1442,10 +1442,10 @@ TEST(ForecastScore, ProcessGSS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("GSS", "Total");
@@ -1501,10 +1501,10 @@ TEST(ForecastScore, ProcessMAE)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("MAE", "Total");
@@ -1560,10 +1560,10 @@ TEST(ForecastScore, ProcessRMSE)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RMSE", "Total");
@@ -1620,10 +1620,10 @@ TEST(ForecastScore, ProcessBS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BS", "Total");
@@ -1682,10 +1682,10 @@ TEST(ForecastScore, ProcessBSS)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        results[i_time] = score->Assess(vecObs[i_time], vecForecast.row(i_time), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BSS", "Total");
@@ -1759,11 +1759,11 @@ TEST(ForecastScore, ProcessRankHistogram)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
-        results[i_time] = res;
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        results[iTime] = res;
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     // Values processed on Excel
@@ -1873,11 +1873,11 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     Array1DFloat results = Array1DFloat::Zero(vecObs.size());
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        float res = score->Assess(vecObs[i_time], vecForecast.row(i_time), nanalogs);
-        results[i_time] = res;
-        EXPECT_TRUE(!asTools::IsNaN(results[i_time]));
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        results[iTime] = res;
+        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
@@ -1941,10 +1941,10 @@ TEST(ForecastScore, ProcessCRPSreliability)
     Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
-        results.row(i_time) = res;
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        Array1DFloat res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
@@ -2008,10 +2008,10 @@ TEST(ForecastScore, ProcessCRPSpotential)
     Array2DFloat results = Array2DFloat::Zero(vecObs.size(), 3 * (nanalogs + 1));
     Array1DFloat pseudoDates = Array1DFloat::Zero(vecObs.size());
 
-    for (int i_time = 0; i_time < vecObs.size(); i_time++) {
-        pseudoDates[i_time] = i_time;
-        Array1DFloat res = score->AssessOnArray(vecObs[i_time], vecForecast.row(i_time), nanalogs);
-        results.row(i_time) = res;
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        Array1DFloat res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 

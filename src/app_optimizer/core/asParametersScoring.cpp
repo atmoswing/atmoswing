@@ -153,61 +153,61 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
 
     // Analog dates
-    for (int i_step = 0; i_step < GetStepsNb(); i_step++) {
+    for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         wxXmlNode *nodeAnalogDates = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_dates");
 
-        nodeAnalogDates->AddChild(fileParams.CreateNodeWithValue("analogs_number", GetAnalogsNumber(i_step)));
+        nodeAnalogDates->AddChild(fileParams.CreateNodeWithValue("analogs_number", GetAnalogsNumber(iStep)));
 
         // Predictors
-        for (int i_ptor = 0; i_ptor < GetPredictorsNb(i_step); i_ptor++) {
+        for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             wxXmlNode *nodePredictor = new wxXmlNode(wxXML_ELEMENT_NODE, "predictor");
             nodeAnalogDates->AddChild(nodePredictor);
 
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(i_step, i_ptor)));
+            nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(iStep, iPtor)));
 
-            if (NeedsPreprocessing(i_step, i_ptor)) {
+            if (NeedsPreprocessing(iStep, iPtor)) {
                 wxXmlNode *nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");
                 nodePredictor->AddChild(nodePreprocessing);
 
                 nodePreprocessing->AddChild(
-                        fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(i_step, i_ptor)));
+                        fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
 
-                for (int i_preproc = 0; i_preproc < GetPreprocessSize(i_step, i_ptor); i_preproc++) {
+                for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
                     wxXmlNode *nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
                     nodePreprocessing->AddChild(nodePreprocessingData);
 
                     nodePreprocessingData->AddChild(fileParams.CreateNodeWithValue("dataset_id",
-                                                                                   GetPreprocessDatasetId(i_step,
-                                                                                                          i_ptor,
-                                                                                                          i_preproc)));
+                                                                                   GetPreprocessDatasetId(iStep,
+                                                                                                          iPtor,
+                                                                                                          iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(i_step, i_ptor, i_preproc)));
+                            fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("level", GetPreprocessLevel(i_step, i_ptor, i_preproc)));
+                            fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("time", GetPreprocessTimeHours(i_step, i_ptor, i_preproc)));
+                            fileParams.CreateNodeWithValue("time", GetPreprocessTimeHours(iStep, iPtor, iPre)));
                 }
             } else {
                 nodePredictor->AddChild(
-                        fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(i_step, i_ptor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(i_step, i_ptor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(i_step, i_ptor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorTimeHours(i_step, i_ptor)));
+                        fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorTimeHours(iStep, iPtor)));
             }
 
             wxXmlNode *nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
             nodePredictor->AddChild(nodeWindow);
 
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("grid_type", GetPredictorGridType(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_min", GetPredictorXmin(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_points_nb", GetPredictorXptsnb(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_step", GetPredictorXstep(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_min", GetPredictorYmin(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_points_nb", GetPredictorYptsnb(i_step, i_ptor)));
-            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_step", GetPredictorYstep(i_step, i_ptor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("grid_type", GetPredictorGridType(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_min", GetPredictorXmin(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_points_nb", GetPredictorXptsnb(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("x_step", GetPredictorXstep(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_min", GetPredictorYmin(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_points_nb", GetPredictorYptsnb(iStep, iPtor)));
+            nodeWindow->AddChild(fileParams.CreateNodeWithValue("y_step", GetPredictorYstep(iStep, iPtor)));
 
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("criteria", GetPredictorCriteria(i_step, i_ptor)));
-            nodePredictor->AddChild(fileParams.CreateNodeWithValue("weight", GetPredictorWeight(i_step, i_ptor)));
+            nodePredictor->AddChild(fileParams.CreateNodeWithValue("criteria", GetPredictorCriteria(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNodeWithValue("weight", GetPredictorWeight(iStep, iPtor)));
         }
 
         fileParams.AddChild(nodeAnalogDates);
@@ -265,16 +265,16 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
 bool asParametersScoring::PreprocessingPropertiesOk()
 {
-    for (int i_step = 0; i_step < GetStepsNb(); i_step++) {
-        for (int i_ptor = 0; i_ptor < GetPredictorsNb(i_step); i_ptor++) {
-            if (NeedsPreloading(i_step, i_ptor) && NeedsPreprocessing(i_step, i_ptor)) {
+    for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
+        for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
+            if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
-                wxString method = GetPreprocessMethod(i_step, i_ptor);
-                int preprocSize = GetPreprocessSize(i_step, i_ptor);
+                wxString method = GetPreprocessMethod(iStep, iPtor);
+                int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Check that the data ID is unique
-                for (int i_preproc = 0; i_preproc < preprocSize; i_preproc++) {
-                    if (GetPreprocessDataIdVectorSize(i_step, i_ptor, i_preproc) != 1) {
+                for (int iPre = 0; iPre < preprocSize; iPre++) {
+                    if (GetPreprocessDataIdVectorSize(iStep, iPtor, iPre) != 1) {
                         wxLogError(_("The preprocess dataId must be unique with the preload option."));
                         return false;
                     }

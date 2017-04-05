@@ -59,26 +59,26 @@ public:
 
     virtual ~asMethodCalibrator();
 
-    bool GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int i_step, bool &containsNaNs);
+    bool GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int iStep, bool &containsNaNs);
 
     bool GetAnalogsSubDates(asResultsAnalogsDates &results, asParametersScoring &params,
-                            asResultsAnalogsDates &anaDates, int i_step, bool &containsNaNs);
+                            asResultsAnalogsDates &anaDates, int iStep, bool &containsNaNs);
 
     bool GetAnalogsValues(asResultsAnalogsValues &results, asParametersScoring &params, asResultsAnalogsDates &anaDates,
-                          int i_step);
+                          int iStep);
 
     bool GetAnalogsForecastScores(asResultsAnalogsForecastScores &results, asParametersScoring &params,
-                                  asResultsAnalogsValues &anaValues, int i_step);
+                                  asResultsAnalogsValues &anaValues, int iStep);
 
     bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results, asParametersScoring &params,
-                                      asResultsAnalogsForecastScores &anaScores, int i_step);
+                                      asResultsAnalogsForecastScores &anaScores, int iStep);
 
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
-                                 int i_step = 0);
+                                 int iStep = 0);
 
-    bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+    bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int iStep, int iPtor, int iPre);
 
-    bool PreloadDataWithPreprocessing(asParametersScoring &params, int i_step, int i_ptor);
+    bool PreloadDataWithPreprocessing(asParametersScoring &params, int iStep, int iPtor);
 
     void Cleanup(std::vector<asDataPredictorArchive *> predictorsPreprocess);
 
@@ -140,9 +140,9 @@ public:
         m_scoreClimatology = val;
     }
 
-    bool IsPointerCopy(int i_step, int i_ptor, int i_dat) const
+    bool IsPointerCopy(int iStep, int iPtor, int iPre) const
     {
-        return m_preloadedArchivePointerCopy[i_step][i_ptor][i_dat];
+        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
     void SetPredictandStationIds(VectorInt val)
@@ -179,7 +179,7 @@ protected:
 
     bool PreloadData(asParametersScoring &params);
 
-    bool LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
+    bool LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
                   double timeStartData, double timeEndData);
 
     VArray1DFloat GetClimatologyData(asParametersScoring &params);
@@ -188,7 +188,7 @@ private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > > m_preloadedArchive;
     std::vector<VVectorBool> m_preloadedArchivePointerCopy;
 
-    bool PointersShared(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+    bool PointersShared(asParametersScoring &params, int iStep, int iPtor, int iPre);
 
     double GetTimeStartCalibration(asParametersScoring &params) const;
 
@@ -202,20 +202,20 @@ private:
 
     void LoadScoreOrder(asParametersCalibration &params);
 
-    bool ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int i_step,
-                              int i_ptor);
+    bool ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
+                              int iPtor);
 
     bool ExtractDataWithoutPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
-                                         int i_step, int i_ptor, double timeStartData, double timeEndData);
+                                         int iStep, int iPtor, double timeStartData, double timeEndData);
 
     bool ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
-                                      int i_step, int i_ptor, double timeStartData, double timeEndData);
+                                      int iStep, int iPtor, double timeStartData, double timeEndData);
 
-    bool HasPreloadedData(int i_step, int i_ptor) const;
+    bool HasPreloadedData(int iStep, int iPtor) const;
 
-    bool HasPreloadedData(int i_step, int i_ptor, int i_dat) const;
+    bool HasPreloadedData(int iStep, int iPtor, int iPre) const;
 
-    bool GetRandomValidData(asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+    bool GetRandomValidData(asParametersScoring &params, int iStep, int iPtor, int iPre);
 
     bool CheckDataIsPreloaded(const asParametersScoring &params) const;
 

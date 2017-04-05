@@ -225,9 +225,9 @@ protected:
 
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
 
-    int *GetIndexesStartGrib(int i_area) const;
+    int *GetIndexesStartGrib(int iArea) const;
 
-    int *GetIndexesCountGrib(int i_area) const;
+    int *GetIndexesCountGrib(int iArea) const;
 
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                 vvva2f &compositeData);

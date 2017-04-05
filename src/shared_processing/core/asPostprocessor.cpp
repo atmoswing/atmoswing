@@ -53,32 +53,32 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteria(const Array1DFloa
     Array1DFloat analogsWeight(analogsValues.rows());
 
     // Process ranges
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
+        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[iDay]);
         sum += range;
-        analogsWeight[i_day] = range;
+        analogsWeight[iDay] = range;
     }
 
     // Process weights
     int nbtot=0;
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        analogsWeight[i_day] *= (float)1000/sum;
-        analogsWeight[i_day] = wxMax(analogsWeight[i_day], (float)1); // Set the min to 1 to avoid a division by 0
-        nbtot += asTools::Round(analogsWeight[i_day]);
+        analogsWeight[iDay] *= (float)1000/sum;
+        analogsWeight[iDay] = wxMax(analogsWeight[iDay], (float)1); // Set the min to 1 to avoid a division by 0
+        nbtot += asTools::Round(analogsWeight[iDay]);
     }
 
     // Duplicate analogs based on the weights
     int counter=0;
     Array1DFloat analogsValuesModified(nbtot);
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        int number = asTools::Round(analogsWeight[i_day]);
+        int number = asTools::Round(analogsWeight[iDay]);
 
-        for (int i_nb=0; i_nb<number; i_nb++)
+        for (int iNb=0; iNb<number; iNb++)
         {
-            analogsValuesModified[counter] = analogsValues[i_day];
+            analogsValuesModified[counter] = analogsValues[iDay];
             counter++;
         }
     }
@@ -92,40 +92,40 @@ Array1DFloat asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const Arr
     Array1DFloat analogsWeight(analogsValues.rows());
 
     // Process ranges
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[i_day]);
+        range = std::abs(analogsCriteria[analogsCriteria.rows()-1] - analogsCriteria[iDay]);
         sum1 += range;
-        analogsWeight[i_day] = range;
+        analogsWeight[iDay] = range;
     }
 
     // Process the exponent
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        analogsWeight[i_day] /= sum1;
-        analogsWeight[i_day] = pow(analogsWeight[i_day], params.GetForecastScorePostprocessDupliExp());
-        sum2 += analogsWeight[i_day];
+        analogsWeight[iDay] /= sum1;
+        analogsWeight[iDay] = pow(analogsWeight[iDay], params.GetForecastScorePostprocessDupliExp());
+        sum2 += analogsWeight[iDay];
     }
 
     // Process weights
     int nbtot=0;
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        analogsWeight[i_day] *= (float)1000/sum2;
-        analogsWeight[i_day] = wxMax(analogsWeight[i_day], (float)1); // Set the min to 1 to avoid a division by 0
-        nbtot += asTools::Round(analogsWeight[i_day]);
+        analogsWeight[iDay] *= (float)1000/sum2;
+        analogsWeight[iDay] = wxMax(analogsWeight[iDay], (float)1); // Set the min to 1 to avoid a division by 0
+        nbtot += asTools::Round(analogsWeight[iDay]);
     }
 
     // Duplicate analogs based on the weights
     int counter=0;
     Array1DFloat analogsValuesModified(nbtot);
-    for (int i_day=0; i_day<analogsValues.rows(); i_day++)
+    for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        int number = asTools::Round(analogsWeight[i_day]);
+        int number = asTools::Round(analogsWeight[iDay]);
 
-        for (int i_nb=0; i_nb<number; i_nb++)
+        for (int iNb=0; iNb<number; iNb++)
         {
-            analogsValuesModified[counter] = analogsValues[i_day];
+            analogsValuesModified[counter] = analogsValues[iDay];
             counter++;
         }
     }

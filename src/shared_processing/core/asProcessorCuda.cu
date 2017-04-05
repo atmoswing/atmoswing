@@ -89,12 +89,12 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
         int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
         int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
 
-        for (int i_ptor = 0; i_ptor < dataProp.ptorsNb; i_ptor++) {
+        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
             float dividend = 0, divisor = 0;
-            int targIndex = targIndexBase + dataProp.indexStart[i_ptor];
-            int archIndex = archIndexBase + dataProp.indexStart[i_ptor];
+            int targIndex = targIndexBase + dataProp.indexStart[iPtor];
+            int archIndex = archIndexBase + dataProp.indexStart[iPtor];
 
-            for (int i = 0; i < dataProp.ptsNb[i_ptor]; i++) {
+            for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
                 dividend += abs(data[targIndex] - data[archIndex]);
                 divisor += max(abs(data[targIndex]), abs(data[archIndex]));
 
@@ -102,7 +102,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
                 archIndex++;
             }
 
-            criterion += dataProp.weights[i_ptor] * 100.0f * (dividend / divisor);
+            criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
         }
 
         criteria[i_cand] = criterion;
@@ -171,13 +171,13 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *> > &data, 
 
     dataProp.totPtsNb = 0;
 
-    for (int i_ptor = 0; i_ptor < dataProp.ptorsNb; i_ptor++) {
-        dataProp.rowsNb[i_ptor] = rowsNb[i_ptor];
-        dataProp.colsNb[i_ptor] = colsNb[i_ptor];
-        dataProp.weights[i_ptor] = weights[i_ptor];
-        dataProp.ptsNb[i_ptor] = colsNb[i_ptor] * rowsNb[i_ptor];
-        dataProp.indexStart[i_ptor] = dataProp.totPtsNb;
-        dataProp.totPtsNb += colsNb[i_ptor] * rowsNb[i_ptor];
+    for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
+        dataProp.rowsNb[iPtor] = rowsNb[iPtor];
+        dataProp.colsNb[iPtor] = colsNb[iPtor];
+        dataProp.weights[iPtor] = weights[iPtor];
+        dataProp.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
+        dataProp.indexStart[iPtor] = dataProp.totPtsNb;
+        dataProp.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
     }
 
     // Sizes
@@ -252,11 +252,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *> > &data, 
 
     // Copy data in the new arrays
     for (int i_day = 0; i_day < data.size(); i_day++) {
-        for (int i_ptor = 0; i_ptor < dataProp.ptorsNb; i_ptor++) {
-            for (int i_pt = 0; i_pt < dataProp.ptsNb[i_ptor]; i_pt++) {
-                arrData[i_day * dataProp.totPtsNb + dataProp.indexStart[i_ptor] + i_pt] = data[i_day][i_ptor][i_pt];
+        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
+            for (int i_pt = 0; i_pt < dataProp.ptsNb[iPtor]; i_pt++) {
+                arrData[i_day * dataProp.totPtsNb + dataProp.indexStart[iPtor] + i_pt] = data[i_day][iPtor][i_pt];
             }
-            //std::copy(vvpArchData[i_day][i_ptor], vvpArchData[i_day][i_ptor] + dataProp.indexEnd[i_ptor], arrArchData + i_day*dataProp.totPtsNb + dataProp.indexStart[i_ptor]); -> fails
+            //std::copy(vvpArchData[i_day][iPtor], vvpArchData[i_day][iPtor] + dataProp.indexEnd[iPtor], arrArchData + i_day*dataProp.totPtsNb + dataProp.indexStart[iPtor]); -> fails
         }
     }
 

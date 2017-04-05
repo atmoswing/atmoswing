@@ -147,17 +147,17 @@ int asGeoAreaCompositeGrid::GetXaxisPtsnb()
 {
     int ptsLon = 0;
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            ptsLon += GetXaxisCompositePtsnb(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            ptsLon += GetXaxisCompositePtsnb(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetYmin() == GetComposite(i_area - 1).GetYmin()) {
-                if (GetXaxisCompositeEnd(i_area) == m_axisXmax) {
-                    ptsLon += GetXaxisCompositePtsnb(i_area) - 1;
+            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
+                if (GetXaxisCompositeEnd(iArea) == m_axisXmax) {
+                    ptsLon += GetXaxisCompositePtsnb(iArea) - 1;
                 } else {
-                    ptsLon += GetXaxisCompositePtsnb(i_area);
+                    ptsLon += GetXaxisCompositePtsnb(iArea);
                 }
             }
         }
@@ -170,17 +170,17 @@ int asGeoAreaCompositeGrid::GetYaxisPtsnb()
 {
     int ptsLat = 0;
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            ptsLat += GetYaxisCompositePtsnb(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            ptsLat += GetYaxisCompositePtsnb(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetXmin() == GetComposite(i_area - 1).GetXmin()) {
-                if (GetYaxisCompositeEnd(i_area) == m_axisYmax) {
-                    ptsLat += GetYaxisCompositePtsnb(i_area) - 1;
+            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
+                if (GetYaxisCompositeEnd(iArea) == m_axisYmax) {
+                    ptsLat += GetYaxisCompositePtsnb(iArea) - 1;
                 } else {
-                    ptsLat += GetYaxisCompositePtsnb(i_area);
+                    ptsLat += GetYaxisCompositePtsnb(iArea);
                 }
             }
         }
@@ -193,14 +193,14 @@ double asGeoAreaCompositeGrid::GetXaxisWidth() const
 {
     double widthLon = 0;
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            widthLon += GetXaxisCompositeWidth(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            widthLon += GetXaxisCompositeWidth(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetYmin() == GetComposite(i_area - 1).GetYmin()) {
-                widthLon += GetXaxisCompositeWidth(i_area);
+            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
+                widthLon += GetXaxisCompositeWidth(iArea);
             }
         }
     }
@@ -212,14 +212,14 @@ double asGeoAreaCompositeGrid::GetYaxisWidth() const
 {
     double widthLat = 0;
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            widthLat += GetYaxisCompositeWidth(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            widthLat += GetYaxisCompositeWidth(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetXmin() == GetComposite(i_area - 1).GetXmin()) {
-                widthLat += GetYaxisCompositeWidth(i_area);
+            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
+                widthLat += GetYaxisCompositeWidth(iArea);
             }
         }
     }
@@ -233,16 +233,16 @@ Array1DDouble asGeoAreaCompositeGrid::GetXaxis()
 
     wxASSERT(GetNbComposites() > 0);
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            Xaxis = GetXaxisComposite(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            Xaxis = GetXaxisComposite(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetYmin() == GetComposite(i_area - 1).GetYmin()) {
-                Array1DDouble Xaxisbis = GetXaxisComposite(i_area);
+            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
+                Array1DDouble Xaxisbis = GetXaxisComposite(iArea);
 
-                if (GetXaxisCompositeEnd(i_area) == m_axisXmax) {
+                if (GetXaxisCompositeEnd(iArea) == m_axisXmax) {
                     Array1DDouble Xaxisfinal(Xaxisbis.size() + Xaxis.size() - 1);
                     Xaxisfinal.head(Xaxisbis.size()) = Xaxisbis;
                     for (int i = 1; i < Xaxis.size(); i++) {
@@ -270,18 +270,18 @@ Array1DDouble asGeoAreaCompositeGrid::GetYaxis()
 
     wxASSERT(GetNbComposites() > 0);
 
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        if (i_area == 0) {
-            Yaxis = GetYaxisComposite(i_area);
-        } else if (i_area == 4) {
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        if (iArea == 0) {
+            Yaxis = GetYaxisComposite(iArea);
+        } else if (iArea == 4) {
             // Do nothing here
         } else {
-            if (GetComposite(i_area).GetXmin() == GetComposite(i_area - 1).GetXmin()) {
+            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
                 wxLogError(_("This function has not been tested"));
 
-                Array1DDouble Yaxisbis = GetYaxisComposite(i_area);
+                Array1DDouble Yaxisbis = GetYaxisComposite(iArea);
 
-                if (GetXaxisCompositeEnd(i_area) == m_axisXmax) {
+                if (GetXaxisCompositeEnd(iArea) == m_axisXmax) {
                     Array1DDouble Yaxisfinal(Yaxisbis.size() + Yaxis.size() - 1);
                     Yaxisfinal.head(Yaxisbis.size()) = Yaxisbis;
                     for (int i = 1; i < Yaxis.size(); i++) {

@@ -105,7 +105,7 @@ bool asResultsAnalogsScoresMap::MakeMap()
 
     Array2DFloat tmpLatLon = Array2DFloat::Constant(m_mapLat.size(), m_mapLon.size(), NaNFloat);
 
-    for (int i_level = 0; i_level <= m_mapLevel.size(); i_level++) {
+    for (int iLevel = 0; iLevel <= m_mapLevel.size(); iLevel++) {
         m_mapScores.push_back(tmpLatLon);
     }
 
@@ -189,13 +189,13 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
     VectorFloat scores(Nlevel * Nlat * Nlon);
     int ind = 0;
 
-    for (unsigned int i_level = 0; i_level < Nlevel; i_level++) {
-        for (unsigned int i_lat = 0; i_lat < Nlat; i_lat++) {
-            for (unsigned int i_lon = 0; i_lon < Nlon; i_lon++) {
-                ind = i_lon;
-                ind += i_lat * Nlon;
-                ind += i_level * Nlon * Nlat;
-                scores[ind] = m_mapScores[i_level](i_lat, i_lon);
+    for (unsigned int iLevel = 0; iLevel < Nlevel; iLevel++) {
+        for (unsigned int iLat = 0; iLat < Nlat; iLat++) {
+            for (unsigned int iLon = 0; iLon < Nlon; iLon++) {
+                ind = iLon;
+                ind += iLat * Nlon;
+                ind += iLevel * Nlon * Nlat;
+                scores[ind] = m_mapScores[iLevel](iLat, iLon);
             }
         }
     }

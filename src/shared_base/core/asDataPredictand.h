@@ -105,7 +105,7 @@ public:
         return nodata;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference) const
+    virtual float GetReferenceValue(int iStat, double duration, float reference) const
     {
         return NaNFloat;
     }

@@ -435,14 +435,14 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         if (counter == index) {
                             wxString dat = GetPreprocessDataId(i, j, k);
                             VectorString vect = GetPreprocessDataIdVector(i, j, k);
-                            int i_dat = -1;
+                            int iPre = -1;
                             for (unsigned int r = 0; r < vect.size(); r++) {
                                 if (vect[r].IsSameAs(dat, false))
-                                    i_dat = r;
+                                    iPre = r;
                             }
-                            wxASSERT(i_dat >= 0);
+                            wxASSERT(iPre >= 0);
 
-                            return (double) i_dat;
+                            return (double) iPre;
                         }
                     }
                     counter++;
@@ -451,14 +451,14 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         if (counter == index) {
                             float dat = GetPreprocessLevel(i, j, k);
                             VectorFloat vect = GetPreprocessLevelVector(i, j, k);
-                            int i_dat = -1;
+                            int iPre = -1;
                             for (unsigned int r = 0; r < vect.size(); r++) {
                                 if (vect[r] == dat)
-                                    i_dat = r;
+                                    iPre = r;
                             }
-                            wxASSERT(i_dat >= 0);
+                            wxASSERT(iPre >= 0);
 
-                            return (double) i_dat;
+                            return (double) iPre;
                         }
                     }
                     counter++;
@@ -475,14 +475,14 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     if (counter == index) {
                         wxString dat = GetPredictorDataId(i, j);
                         VectorString vect = GetPredictorDataIdVector(i, j);
-                        int i_dat = -1;
+                        int iPre = -1;
                         for (unsigned int r = 0; r < vect.size(); r++) {
                             if (vect[r].IsSameAs(dat, false))
-                                i_dat = r;
+                                iPre = r;
                         }
-                        wxASSERT(i_dat >= 0);
+                        wxASSERT(iPre >= 0);
 
-                        return (double) i_dat;
+                        return (double) iPre;
                     }
                 }
                 counter++;
@@ -491,14 +491,14 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     if (counter == index) {
                         float dat = GetPredictorLevel(i, j);
                         VectorFloat vect = GetPredictorLevelVector(i, j);
-                        int i_dat = -1;
+                        int iPre = -1;
                         for (unsigned int r = 0; r < vect.size(); r++) {
                             if (vect[r] == dat)
-                                i_dat = r;
+                                iPre = r;
                         }
-                        wxASSERT(i_dat >= 0);
+                        wxASSERT(iPre >= 0);
 
-                        return (double) i_dat;
+                        return (double) iPre;
                     }
                 }
                 counter++;
@@ -550,14 +550,14 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 if (counter == index) {
                     wxString dat = GetPredictorCriteria(i, j);
                     VectorString vect = GetPredictorCriteriaVector(i, j);
-                    int i_dat = -1;
+                    int iPre = -1;
                     for (unsigned int r = 0; r < vect.size(); r++) {
                         if (vect[r].IsSameAs(dat, false))
-                            i_dat = r;
+                            iPre = r;
                     }
-                    wxASSERT(i_dat >= 0);
+                    wxASSERT(iPre >= 0);
 
-                    return (double) i_dat;
+                    return (double) iPre;
                 }
             }
             counter++;

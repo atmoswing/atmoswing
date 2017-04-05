@@ -77,12 +77,12 @@ bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, 
     forecastScore->SetThreshold(GetThreshold());
     forecastScore->SetQuantile(GetQuantile());
 
-    for (int i_reftime = 0; i_reftime < refVals.size(); i_reftime++) {
-        if (!asTools::IsNaN(refVals(i_reftime))) {
-            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData,
+    for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
+        if (!asTools::IsNaN(refVals(iReftime))) {
+            scoresClimatology(iReftime) = forecastScore->Assess(refVals(iReftime), climatologyData,
                                                                  climatologyData.size());
         } else {
-            scoresClimatology(i_reftime) = NaNFloat;
+            scoresClimatology(iReftime) = NaNFloat;
         }
     }
 

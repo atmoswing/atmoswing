@@ -196,21 +196,21 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(Array1DFloat &dates, const VectorSt
         wxPoint startGrid(12 * g_ppiScaleDc, 10 * g_ppiScaleDc);
         int cellWitdh = (226 * g_ppiScaleDc) / dates.size();
 
-        for (int i_leadtime = 0; i_leadtime < dates.size(); i_leadtime++) {
-            wxString dateStr = asTime::GetStringTime(dates[i_leadtime], "DD.MM");
+        for (int iLead = 0; iLead < dates.size(); iLead++) {
+            wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
             gc->SetFont(datesFont, *wxBLACK);
-            CreateDatesText(gc, startText, cellWitdh, i_leadtime, dateStr);
+            CreateDatesText(gc, startText, cellWitdh, iLead, dateStr);
 
-            for (int i_forecast = 0; (unsigned) i_forecast < names.size(); i_forecast++) {
-                if (i_leadtime == 0) {
-                    wxString forecastStr = wxString::Format("%d", i_forecast + 1);
+            for (int iFcst = 0; (unsigned) iFcst < names.size(); iFcst++) {
+                if (iLead == 0) {
+                    wxString forecastStr = wxString::Format("%d", iFcst + 1);
                     gc->SetFont(numFont, *wxBLACK);
-                    CreateNbText(gc, startNb, cellHeight, i_forecast, forecastStr);
+                    CreateNbText(gc, startNb, cellHeight, iFcst, forecastStr);
                 }
 
                 wxGraphicsPath path = gc->CreatePath();
-                CreatePath(path, startGrid, cellWitdh, cellHeight, i_leadtime, i_forecast);
-                float value = values(i_forecast, i_leadtime);
+                CreatePath(path, startGrid, cellWitdh, cellHeight, iLead, iFcst);
+                float value = values(iFcst, iLead);
                 FillPath(gc, path, value);
             }
         }
@@ -252,11 +252,11 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event)
 }
 
 void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath &path, const wxPoint &start, int cellWitdh, int cellHeight,
-                                             int i_col, int i_row)
+                                             int iCol, int iRow)
 {
-    double startPointX = (double) start.x + i_col * cellWitdh;
+    double startPointX = (double) start.x + iCol * cellWitdh;
 
-    double startPointY = (double) start.y + i_row * cellHeight;
+    double startPointY = (double) start.y + iRow * cellHeight;
 
     path.MoveToPoint(startPointX, startPointY);
 
@@ -324,21 +324,21 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
     gc->DrawPath(path);
 }
 
-void asPanelSidebarAlarmsDrawing::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int i_col,
+void asPanelSidebarAlarmsDrawing::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int iCol,
                                                   const wxString &label)
 {
-    double pointX = (double) start.x + i_col * cellWitdh;
+    double pointX = (double) start.x + iCol * cellWitdh;
     double pointY = (double) start.y;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);
 }
 
-void asPanelSidebarAlarmsDrawing::CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int i_row,
+void asPanelSidebarAlarmsDrawing::CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int iRow,
                                                const wxString &label)
 {
     double pointX = (double) start.x;
-    double pointY = (double) start.y + i_row * cellHeight;
+    double pointY = (double) start.y + iRow * cellHeight;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);

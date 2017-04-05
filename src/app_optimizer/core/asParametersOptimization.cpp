@@ -116,7 +116,7 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     if (!fileParams.CheckRootElement())
         return false;
 
-    int i_step = 0;
+    int iStep = 0;
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
 
@@ -130,9 +130,9 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
 
         } else if (nodeProcess->GetName() == "analog_dates") {
             AddStep();
-            if(!ParseAnalogDatesParams(fileParams, i_step, nodeProcess))
+            if(!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
                 return false;
-            i_step++;
+            iStep++;
 
         } else if (nodeProcess->GetName() == "analog_values") {
             if(!ParseAnalogValuesParams(fileParams, nodeProcess))
@@ -327,43 +327,43 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
     return true;
 }
 
-bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimization &fileParams, int i_step,
+bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimization &fileParams, int iStep,
                                                       const wxXmlNode *nodeProcess)
 {
-    int i_ptor = 0;
+    int iPtor = 0;
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
-            SetAnalogsNumberLock(i_step, fileParams.GetAttributeBool(nodeParamBlock, "lock"));
-            if (IsAnalogsNumberLocked(i_step)) {
-                if (!SetAnalogsNumber(i_step, fileParams.GetInt(nodeParamBlock)))
+            SetAnalogsNumberLock(iStep, fileParams.GetAttributeBool(nodeParamBlock, "lock"));
+            if (IsAnalogsNumberLocked(iStep)) {
+                if (!SetAnalogsNumber(iStep, fileParams.GetInt(nodeParamBlock)))
                     return false;
-                if (!SetAnalogsNumberLowerLimit(i_step, GetAnalogsNumber(i_step)))
+                if (!SetAnalogsNumberLowerLimit(iStep, GetAnalogsNumber(iStep)))
                     return false;
-                if (!SetAnalogsNumberUpperLimit(i_step, GetAnalogsNumber(i_step)))
+                if (!SetAnalogsNumberUpperLimit(iStep, GetAnalogsNumber(iStep)))
                     return false;
-                if (!SetAnalogsNumberIteration(i_step, 1))
+                if (!SetAnalogsNumberIteration(iStep, 1))
                     return false;
             } else {
-                if (!SetAnalogsNumberLowerLimit(i_step, fileParams.GetAttributeInt(nodeParamBlock, "lowerlimit")))
+                if (!SetAnalogsNumberLowerLimit(iStep, fileParams.GetAttributeInt(nodeParamBlock, "lowerlimit")))
                     return false;
-                if (!SetAnalogsNumberUpperLimit(i_step, fileParams.GetAttributeInt(nodeParamBlock, "upperlimit")))
+                if (!SetAnalogsNumberUpperLimit(iStep, fileParams.GetAttributeInt(nodeParamBlock, "upperlimit")))
                     return false;
-                if (!SetAnalogsNumberIteration(i_step, fileParams.GetAttributeInt(nodeParamBlock, "iteration")))
+                if (!SetAnalogsNumberIteration(iStep, fileParams.GetAttributeInt(nodeParamBlock, "iteration")))
                     return false;
             }
         } else if (nodeParamBlock->GetName() == "predictor") {
-            AddPredictor(i_step);
-            AddPredictorVect(m_stepsVect[i_step]);
-            AddPredictorIteration(m_stepsIteration[i_step]);
-            AddPredictorUpperLimit(m_stepsUpperLimit[i_step]);
-            AddPredictorLowerLimit(m_stepsLowerLimit[i_step]);
-            AddPredictorLocks(m_stepsLocks[i_step]);
-            SetPreprocess(i_step, i_ptor, false);
-            SetPreload(i_step, i_ptor, false);
-            if(!ParsePredictors(fileParams, i_step, i_ptor, nodeParamBlock))
+            AddPredictor(iStep);
+            AddPredictorVect(m_stepsVect[iStep]);
+            AddPredictorIteration(m_stepsIteration[iStep]);
+            AddPredictorUpperLimit(m_stepsUpperLimit[iStep]);
+            AddPredictorLowerLimit(m_stepsLowerLimit[iStep]);
+            AddPredictorLocks(m_stepsLocks[iStep]);
+            SetPreprocess(iStep, iPtor, false);
+            SetPreload(iStep, iPtor, false);
+            if(!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock))
                 return false;
-            i_ptor++;
+            iPtor++;
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }
@@ -372,93 +372,93 @@ bool asParametersOptimization::ParseAnalogDatesParams(asFileParametersOptimizati
     return true;
 }
 
-bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fileParams, int i_step, int i_ptor,
+bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fileParams, int iStep, int iPtor,
                                                const wxXmlNode *nodeParamBlock)
 {
     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
-            SetPreload(i_step, i_ptor, fileParams.GetBool(nodeParam));
+            SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
-            SetPreprocess(i_step, i_ptor, true);
-            if (!ParsePreprocessedPredictors(fileParams, i_step, i_ptor, nodeParam))
+            SetPreprocess(iStep, iPtor, true);
+            if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
                 return false;
         } else if (nodeParam->GetName() == "dataset_id") {
-            if (!SetPredictorDatasetId(i_step, i_ptor, fileParams.GetString(nodeParam)))
+            if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "data_id") {
-            if (!SetPredictorDataIdVector(i_step, i_ptor, fileParams.GetVectorString(nodeParam)))
+            if (!SetPredictorDataIdVector(iStep, iPtor, fileParams.GetVectorString(nodeParam)))
                 return false;
-            SetPredictorDataIdLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorDataIdLocked(i_step, i_ptor)) {
-                if (!SetPredictorDataId(i_step, i_ptor, fileParams.GetString(nodeParam)))
+            SetPredictorDataIdLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorDataIdLocked(iStep, iPtor)) {
+                if (!SetPredictorDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
                     return false;
             }
         } else if (nodeParam->GetName() == "level") {
-            if (!SetPredictorLevelVector(i_step, i_ptor, fileParams.GetVectorFloat(nodeParam)))
+            if (!SetPredictorLevelVector(iStep, iPtor, fileParams.GetVectorFloat(nodeParam)))
                 return false;
-            SetPredictorLevelLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorLevelLocked(i_step, i_ptor)) {
-                if (!SetPredictorLevel(i_step, i_ptor, fileParams.GetFloat(nodeParam)))
+            SetPredictorLevelLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorLevelLocked(iStep, iPtor)) {
+                if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
                     return false;
             }
         } else if (nodeParam->GetName() == "time") {
-            SetPredictorTimeHoursLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorTimeHoursLocked(i_step, i_ptor)) {
-                if (!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetDouble(nodeParam)))
+            SetPredictorTimeHoursLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorTimeHoursLocked(iStep, iPtor)) {
+                if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                     return false;
                 VectorDouble vTimeHours;
-                vTimeHours.push_back(GetPredictorTimeHours(i_step, i_ptor));
-                if (!SetPreloadTimeHours(i_step, i_ptor, vTimeHours))
+                vTimeHours.push_back(GetPredictorTimeHours(iStep, iPtor));
+                if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
                     return false;
-                if (!SetPredictorTimeHoursLowerLimit(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor)))
+                if (!SetPredictorTimeHoursLowerLimit(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor)))
                     return false;
-                if (!SetPredictorTimeHoursUpperLimit(i_step, i_ptor, GetPredictorTimeHours(i_step, i_ptor)))
+                if (!SetPredictorTimeHoursUpperLimit(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor)))
                     return false;
-                if (!SetPredictorTimeHoursIteration(i_step, i_ptor, 6))
+                if (!SetPredictorTimeHoursIteration(iStep, iPtor, 6))
                     return false;
             } else {
-                if (!SetPredictorTimeHoursLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "lowerlimit")))
+                if (!SetPredictorTimeHoursLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "lowerlimit")))
                     return false;
-                if (!SetPredictorTimeHoursUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "upperlimit")))
+                if (!SetPredictorTimeHoursUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "upperlimit")))
                     return false;
-                if (!SetPredictorTimeHoursIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeParam, "iteration")))
+                if (!SetPredictorTimeHoursIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "iteration")))
                     return false;
                 // Initialize to ensure correct array sizes
-                if (!SetPredictorTimeHours(i_step, i_ptor, GetPredictorTimeHoursLowerLimit(i_step, i_ptor)))
+                if (!SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHoursLowerLimit(iStep, iPtor)))
                     return false;
             }
         } else if (nodeParam->GetName() == "members") {
-            if (!SetPredictorMembersNb(i_step, i_ptor, fileParams.GetInt(nodeParam)))
+            if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "spatial_window") {
-            if(!ParseSpatialWindow(fileParams, i_step, i_ptor, nodeParam))
+            if(!ParseSpatialWindow(fileParams, iStep, iPtor, nodeParam))
                 return false;
         } else if (nodeParam->GetName() == "criteria") {
-            if (!SetPredictorCriteriaVector(i_step, i_ptor, fileParams.GetVectorString(nodeParam)))
+            if (!SetPredictorCriteriaVector(iStep, iPtor, fileParams.GetVectorString(nodeParam)))
                 return false;
-            SetPredictorCriteriaLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorCriteriaLocked(i_step, i_ptor)) {
-                if (!SetPredictorCriteria(i_step, i_ptor, fileParams.GetString(nodeParam)))
+            SetPredictorCriteriaLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorCriteriaLocked(iStep, iPtor)) {
+                if (!SetPredictorCriteria(iStep, iPtor, fileParams.GetString(nodeParam)))
                     return false;
             }
         } else if (nodeParam->GetName() == "weight") {
-            SetPredictorWeightLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorWeightLocked(i_step, i_ptor)) {
-                if (!SetPredictorWeight(i_step, i_ptor, fileParams.GetFloat(nodeParam)))
+            SetPredictorWeightLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorWeightLocked(iStep, iPtor)) {
+                if (!SetPredictorWeight(iStep, iPtor, fileParams.GetFloat(nodeParam)))
                     return false;
-                if (!SetPredictorWeightLowerLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor)))
+                if (!SetPredictorWeightLowerLimit(iStep, iPtor, GetPredictorWeight(iStep, iPtor)))
                     return false;
-                if (!SetPredictorWeightUpperLimit(i_step, i_ptor, GetPredictorWeight(i_step, i_ptor)))
+                if (!SetPredictorWeightUpperLimit(iStep, iPtor, GetPredictorWeight(iStep, iPtor)))
                     return false;
-                if (!SetPredictorWeightIteration(i_step, i_ptor, 1))
+                if (!SetPredictorWeightIteration(iStep, iPtor, 1))
                     return false;
             } else {
-                if (!SetPredictorWeightLowerLimit(i_step, i_ptor, fileParams.GetAttributeFloat(nodeParam, "lowerlimit")))
+                if (!SetPredictorWeightLowerLimit(iStep, iPtor, fileParams.GetAttributeFloat(nodeParam, "lowerlimit")))
                     return false;
-                if (!SetPredictorWeightUpperLimit(i_step, i_ptor, fileParams.GetAttributeFloat(nodeParam, "upperlimit")))
+                if (!SetPredictorWeightUpperLimit(iStep, iPtor, fileParams.GetAttributeFloat(nodeParam, "upperlimit")))
                     return false;
-                if (!SetPredictorWeightIteration(i_step, i_ptor, fileParams.GetAttributeFloat(nodeParam, "iteration")))
+                if (!SetPredictorWeightIteration(iStep, iPtor, fileParams.GetAttributeFloat(nodeParam, "iteration")))
                     return false;
             }
         } else {
@@ -469,95 +469,95 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
     return true;
 }
 
-bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization &fileParams, int i_step, int i_ptor,
+bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization &fileParams, int iStep, int iPtor,
                                                   const wxXmlNode *nodeParam)
 {
     wxXmlNode *nodeWindow = nodeParam->GetChildren();
     while (nodeWindow) {
         if (nodeWindow->GetName() == "grid_type") {
-            if (!SetPredictorGridType(i_step, i_ptor, fileParams.GetString(nodeWindow, "regular")))
+            if (!SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular")))
                 return false;
         } else if (nodeWindow->GetName() == "x_min") {
-            SetPredictorXminLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
-            if (IsPredictorXminLocked(i_step, i_ptor)) {
-                if (!SetPredictorXmin(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            SetPredictorXminLock(iStep, iPtor, fileParams.GetAttributeBool(nodeWindow, "lock"));
+            if (IsPredictorXminLocked(iStep, iPtor)) {
+                if (!SetPredictorXmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                     return false;
-                if (!SetPredictorXminLowerLimit(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor)))
+                if (!SetPredictorXminLowerLimit(iStep, iPtor, GetPredictorXmin(iStep, iPtor)))
                     return false;
-                if (!SetPredictorXminUpperLimit(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor)))
+                if (!SetPredictorXminUpperLimit(iStep, iPtor, GetPredictorXmin(iStep, iPtor)))
                     return false;
-                if (!SetPredictorXminIteration(i_step, i_ptor, 1))
+                if (!SetPredictorXminIteration(iStep, iPtor, 1))
                     return false;
             } else {
-                if (!SetPredictorXminLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
+                if (!SetPredictorXminLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
                     return false;
-                if (!SetPredictorXminUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
+                if (!SetPredictorXminUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
                     return false;
-                if (!SetPredictorXminIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
+                if (!SetPredictorXminIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
                     return false;
             }
         } else if (nodeWindow->GetName() == "x_points_nb") {
-            SetPredictorXptsnbLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
-            if (IsPredictorXptsnbLocked(i_step, i_ptor)) {
-                if (!SetPredictorXptsnb(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            SetPredictorXptsnbLock(iStep, iPtor, fileParams.GetAttributeBool(nodeWindow, "lock"));
+            if (IsPredictorXptsnbLocked(iStep, iPtor)) {
+                if (!SetPredictorXptsnb(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                     return false;
-                if (!SetPredictorXptsnbLowerLimit(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor)))
+                if (!SetPredictorXptsnbLowerLimit(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor)))
                     return false;
-                if (!SetPredictorXptsnbUpperLimit(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor)))
+                if (!SetPredictorXptsnbUpperLimit(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor)))
                     return false;
-                if (!SetPredictorXptsnbIteration(i_step, i_ptor, 1))
+                if (!SetPredictorXptsnbIteration(iStep, iPtor, 1))
                     return false;
             } else {
-                if (!SetPredictorXptsnbLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
+                if (!SetPredictorXptsnbLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
                     return false;
-                if (!SetPredictorXptsnbUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
+                if (!SetPredictorXptsnbUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
                     return false;
-                if (!SetPredictorXptsnbIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
+                if (!SetPredictorXptsnbIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
                     return false;
             }
         } else if (nodeWindow->GetName() == "x_step") {
-            if (!SetPredictorXstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                 return false;
         } else if (nodeWindow->GetName() == "y_min") {
-            SetPredictorYminLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
-            if (IsPredictorYminLocked(i_step, i_ptor)) {
-                if (!SetPredictorYmin(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            SetPredictorYminLock(iStep, iPtor, fileParams.GetAttributeBool(nodeWindow, "lock"));
+            if (IsPredictorYminLocked(iStep, iPtor)) {
+                if (!SetPredictorYmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                     return false;
-                if (!SetPredictorYminLowerLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor)))
+                if (!SetPredictorYminLowerLimit(iStep, iPtor, GetPredictorYmin(iStep, iPtor)))
                     return false;
-                if (!SetPredictorYminUpperLimit(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor)))
+                if (!SetPredictorYminUpperLimit(iStep, iPtor, GetPredictorYmin(iStep, iPtor)))
                     return false;
-                if (!SetPredictorYminIteration(i_step, i_ptor, 1))
+                if (!SetPredictorYminIteration(iStep, iPtor, 1))
                     return false;
             } else {
-                if (!SetPredictorYminLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
+                if (!SetPredictorYminLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
                     return false;
-                if (!SetPredictorYminUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
+                if (!SetPredictorYminUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
                     return false;
-                if (!SetPredictorYminIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
+                if (!SetPredictorYminIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
                     return false;
             }
         } else if (nodeWindow->GetName() == "y_points_nb") {
-            SetPredictorYptsnbLock(i_step, i_ptor, fileParams.GetAttributeBool(nodeWindow, "lock"));
-            if (IsPredictorYptsnbLocked(i_step, i_ptor)) {
-                if (!SetPredictorYptsnb(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            SetPredictorYptsnbLock(iStep, iPtor, fileParams.GetAttributeBool(nodeWindow, "lock"));
+            if (IsPredictorYptsnbLocked(iStep, iPtor)) {
+                if (!SetPredictorYptsnb(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                     return false;
-                if (!SetPredictorYptsnbLowerLimit(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor)))
+                if (!SetPredictorYptsnbLowerLimit(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor)))
                     return false;
-                if (!SetPredictorYptsnbUpperLimit(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor)))
+                if (!SetPredictorYptsnbUpperLimit(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor)))
                     return false;
-                if (!SetPredictorYptsnbIteration(i_step, i_ptor, 1))
+                if (!SetPredictorYptsnbIteration(iStep, iPtor, 1))
                     return false;
             } else {
-                if (!SetPredictorYptsnbLowerLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
+                if (!SetPredictorYptsnbLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "lowerlimit")))
                     return false;
-                if (!SetPredictorYptsnbUpperLimit(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
+                if (!SetPredictorYptsnbUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "upperlimit")))
                     return false;
-                if (!SetPredictorYptsnbIteration(i_step, i_ptor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
+                if (!SetPredictorYptsnbIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeWindow, "iteration")))
                     return false;
             }
         } else if (nodeWindow->GetName() == "y_step") {
-            if (!SetPredictorYstep(i_step, i_ptor, fileParams.GetDouble(nodeWindow)))
+            if (!SetPredictorYstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                 return false;
         } else {
             fileParams.UnknownNode(nodeWindow);
@@ -567,19 +567,19 @@ bool asParametersOptimization::ParseSpatialWindow(asFileParametersOptimization &
     return true;
 }
 
-bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptimization &fileParams, int i_step,
-                                                           int i_ptor, const wxXmlNode *nodeParam)
+bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptimization &fileParams, int iStep,
+                                                           int iPtor, const wxXmlNode *nodeParam)
 {
-    int i_dataset = 0;
+    int iPre = 0;
     wxXmlNode *nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
-            if (!SetPreprocessMethod(i_step, i_ptor, fileParams.GetString(nodePreprocess)))
+            if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess)))
                 return false;
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
-            if(!ParsePreprocessedPredictorDataset(fileParams, i_step, i_ptor, i_dataset, nodePreprocess))
+            if(!ParsePreprocessedPredictorDataset(fileParams, iStep, iPtor, iPre, nodePreprocess))
                 return false;
-            i_dataset++;
+            iPre++;
         } else {
             fileParams.UnknownNode(nodePreprocess);
         }
@@ -588,74 +588,74 @@ bool asParametersOptimization::ParsePreprocessedPredictors(asFileParametersOptim
     return true;
 }
 
-bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParametersOptimization &fileParams, int i_step,
-                                                                 int i_ptor, int i_dataset,
+bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParametersOptimization &fileParams, int iStep,
+                                                                 int iPtor, int iPre,
                                                                  const wxXmlNode *nodePreprocess)
 {
     wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
     while (nodeParamPreprocess) {
         if (nodeParamPreprocess->GetName() == "dataset_id") {
-            if (!SetPreprocessDatasetId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess)))
+            if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                 return false;
         } else if (nodeParamPreprocess->GetName() == "data_id") {
-            if (!SetPreprocessDataIdVector(i_step, i_ptor, i_dataset, fileParams.GetVectorString(nodeParamPreprocess)))
+            if (!SetPreprocessDataIdVector(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPreprocess)))
                 return false;
-            SetPreprocessDataIdLock(i_step, i_ptor, i_dataset,
+            SetPreprocessDataIdLock(iStep, iPtor, iPre,
                                     fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
-            if (IsPreprocessDataIdLocked(i_step, i_ptor, i_dataset)) {
-                if (!SetPreprocessDataId(i_step, i_ptor, i_dataset, fileParams.GetString(nodeParamPreprocess)))
+            if (IsPreprocessDataIdLocked(iStep, iPtor, iPre)) {
+                if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                     return false;
             } else {
                 // Initialize to ensure correct array sizes
-                if (!SetPreprocessDataId(i_step, i_ptor, i_dataset,
-                                         GetPreprocessDataIdVector(i_step, i_ptor, i_dataset)[0]))
+                if (!SetPreprocessDataId(iStep, iPtor, iPre,
+                                         GetPreprocessDataIdVector(iStep, iPtor, iPre)[0]))
                     return false;
             }
         } else if (nodeParamPreprocess->GetName() == "level") {
-            if (!SetPreprocessLevelVector(i_step, i_ptor, i_dataset, fileParams.GetVectorFloat(nodeParamPreprocess)))
+            if (!SetPreprocessLevelVector(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPreprocess)))
                 return false;
-            SetPreprocessLevelLock(i_step, i_ptor, i_dataset,
+            SetPreprocessLevelLock(iStep, iPtor, iPre,
                                    fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
-            if (IsPreprocessLevelLocked(i_step, i_ptor, i_dataset)) {
-                if (!SetPreprocessLevel(i_step, i_ptor, i_dataset, fileParams.GetFloat(nodeParamPreprocess)))
+            if (IsPreprocessLevelLocked(iStep, iPtor, iPre)) {
+                if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
                     return false;
             } else {
                 // Initialize to ensure correct array sizes
-                if (!SetPreprocessLevel(i_step, i_ptor, i_dataset,
-                                        GetPreprocessLevelVector(i_step, i_ptor, i_dataset)[0]))
+                if (!SetPreprocessLevel(iStep, iPtor, iPre,
+                                        GetPreprocessLevelVector(iStep, iPtor, iPre)[0]))
                     return false;
             }
         } else if (nodeParamPreprocess->GetName() == "time") {
-            SetPreprocessTimeHoursLock(i_step, i_ptor, i_dataset,
+            SetPreprocessTimeHoursLock(iStep, iPtor, iPre,
                                        fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
-            if (IsPreprocessTimeHoursLocked(i_step, i_ptor, i_dataset)) {
-                if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess)))
+            if (IsPreprocessTimeHoursLocked(iStep, iPtor, iPre)) {
+                if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                     return false;
-                if (!SetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset,
-                                                      GetPreprocessTimeHours(i_step, i_ptor, i_dataset)))
+                if (!SetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre,
+                                                      GetPreprocessTimeHours(iStep, iPtor, iPre)))
                     return false;
-                if (!SetPreprocessTimeHoursUpperLimit(i_step, i_ptor, i_dataset,
-                                                      GetPreprocessTimeHours(i_step, i_ptor, i_dataset)))
+                if (!SetPreprocessTimeHoursUpperLimit(iStep, iPtor, iPre,
+                                                      GetPreprocessTimeHours(iStep, iPtor, iPre)))
                     return false;
-                if (!SetPreprocessTimeHoursIteration(i_step, i_ptor, i_dataset, 6))
+                if (!SetPreprocessTimeHoursIteration(iStep, iPtor, iPre, 6))
                     return false;
             } else {
-                if (!SetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset,
+                if (!SetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre,
                                                       fileParams.GetAttributeDouble(nodeParamPreprocess, "lowerlimit")))
                     return false;
-                if (!SetPreprocessTimeHoursUpperLimit(i_step, i_ptor, i_dataset,
+                if (!SetPreprocessTimeHoursUpperLimit(iStep, iPtor, iPre,
                                                       fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit")))
                     return false;
-                if (!SetPreprocessTimeHoursIteration(i_step, i_ptor, i_dataset,
+                if (!SetPreprocessTimeHoursIteration(iStep, iPtor, iPre,
                                                      fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration")))
                     return false;
                 // Initialize to ensure correct array sizes
-                if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset,
-                                            GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset)))
+                if (!SetPreprocessTimeHours(iStep, iPtor, iPre,
+                                            GetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre)))
                     return false;
             }
         } else if (nodeParamPreprocess->GetName() == "members") {
-            if (!SetPreprocessMembersNb(i_step, i_ptor, i_dataset, fileParams.GetInt(nodeParamPreprocess)))
+            if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
                 return false;
         } else {
             fileParams.UnknownNode(nodeParamPreprocess);
@@ -732,26 +732,26 @@ bool asParametersOptimization::ParseForecastScoreFinal(asFileParametersOptimizat
 
 bool asParametersOptimization::SetSpatialWindowProperties()
 {
-    for (int i_step = 0; i_step < GetStepsNb(); i_step++) {
-        for (int i_ptor = 0; i_ptor < GetPredictorsNb(i_step); i_ptor++) {
-            double Xshift = std::fmod(GetPredictorXminLowerLimit(i_step, i_ptor), GetPredictorXstep(i_step, i_ptor));
+    for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
+        for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
+            double Xshift = std::fmod(GetPredictorXminLowerLimit(iStep, iPtor), GetPredictorXstep(iStep, iPtor));
             if (Xshift < 0)
-                Xshift += GetPredictorXstep(i_step, i_ptor);
-            if (!SetPredictorXshift(i_step, i_ptor, Xshift))
+                Xshift += GetPredictorXstep(iStep, iPtor);
+            if (!SetPredictorXshift(iStep, iPtor, Xshift))
                 return false;
 
-            double Yshift = std::fmod(GetPredictorYminLowerLimit(i_step, i_ptor), GetPredictorYstep(i_step, i_ptor));
+            double Yshift = std::fmod(GetPredictorYminLowerLimit(iStep, iPtor), GetPredictorYstep(iStep, iPtor));
             if (Yshift < 0)
-                Yshift += GetPredictorYstep(i_step, i_ptor);
-            if (!SetPredictorYshift(i_step, i_ptor, Yshift))
+                Yshift += GetPredictorYstep(iStep, iPtor);
+            if (!SetPredictorYshift(iStep, iPtor, Yshift))
                 return false;
 
-            if (GetPredictorXptsnbLowerLimit(i_step, i_ptor) <= 1 || GetPredictorYptsnbLowerLimit(i_step, i_ptor) <= 1)
-                SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (IsPredictorXptsnbLocked(i_step, i_ptor) && GetPredictorXptsnb(i_step, i_ptor) <= 1)
-                SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
-            if (IsPredictorYptsnbLocked(i_step, i_ptor) && GetPredictorYptsnb(i_step, i_ptor) <= 1)
-                SetPredictorFlatAllowed(i_step, i_ptor, asFLAT_ALLOWED);
+            if (GetPredictorXptsnbLowerLimit(iStep, iPtor) <= 1 || GetPredictorYptsnbLowerLimit(iStep, iPtor) <= 1)
+                SetPredictorFlatAllowed(iStep, iPtor, asFLAT_ALLOWED);
+            if (IsPredictorXptsnbLocked(iStep, iPtor) && GetPredictorXptsnb(iStep, iPtor) <= 1)
+                SetPredictorFlatAllowed(iStep, iPtor, asFLAT_ALLOWED);
+            if (IsPredictorYptsnbLocked(iStep, iPtor) && GetPredictorYptsnb(iStep, iPtor) <= 1)
+                SetPredictorFlatAllowed(iStep, iPtor, asFLAT_ALLOWED);
         }
     }
 
@@ -760,103 +760,103 @@ bool asParametersOptimization::SetSpatialWindowProperties()
 
 bool asParametersOptimization::SetPreloadingProperties()
 {
-    for (int i_step = 0; i_step < GetStepsNb(); i_step++) {
-        for (int i_ptor = 0; i_ptor < GetPredictorsNb(i_step); i_ptor++) {
+    for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
+        for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             // Set maximum extent
-            if (NeedsPreloading(i_step, i_ptor)) {
+            if (NeedsPreloading(iStep, iPtor)) {
                 // Set maximum extent
-                if (!IsPredictorXminLocked(i_step, i_ptor)) {
-                    SetPreloadXmin(i_step, i_ptor, GetPredictorXminLowerLimit(i_step, i_ptor));
+                if (!IsPredictorXminLocked(iStep, iPtor)) {
+                    SetPreloadXmin(iStep, iPtor, GetPredictorXminLowerLimit(iStep, iPtor));
                 } else {
-                    SetPreloadXmin(i_step, i_ptor, GetPredictorXmin(i_step, i_ptor));
+                    SetPreloadXmin(iStep, iPtor, GetPredictorXmin(iStep, iPtor));
                 }
 
-                if (!IsPredictorYminLocked(i_step, i_ptor)) {
-                    SetPreloadYmin(i_step, i_ptor, GetPredictorYminLowerLimit(i_step, i_ptor));
+                if (!IsPredictorYminLocked(iStep, iPtor)) {
+                    SetPreloadYmin(iStep, iPtor, GetPredictorYminLowerLimit(iStep, iPtor));
                 } else {
-                    SetPreloadYmin(i_step, i_ptor, GetPredictorYmin(i_step, i_ptor));
+                    SetPreloadYmin(iStep, iPtor, GetPredictorYmin(iStep, iPtor));
                 }
 
-                if (!IsPredictorXptsnbLocked(i_step, i_ptor)) {
+                if (!IsPredictorXptsnbLocked(iStep, iPtor)) {
                     int Xbaseptsnb = std::abs(
-                            GetPredictorXminUpperLimit(i_step, i_ptor) - GetPredictorXminLowerLimit(i_step, i_ptor)) /
-                                     GetPredictorXstep(i_step, i_ptor);
-                    SetPreloadXptsnb(i_step, i_ptor,
-                                     Xbaseptsnb + GetPredictorXptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
+                            GetPredictorXminUpperLimit(iStep, iPtor) - GetPredictorXminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorXstep(iStep, iPtor);
+                    SetPreloadXptsnb(iStep, iPtor,
+                                     Xbaseptsnb + GetPredictorXptsnbUpperLimit(iStep, iPtor)); // No need to add +1
                 } else {
-                    SetPreloadXptsnb(i_step, i_ptor, GetPredictorXptsnb(i_step, i_ptor));
+                    SetPreloadXptsnb(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor));
                 }
 
-                if (!IsPredictorYptsnbLocked(i_step, i_ptor)) {
+                if (!IsPredictorYptsnbLocked(iStep, iPtor)) {
                     int Ybaseptsnb = std::abs(
-                            GetPredictorYminUpperLimit(i_step, i_ptor) - GetPredictorYminLowerLimit(i_step, i_ptor)) /
-                                     GetPredictorYstep(i_step, i_ptor);
-                    SetPreloadYptsnb(i_step, i_ptor,
-                                     Ybaseptsnb + GetPredictorYptsnbUpperLimit(i_step, i_ptor)); // No need to add +1
+                            GetPredictorYminUpperLimit(iStep, iPtor) - GetPredictorYminLowerLimit(iStep, iPtor)) /
+                                     GetPredictorYstep(iStep, iPtor);
+                    SetPreloadYptsnb(iStep, iPtor,
+                                     Ybaseptsnb + GetPredictorYptsnbUpperLimit(iStep, iPtor)); // No need to add +1
                 } else {
-                    SetPreloadYptsnb(i_step, i_ptor, GetPredictorYptsnb(i_step, i_ptor));
+                    SetPreloadYptsnb(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor));
                 }
             }
 
             // Change predictor properties when preprocessing
-            if (NeedsPreprocessing(i_step, i_ptor)) {
-                if (GetPreprocessSize(i_step, i_ptor) == 1) {
-                    SetPredictorDatasetId(i_step, i_ptor, GetPreprocessDatasetId(i_step, i_ptor, 0));
-                    SetPredictorDataId(i_step, i_ptor, GetPreprocessDataId(i_step, i_ptor, 0));
-                    SetPredictorLevel(i_step, i_ptor, GetPreprocessLevel(i_step, i_ptor, 0));
-                    SetPredictorTimeHours(i_step, i_ptor, GetPreprocessTimeHours(i_step, i_ptor, 0));
+            if (NeedsPreprocessing(iStep, iPtor)) {
+                if (GetPreprocessSize(iStep, iPtor) == 1) {
+                    SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
+                    SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
+                    SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
+                    SetPredictorTimeHours(iStep, iPtor, GetPreprocessTimeHours(iStep, iPtor, 0));
                 } else {
-                    SetPredictorDatasetId(i_step, i_ptor, "mix");
-                    SetPredictorDataId(i_step, i_ptor, "mix");
-                    SetPredictorLevel(i_step, i_ptor, 0);
-                    SetPredictorTimeHours(i_step, i_ptor, 0);
+                    SetPredictorDatasetId(iStep, iPtor, "mix");
+                    SetPredictorDataId(iStep, iPtor, "mix");
+                    SetPredictorLevel(iStep, iPtor, 0);
+                    SetPredictorTimeHours(iStep, iPtor, 0);
                 }
             }
 
             // Set levels and time for preloading
-            if (NeedsPreloading(i_step, i_ptor) && !NeedsPreprocessing(i_step, i_ptor)) {
-                if (!SetPreloadDataIds(i_step, i_ptor, GetPredictorDataIdVector(i_step, i_ptor)))
+            if (NeedsPreloading(iStep, iPtor) && !NeedsPreprocessing(iStep, iPtor)) {
+                if (!SetPreloadDataIds(iStep, iPtor, GetPredictorDataIdVector(iStep, iPtor)))
                     return false;
-                if (!SetPreloadLevels(i_step, i_ptor, GetPredictorLevelVector(i_step, i_ptor)))
+                if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevelVector(iStep, iPtor)))
                     return false;
                 VectorDouble vTimeHours;
-                for (double h = GetPredictorTimeHoursLowerLimit(i_step, i_ptor);
-                     h <= GetPredictorTimeHoursUpperLimit(i_step, i_ptor); h += GetPredictorTimeHoursIteration(i_step,
-                                                                                                               i_ptor)) {
+                for (double h = GetPredictorTimeHoursLowerLimit(iStep, iPtor);
+                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor); h += GetPredictorTimeHoursIteration(iStep,
+                                                                                                               iPtor)) {
                     vTimeHours.push_back(h);
                 }
-                if (!SetPreloadTimeHours(i_step, i_ptor, vTimeHours))
+                if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
                     return false;
-            } else if (NeedsPreloading(i_step, i_ptor) && NeedsPreprocessing(i_step, i_ptor)) {
+            } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
-                wxString method = GetPreprocessMethod(i_step, i_ptor);
+                wxString method = GetPreprocessMethod(iStep, iPtor);
                 VectorFloat preprocLevels;
                 VectorDouble preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
                 if (method.IsSameAs("Gradients")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
-                            i_step, i_ptor, 0)) {
+                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
+                            iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
-                            i_step, i_ptor, 0)) {
+                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
+                            iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
                            method.IsSameAs("HumidityIndex")) {
-                    preprocLevels = GetPreprocessLevelVector(i_step, i_ptor, 0);
+                    preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(i_step, i_ptor, 0); h += GetPreprocessTimeHoursIteration(
-                            i_step, i_ptor, 0)) {
+                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
+                            iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
@@ -866,9 +866,9 @@ bool asParametersOptimization::SetPreloadingProperties()
                     wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
-                if (!SetPreloadLevels(i_step, i_ptor, preprocLevels))
+                if (!SetPreloadLevels(iStep, iPtor, preprocLevels))
                     return false;
-                if (!SetPreloadTimeHours(i_step, i_ptor, preprocTimeHours))
+                if (!SetPreloadTimeHours(iStep, iPtor, preprocTimeHours))
                     return false;
             }
         }

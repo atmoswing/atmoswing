@@ -44,16 +44,16 @@ wxThread::ExitCode asThreadMethodOptimizerGeneticAlgorithms::Entry()
         return NULL;
     }
 
-    for (int i_step = 0; i_step < stepsNb; i_step++) {
+    for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
-        if (i_step == 0) {
-            if (!m_optimizer->GetAnalogsDates(anaDates, *m_params, i_step, containsNaNs)) {
+        if (iStep == 0) {
+            if (!m_optimizer->GetAnalogsDates(anaDates, *m_params, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs dates"));
                 return NULL;
             }
             anaDatesPrevious = anaDates;
         } else {
-            if (!m_optimizer->GetAnalogsSubDates(anaDates, *m_params, anaDatesPrevious, i_step, containsNaNs)) {
+            if (!m_optimizer->GetAnalogsSubDates(anaDates, *m_params, anaDatesPrevious, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs sub dates"));
                 return NULL;
             }

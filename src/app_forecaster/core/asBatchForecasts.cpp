@@ -123,8 +123,8 @@ bool asBatchForecasts::Save() const
 
     // Forecasts
     wxXmlNode *nodeForecasts = new wxXmlNode(wxXML_ELEMENT_NODE, "forecasts");
-    for (int i_forecast = 0; i_forecast < GetForecastsNb(); i_forecast++) {
-        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[i_forecast]));
+    for (int iFcst = 0; iFcst < GetForecastsNb(); iFcst++) {
+        nodeForecasts->AddChild(fileBatch.CreateNodeWithValue("filename", m_forecastFileNames[iFcst]));
     }
     fileBatch.AddChild(nodeForecasts);
 

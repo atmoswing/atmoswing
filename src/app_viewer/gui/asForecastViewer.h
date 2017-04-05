@@ -51,7 +51,7 @@ public:
 
     void SetForecast(int methodRow, int forecastRow);
 
-    wxString GetStationName(int i_stat) const;
+    wxString GetStationName(int iStat) const;
 
     float GetSelectedTargetDate();
 
