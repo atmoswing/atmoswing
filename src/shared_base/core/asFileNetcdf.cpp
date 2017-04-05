@@ -558,9 +558,9 @@ int asFileNetcdf::GetDimId(const wxString &dimName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_dim = 0; i_dim < GetDimsNb(); i_dim++) {
-        if (m_struct.dims[i_dim].name.IsSameAs(dimName)) {
-            id = m_struct.dims[i_dim].id;
+    for (int iDim = 0; iDim < GetDimsNb(); iDim++) {
+        if (m_struct.dims[iDim].name.IsSameAs(dimName)) {
+            id = m_struct.dims[iDim].id;
         }
     }
 
@@ -578,8 +578,8 @@ bool asFileNetcdf::HasVariable(const wxString &varName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_var = 0; i_var < GetVarsNb(); i_var++) {
-        if (m_struct.vars[i_var].name.IsSameAs(varName)) {
+    for (int iVar = 0; iVar < GetVarsNb(); iVar++) {
+        if (m_struct.vars[iVar].name.IsSameAs(varName)) {
             return true;
         }
     }
@@ -597,9 +597,9 @@ int asFileNetcdf::GetVarId(const wxString &varName)
     CheckDefModeClosed();
 
     // Get the variable id
-    for (int i_var = 0; i_var < GetVarsNb(); i_var++) {
-        if (m_struct.vars[i_var].name.IsSameAs(varName)) {
-            id = m_struct.vars[i_var].id;
+    for (int iVar = 0; iVar < GetVarsNb(); iVar++) {
+        if (m_struct.vars[iVar].name.IsSameAs(varName)) {
+            id = m_struct.vars[iVar].id;
         }
     }
 
@@ -618,8 +618,8 @@ bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName
 
     // Get the attribute id
     if (varName.IsEmpty()) { // Global attribute
-        for (int i_att = 0; i_att < GetGlobAttsNb(); i_att++) {
-            if (m_struct.atts[i_att].name.IsSameAs(attName)) {
+        for (int iAtt = 0; iAtt < GetGlobAttsNb(); iAtt++) {
+            if (m_struct.atts[iAtt].name.IsSameAs(attName)) {
                 return true;
             }
         }
@@ -627,8 +627,8 @@ bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND)
             return asNOT_FOUND;
-        for (int i_att = 0; i_att < GetVarAttsNb(varId); i_att++) {
-            if (m_struct.vars[varId].atts[i_att].name.IsSameAs(attName)) {
+        for (int iAtt = 0; iAtt < GetVarAttsNb(varId); iAtt++) {
+            if (m_struct.vars[varId].atts[iAtt].name.IsSameAs(attName)) {
                 return true;
             }
         }
@@ -648,18 +648,18 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
 
     // Get the attribute id
     if (varName.IsEmpty()) { // Global attribute
-        for (int i_att = 0; i_att < GetGlobAttsNb(); i_att++) {
-            if (m_struct.atts[i_att].name.IsSameAs(attName)) {
-                id = m_struct.atts[i_att].id;
+        for (int iAtt = 0; iAtt < GetGlobAttsNb(); iAtt++) {
+            if (m_struct.atts[iAtt].name.IsSameAs(attName)) {
+                id = m_struct.atts[iAtt].id;
             }
         }
     } else { // Variable attribute
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND)
             return asNOT_FOUND;
-        for (int i_att = 0; i_att < GetVarAttsNb(varId); i_att++) {
-            if (m_struct.vars[varId].atts[i_att].name.IsSameAs(attName)) {
-                id = m_struct.vars[varId].atts[i_att].id;
+        for (int iAtt = 0; iAtt < GetVarAttsNb(varId); iAtt++) {
+            if (m_struct.vars[varId].atts[iAtt].name.IsSameAs(attName)) {
+                id = m_struct.vars[varId].atts[iAtt].id;
             }
         }
     }
@@ -1548,110 +1548,110 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 
 void asFileNetcdf::ClearStruct()
 {
-    for (unsigned int i_var = 0; i_var < m_struct.vars.size(); i_var++) {
-        for (unsigned int i_att = 0; i_att < m_struct.vars[i_var].atts.size(); i_att++) {
-            if (m_struct.vars[i_var].atts[i_att].pValue != NULL) {
-                nc_type nctype = m_struct.vars[i_var].atts[i_att].type;
+    for (unsigned int iVar = 0; iVar < m_struct.vars.size(); iVar++) {
+        for (unsigned int iAtt = 0; iAtt < m_struct.vars[iVar].atts.size(); iAtt++) {
+            if (m_struct.vars[iVar].atts[iAtt].pValue != NULL) {
+                nc_type nctype = m_struct.vars[iVar].atts[iAtt].type;
 
                 // Cleanup from http://stackoverflow.com/questions/206257/freeing-memory-allocated-to-an-array-of-void-pointers
                 switch (nctype) {
                     case NC_CHAR: // NC_CHAR - ISO/ASCII character
                     {
-                        delete static_cast<char *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<char *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     case NC_SHORT: // NC_SHORT - signed 2 byte integer
                     {
-                        delete static_cast<short *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<short *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        delete static_cast<int32_t *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<int32_t *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        delete static_cast<int64_t *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<int64_t *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     case NC_FLOAT: // NC_FLOAT - single precision floating point number
                     {
-                        delete static_cast<float *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<float *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                     {
-                        delete static_cast<double *>( m_struct.vars[i_var].atts[i_att].pValue);
+                        delete static_cast<double *>( m_struct.vars[iVar].atts[iAtt].pValue);
                         break;
                     }
 
                     default:
                         asThrowException(wxString::Format(
                                 _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                                nctype, m_struct.vars[i_var].atts[i_att].name));
+                                nctype, m_struct.vars[iVar].atts[iAtt].name));
                         break;
                 }
 
-                m_struct.vars[i_var].atts[i_att].pValue = NULL;
+                m_struct.vars[iVar].atts[iAtt].pValue = NULL;
             }
         }
     }
 
-    for (unsigned int i_att = 0; i_att < m_struct.atts.size(); i_att++) {
-        if (m_struct.atts[i_att].pValue != NULL) {
-            nc_type nctype = m_struct.atts[i_att].type;
+    for (unsigned int iAtt = 0; iAtt < m_struct.atts.size(); iAtt++) {
+        if (m_struct.atts[iAtt].pValue != NULL) {
+            nc_type nctype = m_struct.atts[iAtt].type;
 
             switch (nctype) {
                 case NC_CHAR: // NC_CHAR - ISO/ASCII character
                 {
-                    delete static_cast<char *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<char *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 case NC_SHORT: // NC_SHORT - signed 2 byte integer
                 {
-                    delete static_cast<short *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<short *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    delete static_cast<int32_t *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<int32_t *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    delete static_cast<int64_t *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<int64_t *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 case NC_FLOAT: // NC_FLOAT - single precision floating point number
                 {
-                    delete static_cast<float *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<float *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                 {
-                    delete static_cast<double *>( m_struct.atts[i_att].pValue);
+                    delete static_cast<double *>( m_struct.atts[iAtt].pValue);
                     break;
                 }
 
                 default:
                     asThrowException(wxString::Format(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                            nctype, m_struct.atts[i_att].name));
+                            nctype, m_struct.atts[iAtt].name));
                     break;
             }
 
-            m_struct.atts[i_att].pValue = NULL;
+            m_struct.atts[iAtt].pValue = NULL;
         }
     }
 }

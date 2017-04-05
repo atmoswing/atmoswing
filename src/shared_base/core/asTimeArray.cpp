@@ -636,28 +636,28 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     int rowid = 0;
     double seasonend = 0;
 
-    for (int i_year = startfirstyearstruct.year; i_year <= endlastyearstruct.year; i_year++) {
-        if (i_year == startfirstyearstruct.year) {
+    for (int iYear = startfirstyearstruct.year; iYear <= endlastyearstruct.year; iYear++) {
+        if (iYear == startfirstyearstruct.year) {
             thistimestep = GetMJD(startfirstyearstruct.year, startfirstyearstruct.month, startfirstyearstruct.day,
                                   startfirstyearstruct.hour, startfirstyearstruct.min);
             seasonend = GetMJD(endfirstyearstruct.year, endfirstyearstruct.month, endfirstyearstruct.day, 23, 59, 59);
-        } else if (i_year == endlastyearstruct.year) {
+        } else if (iYear == endlastyearstruct.year) {
             thistimestep = GetMJD(startlastyearstruct.year, startlastyearstruct.month, startlastyearstruct.day,
                                   startlastyearstruct.hour, startlastyearstruct.min);
             seasonend = GetMJD(endlastyearstruct.year, endlastyearstruct.month, endlastyearstruct.day, 23, 59, 59);
         } else {
-            thistimestep = GetMJD(i_year, GetSeasonStart(forecastseason).month, GetSeasonStart(forecastseason).day,
+            thistimestep = GetMJD(iYear, GetSeasonStart(forecastseason).month, GetSeasonStart(forecastseason).day,
                                   startfirstyearstruct.hour, startfirstyearstruct.min);
             int thismonth, thisday;
             TimeStruct thisyearendstruct;
             if (forecastseason != DJF) {
-                thismonth = GetSeasonEnd(forecastseason, i_year).month;
-                thisday = GetSeasonEnd(forecastseason, i_year).day;
-                thisyearendstruct = asTime::GetTimeStruct(i_year, thismonth, thisday, 23, 59, 59);
+                thismonth = GetSeasonEnd(forecastseason, iYear).month;
+                thisday = GetSeasonEnd(forecastseason, iYear).day;
+                thisyearendstruct = asTime::GetTimeStruct(iYear, thismonth, thisday, 23, 59, 59);
             } else {
-                thismonth = GetSeasonEnd(forecastseason, i_year + 1).month;
-                thisday = GetSeasonEnd(forecastseason, i_year + 1).day;
-                thisyearendstruct = asTime::GetTimeStruct(i_year + 1, thismonth, thisday, 23, 59, 59);
+                thismonth = GetSeasonEnd(forecastseason, iYear + 1).month;
+                thisday = GetSeasonEnd(forecastseason, iYear + 1).day;
+                thisyearendstruct = asTime::GetTimeStruct(iYear + 1, thismonth, thisday, 23, 59, 59);
             }
             seasonend = GetMJD(thisyearendstruct);
         }

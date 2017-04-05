@@ -95,7 +95,7 @@ public:
 
     void AddPredictor(ParamsStep &step);
 
-    void AddPredictor(int i_step);
+    void AddPredictor(int iStep);
 
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
@@ -127,16 +127,16 @@ public:
 
     bool SetPredictandStationIds(wxString val);
 
-    VectorParamsPredictors GetVectorParamsPredictors(int i_step) const
+    VectorParamsPredictors GetVectorParamsPredictors(int iStep) const
     {
-        wxASSERT(i_step < GetStepsNb());
-        return m_steps[i_step].predictors;
+        wxASSERT(iStep < GetStepsNb());
+        return m_steps[iStep].predictors;
     }
 
-    void SetVectorParamsPredictors(int i_step, VectorParamsPredictors ptors)
+    void SetVectorParamsPredictors(int iStep, VectorParamsPredictors ptors)
     {
-        wxASSERT(i_step < GetStepsNb());
-        m_steps[i_step].predictors = ptors;
+        wxASSERT(iStep < GetStepsNb());
+        m_steps[iStep].predictors = ptors;
     }
 
     wxString GetMethodId() const
@@ -378,248 +378,248 @@ public:
 
     bool SetPredictandTimeHours(double val);
 
-    int GetAnalogsNumber(int i_step) const
+    int GetAnalogsNumber(int iStep) const
     {
-        return m_steps[i_step].analogsNumber;
+        return m_steps[iStep].analogsNumber;
     }
 
-    bool SetAnalogsNumber(int i_step, int val);
+    bool SetAnalogsNumber(int iStep, int val);
 
-    bool NeedsPreloading(int i_step, int i_predictor) const
+    bool NeedsPreloading(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preload;
+        return m_steps[iStep].predictors[iPtor].preload;
     }
 
-    void SetPreload(int i_step, int i_predictor, bool val)
+    void SetPreload(int iStep, int iPtor, bool val)
     {
-        m_steps[i_step].predictors[i_predictor].preload = val;
+        m_steps[iStep].predictors[iPtor].preload = val;
     }
 
-    VectorString GetPreloadDataIds(int i_step, int i_predictor) const
+    VectorString GetPreloadDataIds(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadDataIds;
+        return m_steps[iStep].predictors[iPtor].preloadDataIds;
     }
 
-    bool SetPreloadDataIds(int i_step, int i_predictor, VectorString val);
+    bool SetPreloadDataIds(int iStep, int iPtor, VectorString val);
 
-    bool SetPreloadDataIds(int i_step, int i_predictor, wxString val);
+    bool SetPreloadDataIds(int iStep, int iPtor, wxString val);
 
-    VectorDouble GetPreloadTimeHours(int i_step, int i_predictor) const
+    VectorDouble GetPreloadTimeHours(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadTimeHours;
+        return m_steps[iStep].predictors[iPtor].preloadTimeHours;
     }
 
-    bool SetPreloadTimeHours(int i_step, int i_predictor, VectorDouble val);
+    bool SetPreloadTimeHours(int iStep, int iPtor, VectorDouble val);
 
-    bool SetPreloadTimeHours(int i_step, int i_predictor, double val);
+    bool SetPreloadTimeHours(int iStep, int iPtor, double val);
 
-    VectorFloat GetPreloadLevels(int i_step, int i_predictor) const
+    VectorFloat GetPreloadLevels(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadLevels;
+        return m_steps[iStep].predictors[iPtor].preloadLevels;
     }
 
-    bool SetPreloadLevels(int i_step, int i_predictor, VectorFloat val);
+    bool SetPreloadLevels(int iStep, int iPtor, VectorFloat val);
 
-    bool SetPreloadLevels(int i_step, int i_predictor, float val);
+    bool SetPreloadLevels(int iStep, int iPtor, float val);
 
-    double GetPreloadXmin(int i_step, int i_predictor) const
+    double GetPreloadXmin(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadXmin;
+        return m_steps[iStep].predictors[iPtor].preloadXmin;
     }
 
-    bool SetPreloadXmin(int i_step, int i_predictor, double val);
+    bool SetPreloadXmin(int iStep, int iPtor, double val);
 
-    int GetPreloadXptsnb(int i_step, int i_predictor) const
+    int GetPreloadXptsnb(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadXptsnb;
+        return m_steps[iStep].predictors[iPtor].preloadXptsnb;
     }
 
-    bool SetPreloadXptsnb(int i_step, int i_predictor, int val);
+    bool SetPreloadXptsnb(int iStep, int iPtor, int val);
 
-    double GetPreloadYmin(int i_step, int i_predictor) const
+    double GetPreloadYmin(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadYmin;
+        return m_steps[iStep].predictors[iPtor].preloadYmin;
     }
 
-    bool SetPreloadYmin(int i_step, int i_predictor, double val);
+    bool SetPreloadYmin(int iStep, int iPtor, double val);
 
-    int GetPreloadYptsnb(int i_step, int i_predictor) const
+    int GetPreloadYptsnb(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preloadYptsnb;
+        return m_steps[iStep].predictors[iPtor].preloadYptsnb;
     }
 
-    bool SetPreloadYptsnb(int i_step, int i_predictor, int val);
+    bool SetPreloadYptsnb(int iStep, int iPtor, int val);
 
-    bool NeedsPreprocessing(int i_step, int i_predictor) const
+    bool NeedsPreprocessing(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preprocess;
+        return m_steps[iStep].predictors[iPtor].preprocess;
     }
 
-    void SetPreprocess(int i_step, int i_predictor, bool val)
+    void SetPreprocess(int iStep, int iPtor, bool val)
     {
-        m_steps[i_step].predictors[i_predictor].preprocess = val;
+        m_steps[iStep].predictors[iPtor].preprocess = val;
     }
 
-    virtual int GetPreprocessSize(int i_step, int i_predictor) const
+    virtual int GetPreprocessSize(int iStep, int iPtor) const
     {
-        return (int) m_steps[i_step].predictors[i_predictor].preprocessDataIds.size();
+        return (int) m_steps[iStep].predictors[iPtor].preprocessDataIds.size();
     }
 
-    wxString GetPreprocessMethod(int i_step, int i_predictor) const
+    wxString GetPreprocessMethod(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].preprocessMethod;
+        return m_steps[iStep].predictors[iPtor].preprocessMethod;
     }
 
-    bool SetPreprocessMethod(int i_step, int i_predictor, const wxString &val);
+    bool SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset) const;
+    wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessDatasetId(int i_step, int i_predictor, int i_dataset, const wxString &val);
+    bool SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    wxString GetPreprocessDataId(int i_step, int i_predictor, int i_dataset) const;
+    wxString GetPreprocessDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessDataId(int i_step, int i_predictor, int i_dataset, const wxString &val);
+    bool SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    float GetPreprocessLevel(int i_step, int i_predictor, int i_dataset) const;
+    float GetPreprocessLevel(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessLevel(int i_step, int i_predictor, int i_dataset, float val);
+    bool SetPreprocessLevel(int iStep, int iPtor, int iPre, float val);
 
-    double GetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset) const;
+    double GetPreprocessTimeHours(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val);
+    bool SetPreprocessTimeHours(int iStep, int iPtor, int iPre, double val);
 
-    int GetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset) const;
+    int GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset, int val);
+    bool SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int val);
 
-    wxString GetPredictorDatasetId(int i_step, int i_predictor) const
+    wxString GetPredictorDatasetId(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].datasetId;
+        return m_steps[iStep].predictors[iPtor].datasetId;
     }
 
-    bool SetPredictorDatasetId(int i_step, int i_predictor, const wxString &val);
+    bool SetPredictorDatasetId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPredictorDataId(int i_step, int i_predictor) const
+    wxString GetPredictorDataId(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].dataId;
+        return m_steps[iStep].predictors[iPtor].dataId;
     }
 
-    bool SetPredictorDataId(int i_step, int i_predictor, wxString val);
+    bool SetPredictorDataId(int iStep, int iPtor, wxString val);
 
-    float GetPredictorLevel(int i_step, int i_predictor) const
+    float GetPredictorLevel(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].level;
+        return m_steps[iStep].predictors[iPtor].level;
     }
 
-    bool SetPredictorLevel(int i_step, int i_predictor, float val);
+    bool SetPredictorLevel(int iStep, int iPtor, float val);
 
-    wxString GetPredictorGridType(int i_step, int i_predictor) const
+    wxString GetPredictorGridType(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].gridType;
+        return m_steps[iStep].predictors[iPtor].gridType;
     }
 
-    bool SetPredictorGridType(int i_step, int i_predictor, wxString val);
+    bool SetPredictorGridType(int iStep, int iPtor, wxString val);
 
-    double GetPredictorXmin(int i_step, int i_predictor) const
+    double GetPredictorXmin(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].xMin;
+        return m_steps[iStep].predictors[iPtor].xMin;
     }
 
-    bool SetPredictorXmin(int i_step, int i_predictor, double val);
+    bool SetPredictorXmin(int iStep, int iPtor, double val);
 
-    int GetPredictorXptsnb(int i_step, int i_predictor) const
+    int GetPredictorXptsnb(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].xPtsNb;
+        return m_steps[iStep].predictors[iPtor].xPtsNb;
     }
 
-    bool SetPredictorXptsnb(int i_step, int i_predictor, int val);
+    bool SetPredictorXptsnb(int iStep, int iPtor, int val);
 
-    double GetPredictorXstep(int i_step, int i_predictor) const
+    double GetPredictorXstep(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].xStep;
+        return m_steps[iStep].predictors[iPtor].xStep;
     }
 
-    bool SetPredictorXstep(int i_step, int i_predictor, double val);
+    bool SetPredictorXstep(int iStep, int iPtor, double val);
 
-    double GetPredictorXshift(int i_step, int i_predictor) const
+    double GetPredictorXshift(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].xShift;
+        return m_steps[iStep].predictors[iPtor].xShift;
     }
 
-    bool SetPredictorXshift(int i_step, int i_predictor, double val);
+    bool SetPredictorXshift(int iStep, int iPtor, double val);
 
-    double GetPredictorYmin(int i_step, int i_predictor) const
+    double GetPredictorYmin(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].yMin;
+        return m_steps[iStep].predictors[iPtor].yMin;
     }
 
-    bool SetPredictorYmin(int i_step, int i_predictor, double val);
+    bool SetPredictorYmin(int iStep, int iPtor, double val);
 
-    int GetPredictorYptsnb(int i_step, int i_predictor) const
+    int GetPredictorYptsnb(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].yPtsNb;
+        return m_steps[iStep].predictors[iPtor].yPtsNb;
     }
 
-    bool SetPredictorYptsnb(int i_step, int i_predictor, int val);
+    bool SetPredictorYptsnb(int iStep, int iPtor, int val);
 
-    double GetPredictorYstep(int i_step, int i_predictor) const
+    double GetPredictorYstep(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].yStep;
+        return m_steps[iStep].predictors[iPtor].yStep;
     }
 
-    bool SetPredictorYstep(int i_step, int i_predictor, double val);
+    bool SetPredictorYstep(int iStep, int iPtor, double val);
 
-    double GetPredictorYshift(int i_step, int i_predictor) const
+    double GetPredictorYshift(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].yShift;
+        return m_steps[iStep].predictors[iPtor].yShift;
     }
 
-    bool SetPredictorYshift(int i_step, int i_predictor, double val);
+    bool SetPredictorYshift(int iStep, int iPtor, double val);
 
-    int GetPredictorFlatAllowed(int i_step, int i_predictor) const
+    int GetPredictorFlatAllowed(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].flatAllowed;
+        return m_steps[iStep].predictors[iPtor].flatAllowed;
     }
 
-    bool SetPredictorFlatAllowed(int i_step, int i_predictor, int val);
+    bool SetPredictorFlatAllowed(int iStep, int iPtor, int val);
 
-    double GetPredictorTimeHours(int i_step, int i_predictor) const
+    double GetPredictorTimeHours(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].timeHours;
+        return m_steps[iStep].predictors[iPtor].timeHours;
     }
 
-    bool SetPredictorTimeHours(int i_step, int i_predictor, double val);
+    bool SetPredictorTimeHours(int iStep, int iPtor, double val);
 
-    int GetPredictorMembersNb(int i_step, int i_predictor) const
+    int GetPredictorMembersNb(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].membersNb;
+        return m_steps[iStep].predictors[iPtor].membersNb;
     }
 
-    bool SetPredictorMembersNb(int i_step, int i_predictor, int val);
+    bool SetPredictorMembersNb(int iStep, int iPtor, int val);
 
-    wxString GetPredictorCriteria(int i_step, int i_predictor) const
+    wxString GetPredictorCriteria(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].criteria;
+        return m_steps[iStep].predictors[iPtor].criteria;
     }
 
-    bool SetPredictorCriteria(int i_step, int i_predictor, const wxString &val);
+    bool SetPredictorCriteria(int iStep, int iPtor, const wxString &val);
 
-    float GetPredictorWeight(int i_step, int i_predictor) const
+    float GetPredictorWeight(int iStep, int iPtor) const
     {
-        return m_steps[i_step].predictors[i_predictor].weight;
+        return m_steps[iStep].predictors[iPtor].weight;
     }
 
-    bool SetPredictorWeight(int i_step, int i_predictor, float val);
+    bool SetPredictorWeight(int iStep, int iPtor, float val);
 
     int GetStepsNb() const
     {
         return (int) m_steps.size();
     }
 
-    int GetPredictorsNb(int i_step) const
+    int GetPredictorsNb(int iStep) const
     {
-        wxASSERT((unsigned) i_step < m_steps.size());
-        return (int) m_steps[i_step].predictors.size();
+        wxASSERT((unsigned) iStep < m_steps.size());
+        return (int) m_steps[iStep].predictors.size();
     }
 
 protected:
@@ -656,11 +656,11 @@ private:
 
     bool ParseTimeProperties(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersStandard &fileParams, int i_step, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    bool ParsePredictors(asFileParametersStandard &fileParams, int i_step, int i_ptor, const wxXmlNode *nodeParamBlock);
+    bool ParsePredictors(asFileParametersStandard &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
 
-    bool ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int i_step, int i_ptor,
+    bool ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int iStep, int iPtor,
                                      const wxXmlNode *nodeParam);
 
     bool ParseAnalogValuesParams(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);

@@ -240,19 +240,19 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
 {
     VectorString files;
 
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
+    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         int firstMonth = 1;
         int lastMonth = 12;
-        if (i_year == timeArray.GetStartingYear()) {
+        if (iYear == timeArray.GetStartingYear()) {
             firstMonth = timeArray.GetStartingMonth();
         }
-        if (i_year == timeArray.GetEndingYear()) {
+        if (iYear == timeArray.GetEndingYear()) {
             lastMonth = timeArray.GetEndingMonth();
         }
 
         if (m_monthlyFiles) {
-            for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {
-                wxString filePattern = wxString::Format(m_fileNamePattern, i_year, i_month);
+            for (int iMonth = firstMonth; iMonth <= lastMonth; ++iMonth) {
+                wxString filePattern = wxString::Format(m_fileNamePattern, iYear, iMonth);
                 wxArrayString listFiles;
                 size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
@@ -266,7 +266,7 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
                 files.push_back(wxString(listFiles.Item(0)));
             }
         } else {
-            wxString filePattern = wxString::Format(m_fileNamePattern, i_year, firstMonth);
+            wxString filePattern = wxString::Format(m_fileNamePattern, iYear, firstMonth);
             wxArrayString listFiles;
             size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 

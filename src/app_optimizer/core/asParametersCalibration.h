@@ -58,9 +58,9 @@ public:
 
     void InitValues();
 
-    int GetPreprocessDataIdVectorSize(int i_step, int i_ptor, int i_prep) const
+    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
     {
-        return (int) GetPreprocessDataIdVector(i_step, i_ptor, i_prep).size();
+        return (int) GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
     }
 
     VVectorInt GetPredictandStationIdsVector() const
@@ -106,58 +106,58 @@ public:
         return m_forecastScoreVect.postprocessDupliExp;
     }
 
-    double GetPreprocessTimeHoursLowerLimit(int i_step, int i_predictor, int i_dataset) const;
+    double GetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre) const;
 
-    double GetPredictorXminLowerLimit(int i_step, int i_predictor) const;
+    double GetPredictorXminLowerLimit(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbLowerLimit(int i_step, int i_predictor) const;
+    int GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const;
 
-    double GetPredictorYminLowerLimit(int i_step, int i_predictor) const;
+    double GetPredictorYminLowerLimit(int iStep, int iPtor) const;
 
-    int GetPredictorYptsnbLowerLimit(int i_step, int i_predictor) const;
+    int GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const;
 
-    double GetPredictorTimeHoursLowerLimit(int i_step, int i_predictor) const;
+    double GetPredictorTimeHoursLowerLimit(int iStep, int iPtor) const;
 
-    double GetPreprocessTimeHoursUpperLimit(int i_step, int i_predictor, int i_dataset) const;
+    double GetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre) const;
 
-    double GetPredictorXminUpperLimit(int i_step, int i_predictor) const;
+    double GetPredictorXminUpperLimit(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbUpperLimit(int i_step, int i_predictor) const;
+    int GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorYminUpperLimit(int i_step, int i_predictor) const;
+    double GetPredictorYminUpperLimit(int iStep, int iPtor) const;
 
-    int GetPredictorYptsnbUpperLimit(int i_step, int i_predictor) const;
+    int GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorTimeHoursUpperLimit(int i_step, int i_predictor) const;
+    double GetPredictorTimeHoursUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorXminIteration(int i_step, int i_predictor) const;
+    double GetPredictorXminIteration(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbIteration(int i_step, int i_predictor) const;
+    int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
 
-    double GetPredictorYminIteration(int i_step, int i_predictor) const;
+    double GetPredictorYminIteration(int iStep, int iPtor) const;
 
-    int GetPredictorYptsnbIteration(int i_step, int i_predictor) const;
+    int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
 protected:
-    VectorDouble GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor);
+    VectorDouble GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
-    VectorDouble GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int i_step, int i_ptor);
+    VectorDouble GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
 private:
     VVectorInt m_predictandStationIdsVect;
     VectorInt m_timeArrayAnalogsIntervalDaysVect;
     ParamsForecastScoreVect m_forecastScoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int i_step, int i_ptor, VectorFloat &preprocLevels,
+    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, VectorFloat &preprocLevels,
                                         VectorDouble &preprocTimeHours) const;
 
     bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
     bool ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int i_step, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int i_step, int i_ptor,
+    bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
                                      const wxXmlNode *nodeParam);
 
     bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);

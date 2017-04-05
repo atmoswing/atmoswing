@@ -130,7 +130,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -144,19 +144,19 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = (float) asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsValues[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -181,12 +181,12 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) // If we have the data
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
 
@@ -426,7 +426,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -440,20 +440,20 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = (float) asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            fileAnalogsValues[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -478,16 +478,16 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) {
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
 
-                if (std::abs(fileAnalogsDates[i_ana] - resultsAnalogsDates(rowTargetDate, i_ana)) > 0.0001) {
+                if (std::abs(fileAnalogsDates[iAnalog] - resultsAnalogsDates(rowTargetDate, iAnalog)) > 0.0001) {
                     wxPrintf(("Date is %s and should be %s.\n"),
-                             asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, i_ana)),
-                             asTime::GetStringTime(fileAnalogsDates[i_ana]));
+                             asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, iAnalog)),
+                             asTime::GetStringTime(fileAnalogsDates[iAnalog]));
                 }
             }
         }
@@ -781,7 +781,7 @@ void Ref1Preloading()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -795,19 +795,19 @@ void Ref1Preloading()
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = (float) asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsValues[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -822,12 +822,12 @@ void Ref1Preloading()
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) // If we have the data
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1148,7 +1148,7 @@ void Ref2Preloading()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1162,20 +1162,20 @@ void Ref2Preloading()
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = sqrt(file.GetFloat() / P10);
+            fileAnalogsValues[iAnalog] = sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -1190,11 +1190,11 @@ void Ref2Preloading()
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) {
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1336,7 +1336,7 @@ void Ref2SavingIntermediateResults()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1350,20 +1350,20 @@ void Ref2SavingIntermediateResults()
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = sqrt(file.GetFloat() / P10);
+            fileAnalogsValues[iAnalog] = sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -1378,11 +1378,11 @@ void Ref2SavingIntermediateResults()
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) {
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1498,7 +1498,7 @@ void Ref2MergeByHalfAndMultiply()
     fileAnalogsCriteria.resize(nanalogs);
     fileAnalogsValues.resize(nanalogs);
 
-    for (int i_test = 0; i_test < nbtests; i_test++) {
+    for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
@@ -1512,20 +1512,20 @@ void Ref2MergeByHalfAndMultiply()
         file.SkipLines(2);
 
         // Get analogs from file
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             file.SkipElements(1);
 
             day = file.GetInt();
             month = file.GetInt();
             year = file.GetInt();
             if (year > 0) {
-                fileAnalogsDates[i_ana] = (float) asTime::GetMJD(year, month, day);
+                fileAnalogsDates[iAnalog] = (float) asTime::GetMJD(year, month, day);
             } else {
-                fileAnalogsDates[i_ana] = 0;
+                fileAnalogsDates[iAnalog] = 0;
             }
-            fileAnalogsValues[i_ana] = (float) sqrt(file.GetFloat() / P10);
+            fileAnalogsValues[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipElements(1); // Skip S1
-            fileAnalogsCriteria[i_ana] = file.GetFloat();
+            fileAnalogsCriteria[iAnalog] = file.GetFloat();
 
             file.SkipLines(1);
         }
@@ -1540,11 +1540,11 @@ void Ref2MergeByHalfAndMultiply()
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
 
-        for (int i_ana = 0; i_ana < nanalogs; i_ana++) {
-            if (fileAnalogsDates[i_ana] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[i_ana], resultsAnalogsDates(rowTargetDate, i_ana));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[i_ana], resultsAnalogsValues(rowTargetDate, i_ana));
-                EXPECT_NEAR(fileAnalogsCriteria[i_ana], resultsAnalogsCriteria(rowTargetDate, i_ana), 0.1);
+        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+            if (fileAnalogsDates[iAnalog] > 0) {
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }

@@ -656,12 +656,12 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
     }
 
     // Open new layers
-    for (int i_layer = m_workspace.GetLayersNb() - 1; i_layer >= 0; i_layer--) {
+    for (int iLayer = m_workspace.GetLayersNb() - 1; iLayer >= 0; iLayer--) {
         // Get attributes
-        wxString path = m_workspace.GetLayerPath(i_layer);
-        wxString type = m_workspace.GetLayerType(i_layer);
-        int transparency = m_workspace.GetLayerTransparency(i_layer);
-        bool visibility = m_workspace.GetLayerVisibility(i_layer);
+        wxString path = m_workspace.GetLayerPath(iLayer);
+        wxString type = m_workspace.GetLayerType(iLayer);
+        int transparency = m_workspace.GetLayerTransparency(iLayer);
+        bool visibility = m_workspace.GetLayerVisibility(iLayer);
 
         // Open the layers
         if (wxFileName::FileExists(path)) {
@@ -674,10 +674,10 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
                     wxASSERT(layer);
                     m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
                 } else if (type.IsSameAs("vector")) {
-                    int width = m_workspace.GetLayerLineWidth(i_layer);
-                    wxColour lineColor = m_workspace.GetLayerLineColor(i_layer);
-                    wxColour fillColor = m_workspace.GetLayerFillColor(i_layer);
-                    wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(i_layer);
+                    int width = m_workspace.GetLayerLineWidth(iLayer);
+                    wxColour lineColor = m_workspace.GetLayerLineColor(iLayer);
+                    wxColour fillColor = m_workspace.GetLayerFillColor(iLayer);
+                    wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(iLayer);
 
                     vrRenderVector *render = new vrRenderVector();
                     render->SetTransparency(transparency);

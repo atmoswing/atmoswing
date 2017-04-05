@@ -55,9 +55,9 @@ public:
         return m_returnPeriods;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference) const
+    virtual float GetReferenceValue(int iStat, double duration, float reference) const
     {
-        return GetPrecipitationOfReturnPeriod(i_station, duration, reference);
+        return GetPrecipitationOfReturnPeriod(iStat, duration, reference);
     }
 
     virtual Array2DFloat GetReferenceValuesArray() const
@@ -65,7 +65,7 @@ public:
         return m_dailyPrecipitationsForReturnPeriods;
     }
 
-    float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const;
+    float GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const;
 
     void SetReturnPeriodNormalization(float val)
     {

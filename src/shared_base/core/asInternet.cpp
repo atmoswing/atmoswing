@@ -91,9 +91,9 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
         int end = -1;
         parallelRequests = wxMin(parallelRequests, (int) fileNames.size());
         int threadType = -1;
-        for (int i_threads = 0; i_threads < parallelRequests; i_threads++) {
+        for (int iThread = 0; iThread < parallelRequests; iThread++) {
             int start = end + 1;
-            end = ceil(((float) (i_threads + 1) * (float) (fileNames.size() - 1) / (float) parallelRequests));
+            end = ceil(((float) (iThread + 1) * (float) (fileNames.size() - 1) / (float) parallelRequests));
             wxASSERT(fileNames.size() > 0);
             wxASSERT(end >= start);
             wxASSERT_MSG((unsigned) end < fileNames.size(),
@@ -118,8 +118,8 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 #endif
 
         // Check the files
-        for (unsigned int i_file = 0; i_file < fileNames.size(); i_file++) {
-            wxString fileName = fileNames[i_file];
+        for (unsigned int iFile = 0; iFile < fileNames.size(); iFile++) {
+            wxString fileName = fileNames[iFile];
             wxString filePath = destinationDir + DS + fileName;
             if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
@@ -151,10 +151,10 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
             // Set a timeout period (in seconds) on the amount of time that the server is allowed to take in order to generate a response message for a command before the session is considered hung.
             curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 10);
 
-            for (unsigned int i_file = 0; i_file < urls.size(); i_file++) {
-                wxString fileName = fileNames[i_file];
+            for (unsigned int iFile = 0; iFile < urls.size(); iFile++) {
+                wxString fileName = fileNames[iFile];
                 wxString filePath = destinationDir + DS + fileName;
-                wxString url = urls[i_file];
+                wxString url = urls[iFile];
                 wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
@@ -170,9 +170,9 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
 #if wxUSE_GUI
                 // Update the progress bar
                 wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) +
-                                               wxString::Format(_("Downloading: %d / %d files"), i_file + 1,
+                                               wxString::Format(_("Downloading: %d / %d files"), iFile + 1,
                                                                 (int) urls.size());
-                if (!ProgressBar.Update(i_file, updatedialogmessage)) {
+                if (!ProgressBar.Update(iFile, updatedialogmessage)) {
                     wxLogVerbose(_("The download has been canceled by the user."));
                     wxDELETE(errorbuffer);
                     return asCANCELLED;
@@ -223,7 +223,7 @@ int asInternet::Download(const VectorString &urls, const VectorString &fileNames
                         wxDELETE(errorbuffer);
                         return asFAILED;
                     } else {
-                        wxLogVerbose(_("File %d/%d downloaded successfully."), i_file + 1, (int) urls.size());
+                        wxLogVerbose(_("File %d/%d downloaded successfully."), iFile + 1, (int) urls.size());
                     }
                 }
             }

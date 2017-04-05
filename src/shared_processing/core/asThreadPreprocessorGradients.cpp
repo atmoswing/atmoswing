@@ -57,30 +57,30 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
 
     Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb - 1) * colsNb + rowsNb * (colsNb - 1), NaNFloat);
 
-    for (int i_time = 0; i_time < timeSize; i_time++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
         int counter = 0;
-        for (int i_mem = 0; i_mem < membersNb; i_mem++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
             // Vertical gradients
-            for (int i_row = 0; i_row < rowsNb - 1; i_row++) {
-                for (int i_col = 0; i_col < colsNb; i_col++) {
-                    tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time][i_mem](i_row + 1, i_col) -
-                                       m_pPredictors[0]->GetData()[i_time][i_mem](i_row, i_col);
+            for (int iRow = 0; iRow < rowsNb - 1; iRow++) {
+                for (int iCol = 0; iCol < colsNb; iCol++) {
+                    tmpgrad(counter) = m_pPredictors[0]->GetData()[iTime][iMem](iRow + 1, iCol) -
+                                       m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol);
                     counter++;
                 }
             }
 
             // Horizontal gradients
-            for (int i_row = 0; i_row < rowsNb; i_row++) {
-                for (int i_col = 0; i_col < colsNb - 1; i_col++) {
+            for (int iRow = 0; iRow < rowsNb; iRow++) {
+                for (int iCol = 0; iCol < colsNb - 1; iCol++) {
                     // The matrix is transposed to be coherent with the dimensions
-                    tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time][i_mem](i_row, i_col + 1) -
-                                       m_pPredictors[0]->GetData()[i_time][i_mem](i_row, i_col);
+                    tmpgrad(counter) = m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol + 1) -
+                                       m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol);
                     counter++;
                 }
             }
 
-            (*m_pGradients)[i_time][i_mem] = tmpgrad.transpose();
+            (*m_pGradients)[iTime][iMem] = tmpgrad.transpose();
         }
     }
 

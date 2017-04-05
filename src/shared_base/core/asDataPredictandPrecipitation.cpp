@@ -289,19 +289,19 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     asDialogProgressBar ProgressBar(_("Making Gumbel adjustments."), duration.size() - 1);
 #endif
 
-    for (float i_duration = 0; i_duration < duration.size(); i_duration++) {
+    for (float iDuration = 0; iDuration < duration.size(); iDuration++) {
         // Get the annual max
-        Array2DFloat annualMax = GetAnnualMax(duration[i_duration]);
+        Array2DFloat annualMax = GetAnnualMax(duration[iDuration]);
 
 #if wxUSE_GUI
-        if (!ProgressBar.Update(i_duration)) {
+        if (!ProgressBar.Update(iDuration)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
         }
 #endif
 
-        for (int i_st = 0; i_st < m_stationsNb; i_st++) {
-            Array1DFloat currentAnnualMax = annualMax.row(i_st);
+        for (int iStat = 0; iStat < m_stationsNb; iStat++) {
+            Array1DFloat currentAnnualMax = annualMax.row(iStat);
             int arrayEnd = currentAnnualMax.size() - 1;
 
             // Check the length of the data
@@ -321,9 +321,9 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
             float b = b_cst * stdev;
             float a = mean - b * g_cst_Euler; // EUCON: Euler-Mascheroni constant in math.h
 
-            m_gumbelDuration(i_st, i_duration) = duration[i_duration];
-            m_gumbelParamA(i_st, i_duration) = a;
-            m_gumbelParamB(i_st, i_duration) = b;
+            m_gumbelDuration(iStat, iDuration) = duration[iDuration];
+            m_gumbelParamA(iStat, iDuration) = a;
+            m_gumbelParamB(iStat, iDuration) = b;
         }
     }
 #if wxUSE_GUI
@@ -333,13 +333,13 @@ bool asDataPredictandPrecipitation::MakeGumbelAdjustment()
     return true;
 }
 
-float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const
+float asDataPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const
 {
     float F = 1 - (1 / returnPeriod); // Probability of not overtaking
     float u = -log(-log(F)); // Gumbel variable
-    Array1DFloat durations = m_gumbelDuration.row(i_station);
-    int i_duration = asTools::SortedArraySearch(&durations(0), &durations(durations.size() - 1), duration, 0.00001f);
-    return m_gumbelParamB(i_station, i_duration) * u + m_gumbelParamA(i_station, i_duration);
+    Array1DFloat durations = m_gumbelDuration.row(iStat);
+    int iDuration = asTools::SortedArraySearch(&durations(0), &durations(durations.size() - 1), duration, 0.00001f);
+    return m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
 }
 
 bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods()
@@ -349,17 +349,17 @@ bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods(
     m_returnPeriods << 2, 2.33f, 5, 10, 20, 50, 100, 200, 300, 500;
     m_dailyPrecipitationsForReturnPeriods.resize(m_stationsNb, m_returnPeriods.size());
 
-    for (int i_station = 0; i_station < m_stationsNb; i_station++) {
-        for (int i_retperiod = 0; i_retperiod < m_returnPeriods.size(); i_retperiod++) {
-            float F = 1 - (1 / m_returnPeriods[i_retperiod]); // Probability of not overtaking
+    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
+        for (int iRetPeriod = 0; iRetPeriod < m_returnPeriods.size(); iRetPeriod++) {
+            float F = 1 - (1 / m_returnPeriods[iRetPeriod]); // Probability of not overtaking
             float u = -log(-log(F)); // Gumbel variable
-            int i_duration = asTools::SortedArraySearch(&m_gumbelDuration(i_station, 0),
-                                                        &m_gumbelDuration(i_station, m_gumbelDuration.cols() - 1),
+            int iDuration = asTools::SortedArraySearch(&m_gumbelDuration(iStat, 0),
+                                                        &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1),
                                                         duration, 0.00001f);
-            float val = m_gumbelParamB(i_station, i_duration) * u + m_gumbelParamA(i_station, i_duration);
+            float val = m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
             wxASSERT(val > 0);
             wxASSERT(val < 1000);
-            m_dailyPrecipitationsForReturnPeriods(i_station, i_retperiod) = val;
+            m_dailyPrecipitationsForReturnPeriods(iStat, iRetPeriod) = val;
         }
     }
 
@@ -368,17 +368,17 @@ bool asDataPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods(
 
 bool asDataPredictandPrecipitation::BuildDataNormalized()
 {
-    for (int i_st = 0; i_st < m_stationsNb; i_st++) {
+    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         float Prt = 1.0;
         if (m_returnPeriodNormalization != 0) {
-            Prt = GetPrecipitationOfReturnPeriod(i_st, 1, m_returnPeriodNormalization);
+            Prt = GetPrecipitationOfReturnPeriod(iStat, 1, m_returnPeriodNormalization);
         }
 
-        for (int i_time = 0; i_time < m_timeLength; i_time++) {
+        for (int iTime = 0; iTime < m_timeLength; iTime++) {
             if (m_isSqrt) {
-                m_dataNormalized(i_time, i_st) = sqrt(m_dataGross(i_time, i_st) / Prt);
+                m_dataNormalized(iTime, iStat) = sqrt(m_dataGross(iTime, iStat) / Prt);
             } else {
-                m_dataNormalized(i_time, i_st) = m_dataGross(i_time, i_st) / Prt;
+                m_dataNormalized(iTime, iStat) = m_dataGross(iTime, iStat) / Prt;
             }
         }
     }

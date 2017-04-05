@@ -72,23 +72,23 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
         Array1DFloat finalForecastScores = Array1DFloat::Zero(timeTargetSelectionLength);
         VArray1DFloat vectForecastScores(stationsNb, Array1DFloat(timeTargetSelectionLength));
 
-        for (int i_st = 0; i_st < stationsNb; i_st++) {
+        for (int iStat = 0; iStat < stationsNb; iStat++) {
             if (forecastScore->UsesClimatology()) {
-                forecastScore->SetScoreClimatology(scoresClimatology[i_st]);
+                forecastScore->SetScoreClimatology(scoresClimatology[iStat]);
             }
 
-            for (int i_targtime = 0; i_targtime < timeTargetSelectionLength; i_targtime++) {
-                if (!asTools::IsNaN(targetValues[i_st](i_targtime))) {
+            for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
+                if (!asTools::IsNaN(targetValues[iStat](iTargetTime))) {
                     if (params.ForecastScoreNeedsPostprocessing()) {
-                        //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
-                        //finalForecastScores(i_targtime) = forecastScore->Assess(targetValues(i_targtime), analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
+                        //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                        //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
                     } else {
-                        vectForecastScores[i_st](i_targtime) = forecastScore->Assess(targetValues[i_st](i_targtime),
-                                                                                     analogsValues[i_st].row(i_targtime),
+                        vectForecastScores[iStat](iTargetTime) = forecastScore->Assess(targetValues[iStat](iTargetTime),
+                                                                                     analogsValues[iStat].row(iTargetTime),
                                                                                      params.GetForecastScoreAnalogsNumber());
                     }
                 } else {
-                    vectForecastScores[i_st](i_targtime) = NaNFloat;
+                    vectForecastScores[iStat](iTargetTime) = NaNFloat;
                 }
             }
         }
@@ -98,8 +98,8 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
             finalForecastScores = vectForecastScores[0];
         } else {
             // Process the average
-            for (int i_st = 0; i_st < stationsNb; i_st++) {
-                finalForecastScores += vectForecastScores[i_st];
+            for (int iStat = 0; iStat < stationsNb; iStat++) {
+                finalForecastScores += vectForecastScores[iStat];
             }
             finalForecastScores /= stationsNb;
         }
@@ -119,18 +119,18 @@ bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &
         // Containers for final results
         Array2DFloat forecastScores(timeTargetSelectionLength, 3 * (params.GetForecastScoreAnalogsNumber() + 1));
 
-        for (int i_targtime = 0; i_targtime < timeTargetSelectionLength; i_targtime++) {
-            if (!asTools::IsNaN(targetValues[0](i_targtime))) {
+        for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
+            if (!asTools::IsNaN(targetValues[0](iTargetTime))) {
                 if (params.ForecastScoreNeedsPostprocessing()) {
-                    //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(i_targtime), analogsCriteria.row(i_targtime), params));
-                    //finalForecastScores(i_targtime) = forecastScore->Assess(targetValues(i_targtime), analogsValuesNew.row(i_targtime), params.GetForecastScoreAnalogsNumber());
+                    //Array2DFloat analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                    //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
                 } else {
-                    forecastScores.row(i_targtime) = forecastScore->AssessOnArray(targetValues[0](i_targtime),
-                                                                                  analogsValues[0].row(i_targtime),
+                    forecastScores.row(iTargetTime) = forecastScore->AssessOnArray(targetValues[0](iTargetTime),
+                                                                                  analogsValues[0].row(iTargetTime),
                                                                                   params.GetForecastScoreAnalogsNumber());
                 }
             } else {
-                forecastScores.row(i_targtime) =
+                forecastScores.row(iTargetTime) =
                         Array1DFloat::Ones(3 * (params.GetForecastScoreAnalogsNumber() + 1)) * NaNFloat;
             }
         }

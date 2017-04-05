@@ -394,22 +394,22 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     int finalIndex = 0;
 
     if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
-        for (int i_lat = nLats - 1; i_lat >= 0; i_lat--) {
-            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
-                for (int i_lon = 0; i_lon < nLons; i_lon++) {
-                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+        for (int iLat = nLats - 1; iLat >= 0; iLat--) {
+            if (iLat >= iLatStart && iLat <= iLatEnd) {
+                for (int iLon = 0; iLon < nLons; iLon++) {
+                    if (iLon >= iLonStart && iLon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
                         finalIndex++;
                     }
                 }
             }
         }
     } else {
-        for (int i_lat = 0; i_lat < nLats; i_lat++) {
-            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
-                for (int i_lon = 0; i_lon < nLons; i_lon++) {
-                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+        for (int iLat = 0; iLat < nLats; iLat++) {
+            if (iLat >= iLatStart && iLat <= iLatEnd) {
+                for (int iLon = 0; iLon < nLons; iLon++) {
+                    if (iLon >= iLonStart && iLon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
                         finalIndex++;
                     }
                 }

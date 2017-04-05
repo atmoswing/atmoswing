@@ -166,19 +166,19 @@ bool asWorkspace::Save() const
 
     // GIS layers
     wxXmlNode *nodeLayers = new wxXmlNode(wxXML_ELEMENT_NODE, "layers");
-    for (int i_layer = 0; i_layer < GetLayersNb(); i_layer++) {
+    for (int iLayer = 0; iLayer < GetLayersNb(); iLayer++) {
         wxXmlNode *nodeLayer = new wxXmlNode(wxXML_ELEMENT_NODE, "layer");
 
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", m_layerPaths[i_layer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_layerTypes[i_layer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_layerTransparencies[i_layer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_layerVisibilities[i_layer]));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_width", m_layerLineWidths[i_layer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("path", m_layerPaths[iLayer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("type", m_layerTypes[iLayer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("transparency", m_layerTransparencies[iLayer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("visibility", m_layerVisibilities[iLayer]));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_width", m_layerLineWidths[iLayer]));
 #if wxUSE_GUI
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_color", wxToString(m_layerLineColors[i_layer])));
-        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("fill_color", wxToString(m_layerFillColors[i_layer])));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("line_color", wxToString(m_layerLineColors[iLayer])));
+        nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("fill_color", wxToString(m_layerFillColors[iLayer])));
         wxString strBrush;
-        strBrush << m_layerBrushStyles[i_layer];
+        strBrush << m_layerBrushStyles[iLayer];
         nodeLayer->AddChild(fileWorkspace.CreateNodeWithValue("brush_style", strBrush));
 #endif
 

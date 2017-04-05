@@ -71,85 +71,85 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         errorField.Append("ForecastScorePostprocessDupliExp, ");
     }
 
-    for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
-        if (params.GetAnalogsNumberVector(i_step).size() > 1) {
+    for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
+        if (params.GetAnalogsNumberVector(iStep).size() > 1) {
             checkSizes = false;
-            errorField.Append(wxString::Format("analogsNumber (step %d), ", i_step));
+            errorField.Append(wxString::Format("analogsNumber (step %d), ", iStep));
         }
-        for (int i_predictor = 0; i_predictor < params.GetPredictorsNb(i_step); i_predictor++) {
-            if (params.NeedsPreprocessing(i_step, i_predictor)) {
-                for (int i_pre = 0; i_pre < params.GetPreprocessSize(i_step, i_predictor); i_pre++) {
-                    if (params.GetPreprocessDataIdVector(i_step, i_predictor, i_pre).size() > 1) {
+        for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+            if (params.NeedsPreprocessing(iStep, iPtor)) {
+                for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
+                    if (params.GetPreprocessDataIdVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ", i_step,
-                                                 i_predictor, i_pre));
+                                wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ", iStep,
+                                                 iPtor, iPre));
                     }
-                    if (params.GetPreprocessLevelVector(i_step, i_predictor, i_pre).size() > 1) {
+                    if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", i_step,
-                                                 i_predictor, i_pre));
+                                wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep,
+                                                 iPtor, iPre));
                     }
-                    if (params.GetPreprocessTimeHoursVector(i_step, i_predictor, i_pre).size() > 1) {
+                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("preprocessTimeHours (step %d, predictor %d, preprocess %d), ", i_step,
-                                                 i_predictor, i_pre));
+                                wxString::Format("preprocessTimeHours (step %d, predictor %d, preprocess %d), ", iStep,
+                                                 iPtor, iPre));
                     }
                 }
             }
 
             // Do the other ones anyway
-            if (params.GetPredictorDataIdVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorDataIdVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorDataId (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorDataId (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorLevelVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorLevelVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorTimeHoursVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorTimeHoursVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
                 errorField.Append(
-                        wxString::Format("PredictorTimeHours (step %d, predictor %d), ", i_step, i_predictor));
+                        wxString::Format("PredictorTimeHours (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorXminVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorXminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorXmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXmin (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorXptsnbVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorXptsnbVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorXptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorXptsnb (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorYminVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorYminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorYmin (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYmin (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorYptsnbVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorYptsnbVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorYptsnb (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorYptsnb (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorCriteriaVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorCriteriaVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorCriteria (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorCriteria (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorWeightVector(i_step, i_predictor).size() > 1) {
+            if (params.GetPredictorWeightVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorWeight (step %d, predictor %d), ", i_step, i_predictor));
+                errorField.Append(wxString::Format("PredictorWeight (step %d, predictor %d), ", iStep, iPtor));
             }
 
-            if (params.NeedsPreprocessing(i_step, i_predictor)) {
-                for (int i_dataset = 0; i_dataset < params.GetPreprocessSize(i_step, i_predictor); i_dataset++) {
-                    if (params.GetPreprocessLevelVector(i_step, i_predictor, i_dataset).size() > 1) {
+            if (params.NeedsPreprocessing(iStep, iPtor)) {
+                for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
+                    if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("PreprocessLevel (step %d, predictor %d), ", i_step, i_predictor));
+                                wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
                     }
-                    if (params.GetPreprocessTimeHoursVector(i_step, i_predictor, i_dataset).size() > 1) {
+                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessTimeHoursV (step %d, predictor %d), ", i_step,
-                                                           i_predictor));
+                        errorField.Append(wxString::Format("PreprocessTimeHoursV (step %d, predictor %d), ", iStep,
+                                                           iPtor));
                     }
                 }
             }
@@ -172,10 +172,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     // Extract the stations IDs
     VVectorInt stationsId = params.GetPredictandStationIdsVector();
 
-    for (unsigned int i_stat = 0; i_stat < stationsId.size(); i_stat++) {
+    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
         ClearAll();
 
-        VectorInt stationId = stationsId[i_stat];
+        VectorInt stationId = stationsId[iStat];
         wxLogMessage(_("Processing station %s"), GetPredictandStationIdsList(stationId));
 
         // Create result objects to save the parameters sets
@@ -203,14 +203,14 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         asResultsAnalogsForecastScoreFinal anaScoreFinal;
 
         // Process every step one after the other
-        for (int i_step = 0; i_step < stepsNb; i_step++) {
+        for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
-            if (i_step == 0) {
-                if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+            if (iStep == 0) {
+                if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                     return false;
             } else {
                 anaDatesPrevious = anaDates;
-                if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
@@ -240,14 +240,14 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             m_validationMode = true;
 
             // Process every step one after the other
-            for (int i_step = 0; i_step < stepsNb; i_step++) {
+            for (int iStep = 0; iStep < stepsNb; iStep++) {
                 bool containsNaNs = false;
-                if (i_step == 0) {
-                    if (!GetAnalogsDates(anaDatesValid, params, i_step, containsNaNs))
+                if (iStep == 0) {
+                    if (!GetAnalogsDates(anaDatesValid, params, iStep, containsNaNs))
                         return false;
                 } else {
                     anaDatesPreviousValid = anaDatesValid;
-                    if (!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, i_step, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
@@ -288,13 +288,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             quantiles.push_back(0.6f);
             quantiles.push_back(0.9f);
 
-            for (unsigned int i_score = 0; i_score < scoresContingency.size(); i_score++) {
-                wxLogMessage(_("Processing %s"), scoresContingency[i_score]);
-                for (unsigned int i_thres = 0; i_thres < thresholds.size(); i_thres++) {
-                    for (unsigned int i_pc = 0; i_pc < quantiles.size(); i_pc++) {
-                        params.SetForecastScoreName(scoresContingency[i_score]);
-                        params.SetForecastScoreQuantile(quantiles[i_pc]);
-                        params.SetForecastScoreThreshold(thresholds[i_thres]);
+            for (unsigned int iScore = 0; iScore < scoresContingency.size(); iScore++) {
+                wxLogMessage(_("Processing %s"), scoresContingency[iScore]);
+                for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
+                    for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
+                        params.SetForecastScoreName(scoresContingency[iScore]);
+                        params.SetForecastScoreQuantile(quantiles[iPc]);
+                        params.SetForecastScoreThreshold(thresholds[iThres]);
                         if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                             return false;
                         if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
@@ -314,11 +314,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresQuantile.push_back("RMSE"); // RMSE - Root mean squared error
             scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
 
-            for (unsigned int i_score = 0; i_score < scoresQuantile.size(); i_score++) {
-                wxLogMessage(_("Processing %s"), scoresQuantile[i_score]);
-                for (unsigned int i_pc = 0; i_pc < quantiles.size(); i_pc++) {
-                    params.SetForecastScoreName(scoresQuantile[i_score]);
-                    params.SetForecastScoreQuantile(quantiles[i_pc]);
+            for (unsigned int iScore = 0; iScore < scoresQuantile.size(); iScore++) {
+                wxLogMessage(_("Processing %s"), scoresQuantile[iScore]);
+                for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
+                    params.SetForecastScoreName(scoresQuantile[iScore]);
+                    params.SetForecastScoreQuantile(quantiles[iPc]);
                     if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                         return false;
                     if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
@@ -336,11 +336,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresThreshold.push_back("BS"); // BS - Brier score
             scoresThreshold.push_back("BSS"); // BSS - Brier skill score
 
-            for (unsigned int i_score = 0; i_score < scoresThreshold.size(); i_score++) {
-                wxLogMessage(_("Processing %s"), scoresThreshold[i_score]);
-                for (unsigned int i_thres = 0; i_thres < thresholds.size(); i_thres++) {
-                    params.SetForecastScoreName(scoresThreshold[i_score]);
-                    params.SetForecastScoreThreshold(thresholds[i_thres]);
+            for (unsigned int iScore = 0; iScore < scoresThreshold.size(); iScore++) {
+                wxLogMessage(_("Processing %s"), scoresThreshold[iScore]);
+                for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
+                    params.SetForecastScoreName(scoresThreshold[iScore]);
+                    params.SetForecastScoreThreshold(thresholds[iThres]);
                     if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                         return false;
                     if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
@@ -372,9 +372,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
             scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
 
-            for (unsigned int i_score = 0; i_score < scoresContinuous.size(); i_score++) {
-                wxLogMessage(_("Processing %s"), scoresContinuous[i_score]);
-                params.SetForecastScoreName(scoresContinuous[i_score]);
+            for (unsigned int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
+                wxLogMessage(_("Processing %s"), scoresContinuous[iScore]);
+                params.SetForecastScoreName(scoresContinuous[iScore]);
                 if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
                 if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
@@ -402,7 +402,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             std::vector<Array1DFloat> histoCalib;
             std::vector<Array1DFloat> histoValid;
 
-            for (int i_boot = 0; i_boot < boostrapNb; i_boot++) {
+            for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
                 if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
                 if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
@@ -420,9 +420,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             // Average all histograms assessments
             Array1DFloat averageHistoCalib = Array1DFloat::Zero(histoCalib[0].size());
             Array1DFloat averageHistoValid = Array1DFloat::Zero(histoValid[0].size());
-            for (int i_boot = 0; i_boot < boostrapNb; i_boot++) {
-                averageHistoCalib += histoCalib[i_boot];
-                averageHistoValid += histoValid[i_boot];
+            for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
+                averageHistoCalib += histoCalib[iBoot];
+                averageHistoValid += histoValid[iBoot];
             }
             averageHistoCalib = averageHistoCalib / boostrapNb;
             averageHistoValid = averageHistoValid / boostrapNb;

@@ -424,15 +424,15 @@ protected:
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                 vvva2f &compositeData) = 0;
 
-    size_t *GetIndexesStartNcdf(int i_area) const;
+    size_t *GetIndexesStartNcdf(int iArea) const;
 
-    size_t *GetIndexesCountNcdf(int i_area) const;
+    size_t *GetIndexesCountNcdf(int iArea) const;
 
     ptrdiff_t *GetIndexesStrideNcdf() const;
 
-    int *GetIndexesStartGrib(int i_area) const;
+    int *GetIndexesStartGrib(int iArea) const;
 
-    int *GetIndexesCountGrib(int i_area) const;
+    int *GetIndexesCountGrib(int iArea) const;
 
     bool GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData);
 

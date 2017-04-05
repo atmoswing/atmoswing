@@ -194,7 +194,7 @@ bool asFileAscii::SkipLines(int linesNb)
 {
     wxASSERT(m_opened);
 
-    for (int i_line = 0; i_line < linesNb; i_line++) {
+    for (int iLine = 0; iLine < linesNb; iLine++) {
         if (!m_file.eof()) {
             GetLineContent();
         } else {
@@ -212,7 +212,7 @@ bool asFileAscii::SkipElements(int elementNb)
 
     float tmp;
 
-    for (int i_el = 0; i_el < elementNb; i_el++) {
+    for (int iEl = 0; iEl < elementNb; iEl++) {
         if (!m_file.eof()) {
             m_file >> tmp;
         } else {

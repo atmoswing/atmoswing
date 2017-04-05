@@ -318,7 +318,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 threadsNb = wxMin(threadsNb, m_paramsNb - m_iterator);
 
                 // Fill up the thread array
-                for (int i_thread = 0; i_thread < threadsNb; i_thread++) {
+                for (int iThread = 0; iThread < threadsNb; iThread++) {
                     // Get a parameters set
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
                     wxASSERT(nextParams);
@@ -383,12 +383,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
                 // Check results
                 bool checkOK = true;
-                for (unsigned int i_check = 0; i_check < m_scoresCalib.size(); i_check++) {
-                    if (asTools::IsNaN(m_scoresCalib[i_check])) {
-                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) i_check + 1,
+                for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
+                    if (asTools::IsNaN(m_scoresCalib[iCheck])) {
+                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
-                        wxString paramsContent = m_parameters[i_check].Print();
-                        wxLogError(_("Parameters #%d: %s"), (int) i_check + 1, paramsContent.c_str());
+                        wxString paramsContent = m_parameters[iCheck].Print();
+                        wxLogError(_("Parameters #%d: %s"), (int) iCheck + 1, paramsContent.c_str());
                         checkOK = false;
                     }
                 }
@@ -414,14 +414,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
                 // Process every step one after the other
                 int stepsNb = newParams->GetStepsNb();
-                for (int i_step = 0; i_step < stepsNb; i_step++) {
+                for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
-                    if (i_step == 0) {
-                        if (!GetAnalogsDates(anaDates, *newParams, i_step, containsNaNs))
+                    if (iStep == 0) {
+                        if (!GetAnalogsDates(anaDates, *newParams, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, *newParams, anaDatesPrevious, i_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, *newParams, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -692,30 +692,30 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                 // Restore the last generation
                 int genNb = vectParams.size() / m_popSize;
-                for (int i_var = 0; i_var < m_popSize; i_var++) {
-                    int i_last_gen = (genNb - 1) * m_popSize;
+                for (int iVar = 0; iVar < m_popSize; iVar++) {
+                    int iLastGen = (genNb - 1) * m_popSize;
 
-                    wxASSERT(vectParams.size() > i_last_gen);
-                    wxASSERT(vectScores.size() > i_last_gen);
-                    m_parameters[i_var] = vectParams[i_last_gen];
-                    m_scoresCalib[i_var] = vectScores[i_last_gen];
+                    wxASSERT(vectParams.size() > iLastGen);
+                    wxASSERT(vectScores.size() > iLastGen);
+                    m_parameters[iVar] = vectParams[iLastGen];
+                    m_scoresCalib[iVar] = vectScores[iLastGen];
 
-                    i_last_gen++;
+                    iLastGen++;
                 }
 
                 // Restore best and mean scores
                 m_bestScores.resize(genNb);
                 m_meanScores.resize(genNb);
-                for (int i_gen = 0; i_gen < genNb; i_gen++) {
-                    int i_best = i_gen * m_popSize;
-                    m_bestScores[i_gen] = vectScores[i_best];
+                for (int iGen = 0; iGen < genNb; iGen++) {
+                    int iBest = iGen * m_popSize;
+                    m_bestScores[iGen] = vectScores[iBest];
 
                     float mean = 0;
-                    for (int i_next = 0; i_next < m_popSize; i_next++) {
-                        mean += vectScores[i_next];
+                    for (int iNext = 0; iNext < m_popSize; iNext++) {
+                        mean += vectScores[iNext];
                     }
 
-                    m_meanScores[i_gen] = mean / float(m_popSize);
+                    m_meanScores[iGen] = mean / float(m_popSize);
                 }
 
                 m_optimizerStage = asREASSESSMENT;
@@ -736,7 +736,7 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
     // Create the corresponding number of parameters
     m_scoresCalib.resize(m_popSize);
     m_parameters.resize(m_popSize);
-    for (int i_var = 0; i_var < m_popSize; i_var++) {
+    for (int iVar = 0; iVar < m_popSize; iVar++) {
         asParametersOptimizationGAs paramsCopy;
         paramsCopy = params;
         paramsCopy.InitRandomValues();
@@ -771,8 +771,8 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
             }
         }
 
-        m_parameters[i_var] = paramsCopy;
-        m_scoresCalib[i_var] = NaNFloat;
+        m_parameters[iVar] = paramsCopy;
+        m_scoresCalib[iVar] = NaNFloat;
     }
     m_scoreValid = NaNFloat;
 }
@@ -1284,7 +1284,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     crossingPoints.push_back(crossingPoint);
                 }
@@ -1323,16 +1323,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1384,16 +1384,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 }
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1436,21 +1436,21 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 VectorInt crossingPoints;
                 bool previouslyCrossed = false; // flag
 
-                for (int i_gene = 0; i_gene < chromosomeLength; i_gene++) {
+                for (int iGene = 0; iGene < chromosomeLength; iGene++) {
                     double doCross = asTools::Random(0.0, 1.0);
 
                     if (doCross >= 0.5) // Yes
                     {
                         if (!previouslyCrossed) // If situation changes
                         {
-                            crossingPoints.push_back(i_gene);
+                            crossingPoints.push_back(iGene);
                         }
                         previouslyCrossed = true;
                     } else // No
                     {
                         if (previouslyCrossed) // If situation changes
                         {
-                            crossingPoints.push_back(i_gene);
+                            crossingPoints.push_back(iGene);
                         }
                         previouslyCrossed = false;
                     }
@@ -1498,16 +1498,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1554,16 +1554,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1630,16 +1630,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1690,16 +1690,16 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 int chromosomeLength = m_parametersTemp[partner1].GetChromosomeLength();
 
                 VectorInt crossingPoints;
-                for (int i_cross = 0; i_cross < crossoverNbPoints; i_cross++) {
+                for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
                     if (crossingPoints.size() > 0) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
-                            for (unsigned int i_pts = 0; i_pts < crossingPoints.size(); i_pts++) {
-                                if (crossingPoints[i_pts] == crossingPoint) {
-                                    crossingPoints.erase(crossingPoints.begin() + i_pts);
+                            for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
+                                if (crossingPoints[iPts] == crossingPoint) {
+                                    crossingPoints.erase(crossingPoints.begin() + iPts);
                                     wxLogVerbose(_("Crossing point already selected. Selection of a new one."));
-                                    i_cross--;
+                                    iCross--;
                                     break;
                                 }
                             }
@@ -1824,17 +1824,17 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                           0.2);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateUniformDistribution(mutationsProbability, hasMutated);
+                m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -1851,17 +1851,17 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             double probIncrease = (probStart - probEnd) / (double) nbGenMax;
             double mutationsProbability = probStart + probIncrease * wxMin(m_generationNb - 1, nbGenMax);
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateUniformDistribution(mutationsProbability, hasMutated);
+                m_parameters[iInd].MutateUniformDistribution(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -1876,17 +1876,17 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                           0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
+                m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -1911,17 +1911,17 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             double stdDevIncrease = (stdDevStart - stdDevEnd) / (double) nbGenMaxStdDev;
             double stdDevRatioRange = stdDevStart + stdDevIncrease * wxMin(m_generationNb - 1, nbGenMaxStdDev);
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
+                m_parameters[iInd].MutateNormalDistribution(mutationsProbability, stdDevRatioRange, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -1935,82 +1935,82 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", &minRate, 0.20);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
+                m_parameters[iInd].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
                                                      hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRate): {
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateSelfAdaptationRate(hasMutated);
+                m_parameters[iInd].MutateSelfAdaptationRate(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRadius): {
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateSelfAdaptationRadius(hasMutated);
+                m_parameters[iInd].MutateSelfAdaptationRadius(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRateChromosome): {
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateSelfAdaptationRateChromosome(hasMutated);
+                m_parameters[iInd].MutateSelfAdaptationRateChromosome(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
 
         case (SelfAdaptationRadiusChromosome): {
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateSelfAdaptationRadiusChromosome(hasMutated);
+                m_parameters[iInd].MutateSelfAdaptationRadiusChromosome(hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }
@@ -2021,17 +2021,17 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", &mutationsProbability, 0.2);
             ThreadsManager().CritSectionConfig().Leave();
 
-            for (unsigned int i_ind = 0; i_ind < m_parameters.size(); i_ind++) {
+            for (unsigned int iInd = 0; iInd < m_parameters.size(); iInd++) {
                 // Mutate
                 bool hasMutated = false;
-                m_parameters[i_ind].MutateMultiScale(mutationsProbability, hasMutated);
+                m_parameters[iInd].MutateMultiScale(mutationsProbability, hasMutated);
                 if (hasMutated)
-                    m_scoresCalib[i_ind] = NaNFloat;
+                    m_scoresCalib[iInd] = NaNFloat;
 
-                m_parameters[i_ind].FixWeights();
-                m_parameters[i_ind].FixCoordinates();
-                m_parameters[i_ind].CheckRange();
-                m_parameters[i_ind].FixAnalogsNb();
+                m_parameters[iInd].FixWeights();
+                m_parameters[iInd].FixCoordinates();
+                m_parameters[iInd].CheckRange();
+                m_parameters[iInd].FixAnalogsNb();
             }
             break;
         }

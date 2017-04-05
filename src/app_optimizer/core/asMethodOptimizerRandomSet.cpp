@@ -124,7 +124,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 threadsNb = wxMin(threadsNb, m_paramsNb - m_iterator);
 
                 // Fill up the thread array
-                for (int i_thread = 0; i_thread < threadsNb; i_thread++) {
+                for (int iThread = 0; iThread < threadsNb; iThread++) {
                     // Get a parameters set
                     nextParams = GetNextParameters();
 
@@ -171,9 +171,9 @@ bool asMethodOptimizerRandomSet::Manager()
 
                 // Check results
                 bool checkOK = true;
-                for (unsigned int i_check = 0; i_check < m_scoresCalib.size(); i_check++) {
-                    if (asTools::IsNaN(m_scoresCalib[i_check])) {
-                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) i_check + 1,
+                for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
+                    if (asTools::IsNaN(m_scoresCalib[iCheck])) {
+                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
                         checkOK = false;
                     }
@@ -199,14 +199,14 @@ bool asMethodOptimizerRandomSet::Manager()
 
                 // Process every step one after the other
                 int stepsNb = params.GetStepsNb();
-                for (int i_step = 0; i_step < stepsNb; i_step++) {
+                for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
-                    if (i_step == 0) {
-                        if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+                    if (iStep == 0) {
+                        if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -275,7 +275,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
 
     // Create the corresponding number of parameters
     m_scoresCalib.resize((unsigned long) m_paramsNb);
-    for (int i_var = 0; i_var < m_paramsNb; i_var++) {
+    for (int iVar = 0; iVar < m_paramsNb; iVar++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;
         paramsCopy.InitRandomValues();

@@ -217,7 +217,7 @@ public:
 
     wxArrayString GetStationNamesAndHeightsWxArrayString() const;
 
-    wxString GetStationNameAndHeight(int i_stat) const;
+    wxString GetStationNameAndHeight(int iStat) const;
 
     void SetStationNames(const VectorString &stationsNames)
     {
@@ -298,18 +298,18 @@ public:
         m_hasReferenceValues = true;
     }
 
-    float GetReferenceValue(int i_stat, int i_ref) const
+    float GetReferenceValue(int iStat, int iRef) const
     {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NaNFloat;
         }
 
-        wxASSERT(i_stat >= 0);
-        wxASSERT(i_ref >= 0);
-        wxASSERT(i_stat < m_referenceValues.rows());
-        wxASSERT(i_ref < m_referenceValues.cols());
-        return m_referenceValues(i_stat, i_ref);
+        wxASSERT(iStat >= 0);
+        wxASSERT(iRef >= 0);
+        wxASSERT(iStat < m_referenceValues.rows());
+        wxASSERT(iRef < m_referenceValues.cols());
+        return m_referenceValues(iStat, iRef);
     }
 
     Array2DFloat GetReferenceValues() const
@@ -370,33 +370,33 @@ public:
         }
     }
 
-    Array2DFloat &GetAnalogsValuesGross(unsigned int i_leadtime)
+    Array2DFloat &GetAnalogsValuesGross(unsigned int iLead)
     {
-        wxASSERT(m_analogsValuesGross.size() > i_leadtime);
-        return m_analogsValuesGross[i_leadtime];
+        wxASSERT(m_analogsValuesGross.size() > iLead);
+        return m_analogsValuesGross[iLead];
     }
 
-    Array1DFloat GetAnalogsValuesGross(unsigned int i_leadtime, int i_station) const
+    Array1DFloat GetAnalogsValuesGross(unsigned int iLead, int iStat) const
     {
-        wxASSERT(m_analogsValuesGross.size() > i_leadtime);
-        wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
-        Array1DFloat vals = m_analogsValuesGross[i_leadtime].row(i_station);
+        wxASSERT(m_analogsValuesGross.size() > iLead);
+        wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
+        Array1DFloat vals = m_analogsValuesGross[iLead].row(iStat);
         return vals;
     }
 
-    void SetAnalogsValuesGross(unsigned int i_leadtime, int i_station, const Array1DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(unsigned int iLead, int iStat, const Array1DFloat &analogsValuesGross)
     {
-        if (m_analogsValuesGross.size() >= i_leadtime + 1) {
-            wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
-            wxASSERT(m_analogsValuesGross[i_leadtime].cols() == analogsValuesGross.size());
-            m_analogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
-        } else if (m_analogsValuesGross.size() == i_leadtime) {
-            Array2DFloat emptyBlock(m_stationIds.size(), m_analogsNb[i_leadtime]);
+        if (m_analogsValuesGross.size() >= iLead + 1) {
+            wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesGross[iLead].cols() == analogsValuesGross.size());
+            m_analogsValuesGross[iLead].row(iStat) = analogsValuesGross;
+        } else if (m_analogsValuesGross.size() == iLead) {
+            Array2DFloat emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
             m_analogsValuesGross.push_back(emptyBlock);
 
-            wxASSERT(m_analogsValuesGross[i_leadtime].rows() > i_station);
-            wxASSERT(m_analogsValuesGross[i_leadtime].cols() == analogsValuesGross.size());
-            m_analogsValuesGross[i_leadtime].row(i_station) = analogsValuesGross;
+            wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesGross[iLead].cols() == analogsValuesGross.size());
+            m_analogsValuesGross[iLead].row(iStat) = analogsValuesGross;
         } else {
             asThrowException(_("The size of the values array does not fit with the required index."));
         }

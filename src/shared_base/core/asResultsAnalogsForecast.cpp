@@ -274,19 +274,19 @@ bool asResultsAnalogsForecast::Save()
     VectorFloat analogsValuesGross(Nanalogstot * Nstations);
 
     int ind = 0;
-    for (unsigned int i_time = 0; i_time < Nleadtime; i_time++) {
-        for (int i_analog = 0; i_analog < m_analogsNb[i_time]; i_analog++) {
-            analogsCriteria[ind] = m_analogsCriteria[i_time][i_analog];
-            analogsDates[ind] = m_analogsDates[i_time][i_analog];
+    for (unsigned int iTime = 0; iTime < Nleadtime; iTime++) {
+        for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+            analogsCriteria[ind] = m_analogsCriteria[iTime][iAnalog];
+            analogsDates[ind] = m_analogsDates[iTime][iAnalog];
             ind++;
         }
     }
 
     int indVal = 0;
-    for (unsigned int i_station = 0; i_station < Nstations; i_station++) {
-        for (unsigned int i_time = 0; i_time < Nleadtime; i_time++) {
-            for (int i_analog = 0; i_analog < m_analogsNb[i_time]; i_analog++) {
-                analogsValuesGross[indVal] = m_analogsValuesGross[i_time](i_station, i_analog);
+    for (unsigned int iStat = 0; iStat < Nstations; iStat++) {
+        for (unsigned int iTime = 0; iTime < Nleadtime; iTime++) {
+            for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+                analogsValuesGross[indVal] = m_analogsValuesGross[iTime](iStat, iAnalog);
                 indVal++;
             }
         }
@@ -535,13 +535,13 @@ bool asResultsAnalogsForecast::Load()
 
     // Set data into the matrices
     int ind = 0;
-    for (int i_time = 0; i_time < (int) Nleadtime; i_time++) {
-        Array1DFloat analogsCriteriaLeadTime(m_analogsNb[i_time]);
-        Array1DFloat analogsDatesLeadTime(m_analogsNb[i_time]);
+    for (int iTime = 0; iTime < (int) Nleadtime; iTime++) {
+        Array1DFloat analogsCriteriaLeadTime(m_analogsNb[iTime]);
+        Array1DFloat analogsDatesLeadTime(m_analogsNb[iTime]);
 
-        for (int i_analog = 0; i_analog < m_analogsNb[i_time]; i_analog++) {
-            analogsCriteriaLeadTime(i_analog) = analogsCriteria[ind];
-            analogsDatesLeadTime(i_analog) = analogsDates[ind];
+        for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+            analogsCriteriaLeadTime(iAnalog) = analogsCriteria[ind];
+            analogsDatesLeadTime(iAnalog) = analogsDates[ind];
             ind++;
         }
 
@@ -551,12 +551,12 @@ bool asResultsAnalogsForecast::Load()
 
     int indVal = 0;
     if (versionMajor == 1 && versionMinor == 0) {
-        for (int i_time = 0; i_time < Nleadtime; i_time++) {
-            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[i_time]);
+        for (int iTime = 0; iTime < Nleadtime; iTime++) {
+            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
 
-            for (int i_analog = 0; i_analog < m_analogsNb[i_time]; i_analog++) {
-                for (int i_station = 0; i_station < Nstations; i_station++) {
-                    analogsValuesGrossLeadTime(i_station, i_analog) = analogsValuesGross[indVal];
+            for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+                for (int iStat = 0; iStat < Nstations; iStat++) {
+                    analogsValuesGrossLeadTime(iStat, iAnalog) = analogsValuesGross[indVal];
                     indVal++;
                 }
             }
@@ -565,16 +565,16 @@ bool asResultsAnalogsForecast::Load()
         }
     } else {
         // Create containers
-        for (int i_time = 0; i_time < Nleadtime; i_time++) {
-            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[i_time]);
+        for (int iTime = 0; iTime < Nleadtime; iTime++) {
+            Array2DFloat analogsValuesGrossLeadTime(Nstations, m_analogsNb[iTime]);
             analogsValuesGrossLeadTime.fill(NaNFloat);
             m_analogsValuesGross.push_back(analogsValuesGrossLeadTime);
         }
 
-        for (int i_station = 0; i_station < Nstations; i_station++) {
-            for (int i_time = 0; i_time < Nleadtime; i_time++) {
-                for (int i_analog = 0; i_analog < m_analogsNb[i_time]; i_analog++) {
-                    m_analogsValuesGross[i_time](i_station, i_analog) = analogsValuesGross[indVal];
+        for (int iStat = 0; iStat < Nstations; iStat++) {
+            for (int iTime = 0; iTime < Nleadtime; iTime++) {
+                for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
+                    m_analogsValuesGross[iTime](iStat, iAnalog) = analogsValuesGross[indVal];
                     indVal++;
                 }
             }
@@ -626,13 +626,13 @@ wxArrayString asResultsAnalogsForecast::GetStationNamesAndHeightsWxArrayString()
     return stationsNames;
 }
 
-wxString asResultsAnalogsForecast::GetStationNameAndHeight(int i_stat) const
+wxString asResultsAnalogsForecast::GetStationNameAndHeight(int iStat) const
 {
     wxString stationName;
-    if (!asTools::IsNaN(m_stationHeights[i_stat]) && m_stationHeights[i_stat] != 0) {
-        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[i_stat], m_stationHeights[i_stat]);
+    if (!asTools::IsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
+        stationName = wxString::Format("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
     } else {
-        stationName = wxString::Format("%s", m_stationNames[i_stat]);
+        stationName = wxString::Format("%s", m_stationNames[iStat]);
     }
     return stationName;
 }

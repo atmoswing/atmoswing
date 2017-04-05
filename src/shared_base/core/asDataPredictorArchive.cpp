@@ -199,41 +199,41 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
 
     // Go through every area
     m_fileIndexes.areas.resize(compositeData.size());
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float)dataArea->GetXaxisCompositeStart(i_area);
-            float latMinStart = (float)dataArea->GetYaxisCompositeStart(i_area);
-            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(i_area);
+            float lonMin = (float)dataArea->GetXaxisCompositeStart(iArea);
+            float latMinStart = (float)dataArea->GetYaxisCompositeStart(iArea);
+            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
-            m_fileIndexes.areas[i_area].lonCount = dataArea->GetXaxisCompositePtsnb(i_area);
-            m_fileIndexes.areas[i_area].latCount = dataArea->GetYaxisCompositePtsnb(i_area);
+            m_fileIndexes.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
+            m_fileIndexes.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
 
             // Get the spatial indices of the desired data
-            m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+            m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                     &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                     lonMin, 0.01f, asHIDE_WARNINGS);
-            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
-                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                         &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                         lonMin - 360, 0.01f, asHIDE_WARNINGS);
             }
-            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
-                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                         &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                         lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
-            if (m_fileIndexes.areas[i_area].lonStart < 0) {
+            if (m_fileIndexes.areas[iArea].lonStart < 0) {
                 wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
                            m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]);
                 return false;
             }
-            wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
+            wxASSERT_MSG(m_fileIndexes.areas[iArea].lonStart >= 0,
                          wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
                                           m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
                                           m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1], lonMin));
@@ -250,12 +250,12 @@ bool asDataPredictorArchive::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, a
             wxASSERT_MSG(indexStartLat2 >= 0,
                          wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fileStructure.axisLat[0],
                                           m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
-            m_fileIndexes.areas[i_area].latStart = wxMin(indexStartLat1, indexStartLat2);
+            m_fileIndexes.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
         } else {
-            m_fileIndexes.areas[i_area].lonStart = 0;
-            m_fileIndexes.areas[i_area].latStart = 0;
-            m_fileIndexes.areas[i_area].lonCount = m_lonPtsnb;
-            m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
+            m_fileIndexes.areas[iArea].lonStart = 0;
+            m_fileIndexes.areas[iArea].latStart = 0;
+            m_fileIndexes.areas[iArea].lonCount = m_lonPtsnb;
+            m_fileIndexes.areas[iArea].latCount = m_latPtsnb;
         }
 
         if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {

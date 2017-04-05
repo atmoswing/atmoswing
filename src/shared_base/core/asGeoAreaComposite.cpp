@@ -177,8 +177,8 @@ bool asGeoAreaComposite::CheckConsistency()
 double asGeoAreaComposite::GetXmin() const
 {
     double RealXmin = InfDouble;
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        RealXmin = wxMin(RealXmin, m_composites[i_area].GetXmin());
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        RealXmin = wxMin(RealXmin, m_composites[iArea].GetXmin());
     }
     return RealXmin;
 }
@@ -186,8 +186,8 @@ double asGeoAreaComposite::GetXmin() const
 double asGeoAreaComposite::GetXmax() const
 {
     double RealXmax = -InfDouble;
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        RealXmax = wxMax(RealXmax, m_composites[i_area].GetXmax());
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        RealXmax = wxMax(RealXmax, m_composites[iArea].GetXmax());
     }
     return RealXmax;
 }
@@ -195,8 +195,8 @@ double asGeoAreaComposite::GetXmax() const
 double asGeoAreaComposite::GetYmin() const
 {
     double RealYmin = InfDouble;
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        RealYmin = wxMin(RealYmin, m_composites[i_area].GetYmin());
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        RealYmin = wxMin(RealYmin, m_composites[iArea].GetYmin());
     }
     return RealYmin;
 }
@@ -204,8 +204,8 @@ double asGeoAreaComposite::GetYmin() const
 double asGeoAreaComposite::GetYmax() const
 {
     double RealYmax = -InfDouble;
-    for (int i_area = 0; i_area < GetNbComposites(); i_area++) {
-        RealYmax = wxMax(RealYmax, m_composites[i_area].GetYmax());
+    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        RealYmax = wxMax(RealYmax, m_composites[iArea].GetYmax());
     }
     return RealYmax;
 }
