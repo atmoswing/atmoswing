@@ -140,7 +140,7 @@ bool asMethodForecasting::Manager()
             } else {
                 // Display processing time
                 wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %.3f min to execute"),
-                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time())/60000.0f);
+                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time()) / 60000.0f);
 
 #if wxUSE_GUI
                 // Send event
@@ -383,8 +383,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
     return true;
 }
 
-bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &params, int iStep,
-                                                     bool &forecastDateChanged)
+bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged)
 {
     // Get preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -874,7 +873,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
                 // Select the number of members for ensemble data.
                 if (predictorRealtimePreprocess->IsEnsemble()) {
-                    predictorRealtimePreprocess->SelectMembers(params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
+                    predictorRealtimePreprocess->SelectMembers(
+                            params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
                 // Restriction needed
@@ -911,8 +911,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
                         params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                         params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
-                        params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre),
-                        asNONE, params.GetPredictorFlatAllowed(iStep, iPtor));
+                        params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre), asNONE,
+                        params.GetPredictorFlatAllowed(iStep, iPtor));
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
@@ -1001,8 +1001,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
         wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
                                                                           linAlgebraMethod);
-        if(criterion->NeedsDataRange()) {
-            wxASSERT(m_storagePredictorsArchive.size()>iPtor);
+        if (criterion->NeedsDataRange()) {
+            wxASSERT(m_storagePredictorsArchive.size() > iPtor);
             wxASSERT(m_storagePredictorsArchive[iPtor]);
             criterion->SetDataRange(m_storagePredictorsArchive[iPtor]);
         }
@@ -1210,8 +1210,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
             // Instanciate an archive predictor object
             asDataPredictorArchive *predictorArchive = asDataPredictorArchive::GetInstance(
-                    params.GetPredictorArchiveDatasetId(iStep, iPtor),
-                    params.GetPredictorArchiveDataId(iStep, iPtor),
+                    params.GetPredictorArchiveDatasetId(iStep, iPtor), params.GetPredictorArchiveDataId(iStep, iPtor),
                     m_batchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive) {
                 return false;
@@ -1355,7 +1354,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
                 // Select the number of members for ensemble data.
                 if (predictorRealtimePreprocess->IsEnsemble()) {
-                    predictorRealtimePreprocess->SelectMembers(params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
+                    predictorRealtimePreprocess->SelectMembers(
+                            params.GetPreprocessRealtimeMembersNb(iStep, iPtor, iPre));
                 }
 
                 // Restriction needed
@@ -1391,8 +1391,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
                         params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                         params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
-                        params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre),
-                        asNONE, params.GetPredictorFlatAllowed(iStep, iPtor));
+                        params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre), asNONE,
+                        params.GetPredictorFlatAllowed(iStep, iPtor));
 
                 // Check the starting dates coherence
                 if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
@@ -1489,8 +1489,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
         wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
                                                                           linAlgebraMethod);
-        if(criterion->NeedsDataRange()) {
-            wxASSERT(m_storagePredictorsArchive.size()>iPtor);
+        if (criterion->NeedsDataRange()) {
+            wxASSERT(m_storagePredictorsArchive.size() > iPtor);
             wxASSERT(m_storagePredictorsArchive[iPtor]);
             criterion->SetDataRange(m_storagePredictorsArchive[iPtor]);
         }
