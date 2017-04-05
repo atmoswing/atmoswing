@@ -344,6 +344,9 @@ bool asParameters::ParsePredictors(asFileParametersStandard &fileParams, int i_s
         } else if (nodeParam->GetName() == "time") {
             if (!SetPredictorTimeHours(i_step, i_ptor, fileParams.GetDouble(nodeParam)))
                 return false;
+        } else if (nodeParam->GetName() == "members") {
+            if (!SetPredictorMembersNb(i_step, i_ptor, fileParams.GetInt(nodeParam)))
+                return false;
         } else if (nodeParam->GetName() == "spatial_window") {
             wxXmlNode *nodeWindow = nodeParam->GetChildren();
             while (nodeWindow) {
@@ -411,6 +414,9 @@ bool asParameters::ParsePreprocessedPredictors(asFileParametersStandard &filePar
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
                     if (!SetPreprocessTimeHours(i_step, i_ptor, i_dataset, fileParams.GetDouble(nodeParamPreprocess)))
+                        return false;
+                } else if (nodeParamPreprocess->GetName() == "members") {
+                    if (!SetPreprocessMembersNb(i_step, i_ptor, i_dataset, fileParams.GetInt(nodeParamPreprocess)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParamPreprocess);
@@ -1535,6 +1541,33 @@ bool asParameters::SetPreprocessTimeHours(int i_step, int i_predictor, int i_dat
     return true;
 }
 
+int asParameters::GetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset) const
+{
+    if (m_steps[i_step].predictors[i_predictor].preprocessMembersNb.size() >= (unsigned) (i_dataset + 1)) {
+        return m_steps[i_step].predictors[i_predictor].preprocessMembersNb[i_dataset];
+    } else {
+        wxLogError(_("Trying to access to an element outside of preprocessMembersNb (std) in the parameters object."));
+        return NaNInt;
+    }
+}
+
+bool asParameters::SetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset, int val)
+{
+    if (asTools::IsNaN(val)) {
+        wxLogError(_("The provided value for the preprocess members is null"));
+        return false;
+    }
+
+    if (m_steps[i_step].predictors[i_predictor].preprocessMembersNb.size() >= (unsigned) (i_dataset + 1)) {
+        m_steps[i_step].predictors[i_predictor].preprocessMembersNb[i_dataset] = val;
+    } else {
+        wxASSERT((int) m_steps[i_step].predictors[i_predictor].preprocessMembersNb.size() == i_dataset);
+        m_steps[i_step].predictors[i_predictor].preprocessMembersNb.push_back(val);
+    }
+
+    return true;
+}
+
 bool asParameters::SetPredictorDatasetId(int i_step, int i_predictor, const wxString &val)
 {
     if (val.IsEmpty()) {
@@ -1673,6 +1706,18 @@ bool asParameters::SetPredictorTimeHours(int i_step, int i_predictor, double val
     }
 
     m_steps[i_step].predictors[i_predictor].timeHours = val;
+
+    return true;
+}
+
+bool asParameters::SetPredictorMembersNb(int i_step, int i_predictor, int val)
+{
+    if (asTools::IsNaN(val)) {
+        wxLogError(_("The provided value for the predictor members is null"));
+        return false;
+    }
+
+    m_steps[i_step].predictors[i_predictor].membersNb = val;
 
     return true;
 }

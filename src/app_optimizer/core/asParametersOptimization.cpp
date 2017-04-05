@@ -428,6 +428,9 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
                 if (!SetPredictorTimeHours(i_step, i_ptor, GetPredictorTimeHoursLowerLimit(i_step, i_ptor)))
                     return false;
             }
+        } else if (nodeParam->GetName() == "members") {
+            if (!SetPredictorMembersNb(i_step, i_ptor, fileParams.GetInt(nodeParam)))
+                return false;
         } else if (nodeParam->GetName() == "spatial_window") {
             if(!ParseSpatialWindow(fileParams, i_step, i_ptor, nodeParam))
                 return false;
@@ -651,6 +654,9 @@ bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParameter
                                             GetPreprocessTimeHoursLowerLimit(i_step, i_ptor, i_dataset)))
                     return false;
             }
+        } else if (nodeParamPreprocess->GetName() == "members") {
+            if (!SetPreprocessMembersNb(i_step, i_ptor, i_dataset, fileParams.GetInt(nodeParamPreprocess)))
+                return false;
         } else {
             fileParams.UnknownNode(nodeParamPreprocess);
         }

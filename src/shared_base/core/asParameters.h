@@ -57,6 +57,7 @@ public:
         VectorString preprocessDataIds;
         VectorFloat preprocessLevels;
         VectorDouble preprocessTimeHours;
+        VectorInt preprocessMembersNb;
         float level;
         wxString gridType;
         double xMin;
@@ -69,6 +70,7 @@ public:
         double yShift;
         int flatAllowed;
         double timeHours;
+        int membersNb;
         wxString criteria;
         float weight;
     } ParamsPredictor;
@@ -486,6 +488,10 @@ public:
 
     bool SetPreprocessTimeHours(int i_step, int i_predictor, int i_dataset, double val);
 
+    int GetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset) const;
+
+    bool SetPreprocessMembersNb(int i_step, int i_predictor, int i_dataset, int val);
+
     wxString GetPredictorDatasetId(int i_step, int i_predictor) const
     {
         return m_steps[i_step].predictors[i_predictor].datasetId;
@@ -583,6 +589,13 @@ public:
     }
 
     bool SetPredictorTimeHours(int i_step, int i_predictor, double val);
+
+    int GetPredictorMembersNb(int i_step, int i_predictor) const
+    {
+        return m_steps[i_step].predictors[i_predictor].membersNb;
+    }
+
+    bool SetPredictorMembersNb(int i_step, int i_predictor, int val);
 
     wxString GetPredictorCriteria(int i_step, int i_predictor) const
     {
