@@ -341,7 +341,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
             for (int past = 0;
                  past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
                 asResultsAnalogsForecast *pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
-                                                                                        m_selectedForecast, past);
+                                                                                            m_selectedForecast, past);
                 a1f dates = pastForecast->GetTargetDates();
                 wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
 
