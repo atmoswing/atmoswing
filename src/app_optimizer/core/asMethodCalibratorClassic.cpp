@@ -53,7 +53,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     vvi stationsId = params.GetPredictandStationIdsVector();
 
     // Preload data
-    if(!DoPreloadData(params))
+    if (!DoPreloadData(params))
         return false;
 
     // Copy of the original parameters set.
@@ -124,7 +124,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 GenerateRelevanceMapParameters(params, iStep, explo);
 
                 // Process the relevance map
-                if(!EvaluateRelevanceMap(params, anaDatesPrevious, resultsTested, iStep))
+                if (!EvaluateRelevanceMap(params, anaDatesPrevious, resultsTested, iStep))
                     return false;
 
                 // Keep the best parameter set
@@ -139,12 +139,12 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                              m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0));
 
                 // Resize domain
-                if(!AssessDomainResizing(params, anaDatesPrevious, resultsTested, iStep, explo))
+                if (!AssessDomainResizing(params, anaDatesPrevious, resultsTested, iStep, explo))
                     return false;
 
                 // Resize domain (plus)
-                if(m_plus) {
-                    if(!AssessDomainResizingPlus(params, anaDatesPrevious, resultsTested, iStep, explo))
+                if (m_plus) {
+                    if (!AssessDomainResizingPlus(params, anaDatesPrevious, resultsTested, iStep, explo))
                         return false;
                 }
 
@@ -158,7 +158,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             }
 
             // Keep the analogs dates of the best parameters set
-            if(!GetDatesOfBestParameters(params, anaDatesPrevious, iStep))
+            if (!GetDatesOfBestParameters(params, anaDatesPrevious, iStep))
                 return false;
         }
 
@@ -271,9 +271,9 @@ asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBounda
         explo.yPtsNbEnd = wxMax(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(iStep, iPtor));
     }
 
-    if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter==0)
+    if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter == 0)
         explo.xPtsNbIter = 1;
-    if ((explo.yMinStart != explo.yMinEnd) && explo.yPtsNbIter==0)
+    if ((explo.yMinStart != explo.yMinEnd) && explo.yPtsNbIter == 0)
         explo.yPtsNbIter = 1;
 
     return explo;
@@ -428,7 +428,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetForecastScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time())/60000.0f);
+    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
 
     return true;
 }
@@ -560,7 +560,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
     }
 
-    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time())/60000.0f);
+    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time()) / 60000.0f);
 
     return true;
 }
@@ -794,7 +794,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
         }
     }
 
-    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time())/60000.0f);
+    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time()) / 60000.0f);
 
     return true;
 }
@@ -805,7 +805,7 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
-    ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int)xAxis.size() - 1);
+    ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int) xAxis.size() - 1);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
@@ -838,7 +838,7 @@ void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
-    iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int)yAxis.size() - 2);
+    iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int) yAxis.size() - 2);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
 }

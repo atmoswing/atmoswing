@@ -80,8 +80,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
         return;
 
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
-                                                    m_scoresCalibTemp.size() - 1);
+    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
     asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 
@@ -498,7 +497,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time())/60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
@@ -1939,7 +1938,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
                 // Mutate
                 bool hasMutated = false;
                 m_parameters[iInd].MutateNonUniform(mutationsProbability, m_generationNb, nbGenMax, minRate,
-                                                     hasMutated);
+                                                    hasMutated);
                 if (hasMutated)
                     m_scoresCalib[iInd] = NaNf;
 

@@ -82,7 +82,7 @@ private:
     wxString m_calibMethod;
     bool m_forceQuit;
 #if wxUSE_GUI
-    wxSingleInstanceChecker* m_singleInstanceChecker;
+    wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };
 

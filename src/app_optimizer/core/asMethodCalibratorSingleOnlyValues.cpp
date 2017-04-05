@@ -89,8 +89,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
             }
             if (params.GetPredictorTimeHoursVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(
-                        wxString::Format("PredictorTimeHours (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorXminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
@@ -121,8 +120,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
                 for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                     if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
+                        errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
                     }
                     if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;

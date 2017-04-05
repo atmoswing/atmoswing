@@ -108,8 +108,7 @@ public:
         if (m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
             m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.size() ==
-                     (unsigned) iPre);
+            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
             m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
         }
         return true;
@@ -248,12 +247,10 @@ public:
             return false;
         }
 
-        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >=
-            (unsigned) (iPre + 1)) {
+        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
             m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() ==
-                     (unsigned) iPre);
+            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
             m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
         }
         return true;
@@ -392,12 +389,10 @@ public:
             return false;
         }
 
-        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >=
-            (unsigned) (iPre + 1)) {
+        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
             m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() ==
-                     (unsigned) iPre);
+            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
             m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
         }
         return true;
@@ -556,8 +551,7 @@ public:
         if (m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) (iPreess)) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours[iPreess] = val;
         } else {
-            wxASSERT(
-                    m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
         }
     }
@@ -654,8 +648,7 @@ public:
 
     bool IncrementAnalogsNumber(int iStep)
     {
-        if (GetAnalogsNumber(iStep) + m_stepsIteration[iStep].analogsNumber <=
-            m_stepsUpperLimit[iStep].analogsNumber) {
+        if (GetAnalogsNumber(iStep) + m_stepsIteration[iStep].analogsNumber <= m_stepsUpperLimit[iStep].analogsNumber) {
             SetAnalogsNumber(iStep, GetAnalogsNumber(iStep) + m_stepsIteration[iStep].analogsNumber);
             return true;
         } else {
@@ -678,8 +671,8 @@ public:
     {
         if (GetPredictorXmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xMin <=
             m_stepsUpperLimit[iStep].predictors[iPtor].xMin) {
-            SetPredictorXmin(iStep, iPtor, GetPredictorXmin(iStep, iPtor) +
-                                                  m_stepsIteration[iStep].predictors[iPtor].xMin);
+            SetPredictorXmin(iStep, iPtor,
+                             GetPredictorXmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xMin);
             return true;
         } else {
             return false;
@@ -690,8 +683,8 @@ public:
     {
         if (GetPredictorXptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xPtsNb <=
             m_stepsUpperLimit[iStep].predictors[iPtor].xPtsNb) {
-            SetPredictorXptsnb(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor) +
-                                                    m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
+            SetPredictorXptsnb(iStep, iPtor,
+                               GetPredictorXptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
             return true;
         } else {
             return false;
@@ -702,8 +695,8 @@ public:
     {
         if (GetPredictorYmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yMin <=
             m_stepsUpperLimit[iStep].predictors[iPtor].yMin) {
-            SetPredictorYmin(iStep, iPtor, GetPredictorYmin(iStep, iPtor) +
-                                                  m_stepsIteration[iStep].predictors[iPtor].yMin);
+            SetPredictorYmin(iStep, iPtor,
+                             GetPredictorYmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yMin);
             return true;
         } else {
             return false;
@@ -714,8 +707,8 @@ public:
     {
         if (GetPredictorYptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yPtsNb <=
             m_stepsUpperLimit[iStep].predictors[iPtor].yPtsNb) {
-            SetPredictorYptsnb(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor) +
-                                                    m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
+            SetPredictorYptsnb(iStep, iPtor,
+                               GetPredictorYptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
             return true;
         } else {
             return false;
@@ -727,7 +720,7 @@ public:
         if (GetPredictorTimeHours(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].timeHours <=
             m_stepsUpperLimit[iStep].predictors[iPtor].timeHours) {
             SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor) +
-                                                       m_stepsIteration[iStep].predictors[iPtor].timeHours);
+                                                m_stepsIteration[iStep].predictors[iPtor].timeHours);
             return true;
         } else {
             return false;
@@ -738,8 +731,8 @@ public:
     {
         if (GetPredictorWeight(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].weight <=
             m_stepsUpperLimit[iStep].predictors[iPtor].weight) {
-            SetPredictorWeight(iStep, iPtor, GetPredictorWeight(iStep, iPtor) +
-                                                    m_stepsIteration[iStep].predictors[iPtor].weight);
+            SetPredictorWeight(iStep, iPtor,
+                               GetPredictorWeight(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].weight);
             return true;
         } else {
             return false;
@@ -748,8 +741,7 @@ public:
 
     bool DecrementAnalogsNumber(int iStep)
     {
-        if (GetAnalogsNumber(iStep) - m_stepsIteration[iStep].analogsNumber >=
-            m_stepsLowerLimit[iStep].analogsNumber) {
+        if (GetAnalogsNumber(iStep) - m_stepsIteration[iStep].analogsNumber >= m_stepsLowerLimit[iStep].analogsNumber) {
             SetAnalogsNumber(iStep, GetAnalogsNumber(iStep) - m_stepsIteration[iStep].analogsNumber);
             return true;
         } else {
@@ -772,8 +764,8 @@ public:
     {
         if (GetPredictorXmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xMin >=
             m_stepsLowerLimit[iStep].predictors[iPtor].xMin) {
-            SetPredictorXmin(iStep, iPtor, GetPredictorXmin(iStep, iPtor) -
-                                                  m_stepsIteration[iStep].predictors[iPtor].xMin);
+            SetPredictorXmin(iStep, iPtor,
+                             GetPredictorXmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xMin);
             return true;
         } else {
             return false;
@@ -784,8 +776,8 @@ public:
     {
         if (GetPredictorXptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xPtsNb >=
             m_stepsLowerLimit[iStep].predictors[iPtor].xPtsNb) {
-            SetPredictorXptsnb(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor) -
-                                                    m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
+            SetPredictorXptsnb(iStep, iPtor,
+                               GetPredictorXptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
             return true;
         } else {
             return false;
@@ -796,8 +788,8 @@ public:
     {
         if (GetPredictorYmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yMin >=
             m_stepsLowerLimit[iStep].predictors[iPtor].yMin) {
-            SetPredictorYmin(iStep, iPtor, GetPredictorYmin(iStep, iPtor) -
-                                                  m_stepsIteration[iStep].predictors[iPtor].yMin);
+            SetPredictorYmin(iStep, iPtor,
+                             GetPredictorYmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yMin);
             return true;
         } else {
             return false;
@@ -808,8 +800,8 @@ public:
     {
         if (GetPredictorYptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yPtsNb >=
             m_stepsLowerLimit[iStep].predictors[iPtor].yPtsNb) {
-            SetPredictorYptsnb(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor) -
-                                                    m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
+            SetPredictorYptsnb(iStep, iPtor,
+                               GetPredictorYptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
             return true;
         } else {
             return false;
@@ -821,7 +813,7 @@ public:
         if (GetPredictorTimeHours(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].timeHours >=
             m_stepsLowerLimit[iStep].predictors[iPtor].timeHours) {
             SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor) -
-                                                       m_stepsIteration[iStep].predictors[iPtor].timeHours);
+                                                m_stepsIteration[iStep].predictors[iPtor].timeHours);
             return true;
         } else {
             return false;
@@ -832,8 +824,8 @@ public:
     {
         if (GetPredictorWeight(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].weight >=
             m_stepsLowerLimit[iStep].predictors[iPtor].weight) {
-            SetPredictorWeight(iStep, iPtor, GetPredictorWeight(iStep, iPtor) -
-                                                    m_stepsIteration[iStep].predictors[iPtor].weight);
+            SetPredictorWeight(iStep, iPtor,
+                               GetPredictorWeight(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].weight);
             return true;
         } else {
             return false;

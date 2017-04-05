@@ -52,7 +52,7 @@ float asForecastScoreFinalRankHistogram::Assess(const a1f &targetDates, const a1
 }
 
 a1f asForecastScoreFinalRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &forecastScores,
-                                                              const asTimeArray &timeArray) const
+                                                     const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);

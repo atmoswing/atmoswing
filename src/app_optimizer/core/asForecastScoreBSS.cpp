@@ -79,7 +79,7 @@ bool asForecastScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &
     for (int iRefTime = 0; iRefTime < refVals.size(); iRefTime++) {
         if (!asTools::IsNaN(refVals(iRefTime))) {
             scoresClimatology(iRefTime) = forecastScore->Assess(refVals(iRefTime), climatologyData,
-                                                                 climatologyData.size());
+                                                                climatologyData.size());
         } else {
             scoresClimatology(iRefTime) = NaNf;
         }

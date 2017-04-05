@@ -1,5 +1,4 @@
 #include "asParametersOptimizationGAs.h"
-#include "asParametersScoring.h"
 
 #include <asFileParametersOptimization.h>
 
@@ -1300,9 +1299,8 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
 
 }
 
-void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam,
-                                                      vi &crossingPoints, bool shareBeta, double betaMin,
-                                                      double betaMax)
+void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
+                                                      bool shareBeta, double betaMin, double betaMax)
 {
     wxASSERT(crossingPoints.size() > 0);
 

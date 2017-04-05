@@ -1,7 +1,5 @@
 #include "asThreadMethodOptimizerGeneticAlgorithms.h"
 
-#include "asMethodCalibratorSingle.h"
-
 asThreadMethodOptimizerGeneticAlgorithms::asThreadMethodOptimizerGeneticAlgorithms(
         asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params, float *finalScoreCalib,
         vf *scoreClimatology)

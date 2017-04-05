@@ -89,7 +89,7 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time())/60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Calibration over."));
 #endif
@@ -188,8 +188,7 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
         return;
 
     // Sort according to the score
-    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0,
-                                                    m_scoresCalibTemp.size() - 1);
+    a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
     asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 
@@ -373,8 +372,7 @@ bool asMethodCalibrator::ProceedToDataPreloading(asParametersScoring &params)
                             continue;
                         }
                         if (parallelDataLoad) {
-                            asThreadPreloadData *thread = new asThreadPreloadData(this, params, iStep, iPtor,
-                                                                                  iPre);
+                            asThreadPreloadData *thread = new asThreadPreloadData(this, params, iStep, iPtor, iPre);
                             if (!ThreadsManager().HasFreeThread(thread->GetType())) {
                                 ThreadsManager().WaitForFreeThread(thread->GetType());
                             }
@@ -561,7 +559,7 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
                     share = false;
             } else {
                 if (!params.GetPreprocessMethod(iStep, iPtor).IsSameAs(params.GetPreprocessMethod(prev_step, prev_ptor),
-                                                                         false))
+                                                                       false))
                     share = false;
                 if (params.GetPreprocessSize(iStep, iPtor) != params.GetPreprocessSize(prev_step, prev_ptor)) {
                     share = false;
@@ -720,9 +718,8 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             timeArray.Init();
 
             asGeo geo;
-            double Ymax = params.GetPreloadYmin(iStep, iPtor) + params.GetPredictorYstep(iStep, iPtor) *
-                                                                  (double) (params.GetPreloadYptsnb(iStep, iPtor) -
-                                                                            1);
+            double Ymax = params.GetPreloadYmin(iStep, iPtor) +
+                          params.GetPredictorYstep(iStep, iPtor) * (double) (params.GetPreloadYptsnb(iStep, iPtor) - 1);
             if (Ymax > geo.GetAxisYmax()) {
                 double diff = Ymax - geo.GetAxisYmax();
                 int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(iStep, iPtor));
@@ -841,8 +838,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
             std::vector<asDataPredictorArchive *> predictorsPreprocess;
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
-                wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), iPtor, iPre,
-                             iStep);
+                wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), iPtor, iPre, iStep);
 
                 // Get level
                 float level;
@@ -909,7 +905,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
 
                 asGeo geo;
                 double Ymax = params.GetPreloadYmin(iStep, iPtor) + params.GetPredictorYstep(iStep, iPtor) *
-                                                                      double(params.GetPreloadYptsnb(iStep, iPtor) - 1);
+                                                                    double(params.GetPreloadYptsnb(iStep, iPtor) - 1);
                 if (Ymax > geo.GetAxisYmax()) {
                     double diff = Ymax - geo.GetAxisYmax();
                     int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(iStep, iPtor));
@@ -939,8 +935,8 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 }
 
                 // Data loading
-                wxLogVerbose(_("Loading %s data for level %d, %gh."),
-                             params.GetPreprocessDataId(iStep, iPtor, iPre), (int) level, timeHours);
+                wxLogVerbose(_("Loading %s data for level %d, %gh."), params.GetPreprocessDataId(iStep, iPtor, iPre),
+                             (int) level, timeHours);
                 if (!predictorPreprocess->Load(area, timeArray)) {
                     wxLogError(_("The data could not be loaded."));
                     wxDELETE(area);
@@ -1010,7 +1006,8 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
                 wxLogVerbose(_("Loading data."));
 
                 if (!params.NeedsPreprocessing(iStep, iPtor)) {
-                    if (!ExtractDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData, timeEndData)) {
+                    if (!ExtractDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
+                                                         timeEndData)) {
                         return false;
                     }
                 } else {
@@ -1092,7 +1089,8 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         if (params.GetPreprocessMethod(iStep, iPtor).IsSameAs("Gradients")) {
             level = params.GetPreprocessLevel(iStep, iPtor, 0);
             time = params.GetPreprocessTimeHours(iStep, iPtor, 0);
-            if(params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
+            if (params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
+                params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
                 wxLogError(_("The criteria value has not been changed after the gradient preprocessing."));
                 return false;
             }
@@ -1116,7 +1114,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         }
         if (preloadTimeHours.size() > 0) {
             iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1],
-                                                time);
+                                               time);
         }
     }
 
@@ -1153,12 +1151,17 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
             *m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Area object instantiation
-    asGeoAreaCompositeGrid *desiredArea = asGeoAreaCompositeGrid::GetInstance(
-            params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
-            params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
-            params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
-            params.GetPredictorYstep(iStep, iPtor), params.GetPredictorLevel(iStep, iPtor), asNONE,
-            params.GetPredictorFlatAllowed(iStep, iPtor));
+    asGeoAreaCompositeGrid *desiredArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(iStep, iPtor),
+                                                                              params.GetPredictorXmin(iStep, iPtor),
+                                                                              params.GetPredictorXptsnb(iStep, iPtor),
+                                                                              params.GetPredictorXstep(iStep, iPtor),
+                                                                              params.GetPredictorYmin(iStep, iPtor),
+                                                                              params.GetPredictorYptsnb(iStep, iPtor),
+                                                                              params.GetPredictorYstep(iStep, iPtor),
+                                                                              params.GetPredictorLevel(iStep, iPtor),
+                                                                              asNONE,
+                                                                              params.GetPredictorFlatAllowed(iStep,
+                                                                                                             iPtor));
 
     wxASSERT(desiredArea);
 
@@ -1205,9 +1208,9 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
     timeArray.Init();
 
     // Loading the datasets information
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance(
-            params.GetPredictorDatasetId(iStep, iPtor), params.GetPredictorDataId(iStep, iPtor),
-            m_predictorDataDir);
+    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(iStep, iPtor),
+                                                                            params.GetPredictorDataId(iStep, iPtor),
+                                                                            m_predictorDataDir);
     if (!predictor) {
         return false;
     }
@@ -1272,8 +1275,8 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
 
         // Loading the dataset information
         asDataPredictorArchive *predictorPreprocess = asDataPredictorArchive::GetInstance(
-                params.GetPreprocessDatasetId(iStep, iPtor, iPre),
-                params.GetPreprocessDataId(iStep, iPtor, iPre), m_predictorDataDir);
+                params.GetPreprocessDatasetId(iStep, iPtor, iPre), params.GetPreprocessDataId(iStep, iPtor, iPre),
+                m_predictorDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
@@ -1361,8 +1364,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
                                                                   &predictandTime[predictandTime.size() - 1],
                                                                   timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
-                                                                 &predictandTime[predictandTime.size() - 1],
-                                                                 timeEnd);
+                                                                 &predictandTime[predictandTime.size() - 1], timeEnd);
 
     for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
         a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
@@ -1580,8 +1582,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         // Instantiate a score object
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
                                                                           linAlgebraMethod);
-        if(criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size()>iPtor);
+        if (criterion->NeedsDataRange()) {
+            wxASSERT(predictors.size() > iPtor);
             wxASSERT(predictors[iPtor]);
             criterion->SetDataRange(predictors[iPtor]);
         }
@@ -1661,8 +1663,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
         wxLogVerbose(_("Creating a criterion object."));
         asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
                                                                           linAlgebraMethod);
-        if(criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size()>iPtor);
+        if (criterion->NeedsDataRange()) {
+            wxASSERT(predictors.size() > iPtor);
             wxASSERT(predictors[iPtor]);
             criterion->SetDataRange(predictors[iPtor]);
         }

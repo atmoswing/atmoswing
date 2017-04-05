@@ -181,7 +181,7 @@ asForecastScoreFinal::~asForecastScoreFinal()
 }
 
 a1f asForecastScoreFinal::AssessOnArray(const a1f &targetDates, const a1f &forecastScores,
-                                                 const asTimeArray &timeArray) const
+                                        const asTimeArray &timeArray) const
 {
     wxLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
     return a1f();

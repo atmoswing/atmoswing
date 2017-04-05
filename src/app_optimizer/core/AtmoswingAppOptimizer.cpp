@@ -440,7 +440,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log().SetLevel((int)logLevel);
+            Log().SetLevel((int) logLevel);
         } else {
             Log().SetLevel(2);
         }

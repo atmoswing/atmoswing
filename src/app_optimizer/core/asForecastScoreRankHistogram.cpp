@@ -126,8 +126,7 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const a1f &Forcast
     }
 }
 
-bool asForecastScoreRankHistogram::ProcessScoreClimatology(const a1f &refVals,
-                                                           const a1f &climatologyData)
+bool asForecastScoreRankHistogram::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

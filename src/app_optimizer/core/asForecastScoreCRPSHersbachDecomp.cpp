@@ -51,8 +51,7 @@ float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const a1f &Fo
     return NaNf;
 }
 
-a1f asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &ForcastVals,
-                                                              int nbElements) const
+a1f asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -129,8 +128,7 @@ a1f asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1
     return result;
 }
 
-bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f &refVals,
-                                                                const a1f &climatologyData)
+bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }
