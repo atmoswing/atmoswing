@@ -91,8 +91,8 @@ void asPanelSidebarAlarms::Update()
             for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
 
                 a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow,
-                                                                                                      returnPeriodRef,
-                                                                                                      quantileThreshold);
+                                                                                             returnPeriodRef,
+                                                                                             quantileThreshold);
                 values.row(methodRow) = methodMaxValues;
             }
 

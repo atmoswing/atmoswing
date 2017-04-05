@@ -1166,7 +1166,7 @@ void asFrameForecast::OpenForecastsFromTmpList()
     wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
-    if(!filePaths.Open()) {
+    if (!filePaths.Open()) {
         wxLogWarning(_("List of the forecasts not found."));
         return;
     }
