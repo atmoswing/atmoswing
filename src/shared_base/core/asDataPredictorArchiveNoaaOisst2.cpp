@@ -114,7 +114,7 @@ VectorString asDataPredictorArchiveNoaaOisst2::GetListOfFiles(asTimeArray &timeA
 }
 
 bool asDataPredictorArchiveNoaaOisst2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

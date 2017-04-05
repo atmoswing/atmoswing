@@ -131,7 +131,7 @@ bool asDataPredictorRealtimeGfsForecast::Init()
 }
 
 bool asDataPredictorRealtimeGfsForecast::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     wxASSERT(GetFileNames().size() >= (unsigned) timeArray.GetSize());
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);

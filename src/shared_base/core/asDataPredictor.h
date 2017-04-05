@@ -106,24 +106,25 @@ public:
 
     bool LoadFullArea(double date, float level);
 
-    bool TransformData(VVArray2DFloat &compositeData);
+    bool TransformData(vvva2f &compositeData);
 
     bool Inline();
 
-    bool SetData(VArray2DFloat &val);
+    bool SetData(VVArray2DFloat &val);
 
     float GetMinValue() const;
 
     float GetMaxValue() const;
 
-    VArray2DFloat &GetData()
+    VVArray2DFloat &GetData()
     {
         wxASSERT((int) m_data.size() == (int) m_time.size());
-        wxASSERT(m_data.size() > 1);
-        wxASSERT(m_data[0].cols() > 0);
-        wxASSERT(m_data[0].rows() > 0);
-        wxASSERT(m_data[1].cols() > 0);
-        wxASSERT(m_data[1].rows() > 0);
+        wxASSERT(m_data.size() >= 1);
+        wxASSERT(m_data[0].size() >= 1);
+        wxASSERT(m_data[0][0].cols() > 0);
+        wxASSERT(m_data[0][0].rows() > 0);
+        wxASSERT(m_data[1][0].cols() > 0);
+        wxASSERT(m_data[1][0].rows() > 0);
 
         return m_data;
     }
@@ -185,6 +186,13 @@ public:
     int GetTimeSize() const
     {
         return (int) m_time.size();
+    }
+
+    int GetMembersNb() const
+    {
+        wxASSERT(m_data.size() > 0);
+
+        return (int) m_data[0].size();
     }
 
     int GetLatPtsnb() const
@@ -298,7 +306,8 @@ public:
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
-        m_fileIndexes.member = 0;
+        m_fileIndexes.memberStart = 0;
+        m_fileIndexes.memberCount = 1;
     }
 
     void SelectMember(int memberNum)
@@ -308,7 +317,19 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.member = memberNum-1;
+        m_fileIndexes.memberStart = memberNum-1;
+        m_fileIndexes.memberCount = 1;
+    }
+
+    void SelectMembers(int memberNb)
+    {
+        if (!m_isEnsemble) {
+            asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
+        }
+
+        // memberNum is 1-based, netcdf index is 0-based
+        m_fileIndexes.memberStart = 0;
+        m_fileIndexes.memberCount = memberNb;
     }
 
 protected:
@@ -348,7 +369,8 @@ protected:
         int level;
         int cutStart;
         int cutEnd;
-        int member;
+        int memberStart;
+        int memberCount;
     };
     FileStructure m_fileStructure;
     FileIndexes m_fileIndexes;
@@ -376,7 +398,7 @@ protected:
     float m_yAxisShift;
     float m_level;
     Array1DDouble m_time;
-    VArray2DFloat m_data;
+    VVArray2DFloat m_data;
     int m_latPtsnb;
     int m_lonPtsnb;
     Array1DFloat m_axisLat;
@@ -390,17 +412,17 @@ protected:
     virtual VectorString GetListOfFiles(asTimeArray &timeArray) const = 0;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData) = 0;
+                                 vvva2f &compositeData) = 0;
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNDouble) const = 0;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  VVArray2DFloat &compositeData) = 0;
+                                  vvva2f &compositeData) = 0;
 
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                VVArray2DFloat &compositeData) = 0;
+                                vvva2f &compositeData) = 0;
 
     size_t *GetIndexesStartNcdf(int i_area) const;
 
@@ -412,31 +434,29 @@ protected:
 
     int *GetIndexesCountGrib(int i_area) const;
 
-    bool GetDataFromFile(asFileNetcdf &ncFile, VVArray2DFloat &compositeData);
+    bool GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData);
 
-    bool GetDataFromFile(asFileGrib2 &gbFile, VVArray2DFloat &compositeData);
+    bool GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData);
 
     bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                               VVArray2DFloat &compositeData);
+                               vvva2f &compositeData);
 
     bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                             VVArray2DFloat &compositeData);
+                             vvva2f &compositeData);
 
-    bool ParseFileStructure(asFileNetcdf &ncFile, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData);
+    bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib2 &gbFile, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                             VVArray2DFloat &compositeData);
+    bool ParseFileStructure(asFileGrib2 &gbFile);
 
     bool CheckFileStructure();
 
-    bool MergeComposites(VVArray2DFloat &compositeData, asGeoAreaCompositeGrid *area);
+    bool MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid *area);
 
     bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
 
     asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
 
-    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, VVArray2DFloat &compositeData);
+    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData);
 
     void AssignGribCode(const int arr[]);
 

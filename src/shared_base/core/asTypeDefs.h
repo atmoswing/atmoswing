@@ -93,6 +93,7 @@ typedef std::vector<Array1DFloat> VArray1DFloat;
 typedef std::vector<Array2DFloat> VArray2DFloat;
 typedef std::vector<Array2DFloat *> VpArray2DFloat;
 typedef std::vector<std::vector<Array2DFloat> > VVArray2DFloat;
+typedef std::vector<std::vector<std::vector<Array2DFloat> > > vvva2f;
 
 typedef Eigen::Array<double, Eigen::Dynamic, 1> Array1DDouble;
 

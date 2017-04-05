@@ -59,8 +59,8 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadEasy)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    VVArray2DFloat hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     1029.3	1019.7	1010.2	1001.6	992.0	982.4	971.9	961.4	950.8
@@ -76,15 +76,15 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadEasy)
     71.97	71.87	71.87	71.87	71.87	71.87	71.87	71.87	71.87
     58.59	59.18	59.87	60.55	61.23	61.82	62.50	63.18	63.67
     */
-    EXPECT_NEAR(104.96, hgt[0](0, 0), 0.01);
-    EXPECT_NEAR(103.98, hgt[0](0, 1), 0.01);
-    EXPECT_NEAR(103.01, hgt[0](0, 2), 0.01);
-    EXPECT_NEAR(102.13, hgt[0](0, 3), 0.01);
-    EXPECT_NEAR(96.95, hgt[0](0, 8), 0.01);
-    EXPECT_NEAR(96.18, hgt[0](1, 0), 0.01);
-    EXPECT_NEAR(85.04, hgt[0](2, 0), 0.01);
-    EXPECT_NEAR(58.59, hgt[0](4, 0), 0.01);
-    EXPECT_NEAR(63.67, hgt[0](4, 8), 0.01);
+    EXPECT_NEAR(104.96, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(103.98, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(103.01, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(102.13, hgt[0][0](0, 3), 0.01);
+    EXPECT_NEAR(96.95, hgt[0][0](0, 8), 0.01);
+    EXPECT_NEAR(96.18, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(85.04, hgt[0][0](2, 0), 0.01);
+    EXPECT_NEAR(58.59, hgt[0][0](4, 0), 0.01);
+    EXPECT_NEAR(63.67, hgt[0][0](4, 8), 0.01);
 
     /* Values time step 3 (horizontal=Lon, vertical=Lat)
     1228.4	1211.2	1193.0	1174.8	1156.6	1137.5	1117.4	1097.3	1077.2
@@ -100,15 +100,15 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadEasy)
     106.03	105.26	104.57	103.79	103.01	102.13	101.35	100.56	99.69
     95.78	95.59	95.20	94.81	94.32	93.83	93.45	92.86	92.37
     */
-    EXPECT_NEAR(125.26, hgt[3](0, 0), 0.01);
-    EXPECT_NEAR(123.51, hgt[3](0, 1), 0.01);
-    EXPECT_NEAR(121.65, hgt[3](0, 2), 0.01);
-    EXPECT_NEAR(119.80, hgt[3](0, 3), 0.01);
-    EXPECT_NEAR(109.84, hgt[3](0, 8), 0.01);
-    EXPECT_NEAR(120.67, hgt[3](1, 0), 0.01);
-    EXPECT_NEAR(114.43, hgt[3](2, 0), 0.01);
-    EXPECT_NEAR(95.78, hgt[3](4, 0), 0.01);
-    EXPECT_NEAR(92.37, hgt[3](4, 8), 0.01);
+    EXPECT_NEAR(125.26, hgt[3][0](0, 0), 0.01);
+    EXPECT_NEAR(123.51, hgt[3][0](0, 1), 0.01);
+    EXPECT_NEAR(121.65, hgt[3][0](0, 2), 0.01);
+    EXPECT_NEAR(119.80, hgt[3][0](0, 3), 0.01);
+    EXPECT_NEAR(109.84, hgt[3][0](0, 8), 0.01);
+    EXPECT_NEAR(120.67, hgt[3][0](1, 0), 0.01);
+    EXPECT_NEAR(114.43, hgt[3][0](2, 0), 0.01);
+    EXPECT_NEAR(95.78, hgt[3][0](4, 0), 0.01);
+    EXPECT_NEAR(92.37, hgt[3][0](4, 8), 0.01);
 
     wxDELETE(predictor);
 }
@@ -139,8 +139,8 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadComposite)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    VVArray2DFloat hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     1124.1	1112.6	1100.1	1087.7  |   1074.3	1061.9	1050.4	1038.9	1029.3
@@ -157,16 +157,16 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadComposite)
     60.55	59.48	58.59	58.11	|	57.82	57.72	57.82	58.21	58.59
 
     */
-    EXPECT_NEAR(114.63, hgt[0](0, 0), 0.01);
-    EXPECT_NEAR(113.45, hgt[0](0, 1), 0.01);
-    EXPECT_NEAR(112.18, hgt[0](0, 2), 0.01);
-    EXPECT_NEAR(110.91, hgt[0](0, 3), 0.01);
-    EXPECT_NEAR(109.55, hgt[0](0, 4), 0.01);
-    EXPECT_NEAR(104.96, hgt[0](0, 8), 0.01);
-    EXPECT_NEAR(105.74, hgt[0](1, 0), 0.01);
-    EXPECT_NEAR(93.45, hgt[0](2, 0), 0.01);
-    EXPECT_NEAR(60.55, hgt[0](4, 0), 0.01);
-    EXPECT_NEAR(58.59, hgt[0](4, 8), 0.01);
+    EXPECT_NEAR(114.63, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(113.45, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(112.18, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(110.91, hgt[0][0](0, 3), 0.01);
+    EXPECT_NEAR(109.55, hgt[0][0](0, 4), 0.01);
+    EXPECT_NEAR(104.96, hgt[0][0](0, 8), 0.01);
+    EXPECT_NEAR(105.74, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(93.45, hgt[0][0](2, 0), 0.01);
+    EXPECT_NEAR(60.55, hgt[0][0](4, 0), 0.01);
+    EXPECT_NEAR(58.59, hgt[0][0](4, 8), 0.01);
 
     /* Values time step 3 (horizontal=Lon, vertical=Lat)
     1359.6	1345.2	1328.9	1312.7   |  1296.4	1279.1	1261.9	1244.7	1228.4
@@ -183,16 +183,16 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadComposite)
     97.74	97.15	96.76	96.47	|	96.27	96.08	96.08	95.99	95.78
 
     */
-    EXPECT_NEAR(138.64, hgt[3](0, 0), 0.01);
-    EXPECT_NEAR(137.17, hgt[3](0, 1), 0.01);
-    EXPECT_NEAR(135.51, hgt[3](0, 2), 0.01);
-    EXPECT_NEAR(133.86, hgt[3](0, 3), 0.01);
-    EXPECT_NEAR(132.20, hgt[3](0, 4), 0.01);
-    EXPECT_NEAR(125.26, hgt[3](0, 8), 0.01);
-    EXPECT_NEAR(133.37, hgt[3](1, 0), 0.01);
-    EXPECT_NEAR(124.68, hgt[3](2, 0), 0.01);
-    EXPECT_NEAR(97.74, hgt[3](4, 0), 0.01);
-    EXPECT_NEAR(95.78, hgt[3](4, 8), 0.01);
+    EXPECT_NEAR(138.64, hgt[3][0](0, 0), 0.01);
+    EXPECT_NEAR(137.17, hgt[3][0](0, 1), 0.01);
+    EXPECT_NEAR(135.51, hgt[3][0](0, 2), 0.01);
+    EXPECT_NEAR(133.86, hgt[3][0](0, 3), 0.01);
+    EXPECT_NEAR(132.20, hgt[3][0](0, 4), 0.01);
+    EXPECT_NEAR(125.26, hgt[3][0](0, 8), 0.01);
+    EXPECT_NEAR(133.37, hgt[3][0](1, 0), 0.01);
+    EXPECT_NEAR(124.68, hgt[3][0](2, 0), 0.01);
+    EXPECT_NEAR(97.74, hgt[3][0](4, 0), 0.01);
+    EXPECT_NEAR(95.78, hgt[3][0](4, 8), 0.01);
 
     wxDELETE(predictor);
 }
@@ -223,8 +223,8 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    VVArray2DFloat hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     |   1074.3	1061.9	1050.4	1038.9	1029.3
@@ -240,14 +240,14 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeft)
     |	73.62	72.94	72.46	72.17	71.97
     |	57.82	57.72	57.82	58.21	58.59
     */
-    EXPECT_NEAR(109.55, hgt[0](0, 0), 0.01);
-    EXPECT_NEAR(108.28, hgt[0](0, 1), 0.01);
-    EXPECT_NEAR(107.11, hgt[0](0, 2), 0.01);
-    EXPECT_NEAR(104.96, hgt[0](0, 4), 0.01);
-    EXPECT_NEAR(100.67, hgt[0](1, 0), 0.01);
-    EXPECT_NEAR(88.56, hgt[0](2, 0), 0.01);
-    EXPECT_NEAR(57.82, hgt[0](4, 0), 0.01);
-    EXPECT_NEAR(58.59, hgt[0](4, 4), 0.01);
+    EXPECT_NEAR(109.55, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(108.28, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(107.11, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(104.96, hgt[0][0](0, 4), 0.01);
+    EXPECT_NEAR(100.67, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(88.56, hgt[0][0](2, 0), 0.01);
+    EXPECT_NEAR(57.82, hgt[0][0](4, 0), 0.01);
+    EXPECT_NEAR(58.59, hgt[0][0](4, 4), 0.01);
 
     /* Values time step 3 (horizontal=Lon, vertical=Lat)
     |  1296.4	1279.1	1261.9	1244.7	1228.4
@@ -263,14 +263,14 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeft)
     |  108.76	107.99	107.30	106.62	106.03
     |  96.27	96.08	96.08	95.99	95.78
     */
-    EXPECT_NEAR(132.20, hgt[3](0, 0), 0.01);
-    EXPECT_NEAR(130.43, hgt[3](0, 1), 0.01);
-    EXPECT_NEAR(128.68, hgt[3](0, 2), 0.01);
-    EXPECT_NEAR(125.26, hgt[3](0, 4), 0.01);
-    EXPECT_NEAR(127.12, hgt[3](1, 0), 0.01);
-    EXPECT_NEAR(119.31, hgt[3](2, 0), 0.01);
-    EXPECT_NEAR(96.27, hgt[3](4, 0), 0.01);
-    EXPECT_NEAR(95.78, hgt[3](4, 4), 0.01);
+    EXPECT_NEAR(132.20, hgt[3][0](0, 0), 0.01);
+    EXPECT_NEAR(130.43, hgt[3][0](0, 1), 0.01);
+    EXPECT_NEAR(128.68, hgt[3][0](0, 2), 0.01);
+    EXPECT_NEAR(125.26, hgt[3][0](0, 4), 0.01);
+    EXPECT_NEAR(127.12, hgt[3][0](1, 0), 0.01);
+    EXPECT_NEAR(119.31, hgt[3][0](2, 0), 0.01);
+    EXPECT_NEAR(96.27, hgt[3][0](4, 0), 0.01);
+    EXPECT_NEAR(95.78, hgt[3][0](4, 4), 0.01);
 
     wxDELETE(predictor);
 }
@@ -301,8 +301,8 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeftOn720)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    VVArray2DFloat hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     |   1074.3	1061.9	1050.4	1038.9	1029.3
@@ -318,14 +318,14 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeftOn720)
     |	73.62	72.94	72.46	72.17	71.97
     |	57.82	57.72	57.82	58.21	58.59
     */
-    EXPECT_NEAR(109.55, hgt[0](0, 0), 0.01);
-    EXPECT_NEAR(108.28, hgt[0](0, 1), 0.01);
-    EXPECT_NEAR(107.11, hgt[0](0, 2), 0.01);
-    EXPECT_NEAR(104.96, hgt[0](0, 4), 0.01);
-    EXPECT_NEAR(100.67, hgt[0](1, 0), 0.01);
-    EXPECT_NEAR(88.56, hgt[0](2, 0), 0.01);
-    EXPECT_NEAR(57.82, hgt[0](4, 0), 0.01);
-    EXPECT_NEAR(58.59, hgt[0](4, 4), 0.01);
+    EXPECT_NEAR(109.55, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(108.28, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(107.11, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(104.96, hgt[0][0](0, 4), 0.01);
+    EXPECT_NEAR(100.67, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(88.56, hgt[0][0](2, 0), 0.01);
+    EXPECT_NEAR(57.82, hgt[0][0](4, 0), 0.01);
+    EXPECT_NEAR(58.59, hgt[0][0](4, 4), 0.01);
 
     /* Values time step 3 (horizontal=Lon, vertical=Lat)
     |  1296.4	1279.1	1261.9	1244.7	1228.4
@@ -341,14 +341,14 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderLeftOn720)
     |  108.76	107.99	107.30	106.62	106.03
     |  96.27	96.08	96.08	95.99	95.78
     */
-    EXPECT_NEAR(132.20, hgt[3](0, 0), 0.01);
-    EXPECT_NEAR(130.43, hgt[3](0, 1), 0.01);
-    EXPECT_NEAR(128.68, hgt[3](0, 2), 0.01);
-    EXPECT_NEAR(125.26, hgt[3](0, 4), 0.01);
-    EXPECT_NEAR(127.12, hgt[3](1, 0), 0.01);
-    EXPECT_NEAR(119.31, hgt[3](2, 0), 0.01);
-    EXPECT_NEAR(96.27, hgt[3](4, 0), 0.01);
-    EXPECT_NEAR(95.78, hgt[3](4, 4), 0.01);
+    EXPECT_NEAR(132.20, hgt[3][0](0, 0), 0.01);
+    EXPECT_NEAR(130.43, hgt[3][0](0, 1), 0.01);
+    EXPECT_NEAR(128.68, hgt[3][0](0, 2), 0.01);
+    EXPECT_NEAR(125.26, hgt[3][0](0, 4), 0.01);
+    EXPECT_NEAR(127.12, hgt[3][0](1, 0), 0.01);
+    EXPECT_NEAR(119.31, hgt[3][0](2, 0), 0.01);
+    EXPECT_NEAR(96.27, hgt[3][0](4, 0), 0.01);
+    EXPECT_NEAR(95.78, hgt[3][0](4, 4), 0.01);
 
     wxDELETE(predictor);
 }
@@ -379,8 +379,8 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
     ASSERT_TRUE(predictor->GetParameter() == asDataPredictor::GeopotentialHeight);
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    VVArray2DFloat hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     1124.1	1112.6	1100.1	1087.7  |   1074.3
@@ -396,15 +396,15 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderRight)
     78.21	76.75	75.48	74.41	|	73.62
     60.55	59.48	58.59	58.11	|	57.82
     */
-    EXPECT_NEAR(114.63, hgt[0](0, 0), 0.01);
-    EXPECT_NEAR(113.45, hgt[0](0, 1), 0.01);
-    EXPECT_NEAR(112.18, hgt[0](0, 2), 0.01);
-    EXPECT_NEAR(110.91, hgt[0](0, 3), 0.01);
-    EXPECT_NEAR(109.55, hgt[0](0, 4), 0.01);
-    EXPECT_NEAR(105.74, hgt[0](1, 0), 0.01);
-    EXPECT_NEAR(93.45, hgt[0](2, 0), 0.01);
-    EXPECT_NEAR(60.55, hgt[0](4, 0), 0.01);
-    EXPECT_NEAR(57.82, hgt[0](4, 4), 0.01);
+    EXPECT_NEAR(114.63, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(113.45, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(112.18, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(110.91, hgt[0][0](0, 3), 0.01);
+    EXPECT_NEAR(109.55, hgt[0][0](0, 4), 0.01);
+    EXPECT_NEAR(105.74, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(93.45, hgt[0][0](2, 0), 0.01);
+    EXPECT_NEAR(60.55, hgt[0][0](4, 0), 0.01);
+    EXPECT_NEAR(57.82, hgt[0][0](4, 4), 0.01);
 
     /* Values time step 3 (horizontal=Lon, vertical=Lat)
     1359.6	1345.2	1328.9	1312.7   |  1296.4
@@ -420,15 +420,15 @@ TEST(DataPredictorArchiveEcmwfEraIntRegular, LoadBorderRight)
     112.58	111.40	110.43	109.55	|	108.76
     97.74	97.15	96.76	96.47	|	96.27
     */
-    EXPECT_NEAR(138.64, hgt[3](0, 0), 0.01);
-    EXPECT_NEAR(137.17, hgt[3](0, 1), 0.01);
-    EXPECT_NEAR(135.51, hgt[3](0, 2), 0.01);
-    EXPECT_NEAR(133.86, hgt[3](0, 3), 0.01);
-    EXPECT_NEAR(132.20, hgt[3](0, 4), 0.01);
-    EXPECT_NEAR(133.37, hgt[3](1, 0), 0.01);
-    EXPECT_NEAR(124.68, hgt[3](2, 0), 0.01);
-    EXPECT_NEAR(97.74, hgt[3](4, 0), 0.01);
-    EXPECT_NEAR(96.27, hgt[3](4, 4), 0.01);
+    EXPECT_NEAR(138.64, hgt[3][0](0, 0), 0.01);
+    EXPECT_NEAR(137.17, hgt[3][0](0, 1), 0.01);
+    EXPECT_NEAR(135.51, hgt[3][0](0, 2), 0.01);
+    EXPECT_NEAR(133.86, hgt[3][0](0, 3), 0.01);
+    EXPECT_NEAR(132.20, hgt[3][0](0, 4), 0.01);
+    EXPECT_NEAR(133.37, hgt[3][0](1, 0), 0.01);
+    EXPECT_NEAR(124.68, hgt[3][0](2, 0), 0.01);
+    EXPECT_NEAR(97.74, hgt[3][0](4, 0), 0.01);
+    EXPECT_NEAR(96.27, hgt[3][0](4, 4), 0.01);
 
     wxDELETE(predictor);
 }

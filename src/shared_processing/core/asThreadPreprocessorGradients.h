@@ -38,7 +38,7 @@ class asThreadPreprocessorGradients
         : public asThread
 {
 public:
-    asThreadPreprocessorGradients(VArray2DFloat *gradients, std::vector<asDataPredictor *> predictors, int start,
+    asThreadPreprocessorGradients(VVArray2DFloat *gradients, std::vector<asDataPredictor *> predictors, int start,
                                   int end);
 
     virtual ~asThreadPreprocessorGradients();
@@ -48,7 +48,7 @@ public:
 protected:
 
 private:
-    VArray2DFloat *m_pGradients;
+    VVArray2DFloat *m_pGradients;
     std::vector<asDataPredictor *> m_pPredictors;
     int m_start;
     int m_end;

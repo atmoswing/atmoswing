@@ -179,7 +179,7 @@ VectorString asDataPredictorArchiveNoaa20Cr2cEnsemble::GetListOfFiles(asTimeArra
 }
 
 bool asDataPredictorArchiveNoaa20Cr2cEnsemble::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
