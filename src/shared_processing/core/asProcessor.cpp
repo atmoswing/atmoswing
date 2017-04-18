@@ -105,7 +105,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchi
 
     // Check analogs number. Correct if superior to the time serie
     int analogsNb = params.GetAnalogsNumber(step);
-    if (analogsNb > timeArrayArchiveSelection.GetSize()) {
+    if (analogsNb > timeArrayArchiveSelection.GetSize() * predictorsArchive[0]->GetMembersNb()) {
         wxLogError(_("The given analog number is superior to the time serie."));
         return false;
     }

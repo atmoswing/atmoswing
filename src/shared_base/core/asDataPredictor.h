@@ -332,6 +332,11 @@ public:
         m_fileIndexes.memberCount = memberNb;
     }
 
+    int GetMembersNb()
+    {
+        return wxMax(m_fileIndexes.memberCount, 1);
+    }
+
 protected:
     struct FileStructure
     {
