@@ -1,0 +1,3 @@
+src/shared_base/libs/wxhgversion=ssh://hg@bitbucket.org/terranum/wxhgversion
+src/app_viewer/libs/vroomgis=ssh://hg@bitbucket.org/terranum/vroomgis
+

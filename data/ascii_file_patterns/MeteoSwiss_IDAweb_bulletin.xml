@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<atmoswing version="1.0">
+  <pattern id="MeteoSwiss_IDAweb_bulletin" name="MeteoSwiss data pattern from IDAweb">
+    <structure_type>constant_width</structure_type>
+    <header_lines>3</header_lines>
+    <parse_time>1</parse_time>
+    <time>
+      <year char_start="8" char_end="11"/>
+      <month char_start="12" char_end="13"/>
+      <day char_start="14" char_end="15"/>
+    </time>
+    <data>
+      <value char_start="25" char_end="30"/>
+    </data>
+  </pattern>
+</atmoswing>

@@ -1,0 +1,173 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ *
+ * The contents of this file are subject to the terms of the
+ * Common Development and Distribution License (the "License").
+ * You may not use this file except in compliance with the License.
+ *
+ * You can read the License at http://opensource.org/licenses/CDDL-1.0
+ * See the License for the specific language governing permissions
+ * and limitations under the License.
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
+ * add the following below this CDDL Header, with the fields enclosed
+ * by brackets [] replaced by your own identifying information:
+ * "Portions Copyright [year] [name of copyright owner]"
+ *
+ * The Original Software is AtmoSwing.
+ * The Original Software was developed at the University of Lausanne.
+ * All Rights Reserved.
+ *
+ */
+
+/*
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ */
+
+#include "asProcessorForecastScore.h"
+
+#include <asParametersCalibration.h>
+#include <asPostprocessor.h>
+#include <asForecastScore.h>
+#include <asForecastScoreFinal.h>
+#include <asResultsAnalogsValues.h>
+#include <asResultsAnalogsForecastScores.h>
+#include <asResultsAnalogsForecastScoreFinal.h>
+#include <asResultsAnalogsScoresMap.h>
+//#include <asDialogProgressBar.h>
+
+#ifndef UNIT_TESTING
+
+#endif
+
+bool asProcessorForecastScore::GetAnalogsForecastScores(asResultsAnalogsValues &anaValues,
+                                                        asForecastScore *forecastScore, asParametersScoring &params,
+                                                        asResultsAnalogsForecastScores &results,
+                                                        vf &scoresClimatology)
+{
+    // Extract Data
+    a1f timeTargetSelection = anaValues.GetTargetDates();
+    va1f targetValues = anaValues.GetTargetValues();
+    a2f analogsCriteria = anaValues.GetAnalogsCriteria();
+    va2f analogsValues = anaValues.GetAnalogsValues();
+    wxASSERT(timeTargetSelection.size() > 0);
+    wxASSERT(analogsValues.size() > 0);
+    int timeTargetSelectionLength = anaValues.GetTargetDatesLength();
+    int analogsNbDates = analogsValues[0].cols();
+    int stationsNb = targetValues.size();
+
+    // Put values in final containers
+    results.SetTargetDates(timeTargetSelection);
+
+    // Check analogs number coherence
+    if (params.GetForecastScoreAnalogsNumber() > analogsNbDates)
+        asThrowException(wxString::Format(
+                _("The given analogs number for the forecast score (%d) processing is superior to the analogs dates number (%d)."),
+                params.GetForecastScoreAnalogsNumber(), analogsNbDates));
+
+    if (forecastScore->SingleValue()) {
+        // Containers for final results
+        a1f finalForecastScores = a1f::Zero(timeTargetSelectionLength);
+        va1f vectForecastScores(stationsNb, a1f(timeTargetSelectionLength));
+
+        for (int iStat = 0; iStat < stationsNb; iStat++) {
+            if (forecastScore->UsesClimatology()) {
+                forecastScore->SetScoreClimatology(scoresClimatology[iStat]);
+            }
+
+            for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
+                if (!asTools::IsNaN(targetValues[iStat](iTargetTime))) {
+                    if (params.ForecastScoreNeedsPostprocessing()) {
+                        //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                        //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
+                    } else {
+                        vectForecastScores[iStat](iTargetTime) = forecastScore->Assess(targetValues[iStat](iTargetTime),
+                                                                                       analogsValues[iStat].row(
+                                                                                               iTargetTime),
+                                                                                       params.GetForecastScoreAnalogsNumber());
+                    }
+                } else {
+                    vectForecastScores[iStat](iTargetTime) = NaNf;
+                }
+            }
+        }
+
+        // Merge of the different scores
+        if (stationsNb == 1) {
+            finalForecastScores = vectForecastScores[0];
+        } else {
+            // Process the average
+            for (int iStat = 0; iStat < stationsNb; iStat++) {
+                finalForecastScores += vectForecastScores[iStat];
+            }
+            finalForecastScores /= stationsNb;
+        }
+
+        // Put values in final containers
+        results.SetForecastScores(finalForecastScores);
+    } else {
+        if (stationsNb > 1) {
+            wxLogError(_("The processing of multivariate complex scores is not implemented yet."));
+            return false;
+        }
+
+        if (forecastScore->UsesClimatology()) {
+            forecastScore->SetScoreClimatology(scoresClimatology[0]);
+        }
+
+        // Containers for final results
+        a2f forecastScores(timeTargetSelectionLength, 3 * (params.GetForecastScoreAnalogsNumber() + 1));
+
+        for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
+            if (!asTools::IsNaN(targetValues[0](iTargetTime))) {
+                if (params.ForecastScoreNeedsPostprocessing()) {
+                    //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
+                    //finalForecastScores(iTargetTime) = forecastScore->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetForecastScoreAnalogsNumber());
+                } else {
+                    forecastScores.row(iTargetTime) = forecastScore->AssessOnArray(targetValues[0](iTargetTime),
+                                                                                   analogsValues[0].row(iTargetTime),
+                                                                                   params.GetForecastScoreAnalogsNumber());
+                }
+            } else {
+                forecastScores.row(iTargetTime) = a1f::Ones(3 * (params.GetForecastScoreAnalogsNumber() + 1)) * NaNf;
+            }
+        }
+
+        // Put values in final containers
+        results.SetForecastScores2DArray(forecastScores);
+    }
+
+    return true;
+}
+
+bool asProcessorForecastScore::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScores &anaScores,
+                                                            asTimeArray &timeArray, asParametersScoring &params,
+                                                            asResultsAnalogsForecastScoreFinal &results)
+{
+    // TODO (phorton#1#): Specify the period in the parameter
+    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance(params.GetForecastScoreName(), "Total");
+
+    // Ranks number set for all, but only used for the rank histogram
+    finalScore->SetRanksNb(params.GetForecastScoreAnalogsNumber() + 1);
+
+    if (finalScore->Has2DArrayArgument()) {
+        float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores2DArray(), timeArray);
+        results.SetForecastScore(result);
+    } else {
+        if (finalScore->SingleValue()) {
+            float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetForecastScores(), timeArray);
+            results.SetForecastScore(result);
+        } else {
+            a1f result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetForecastScores(),
+                                                   timeArray);
+            results.SetForecastScore(result);
+        }
+    }
+
+    wxDELETE(finalScore);
+
+    return true;
+}
+
