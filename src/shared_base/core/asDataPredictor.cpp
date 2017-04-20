@@ -705,6 +705,9 @@ bool asDataPredictor::CheckFileStructure()
 asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea)
 {
     if (desiredArea) {
+        m_fileIndexes.lonStep = 1;
+        m_fileIndexes.latStep = 1;
+
         double dataXmin, dataYmin, dataXstep, dataYstep;
         int dataXptsnb, dataYptsnb;
         wxString gridType = desiredArea->GetGridTypeString();
@@ -713,8 +716,16 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataYmin = floor((desiredArea->GetAbsoluteYmin() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
             double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
             double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
-            dataXstep = m_xAxisStep;
-            dataYstep = m_yAxisStep;
+            if (fmod(desiredArea->GetXstep(), m_xAxisStep) == 0 && fmod(desiredArea->GetYstep(), m_yAxisStep) == 0 ) {
+                // If the desired step is a multiple of the data resolution
+                dataXstep = desiredArea->GetXstep();
+                dataYstep = desiredArea->GetYstep();
+                m_fileIndexes.lonStep = wxRound(desiredArea->GetXstep() / m_xAxisStep);
+                m_fileIndexes.latStep = wxRound(desiredArea->GetYstep() / m_yAxisStep);
+            } else {
+                dataXstep = m_xAxisStep;
+                dataYstep = m_yAxisStep;
+            }
             dataXptsnb = wxRound((dataXmax - dataXmin) / dataXstep + 1);
             dataYptsnb = wxRound((dataYmax - dataYmin) / dataYstep + 1);
         } else {
@@ -735,15 +746,6 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
                                                                                dataXstep, dataYmin, dataYptsnb,
                                                                                dataYstep, desiredArea->GetLevel(),
                                                                                asNONE, asFLAT_ALLOWED);
-
-        // Get indexes steps
-        if (gridType.IsSameAs("Regular", false)) {
-            m_fileIndexes.lonStep = wxRound(dataArea->GetXstep() / m_xAxisStep);
-            m_fileIndexes.latStep = wxRound(dataArea->GetYstep() / m_yAxisStep);
-        } else {
-            m_fileIndexes.lonStep = 1;
-            m_fileIndexes.latStep = 1;
-        }
 
         // Get axes length for preallocation
         m_lonPtsnb = dataArea->GetXaxisPtsnb();
