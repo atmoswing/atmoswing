@@ -10,7 +10,7 @@ pipelines:
     - step:
         script:
           - apt-get update
-          - apt-get install -y cmake mercurial git 
+          - apt-get install -y cmake mercurial git ssh
           - apt-get install -y libnetcdf-dev libgdal-dev libcurl3 libwxgtk3.0-dev
           - cmake CMakeLists.txt
           - make -j$(nproc)
