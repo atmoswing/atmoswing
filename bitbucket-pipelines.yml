@@ -15,4 +15,5 @@ pipelines:
           - cmake CMakeLists.txt
           - make -j$(nproc)
           - ls
+		  - ls Release
           - make test
