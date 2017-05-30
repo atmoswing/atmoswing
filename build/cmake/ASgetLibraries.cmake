@@ -1,3 +1,7 @@
+# External projects
+include(ExternalProject)
+set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER)
@@ -10,7 +14,7 @@ endif (BUILD_VIEWER)
 
 # Provided libraries
 if (WIN32)
-    set(USE_PROVIDED_LIBRARIES ON CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
+    set(USE_PROVIDED_LIBRARIES OFF CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
     if(USE_PROVIDED_LIBRARIES)
         set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
         if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
@@ -144,14 +148,15 @@ endif (USE_CUDA)
 
 # Google Test
 if (BUILD_TESTS)
-    set(BUILD_GTEST ON CACHE BOOL "" FORCE)
-    set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
     if(MINGW OR MSYS)
         set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
     endif()
-    add_subdirectory(test/libs/googletest)
-    include_directories("${gtest_SOURCE_DIR}")
-    include_directories("${gtest_SOURCE_DIR}/include")
+    ExternalProject_Add(googletest
+        GIT_REPOSITORY https://github.com/google/googletest
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+        )
+    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 endif (BUILD_TESTS)
 
 # Visual Leak Detector
