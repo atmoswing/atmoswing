@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 
     // Check path
     wxString filePath = wxFileName::GetCwd();
+    wxPrintf("Original working directory: %s\n", filePath);
     wxString filePath1 = filePath;
     filePath1.Append("/test/files");
     if (!wxFileName::DirExists(filePath1)) {
@@ -77,6 +78,8 @@ int main(int argc, char **argv)
             }
         }
     }
+
+    wxPrintf("New working directory: %s\n", wxFileName::GetCwd());
 
     int resultTest = RUN_ALL_TESTS();
 
