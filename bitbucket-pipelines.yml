@@ -12,7 +12,7 @@ pipelines:
           - apt-get update
           - apt-get install -y cmake mercurial git
           - apt-get install -y libnetcdf-dev libgdal-dev libcurl3 libwxgtk3.0-dev
-          - cmake CMakeLists.txt
+          - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1
           - make -j$(nproc)
           - ls
           - make test
