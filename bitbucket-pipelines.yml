@@ -15,4 +15,4 @@ pipelines:
           - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1
           - make -j$(nproc)
           - ls
-          - make test
+          - ./atmoswing-tests
