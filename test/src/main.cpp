@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     wxInitialize();
 
     // Set the log
-    Log().CreateFileOnly("AtmoSwingTests.log");
+    Log().CreateFile("AtmoSwingTests.log");
     Log().SetLevel(2);
 
     // Set the local config object
@@ -57,10 +57,12 @@ int main(int argc, char **argv)
 
     // Check path
     wxString filePath = wxFileName::GetCwd();
-    wxPrintf("Original working directory: %s\n", filePath);
     wxString filePath1 = filePath;
     filePath1.Append("/test/files");
-    if (!wxFileName::DirExists(filePath1)) {
+    if (wxFileName::DirExists(filePath1)) {
+        filePath.Append("/test");
+        wxSetWorkingDirectory(filePath);
+    } else {
         wxString filePath2 = filePath;
         filePath2.Append("/../test/files");
         if (wxFileName::DirExists(filePath2)) {
@@ -74,12 +76,11 @@ int main(int argc, char **argv)
                 wxSetWorkingDirectory(filePath);
             } else {
                 wxPrintf("Cannot find the files directory\n");
+                wxPrintf("Original working directory: %s\n", filePath);
                 return 0;
             }
         }
     }
-
-    wxPrintf("New working directory: %s\n", wxFileName::GetCwd());
 
     int resultTest = RUN_ALL_TESTS();
 
