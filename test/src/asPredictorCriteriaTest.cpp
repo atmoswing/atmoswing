@@ -160,18 +160,6 @@ TEST(PredictorCriteria, ProcessS1)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
-        res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
-
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
@@ -313,18 +301,6 @@ TEST(PredictorCriteria, ProcessNS1)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, (int) RefZ1000.rows(), (int) RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, (int) RefZ500.rows(), (int) RefZ500.cols());
-        res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, (int) RefZ1000.rows(), (int) RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, (int) RefZ500.rows(), (int) RefZ500.cols());
-        res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
-
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, (int) RefZ1000.rows(), (int) RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, (int) RefZ500.rows(), (int) RefZ500.cols());
@@ -411,16 +387,6 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
 
         // Process the score
         wxConfigBase *pConfig = wxFileConfig::Get();
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
-        EXPECT_FLOAT_EQ(S1Original, S1Preproc);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
-        EXPECT_FLOAT_EQ(S1Original, S1Preproc);
 
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
@@ -509,16 +475,6 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
 
         // Process the score
         wxConfigBase *pConfig = wxFileConfig::Get();
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
-        EXPECT_FLOAT_EQ(S1Original, S1Preproc);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
-        EXPECT_FLOAT_EQ(S1Original, S1Preproc);
 
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
@@ -717,14 +673,6 @@ TEST(PredictorCriteria, ProcessRSE)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
-
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
@@ -916,18 +864,6 @@ TEST(PredictorCriteria, ProcessRMSE)
         float res12h, res24h, res;
 
         wxConfigBase *pConfig = wxFileConfig::Get();
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
 
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
@@ -1126,18 +1062,6 @@ TEST(PredictorCriteria, ProcessNRMSE)
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
-
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
-        res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
-
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
@@ -1296,12 +1220,6 @@ TEST(PredictorCriteria, ProcessDifferences)
 
     float res;
     for (int i = 0; i < 11; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
@@ -1329,12 +1247,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     asPredictorCriteria *criteriaMD = asPredictorCriteria::GetInstance(asPredictorCriteria::MD);
 
     for (int i = 0; i < 11; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
@@ -1363,12 +1275,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     criteriaNMD->SetDataRange(2, 2300.0);
 
     for (int i = 0; i < 11; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaNMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaNMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaNMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_FLOAT_EQ(Results[i], res);
@@ -1396,12 +1302,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     asPredictorCriteria *criteriaMRDtoMax = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMax);
 
     for (int i = 0; i < 4; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
@@ -1411,12 +1311,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     }
 
     for (int i = 5; i < 11; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.0001);
@@ -1444,12 +1338,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     asPredictorCriteria *criteriaMRDtoMean = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMean);
 
     for (int i = 0; i < 4; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
@@ -1459,12 +1347,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     }
 
     for (int i = 5; i < 9; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);
@@ -1474,12 +1356,6 @@ TEST(PredictorCriteria, ProcessDifferences)
     }
 
     for (int i = 10; i < 11; i++) {
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
-        pConfig->Write("/Processing/LinAlgebra", (int) asCOEFF_NOVAR);
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
         pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
         EXPECT_NEAR(Results[i], res, 0.001);

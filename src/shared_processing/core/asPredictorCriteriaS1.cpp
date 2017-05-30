@@ -106,52 +106,6 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             break;
         }
 
-        case (asCOEFF_NOVAR): {
-            for (int i = 0; i < rowsNb - 1; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    dividend += std::abs((refData(i + 1, j) - refData(i, j)) - (evalData(i + 1, j) - evalData(i, j)));
-                    divisor += wxMax(std::abs((refData(i + 1, j) - refData(i, j))),
-                                     std::abs((evalData(i + 1, j) - evalData(i, j))));
-                }
-            }
-
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb - 1; j++) {
-                    dividend += std::abs((refData(i, j + 1) - refData(i, j)) - (evalData(i, j + 1) - evalData(i, j)));
-                    divisor += wxMax(std::abs((refData(i, j + 1) - refData(i, j))),
-                                     std::abs((evalData(i, j + 1) - evalData(i, j))));
-                }
-            }
-
-            break;
-        }
-
-        case (asCOEFF): {
-            float refGradCols, refGradRows, evalGradCols, evalGradRows;
-
-            for (int i = 0; i < rowsNb - 1; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    refGradRows = refData(i + 1, j) - refData(i, j);
-                    evalGradRows = evalData(i + 1, j) - evalData(i, j);
-
-                    dividend += std::abs(refGradRows - evalGradRows);
-                    divisor += wxMax(std::abs(refGradRows), std::abs(evalGradRows));
-                }
-            }
-
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb - 1; j++) {
-                    refGradCols = refData(i, j + 1) - refData(i, j);
-                    evalGradCols = evalData(i, j + 1) - evalData(i, j);
-
-                    dividend += std::abs(refGradCols - evalGradCols);
-                    divisor += wxMax(std::abs(refGradCols), std::abs(evalGradCols));
-                }
-            }
-
-            break;
-        }
-
         default: {
             wxLogError(_("The calculation method was not correcty set"));
             return NaNFloat;

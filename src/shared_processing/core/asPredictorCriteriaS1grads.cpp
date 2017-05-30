@@ -69,31 +69,8 @@ float asPredictorCriteriaS1grads::Assess(const Array2DFloat &refData, const Arra
     // Note here that the actual gradient data do not fill the entire data blocks,
     // but the rest being 0-filled, we can simplify the sum calculation !
 
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA): {
-            dividend = ((refData - evalData).abs()).sum();
-            divisor = (refData.abs().max(evalData.abs())).sum();
-
-            break;
-        }
-        case (asCOEFF_NOVAR):
-        case (asCOEFF): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    dividend += std::abs(refData(i, j) - evalData(i, j));
-                    divisor += wxMax(std::abs(refData(i, j)), std::abs(evalData(i, j)));
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
-        }
-    }
+    dividend = ((refData - evalData).abs()).sum();
+    divisor = (refData.abs().max(evalData.abs())).sum();
 
     if (divisor > 0) {
         return 100.0f * (dividend / divisor); // Can be NaN
