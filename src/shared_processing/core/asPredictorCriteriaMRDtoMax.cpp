@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaMRDtoMax.h"
 
-asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaMRDtoMax::asPredictorCriteriaMRDtoMax()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::MRDtoMax;
     m_name = "MRDtoMax";
@@ -57,52 +57,17 @@ float asPredictorCriteriaMRDtoMax::Assess(const Array2DFloat &refData, const Arr
 
     float rd = 0;
 
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
-        case (asLIN_ALGEBRA): // Not implemented yet
-        case (asCOEFF_NOVAR): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    if (wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j))) > 0) {
-                        rd += std::abs(evalData(i, j) - refData(i, j)) /
-                              wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
-                    } else {
-                        if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
-                            wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNFloat;
-                        }
-                    }
+    for (int i = 0; i < rowsNb; i++) {
+        for (int j = 0; j < colsNb; j++) {
+            if (wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j))) > 0) {
+                rd += std::abs(evalData(i, j) - refData(i, j)) /
+                      wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
+            } else {
+                if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
+                    wxLogWarning(_("Division by zero in the predictor criteria."));
+                    return NaNFloat;
                 }
             }
-
-            break;
-        }
-
-        case (asCOEFF): {
-            float dividend = 0, divisor = 0;
-
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    dividend = std::abs(evalData(i, j) - refData(i, j));
-                    divisor = wxMax(std::abs(evalData(i, j)), std::abs(refData(i, j)));
-
-                    if (divisor > 0) {
-                        rd += dividend / divisor;
-                    } else {
-                        if (dividend != 0) {
-                            wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNFloat;
-                        }
-                    }
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
         }
     }
 

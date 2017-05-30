@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaRMSE.h"
 
-asPredictorCriteriaRMSE::asPredictorCriteriaRMSE(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaRMSE::asPredictorCriteriaRMSE()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::RMSE;
     m_name = "RMSE";

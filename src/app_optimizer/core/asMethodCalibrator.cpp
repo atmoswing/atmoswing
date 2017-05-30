@@ -1443,11 +1443,6 @@ void asMethodCalibrator::DeletePreloadedData()
 bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int i_step,
                                          bool &containsNaNs)
 {
-    // Get the linear algebra method
-    ThreadsManager().CritSectionConfig().Enter();
-    int linAlgebraMethod = (int) (wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR));
-    ThreadsManager().CritSectionConfig().Leave();
-
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
@@ -1557,8 +1552,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     std::vector<asPredictorCriteria *> criteria;
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
         // Instantiate a score object
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
-                                                                          linAlgebraMethod);
+        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor));
         if(criterion->NeedsDataRange()) {
             wxASSERT(predictors.size()>i_ptor);
             wxASSERT(predictors[i_ptor]);
@@ -1607,11 +1601,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
 bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asParametersScoring &params,
                                             asResultsAnalogsDates &anaDates, int i_step, bool &containsNaNs)
 {
-    // Get the linear algebra method
-    ThreadsManager().CritSectionConfig().Enter();
-    int linAlgebraMethod = (int) (wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR));
-    ThreadsManager().CritSectionConfig().Leave();
-
     // Initialize the result object
     results.SetCurrentStep(i_step);
     results.Init(params);
@@ -1638,8 +1627,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     std::vector<asPredictorCriteria *> criteria;
     for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
         wxLogVerbose(_("Creating a criterion object."));
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor),
-                                                                          linAlgebraMethod);
+        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(i_step, i_ptor));
         if(criterion->NeedsDataRange()) {
             wxASSERT(predictors.size()>i_ptor);
             wxASSERT(predictors[i_ptor]);

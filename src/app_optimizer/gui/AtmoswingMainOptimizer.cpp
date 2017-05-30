@@ -143,9 +143,6 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
         ProcessingMethod = (long) asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long defaultLinAlgebra = (long) asLIN_ALGEBRA_NOVAR;
-    long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
-    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
     pConfig->Flush();
 }

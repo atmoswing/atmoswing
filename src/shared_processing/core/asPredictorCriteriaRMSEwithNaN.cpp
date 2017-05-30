@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaRMSEwithNaN.h"
 
-asPredictorCriteriaRMSEwithNaN::asPredictorCriteriaRMSEwithNaN(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaRMSEwithNaN::asPredictorCriteriaRMSEwithNaN()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::RMSEwithNaN;
     m_name = "RMSEwithNaN";
@@ -63,27 +63,13 @@ float asPredictorCriteriaRMSEwithNaN::Assess(const Array2DFloat &refData, const 
     float mse = 0;
     float finalsize = (float) refData.size();
 
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA):
-        case (asCOEFF_NOVAR):
-        case (asCOEFF): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    if (!asTools::IsNaN(evalData(i, j)) && !asTools::IsNaN(refData(i, j))) {
-                        mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
-                    } else {
-                        finalsize--;
-                    }
-                }
+    for (int i = 0; i < rowsNb; i++) {
+        for (int j = 0; j < colsNb; j++) {
+            if (!asTools::IsNaN(evalData(i, j)) && !asTools::IsNaN(refData(i, j))) {
+                mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
+            } else {
+                finalsize--;
             }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
         }
     }
 
