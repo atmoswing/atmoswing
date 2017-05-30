@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaSAD.h"
 
-asPredictorCriteriaSAD::asPredictorCriteriaSAD(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaSAD::asPredictorCriteriaSAD()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::SAD;
     m_name = "SAD";

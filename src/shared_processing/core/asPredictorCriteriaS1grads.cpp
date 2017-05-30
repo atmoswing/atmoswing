@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaS1grads.h"
 
-asPredictorCriteriaS1grads::asPredictorCriteriaS1grads(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaS1grads::asPredictorCriteriaS1grads()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::S1grads;
     m_name = "S1grads";

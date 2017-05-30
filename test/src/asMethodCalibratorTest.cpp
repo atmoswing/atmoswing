@@ -220,22 +220,11 @@ TEST(Ref1ProcessingMethodCuda)
 }
 #endif
 
-TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebra)
+TEST(MethodCalibrator, Ref1Multithreads)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA);
-
-    Ref1("parameters_calibration_R1_full.xml", false);
-}
-
-TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebraNoVar)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -244,7 +233,6 @@ TEST(MethodCalibrator, Ref1Insert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -253,7 +241,6 @@ TEST(MethodCalibrator, Ref1Splitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -263,17 +250,15 @@ TEST(MethodCalibrator, Ref1CalibPeriodMultithreads)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-TEST(MethodCalibrator, Ref1MultithreadsWithLinAlgebraNoVarNoPreprocessing)
+TEST(MethodCalibrator, Ref1MultithreadsNoPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
 }
@@ -282,7 +267,6 @@ TEST(MethodCalibrator, Ref1CalibPeriodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -291,7 +275,6 @@ TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -486,7 +469,6 @@ TEST(MethodCalibrator, Ref2Multithreads)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -495,7 +477,6 @@ TEST(MethodCalibrator, Ref2Insert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -504,7 +485,6 @@ TEST(MethodCalibrator, Ref2Splitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -514,7 +494,6 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -523,7 +502,6 @@ TEST(MethodCalibrator, Ref2CalibPeriodInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -532,7 +510,6 @@ TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -541,7 +518,6 @@ TEST(MethodCalibrator, PreloadingSimple)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -602,7 +578,6 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     // Get parameters
     asParametersCalibration paramsStd;
@@ -814,7 +789,6 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1Preloading();
 }
@@ -893,7 +867,6 @@ TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref1PreloadingSubset();
 }
@@ -902,7 +875,6 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -1180,7 +1152,6 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2Preloading();
 }
@@ -1189,7 +1160,6 @@ TEST(MethodCalibrator, Ref2PreloadingInsert)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asINSERT);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2Preloading();
 }
@@ -1370,7 +1340,6 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     pConfig->Write("/Paths/OptimizerResultsDir", tmpDir);
 
@@ -1530,7 +1499,6 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     Ref2MergeByHalfAndMultiply();
 }
@@ -1542,7 +1510,6 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
     pConfig->Write("/General/ParallelDataLoad", false); // In order to avoid warning messages
 
     // Get parameters
@@ -1611,7 +1578,6 @@ TEST(MethodCalibrator, NormalizedS1Criteria)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     // Get parameters
     asParametersCalibration paramsStd;
@@ -1674,7 +1640,6 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-    pConfig->Write("/Processing/LinAlgebra", (int) asLIN_ALGEBRA_NOVAR);
 
     // Get parameters
     asParametersCalibration paramsStd;
