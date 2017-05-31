@@ -199,8 +199,6 @@ void asFramePreferencesOptimizer::SavePreferences() const
         ProcessingMethod = (long) asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long ProcessingLinAlgebra = (long) m_radioBoxLinearAlgebra->GetSelection();
-    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
 
     GetParent()->Update();

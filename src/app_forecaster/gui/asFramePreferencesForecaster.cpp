@@ -279,8 +279,6 @@ void asFramePreferencesForecaster::SavePreferences()
         ProcessingMethod = (long) asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long ProcessingLinAlgebra = (long) m_radioBoxLinearAlgebra->GetSelection();
-    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
     if (GetParent() != NULL) {
         GetParent()->Update();

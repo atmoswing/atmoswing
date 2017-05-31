@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun  5 2014)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -232,7 +232,6 @@ class asFramePreferencesForecasterVirtual : public wxFrame
 		wxStaticText* m_staticTextThreadsPriority;
 		wxSlider* m_sliderThreadsPriority;
 		wxRadioBox* m_radioBoxProcessingMethods;
-		wxRadioBox* m_radioBoxLinearAlgebra;
 		wxPanel* m_panelUserDirectories;
 		wxStaticText* m_staticTextUserDirLabel;
 		wxStaticText* m_staticTextUserDir;
