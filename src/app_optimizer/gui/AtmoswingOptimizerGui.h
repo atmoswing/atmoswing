@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan  9 2017)
+// C++ code generated with wxFormBuilder (version Jun 17 2015)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -138,7 +138,6 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxStaticText* m_staticTextThreadsPriority;
 		wxSlider* m_sliderThreadsPriority;
 		wxRadioBox* m_radioBoxProcessingMethods;
-		wxRadioBox* m_radioBoxLinearAlgebra;
 		wxPanel* m_panelUserDirectories;
 		wxStaticText* m_staticTextIntermediateResultsDir;
 		wxDirPickerCtrl* m_dirPickerIntermediateResults;
