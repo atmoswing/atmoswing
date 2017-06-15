@@ -181,6 +181,6 @@ endif (USE_CPPCHECK)
 # Code coverage
 if (USE_CODECOV)
     include(CodeCoverage)
-    setup_target_for_coverage(${PROJECT_NAME}-coverage tests coverage)
+    setup_target_for_coverage(${PROJECT_NAME}-coverage atmoswing-tests coverage)
 endif (USE_CODECOV)
 
