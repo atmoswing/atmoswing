@@ -184,8 +184,3 @@ if (USE_CODECOV)
     setup_target_for_coverage(${PROJECT_NAME}-coverage tests coverage)
 endif (USE_CODECOV)
 
-# CTest
-if (BUILD_TESTS)
-    include(CTest)
-    enable_testing()
-endif (BUILD_TESTS)

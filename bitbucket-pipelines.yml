@@ -14,7 +14,7 @@ pipelines:
           - apt-get install -y libnetcdf-dev libgdal-dev libcurl3 libwxgtk3.0-dev lcov
           - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DUSE_CODECOV=1
           - make -j$(nproc)
-          - ctest -V
+          - ctest -V --test-timeout=3600
           - ls
           - lcov --directory . --capture --output-file coverage.info # capture coverage info
           - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
