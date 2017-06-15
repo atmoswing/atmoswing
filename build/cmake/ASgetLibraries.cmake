@@ -177,3 +177,15 @@ if (USE_CPPCHECK)
     include(build/cmake/Findcppcheck.cmake)
     include(build/cmake/CppcheckTargets.cmake)
 endif (USE_CPPCHECK)
+
+# Code coverage
+if (USE_CODECOV)
+    include(CodeCoverage)
+    setup_target_for_coverage(${PROJECT_NAME}-coverage tests coverage)
+endif (USE_CODECOV)
+
+# CTest
+if (BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+endif (BUILD_TESTS)
