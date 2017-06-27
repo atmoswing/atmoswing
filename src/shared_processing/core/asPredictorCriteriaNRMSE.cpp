@@ -27,8 +27,8 @@
 
 #include "asPredictorCriteriaNRMSE.h"
 
-asPredictorCriteriaNRMSE::asPredictorCriteriaNRMSE(int linAlgebraMethod)
-        : asPredictorCriteriaRMSE(linAlgebraMethod)
+asPredictorCriteriaNRMSE::asPredictorCriteriaNRMSE()
+        : asPredictorCriteriaRMSE()
 {
     m_criteria = asPredictorCriteria::NRMSE;
     m_name = "NRMSE";

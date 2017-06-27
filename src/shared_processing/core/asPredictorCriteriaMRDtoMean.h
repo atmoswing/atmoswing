@@ -36,7 +36,7 @@ class asPredictorCriteriaMRDtoMean
         : public asPredictorCriteria
 {
 public:
-    asPredictorCriteriaMRDtoMean(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaMRDtoMean();
 
     ~asPredictorCriteriaMRDtoMean();
 

@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaMD.h"
 
-asPredictorCriteriaMD::asPredictorCriteriaMD(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaMD::asPredictorCriteriaMD()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::MD;
     m_name = "MD";
@@ -54,32 +54,6 @@ float asPredictorCriteriaMD::Assess(const a2f &refData, const a2f &evalData, int
                  wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
                                   (int) evalData.cols()));
 
-    float rescriteria = 0;
-
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA): {
-            rescriteria = (evalData - refData).abs().sum();
-            break;
-        }
-
-        case (asCOEFF_NOVAR):
-        case (asCOEFF): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    rescriteria += std::abs(evalData(i, j) - refData(i, j));
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correctly set"));
-            return NaNf;
-        }
-    }
-
-    return rescriteria / (float) refData.size();
+    return (evalData - refData).abs().sum() / (float) refData.size();
 
 }

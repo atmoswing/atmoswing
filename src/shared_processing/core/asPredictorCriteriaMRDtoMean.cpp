@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaMRDtoMean.h"
 
-asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::MRDtoMean;
     m_name = "MRDtoMean";
@@ -57,53 +57,17 @@ float asPredictorCriteriaMRDtoMean::Assess(const a2f &refData, const a2f &evalDa
 
     float rd = 0;
 
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR): // Not implemented yet
-        case (asLIN_ALGEBRA): // Not implemented yet
-        case (asCOEFF_NOVAR): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    if (std::abs(evalData(i, j) + refData(i, j)) > 0) {
-                        rd += std::abs(evalData(i, j) - refData(i, j)) /
-                              (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
-                    } else {
-                        if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
-                            wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNf;
-                        }
-                    }
+    for (int i = 0; i < rowsNb; i++) {
+        for (int j = 0; j < colsNb; j++) {
+            if (std::abs(evalData(i, j) + refData(i, j)) > 0) {
+                rd += std::abs(evalData(i, j) - refData(i, j)) /
+                      (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
+            } else {
+                if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
+                    wxLogWarning(_("Division by zero in the predictor criteria."));
+                    return NaNf;
                 }
             }
-
-            break;
-        }
-
-        case (asCOEFF): {
-            float dividend = 0, divisor = 0;
-
-            // Faster in the order cols then rows than the opposite
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    dividend = std::abs(evalData(i, j) - refData(i, j));
-                    divisor = std::abs(evalData(i, j) + refData(i, j)) * 0.5;
-
-                    if (divisor > 0) {
-                        rd += dividend / divisor;
-                    } else {
-                        if (dividend != 0) {
-                            wxLogWarning(_("Division by zero in the predictor criteria."));
-                            return NaNf;
-                        }
-                    }
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correcty set"));
-            return NaNf;
         }
     }
 

@@ -35,7 +35,7 @@ class asPredictorCriteriaNS1
         : public asPredictorCriteriaS1
 {
 public:
-    asPredictorCriteriaNS1(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaNS1();
 
     ~asPredictorCriteriaNS1();
 

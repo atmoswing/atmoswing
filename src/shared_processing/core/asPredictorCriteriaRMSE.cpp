@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaRMSE.h"
 
-asPredictorCriteriaRMSE::asPredictorCriteriaRMSE(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaRMSE::asPredictorCriteriaRMSE()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::RMSE;
     m_name = "RMSE";
@@ -59,33 +59,7 @@ float asPredictorCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, i
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    float mse = 0;
-
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA): {
-            mse += (evalData - refData).pow(2).sum();
-            break;
-        }
-
-        case (asCOEFF_NOVAR):
-        case (asCOEFF): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correctly set"));
-            return NaNf;
-        }
-    }
-
-    mse /= (float) refData.size(); // Can be NaN
+    float mse = (evalData - refData).pow(2).sum() / (float) refData.size(); // Can be NaN
 
     return (float) sqrt(mse);
 }

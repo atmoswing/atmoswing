@@ -33,7 +33,10 @@ asException::asException()
     m_message = wxEmptyString;
     m_fileName = wxEmptyString;
     m_lineNum = 0;
+
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured."));
+#endif
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line)
@@ -42,7 +45,10 @@ asException::asException(const wxString &message, const char *filename, unsigned
     m_message = message;
     m_fileName = wxfilename;
     m_lineNum = line;
+
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 asException::asException(const std::string &message, const char *filename, unsigned int line)
@@ -53,7 +59,10 @@ asException::asException(const std::string &message, const char *filename, unsig
     m_fileName = wxfilename;
     m_fileName = wxString::FromAscii(filename);
     m_lineNum = line;
+
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 asException::asException(const char *message, const char *filename, unsigned int line)
@@ -63,7 +72,10 @@ asException::asException(const char *message, const char *filename, unsigned int
     m_message = wxmessage;
     m_fileName = wxfilename;
     m_lineNum = line;
+
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line, asException prevexception)
@@ -80,7 +92,9 @@ asException::asException(const wxString &message, const char *filename, unsigned
     Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 asException::asException(const std::string &message, const char *filename, unsigned int line, asException prevexception)
@@ -98,7 +112,9 @@ asException::asException(const std::string &message, const char *filename, unsig
     Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 asException::asException(const char *message, const char *filename, unsigned int line, asException prevexception)
@@ -116,7 +132,9 @@ asException::asException(const char *message, const char *filename, unsigned int
     Previous.lineNum = prevexception.m_lineNum;
     m_previous.push_back(&Previous);
 
+#ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
+#endif
 }
 
 // TODO (phorton#5#): Is it alright ?

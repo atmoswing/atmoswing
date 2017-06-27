@@ -576,9 +576,6 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 
 bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int iStep)
 {
-    // Get preferences
-    int linAlgebraMethod = (int) (wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR));
-
     // Initialize the result object
     results.SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(iStep);
@@ -999,8 +996,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 
         // Instantiate a score object
         wxLogVerbose(_("Creating a criterion object."));
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
-                                                                          linAlgebraMethod);
+        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         if (criterion->NeedsDataRange()) {
             wxASSERT(m_storagePredictorsArchive.size() > iPtor);
             wxASSERT(m_storagePredictorsArchive[iPtor]);
@@ -1070,9 +1066,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsAnalogsForecast &results, asP
 bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params,
                                              asResultsAnalogsForecast &resultsPrev, int iStep)
 {
-    // Get the linear algebra method
-    int linAlgebraMethod = (int) (wxFileConfig::Get()->Read("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR));
-
     // Initialize the result object
     results.SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
     results.SetCurrentStep(iStep);
@@ -1487,8 +1480,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsAnalogsForecast &results, 
 
         // Instantiate a score object
         wxLogVerbose(_("Creating a criterion object."));
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor),
-                                                                          linAlgebraMethod);
+        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         if (criterion->NeedsDataRange()) {
             wxASSERT(m_storagePredictorsArchive.size() > iPtor);
             wxASSERT(m_storagePredictorsArchive[iPtor]);

@@ -56,11 +56,11 @@ public:
         RSE // Root square error (According to Bontron. Should not be used !)
     };
 
-    asPredictorCriteria(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteria();
 
-    static asPredictorCriteria *GetInstance(Criteria criteriaEnum, int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    static asPredictorCriteria *GetInstance(Criteria criteriaEnum);
 
-    static asPredictorCriteria *GetInstance(const wxString &criteriaString, int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    static asPredictorCriteria *GetInstance(const wxString &criteriaString);
 
     virtual ~asPredictorCriteria();
 
@@ -110,7 +110,6 @@ protected:
     float m_dataMax;
     float m_scaleBest;
     float m_scaleWorst;
-    int m_linAlgebraMethod;
     bool m_canUseInline;
 
 private:

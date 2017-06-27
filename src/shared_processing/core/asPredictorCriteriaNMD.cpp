@@ -27,8 +27,8 @@
 
 #include "asPredictorCriteriaNMD.h"
 
-asPredictorCriteriaNMD::asPredictorCriteriaNMD(int linAlgebraMethod)
-        : asPredictorCriteriaMD(linAlgebraMethod)
+asPredictorCriteriaNMD::asPredictorCriteriaNMD()
+        : asPredictorCriteriaMD()
 {
     m_criteria = asPredictorCriteria::NMD;
     m_name = "NMD";

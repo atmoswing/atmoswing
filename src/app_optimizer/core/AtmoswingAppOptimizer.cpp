@@ -262,7 +262,6 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
-        pConfig->Write("/Processing/LinAlgebra", (long) asLIN_ALGEBRA_NOVAR);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
         if (m_calibMethod.IsSameAs("ga", false)) {
