@@ -35,7 +35,7 @@ class asPredictorCriteriaNRMSE
         : public asPredictorCriteriaRMSE
 {
 public:
-    asPredictorCriteriaNRMSE(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaNRMSE();
 
     ~asPredictorCriteriaNRMSE();
 

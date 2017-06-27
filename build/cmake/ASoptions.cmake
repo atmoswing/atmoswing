@@ -37,6 +37,13 @@ endif (WIN32)
 # Enable Cppcheck
 set(USE_CPPCHECK OFF CACHE BOOL "Sould we use Cppcheck (http://cppcheck.sourceforge.net/) ?" )
 
+# Enable code coverage
+if (CMAKE_COMPILER_IS_GNUCXX)
+    set(USE_CODECOV OFF CACHE BOOL "Sould we do code coverage with lcov ?" )
+else (CMAKE_COMPILER_IS_GNUCXX)
+    set(USE_CODECOV OFF)
+endif ()
+
 # Enable GUIs
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER AND NOT BUILD_VIEWER)
     set(USE_GUI OFF CACHE BOOL "Sould we build the Forecaster / Optimizer with a GUI ?" )

@@ -35,7 +35,7 @@ class asPredictorCriteriaNMD
         : public asPredictorCriteriaMD
 {
 public:
-    asPredictorCriteriaNMD(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaNMD();
 
     ~asPredictorCriteriaNMD();
 

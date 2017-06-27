@@ -36,7 +36,7 @@ class asPredictorCriteriaMRDtoMax
         : public asPredictorCriteria
 {
 public:
-    asPredictorCriteriaMRDtoMax(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaMRDtoMax();
 
     ~asPredictorCriteriaMRDtoMax();
 

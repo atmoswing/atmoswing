@@ -28,8 +28,8 @@
 
 #include "asPredictorCriteriaRSE.h"
 
-asPredictorCriteriaRSE::asPredictorCriteriaRSE(int linAlgebraMethod)
-        : asPredictorCriteria(linAlgebraMethod)
+asPredictorCriteriaRSE::asPredictorCriteriaRSE()
+        : asPredictorCriteria()
 {
     m_criteria = asPredictorCriteria::RSE;
     m_name = "RSE";
@@ -54,32 +54,6 @@ float asPredictorCriteriaRSE::Assess(const Array2DFloat &refData, const Array2DF
                  wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
                                   (int) evalData.cols()));
 
-    float se = 0;
-
-    switch (m_linAlgebraMethod) {
-        case (asLIN_ALGEBRA_NOVAR):
-        case (asLIN_ALGEBRA): {
-            se += (evalData - refData).pow(2).sum();
-            break;
-        }
-
-        case (asCOEFF_NOVAR):
-        case (asCOEFF): {
-            for (int i = 0; i < rowsNb; i++) {
-                for (int j = 0; j < colsNb; j++) {
-                    se += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            wxLogError(_("The calculation method was not correcty set"));
-            return NaNFloat;
-        }
-    }
-
-    return sqrt(se); // Can be NaN
+    return sqrt((evalData - refData).pow(2).sum()); // Can be NaN
 
 }

@@ -44,9 +44,12 @@ include(ASlinking)
 
 #### TESTS
 if (BUILD_TESTS)
+    set(CTEST_TEST_TIMEOUT 3600)
+    set(DART_TESTING_TIMEOUT 3600)
     set(CTEST_OUTPUT_ON_FAILURE TRUE)
     add_test(AtmoSwing-tests atmoswing-tests)
     include(CTest)
+    enable_testing()
 endif (BUILD_TESTS)
 
 

@@ -130,9 +130,6 @@ void asFramePreferencesOptimizer::LoadPreferences()
         m_radioBoxProcessingMethods->Enable(0, true);
     }
     m_radioBoxProcessingMethods->SetSelection((int) ProcessingMethod);
-    long defaultLinAlgebra = (long) asLIN_ALGEBRA_NOVAR;
-    long ProcessingLinAlgebra = pConfig->Read("/Processing/LinAlgebra", defaultLinAlgebra);
-    m_radioBoxLinearAlgebra->SetSelection((int) ProcessingLinAlgebra);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -202,8 +199,6 @@ void asFramePreferencesOptimizer::SavePreferences() const
         ProcessingMethod = (long) asINSERT;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
-    long ProcessingLinAlgebra = (long) m_radioBoxLinearAlgebra->GetSelection();
-    pConfig->Write("/Processing/LinAlgebra", ProcessingLinAlgebra);
 
 
     GetParent()->Update();

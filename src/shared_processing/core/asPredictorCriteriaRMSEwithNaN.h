@@ -36,7 +36,7 @@ class asPredictorCriteriaRMSEwithNaN
         : public asPredictorCriteria
 {
 public:
-    asPredictorCriteriaRMSEwithNaN(int linAlgebraMethod = asLIN_ALGEBRA_NOVAR);
+    asPredictorCriteriaRMSEwithNaN();
 
     ~asPredictorCriteriaRMSEwithNaN();
 
