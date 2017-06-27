@@ -83,14 +83,6 @@ enum
     asSAMPLE, asENTIRE_POPULATION
 };
 
-enum
-{
-    asCOEFF, // Direct access to the coefficients
-    asCOEFF_NOVAR, // Direct access to the coefficients without any other variable declaration
-    asLIN_ALGEBRA,    // Linear algebra using a library
-    asLIN_ALGEBRA_NOVAR    // Linear algebra using a library without any other variable declaration
-};
-
 // Processor methods
 enum
 {

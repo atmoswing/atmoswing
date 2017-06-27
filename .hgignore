@@ -54,3 +54,4 @@ bin/
 .idea/*
 Test Results *
 CMakeFiles/*
+cmake-build-debug/
