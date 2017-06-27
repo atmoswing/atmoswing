@@ -66,20 +66,20 @@ public:
         m_forecastDate = val;
     }
 
-    VectorString GetResultsFilePaths() const
+    vwxs GetResultsFilePaths() const
     {
         return m_resultsFilePaths;
     }
 
 protected:
-    bool DownloadRealtimePredictors(asParametersForecast &params, int i_step, bool &forecastDateChanged);
+    bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
-    bool GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
+    bool GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int iStep);
 
     bool GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params,
-                            asResultsAnalogsForecast &resultsPrev, int i_step);
+                            asResultsAnalogsForecast &resultsPrev, int iStep);
 
-    bool GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int i_step);
+    bool GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int iStep);
 
     void DeletePreprocessData();
 
@@ -89,7 +89,7 @@ private:
     asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
     asResultsAnalogsForecastAggregator m_aggregator;
-    VectorString m_resultsFilePaths;
+    vwxs m_resultsFilePaths;
     wxWindow *m_parent;
     std::vector<asDataPredictorArchive *> m_storagePredictorsArchivePreprocess;
     std::vector<asDataPredictorRealtime *> m_storagePredictorsRealtimePreprocess;

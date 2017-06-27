@@ -45,7 +45,7 @@ asForecastScoreFinalB::~asForecastScoreFinalB()
     //dtor
 }
 
-float asForecastScoreFinalB::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores, const asTimeArray &timeArray) const
+float asForecastScoreFinalB::Assess(const a1f &targetDates, const a1f &forecastScores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);
@@ -66,7 +66,7 @@ float asForecastScoreFinalB::Assess(const Array1DFloat &targetDates, const Array
                     //
                 } else {
                     wxLogError(_("The B score (%f) is not an authorized value."), forecastScores[i]);
-                    return NaNFloat;
+                    return NaNf;
                 }
             }
             break;
@@ -86,7 +86,7 @@ float asForecastScoreFinalB::Assess(const Array1DFloat &targetDates, const Array
             score = 0;
         }
     } else {
-        score = NaNFloat;
+        score = NaNf;
     }
 
     return score;

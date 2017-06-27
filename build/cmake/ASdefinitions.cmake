@@ -45,8 +45,8 @@ endif ()
 
 # Global definitions
 add_definitions(-DUSE_JPEG2000)
-add_definitions(-std=c++11)
 add_definitions(-DEIGEN_NO_DEBUG)
+#add_definitions(-std=c++11)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)

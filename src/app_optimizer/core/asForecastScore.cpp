@@ -48,12 +48,12 @@ asForecastScore::asForecastScore()
 {
     m_score = Undefined;
     m_scoreClimatology = 0;
-    m_threshold = NaNFloat;
-    m_quantile = NaNFloat;
+    m_threshold = NaNf;
+    m_quantile = NaNf;
     m_usesClimatology = false;
     m_singleValue = true;
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScore *asForecastScore::GetInstance(Score scoreEnum)
@@ -282,14 +282,14 @@ asForecastScore::~asForecastScore()
     //dtor
 }
 
-Array1DFloat asForecastScore::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const
+a1f asForecastScore::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const
 {
     wxLogError(_("This asForecastScore class has no AssessOnArrays method implemented !"));
 
-    return Array1DFloat();
+    return a1f();
 }
 
-bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+bool asForecastScore::CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     // Check the element numbers vs vector length
     wxASSERT_MSG(ForcastVals.rows() >= nbElements,
@@ -309,15 +309,15 @@ bool asForecastScore::CheckInputs(float ObservedVal, const Array1DFloat &Forcast
     return true;
 }
 
-int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements) const
+int asForecastScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const
 {
     // Remove the NaNs and copy content
     int nbForecasts = 0, nbNans = 0;
-    int i_val = 0;
+    int iVal = 0;
     while (nbForecasts < nbElements) {
         // Add a check to not overflow the array
-        if (i_val >= nbElements) {
-            if (i_val == ForcastVals.rows()) {
+        if (iVal >= nbElements) {
+            if (iVal == ForcastVals.rows()) {
                 wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
                 wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
                              nbForecasts, nbNans);
@@ -325,13 +325,13 @@ int asForecastScore::CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &Fo
             }
         }
 
-        if (!asTools::IsNaN(ForcastVals[i_val])) {
-            ForcastValsSorted(nbForecasts) = ForcastVals[i_val];
+        if (!asTools::IsNaN(ForcastVals[iVal])) {
+            ForcastValsSorted(nbForecasts) = ForcastVals[iVal];
             nbForecasts++;
         } else {
             nbNans++;
         }
-        i_val++;
+        iVal++;
     }
 
     if (nbForecasts < 1) {

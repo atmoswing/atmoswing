@@ -70,10 +70,10 @@ bool asResultsAnalogsForecastScores::Save()
 {
     BuildFileName();
 
-    wxLogVerbose(_("Saving intermediate file: %s") , m_filePath);
+    wxLogVerbose(_("Saving intermediate file: %s"), m_filePath);
 
     // Get the elements size
-    size_t Ntime = (size_t)m_forecastScores.rows();
+    size_t Ntime = (size_t) m_forecastScores.rows();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -88,7 +88,7 @@ bool asResultsAnalogsForecastScores::Save()
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNames1;
+    vstds DimNames1;
     DimNames1.push_back("time");
 
     // Define variables: the scores and the corresponding dates

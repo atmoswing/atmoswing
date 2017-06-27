@@ -180,15 +180,15 @@ asForecastScoreFinal::~asForecastScoreFinal()
     //dtor
 }
 
-Array1DFloat asForecastScoreFinal::AssessOnArray(const Array1DFloat &targetDates, const Array1DFloat &forecastScores,
-                                                 const asTimeArray &timeArray) const
+a1f asForecastScoreFinal::AssessOnArray(const a1f &targetDates, const a1f &forecastScores,
+                                        const asTimeArray &timeArray) const
 {
     wxLogError(_("This asForecastScoreFinal class has no AssessOnArray method implemented !"));
-    return Array1DFloat();
+    return a1f();
 }
 
-float asForecastScoreFinal::Assess(const Array1DFloat &targetDates, const Array2DFloat &forecastScores, const asTimeArray &timeArray) const
+float asForecastScoreFinal::Assess(const a1f &targetDates, const a2f &forecastScores, const asTimeArray &timeArray) const
 {
     wxLogError(_("This asForecastScoreFinal class has no Assess method implemented with a 2D array as argument !"));
-    return NaNFloat;
+    return NaNf;
 }

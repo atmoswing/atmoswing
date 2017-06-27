@@ -43,11 +43,11 @@ public:
         DuplicationOnCriteriaExponent // Duplication of the analog days based on the criteria with an exponent
     };
     /*
-        static Array1DFloat Postprocess(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
+        static a1f Postprocess(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params);
 
 
-        static Array1DFloat PostprocessDuplicationOnCriteria(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria);
-        static Array1DFloat PostprocessDuplicationOnCriteriaExponent(const Array1DFloat &analogsValues, const Array1DFloat &analogsCriteria, asParametersScoring &params);
+        static a1f PostprocessDuplicationOnCriteria(const a1f &analogsValues, const a1f &analogsCriteria);
+        static a1f PostprocessDuplicationOnCriteriaExponent(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params);
     */
 
 protected:

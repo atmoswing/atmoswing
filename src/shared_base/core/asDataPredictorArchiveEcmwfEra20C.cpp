@@ -36,13 +36,13 @@ asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxStr
 {
     // Set the basic properties.
     m_initialized = false;
-    m_datasetId = "ECMWF_ERA_20C";
+    m_datasetId = "ECMWF_ERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA 20th Century";
     m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
     m_timeZoneHours = 0;
-    m_timeStepHours = 6;
+    m_timeStepHours = 3;
     m_firstTimeStepHours = 0;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
@@ -148,9 +148,9 @@ bool asDataPredictorArchiveEcmwfEra20C::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 
@@ -158,7 +158,7 @@ VectorString asDataPredictorArchiveEcmwfEra20C::GetListOfFiles(asTimeArray &time
 }
 
 bool asDataPredictorArchiveEcmwfEra20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

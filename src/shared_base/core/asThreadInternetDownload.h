@@ -37,7 +37,7 @@ class asThreadInternetDownload
         : public asThread
 {
 public:
-    asThreadInternetDownload(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir,
+    asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir,
                              bool usesProxy, const wxString &proxyAddress, const long proxyPort,
                              const wxString &proxyUser, const wxString &proxyPasswd, int start, int end);
 
@@ -48,8 +48,8 @@ public:
 protected:
 
 private:
-    VectorString m_urls;
-    VectorString m_fileNames;
+    vwxs m_urls;
+    vwxs m_fileNames;
     wxString m_destinationDir;
     bool m_usesProxy;
     wxString m_proxyAddress;

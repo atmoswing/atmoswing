@@ -55,8 +55,8 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data)
         wxArrayDouble *dataArray = (wxArrayDouble *) data;
         wxASSERT(dataArray->GetCount() >= 3);
 
-        for (unsigned int i_dat = 0; i_dat < dataArray->size(); i_dat++) {
-            feature->SetField(i_dat, dataArray->Item(i_dat));
+        for (unsigned int iDat = 0; iDat < dataArray->size(); iDat++) {
+            feature->SetField(iDat, dataArray->Item(iDat));
         }
     }
 
@@ -127,13 +127,13 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
         _Paint(gc, path, value);
 
         // Draw next segments
-        for (int i_leadtime = 1; i_leadtime < leadTimeSize; i_leadtime++) {
+        for (int iLead = 1; iLead < leadTimeSize; iLead++) {
             // Create shape
             path = gc->CreatePath();
-            _CreatePath(path, point, leadTimeSize, i_leadtime);
+            _CreatePath(path, point, leadTimeSize, iLead);
 
             // Get value to set color
-            value = feature->GetFieldAsDouble(i_leadtime + 3);
+            value = feature->GetFieldAsDouble(iLead + 3);
             _Paint(gc, path, value);
 
         }

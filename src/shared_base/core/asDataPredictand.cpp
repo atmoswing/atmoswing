@@ -358,10 +358,10 @@ bool asDataPredictand::InitBaseContainers()
     m_stationEnds.resize(m_stationsNb);
     m_time.resize(m_timeLength);
     m_dataGross.resize(m_timeLength, m_stationsNb);
-    m_dataGross.fill(NaNFloat);
+    m_dataGross.fill(NaNf);
     if (m_hasNormalizedData) {
         m_dataNormalized.resize(m_timeLength, m_stationsNb);
-        m_dataNormalized.fill(NaNFloat);
+        m_dataNormalized.fill(NaNf);
     }
 
     return true;
@@ -449,11 +449,11 @@ void asDataPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNameTime;
+    vstds DimNameTime;
     DimNameTime.push_back("time");
-    VectorStdString DimNameStations;
+    vstds DimNameStations;
     DimNameStations.push_back("stations");
-    VectorStdString DimNames2D;
+    vstds DimNames2D;
     DimNames2D.push_back("time");
     DimNames2D.push_back("stations");
 
@@ -574,23 +574,23 @@ bool asDataPredictand::ParseData(const wxString &catalogFilePath, const wxString
     catalog.Load();
 
     // Get the stations list
-    for (int i_station = 0; i_station < catalog.GetStationsNb(); i_station++) {
+    for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
 #if wxUSE_GUI
         // Update the progress bar.
         wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
-                                                    catalog.GetStationFilename(i_station));
-        if (!ProgressBar.Update(i_station, fileNameMessage)) {
+                                                    catalog.GetStationFilename(iStat));
+        if (!ProgressBar.Update(iStat, fileNameMessage)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
         }
 #endif
 
         // Get station information
-        if (!SetStationProperties(catalog, i_station))
+        if (!SetStationProperties(catalog, iStat))
             return false;
 
         // Get file content
-        if (!GetFileContent(catalog, i_station, AlternateDataDir, AlternatePatternDir))
+        if (!GetFileContent(catalog, iStat, AlternateDataDir, AlternatePatternDir))
             return false;
     }
 
@@ -711,7 +711,7 @@ bool asDataPredictand::GetFileContent(asCatalogPredictands &currentData, size_t 
 
                 case (asFileDat::TabsDelimited): {
                     // Parse into a vector
-                    VectorString vColumns;
+                    vwxs vColumns;
                     wxString tmpLineContent = lineContent;
                     while (tmpLineContent.Find("\t") != wxNOT_FOUND) {
                         int foundCol = tmpLineContent.Find("\t");
@@ -819,9 +819,9 @@ float asDataPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData
     dataStr = dataStr.Trim(true);
 
     // Check if not NaN
-    for (size_t i_nan = 0; i_nan < currentData.GetNan().size(); i_nan++) {
-        if (dataStr.IsSameAs(currentData.GetNan()[i_nan], false)) {
-            return NaNFloat;
+    for (size_t iNan = 0; iNan < currentData.GetNan().size(); iNan++) {
+        if (dataStr.IsSameAs(currentData.GetNan()[iNan], false)) {
+            return NaNf;
         }
     }
 
@@ -832,7 +832,7 @@ float asDataPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData
     return (float) dataGross;
 }
 
-Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
+a2f asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
 {
     // Flag to check the need of aggregation (timeStepDays>m_timeStepDays)
     bool aggregate = false;
@@ -844,8 +844,8 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
     } else if (timeStepDays > m_timeStepDays) {
         if (std::fmod(timeStepDays, m_timeStepDays) > 0.0000001) {
             wxLogError(_("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
-            Array2DFloat emptyMatrix;
-            emptyMatrix << NaNFloat;
+            a2f emptyMatrix;
+            emptyMatrix << NaNf;
             return emptyMatrix;
         }
 
@@ -857,8 +857,8 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
         indexTimeSpanDown = ceil((timeStepDays / m_timeStepDays) / 2) - 1;
     } else {
         wxLogError(_("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
-        Array2DFloat emptyMatrix;
-        emptyMatrix << NaNFloat;
+        a2f emptyMatrix;
+        emptyMatrix << NaNf;
         return emptyMatrix;
     }
 
@@ -879,40 +879,40 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
     }
 
     // Create the container
-    Array2DFloat maxMatrix = Array2DFloat::Constant(m_stationsNb, indYearEnd + 1, NaNFloat);
+    a2f maxMatrix = a2f::Constant(m_stationsNb, indYearEnd + 1, NaNf);
 
     // Look for maximums
-    for (int i_stnb = 0; i_stnb < m_stationsNb; i_stnb++) {
-        for (int i_year = yearStart; i_year <= yearEnd; i_year++) {
+    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
+        for (int iYear = yearStart; iYear <= yearEnd; iYear++) {
             // The maximum value and a flag for accepted NaNs
             float annualmax = -99999;
             int nansNb = 0;
 
             // Find begining and end of the year
             int rowstart = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                           asTime::GetMJD(i_year, 1, 1), 0, asHIDE_WARNINGS);
+                                                           asTime::GetMJD(iYear, 1, 1), 0, asHIDE_WARNINGS);
             int rowend = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                         asTime::GetMJD(i_year, 12, 31, 59, 59), 0, asHIDE_WARNINGS);
+                                                         asTime::GetMJD(iYear, 12, 31, 59, 59), 0, asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
-                if (i_year == yearEnd) {
+                if (iYear == yearEnd) {
                     rowend = m_timeLength - 1;
                 } else {
-                    annualmax = NaNFloat;
+                    annualmax = NaNf;
                 }
             }
             rowend -= 1;
 
             // Get max
             if (!aggregate) {
-                for (int i_row = rowstart; i_row <= rowend; i_row++) {
-                    if (!asTools::IsNaN(m_dataGross(i_row, i_stnb))) {
-                        annualmax = wxMax(m_dataGross(i_row, i_stnb), annualmax);
+                for (int iRow = rowstart; iRow <= rowend; iRow++) {
+                    if (!asTools::IsNaN(m_dataGross(iRow, iStat))) {
+                        annualmax = wxMax(m_dataGross(iRow, iStat), annualmax);
                     } else {
                         nansNb++;
                     }
                 }
                 if (nansNb > nansNbMax) {
-                    annualmax = NaNFloat;
+                    annualmax = NaNf;
                 }
             } else {
                 // Correction for both extremes
@@ -922,13 +922,13 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
                 rowend -= indexTimeSpanUp;
 
                 // Loop within the new limits
-                for (int i_row = rowstart; i_row <= rowend; i_row++) {
+                for (int iRow = rowstart; iRow <= rowend; iRow++) {
                     float timeStepSum = 0;
-                    for (int i_element = i_row - indexTimeSpanDown; i_element <= i_row + indexTimeSpanUp; i_element++) {
-                        if (!asTools::IsNaN(m_dataGross(i_element, i_stnb))) {
-                            timeStepSum += m_dataGross(i_element, i_stnb);
+                    for (int iEl = iRow - indexTimeSpanDown; iEl <= iRow + indexTimeSpanUp; iEl++) {
+                        if (!asTools::IsNaN(m_dataGross(iEl, iStat))) {
+                            timeStepSum += m_dataGross(iEl, iStat);
                         } else {
-                            timeStepSum = NaNFloat;
+                            timeStepSum = NaNf;
                             break;
                         }
                     }
@@ -940,11 +940,11 @@ Array2DFloat asDataPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) 
                     }
                 }
                 if (nansNb > nansNbMax) {
-                    annualmax = NaNFloat;
+                    annualmax = NaNf;
                 }
             }
 
-            maxMatrix(i_stnb, i_year - yearStart + indYearStart) = annualmax;
+            maxMatrix(iStat, iYear - yearStart + indYearStart) = annualmax;
         }
     }
 

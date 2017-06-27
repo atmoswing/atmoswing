@@ -50,10 +50,10 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     GetPlusOptions();
 
     // Extract the stations IDs
-    VVectorInt stationsId = params.GetPredictandStationIdsVector();
+    vvi stationsId = params.GetPredictandStationIdsVector();
 
     // Preload data
-    if(!DoPreloadData(params))
+    if (!DoPreloadData(params))
         return false;
 
     // Copy of the original parameters set.
@@ -66,8 +66,8 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsAnalogsDates anaDatesPrevious;
 
-    for (unsigned int i_stat = 0; i_stat < stationsId.size(); i_stat++) {
-        VectorInt stationId = stationsId[i_stat];
+    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
+        vi stationId = stationsId[iStat];
 
         wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
 
@@ -98,9 +98,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         params.SetPredictandStationIds(stationId);
 
         // Process every step one after the other
-        for (int i_step = 0; i_step < params.GetStepsNb(); i_step++) {
+        for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
             // Restore previous best parameters
-            if (i_step > 0) {
+            if (iStep > 0) {
                 params = m_parameters[0];
             }
 
@@ -108,23 +108,23 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             ClearAll();
 
             // Set the same weight to every predictors
-            BalanceWeights(params, i_step);
+            BalanceWeights(params, iStep);
 
             // Get spatial boundaries
-            ParamExploration explo = GetSpatialBoundaries(params, i_step);
+            ParamExploration explo = GetSpatialBoundaries(params, iStep);
 
             // Set the initial analogs numbers.
-            GetInitialAnalogNumber(params, i_step);
+            GetInitialAnalogNumber(params, iStep);
 
             if (explo.xPtsNbIter != 0 || explo.yPtsNbIter != 0) {
                 // Set the minimal size
-                SetMinimalArea(params, i_step, explo);
+                SetMinimalArea(params, iStep, explo);
 
                 // Build map to explore
-                GenerateRelevanceMapParameters(params, i_step, explo);
+                GenerateRelevanceMapParameters(params, iStep, explo);
 
                 // Process the relevance map
-                if(!EvaluateRelevanceMap(params, anaDatesPrevious, resultsTested, i_step))
+                if (!EvaluateRelevanceMap(params, anaDatesPrevious, resultsTested, iStep))
                     return false;
 
                 // Keep the best parameter set
@@ -135,16 +135,16 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 ClearTemp();
 
                 wxLogMessage(_("Best point on relevance map: %.2f lat, %.2f lon"),
-                             m_parameters[m_parameters.size() - 1].GetPredictorYmin(i_step, 0),
-                             m_parameters[m_parameters.size() - 1].GetPredictorXmin(i_step, 0));
+                             m_parameters[m_parameters.size() - 1].GetPredictorYmin(iStep, 0),
+                             m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0));
 
                 // Resize domain
-                if(!AssessDomainResizing(params, anaDatesPrevious, resultsTested, i_step, explo))
+                if (!AssessDomainResizing(params, anaDatesPrevious, resultsTested, iStep, explo))
                     return false;
 
                 // Resize domain (plus)
-                if(m_plus) {
-                    if(!AssessDomainResizingPlus(params, anaDatesPrevious, resultsTested, i_step, explo))
+                if (m_plus) {
+                    if (!AssessDomainResizingPlus(params, anaDatesPrevious, resultsTested, iStep, explo))
                         return false;
                 }
 
@@ -158,7 +158,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             }
 
             // Keep the analogs dates of the best parameters set
-            if(!GetDatesOfBestParameters(params, anaDatesPrevious, i_step))
+            if (!GetDatesOfBestParameters(params, anaDatesPrevious, iStep))
                 return false;
         }
 
@@ -170,8 +170,8 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             return false;
 
         // Extract intermediate results from temporary vectors
-        for (unsigned int i_res = 0; i_res < m_parametersTemp.size(); i_res++) {
-            resultsTested.Add(m_parametersTemp[i_res], m_scoresCalibTemp[i_res]);
+        for (unsigned int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
+            resultsTested.Add(m_parametersTemp[iRes], m_scoresCalibTemp[iRes]);
         }
         resultsTested.Print();
 
@@ -243,46 +243,46 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
 }
 
 asMethodCalibrator::ParamExploration asMethodCalibratorClassic::GetSpatialBoundaries(const asParametersCalibration &params,
-                                                                                     int i_step) const
+                                                                                     int iStep) const
 {
     ParamExploration explo;
 
-    explo.xMinStart = params.GetPredictorXminLowerLimit(i_step, 0);
-    explo.xMinEnd = params.GetPredictorXminUpperLimit(i_step, 0);
-    explo.xPtsNbIter = params.GetPredictorXptsnbIteration(i_step, 0);
-    explo.xPtsNbStart = params.GetPredictorXptsnbLowerLimit(i_step, 0);
-    explo.xPtsNbEnd = params.GetPredictorXptsnbUpperLimit(i_step, 0);
-    explo.yMinStart = params.GetPredictorYminLowerLimit(i_step, 0);
-    explo.yMinEnd = params.GetPredictorYminUpperLimit(i_step, 0);
-    explo.yPtsNbIter = params.GetPredictorYptsnbIteration(i_step, 0);
-    explo.yPtsNbStart = params.GetPredictorYptsnbLowerLimit(i_step, 0);
-    explo.yPtsNbEnd = params.GetPredictorYptsnbUpperLimit(i_step, 0);
+    explo.xMinStart = params.GetPredictorXminLowerLimit(iStep, 0);
+    explo.xMinEnd = params.GetPredictorXminUpperLimit(iStep, 0);
+    explo.xPtsNbIter = params.GetPredictorXptsnbIteration(iStep, 0);
+    explo.xPtsNbStart = params.GetPredictorXptsnbLowerLimit(iStep, 0);
+    explo.xPtsNbEnd = params.GetPredictorXptsnbUpperLimit(iStep, 0);
+    explo.yMinStart = params.GetPredictorYminLowerLimit(iStep, 0);
+    explo.yMinEnd = params.GetPredictorYminUpperLimit(iStep, 0);
+    explo.yPtsNbIter = params.GetPredictorYptsnbIteration(iStep, 0);
+    explo.yPtsNbStart = params.GetPredictorYptsnbLowerLimit(iStep, 0);
+    explo.yPtsNbEnd = params.GetPredictorYptsnbUpperLimit(iStep, 0);
 
-    for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        explo.xMinStart = wxMax(explo.xMinStart, params.GetPredictorXminLowerLimit(i_step, i_ptor));
-        explo.xMinEnd = wxMin(explo.xMinEnd, params.GetPredictorXminUpperLimit(i_step, i_ptor));
-        explo.xPtsNbIter = wxMin(explo.xPtsNbIter, params.GetPredictorXptsnbIteration(i_step, i_ptor));
-        explo.xPtsNbStart = wxMax(explo.xPtsNbStart, params.GetPredictorXptsnbLowerLimit(i_step, i_ptor));
-        explo.xPtsNbEnd = wxMin(explo.xPtsNbEnd, params.GetPredictorXptsnbUpperLimit(i_step, i_ptor));
-        explo.yMinStart = wxMax(explo.yMinStart, params.GetPredictorYminLowerLimit(i_step, i_ptor));
-        explo.yMinEnd = wxMin(explo.yMinEnd, params.GetPredictorYminUpperLimit(i_step, i_ptor));
-        explo.yPtsNbIter = wxMin(explo.yPtsNbIter, params.GetPredictorYptsnbIteration(i_step, i_ptor));
-        explo.yPtsNbStart = wxMax(explo.yPtsNbStart, params.GetPredictorYptsnbLowerLimit(i_step, i_ptor));
-        explo.yPtsNbEnd = wxMax(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(i_step, i_ptor));
+    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+        explo.xMinStart = wxMax(explo.xMinStart, params.GetPredictorXminLowerLimit(iStep, iPtor));
+        explo.xMinEnd = wxMin(explo.xMinEnd, params.GetPredictorXminUpperLimit(iStep, iPtor));
+        explo.xPtsNbIter = wxMin(explo.xPtsNbIter, params.GetPredictorXptsnbIteration(iStep, iPtor));
+        explo.xPtsNbStart = wxMax(explo.xPtsNbStart, params.GetPredictorXptsnbLowerLimit(iStep, iPtor));
+        explo.xPtsNbEnd = wxMin(explo.xPtsNbEnd, params.GetPredictorXptsnbUpperLimit(iStep, iPtor));
+        explo.yMinStart = wxMax(explo.yMinStart, params.GetPredictorYminLowerLimit(iStep, iPtor));
+        explo.yMinEnd = wxMin(explo.yMinEnd, params.GetPredictorYminUpperLimit(iStep, iPtor));
+        explo.yPtsNbIter = wxMin(explo.yPtsNbIter, params.GetPredictorYptsnbIteration(iStep, iPtor));
+        explo.yPtsNbStart = wxMax(explo.yPtsNbStart, params.GetPredictorYptsnbLowerLimit(iStep, iPtor));
+        explo.yPtsNbEnd = wxMax(explo.yPtsNbEnd, params.GetPredictorYptsnbUpperLimit(iStep, iPtor));
     }
 
-    if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter==0)
+    if ((explo.xMinStart != explo.xMinEnd) && explo.xPtsNbIter == 0)
         explo.xPtsNbIter = 1;
-    if ((explo.yMinStart != explo.yMinEnd) && explo.yPtsNbIter==0)
+    if ((explo.yMinStart != explo.yMinEnd) && explo.yPtsNbIter == 0)
         explo.yPtsNbIter = 1;
 
     return explo;
 }
 
-void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &params, int i_step) const
+void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &params, int iStep) const
 {
     int initalAnalogsNb = 0;
-    VectorInt initalAnalogsNbVect = params.GetAnalogsNumberVector(i_step);
+    vi initalAnalogsNbVect = params.GetAnalogsNumberVector(iStep);
     if (initalAnalogsNbVect.size() > 1) {
         int indexAnb = floor(initalAnalogsNbVect.size() / 2.0);
         initalAnalogsNb = initalAnalogsNbVect[indexAnb]; // Take the median
@@ -291,54 +291,54 @@ void asMethodCalibratorClassic::GetInitialAnalogNumber(asParametersCalibration &
     }
 
     // For the current step
-    params.SetAnalogsNumber(i_step, initalAnalogsNb);
+    params.SetAnalogsNumber(iStep, initalAnalogsNb);
     // And the next ones
     if (m_proceedSequentially) {
-        for (int i = i_step; i < params.GetStepsNb(); i++) {
+        for (int i = iStep; i < params.GetStepsNb(); i++) {
             params.SetAnalogsNumber(i, initalAnalogsNb);
         }
     }
     params.FixAnalogsNb();
 }
 
-void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, int i_step,
+void asMethodCalibratorClassic::SetMinimalArea(asParametersCalibration &params, int iStep,
                                                const asMethodCalibrator::ParamExploration &explo) const
 {
-    for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-        if (params.GetPredictorFlatAllowed(i_step, i_ptor)) {
-            params.SetPredictorXptsnb(i_step, i_ptor, 1);
-            params.SetPredictorYptsnb(i_step, i_ptor, 1);
+    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+        if (params.GetPredictorFlatAllowed(iStep, iPtor)) {
+            params.SetPredictorXptsnb(iStep, iPtor, 1);
+            params.SetPredictorYptsnb(iStep, iPtor, 1);
         } else {
-            params.SetPredictorXptsnb(i_step, i_ptor, explo.xPtsNbStart);
-            params.SetPredictorYptsnb(i_step, i_ptor, explo.yPtsNbStart);
+            params.SetPredictorXptsnb(iStep, iPtor, explo.xPtsNbStart);
+            params.SetPredictorYptsnb(iStep, iPtor, explo.yPtsNbStart);
         }
     }
 }
 
-void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &params, int i_step,
-                                               const asMethodCalibrator::ParamExploration &explo, Array1DDouble &xAxis,
-                                               Array1DDouble &yAxis) const
+void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &params, int iStep,
+                                               const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
+                                               a1d &yAxis) const
 {
-    xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(i_step, 0), explo.xMinStart, explo.xMinEnd,
-                                             params.GetPredictorXstep(i_step, 0));
-    yAxis = asGeoAreaCompositeGrid::GetYaxis(params.GetPredictorGridType(i_step, 0), explo.yMinStart, explo.yMinEnd,
-                                             params.GetPredictorYstep(i_step, 0));
+    xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
+                                             params.GetPredictorXstep(iStep, 0));
+    yAxis = asGeoAreaCompositeGrid::GetYaxis(params.GetPredictorGridType(iStep, 0), explo.yMinStart, explo.yMinEnd,
+                                             params.GetPredictorYstep(iStep, 0));
 }
 
-void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int i_step,
+void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep,
                                                                const asMethodCalibrator::ParamExploration &explo)
 {
     ClearTemp();
 
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
-    GetSpatialAxes(params, i_step, explo, xAxis, yAxis);
+    a1d xAxis;
+    a1d yAxis;
+    GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
-    for (int i_x = 0; i_x < xAxis.size(); i_x += m_stepsLonPertinenceMap) {
-        for (int i_y = 0; i_y < yAxis.size(); i_y += m_stepsLatPertinenceMap) {
-            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                params.SetPredictorXmin(i_step, i_ptor, xAxis[i_x]);
-                params.SetPredictorYmin(i_step, i_ptor, yAxis[i_y]);
+    for (int iX = 0; iX < xAxis.size(); iX += m_stepsLonPertinenceMap) {
+        for (int iY = 0; iY < yAxis.size(); iY += m_stepsLatPertinenceMap) {
+            for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+                params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
+                params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
 
                 // Fixes and checks
                 params.FixWeights();
@@ -350,18 +350,18 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     }
 }
 
-void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, int i_step) const
+void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, int iStep) const
 {
-    int ptorsNb = params.GetPredictorsNb(i_step);
+    int ptorsNb = params.GetPredictorsNb(iStep);
     float weight = (float) 1 / (float) (ptorsNb);
-    for (int i_ptor = 0; i_ptor < ptorsNb; i_ptor++) {
-        params.SetPredictorWeight(i_step, i_ptor, weight);
+    for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
+        params.SetPredictorWeight(iStep, iPtor, weight);
     }
 }
 
 bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibration &params,
                                                      asResultsAnalogsDates &anaDatesPrevious,
-                                                     asResultsParametersArray &resultsTested, int i_step)
+                                                     asResultsParametersArray &resultsTested, int iStep)
 {
     asResultsAnalogsDates anaDates;
     asResultsAnalogsDates anaDatesPreviousSubRuns;
@@ -371,53 +371,53 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
     wxStopWatch swMap;
 
-    for (unsigned int i_param = 0; i_param < m_parametersTemp.size(); i_param++) {
+    for (unsigned int iParam = 0; iParam < m_parametersTemp.size(); iParam++) {
         if (m_proceedSequentially) {
             bool containsNaNs = false;
-            if (i_step == 0) {
-                if (!GetAnalogsDates(anaDates, m_parametersTemp[i_param], i_step, containsNaNs))
+            if (iStep == 0) {
+                if (!GetAnalogsDates(anaDates, m_parametersTemp[iParam], iStep, containsNaNs))
                     return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, m_parametersTemp[i_param], anaDatesPrevious, i_step, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, m_parametersTemp[iParam], anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
-                m_scoresCalibTemp.push_back(NaNFloat);
+                m_scoresCalibTemp.push_back(NaNf);
                 continue;
             }
-            if (!GetAnalogsValues(anaValues, m_parametersTemp[i_param], anaDates, i_step))
+            if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, iStep))
                 return false;
-            if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[i_param], anaValues, i_step))
+            if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[iParam], anaValues, iStep))
                 return false;
-            if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[i_param], anaScores, i_step))
+            if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[iParam], anaScores, iStep))
                 return false;
         } else {
             bool continueLoop = true;
             anaDatesPreviousSubRuns = anaDatesPrevious;
-            for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
+            for (int sub_step = iStep; sub_step < params.GetStepsNb(); sub_step++) {
                 wxLogVerbose(_("Process sub-level %d"), sub_step);
                 bool containsNaNs = false;
                 if (sub_step == 0) {
-                    if (!GetAnalogsDates(anaDates, m_parametersTemp[i_param], sub_step, containsNaNs))
+                    if (!GetAnalogsDates(anaDates, m_parametersTemp[iParam], sub_step, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, m_parametersTemp[i_param], anaDatesPreviousSubRuns, sub_step,
+                    if (!GetAnalogsSubDates(anaDates, m_parametersTemp[iParam], anaDatesPreviousSubRuns, sub_step,
                                             containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
                     continueLoop = false;
-                    m_scoresCalibTemp.push_back(NaNFloat);
+                    m_scoresCalibTemp.push_back(NaNf);
                     continue;
                 }
                 anaDatesPreviousSubRuns = anaDates;
             }
             if (continueLoop) {
-                if (!GetAnalogsValues(anaValues, m_parametersTemp[i_param], anaDates, params.GetStepsNb() - 1))
+                if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[i_param], anaValues, params.GetStepsNb() - 1))
+                if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[iParam], anaValues, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[i_param], anaScores,
+                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[iParam], anaScores,
                                                   params.GetStepsNb() - 1))
                     return false;
             }
@@ -425,17 +425,17 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
         // Store the result
         m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
-        resultsTested.Add(m_parametersTemp[i_param], anaScoreFinal.GetForecastScore());
+        resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetForecastScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time())/60000.0f);
+    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
 
     return true;
 }
 
 bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params,
                                                      asResultsAnalogsDates &anaDatesPrevious,
-                                                     asResultsParametersArray &resultsTested, int i_step,
+                                                     asResultsParametersArray &resultsTested, int iStep,
                                                      const asMethodCalibrator::ParamExploration &explo)
 {
     wxLogVerbose(_("Resize the spatial domain for every predictor."));
@@ -443,9 +443,9 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     wxStopWatch swEnlarge;
 
     // Get axes
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
-    GetSpatialAxes(params, i_step, explo, xAxis, yAxis);
+    a1d xAxis;
+    a1d yAxis;
+    GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     bool isover = false;
     while (!isover) {
@@ -453,32 +453,32 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
 
         ClearTemp();
 
-        for (int i_resizing = 0; i_resizing < 4; i_resizing++) {
+        for (int iResizing = 0; iResizing < 4; iResizing++) {
             // Consider the best point in previous iteration
             params = m_parameters[0];
 
-            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                switch (i_resizing) {
+            for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+                switch (iResizing) {
                     case 0: {
                         // Enlarge top
-                        WidenNorth(params, explo, i_step, i_ptor);
+                        WidenNorth(params, explo, iStep, iPtor);
                         break;
                     }
                     case 1: {
                         // Enlarge right
-                        WidenEast(params, explo, i_step, i_ptor);
+                        WidenEast(params, explo, iStep, iPtor);
                         break;
                     }
                     case 2: {
                         // Enlarge bottom
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor);
-                        WidenNorth(params, explo, i_step, i_ptor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor);
+                        WidenNorth(params, explo, iStep, iPtor);
                         break;
                     }
                     case 3: {
                         // Enlarge left
-                        MoveWest(params, explo, xAxis, i_step, i_ptor);
-                        WidenEast(params, explo, i_step, i_ptor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor);
+                        WidenEast(params, explo, iStep, iPtor);
                         break;
                     }
                     default:
@@ -499,27 +499,27 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
 
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
-                if (i_step == 0) {
-                    if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+                if (iStep == 0) {
+                    if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
                     isover = false;
                     continue;
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, i_step))
+                if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, i_step))
+                if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step))
+                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
                 anaDatesPreviousSubRuns = anaDatesPrevious;
-                for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
+                for (int sub_step = iStep; sub_step < params.GetStepsNb(); sub_step++) {
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
@@ -560,14 +560,14 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
     }
 
-    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time())/60000.0f);
+    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time()) / 60000.0f);
 
     return true;
 }
 
 bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration &params,
                                                          asResultsAnalogsDates &anaDatesPrevious,
-                                                         asResultsParametersArray &resultsTested, int i_step,
+                                                         asResultsParametersArray &resultsTested, int iStep,
                                                          const asMethodCalibrator::ParamExploration &explo)
 {
     wxLogVerbose(_("Reshape again (calibration plus) the spatial domain for every predictor."));
@@ -577,144 +577,144 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     wxStopWatch swResize;
 
     // Get axes
-    Array1DDouble xAxis;
-    Array1DDouble yAxis;
-    GetSpatialAxes(params, i_step, explo, xAxis, yAxis);
+    a1d xAxis;
+    a1d yAxis;
+    GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
     // Try other moves. No while loop but reinitialize the for loops
     for (int multipleFactor = 1; multipleFactor <= m_resizingIterations; multipleFactor++) {
-        for (int i_resizing = 0; i_resizing < 22; i_resizing++) {
+        for (int iResizing = 0; iResizing < 22; iResizing++) {
             // Consider the best point in previous iteration
             params = m_parameters[0];
 
-            for (int i_ptor = 0; i_ptor < params.GetPredictorsNb(i_step); i_ptor++) {
-                switch (i_resizing) {
+            for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+                switch (iResizing) {
                     case 0: {
                         // Enlarge all
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        WidenNorth(params, explo, i_step, i_ptor, 2 * multipleFactor);
-                        WidenEast(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        WidenNorth(params, explo, iStep, iPtor, 2 * multipleFactor);
+                        WidenEast(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 1: {
                         // Reduce all
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        ReduceNorth(params, explo, i_step, i_ptor, 2 * multipleFactor);
-                        ReduceEast(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        ReduceNorth(params, explo, iStep, iPtor, 2 * multipleFactor);
+                        ReduceEast(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 2: {
                         // Reduce top
-                        ReduceNorth(params, explo, i_step, i_ptor, multipleFactor);
+                        ReduceNorth(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 3: {
                         // Reduce right
-                        ReduceEast(params, explo, i_step, i_ptor, multipleFactor);
+                        ReduceEast(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 4: {
                         // Reduce bottom
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        ReduceNorth(params, explo, i_step, i_ptor, multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        ReduceNorth(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 5: {
                         // Reduce left
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        ReduceEast(params, explo, i_step, i_ptor, multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        ReduceEast(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 6: {
                         // Reduce top & bottom
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        ReduceNorth(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        ReduceNorth(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 7: {
                         // Reduce right & left
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        ReduceEast(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        ReduceEast(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 8: {
                         // Enlarge top
-                        WidenNorth(params, explo, i_step, i_ptor, multipleFactor);
+                        WidenNorth(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 9: {
                         // Enlarge right
-                        WidenEast(params, explo, i_step, i_ptor, multipleFactor);
+                        WidenEast(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 10: {
                         // Enlarge bottom
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        WidenNorth(params, explo, i_step, i_ptor, multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        WidenNorth(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 11: {
                         // Enlarge left
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        WidenEast(params, explo, i_step, i_ptor, multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        WidenEast(params, explo, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 12: {
                         // Enlarge top & bottom
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        WidenNorth(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        WidenNorth(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 13: {
                         // Enlarge right & left
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
-                        WidenEast(params, explo, i_step, i_ptor, 2 * multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
+                        WidenEast(params, explo, iStep, iPtor, 2 * multipleFactor);
                         break;
                     }
                     case 14: {
                         // Move top
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 15: {
                         // Move right
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 16: {
                         // Move bottom
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 17: {
                         // Move left
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 18: {
                         // Move top-left
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 19: {
                         // Move top-right
-                        MoveNorth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveNorth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 20: {
                         // Move bottom-left
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveWest(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveWest(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     case 21: {
                         // Move bottom-right
-                        MoveSouth(params, explo, yAxis, i_step, i_ptor, multipleFactor);
-                        MoveEast(params, explo, xAxis, i_step, i_ptor, multipleFactor);
+                        MoveSouth(params, explo, yAxis, iStep, iPtor, multipleFactor);
+                        MoveEast(params, explo, xAxis, iStep, iPtor, multipleFactor);
                         break;
                     }
                     default:
@@ -737,26 +737,26 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
-                if (i_step == 0) {
-                    if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+                if (iStep == 0) {
+                    if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
                     continue;
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, i_step))
+                if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, i_step))
+                if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, i_step))
+                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
                 anaDatesPreviousSubRuns = anaDatesPrevious;
-                for (int sub_step = i_step; sub_step < params.GetStepsNb(); sub_step++) {
+                for (int sub_step = iStep; sub_step < params.GetStepsNb(); sub_step++) {
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
@@ -786,119 +786,119 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
 
             // If better, keep it and start again
             if (KeepIfBetter(params, anaScoreFinal)) {
-                wxLogMessage("Improved spatial window size and position (move %d, factor %d)", i_resizing,
+                wxLogMessage("Improved spatial window size and position (move %d, factor %d)", iResizing,
                              multipleFactor);
-                i_resizing = 0;
+                iResizing = 0;
                 multipleFactor = 1;
             }
         }
     }
 
-    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time())/60000.0f);
+    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time()) / 60000.0f);
 
     return true;
 }
 
 void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &xAxis,
-                                         int i_step, int i_ptor, int multipleFactor) const
+                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis,
+                                         int iStep, int iPtor, int multipleFactor) const
 {
-    double xtmp = params.GetPredictorXmin(i_step, i_ptor);
+    double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
-    ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int)xAxis.size() - 1);
+    ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int) xAxis.size() - 1);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
-    params.SetPredictorXmin(i_step, i_ptor, xtmp);
+    params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
 void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &yAxis,
-                                          int i_step, int i_ptor, int multipleFactor) const
+                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
+                                          int iStep, int iPtor, int multipleFactor) const
 {
-    double ytmp = params.GetPredictorYmin(i_step, i_ptor);
+    double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
     iy = wxMax(iy - multipleFactor * explo.yPtsNbIter, 0);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
-    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+    params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
 void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
-                                         const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &xAxis,
-                                         int i_step, int i_ptor, int multipleFactor) const
+                                         const asMethodCalibrator::ParamExploration &explo, const a1d &xAxis,
+                                         int iStep, int iPtor, int multipleFactor) const
 {
-    double xtmp = params.GetPredictorXmin(i_step, i_ptor);
+    double xtmp = params.GetPredictorXmin(iStep, iPtor);
     int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
     ix = wxMax(ix - multipleFactor * explo.xPtsNbIter, 0);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
-    params.SetPredictorXmin(i_step, i_ptor, xtmp);
+    params.SetPredictorXmin(iStep, iPtor, xtmp);
 }
 
 void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, const Array1DDouble &yAxis,
-                                          int i_step, int i_ptor, int multipleFactor) const
+                                          const asMethodCalibrator::ParamExploration &explo, const a1d &yAxis,
+                                          int iStep, int iPtor, int multipleFactor) const
 {
-    double ytmp = params.GetPredictorYmin(i_step, i_ptor);
+    double ytmp = params.GetPredictorYmin(iStep, iPtor);
     int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
-    iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int)yAxis.size() - 2);
+    iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int) yAxis.size() - 2);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
-    params.SetPredictorYmin(i_step, i_ptor, ytmp);
+    params.SetPredictorYmin(iStep, iPtor, ytmp);
 }
 
 void asMethodCalibratorClassic::WidenEast(asParametersCalibration &params,
-                                          const asMethodCalibrator::ParamExploration &explo, int i_step, int i_ptor,
+                                          const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
                                           int multipleFactor) const
 {
-    int xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor) + multipleFactor * explo.xPtsNbIter;
+    int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) + multipleFactor * explo.xPtsNbIter;
     xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
-    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+    params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
 void asMethodCalibratorClassic::WidenNorth(asParametersCalibration &params,
-                                           const asMethodCalibrator::ParamExploration &explo, int i_step, int i_ptor,
+                                           const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
                                            int multipleFactor) const
 {
-    int yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor) + multipleFactor * explo.yPtsNbIter;
+    int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) + multipleFactor * explo.yPtsNbIter;
     yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
-    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+    params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 
 void asMethodCalibratorClassic::ReduceEast(asParametersCalibration &params,
-                                           const asMethodCalibrator::ParamExploration &explo, int i_step, int i_ptor,
+                                           const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
                                            int multipleFactor) const
 {
-    int xptsnbtmp = params.GetPredictorXptsnb(i_step, i_ptor) - multipleFactor * explo.xPtsNbIter;
+    int xptsnbtmp = params.GetPredictorXptsnb(iStep, iPtor) - multipleFactor * explo.xPtsNbIter;
     xptsnbtmp = wxMax(wxMin(xptsnbtmp, explo.xPtsNbEnd), explo.xPtsNbStart);
-    params.SetPredictorXptsnb(i_step, i_ptor, xptsnbtmp);
+    params.SetPredictorXptsnb(iStep, iPtor, xptsnbtmp);
 }
 
 void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration &params,
-                                            const asMethodCalibrator::ParamExploration &explo, int i_step, int i_ptor,
+                                            const asMethodCalibrator::ParamExploration &explo, int iStep, int iPtor,
                                             int multipleFactor) const
 {
-    int yptsnbtmp = params.GetPredictorYptsnb(i_step, i_ptor) - multipleFactor * explo.yPtsNbIter;
+    int yptsnbtmp = params.GetPredictorYptsnb(iStep, iPtor) - multipleFactor * explo.yPtsNbIter;
     yptsnbtmp = wxMax(wxMin(yptsnbtmp, explo.yPtsNbEnd), explo.yPtsNbStart);
-    params.SetPredictorYptsnb(i_step, i_ptor, yptsnbtmp);
+    params.SetPredictorYptsnb(iStep, iPtor, yptsnbtmp);
 }
 
 bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration &params,
-                                                         asResultsAnalogsDates &anaDatesPrevious, int i_step)
+                                                         asResultsAnalogsDates &anaDatesPrevious, int iStep)
 {
     bool containsNaNs = false;
-    if (i_step == 0) {
-        if (!GetAnalogsDates(anaDatesPrevious, params, i_step, containsNaNs))
+    if (iStep == 0) {
+        if (!GetAnalogsDates(anaDatesPrevious, params, iStep, containsNaNs))
             return false;
-    } else if (i_step < params.GetStepsNb()) {
+    } else if (iStep < params.GetStepsNb()) {
         asResultsAnalogsDates anaDatesPreviousNew;
-        if (!GetAnalogsSubDates(anaDatesPreviousNew, params, anaDatesPrevious, i_step, containsNaNs))
+        if (!GetAnalogsSubDates(anaDatesPreviousNew, params, anaDatesPrevious, iStep, containsNaNs))
             return false;
         anaDatesPrevious = anaDatesPreviousNew;
     }
     if (containsNaNs) {
         wxLogError(_("The final dates selection contains NaNs"));
 
-        double tmpYmin = m_parameters[m_parameters.size() - 1].GetPredictorYmin(i_step, 0);
-        double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(i_step, 0);
-        int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(i_step, 0);
-        int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(i_step, 0);
+        double tmpYmin = m_parameters[m_parameters.size() - 1].GetPredictorYmin(iStep, 0);
+        double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0);
+        int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(iStep, 0);
+        int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(iStep, 0);
         wxLogMessage(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
                      tmpXptsnb);
 

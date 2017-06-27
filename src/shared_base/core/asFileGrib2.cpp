@@ -259,8 +259,8 @@ void asFileGrib2::BuildAxes(const gribfield *gfld)
         lonEnd += 360;
     }
 
-    Array1DFloat xAxis = Array1DFloat::LinSpaced(nX, lonStart, lonEnd);
-    Array1DFloat yAxis = Array1DFloat::LinSpaced(nY, latStart, latEnd);
+    a1f xAxis = a1f::LinSpaced(nX, lonStart, lonEnd);
+    a1f yAxis = a1f::LinSpaced(nY, latStart, latEnd);
 
     m_xAxes.push_back(xAxis);
     m_yAxes.push_back(yAxis);
@@ -294,7 +294,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
     }
 }
 
-bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
+bool asFileGrib2::GetXaxis(a1f &uaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -305,7 +305,7 @@ bool asFileGrib2::GetXaxis(Array1DFloat &uaxis) const
     return true;
 }
 
-bool asFileGrib2::GetYaxis(Array1DFloat &vaxis) const
+bool asFileGrib2::GetYaxis(a1f &vaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -325,7 +325,7 @@ double asFileGrib2::GetTime() const
     return m_times[m_index];
 }
 
-bool asFileGrib2::SetIndexPosition(const VectorInt gribCode, const float level)
+bool asFileGrib2::SetIndexPosition(const vi gribCode, const float level)
 {
     wxASSERT(gribCode.size() == 4);
 
@@ -394,22 +394,22 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     int finalIndex = 0;
 
     if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
-        for (int i_lat = nLats - 1; i_lat >= 0; i_lat--) {
-            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
-                for (int i_lon = 0; i_lon < nLons; i_lon++) {
-                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+        for (int iLat = nLats - 1; iLat >= 0; iLat--) {
+            if (iLat >= iLatStart && iLat <= iLatEnd) {
+                for (int iLon = 0; iLon < nLons; iLon++) {
+                    if (iLon >= iLonStart && iLon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
                         finalIndex++;
                     }
                 }
             }
         }
     } else {
-        for (int i_lat = 0; i_lat < nLats; i_lat++) {
-            if (i_lat >= iLatStart && i_lat <= iLatEnd) {
-                for (int i_lon = 0; i_lon < nLons; i_lon++) {
-                    if (i_lon >= iLonStart && i_lon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[i_lat * nLons + i_lon];
+        for (int iLat = 0; iLat < nLats; iLat++) {
+            if (iLat >= iLatStart && iLat <= iLatEnd) {
+                for (int iLon = 0; iLon < nLons; iLon++) {
+                    if (iLon >= iLonStart && iLon <= iLonEnd) {
+                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
                         finalIndex++;
                     }
                 }

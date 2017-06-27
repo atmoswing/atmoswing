@@ -42,7 +42,7 @@ asDataPredictorArchiveNcepReanalysis1Subset::asDataPredictorArchiveNcepReanalysi
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -148,9 +148,9 @@ bool asDataPredictorArchiveNcepReanalysis1Subset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepReanalysis1Subset::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepReanalysis1Subset::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 
@@ -158,7 +158,7 @@ VectorString asDataPredictorArchiveNcepReanalysis1Subset::GetListOfFiles(asTimeA
 }
 
 bool asDataPredictorArchiveNcepReanalysis1Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

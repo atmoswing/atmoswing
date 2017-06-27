@@ -41,7 +41,7 @@ asDataPredictorArchiveNcepReanalysis2::asDataPredictorArchiveNcepReanalysis2(con
     m_originalProvider = "NCEP/DOE";
     m_datasetName = "Reanalysis 2";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -138,8 +138,8 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
             m_product.IsSameAs("gauss", false) || m_product.IsSameAs("flux", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "gaussian_grid";
-        m_xAxisStep = NaNFloat;
-        m_yAxisStep = NaNFloat;
+        m_xAxisStep = NaNf;
+        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("air2m", false)) {
             m_fileStructure.hasLevelDimension = true;
             m_fileStructure.singleLevel = true;
@@ -357,19 +357,19 @@ bool asDataPredictorArchiveNcepReanalysis2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepReanalysis2::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepReanalysis2::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year));
+    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
+        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 
     return files;
 }
 
 bool asDataPredictorArchiveNcepReanalysis2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

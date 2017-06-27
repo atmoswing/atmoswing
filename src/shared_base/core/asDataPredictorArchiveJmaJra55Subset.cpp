@@ -42,7 +42,7 @@ asDataPredictorArchiveJmaJra55Subset::asDataPredictorArchiveJmaJra55Subset(const
     m_transformedBy = "NCAR/UCAR Data Subset";
     m_datasetName = "Japanese 55-year Reanalysis";
     m_originalProviderStart = asTime::GetMJD(1958, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -236,23 +236,23 @@ bool asDataPredictorArchiveJmaJra55Subset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
+    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         int firstMonth = 1;
         int lastMonth = 12;
-        if (i_year == timeArray.GetStartingYear()) {
+        if (iYear == timeArray.GetStartingYear()) {
             firstMonth = timeArray.GetStartingMonth();
         }
-        if (i_year == timeArray.GetEndingYear()) {
+        if (iYear == timeArray.GetEndingYear()) {
             lastMonth = timeArray.GetEndingMonth();
         }
 
         if (m_monthlyFiles) {
-            for (int i_month = firstMonth; i_month <= lastMonth; ++i_month) {
-                wxString filePattern = wxString::Format(m_fileNamePattern, i_year, i_month);
+            for (int iMonth = firstMonth; iMonth <= lastMonth; ++iMonth) {
+                wxString filePattern = wxString::Format(m_fileNamePattern, iYear, iMonth);
                 wxArrayString listFiles;
                 size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
@@ -266,7 +266,7 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
                 files.push_back(wxString(listFiles.Item(0)));
             }
         } else {
-            wxString filePattern = wxString::Format(m_fileNamePattern, i_year, firstMonth);
+            wxString filePattern = wxString::Format(m_fileNamePattern, iYear, firstMonth);
             wxArrayString listFiles;
             size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, filePattern);
 
@@ -285,7 +285,7 @@ VectorString asDataPredictorArchiveJmaJra55Subset::GetListOfFiles(asTimeArray &t
 }
 
 bool asDataPredictorArchiveJmaJra55Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

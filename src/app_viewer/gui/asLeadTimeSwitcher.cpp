@@ -72,7 +72,7 @@ void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event)
     GetParent()->ProcessWindowEvent(eventSlct);
 }
 
-void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
+void asLeadTimeSwitcher::Draw(a1f &dates)
 {
     // Required size
     int margin = 5 * g_ppiScaleDc;
@@ -82,8 +82,7 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
     // Get color values
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
     float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
-    Array1DFloat values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef,
-                                                                                  quantileThreshold);
+    a1f values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
     wxASSERT(values.size() == dates.size());
 
     // Create bitmap
@@ -109,16 +108,16 @@ void asLeadTimeSwitcher::Draw(Array1DFloat &dates)
         wxPoint startText(margin, m_cellWidth / 2 - 10);
 
         // For every lead time
-        for (int i_leadtime = 0; i_leadtime < dates.size(); i_leadtime++) {
+        for (int iLead = 0; iLead < dates.size(); iLead++) {
             gc->SetPen(wxPen(GetBackgroundColour(), 3, wxSOLID));
 
             wxGraphicsPath path = gc->CreatePath();
-            CreatePath(path, i_leadtime);
-            FillPath(gc, path, values[i_leadtime]);
+            CreatePath(path, iLead);
+            FillPath(gc, path, values[iLead]);
 
-            wxString dateStr = asTime::GetStringTime(dates[i_leadtime], "DD.MM");
+            wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
             gc->SetFont(datesFont, *wxBLACK);
-            CreateDatesText(gc, startText, i_leadtime, dateStr);
+            CreateDatesText(gc, startText, iLead, dateStr);
         }
 
         // For the global view option
@@ -220,11 +219,11 @@ void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event)
     event.Skip();
 }
 
-void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int i_col)
+void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int iCol)
 {
     wxPoint start(0, 0);
 
-    double startPointX = (double) start.x + i_col * m_cellWidth;
+    double startPointX = (double) start.x + iCol * m_cellWidth;
 
     double startPointY = (double) start.y;
 
@@ -304,22 +303,22 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
     gc->DrawPath(path);
 }
 
-void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int i_col, const wxString &label)
+void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int iCol, const wxString &label)
 {
-    double pointX = (double) start.x + i_col * m_cellWidth;
+    double pointX = (double) start.x + iCol * m_cellWidth;
     double pointY = (double) start.y;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);
 }
 
-void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath &path, int i_col)
+void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath &path, int iCol)
 {
     int outlier = g_ppiScaleDc * 5;
     int markerHeight = g_ppiScaleDc * 13;
     wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);
 
-    double startPointX = (double) start.x + i_col * m_cellWidth;
+    double startPointX = (double) start.x + iCol * m_cellWidth;
     double startPointY = (double) start.y;
 
     path.MoveToPoint(startPointX, startPointY);

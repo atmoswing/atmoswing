@@ -45,7 +45,7 @@ public:
 
     ~asPanelSidebarCaptionForecastRingDrawing();
 
-    void DrawDates(Array1DFloat &dates);
+    void DrawDates(a1f &dates);
 
     void DrawColorbar(double maxval);
 
@@ -85,7 +85,7 @@ public:
 
     ~asPanelSidebarCaptionForecastRing();
 
-    void SetDates(Array1DFloat &dates);
+    void SetDates(a1f &dates);
 
     void SetColorbarMax(double maxval);
 

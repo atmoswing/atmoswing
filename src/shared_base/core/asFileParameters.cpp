@@ -39,7 +39,7 @@ asFileParameters::~asFileParameters()
     //dtor
 }
 
-VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
+vi asFileParameters::BuildVectorInt(int min, int max, int step)
 {
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
@@ -49,7 +49,7 @@ VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
     }
 
     unsigned int stepsnb = (unsigned int) 1 + (max - min) / step;
-    VectorInt vect(stepsnb);
+    vi vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + i * step;
     }
@@ -57,9 +57,9 @@ VectorInt asFileParameters::BuildVectorInt(int min, int max, int step)
     return vect;
 }
 
-VectorInt asFileParameters::BuildVectorInt(wxString str)
+vi asFileParameters::BuildVectorInt(wxString str)
 {
-    VectorInt vect;
+    vi vect;
     wxChar separator = ',';
     while (str.Find(separator) != wxNOT_FOUND) {
         wxString strbefore = str.BeforeFirst(separator);
@@ -79,7 +79,7 @@ VectorInt asFileParameters::BuildVectorInt(wxString str)
     return vect;
 }
 
-VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
+vf asFileParameters::BuildVectorFloat(float min, float max, float step)
 {
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
@@ -89,7 +89,7 @@ VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
     }
 
     int stepsnb = (int) (1 + (max - min) / step);
-    VectorFloat vect((unsigned long) stepsnb);
+    vf vect((unsigned long) stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (float) i * step;
     }
@@ -97,9 +97,9 @@ VectorFloat asFileParameters::BuildVectorFloat(float min, float max, float step)
     return vect;
 }
 
-VectorFloat asFileParameters::BuildVectorFloat(wxString str)
+vf asFileParameters::BuildVectorFloat(wxString str)
 {
-    VectorFloat vect;
+    vf vect;
     wxChar separator = ',';
     while (str.Find(separator) != wxNOT_FOUND) {
         wxString strbefore = str.BeforeFirst(separator);
@@ -119,7 +119,7 @@ VectorFloat asFileParameters::BuildVectorFloat(wxString str)
     return vect;
 }
 
-VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double step)
+vd asFileParameters::BuildVectorDouble(double min, double max, double step)
 {
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
@@ -129,7 +129,7 @@ VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double 
     }
 
     int stepsnb = (int) (1 + (max - min) / step);
-    VectorDouble vect(stepsnb);
+    vd vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (double) i * step;
     }
@@ -137,9 +137,9 @@ VectorDouble asFileParameters::BuildVectorDouble(double min, double max, double 
     return vect;
 }
 
-VectorDouble asFileParameters::BuildVectorDouble(wxString str)
+vd asFileParameters::BuildVectorDouble(wxString str)
 {
-    VectorDouble vect;
+    vd vect;
     wxChar separator = ',';
     while (str.Find(separator) != wxNOT_FOUND) {
         wxString strbefore = str.BeforeFirst(separator);
@@ -157,9 +157,9 @@ VectorDouble asFileParameters::BuildVectorDouble(wxString str)
     return vect;
 }
 
-VectorString asFileParameters::BuildVectorString(wxString str)
+vwxs asFileParameters::BuildVectorString(wxString str)
 {
-    VectorString vect;
+    vwxs vect;
     wxChar separator = ',';
     while (str.Find(separator) != wxNOT_FOUND) {
         wxString strBefore = str.BeforeFirst(separator).Trim().Trim(false);
@@ -173,9 +173,9 @@ VectorString asFileParameters::BuildVectorString(wxString str)
     return vect;
 }
 
-VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
+vi asFileParameters::GetVectorInt(wxXmlNode *node)
 {
-    VectorInt vect;
+    vi vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
@@ -222,9 +222,9 @@ VectorInt asFileParameters::GetVectorInt(wxXmlNode *node)
     return vect;
 }
 
-VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
+vf asFileParameters::GetVectorFloat(wxXmlNode *node)
 {
-    VectorFloat vect;
+    vf vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
@@ -271,9 +271,9 @@ VectorFloat asFileParameters::GetVectorFloat(wxXmlNode *node)
     return vect;
 }
 
-VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
+vd asFileParameters::GetVectorDouble(wxXmlNode *node)
 {
-    VectorDouble vect;
+    vd vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
@@ -317,9 +317,9 @@ VectorDouble asFileParameters::GetVectorDouble(wxXmlNode *node)
     return vect;
 }
 
-VectorString asFileParameters::GetVectorString(wxXmlNode *node)
+vwxs asFileParameters::GetVectorString(wxXmlNode *node)
 {
-    VectorString vect;
+    vwxs vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
@@ -342,18 +342,18 @@ VectorString asFileParameters::GetVectorString(wxXmlNode *node)
     return vect;
 }
 
-VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
+vvi asFileParameters::GetStationIdsVector(wxXmlNode *node)
 {
-    VVectorInt vect;
+    vvi vect;
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
         wxString value = node->GetChildren()->GetContent();
-        VectorInt ids = GetStationIds(value);
+        vi ids = GetStationIds(value);
         vect.push_back(ids);
     } else if (method.IsSameAs("fixed")) {
         wxString value = node->GetChildren()->GetContent();
-        VectorInt ids = GetStationIds(value);
+        vi ids = GetStationIds(value);
         vect.push_back(ids);
     } else if (method.IsSameAs("array")) {
         wxString value = node->GetChildren()->GetContent();
@@ -366,7 +366,7 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
             if (startBracket != wxNOT_FOUND && startBracket < value.Find(separator)) {
                 int endBracket = value.Find(')');
                 wxString bracketContent = value.SubString((size_t) startBracket, (size_t) endBracket);
-                VectorInt ids = GetStationIds(bracketContent);
+                vi ids = GetStationIds(bracketContent);
                 vect.push_back(ids);
 
                 value = value.AfterFirst(')');
@@ -377,13 +377,13 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
                 wxString txtbefore = value.BeforeFirst(separator);
                 value = value.AfterFirst(separator);
                 if (!txtbefore.IsEmpty()) {
-                    VectorInt ids = GetStationIds(txtbefore);
+                    vi ids = GetStationIds(txtbefore);
                     vect.push_back(ids);
                 }
             }
         }
         if (!value.IsEmpty()) {
-            VectorInt ids = GetStationIds(value);
+            vi ids = GetStationIds(value);
             vect.push_back(ids);
         }
     } else if (method.IsSameAs("minmax")) {
@@ -407,27 +407,27 @@ VVectorInt asFileParameters::GetStationIdsVector(wxXmlNode *node)
         }
         int step = (int) value;
 
-        VectorInt ids = BuildVectorInt(min, max, step);
+        vi ids = BuildVectorInt(min, max, step);
         for (int i = 0; i < (int) ids.size(); i++) {
-            VectorInt id;
+            vi id;
             id.push_back(ids[i]);
             vect.push_back(id);
         }
     } else {
         wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
-        return VVectorInt(0);
+        return vvi(0);
     }
 
     return vect;
 }
 
-VectorInt asFileParameters::GetStationIds(wxString stationIdsString)
+vi asFileParameters::GetStationIds(wxString stationIdsString)
 {
     // Trim
     stationIdsString.Trim(true);
     stationIdsString.Trim(false);
 
-    VectorInt ids;
+    vi ids;
 
     if (stationIdsString.IsEmpty()) {
         wxLogError(_("The station ID was not provided."));

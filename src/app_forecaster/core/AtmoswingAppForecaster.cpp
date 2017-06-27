@@ -555,7 +555,7 @@ int AtmoswingAppForecaster::OnRun()
             // Write the resulting files path into a temp file.
             wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
             asFileAscii filePaths(tempFile, asFile::Replace);
-            VectorString filePathsVect = forecaster.GetResultsFilePaths();
+            vwxs filePathsVect = forecaster.GetResultsFilePaths();
 
             filePaths.Open();
 

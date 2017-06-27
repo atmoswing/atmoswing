@@ -90,9 +90,9 @@ public:
      */
     static double StDev(const double *pArrStart, const double *pArrEnd, const int sample = asSAMPLE);
 
-    static Array1DFloat GetCumulativeFrequency(const int size);
+    static a1f GetCumulativeFrequency(const int size);
 
-    static float GetValueForQuantile(const Array1DFloat &values, const float quantile);
+    static float GetValueForQuantile(const a1f &values, const float quantile);
 
     static bool IsNaN(const int value);
 
@@ -116,7 +116,7 @@ public:
 
     static int CountNotNaN(const double *pArrStart, const double *pArrEnd);
 
-    static bool HasNaN(const Array2DFloat &data);
+    static bool HasNaN(const a2f &data);
 
     static bool HasNaN(const float *pArrStart, const float *pArrEnd);
 
@@ -152,12 +152,12 @@ public:
 
     static double MinArrayStep(const double *pArrStart, const double *pArrEnd, const double tolerance = 0.000000001);
 
-    static Array1DInt ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance = 0);
+    static a1i ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance = 0);
 
-    static Array1DFloat ExtractUniqueValues(const float *pArrStart, const float *pArrEnd,
+    static a1f ExtractUniqueValues(const float *pArrStart, const float *pArrEnd,
                                             const float tolerance = 0.000001);
 
-    static Array1DDouble ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
+    static a1d ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
                                              const double tolerance = 0.000000001);
 
     static int SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetValue,

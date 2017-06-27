@@ -36,7 +36,7 @@ asPredictorCriteriaMRDtoMean::asPredictorCriteriaMRDtoMean()
     m_fullName = _("Mean Relative Differences to the Mean");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaMRDtoMean::~asPredictorCriteriaMRDtoMean()
     //dtor
 }
 
-float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb,
+float asPredictorCriteriaMRDtoMean::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
                                            int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
@@ -65,7 +65,7 @@ float asPredictorCriteriaMRDtoMean::Assess(const Array2DFloat &refData, const Ar
             } else {
                 if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
                     wxLogWarning(_("Division by zero in the predictor criteria."));
-                    return NaNFloat;
+                    return NaNf;
                 }
             }
         }

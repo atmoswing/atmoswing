@@ -36,7 +36,7 @@ asForecastScoreCRPSHersbachDecomp::asForecastScoreCRPSHersbachDecomp()
     m_fullName = _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_singleValue = false;
 }
 
@@ -45,14 +45,13 @@ asForecastScoreCRPSHersbachDecomp::~asForecastScoreCRPSHersbachDecomp()
     //dtor
 }
 
-float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSHersbachDecomp::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
-    return NaNFloat;
+    return NaNf;
 }
 
-Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals,
-                                                              int nbElements) const
+a1f asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -60,16 +59,16 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
         wxLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
-        return Array2DFloat();
+        return a2f();
     }
 
     // Create the container to sort the data
-    Array1DFloat x = ForcastVals;
+    a1f x = ForcastVals;
 
     // NaNs are not allowed as it messes up the ranks
     if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
         wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
-        return Array2DFloat();
+        return a2f();
     }
 
     // Sort the forcast array
@@ -77,13 +76,13 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
 
     // Containers
     int binsNbs = nbElements + 1;
-    Array1DFloat alpha = Array1DFloat::Zero(binsNbs);
-    Array1DFloat beta = Array1DFloat::Zero(binsNbs);
-    Array1DFloat g = Array1DFloat::Zero(binsNbs);
+    a1f alpha = a1f::Zero(binsNbs);
+    a1f beta = a1f::Zero(binsNbs);
+    a1f g = a1f::Zero(binsNbs);
 
     // Predictive sampling completed by 0 and N+1 elements
     int binsNbsExtra = nbElements + 2;
-    Array1DFloat z = Array1DFloat::Zero(binsNbsExtra);
+    a1f z = a1f::Zero(binsNbsExtra);
     z[0] = x[0];
     z.segment(1, nbElements) = x;
     z[binsNbsExtra - 1] = x[nbElements - 1];
@@ -113,15 +112,15 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
 
     // Outliers cases (Hersbach, Eq 27)
     if (ObservedVal == z[0]) {
-        alpha = Array1DFloat::Zero(binsNbs);
+        alpha = a1f::Zero(binsNbs);
         beta[0] = z[1] - ObservedVal;
     } else if (ObservedVal == z[binsNbsExtra - 1]) {
         alpha[binsNbs - 1] = ObservedVal - z[binsNbs - 1];
-        beta = Array1DFloat::Zero(binsNbs);
+        beta = a1f::Zero(binsNbs);
     }
 
     // Concatenate the results
-    Array1DFloat result(3 * binsNbs);
+    a1f result(3 * binsNbs);
     result.segment(0, binsNbs) = alpha;
     result.segment(binsNbs, binsNbs) = beta;
     result.segment(2 * binsNbs, binsNbs) = g;
@@ -129,8 +128,7 @@ Array1DFloat asForecastScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal,
     return result;
 }
 
-bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const Array1DFloat &refVals,
-                                                                const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSHersbachDecomp::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

@@ -61,9 +61,9 @@ public:
 
     asTimeArray(double date, Mode slctmode);
 
-    asTimeArray(VectorDouble &timeArray);
+    asTimeArray(vd &timeArray);
 
-    asTimeArray(Array1DDouble &timeArray);
+    asTimeArray(a1d &timeArray);
 
     virtual ~asTimeArray();
 
@@ -99,19 +99,19 @@ public:
 
     bool IsYearForbidden(int year) const;
 
-    VectorInt GetForbiddenYears() const
+    vi GetForbiddenYears() const
     {
         return m_forbiddenYears;
     }
 
-    void SetForbiddenYears(const VectorInt years)
+    void SetForbiddenYears(const vi years)
     {
         m_forbiddenYears = years;
     }
 
-    bool RemoveYears(const VectorInt &years);
+    bool RemoveYears(const vi &years);
 
-    bool KeepOnlyYears(const VectorInt &years);
+    bool KeepOnlyYears(const vi &years);
 
     Mode GetMode() const
     {
@@ -207,7 +207,7 @@ public:
         return m_exclusionDays;
     }
 
-    Array1DDouble GetTimeArray() const
+    a1d GetTimeArray() const
     {
         return m_timeArray;
     }
@@ -240,13 +240,13 @@ protected:
 private:
     bool m_initialized;
     Mode m_mode;
-    Array1DDouble m_timeArray;
+    a1d m_timeArray;
     double m_start;
     double m_end;
     double m_timeStepDays;
     double m_intervalDays;
     double m_exclusionDays;
-    VectorInt m_forbiddenYears;
+    vi m_forbiddenYears;
 
 };
 

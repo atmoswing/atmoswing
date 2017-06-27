@@ -44,10 +44,10 @@ public:
     bool Init();
 
 protected:
-    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData);
+                                 vvva2f &compositeData);
 
 private:
 

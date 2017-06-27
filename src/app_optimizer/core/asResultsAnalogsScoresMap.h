@@ -57,14 +57,14 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_mapLon;
-    Array1DFloat m_mapLat;
-    Array1DFloat m_mapLevel;
-    VArray2DFloat m_mapScores;
-    VectorFloat m_scores;
-    VectorFloat m_lon;
-    VectorFloat m_lat;
-    VectorFloat m_level;
+    a1f m_mapLon;
+    a1f m_mapLat;
+    a1f m_mapLevel;
+    va2f m_mapScores;
+    vf m_scores;
+    vf m_lon;
+    vf m_lat;
+    vf m_level;
 };
 
 #endif // ASRESULTSANALOGSSCORESMAP_H

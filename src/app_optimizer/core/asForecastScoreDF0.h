@@ -40,9 +40,9 @@ public:
 
     ~asForecastScoreDF0();
 
-    float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const;
+    float Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const;
 
-    bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
 protected:
 

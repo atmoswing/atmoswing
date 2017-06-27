@@ -31,7 +31,7 @@
 #include <asDataPredictor.h>
 
 
-asThreadPreprocessorGradients::asThreadPreprocessorGradients(VArray2DFloat *gradients,
+asThreadPreprocessorGradients::asThreadPreprocessorGradients(vva2f *gradients,
                                                              std::vector<asDataPredictor *> predictors, int start,
                                                              int end)
         : asThread(),
@@ -53,32 +53,35 @@ wxThread::ExitCode asThreadPreprocessorGradients::Entry()
     int rowsNb = m_pPredictors[0]->GetLatPtsnb();
     int colsNb = m_pPredictors[0]->GetLonPtsnb();
     int timeSize = m_pPredictors[0]->GetTimeSize();
+    int membersNb = m_pPredictors[0]->GetMembersNb();
 
-    Array1DFloat tmpgrad = Array1DFloat::Constant((rowsNb - 1) * colsNb + rowsNb * (colsNb - 1), NaNFloat);
+    a1f tmpgrad = a1f::Constant((rowsNb - 1) * colsNb + rowsNb * (colsNb - 1), NaNf);
 
-    for (int i_time = 0; i_time < timeSize; i_time++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
         int counter = 0;
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
-        // Vertical gradients
-        for (int i_row = 0; i_row < rowsNb - 1; i_row++) {
-            for (int i_col = 0; i_col < colsNb; i_col++) {
-                tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time](i_row + 1, i_col) -
-                                   m_pPredictors[0]->GetData()[i_time](i_row, i_col);
-                counter++;
+            // Vertical gradients
+            for (int iRow = 0; iRow < rowsNb - 1; iRow++) {
+                for (int iCol = 0; iCol < colsNb; iCol++) {
+                    tmpgrad(counter) = m_pPredictors[0]->GetData()[iTime][iMem](iRow + 1, iCol) -
+                                       m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol);
+                    counter++;
+                }
             }
-        }
 
-        // Horizontal gradients
-        for (int i_row = 0; i_row < rowsNb; i_row++) {
-            for (int i_col = 0; i_col < colsNb - 1; i_col++) {
-                // The matrix is transposed to be coherent with the dimensions
-                tmpgrad(counter) = m_pPredictors[0]->GetData()[i_time](i_row, i_col + 1) -
-                                   m_pPredictors[0]->GetData()[i_time](i_row, i_col);
-                counter++;
+            // Horizontal gradients
+            for (int iRow = 0; iRow < rowsNb; iRow++) {
+                for (int iCol = 0; iCol < colsNb - 1; iCol++) {
+                    // The matrix is transposed to be coherent with the dimensions
+                    tmpgrad(counter) = m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol + 1) -
+                                       m_pPredictors[0]->GetData()[iTime][iMem](iRow, iCol);
+                    counter++;
+                }
             }
-        }
 
-        (*m_pGradients)[i_time] = tmpgrad.transpose();
+            (*m_pGradients)[iTime][iMem] = tmpgrad.transpose();
+        }
     }
 
     return (wxThread::ExitCode) 0;

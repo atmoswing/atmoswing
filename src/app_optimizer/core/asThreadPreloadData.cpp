@@ -1,16 +1,16 @@
 #include "asThreadPreloadData.h"
 
-asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int i_step,
-                                         int i_ptor, int i_dat)
+asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep,
+                                         int iPtor, int iPre)
         : asThread()
 {
     m_type = asThread::PreloadData;
 
     m_optimizer = optimizer; // copy pointer
     m_params = params;
-    m_iStep = i_step;
-    m_iProt = i_ptor;
-    m_iDat = i_dat;
+    m_iStep = iStep;
+    m_iProt = iPtor;
+    m_iDat = iPre;
 }
 
 asThreadPreloadData::~asThreadPreloadData()

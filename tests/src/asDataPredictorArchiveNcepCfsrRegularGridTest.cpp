@@ -57,8 +57,8 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadEasy)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     171.1	170.7	169.1	167.1	164.5	162.1	160.0	158.3	156.8	155.3	153.5
@@ -67,15 +67,15 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadEasy)
     174.9	173.6	171.9	170.1	168.9	167.9	166.6	165.5	163.3	161.4	159.6
     175.7	173.8	171.9	170.2	169.0	168.7	167.5	166.2	164.6	162.8	161.1
     */
-    EXPECT_NEAR(171.1, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(170.7, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(169.1, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(167.1, hgt[0](0, 3), 0.1);
-    EXPECT_NEAR(153.5, hgt[0](0, 10), 0.1);
-    EXPECT_NEAR(172.0, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(173.5, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(175.7, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(161.1, hgt[0](4, 10), 0.1);
+    EXPECT_NEAR(171.1, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(170.7, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(169.1, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(167.1, hgt[0][0](0, 3), 0.1);
+    EXPECT_NEAR(153.5, hgt[0][0](0, 10), 0.1);
+    EXPECT_NEAR(172.0, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(173.5, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(175.7, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(161.1, hgt[0][0](4, 10), 0.1);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     163.0	161.8	160.8	160.9	160.8	160.9	160.7	159.4	157.9	156.5	154.8
@@ -84,15 +84,15 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadEasy)
     168.1	168.0	168.7	168.8	168.9	168.7	168.0	167.3	165.5	164.2	162.6
     170.3	170.4	170.6	170.8	170.9	170.9	170.2	169.0	167.7	166.3	164.8
     */
-    EXPECT_NEAR(163.0, hgt[1](0, 0), 0.1);
-    EXPECT_NEAR(161.8, hgt[1](0, 1), 0.1);
-    EXPECT_NEAR(160.8, hgt[1](0, 2), 0.1);
-    EXPECT_NEAR(160.9, hgt[1](0, 3), 0.1);
-    EXPECT_NEAR(154.8, hgt[1](0, 10), 0.1);
-    EXPECT_NEAR(165.4, hgt[1](1, 0), 0.1);
-    EXPECT_NEAR(167.4, hgt[1](2, 0), 0.1);
-    EXPECT_NEAR(170.3, hgt[1](4, 0), 0.1);
-    EXPECT_NEAR(164.8, hgt[1](4, 10), 0.1);
+    EXPECT_NEAR(163.0, hgt[1][0](0, 0), 0.1);
+    EXPECT_NEAR(161.8, hgt[1][0](0, 1), 0.1);
+    EXPECT_NEAR(160.8, hgt[1][0](0, 2), 0.1);
+    EXPECT_NEAR(160.9, hgt[1][0](0, 3), 0.1);
+    EXPECT_NEAR(154.8, hgt[1][0](0, 10), 0.1);
+    EXPECT_NEAR(165.4, hgt[1][0](1, 0), 0.1);
+    EXPECT_NEAR(167.4, hgt[1][0](2, 0), 0.1);
+    EXPECT_NEAR(170.3, hgt[1][0](4, 0), 0.1);
+    EXPECT_NEAR(164.8, hgt[1][0](4, 10), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     147.3	149.4	150.1	150.8	150.5	149.8	149.1	148.1	148.4	150.4	152.7
@@ -101,15 +101,15 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadEasy)
     142.8	145.7	148.5	150.8	152.1	152.6	152.8	153.9	154.2	154.7	155.1
     141.9	143.9	148.3	150.9	151.9	153.2	153.8	154.5	155.4	155.9	156.3
     */
-    EXPECT_NEAR(147.3, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(149.4, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(150.1, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(150.8, hgt[7](0, 3), 0.1);
-    EXPECT_NEAR(152.7, hgt[7](0, 10), 0.1);
-    EXPECT_NEAR(143.9, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(143.6, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(141.9, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(156.3, hgt[7](4, 10), 0.1);
+    EXPECT_NEAR(147.3, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(149.4, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(150.1, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(150.8, hgt[7][0](0, 3), 0.1);
+    EXPECT_NEAR(152.7, hgt[7][0](0, 10), 0.1);
+    EXPECT_NEAR(143.9, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(143.6, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(141.9, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(156.3, hgt[7][0](4, 10), 0.1);
 
     wxDELETE(predictor);
 }
@@ -138,8 +138,8 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadComposite)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     174.8	169.0	161.9	159.3	158.2	156.8   |   153.9	151.8	150.9	150.8	151.1
@@ -148,16 +148,16 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadComposite)
     155.9	153.7	150.3	148.7	149.0	150.5   |   151.0	151.9	156.6	166.0	169.5
     156.3	152.3	150.7	155.2	162.2	164.2   |   165.0	165.8	167.7	171.3	170.1
     */
-    EXPECT_NEAR(174.8, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(169.0, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(161.9, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(156.8, hgt[0](0, 5), 0.1);
-    EXPECT_NEAR(153.9, hgt[0](0, 6), 0.1);
-    EXPECT_NEAR(151.1, hgt[0](0, 10), 0.1);
-    EXPECT_NEAR(159.4, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(156.4, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(156.3, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(170.1, hgt[0](4, 10), 0.1);
+    EXPECT_NEAR(174.8, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(169.0, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(161.9, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(156.8, hgt[0][0](0, 5), 0.1);
+    EXPECT_NEAR(153.9, hgt[0][0](0, 6), 0.1);
+    EXPECT_NEAR(151.1, hgt[0][0](0, 10), 0.1);
+    EXPECT_NEAR(159.4, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(156.4, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(156.3, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(170.1, hgt[0][0](4, 10), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     169.2	163.9	158.3	158.0	158.3	159.0   |   157.9	156.8	156.4	155.6	154.9
@@ -166,16 +166,16 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadComposite)
     152.0	151.8	150.0	148.9	148.5	148.7   |   147.4	145.7	146.3	148.8	146.7
     149.7	150.2	150.5	151.8	152.7	151.3   |   150.8	150.8	150.9	150.6	145.9
     */
-    EXPECT_NEAR(169.2, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(163.9, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(158.3, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(159.0, hgt[7](0, 5), 0.1);
-    EXPECT_NEAR(157.9, hgt[7](0, 6), 0.1);
-    EXPECT_NEAR(154.9, hgt[7](0, 10), 0.1);
-    EXPECT_NEAR(155.7, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(152.3, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(149.7, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(145.9, hgt[7](4, 10), 0.1);
+    EXPECT_NEAR(169.2, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(163.9, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(158.3, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(159.0, hgt[7][0](0, 5), 0.1);
+    EXPECT_NEAR(157.9, hgt[7][0](0, 6), 0.1);
+    EXPECT_NEAR(154.9, hgt[7][0](0, 10), 0.1);
+    EXPECT_NEAR(155.7, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(152.3, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(149.7, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(145.9, hgt[7][0](4, 10), 0.1);
 
     wxDELETE(predictor);
 }
@@ -204,8 +204,8 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeft)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     |   153.9	151.8	150.9	150.8	151.1
@@ -214,14 +214,14 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeft)
     |   151.0	151.9	156.6	166.0	169.5
     |   165.0	165.8	167.7	171.3	170.1
     */
-    EXPECT_NEAR(153.9, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(151.8, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(150.9, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(151.1, hgt[0](0, 4), 0.1);
-    EXPECT_NEAR(149.6, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(148.0, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(165.0, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(170.1, hgt[0](4, 4), 0.1);
+    EXPECT_NEAR(153.9, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(151.8, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(150.9, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(151.1, hgt[0][0](0, 4), 0.1);
+    EXPECT_NEAR(149.6, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(148.0, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(165.0, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(170.1, hgt[0][0](4, 4), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     |   157.9	156.8	156.4	155.6	154.9
@@ -230,14 +230,14 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeft)
     |   147.4	145.7	146.3	148.8	146.7
     |   150.8	150.8	150.9	150.6	145.9
     */
-    EXPECT_NEAR(157.9, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(156.8, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(156.4, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(154.9, hgt[7](0, 4), 0.1);
-    EXPECT_NEAR(154.3, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(150.7, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(150.8, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(145.9, hgt[7](4, 4), 0.1);
+    EXPECT_NEAR(157.9, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(156.8, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(156.4, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(154.9, hgt[7][0](0, 4), 0.1);
+    EXPECT_NEAR(154.3, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(150.7, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(150.8, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(145.9, hgt[7][0](4, 4), 0.1);
 
     wxDELETE(predictor);
 }
@@ -266,8 +266,8 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeftOn720)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     |   153.9	151.8	150.9	150.8	151.1
@@ -276,14 +276,14 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeftOn720)
     |   151.0	151.9	156.6	166.0	169.5
     |   165.0	165.8	167.7	171.3	170.1
     */
-    EXPECT_NEAR(153.9, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(151.8, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(150.9, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(151.1, hgt[0](0, 4), 0.1);
-    EXPECT_NEAR(149.6, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(148.0, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(165.0, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(170.1, hgt[0](4, 4), 0.1);
+    EXPECT_NEAR(153.9, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(151.8, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(150.9, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(151.1, hgt[0][0](0, 4), 0.1);
+    EXPECT_NEAR(149.6, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(148.0, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(165.0, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(170.1, hgt[0][0](4, 4), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     |   157.9	156.8	156.4	155.6	154.9
@@ -292,14 +292,14 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderLeftOn720)
     |   147.4	145.7	146.3	148.8	146.7
     |   150.8	150.8	150.9	150.6	145.9
     */
-    EXPECT_NEAR(157.9, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(156.8, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(156.4, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(154.9, hgt[7](0, 4), 0.1);
-    EXPECT_NEAR(154.3, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(150.7, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(150.8, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(145.9, hgt[7](4, 4), 0.1);
+    EXPECT_NEAR(157.9, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(156.8, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(156.4, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(154.9, hgt[7][0](0, 4), 0.1);
+    EXPECT_NEAR(154.3, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(150.7, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(150.8, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(145.9, hgt[7][0](4, 4), 0.1);
 
     wxDELETE(predictor);
 }
@@ -328,8 +328,8 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderRight)
 
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     174.8	169.0	161.9	159.3	158.2	156.8   |   153.9
@@ -338,15 +338,15 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderRight)
     155.9	153.7	150.3	148.7	149.0	150.5   |   151.0
     156.3	152.3	150.7	155.2	162.2	164.2   |   165.0
     */
-    EXPECT_NEAR(174.8, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(169.0, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(161.9, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(156.8, hgt[0](0, 5), 0.1);
-    EXPECT_NEAR(153.9, hgt[0](0, 6), 0.1);
-    EXPECT_NEAR(159.4, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(156.4, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(156.3, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(165.0, hgt[0](4, 6), 0.1);
+    EXPECT_NEAR(174.8, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(169.0, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(161.9, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(156.8, hgt[0][0](0, 5), 0.1);
+    EXPECT_NEAR(153.9, hgt[0][0](0, 6), 0.1);
+    EXPECT_NEAR(159.4, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(156.4, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(156.3, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(165.0, hgt[0][0](4, 6), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     169.2	163.9	158.3	158.0	158.3	159.0   |   157.9
@@ -355,15 +355,15 @@ TEST(DataPredictorArchiveNcepCfsrRegular, LoadBorderRight)
     152.0	151.8	150.0	148.9	148.5	148.7   |   147.4
     149.7	150.2	150.5	151.8	152.7	151.3   |   150.8
     */
-    EXPECT_NEAR(169.2, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(163.9, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(158.3, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(159.0, hgt[7](0, 5), 0.1);
-    EXPECT_NEAR(157.9, hgt[7](0, 6), 0.1);
-    EXPECT_NEAR(155.7, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(152.3, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(149.7, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(150.8, hgt[7](4, 6), 0.1);
+    EXPECT_NEAR(169.2, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(163.9, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(158.3, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(159.0, hgt[7][0](0, 5), 0.1);
+    EXPECT_NEAR(157.9, hgt[7][0](0, 6), 0.1);
+    EXPECT_NEAR(155.7, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(152.3, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(149.7, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(150.8, hgt[7][0](4, 6), 0.1);
 
     wxDELETE(predictor);
 }

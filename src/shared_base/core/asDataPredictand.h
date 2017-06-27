@@ -98,22 +98,22 @@ public:
                                    const wxString &AlternatePatternDir = wxEmptyString,
                                    const wxString &AlternateDestinationDir = wxEmptyString) = 0;
 
-    virtual Array1DFloat GetReferenceAxis() const
+    virtual a1f GetReferenceAxis() const
     {
-        Array1DFloat nodata(1);
-        nodata << NaNFloat;
+        a1f nodata(1);
+        nodata << NaNf;
         return nodata;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference) const
+    virtual float GetReferenceValue(int iStat, double duration, float reference) const
     {
-        return NaNFloat;
+        return NaNf;
     }
 
-    virtual Array2DFloat GetReferenceValuesArray() const
+    virtual a2f GetReferenceValuesArray() const
     {
-        Array1DFloat nodata(1);
-        nodata << NaNFloat;
+        a1f nodata(1);
+        nodata << NaNf;
         return nodata;
     }
 
@@ -188,48 +188,48 @@ public:
         return m_timeLength;
     }
 
-    VectorString &GetStationNamesArray()
+    vwxs &GetStationNamesArray()
     {
         return m_stationNames;
     }
 
-    VectorString &GetStationOfficialIdsArray()
+    vwxs &GetStationOfficialIdsArray()
     {
         return m_stationOfficialIds;
     }
 
-    Array1DFloat &GetStationHeightsArray()
+    a1f &GetStationHeightsArray()
     {
         return m_stationHeights;
     }
 
-    Array1DInt &GetStationsIdArray()
+    a1i &GetStationsIdArray()
     {
         return m_stationIds;
     }
 
-    Array1DDouble &GetStationXCoordsArray()
+    a1d &GetStationXCoordsArray()
     {
         return m_stationXCoords;
     }
 
-    Array1DDouble &GetStationYCoordsArray()
+    a1d &GetStationYCoordsArray()
     {
         return m_stationYCoords;
     }
 
-    Array2DFloat &GetDataGross()
+    a2f &GetDataGross()
     {
         return m_dataGross;
     }
 
-    Array1DFloat GetDataGrossStation(int predictandStationId) const
+    a1f GetDataGrossStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataGross.col(indexStation);
     }
 
-    Array2DFloat &GetDataNormalized()
+    a2f &GetDataNormalized()
     {
         if (m_hasNormalizedData) {
             return m_dataNormalized;
@@ -238,7 +238,7 @@ public:
         }
     }
 
-    Array1DFloat GetDataNormalizedStation(int predictandStationId) const
+    a1f GetDataNormalizedStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         if (m_hasNormalizedData) {
@@ -248,7 +248,7 @@ public:
         }
     }
 
-    Array1DDouble &GetTime()
+    a1d &GetTime()
     {
         return m_time;
     }
@@ -271,19 +271,19 @@ protected:
     bool m_hasNormalizedData;
     bool m_hasReferenceValues;
     // Matrix data
-    Array2DFloat m_dataGross;
-    Array2DFloat m_dataNormalized;
+    a2f m_dataGross;
+    a2f m_dataNormalized;
     // Vector (dim = time)
-    Array1DDouble m_time;
+    a1d m_time;
     // Vector (dim = stations)
-    VectorString m_stationNames;
-    VectorString m_stationOfficialIds;
-    Array1DInt m_stationIds;
-    Array1DFloat m_stationHeights;
-    Array1DDouble m_stationXCoords;
-    Array1DDouble m_stationYCoords;
-    Array1DDouble m_stationStarts;
-    Array1DDouble m_stationEnds;
+    vwxs m_stationNames;
+    vwxs m_stationOfficialIds;
+    a1i m_stationIds;
+    a1f m_stationHeights;
+    a1d m_stationXCoords;
+    a1d m_stationYCoords;
+    a1d m_stationStarts;
+    a1d m_stationEnds;
 
     wxString GetDBFilePathSaving(const wxString &destinationDir) const;
 
@@ -300,7 +300,7 @@ protected:
     bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
                    const wxString &AlternatePatternDir = wxEmptyString);
 
-    Array2DFloat GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
+    a2f GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
 
     bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
 

@@ -80,7 +80,7 @@ void asPanelSidebarCalendar::SetPresentDate()
 {
     // Set the present date in the calendar and the hour field
     wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
-    TimeStruct nowStruct = asTime::NowTimeStruct(asUTM);
+    Time nowStruct = asTime::NowTimeStruct(asUTM);
     wxString hourStr = wxString::Format("%d", nowStruct.hour);
     m_calendarForecastDate->SetDate(nowWx);
     m_textCtrlForecastHour->SetValue(hourStr);

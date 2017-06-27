@@ -124,14 +124,14 @@ void asForecastViewer::SetForecast(int methodRow, int forecastRow)
     Redraw();
 }
 
-wxString asForecastViewer::GetStationName(int i_stat) const
+wxString asForecastViewer::GetStationName(int iStat) const
 {
-    return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, i_stat);
+    return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, iStat);
 }
 
 float asForecastViewer::GetSelectedTargetDate()
 {
-    Array1DFloat targetDates;
+    a1f targetDates;
 
     if (m_methodSelection < 0) {
         m_methodSelection = 0;
@@ -153,7 +153,7 @@ float asForecastViewer::GetSelectedTargetDate()
 void asForecastViewer::SetLeadTimeDate(float date)
 {
     if (date > 0 && (m_methodSelection > 0)) {
-        Array1DFloat targetDates;
+        a1f targetDates;
 
         if (m_forecastSelection > 0) {
             targetDates = m_forecastManager->GetTargetDates(m_methodSelection, m_forecastSelection);
@@ -264,7 +264,7 @@ void asForecastViewer::Redraw()
     // Get reference axis index
     int indexReferenceAxis = asNOT_FOUND;
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
-        Array1DFloat forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
+        a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
         indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0],
                                                         &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
@@ -335,8 +335,8 @@ void asForecastViewer::Redraw()
         }
 
         // Adding features to the layer
-        for (int i_stat = 0; i_stat < forecasts[0]->GetStationsNb(); i_stat++) {
-            int currentId = forecasts[0]->GetStationId(i_stat);
+        for (int iStat = 0; iStat < forecasts[0]->GetStationsNb(); iStat++) {
+            int currentId = forecasts[0]->GetStationId(iStat);
 
             // Select the accurate forecast
             bool accurateForecast = false;
@@ -360,24 +360,24 @@ void asForecastViewer::Redraw()
             }
 
             if (!forecast) {
-                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat));
+                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(iStat));
                 continue;
             }
 
             OGRPoint station;
-            station.setX(forecast->GetStationXCoord(i_stat));
-            station.setY(forecast->GetStationYCoord(i_stat));
+            station.setX(forecast->GetStationXCoord(iStat));
+            station.setY(forecast->GetStationYCoord(iStat));
 
             // Field container
             wxArrayDouble data;
-            data.Add((double) i_stat);
+            data.Add((double) iStat);
             data.Add((double) currentId);
             data.Add((double) leadTimeSize);
 
             // For normalization by the return period
             double factor = 1;
             if (forecast->HasReferenceValues() && returnPeriod != 0) {
-                float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                float precip = forecast->GetReferenceValue(iStat, indexReferenceAxis);
                 wxASSERT(precip > 0);
                 wxASSERT(precip < 500);
                 factor = 1.0 / precip;
@@ -385,11 +385,11 @@ void asForecastViewer::Redraw()
             }
 
             // Loop over the lead times
-            for (unsigned int i_leadtime = 0; i_leadtime < leadTimeSize; i_leadtime++) {
-                Array1DFloat values = forecast->GetAnalogsValuesGross(i_leadtime, i_stat);
+            for (unsigned int iLead = 0; iLead < leadTimeSize; iLead++) {
+                a1f values = forecast->GetAnalogsValuesGross(iLead, iStat);
 
                 if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
-                    data.Add(NaNDouble);
+                    data.Add(NaNd);
                 } else {
                     if (quantile >= 0) {
                         double forecastVal = asTools::GetValueForQuantile(values, quantile);
@@ -491,8 +491,8 @@ void asForecastViewer::Redraw()
         layerOther->AddField(fieldValueNorm);
 
         // Adding features to the layer
-        for (int i_stat = 0; i_stat < forecasts[0]->GetStationsNb(); i_stat++) {
-            int currentId = forecasts[0]->GetStationId(i_stat);
+        for (int iStat = 0; iStat < forecasts[0]->GetStationsNb(); iStat++) {
+            int currentId = forecasts[0]->GetStationId(iStat);
 
             // Select the accurate forecast
             bool accurateForecast = false;
@@ -516,23 +516,23 @@ void asForecastViewer::Redraw()
             }
 
             if (!forecast) {
-                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(i_stat));
+                wxLogWarning(_("%s is not associated to any forecast"), forecasts[0]->GetStationName(iStat));
                 continue;
             }
 
             OGRPoint station;
-            station.setX(forecast->GetStationXCoord(i_stat));
-            station.setY(forecast->GetStationYCoord(i_stat));
+            station.setX(forecast->GetStationXCoord(iStat));
+            station.setY(forecast->GetStationYCoord(iStat));
 
             // Field container
             wxArrayDouble data;
-            data.Add((double) i_stat);
+            data.Add((double) iStat);
             data.Add((double) currentId);
 
             // For normalization by the return period
             double factor = 1;
             if (forecast->HasReferenceValues() && returnPeriod != 0) {
-                float precip = forecast->GetReferenceValue(i_stat, indexReferenceAxis);
+                float precip = forecast->GetReferenceValue(iStat, indexReferenceAxis);
                 wxASSERT(precip > 0);
                 wxASSERT(precip < 500);
                 factor = 1.0 / precip;
@@ -545,11 +545,11 @@ void asForecastViewer::Redraw()
                 m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 
-            Array1DFloat values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, i_stat);
+            a1f values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, iStat);
 
             if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
-                data.Add(NaNDouble); // 1st real value
-                data.Add(NaNDouble); // 2nd normalized
+                data.Add(NaNd); // 1st real value
+                data.Add(NaNd); // 2nd normalized
             } else {
                 if (quantile >= 0) {
                     double forecastVal = asTools::GetValueForQuantile(values, quantile);

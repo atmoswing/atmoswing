@@ -34,8 +34,8 @@ asForecastScoreContingencyTable::asForecastScoreContingencyTable()
     m_score = asForecastScore::ContingencyTable;
     m_name = _("Contingency table");
     m_fullName = _("Contingency table class");
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreContingencyTable::~asForecastScoreContingencyTable()
@@ -43,7 +43,7 @@ asForecastScoreContingencyTable::~asForecastScoreContingencyTable()
     //dtor
 }
 
-float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreContingencyTable::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -53,20 +53,20 @@ float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFl
     wxASSERT(m_quantile < 1);
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Contingency table processing function."));
-        return NaNFloat;
+        return NaNf;
     } else if (nbForecasts <= 2) {
         wxLogWarning(_("Not enough elements to process the Contingency table."));
-        return NaNFloat;
+        return NaNf;
     }
 
-    Array1DFloat cleanValues = x.head(nbForecasts);
-    float score = NaNFloat;
+    a1f cleanValues = x.head(nbForecasts);
+    float score = NaNf;
 
     // Get value for quantile
     float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
@@ -91,8 +91,7 @@ float asForecastScoreContingencyTable::Assess(float ObservedVal, const Array1DFl
     return score;
 }
 
-bool asForecastScoreContingencyTable::ProcessScoreClimatology(const Array1DFloat &refVals,
-                                                              const Array1DFloat &climatologyData)
+bool asForecastScoreContingencyTable::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

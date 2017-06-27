@@ -33,8 +33,8 @@ asForecastScoreRankHistogram::asForecastScoreRankHistogram()
     m_score = asForecastScore::RankHistogram;
     m_name = _("Rank Histogram");
     m_fullName = _("Verification Rank Histogram (Talagrand Diagram)");
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreRankHistogram::~asForecastScoreRankHistogram()
@@ -42,18 +42,18 @@ asForecastScoreRankHistogram::~asForecastScoreRankHistogram()
     //dtor
 }
 
-float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreRankHistogram::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Create the container to sort the data
-    Array1DFloat x = ForcastVals;
+    a1f x = ForcastVals;
 
     // NaNs are not allowed as it messes up the ranks
     if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
         wxLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Sort the forcast array
@@ -89,7 +89,7 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
 
             // Generate uniform random deviates
             float verif = asTools::Random(0.0, 1.0);
-            Array1DFloat rand(m);
+            a1f rand(m);
             for (int i = 0; i < m; i++) {
                 rand[i] = asTools::Random(0.0, 1.0);
             }
@@ -126,8 +126,7 @@ float asForecastScoreRankHistogram::Assess(float ObservedVal, const Array1DFloat
     }
 }
 
-bool asForecastScoreRankHistogram::ProcessScoreClimatology(const Array1DFloat &refVals,
-                                                           const Array1DFloat &climatologyData)
+bool asForecastScoreRankHistogram::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

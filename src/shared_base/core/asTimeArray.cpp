@@ -115,7 +115,7 @@ asTimeArray::asTimeArray(double date, Mode slctmode)
 
 }
 
-asTimeArray::asTimeArray(VectorDouble &timeArray)
+asTimeArray::asTimeArray(vd &timeArray)
         : asTime()
 {
     wxASSERT(timeArray.size() > 1);
@@ -136,7 +136,7 @@ asTimeArray::asTimeArray(VectorDouble &timeArray)
     }
 }
 
-asTimeArray::asTimeArray(Array1DDouble &timeArray)
+asTimeArray::asTimeArray(a1d &timeArray)
         : asTime()
 {
     wxASSERT(timeArray.size() > 0);
@@ -432,7 +432,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     double excludeend = forecastDate + m_exclusionDays;
 
     // Get the structure of the forecast date
-    TimeStruct forecastDateStruct = GetTimeStruct(forecastDate);
+    Time forecastDateStruct = GetTimeStruct(forecastDate);
 
     // Array resizing (larger than required)
     int firstYear = GetTimeStruct(m_start).year;
@@ -446,7 +446,7 @@ bool asTimeArray::BuildArrayDaysInterval(double forecastDate)
     int counter = 0;
     for (int year = firstYear; year <= lastYear; year++) {
         // Get the interval boundaries
-        TimeStruct adaptedForecastDateStruct = forecastDateStruct;
+        Time adaptedForecastDateStruct = forecastDateStruct;
         adaptedForecastDateStruct.year = year;
         double currentStart = GetMJD(adaptedForecastDateStruct) - m_intervalDays;
         double currentEnd = GetMJD(adaptedForecastDateStruct) + m_intervalDays;
@@ -517,7 +517,7 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     }
 
     // Get the season
-    TimeStruct forecastdatestruct = GetTimeStruct(forecastdate);
+    Time forecastdatestruct = GetTimeStruct(forecastdate);
     Season forecastseason = GetSeason(forecastdatestruct.month);
 
     // Adapt the hour if the timestep allows for it
@@ -541,10 +541,10 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     }
 
     // Get the beginning of the time array
-    TimeStruct startstruct = GetTimeStruct(m_start);
-    TimeStruct endstruct = GetTimeStruct(m_end);
+    Time startstruct = GetTimeStruct(m_start);
+    Time endstruct = GetTimeStruct(m_end);
 
-    TimeStruct startfirstyearstruct, endfirstyearstruct;
+    Time startfirstyearstruct, endfirstyearstruct;
     TimeStructInit(startfirstyearstruct);
     TimeStructInit(endfirstyearstruct);
 
@@ -580,7 +580,7 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     startfirstyearstruct = GetTimeStruct(startfirstyear);
 
     // Get the end of the time array
-    TimeStruct startlastyearstruct, endlastyearstruct;
+    Time startlastyearstruct, endlastyearstruct;
     TimeStructInit(startlastyearstruct);
     TimeStructInit(endlastyearstruct);
 
@@ -636,28 +636,28 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     int rowid = 0;
     double seasonend = 0;
 
-    for (int i_year = startfirstyearstruct.year; i_year <= endlastyearstruct.year; i_year++) {
-        if (i_year == startfirstyearstruct.year) {
+    for (int iYear = startfirstyearstruct.year; iYear <= endlastyearstruct.year; iYear++) {
+        if (iYear == startfirstyearstruct.year) {
             thistimestep = GetMJD(startfirstyearstruct.year, startfirstyearstruct.month, startfirstyearstruct.day,
                                   startfirstyearstruct.hour, startfirstyearstruct.min);
             seasonend = GetMJD(endfirstyearstruct.year, endfirstyearstruct.month, endfirstyearstruct.day, 23, 59, 59);
-        } else if (i_year == endlastyearstruct.year) {
+        } else if (iYear == endlastyearstruct.year) {
             thistimestep = GetMJD(startlastyearstruct.year, startlastyearstruct.month, startlastyearstruct.day,
                                   startlastyearstruct.hour, startlastyearstruct.min);
             seasonend = GetMJD(endlastyearstruct.year, endlastyearstruct.month, endlastyearstruct.day, 23, 59, 59);
         } else {
-            thistimestep = GetMJD(i_year, GetSeasonStart(forecastseason).month, GetSeasonStart(forecastseason).day,
+            thistimestep = GetMJD(iYear, GetSeasonStart(forecastseason).month, GetSeasonStart(forecastseason).day,
                                   startfirstyearstruct.hour, startfirstyearstruct.min);
             int thismonth, thisday;
-            TimeStruct thisyearendstruct;
+            Time thisyearendstruct;
             if (forecastseason != DJF) {
-                thismonth = GetSeasonEnd(forecastseason, i_year).month;
-                thisday = GetSeasonEnd(forecastseason, i_year).day;
-                thisyearendstruct = asTime::GetTimeStruct(i_year, thismonth, thisday, 23, 59, 59);
+                thismonth = GetSeasonEnd(forecastseason, iYear).month;
+                thisday = GetSeasonEnd(forecastseason, iYear).day;
+                thisyearendstruct = asTime::GetTimeStruct(iYear, thismonth, thisday, 23, 59, 59);
             } else {
-                thismonth = GetSeasonEnd(forecastseason, i_year + 1).month;
-                thisday = GetSeasonEnd(forecastseason, i_year + 1).day;
-                thisyearendstruct = asTime::GetTimeStruct(i_year + 1, thismonth, thisday, 23, 59, 59);
+                thismonth = GetSeasonEnd(forecastseason, iYear + 1).month;
+                thisday = GetSeasonEnd(forecastseason, iYear + 1).day;
+                thisyearendstruct = asTime::GetTimeStruct(iYear + 1, thismonth, thisday, 23, 59, 59);
             }
             seasonend = GetMJD(thisyearendstruct);
         }
@@ -713,12 +713,12 @@ bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, c
     }
 
     // Get the time arrays
-    Array1DDouble predictandTimeArray = predictand.GetTime();
-    Array1DDouble fullTimeArray = m_timeArray;
-    Array1DDouble finalTimeArray(fullTimeArray.size());
+    a1d predictandTimeArray = predictand.GetTime();
+    a1d fullTimeArray = m_timeArray;
+    a1d finalTimeArray(fullTimeArray.size());
 
     // Get data
-    Array1DFloat predictandData;
+    a1f predictandData;
     if (serieName.IsSameAs("DataNormalized")) {
         predictandData = predictand.GetDataNormalizedStation(stationId);
     } else if (serieName.IsSameAs("DataGross")) {
@@ -787,7 +787,7 @@ int asTimeArray::GetClosestIndex(double date) const
 
     if (date - 0.00001 > m_end || date + 0.00001 < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNInt;
+        return NaNi;
     }
 
     int index = asTools::SortedArraySearchClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
@@ -806,7 +806,7 @@ int asTimeArray::GetIndexFirstAfter(double date) const
 
     if (date - tolerance > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNInt;
+        return NaNi;
     }
 
     int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
@@ -825,7 +825,7 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 
     if (date + tolerance < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNInt;
+        return NaNi;
     }
 
     int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
@@ -836,17 +836,17 @@ int asTimeArray::GetIndexFirstBefore(double date) const
     return index;
 }
 
-bool asTimeArray::RemoveYears(const VectorInt &years)
+bool asTimeArray::RemoveYears(const vi &years)
 {
     wxASSERT(m_timeArray.size() > 0);
     wxASSERT(years.size() > 0);
 
-    VectorInt yearsRemove = years;
+    vi yearsRemove = years;
 
     asTools::SortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
-    Array1DInt flags = Array1DInt::Zero(arraySize);
+    a1i flags = a1i::Zero(arraySize);
 
     for (unsigned int i = 0; i < yearsRemove.size(); i++) {
         int year = yearsRemove[i];
@@ -873,7 +873,7 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
         }
     }
 
-    Array1DDouble newTimeArray(arraySize);
+    a1d newTimeArray(arraySize);
     int counter = 0;
 
     for (int i = 0; i < arraySize; i++) {
@@ -889,17 +889,17 @@ bool asTimeArray::RemoveYears(const VectorInt &years)
     return true;
 }
 
-bool asTimeArray::KeepOnlyYears(const VectorInt &years)
+bool asTimeArray::KeepOnlyYears(const vi &years)
 {
     wxASSERT(m_timeArray.size() > 0);
     wxASSERT(years.size() > 0);
 
-    VectorInt yearsKeep = years;
+    vi yearsKeep = years;
 
     asTools::SortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
-    Array1DInt flags = Array1DInt::Zero(arraySize);
+    a1i flags = a1i::Zero(arraySize);
 
     for (unsigned int i = 0; i < yearsKeep.size(); i++) {
         int year = yearsKeep[i];
@@ -926,7 +926,7 @@ bool asTimeArray::KeepOnlyYears(const VectorInt &years)
         }
     }
 
-    Array1DDouble newTimeArray(arraySize);
+    a1d newTimeArray(arraySize);
     int counter = 0;
 
     for (int i = 0; i < arraySize; i++) {

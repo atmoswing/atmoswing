@@ -44,7 +44,7 @@ asDataPredictorArchiveNcepCfsrSubset::asDataPredictorArchiveNcepCfsrSubset(const
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
-    m_firstTimeStepHours = NaNDouble;
+    m_firstTimeStepHours = NaNd;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "lat";
@@ -124,8 +124,8 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
                m_product.IsSameAs("flx", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "flxf06";
-        m_xAxisStep = NaNFloat;
-        m_yAxisStep = NaNFloat;
+        m_xAxisStep = NaNf;
+        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
@@ -165,17 +165,17 @@ bool asDataPredictorArchiveNcepCfsrSubset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
     int firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
 
     while (true) {
-        TimeStruct t1 = asTime::GetTimeStruct(fileStart);
-        TimeStruct t2 = asTime::GetTimeStruct(fileEnd);
+        Time t1 = asTime::GetTimeStruct(fileStart);
+        Time t2 = asTime::GetTimeStruct(fileEnd);
         files.push_back(GetFullDirectoryPath() +
                         wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
         fileStart = fileEnd + 1;
@@ -203,7 +203,7 @@ VectorString asDataPredictorArchiveNcepCfsrSubset::GetListOfFiles(asTimeArray &t
 }
 
 bool asDataPredictorArchiveNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                           asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                           asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

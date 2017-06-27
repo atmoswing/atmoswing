@@ -36,7 +36,7 @@ asForecastScoreBS::asForecastScoreBS()
     m_fullName = _("Brier score");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreBS::~asForecastScoreBS()
@@ -44,30 +44,30 @@ asForecastScoreBS::~asForecastScoreBS()
     //dtor
 }
 
-float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_threshold));
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
-        return NaNFloat;
+        return NaNf;
     } else if (nbForecasts <= 2) {
         wxLogWarning(_("Not enough elements to process the Brier score."));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Sort the forcast array
     asTools::SortArray(&x[0], &x[nbForecasts - 1], Asc);
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
+    a1f F = asTools::GetCumulativeFrequency(nbForecasts);
 
     // Search probability
     float probaOccurrence;
@@ -96,7 +96,7 @@ float asForecastScoreBS::Assess(float ObservedVal, const Array1DFloat &ForcastVa
     return (probaOccurrence - probaObservedVal) * (probaOccurrence - probaObservedVal);
 }
 
-bool asForecastScoreBS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreBS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

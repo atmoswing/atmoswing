@@ -35,7 +35,7 @@
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -66,8 +66,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -76,16 +76,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    EXPECT_NEAR(9308, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9305, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9297, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9290, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9285, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9312, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9321, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9336, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9308, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9305, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9297, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9285, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9336, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](3, 5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -94,16 +94,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    EXPECT_NEAR(9302, hgt[1](0, 0), 0.5);
-    EXPECT_NEAR(9299, hgt[1](0, 1), 0.5);
-    EXPECT_NEAR(9297, hgt[1](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[1](0, 3), 0.5);
-    EXPECT_NEAR(9291, hgt[1](0, 4), 0.5);
-    EXPECT_NEAR(9289, hgt[1](0, 5), 0.5);
-    EXPECT_NEAR(9304, hgt[1](1, 0), 0.5);
-    EXPECT_NEAR(9314, hgt[1](2, 0), 0.5);
-    EXPECT_NEAR(9326, hgt[1](3, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[1](3, 5), 0.5);
+    EXPECT_NEAR(9302, hgt[1][0](0, 0), 0.5);
+    EXPECT_NEAR(9299, hgt[1][0](0, 1), 0.5);
+    EXPECT_NEAR(9297, hgt[1][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[1][0](0, 3), 0.5);
+    EXPECT_NEAR(9291, hgt[1][0](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[1][0](0, 5), 0.5);
+    EXPECT_NEAR(9304, hgt[1][0](1, 0), 0.5);
+    EXPECT_NEAR(9314, hgt[1][0](2, 0), 0.5);
+    EXPECT_NEAR(9326, hgt[1][0](3, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[1][0](3, 5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -112,16 +112,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    EXPECT_NEAR(9299, hgt[2](0, 0), 0.5);
-    EXPECT_NEAR(9297, hgt[2](0, 1), 0.5);
-    EXPECT_NEAR(9295, hgt[2](0, 2), 0.5);
-    EXPECT_NEAR(9293, hgt[2](0, 3), 0.5);
-    EXPECT_NEAR(9290, hgt[2](0, 4), 0.5);
-    EXPECT_NEAR(9289, hgt[2](0, 5), 0.5);
-    EXPECT_NEAR(9303, hgt[2](1, 0), 0.5);
-    EXPECT_NEAR(9311, hgt[2](2, 0), 0.5);
-    EXPECT_NEAR(9321, hgt[2](3, 0), 0.5);
-    EXPECT_NEAR(9295, hgt[2](3, 5), 0.5);
+    EXPECT_NEAR(9299, hgt[2][0](0, 0), 0.5);
+    EXPECT_NEAR(9297, hgt[2][0](0, 1), 0.5);
+    EXPECT_NEAR(9295, hgt[2][0](0, 2), 0.5);
+    EXPECT_NEAR(9293, hgt[2][0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[2][0](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[2][0](0, 5), 0.5);
+    EXPECT_NEAR(9303, hgt[2][0](1, 0), 0.5);
+    EXPECT_NEAR(9311, hgt[2][0](2, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
+    EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -129,7 +129,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasySmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -160,8 +160,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -170,16 +170,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
     9321	9317	9314	9310	9303	9295
     9336	9329	9325	9320	9315	9308
     */
-    EXPECT_NEAR(9308, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9305, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9297, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9290, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9285, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9312, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9321, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9336, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9308, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9305, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9297, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9285, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9336, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](3, 5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -188,16 +188,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
     9314	9308	9304	9301	9297	9293
     9326	9321	9313	9308	9304	9300
     */
-    EXPECT_NEAR(9302, hgt[1](0, 0), 0.5);
-    EXPECT_NEAR(9299, hgt[1](0, 1), 0.5);
-    EXPECT_NEAR(9297, hgt[1](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[1](0, 3), 0.5);
-    EXPECT_NEAR(9291, hgt[1](0, 4), 0.5);
-    EXPECT_NEAR(9289, hgt[1](0, 5), 0.5);
-    EXPECT_NEAR(9304, hgt[1](1, 0), 0.5);
-    EXPECT_NEAR(9314, hgt[1](2, 0), 0.5);
-    EXPECT_NEAR(9326, hgt[1](3, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[1](3, 5), 0.5);
+    EXPECT_NEAR(9302, hgt[1][0](0, 0), 0.5);
+    EXPECT_NEAR(9299, hgt[1][0](0, 1), 0.5);
+    EXPECT_NEAR(9297, hgt[1][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[1][0](0, 3), 0.5);
+    EXPECT_NEAR(9291, hgt[1][0](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[1][0](0, 5), 0.5);
+    EXPECT_NEAR(9304, hgt[1][0](1, 0), 0.5);
+    EXPECT_NEAR(9314, hgt[1][0](2, 0), 0.5);
+    EXPECT_NEAR(9326, hgt[1][0](3, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[1][0](3, 5), 0.5);
 
     /* Values time step 2 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -206,16 +206,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
     9311	9308	9304	9298	9294	9291
     9321	9318	9314	9307	9299	9295
     */
-    EXPECT_NEAR(9299, hgt[2](0, 0), 0.5);
-    EXPECT_NEAR(9297, hgt[2](0, 1), 0.5);
-    EXPECT_NEAR(9295, hgt[2](0, 2), 0.5);
-    EXPECT_NEAR(9293, hgt[2](0, 3), 0.5);
-    EXPECT_NEAR(9290, hgt[2](0, 4), 0.5);
-    EXPECT_NEAR(9289, hgt[2](0, 5), 0.5);
-    EXPECT_NEAR(9303, hgt[2](1, 0), 0.5);
-    EXPECT_NEAR(9311, hgt[2](2, 0), 0.5);
-    EXPECT_NEAR(9321, hgt[2](3, 0), 0.5);
-    EXPECT_NEAR(9295, hgt[2](3, 5), 0.5);
+    EXPECT_NEAR(9299, hgt[2][0](0, 0), 0.5);
+    EXPECT_NEAR(9297, hgt[2][0](0, 1), 0.5);
+    EXPECT_NEAR(9295, hgt[2][0](0, 2), 0.5);
+    EXPECT_NEAR(9293, hgt[2][0](0, 3), 0.5);
+    EXPECT_NEAR(9290, hgt[2][0](0, 4), 0.5);
+    EXPECT_NEAR(9289, hgt[2][0](0, 5), 0.5);
+    EXPECT_NEAR(9303, hgt[2][0](1, 0), 0.5);
+    EXPECT_NEAR(9311, hgt[2][0](2, 0), 0.5);
+    EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
+    EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -223,7 +223,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadEasyLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -254,8 +254,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -264,16 +264,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9395, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -281,7 +281,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -312,8 +312,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -322,16 +322,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
     9451	9436	9421	9402	9379	9364
     9462	9449	9437	9423	9410	9395
     */
-    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9395, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -339,7 +339,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -370,8 +370,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -380,16 +380,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -397,7 +397,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -428,8 +428,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -438,16 +438,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -455,7 +455,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -486,8 +486,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -496,16 +496,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -513,7 +513,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -544,8 +544,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -554,16 +554,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     9402	9379	9364	9354	9350	9350
     9423	9410	9395	9385	9379	9373
     */
-    EXPECT_NEAR(9333, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9291, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9301, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9369, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9402, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9291, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9301, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9369, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -571,7 +571,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -602,8 +602,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -612,16 +612,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    EXPECT_NEAR(9451, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9438, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9422, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9463, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9475, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9485, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9463, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9475, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -629,7 +629,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -660,8 +660,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -670,16 +670,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
     9475	9465	9451	9436	9421	9402
     9485	9473	9462	9449	9437	9423
     */
-    EXPECT_NEAR(9451, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9438, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9422, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9402, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9333, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9463, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9475, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9485, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9423, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9402, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9333, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9463, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9475, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -687,7 +687,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadBorderRightLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -719,8 +719,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -729,16 +729,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -746,7 +746,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -778,8 +778,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -788,16 +788,16 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9422, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9373, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9295, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9308, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9438, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9451, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](3, 0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](3, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9295, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9308, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -805,7 +805,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -837,8 +837,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -846,15 +846,15 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9400, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9368, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9314, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9422, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](2, 5), 0.5);
+    EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9314, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -862,7 +862,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -894,8 +894,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -903,15 +903,15 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
-    EXPECT_NEAR(9400, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9368, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9314, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9312, hgt[0](0, 5), 0.5);
-    EXPECT_NEAR(9422, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9462, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9360, hgt[0](2, 5), 0.5);
+    EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9314, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9312, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(9422, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -919,7 +919,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -951,8 +951,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmal
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -960,18 +960,18 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmal
     9457	7536.6	9351	7444.4	9316
     9485	9455.5	9423	9390	9373
     */
-    EXPECT_NEAR(9431, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9397.5, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9457, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 3), 0.5);
-    EXPECT_NEAR(9485, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9455.5, hgt[0](2, 1), 0.5);
-    EXPECT_NEAR(9390, hgt[0](2, 3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](2, 4), 0.5);
+    EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9304, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9457, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 3), 0.5);
+    EXPECT_NEAR(9485, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0][0](2, 1), 0.5);
+    EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -979,7 +979,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmal
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -1011,8 +1011,8 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLarg
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
@@ -1020,18 +1020,18 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLarg
     9457	9420.75	9351	9305.5	9316
     9485	9455.5	9423	9390	9373
     */
-    EXPECT_NEAR(9431, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9397.5, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0, 4), 0.5);
-    EXPECT_NEAR(9457, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 3), 0.5);
-    EXPECT_NEAR(9485, hgt[0](2, 0), 0.5);
-    EXPECT_NEAR(9455.5, hgt[0](2, 1), 0.5);
-    EXPECT_NEAR(9390, hgt[0](2, 3), 0.5);
-    EXPECT_NEAR(9373, hgt[0](2, 4), 0.5);
+    EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9304, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(9457, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 3), 0.5);
+    EXPECT_NEAR(9485, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(9455.5, hgt[0][0](2, 1), 0.5);
+    EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
+    EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -1039,7 +1039,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLarg
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -1071,22 +1071,22 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
-    EXPECT_NEAR(9316, hgt[0](1, 3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9304, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
+    EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -1094,7 +1094,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -1126,22 +1126,22 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
-    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9304, hgt[0](0, 3), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
-    EXPECT_NEAR(9316, hgt[0](1, 3), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9304, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
+    EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -1149,7 +1149,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
@@ -1181,20 +1181,20 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);
@@ -1202,7 +1202,7 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
 
 TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
-    VectorString filepaths;
+    vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
@@ -1234,20 +1234,20 @@ TEST(DataPredictorRealtimeNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStart
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
-    EXPECT_NEAR(9397.5, hgt[0](0, 0), 0.5);
-    EXPECT_NEAR(9332, hgt[0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0](0, 2), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0](1, 0), 0.5);
-    EXPECT_NEAR(9351, hgt[0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0](1, 2), 0.5);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
+    EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
     wxDELETE(geoarea);
     wxDELETE(predictor);

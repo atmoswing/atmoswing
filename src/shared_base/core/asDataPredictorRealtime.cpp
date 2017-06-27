@@ -246,9 +246,9 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
 }
 
 bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                              VVArray2DFloat &compositeData)
+                                               vvva2f &compositeData)
 {
-    VectorString filesList = GetListOfFiles(timeArray);
+    vwxs filesList = GetListOfFiles(timeArray);
 
     if(!CheckFilesPresence(filesList)) {
         return false;
@@ -265,20 +265,20 @@ bool asDataPredictorRealtime::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea
     return true;
 }
 
-VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString filesList;
+    vwxs filesList;
 
-    for (int i_file = 0; i_file < m_fileNames.size(); i_file++) {
+    for (int iFile = 0; iFile < m_fileNames.size(); iFile++) {
         wxString filePath = wxEmptyString;
 
         // Check if the volume is present
-        wxFileName fileName(m_fileNames[i_file]);
+        wxFileName fileName(m_fileNames[iFile]);
         if (!fileName.HasVolume() && !m_predictorsRealtimeDirectory.IsEmpty()) {
             filePath = m_predictorsRealtimeDirectory;
             filePath.Append(DS);
         }
-        filePath.Append(m_fileNames[i_file]);
+        filePath.Append(m_fileNames[iFile]);
 
         filesList.push_back(filePath);
     }
@@ -287,7 +287,7 @@ VectorString asDataPredictorRealtime::GetListOfFiles(asTimeArray &timeArray) con
 }
 
 bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                             VVArray2DFloat &compositeData)
+                                             vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -297,41 +297,41 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
 
     // Go through every area
     m_fileIndexes.areas.resize(compositeData.size());
-    for (int i_area = 0; i_area < compositeData.size(); i_area++) {
+    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float)dataArea->GetXaxisCompositeStart(i_area);
-            float latMinStart = (float)dataArea->GetYaxisCompositeStart(i_area);
-            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(i_area);
+            float lonMin = (float)dataArea->GetXaxisCompositeStart(iArea);
+            float latMinStart = (float)dataArea->GetYaxisCompositeStart(iArea);
+            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
-            m_fileIndexes.areas[i_area].lonCount = dataArea->GetXaxisCompositePtsnb(i_area);
-            m_fileIndexes.areas[i_area].latCount = dataArea->GetYaxisCompositePtsnb(i_area);
+            m_fileIndexes.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
+            m_fileIndexes.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
 
             // Get the spatial indices of the desired data
-            m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+            m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                               &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                               lonMin, 0.01f);
-            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
-                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                                   &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                                   lonMin - 360, 0.01f);
             }
-            if (m_fileIndexes.areas[i_area].lonStart == asOUT_OF_RANGE) {
+            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
-                m_fileIndexes.areas[i_area].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
+                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                                   &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
                                                                                   lonMin + 360, 0.01f);
             }
-            if (m_fileIndexes.areas[i_area].lonStart < 0) {
+            if (m_fileIndexes.areas[iArea].lonStart < 0) {
                 wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
                            m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
                            m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]);
                 return false;
             }
-            wxASSERT_MSG(m_fileIndexes.areas[i_area].lonStart >= 0,
+            wxASSERT_MSG(m_fileIndexes.areas[iArea].lonStart >= 0,
                          wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
                                           m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
                                           m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1], lonMin));
@@ -348,12 +348,12 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
             wxASSERT_MSG(indexStartLat2 >= 0,
                          wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fileStructure.axisLat[0],
                                           m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
-            m_fileIndexes.areas[i_area].latStart = wxMin(indexStartLat1, indexStartLat2);
+            m_fileIndexes.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
         } else {
-            m_fileIndexes.areas[i_area].lonStart = 0;
-            m_fileIndexes.areas[i_area].latStart = 0;
-            m_fileIndexes.areas[i_area].lonCount = m_lonPtsnb;
-            m_fileIndexes.areas[i_area].latCount = m_latPtsnb;
+            m_fileIndexes.areas[iArea].lonStart = 0;
+            m_fileIndexes.areas[iArea].latStart = 0;
+            m_fileIndexes.areas[iArea].lonCount = m_lonPtsnb;
+            m_fileIndexes.areas[iArea].latCount = m_latPtsnb;
         }
 
         if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
@@ -373,12 +373,12 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
 }
 
 bool asDataPredictorRealtime::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                             asTimeArray &timeArray, vvva2f &compositeData)
 {
     return false;
 }
 
 double asDataPredictorRealtime::ConvertToMjd(double timeValue, double refValue) const
 {
-    return NaNDouble;
+    return NaNd;
 }

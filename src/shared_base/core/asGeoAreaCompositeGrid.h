@@ -49,9 +49,9 @@ public:
                                                int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
                                                int flatAllowed = asFLAT_FORBIDDEN);
 
-	static Array1DDouble GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep = 0);
+	static a1d GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep = 0);
 
-	static Array1DDouble GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep = 0);
+	static a1d GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep = 0);
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
@@ -63,9 +63,9 @@ public:
 
     virtual double GetYstep() const = 0;
 
-    virtual Array1DDouble GetXaxisComposite(int compositeNb) = 0;
+    virtual a1d GetXaxisComposite(int compositeNb) = 0;
 
-    virtual Array1DDouble GetYaxisComposite(int compositeNb) = 0;
+    virtual a1d GetYaxisComposite(int compositeNb) = 0;
 
     virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
 
@@ -91,9 +91,9 @@ public:
 
     double GetYaxisWidth() const;
 
-    Array1DDouble GetXaxis();
+    a1d GetXaxis();
 
-    Array1DDouble GetYaxis();
+    a1d GetYaxis();
 
 protected:
 

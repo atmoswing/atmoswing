@@ -86,9 +86,9 @@ bool asResultsAnalogsDates::Save()
     ncFile.DefDim("analogs", Nanalogs);
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNames1;
+    vstds DimNames1;
     DimNames1.push_back("time");
-    VectorStdString DimNames2;
+    vstds DimNames2;
     DimNames2.push_back("time");
     DimNames2.push_back("analogs");
 

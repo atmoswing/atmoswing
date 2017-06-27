@@ -175,13 +175,13 @@ TEST(Tools, IsNaNZero)
 
 TEST(Tools, IsNaNFloatTrue)
 {
-    float Value = NaNFloat;
+    float Value = NaNf;
     EXPECT_TRUE(asTools::IsNaN(Value));
 }
 
 TEST(Tools, IsNaNDoubleTrue)
 {
-    double Value = NaNDouble;
+    double Value = NaNd;
     EXPECT_TRUE(asTools::IsNaN(Value));
 }
 
@@ -205,25 +205,25 @@ TEST(Tools, IsInfLongDoubleFalse)
 
 TEST(Tools, IsInfFloatTrue)
 {
-    float Value = InfFloat;
+    float Value = Inff;
     EXPECT_TRUE(asTools::IsInf(Value));
 }
 
 TEST(Tools, IsInfDoubleTrue)
 {
-    double Value = InfDouble;
+    double Value = Infd;
     EXPECT_TRUE(asTools::IsInf(Value));
 }
 
 TEST(Tools, IsInfLongDoubleTrue)
 {
-    long double Value = InfLongDouble;
+    long double Value = Infld;
     EXPECT_TRUE(asTools::IsInf(Value));
 }
 
 TEST(Tools, CountNotNaNFloat)
 {
-    float Array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNFloat, 8.34f, 9.75f, 10.0f, NaNFloat};
+    float Array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
     float *pVectStart = &Array[0];
     float *pVectEnd = &Array[9];
     int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
@@ -232,7 +232,7 @@ TEST(Tools, CountNotNaNFloat)
 
 TEST(Tools, CountNotNaNDouble)
 {
-    double Array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNDouble, 8.34, 9.75, 10, NaNDouble};
+    double Array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
     double *pVectStart = &Array[0];
     double *pVectEnd = &Array[9];
     int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
@@ -248,14 +248,14 @@ TEST(Tools, FindMinInt)
 
 TEST(Tools, FindMinFloat)
 {
-    float Array[] = {NaNFloat, NaNFloat, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNFloat, 8.34f, 9.75f, 10.0f, NaNFloat};
+    float Array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
     float Result = asTools::MinArray(&Array[0], &Array[11]);
     EXPECT_FLOAT_EQ(0.3465, Result);
 }
 
 TEST(Tools, FindMinDouble)
 {
-    double Array[] = {NaNDouble, NaNDouble, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNDouble, 8.34, 9.75, 10, NaNDouble};
+    double Array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
     double Result = asTools::MinArray(&Array[0], &Array[11]);
     EXPECT_DOUBLE_EQ(0.3465, Result);
 }
@@ -269,15 +269,15 @@ TEST(Tools, FindMaxInt)
 
 TEST(Tools, FindMaxFloat)
 {
-    float Array[] = {NaNFloat, NaNFloat, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNFloat, 8.34f, 9.75f, 10.12f,
-                     NaNFloat};
+    float Array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f,
+                     NaNf};
     float Result = asTools::MaxArray(&Array[0], &Array[11]);
     EXPECT_FLOAT_EQ(10.12, Result);
 }
 
 TEST(Tools, FindMaxDouble)
 {
-    double Array[] = {NaNDouble, NaNDouble, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNDouble, 8.34, 9.75, 10.12, NaNDouble};
+    double Array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10.12, NaNd};
     double Result = asTools::MaxArray(&Array[0], &Array[11]);
     EXPECT_DOUBLE_EQ(10.12, Result);
 }
@@ -291,16 +291,16 @@ TEST(Tools, FindMinStepInt)
 
 TEST(Tools, FindMinStepFloat)
 {
-    float Array[] = {NaNFloat, 10.12f, NaNFloat, 1.345f, 1.345f, 3.69f, 5.58f, NaNFloat, 8.34f, 2.76f, 9.75f, 0.3465f,
-                     NaNFloat};
+    float Array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
+                     NaNf};
     float Result = asTools::MinArrayStep(&Array[0], &Array[11], 0.0001f);
     EXPECT_FLOAT_EQ(0.37, Result);
 }
 
 TEST(Tools, FindMinStepDouble)
 {
-    double Array[] = {NaNDouble, 10.12, NaNDouble, 1.345, 1.345, 3.69, 5.58, NaNDouble, 8.34, 2.76, 9.75, 0.3465,
-                      NaNDouble};
+    double Array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
+                      NaNd};
     double Result = asTools::MinArrayStep(&Array[0], &Array[11]);
     EXPECT_FLOAT_EQ(0.37, Result);
 }
@@ -308,7 +308,7 @@ TEST(Tools, FindMinStepDouble)
 TEST(Tools, ExtractUniqueValuesInt)
 {
     int Array[] = {0, 10, 0, 1, 3, 5, 1, 8, 2, 9, 0, 9};;
-    Array1DInt Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
+    a1i Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
     EXPECT_EQ(0, Result[0]);
     EXPECT_EQ(1, Result[1]);
     EXPECT_EQ(2, Result[2]);
@@ -321,9 +321,9 @@ TEST(Tools, ExtractUniqueValuesInt)
 
 TEST(Tools, ExtractUniqueValuesFloat)
 {
-    float Array[] = {NaNFloat, 10.12f, NaNFloat, 1.345f, 1.345f, 3.69f, 5.58f, NaNFloat, 8.34f, 2.76f, 9.75f, 0.3465f,
-                     NaNFloat};
-    Array1DFloat Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001f));
+    float Array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
+                     NaNf};
+    a1f Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001f));
     EXPECT_FLOAT_EQ(0.3465, Result[0]);
     EXPECT_FLOAT_EQ(1.345, Result[1]);
     EXPECT_FLOAT_EQ(2.76, Result[2]);
@@ -336,9 +336,9 @@ TEST(Tools, ExtractUniqueValuesFloat)
 
 TEST(Tools, ExtractUniqueValuesDouble)
 {
-    double Array[] = {NaNDouble, 10.12, NaNDouble, 1.345, 1.345, 3.69, 5.58, NaNDouble, 8.34, 2.76, 9.75, 0.3465,
-                      NaNDouble};
-    Array1DDouble Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
+    double Array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
+                      NaNd};
+    a1d Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
     EXPECT_DOUBLE_EQ(0.3465, Result[0]);
     EXPECT_DOUBLE_EQ(1.345, Result[1]);
     EXPECT_DOUBLE_EQ(2.76, Result[2]);
@@ -991,7 +991,7 @@ TEST(Tools, SortedArraySearchDoubleArraySameValOutofRange)
 
 TEST(Tools, SortedArraySearchRoleOfToleranceInSearch)
 {
-    Array1DDouble values;
+    a1d values;
     values.resize(94);
     values <<
     -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762, 06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
