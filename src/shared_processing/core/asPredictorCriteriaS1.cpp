@@ -45,7 +45,7 @@ asPredictorCriteriaS1::~asPredictorCriteriaS1()
     //dtor
 }
 
-float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
+float asPredictorCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
@@ -108,7 +108,7 @@ float asPredictorCriteriaS1::Assess(const Array2DFloat &refData, const Array2DFl
             wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNFloat;
+            return NaNf;
         }
     }
 

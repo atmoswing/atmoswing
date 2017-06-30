@@ -71,11 +71,11 @@ bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherar
     return true;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
+a1d asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetXaxisCompositePtsnb(compositeNb);
-    Array1DDouble Xaxis(size);
+    a1d Xaxis(size);
 
     // Build array
     double Xmin = GetComposite(compositeNb).GetXmin();
@@ -94,11 +94,11 @@ Array1DDouble asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
     return Xaxis;
 }
 
-Array1DDouble asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
+a1d asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetYaxisCompositePtsnb(compositeNb);
-    Array1DDouble Yaxis(size);
+    a1d Yaxis(size);
 
     // Build array
     double Ymin = GetComposite(compositeNb).GetYmin();

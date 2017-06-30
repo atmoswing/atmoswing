@@ -149,11 +149,11 @@ TEST(GeoAreaRegularGrid, GetAxes)
     double step = 2.5;
     asGeoAreaRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
 
-    Array1DDouble uaxis;
+    a1d uaxis;
     uaxis.resize(geoArea.GetXaxisPtsnb());
     uaxis = geoArea.GetXaxis();
 
-    Array1DDouble vaxis;
+    a1d vaxis;
     vaxis.resize(geoArea.GetYaxisPtsnb());
     vaxis = geoArea.GetYaxis();
 

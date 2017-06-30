@@ -69,7 +69,7 @@ void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent &event)
     GetParent()->ProcessWindowEvent(eventParent);
 }
 
-void asPanelSidebarAnalogDates::SetChoices(Array1DFloat &arrayDate, Array1DFloat &arrayCriteria)
+void asPanelSidebarAnalogDates::SetChoices(a1f &arrayDate, a1f &arrayCriteria)
 {
     // To speed up inserting we hide the control temporarily
     m_listCtrl->Freeze();

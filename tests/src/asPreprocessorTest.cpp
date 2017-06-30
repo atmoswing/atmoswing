@@ -72,8 +72,8 @@ TEST(Preprocessor, Gradients)
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
-    VArray2DFloat arrayData = predictor->GetData();
-    EXPECT_FLOAT_EQ(176.0, arrayData[0](0, 0));
+    vva2f arrayData = predictor->GetData();
+    EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
@@ -82,7 +82,7 @@ TEST(Preprocessor, Gradients)
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
-    VArray2DFloat grads = gradients->GetData();
+    vva2f grads = gradients->GetData();
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     176.0	175.0	170.0	162.0	151.0
@@ -121,35 +121,35 @@ TEST(Preprocessor, Gradients)
     28	-20
     */
 
-    EXPECT_DOUBLE_EQ(9, grads[0](0, 0));
-    EXPECT_DOUBLE_EQ(5, grads[0](0, 1));
-    EXPECT_DOUBLE_EQ(3, grads[0](0, 2));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 3));
-    EXPECT_DOUBLE_EQ(-7, grads[0](0, 4));
-    EXPECT_DOUBLE_EQ(8, grads[0](0, 5));
-    EXPECT_DOUBLE_EQ(3, grads[0](0, 6));
-    EXPECT_DOUBLE_EQ(1, grads[0](0, 7));
-    EXPECT_DOUBLE_EQ(1, grads[0](0, 8));
-    EXPECT_DOUBLE_EQ(-1, grads[0](0, 9));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 10));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 11));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 12));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 13));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 14));
-    EXPECT_DOUBLE_EQ(-1, grads[0](0, 15));
-    EXPECT_DOUBLE_EQ(-5, grads[0](0, 16));
-    EXPECT_DOUBLE_EQ(-8, grads[0](0, 17));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0, 18));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 19));
-    EXPECT_DOUBLE_EQ(-5, grads[0](0, 20));
-    EXPECT_DOUBLE_EQ(-7, grads[0](0, 21));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0, 22));
-    EXPECT_DOUBLE_EQ(-18, grads[0](0, 23));
-    EXPECT_DOUBLE_EQ(0, grads[0](0, 24));
-    EXPECT_DOUBLE_EQ(-10, grads[0](0, 25));
-    EXPECT_DOUBLE_EQ(-9, grads[0](0, 26));
-    EXPECT_DOUBLE_EQ(-11, grads[0](0, 27));
-    EXPECT_DOUBLE_EQ(-20, grads[0](0, 28));
+    EXPECT_DOUBLE_EQ(9, grads[0][0](0, 0));
+    EXPECT_DOUBLE_EQ(5, grads[0][0](0, 1));
+    EXPECT_DOUBLE_EQ(3, grads[0][0](0, 2));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 3));
+    EXPECT_DOUBLE_EQ(-7, grads[0][0](0, 4));
+    EXPECT_DOUBLE_EQ(8, grads[0][0](0, 5));
+    EXPECT_DOUBLE_EQ(3, grads[0][0](0, 6));
+    EXPECT_DOUBLE_EQ(1, grads[0][0](0, 7));
+    EXPECT_DOUBLE_EQ(1, grads[0][0](0, 8));
+    EXPECT_DOUBLE_EQ(-1, grads[0][0](0, 9));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 10));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 11));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 12));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 13));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 14));
+    EXPECT_DOUBLE_EQ(-1, grads[0][0](0, 15));
+    EXPECT_DOUBLE_EQ(-5, grads[0][0](0, 16));
+    EXPECT_DOUBLE_EQ(-8, grads[0][0](0, 17));
+    EXPECT_DOUBLE_EQ(-11, grads[0][0](0, 18));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 19));
+    EXPECT_DOUBLE_EQ(-5, grads[0][0](0, 20));
+    EXPECT_DOUBLE_EQ(-7, grads[0][0](0, 21));
+    EXPECT_DOUBLE_EQ(-11, grads[0][0](0, 22));
+    EXPECT_DOUBLE_EQ(-18, grads[0][0](0, 23));
+    EXPECT_DOUBLE_EQ(0, grads[0][0](0, 24));
+    EXPECT_DOUBLE_EQ(-10, grads[0][0](0, 25));
+    EXPECT_DOUBLE_EQ(-9, grads[0][0](0, 26));
+    EXPECT_DOUBLE_EQ(-11, grads[0][0](0, 27));
+    EXPECT_DOUBLE_EQ(-20, grads[0][0](0, 28));
 
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -188,14 +188,14 @@ TEST(Preprocessor, Gradients)
     28	-2
     */
 
-    EXPECT_DOUBLE_EQ(20, grads[11](0, 0));
-    EXPECT_DOUBLE_EQ(21, grads[11](0, 1));
-    EXPECT_DOUBLE_EQ(17, grads[11](0, 5));
-    EXPECT_DOUBLE_EQ(15, grads[11](0, 9));
-    EXPECT_DOUBLE_EQ(-17, grads[11](0, 15));
-    EXPECT_DOUBLE_EQ(12, grads[11](0, 18));
-    EXPECT_DOUBLE_EQ(-16, grads[11](0, 20));
-    EXPECT_DOUBLE_EQ(-2, grads[11](0, 28));
+    EXPECT_DOUBLE_EQ(20, grads[11][0](0, 0));
+    EXPECT_DOUBLE_EQ(21, grads[11][0](0, 1));
+    EXPECT_DOUBLE_EQ(17, grads[11][0](0, 5));
+    EXPECT_DOUBLE_EQ(15, grads[11][0](0, 9));
+    EXPECT_DOUBLE_EQ(-17, grads[11][0](0, 15));
+    EXPECT_DOUBLE_EQ(12, grads[11][0](0, 18));
+    EXPECT_DOUBLE_EQ(-16, grads[11][0](0, 20));
+    EXPECT_DOUBLE_EQ(-2, grads[11][0](0, 28));
 
     wxDELETE(gradients);
     wxDELETE(predictor);
@@ -239,8 +239,8 @@ TEST(Preprocessor, GradientsMultithreading)
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
-    VArray2DFloat arrayData = predictor->GetData();
-    EXPECT_FLOAT_EQ(176.0, arrayData[0](0, 0));
+    vva2f arrayData = predictor->GetData();
+    EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
     std::vector<asDataPredictorArchive *> vdata;
     vdata.push_back(predictor);
@@ -249,7 +249,7 @@ TEST(Preprocessor, GradientsMultithreading)
     asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
-    VArray2DFloat hgt = gradients->GetData();
+    vva2f hgt = gradients->GetData();
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     176.0	175.0	170.0	162.0	151.0
@@ -288,14 +288,14 @@ TEST(Preprocessor, GradientsMultithreading)
     28	-20
     */
 
-    EXPECT_DOUBLE_EQ(9, hgt[0](0, 0));
-    EXPECT_DOUBLE_EQ(5, hgt[0](0, 1));
-    EXPECT_DOUBLE_EQ(-7, hgt[0](0, 4));
-    EXPECT_DOUBLE_EQ(8, hgt[0](0, 5));
-    EXPECT_DOUBLE_EQ(-1, hgt[0](0, 15));
-    EXPECT_DOUBLE_EQ(-5, hgt[0](0, 20));
-    EXPECT_DOUBLE_EQ(-18, hgt[0](0, 23));
-    EXPECT_DOUBLE_EQ(-20, hgt[0](0, 28));
+    EXPECT_DOUBLE_EQ(9, hgt[0][0](0, 0));
+    EXPECT_DOUBLE_EQ(5, hgt[0][0](0, 1));
+    EXPECT_DOUBLE_EQ(-7, hgt[0][0](0, 4));
+    EXPECT_DOUBLE_EQ(8, hgt[0][0](0, 5));
+    EXPECT_DOUBLE_EQ(-1, hgt[0][0](0, 15));
+    EXPECT_DOUBLE_EQ(-5, hgt[0][0](0, 20));
+    EXPECT_DOUBLE_EQ(-18, hgt[0][0](0, 23));
+    EXPECT_DOUBLE_EQ(-20, hgt[0][0](0, 28));
 
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     121.0	104.0	98.0	102.0	114.0
@@ -334,14 +334,14 @@ TEST(Preprocessor, GradientsMultithreading)
     28	-2
     */
 
-    EXPECT_DOUBLE_EQ(20, hgt[11](0, 0));
-    EXPECT_DOUBLE_EQ(21, hgt[11](0, 1));
-    EXPECT_DOUBLE_EQ(17, hgt[11](0, 5));
-    EXPECT_DOUBLE_EQ(15, hgt[11](0, 9));
-    EXPECT_DOUBLE_EQ(-17, hgt[11](0, 15));
-    EXPECT_DOUBLE_EQ(12, hgt[11](0, 18));
-    EXPECT_DOUBLE_EQ(-16, hgt[11](0, 20));
-    EXPECT_DOUBLE_EQ(-2, hgt[11](0, 28));
+    EXPECT_DOUBLE_EQ(20, hgt[11][0](0, 0));
+    EXPECT_DOUBLE_EQ(21, hgt[11][0](0, 1));
+    EXPECT_DOUBLE_EQ(17, hgt[11][0](0, 5));
+    EXPECT_DOUBLE_EQ(15, hgt[11][0](0, 9));
+    EXPECT_DOUBLE_EQ(-17, hgt[11][0](0, 15));
+    EXPECT_DOUBLE_EQ(12, hgt[11][0](0, 18));
+    EXPECT_DOUBLE_EQ(-16, hgt[11][0](0, 20));
+    EXPECT_DOUBLE_EQ(-2, hgt[11][0](0, 28));
 
     wxDELETE(gradients);
     wxDELETE(predictor);
@@ -391,7 +391,7 @@ TEST(Preprocessor, Addition)
     asDataPredictorArchive *addition = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, addition);
 
-    VArray2DFloat adds = addition->GetData();
+    vva2f adds = addition->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -414,14 +414,14 @@ TEST(Preprocessor, Addition)
     842.9	842.5	839.3	833.4	822.7
     */
 
-    EXPECT_NEAR(837.6, adds[0](0, 0), 0.05);
-    EXPECT_NEAR(839.5, adds[0](0, 1), 0.05);
-    EXPECT_NEAR(840.4, adds[0](0, 2), 0.05);
-    EXPECT_NEAR(839.0, adds[0](0, 3), 0.05);
-    EXPECT_NEAR(834.8, adds[0](0, 4), 0.05);
-    EXPECT_NEAR(841.1, adds[0](1, 0), 0.05);
-    EXPECT_NEAR(842.9, adds[0](2, 0), 0.05);
-    EXPECT_NEAR(822.7, adds[0](2, 4), 0.05);
+    EXPECT_NEAR(837.6, adds[0][0](0, 0), 0.05);
+    EXPECT_NEAR(839.5, adds[0][0](0, 1), 0.05);
+    EXPECT_NEAR(840.4, adds[0][0](0, 2), 0.05);
+    EXPECT_NEAR(839.0, adds[0][0](0, 3), 0.05);
+    EXPECT_NEAR(834.8, adds[0][0](0, 4), 0.05);
+    EXPECT_NEAR(841.1, adds[0][0](1, 0), 0.05);
+    EXPECT_NEAR(842.9, adds[0][0](2, 0), 0.05);
+    EXPECT_NEAR(822.7, adds[0][0](2, 4), 0.05);
 
 
     /* Values day 5, 00h
@@ -445,14 +445,14 @@ TEST(Preprocessor, Addition)
     841.1	839.6	835.7	827.4	820.7
     */
 
-    EXPECT_NEAR(838.3, adds[4](0, 0), 0.05);
-    EXPECT_NEAR(840.4, adds[4](0, 1), 0.05);
-    EXPECT_NEAR(841.0, adds[4](0, 2), 0.05);
-    EXPECT_NEAR(839.1, adds[4](0, 3), 0.05);
-    EXPECT_NEAR(835.1, adds[4](0, 4), 0.05);
-    EXPECT_NEAR(841.2, adds[4](1, 0), 0.05);
-    EXPECT_NEAR(841.1, adds[4](2, 0), 0.05);
-    EXPECT_NEAR(820.7, adds[4](2, 4), 0.05);
+    EXPECT_NEAR(838.3, adds[4][0](0, 0), 0.05);
+    EXPECT_NEAR(840.4, adds[4][0](0, 1), 0.05);
+    EXPECT_NEAR(841.0, adds[4][0](0, 2), 0.05);
+    EXPECT_NEAR(839.1, adds[4][0](0, 3), 0.05);
+    EXPECT_NEAR(835.1, adds[4][0](0, 4), 0.05);
+    EXPECT_NEAR(841.2, adds[4][0](1, 0), 0.05);
+    EXPECT_NEAR(841.1, adds[4][0](2, 0), 0.05);
+    EXPECT_NEAR(820.7, adds[4][0](2, 4), 0.05);
 
 
     wxDELETE(geoarea);
@@ -506,7 +506,7 @@ TEST(Preprocessor, Average)
     asDataPredictorArchive *average = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, average);
 
-    VArray2DFloat avg = average->GetData();
+    vva2f avg = average->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -529,14 +529,14 @@ TEST(Preprocessor, Average)
     281.0	280.8	279.8	277.8	274.2
     */
 
-    EXPECT_NEAR(279.2, avg[0](0, 0), 0.05);
-    EXPECT_NEAR(279.8, avg[0](0, 1), 0.05);
-    EXPECT_NEAR(280.1, avg[0](0, 2), 0.05);
-    EXPECT_NEAR(279.7, avg[0](0, 3), 0.05);
-    EXPECT_NEAR(278.3, avg[0](0, 4), 0.05);
-    EXPECT_NEAR(280.4, avg[0](1, 0), 0.05);
-    EXPECT_NEAR(281.0, avg[0](2, 0), 0.05);
-    EXPECT_NEAR(274.2, avg[0](2, 4), 0.05);
+    EXPECT_NEAR(279.2, avg[0][0](0, 0), 0.05);
+    EXPECT_NEAR(279.8, avg[0][0](0, 1), 0.05);
+    EXPECT_NEAR(280.1, avg[0][0](0, 2), 0.05);
+    EXPECT_NEAR(279.7, avg[0][0](0, 3), 0.05);
+    EXPECT_NEAR(278.3, avg[0][0](0, 4), 0.05);
+    EXPECT_NEAR(280.4, avg[0][0](1, 0), 0.05);
+    EXPECT_NEAR(281.0, avg[0][0](2, 0), 0.05);
+    EXPECT_NEAR(274.2, avg[0][0](2, 4), 0.05);
 
 
     /* Values day 5, 00h
@@ -560,14 +560,14 @@ TEST(Preprocessor, Average)
     280.4	279.9	278.6	275.8	273.6
     */
 
-    EXPECT_NEAR(279.4, avg[4](0, 0), 0.05);
-    EXPECT_NEAR(280.1, avg[4](0, 1), 0.05);
-    EXPECT_NEAR(280.3, avg[4](0, 2), 0.05);
-    EXPECT_NEAR(279.7, avg[4](0, 3), 0.05);
-    EXPECT_NEAR(278.4, avg[4](0, 4), 0.05);
-    EXPECT_NEAR(280.4, avg[4](1, 0), 0.05);
-    EXPECT_NEAR(280.4, avg[4](2, 0), 0.05);
-    EXPECT_NEAR(273.6, avg[4](2, 4), 0.05);
+    EXPECT_NEAR(279.4, avg[4][0](0, 0), 0.05);
+    EXPECT_NEAR(280.1, avg[4][0](0, 1), 0.05);
+    EXPECT_NEAR(280.3, avg[4][0](0, 2), 0.05);
+    EXPECT_NEAR(279.7, avg[4][0](0, 3), 0.05);
+    EXPECT_NEAR(278.4, avg[4][0](0, 4), 0.05);
+    EXPECT_NEAR(280.4, avg[4][0](1, 0), 0.05);
+    EXPECT_NEAR(280.4, avg[4][0](2, 0), 0.05);
+    EXPECT_NEAR(273.6, avg[4][0](2, 4), 0.05);
 
 
     wxDELETE(geoarea);
@@ -616,7 +616,7 @@ TEST(Preprocessor, Difference)
     asDataPredictorArchive *difference = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, difference);
 
-    VArray2DFloat diffs = difference->GetData();
+    vva2f diffs = difference->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -634,14 +634,14 @@ TEST(Preprocessor, Difference)
     -0.2	-0.1	0	    0.3	    0.4
     */
 
-    EXPECT_NEAR(-0.9, diffs[0](0, 0), 0.05);
-    EXPECT_NEAR(-0.5, diffs[0](0, 1), 0.05);
-    EXPECT_NEAR(0, diffs[0](0, 2), 0.05);
-    EXPECT_NEAR(0.4, diffs[0](0, 3), 0.05);
-    EXPECT_NEAR(0.7, diffs[0](0, 4), 0.05);
-    EXPECT_NEAR(-0.4, diffs[0](1, 0), 0.05);
-    EXPECT_NEAR(-0.2, diffs[0](2, 0), 0.05);
-    EXPECT_NEAR(0.4, diffs[0](2, 4), 0.05);
+    EXPECT_NEAR(-0.9, diffs[0][0](0, 0), 0.05);
+    EXPECT_NEAR(-0.5, diffs[0][0](0, 1), 0.05);
+    EXPECT_NEAR(0, diffs[0][0](0, 2), 0.05);
+    EXPECT_NEAR(0.4, diffs[0][0](0, 3), 0.05);
+    EXPECT_NEAR(0.7, diffs[0][0](0, 4), 0.05);
+    EXPECT_NEAR(-0.4, diffs[0][0](1, 0), 0.05);
+    EXPECT_NEAR(-0.2, diffs[0][0](2, 0), 0.05);
+    EXPECT_NEAR(0.4, diffs[0][0](2, 4), 0.05);
 
 
     /* Values day 5, 00h
@@ -660,14 +660,14 @@ TEST(Preprocessor, Difference)
     0.2	    0.3	    0.4	    0.6	    0.2
     */
 
-    EXPECT_NEAR(0.1, diffs[4](0, 0), 0.05);
-    EXPECT_NEAR(0.3, diffs[4](0, 1), 0.05);
-    EXPECT_NEAR(0.7, diffs[4](0, 2), 0.05);
-    EXPECT_NEAR(1.1, diffs[4](0, 3), 0.05);
-    EXPECT_NEAR(1.3, diffs[4](0, 4), 0.05);
-    EXPECT_NEAR(-0.2, diffs[4](1, 0), 0.05);
-    EXPECT_NEAR(0.2, diffs[4](2, 0), 0.05);
-    EXPECT_NEAR(0.2, diffs[4](2, 4), 0.05);
+    EXPECT_NEAR(0.1, diffs[4][0](0, 0), 0.05);
+    EXPECT_NEAR(0.3, diffs[4][0](0, 1), 0.05);
+    EXPECT_NEAR(0.7, diffs[4][0](0, 2), 0.05);
+    EXPECT_NEAR(1.1, diffs[4][0](0, 3), 0.05);
+    EXPECT_NEAR(1.3, diffs[4][0](0, 4), 0.05);
+    EXPECT_NEAR(-0.2, diffs[4][0](1, 0), 0.05);
+    EXPECT_NEAR(0.2, diffs[4][0](2, 0), 0.05);
+    EXPECT_NEAR(0.2, diffs[4][0](2, 4), 0.05);
 
 
     wxDELETE(geoarea);
@@ -715,7 +715,7 @@ TEST(Preprocessor, Multiplication)
     asDataPredictorArchive *multiplication = new asDataPredictorArchive(*predictor1);
     asPreprocessor::Preprocess(vdata, method, multiplication);
 
-    VArray2DFloat multi = multiplication->GetData();
+    vva2f multi = multiplication->GetData();
 
     /* Values day 1, 00h
     278.3	279.2	279.9	279.9	278.9
@@ -733,14 +733,14 @@ TEST(Preprocessor, Multiplication)
     78960.99	78989.1	    78512.04	77645.8	    75350.21
     */
 
-    EXPECT_NEAR(77701.36, multi[0](0, 0), 0.05);
-    EXPECT_NEAR(78092.24, multi[0](0, 1), 0.05);
-    EXPECT_NEAR(78344.01, multi[0](0, 2), 0.05);
-    EXPECT_NEAR(78232.05, multi[0](0, 3), 0.05);
-    EXPECT_NEAR(77589.98, multi[0](0, 4), 0.05);
-    EXPECT_NEAR(78568.05, multi[0](1, 0), 0.05);
-    EXPECT_NEAR(78960.99, multi[0](2, 0), 0.05);
-    EXPECT_NEAR(75350.21, multi[0](2, 4), 0.05);
+    EXPECT_NEAR(77701.36, multi[0][0](0, 0), 0.05);
+    EXPECT_NEAR(78092.24, multi[0][0](0, 1), 0.05);
+    EXPECT_NEAR(78344.01, multi[0][0](0, 2), 0.05);
+    EXPECT_NEAR(78232.05, multi[0][0](0, 3), 0.05);
+    EXPECT_NEAR(77589.98, multi[0][0](0, 4), 0.05);
+    EXPECT_NEAR(78568.05, multi[0][0](1, 0), 0.05);
+    EXPECT_NEAR(78960.99, multi[0][0](2, 0), 0.05);
+    EXPECT_NEAR(75350.21, multi[0][0](2, 4), 0.05);
 
 
     /* Values day 5, 00h
@@ -759,14 +759,14 @@ TEST(Preprocessor, Multiplication)
     78736.35	78484	    77785.17	76341.6	    74966.43
     */
 
-    EXPECT_NEAR(78204.12, multi[4](0, 0), 0.05);
-    EXPECT_NEAR(78596.1, multi[4](0, 1), 0.05);
-    EXPECT_NEAR(78708.18, multi[4](0, 2), 0.05);
-    EXPECT_NEAR(78371.7, multi[4](0, 3), 0.05);
-    EXPECT_NEAR(77645.4, multi[4](0, 4), 0.05);
-    EXPECT_NEAR(78736.35, multi[4](1, 0), 0.05);
-    EXPECT_NEAR(78736.35, multi[4](2, 0), 0.05);
-    EXPECT_NEAR(74966.43, multi[4](2, 4), 0.05);
+    EXPECT_NEAR(78204.12, multi[4][0](0, 0), 0.05);
+    EXPECT_NEAR(78596.1, multi[4][0](0, 1), 0.05);
+    EXPECT_NEAR(78708.18, multi[4][0](0, 2), 0.05);
+    EXPECT_NEAR(78371.7, multi[4][0](0, 3), 0.05);
+    EXPECT_NEAR(77645.4, multi[4][0](0, 4), 0.05);
+    EXPECT_NEAR(78736.35, multi[4][0](1, 0), 0.05);
+    EXPECT_NEAR(78736.35, multi[4][0](2, 0), 0.05);
+    EXPECT_NEAR(74966.43, multi[4][0](2, 4), 0.05);
 
 
     wxDELETE(geoarea);

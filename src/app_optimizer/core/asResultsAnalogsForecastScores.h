@@ -44,12 +44,12 @@ public:
 
     void Init(asParametersScoring &params);
 
-    Array1DFloat &GetTargetDates()
+    a1f &GetTargetDates()
     {
         return m_targetDates;
     }
 
-    void SetTargetDates(Array1DDouble &refDates)
+    void SetTargetDates(a1d &refDates)
     {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
@@ -58,23 +58,23 @@ public:
         }
     }
 
-    void SetTargetDates(Array1DFloat &refDates)
+    void SetTargetDates(a1f &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    Array1DFloat &GetForecastScores()
+    a1f &GetForecastScores()
     {
         return m_forecastScores;
     }
 
-    Array2DFloat &GetForecastScores2DArray()
+    a2f &GetForecastScores2DArray()
     {
         return m_forecastScores2DArray;
     }
 
-    void SetForecastScores(Array1DDouble &forecastScores)
+    void SetForecastScores(a1d &forecastScores)
     {
         m_forecastScores.resize(forecastScores.rows());
         for (int i = 0; i < forecastScores.size(); i++) {
@@ -82,13 +82,13 @@ public:
         }
     }
 
-    void SetForecastScores(Array1DFloat &forecastScores)
+    void SetForecastScores(a1f &forecastScores)
     {
         m_forecastScores.resize(forecastScores.rows());
         m_forecastScores = forecastScores;
     }
 
-    void SetForecastScores2DArray(Array2DFloat &forecastScores)
+    void SetForecastScores2DArray(a2f &forecastScores)
     {
         m_forecastScores2DArray.resize(forecastScores.rows(), forecastScores.cols());
         m_forecastScores2DArray = forecastScores;
@@ -102,9 +102,9 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_targetDates;
-    Array1DFloat m_forecastScores;
-    Array2DFloat m_forecastScores2DArray;
+    a1f m_targetDates;
+    a1f m_forecastScores;
+    a2f m_forecastScores2DArray;
 };
 
 #endif // ASRESULTSANALOGSFORECASTSCORES_H

@@ -47,10 +47,10 @@ asPredictorCriteria::asPredictorCriteria()
 {
     m_canUseInline = false;
     m_criteria = Undefined;
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
-    m_dataMin = NaNFloat;
-    m_dataMax = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
+    m_dataMin = NaNf;
+    m_dataMax = NaNf;
     m_needsDataRange = false;
 }
 

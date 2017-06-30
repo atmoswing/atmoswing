@@ -57,9 +57,9 @@ public:
         return m_yStep;
     }
 
-    Array1DDouble GetXaxisComposite(int compositeNb);
+    a1d GetXaxisComposite(int compositeNb);
 
-    Array1DDouble GetYaxisComposite(int compositeNb);
+    a1d GetYaxisComposite(int compositeNb);
 
     int GetXaxisCompositePtsnb(int compositeNb);
 

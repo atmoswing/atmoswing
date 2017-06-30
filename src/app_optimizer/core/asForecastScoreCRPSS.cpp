@@ -38,7 +38,7 @@ asForecastScoreCRPSS::asForecastScoreCRPSS()
             "Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method");
     m_order = Desc;
     m_scaleBest = 1;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_usesClimatology = true;
 }
 
@@ -47,7 +47,7 @@ asForecastScoreCRPSS::~asForecastScoreCRPSS()
     //dtor
 }
 
-float asForecastScoreCRPSS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -64,25 +64,25 @@ float asForecastScoreCRPSS::Assess(float ObservedVal, const Array1DFloat &Forcas
     return skillScore;
 }
 
-bool asForecastScoreCRPSS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
     wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
     // Containers for final results
-    Array1DFloat scoresClimatology(refVals.size());
+    a1f scoresClimatology(refVals.size());
 
     // Set the original score and process
     asForecastScore *forecastScore = asForecastScore::GetInstance(asForecastScore::CRPSAR);
     forecastScore->SetThreshold(GetThreshold());
     forecastScore->SetQuantile(GetQuantile());
 
-    for (int i_reftime = 0; i_reftime < refVals.size(); i_reftime++) {
-        if (!asTools::IsNaN(refVals(i_reftime))) {
-            scoresClimatology(i_reftime) = forecastScore->Assess(refVals(i_reftime), climatologyData,
-                                                                 climatologyData.size());
+    for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
+        if (!asTools::IsNaN(refVals(iReftime))) {
+            scoresClimatology(iReftime) = forecastScore->Assess(refVals(iReftime), climatologyData,
+                                                                climatologyData.size());
         } else {
-            scoresClimatology(i_reftime) = NaNFloat;
+            scoresClimatology(iReftime) = NaNf;
         }
     }
 

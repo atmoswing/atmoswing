@@ -93,7 +93,7 @@ TEST(Parameters, ParametersLoadFromFileMultipleIds)
     asParameters params;
     params.LoadFromFile(filepath);
 
-    VectorInt stations = params.GetPredictandStationIds();
+    vi stations = params.GetPredictandStationIds();
 
     EXPECT_EQ(5, (int) stations.size());
     EXPECT_EQ(40, stations[0]);

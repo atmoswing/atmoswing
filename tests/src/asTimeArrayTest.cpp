@@ -53,7 +53,7 @@ TEST(TimeArray, BuildArraySimple)
     EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, timearray[1000]);
     EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, timearray[10000]);
 
-    Array1DDouble datetimearray = timearray.GetTimeArray();
+    a1d datetimearray = timearray.GetTimeArray();
 
     EXPECT_DOUBLE_EQ(start, datetimearray(0));
     EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, datetimearray(1));
@@ -94,7 +94,7 @@ TEST(TimeArray, BuildArraySimpleGeneric)
     EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, timearray[1000]);
     EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, timearray[10000]);
 
-    Array1DDouble datetimearray = timearray.GetTimeArray();
+    a1d datetimearray = timearray.GetTimeArray();
 
     EXPECT_DOUBLE_EQ(start, datetimearray(0));
     EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, datetimearray(1));
@@ -269,7 +269,7 @@ TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
 
     asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
-    Array1DDouble datetimearray = timearray.GetTimeArray();
+    a1d datetimearray = timearray.GetTimeArray();
 
     bool foundyear = false;
     double year2001start = asTime::GetMJD(2001, 1, 1);

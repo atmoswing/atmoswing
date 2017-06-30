@@ -44,7 +44,7 @@ public:
     bool Init();
 
 protected:
-    virtual VectorString GetListOfFiles(asTimeArray &timeArray) const;
+    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
 
 private:
 

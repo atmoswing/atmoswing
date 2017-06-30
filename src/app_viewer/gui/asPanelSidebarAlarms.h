@@ -47,7 +47,7 @@ public:
 
     ~asPanelSidebarAlarmsDrawing();
 
-    void DrawAlarms(Array1DFloat &dates, const VectorString &forecasts, Array2DFloat &values);
+    void DrawAlarms(a1f &dates, const vwxs &forecasts, a2f &values);
 
     void SetParent(asPanelSidebarAlarms *parent);
 
@@ -58,13 +58,13 @@ private:
 
     void SetBitmapAlarms(wxBitmap *bmp);
 
-    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int i_col, int i_row);
+    void CreatePath(wxGraphicsPath &path, const wxPoint &start, int witdh, int height, int iCol, int iRow);
 
     void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
 
-    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int i_col, const wxString &label);
+    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int iCol, const wxString &label);
 
-    void CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int i_row, const wxString &label);
+    void CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int iRow, const wxString &label);
 
     void OnPaint(wxPaintEvent &event);
 };
@@ -80,7 +80,7 @@ public:
 
     ~asPanelSidebarAlarms();
 
-    void SetData(Array1DFloat &dates, Array2DFloat &values);
+    void SetData(a1f &dates, a2f &values);
 
     void Update();
 

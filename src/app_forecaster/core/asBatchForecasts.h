@@ -165,7 +165,7 @@ private:
     wxString m_predictorsArchiveDirectory;
     wxString m_predictorsRealtimeDirectory;
     wxString m_predictandDBDirectory;
-    VectorString m_forecastFileNames;
+    vwxs m_forecastFileNames;
 
 };
 

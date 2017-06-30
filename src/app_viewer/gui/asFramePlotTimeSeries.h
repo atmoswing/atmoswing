@@ -69,7 +69,7 @@ private:
     int m_selectedMethod;
     int m_selectedForecast;
     float m_maxVal;
-    VectorDouble m_leadTimes;
+    vd m_leadTimes;
 
     void OnClose(wxCloseEvent &evt);
 

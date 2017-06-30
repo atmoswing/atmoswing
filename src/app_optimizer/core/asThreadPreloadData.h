@@ -9,7 +9,7 @@ class asThreadPreloadData
         : public asThread
 {
 public:
-    asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int i_step, int i_ptor, int i_dat);
+    asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep, int iPtor, int iPre);
 
     virtual ~asThreadPreloadData();
 

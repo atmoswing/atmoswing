@@ -42,12 +42,12 @@ public:
 
     void Init(asParameters &params);
 
-    Array1DFloat &GetTargetDates()
+    a1f &GetTargetDates()
     {
         return m_targetDates;
     }
 
-    void SetTargetDates(Array1DDouble &refDates)
+    void SetTargetDates(a1d &refDates)
     {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
@@ -56,79 +56,79 @@ public:
         }
     }
 
-    void SetTargetDates(Array1DFloat &refDates)
+    void SetTargetDates(a1f &refDates)
     {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    VArray1DFloat &GetTargetValues()
+    va1f &GetTargetValues()
     {
         return m_targetValuesNorm;
     }
 
-    void SetTargetValues(VArray1DFloat &targetValues)
+    void SetTargetValues(va1f &targetValues)
     {
         m_targetValuesNorm = targetValues;
     }
 
-    VArray1DFloat &GetTargetValuesNorm()
+    va1f &GetTargetValuesNorm()
     {
         return m_targetValuesNorm;
     }
 
-    void SetTargetValuesNorm(VArray1DFloat &targetValuesNorm)
+    void SetTargetValuesNorm(va1f &targetValuesNorm)
     {
         m_targetValuesNorm = targetValuesNorm;
     }
 
-    VArray1DFloat &GetTargetValuesGross()
+    va1f &GetTargetValuesGross()
     {
         return m_targetValuesGross;
     }
 
-    void SetTargetValuesGross(VArray1DFloat &targetValuesGross)
+    void SetTargetValuesGross(va1f &targetValuesGross)
     {
         m_targetValuesGross = targetValuesGross;
     }
 
-    Array2DFloat &GetAnalogsCriteria()
+    a2f &GetAnalogsCriteria()
     {
         return m_analogsCriteria;
     }
 
-    void SetAnalogsCriteria(Array2DFloat &analogsCriteria)
+    void SetAnalogsCriteria(a2f &analogsCriteria)
     {
         m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
         m_analogsCriteria = analogsCriteria;
     }
 
-    VArray2DFloat &GetAnalogsValues()
+    va2f &GetAnalogsValues()
     {
         return m_analogsValuesNorm;
     }
 
-    void SetAnalogsValues(VArray2DFloat &analogsValues)
+    void SetAnalogsValues(va2f &analogsValues)
     {
         m_analogsValuesNorm = analogsValues;
     }
 
-    VArray2DFloat GetAnalogsValuesNorm() const
+    va2f GetAnalogsValuesNorm() const
     {
         return m_analogsValuesNorm;
     }
 
-    void SetAnalogsValuesNorm(VArray2DFloat &analogsValuesNorm)
+    void SetAnalogsValuesNorm(va2f &analogsValuesNorm)
     {
         m_analogsValuesNorm = analogsValuesNorm;
     }
 
-    VArray2DFloat GetAnalogsValuesGross() const
+    va2f GetAnalogsValuesGross() const
     {
         return m_analogsValuesGross;
     }
 
-    void SetAnalogsValuesGross(VArray2DFloat &analogsValuesGross)
+    void SetAnalogsValuesGross(va2f &analogsValuesGross)
     {
         m_analogsValuesGross = analogsValuesGross;
     }
@@ -146,12 +146,12 @@ protected:
     void BuildFileName();
 
 private:
-    Array1DFloat m_targetDates; // Dimensions: time
-    VArray1DFloat m_targetValuesNorm; // Dimensions: stations x time
-    VArray1DFloat m_targetValuesGross; // Dimensions: stations x time
-    Array2DFloat m_analogsCriteria; // Dimensions: time x analogs
-    VArray2DFloat m_analogsValuesNorm; // Dimensions: stations x time x analogs
-    VArray2DFloat m_analogsValuesGross; // Dimensions: stations x time x analogs
+    a1f m_targetDates; // Dimensions: time
+    va1f m_targetValuesNorm; // Dimensions: stations x time
+    va1f m_targetValuesGross; // Dimensions: stations x time
+    a2f m_analogsCriteria; // Dimensions: time x analogs
+    va2f m_analogsValuesNorm; // Dimensions: stations x time x analogs
+    va2f m_analogsValuesGross; // Dimensions: stations x time x analogs
 };
 
 #endif // ASRESULTSANALOGSVALUES_H

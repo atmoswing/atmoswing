@@ -34,12 +34,12 @@ asForecastScoreSEEPS::asForecastScoreSEEPS()
     m_score = asForecastScore::SEEPS;
     m_name = _("Stable equitable error in probability space");
     m_fullName = _("Stable equitable error in probability space");
-    m_scaleBest = NaNFloat;
-    m_scaleWorst = NaNFloat;
-    m_p1 = NaNFloat;
-    m_p3 = NaNFloat;
+    m_scaleBest = NaNf;
+    m_scaleWorst = NaNf;
+    m_p1 = NaNf;
+    m_p3 = NaNf;
     m_thresNull = 0.2f;
-    m_thresHigh = NaNFloat;
+    m_thresHigh = NaNf;
     m_usesClimatology = true;
 }
 
@@ -48,7 +48,7 @@ asForecastScoreSEEPS::~asForecastScoreSEEPS()
     //dtor
 }
 
-float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -60,19 +60,19 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
     wxASSERT(m_quantile < 1);
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNFloat;
+        return NaNf;
     } else if (nbForecasts <= 2) {
         wxLogWarning(_("Not enough elements to process the CRPS."));
-        return NaNFloat;
+        return NaNf;
     }
 
-    Array1DFloat cleanValues = x.head(nbForecasts);
+    a1f cleanValues = x.head(nbForecasts);
 
     // Get value for quantile
     float fcstV = asTools::GetValueForQuantile(cleanValues, m_quantile);
@@ -120,12 +120,12 @@ float asForecastScoreSEEPS::Assess(float ObservedVal, const Array1DFloat &Forcas
     return score;
 }
 
-bool asForecastScoreSEEPS::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
     wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
-    Array1DFloat climatologyDataSorted = climatologyData;
+    a1f climatologyDataSorted = climatologyData;
     asTools::SortArray(&climatologyDataSorted[0], &climatologyDataSorted[climatologyDataSorted.size() - 1], Asc);
 
     // Find first value above the lower threshold

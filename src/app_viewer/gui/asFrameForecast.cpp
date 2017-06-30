@@ -656,12 +656,12 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
     }
 
     // Open new layers
-    for (int i_layer = m_workspace.GetLayersNb() - 1; i_layer >= 0; i_layer--) {
+    for (int iLayer = m_workspace.GetLayersNb() - 1; iLayer >= 0; iLayer--) {
         // Get attributes
-        wxString path = m_workspace.GetLayerPath(i_layer);
-        wxString type = m_workspace.GetLayerType(i_layer);
-        int transparency = m_workspace.GetLayerTransparency(i_layer);
-        bool visibility = m_workspace.GetLayerVisibility(i_layer);
+        wxString path = m_workspace.GetLayerPath(iLayer);
+        wxString type = m_workspace.GetLayerType(iLayer);
+        int transparency = m_workspace.GetLayerTransparency(iLayer);
+        bool visibility = m_workspace.GetLayerVisibility(iLayer);
 
         // Open the layers
         if (wxFileName::FileExists(path)) {
@@ -674,10 +674,10 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
                     wxASSERT(layer);
                     m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
                 } else if (type.IsSameAs("vector")) {
-                    int width = m_workspace.GetLayerLineWidth(i_layer);
-                    wxColour lineColor = m_workspace.GetLayerLineColor(i_layer);
-                    wxColour fillColor = m_workspace.GetLayerFillColor(i_layer);
-                    wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(i_layer);
+                    int width = m_workspace.GetLayerLineWidth(iLayer);
+                    wxColour lineColor = m_workspace.GetLayerLineColor(iLayer);
+                    wxColour fillColor = m_workspace.GetLayerFillColor(iLayer);
+                    wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(iLayer);
 
                     vrRenderVector *render = new vrRenderVector();
                     render->SetTransparency(transparency);
@@ -759,7 +759,7 @@ void asFrameForecast::UpdateLeadTimeSwitch()
     m_leadTimeSwitcher->SetBackgroundColour(wxColour(77, 77, 77));
     m_leadTimeSwitcher->SetMinSize(wxSize(width, height));
     m_leadTimeSwitcher->Layout();
-    Array1DFloat dates = m_forecastManager->GetFullTargetDates();
+    a1f dates = m_forecastManager->GetFullTargetDates();
     m_leadTimeSwitcher->Draw(dates);
 
     m_sizerLeadTimeSwitch->Add(m_leadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5);
@@ -1166,7 +1166,7 @@ void asFrameForecast::OpenForecastsFromTmpList()
     wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
-    if(!filePaths.Open()) {
+    if (!filePaths.Open()) {
         wxLogWarning(_("List of the forecasts not found."));
         return;
     }
@@ -1230,7 +1230,7 @@ bool asFrameForecast::OpenRecentForecasts()
 
     // Identify the most recent forecasts
     long mostRecentDate = 0;
-    VectorInt mostRecentRows;
+    vi mostRecentRows;
     for (int i = 0; i < (int) files.GetCount(); i++) {
         wxFileName fileName(files[i]);
         wxString fileDate = fileName.GetFullName().SubString(0, 9);
@@ -1968,7 +1968,7 @@ void asFrameForecast::UpdatePanelCaptionAll()
         }
 
         asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
-        Array1DFloat dates = forecast->GetTargetDates();
+        a1f dates = forecast->GetTargetDates();
         m_panelSidebarCaptionForecastRing->SetDates(dates);
     }
 }
@@ -1992,8 +1992,8 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
                                                                         m_forecastViewer->GetForecastSelection());
-    Array1DFloat arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
-    Array1DFloat arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
+    a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
+    a1f arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
     m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
 }
 

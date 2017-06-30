@@ -58,8 +58,8 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, LoadEasy)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     122.4	121.6	121.1	120.4	119.6	118.1	116.9	115.9	115.1
@@ -68,15 +68,15 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, LoadEasy)
     81.9	79.9	78.1	76.4	74.9	73.6	72.4	71.1	69.9
     54.9	54.6	54.9	55.4	56.1	56.9	57.9	58.6	59.6
     */
-    EXPECT_NEAR(122.4, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(121.6, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(121.1, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(120.4, hgt[0](0, 3), 0.1);
-    EXPECT_NEAR(115.1, hgt[0](0, 8), 0.1);
-    EXPECT_NEAR(115.4, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(102.4, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(54.9, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(59.6, hgt[0](4, 8), 0.1);
+    EXPECT_NEAR(122.4, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(121.6, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(121.1, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(120.4, hgt[0][0](0, 3), 0.1);
+    EXPECT_NEAR(115.1, hgt[0][0](0, 8), 0.1);
+    EXPECT_NEAR(115.4, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(102.4, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(54.9, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(59.6, hgt[0][0](4, 8), 0.1);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     85.8	86.3	86.6	86.3	85.8	84.3	83.3	82.1	81.1
@@ -85,15 +85,15 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, LoadEasy)
     80.8	78.3	75.6	72.8	70.3	67.8	65.3	62.8	61.1
     67.6	64.1	60.3	56.8	53.3	50.1	47.1	44.6	42.8
     */
-    EXPECT_NEAR(85.8, hgt[7](0, 0), 0.1);
-    EXPECT_NEAR(86.3, hgt[7](0, 1), 0.1);
-    EXPECT_NEAR(86.6, hgt[7](0, 2), 0.1);
-    EXPECT_NEAR(86.3, hgt[7](0, 3), 0.1);
-    EXPECT_NEAR(81.1, hgt[7](0, 8), 0.1);
-    EXPECT_NEAR(90.1, hgt[7](1, 0), 0.1);
-    EXPECT_NEAR(88.6, hgt[7](2, 0), 0.1);
-    EXPECT_NEAR(67.6, hgt[7](4, 0), 0.1);
-    EXPECT_NEAR(42.8, hgt[7](4, 8), 0.1);
+    EXPECT_NEAR(85.8, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(86.3, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(86.6, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(86.3, hgt[7][0](0, 3), 0.1);
+    EXPECT_NEAR(81.1, hgt[7][0](0, 8), 0.1);
+    EXPECT_NEAR(90.1, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(88.6, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(67.6, hgt[7][0](4, 0), 0.1);
+    EXPECT_NEAR(42.8, hgt[7][0](4, 8), 0.1);
 
     wxDELETE(predictor);
 }
@@ -124,8 +124,8 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, Around360)
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
 
-    VArray2DFloat hgt = predictor->GetData();
-    // hgt[time](lat,lon)
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     125.9	124.6	123.6	122.9	122.4	121.6	121.1	120.4	119.6
@@ -134,15 +134,15 @@ TEST(DataPredictorArchiveJmaJra55SubsetRegular, Around360)
     91.4	89.1	86.6	84.1	81.9	79.9	78.1	76.4	74.9
     61.6	58.9	56.9	55.6	54.9	54.6	54.9	55.4	56.1
     */
-    EXPECT_NEAR(125.9, hgt[0](0, 0), 0.1);
-    EXPECT_NEAR(124.6, hgt[0](0, 1), 0.1);
-    EXPECT_NEAR(123.6, hgt[0](0, 2), 0.1);
-    EXPECT_NEAR(122.9, hgt[0](0, 3), 0.1);
-    EXPECT_NEAR(119.6, hgt[0](0, 8), 0.1);
-    EXPECT_NEAR(118.9, hgt[0](1, 0), 0.1);
-    EXPECT_NEAR(109.9, hgt[0](2, 0), 0.1);
-    EXPECT_NEAR(61.6, hgt[0](4, 0), 0.1);
-    EXPECT_NEAR(56.1, hgt[0](4, 8), 0.1);
+    EXPECT_NEAR(125.9, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(124.6, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(123.6, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(122.9, hgt[0][0](0, 3), 0.1);
+    EXPECT_NEAR(119.6, hgt[0][0](0, 8), 0.1);
+    EXPECT_NEAR(118.9, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(109.9, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(61.6, hgt[0][0](4, 0), 0.1);
+    EXPECT_NEAR(56.1, hgt[0][0](4, 8), 0.1);
 
     wxDELETE(predictor);
 }

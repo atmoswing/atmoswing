@@ -36,7 +36,7 @@ asPredictorCriteriaSAD::asPredictorCriteriaSAD()
     m_fullName = _("Sum of Absolute Differences");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
     m_canUseInline = true;
 }
 
@@ -45,7 +45,7 @@ asPredictorCriteriaSAD::~asPredictorCriteriaSAD()
     //dtor
 }
 
-float asPredictorCriteriaSAD::Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const
+float asPredictorCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),

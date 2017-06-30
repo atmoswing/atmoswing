@@ -43,7 +43,7 @@ asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &d
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
-    m_firstTimeStepHours = NaNDouble;
+    m_firstTimeStepHours = NaNd;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
 }
@@ -137,13 +137,13 @@ bool asDataPredictorArchiveNcepCfsr::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
-    Array1DDouble tArray = timeArray.GetTimeArray();
+    vwxs files;
+    a1d tArray = timeArray.GetTimeArray();
 
     for (int i = 0; i < tArray.size(); i++) {
-        TimeStruct t = asTime::GetTimeStruct(tArray[i]);
+        Time t = asTime::GetTimeStruct(tArray[i]);
         files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
                                                                   t.month, t.day, t.year, t.month, t.day, t.hour));
     }
@@ -152,7 +152,7 @@ VectorString asDataPredictorArchiveNcepCfsr::GetListOfFiles(asTimeArray &timeArr
 }
 
 bool asDataPredictorArchiveNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }

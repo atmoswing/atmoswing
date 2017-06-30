@@ -55,3 +55,4 @@ bin/
 Test Results *
 CMakeFiles/*
 cmake-build-debug/
+*.resolve

@@ -46,7 +46,7 @@ public:
 
 protected:
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 VVArray2DFloat &compositeData);
+                                 vvva2f &compositeData);
 
 
 private:

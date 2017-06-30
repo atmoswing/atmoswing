@@ -40,7 +40,7 @@ public:
 
     ~asPredictorCriteriaMRDtoMean();
 
-    float Assess(const Array2DFloat &refData, const Array2DFloat &evalData, int rowsNb, int colsNb) const;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const;
 
 protected:
 

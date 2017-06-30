@@ -95,17 +95,17 @@ bool asResultsAnalogsScoresMap::Add(asParametersScoring &params, float score)
 bool asResultsAnalogsScoresMap::MakeMap()
 {
 
-    Array1DFloat levels(asTools::ExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
-    Array1DFloat lons(asTools::ExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
-    Array1DFloat lats(asTools::ExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
+    a1f levels(asTools::ExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
+    a1f lons(asTools::ExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
+    a1f lats(asTools::ExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
 
     m_mapLevel = levels;
     m_mapLon = lons;
     m_mapLat = lats;
 
-    Array2DFloat tmpLatLon = Array2DFloat::Constant(m_mapLat.size(), m_mapLon.size(), NaNFloat);
+    a2f tmpLatLon = a2f::Constant(m_mapLat.size(), m_mapLon.size(), NaNf);
 
-    for (int i_level = 0; i_level <= m_mapLevel.size(); i_level++) {
+    for (int iLevel = 0; iLevel <= m_mapLevel.size(); iLevel++) {
         m_mapScores.push_back(tmpLatLon);
     }
 
@@ -127,9 +127,9 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
     MakeMap();
 
     // Get the elements size
-    size_t Nlon = (size_t)m_mapLon.size();
-    size_t Nlat = (size_t)m_mapLat.size();
-    size_t Nlevel = (size_t)m_mapLevel.size();
+    size_t Nlon = (size_t) m_mapLon.size();
+    size_t Nlat = (size_t) m_mapLat.size();
+    size_t Nlevel = (size_t) m_mapLevel.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -146,13 +146,13 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
     ncFile.DefDim("level", Nlevel);
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    VectorStdString DimNamesLon;
+    vstds DimNamesLon;
     DimNamesLon.push_back("lon");
-    VectorStdString DimNamesLat;
+    vstds DimNamesLat;
     DimNamesLat.push_back("lat");
-    VectorStdString DimNamesLevel;
+    vstds DimNamesLevel;
     DimNamesLevel.push_back("level");
-    VectorStdString DimNames3;
+    vstds DimNames3;
     DimNames3.push_back("level");
     DimNames3.push_back("lat");
     DimNames3.push_back("lon");
@@ -186,16 +186,16 @@ bool asResultsAnalogsScoresMap::Save(asParametersCalibration &params)
     size_t count3[] = {Nlevel, Nlat, Nlon};
 
     // Set the scores in a vector
-    VectorFloat scores(Nlevel * Nlat * Nlon);
+    vf scores(Nlevel * Nlat * Nlon);
     int ind = 0;
 
-    for (unsigned int i_level = 0; i_level < Nlevel; i_level++) {
-        for (unsigned int i_lat = 0; i_lat < Nlat; i_lat++) {
-            for (unsigned int i_lon = 0; i_lon < Nlon; i_lon++) {
-                ind = i_lon;
-                ind += i_lat * Nlon;
-                ind += i_level * Nlon * Nlat;
-                scores[ind] = m_mapScores[i_level](i_lat, i_lon);
+    for (unsigned int iLevel = 0; iLevel < Nlevel; iLevel++) {
+        for (unsigned int iLat = 0; iLat < Nlat; iLat++) {
+            for (unsigned int iLon = 0; iLon < Nlon; iLon++) {
+                ind = iLon;
+                ind += iLat * Nlon;
+                ind += iLevel * Nlon * Nlat;
+                scores[ind] = m_mapScores[iLevel](iLat, iLon);
             }
         }
     }

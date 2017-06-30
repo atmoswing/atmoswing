@@ -261,8 +261,8 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
                 OpenPastForecast(methodRow, forecastRow, fullPathOld);
             } else {
                 // Load from temporarly stored directories
-                for (unsigned int i_dir = 0; i_dir < m_directoriesPastForecasts.Count(); i_dir++) {
-                    currentDirPath = m_directoriesPastForecasts.Item(i_dir);
+                for (unsigned int iDir = 0; iDir < m_directoriesPastForecasts.Count(); iDir++) {
+                    currentDirPath = m_directoriesPastForecasts.Item(iDir);
                     currentDirPath.Append(directory);
                     currentDirPath.Append(DS);
                     fullPath = currentDirPath + filename;

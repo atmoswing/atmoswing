@@ -36,7 +36,7 @@ asForecastScoreCRPSEP::asForecastScoreCRPSEP()
     m_fullName = _("Continuous Ranked Probability Score exact solution");
     m_order = Asc;
     m_scaleBest = 0;
-    m_scaleWorst = NaNFloat;
+    m_scaleWorst = NaNf;
 }
 
 asForecastScoreCRPSEP::~asForecastScoreCRPSEP()
@@ -44,7 +44,7 @@ asForecastScoreCRPSEP::~asForecastScoreCRPSEP()
     //dtor
 }
 
-float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const
+float asForecastScoreCRPSEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
@@ -52,18 +52,18 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     // Check the element numbers vs vector length and the observed value
     if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
         wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Create the container to sort the data
-    Array1DFloat x(nbElements);
+    a1f x(nbElements);
     float xObs = ObservedVal;
 
     // Remove the NaNs and copy content
     int nbForecasts = CleanNans(ForcastVals, x, nbElements);
     if (nbForecasts == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function"));
-        return NaNFloat;
+        return NaNf;
     }
 
     // Sort the forcast array
@@ -72,7 +72,7 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     float CRPS = 0;
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbForecasts);
+    a1f F = asTools::GetCumulativeFrequency(nbForecasts);
 
     float DF, DVal;
 
@@ -163,7 +163,7 @@ float asForecastScoreCRPSEP::Assess(float ObservedVal, const Array1DFloat &Forca
     return CRPS;
 }
 
-bool asForecastScoreCRPSEP::ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData)
+bool asForecastScoreCRPSEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

@@ -45,7 +45,7 @@ public:
 
     ~asLeadTimeSwitcher();
 
-    void Draw(Array1DFloat &dates);
+    void Draw(a1f &dates);
 
     void SetLeadTime(int leadTime);
 
@@ -69,15 +69,15 @@ private:
 
     wxBitmap *GetBitmap();
 
-    void CreatePath(wxGraphicsPath &path, int i_col);
+    void CreatePath(wxGraphicsPath &path, int iCol);
 
     void CreatePathRing(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
 
     void FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value);
 
-    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int i_col, const wxString &label);
+    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int iCol, const wxString &label);
 
-    void CreatePathMarker(wxGraphicsPath &path, int i_col);
+    void CreatePathMarker(wxGraphicsPath &path, int iCol);
 
     void OnPaint(wxPaintEvent &event);
 

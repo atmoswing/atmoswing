@@ -44,7 +44,7 @@ public:
 
     static void Cleanup();
 
-    int Download(const VectorString &urls, const VectorString &fileNames, const wxString &destinationDir);
+    int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
 
 protected:
 

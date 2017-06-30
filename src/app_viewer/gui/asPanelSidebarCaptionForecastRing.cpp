@@ -60,7 +60,7 @@ void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent &event)
     event.Skip();
 }
 
-void asPanelSidebarCaptionForecastRing::SetDates(Array1DFloat &dates)
+void asPanelSidebarCaptionForecastRing::SetDates(a1f &dates)
 {
     m_panelDrawing->DrawDates(dates);
 }
@@ -86,7 +86,7 @@ asPanelSidebarCaptionForecastRingDrawing::asPanelSidebarCaptionForecastRingDrawi
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), NULL, this);
 
-    Array1DFloat emptyDates;
+    a1f emptyDates;
     DrawDates(emptyDates);
     DrawColorbar(1);
 
@@ -100,7 +100,7 @@ asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDraw
     wxDELETE(m_bmpColorbar);
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::DrawDates(Array1DFloat &dates)
+void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
 {
     wxBitmap *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(182 * g_ppiScaleDc));
     wxASSERT(bmp);
@@ -130,10 +130,10 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(Array1DFloat &dates)
         if (segmentsTot == 0) {
             CreateDatesPath(path, center, scale, 1, 0);
         } else {
-            for (int i_leadtime = 0; i_leadtime < segmentsTot; i_leadtime++) {
-                CreateDatesPath(path, center, scale, segmentsTot, i_leadtime);
-                wxString dateStr = asTime::GetStringTime(dates[i_leadtime], "DD.MM");
-                CreateDatesText(gc, center, scale, segmentsTot, i_leadtime, dateStr);
+            for (int iLead = 0; iLead < segmentsTot; iLead++) {
+                CreateDatesPath(path, center, scale, segmentsTot, iLead);
+                wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
+                CreateDatesText(gc, center, scale, segmentsTot, iLead, dateStr);
             }
         }
 

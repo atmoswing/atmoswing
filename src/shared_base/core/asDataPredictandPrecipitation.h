@@ -50,22 +50,22 @@ public:
                                    const wxString &AlternatePatternDir = wxEmptyString,
                                    const wxString &AlternateDestinationDir = wxEmptyString);
 
-    virtual Array1DFloat GetReferenceAxis() const
+    virtual a1f GetReferenceAxis() const
     {
         return m_returnPeriods;
     }
 
-    virtual float GetReferenceValue(int i_station, double duration, float reference) const
+    virtual float GetReferenceValue(int iStat, double duration, float reference) const
     {
-        return GetPrecipitationOfReturnPeriod(i_station, duration, reference);
+        return GetPrecipitationOfReturnPeriod(iStat, duration, reference);
     }
 
-    virtual Array2DFloat GetReferenceValuesArray() const
+    virtual a2f GetReferenceValuesArray() const
     {
         return m_dailyPrecipitationsForReturnPeriods;
     }
 
-    float GetPrecipitationOfReturnPeriod(int i_station, double duration, float returnPeriod) const;
+    float GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const;
 
     void SetReturnPeriodNormalization(float val)
     {
@@ -94,13 +94,13 @@ private:
     float m_returnPeriodNormalization;
     bool m_isSqrt;
     // Vector (dim = return periods)
-    Array1DFloat m_returnPeriods;
+    a1f m_returnPeriods;
     // Matrix data
-    Array2DFloat m_gumbelDuration; // Values of the Precipitation duration
-    Array2DFloat m_gumbelParamA; // Values of the a parameter of the Gumbel adjustment
-    Array2DFloat m_gumbelParamB; // Values of the b parameter of the Gumbel adjustment
+    a2f m_gumbelDuration; // Values of the Precipitation duration
+    a2f m_gumbelParamA; // Values of the a parameter of the Gumbel adjustment
+    a2f m_gumbelParamB; // Values of the b parameter of the Gumbel adjustment
     // Matrix with other axes
-    Array2DFloat m_dailyPrecipitationsForReturnPeriods;
+    a2f m_dailyPrecipitationsForReturnPeriods;
 
     bool InitContainers();
 

@@ -76,15 +76,15 @@ public:
 
     static asForecastScore *GetInstance(const wxString &scoreString);
 
-    virtual bool ProcessScoreClimatology(const Array1DFloat &refVals, const Array1DFloat &climatologyData) = 0;
+    virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
 
-    virtual float Assess(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const = 0;
+    virtual float Assess(float ObservedVal, const a1f &ForcastVals, int NbElements) const = 0;
 
-    virtual Array1DFloat AssessOnArray(float ObservedVal, const Array1DFloat &ForcastVals, int NbElements) const;
+    virtual a1f AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const;
 
-    bool CheckInputs(float ObservedVal, const Array1DFloat &ForcastVals, int nbElements) const;
+    bool CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const;
 
-    int CleanNans(const Array1DFloat &ForcastVals, Array1DFloat &ForcastValsSorted, int nbElements) const;
+    int CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const;
 
     wxString GetName() const
     {

@@ -44,21 +44,21 @@ asForecastScoreFinalRankHistogram::~asForecastScoreFinalRankHistogram()
     //dtor
 }
 
-float asForecastScoreFinalRankHistogram::Assess(const Array1DFloat &targetDates, const Array1DFloat &forecastScores,
+float asForecastScoreFinalRankHistogram::Assess(const a1f &targetDates, const a1f &forecastScores,
                                                 const asTimeArray &timeArray) const
 {
     wxLogError(_("The rank histogram cannot provide a single score value !"));
-    return NaNFloat;
+    return NaNf;
 }
 
-Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(const Array1DFloat &targetDates, const Array1DFloat &forecastScores,
-                                                              const asTimeArray &timeArray) const
+a1f asForecastScoreFinalRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &forecastScores,
+                                                     const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(forecastScores.rows() > 1);
     wxASSERT(m_ranksNb > 1);
 
-    Array1DInt histogram = Array1DInt::Zero(m_ranksNb);
+    a1i histogram = a1i::Zero(m_ranksNb);
     int countTot = 0;
 
     switch (m_period) {
@@ -79,7 +79,7 @@ Array1DFloat asForecastScoreFinalRankHistogram::AssessOnArray(const Array1DFloat
     }
 
     // Process percentages
-    Array1DFloat histogramPercent = Array1DFloat::Zero(m_ranksNb);
+    a1f histogramPercent = a1f::Zero(m_ranksNb);
 
     for (int i = 0; i < m_ranksNb; i++) {
         histogramPercent[i] = float(100 * histogram[i]) / float(countTot);

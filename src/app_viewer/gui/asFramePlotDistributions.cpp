@@ -311,7 +311,7 @@ bool asFramePlotDistributions::PlotPredictands()
 
     // Check that there is no NaNs
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
         wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
         return false;
@@ -421,7 +421,7 @@ bool asFramePlotDistributions::PlotCriteria()
 
     // Check that there is no NaNs
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    Array1DFloat criteria = forecast->GetAnalogsCriteria(m_selectedDate);
+    a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     if (asTools::HasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
         wxLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
         return false;
@@ -445,7 +445,7 @@ bool asFramePlotDistributions::PlotCriteria()
     // Get min/max of the criteria
     float critMin = (float) 999999999.0, critMax = (float) 0.0;
     for (int i = 0; i < forecast->GetTargetDatesLength(); i++) {
-        Array1DFloat tmpCriteria = forecast->GetAnalogsCriteria(i);
+        a1f tmpCriteria = forecast->GetAnalogsCriteria(i);
         if (tmpCriteria[0] < critMin)
             critMin = tmpCriteria[0];
         if (tmpCriteria[tmpCriteria.size() - 1] > critMax)
@@ -468,7 +468,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
+    a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
     for (int i = retPeriods.size() - 1; i >= 0; i--) {
         if (std::abs(retPeriods[i] - 2.33) < 0.1)
@@ -530,7 +530,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get return periods
-    Array1DFloat retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
+    a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
     // Find the value 10
     int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
@@ -565,24 +565,24 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
-    Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
     plotData.Create(nbPoints);
     int counter = 0;
-    for (int i_analog = 0; i_analog < analogs.size(); i_analog++) {
-        plotData.SetValue(counter, analogs[i_analog], F(i_analog));
+    for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
+        plotData.SetValue(counter, analogs[iAnalog], F(iAnalog));
         counter++;
 
         // Store max val
-        if (analogs[i_analog] > m_xmaxPredictands)
-            m_xmaxPredictands = analogs[i_analog];
+        if (analogs[iAnalog] > m_xmaxPredictands)
+            m_xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -617,24 +617,24 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
-    Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
     plotData.Create(nbPoints);
     int counter = 0;
-    for (int i_analog = 0; i_analog < analogs.size(); i_analog++) {
-        plotData.SetValue(counter, analogs[i_analog], F(i_analog));
+    for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
+        plotData.SetValue(counter, analogs[iAnalog], F(iAnalog));
         counter++;
 
         // Store max val
-        if (analogs[i_analog] > m_xmaxPredictands)
-            m_xmaxPredictands = analogs[i_analog];
+        if (analogs[iAnalog] > m_xmaxPredictands)
+            m_xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -668,26 +668,26 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
-    Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
-    Array1DFloat analogs = analogsAll.head(nbPoints);
-    Array1DFloat ranks = Array1DFloat::LinSpaced(nbPoints, 0, nbPoints - 1);
+    a1f analogs = analogsAll.head(nbPoints);
+    a1f ranks = a1f::LinSpaced(nbPoints, 0, nbPoints - 1);
     asTools::SortArrays(&analogs[0], &analogs[analogs.size() - 1], &ranks[0], &ranks[ranks.size() - 1], Asc);
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
-    for (int i_analog = 0; i_analog < analogs.size(); i_analog++) {
+    for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
         wxPlotData plotData;
         plotData.Create(1);
 
-        plotData.SetValue(0, analogs[i_analog], F(i_analog));
+        plotData.SetValue(0, analogs[iAnalog], F(iAnalog));
 
         // Check and add to the plot
         if (plotData.Ok()) {
             // Color (from yellow to red)
-            float ratio = ranks[i_analog] / (float) (nbPoints - 1);
+            float ratio = ranks[iAnalog] / (float) (nbPoints - 1);
             wxPen pen(wxColor(255, ratio * 255, 0), 2);
 
             // wxPlotPen_Type : wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
@@ -709,8 +709,8 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
         plotData.Destroy();
 
         // Store max val
-        if (analogs[i_analog] > m_xmaxPredictands)
-            m_xmaxPredictands = analogs[i_analog];
+        if (analogs[iAnalog] > m_xmaxPredictands)
+            m_xmaxPredictands = analogs[iAnalog];
     }
 }
 
@@ -723,25 +723,25 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
-    Array1DFloat analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
-    Array1DFloat analogs = analogsAll.head(nbPoints);
+    a1f analogs = analogsAll.head(nbPoints);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
 
     // Cumulative frequency
-    Array1DFloat F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asTools::GetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
     plotData.Create(nbPoints);
     int counter = 0;
-    for (int i_analog = 0; i_analog < analogs.size(); i_analog++) {
-        plotData.SetValue(counter, analogs[i_analog], F(i_analog));
+    for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
+        plotData.SetValue(counter, analogs[iAnalog], F(iAnalog));
         counter++;
 
         // Store max val
-        if (analogs[i_analog] > m_xmaxPredictands)
-            m_xmaxPredictands = analogs[i_analog];
+        if (analogs[iAnalog] > m_xmaxPredictands)
+            m_xmaxPredictands = analogs[iAnalog];
     }
 
     // Check and add to the plot
@@ -776,7 +776,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
 void asFramePlotDistributions::PlotClassicQuantiles()
 {
     // Quantiles
-    Array1DFloat pc(3);
+    a1f pc(3);
     pc << 0.2f, 0.6f, 0.9f;
 
     // Get a pointer to the plotctrl
@@ -784,11 +784,11 @@ void asFramePlotDistributions::PlotClassicQuantiles()
 
     // Get forecast
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    Array1DFloat analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
 
     // Loop over the quantiles
-    for (int i_pc = 0; i_pc < pc.size(); i_pc++) {
-        float thisQuantile = pc[i_pc];
+    for (int iPc = 0; iPc < pc.size(); iPc++) {
+        float thisQuantile = pc[iPc];
 
         // Create plot data
         wxPlotData plotData;
@@ -832,14 +832,14 @@ void asFramePlotDistributions::PlotCriteriaCurve()
     asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the criteria
-    Array1DFloat criteria = forecast->GetAnalogsCriteria(m_selectedDate);
-    Array1DFloat indices = Array1DFloat::LinSpaced(criteria.size(), 1, criteria.size()); //LinSpaced(size, low, high)
+    a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
+    a1f indices = a1f::LinSpaced(criteria.size(), 1, criteria.size()); //LinSpaced(size, low, high)
 
     // Create plot data
     wxPlotData plotData;
     plotData.Create(criteria.size());
-    for (int i_analog = 0; i_analog < criteria.size(); i_analog++) {
-        plotData.SetValue(i_analog, indices[i_analog], criteria[i_analog]);
+    for (int iAnalog = 0; iAnalog < criteria.size(); iAnalog++) {
+        plotData.SetValue(iAnalog, indices[iAnalog], criteria[iAnalog]);
     }
 
     // Check and add to the plot

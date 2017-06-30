@@ -41,7 +41,7 @@ asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxStrin
     m_originalProvider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
     m_originalProviderStart = asTime::GetMJD(1980, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -115,15 +115,15 @@ bool asDataPredictorArchiveNasaMerra2::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
-    Array1DDouble tArray = timeArray.GetTimeArray();
+    vwxs files;
+    a1d tArray = timeArray.GetTimeArray();
 
-    TimeStruct tLast = asTime::GetTimeStruct(20000);
+    Time tLast = asTime::GetTimeStruct(20000);
 
     for (int i = 0; i < tArray.size(); i++) {
-        TimeStruct t = asTime::GetTimeStruct(tArray[i]);
+        Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
 
             wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
@@ -147,7 +147,7 @@ VectorString asDataPredictorArchiveNasaMerra2::GetListOfFiles(asTimeArray &timeA
 }
 
 bool asDataPredictorArchiveNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

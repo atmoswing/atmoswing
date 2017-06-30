@@ -112,7 +112,7 @@ TEST(Time, GetMJDAlternate_20101104_103245)
 TEST(Time, GetTimeStructNormal_20040101)
 {
     double Mjd = 53005;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -122,7 +122,7 @@ TEST(Time, GetTimeStructNormal_20040101)
 TEST(Time, GetTimeStructNormal_20040101_120000)
 {
     double Mjd = 53005.5;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -133,7 +133,7 @@ TEST(Time, GetTimeStructNormal_20040101_120000)
 TEST(Time, GetTimeStructNormal_20101104_120000)
 {
     double Mjd = 55504.5;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -144,7 +144,7 @@ TEST(Time, GetTimeStructNormal_20101104_120000)
 TEST(Time, GetTimeStructNormal_20101104_100000)
 {
     double Mjd = 55504.41666666651;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -155,7 +155,7 @@ TEST(Time, GetTimeStructNormal_20101104_100000)
 TEST(Time, GetTimeStructNormal_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -168,7 +168,7 @@ TEST(Time, GetTimeStructNormal_20101104_103245)
 TEST(Time, GetTimeStructAlternate_20040101)
 {
     double Mjd = 53005;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -178,7 +178,7 @@ TEST(Time, GetTimeStructAlternate_20040101)
 TEST(Time, GetTimeStructAlternate_20040101_120000)
 {
     double Mjd = 53005.5;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -189,7 +189,7 @@ TEST(Time, GetTimeStructAlternate_20040101_120000)
 TEST(Time, GetTimeStructAlternate_20101104_120000)
 {
     double Mjd = 55504.5;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -200,7 +200,7 @@ TEST(Time, GetTimeStructAlternate_20101104_120000)
 TEST(Time, GetTimeStructAlternate_20101104_100000)
 {
     double Mjd = 55504.41666666651;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -213,7 +213,7 @@ TEST(Time, GetTimeStructAlternate_20101104_100000)
 TEST(Time, GetTimeStructAlternate_20101104_103245)
 {
     double Mjd = 55504.43940972211;
-    TimeStruct date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -225,7 +225,7 @@ TEST(Time, GetTimeStructAlternate_20101104_103245)
 
 TEST(Time, GetTimeStructOther)
 {
-    TimeStruct date = asTime::GetTimeStruct(2010, 11, 4, 10, 32, 45);
+    Time date = asTime::GetTimeStruct(2010, 11, 4, 10, 32, 45);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -341,7 +341,7 @@ TEST(Time, NowLocalMJD)
 
 TEST(Time, NowLocalTimeStruct)
 {
-    TimeStruct date = asTime::NowTimeStruct(asLOCAL);
+    Time date = asTime::NowTimeStruct(asLOCAL);
     wxString datestr = asTime::GetStringTime(date);
 
     wxPrintf("Local time is %s\n", datestr);
@@ -357,7 +357,7 @@ TEST(Time, NowMJD)
 
 TEST(Time, NowTimeStruct)
 {
-    TimeStruct date = asTime::NowTimeStruct(asUTM);
+    Time date = asTime::NowTimeStruct(asUTM);
     wxString datestr = asTime::GetStringTime(date);
 
     wxPrintf("UTM time is %s\n", datestr);
@@ -376,7 +376,7 @@ TEST(Time, GetStringDateMJD)
 
 TEST(Time, GetStringDateTimeStruct)
 {
-    TimeStruct date;
+    Time date;
     date.year = 2010;
     date.month = 11;
     date.day = 4;
@@ -404,7 +404,7 @@ TEST(Time, GetStringDateReverseMJD)
 
 TEST(Time, GetStringDateReverseTimeStruct)
 {
-    TimeStruct date;
+    Time date;
     date.year = 2010;
     date.month = 11;
     date.day = 4;
@@ -421,7 +421,7 @@ TEST(Time, GetStringDateReverseTimeStruct)
 
 TEST(Time, GetStringTimeTimeStruct)
 {
-    TimeStruct date;
+    Time date;
     date.year = 2010;
     date.month = 11;
     date.day = 4;

@@ -41,7 +41,7 @@ asDataPredictorArchiveNcepReanalysis1::asDataPredictorArchiveNcepReanalysis1(con
     m_originalProvider = "NCEP/NCAR";
     m_datasetName = "Reanalysis 1";
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNDouble;
+    m_originalProviderEnd = NaNd;
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
@@ -191,8 +191,8 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
             m_product.IsSameAs("flux", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "surface_gauss";
-        m_xAxisStep = NaNFloat;
-        m_yAxisStep = NaNFloat;
+        m_xAxisStep = NaNf;
+        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("air2m", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature 2m";
@@ -449,19 +449,19 @@ bool asDataPredictorArchiveNcepReanalysis1::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNcepReanalysis1::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNcepReanalysis1::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
+    vwxs files;
 
-    for (int i_year = timeArray.GetStartingYear(); i_year <= timeArray.GetEndingYear(); i_year++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, i_year));
+    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
+        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 
     return files;
 }
 
 bool asDataPredictorArchiveNcepReanalysis1::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, VVArray2DFloat &compositeData)
+                                                            asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

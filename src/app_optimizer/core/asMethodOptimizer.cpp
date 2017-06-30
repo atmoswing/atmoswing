@@ -28,14 +28,14 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
-    for (int i_step = 0; i_step < stepsNb; i_step++) {
+    for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
-        if (i_step == 0) {
-            if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+        if (iStep == 0) {
+            if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                 return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                 return false;
         }
         if (containsNaNs) {
@@ -77,14 +77,14 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
-    for (int i_step = 0; i_step < stepsNb; i_step++) {
+    for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
-        if (i_step == 0) {
-            if (!GetAnalogsDates(anaDates, params, i_step, containsNaNs))
+        if (iStep == 0) {
+            if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
                 return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, i_step, containsNaNs))
+            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
                 return false;
         }
         if (containsNaNs) {

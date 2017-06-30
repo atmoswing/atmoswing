@@ -59,9 +59,9 @@ public:
         return 0.0;
     }
 
-    Array1DDouble GetXaxisComposite(int compositeNb);
+    a1d GetXaxisComposite(int compositeNb);
 
-    Array1DDouble GetYaxisComposite(int compositeNb);
+    a1d GetYaxisComposite(int compositeNb);
 
     int GetXaxisCompositePtsnb(int compositeNb);
 
@@ -82,8 +82,8 @@ public:
 protected:
 
 private:
-    Array1DDouble m_fullAxisX;
-    Array1DDouble m_fullAxisY;
+    a1d m_fullAxisX;
+    a1d m_fullAxisY;
 
     bool IsOnGrid(const Coo &point) const;
 

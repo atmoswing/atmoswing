@@ -261,15 +261,15 @@ bool asDataPredictorArchiveNasaMerra2Subset::Init()
     return true;
 }
 
-VectorString asDataPredictorArchiveNasaMerra2Subset::GetListOfFiles(asTimeArray &timeArray) const
+vwxs asDataPredictorArchiveNasaMerra2Subset::GetListOfFiles(asTimeArray &timeArray) const
 {
-    VectorString files;
-    Array1DDouble tArray = timeArray.GetTimeArray();
+    vwxs files;
+    a1d tArray = timeArray.GetTimeArray();
 
-    TimeStruct tLast = asTime::GetTimeStruct(20000);
+    Time tLast = asTime::GetTimeStruct(20000);
 
     for (int i = 0; i < tArray.size(); i++) {
-        TimeStruct t = asTime::GetTimeStruct(tArray[i]);
+        Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
 
             wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.day);
