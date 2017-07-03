@@ -32,6 +32,8 @@
 
 TEST(GeoAreaRegularGrid, ConstructorLimitsException)
 {
+    wxLogNull logNo;
+
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
     CornerUL.y = 40;
@@ -48,6 +50,8 @@ TEST(GeoAreaRegularGrid, ConstructorLimitsException)
 
 TEST(GeoAreaRegularGrid, ConstructorAlternativeLimitsException)
 {
+    wxLogNull logNo;
+
     double Xmin = -10;
     double Xwidth = 30;
     double Ymin = 30;
@@ -59,6 +63,8 @@ TEST(GeoAreaRegularGrid, ConstructorAlternativeLimitsException)
 
 TEST(GeoAreaRegularGrid, ConstructorStepException)
 {
+    wxLogNull logNo;
+
     double Xmin = -10;
     double Xwidth = 30;
     double Ymin = 30;
@@ -87,6 +93,8 @@ TEST(GeoAreaRegularGrid, IsRectangleTrue)
 
 TEST(GeoAreaRegularGrid, IsRectangleFalse)
 {
+    wxLogNull logNo;
+
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
     CornerUL.y = 40;

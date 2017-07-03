@@ -80,6 +80,8 @@ TEST(GeoAreaCompositeGeneralGrid, CheckConsistency)
 
 TEST(GeoAreaCompositeGeneralGrid, CheckConsistencyException)
 {
+    wxLogNull logNo;
+
     double Xmin = 10;
     int Xptsnb = 1;
     double Ymin = 40;

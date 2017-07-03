@@ -32,6 +32,8 @@
 
 TEST(GeoArea, ConstructorLimitsException)
 {
+    wxLogNull logNo;
+
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
     CornerUL.y = 40;
@@ -47,6 +49,8 @@ TEST(GeoArea, ConstructorLimitsException)
 
 TEST(GeoArea, ConstructorAlternativeLimitsException)
 {
+    wxLogNull logNo;
+
     double Xmin = -10;
     double Xwidth = 30;
     double Ymin = 30;

@@ -155,6 +155,8 @@ TEST(FileXml, LoadSimpleXmlFile)
 
 TEST(FileXml, LoadSimpleXmlFileWithErrors)
 {
+    wxLogNull logNo;
+
     wxString filePath = wxFileName::GetCwd();
     filePath.Append("/files/file_xml_error.xml");
     asFileXml fileXml(filePath, asFile::ReadOnly);

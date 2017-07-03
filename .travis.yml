@@ -6,7 +6,7 @@ install:
   - sudo apt-get -qq update
   - sudo apt-get install -y build-essential gnome-devel cmake git
   - sudo apt-get install -y libnetcdf-dev libgdal-dev libcurl3 libwxgtk3.0-dev
-  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DUSE_CODECOV=0
+  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSE_CODECOV=0
   - make -j$(nproc)
 before_script:
   - ls

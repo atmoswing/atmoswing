@@ -32,6 +32,8 @@
 
 TEST(GeoAreaCompositeRegularGrid, ConstructorStepException)
 {
+    wxLogNull logNo;
+
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = -10;
     CornerUL.y = 40;
@@ -121,6 +123,8 @@ TEST(GeoAreaCompositeRegularGrid, CheckConsistency)
 
 TEST(GeoAreaCompositeRegularGrid, CheckConsistencyException)
 {
+    wxLogNull logNo;
+
     double Xmin = 10;
     double Xwidth = 0;
     double Ymin = 40;
@@ -147,6 +151,8 @@ TEST(GeoAreaCompositeRegularGrid, IsRectangleTrue)
 
 TEST(GeoAreaCompositeRegularGrid, IsRectangleFalse)
 {
+    wxLogNull logNo;
+
     Coo CornerUL, CornerUR, CornerLL, CornerLR;
     CornerUL.x = 10;
     CornerUL.y = 40;

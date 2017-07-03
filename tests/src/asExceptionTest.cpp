@@ -31,5 +31,6 @@
 
 TEST(Exception, ThrowException)
 {
+    wxLogNull logNo;
     ASSERT_THROW(asThrowException("My exception"), asException);
 }

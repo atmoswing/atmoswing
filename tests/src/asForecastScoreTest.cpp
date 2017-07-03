@@ -1815,6 +1815,8 @@ TEST(ForecastScore, ProcessRankHistogram)
 
 TEST(ForecastScore, ProcessRankHistogramReliability)
 {
+    wxLogNull logNo;
+
     // Sizes
     int timeLength = 20;
     int nanalogs = 30;

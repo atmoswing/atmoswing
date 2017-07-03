@@ -454,6 +454,8 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYSlashes)
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07", DDMMYYYY), asException);
 }
 
@@ -467,6 +469,8 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDD)
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.2007", YYYYMMDD), asException);
 }
 
@@ -480,6 +484,8 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmm)
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", DDMMYYYYhhmm), asException);
 }
 
@@ -493,6 +499,8 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmm)
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYYMMDDhhmm), asException);
 }
 
@@ -506,6 +514,8 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmss)
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmssException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DDMMYYYYhhmmss), asException);
 }
 
@@ -519,11 +529,15 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmss)
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmssException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYYMMDDhhmmss), asException);
 }
 
 TEST(Time, GetTimeFromStringFormathhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("13:05:01", hhmm), asException);
 }
 
@@ -537,11 +551,15 @@ TEST(Time, GetTimeFromStringFormatnowplushours)
 
 TEST(Time, GetTimeFromStringFormatnowplushoursException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2:23", nowplushours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowplushoursExceptionDot)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2.23", nowplushours), asException);
 }
 
@@ -555,21 +573,29 @@ TEST(Time, GetTimeFromStringFormatnowminushours)
 
 TEST(Time, GetTimeFromStringFormatnowminushoursException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("-2:23", nowminushours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionDot)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("-2.23", nowminushours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2", nowminushours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignNo)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("2", nowminushours), asException);
 }
 
@@ -591,6 +617,8 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYSlashes)
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07", guess), asException);
 }
 
@@ -604,6 +632,8 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDD)
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("11.2007", guess), asException);
 }
 
@@ -617,6 +647,8 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmm)
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
 }
 
@@ -630,6 +662,8 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmm)
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
 }
 
@@ -643,6 +677,8 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmss)
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
 }
 
@@ -656,11 +692,15 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmss)
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautohhmmException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("13:05:01", guess), asException);
 }
 
@@ -674,11 +714,15 @@ TEST(Time, GetTimeFromStringFormatautonowplushours)
 
 TEST(Time, GetTimeFromStringFormatautonowplushoursException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2:23", guess), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushoursExceptionDot)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2.23", guess), asException);
 }
 
@@ -692,21 +736,29 @@ TEST(Time, GetTimeFromStringFormatautonowminushours)
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursException)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("-2:23", guess), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionDot)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("-2.23", guess), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("2", guess), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 {
+    wxLogNull logNo;
+
     ASSERT_THROW(asTime::GetTimeFromString("+2hours", guess), asException);
 }
 

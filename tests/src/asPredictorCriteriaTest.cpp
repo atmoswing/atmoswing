@@ -158,12 +158,10 @@ TEST(PredictorCriteria, ProcessS1)
         // Process S1 and check the results
         float resZ1000, resZ500, res;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
-
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
         res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
+        EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
 
     wxDELETE(criteria);
@@ -292,12 +290,10 @@ TEST(PredictorCriteria, ProcessNS1)
         // Process S1 and check the results
         float resZ1000, resZ500, res;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
-
         resZ1000 = criteria->Assess(RefZ1000, CandZ1000, (int) RefZ1000.rows(), (int) RefZ1000.cols());
         resZ500 = criteria->Assess(RefZ500, CandZ500, (int) RefZ500.rows(), (int) RefZ500.cols());
         res = (resZ500 + resZ1000) / 2;
-        EXPECT_NEAR(critS1[i_cand], res, 0.05);
+        EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
 
     wxDELETE(criteria);
@@ -370,9 +366,6 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
         // Get candidate data
         CandOriginal = hgtOriginal[iCand][0];
         CandPreproc = hgtPreproc[iCand][0];
-
-        // Process the score
-        wxConfigBase *pConfig = wxFileConfig::Get();
 
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
@@ -452,9 +445,6 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
         // Get candidate data
         CandOriginal = hgtOriginal[iCand][0];
         CandPreproc = hgtPreproc[iCand][0];
-
-        // Process the score
-        wxConfigBase *pConfig = wxFileConfig::Get();
 
         S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
         S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
@@ -645,8 +635,6 @@ TEST(PredictorCriteria, ProcessRSE)
         // Process RMSE and check the results
         float res;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
-
         res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
@@ -832,12 +820,10 @@ TEST(PredictorCriteria, ProcessRMSE)
         // Process RMSE and check the results
         float res12h, res24h, res;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
-
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
+        EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
 
     wxDELETE(criteria);
@@ -1022,12 +1008,10 @@ TEST(PredictorCriteria, ProcessNRMSE)
         // Process RMSE and check the results
         float res12h, res24h, res;
 
-        wxConfigBase *pConfig = wxFileConfig::Get();
-
         res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
         res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
         res = (res12h + res24h) / 2;
-        EXPECT_NEAR(critRMSE[i_cand], res, 0.05);
+        EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
 
     wxDELETE(criteria);
@@ -1036,8 +1020,6 @@ TEST(PredictorCriteria, ProcessNRMSE)
 
 TEST(PredictorCriteria, ProcessDifferences)
 {
-    wxConfigBase *pConfig = wxFileConfig::Get();
-
     va2f RefData;
     a2f Datatmp;
     Datatmp.resize(2, 2);

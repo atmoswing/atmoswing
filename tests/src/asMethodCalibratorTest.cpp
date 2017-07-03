@@ -25,7 +25,7 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
-/*
+
 #include <wx/filename.h>
 #include <wx/dir.h>
 #include "asDataPredictandPrecipitation.h"
@@ -1696,4 +1696,4 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
             EXPECT_NE(criteriaStd.coeff(i, j), criteriaNorm.coeff(i, j));
         }
     }
-}*/
+}
