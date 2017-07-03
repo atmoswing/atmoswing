@@ -12,41 +12,6 @@ if (BUILD_VIEWER)
     add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
 endif (BUILD_VIEWER)
 
-# Provided libraries
-if (WIN32)
-    set(USE_PROVIDED_LIBRARIES OFF CACHE BOOL "Use the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
-    if(USE_PROVIDED_LIBRARIES)
-        set(USE_PROVIDED_LIBRARIES_PATH CACHE PATH "Path to the libraries downloaded from https://bitbucket.org/atmoswing/atmoswing")
-        if ("${USE_PROVIDED_LIBRARIES_PATH}" STREQUAL "")
-            message(FATAL_ERROR "Please provide the path to the downloaded libraries, or disable the option USE_PROVIDED_LIBRARIES.")
-        else()
-            set(CUSTOM_LIBRARY_PATH "${USE_PROVIDED_LIBRARIES_PATH}")
-            file(GLOB sub-dir ${CUSTOM_LIBRARY_PATH}/*)
-            foreach(dir ${sub-dir})
-                if(IS_DIRECTORY ${dir})
-                    # Get directory to select the correct wxWidgets configuration
-                    get_filename_component(lastdir ${dir} NAME)
-                    string(FIND ${lastdir} "wxWidgets" dirwx)
-                    if (${dirwx} EQUAL 0)
-                        string(FIND ${lastdir} "nogui" dirwxnogui)
-                        if (${dirwxnogui} GREATER 0)
-                            if (NOT USE_GUI)
-                                set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
-                            endif()
-                        else ()
-                            if (USE_GUI)
-                                set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
-                            endif()
-                        endif()
-                    else ()
-                        set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH};${dir})
-                    endif()
-                endif()
-            endforeach()
-        endif()
-    endif(USE_PROVIDED_LIBRARIES)
-endif (WIN32)
-
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 mark_as_advanced(wxWidgets_with_GUI)
@@ -60,7 +25,7 @@ else (USE_GUI)
     set(wxWidgets_with_GUI FALSE)
     find_package(wxWidgets COMPONENTS base xml REQUIRED)
 endif (USE_GUI)
-include( "${wxWidgets_USE_FILE}" )
+include("${wxWidgets_USE_FILE}")
 include_directories(${wxWidgets_INCLUDE_DIRS})
 
 # NetCDF (has to be before GDAL)
@@ -105,30 +70,41 @@ else (BUILD_FORECASTER OR BUILD_VIEWER)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # Eigen
-include_directories("src/shared_base/libs/eigen")
+ExternalProject_Add(eigen
+        URL "http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz"
+        UPDATE_COMMAND ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND
+        ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
+        ${EXTERNAL_INSTALL_LOCATION}/include/Eigen)
+include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
 
 # vroomgis
 if (BUILD_VIEWER)
-    mark_as_advanced(SEARCH_GDAL)
-    mark_as_advanced(SEARCH_GEOS)
-    mark_as_advanced(SEARCH_GIS_LIB_PATH)
-    mark_as_advanced(SEARCH_VROOMGIS_LIBS)
-    mark_as_advanced(SEARCH_VROOMGIS_WXWIDGETS)
-    mark_as_advanced(SQLITE_INCLUDE_DIR)
-    mark_as_advanced(SQLITE_PATH)
-    mark_as_advanced(wxWIDGETS_USING_SVN)
-    include("src/app_viewer/libs/vroomgis/vroomgis/build/cmake/Use_vroomGISlib.cmake")
+    ExternalProject_Add(vroomgis
+            URL "https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz"
+            PATCH_COMMAND cp vroomgis/build/cmake/Use_vroomGISlib.cmake CMakeLists.txt
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DVROOMGIS_PATH=vroomgis/src
+            )
+    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
     link_libraries(${wxWidgets_LIBRARIES})
 endif (BUILD_VIEWER)
 
 # wxhgversion
 if (USE_GUI)
     set(USE_WXHGVERSION 1)
-    mark_as_advanced(USE_WXHGVERSION)
-    include("src/shared_base/libs/wxhgversion/build/use_wxhgversion.cmake")
+    ExternalProject_Add(wxhgversion
+            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
+            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            )
+    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 else (USE_GUI)
     set(USE_WXHGVERSION 0)
-    mark_as_advanced(USE_WXHGVERSION)
 endif (USE_GUI)
 
 # CUDA
@@ -148,13 +124,13 @@ endif (USE_CUDA)
 
 # Google Test
 if (BUILD_TESTS)
-    if(MINGW OR MSYS)
+    if (MINGW OR MSYS)
         set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
-    endif()
+    endif ()
     ExternalProject_Add(googletest
-        GIT_REPOSITORY https://github.com/google/googletest
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-        )
+            GIT_REPOSITORY https://github.com/google/googletest
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            )
     include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
     link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 endif (BUILD_TESTS)

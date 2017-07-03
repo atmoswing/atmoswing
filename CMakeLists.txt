@@ -29,6 +29,7 @@ include(ASsourceIncludes)
 #### LIBRARIES
 include(ASgetLibraries)
 
+
 #### DECLARE EXECUTABLE
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake) # repeat
 include(ASdeclareExecutable)

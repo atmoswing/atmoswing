@@ -19,19 +19,11 @@ if (BUILD_OPTIMIZER)
 endif (BUILD_OPTIMIZER)
 
 if (WIN32)
-    if (USE_PROVIDED_LIBRARIES)
-        file (GLOB dlls ${USE_PROVIDED_LIBRARIES_PATH}/*.dll)
-        install(
-                PROGRAMS ${dlls}
-                DESTINATION .
-        )
-    else (USE_PROVIDED_LIBRARIES)
-        file (GLOB dlls bin/*.dll)
-        install(
-                PROGRAMS ${dlls}
-                DESTINATION .
-        )
-    endif (USE_PROVIDED_LIBRARIES)
+    file (GLOB dlls bin/*.dll)
+    install(
+            PROGRAMS ${dlls}
+            DESTINATION .
+    )
 
     # pack the Visual C++ Redistributable for Visual Studio
     include(InstallRequiredSystemLibraries)

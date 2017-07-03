@@ -1,5 +1,5 @@
 # Compilation flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${wxWidgets_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DwxDEBUG_LEVEL=0 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DwxDEBUG_LEVEL=1 -D__WXDEBUG__")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DwxDEBUG_LEVEL=0 -DNDEBUG ")
@@ -46,7 +46,6 @@ endif ()
 # Global definitions
 add_definitions(-DUSE_JPEG2000)
 add_definitions(-DEIGEN_NO_DEBUG)
-#add_definitions(-std=c++11)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)

@@ -17,6 +17,9 @@ endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER)
 # Output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
+# Libraries version
+set(EIGEN_VERSION 3.3.4)
+
 # MSYS condition
 if (WIN32)
     set(USE_MSYS2 ON CACHE BOOL "Do you want to use MSYS2 ?" )
