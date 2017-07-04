@@ -113,7 +113,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #if wxUSE_GUI
         wxTheApp->Yield();
 #else
-        g_pLog->Flush();
+        wxLog::FlushActive();
         wxTheApp->Yield();
 #endif
 

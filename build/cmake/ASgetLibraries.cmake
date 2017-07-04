@@ -1,6 +1,6 @@
 # External projects
 include(ExternalProject)
-set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
 
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
@@ -35,9 +35,20 @@ find_package(NetCDF REQUIRED)
 include_directories(${NetCDF_INCLUDE_DIRECTORIES})
 
 # Jasper
-find_package(Jasper REQUIRED)
-include_directories(${JASPER_INCLUDE_DIR})
-include_directories(${JPEG_INCLUDE_DIR})
+if (PATH_JASPER)
+    find_package(Jasper REQUIRED PATHS PATH_JASPER)
+    include_directories(${JASPER_INCLUDE_DIR})
+    include_directories(${JPEG_INCLUDE_DIR})
+else (PATH_JASPER)
+    ExternalProject_Add(jasper
+            URL "http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip"
+            #PATCH_COMMAND patch < http://www.linuxfromscratch.org/patches/blfs/svn/jasper-1.900.1-security_fixes-1.patch
+            CONFIGURE_COMMAND ./configure --prefix=${EXTERNAL_DIR}
+            BUILD_COMMAND make -j4
+            INSTALL_COMMAND make install
+            )
+endif (PATH_JASPER)
+
 
 # PNG
 find_package(PNG REQUIRED)
@@ -49,10 +60,19 @@ include_directories("src/shared_base/libs/g2clib")
 
 # libcURL
 if (BUILD_FORECASTER OR BUILD_VIEWER)
-    mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-    mark_as_advanced(CLEAR CURL_LIBRARY)
-    find_package(CURL REQUIRED)
-    include_directories(${CURL_INCLUDE_DIRS})
+    if (PATH_CURL)
+        mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+        mark_as_advanced(CLEAR CURL_LIBRARY)
+        find_package(CURL REQUIRED PATHS PATH_CURL)
+        include_directories(${CURL_INCLUDE_DIRS})
+    else(PATH_CURL)
+        ExternalProject_Add(libcurl
+                GIT_REPOSITORY https://github.com/curl/curl
+                GIT_TAG ${CURL_GIT_TAG}
+                CMAKE_ARGS -DHTTP_ONLY=ON -DCURL_STATICLIB=OFF -DBUILD_CURL_EXE=OFF -DBUILD_TESTING=0 -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+                )
+        set(CURL_INCLUDE_DIR ${EXTERNAL_DIR}/include)
+    endif(PATH_CURL)
 else (BUILD_FORECASTER OR BUILD_VIEWER)
     # unset for wxhgversion
     unset(CURL_INCLUDE_DIR CACHE)
@@ -60,14 +80,36 @@ else (BUILD_FORECASTER OR BUILD_VIEWER)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # GDAL
-if (BUILD_FORECASTER OR BUILD_VIEWER)
-    find_package(GDAL REQUIRED)
-    include_directories(${GDAL_INCLUDE_DIRS})
-else (BUILD_FORECASTER OR BUILD_VIEWER)
+if (BUILD_VIEWER)
+    if (PATH_GDAL)
+        find_package(GDAL REQUIRED PATHS PATH_GDAL)
+        include_directories(${GDAL_INCLUDE_DIRS})
+    else(PATH_GDAL)
+        if (PATH_CURL)
+            set(WITH_CURL_PATH PATH_CURL)
+        else (PATH_CURL)
+            set(WITH_CURL_PATH ${EXTERNAL_DIR})
+        endif (PATH_CURL)
+
+        if (MINGW OR MSYS OR UNIX)
+
+            ExternalProject_Add(gdal
+                    DEPENDS curl jasper
+                    URL "http://download.osgeo.org/gdal/CURRENT/gdal-${GDAL_VERSION}.tar.gz"
+                    CONFIGURE_COMMAND ./configure --prefix=${EXTERNAL_DIR} --with-jasper=${EXTERNAL_DIR} --with-curl=${WITH_CURL_PATH}
+                    BUILD_COMMAND make -j4
+                    INSTALL_COMMAND make install
+                    )
+        elseif(WIN32)
+
+
+        endif()
+    endif(PATH_GDAL)
+else (BUILD_VIEWER)
     # unset for wxhgversion
     unset(GDAL_INCLUDE_DIR CACHE)
     unset(GDAL_LIBRARY CACHE)
-endif (BUILD_FORECASTER OR BUILD_VIEWER)
+endif (BUILD_VIEWER)
 
 # Eigen
 ExternalProject_Add(eigen
@@ -78,31 +120,31 @@ ExternalProject_Add(eigen
         INSTALL_COMMAND
         ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
-        ${EXTERNAL_INSTALL_LOCATION}/include/Eigen)
-include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+        ${EXTERNAL_DIR}/include/Eigen
+        )
 
 # vroomgis
 if (BUILD_VIEWER)
     ExternalProject_Add(vroomgis
             URL "https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz"
-            PATCH_COMMAND cp vroomgis/build/cmake/Use_vroomGISlib.cmake CMakeLists.txt
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} -DVROOMGIS_PATH=vroomgis/src
+            SOURCE_SUBDIR vroomgis
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DVROOMGIS_PATH=vroomgis/src
             )
-    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
     link_libraries(${wxWidgets_LIBRARIES})
 endif (BUILD_VIEWER)
 
 # wxhgversion
 if (USE_GUI)
-    set(USE_WXHGVERSION 1)
-    ExternalProject_Add(wxhgversion
-            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
-            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-            )
-    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
+    set(USE_WXHGVERSION 0)
+
+#    set(USE_WXHGVERSION 1)
+#    ExternalProject_Add(wxhgversion
+#            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
+#            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
+#            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+#            )
+#    include_directories(${EXTERNAL_DIR}/include)
+#    link_directories(${EXTERNAL_DIR}/lib)
 else (USE_GUI)
     set(USE_WXHGVERSION 0)
 endif (USE_GUI)
@@ -129,10 +171,8 @@ if (BUILD_TESTS)
     endif ()
     ExternalProject_Add(googletest
             GIT_REPOSITORY https://github.com/google/googletest
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
             )
-    include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-    link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 endif (BUILD_TESTS)
 
 # Visual Leak Detector
@@ -160,3 +200,5 @@ if (USE_CODECOV)
     setup_target_for_coverage(${PROJECT_NAME}-coverage atmoswing-tests coverage)
 endif (USE_CODECOV)
 
+include_directories(${EXTERNAL_DIR}/include)
+link_directories(${EXTERNAL_DIR}/lib)
