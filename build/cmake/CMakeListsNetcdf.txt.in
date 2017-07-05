@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(libnetcdf)
+
+include(ExternalProject)
+set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
+
+ExternalProject_Add(libnetcdf
+        GIT_REPOSITORY https://github.com/Unidata/netcdf-c
+        GIT_TAG v4.4.1.1
+        CMAKE_ARGS -DENABLE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_PREFIX_PATH=${HDF5_ROOT} -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+        )
