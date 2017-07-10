@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(libhdf5)
+
+include(ExternalProject)
+
+ExternalProject_Add(libhdf5
+        URL http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/CMake-hdf5-1.10.1.tar.gz
+        BUILD_IN_SOURCE 1
+        SOURCE_SUBDIR hdf5-1.10.1
+        CMAKE_ARGS
+            -DCMAKE_BUILD_TYPE:STRING=Release
+            -DBUILD_SHARED_LIBS:BOOL=OFF
+            -DBUILD_TESTING:BOOL=OFF
+            -DHDF5_BUILD_TOOLS:BOOL=OFF
+            -DHDF5_ALLOW_EXTERNAL_SUPPORT:STRING="TGZ"
+            -DZLIB_TGZ_NAME:STRING=ZLib.tar.gz
+            -DSZIP_TGZ_NAME:STRING=SZip.tar.gz
+            -DTGZPATH:STRING=${CMAKE_BINARY_DIR}/libhdf5/libhdf5-prefix/src/libhdf5
+            -DCMAKE_INSTALL_PREFIX:STRING=${EXTERNAL_DIR}
+        )

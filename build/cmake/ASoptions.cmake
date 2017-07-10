@@ -17,19 +17,14 @@ endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER)
 # Output path
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
 
-# Libraries version
+# Libraries
 set(EIGEN_VERSION 3.3.4)
 set(GDAL_VERSION 2.2.1)
-set(CURL_GIT_TAG curl-7_54_1)
 
 # Libraries paths
-set(PATH_JASPER CACHE PATH "Path to installed Jasper libraries (optional - will be compiled if not provided)")
-if (BUILD_VIEWER)
-    set(PATH_GDAL CACHE PATH "Path to installed Gdal libraries (optional - will be compiled if not provided)")
-endif (BUILD_VIEWER)
-if (BUILD_FORECASTER OR BUILD_VIEWER)
-    set(PATH_CURL CACHE PATH "Path to installed cURL libraries (optional - will be compiled if not provided)")
-endif(BUILD_FORECASTER OR BUILD_VIEWER)
+if (BUILD_VIEWER AND NOT DOWNLOAD_LIBRARIES)
+    set(GDAL_ROOT CACHE PATH "Path to installed Gdal libraries (optional - will be downloaded if not provided)")
+endif (BUILD_VIEWER AND NOT DOWNLOAD_LIBRARIES)
 
 # MSYS condition
 if (WIN32)

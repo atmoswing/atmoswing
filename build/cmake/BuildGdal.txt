@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 project(libgdal)
 
 include(ExternalProject)
-set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
 
 if (MINGW OR MSYS OR UNIX)
     ExternalProject_Add(libgdal
@@ -11,7 +10,7 @@ if (MINGW OR MSYS OR UNIX)
             URL http://download.osgeo.org/gdal/CURRENT/gdal-${GDAL_VERSION}.tar.gz
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ./configure --prefix=${EXTERNAL_DIR} --with-jasper=${EXTERNAL_DIR} --with-curl=${CURL_ROOT}
-            BUILD_COMMAND make -j4
+            BUILD_COMMAND make -j$(nproc)
             INSTALL_COMMAND make install
             )
 elseif (WIN32)

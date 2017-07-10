@@ -3,24 +3,16 @@ include(ExternalProject)
 set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
 
 
-# Own libraries
-add_library(asbase STATIC ${src_shared_base})
-if (BUILD_FORECASTER OR BUILD_OPTIMIZER)
-    add_library(asprocessing STATIC ${src_shared_processing})
-endif (BUILD_FORECASTER OR BUILD_OPTIMIZER)
-
-# wxplotctrl
-if (BUILD_VIEWER)
-    add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
-endif (BUILD_VIEWER)
-
-# Grib2c
-add_library(g2clib STATIC ${src_lib_g2clib})
-include_directories("src/shared_base/libs/g2clib")
-
-
 # Donwload libraries
 if (DOWNLOAD_LIBRARIES)
+
+    # PNG
+    hunter_add_package(PNG)
+    find_package(PNG CONFIG REQUIRED)
+
+    # Jpeg
+    hunter_add_package(Jpeg)
+    find_package(JPEG CONFIG REQUIRED)
 
     # WxWidgets
     hunter_add_package(wxWidgets)
@@ -37,71 +29,61 @@ if (DOWNLOAD_LIBRARIES)
     include(${wxWidgets_USE_FILE})
     include_directories(${WXWIDGETS_ROOT}/include)
 
-
-
     # OpenSSL
-    #hunter_add_package(OpenSSL)
-    #find_package(OpenSSL REQUIRED)
-    #include_directories("${OPENSSL_INCLUDE_DIR}")
-
-    # libcURL
-    #hunter_add_package(CURL)
-    #find_package(CURL REQUIRED)
-    #set(CURL_LIBRARIES CURL::libcurl)
-    #include_directories(${CURL_INCLUDE_DIRS})
-
-    # libcURL
-    configure_file(build/cmake/CMakeListsCurl.txt.in ${CMAKE_BINARY_DIR}/libcurl/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
+    hunter_add_package(OpenSSL)
     find_package(OpenSSL REQUIRED)
-    find_package(CURL REQUIRED PATHS ${EXTERNAL_DIR} NO_SYSTEM_ENVIRONMENT_PATH)
+    include_directories("${OPENSSL_INCLUDE_DIR}")
 
-    # PNG
-    hunter_add_package(PNG)
-    find_package(PNG REQUIRED)
-
-    # Jpg
-    hunter_add_package(Jpeg)
-    find_package(JPEG REQUIRED)
+    # libcURL
+    configure_file(build/cmake/BuildCurl.txt ${CMAKE_BINARY_DIR}/libcurl/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
+    include(FindLocalCURL)
 
     # HDF5
-    hunter_add_package(hdf5)
-    find_package(ZLIB REQUIRED)
-    find_package(szip REQUIRED)
-    find_package(hdf5 REQUIRED)
+    configure_file(build/cmake/BuildHdf5.txt ${CMAKE_BINARY_DIR}/libhdf5/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libhdf5" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libhdf5" )
+    if (WIN32)
+        if (${STATICONLYLIBRARIES})
+            set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF")
+        endif ()
+        set(HDF5_DIR "${EXTERNAL_DIR}/cmake")
+    else (WIN32)
+        if (${STATICONLYLIBRARIES})
+            set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
+        endif ()
+        set(HDF5_DIR ${EXTERNAL_DIR}/share/cmake)
+        set(ENV{HDF5_ROOT} "${EXTERNAL_DIR}")
+        set(HDF5_USE_STATIC_LIBRARIES ON)
+        #set (ENV{LD_LIBRARY_PATH} "${EXTERNAL_DIR}/lib")
+    endif (WIN32)
+    find_package(HDF5 REQUIRED C HL)
 
     # NetCDF
-    configure_file(build/cmake/CMakeListsNetcdf.txt.in ${CMAKE_BINARY_DIR}/libnetcdf/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
-    find_package(netCDF REQUIRED PATHS ${EXTERNAL_DIR} NO_SYSTEM_ENVIRONMENT_PATH)
+    configure_file(build/cmake/BuildNetcdf.txt ${CMAKE_BINARY_DIR}/libnetcdf/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
+    find_package(netCDF 4 REQUIRED PATHS ${EXTERNAL_DIR} NO_SYSTEM_ENVIRONMENT_PATH)
 
     # Jasper
-    configure_file(build/cmake/CMakeListsJasper.txt.in ${CMAKE_BINARY_DIR}/libjasper/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
+    configure_file(build/cmake/BuildJasper.txt ${CMAKE_BINARY_DIR}/libjasper/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
     find_library(JASPER_LIBRARIES NAMES jasper libjasper PATHS ${EXTERNAL_DIR}/lib NO_DEFAULT_PATH)
 
     # GDAL
     if (BUILD_VIEWER)
-        configure_file(build/cmake/CMakeListsGdal.txt.in ${CMAKE_BINARY_DIR}/libgdal/CMakeLists.txt)
-        execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-                WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
-        execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-                WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
-        find_package(GDAL REQUIRED PATHS ${EXTERNAL_DIR} NO_DEFAULT_PATH)
+        configure_file(build/cmake/BuildGdal.txt ${CMAKE_BINARY_DIR}/libgdal/CMakeLists.txt)
+        execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
+        execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
+        find_package(GDAL 2 REQUIRED PATHS ${EXTERNAL_DIR} NO_DEFAULT_PATH)
     else (BUILD_VIEWER)
         # unset for wxhgversion
         unset(GDAL_INCLUDE_DIR CACHE)
         unset(GDAL_LIBRARY CACHE)
     endif (BUILD_VIEWER)
+    set(GDAL_ROOT ${EXTERNAL_DIR})
 
 else(DOWNLOAD_LIBRARIES)
 
@@ -139,10 +121,10 @@ else(DOWNLOAD_LIBRARIES)
     include_directories(${PNG_INCLUDE_DIRS})
 
     # NetCDF (has to be before GDAL)
-    mark_as_advanced(CLEAR NetCDF_INCLUDE_DIRECTORIES)
-    mark_as_advanced(CLEAR NetCDF_C_LIBRARY)
-    find_package(NetCDF REQUIRED)
-    include_directories(${NetCDF_INCLUDE_DIRECTORIES})
+    mark_as_advanced(CLEAR NETCDF_INCLUDE_DIRECTORIES)
+    mark_as_advanced(CLEAR NETCDF_C_LIBRARY)
+    find_package(NetCDF 4 MODULE REQUIRED)
+    include_directories(${NETCDF_INCLUDE_DIRECTORIES})
 
     # Jasper
     find_package(Jasper REQUIRED)
@@ -151,7 +133,10 @@ else(DOWNLOAD_LIBRARIES)
 
     # GDAL
     if (BUILD_VIEWER)
-        find_package(GDAL REQUIRED)
+        if (GDAL_ROOT)
+            set(ENV{GDAL_ROOT} GDAL_ROOT)
+        endif ()
+        find_package(GDAL 2 REQUIRED)
         include_directories(${GDAL_INCLUDE_DIRS})
     else (BUILD_VIEWER)
         # unset for wxhgversion
@@ -161,54 +146,6 @@ else(DOWNLOAD_LIBRARIES)
 
 
 endif(DOWNLOAD_LIBRARIES)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# vroomgis
-if (BUILD_VIEWER)
-    ExternalProject_Add(vroomgis
-            URL https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz
-            SOURCE_SUBDIR vroomgis
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DVROOMGIS_PATH=vroomgis/src
-            )
-    link_libraries(${wxWidgets_LIBRARIES})
-endif (BUILD_VIEWER)
-
-# wxhgversion
-if (USE_GUI)
-    set(USE_WXHGVERSION 0)
-
-#    set(USE_WXHGVERSION 1)
-#    ExternalProject_Add(wxhgversion
-#            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
-#            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
-#            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
-#            )
-#    include_directories(${EXTERNAL_DIR}/include)
-#    link_directories(${EXTERNAL_DIR}/lib)
-else (USE_GUI)
-    set(USE_WXHGVERSION 0)
-endif (USE_GUI)
-
-
-
-
-
-
-
-
 
 # Eigen
 ExternalProject_Add(eigen
@@ -237,6 +174,63 @@ else (USE_CUDA)
     unset(CUDA_CUDA_LIBRARY CACHE)
 endif (USE_CUDA)
 
+
+# Link to all following targets
+link_libraries(${wxWidgets_LIBRARIES})
+link_libraries(${CURL_LIBRARIES})
+link_libraries(${PNG_LIBRARIES})
+link_libraries(${JPEG_LIBRARY})
+link_libraries(${HDF5_LIBRARIES})
+link_libraries(${JASPER_LIBRARIES})
+link_libraries(${NETCDF_LIBRARIES})
+
+
+# Own libraries
+add_library(asbase STATIC ${src_shared_base})
+if (BUILD_FORECASTER OR BUILD_OPTIMIZER)
+    add_library(asprocessing STATIC ${src_shared_processing})
+endif (BUILD_FORECASTER OR BUILD_OPTIMIZER)
+
+# wxplotctrl
+if (BUILD_VIEWER)
+    add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
+endif (BUILD_VIEWER)
+
+# Grib2c
+add_library(g2clib STATIC ${src_lib_g2clib})
+include_directories("src/shared_base/libs/g2clib")
+
+# vroomgis
+if (BUILD_VIEWER)
+    ExternalProject_Add(vroomgis
+            URL https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz
+            SOURCE_SUBDIR vroomgis
+            CMAKE_ARGS
+                -DCMAKE_INSTALL_PREFIX:STRING=${EXTERNAL_DIR}
+                -DSEARCH_VROOMGIS_LIBS:BOOL=ON
+                -DSEARCH_GDAL:BOOL=ON
+                -DSEARCH_GEOS:BOOL=OFF
+                -DVROOMGIS_PATH:STRING=vroomgis/src
+                -DSEARCH_GIS_LIB_PATH:STRING=${GDAL_ROOT}
+            )
+endif (BUILD_VIEWER)
+
+# wxhgversion
+if (USE_GUI)
+    set(USE_WXHGVERSION 0)
+
+#    set(USE_WXHGVERSION 1)
+#    ExternalProject_Add(wxhgversion
+#            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
+#            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
+#            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+#            )
+#    include_directories(${EXTERNAL_DIR}/include)
+#    link_directories(${EXTERNAL_DIR}/lib)
+else (USE_GUI)
+    set(USE_WXHGVERSION 0)
+endif (USE_GUI)
+
 # Google Test
 if (BUILD_TESTS)
     if (MINGW OR MSYS)
@@ -244,6 +238,7 @@ if (BUILD_TESTS)
     endif ()
     ExternalProject_Add(googletest
             GIT_REPOSITORY https://github.com/google/googletest
+            UPDATE_COMMAND ""
             CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
             )
 endif (BUILD_TESTS)

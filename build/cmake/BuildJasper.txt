@@ -3,12 +3,11 @@ cmake_minimum_required(VERSION 3.0)
 project(libjasper)
 
 include(ExternalProject)
-set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
 
 ExternalProject_Add(libjasper
         URL http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
         BUILD_IN_SOURCE 1
         CONFIGURE_COMMAND ./configure --prefix=${EXTERNAL_DIR}
-        BUILD_COMMAND make -j4
+        BUILD_COMMAND make -j$(nproc)
         INSTALL_COMMAND make install
         )

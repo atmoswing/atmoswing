@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 #### HUNTER
-option(DOWNLOAD_LIBRARIES "Do you want to download the required libraries ?" ON)
+option(DOWNLOAD_LIBRARIES "Do you want to download the required libraries ?" OFF)
 if (DOWNLOAD_LIBRARIES)
     include(build/cmake/HunterGate.cmake)
     set(HUNTER_ROOT ${CMAKE_BINARY_DIR}/hunter)
