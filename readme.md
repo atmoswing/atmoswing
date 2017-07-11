@@ -1,4 +1,4 @@
-![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)
+[![AtmoSwing](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/logo/logo.png)](http://www.atmoswing.org)
 
 [![DOI](https://zenodo.org/badge/95885904.svg)](https://zenodo.org/badge/latestdoi/95885904) [![Build Status](https://travis-ci.org/atmoswing/atmoswing.svg?branch=master)](https://travis-ci.org/atmoswing/atmoswing)
 
