@@ -37,15 +37,15 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 ## Credits ##
 
-![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png)
+![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png) 
+&nbsp;&nbsp;&nbsp;&nbsp;
+![Terranum](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Terranum.png) 
+&nbsp;&nbsp;&nbsp;&nbsp;
+![University of Bern](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unibe.png) 
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
-![Terranum](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Terranum.png)
-
 Copyright (C) 2013-2015, Terranum, Switzerland.
-
-![University of Bern](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unibe.png)
 
 Copyright (C) 2016-2017, University of Bern, Switzerland.
 
@@ -63,7 +63,3 @@ Financial contributions:
 * 2015 Cantons of Valais (Switzerland): addition of synthetic xml export and the aggregation of parametrizations in the viewer.
 
 See both license.txt and notice.txt files for details about the license and its enforcement.
-
-## Contact ##
-
-You can contact the main developer by email: pascal.horton@terranum.ch.
