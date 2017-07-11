@@ -10,10 +10,14 @@ cache:
 install: 
   - sudo apt-get -qq update
   - sudo apt-get install -y build-essential gnome-devel cmake git
-  - sudo apt-get install -y libnetcdf-dev libproj-dev libjasper-dev libcurl3 libwxgtk3.0-dev
+  - sudo apt-get install -y libnetcdf-dev libproj-dev libjasper-dev libcurl3 libwxgtk3.0-dev lcov
   - chmod +x ci/build-gdal.sh
   - travis_wait 30 ci/build-gdal.sh
-  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSE_CODECOV=0
+  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSE_CODECOV=1
   - make -j$(nproc)
 script:
-  - ctest -V
+  - make -j$(nproc) atmoswing-coverage
+  - lcov --directory . --capture --output-file coverage.info # capture coverage info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info # filter out system
+  - lcov --list coverage.info #debug info
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
