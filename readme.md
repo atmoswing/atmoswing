@@ -37,13 +37,23 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 ## Credits ##
 
-![http://unil.ch/iste](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-UNIL.png)
+![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png)
 
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
+![Terranum](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Terranum.png)
+
 Copyright (C) 2013-2015, Terranum, Switzerland.
 
-Developed by Pascal Horton. 
+![University of Bern](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unibe.png)
+
+Copyright (C) 2016-2017, University of Bern, Switzerland.
+
+Contributions:
+
+* Developed by Pascal Horton
+* Under the supervision of Charles Obled and Michel Jaboyedoff
+* With inputs from Lucien Schreiber, Richard Metzger and Renaud Marty
 
 Financial contributions:
 
