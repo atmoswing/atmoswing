@@ -399,6 +399,7 @@ protected:
     Unit m_unit;
     float m_xAxisStep;
     float m_yAxisStep;
+    bool m_strideAllowed;
     float m_xAxisShift;
     float m_yAxisShift;
     float m_level;

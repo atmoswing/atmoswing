@@ -312,18 +312,18 @@ bool asDataPredictorRealtime::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, 
             // Get the spatial indices of the desired data
             m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                               &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                              lonMin, 0.01f);
+                                                                              lonMin, 0.01f, asHIDE_WARNINGS);
             if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
                 m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                                   &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                                  lonMin - 360, 0.01f);
+                                                                                  lonMin - 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
                 m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
                                                                                   &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
-                                                                                  lonMin + 360, 0.01f);
+                                                                                  lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fileIndexes.areas[iArea].lonStart < 0) {
                 wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,

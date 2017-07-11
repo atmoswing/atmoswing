@@ -44,6 +44,7 @@ asDataPredictorArchiveNoaa20Cr2c::asDataPredictorArchiveNoaa20Cr2c(const wxStrin
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
+    m_strideAllowed = true;
     m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
     m_xAxisShift = 0;
     m_yAxisShift = 0;

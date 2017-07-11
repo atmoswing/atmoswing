@@ -46,6 +46,7 @@ asDataPredictorArchiveNcepReanalysis1Subset::asDataPredictorArchiveNcepReanalysi
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
+    m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
     m_xAxisShift = 0;

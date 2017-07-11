@@ -45,6 +45,7 @@ asDataPredictorArchiveNasaMerra2::asDataPredictorArchiveNasaMerra2(const wxStrin
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
+    m_strideAllowed = true;
     m_nanValues.push_back(std::pow(10.f, 15.f));
     m_nanValues.push_back(std::pow(10.f, 15.f)-1);
     m_xAxisShift = 0;

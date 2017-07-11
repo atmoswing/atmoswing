@@ -44,6 +44,7 @@ asDataPredictorArchiveNcepCfsr::asDataPredictorArchiveNcepCfsr(const wxString &d
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = NaNd;
+    m_strideAllowed = false;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
 }

@@ -45,6 +45,7 @@ asDataPredictorArchiveNcepCfsrSubset::asDataPredictorArchiveNcepCfsrSubset(const
     m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = NaNd;
+    m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "lat";

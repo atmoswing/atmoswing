@@ -53,6 +53,7 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_firstTimeStepHours = 0.0;
     m_xAxisStep = 0.0f;
     m_yAxisStep = 0.0f;
+    m_strideAllowed = false;
     m_xAxisShift = 0.0f;
     m_yAxisShift = 0.0f;
     m_fileStructure.dimLatName = wxEmptyString;
@@ -716,7 +717,7 @@ asGeoAreaCompositeGrid *asDataPredictor::CreateMatchingArea(asGeoAreaCompositeGr
             dataYmin = floor((desiredArea->GetAbsoluteYmin() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
             double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
             double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
-            if (fmod(desiredArea->GetXstep(), m_xAxisStep) == 0 && fmod(desiredArea->GetYstep(), m_yAxisStep) == 0 ) {
+            if (m_strideAllowed && fmod(desiredArea->GetXstep(), m_xAxisStep) == 0 && fmod(desiredArea->GetYstep(), m_yAxisStep) == 0 ) {
                 // If the desired step is a multiple of the data resolution
                 dataXstep = desiredArea->GetXstep();
                 dataYstep = desiredArea->GetYstep();
@@ -1171,6 +1172,12 @@ bool asDataPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeDat
 
 bool asDataPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
 {
+    // Grib files do not handle stride
+    if (m_fileIndexes.lonStep != 1 || m_fileIndexes.latStep != 1) {
+        wxLogError(_("Grib files do not handle stride."));
+        return false;
+    }
+
     vvf vectData;
 
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {

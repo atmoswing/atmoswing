@@ -44,6 +44,7 @@ asDataPredictorArchiveEcmwfEra20C::asDataPredictorArchiveEcmwfEra20C(const wxStr
     m_timeZoneHours = 0;
     m_timeStepHours = 3;
     m_firstTimeStepHours = 0;
+    m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "latitude";
