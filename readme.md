@@ -37,6 +37,8 @@ Additionally, you can report issues or suggestions in the issues tracker (https:
 
 ## Credits ##
 
+![http://unil.ch/iste](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-UNIL.png)
+
 Copyright (C) 2007-2013, University of Lausanne, Switzerland.
 
 Copyright (C) 2013-2015, Terranum, Switzerland.
