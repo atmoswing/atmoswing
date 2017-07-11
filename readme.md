@@ -20,7 +20,7 @@ Additionally, multiple unit tests are available and are built along with the sof
 
 ## How to build AtmoSwing ##
 
-The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
+The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
 
 1. [Get the required **libraries**](https://bitbucket.org/atmoswing/atmoswing/wiki/Libraries)
 2. [Get the **source code**](https://bitbucket.org/atmoswing/atmoswing/wiki/Source%20code)
@@ -33,21 +33,21 @@ The wiki (https://bitbucket.org/atmoswing/atmoswing/wiki/Home) explains how to c
 
 If you want to contribute to the software development, you can fork this repository (keep it public !) and then suggest your improvements by sending pull requests. We would be glad to see a community growing around this project.
 
-Additionally, you can report issues or suggestions in the issues tracker (https://bitbucket.org/atmoswing/atmoswing/issues).
+Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
 
 ## Credits ##
 
-![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png) 
+[![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png)](http://unil.ch/iste) 
 &nbsp;&nbsp;&nbsp;&nbsp;
-![Terranum](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Terranum.png) 
+[![Terranum](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Terranum.png)](http://terranum.ch) 
 &nbsp;&nbsp;&nbsp;&nbsp;
-![University of Bern](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unibe.png) 
+[![University of Bern](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unibe.png)](http://www.geography.unibe.ch/) 
 
-Copyright (C) 2007-2013, University of Lausanne, Switzerland.
+Copyright (C) 2007-2013, [University of Lausanne](http://unil.ch/iste), Switzerland.
 
-Copyright (C) 2013-2015, Terranum, Switzerland.
+Copyright (C) 2013-2015, [Terranum](http://terranum.ch), Switzerland.
 
-Copyright (C) 2016-2017, University of Bern, Switzerland.
+Copyright (C) 2016-2017, [University of Bern](http://www.geography.unibe.ch/), Switzerland.
 
 Contributions:
 
