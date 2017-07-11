@@ -32,7 +32,7 @@ awxLed::awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize
     SetInitialSize(wxSize(imgSize, imgSize));
     SetMinSize(wxSize(imgSize, imgSize));
     SetColour(color);
-};
+}
 
 awxLed::~awxLed()
 {
@@ -41,13 +41,13 @@ awxLed::~awxLed()
         delete m_timer;
     }
     delete m_bitmap;
-};
+}
 
 void awxLed::Blink()
 {
     m_blink ^= 1;
     Redraw();
-};
+}
 
 void awxLed::DrawOnBitmap()
 {
@@ -71,7 +71,7 @@ void awxLed::DrawOnBitmap()
         dc.DrawBitmap(m_icons[m_state & 1], m_x, m_y, true);
 
     dc.SelectObject(wxNullBitmap);
-};
+}
 
 void awxLed::SetColour(awxLedColour colour)
 {
@@ -89,7 +89,7 @@ void awxLed::SetColour(awxLedColour colour)
         default:
             m_icons[awxLED_ON] = *_img_bullet_red;
     }
-};
+}
 
 void awxLed::SetState(awxLedState state)
 {
@@ -101,7 +101,7 @@ void awxLed::SetState(awxLedState state)
         m_timer->Start(m_timerInterval);
     }
     Redraw();
-};
+}
 
 void awxLed::SetOn(awxLedColour colour, awxLedState state)
 {

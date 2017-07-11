@@ -42,7 +42,7 @@
 
 #endif
 
-IMPLEMENT_APP(AtmoswingAppForecaster);
+IMPLEMENT_APP(AtmoswingAppForecaster)
 
 #include "asInternet.h"
 #include "asFileAscii.h"

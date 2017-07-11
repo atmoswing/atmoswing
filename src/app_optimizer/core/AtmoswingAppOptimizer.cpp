@@ -49,7 +49,7 @@
 #include "asMethodCalibratorEvaluateAllScores.h"
 
 
-IMPLEMENT_APP(AtmoswingAppOptimizer);
+IMPLEMENT_APP(AtmoswingAppOptimizer)
 
 #include <asFileAscii.h>
 #include <asMethodCalibratorSingle.h>

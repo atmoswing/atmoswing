@@ -53,7 +53,7 @@ protected:
 private:
     void OnForecastDisplaySlctChange(wxCommandEvent &event);
 
-DECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 #endif // ASLISTBOXFORECASTDISPLAY_H

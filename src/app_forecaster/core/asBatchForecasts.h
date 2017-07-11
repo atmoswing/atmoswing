@@ -47,7 +47,7 @@ public:
 
     void ClearForecasts();
 
-    void AddForecast();;
+    void AddForecast();
 
     wxString GetFilePath() const
     {

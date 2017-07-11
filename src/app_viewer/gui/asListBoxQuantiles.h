@@ -53,7 +53,7 @@ protected:
 private:
     void OnQuantileSlctChange(wxCommandEvent &event);
 
-DECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 #endif // ASLISTBOXQUANTILES_H
