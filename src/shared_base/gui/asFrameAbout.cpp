@@ -28,7 +28,8 @@
 #include "asFrameAbout.h"
 #include "asIncludes.h"
 #include "images.h"
-#include "wxhgversion_core.h"
+
+//#include "wxhgversion_core.h"
 
 
 asFrameAbout::asFrameAbout(wxWindow *parent)
@@ -44,14 +45,14 @@ asFrameAbout::asFrameAbout(wxWindow *parent)
 
     // Set AtmoSwing version
     m_staticTextVersion->SetLabel(asVersion::GetFullString());
-
+/*
     // Set changeset number
     wxString changesetLabel = wxString::Format("Changeset %s", wxHgVersion::GetSoftNumber());
     m_staticTextChangeset->SetLabel(changesetLabel);
 
     // Set libraries versions
     m_textCtrlLibraries->SetValue(wxHgVersion::GetAllModuleInfo(false));
-
+*/
     // Set libraries versions
     m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());
 

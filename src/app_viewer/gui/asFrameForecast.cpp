@@ -644,7 +644,7 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
     m_forecastViewer->ResetForecastSelection();
 
     // Remove all layers
-    for (unsigned int i = (unsigned int) m_viewerLayerManager->GetCount() - 1; i >= 0; i--) {
+    for (int i = m_viewerLayerManager->GetCount() - 1; i >= 0; i--) {
         // Remove from viewer manager (TOC and Display)
         vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
         vrLayer *layer = renderer->GetLayer();

@@ -134,7 +134,8 @@ else(DOWNLOAD_LIBRARIES)
     # GDAL
     if (BUILD_VIEWER)
         if (GDAL_ROOT)
-            set(ENV{GDAL_ROOT} GDAL_ROOT)
+            message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
+            set(ENV{GDAL_ROOT} ${GDAL_ROOT})
         endif ()
         find_package(GDAL 2 REQUIRED)
         include_directories(${GDAL_INCLUDE_DIRS})
@@ -154,9 +155,9 @@ ExternalProject_Add(eigen
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
         INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
-        ${EXTERNAL_DIR}/include/Eigen
+            ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
+            ${EXTERNAL_DIR}/include/Eigen
         )
 
 # CUDA
@@ -202,17 +203,18 @@ include_directories("src/shared_base/libs/g2clib")
 
 # vroomgis
 if (BUILD_VIEWER)
-    ExternalProject_Add(vroomgis
-            URL https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz
-            SOURCE_SUBDIR vroomgis
-            CMAKE_ARGS
-                -DCMAKE_INSTALL_PREFIX:STRING=${EXTERNAL_DIR}
-                -DSEARCH_VROOMGIS_LIBS:BOOL=ON
-                -DSEARCH_GDAL:BOOL=ON
-                -DSEARCH_GEOS:BOOL=OFF
-                -DVROOMGIS_PATH:STRING=vroomgis/src
-                -DSEARCH_GIS_LIB_PATH:STRING=${GDAL_ROOT}
-            )
+    configure_file(build/cmake/GetVroomgis.txt ${CMAKE_BINARY_DIR}/vroomgis/CMakeLists.txt)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis" )
+    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis" )
+    set(CMAKE_INSTALL_PREFIX:STRING ${EXTERNAL_DIR})
+    set(SEARCH_VROOMGIS_LIBS:BOOL ON)
+    set(SEARCH_GDAL:BOOL ON)
+    set(SEARCH_GEOS:BOOL OFF)
+    set(VROOMGIS_PATH:STRING vroomgis/src)
+    set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_ROOT})
+    add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis)
+    include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/src)
+    include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/art)
 endif (BUILD_VIEWER)
 
 # wxhgversion
