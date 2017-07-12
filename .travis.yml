@@ -36,8 +36,8 @@ matrix:
             name: "atmoswing/atmoswing"
             description: "Build submitted via Travis CI"
           notification_email: pascal.horton@giub.unibe.ch
-          build_command_prepend: "cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGDAL_ROOT=$HOME/.libs/gdal; make clean"
-          build_command:   "make -j $(nproc)"
+          build_command_prepend: "cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGDAL_ROOT=$HOME/.libs/gdal"
+          build_command: "make -j $(nproc)"
           branch_pattern: coverity-scan
 cache:
   directories:
