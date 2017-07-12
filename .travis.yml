@@ -2,16 +2,49 @@ language: cpp
 compiler: gcc
 dist: trusty
 sudo: required
-env:
-  - TARGET=tests
-  - TARGET=coverage
+addons:
+  apt:
+    packages:
+      - build-essential
+      - gnome-devel
+      - cmake
+      - git
+      - libnetcdf-dev
+      - libproj-dev
+      - libjasper-dev
+      - libcurl3
+      - libwxgtk3.0-dev
+matrix:
+  include:
+    - env: TARGET=tests
+    - env: TARGET=coverage
+      addons:
+        apt:
+          packages:
+            - lcov
+    - env:
+      - TARGET=coverity
+      - secure: "bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc="
+      branches:
+        only: coverity-scan
+      before_install:
+        - if [[ "$TRAVIS_BRANCH" != "coverity-scan" ]]; then exit 0; fi
+        - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      addons:
+        coverity_scan:
+          project:
+            name: "atmoswing/atmoswing"
+            description: "Build submitted via Travis CI"
+          notification_email: pascal.horton@giub.unibe.ch
+          build_command_prepend: "cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGDAL_ROOT=$HOME/.libs/gdal; make clean"
+          build_command:   "make -j $(nproc)"
+          branch_pattern: coverity-scan
 cache:
   directories:
     - $HOME/.libs
-install: 
-  - sudo apt-get -qq update
-  - sudo apt-get install -y build-essential gnome-devel cmake git
-  - sudo apt-get install -y libnetcdf-dev libproj-dev libjasper-dev libcurl3 libwxgtk3.0-dev lcov
+install:
   - chmod +x ci/travis/build-gdal.sh
   - travis_wait 30 ci/travis/build-gdal.sh
-script: "chmod +x ci/travis/run-${TARGET}.sh && travis_wait 40 ci/travis/run-${TARGET}.sh"
+script:
+  - chmod +x ci/travis/run-${TARGET}.sh
+  - travis_wait 40 ci/travis/run-${TARGET}.sh
