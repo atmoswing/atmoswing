@@ -1623,7 +1623,7 @@ protected:
     double m_x, m_y;
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotCtrlEvent);
+DECLARE_ABSTRACT_CLASS(wxPlotCtrlEvent)
 };
 
 //-----------------------------------------------------------------------------
@@ -1708,7 +1708,7 @@ protected:
     bool m_selecting;
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotCtrlSelEvent);
+DECLARE_ABSTRACT_CLASS(wxPlotCtrlSelEvent)
 };
 
 // ----------------------------------------------------------------------------

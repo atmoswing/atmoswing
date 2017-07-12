@@ -124,7 +124,7 @@ protected:
     double m_font_scale;   // scaling factor for font sizes
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase)
 };
 
 //-----------------------------------------------------------------------------
@@ -143,7 +143,7 @@ public:
     virtual void Draw(wxDC *dc, bool refresh);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerArea);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerArea)
 };
 
 //-----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ public:
     wxGenericBrush m_backgroundBrush;
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase)
 };
 
 //-----------------------------------------------------------------------------
@@ -237,7 +237,7 @@ public:
     virtual void Draw(wxDC *dc, bool refresh);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerXAxis);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerXAxis)
 };
 
 //-----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ public:
     virtual void Draw(wxDC *dc, bool refresh);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerYAxis);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerYAxis)
 };
 
 //-----------------------------------------------------------------------------
@@ -301,7 +301,7 @@ public:
     int m_key_line_margin; // margin between line and key text
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey)
 };
 
 //-----------------------------------------------------------------------------
@@ -325,7 +325,7 @@ public:
     virtual void Draw(wxDC *dc, wxPlotCurve *curve, int curve_index);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerCurve);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerCurve)
 };
 
 //-----------------------------------------------------------------------------
@@ -349,7 +349,7 @@ public:
     virtual void Draw(wxDC *dc, wxPlotData *plotData, int curve_index);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerDataCurve);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerDataCurve)
 };
 
 //-----------------------------------------------------------------------------
@@ -373,7 +373,7 @@ public:
     virtual void Draw(wxDC *dc, const wxPlotMarker &marker);
 
 private:
-DECLARE_ABSTRACT_CLASS(wxPlotDrawerMarker);
+DECLARE_ABSTRACT_CLASS(wxPlotDrawerMarker)
 };
 
 #endif // _WX_PLOTDRAW_H_

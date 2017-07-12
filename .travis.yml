@@ -13,7 +13,7 @@ install:
   - sudo apt-get install -y libnetcdf-dev libproj-dev libjasper-dev libcurl3 libwxgtk3.0-dev lcov
   - chmod +x ci/build-gdal.sh
   - travis_wait 30 ci/build-gdal.sh
-  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSE_CODECOV=1
+  - cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=Debug -DUSE_CODECOV=1
   - make -j$(nproc)
 script:
   - make -j$(nproc) atmoswing-coverage > /dev/null
