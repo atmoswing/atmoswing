@@ -21,6 +21,15 @@ matrix:
       addons:
         apt:
           packages:
+            - build-essential
+            - gnome-devel
+            - cmake
+            - git
+            - libnetcdf-dev
+            - libproj-dev
+            - libjasper-dev
+            - libcurl3
+            - libwxgtk3.0-dev
             - lcov
     - env:
       - TARGET=coverity
