@@ -82,6 +82,10 @@ float asForecastScoreFinalMean::Assess(const a1f &targetDates, const a1f &foreca
             float score = 0, divisor = 0;
 
             for (int iTime = IndexStart; iTime <= IndexEnd; iTime++) {
+                if (iTime<0) {
+                    wxLogError(_("Error processing the final mean score."));
+                    return NaNf;
+                }
                 int indexCurrent = asTools::SortedArraySearchClosest(&targetDates(0),
                                                                      &targetDates(targetDatesLength - 1),
                                                                      DateTime(iTime));

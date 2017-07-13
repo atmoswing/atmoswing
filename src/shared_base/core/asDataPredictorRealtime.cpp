@@ -155,16 +155,21 @@ bool asDataPredictorRealtime::BuildFilenamesUrls()
     // Replace time in the command
     while (thisCommand.Find("CURRENTDATE") != wxNOT_FOUND) {
         int posStart = thisCommand.Find("CURRENTDATE");
+        if (posStart == wxNOT_FOUND) {
+            break;
+        }
         posStart--;
-        thisCommand.Remove((size_t) posStart, 13); // Removes '[CURRENTDATE-'
+        size_t posStartSt = (size_t) posStart;
+        thisCommand.Remove(posStartSt, 13); // Removes '[CURRENTDATE-'
         // Find end
-        int posEnd = thisCommand.find("]", (size_t) posStart);
+        int posEnd = thisCommand.find("]", posStartSt);
 
-        if (posEnd != wxNOT_FOUND && posEnd > posStart) {
-            thisCommand.Remove((size_t) posEnd, 1); // Removes ']'
-            wxString dateFormat = thisCommand.SubString((size_t) posStart, (size_t) posEnd);
+        if (posEnd != wxNOT_FOUND && posEnd > posStartSt) {
+            size_t posEndSt = (size_t) posEnd;
+            thisCommand.Remove(posEndSt, 1); // Removes ']'
+            wxString dateFormat = thisCommand.SubString(posStartSt, posEndSt);
             wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
-            thisCommand.replace((size_t) posStart, date.Length(), date);
+            thisCommand.replace(posStartSt, date.Length(), date);
         }
     }
 

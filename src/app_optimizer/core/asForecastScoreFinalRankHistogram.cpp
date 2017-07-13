@@ -81,6 +81,11 @@ a1f asForecastScoreFinalRankHistogram::AssessOnArray(const a1f &targetDates, con
     // Process percentages
     a1f histogramPercent = a1f::Zero(m_ranksNb);
 
+    if (countTot<=0) {
+        wxLogError(_("Error processing the final rank histogram."));
+        return histogramPercent;
+    }
+
     for (int i = 0; i < m_ranksNb; i++) {
         histogramPercent[i] = float(100 * histogram[i]) / float(countTot);
     }

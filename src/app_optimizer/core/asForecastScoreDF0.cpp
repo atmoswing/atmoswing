@@ -104,6 +104,11 @@ float asForecastScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int 
         FxObs = 0;
     }
 
+    if (indexLastZero<0) {
+        wxLogError(_("Error processing DF0 score."));
+        return NaNf;
+    }
+
     score = std::abs((1.0f - F(indexLastZero)) - FxObs);
 
     return score;

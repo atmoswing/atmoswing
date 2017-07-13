@@ -77,6 +77,10 @@ float asForecastScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int n
         probaOccurrence = 0;
     } else {
         int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbForecasts - 1], m_threshold);
+        if (ind<0) {
+            wxLogError(_("Error processing BS score."));
+            return NaNf;
+        }
         while (x[ind] <= m_threshold) {
             ind++;
         }

@@ -132,6 +132,11 @@ bool asForecastScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f
     int rowAboveThreshold1 = asTools::SortedArraySearchFloor(&climatologyDataSorted[0],
                                                              &climatologyDataSorted[climatologyDataSorted.size() - 1],
                                                              m_threshold);
+    if (rowAboveThreshold1<0) {
+        wxLogError(_("Error processing the SEEPS climatology score."));
+        return false;
+    }
+
     while (climatologyDataSorted[rowAboveThreshold1] <= m_threshold) {
         rowAboveThreshold1++;
     }
