@@ -195,16 +195,8 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check if the user asked for the version
     if (parser.Found("version")) {
-        wxMessageOutput *msgOut = wxMessageOutput::Get();
-        if (msgOut) {
-            wxString msg;
-            wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing version %s, %s", g_version, (const wxChar *) date);
-
-            msgOut->Printf(msg);
-        } else {
-            wxFAIL_MSG(_("No wxMessageOutput object?"));
-        }
+        wxString date(wxString::FromAscii(__DATE__));
+        wxPrintf("AtmoSwing version %s, %s", g_version, (const wxChar *) date);
 
         return false;
     }
@@ -234,11 +226,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             Log().SetLevel(3);
         } else {
             Log().SetLevel(2);
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (msgOut) {
-                msgOut->Printf(_("The given log level (%s) does not correspond to any possible option (0-3)."),
-                               logLevelStr);
-            }
+            wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3)."), logLevelStr);
         }
     }
 
@@ -306,7 +294,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-past", &numberOfDaysStr)) {
         long numberOfDays;
         if(!numberOfDaysStr.ToLong(&numberOfDays)) {
-            msgOut->Printf(_("The value provided for 'forecast-past' could not be interpreted."));
+            wxPrintf(_("The value provided for 'forecast-past' could not be interpreted."));
             return false;
         }
 
@@ -341,18 +329,10 @@ int AtmoswingAppForecaster::OnRun()
 {
     if (!g_guiMode) {
         if (m_doConfig) {
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (!msgOut) {
-                wxFAIL_MSG(_("No wxMessageOutput object?"));
-                return 1;
-            }
 
 #if wxUSE_GUI
-
-            msgOut->Printf(
-                    _("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead."));
+            wxPrintf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead."));
             return 1;
-
 #else
 
             asBatchForecasts batchForecasts;
@@ -506,14 +486,10 @@ int AtmoswingAppForecaster::OnRun()
         }
 
         if (m_doForecast) {
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-
             // Log message
             wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
             wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-            if (msgOut) {
-                msgOut->Printf("Forecast started for the %s UTC", forecastDateStr);
-            }
+            wxPrintf("Forecast started for the %s UTC", forecastDateStr);
 
             // Open last batch file
             wxConfigBase *pConfig = wxFileConfig::Get();
@@ -525,16 +501,12 @@ int AtmoswingAppForecaster::OnRun()
             if (!batchFilePath.IsEmpty()) {
                 if (!batchForecasts.Load(batchFilePath)) {
                     wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    if (msgOut) {
-                        msgOut->Printf(_("Failed to open the batch file %s"), batchFilePath);
-                    }
+                    wxPrintf(_("Failed to open the batch file %s"), batchFilePath);
                     return 1;
                 }
             } else {
                 wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                if (msgOut) {
-                    msgOut->Printf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                }
+                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
                 return 1;
             }
 
@@ -543,9 +515,7 @@ int AtmoswingAppForecaster::OnRun()
             forecaster.SetForecastDate(m_forecastDate);
             if (!forecaster.Manager()) {
                 wxLogError(_("Failed processing the forecast."));
-                if (msgOut) {
-                    msgOut->Printf(_("Failed processing the forecast."));
-                }
+                wxPrintf(_("Failed processing the forecast."));
                 return 1;
             }
             double realForecastDate = forecaster.GetForecastDate();
@@ -553,9 +523,7 @@ int AtmoswingAppForecaster::OnRun()
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
             wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-            if (msgOut) {
-                msgOut->Printf("Forecast processed for the date %s UTC", realForecastDateStr);
-            }
+            wxPrintf("Forecast processed for the date %s UTC", realForecastDateStr);
 
             // Write the resulting files path into a temp file.
             wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
@@ -571,10 +539,7 @@ int AtmoswingAppForecaster::OnRun()
         }
 
         if (m_doForecastPast) {
-            wxMessageOutput *msgOut = wxMessageOutput::Get();
-            if (msgOut) {
-                msgOut->Printf("Forecast started for the last %d days", m_forecastPastDays);
-            }
+            wxPrintf("Forecast started for the last %d days", m_forecastPastDays);
 
             // Open last batch file
             wxConfigBase *pConfig = wxFileConfig::Get();
@@ -586,16 +551,12 @@ int AtmoswingAppForecaster::OnRun()
             if (!batchFilePath.IsEmpty()) {
                 if (!batchForecasts.Load(batchFilePath)) {
                     wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    if (msgOut) {
-                        msgOut->Printf(_("Failed to open the batch file %s"), batchFilePath);
-                    }
+                    wxPrintf(_("Failed to open the batch file %s"), batchFilePath);
                     return 1;
                 }
             } else {
                 wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                if (msgOut) {
-                    msgOut->Printf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                }
+                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
                 return 1;
             }
 
@@ -611,18 +572,14 @@ int AtmoswingAppForecaster::OnRun()
                 // Log message
                 wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
                 wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-                if (msgOut) {
-                    msgOut->Printf("Forecast started for the %s UTC", forecastDateStr);
-                }
+                wxPrintf("Forecast started for the %s UTC", forecastDateStr);
 
                 // Launch forecasting
                 asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
                 forecaster.SetForecastDate(date);
                 if (!forecaster.Manager()) {
                     wxLogError(_("Failed processing the forecast."));
-                    if (msgOut) {
-                        msgOut->Printf(_("Failed processing the forecast."));
-                    }
+                    wxPrintf(_("Failed processing the forecast."));
                     return 1;
                 }
                 double realForecastDate = forecaster.GetForecastDate();
@@ -630,9 +587,7 @@ int AtmoswingAppForecaster::OnRun()
                 // Log message
                 wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
                 wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-                if (msgOut) {
-                    msgOut->Printf("Forecast processed for the date %s UTC", realForecastDateStr);
-                }
+                wxPrintf("Forecast processed for the date %s UTC", realForecastDateStr);
 
                 // Apply real forecast date to increment
                 date = realForecastDate;
