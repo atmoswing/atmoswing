@@ -146,6 +146,9 @@ bool AtmoswingAppOptimizer::OnInit()
     m_predictorsDir = wxEmptyString;
     m_calibMethod = wxEmptyString;
     m_forceQuit = false;
+#if wxUSE_GUI
+    m_singleInstanceChecker = nullptr;
+#endif
 
     // Call default behaviour (mandatory for command-line mode)
     if (!wxApp::OnInit()) {
@@ -435,7 +438,10 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
-        logLevelStr.ToLong(&logLevel);
+        if(!logLevelStr.ToLong(&logLevel)) {
+            msgOut->Printf(_("The value provided for 'log-level' could not be interpreted."));
+            return false;
+        }
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {

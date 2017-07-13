@@ -40,6 +40,7 @@ asMethodCalibrator::asMethodCalibrator()
     m_paramsFilePath = wxEmptyString;
     m_preloaded = false;
     m_validationMode = false;
+    m_scoreOrder = Asc;
     m_scoreValid = NaNf;
 
     // Seeds the random generator
@@ -1182,6 +1183,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         if (!asPreprocessor::Preprocess(predictorsPreprocess, "Gradients", newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
+            wxDELETE(newPredictor);
             return false;
         }
 
@@ -1337,6 +1339,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
     if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
+        wxDELETE(predictor);
         return false;
     }
 
@@ -1795,6 +1798,11 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 
     asResultsAnalogsDates anaDates;
     asResultsAnalogsValues anaValues;
+
+    if (rowEnd<0) {
+        wxLogError(_("Error assessing the number of analogues."));
+        return false;
+    }
 
     // If at the end of the chain
     if (iStep == params.GetStepsNb() - 1) {

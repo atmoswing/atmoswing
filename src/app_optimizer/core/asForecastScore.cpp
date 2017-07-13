@@ -54,6 +54,7 @@ asForecastScore::asForecastScore()
     m_singleValue = true;
     m_scaleBest = NaNf;
     m_scaleWorst = NaNf;
+    m_order = Asc;
 }
 
 asForecastScore *asForecastScore::GetInstance(Score scoreEnum)

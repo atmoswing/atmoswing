@@ -126,6 +126,7 @@ bool asFileGrib2::ParseStructure()
         wxASSERT(numLocal == 0);
         if (ierr > 0) {
             handleGribError(ierr);
+            free(cgrib);
             return false;
         }
 
@@ -145,6 +146,8 @@ bool asFileGrib2::ParseStructure()
             ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
             if (ierr > 0) {
                 handleGribError(ierr);
+                g2_free(gfld);
+                free(cgrib);
                 return false;
             }
 
@@ -156,6 +159,8 @@ bool asFileGrib2::ParseStructure()
             // Grid Definition
             if (!CheckGridDefinition(gfld)) {
                 wxLogError(_("Grid definition not allowed yet."));
+                g2_free(gfld);
+                free(cgrib);
                 return false;
             }
 
@@ -164,6 +169,8 @@ bool asFileGrib2::ParseStructure()
             // Product Definition
             if (!CheckProductDefinition(gfld)) {
                 wxLogError(_("Product definition not allowed yet."));
+                g2_free(gfld);
+                free(cgrib);
                 return false;
             }
 
@@ -374,11 +381,15 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     g2int ierr = g2_getfld(cgrib, m_fieldNum[m_index] + 1, unpack, expand, &gfld);
     if (ierr > 0) {
         handleGribError(ierr);
+        g2_free(gfld);
+        free(cgrib);
         return false;
     }
 
     if (gfld->unpacked != 1 || gfld->expanded != 1) {
         wxLogError(_("The Grib data were not unpacked neither expanded."));
+        g2_free(gfld);
+        free(cgrib);
         return false;
     }
 
