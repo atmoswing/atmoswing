@@ -156,16 +156,8 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check if the user asked for the version
     if (parser.Found("v")) {
-        wxMessageOutput *msgOut = wxMessageOutput::Get();
-        if (msgOut) {
-            wxString msg;
-            wxString date(wxString::FromAscii(__DATE__));
-            msg.Printf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar *) date);
-
-            msgOut->Printf(wxT("%s"), msg);
-        } else {
-            wxFAIL_MSG(_("No wxMessageOutput object?"));
-        }
+        wxString date(wxString::FromAscii(__DATE__));
+        wxPrintf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar *) date);
 
         return false;
     }

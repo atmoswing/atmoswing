@@ -924,7 +924,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
             if (std::abs(targetValue - *pLast) <= tolerance) {
                 return int(pLast - pArrStart);
             } else {
-                // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
+                // Check that the value is within the array. Do it here to allow a margin for the tolerance
                 if (targetValue > *pArrEnd || targetValue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
                         wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
@@ -996,7 +996,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 return asNOT_FOUND;
             }
         } else {
-            if (std::abs(targetValue - *(pLast + 1)) <= tolerance) {
+            if (std::abs(targetValue - *(pFirst + 1)) <= tolerance) {
                 return int(pFirst - pArrStart - 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
