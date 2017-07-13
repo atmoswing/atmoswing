@@ -40,6 +40,17 @@ matrix:
         - if [[ "$TRAVIS_BRANCH" != "coverity-scan" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       addons:
+        apt:
+          packages:
+            - build-essential
+            - gnome-devel
+            - cmake
+            - git
+            - libnetcdf-dev
+            - libproj-dev
+            - libjasper-dev
+            - libcurl3
+            - libwxgtk3.0-dev
         coverity_scan:
           project:
             name: "atmoswing/atmoswing"
