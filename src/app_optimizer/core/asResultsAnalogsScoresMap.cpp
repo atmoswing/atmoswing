@@ -115,7 +115,9 @@ bool asResultsAnalogsScoresMap::MakeMap()
         int indexLevel = asTools::SortedArraySearch(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size() - 1], m_level[i],
                                                     0.0001f);
 
-        m_mapScores[indexLevel](indexLat, indexLon) = m_scores[i];
+        if (indexLon > 0 || indexLat > 0 || indexLevel > 0) {
+            m_mapScores[indexLevel](indexLat, indexLon) = m_scores[i];
+        }
     }
 
     return true;

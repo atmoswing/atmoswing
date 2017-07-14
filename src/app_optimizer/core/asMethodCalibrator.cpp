@@ -1146,6 +1146,11 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
         iLevel = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
         iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
     }
+    if (iLevel < 0 || iHour < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return false;
+    }
+
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
     asDataPredictorArchive *desiredPredictor = new asDataPredictorArchive(
@@ -1388,6 +1393,11 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
                                                               &predictandTime[predictandTime.size() - 1], timeStart);
     indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
                                                              &predictandTime[predictandTime.size() - 1], timeEnd);
+
+    if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return va1f(stationIds.size(), a1f(1));
+    }
 
     // Get index step
     double predictandTimeStep = predictandTime[1] - predictandTime[0];

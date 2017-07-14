@@ -116,7 +116,11 @@ bool asFileGrib2::ParseStructure()
 
         // Read block of data from stream
         unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
-        fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
+        size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
+        if (nbBytesRead == 0) {
+            free(cgrib);
+            return false;
+        }
         seekPosition = offset + currentMessageSize;
 
         // Get the number of gridded fields and the number (and maximum size) of Local Use Sections.
@@ -372,7 +376,11 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
 
     // Read block of data from stream
     unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
-    fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
+    size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
+    if (nbBytesRead == 0) {
+        free(cgrib);
+        return false;
+    }
 
     // Get the data
     gribfield *gfld;

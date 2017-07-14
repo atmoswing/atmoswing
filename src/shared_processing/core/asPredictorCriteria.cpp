@@ -44,14 +44,18 @@
 
 
 asPredictorCriteria::asPredictorCriteria()
+        : m_criteria(CriteriaUndefined),
+          m_name(wxEmptyString),
+          m_fullName(wxEmptyString),
+          m_order(Asc),
+          m_needsDataRange(false),
+          m_dataMin(NaNf),
+          m_dataMax(NaNf),
+          m_scaleBest(NaNf),
+          m_scaleWorst(NaNf),
+          m_canUseInline(false)
 {
-    m_canUseInline = false;
-    m_criteria = Undefined;
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
-    m_dataMin = NaNf;
-    m_dataMax = NaNf;
-    m_needsDataRange = false;
+
 }
 
 asPredictorCriteria::~asPredictorCriteria()

@@ -66,30 +66,36 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
             vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
 
             for (unsigned int iPtorData = 0; iPtorData < vPredictorDataId.size(); iPtorData++) {
-                params.SetPredictorDataId(iStep, iPtor, vPredictorDataId[iPtorData]);
+                if (!params.SetPredictorDataId(iStep, iPtor, vPredictorDataId[iPtorData]))
+                    return false;
 
                 vd vPredictorTimeHours = params.GetPredictorTimeHoursVector(iStep, iPtor);
 
                 for (unsigned int iPtorTime = 0; iPtorTime < vPredictorTimeHours.size(); iPtorTime++) {
-                    params.SetPredictorTimeHours(iStep, iPtor, vPredictorTimeHours[iPtorTime]);
+                    if (!params.SetPredictorTimeHours(iStep, iPtor, vPredictorTimeHours[iPtorTime]))
+                        return false;
 
                     vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
 
                     for (unsigned int iPtorLevel = 0; iPtorLevel < vPredictorLevels.size(); iPtorLevel++) {
-                        params.SetPredictorLevel(iStep, iPtor, vPredictorLevels[iPtorLevel]);
+                        if (!params.SetPredictorLevel(iStep, iPtor, vPredictorLevels[iPtorLevel]))
+                            return false;
 
                         vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
 
                         for (unsigned int iCriteria = 0; iCriteria < vPredictorCriteria.size(); iCriteria++) {
-                            params.SetPredictorCriteria(iStep, iPtor, vPredictorCriteria[iCriteria]);
+                            if (!params.SetPredictorCriteria(iStep, iPtor, vPredictorCriteria[iCriteria]))
+                                return false;
 
                             vf slctPredictorLevels;
                             slctPredictorLevels.push_back(vPredictorLevels[iPtorLevel]);
-                            params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels);
+                            if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels))
+                                return false;
 
                             vd slctPreloadTimeHours;
                             slctPreloadTimeHours.push_back(vPredictorTimeHours[iPtorTime]);
-                            params.SetPreloadTimeHours(iStep, iPtor, slctPreloadTimeHours);
+                            if (!params.SetPreloadTimeHours(iStep, iPtor, slctPreloadTimeHours))
+                                return false;
 
                             m_originalParams = params;
 

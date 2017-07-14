@@ -82,7 +82,13 @@ int main(int argc, char **argv)
         }
     }
 
-    int resultTest = RUN_ALL_TESTS();
+    int resultTest = -2;
+
+    try {
+        resultTest = RUN_ALL_TESTS();
+    } catch (const std::exception &e) {
+        wxPrintf(e.what());
+    }
 
     // Cleanup
     wxUninitialize();

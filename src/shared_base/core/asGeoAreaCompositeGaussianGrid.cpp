@@ -74,15 +74,17 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double Xmin, int 
     wxASSERT(Xptsnb >= 0);
     wxASSERT(Yptsnb >= 0);
     if (m_fullAxisX.size() <= indexXmin + Xptsnb - 1)
-        asThrowException(_("The given width exceeds the grid size of the gaussian grid."));
+        asThrowException(_("The given width exceeds the grid size of the Gaussian grid."));
     if (m_fullAxisY.size() <= indexYmin + Yptsnb - 1)
-        asThrowException(_("The given height exceeds the grid size of the gaussian grid."));
+        asThrowException(_("The given height exceeds the grid size of the Gaussian grid."));
     if (Xptsnb < 0)
-        asThrowException(wxString::Format(_("The given width (points number) is not consistent in the gaussian grid: %d"),
+        asThrowException(wxString::Format(_("The given width (points number) is not consistent in the Gaussian grid: %d"),
                                           Xptsnb));
     if (Yptsnb < 0)
-        asThrowException(wxString::Format(_("The given height (points number) is not consistent in the gaussian grid: %d"),
+        asThrowException(wxString::Format(_("The given height (points number) is not consistent in the Gaussian grid: %d"),
                                           Yptsnb));
+    if (indexXmin < 0 || indexYmin < 0)
+        asThrowException(_("Negative indices found when building the Gaussian grid."));
     double Xwidth = m_fullAxisX[indexXmin + Xptsnb - 1] - m_fullAxisX[indexXmin];
     double Ywidth = m_fullAxisY[indexYmin + Yptsnb - 1] - m_fullAxisY[indexYmin];
 
@@ -100,6 +102,8 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
     if (otherarea->GetGridType() != GetGridType())
         return false;
     asGeoAreaCompositeGaussianGrid *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
+    if (!otherareaGaussian)
+        return false;
 
     return otherareaGaussian->GetGridType() == GetGridType();
 }

@@ -50,7 +50,7 @@ protected:
 
     void Update();
 
-    void OnSaveDefault(wxCommandEvent &event) const;
+    void OnSaveDefault(wxCommandEvent &event);
 
     void Launch(wxCommandEvent &event);
 

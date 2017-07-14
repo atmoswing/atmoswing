@@ -29,12 +29,13 @@
 #include "asGeo.h"
 
 asGeo::asGeo()
+        : m_gridType(Regular),
+          m_axisXmin(0),
+          m_axisXmax(360),
+          m_axisYmin(-90),
+          m_axisYmax(90)
 {
     // We always consider WGS84 for the predictors
-    m_axisXmin = 0;
-    m_axisXmax = 360;
-    m_axisYmin = -90;
-    m_axisYmax = 90;
 }
 
 asGeo::~asGeo()

@@ -325,7 +325,7 @@ void asFrameOptimizer::LoadOptions()
     m_textCtrlGAsMutationsMultiScaleProb->SetValue(GAsMutationsMultiScaleProb);
 }
 
-void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event) const
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
 {
     SaveOptions();
 }

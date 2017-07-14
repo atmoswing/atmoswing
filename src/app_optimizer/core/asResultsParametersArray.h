@@ -44,11 +44,11 @@ public:
 
     void Init(const wxString &fileTag);
 
-    void Add(asParametersScoring params, float scoreCalib);
+    void Add(asParametersScoring &params, float scoreCalib);
 
-    void Add(asParametersScoring params, float scoreCalib, float scoreValid);
+    void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring params, a1f scoreCalib, a1f scoreValid);
+    void Add(asParametersScoring &params, a1f scoreCalib, a1f scoreValid);
 
     void Clear();
 

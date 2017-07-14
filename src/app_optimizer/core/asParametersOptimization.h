@@ -76,7 +76,7 @@ public:
 
     void Unlock(vi &indices);
 
-    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre)
+    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
     {
         return GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
     }

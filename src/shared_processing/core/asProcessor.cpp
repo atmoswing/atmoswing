@@ -990,6 +990,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsAr
                                                                        timeTargetData[timeTargetDataSize - 1],
                                                                        "DD.MM.YYYY hh:mm")));
 
+                if (iTimeTarg < 0) {
+                    wxLogError(_("An unexpected error occurred."));
+                    return false;
+                }
 
                 // Get dates
                 currentAnalogsDates = analogsDates.row(iAnalogDate);
@@ -1177,6 +1181,12 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
             indexPredictandTimeEnd--;
         }
     }
+
+    if (indexPredictandTimeStart<0 || indexPredictandTimeEnd<0) {
+        wxLogError(_("An unexpected error occurred."));
+        return false;
+    }
+
     timeStart = predictandTime[indexPredictandTimeStart];
     timeEnd = predictandTime[indexPredictandTimeEnd];
     if (timeEnd <= timeStart) {

@@ -165,8 +165,11 @@ void asFramePreferencesViewer::SavePreferences()
     m_workspace->SetColorbarMaxValue(colorbarMaxValueDouble);
     wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
     long pastDaysNbLong;
-    pastDaysNb.ToLong(&pastDaysNbLong);
-    m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+    if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
+        m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+    } else {
+        m_workspace->SetTimeSeriesPlotPastDaysNb(5);
+    }
 
     // Alarms panel
     int alarmsReturnPeriod;

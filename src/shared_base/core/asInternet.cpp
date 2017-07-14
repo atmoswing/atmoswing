@@ -81,8 +81,6 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
     long parallelRequests = 5;
     pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 5l);
 
-    parallelRequests = 1;
-
     if (parallelRequests > 1) {
         // Must initialize libcurl before any threads are started
         curl_global_init(CURL_GLOBAL_ALL);
@@ -234,7 +232,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
             // Always cleanup
             curl_easy_cleanup(curl);
-            wxDELETE(errorbuffer);
+            wxDELETEA(errorbuffer);
         }
     }
 

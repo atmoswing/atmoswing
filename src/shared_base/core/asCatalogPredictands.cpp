@@ -32,28 +32,27 @@
 
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
-        : wxObject()
+        : wxObject(),
+          m_catalogFilePath(filePath),
+          m_setId(wxEmptyString),
+          m_name(wxEmptyString),
+          m_description(wxEmptyString),
+          m_start(0),
+          m_end(0),
+          m_timeZoneHours(0),
+          m_timeStepHours(0),
+          m_firstTimeStepHour(0),
+          m_dataPath(wxEmptyString),
+          m_coordSys(wxEmptyString),
+          m_parameter(asDataPredictand::Precipitation),
+          m_unit(asDataPredictand::mm),
+          m_temporalResolution(asDataPredictand::Daily),
+          m_spatialAggregation(asDataPredictand::Station)
 {
-    m_catalogFilePath = filePath;
-
-    // Initialize some data
-    m_setId = wxEmptyString;
-    m_name = wxEmptyString;
-    m_description = wxEmptyString;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 0;
-    m_firstTimeStepHour = 0;
-    m_dataPath = wxEmptyString;
-    m_start = 0;
-    m_end = 0;
-
     // Get the xml file path
     if (m_catalogFilePath.IsEmpty()) {
         wxLogError(_("No path was given for the predictand catalog."));
     }
-
-    // Initiate some data
-    m_dataPath = wxEmptyString;
 }
 
 asCatalogPredictands::~asCatalogPredictands()

@@ -39,6 +39,7 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace,
     m_bmp = NULL;
     m_gdc = NULL;
     m_cellWidth = 40 * g_ppiScaleDc;
+    m_parent = NULL;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), NULL, this);
     Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);

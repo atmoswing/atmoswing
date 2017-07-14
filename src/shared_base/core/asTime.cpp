@@ -285,11 +285,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(4, 4).ToLong(&year))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
             }
 
-            break;
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
 
         case (YYYYMMDD):
 
@@ -309,10 +307,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(6, 2).ToLong(&day))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
 
         case (YYYYMMDDhh):
 
@@ -336,10 +333,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(8, 2).ToLong(&hour))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 10, 13));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 10, 13));
 
         case (full):
         case (DDMMYYYYhhmm):
@@ -368,10 +364,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(10, 2).ToLong(&min))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
 
         case (YYYYMMDDhhmm):
 
@@ -399,10 +394,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(10, 2).ToLong(&min))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
 
         case (DDMMYYYYhhmmss):
 
@@ -434,10 +428,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(12, 2).ToLong(&sec))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
         case (YYYYMMDDhhmmss):
 
@@ -469,10 +462,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(12, 2).ToLong(&sec))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(year, month, day, hour, min, sec);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
         case (timeonly):
         case (hhmm):
@@ -489,10 +481,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                 if (!datestr.Mid(2, 2).ToLong(&min))
                     asThrowException(wxString::Format(errormsgconversion, datestr));
                 return GetMJD(0, 0, 0, hour, min);
-            } else {
-                asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 4, 5));
             }
-            break;
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 4, 5));
 
         case (nowplushours):
 
@@ -548,9 +539,9 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                         if (!datestr.Mid(6, 4).ToLong(&year))
                             asThrowException(wxString::Format(errormsgconversion, datestr));
                         return GetMJD(year, month, day);
-                    } else {
-                        asThrowException(wxString::Format(errormsgconversion, datestr));
                     }
+
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
 
                 } else if (datestr.Len() == 16) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
@@ -577,9 +568,8 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                         if (!datestr.Mid(14, 2).ToLong(&min))
                             asThrowException(wxString::Format(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min);
-                    } else {
-                        asThrowException(wxString::Format(errormsgconversion, datestr));
                     }
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
                 } else if (datestr.Len() == 19) {
                     if (datestr.Mid(0, 4).ToLong(&year)) {
                         if (!datestr.Mid(0, 4).ToLong(&year))
@@ -609,18 +599,17 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
                         if (!datestr.Mid(17, 2).ToLong(&sec))
                             asThrowException(wxString::Format(errormsgconversion, datestr));
                         return GetMJD(year, month, day, hour, min, sec);
-                    } else {
-                        asThrowException(wxString::Format(errormsgconversion, datestr));
                     }
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
                 } else if (datestr.Len() == 5) {
                     if (!datestr.Mid(0, 2).ToLong(&hour))
                         asThrowException(wxString::Format(errormsgconversion, datestr));
                     if (!datestr.Mid(3, 2).ToLong(&min))
                         asThrowException(wxString::Format(errormsgconversion, datestr));
                     return GetMJD(0, 0, 0, hour, min);
-                } else {
-                    asThrowException(wxString::Format(errormsgconversion, datestr));
                 }
+
+                asThrowException(wxString::Format(errormsgconversion, datestr));
             }
 
             break;
@@ -628,7 +617,6 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             asThrowException(_("The date format is not correctly set"));
     }
 
-    return NaNf;
 }
 
 bool asTime::IsLeapYear(int year)

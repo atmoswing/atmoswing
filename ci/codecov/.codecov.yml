@@ -1,0 +1,13 @@
+coverage:
+  precision: 2
+  round: nearest
+  range: "20...100"
+ignore:
+  - "/usr/.*"
+  - ".*/external/.*"
+  - "tests/.*"
+  - ".*/tests/.*"
+  - "tests/src/*"
+  - ".*/tests/src/*"
+  - "/home/travis/build/atmoswing/atmoswing/tests/src/*"
+  - ".*/libs/.*"
