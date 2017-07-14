@@ -31,15 +31,13 @@
 
 // Safe: Critical section defined within
 asThreadsManager::asThreadsManager()
+        : m_idCounter(-1),
+          m_waitingUntilAllDone(true),
+          m_cancelled(false),
+          m_maxThreadsNb(-1),
+          m_priority(-1)
 {
-    m_critSectionManager.Enter();
 
-    m_cancelled = false;
-    m_idCounter = 0;
-    m_maxThreadsNb = -1;
-    m_priority = -1;
-
-    m_critSectionManager.Leave();
 }
 
 asThreadsManager::~asThreadsManager()

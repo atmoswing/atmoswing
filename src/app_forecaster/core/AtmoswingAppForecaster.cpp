@@ -213,21 +213,23 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     wxString logLevelStr = wxEmptyString;
     long logLevel = -1;
     if (parser.Found("log-level", &logLevelStr)) {
-        logLevelStr.ToLong(&logLevel);
-
-        // Check and apply
-        if (logLevel == 0) {
-            Log().SetLevel(0);
-        } else if (logLevel == 1) {
-            Log().SetLevel(1);
-        } else if (logLevel == 2) {
-            Log().SetLevel(2);
-        } else if (logLevel == 3) {
-            Log().SetLevel(3);
+        if (logLevelStr.ToLong(&logLevel)) {
+            if (logLevel == 0) {
+                Log().SetLevel(0);
+            } else if (logLevel == 1) {
+                Log().SetLevel(1);
+            } else if (logLevel == 2) {
+                Log().SetLevel(2);
+            } else if (logLevel == 3) {
+                Log().SetLevel(3);
+            } else {
+                Log().SetLevel(2);
+                wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3)."), logLevelStr);
+            }
         } else {
             Log().SetLevel(2);
-            wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3)."), logLevelStr);
         }
+
     }
 
     // Proxy activated

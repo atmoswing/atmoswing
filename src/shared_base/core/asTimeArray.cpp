@@ -74,6 +74,7 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
         m_mode = PredictandThresholds;
     } else {
         wxLogError(_("Time array mode not correctly defined (%s)!"), slctModeString);
+        m_mode = Custom;
     }
 
     // Get values

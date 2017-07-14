@@ -129,6 +129,10 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                                                             &timeArchiveData[timeArchiveDataSize - 1],
                                                             currentAnalogsDates[iPrevAnalog], 0.01);
                 wxASSERT(iTimeArch >= 0);
+                if (iTimeArch < 0) {
+                    wxLogError(_("An unexpected error occurred."));
+                    return (wxThread::ExitCode) 1;
+                }
 
                 // Check if a row was found
                 if (iTimeArch != asNOT_FOUND && iTimeArch != asOUT_OF_RANGE) {

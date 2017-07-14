@@ -39,7 +39,7 @@ class asPredictorCriteria
 public:
     enum Criteria
     {
-        Undefined,
+        CriteriaUndefined,
         S1, // Teweles-Wobus
         NS1, // Normalized Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients

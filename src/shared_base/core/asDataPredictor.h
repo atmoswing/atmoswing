@@ -46,6 +46,7 @@ class asDataPredictor
 public:
     enum Parameter
     {
+        ParameterUndefined,
         AirTemperature,
         PotentialTemperature,
         GeopotentialHeight,
@@ -76,8 +77,8 @@ public:
 
     enum Unit
     {
-        unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2, kg_m2_s, N_m2,
-        m2_s2, degKm2_kg_s, mm_d
+        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2,
+        kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
     };
 
     asDataPredictor(const wxString &dataId);

@@ -5,5 +5,9 @@ coverage:
 ignore:
   - "/usr/.*"
   - ".*/external/.*"
+  - "tests/.*"
   - ".*/tests/.*"
+  - "tests/src/*"
+  - ".*/tests/src/*"
+  - "/home/travis/build/atmoswing/atmoswing/tests/src/*"
   - ".*/libs/.*"

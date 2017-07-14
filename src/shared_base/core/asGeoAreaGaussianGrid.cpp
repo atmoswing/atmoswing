@@ -67,9 +67,11 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymi
     wxASSERT(indexXmin >= 0);
     wxASSERT(indexYmin >= 0);
     if (m_fullAxisX.size() <= indexXmin + Xptsnb - 1)
-        asThrowException(_("The given width exceeds the grid size of the guassian grid."));
+        asThrowException(_("The given width exceeds the grid size of the Gaussian grid."));
     if (m_fullAxisY.size() <= indexYmin + Yptsnb - 1)
-        asThrowException(_("The given height exceeds the grid size of the guassian grid."));
+        asThrowException(_("The given height exceeds the grid size of the Gaussian grid."));
+    if (indexXmin < 0 || indexYmin < 0)
+        asThrowException(_("Coordinates not found in the Gaussian grid."));
     double Xwidth = m_fullAxisX[indexXmin + Xptsnb - 1] - m_fullAxisX[indexXmin];
     double Ywidth = m_fullAxisY[indexYmin + Yptsnb - 1] - m_fullAxisY[indexYmin];
 

@@ -371,8 +371,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     wxString runNbStr = wxEmptyString;
     long runNb = 0;
     if (parser.Found("run-number", &runNbStr)) {
-        runNbStr.ToLong(&runNb);
-        g_runNb = (int) runNb;
+        if (runNbStr.ToLong(&runNb)) {
+            g_runNb = (int) runNb;
+        } else {
+            g_runNb = rand();
+        }
     }
 
     // Local mode

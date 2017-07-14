@@ -142,7 +142,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
         // Always cleanup
         curl_easy_cleanup(curl);
-        wxDELETE(errorbuffer);
+        wxDELETEA(errorbuffer);
     }
 
     return (wxThread::ExitCode) 0;

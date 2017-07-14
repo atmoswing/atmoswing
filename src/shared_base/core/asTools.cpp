@@ -306,6 +306,11 @@ float asTools::GetValueForQuantile(const a1f &values, const float quantile)
     wxASSERT(indRight >= 0);
     wxASSERT(indLeft <= indRight);
 
+    if (indLeft < 0 || indRight < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return NaNf;
+    }
+
     if (indLeft == indRight) {
         value = valuesCopy[indLeft];
     } else {
@@ -977,7 +982,6 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
             pFirst += 1;
         }
 
-
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetValue - *pFirst) <= std::abs(targetValue - *(pFirst - 1))) {
             if (std::abs(targetValue - *pFirst) <= tolerance) {
@@ -996,7 +1000,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
                 return asNOT_FOUND;
             }
         } else {
-            if (std::abs(targetValue - *(pFirst + 1)) <= tolerance) {
+            if (std::abs(targetValue - *(pFirst - 1)) <= tolerance) {
                 return int(pFirst - pArrStart - 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.

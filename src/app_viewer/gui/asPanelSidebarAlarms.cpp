@@ -140,6 +140,7 @@ asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWin
 {
     m_bmpAlarms = NULL;
     m_gdc = NULL;
+    m_parent = NULL;
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), NULL, this);
 

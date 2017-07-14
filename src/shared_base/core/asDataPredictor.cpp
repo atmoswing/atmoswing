@@ -65,6 +65,8 @@ asDataPredictor::asDataPredictor(const wxString &dataId)
     m_fileIndexes.memberStart = 0;
     m_fileIndexes.memberCount = 1;
     m_fileExtension = wxEmptyString;
+    m_parameter = ParameterUndefined;
+    m_unit = UnitUndefined;
     int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
     AssignGribCode(arr);
 
@@ -867,9 +869,10 @@ asGeoAreaCompositeGrid *asDataPredictor::AdjustAxes(asGeoAreaCompositeGrid *data
             m_latPtsnb = dataArea->GetYaxisPtsnb();
             wxASSERT_MSG(m_axisLat.size() == m_latPtsnb,
                          wxString::Format("m_axisLat.size()=%d, m_latPtsnb=%d", (int) m_axisLat.size(), m_latPtsnb));
+
+            compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
         }
 
-        compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
         m_axesChecked = true;
     }
 
