@@ -1367,12 +1367,21 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
     timeEnd = wxMin(predictandTime[predictandTime.size() - 1], params.GetCalibrationEnd());
     timeEnd = floor(timeEnd) + predictandTimeDays;
 
+    if (predictandTime.size() < 1) {
+        wxLogError(_("An unexpected error occurred."));
+        return va1f(stationIds.size(), a1f(1));
+    }
+
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],
-                                                                  &predictandTime[predictandTime.size() - 1],
-                                                                  timeStart);
+                                                                  &predictandTime[predictandTime.size() - 1], timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
                                                                  &predictandTime[predictandTime.size() - 1], timeEnd);
+
+    if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return va1f(stationIds.size(), a1f(1));
+    }
 
     for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
         a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
@@ -1382,7 +1391,16 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
         }
         while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeEnd))) {
             indexPredictandTimeEnd--;
+            if (indexPredictandTimeEnd < 0) {
+                wxLogError(_("An unexpected error occurred."));
+                return va1f(stationIds.size(), a1f(1));
+            }
         }
+    }
+
+    if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return va1f(stationIds.size(), a1f(1));
     }
 
     timeStart = predictandTime[indexPredictandTimeStart];

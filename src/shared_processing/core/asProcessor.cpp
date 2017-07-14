@@ -1173,6 +1173,12 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
                                                                   &predictandTime[predictandTimeLength - 1], timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
                                                                  &predictandTime[predictandTimeLength - 1], timeEnd);
+
+    if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
+        wxLogError(_("An unexpected error occurred."));
+        return false;
+    }
+
     for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
         while (asTools::IsNaN(predictandDataNorm[iStat](indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
@@ -1182,7 +1188,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
         }
     }
 
-    if (indexPredictandTimeStart<0 || indexPredictandTimeEnd<0) {
+    if (indexPredictandTimeEnd<0) {
         wxLogError(_("An unexpected error occurred."));
         return false;
     }
@@ -1190,6 +1196,7 @@ bool asProcessor::GetAnalogsValues(asDataPredictand &predictand, asResultsAnalog
     timeStart = predictandTime[indexPredictandTimeStart];
     timeEnd = predictandTime[indexPredictandTimeEnd];
     if (timeEnd <= timeStart) {
+        wxLogError(_("An unexpected error occurred."));
         return false;
     }
 

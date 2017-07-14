@@ -1055,7 +1055,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
     wxASSERT(pArrEnd);
 
     T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
-    int vlength, IndexMid;
+    int vlength;
 
     // Initialize first and last variables.
     pFirst = (T *) pArrStart;
@@ -1081,8 +1081,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                IndexMid = (int) (pMid - pArrStart);
-                return IndexMid;
+                return (int) (pMid - pArrStart);
             }
         }
 
@@ -1120,8 +1119,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                IndexMid = (int) (pMid - pArrStart);
-                return IndexMid;
+                return (int) (pMid - pArrStart);
             }
         }
 

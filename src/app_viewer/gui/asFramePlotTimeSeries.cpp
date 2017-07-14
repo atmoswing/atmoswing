@@ -433,7 +433,7 @@ bool asFramePlotTimeSeries::Plot()
     bool DoPlotPreviousForecasts = false;
     bool DoPlotInterpretation = false;
 
-    for (int curve = 0; curve < 8; curve++) {
+    for (int curve = 0; curve < 9; curve++) {
         if (m_checkListToc->IsChecked(curve)) {
             switch (curve) {
                 case (AllQuantiles):

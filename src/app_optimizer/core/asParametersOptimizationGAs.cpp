@@ -968,7 +968,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
             int val = asTools::Round(newVal);
-            SetTimeArrayAnalogsIntervalDays(val);
+            if (!SetTimeArrayAnalogsIntervalDays(val)) {
+                asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
+            }
             return;
         }
     }
@@ -978,7 +980,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
                 int val = asTools::Round(newVal);
-                SetAnalogsNumber(i, val);
+                if (!SetAnalogsNumber(i, val)) {
+                    asThrowException(_("Error in SetAnalogsNumber from GAs."));
+                }
                 return;
             }
         }
@@ -997,8 +1001,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             if ((unsigned) val >= vect.size())
                                 val = vect.size() - 1;
 
-                            SetPreprocessDataId(i, j, k, vect[val]);
-
+                            if (!SetPreprocessDataId(i, j, k, vect[val])) {
+                                asThrowException(_("Error in SetPreprocessDataId from GAs."));
+                            }
                             return;
                         }
                     }
@@ -1014,8 +1019,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             if ((unsigned) val >= vect.size())
                                 val = vect.size() - 1;
 
-                            SetPreprocessLevel(i, j, k, vect[val]);
-
+                            if (!SetPreprocessLevel(i, j, k, vect[val])) {
+                                asThrowException(_("Error in SetPreprocessLevel from GAs."));
+                            }
                             return;
                         }
                     }
@@ -1024,7 +1030,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
                         if (counter == index) {
                             int val = asTools::Round(newVal);
-                            SetPreprocessTimeHours(i, j, k, val);
+                            if (!SetPreprocessTimeHours(i, j, k, val)) {
+                                asThrowException(_("Error in SetPreprocessTimeHours from GAs."));
+                            }
                             return;
                         }
                     }
@@ -1041,8 +1049,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         if ((unsigned) val >= vect.size())
                             val = vect.size() - 1;
 
-                        SetPredictorDataId(i, j, vect[val]);
-
+                        if (!SetPredictorDataId(i, j, vect[val])) {
+                            asThrowException(_("Error in SetPredictorDataId from GAs."));
+                        }
                         return;
                     }
                 }
@@ -1058,8 +1067,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         if ((unsigned) val >= vect.size())
                             val = vect.size() - 1;
 
-                        SetPredictorLevel(i, j, vect[val]);
-
+                        if (!SetPredictorLevel(i, j, vect[val])) {
+                            asThrowException(_("Error in SetPredictorLevel from GAs."));
+                        }
                         return;
                     }
                 }
@@ -1068,7 +1078,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 if (!m_stepsLocks[i].predictors[j].timeHours) {
                     if (counter == index) {
                         int val = asTools::Round(newVal);
-                        SetPredictorTimeHours(i, j, val);
+                        if (!SetPredictorTimeHours(i, j, val)) {
+                            asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
+                        }
                         return;
                     }
                 }
@@ -1077,7 +1089,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    SetPredictorXmin(i, j, newVal);
+                    if (!SetPredictorXmin(i, j, newVal)) {
+                        asThrowException(_("Error in SetPredictorXmin from GAs."));
+                    }
                     return;
                 }
             }
@@ -1086,7 +1100,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
                     int val = asTools::Round(newVal);
-                    SetPredictorXptsnb(i, j, val);
+                    if (!SetPredictorXptsnb(i, j, val)) {
+                        asThrowException(_("Error in SetPredictorXptsnb from GAs."));
+                    }
                     return;
                 }
             }
@@ -1094,7 +1110,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    SetPredictorYmin(i, j, newVal);
+                    if (!SetPredictorYmin(i, j, newVal)) {
+                        asThrowException(_("Error in SetPredictorYmin from GAs."));
+                    }
                     return;
                 }
             }
@@ -1103,7 +1121,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
                     int val = asTools::Round(newVal);
-                    SetPredictorYptsnb(i, j, val);
+                    if (!SetPredictorYptsnb(i, j, val)) {
+                        asThrowException(_("Error in SetPredictorYptsnb from GAs."));
+                    }
                     return;
                 }
             }
@@ -1112,7 +1132,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
                     float val = (float) newVal;
-                    SetPredictorWeight(i, j, val);
+                    if (!SetPredictorWeight(i, j, val)) {
+                        asThrowException(_("Error in SetPredictorWeight from GAs."));
+                    }
                     return;
                 }
             }
@@ -1128,8 +1150,9 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     if ((unsigned) val >= vect.size())
                         val = vect.size() - 1;
 
-                    SetPredictorCriteria(i, j, vect[val]);
-
+                    if (!SetPredictorCriteria(i, j, vect[val])) {
+                        asThrowException(_("Error in SetPredictorCriteria from GAs."));
+                    }
                     return;
                 }
             }
