@@ -107,6 +107,10 @@ wxThread::ExitCode asThreadProcessorGetAnalogsSubDates::Entry()
                                                     (double) m_pTimeTargetSelection->coeff(iDateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(iDateTarg) > 0);
         wxASSERT(iTimeTarg >= 0);
+        if (iTimeTarg < 0) {
+            wxLogError(_("An unexpected error occurred."));
+            return (wxThread::ExitCode) 1;
+        }
 
         // Get dates
         currentAnalogsDates = m_pPreviousAnalogsDates->row(iDateTarg);
