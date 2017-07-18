@@ -31,7 +31,7 @@
 
 a1f asPostprocessor::Postprocess(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params)
 {
-    wxString method(params.GetForecastScorePostprocessMethod());
+    wxString method(params.GetScorePostprocessMethod());
 
     if (method.IsSameAs("DuplicationOnCriteria"))
     {
@@ -103,7 +103,7 @@ a1f asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const a1f &analogs
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
         analogsWeight[iDay] /= sum1;
-        analogsWeight[iDay] = pow(analogsWeight[iDay], params.GetForecastScorePostprocessDupliExp());
+        analogsWeight[iDay] = pow(analogsWeight[iDay], params.GetScorePostprocessDupliExp());
         sum2 += analogsWeight[iDay];
     }
 

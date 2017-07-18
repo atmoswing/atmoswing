@@ -101,20 +101,20 @@ void asListBoxForecasts::Update()
     }
 
     for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
-        asResultsAnalogsForecast *forecastFirst = m_forecastManager->GetForecast(methodRow, 0);
+        asResultsForecast *forecastFirst = m_forecastManager->GetForecast(methodRow, 0);
 
         int image;
         switch (forecastFirst->GetPredictandParameter()) {
-            case asDataPredictand::Precipitation:
+            case asPredictand::Precipitation:
                 image = asListBoxForecasts::TreeCtrlIcon_Precipitation;
                 break;
-            case asDataPredictand::AirTemperature:
+            case asPredictand::AirTemperature:
                 image = asListBoxForecasts::TreeCtrlIcon_Temperature;
                 break;
-            case asDataPredictand::Lightnings:
+            case asPredictand::Lightnings:
                 image = asListBoxForecasts::TreeCtrlIcon_Lightnings;
                 break;
-            case asDataPredictand::Wind:
+            case asPredictand::Wind:
                 image = asListBoxForecasts::TreeCtrlIcon_Wind;
                 break;
             default:
@@ -129,7 +129,7 @@ void asListBoxForecasts::Update()
 
         if (parentItemId.IsOk()) {
             for (int forecastRow = 0; forecastRow < m_forecastManager->GetForecastsNb(methodRow); forecastRow++) {
-                asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
+                asResultsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
 
                 // Create the new forecast item
                 asForecastTreeItemData *itemForecast = new asForecastTreeItemData(methodRow, forecastRow);

@@ -158,17 +158,17 @@ bool asResults::DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const
     return true;
 }
 
-bool asResults::DefForecastScoresAttributes(asFileNetcdf &ncFile) const
+bool asResults::DefScoresAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Forecast scores", "forecast_scores");
-    ncFile.PutAtt("var_desc", "Scores of the forecast resulting from the analog method", "forecast_scores");
+    ncFile.PutAtt("long_name", "Prediction scores", "prediction_scores");
+    ncFile.PutAtt("var_desc", "Scores of the prediction resulting from the analog method", "prediction_scores");
     return true;
 }
 
-bool asResults::DefForecastScoreFinalAttributes(asFileNetcdf &ncFile) const
+bool asResults::DefTotalScoreAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Final score", "forecast_score");
-    ncFile.PutAtt("var_desc", "Final score of the method", "forecast_score");
+    ncFile.PutAtt("long_name", "Final score", "prediction_score");
+    ncFile.PutAtt("var_desc", "Final score of the method", "prediction_score");
     return true;
 }
 

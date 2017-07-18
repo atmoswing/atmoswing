@@ -117,9 +117,9 @@ protected:
 
     bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefForecastScoresAttributes(asFileNetcdf &ncFile) const;
+    bool DefScoresAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefForecastScoreFinalAttributes(asFileNetcdf &ncFile) const;
+    bool DefTotalScoreAttributes(asFileNetcdf &ncFile) const;
 
     bool DefLevelAttributes(asFileNetcdf &ncFile) const;
 

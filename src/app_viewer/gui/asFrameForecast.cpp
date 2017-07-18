@@ -1970,7 +1970,7 @@ void asFrameForecast::UpdatePanelCaptionAll()
             forecastRow = 0;
         }
 
-        asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
+        asResultsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
         a1f dates = forecast->GetTargetDates();
         m_panelSidebarCaptionForecastRing->SetDates(dates);
     }
@@ -1993,7 +1993,7 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
     m_panelSidebarAnalogDates->Show();
 
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
                                                                         m_forecastViewer->GetForecastSelection());
     a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
     a1f arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());

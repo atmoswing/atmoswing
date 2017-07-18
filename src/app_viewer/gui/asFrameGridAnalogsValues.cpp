@@ -161,7 +161,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
     if (m_forecastManager->GetMethodsNb() < 1)
         return false;
 
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f dates = forecast->GetAnalogsDates(m_selectedDate);
     a1f values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);

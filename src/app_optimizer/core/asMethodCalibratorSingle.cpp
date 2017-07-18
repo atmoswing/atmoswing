@@ -48,25 +48,25 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         checkSizes = false;
         errorField.Append("IntervalDays, ");
     }
-    if (params.GetForecastScoreNameVector().size() > 1) {
+    if (params.GetScoreNameVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreName, ");
+        errorField.Append("ScoreName, ");
     }
-    if (params.GetForecastScoreTimeArrayModeVector().size() > 1) {
+    if (params.GetScoreTimeArrayModeVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayMode, ");
+        errorField.Append("ScoreTimeArrayMode, ");
     }
-    if (params.GetForecastScoreTimeArrayDateVector().size() > 1) {
+    if (params.GetScoreTimeArrayDateVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayDate ,");
+        errorField.Append("ScoreTimeArrayDate ,");
     }
-    if (params.GetForecastScoreTimeArrayIntervalDaysVector().size() > 1) {
+    if (params.GetScoreTimeArrayIntervalDaysVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayIntervalDays, ");
+        errorField.Append("ScoreTimeArrayIntervalDays, ");
     }
-    if (params.GetForecastScorePostprocessDupliExpVector().size() > 1) {
+    if (params.GetScorePostprocessDupliExpVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScorePostprocessDupliExp, ");
+        errorField.Append("ScorePostprocessDupliExp, ");
     }
 
     for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
@@ -168,7 +168,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     results_all.Init(_("all_station_parameters"));
 
     // Create a analogsdate object to save previous analogs dates selection.
-    asResultsAnalogsDates anaDatesPrevious;
+    asResultsDates anaDatesPrevious;
 
     for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
         ClearAll();
@@ -179,10 +179,10 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         m_scoreClimatology.clear();
 
         // Create results objects
-        asResultsAnalogsDates anaDates;
-        asResultsAnalogsValues anaValues;
-        asResultsAnalogsForecastScores anaScores;
-        asResultsAnalogsForecastScoreFinal anaScoreFinal;
+        asResultsDates anaDates;
+        asResultsValues anaValues;
+        asResultsScores anaScores;
+        asResultsTotalScore anaScoreFinal;
 
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
@@ -209,13 +209,13 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
             }
             if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
                 return false;
-            if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
+            if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
                 return false;
-            if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
+            if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
                 return false;
 
             // Store the result
-            results_tested.Add(params, anaScoreFinal.GetForecastScore(), m_scoreValid);
+            results_tested.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
 
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
@@ -226,7 +226,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         Validate(params);
 
         // Keep the best parameters set
-        results_all.Add(params, anaScoreFinal.GetForecastScore(), m_scoreValid);
+        results_all.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
         if (!results_all.Print())
             return false;
         if (!results_tested.Print())

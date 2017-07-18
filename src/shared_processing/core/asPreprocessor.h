@@ -31,11 +31,11 @@
 
 #include <asIncludes.h>
 
-class asDataPredictor;
+class asPredictor;
 
-class asDataPredictorArchive;
+class asPredictorArch;
 
-class asDataPredictorRealtime;
+class asPredictorOper;
 
 
 class asPreprocessor
@@ -43,31 +43,31 @@ class asPreprocessor
 {
 public:
 
-    static bool Preprocess(std::vector<asDataPredictorArchive *> predictors, const wxString &method,
-                           asDataPredictor *result);
+    static bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method,
+                           asPredictor *result);
 
-    static bool Preprocess(std::vector<asDataPredictorRealtime *> predictors, const wxString &method,
-                           asDataPredictor *result);
+    static bool Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method,
+                           asPredictor *result);
 
-    static bool Preprocess(std::vector<asDataPredictor *> predictors, const wxString &method, asDataPredictor *result);
+    static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
-    static bool PreprocessGradients(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessGradients(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessAverage(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessAverage(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessDifference(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessDifference(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessMultiplication(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessMultiplication(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessFormerHumidityIndex(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessFormerHumidityIndex(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessMergeByHalfAndMultiply(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessHumidityFlux(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessHumidityFlux(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessWindSpeed(std::vector<asDataPredictor *> predictors, asDataPredictor *result);
+    static bool PreprocessWindSpeed(std::vector<asPredictor *> predictors, asPredictor *result);
 
 protected:
 

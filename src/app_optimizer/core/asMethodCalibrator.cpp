@@ -106,10 +106,10 @@ bool asMethodCalibrator::Manager()
 
 void asMethodCalibrator::LoadScoreOrder(asParametersCalibration &params)
 {
-    asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
-    Order scoreOrder = forecastScore->GetOrder();
+    asScore *score = asScore::GetInstance(params.GetScoreName());
+    Order scoreOrder = score->GetOrder();
     SetScoreOrder(scoreOrder);
-    wxDELETE(forecastScore);
+    wxDELETE(score);
 }
 
 void asMethodCalibrator::ClearAll()
@@ -205,9 +205,9 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
 }
 
 bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params,
-                                                asResultsAnalogsForecastScoreFinal &scoreFinal)
+                                                asResultsTotalScore &scoreFinal)
 {
-    float thisScore = scoreFinal.GetForecastScore();
+    float thisScore = scoreFinal.GetScore();
 
     switch (m_scoreOrder) {
         case Asc:
@@ -233,9 +233,9 @@ bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params,
     return false;
 }
 
-bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResultsAnalogsForecastScoreFinal &scoreFinal)
+bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal)
 {
-    float thisScore = scoreFinal.GetForecastScore();
+    float thisScore = scoreFinal.GetScore();
 
     switch (m_scoreOrder) {
         case Asc:
@@ -690,7 +690,7 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
     for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
         for (unsigned int iHour = 0; iHour < preloadTimeHours.size(); iHour++) {
             // Loading the dataset information
-            asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance(
+            asPredictorArch *predictor = asPredictorArch::GetInstance(
                     params.GetPredictorDatasetId(iStep, iPtor), preloadDataIds[iPre], m_predictorDataDir);
             if (!predictor) {
                 return false;
@@ -836,7 +836,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     // Load data for every level and every hour
     for (unsigned int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
         for (unsigned int iHour = 0; iHour < preloadTimeHoursSize; iHour++) {
-            std::vector<asDataPredictorArchive *> predictorsPreprocess;
+            std::vector<asPredictorArch *> predictorsPreprocess;
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
                 wxLogVerbose(_("Preloading data for predictor %d (preprocess %d) of step %d."), iPtor, iPre, iStep);
@@ -891,7 +891,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 timeArray.Init();
 
                 // Loading the datasets information
-                asDataPredictorArchive *predictorPreprocess = asDataPredictorArchive::GetInstance(
+                asPredictorArch *predictorPreprocess = asPredictorArch::GetInstance(
                         params.GetPreprocessDatasetId(iStep, iPtor, iPre),
                         params.GetPreprocessDataId(iStep, iPtor, iPre), m_predictorDataDir);
                 if (!predictorPreprocess) {
@@ -949,7 +949,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
             }
 
             wxLogVerbose(_("Preprocessing data."));
-            asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+            asPredictorArch *predictor = new asPredictorArch(*predictorsPreprocess[0]);
 
             try {
                 if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor),
@@ -988,7 +988,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
     return true;
 }
 
-bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
+bool asMethodCalibrator::LoadData(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
                                   double timeStartData, double timeEndData)
 {
     try {
@@ -1040,7 +1040,7 @@ bool asMethodCalibrator::LoadData(std::vector<asDataPredictor *> &predictors, as
     return true;
 }
 
-bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
+bool asMethodCalibrator::ExtractPreloadedData(std::vector<asPredictor *> &predictors, asParametersScoring &params,
                                               int iStep, int iPtor)
 {
     wxLogVerbose(_("Using preloaded data."));
@@ -1153,7 +1153,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
 
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
-    asDataPredictorArchive *desiredPredictor = new asDataPredictorArchive(
+    asPredictorArch *desiredPredictor = new asPredictorArch(
             *m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Area object instantiation
@@ -1181,10 +1181,10 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     wxDELETE(desiredArea);
 
     if (doPreprocessGradients) {
-        std::vector<asDataPredictorArchive *> predictorsPreprocess;
+        std::vector<asPredictorArch *> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 
-        asDataPredictorArchive *newPredictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+        asPredictorArch *newPredictor = new asPredictorArch(*predictorsPreprocess[0]);
         if (!asPreprocessor::Preprocess(predictorsPreprocess, "Gradients", newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
@@ -1204,7 +1204,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asDataPredictor *> &pr
     return true;
 }
 
-bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredictor *> &predictors,
+bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
                                                          asParametersScoring &params, int iStep, int iPtor,
                                                          double timeStartData, double timeEndData)
 {
@@ -1215,7 +1215,7 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
     timeArray.Init();
 
     // Loading the datasets information
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance(params.GetPredictorDatasetId(iStep, iPtor),
+    asPredictorArch *predictor = asPredictorArch::GetInstance(params.GetPredictorDatasetId(iStep, iPtor),
                                                                             params.GetPredictorDataId(iStep, iPtor),
                                                                             m_predictorDataDir);
     if (!predictor) {
@@ -1261,11 +1261,11 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asDataPredi
     return true;
 }
 
-bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors,
+bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asPredictor *> &predictors,
                                                       asParametersScoring &params, int iStep, int iPtor,
                                                       double timeStartData, double timeEndData)
 {
-    std::vector<asDataPredictorArchive *> predictorsPreprocess;
+    std::vector<asPredictorArch *> predictorsPreprocess;
 
     int preprocessSize = params.GetPreprocessSize(iStep, iPtor);
 
@@ -1281,7 +1281,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
         timeArray.Init();
 
         // Loading the dataset information
-        asDataPredictorArchive *predictorPreprocess = asDataPredictorArchive::GetInstance(
+        asPredictorArch *predictorPreprocess = asPredictorArch::GetInstance(
                 params.GetPreprocessDatasetId(iStep, iPtor, iPre), params.GetPreprocessDataId(iStep, iPtor, iPre),
                 m_predictorDataDir);
         if (!predictorPreprocess) {
@@ -1340,7 +1340,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asDataPredicto
         params.SetPredictorCriteria(iStep, iPtor, "NS1grads");
     }
 
-    asDataPredictorArchive *predictor = new asDataPredictorArchive(*predictorsPreprocess[0]);
+    asPredictorArch *predictor = new asPredictorArch(*predictorsPreprocess[0]);
     if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
@@ -1442,7 +1442,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
     return climatologyData;
 }
 
-void asMethodCalibrator::Cleanup(std::vector<asDataPredictorArchive *> predictorsPreprocess)
+void asMethodCalibrator::Cleanup(std::vector<asPredictorArch *> predictorsPreprocess)
 {
     if (predictorsPreprocess.size() > 0) {
         for (unsigned int i = 0; i < predictorsPreprocess.size(); i++) {
@@ -1452,7 +1452,7 @@ void asMethodCalibrator::Cleanup(std::vector<asDataPredictorArchive *> predictor
     }
 }
 
-void asMethodCalibrator::Cleanup(std::vector<asDataPredictor *> predictors)
+void asMethodCalibrator::Cleanup(std::vector<asPredictor *> predictors)
 {
     if (predictors.size() > 0) {
         for (unsigned int i = 0; i < predictors.size(); i++) {
@@ -1462,7 +1462,7 @@ void asMethodCalibrator::Cleanup(std::vector<asDataPredictor *> predictors)
     }
 }
 
-void asMethodCalibrator::Cleanup(std::vector<asPredictorCriteria *> criteria)
+void asMethodCalibrator::Cleanup(std::vector<asCriteria *> criteria)
 {
     if (criteria.size() > 0) {
         for (unsigned int i = 0; i < criteria.size(); i++) {
@@ -1494,7 +1494,7 @@ void asMethodCalibrator::DeletePreloadedData()
     m_preloaded = false;
 }
 
-bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int iStep,
+bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersScoring &params, int iStep,
                                          bool &containsNaNs)
 {
     // Initialize the result object
@@ -1595,7 +1595,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
         }
     */
     // Load the predictor data
-    std::vector<asDataPredictor *> predictors;
+    std::vector<asPredictor *> predictors;
     if (!LoadData(predictors, params, iStep, timeStartData, timeEndData)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -1603,10 +1603,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     }
 
     // Create the criterion
-    std::vector<asPredictorCriteria *> criteria;
+    std::vector<asCriteria *> criteria;
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
+        asCriteria *criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         if (criterion->NeedsDataRange()) {
             wxASSERT(predictors.size() > iPtor);
             wxASSERT(predictors[iPtor]);
@@ -1652,8 +1652,8 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsAnalogsDates &results, asParam
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asParametersScoring &params,
-                                            asResultsAnalogsDates &anaDates, int iStep, bool &containsNaNs)
+bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParametersScoring &params,
+                                            asResultsDates &anaDates, int iStep, bool &containsNaNs)
 {
     // Initialize the result object
     results.SetCurrentStep(iStep);
@@ -1670,7 +1670,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     wxLogVerbose(_("Date arrays created."));
 
     // Load the predictor data
-    std::vector<asDataPredictor *> predictors;
+    std::vector<asPredictor *> predictors;
     if (!LoadData(predictors, params, iStep, timeStart, timeEnd)) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictors);
@@ -1678,10 +1678,10 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     }
 
     // Create the score objects
-    std::vector<asPredictorCriteria *> criteria;
+    std::vector<asCriteria *> criteria;
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
-        asPredictorCriteria *criterion = asPredictorCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
+        asCriteria *criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
         if (criterion->NeedsDataRange()) {
             wxASSERT(predictors.size() > iPtor);
             wxASSERT(predictors[iPtor]);
@@ -1715,8 +1715,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsAnalogsDates &results, asPa
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asParametersScoring &params,
-                                          asResultsAnalogsDates &anaDates, int iStep)
+bool asMethodCalibrator::GetAnalogsValues(asResultsValues &results, asParametersScoring &params,
+                                          asResultsDates &anaDates, int iStep)
 {
     // Initialize the result object
     results.SetCurrentStep(iStep);
@@ -1734,20 +1734,20 @@ bool asMethodCalibrator::GetAnalogsValues(asResultsAnalogsValues &results, asPar
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores &results, asParametersScoring &params,
-                                                  asResultsAnalogsValues &anaValues, int iStep)
+bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParametersScoring &params,
+                                          asResultsValues &anaValues, int iStep)
 {
     // Initialize the result object
     results.SetCurrentStep(iStep);
     results.Init(params);
 
-    // Instantiate a forecast score object
-    wxLogVerbose(_("Instantiating a forecast score object"));
-    asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
-    forecastScore->SetQuantile(params.GetForecastScoreQuantile());
-    forecastScore->SetThreshold(params.GetForecastScoreThreshold());
+    // Instantiate a score object
+    wxLogVerbose(_("Instantiating a score object"));
+    asScore *score = asScore::GetInstance(params.GetScoreName());
+    score->SetQuantile(params.GetScoreQuantile());
+    score->SetThreshold(params.GetScoreThreshold());
 
-    if (forecastScore->UsesClimatology() && m_scoreClimatology.size() == 0) {
+    if (score->UsesClimatology() && m_scoreClimatology.size() == 0) {
         wxLogVerbose(_("Processing the score of the climatology."));
 
         va1f climatologyData = GetClimatologyData(params);
@@ -1755,29 +1755,27 @@ bool asMethodCalibrator::GetAnalogsForecastScores(asResultsAnalogsForecastScores
         m_scoreClimatology.resize(stationIds.size());
 
         for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
-            forecastScore->ProcessScoreClimatology(anaValues.GetTargetValues()[iStat], climatologyData[iStat]);
-            m_scoreClimatology[iStat] = forecastScore->GetScoreClimatology();
+            score->ProcessScoreClimatology(anaValues.GetTargetValues()[iStat], climatologyData[iStat]);
+            m_scoreClimatology[iStat] = score->GetScoreClimatology();
         }
     }
 
     // Pass data and score to processor
-    wxLogVerbose(_("Start processing the forecast score."));
+    wxLogVerbose(_("Start processing the score."));
 
-    if (!asProcessorForecastScore::GetAnalogsForecastScores(anaValues, forecastScore, params, results,
-                                                            m_scoreClimatology)) {
-        wxLogError(_("Failed processing the forecast score."));
-        wxDELETE(forecastScore);
+    if (!asProcessorScore::GetAnalogsScores(anaValues, score, params, results, m_scoreClimatology)) {
+        wxLogError(_("Failed processing the score."));
+        wxDELETE(score);
         return false;
     }
 
-    wxDELETE(forecastScore);
+    wxDELETE(score);
 
     return true;
 }
 
-bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results,
-                                                      asParametersScoring &params,
-                                                      asResultsAnalogsForecastScores &anaScores, int iStep)
+bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring &params,
+                                              asResultsScores &anaScores, int iStep)
 {
     // Initialize the result object
     results.SetCurrentStep(iStep);
@@ -1790,17 +1788,16 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
     while (timeEnd > params.GetCalibrationEnd() + 0.999) {
         timeEnd -= params.GetTimeArrayTargetTimeStepHours() / 24.0;
     }
-    asTimeArray timeArray(timeStart, timeEnd, params.GetTimeArrayTargetTimeStepHours(),
-                          params.GetForecastScoreTimeArrayMode());
+    asTimeArray timeArray(timeStart, timeEnd, params.GetTimeArrayTargetTimeStepHours(), params.GetScoreTimeArrayMode());
 
     // TODO (phorton#1#): Fix me: add every options for the Init function (generic version)
-    //    timeArray.Init(params.GetForecastScoreTimeArrayDate(), params.GetForecastScoreTimeArrayIntervalDays());
+    //    timeArray.Init(params.GetScoreTimeArrayDate(), params.GetForecastScoreTimeArrayIntervalDays());
     timeArray.Init();
     wxLogVerbose(_("Date array created."));
 
     // Pass data and score to processor
     wxLogVerbose(_("Start processing the final score."));
-    if (!asProcessorForecastScore::GetAnalogsForecastScoreFinal(anaScores, timeArray, params, results)) {
+    if (!asProcessorScore::GetAnalogsTotalScore(anaScores, timeArray, params, results)) {
         wxLogError(_("Failed to process the final score."));
         return false;
     }
@@ -1810,7 +1807,7 @@ bool asMethodCalibrator::GetAnalogsForecastScoreFinal(asResultsAnalogsForecastSc
 }
 
 bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params,
-                                                 asResultsAnalogsDates &anaDatesPrevious, int iStep)
+                                                 asResultsDates &anaDatesPrevious, int iStep)
 {
     vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
@@ -1824,8 +1821,8 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
         }
     }
 
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
 
     if (rowEnd<0) {
         wxLogError(_("Error assessing the number of analogues."));
@@ -1834,7 +1831,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 
     // If at the end of the chain
     if (iStep == params.GetStepsNb() - 1) {
-        // Set the maximum and let play with the analogs nb on the forecast score (faster)
+        // Set the maximum and let play with the analogs nb on the score (faster)
         params.SetAnalogsNumber(iStep, analogsNbVect[rowEnd]);
 
         // Process first the dates and the values
@@ -1853,9 +1850,9 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
         if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
             return false;
 
-        asResultsAnalogsForecastScores anaScores;
-        asResultsAnalogsForecastScoreFinal anaScoreFinal;
-        asResultsAnalogsDates anaDatesTmp(anaDates);
+        asResultsScores anaScores;
+        asResultsTotalScore anaScoreFinal;
+        asResultsDates anaDatesTmp(anaDates);
         a2f dates = anaDates.GetAnalogsDates();
 
         for (int i = 0; i <= rowEnd; i++) {
@@ -1868,13 +1865,13 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
             a2f subDates = dates.leftCols(params.GetAnalogsNumber(iStep));
             anaDatesTmp.SetAnalogsDates(subDates);
 
-            if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
+            if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
                 return false;
-            if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
+            if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
                 return false;
 
             m_parametersTemp.push_back(params);
-            m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
+            m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
         }
 
     } else {
@@ -1911,11 +1908,11 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
 
 bool asMethodCalibrator::SaveDetails(asParametersCalibration &params)
 {
-    asResultsAnalogsDates anaDatesPrevious;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScores;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDatesPrevious;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScores;
+    asResultsTotalScore anaScoreFinal;
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
@@ -1936,9 +1933,9 @@ bool asMethodCalibrator::SaveDetails(asParametersCalibration &params)
     }
     if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("calibration");
@@ -1967,11 +1964,11 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
 
     m_validationMode = true;
 
-    asResultsAnalogsDates anaDatesPrevious;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScores;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDatesPrevious;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScores;
+    asResultsTotalScore anaScoreFinal;
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
@@ -1992,9 +1989,9 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
     }
     if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("validation");
@@ -2004,7 +2001,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration &params)
     anaScores.SetSubFolder("validation");
     anaScores.Save();
 
-    m_scoreValid = anaScoreFinal.GetForecastScore();
+    m_scoreValid = anaScoreFinal.GetScore();
 
     m_validationMode = false;
 

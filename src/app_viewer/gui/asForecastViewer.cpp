@@ -220,7 +220,7 @@ void asForecastViewer::Redraw()
         return;
 
     // Get data
-    std::vector<asResultsAnalogsForecast *> forecasts;
+    std::vector<asResultsForecast *> forecasts;
 
     if (m_forecastSelection < 0) {
         for (int i = 0; i < m_forecastManager->GetForecastsNb(m_methodSelection); i++) {
@@ -340,7 +340,7 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsAnalogsForecast *forecast = NULL;
+            asResultsForecast *forecast = NULL;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
@@ -496,7 +496,7 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsAnalogsForecast *forecast = NULL;
+            asResultsForecast *forecast = NULL;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);

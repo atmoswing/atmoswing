@@ -28,7 +28,7 @@
 
 #include "asTimeArray.h"
 
-#include <asDataPredictand.h>
+#include <asPredictand.h>
 
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, Mode slctmode)
@@ -275,7 +275,7 @@ bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusio
     return true;
 }
 
-bool asTimeArray::Init(asDataPredictand &predictand, const wxString &serieName, int stationId, float minThreshold,
+bool asTimeArray::Init(asPredictand &predictand, const wxString &serieName, int stationId, float minThreshold,
                        float maxThreshold)
 {
     m_timeArray.resize(0);
@@ -296,7 +296,7 @@ bool asTimeArray::Init(asDataPredictand &predictand, const wxString &serieName, 
     return true;
 }
 
-bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusiondays, asDataPredictand &predictand,
+bool asTimeArray::Init(double forecastdate, double intervaldays, double exclusiondays, asPredictand &predictand,
                        const wxString &serieName, int stationId, float minThreshold, float maxThreshold)
 {
     wxASSERT(exclusiondays > 0);
@@ -705,7 +705,7 @@ bool asTimeArray::BuildArraySeasons(double forecastdate)
     return true;
 }
 
-bool asTimeArray::BuildArrayPredictandThresholds(asDataPredictand &predictand, const wxString &serieName, int stationId,
+bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &serieName, int stationId,
                                                  float minThreshold, float maxThreshold)
 {
     // Build a simple array for reference

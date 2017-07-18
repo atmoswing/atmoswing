@@ -148,7 +148,7 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
     results_all.Init(_("all_station_parameters"));
 
     // Create a analogsdate object to save previous analogs dates selection.
-    asResultsAnalogsDates anaDatesPrevious;
+    asResultsDates anaDatesPrevious;
 
     wxLogMessage(_("Do not process a score. Use to save intermediate values."));
 
@@ -161,8 +161,8 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
         m_scoreClimatology.clear();
 
         // Create results objects
-        asResultsAnalogsDates anaDates;
-        asResultsAnalogsValues anaValues;
+        asResultsDates anaDates;
+        asResultsValues anaValues;
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);

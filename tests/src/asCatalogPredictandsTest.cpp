@@ -48,14 +48,14 @@ TEST(CatalogPredictand, LoadCatalogProp)
     samestr = catalog.GetDescription().CompareTo(
             _T("Precipitation measurements made by MeteoSwiss at a daily timestep for the Rhone catchment"));
     EXPECT_EQ(0, samestr);
-    asDataPredictand::Parameter paramval = catalog.GetParameter();
-    asDataPredictand::Parameter paramref = asDataPredictand::Precipitation;
+    asPredictand::Parameter paramval = catalog.GetParameter();
+    asPredictand::Parameter paramref = asPredictand::Precipitation;
     EXPECT_EQ(paramref, paramval);
     int parameter = catalog.GetParameter();
-    int parameterreal = asDataPredictand::Precipitation;
+    int parameterreal = asPredictand::Precipitation;
     EXPECT_EQ(parameterreal, parameter);
     int unit = catalog.GetUnit();
-    int unitreal = asDataPredictand::mm;
+    int unitreal = asPredictand::mm;
     EXPECT_EQ(unitreal, unit);
     EXPECT_EQ(0, catalog.GetTimeZoneHours());
     double startreal = asTime::GetMJD(1940, 01, 01, 00, 00);

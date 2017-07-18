@@ -72,7 +72,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
             return false;
         }
 
-        m_predictandDB = asDataPredictand::GetInstance(m_predictandDBFilePath);
+        m_predictandDB = asPredictand::GetInstance(m_predictandDBFilePath);
         if (!m_predictandDB)
             return false;
 
@@ -81,7 +81,7 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
             return false;
         }
     } else {
-        m_predictandDB = asDataPredictand::GetInstance(predictandDBFilePath);
+        m_predictandDB = asPredictand::GetInstance(predictandDBFilePath);
         if (!m_predictandDB)
             return false;
 

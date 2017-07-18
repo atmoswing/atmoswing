@@ -32,7 +32,7 @@
 #include <asIncludes.h>
 #include <asTime.h>
 
-class asDataPredictand;
+class asPredictand;
 
 
 class asTimeArray
@@ -73,10 +73,10 @@ public:
 
     bool Init(double forecastdate, double intervaldays, double exclusiondays);
 
-    bool Init(asDataPredictand &predictand, const wxString &serieName, int stationId, float minThreshold,
+    bool Init(asPredictand &predictand, const wxString &serieName, int stationId, float minThreshold,
               float maxThreshold);
 
-    bool Init(double forecastdate, double intervaldays, double exclusiondays, asDataPredictand &predictand,
+    bool Init(double forecastdate, double intervaldays, double exclusiondays, asPredictand &predictand,
               const wxString &serieName, int stationId, float minThreshold, float maxThreshold);
 
     double operator[](unsigned int i)
@@ -92,7 +92,7 @@ public:
 
     bool BuildArraySeasons(double forecastDate);
 
-    bool BuildArrayPredictandThresholds(asDataPredictand &predictand, const wxString &serieName, int stationId,
+    bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &serieName, int stationId,
                                         float minThreshold, float maxThreshold);
 
     bool HasForbiddenYears() const;

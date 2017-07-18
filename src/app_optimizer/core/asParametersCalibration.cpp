@@ -88,12 +88,12 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
-        } else if (nodeProcess->GetName() == "analog_forecast_score") {
-            if (!ParseForecastScore(fileParams, nodeProcess))
+        } else if (nodeProcess->GetName() == "analog_score") {
+            if (!ParseScore(fileParams, nodeProcess))
                 return false;
 
-        } else if (nodeProcess->GetName() == "analog_forecast_score_final") {
-            if (!ParseForecastScoreFinal(fileParams, nodeProcess))
+        } else if (nodeProcess->GetName() == "analog_total_score") {
+            if (!ParseTotalScore(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -422,17 +422,17 @@ bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibratio
     return true;
 }
 
-bool asParametersCalibration::ParseForecastScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
+bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "score") {
-            if (!SetForecastScoreNameVector(fileParams.GetVectorString(nodeParamBlock)))
+            if (!SetScoreNameVector(fileParams.GetVectorString(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "threshold") {
-            SetForecastScoreThreshold(fileParams.GetFloat(nodeParamBlock));
+            SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
-            SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
+            SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "postprocessing") {
             wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
@@ -443,13 +443,12 @@ bool asParametersCalibration::ParseForecastScore(asFileParametersCalibration &fi
     return true;
 }
 
-bool asParametersCalibration::ParseForecastScoreFinal(asFileParametersCalibration &fileParams,
-                                                      const wxXmlNode *nodeProcess)
+bool asParametersCalibration::ParseTotalScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "time_array") {
-            if (!SetForecastScoreTimeArrayModeVector(fileParams.GetVectorString(nodeParamBlock)))
+            if (!SetScoreTimeArrayModeVector(fileParams.GetVectorString(nodeParamBlock)))
                 return false;
         } else {
             fileParams.UnknownNode(nodeParamBlock);
@@ -835,14 +834,14 @@ bool asParametersCalibration::InputsOK() const
     }
 
     // Forecast scores
-    if (GetForecastScoreNameVector().size() == 0) {
-        wxLogWarning(_("The forecast score was not provided in the parameters file."));
+    if (GetScoreNameVector().size() == 0) {
+        wxLogWarning(_("The score was not provided in the parameters file."));
         return false;
     }
 
     // Forecast score final
-    if (GetForecastScoreTimeArrayModeVector().size() == 0) {
-        wxLogWarning(_("The final forecast score was not provided in the parameters file."));
+    if (GetScoreTimeArrayModeVector().size() == 0) {
+        wxLogWarning(_("The total score was not provided in the parameters file."));
         return false;
     }
 
@@ -876,14 +875,14 @@ void asParametersCalibration::InitValues()
 {
     wxASSERT(m_predictandStationIdsVect.size() > 0);
     wxASSERT(m_timeArrayAnalogsIntervalDaysVect.size() > 0);
-    wxASSERT(m_forecastScoreVect.name.size() > 0);
-    wxASSERT(m_forecastScoreVect.timeArrayMode.size() > 0);
+    wxASSERT(m_scoreVect.name.size() > 0);
+    wxASSERT(m_scoreVect.timeArrayMode.size() > 0);
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];
     m_timeArrayAnalogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
-    SetForecastScoreName(m_forecastScoreVect.name[0]);
-    SetForecastScoreTimeArrayMode(m_forecastScoreVect.timeArrayMode[0]);
+    SetScoreName(m_scoreVect.name[0]);
+    SetScoreTimeArrayMode(m_scoreVect.timeArrayMode[0]);
 
     for (int i = 0; i < GetStepsNb(); i++) {
         SetAnalogsNumber(i, m_stepsVect[i].analogsNumber[0]);
@@ -968,15 +967,15 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val)
     return true;
 }
 
-bool asParametersCalibration::SetForecastScoreNameVector(vwxs val)
+bool asParametersCalibration::SetScoreNameVector(vwxs val)
 {
     if (val.size() < 1) {
-        wxLogError(_("The provided forecast scores vector is empty."));
+        wxLogError(_("The provided scores vector is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (val[i].IsEmpty()) {
-                wxLogError(_("There are NaN values in the provided forecast scores vector."));
+                wxLogError(_("There are NaN values in the provided scores vector."));
                 return false;
             }
 
@@ -986,24 +985,24 @@ bool asParametersCalibration::SetForecastScoreNameVector(vwxs val)
             }
         }
     }
-    m_forecastScoreVect.name = val;
+    m_scoreVect.name = val;
     return true;
 }
 
-bool asParametersCalibration::SetForecastScoreTimeArrayModeVector(vwxs val)
+bool asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val)
 {
     if (val.size() < 1) {
-        wxLogError(_("The provided time array mode vector for the forecast score is empty."));
+        wxLogError(_("The provided time array mode vector for the score is empty."));
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
             if (val[i].IsEmpty()) {
-                wxLogError(_("There are NaN values in the provided time array mode vector for the forecast score."));
+                wxLogError(_("There are NaN values in the provided time array mode vector for the score."));
                 return false;
             }
         }
     }
-    m_forecastScoreVect.timeArrayMode = val;
+    m_scoreVect.timeArrayMode = val;
     return true;
 }
 

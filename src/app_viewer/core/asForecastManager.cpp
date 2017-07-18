@@ -36,7 +36,7 @@ asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
     m_leadTimeOrigin = 0;
     m_parent = parent;
     m_workspace = workspace;
-    m_aggregator = new asResultsAnalogsForecastAggregator();
+    m_aggregator = new asResultsForecastAggregator();
 }
 
 asForecastManager::~asForecastManager()
@@ -137,7 +137,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
 
     // Create and load the forecast
-    asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
+    asResultsForecast *forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -192,7 +192,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Create and load the forecast
-    asResultsAnalogsForecast *forecast = new asResultsAnalogsForecast;
+    asResultsForecast *forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {

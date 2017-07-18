@@ -32,15 +32,15 @@
 #include <asIncludes.h>
 #include <asMethodStandard.h>
 #include <asParametersForecast.h>
-#include <asDataPredictorRealtime.h>
-#include <asDataPredictorArchive.h>
-#include <asPredictorCriteria.h>
+#include <asPredictorOper.h>
+#include <asPredictorArch.h>
+#include <asCriteria.h>
 #include <asBatchForecasts.h>
-#include <asResultsAnalogsForecastAggregator.h>
+#include <asResultsForecastAggregator.h>
 
-class asResultsAnalogsDates;
+class asResultsDates;
 
-class asResultsAnalogsForecast;
+class asResultsForecast;
 
 class asMethodForecasting
         : public asMethodStandard
@@ -74,12 +74,12 @@ public:
 protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
-    bool GetAnalogsDates(asResultsAnalogsForecast &results, asParametersForecast &params, int iStep);
+    bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
 
-    bool GetAnalogsSubDates(asResultsAnalogsForecast &results, asParametersForecast &params,
-                            asResultsAnalogsForecast &resultsPrev, int iStep);
+    bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params,
+                            asResultsForecast &resultsPrev, int iStep);
 
-    bool GetAnalogsValues(asResultsAnalogsForecast &results, asParametersForecast &params, int iStep);
+    bool GetAnalogsValues(asResultsForecast &results, asParametersForecast &params, int iStep);
 
     void DeletePreprocessData();
 
@@ -88,14 +88,14 @@ protected:
 private:
     asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
-    asResultsAnalogsForecastAggregator m_aggregator;
+    asResultsForecastAggregator m_aggregator;
     vwxs m_resultsFilePaths;
     wxWindow *m_parent;
-    std::vector<asDataPredictorArchive *> m_storagePredictorsArchivePreprocess;
-    std::vector<asDataPredictorRealtime *> m_storagePredictorsRealtimePreprocess;
-    std::vector<asDataPredictor *> m_storagePredictorsArchive;
-    std::vector<asDataPredictor *> m_storagePredictorsRealtime;
-    std::vector<asPredictorCriteria *> m_storageCriteria;
+    std::vector<asPredictorArch *> m_storagePredictorsArchivePreprocess;
+    std::vector<asPredictorOper *> m_storagePredictorsRealtimePreprocess;
+    std::vector<asPredictor *> m_storagePredictorsArchive;
+    std::vector<asPredictor *> m_storagePredictorsRealtime;
+    std::vector<asCriteria *> m_storageCriteria;
 };
 
 #endif // ASMETHODFORECASTING_H

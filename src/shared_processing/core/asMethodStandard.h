@@ -30,7 +30,7 @@
 #define ASMETHODSTANDARD_H
 
 #include <asIncludes.h>
-#include <asDataPredictand.h>
+#include <asPredictand.h>
 
 
 class asMethodStandard
@@ -57,7 +57,7 @@ public:
         m_predictandDBFilePath = val;
     }
 
-    void SetPredictandDB(asDataPredictand *pDB)
+    void SetPredictandDB(asPredictand *pDB)
     {
         m_predictandDB = pDB;
     }
@@ -72,7 +72,7 @@ protected:
     wxString m_paramsFilePath;
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
-    asDataPredictand *m_predictandDB;
+    asPredictand *m_predictandDB;
 
 private:
 };

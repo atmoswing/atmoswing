@@ -30,7 +30,7 @@
 #define ASFORECASTMANAGER_H
 
 #include <asIncludes.h>
-#include <asResultsAnalogsForecastAggregator.h>
+#include <asResultsForecastAggregator.h>
 #include "asWorkspace.h"
 
 class asForecastManager
@@ -62,7 +62,7 @@ public:
 
     int GetForecastRowFromLinearIndex(int linearIndex) const;
 
-    asResultsAnalogsForecastAggregator *GetAggregator() const
+    asResultsForecastAggregator *GetAggregator() const
     {
         return m_aggregator;
     }
@@ -92,12 +92,12 @@ public:
         return m_aggregator->GetPastForecastsNb(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast *GetForecast(int methodRow, int forecastRow) const
+    asResultsForecast *GetForecast(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetForecast(methodRow, forecastRow);
     }
 
-    asResultsAnalogsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const
+    asResultsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const
     {
         return m_aggregator->GetPastForecast(methodRow, forecastRow, leadtimeRow);
     }
@@ -217,7 +217,7 @@ protected:
 private:
     wxWindow *m_parent;
     asWorkspace *m_workspace;
-    asResultsAnalogsForecastAggregator *m_aggregator;
+    asResultsForecastAggregator *m_aggregator;
     double m_leadTimeOrigin;
     wxArrayString m_directoriesPastForecasts;
 
