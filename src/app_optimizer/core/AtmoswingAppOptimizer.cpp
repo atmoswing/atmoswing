@@ -708,8 +708,6 @@ int AtmoswingAppOptimizer::OnRun()
             return 1003;
         }
 
-        wxMessageOutput *msgOut = wxMessageOutput::Get();
-
         try {
             if (m_calibMethod.IsSameAs("single", false)) {
                 asMethodCalibratorSingle calibrator;

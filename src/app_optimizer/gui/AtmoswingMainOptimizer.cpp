@@ -140,7 +140,7 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     long defaultMethod = (long) asMULTITHREADS;
     long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
-        ProcessingMethod = (long) asINSERT;
+        ProcessingMethod = (long) asSTANDARD;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
 

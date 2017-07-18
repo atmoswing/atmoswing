@@ -229,18 +229,10 @@ TEST(MethodCalibrator, Ref1Multithreads)
     Ref1("parameters_calibration_R1_full.xml", false);
 }
 
-TEST(MethodCalibrator, Ref1Insert)
+TEST(MethodCalibrator, Ref1Standard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref1("parameters_calibration_R1_full.xml", false);
-}
-
-TEST(MethodCalibrator, Ref1Splitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -263,18 +255,10 @@ TEST(MethodCalibrator, Ref1MultithreadsNoPreprocessing)
     Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
 }
 
-TEST(MethodCalibrator, Ref1CalibPeriodInsert)
+TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref1("parameters_calibration_R1_calib_period.xml", true);
-}
-
-TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -473,18 +457,10 @@ TEST(MethodCalibrator, Ref2Multithreads)
     Ref2("parameters_calibration_R2_full.xml", false);
 }
 
-TEST(MethodCalibrator, Ref2Insert)
+TEST(MethodCalibrator, Ref2Standard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref2("parameters_calibration_R2_full.xml", false);
-}
-
-TEST(MethodCalibrator, Ref2Splitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -498,18 +474,10 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads)
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
 
-TEST(MethodCalibrator, Ref2CalibPeriodInsert)
+TEST(MethodCalibrator, Ref2CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref2("parameters_calibration_R2_calib_period.xml", true);
-}
-
-TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -517,7 +485,7 @@ TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
 TEST(MethodCalibrator, PreloadingSimple)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -577,7 +545,7 @@ TEST(MethodCalibrator, PreloadingSimple)
 TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     // Get parameters
     asParametersCalibration paramsStd;
@@ -1156,10 +1124,10 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads)
     Ref2Preloading();
 }
 
-TEST(MethodCalibrator, Ref2PreloadingInsert)
+TEST(MethodCalibrator, Ref2PreloadingStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2Preloading();
 }
