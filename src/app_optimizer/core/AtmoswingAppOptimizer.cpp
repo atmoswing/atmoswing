@@ -433,7 +433,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
-        if(!logLevelStr.ToLong(&logLevel)) {
+        if (!logLevelStr.ToLong(&logLevel)) {
             wxPrintf(_("The value provided for 'log-level' could not be interpreted."));
             return false;
         }
@@ -795,7 +795,7 @@ void AtmoswingAppOptimizer::CleanUp()
 {
 #if wxUSE_GUI
     // Instance checker
-        wxDELETE(m_singleInstanceChecker);
+    wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)
@@ -807,7 +807,7 @@ void AtmoswingAppOptimizer::CleanUp()
 
 #if wxUSE_GUI
     // Delete images
-        cleanup_images();
+    cleanup_images();
 #endif
 
     // CleanUp

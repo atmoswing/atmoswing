@@ -125,12 +125,11 @@ bool asPredictorArch::Init()
     return false;
 }
 
-bool asPredictorArch::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                              vvva2f &compositeData)
+bool asPredictorArch::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     vwxs filesList = GetListOfFiles(timeArray);
 
-    if(!CheckFilesPresence(filesList)) {
+    if (!CheckFilesPresence(filesList)) {
         return false;
     }
 
@@ -157,8 +156,7 @@ bool asPredictorArch::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTime
     return true;
 }
 
-bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                            vvva2f &compositeData)
+bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -203,9 +201,9 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float)dataArea->GetXaxisCompositeStart(iArea);
-            float latMinStart = (float)dataArea->GetYaxisCompositeStart(iArea);
-            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(iArea);
+            float lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
+            float latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
+            float latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
             m_fileIndexes.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
@@ -396,8 +394,8 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength - 1, Xlength);
-                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex,
-                                                                  Ylength, Xlength - 1);
+                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
+                                                            Xlength - 1);
                         // Needs to be 0-filled for further simplification.
                         a2f datMerged = a2f::Zero(2 * Ylength, Xlength);
                         datMerged.block(0, 0, Ylength - 1, Xlength) = dat1;
@@ -437,8 +435,8 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
-                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex,
-                                                                  Ylength, Xlength);
+                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
+                                                            Xlength);
                         a2f datMerged(2 * Ylength, Xlength);
                         datMerged.block(0, 0, Ylength, Xlength) = dat1;
                         datMerged.block(Ylength, 0, Ylength, Xlength) = dat2;

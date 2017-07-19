@@ -28,9 +28,9 @@
 
 #include "asThreadGeneticAlgorithms.h"
 
-asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(
-        asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params, float *finalScoreCalib,
-        vf *scoreClimatology)
+asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
+                                                     asParametersOptimization *params, float *finalScoreCalib,
+                                                     vf *scoreClimatology)
         : asThread(),
           m_optimizer(optimizer),
           m_params(params),

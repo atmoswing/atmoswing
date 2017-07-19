@@ -56,10 +56,8 @@
       <station_id method="array">40,81,90,68,56</station_id>
     </predictand>
   </analog_values>
-  <analog_score>
+  <evaluation>
     <score method="array">CRPSAR, CRPSaccuracyAR, CRPSsharpnessAR</score>
-  </analog_score>
-  <analog_total_score>
     <time_array>simple</time_array>
-  </analog_total_score>
+  </evaluation>
 </atmoswing>

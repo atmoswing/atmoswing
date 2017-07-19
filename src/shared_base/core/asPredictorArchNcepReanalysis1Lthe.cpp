@@ -102,8 +102,8 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
         m_firstTimeStepHours = 0;
         m_timeStepHours = 12;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
+                                          m_product));
     }
 
     // Check data ID
@@ -136,7 +136,7 @@ vwxs asPredictorArchNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) 
 }
 
 bool asPredictorArchNcepReanalysis1Lthe::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                         asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

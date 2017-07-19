@@ -173,19 +173,15 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                              wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
                                               timeTargetSelectionSize));
 
-                asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive,
-                                                                                                predictorsTarget,
-                                                                                                &timeArrayArchiveData,
-                                                                                                &timeArrayArchiveSelection,
-                                                                                                &timeArrayTargetData,
-                                                                                                &timeArrayTargetSelection,
-                                                                                                criteria, params, step,
-                                                                                                vTargData, vArchData,
-                                                                                                vRowsNb, vColsNb, start,
-                                                                                                end,
-                                                                                                &finalAnalogsCriteria,
-                                                                                                &finalAnalogsDates,
-                                                                                                flag);
+                asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive, predictorsTarget,
+                                                                              &timeArrayArchiveData,
+                                                                              &timeArrayArchiveSelection,
+                                                                              &timeArrayTargetData,
+                                                                              &timeArrayTargetSelection, criteria,
+                                                                              params, step, vTargData, vArchData,
+                                                                              vRowsNb, vColsNb, start, end,
+                                                                              &finalAnalogsCriteria, &finalAnalogsDates,
+                                                                              flag);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -508,8 +504,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     iTimeTargRelative = 1;
                 } else {
                     iTimeTargRelative = asTools::SortedArraySearch(&timeTargetData[iTimeTargStart],
-                                                                    &timeTargetData[timeTargetDataSize - 1],
-                                                                    timeTargetSelection[iDateTarg], 0.01);
+                                                                   &timeTargetData[timeTargetDataSize - 1],
+                                                                   timeTargetSelection[iDateTarg], 0.01);
                 }
 
                 // Check if a row was found
@@ -568,7 +564,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                     wxASSERT(vTargData[iPtor]);
                                     wxASSERT(vArchData[iPtor]);
                                     tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
-                                                                        vRowsNb[iPtor], vColsNb[iPtor]);
+                                                                       vRowsNb[iPtor], vColsNb[iPtor]);
 
                                     // Weight and add the score
                                     thisScore += tmpScore * params.GetPredictorWeight(step, iPtor);
@@ -620,7 +616,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), float(sw.Time())/1000.0f);
+    wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), float(sw.Time()) / 1000.0f);
 
     return true;
 }
@@ -788,20 +784,15 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                              wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
                                               timeTargetSelectionSize));
 
-                asThreadGetAnalogsSubDates *thread = new asThreadGetAnalogsSubDates(predictorsArchive,
-                                                                                                      predictorsTarget,
-                                                                                                      &timeArrayArchiveData,
-                                                                                                      &timeArrayTargetData,
-                                                                                                      &timeTargetSelection,
-                                                                                                      criteria, params,
-                                                                                                      step, vTargData,
-                                                                                                      vArchData,
-                                                                                                      vRowsNb, vColsNb,
-                                                                                                      start, end,
-                                                                                                      &finalAnalogsCriteria,
-                                                                                                      &finalAnalogsDates,
-                                                                                                      &analogsDates,
-                                                                                                      flag);
+                asThreadGetAnalogsSubDates *thread = new asThreadGetAnalogsSubDates(predictorsArchive, predictorsTarget,
+                                                                                    &timeArrayArchiveData,
+                                                                                    &timeArrayTargetData,
+                                                                                    &timeTargetSelection, criteria,
+                                                                                    params, step, vTargData, vArchData,
+                                                                                    vRowsNb, vColsNb, start, end,
+                                                                                    &finalAnalogsCriteria,
+                                                                                    &finalAnalogsDates, &analogsDates,
+                                                                                    flag);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -838,15 +829,15 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             // Loop through every timestep as target data
             for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
                 int iTimeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
-                                                            timeTargetSelection[iAnalogDate], 0.01);
+                                                           timeTargetSelection[iAnalogDate], 0.01);
                 wxASSERT_MSG(iTimeTarg >= 0, wxString::Format(_("Looking for %s in betwwen %s and %s."),
-                                                               asTime::GetStringTime(timeTargetSelection[iAnalogDate],
-                                                                                     "DD.MM.YYYY hh:mm"),
-                                                               asTime::GetStringTime(timeTargetData[0],
-                                                                                     "DD.MM.YYYY hh:mm"),
-                                                               asTime::GetStringTime(
-                                                                       timeTargetData[timeTargetDataSize - 1],
-                                                                       "DD.MM.YYYY hh:mm")));
+                                                              asTime::GetStringTime(timeTargetSelection[iAnalogDate],
+                                                                                    "DD.MM.YYYY hh:mm"),
+                                                              asTime::GetStringTime(timeTargetData[0],
+                                                                                    "DD.MM.YYYY hh:mm"),
+                                                              asTime::GetStringTime(
+                                                                      timeTargetData[timeTargetDataSize - 1],
+                                                                      "DD.MM.YYYY hh:mm")));
 
                 if (iTimeTarg < 0) {
                     wxLogError(_("An unexpected error occurred."));
@@ -871,8 +862,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
                         // Find row in the predictor time array
                         int iTimeArch = asTools::SortedArraySearch(&timeArchiveData[0],
-                                                                    &timeArchiveData[timeArchiveDataSize - 1],
-                                                                    currentAnalogsDates[iPrevAnalog], 0.01);
+                                                                   &timeArchiveData[timeArchiveDataSize - 1],
+                                                                   currentAnalogsDates[iPrevAnalog], 0.01);
 
                         // Check if a row was found
                         if (iTimeArch != asNOT_FOUND && iTimeArch != asOUT_OF_RANGE) {
@@ -890,11 +881,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                                 wxASSERT_MSG(vArchData[iPtor]->size() == vTargData[iPtor]->size(), wxString::Format(
                                         "%s (%d th element) in archive, %s (%d th element) in target: vArchData size = %d, vTargData size = %d",
                                         asTime::GetStringTime(timeArchiveData[iTimeArch], "DD.MM.YYYY hh:mm"),
-                                        iTimeArch,
-                                        asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"),
+                                        iTimeArch, asTime::GetStringTime(timeTargetData[iTimeTarg], "DD.MM.YYYY hh:mm"),
                                         iTimeTarg, (int) vArchData[iPtor]->size(), (int) vTargData[iPtor]->size()));
                                 float tmpscore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
-                                                                          vRowsNb[iPtor], vColsNb[iPtor]);
+                                                                         vRowsNb[iPtor], vColsNb[iPtor]);
 
                                 // Weight and add the score
                                 thisscore += tmpscore * params.GetPredictorWeight(step, iPtor);
@@ -984,7 +974,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    wxLogVerbose(_("The function asProcessor::GetAnalogsSubDates took %.3f s to execute"), float(sw.Time())/1000);
+    wxLogVerbose(_("The function asProcessor::GetAnalogsSubDates took %.3f s to execute"), float(sw.Time()) / 1000);
 
     return true;
 }
@@ -1046,7 +1036,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
         }
     }
 
-    if (indexPredictandTimeEnd<0) {
+    if (indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
         return false;
     }

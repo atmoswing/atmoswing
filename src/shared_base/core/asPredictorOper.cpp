@@ -181,9 +181,8 @@ bool asPredictorOper::BuildFilenamesUrls()
         double diff = desiredTime - m_runDateInUse;
         m_forecastLeadTimeStart = (int) (diff * 24.0);
         m_forecastLeadTimeStep = m_restrictTimeStepHours;
-        m_forecastLeadTimeEnd = floor((m_forecastLeadTimeEnd - m_forecastLeadTimeStart) /
-                                      m_forecastLeadTimeStep) * m_forecastLeadTimeStep +
-                                m_forecastLeadTimeStart;
+        m_forecastLeadTimeEnd = floor((m_forecastLeadTimeEnd - m_forecastLeadTimeStart) / m_forecastLeadTimeStep) *
+                                m_forecastLeadTimeStep + m_forecastLeadTimeStart;
     }
 
     wxASSERT(m_forecastLeadTimeStep > 0);
@@ -250,12 +249,11 @@ bool asPredictorOper::BuildFilenamesUrls()
     return true;
 }
 
-bool asPredictorOper::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                               vvva2f &compositeData)
+bool asPredictorOper::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     vwxs filesList = GetListOfFiles(timeArray);
 
-    if(!CheckFilesPresence(filesList)) {
+    if (!CheckFilesPresence(filesList)) {
         return false;
     }
 
@@ -291,8 +289,7 @@ vwxs asPredictorOper::GetListOfFiles(asTimeArray &timeArray) const
     return filesList;
 }
 
-bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                             vvva2f &compositeData)
+bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
 
@@ -306,9 +303,9 @@ bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float)dataArea->GetXaxisCompositeStart(iArea);
-            float latMinStart = (float)dataArea->GetYaxisCompositeStart(iArea);
-            float latMinEnd = (float)dataArea->GetYaxisCompositeEnd(iArea);
+            float lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
+            float latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
+            float latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
             m_fileIndexes.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);

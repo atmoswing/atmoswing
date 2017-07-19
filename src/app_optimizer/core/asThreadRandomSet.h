@@ -38,8 +38,8 @@ class asThreadRandomSet
         : public asThread
 {
 public:
-    asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params,
-                                     float *finalScoreCalib, vf *scoreClimatology);
+    asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
+                      vf *scoreClimatology);
 
     virtual ~asThreadRandomSet();
 

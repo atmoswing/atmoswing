@@ -83,7 +83,7 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
             float score = 0, divisor = 0;
 
             for (int iTime = IndexStart; iTime <= IndexEnd; iTime++) {
-                if (iTime<0) {
+                if (iTime < 0) {
                     wxLogError(_("Error processing the final RMSE score."));
                     return NaNf;
                 }

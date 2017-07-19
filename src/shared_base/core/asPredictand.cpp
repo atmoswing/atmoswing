@@ -38,7 +38,7 @@
 
 
 asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                                   SpatialAggregation dataSpatialAggregation)
+                           SpatialAggregation dataSpatialAggregation)
 {
     m_parameter = dataParameter;
     m_temporalResolution = dataTemporalResolution;
@@ -220,9 +220,8 @@ wxString asPredictand::SpatialAggregationEnumToString(asPredictand::SpatialAggre
     return wxEmptyString;
 }
 
-asPredictand *asPredictand::GetInstance(const wxString &parameterStr,
-                                                const wxString &temporalResolutionStr,
-                                                const wxString &spatialAggregationStr)
+asPredictand *asPredictand::GetInstance(const wxString &parameterStr, const wxString &temporalResolutionStr,
+                                        const wxString &spatialAggregationStr)
 {
     Parameter parameter = StringToParameterEnum(parameterStr);
     TemporalResolution temporalResolution = StringToTemporalResolutionEnum(temporalResolutionStr);
@@ -232,9 +231,8 @@ asPredictand *asPredictand::GetInstance(const wxString &parameterStr,
     return db;
 }
 
-asPredictand *asPredictand::GetInstance(Parameter parameter,
-                                                TemporalResolution temporalResolution,
-                                                SpatialAggregation spatialAggregation)
+asPredictand *asPredictand::GetInstance(Parameter parameter, TemporalResolution temporalResolution,
+                                        SpatialAggregation spatialAggregation)
 {
     switch (parameter) {
         case (Precipitation): {
@@ -276,10 +274,8 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
 
     // Get basic information
     Parameter dataParameter = (Parameter) ncFile.GetAttInt("data_parameter");
-    TemporalResolution dataTemporalResolution = (TemporalResolution) ncFile.GetAttInt(
-            "data_temporal_resolution");
-    SpatialAggregation dataSpatialAggregation = (SpatialAggregation) ncFile.GetAttInt(
-            "data_spatial_aggregation");
+    TemporalResolution dataTemporalResolution = (TemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
+    SpatialAggregation dataSpatialAggregation = (SpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
 
     // Close the netCDF file
     ncFile.Close();
@@ -562,7 +558,7 @@ bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_
 }
 
 bool asPredictand::ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                 const wxString &AlternatePatternDir)
+                             const wxString &AlternatePatternDir)
 {
 #if wxUSE_GUI
     // The progress bar

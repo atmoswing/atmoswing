@@ -204,15 +204,15 @@ vwxs asPredictorArchNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                           asTimeArray &timeArray, vvva2f &compositeData)
+                                                    asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNcepCfsrSubset::ConvertToMjd(double timeValue, double refValue) const
 {
-    wxASSERT(refValue>30000);
-    wxASSERT(refValue<70000);
+    wxASSERT(refValue > 30000);
+    wxASSERT(refValue < 70000);
 
     return refValue + (timeValue / 24.0); // hours to days
 }

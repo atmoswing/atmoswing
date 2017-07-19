@@ -40,8 +40,8 @@ public:
                           asGeo::GridType type, float Level = asNONE, float Height = asNONE,
                           int flatAllowed = asFLAT_ALLOWED);
 
-    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeo::GridType type,
-                          float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeo::GridType type, float Level = asNONE,
+                          float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     virtual ~asGeoAreaGaussianGrid();
 

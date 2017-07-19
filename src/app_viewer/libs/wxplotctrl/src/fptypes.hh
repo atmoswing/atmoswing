@@ -78,7 +78,9 @@ namespace FUNCTIONPARSERTYPES
         cPCall,
 
 #ifdef SUPPORT_OPTIMIZER
-        cVar, cDup, cInv,
+        cVar,
+        cDup,
+        cInv,
 #endif
 
         VarBegin

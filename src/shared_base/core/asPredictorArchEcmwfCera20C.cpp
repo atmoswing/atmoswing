@@ -163,7 +163,7 @@ vwxs asPredictorArchEcmwfCera20C::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchEcmwfCera20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                  asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

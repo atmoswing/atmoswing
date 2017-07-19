@@ -319,8 +319,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadGeneticAlgorithms *firstThread = new asThreadGeneticAlgorithms(
-                        this, newParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                asThreadGeneticAlgorithms *firstThread = new asThreadGeneticAlgorithms(this, newParams,
+                                                                                       &m_scoresCalib[m_iterator],
+                                                                                       &m_scoreClimatology);
                 int threadType = firstThread->GetType();
                 ThreadsManager().AddThread(firstThread);
 
@@ -356,8 +357,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     }
 
                     // Add it to the threads
-                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(
-                            this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
+                                                                                      &m_scoresCalib[m_iterator],
+                                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -393,8 +395,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     }
 
                     // Add it to the threads
-                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(
-                            this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
+                                                                                      &m_scoresCalib[m_iterator],
+                                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);

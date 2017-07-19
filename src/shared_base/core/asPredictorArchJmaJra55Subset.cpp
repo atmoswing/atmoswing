@@ -286,7 +286,7 @@ vwxs asPredictorArchJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchJmaJra55Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                    asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

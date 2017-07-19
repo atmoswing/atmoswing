@@ -72,14 +72,12 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
                  (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
                   evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()))).abs()).sum();
 
-    divisor =
-            ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs().max(
-                    (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-                     evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1)).abs())).sum() +
-            ((refData.bottomLeftCorner(rowsNb - 1, colsNb) -
-              refData.topLeftCorner(rowsNb - 1, colsNb)).abs().max(
-                    (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                     evalData.topLeftCorner(evalData.rows() - 1, evalData.cols())).abs())).sum();
+    divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs().max(
+            (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
+             evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1)).abs())).sum() +
+              ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs().max(
+                      (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
+                       evalData.topLeftCorner(evalData.rows() - 1, evalData.cols())).abs())).sum();
 
 
     /* More readable version

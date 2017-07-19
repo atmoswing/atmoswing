@@ -37,9 +37,9 @@ class asThreadInternetDownload
         : public asThread
 {
 public:
-    asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir,
-                             bool usesProxy, const wxString &proxyAddress, const long proxyPort,
-                             const wxString &proxyUser, const wxString &proxyPasswd, int start, int end);
+    asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir, bool usesProxy,
+                             const wxString &proxyAddress, const long proxyPort, const wxString &proxyUser,
+                             const wxString &proxyPasswd, int start, int end);
 
     virtual ~asThreadInternetDownload();
 

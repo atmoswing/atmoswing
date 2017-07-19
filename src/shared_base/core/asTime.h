@@ -116,7 +116,7 @@ protected:
     static Time GetSeasonEnd(Season season, int year);
 
     static Season GetSeason(int month);
-    
+
 };
 
 #endif

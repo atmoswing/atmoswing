@@ -45,7 +45,7 @@ asTotalScoreRankHistogramReliability::~asTotalScoreRankHistogramReliability()
 }
 
 float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const a1f &scores,
-                                                           const asTimeArray &timeArray) const
+                                                   const asTimeArray &timeArray) const
 {
     wxLogWarning(_("Calling asTotalScoreRankHistogramReliability::Assess means it doesn't do bootstraping."));
 
@@ -83,8 +83,7 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const
     return reliability;
 }
 
-float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent,
-                                                                      int scoresSize) const
+float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const
 {
     wxASSERT(m_ranksNb > 1);
 

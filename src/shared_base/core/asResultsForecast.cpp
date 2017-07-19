@@ -658,7 +658,7 @@ void asResultsForecast::SetPredictandStationIds(wxString val)
     while (tokenizer.HasMoreTokens()) {
         wxString token = tokenizer.GetNextToken();
         long stationId;
-        if(token.ToLong(&stationId)) {
+        if (token.ToLong(&stationId)) {
             m_predictandStationIds.push_back(int(stationId));
         }
     }

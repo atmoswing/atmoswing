@@ -44,8 +44,7 @@ asTotalScoreRankHistogram::~asTotalScoreRankHistogram()
     //dtor
 }
 
-float asTotalScoreRankHistogram::Assess(const a1f &targetDates, const a1f &scores,
-                                                const asTimeArray &timeArray) const
+float asTotalScoreRankHistogram::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
 {
     wxLogError(_("The rank histogram cannot provide a single score value !"));
     return NaNf;
@@ -81,7 +80,7 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &
     // Process percentages
     a1f histogramPercent = a1f::Zero(m_ranksNb);
 
-    if (countTot<=0) {
+    if (countTot <= 0) {
         wxLogError(_("Error processing the final rank histogram."));
         return histogramPercent;
     }

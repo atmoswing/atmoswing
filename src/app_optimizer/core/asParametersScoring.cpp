@@ -226,7 +226,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
 
     // Forecast scores
-    wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_score");
+    wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
 
     nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
 
@@ -240,15 +240,9 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
+    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("time_array", GetScoreTimeArrayMode()));
+
     fileParams.AddChild(nodeAnalogScore);
-
-
-    // Forecast score final
-    wxXmlNode *nodeAnalogScoreFinal = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_total_score");
-
-    nodeAnalogScoreFinal->AddChild(fileParams.CreateNodeWithValue("time_array", GetScoreTimeArrayMode()));
-
-    fileParams.AddChild(nodeAnalogScoreFinal);
 
 
     if (!fileParams.Save())
@@ -378,8 +372,7 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     iRight = (unsigned int) stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetScoreName())) {
-        wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(),
-                   strVal);
+        wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
         wxPrintf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
                                   GetScoreName(), strVal));
         return false;

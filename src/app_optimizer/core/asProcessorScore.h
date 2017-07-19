@@ -51,8 +51,8 @@ public:
     static bool GetAnalogsScores(asResultsValues &anaValues, asScore *score, asParametersScoring &params,
                                  asResultsScores &results, vf &scoresClimatology);
 
-    static bool GetAnalogsTotalScore(asResultsScores &anaScores, asTimeArray &timeArray,
-                                     asParametersScoring &params, asResultsTotalScore &results);
+    static bool GetAnalogsTotalScore(asResultsScores &anaScores, asTimeArray &timeArray, asParametersScoring &params,
+                                     asResultsTotalScore &results);
 
 protected:
 

@@ -155,21 +155,21 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     while (nodeProcess) {
 
         if (nodeProcess->GetName() == "description") {
-            if(!ParseDescription(fileParams, nodeProcess))
+            if (!ParseDescription(fileParams, nodeProcess))
                 return false;
 
         } else if (nodeProcess->GetName() == "time_properties") {
-            if(!ParseTimeProperties(fileParams, nodeProcess))
+            if (!ParseTimeProperties(fileParams, nodeProcess))
                 return false;
 
         } else if (nodeProcess->GetName() == "analog_dates") {
             AddStep();
-            if(!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
+            if (!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
                 return false;
             iStep++;
 
         } else if (nodeProcess->GetName() == "analog_values") {
-            if(!ParseAnalogValuesParams(fileParams, nodeProcess))
+            if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -296,8 +296,7 @@ bool asParameters::ParseTimeProperties(asFileParametersStandard &fileParams, con
     return true;
 }
 
-bool asParameters::ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep,
-                                          const wxXmlNode *nodeProcess)
+bool asParameters::ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep, const wxXmlNode *nodeProcess)
 {
     int iPtor = 0;
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
@@ -1035,7 +1034,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
         wxLogError(errMsg);
         return false;
     }
-    strVal = stringVals.SubString((size_t)iLeft + 8, (size_t)iRight - 2);
+    strVal = stringVals.SubString((size_t) iLeft + 8, (size_t) iRight - 2);
     if (!strVal.ToLong(&lVal)) {
         wxLogError(errMsg);
         return false;
@@ -1044,7 +1043,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
         wxLogError(errMsg);
         return false;
     }
-    stringVals = stringVals.SubString((size_t)iRight + 5, stringVals.Length());
+    stringVals = stringVals.SubString((size_t) iRight + 5, stringVals.Length());
 
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         iLeft = stringVals.Find("Anb");
@@ -1053,7 +1052,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             wxLogError(errMsg);
             return false;
         }
-        strVal = stringVals.SubString((size_t)iLeft + 4, (size_t)iRight - 2);
+        strVal = stringVals.SubString((size_t) iLeft + 4, (size_t) iRight - 2);
         if (!strVal.ToLong(&lVal)) {
             wxLogError(errMsg);
             return false;
@@ -1073,7 +1072,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    strVal = stringVals.SubString((size_t)iLeft + 6, (size_t)iRight - 2);
+                    strVal = stringVals.SubString((size_t) iLeft + 6, (size_t) iRight - 2);
                     if (!strVal.ToDouble(&dVal)) {
                         wxLogError(errMsg);
                         return false;
@@ -1082,7 +1081,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    stringVals = stringVals.SubString((size_t)iRight + 5, stringVals.Length());
+                    stringVals = stringVals.SubString((size_t) iRight + 5, stringVals.Length());
 
                     iLeft = 0;
                     iRight = stringVals.Find("\t");
@@ -1090,7 +1089,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    strVal = stringVals.SubString((size_t)iLeft, (size_t)iRight - 1);
+                    strVal = stringVals.SubString((size_t) iLeft, (size_t) iRight - 1);
                     if (!strVal.ToDouble(&dVal)) {
                         wxLogError(errMsg);
                         return false;
@@ -1099,7 +1098,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+                    stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
                 }
             } else {
                 iLeft = stringVals.Find("Level");
@@ -1108,7 +1107,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                strVal = stringVals.SubString((size_t)iLeft + 6, (size_t)iRight - 2);
+                strVal = stringVals.SubString((size_t) iLeft + 6, (size_t) iRight - 2);
                 if (!strVal.ToDouble(&dVal)) {
                     wxLogError(errMsg);
                     return false;
@@ -1117,15 +1116,15 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                stringVals = stringVals.SubString((size_t)iRight + 5, stringVals.Length());
+                stringVals = stringVals.SubString((size_t) iRight + 5, stringVals.Length());
 
                 iLeft = 0;
-                iRight =  stringVals.Find("\t");
+                iRight = stringVals.Find("\t");
                 if (iLeft < 0 || iRight < 0) {
                     wxLogError(errMsg);
                     return false;
                 }
-                strVal = stringVals.SubString((size_t)iLeft, (size_t)iRight - 1);
+                strVal = stringVals.SubString((size_t) iLeft, (size_t) iRight - 1);
                 if (!strVal.ToDouble(&dVal)) {
                     wxLogError(errMsg);
                     return false;
@@ -1134,12 +1133,12 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+                stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
             }
 
-            iLeft =  stringVals.Find("Xmin");
+            iLeft = stringVals.Find("Xmin");
             if (iLeft < 0)
-                iLeft =  stringVals.Find("Umin");
+                iLeft = stringVals.Find("Umin");
             iRight = stringVals.Find("Xptsnb");
             if (iRight < 0)
                 iRight = stringVals.Find("Uptsnb");
@@ -1147,7 +1146,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 5, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 5, (size_t) iRight - 2);
             if (!strVal.ToDouble(&dVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1156,7 +1155,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
             iLeft = stringVals.Find("Xptsnb");
             if (iLeft < 0)
@@ -1168,7 +1167,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 7, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 7, (size_t) iRight - 2);
             if (!strVal.ToLong(&lVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1189,7 +1188,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 6, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 6, (size_t) iRight - 2);
             if (!strVal.ToDouble(&dVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1198,7 +1197,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
             iLeft = stringVals.Find("Ymin");
             if (iLeft < 0)
@@ -1210,7 +1209,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 5, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 5, (size_t) iRight - 2);
             if (!strVal.ToDouble(&dVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1219,7 +1218,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
             iLeft = stringVals.Find("Yptsnb");
             if (iLeft < 0)
@@ -1231,7 +1230,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 7, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 7, (size_t) iRight - 2);
             if (!strVal.ToLong(&lVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1240,7 +1239,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
             iLeft = stringVals.Find("Ystep");
             if (iLeft < 0)
@@ -1250,7 +1249,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 6, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 6, (size_t) iRight - 2);
             if (!strVal.ToDouble(&dVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1259,7 +1258,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
             iLeft = stringVals.Find("Weight");
             iRight = stringVals.Find("Criteria");
@@ -1267,7 +1266,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            strVal = stringVals.SubString((size_t)iLeft + 7, (size_t)iRight - 2);
+            strVal = stringVals.SubString((size_t) iLeft + 7, (size_t) iRight - 2);
             if (!strVal.ToDouble(&dVal)) {
                 wxLogError(errMsg);
                 return false;
@@ -1280,7 +1279,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            stringVals = stringVals.SubString((size_t)iRight, stringVals.Length());
+            stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
         }
     }
 

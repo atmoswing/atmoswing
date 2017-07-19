@@ -40,8 +40,7 @@ asCriteriaNS1grads::~asCriteriaNS1grads()
     //dtor
 }
 
-float asCriteriaNS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
-                                         int colsNb) const
+float asCriteriaNS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     return asCriteriaS1grads::Assess(refData, evalData, rowsNb, colsNb) / m_scaleWorst;
 }

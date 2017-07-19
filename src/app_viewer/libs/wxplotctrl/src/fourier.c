@@ -61,7 +61,7 @@ unsigned NumberOfBitsNeeded(unsigned PowerOfTwo)
 {
     unsigned i;
 
-    for (i = 0; ; i++) {
+    for (i = 0;; i++) {
         if (PowerOfTwo & (1 << i))
             return i;
     }

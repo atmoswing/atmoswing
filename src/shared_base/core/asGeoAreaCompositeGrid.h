@@ -49,15 +49,15 @@ public:
                                                int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
                                                int flatAllowed = asFLAT_FORBIDDEN);
 
-	static a1d GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep = 0);
+    static a1d GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep = 0);
 
-	static a1d GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep = 0);
+    static a1d GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep = 0);
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 
     void SetLastRowAsNewComposite();
 
-	void RemoveLastRowOnComposite(int i);
+    void RemoveLastRowOnComposite(int i);
 
     virtual double GetXstep() const = 0;
 

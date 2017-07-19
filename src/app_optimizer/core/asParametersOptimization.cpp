@@ -166,12 +166,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
-        } else if (nodeProcess->GetName() == "analog_score") {
+        } else if (nodeProcess->GetName() == "evaluation") {
             if (!ParseScore(fileParams, nodeProcess))
-                return false;
-
-        } else if (nodeProcess->GetName() == "analog_total_score") {
-            if (!ParseTotalScore(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -721,8 +717,7 @@ bool asParametersOptimization::ParseAnalogValuesParams(asFileParametersOptimizat
     return true;
 }
 
-bool
-asParametersOptimization::ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess)
+bool asParametersOptimization::ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
@@ -733,23 +728,11 @@ asParametersOptimization::ParseScore(asFileParametersOptimization &fileParams, c
             SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
-        } else if (nodeParamBlock->GetName() == "postprocessing") {
-            wxLogError(_("The postptocessing is not yet fully implemented."));
-        } else {
-            fileParams.UnknownNode(nodeParamBlock);
-        }
-        nodeParamBlock = nodeParamBlock->GetNext();
-    }
-    return true;
-}
-
-bool asParametersOptimization::ParseTotalScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess)
-{
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
-    while (nodeParamBlock) {
-        if (nodeParamBlock->GetName() == "time_array") {
+        } else if (nodeParamBlock->GetName() == "time_array") {
             if (!SetScoreTimeArrayMode(fileParams.GetString(nodeParamBlock)))
                 return false;
+        } else if (nodeParamBlock->GetName() == "postprocessing") {
+            wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }

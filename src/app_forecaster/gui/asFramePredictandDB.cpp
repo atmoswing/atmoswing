@@ -246,7 +246,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
 
                 // Instantiate a predictand object
                 asPredictandPrecipitation predictand(asPredictand::Precipitation, temporalResolution,
-                                                         spatialAggregation);
+                                                     spatialAggregation);
                 predictand.SetHasReferenceValues(m_checkBoxReturnPeriod->GetValue());
                 predictand.SetIsSqrt(m_checkBoxSqrt->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
@@ -256,15 +256,14 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             {
                 // Instantiate a predictand object
                 asPredictandTemperature predictand(asPredictand::AirTemperature, temporalResolution,
-                                                       spatialAggregation);
+                                                   spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
                 // Instantiate a predictand object
-                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResolution,
-                                                      spatialAggregation);
+                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }

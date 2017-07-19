@@ -204,8 +204,7 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
     }
 }
 
-bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params,
-                                                asResultsTotalScore &scoreFinal)
+bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal)
 {
     float thisScore = scoreFinal.GetScore();
 
@@ -690,8 +689,8 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
     for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
         for (unsigned int iHour = 0; iHour < preloadTimeHours.size(); iHour++) {
             // Loading the dataset information
-            asPredictorArch *predictor = asPredictorArch::GetInstance(
-                    params.GetPredictorDatasetId(iStep, iPtor), preloadDataIds[iPre], m_predictorDataDir);
+            asPredictorArch *predictor = asPredictorArch::GetInstance(params.GetPredictorDatasetId(iStep, iPtor),
+                                                                      preloadDataIds[iPre], m_predictorDataDir);
             if (!predictor) {
                 return false;
             }
@@ -1153,8 +1152,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asPredictor *> &predic
 
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
-    asPredictorArch *desiredPredictor = new asPredictorArch(
-            *m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+    asPredictorArch *desiredPredictor = new asPredictorArch(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Area object instantiation
     asGeoAreaCompositeGrid *desiredArea = asGeoAreaCompositeGrid::GetInstance(params.GetPredictorGridType(iStep, iPtor),
@@ -1216,8 +1214,8 @@ bool asMethodCalibrator::ExtractDataWithoutPreprocessing(std::vector<asPredictor
 
     // Loading the datasets information
     asPredictorArch *predictor = asPredictorArch::GetInstance(params.GetPredictorDatasetId(iStep, iPtor),
-                                                                            params.GetPredictorDataId(iStep, iPtor),
-                                                                            m_predictorDataDir);
+                                                              params.GetPredictorDataId(iStep, iPtor),
+                                                              m_predictorDataDir);
     if (!predictor) {
         return false;
     }
@@ -1374,7 +1372,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring &params)
 
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],
-                                                                  &predictandTime[predictandTime.size() - 1], timeStart);
+                                                                  &predictandTime[predictandTime.size() - 1],
+                                                                  timeStart);
     int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
                                                                  &predictandTime[predictandTime.size() - 1], timeEnd);
 
@@ -1806,8 +1805,8 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asPa
     return true;
 }
 
-bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params,
-                                                 asResultsDates &anaDatesPrevious, int iStep)
+bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
+                                                 int iStep)
 {
     vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
@@ -1824,7 +1823,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     asResultsDates anaDates;
     asResultsValues anaValues;
 
-    if (rowEnd<0) {
+    if (rowEnd < 0) {
         wxLogError(_("Error assessing the number of analogues."));
         return false;
     }

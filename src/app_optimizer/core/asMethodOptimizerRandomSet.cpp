@@ -126,9 +126,8 @@ bool asMethodOptimizerRandomSet::Manager()
                 vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadRandomSet *firstThread = new asThreadRandomSet(this, nextParams,
-                                                                                                     &m_scoresCalib[m_iterator],
-                                                                                                     &m_scoreClimatology);
+                asThreadRandomSet *firstThread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                       &m_scoreClimatology);
                 int threadType = firstThread->GetType();
                 ThreadsManager().AddThread(firstThread);
 
@@ -157,9 +156,8 @@ bool asMethodOptimizerRandomSet::Manager()
                     nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams,
-                                                                                                    &m_scoresCalib[m_iterator],
-                                                                                                    &m_scoreClimatology);
+                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -183,9 +181,8 @@ bool asMethodOptimizerRandomSet::Manager()
                     nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams,
-                                                                                                    &m_scoresCalib[m_iterator],
-                                                                                                    &m_scoreClimatology);
+                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);

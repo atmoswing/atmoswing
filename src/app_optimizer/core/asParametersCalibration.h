@@ -162,8 +162,6 @@ private:
     bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
     bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
-
-    bool ParseTotalScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif // ASPARAMETERSCALIBRATION_H

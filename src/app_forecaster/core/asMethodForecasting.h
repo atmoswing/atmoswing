@@ -76,8 +76,8 @@ protected:
 
     bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
 
-    bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params,
-                            asResultsForecast &resultsPrev, int iStep);
+    bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params, asResultsForecast &resultsPrev,
+                            int iStep);
 
     bool GetAnalogsValues(asResultsForecast &results, asParametersForecast &params, int iStep);
 

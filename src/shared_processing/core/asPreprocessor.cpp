@@ -40,8 +40,7 @@
 #include <asThreadPreprocessGradients.h>
 
 
-bool asPreprocessor::Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method,
-                                asPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result)
 {
     std::vector<asPredictor *> ptorsPredictors(predictors.size());
 
@@ -54,8 +53,7 @@ bool asPreprocessor::Preprocess(std::vector<asPredictorArch *> predictors, const
 
 #ifndef MINIMAL_LINKS
 
-bool asPreprocessor::Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method,
-                                asPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method, asPredictor *result)
 {
     std::vector<asPredictor *> ptorsPredictors(predictors.size());
 
@@ -68,8 +66,7 @@ bool asPreprocessor::Preprocess(std::vector<asPredictorOper *> predictors, const
 
 #endif
 
-bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxString &method,
-                                asPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result)
 {
     wxASSERT(result);
 
@@ -354,8 +351,8 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
     // Merge
     wxASSERT(predictors[0]);
     vvva2f copyData = vvva2f(inputSize / 2);
-    copyData.reserve(2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() *
-                     predictors[0]->GetTimeSize() * predictors[0]->GetMembersNb() * inputSize);
+    copyData.reserve(2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() * predictors[0]->GetTimeSize() *
+                     predictors[0]->GetMembersNb() * inputSize);
     int counter = 0;
 
 #ifdef _DEBUG
@@ -455,8 +452,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *> predictors,
-                                                      asPredictor *result)
+bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     int inputSize = (int) predictors.size();
@@ -503,7 +499,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *>
                     wxASSERT(predictors[iCurr]->GetMembersNb() == membersNb);
 
                     copyData[iHalf][iTime][iMem].block(iPre * originalRowsNb, 0, originalRowsNb,
-                                                   originalColsNb) = predictors[iCurr]->GetData()[iTime][iMem];
+                                                       originalColsNb) = predictors[iCurr]->GetData()[iTime][iMem];
                 }
             }
         }
@@ -574,7 +570,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictor
                                         predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
                                         predictors[1]->GetData()[iTime][iMem](iRow, iCol));
                     multi[iTime][iMem](iRow, iCol) = wind * predictors[2]->GetData()[iTime][iMem](iRow, iCol) *
-                                                  predictors[3]->GetData()[iTime][iMem](iRow, iCol);
+                                                     predictors[3]->GetData()[iTime][iMem](iRow, iCol);
                 }
             }
         }

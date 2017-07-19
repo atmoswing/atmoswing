@@ -318,7 +318,7 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.memberStart = memberNum-1;
+        m_fileIndexes.memberStart = memberNum - 1;
         m_fileIndexes.memberCount = 1;
     }
 
@@ -425,11 +425,9 @@ protected:
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                  vvva2f &compositeData) = 0;
+    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                vvva2f &compositeData) = 0;
+    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 

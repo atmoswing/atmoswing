@@ -62,7 +62,7 @@ bool asPredictorArchNcepCfsr::Init()
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
-        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false)  ||
+        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
         m_product.IsSameAs("pgb", false)) {
         m_fileStructure.hasLevelDimension = true;
         m_fileStructure.singleLevel = true;
@@ -130,7 +130,7 @@ bool asPredictorArchNcepCfsr::Init()
         return false;
     }
 
-    wxASSERT(m_gribCode.size()==4);
+    wxASSERT(m_gribCode.size() == 4);
 
     // Set to initialized
     m_initialized = true;
@@ -153,7 +153,7 @@ vwxs asPredictorArchNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                              asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }

@@ -125,8 +125,8 @@ bool asPredictorArchNcepReanalysis1Subset::Init()
         m_fileVariableName = "pr_wtr";
         m_unit = mm;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
+                                          m_product));
     }
 
     // Check data ID
@@ -159,7 +159,7 @@ vwxs asPredictorArchNcepReanalysis1Subset::GetListOfFiles(asTimeArray &timeArray
 }
 
 bool asPredictorArchNcepReanalysis1Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                           asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

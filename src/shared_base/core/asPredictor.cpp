@@ -70,7 +70,7 @@ asPredictor::asPredictor(const wxString &dataId)
     int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
     AssignGribCode(arr);
 
-    if(dataId.Contains('/')) {
+    if (dataId.Contains('/')) {
         wxString levelType = dataId.BeforeFirst('/');
         m_product = levelType;
         m_dataId = dataId.AfterFirst('/');
@@ -313,7 +313,7 @@ bool asPredictor::CheckFilesPresence(vwxs &filesList)
                 }
 
                 if (i == 0) {
-                    if (fileName.GetDirCount()<2) {
+                    if (fileName.GetDirCount() < 2) {
                         wxLogError(_("File not found: %s"), filesList[i]);
                         return false;
                     }
@@ -633,12 +633,13 @@ bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile)
             timeLastVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
             break;
         case NC_FLOAT:
-            timeFirstVal = (double)ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, 0);
-            timeLastVal = (double)ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+            timeFirstVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName,
+                                                         m_fileStructure.axisTimeLength - 1);
             break;
         case NC_INT:
-            timeFirstVal = (double)ncFile.GetVarOneInt(m_fileStructure.dimTimeName, 0);
-            timeLastVal = (double)ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+            timeFirstVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
             break;
         default:
             wxLogError(_("Variable type not supported yet for the time dimension."));
@@ -650,7 +651,7 @@ bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile)
         wxString refValueStr = ncFile.GetAttString("units", "time");
         refValueStr = refValueStr.Remove(0, 14);
         refValue = asTime::GetTimeFromString(refValueStr);
-    } else if(m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+    } else if (m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
         wxString refValueStr = ncFile.GetAttString("units", "time");
         refValueStr = refValueStr.Mid(12, 10);
         refValue = asTime::GetTimeFromString(refValueStr);
@@ -688,7 +689,7 @@ bool asPredictor::CheckFileStructure()
         if (m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] < m_fileStructure.axisLon[0]) {
             int iBreak = 0;
             for (int i = 1; i < m_fileStructure.axisLon.size(); ++i) {
-                if (m_fileStructure.axisLon[i] < m_fileStructure.axisLon[i-1]) {
+                if (m_fileStructure.axisLon[i] < m_fileStructure.axisLon[i - 1]) {
                     if (iBreak != 0) {
                         wxLogError(_("Longitude axis seems not consistent (multiple breaks)."));
                         return false;
@@ -762,8 +763,8 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
 
 asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData)
 {
-    wxASSERT(m_fileStructure.axisLon.size()>0);
-    wxASSERT(m_fileStructure.axisLat.size()>0);
+    wxASSERT(m_fileStructure.axisLon.size() > 0);
+    wxASSERT(m_fileStructure.axisLat.size() > 0);
 
     if (!m_axesChecked) {
         if (dataArea == NULL) {
@@ -782,7 +783,7 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
 
                 // Condition for change: The composite must not be fully outside (considered as handled).
                 if (axisLonComp[axisLonComp.size() - 1] > m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] &&
-                    axisLonComp[0] <= m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] ) {
+                    axisLonComp[0] <= m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]) {
                     // If the last value corresponds to the maximum value of the reference system, create a new composite
                     if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
                         dataArea->SetLastRowAsNewComposite();
@@ -796,9 +797,9 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                         int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
                         wxLogDebug(_("xPtsNb = %d."), Xptsnb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb, dataArea->GetXstep(),
-                                dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(), dataArea->GetYstep(),
-                                dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
+                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
+                                dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
                         dataArea = newdataArea;
@@ -1040,7 +1041,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
     bool isShort = (ncFile.GetVarType(m_fileVariableName) == NC_SHORT);
     bool isFloat = (ncFile.GetVarType(m_fileVariableName) == NC_FLOAT);
 
-    if(!isShort && !isFloat) {
+    if (!isShort && !isFloat) {
         wxLogError(_("Loading data other than short or float is not implemented yet."));
     }
 
@@ -1076,7 +1077,8 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Fill empty beginning with NaNs
         int indexBegining = 0;
         if (m_fileIndexes.cutStart > 0) {
-            int latlonlength = m_fileIndexes.memberCount * m_fileIndexes.areas[iArea].latCount * m_fileIndexes.areas[iArea].lonCount;
+            int latlonlength = m_fileIndexes.memberCount * m_fileIndexes.areas[iArea].latCount *
+                               m_fileIndexes.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fileIndexes.cutStart; iEmpty++) {
                 for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
                     dataF[indexBegining] = NaNf;
@@ -1086,9 +1088,11 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         }
 
         // Fill empty end with NaNs
-        int indexEnd = m_fileIndexes.memberCount * m_fileIndexes.timeCount * m_fileIndexes.areas[iArea].latCount * m_fileIndexes.areas[iArea].lonCount - 1;
+        int indexEnd = m_fileIndexes.memberCount * m_fileIndexes.timeCount * m_fileIndexes.areas[iArea].latCount *
+                       m_fileIndexes.areas[iArea].lonCount - 1;
         if (m_fileIndexes.cutEnd > 0) {
-            int latlonlength = m_fileIndexes.memberCount * m_fileIndexes.areas[iArea].latCount * m_fileIndexes.areas[iArea].lonCount;
+            int latlonlength = m_fileIndexes.memberCount * m_fileIndexes.areas[iArea].latCount *
+                               m_fileIndexes.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fileIndexes.cutEnd; iEmpty++) {
                 for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
                     indexEnd++;
@@ -1115,8 +1119,8 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
     if (compositeData[0].capacity() == 0) {
         unsigned int totSize = 0;
         for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-            totSize += m_fileIndexes.memberCount * m_time.size() * m_fileIndexes.areas[iArea].latCount
-                       * (m_fileIndexes.areas[iArea].lonCount + 1); // +1 in case of a border
+            totSize += m_fileIndexes.memberCount * m_time.size() * m_fileIndexes.areas[iArea].latCount *
+                       (m_fileIndexes.areas[iArea].lonCount + 1); // +1 in case of a border
         }
         compositeData.reserve(totSize);
     }
@@ -1287,7 +1291,7 @@ bool asPredictor::Inline()
     a2f inlineData = a2f::Zero(1, cols * rows);
 
     vva2f newData;
-    newData.reserve((unsigned int)(membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
+    newData.reserve((unsigned int) (membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
     newData.resize(timeSize);
 
     for (int iTime = 0; iTime < timeSize; iTime++) {
@@ -1415,8 +1419,8 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
         // Creation of the axes
         a1f axisDataLon;
         if (dataArea->GetXaxisPtsnb() > 1) {
-            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(),
-                                                  dataArea->GetAbsoluteXmin(), dataArea->GetAbsoluteXmax());
+            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(), dataArea->GetAbsoluteXmin(),
+                                         dataArea->GetAbsoluteXmax());
         } else {
             axisDataLon.resize(1);
             axisDataLon << dataArea->GetAbsoluteXmin();
@@ -1424,9 +1428,8 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
 
         a1f axisDataLat;
         if (dataArea->GetYaxisPtsnb() > 1) {
-            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(),
-                                                  dataArea->GetAbsoluteYmax(),
-                                                  dataArea->GetAbsoluteYmin()); // From top to bottom
+            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(), dataArea->GetAbsoluteYmax(),
+                                         dataArea->GetAbsoluteYmin()); // From top to bottom
         } else {
             axisDataLat.resize(1);
             axisDataLat << dataArea->GetAbsoluteYmax();
@@ -1435,7 +1438,7 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
         a1f axisFinalLon;
         if (desiredArea->GetXaxisPtsnb() > 1) {
             axisFinalLon = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetXaxisPtsnb(),
-                                                   desiredArea->GetAbsoluteXmin(), desiredArea->GetAbsoluteXmax());
+                                          desiredArea->GetAbsoluteXmin(), desiredArea->GetAbsoluteXmax());
         } else {
             axisFinalLon.resize(1);
             axisFinalLon << desiredArea->GetAbsoluteXmin();
@@ -1444,8 +1447,8 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
         a1f axisFinalLat;
         if (desiredArea->GetYaxisPtsnb() > 1) {
             axisFinalLat = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetYaxisPtsnb(),
-                                                   desiredArea->GetAbsoluteYmax(),
-                                                   desiredArea->GetAbsoluteYmin()); // From top to bottom
+                                          desiredArea->GetAbsoluteYmax(),
+                                          desiredArea->GetAbsoluteYmin()); // From top to bottom
         } else {
             axisFinalLat.resize(1);
             axisFinalLat << desiredArea->GetAbsoluteYmax();

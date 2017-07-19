@@ -897,8 +897,6 @@ private:
 
     bool ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseTotalScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
-
 };
 
 #endif // ASPARAMETERSOPTIMIZATION_H

@@ -88,12 +88,8 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
             if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
-        } else if (nodeProcess->GetName() == "analog_score") {
+        } else if (nodeProcess->GetName() == "evaluation") {
             if (!ParseScore(fileParams, nodeProcess))
-                return false;
-
-        } else if (nodeProcess->GetName() == "analog_total_score") {
-            if (!ParseTotalScore(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -433,23 +429,11 @@ bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams
             SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
-        } else if (nodeParamBlock->GetName() == "postprocessing") {
-            wxLogError(_("The postptocessing is not yet fully implemented."));
-        } else {
-            fileParams.UnknownNode(nodeParamBlock);
-        }
-        nodeParamBlock = nodeParamBlock->GetNext();
-    }
-    return true;
-}
-
-bool asParametersCalibration::ParseTotalScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
-{
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
-    while (nodeParamBlock) {
-        if (nodeParamBlock->GetName() == "time_array") {
+        } else if (nodeParamBlock->GetName() == "time_array") {
             if (!SetScoreTimeArrayModeVector(fileParams.GetVectorString(nodeParamBlock)))
                 return false;
+        } else if (nodeParamBlock->GetName() == "postprocessing") {
+            wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }

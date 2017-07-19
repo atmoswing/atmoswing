@@ -47,7 +47,7 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(std::pow(10.f, 15.f));
-    m_nanValues.push_back(std::pow(10.f, 15.f)-1);
+    m_nanValues.push_back(std::pow(10.f, 15.f) - 1);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
     m_fileStructure.dimLatName = "lat";
@@ -148,15 +148,15 @@ vwxs asPredictorArchNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNasaMerra2::ConvertToMjd(double timeValue, double refValue) const
 {
-    wxASSERT(refValue>30000);
-    wxASSERT(refValue<70000);
+    wxASSERT(refValue > 30000);
+    wxASSERT(refValue < 70000);
 
     return refValue + (timeValue / 1440.0); // minutes to days
 }

@@ -184,12 +184,13 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileVariableName = "vwnd";
             m_unit = m_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            asThrowException(
+                    wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
+                                     m_product));
         }
 
     } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
-            m_product.IsSameAs("flux", false)) {
+               m_product.IsSameAs("flux", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "surface_gauss";
         m_xAxisStep = NaNf;
@@ -462,7 +463,7 @@ vwxs asPredictorArchNcepReanalysis1::GetListOfFiles(asTimeArray &timeArray) cons
 }
 
 bool asPredictorArchNcepReanalysis1::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                     asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

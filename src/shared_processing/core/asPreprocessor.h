@@ -43,11 +43,9 @@ class asPreprocessor
 {
 public:
 
-    static bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method,
-                           asPredictor *result);
+    static bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result);
 
-    static bool Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method,
-                           asPredictor *result);
+    static bool Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method, asPredictor *result);
 
     static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 

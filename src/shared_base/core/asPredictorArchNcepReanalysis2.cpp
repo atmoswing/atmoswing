@@ -136,7 +136,7 @@ bool asPredictorArchNcepReanalysis2::Init()
         }
 
     } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gaussian_grid", false) ||
-            m_product.IsSameAs("gauss", false) || m_product.IsSameAs("flux", false)) {
+               m_product.IsSameAs("gauss", false) || m_product.IsSameAs("flux", false)) {
         m_fileStructure.hasLevelDimension = false;
         m_subFolder = "gaussian_grid";
         m_xAxisStep = NaNf;
@@ -370,7 +370,7 @@ vwxs asPredictorArchNcepReanalysis2::GetListOfFiles(asTimeArray &timeArray) cons
 }
 
 bool asPredictorArchNcepReanalysis2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                     asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

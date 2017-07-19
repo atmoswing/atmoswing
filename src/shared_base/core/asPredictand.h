@@ -83,7 +83,7 @@ public:
     static wxString SpatialAggregationEnumToString(SpatialAggregation spatialAggregation);
 
     static asPredictand *GetInstance(const wxString &parameterStr, const wxString &temporalResolutionStr,
-                                         const wxString &spatialAggregationStr);
+                                     const wxString &spatialAggregationStr);
 
     static asPredictand *GetInstance(Parameter parameter, TemporalResolution temporalResolution,
                                          SpatialAggregation spatialAggregation);

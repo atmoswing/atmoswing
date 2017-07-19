@@ -38,9 +38,8 @@ class asThreadGeneticAlgorithms
         : public asThread
 {
 public:
-    asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
-                                             asParametersOptimization *params, float *finalScoreCalib,
-                                             vf *scoreClimatology);
+    asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params,
+                              float *finalScoreCalib, vf *scoreClimatology);
 
     virtual ~asThreadGeneticAlgorithms();
 

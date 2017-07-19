@@ -97,8 +97,7 @@ bool asResultsForecastAggregator::Add(asResultsForecast *forecast)
     return true;
 }
 
-bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow,
-                                                         asResultsForecast *forecast)
+bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsForecast *forecast)
 {
     bool compatible = true;
 
@@ -191,8 +190,7 @@ asResultsForecast *asResultsForecastAggregator::GetForecast(int methodRow, int f
     return m_forecasts[methodRow][forecastRow];
 }
 
-asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow,
-                                                                              int leadtimeRow) const
+asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const
 {
     wxASSERT(m_pastForecasts.size() > (unsigned) methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > (unsigned) forecastRow);
@@ -566,8 +564,8 @@ wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forec
     return leadTimes;
 }
 
-a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow,
-                                                                    int returnPeriodRef, float quantileThreshold) const
+a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, int returnPeriodRef,
+                                                    float quantileThreshold) const
 {
     wxASSERT(returnPeriodRef >= 2);
     wxASSERT(quantileThreshold > 0);
@@ -669,8 +667,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow,
     return maxValues;
 }
 
-a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPeriodRef,
-                                                                     float quantileThreshold) const
+a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const
 {
     a2f allMax(dates.size(), m_forecasts.size());
 

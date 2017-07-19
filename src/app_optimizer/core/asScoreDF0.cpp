@@ -104,7 +104,7 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
         FxObs = 0;
     }
 
-    if (indexLastZero<0) {
+    if (indexLastZero < 0) {
         wxLogError(_("Error processing DF0 score."));
         return NaNf;
     }

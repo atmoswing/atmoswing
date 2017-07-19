@@ -180,8 +180,7 @@ asTotalScore::~asTotalScore()
     //dtor
 }
 
-a1f asTotalScore::AssessOnArray(const a1f &targetDates, const a1f &scores,
-                                        const asTimeArray &timeArray) const
+a1f asTotalScore::AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
 {
     wxLogError(_("This asTotalScore class has no AssessOnArray method implemented !"));
     return a1f();

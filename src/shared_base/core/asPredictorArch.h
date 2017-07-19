@@ -75,8 +75,7 @@ protected:
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                vvva2f &compositeData);
+    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
 private:
 

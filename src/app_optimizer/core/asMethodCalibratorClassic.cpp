@@ -432,8 +432,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
     return true;
 }
 
-bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params,
-                                                     asResultsDates &anaDatesPrevious,
+bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
                                                      asResultsParametersArray &resultsTested, int iStep,
                                                      const asMethodCalibrator::ParamExploration &explo)
 {

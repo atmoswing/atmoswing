@@ -33,9 +33,8 @@
 #include <asCatalogPredictands.h>
 
 
-asPredictandLightnings::asPredictandLightnings(Parameter dataParameter,
-                                                       TemporalResolution dataTemporalResolution,
-                                                       SpatialAggregation dataSpatialAggregation)
+asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                               SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
@@ -100,8 +99,8 @@ bool asPredictandLightnings::Save(const wxString &AlternateDestinationDir) const
 }
 
 bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                                   const wxString &AlternatePatternDir,
-                                                   const wxString &AlternateDestinationDir)
+                                               const wxString &AlternatePatternDir,
+                                               const wxString &AlternateDestinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));

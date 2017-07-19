@@ -312,11 +312,10 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
         // All traces
         file.AddLineContent("All traces:");
 
-        asResultsForecast *oldestForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
-                                                                                      m_selectedForecast,
-                                                                                      m_forecastManager->GetPastForecastsNb(
-                                                                                              m_selectedMethod,
-                                                                                              m_selectedForecast) - 1);
+        asResultsForecast *oldestForecast = m_forecastManager->GetPastForecast(m_selectedMethod, m_selectedForecast,
+                                                                               m_forecastManager->GetPastForecastsNb(
+                                                                                       m_selectedMethod,
+                                                                                       m_selectedForecast) - 1);
         float leadtimeStart = oldestForecast->GetTargetDates()[0];
         float leadtimeEnd = forecast->GetTargetDates()[forecast->GetTargetDatesLength() - 1];
 
@@ -341,7 +340,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
             for (int past = 0;
                  past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
                 asResultsForecast *pastForecast = m_forecastManager->GetPastForecast(m_selectedMethod,
-                                                                                            m_selectedForecast, past);
+                                                                                     m_selectedForecast, past);
                 a1f dates = pastForecast->GetTargetDates();
                 wxString currentLine = asTime::GetStringTime(pastForecast->GetLeadTimeOrigin(), "DD.MM") + "\t";
 

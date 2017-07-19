@@ -954,8 +954,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Instanciate an archive predictor object
-            asPredictorArch *predictorArchive = new asPredictorArch(
-                    *m_storagePredictorsArchivePreprocess[0]);
+            asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -968,8 +967,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Instanciate an realtime predictor object
-            asPredictorOper *predictorRealtime = new asPredictorOper(
-                    *m_storagePredictorsRealtimePreprocess[0]);
+            asPredictorOper *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1439,8 +1437,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Instanciate an archive predictor object
-            asPredictorArch *predictorArchive = new asPredictorArch(
-                    *m_storagePredictorsArchivePreprocess[0]);
+            asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -1453,8 +1450,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Instanciate an realtime predictor object
-            asPredictorOper *predictorRealtime = new asPredictorOper(
-                    *m_storagePredictorsRealtimePreprocess[0]);
+            asPredictorOper *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;

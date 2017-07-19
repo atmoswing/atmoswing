@@ -45,8 +45,7 @@ asCriteriaMRDtoMean::~asCriteriaMRDtoMean()
     //dtor
 }
 
-float asCriteriaMRDtoMean::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
-                                           int colsNb) const
+float asCriteriaMRDtoMean::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
@@ -60,8 +59,7 @@ float asCriteriaMRDtoMean::Assess(const a2f &refData, const a2f &evalData, int r
     for (int i = 0; i < rowsNb; i++) {
         for (int j = 0; j < colsNb; j++) {
             if (std::abs(evalData(i, j) + refData(i, j)) > 0) {
-                rd += std::abs(evalData(i, j) - refData(i, j)) /
-                      (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
+                rd += std::abs(evalData(i, j) - refData(i, j)) / (std::abs(evalData(i, j) + refData(i, j)) * 0.5);
             } else {
                 if (std::abs(evalData(i, j) - refData(i, j)) != 0) {
                     wxLogWarning(_("Division by zero in the predictor criteria."));

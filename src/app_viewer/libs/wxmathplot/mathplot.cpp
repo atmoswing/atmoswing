@@ -165,7 +165,7 @@ void mpInfoLayer::UpdateReference()
 }
 
 
-void   mpInfoLayer::Plot(wxDC &dc, mpWindow &w)
+void mpInfoLayer::Plot(wxDC &dc, mpWindow &w)
 {
     if (m_visible) {
         // Adjust relative position inside the window

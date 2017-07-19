@@ -42,9 +42,8 @@
 
 #endif
 
-bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *score,
-                                        asParametersScoring &params, asResultsScores &results,
-                                        vf &scoresClimatology)
+bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *score, asParametersScoring &params,
+                                        asResultsScores &results, vf &scoresClimatology)
 {
     // Extract Data
     a1f timeTargetSelection = anaValues.GetTargetDates();
@@ -83,9 +82,8 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
                         //totalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetScoreAnalogsNumber());
                     } else {
                         vectScores[iStat](iTargetTime) = score->Assess(targetValues[iStat](iTargetTime),
-                                                                                       analogsValues[iStat].row(
-                                                                                               iTargetTime),
-                                                                               params.GetScoreAnalogsNumber());
+                                                                       analogsValues[iStat].row(iTargetTime),
+                                                                       params.GetScoreAnalogsNumber());
                     }
                 } else {
                     vectScores[iStat](iTargetTime) = NaNf;
@@ -126,7 +124,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
                     //finalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetScoreAnalogsNumber());
                 } else {
                     scores.row(iTargetTime) = score->AssessOnArray(targetValues[0](iTargetTime),
-                                                                                   analogsValues[0].row(iTargetTime),
+                                                                   analogsValues[0].row(iTargetTime),
                                                                    params.GetScoreAnalogsNumber());
                 }
             } else {
@@ -158,8 +156,7 @@ bool asProcessorScore::GetAnalogsTotalScore(asResultsScores &anaScores, asTimeAr
             float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray);
             results.SetScore(result);
         } else {
-            a1f result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetScores(),
-                                                   timeArray);
+            a1f result = finalScore->AssessOnArray(anaScores.GetTargetDates(), anaScores.GetScores(), timeArray);
             results.SetScore(result);
         }
     }

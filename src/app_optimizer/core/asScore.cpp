@@ -320,8 +320,8 @@ int asScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbEle
         if (iVal >= nbElements) {
             if (iVal == ForcastVals.rows()) {
                 wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
-                wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements,
-                             nbPredict, nbNans);
+                wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbPredict,
+                             nbNans);
                 break;
             }
         }

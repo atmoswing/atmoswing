@@ -1605,12 +1605,15 @@ namespace
     {
         if (GetOp() != b.GetOp())
             return false;
-        if (IsImmed()) if (GetImmed() != b.GetImmed())
-            return false;
-        if (IsVar()) if (GetVar() != b.GetVar())
-            return false;
-        if (data->IsFunc()) if (data->GetFuncNo() != b.data->GetFuncNo())
-            return false;
+        if (IsImmed())
+            if (GetImmed() != b.GetImmed())
+                return false;
+        if (IsVar())
+            if (GetVar() != b.GetVar())
+                return false;
+        if (data->IsFunc())
+            if (data->GetFuncNo() != b.data->GetFuncNo())
+                return false;
         return data->args == b.data->args;
     }
 
@@ -1794,7 +1797,7 @@ void FunctionParser::MakeTree(void *r) const
     const unsigned ByteCodeSize = data->ByteCodeSize;
     const double *const Immed = data->Immed;
 
-    for (unsigned IP = 0, DP = 0; ; ++IP) {
+    for (unsigned IP = 0, DP = 0;; ++IP) {
         while (labels.size() > 0 && *labels.begin() == IP) {
             // The "else" of an "if" ends here
             EAT(3, cIf);

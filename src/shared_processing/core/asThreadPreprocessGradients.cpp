@@ -31,9 +31,8 @@
 #include <asPredictor.h>
 
 
-asThreadPreprocessGradients::asThreadPreprocessGradients(vva2f *gradients,
-                                                             std::vector<asPredictor *> predictors, int start,
-                                                             int end)
+asThreadPreprocessGradients::asThreadPreprocessGradients(vva2f *gradients, std::vector<asPredictor *> predictors,
+                                                         int start, int end)
         : asThread(),
           m_pGradients(gradients),
           m_pPredictors(predictors)

@@ -83,21 +83,21 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
 
         // Description
         if (nodeProcess->GetName() == "description") {
-            if(!ParseDescription(fileParams, nodeProcess))
+            if (!ParseDescription(fileParams, nodeProcess))
                 return false;
 
         } else if (nodeProcess->GetName() == "time_properties") {
-            if(!ParseTimeProperties(fileParams, nodeProcess))
+            if (!ParseTimeProperties(fileParams, nodeProcess))
                 return false;
 
         } else if (nodeProcess->GetName() == "analog_dates") {
             AddStep();
-            if(!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
+            if (!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
                 return false;
             iStep++;
 
         } else if (nodeProcess->GetName() == "analog_values") {
-            if(!ParseAnalogValuesParams(fileParams, nodeProcess))
+            if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -240,7 +240,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
-                    if(!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
+                    if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
                         return false;
                 } else if (nodeParam->GetName() == "realtime_dataset_id") {
                     if (!SetPredictorRealtimeDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
@@ -325,20 +325,16 @@ bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast 
             wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
             while (nodeParamPreprocess) {
                 if (nodeParamPreprocess->GetName() == "realtime_dataset_id") {
-                    if (!SetPreprocessRealtimeDatasetId(iStep, iPtor, iPre,
-                                                        fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessRealtimeDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "realtime_data_id") {
-                    if (!SetPreprocessRealtimeDataId(iStep, iPtor, iPre,
-                                                     fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessRealtimeDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "archive_dataset_id") {
-                    if (!SetPreprocessArchiveDatasetId(iStep, iPtor, iPre,
-                                                       fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessArchiveDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "archive_data_id") {
-                    if (!SetPreprocessArchiveDataId(iStep, iPtor, iPre,
-                                                    fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessArchiveDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "level") {
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
@@ -604,8 +600,7 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, cons
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
@@ -613,16 +608,14 @@ wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPto
     }
 }
 
-bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre,
-                                                         const wxString &val)
+bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val)
 {
     if (val.IsEmpty()) {
         wxLogError(_("The provided value for the preprocess archive dataset ID is null"));
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
@@ -659,8 +652,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int 
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -668,16 +660,14 @@ wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPt
     }
 }
 
-bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre,
-                                                          const wxString &val)
+bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val)
 {
     if (val.IsEmpty()) {
         wxLogError(_("The provided value for the preprocess realtime dataset ID is null"));
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.push_back(val);
@@ -688,8 +678,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, 
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -704,8 +693,7 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >=
-        (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.push_back(val);

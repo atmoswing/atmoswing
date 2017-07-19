@@ -33,9 +33,8 @@
 #include <asCatalogPredictands.h>
 
 
-asPredictandTemperature::asPredictandTemperature(Parameter dataParameter,
-                                                         TemporalResolution dataTemporalResolution,
-                                                         SpatialAggregation dataSpatialAggregation)
+asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                                 SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
@@ -100,8 +99,8 @@ bool asPredictandTemperature::Save(const wxString &AlternateDestinationDir) cons
 }
 
 bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                                    const wxString &AlternatePatternDir,
-                                                    const wxString &AlternateDestinationDir)
+                                                const wxString &AlternatePatternDir,
+                                                const wxString &AlternateDestinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));

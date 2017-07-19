@@ -33,9 +33,8 @@
 #include <asCatalogPredictands.h>
 
 
-asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter,
-                                                             TemporalResolution dataTemporalResolution,
-                                                             SpatialAggregation dataSpatialAggregation)
+asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                                                     SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
     //ctor
@@ -193,8 +192,8 @@ bool asPredictandPrecipitation::Save(const wxString &AlternateDestinationDir) co
 }
 
 bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                                      const wxString &AlternatePatternDir,
-                                                      const wxString &AlternateDestinationDir)
+                                                  const wxString &AlternatePatternDir,
+                                                  const wxString &AlternateDestinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -354,8 +353,8 @@ bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods()
             float F = 1 - (1 / m_returnPeriods[iRetPeriod]); // Probability of not overtaking
             float u = -log(-log(F)); // Gumbel variable
             int iDuration = asTools::SortedArraySearch(&m_gumbelDuration(iStat, 0),
-                                                        &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1),
-                                                        duration, 0.00001f);
+                                                       &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1), duration,
+                                                       0.00001f);
             float val = m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
             wxASSERT(val > 0);
             wxASSERT(val < 1000);

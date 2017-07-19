@@ -45,8 +45,7 @@ asCriteriaRMSEwithNaN::~asCriteriaRMSEwithNaN()
     //dtor
 }
 
-float asCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
-                                             int colsNb) const
+float asCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT_MSG(refData.rows() == evalData.rows(),
                  wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),

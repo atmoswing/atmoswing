@@ -50,12 +50,14 @@ asGeoAreaCompositeGrid *asGeoAreaCompositeGrid::GetInstance(const wxString &type
                                                                          Level, Height, flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT62", false)) {
-        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, asGeo::GaussianT62,
-                                                                          Level, Height, flatAllowed);
+        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb,
+                                                                          asGeo::GaussianT62, Level, Height,
+                                                                          flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT382", false)) {
-        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb, asGeo::GaussianT382,
-                                                                          Level, Height, flatAllowed);
+        asGeoAreaCompositeGrid *area = new asGeoAreaCompositeGaussianGrid(Xmin, Xptsnb, Ymin, Yptsnb,
+                                                                          asGeo::GaussianT382, Level, Height,
+                                                                          flatAllowed);
         return area;
     } else {
         wxLogError(_("Given grid type: %s"), type);
@@ -311,8 +313,8 @@ void asGeoAreaCompositeGrid::SetLastRowAsNewComposite()
     Coo cornerUR1 = area1.GetCornerUR();
 
     a1d xAxis = GetXaxisComposite(0);
-    cornerLR1.x = xAxis[xAxis.size()-2];
-    cornerUR1.x = xAxis[xAxis.size()-2];
+    cornerLR1.x = xAxis[xAxis.size() - 2];
+    cornerUR1.x = xAxis[xAxis.size() - 2];
 
     area1.SetCornerLR(cornerLR1);
     area1.SetCornerUR(cornerUR1);
@@ -342,8 +344,8 @@ void asGeoAreaCompositeGrid::RemoveLastRowOnComposite(int i)
     Coo cornerUR = area.GetCornerUR();
 
     a1d xAxis = GetXaxisComposite(i);
-    cornerLR.x = xAxis[xAxis.size()-2];
-    cornerUR.x = xAxis[xAxis.size()-2];
+    cornerLR.x = xAxis[xAxis.size() - 2];
+    cornerUR.x = xAxis[xAxis.size() - 2];
 
     area.SetCornerLR(cornerLR);
     area.SetCornerUR(cornerUR);

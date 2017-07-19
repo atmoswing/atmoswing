@@ -3,16 +3,21 @@
 #define _MISC_H_ 1
 
 #include <wx/wxprec.h>
+
 #ifndef WX_PRECOMP
+
 #	include <wx/wx.h>
+
 #endif
 
 #ifdef _MSC_VER
-    #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
+#pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
 #endif
 
 extern void initialize_img_misc_s(void);
+
 extern void initialize_img_misc_m(void);
+
 extern void initialize_img_misc_l(void);
 
 void cleanup_img_misc(void);

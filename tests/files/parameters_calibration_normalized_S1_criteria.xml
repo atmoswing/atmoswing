@@ -58,10 +58,8 @@
       <station_id>1</station_id>
     </predictand>
   </analog_values>
-  <analog_score>
+  <evaluation>
     <score>CRPSAR</score>
-  </analog_score>
-  <analog_total_score>
     <time_array>simple</time_array>
-  </analog_total_score>
+  </evaluation>
 </atmoswing>

@@ -81,8 +81,8 @@ bool asPredictorArchNoaaOisst2Subset::Init()
         m_fileVariableName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
+                                          m_product));
     }
 
     // Check data ID
@@ -115,7 +115,7 @@ vwxs asPredictorArchNoaaOisst2Subset::GetListOfFiles(asTimeArray &timeArray) con
 }
 
 bool asPredictorArchNoaaOisst2Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                       asTimeArray &timeArray, vvva2f &compositeData)
+                                                      asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

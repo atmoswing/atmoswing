@@ -180,7 +180,7 @@ vwxs asPredictorArchNoaa20Cr2cEnsemble::GetListOfFiles(asTimeArray &timeArray) c
 }
 
 bool asPredictorArchNoaa20Cr2cEnsemble::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                        asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

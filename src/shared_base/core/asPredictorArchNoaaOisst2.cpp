@@ -115,7 +115,7 @@ vwxs asPredictorArchNoaaOisst2::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArchNoaaOisst2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                                asTimeArray &timeArray, vvva2f &compositeData)
 {
     return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }

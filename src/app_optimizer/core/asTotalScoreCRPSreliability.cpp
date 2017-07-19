@@ -45,8 +45,7 @@ asTotalScoreCRPSreliability::~asTotalScoreCRPSreliability()
     //dtor
 }
 
-float asTotalScoreCRPSreliability::Assess(const a1f &targetDates, const a2f &scores,
-                                                  const asTimeArray &timeArray) const
+float asTotalScoreCRPSreliability::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const
 {
     wxASSERT(scores.rows() > 1);
     wxASSERT(scores.cols() > 1);

@@ -38,7 +38,7 @@ class asPredictandTemperature
 {
 public:
     asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                                SpatialAggregation dataSpatialAggregation);
+                            SpatialAggregation dataSpatialAggregation);
 
     virtual ~asPredictandTemperature();
 

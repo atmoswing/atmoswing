@@ -120,7 +120,7 @@ public:
 
     int GetNbComposites() const
     {
-        return (int)m_composites.size();
+        return (int) m_composites.size();
     }
 
     std::vector<asGeoArea> GetComposites() const

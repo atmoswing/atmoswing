@@ -79,8 +79,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
 
     for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
         if (!asTools::IsNaN(refVals(iReftime))) {
-            scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData,
-                                                                climatologyData.size());
+            scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
         } else {
             scoresClimatology(iReftime) = NaNf;
         }
