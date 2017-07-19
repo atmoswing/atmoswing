@@ -463,26 +463,19 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
         case (asSTANDARD): {
             // Extract some data
             a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
-            int timeArchiveDataSize = timeArchiveData.size();
-            wxASSERT(timeArchiveDataSize > 0);
+            wxASSERT(timeArchiveData.size() > 0);
             wxASSERT(predictorsArchive.size() > 0);
             wxASSERT(predictorsArchive[0]->GetData().size() > 0);
-            wxASSERT_MSG(timeArchiveDataSize == (int) predictorsArchive[0]->GetData().size(),
-                         wxString::Format("timeArchiveDataSize = %d, predictorsArchive[0].GetData().size() = %d",
-                                          timeArchiveDataSize, (int) predictorsArchive[0]->GetData().size()));
+            wxASSERT_MSG(timeArchiveData.size() == predictorsArchive[0]->GetData().size(),
+                         wxString::Format("timeArchiveData.size() = %d, predictorsArchive[0].GetData().size() = %d",
+                         (int) timeArchiveData.size(), (int) predictorsArchive[0]->GetData().size()));
             a1d timeTargetData = timeArrayTargetData.GetTimeArray();
-            int timeTargetDataSize = timeTargetData.size();
             wxASSERT(predictorsTarget[0]);
-            wxASSERT(timeTargetDataSize == (int) predictorsTarget[0]->GetData().size());
+            wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
 
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
             a1f dateArrayOneDay(analogsNb);
-
-            // Some other variables
-            float tmpScore, thisScore;
-            int counter = 0;
-            int iTimeTarg, iTimeArch, iTimeTargRelative, iTimeArchRelative;
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
@@ -498,20 +491,13 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Loop through every timestep as target data
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
-                // Check if the next data is the following. If not, search for it in the array.
-                if (timeTargetDataSize > iTimeTargStart + 1 &&
-                    std::abs(timeTargetSelection[iDateTarg] - timeTargetData[iTimeTargStart + 1]) < 0.01) {
-                    iTimeTargRelative = 1;
-                } else {
-                    iTimeTargRelative = asTools::SortedArraySearch(&timeTargetData[iTimeTargStart],
-                                                                   &timeTargetData[timeTargetDataSize - 1],
-                                                                   timeTargetSelection[iDateTarg], 0.01);
-                }
+
+                int iTimeTargRelative = FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
 
                 // Check if a row was found
                 if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {
                     // Convert the relative index into an absolute index
-                    iTimeTarg = iTimeTargRelative + iTimeTargStart;
+                    int iTimeTarg = iTimeTargRelative + iTimeTargStart;
                     iTimeTargStart = iTimeTarg;
 
                     // DateArray object initialization.
@@ -520,7 +506,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                    params.GetTimeArrayAnalogsExcludeDays());
 
                     // Counter representing the current index
-                    counter = 0;
+                    int counter = 0;
 
                     // Loop over the members
                     for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -535,26 +521,18 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                         // Loop through the datearray for candidate data
                         for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-                            // Check if the next data is the following. If not, search for it in the array.
-                            if (timeArchiveDataSize > iTimeArchStart + 1 &&
-                                std::abs(dateArrayArchiveSelection[iDateArch] - timeArchiveData[iTimeArchStart + 1]) <
-                                0.01) {
-                                iTimeArchRelative = 1;
-                            } else {
-                                iTimeArchRelative = asTools::SortedArraySearch(&timeArchiveData[iTimeArchStart],
-                                                                                &timeArchiveData[timeArchiveDataSize - 1],
-                                                                                dateArrayArchiveSelection[iDateArch],
-                                                                                0.01);
-                            }
+
+                            int iTimeArchRelative = FindNextDate(dateArrayArchiveSelection, timeArchiveData,
+                                                                 iTimeArchStart, iDateArch);
 
                             // Check if a row was found
                             if (iTimeArchRelative != asNOT_FOUND && iTimeArchRelative != asOUT_OF_RANGE) {
                                 // Convert the relative index into an absolute index
-                                iTimeArch = iTimeArchRelative + iTimeArchStart;
+                                int iTimeArch = iTimeArchRelative + iTimeArchStart;
                                 iTimeArchStart = iTimeArch;
 
                                 // Process the criteria
-                                thisScore = 0;
+                                float thisScore = 0;
                                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                                     // Get data
                                     vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
@@ -563,8 +541,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                     wxASSERT(criteria.size() > (unsigned) iPtor);
                                     wxASSERT(vTargData[iPtor]);
                                     wxASSERT(vArchData[iPtor]);
-                                    tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
-                                                                       vRowsNb[iPtor], vColsNb[iPtor]);
+                                    float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
+                                                                             vRowsNb[iPtor], vColsNb[iPtor]);
 
                                     // Weight and add the score
                                     thisScore += tmpScore * params.GetPredictorWeight(step, iPtor);
@@ -586,7 +564,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                 wxLogError(_("The candidate (%s) was not found in the array (%s - %s) (Target date: %s)."),
                                            asTime::GetStringTime(dateArrayArchiveSelection[iDateArch]),
                                            asTime::GetStringTime(timeArchiveData[iTimeArchStart]),
-                                           asTime::GetStringTime(timeArchiveData[timeArchiveDataSize - 1]),
+                                           asTime::GetStringTime(timeArchiveData[timeArchiveData.size() - 1]),
                                            asTime::GetStringTime(timeTargetSelection[iDateTarg]));
                             }
                         }
@@ -621,31 +599,51 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     return true;
 }
 
-void asProcessor::InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float thisScore, int counter,
+int asProcessor::FindNextDate(asTimeArray &dateArray, a1d &timeData, int iTimeStart, int iDate)
+{
+    // Check if the next data is the following. If not, search for it in the array.
+    if (timeData.size() > iTimeStart + 1 && std::abs(dateArray[iDate] - timeData[iTimeStart + 1]) < 0.01) {
+        return 1;
+    }
+
+    return asTools::SortedArraySearch(&timeData[iTimeStart], &timeData[timeData.size() - 1], dateArray[iDate], 0.01);
+}
+
+int asProcessor::FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int iDate)
+{
+    // Check if the next data is the following. If not, search for it in the array.
+    if (timeData.size() > iTimeStart + 1 && std::abs(dateArray[iDate] - timeData[iTimeStart + 1]) < 0.01) {
+        return 1;
+    }
+
+    return asTools::SortedArraySearch(&timeData[iTimeStart], &timeData[timeData.size() - 1], dateArray[iDate], 0.01);
+}
+
+void asProcessor::InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float score, int counter,
                                  int iTimeArch, a1f &scoreArrayOneDay, a1f &dateArrayOneDay)
 {
     // Check if the array is already full
     if (counter > analogsNb - 1) {
         if (isAsc) {
-            if (thisScore < scoreArrayOneDay[analogsNb - 1]) {
+            if (score < scoreArrayOneDay[analogsNb - 1]) {
                 asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Asc, thisScore,
+                                            &dateArrayOneDay[analogsNb - 1], Asc, score,
                                             (float) timeArchiveData[iTimeArch]);
             }
         } else {
-            if (thisScore > scoreArrayOneDay[analogsNb - 1]) {
+            if (score > scoreArrayOneDay[analogsNb - 1]) {
                 asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Desc, thisScore,
+                                            &dateArrayOneDay[analogsNb - 1], Desc, score,
                                             (float) timeArchiveData[iTimeArch]);
             }
         }
     } else if (counter < analogsNb - 1) {
         // Add score and date to the vectors
-        scoreArrayOneDay[counter] = thisScore;
+        scoreArrayOneDay[counter] = score;
         dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
     } else if (counter == analogsNb - 1) {
         // Add score and date to the vectors
-        scoreArrayOneDay[counter] = thisScore;
+        scoreArrayOneDay[counter] = score;
         dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
 
         // Sort both scores and dates arrays

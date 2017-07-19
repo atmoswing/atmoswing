@@ -65,12 +65,16 @@ public:
     static bool GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters &params,
                                  asResultsValues &results);
 
+    static void InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float score, int counter, int iTimeArch,
+                               a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
+
+    static int FindNextDate(asTimeArray &dateArray, a1d &timeData, int iTimeStart, int iDate);
+
+    static int FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int iDate);
+
 protected:
 
 private:
-    static void
-    InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float thisScore, int counter, int iTimeArch,
-                   a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
 };
 
 #endif
