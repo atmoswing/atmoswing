@@ -160,15 +160,15 @@ bool asResults::DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const
 
 bool asResults::DefScoresAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Prediction scores", "prediction_scores");
-    ncFile.PutAtt("var_desc", "Scores of the prediction resulting from the analog method", "prediction_scores");
+    ncFile.PutAtt("long_name", "Prediction scores", "scores");
+    ncFile.PutAtt("var_desc", "Scores of the prediction resulting from the analog method", "scores");
     return true;
 }
 
 bool asResults::DefTotalScoreAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Final score", "prediction_score");
-    ncFile.PutAtt("var_desc", "Final score of the method", "prediction_score");
+    ncFile.PutAtt("long_name", "Final score", "score");
+    ncFile.PutAtt("var_desc", "Final score of the method", "score");
     return true;
 }
 
@@ -181,8 +181,8 @@ bool asResults::DefLevelAttributes(asFileNetcdf &ncFile) const
 
 bool asResults::DefScoresMapAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Forecast score", "forecast_scores");
-    ncFile.PutAtt("var_desc", "Map of the forecast scores", "forecast_scores");
-    ncFile.PutAtt("units", "no unit", "forecast_scores");
+    ncFile.PutAtt("long_name", "Prediction score", "scores");
+    ncFile.PutAtt("var_desc", "Map of the scores", "scores");
+    ncFile.PutAtt("units", "no unit", "scores");
     return true;
 }

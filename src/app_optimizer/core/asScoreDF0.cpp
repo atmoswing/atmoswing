@@ -72,8 +72,6 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
     // Sort the forcast array
     asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
 
-    float score = 0;
-
     // Cumulative frequency
     a1f F = asTools::GetCumulativeFrequency(nbPredict);
 
@@ -82,16 +80,6 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
     for (int i = 0; i < nbElements; i++) {
         if (x[i] == 0) {
             indexLastZero = i;
-        }
-    }
-
-    // Display F(0)analog
-    bool dispF0 = false;
-    if (dispF0) {
-        if (indexLastZero >= 0) {
-            wxLogWarning("%f", F(indexLastZero));
-        } else {
-            wxLogWarning("%d", 0);
         }
     }
 
@@ -109,9 +97,7 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
         return NaNf;
     }
 
-    score = std::abs((1.0f - F(indexLastZero)) - FxObs);
-
-    return score;
+    return std::abs((1.0f - F(indexLastZero)) - FxObs);
 }
 
 bool asScoreDF0::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
