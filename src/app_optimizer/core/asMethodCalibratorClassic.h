@@ -69,16 +69,16 @@ private:
 
     void BalanceWeights(asParametersCalibration &params, int iStep) const;
 
-    bool EvaluateRelevanceMap(const asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+    bool EvaluateRelevanceMap(const asParametersCalibration &params, asResultsDates &anaDatesPrevious,
                               asResultsParametersArray &resultsTested, int iStep);
 
-    bool AssessDomainResizing(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+    bool AssessDomainResizing(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
                               asResultsParametersArray &resultsTested, int iStep, const ParamExploration &explo);
 
-    bool AssessDomainResizingPlus(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
+    bool AssessDomainResizingPlus(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
                                   asResultsParametersArray &resultsTested, int iStep, const ParamExploration &explo);
 
-    bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious, int iStep);
+    bool GetDatesOfBestParameters(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep);
 
     void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo, a1d &xAxis,
                         a1d &yAxis) const;

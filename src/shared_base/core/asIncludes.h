@@ -54,7 +54,9 @@
 
 // For all others, include the necessary headers
 #ifndef WX_PRECOMP
+
 #   include "wx/wx.h"
+
 #endif
 
 
@@ -63,11 +65,13 @@
 //---------------------------------
 
 #ifndef WX_PRECOMP
+
 #   include "wx/log.h"
 #include "wx/string.h"
 #include "wx/arrstr.h"
 #include "wx/utils.h"
 #include "wx/fileconf.h"
+
 #endif
 
 #if defined (__WIN32__)
@@ -145,9 +149,11 @@
 #include "asThreadsManager.h"
 
 #if wxUSE_GUI
+
 #   include "asDialogFilePicker.h"
 #   include "asDialogFileSaver.h"
 #   include "asDialogProgressBar.h"
+
 #endif
 
 #ifdef APP_FORECASTER

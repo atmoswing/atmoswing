@@ -50,7 +50,7 @@ public:
         wxString postprocessMethod;
         float threshold;
         float quantile;
-    } ParamsForecastScore;
+    } ParamsScore;
 
     /** Vectors */
     typedef struct
@@ -86,7 +86,7 @@ public:
         vd timeArrayDate;
         vi timeArrayIntervalDays;
         vf postprocessDupliExp;
-    } ParamsForecastScoreVect;
+    } ParamsScoreVect;
 
     /** Booleans */
     typedef struct
@@ -197,64 +197,64 @@ public:
         return m_validationYears.size() > 0;
     }
 
-    wxString GetForecastScoreName() const
+    wxString GetScoreName() const
     {
-        return m_forecastScore.name;
+        return m_score.name;
     }
 
-    bool SetForecastScoreName(const wxString &val)
+    bool SetScoreName(const wxString &val)
     {
         if (val.IsEmpty()) {
-            wxLogError(_("The provided forecast score is null"));
+            wxLogError(_("The provided score is null"));
             return false;
         }
-        m_forecastScore.name = val;
+        m_score.name = val;
         return true;
     }
 
-    float GetForecastScoreThreshold() const
+    float GetScoreThreshold() const
     {
-        return m_forecastScore.threshold;
+        return m_score.threshold;
     }
 
-    void SetForecastScoreThreshold(float val)
+    void SetScoreThreshold(float val)
     {
-        m_forecastScore.threshold = val;
+        m_score.threshold = val;
     }
 
-    float GetForecastScoreQuantile() const
+    float GetScoreQuantile() const
     {
-        return m_forecastScore.quantile;
+        return m_score.quantile;
     }
 
-    void SetForecastScoreQuantile(float val)
+    void SetScoreQuantile(float val)
     {
-        m_forecastScore.quantile = val;
+        m_score.quantile = val;
     }
 
-    int GetForecastScoreAnalogsNumber() const
+    int GetScoreAnalogsNumber() const
     {
         return GetAnalogsNumber(GetStepsNb() - 1);
     }
 
-    wxString GetForecastScoreTimeArrayMode() const
+    wxString GetScoreTimeArrayMode() const
     {
-        return m_forecastScore.timeArrayMode;
+        return m_score.timeArrayMode;
     }
 
-    bool SetForecastScoreTimeArrayMode(const wxString &val)
+    bool SetScoreTimeArrayMode(const wxString &val)
     {
         if (val.IsEmpty()) {
-            wxLogError(_("The provided time array mode for the forecast score is null"));
+            wxLogError(_("The provided time array mode for the score is null"));
             return false;
         }
-        m_forecastScore.timeArrayMode = val;
+        m_score.timeArrayMode = val;
         return true;
     }
 
-    bool ForecastScoreNeedsPostprocessing() const
+    bool ScoreNeedsPostprocessing() const
     {
-        return m_forecastScore.postprocess;
+        return m_score.postprocess;
     }
 
     /* Vector elements */
@@ -593,7 +593,7 @@ protected:
     VectorParamsStepVect m_stepsVect;
 
 private:
-    ParamsForecastScore m_forecastScore;
+    ParamsScore m_score;
 };
 
 #endif // ASPARAMETERSSCORING_H

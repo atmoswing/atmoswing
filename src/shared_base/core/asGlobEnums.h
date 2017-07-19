@@ -86,7 +86,7 @@ enum
 // Processor methods
 enum
 {
-    asMULTITHREADS = 0, asINSERT = 1, asFULL_ARRAY = 2, asCUDA = 3,
+    asMULTITHREADS = 0, asSTANDARD = 1, asCUDA = 2,
 };
 
 // Optimization stages

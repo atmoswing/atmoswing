@@ -1121,10 +1121,11 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
 
     // Remove layer(s)
     m_viewerLayerManager->FreezeBegin();
-    for (int i = (int)layerToRemoveIndex.GetCount() - 1; i >= 0; i--) {
+    for (int i = (int) layerToRemoveIndex.GetCount() - 1; i >= 0; i--) {
 
         // Remove from viewer manager (TOC and Display)
-        vrRenderer *renderer = m_viewerLayerManager->GetRenderer((const unsigned int &) layerToRemoveIndex.Item((size_t)i));
+        vrRenderer *renderer = m_viewerLayerManager->GetRenderer(
+                (const unsigned int &) layerToRemoveIndex.Item((size_t) i));
         vrLayer *layer = renderer->GetLayer();
         wxASSERT(renderer);
         m_viewerLayerManager->Remove(renderer);
@@ -1970,7 +1971,7 @@ void asFrameForecast::UpdatePanelCaptionAll()
             forecastRow = 0;
         }
 
-        asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
+        asResultsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
         a1f dates = forecast->GetTargetDates();
         m_panelSidebarCaptionForecastRing->SetDates(dates);
     }
@@ -1993,8 +1994,8 @@ void asFrameForecast::UpdatePanelAnalogDates()
 
     m_panelSidebarAnalogDates->Show();
 
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
-                                                                        m_forecastViewer->GetForecastSelection());
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
+                                                                 m_forecastViewer->GetForecastSelection());
     a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
     a1f arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
     m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);

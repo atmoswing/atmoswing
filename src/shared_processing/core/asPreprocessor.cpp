@@ -28,22 +28,21 @@
 
 #include "asPreprocessor.h"
 
-#include <asDataPredictor.h>
-#include <asDataPredictorArchive.h>
+#include <asPredictor.h>
+#include <asPredictorArch.h>
 
 #ifndef MINIMAL_LINKS
 
-#include <asDataPredictorRealtime.h>
+#include <asPredictorOper.h>
 
 #endif
 
-#include <asThreadPreprocessorGradients.h>
+#include <asThreadPreprocessGradients.h>
 
 
-bool asPreprocessor::Preprocess(std::vector<asDataPredictorArchive *> predictors, const wxString &method,
-                                asDataPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result)
 {
-    std::vector<asDataPredictor *> ptorsPredictors(predictors.size());
+    std::vector<asPredictor *> ptorsPredictors(predictors.size());
 
     for (unsigned int i = 0; i < predictors.size(); i++) {
         ptorsPredictors[i] = predictors[i];
@@ -54,10 +53,9 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictorArchive *> predictors
 
 #ifndef MINIMAL_LINKS
 
-bool asPreprocessor::Preprocess(std::vector<asDataPredictorRealtime *> predictors, const wxString &method,
-                                asDataPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method, asPredictor *result)
 {
-    std::vector<asDataPredictor *> ptorsPredictors(predictors.size());
+    std::vector<asPredictor *> ptorsPredictors(predictors.size());
 
     for (unsigned int i = 0; i < predictors.size(); i++) {
         ptorsPredictors[i] = predictors[i];
@@ -68,8 +66,7 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictorRealtime *> predictor
 
 #endif
 
-bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const wxString &method,
-                                asDataPredictor *result)
+bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result)
 {
     wxASSERT(result);
 
@@ -101,7 +98,7 @@ bool asPreprocessor::Preprocess(std::vector<asDataPredictor *> predictors, const
     }
 }
 
-bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessGradients(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -183,7 +180,7 @@ bool asPreprocessor::PreprocessGradients(std::vector<asDataPredictor *> predicto
     return true;
 }
 
-bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     if (predictors.size() < 2) {
@@ -223,7 +220,7 @@ bool asPreprocessor::PreprocessAddition(std::vector<asDataPredictor *> predictor
     return true;
 }
 
-bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessAverage(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     if (predictors.size() < 2) {
@@ -264,7 +261,7 @@ bool asPreprocessor::PreprocessAverage(std::vector<asDataPredictor *> predictors
     return true;
 }
 
-bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessDifference(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     if (predictors.size() != 2) {
@@ -302,7 +299,7 @@ bool asPreprocessor::PreprocessDifference(std::vector<asDataPredictor *> predict
     return true;
 }
 
-bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessMultiplication(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     if (predictors.size() < 2) {
@@ -342,7 +339,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asDataPredictor *> pre
     return true;
 }
 
-bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     unsigned int inputSize = (unsigned int) predictors.size();
@@ -354,8 +351,8 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
     // Merge
     wxASSERT(predictors[0]);
     vvva2f copyData = vvva2f(inputSize / 2);
-    copyData.reserve(2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() *
-                     predictors[0]->GetTimeSize() * predictors[0]->GetMembersNb() * inputSize);
+    copyData.reserve(2 * predictors[0]->GetLatPtsnb() * predictors[0]->GetLonPtsnb() * predictors[0]->GetTimeSize() *
+                     predictors[0]->GetMembersNb() * inputSize);
     int counter = 0;
 
 #ifdef _DEBUG
@@ -455,8 +452,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asDataPredictor *
     return true;
 }
 
-bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredictor *> predictors,
-                                                      asDataPredictor *result)
+bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     int inputSize = (int) predictors.size();
@@ -503,7 +499,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
                     wxASSERT(predictors[iCurr]->GetMembersNb() == membersNb);
 
                     copyData[iHalf][iTime][iMem].block(iPre * originalRowsNb, 0, originalRowsNb,
-                                                   originalColsNb) = predictors[iCurr]->GetData()[iTime][iMem];
+                                                       originalColsNb) = predictors[iCurr]->GetData()[iTime][iMem];
                 }
             }
         }
@@ -530,7 +526,7 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asDataPredicto
     return true;
 }
 
-bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     int inputSize = (int) predictors.size();
@@ -574,7 +570,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
                                         predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
                                         predictors[1]->GetData()[iTime][iMem](iRow, iCol));
                     multi[iTime][iMem](iRow, iCol) = wind * predictors[2]->GetData()[iTime][iMem](iRow, iCol) *
-                                                  predictors[3]->GetData()[iTime][iMem](iRow, iCol);
+                                                     predictors[3]->GetData()[iTime][iMem](iRow, iCol);
                 }
             }
         }
@@ -588,7 +584,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asDataPredictor *> predi
     return true;
 }
 
-bool asPreprocessor::PreprocessWindSpeed(std::vector<asDataPredictor *> predictors, asDataPredictor *result)
+bool asPreprocessor::PreprocessWindSpeed(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
     int inputSize = (int) predictors.size();

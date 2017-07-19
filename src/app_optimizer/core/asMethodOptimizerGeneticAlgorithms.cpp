@@ -30,7 +30,7 @@
 
 #include <wx/dir.h>
 #include "asFileAscii.h"
-#include <asThreadMethodOptimizerGeneticAlgorithms.h>
+#include <asThreadGeneticAlgorithms.h>
 
 #ifndef UNIT_TESTING
 
@@ -280,10 +280,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Store parameter after preloading !
     m_originalParams = params;
 
-    // Get a forecast score object to extract the score order
-    asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
-    Order scoreOrder = forecastScore->GetOrder();
-    wxDELETE(forecastScore);
+    // Get a score object to extract the score order
+    asScore *score = asScore::GetInstance(params.GetScoreName());
+    Order scoreOrder = score->GetOrder();
+    wxDELETE(score);
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
@@ -319,8 +319,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerGeneticAlgorithms *firstThread = new asThreadMethodOptimizerGeneticAlgorithms(
-                        this, newParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                asThreadGeneticAlgorithms *firstThread = new asThreadGeneticAlgorithms(this, newParams,
+                                                                                       &m_scoresCalib[m_iterator],
+                                                                                       &m_scoreClimatology);
                 int threadType = firstThread->GetType();
                 ThreadsManager().AddThread(firstThread);
 
@@ -356,8 +357,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     }
 
                     // Add it to the threads
-                    asThreadMethodOptimizerGeneticAlgorithms *thread = new asThreadMethodOptimizerGeneticAlgorithms(
-                            this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
+                                                                                      &m_scoresCalib[m_iterator],
+                                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -393,8 +395,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     }
 
                     // Add it to the threads
-                    asThreadMethodOptimizerGeneticAlgorithms *thread = new asThreadMethodOptimizerGeneticAlgorithms(
-                            this, nextParams, &m_scoresCalib[m_iterator], &m_scoreClimatology);
+                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
+                                                                                      &m_scoresCalib[m_iterator],
+                                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -433,11 +436,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     return false;
 
                 // Create results objects
-                asResultsAnalogsDates anaDates;
-                asResultsAnalogsDates anaDatesPrevious;
-                asResultsAnalogsValues anaValues;
-                asResultsAnalogsForecastScores anaScores;
-                asResultsAnalogsForecastScoreFinal anaScoreFinal;
+                asResultsDates anaDates;
+                asResultsDates anaDatesPrevious;
+                asResultsValues anaValues;
+                asResultsScores anaScores;
+                asResultsTotalScore anaScoreFinal;
 
                 // Process every step one after the other
                 int stepsNb = newParams->GetStepsNb();
@@ -459,15 +462,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 }
                 if (!GetAnalogsValues(anaValues, *newParams, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, *newParams, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, *newParams, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, *newParams, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, *newParams, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
                 if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) &&
                     m_iterator < m_paramsNb) {
-                    m_scoresCalib[m_iterator] = anaScoreFinal.GetForecastScore();
+                    m_scoresCalib[m_iterator] = anaScoreFinal.GetScore();
                 } else {
                     wxLogError(_("This should not happen (in ManageOneRun)..."));
                 }

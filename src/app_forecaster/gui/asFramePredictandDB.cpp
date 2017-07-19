@@ -27,9 +27,9 @@
 
 #include "asFramePredictandDB.h"
 
-#include "asDataPredictandPrecipitation.h"
-#include "asDataPredictandTemperature.h"
-#include "asDataPredictandLightnings.h"
+#include "asPredictandPrecipitation.h"
+#include "asPredictandTemperature.h"
+#include "asPredictandLightnings.h"
 
 asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
         : asFramePredictandDBVirtual(parent, id)
@@ -158,7 +158,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        asDataPredictand::TemporalResolution temporalResolution = asDataPredictand::Daily;
+        asPredictand::TemporalResolution temporalResolution = asPredictand::Daily;
         switch (m_choiceDataTempResol->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the temporal resolution option."));
@@ -166,32 +166,32 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // 24 hours
             {
-                temporalResolution = asDataPredictand::Daily;
+                temporalResolution = asPredictand::Daily;
                 break;
             }
             case 1: // 6 hours
             {
-                temporalResolution = asDataPredictand::SixHourly;
+                temporalResolution = asPredictand::SixHourly;
                 break;
             }
             case 2: // Moving temporal window (1-hourly)
             {
-                temporalResolution = asDataPredictand::OneHourlyMTW;
+                temporalResolution = asPredictand::OneHourlyMTW;
                 break;
             }
             case 3: // Moving temporal window (3-hourly)
             {
-                temporalResolution = asDataPredictand::ThreeHourlyMTW;
+                temporalResolution = asPredictand::ThreeHourlyMTW;
                 break;
             }
             case 4: // Moving temporal window (6-hourly)
             {
-                temporalResolution = asDataPredictand::SixHourlyMTW;
+                temporalResolution = asPredictand::SixHourlyMTW;
                 break;
             }
             case 5: // Moving temporal window (12-hourly)
             {
-                temporalResolution = asDataPredictand::TwelveHourlyMTW;
+                temporalResolution = asPredictand::TwelveHourlyMTW;
                 break;
             }
             default:
@@ -199,7 +199,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        asDataPredictand::SpatialAggregation spatialAggregation = asDataPredictand::Station;
+        asPredictand::SpatialAggregation spatialAggregation = asPredictand::Station;
         switch (m_choiceDataSpatAggreg->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the spatial aggregation option."));
@@ -207,17 +207,17 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // Station
             {
-                spatialAggregation = asDataPredictand::Station;
+                spatialAggregation = asPredictand::Station;
                 break;
             }
             case 1: // Groupment
             {
-                spatialAggregation = asDataPredictand::Groupment;
+                spatialAggregation = asPredictand::Groupment;
                 break;
             }
             case 2: // Catchment
             {
-                spatialAggregation = asDataPredictand::Catchment;
+                spatialAggregation = asPredictand::Catchment;
                 break;
             }
             default:
@@ -245,8 +245,8 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 }
 
                 // Instantiate a predictand object
-                asDataPredictandPrecipitation predictand(asDataPredictand::Precipitation, temporalResolution,
-                                                         spatialAggregation);
+                asPredictandPrecipitation predictand(asPredictand::Precipitation, temporalResolution,
+                                                     spatialAggregation);
                 predictand.SetHasReferenceValues(m_checkBoxReturnPeriod->GetValue());
                 predictand.SetIsSqrt(m_checkBoxSqrt->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
@@ -255,16 +255,15 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             case 1: // Temperature
             {
                 // Instantiate a predictand object
-                asDataPredictandTemperature predictand(asDataPredictand::AirTemperature, temporalResolution,
-                                                       spatialAggregation);
+                asPredictandTemperature predictand(asPredictand::AirTemperature, temporalResolution,
+                                                   spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
                 // Instantiate a predictand object
-                asDataPredictandLightnings predictand(asDataPredictand::Lightnings, temporalResolution,
-                                                      spatialAggregation);
+                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResolution, spatialAggregation);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }

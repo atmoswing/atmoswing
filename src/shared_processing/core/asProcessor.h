@@ -35,35 +35,45 @@ class asTimeArray;
 
 class asParameters;
 
-class asResultsAnalogsDates;
+class asResultsDates;
 
-class asPredictorCriteria;
+class asCriteria;
 
-class asResultsAnalogsValues;
+class asResultsValues;
 
-class asDataPredictor;
+class asPredictor;
 
-class asDataPredictand;
+class asPredictand;
 
 
 class asProcessor
         : public wxObject
 {
 public:
-    static bool GetAnalogsDates(std::vector<asDataPredictor *> predictorsArchive,
-                                std::vector<asDataPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
+    static bool GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
+                                std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                 asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData,
-                                asTimeArray &timeArrayTargetSelection, std::vector<asPredictorCriteria *> criteria,
-                                asParameters &params, int step, asResultsAnalogsDates &results, bool &containsNaNs);
+                                asTimeArray &timeArrayTargetSelection, std::vector<asCriteria *> criteria,
+                                asParameters &params, int step, asResultsDates &results, bool &containsNaNs);
 
-    static bool GetAnalogsSubDates(std::vector<asDataPredictor *> predictorsArchive,
-                                   std::vector<asDataPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
-                                   asTimeArray &timeArrayTargetData, asResultsAnalogsDates &anaDates,
-                                   std::vector<asPredictorCriteria *> criteria, asParameters &params, int step,
-                                   asResultsAnalogsDates &results, bool &containsNaNs);
+    static bool GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
+                                   std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
+                                   asTimeArray &timeArrayTargetData, asResultsDates &anaDates,
+                                   std::vector<asCriteria *> criteria, asParameters &params, int step,
+                                   asResultsDates &results, bool &containsNaNs);
 
-    static bool GetAnalogsValues(asDataPredictand &predictand, asResultsAnalogsDates &anaDates, asParameters &params,
-                                 asResultsAnalogsValues &results);
+    static bool GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters &params,
+                                 asResultsValues &results);
+
+    static void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
+                               a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
+
+    static void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
+                                          a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
+
+    static int FindNextDate(asTimeArray &dateArray, a1d &timeData, int iTimeStart, int iDate);
+
+    static int FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int iDate);
 
 protected:
 

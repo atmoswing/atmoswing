@@ -27,8 +27,8 @@
  */
 
 #include "asMethodCalibratorEvaluateAllScores.h"
-#include "asForecastScoreFinal.h"
-#include "asForecastScoreFinalRankHistogramReliability.h"
+#include "asTotalScore.h"
+#include "asTotalScoreRankHistogramReliability.h"
 
 asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
         : asMethodCalibrator()
@@ -50,25 +50,25 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         checkSizes = false;
         errorField.Append("IntervalDays, ");
     }
-    if (params.GetForecastScoreNameVector().size() > 1) {
+    if (params.GetScoreNameVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreName, ");
+        errorField.Append("ScoreName, ");
     }
-    if (params.GetForecastScoreTimeArrayModeVector().size() > 1) {
+    if (params.GetScoreTimeArrayModeVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayMode, ");
+        errorField.Append("ScoreTimeArrayMode, ");
     }
-    if (params.GetForecastScoreTimeArrayDateVector().size() > 1) {
+    if (params.GetScoreTimeArrayDateVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayDate ,");
+        errorField.Append("ScoreTimeArrayDate ,");
     }
-    if (params.GetForecastScoreTimeArrayIntervalDaysVector().size() > 1) {
+    if (params.GetScoreTimeArrayIntervalDaysVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScoreTimeArrayIntervalDays, ");
+        errorField.Append("ScoreTimeArrayIntervalDays, ");
     }
-    if (params.GetForecastScorePostprocessDupliExpVector().size() > 1) {
+    if (params.GetScorePostprocessDupliExpVector().size() > 1) {
         checkSizes = false;
-        errorField.Append("ForecastScorePostprocessDupliExp, ");
+        errorField.Append("ScorePostprocessDupliExp, ");
     }
 
     for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
@@ -194,11 +194,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
          */
 
         // Create results objects
-        asResultsAnalogsDates anaDates;
-        asResultsAnalogsDates anaDatesPrevious;
-        asResultsAnalogsValues anaValues;
-        asResultsAnalogsForecastScores anaScores;
-        asResultsAnalogsForecastScoreFinal anaScoreFinal;
+        asResultsDates anaDates;
+        asResultsDates anaDatesPrevious;
+        asResultsValues anaValues;
+        asResultsScores anaScores;
+        asResultsTotalScore anaScoreFinal;
 
         // Process every step one after the other
         for (int iStep = 0; iStep < stepsNb; iStep++) {
@@ -226,11 +226,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
          * On the validation period 
          */
 
-        asResultsAnalogsDates anaDatesValid;
-        asResultsAnalogsDates anaDatesPreviousValid;
-        asResultsAnalogsValues anaValuesValid;
-        asResultsAnalogsForecastScores anaScoresValid;
-        asResultsAnalogsForecastScoreFinal anaScoreFinalValid;
+        asResultsDates anaDatesValid;
+        asResultsDates anaDatesPreviousValid;
+        asResultsValues anaValuesValid;
+        asResultsScores anaScoresValid;
+        asResultsTotalScore anaScoreFinalValid;
 
         // Get validation data
         if (params.HasValidationPeriod()) // Validate
@@ -290,18 +290,18 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 wxLogMessage(_("Processing %s"), scoresContingency[iScore]);
                 for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
                     for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
-                        params.SetForecastScoreName(scoresContingency[iScore]);
-                        params.SetForecastScoreQuantile(quantiles[iPc]);
-                        params.SetForecastScoreThreshold(thresholds[iThres]);
-                        if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                        params.SetScoreName(scoresContingency[iScore]);
+                        params.SetScoreQuantile(quantiles[iPc]);
+                        params.SetScoreThreshold(thresholds[iThres]);
+                        if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                        if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                        if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                        if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
                             return false;
-                        results.Add(params, anaScoreFinal.GetForecastScore(), anaScoreFinalValid.GetForecastScore());
+                        results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                         m_scoreClimatology.clear();
                     }
                 }
@@ -315,17 +315,17 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             for (unsigned int iScore = 0; iScore < scoresQuantile.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresQuantile[iScore]);
                 for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
-                    params.SetForecastScoreName(scoresQuantile[iScore]);
-                    params.SetForecastScoreQuantile(quantiles[iPc]);
-                    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                    params.SetScoreName(scoresQuantile[iScore]);
+                    params.SetScoreQuantile(quantiles[iPc]);
+                    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
                         return false;
-                    results.Add(params, anaScoreFinal.GetForecastScore(), anaScoreFinalValid.GetForecastScore());
+                    results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
                 }
             }
@@ -337,17 +337,17 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             for (unsigned int iScore = 0; iScore < scoresThreshold.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresThreshold[iScore]);
                 for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
-                    params.SetForecastScoreName(scoresThreshold[iScore]);
-                    params.SetForecastScoreThreshold(thresholds[iThres]);
-                    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                    params.SetScoreName(scoresThreshold[iScore]);
+                    params.SetScoreThreshold(thresholds[iThres]);
+                    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
                         return false;
-                    results.Add(params, anaScoreFinal.GetForecastScore(), anaScoreFinalValid.GetForecastScore());
+                    results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
                 }
             }
@@ -372,16 +372,16 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
 
             for (unsigned int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresContinuous[iScore]);
-                params.SetForecastScoreName(scoresContinuous[iScore]);
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                params.SetScoreName(scoresContinuous[iScore]);
+                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
                     return false;
-                results.Add(params, anaScoreFinal.GetForecastScore(), anaScoreFinalValid.GetForecastScore());
+                results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                 m_scoreClimatology.clear();
             }
         }
@@ -394,25 +394,25 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             wxLogMessage(_("Processing the Verification Rank Histogram"));
 
             int boostrapNb = 10000;
-            params.SetForecastScoreName("RankHistogram");
+            params.SetScoreName("RankHistogram");
             m_parameters[0] = params;
 
             std::vector<a1f> histoCalib;
             std::vector<a1f> histoValid;
 
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
                     return false;
 
                 // Store every assessment
-                histoCalib.push_back(anaScoreFinal.GetForecastScoreArray());
-                histoValid.push_back(anaScoreFinalValid.GetForecastScoreArray());
+                histoCalib.push_back(anaScoreFinal.GetScoreArray());
+                histoValid.push_back(anaScoreFinalValid.GetScoreArray());
             }
 
             // Average all histograms assessments
@@ -429,14 +429,14 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             m_scoreClimatology.clear();
 
             // Reliability of the Verification Rank Histogram (Talagrand Diagram)
-            params.SetForecastScoreName("RankHistogramReliability");
-            int forecastScoresSize = anaScores.GetForecastScores().size();
-            int forecastScoresSizeValid = anaScoresValid.GetForecastScores().size();
+            params.SetScoreName("RankHistogramReliability");
+            int scoresSize = anaScores.GetScores().size();
+            int scoresSizeValid = anaScoresValid.GetScores().size();
 
-            asForecastScoreFinalRankHistogramReliability rankHistogramReliability(asForecastScoreFinal::Total);
-            rankHistogramReliability.SetRanksNb(params.GetForecastScoreAnalogsNumber() + 1);
-            float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, forecastScoresSize);
-            float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, forecastScoresSizeValid);
+            asTotalScoreRankHistogramReliability rankHistogramReliability(asTotalScore::Total);
+            rankHistogramReliability.SetRanksNb(params.GetScoreAnalogsNumber() + 1);
+            float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, scoresSize);
+            float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, scoresSizeValid);
 
             results.Add(params, resultCalib, resultValid);
             m_scoreClimatology.clear();

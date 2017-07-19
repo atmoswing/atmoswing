@@ -295,7 +295,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     wxString numberOfDaysStr = wxEmptyString;
     if (parser.Found("forecast-past", &numberOfDaysStr)) {
         long numberOfDays;
-        if(!numberOfDaysStr.ToLong(&numberOfDays)) {
+        if (!numberOfDaysStr.ToLong(&numberOfDays)) {
             wxPrintf(_("The value provided for 'forecast-past' could not be interpreted."));
             return false;
         }

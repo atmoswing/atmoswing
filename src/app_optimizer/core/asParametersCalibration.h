@@ -77,33 +77,33 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
 
-    vwxs GetForecastScoreNameVector() const
+    vwxs GetScoreNameVector() const
     {
-        return m_forecastScoreVect.name;
+        return m_scoreVect.name;
     }
 
-    bool SetForecastScoreNameVector(vwxs val);
+    bool SetScoreNameVector(vwxs val);
 
-    vwxs GetForecastScoreTimeArrayModeVector() const
+    vwxs GetScoreTimeArrayModeVector() const
     {
-        return m_forecastScoreVect.timeArrayMode;
+        return m_scoreVect.timeArrayMode;
     }
 
-    bool SetForecastScoreTimeArrayModeVector(vwxs val);
+    bool SetScoreTimeArrayModeVector(vwxs val);
 
-    vd GetForecastScoreTimeArrayDateVector() const
+    vd GetScoreTimeArrayDateVector() const
     {
-        return m_forecastScoreVect.timeArrayDate;
+        return m_scoreVect.timeArrayDate;
     }
 
-    vi GetForecastScoreTimeArrayIntervalDaysVector() const
+    vi GetScoreTimeArrayIntervalDaysVector() const
     {
-        return m_forecastScoreVect.timeArrayIntervalDays;
+        return m_scoreVect.timeArrayIntervalDays;
     }
 
-    vf GetForecastScorePostprocessDupliExpVector() const
+    vf GetScorePostprocessDupliExpVector() const
     {
-        return m_forecastScoreVect.postprocessDupliExp;
+        return m_scoreVect.postprocessDupliExp;
     }
 
     double GetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre) const;
@@ -146,7 +146,7 @@ protected:
 private:
     vvi m_predictandStationIdsVect;
     vi m_timeArrayAnalogsIntervalDaysVect;
-    ParamsForecastScoreVect m_forecastScoreVect;
+    ParamsScoreVect m_scoreVect;
 
     void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocTimeHours) const;
 
@@ -161,9 +161,7 @@ private:
 
     bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseForecastScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
-
-    bool ParseForecastScoreFinal(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif // ASPARAMETERSCALIBRATION_H

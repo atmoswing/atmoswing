@@ -870,9 +870,9 @@ protected:
     VectorParamsStep m_stepsUpperLimit;
     VectorParamsStep m_stepsLowerLimit;
     VectorParamsStepBool m_stepsLocks;
-    ParamsForecastScore m_forecastScoreIteration;
-    ParamsForecastScore m_forecastScoreUpperLimit;
-    ParamsForecastScore m_forecastScoreLowerLimit;
+    ParamsScore m_scoreIteration;
+    ParamsScore m_scoreUpperLimit;
+    ParamsScore m_scoreLowerLimit;
 
 private:
 
@@ -895,9 +895,7 @@ private:
 
     bool ParseAnalogValuesParams(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseForecastScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
-
-    bool ParseForecastScoreFinal(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
 
 };
 

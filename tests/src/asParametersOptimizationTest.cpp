@@ -131,7 +131,7 @@ TEST(ParametersOptimization, LoadFromFile)
 
     EXPECT_EQ(40, params.GetPredictandStationIds()[0]);
 
-    EXPECT_TRUE(params.GetForecastScoreName().IsSameAs("CRPSAR"));
+    EXPECT_TRUE(params.GetScoreName().IsSameAs("CRPSAR"));
 
-    EXPECT_TRUE(params.GetForecastScoreTimeArrayMode().IsSameAs("simple"));
+    EXPECT_TRUE(params.GetScoreTimeArrayMode().IsSameAs("simple"));
 }

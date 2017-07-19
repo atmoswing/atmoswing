@@ -27,9 +27,9 @@
  */
 
 #include "wx/filename.h"
-#include <asPredictorCriteria.h>
+#include <asCriteria.h>
 #include <asGeoAreaCompositeRegularGrid.h>
-#include <asDataPredictorArchive.h>
+#include <asPredictorArch.h>
 #include <asPreprocessor.h>
 #include <asFileAscii.h>
 #include <asTimeArray.h>
@@ -40,7 +40,7 @@ TEST(PredictorCriteria, ProcessS1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/predictor_criteria_S1.txt"));
+    filepath.Append(_T("/files/criteria_S1.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -125,7 +125,7 @@ TEST(PredictorCriteria, ProcessS1)
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("S1"));
+    asCriteria *criteria = asCriteria::GetInstance(_("S1"));
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -172,7 +172,7 @@ TEST(PredictorCriteria, ProcessNS1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/predictor_criteria_S1.txt"));
+    filepath.Append(_T("/files/criteria_S1.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -257,7 +257,7 @@ TEST(PredictorCriteria, ProcessNS1)
     critS1[9] = 61.8f / 200.0f;
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("NS1"));
+    asCriteria *criteria = asCriteria::GetInstance(_("NS1"));
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -319,16 +319,16 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
-    std::vector<asDataPredictorArchive *> vdata;
+    std::vector<asPredictorArch *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
-    asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
+    asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
@@ -356,8 +356,8 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("S1"));
-    asPredictorCriteria *criteriaGrads = asPredictorCriteria::GetInstance(_("S1grads"));
+    asCriteria *criteria = asCriteria::GetInstance(_("S1"));
+    asCriteria *criteriaGrads = asCriteria::GetInstance(_("S1grads"));
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -398,16 +398,16 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asDataPredictorArchive *predictor = asDataPredictorArchive::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
-    std::vector<asDataPredictorArchive *> vdata;
+    std::vector<asPredictorArch *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "Gradients";
-    asDataPredictorArchive *gradients = new asDataPredictorArchive(*predictor);
+    asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
@@ -435,8 +435,8 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("NS1"));
-    asPredictorCriteria *criteriaGrads = asPredictorCriteria::GetInstance(_("NS1grads"));
+    asCriteria *criteria = asCriteria::GetInstance(_("NS1"));
+    asCriteria *criteriaGrads = asCriteria::GetInstance(_("NS1grads"));
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -462,7 +462,7 @@ TEST(PredictorCriteria, ProcessRSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/predictor_criteria_RMSE.txt"));
+    filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -575,7 +575,7 @@ TEST(PredictorCriteria, ProcessRSE)
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(asPredictorCriteria::RSE);
+    asCriteria *criteria = asCriteria::GetInstance(asCriteria::RSE);
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -647,7 +647,7 @@ TEST(PredictorCriteria, ProcessRMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/predictor_criteria_RMSE.txt"));
+    filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -763,7 +763,7 @@ TEST(PredictorCriteria, ProcessRMSE)
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("RMSE"));
+    asCriteria *criteria = asCriteria::GetInstance(_("RMSE"));
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -834,7 +834,7 @@ TEST(PredictorCriteria, ProcessNRMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append(_T("/files/predictor_criteria_RMSE.txt"));
+    filepath.Append(_T("/files/criteria_RMSE.txt"));
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -950,7 +950,7 @@ TEST(PredictorCriteria, ProcessNRMSE)
     critRMSE[6] = 632.32f / (2053.4f - 62.1f);
 
     // Instantiate the criteria
-    asPredictorCriteria *criteria = asPredictorCriteria::GetInstance(_("NRMSE"));
+    asCriteria *criteria = asCriteria::GetInstance(_("NRMSE"));
     criteria->SetDataRange(62.1, 2053.4); // fake range here...
 
     // Loop on every candidate
@@ -1153,7 +1153,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 1354;
     Results[10] = 908;
 
-    asPredictorCriteria *criteriaSAD = asPredictorCriteria::GetInstance(asPredictorCriteria::SAD);
+    asCriteria *criteriaSAD = asCriteria::GetInstance(asCriteria::SAD);
 
     float res;
     for (int i = 0; i < 11; i++) {
@@ -1177,7 +1177,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 338.5;
     Results[10] = 227;
 
-    asPredictorCriteria *criteriaMD = asPredictorCriteria::GetInstance(asPredictorCriteria::MD);
+    asCriteria *criteriaMD = asCriteria::GetInstance(asCriteria::MD);
 
     for (int i = 0; i < 11; i++) {
         res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
@@ -1200,7 +1200,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 338.5f / 2298.0f;
     Results[10] = 227.0f / 2298.0f;
 
-    asPredictorCriteria *criteriaNMD = asPredictorCriteria::GetInstance(asPredictorCriteria::NMD);
+    asCriteria *criteriaNMD = asCriteria::GetInstance(asCriteria::NMD);
     criteriaNMD->SetDataRange(2, 2300.0);
 
     for (int i = 0; i < 11; i++) {
@@ -1224,7 +1224,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = 1.3130f;
     Results[10] = 0.4173f;
 
-    asPredictorCriteria *criteriaMRDtoMax = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMax);
+    asCriteria *criteriaMRDtoMax = asCriteria::GetInstance(asCriteria::MRDtoMax);
 
     for (int i = 0; i < 4; i++) {
         res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
@@ -1252,7 +1252,7 @@ TEST(PredictorCriteria, ProcessDifferences)
     Results[9] = NaNf;
     Results[10] = 0.543f;
 
-    asPredictorCriteria *criteriaMRDtoMean = asPredictorCriteria::GetInstance(asPredictorCriteria::MRDtoMean);
+    asCriteria *criteriaMRDtoMean = asCriteria::GetInstance(asCriteria::MRDtoMean);
 
     for (int i = 0; i < 4; i++) {
         res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());

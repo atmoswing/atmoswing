@@ -32,23 +32,23 @@
 #include <asIncludes.h>
 #include <asMethodStandard.h>
 #include <asParametersCalibration.h>
-#include <asResultsAnalogsDates.h>
-#include <asDataPredictorArchive.h>
+#include <asResultsDates.h>
+#include <asPredictorArch.h>
 #include <asResultsParametersArray.h>
-#include <asResultsAnalogsDates.h>
-#include <asResultsAnalogsValues.h>
-#include <asResultsAnalogsForecastScores.h>
-#include <asResultsAnalogsForecastScoreFinal.h>
-#include <asResultsAnalogsScoresMap.h>
+#include <asResultsDates.h>
+#include <asResultsValues.h>
+#include <asResultsScores.h>
+#include <asResultsTotalScore.h>
+#include <asResultsScoresMap.h>
 #include <asParametersCalibration.h>
 #include <asParametersOptimization.h>
-#include <asPredictorCriteria.h>
+#include <asCriteria.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <asTimeArray.h>
 #include <asProcessor.h>
-#include <asProcessorForecastScore.h>
+#include <asProcessorScore.h>
 #include <asPreprocessor.h>
-#include <asForecastScore.h>
+#include <asScore.h>
 
 
 class asMethodCalibrator
@@ -59,32 +59,29 @@ public:
 
     virtual ~asMethodCalibrator();
 
-    bool GetAnalogsDates(asResultsAnalogsDates &results, asParametersScoring &params, int iStep, bool &containsNaNs);
+    bool GetAnalogsDates(asResultsDates &results, asParametersScoring &params, int iStep, bool &containsNaNs);
 
-    bool GetAnalogsSubDates(asResultsAnalogsDates &results, asParametersScoring &params,
-                            asResultsAnalogsDates &anaDates, int iStep, bool &containsNaNs);
+    bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring &params, asResultsDates &anaDates, int iStep,
+                            bool &containsNaNs);
 
-    bool GetAnalogsValues(asResultsAnalogsValues &results, asParametersScoring &params, asResultsAnalogsDates &anaDates,
-                          int iStep);
+    bool GetAnalogsValues(asResultsValues &results, asParametersScoring &params, asResultsDates &anaDates, int iStep);
 
-    bool GetAnalogsForecastScores(asResultsAnalogsForecastScores &results, asParametersScoring &params,
-                                  asResultsAnalogsValues &anaValues, int iStep);
+    bool GetAnalogsScores(asResultsScores &results, asParametersScoring &params, asResultsValues &anaValues, int iStep);
 
-    bool GetAnalogsForecastScoreFinal(asResultsAnalogsForecastScoreFinal &results, asParametersScoring &params,
-                                      asResultsAnalogsForecastScores &anaScores, int iStep);
+    bool GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring &params, asResultsScores &anaScores,
+                              int iStep);
 
-    bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsAnalogsDates &anaDatesPrevious,
-                                 int iStep = 0);
+    bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep = 0);
 
     bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int iStep, int iPtor, int iPre);
 
     bool PreloadDataWithPreprocessing(asParametersScoring &params, int iStep, int iPtor);
 
-    void Cleanup(std::vector<asDataPredictorArchive *> predictorsPreprocess);
+    void Cleanup(std::vector<asPredictorArch *> predictorsPreprocess);
 
-    void Cleanup(std::vector<asDataPredictor *> predictors);
+    void Cleanup(std::vector<asPredictor *> predictors);
 
-    void Cleanup(std::vector<asPredictorCriteria *> criteria);
+    void Cleanup(std::vector<asCriteria *> criteria);
 
     void DeletePreloadedData();
 
@@ -104,9 +101,9 @@ public:
 
     void SortScoresAndParametersTemp();
 
-    bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsAnalogsForecastScoreFinal &scoreFinal);
+    bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
-    bool KeepIfBetter(asParametersCalibration &params, asResultsAnalogsForecastScoreFinal &scoreFinal);
+    bool KeepIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
     bool SetSelectedParameters(asResultsParametersArray &results);
 
@@ -180,13 +177,13 @@ protected:
 
     bool PreloadData(asParametersScoring &params);
 
-    bool LoadData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
-                  double timeStartData, double timeEndData);
+    bool LoadData(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep, double timeStartData,
+                  double timeEndData);
 
     va1f GetClimatologyData(asParametersScoring &params);
 
 private:
-    std::vector<std::vector<std::vector<std::vector<std::vector<asDataPredictorArchive *> > > > > m_preloadedArchive;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
     std::vector<vvb> m_preloadedArchivePointerCopy;
 
     bool PointersShared(asParametersScoring &params, int iStep, int iPtor, int iPre);
@@ -203,14 +200,14 @@ private:
 
     void LoadScoreOrder(asParametersCalibration &params);
 
-    bool ExtractPreloadedData(std::vector<asDataPredictor *> &predictors, asParametersScoring &params, int iStep,
+    bool ExtractPreloadedData(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
                               int iPtor);
 
-    bool ExtractDataWithoutPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
-                                         int iStep, int iPtor, double timeStartData, double timeEndData);
+    bool ExtractDataWithoutPreprocessing(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
+                                         int iPtor, double timeStartData, double timeEndData);
 
-    bool ExtractDataWithPreprocessing(std::vector<asDataPredictor *> &predictors, asParametersScoring &params,
-                                      int iStep, int iPtor, double timeStartData, double timeEndData);
+    bool ExtractDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
+                                      int iPtor, double timeStartData, double timeEndData);
 
     bool HasPreloadedData(int iStep, int iPtor) const;
 

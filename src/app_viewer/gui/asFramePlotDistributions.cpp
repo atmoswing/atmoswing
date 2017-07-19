@@ -310,7 +310,7 @@ bool asFramePlotDistributions::PlotPredictands()
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
     if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
         wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
@@ -420,7 +420,7 @@ bool asFramePlotDistributions::PlotCriteria()
     wxPlotCtrl *plotctrl = m_panelPlotCriteria->GetPlotCtrl();
 
     // Check that there is no NaNs
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     if (asTools::HasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
         wxLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
@@ -562,7 +562,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
     a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
@@ -614,7 +614,7 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
     a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
@@ -665,7 +665,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
     a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
@@ -720,7 +720,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
     a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
@@ -783,7 +783,7 @@ void asFramePlotDistributions::PlotClassicQuantiles()
     wxPlotCtrl *plotctrl = m_panelPlotPredictands->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
 
     // Loop over the quantiles
@@ -829,7 +829,7 @@ void asFramePlotDistributions::PlotCriteriaCurve()
     wxPlotCtrl *plotctrl = m_panelPlotCriteria->GetPlotCtrl();
 
     // Get forecast
-    asResultsAnalogsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
+    asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the criteria
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);

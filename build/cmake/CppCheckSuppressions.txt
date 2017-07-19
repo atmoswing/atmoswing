@@ -1,8 +1,8 @@
 // style: The scope of the variable 'variablename' can be reduced
-variableScope:*/asDataPredictorArchiveNcepReanalysis1.cpp
+variableScope:*/asPredictorArchNcepReanalysis1.cpp
 variableScope:*/asDataPredictorArchiveNcepReanalysis1Terranum.cpp
-variableScope:*/asDataPredictorArchiveNcepReanalysis2.cpp
-variableScope:*/asDataPredictorArchiveNoaaOisst2.cpp
+variableScope:*/asPredictorArchNcepReanalysis2.cpp
+variableScope:*/asPredictorArchNoaaOisst2.cpp
 variableScope:*/asDataPredictorArchiveNoaaOisst2Terranum.cpp
 
 // style: The class 'classname' does not have a constructor

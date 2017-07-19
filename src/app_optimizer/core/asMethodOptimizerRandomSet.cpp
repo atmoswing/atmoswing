@@ -28,7 +28,7 @@
 
 #include "asMethodOptimizerRandomSet.h"
 
-#include <asThreadMethodOptimizerRandomSet.h>
+#include <asThreadRandomSet.h>
 
 #ifndef UNIT_TESTING
 
@@ -94,10 +94,10 @@ bool asMethodOptimizerRandomSet::Manager()
     InitParameters(params);
     m_originalParams = params;
 
-    // Get a forecast score object to extract the score order
-    asForecastScore *forecastScore = asForecastScore::GetInstance(params.GetForecastScoreName());
-    Order scoreOrder = forecastScore->GetOrder();
-    wxDELETE(forecastScore);
+    // Get a score object to extract the score order
+    asScore *score = asScore::GetInstance(params.GetScoreName());
+    Order scoreOrder = score->GetOrder();
+    wxDELETE(score);
     SetScoreOrder(scoreOrder);
 
     // Load the Predictand DB
@@ -126,9 +126,8 @@ bool asMethodOptimizerRandomSet::Manager()
                 vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadMethodOptimizerRandomSet *firstThread = new asThreadMethodOptimizerRandomSet(this, nextParams,
-                                                                                                     &m_scoresCalib[m_iterator],
-                                                                                                     &m_scoreClimatology);
+                asThreadRandomSet *firstThread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                       &m_scoreClimatology);
                 int threadType = firstThread->GetType();
                 ThreadsManager().AddThread(firstThread);
 
@@ -157,9 +156,8 @@ bool asMethodOptimizerRandomSet::Manager()
                     nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, nextParams,
-                                                                                                    &m_scoresCalib[m_iterator],
-                                                                                                    &m_scoreClimatology);
+                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -183,9 +181,8 @@ bool asMethodOptimizerRandomSet::Manager()
                     nextParams = GetNextParameters();
 
                     // Add it to the threads
-                    asThreadMethodOptimizerRandomSet *thread = new asThreadMethodOptimizerRandomSet(this, nextParams,
-                                                                                                    &m_scoresCalib[m_iterator],
-                                                                                                    &m_scoreClimatology);
+                    asThreadRandomSet *thread = new asThreadRandomSet(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                      &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -219,11 +216,11 @@ bool asMethodOptimizerRandomSet::Manager()
                     return false;
 
                 // Create results objects
-                asResultsAnalogsDates anaDates;
-                asResultsAnalogsDates anaDatesPrevious;
-                asResultsAnalogsValues anaValues;
-                asResultsAnalogsForecastScores anaScores;
-                asResultsAnalogsForecastScoreFinal anaScoreFinal;
+                asResultsDates anaDates;
+                asResultsDates anaDatesPrevious;
+                asResultsValues anaValues;
+                asResultsScores anaScores;
+                asResultsTotalScore anaScoreFinal;
 
                 // Process every step one after the other
                 int stepsNb = params.GetStepsNb();
@@ -245,22 +242,22 @@ bool asMethodOptimizerRandomSet::Manager()
                 }
                 if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
                 if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) &&
                     m_iterator < m_paramsNb) {
-                    m_scoresCalib[m_iterator] = anaScoreFinal.GetForecastScore();
+                    m_scoresCalib[m_iterator] = anaScoreFinal.GetScore();
                 } else {
-                    m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
+                    m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
                 }
                 wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
 
                 // Save all tested parameters in a text file
-                results_all.Add(params, anaScoreFinal.GetForecastScore());
+                results_all.Add(params, anaScoreFinal.GetScore());
 
                 // Increment iterator
                 IncrementIterator();

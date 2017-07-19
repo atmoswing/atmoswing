@@ -99,10 +99,8 @@
       <station_id>40</station_id>
     </predictand>
   </analog_values>
-  <analog_forecast_score>
+  <evaluation>
     <score>CRPSAR</score>
-  </analog_forecast_score>
-  <analog_forecast_score_final>
     <time_array>simple</time_array>
-  </analog_forecast_score_final>
+  </evaluation>
 </atmoswing>

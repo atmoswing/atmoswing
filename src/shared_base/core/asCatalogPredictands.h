@@ -30,7 +30,7 @@
 #define ASCATALOGPREDICTAND_H
 
 #include <asIncludes.h>
-#include "asDataPredictand.h"
+#include "asPredictand.h"
 
 
 class asCatalogPredictands
@@ -117,12 +117,12 @@ public:
         return m_coordSys;
     }
 
-    asDataPredictand::Parameter GetParameter() const
+    asPredictand::Parameter GetParameter() const
     {
         return m_parameter;
     }
 
-    asDataPredictand::Unit GetUnit() const
+    asPredictand::Unit GetUnit() const
     {
         return m_unit;
     }
@@ -192,11 +192,11 @@ private:
     wxString m_dataPath;
     vwxs m_nan;
     wxString m_coordSys;
-    asDataPredictand::Parameter m_parameter;
-    asDataPredictand::Unit m_unit;
+    asPredictand::Parameter m_parameter;
+    asPredictand::Unit m_unit;
     std::vector<DataStruct> m_stations;
-    asDataPredictand::TemporalResolution m_temporalResolution;
-    asDataPredictand::SpatialAggregation m_spatialAggregation;
+    asPredictand::TemporalResolution m_temporalResolution;
+    asPredictand::SpatialAggregation m_spatialAggregation;
 
 };
 

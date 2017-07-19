@@ -48,11 +48,11 @@ asMethodOptimizer::~asMethodOptimizer()
 
 bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
 {
-    asResultsAnalogsDates anaDatesPrevious;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScores;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDatesPrevious;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScores;
+    asResultsTotalScore anaScoreFinal;
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
@@ -73,9 +73,9 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
     }
     if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("calibration");
@@ -97,11 +97,11 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
 
     m_validationMode = true;
 
-    asResultsAnalogsDates anaDatesPrevious;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScores;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDatesPrevious;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScores;
+    asResultsTotalScore anaScoreFinal;
 
     // Process every step one after the other
     int stepsNb = params.GetStepsNb();
@@ -122,9 +122,9 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
     }
     if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("validation");
@@ -134,7 +134,7 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
     anaScores.SetSubFolder("validation");
     anaScores.Save();
 
-    m_scoreValid = anaScoreFinal.GetForecastScore();
+    m_scoreValid = anaScoreFinal.GetScore();
 
     m_validationMode = false;
 

@@ -35,15 +35,15 @@ asParametersScoring::asParametersScoring()
 {
     m_calibrationStart = 0;
     m_calibrationEnd = 0;
-    m_forecastScore.name = wxEmptyString;
-    m_forecastScore.timeArrayMode = wxEmptyString;
-    m_forecastScore.timeArrayDate = 0;
-    m_forecastScore.timeArrayIntervalDays = 0;
-    m_forecastScore.postprocess = false;
-    m_forecastScore.postprocessDupliExp = 0;
-    m_forecastScore.postprocessMethod = wxEmptyString;
-    m_forecastScore.threshold = NaNf; // initialization required
-    m_forecastScore.quantile = NaNf; // initialization required
+    m_score.name = wxEmptyString;
+    m_score.timeArrayMode = wxEmptyString;
+    m_score.timeArrayDate = 0;
+    m_score.timeArrayIntervalDays = 0;
+    m_score.postprocess = false;
+    m_score.postprocessDupliExp = 0;
+    m_score.postprocessMethod = wxEmptyString;
+    m_score.threshold = NaNf; // initialization required
+    m_score.quantile = NaNf; // initialization required
 }
 
 asParametersScoring::~asParametersScoring()
@@ -226,29 +226,23 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
 
     // Forecast scores
-    wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_forecast_score");
+    wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
 
-    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetForecastScoreName()));
+    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
 
-    float fsThreshold = GetForecastScoreThreshold();
+    float fsThreshold = GetScoreThreshold();
     if (!asTools::IsNaN(fsThreshold)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
     }
 
-    float fsQuantile = GetForecastScoreQuantile();
+    float fsQuantile = GetScoreQuantile();
     if (!asTools::IsNaN(fsQuantile)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
+    nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("time_array", GetScoreTimeArrayMode()));
+
     fileParams.AddChild(nodeAnalogScore);
-
-
-    // Forecast score final
-    wxXmlNode *nodeAnalogScoreFinal = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_forecast_score_final");
-
-    nodeAnalogScoreFinal->AddChild(fileParams.CreateNodeWithValue("time_array", GetForecastScoreTimeArrayMode()));
-
-    fileParams.AddChild(nodeAnalogScoreFinal);
 
 
     if (!fileParams.Save())
@@ -349,14 +343,14 @@ wxString asParametersScoring::Print() const
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score \t%s\t", GetForecastScoreName()));
-    if (!asTools::IsNaN(GetForecastScoreQuantile())) {
-        content.Append(wxString::Format("quantile \t%f\t", GetForecastScoreQuantile()));
+    content.Append(wxString::Format("|||| Score \t%s\t", GetScoreName()));
+    if (!asTools::IsNaN(GetScoreQuantile())) {
+        content.Append(wxString::Format("quantile \t%f\t", GetScoreQuantile()));
     }
-    if (!asTools::IsNaN(GetForecastScoreThreshold())) {
-        content.Append(wxString::Format("threshold \t%f\t", GetForecastScoreThreshold()));
+    if (!asTools::IsNaN(GetScoreThreshold())) {
+        content.Append(wxString::Format("threshold \t%f\t", GetScoreThreshold()));
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", GetForecastScoreTimeArrayMode()));
+    content.Append(wxString::Format("TimeArray\t%s\t", GetScoreTimeArrayMode()));
 
     return content;
 }
@@ -377,11 +371,10 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     iLeft = 0;
     iRight = (unsigned int) stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
-    if (!strVal.IsSameAs(GetForecastScoreName())) {
-        wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetForecastScoreName(),
-                   strVal);
+    if (!strVal.IsSameAs(GetScoreName())) {
+        wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
         wxPrintf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
-                                  GetForecastScoreName(), strVal));
+                                  GetScoreName(), strVal));
         return false;
     }
 

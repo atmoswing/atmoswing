@@ -31,7 +31,7 @@
 
 #include <wx/xml/xml.h>
 #include "asIncludes.h"
-#include "asDataPredictand.h"
+#include "asPredictand.h"
 #include "asFileParametersStandard.h"
 
 
@@ -341,32 +341,32 @@ public:
 
     bool SetPredictandDatasetId(const wxString &val);
 
-    asDataPredictand::Parameter GetPredictandParameter() const
+    asPredictand::Parameter GetPredictandParameter() const
     {
         return m_predictandParameter;
     }
 
-    void SetPredictandParameter(asDataPredictand::Parameter val)
+    void SetPredictandParameter(asPredictand::Parameter val)
     {
         m_predictandParameter = val;
     }
 
-    asDataPredictand::TemporalResolution GetPredictandTemporalResolution() const
+    asPredictand::TemporalResolution GetPredictandTemporalResolution() const
     {
         return m_predictandTemporalResolution;
     }
 
-    void SetPredictandTemporalResolution(asDataPredictand::TemporalResolution val)
+    void SetPredictandTemporalResolution(asPredictand::TemporalResolution val)
     {
         m_predictandTemporalResolution = val;
     }
 
-    asDataPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
+    asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
     {
         return m_predictandSpatialAggregation;
     }
 
-    void SetPredictandSpatialAggregation(asDataPredictand::SpatialAggregation val)
+    void SetPredictandSpatialAggregation(asPredictand::SpatialAggregation val)
     {
         m_predictandSpatialAggregation = val;
     }
@@ -646,9 +646,9 @@ private:
     wxString m_timeArrayAnalogsMode;
     double m_timeArrayAnalogsTimeStepHours;
     int m_timeArrayAnalogsExcludeDays;
-    asDataPredictand::Parameter m_predictandParameter;
-    asDataPredictand::TemporalResolution m_predictandTemporalResolution;
-    asDataPredictand::SpatialAggregation m_predictandSpatialAggregation;
+    asPredictand::Parameter m_predictandParameter;
+    asPredictand::TemporalResolution m_predictandTemporalResolution;
+    asPredictand::SpatialAggregation m_predictandSpatialAggregation;
     wxString m_predictandDatasetId;
     double m_predictandTimeHours;
 

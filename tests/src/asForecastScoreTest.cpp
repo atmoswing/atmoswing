@@ -27,17 +27,17 @@
  */
 
 #include <wx/filename.h>
-#include <asForecastScore.h>
-#include <asForecastScoreFinal.h>
+#include <asScore.h>
+#include <asTotalScore.h>
 #include <asFileAscii.h>
 #include "gtest/gtest.h"
 
 
-TEST(ForecastScore, ProcessCRPSapproxRectangle)
+TEST(Score, ProcessCRPSapproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -53,7 +53,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -84,11 +84,11 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSexactPrimitive)
+TEST(Score, ProcessCRPSexactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -104,7 +104,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSEP");
+    asScore *score = asScore::GetInstance("CRPSEP");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -135,11 +135,11 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
+TEST(Score, ProcessCRPSapproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -155,7 +155,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSAR");
+    asScore *score = asScore::GetInstance("CRPSAR");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -186,11 +186,11 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
+TEST(Score, ProcessCRPSexactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -206,7 +206,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -237,11 +237,11 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
+TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -257,7 +257,7 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -288,11 +288,11 @@ TEST(ForecastScore, ProcessCRPSapproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
+TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -308,7 +308,7 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -339,11 +339,11 @@ TEST(ForecastScore, ProcessCRPSexactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
+TEST(Score, ProcessCRPSsharpnessApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -359,7 +359,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -392,11 +392,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
+TEST(Score, ProcessCRPSsharpnessExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -412,7 +412,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessEP");
+    asScore *score = asScore::GetInstance("CRPSsharpnessEP");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -445,11 +445,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
+TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -465,7 +465,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSsharpnessAR");
+    asScore *score = asScore::GetInstance("CRPSsharpnessAR");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -498,11 +498,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
+TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -518,7 +518,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -551,11 +551,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
+TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -571,7 +571,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -604,11 +604,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
+TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -624,7 +624,7 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSsharpnessEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -657,11 +657,11 @@ TEST(ForecastScore, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
+TEST(Score, ProcessCRPSaccuracyApproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -677,7 +677,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -709,11 +709,11 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
+TEST(Score, ProcessCRPSaccuracyExactPrimitive)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_01.txt");
+    filepath.Append("/files/score_01.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -729,7 +729,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyEP");
+    asScore *score = asScore::GetInstance("CRPSaccuracyEP");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -761,11 +761,11 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
+TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -781,7 +781,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSaccuracyAR");
+    asScore *score = asScore::GetInstance("CRPSaccuracyAR");
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -813,11 +813,11 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
+TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_02.txt");
+    filepath.Append("/files/score_02.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -833,7 +833,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -865,11 +865,11 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
+TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -885,7 +885,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyAR);
+    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -917,11 +917,11 @@ TEST(ForecastScore, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
+TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
-    filepath.Append("/files/forecast_score_03.txt");
+    filepath.Append("/files/score_03.txt");
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
@@ -937,7 +937,7 @@ TEST(ForecastScore, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     ForcastVals.resize(nanalogs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance(asForecastScore::CRPSaccuracyEP);
+    asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
     for (int iTest = 0; iTest < nbtests; iTest++) {
         // Skip the header
@@ -1139,7 +1139,7 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
 }
 
-TEST(ForecastScore, ProcessPCwithConstantDistribution)
+TEST(Score, ProcessPCwithConstantDistribution)
 {
     // Create data
     a2f vecForecast;
@@ -1147,7 +1147,7 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
     InitConstantDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("PC");
+    asScore *score = asScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.5f);
 
@@ -1160,7 +1160,7 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1171,7 +1171,7 @@ TEST(ForecastScore, ProcessPCwithConstantDistribution)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessPC)
+TEST(Score, ProcessPC)
 {
     // Create data
     a2f vecForecast;
@@ -1179,7 +1179,7 @@ TEST(ForecastScore, ProcessPC)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("PC");
+    asScore *score = asScore::GetInstance("PC");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1192,7 +1192,7 @@ TEST(ForecastScore, ProcessPC)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PC", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1203,7 +1203,7 @@ TEST(ForecastScore, ProcessPC)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessTS)
+TEST(Score, ProcessTS)
 {
     // Create data
     a2f vecForecast;
@@ -1211,7 +1211,7 @@ TEST(ForecastScore, ProcessTS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("TS");
+    asScore *score = asScore::GetInstance("TS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1224,7 +1224,7 @@ TEST(ForecastScore, ProcessTS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("TS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("TS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1235,7 +1235,7 @@ TEST(ForecastScore, ProcessTS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessBIAS)
+TEST(Score, ProcessBIAS)
 {
     // Create data
     a2f vecForecast;
@@ -1243,7 +1243,7 @@ TEST(ForecastScore, ProcessBIAS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("BIAS");
+    asScore *score = asScore::GetInstance("BIAS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1256,7 +1256,7 @@ TEST(ForecastScore, ProcessBIAS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BIAS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("BIAS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1267,7 +1267,7 @@ TEST(ForecastScore, ProcessBIAS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessFARA)
+TEST(Score, ProcessFARA)
 {
     // Create data
     a2f vecForecast;
@@ -1275,7 +1275,7 @@ TEST(ForecastScore, ProcessFARA)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("FARA");
+    asScore *score = asScore::GetInstance("FARA");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1288,7 +1288,7 @@ TEST(ForecastScore, ProcessFARA)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("FARA", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("FARA", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1299,7 +1299,7 @@ TEST(ForecastScore, ProcessFARA)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessH)
+TEST(Score, ProcessH)
 {
     // Create data
     a2f vecForecast;
@@ -1307,7 +1307,7 @@ TEST(ForecastScore, ProcessH)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("H");
+    asScore *score = asScore::GetInstance("H");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1320,7 +1320,7 @@ TEST(ForecastScore, ProcessH)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("H", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("H", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1331,7 +1331,7 @@ TEST(ForecastScore, ProcessH)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessF)
+TEST(Score, ProcessF)
 {
     // Create data
     a2f vecForecast;
@@ -1339,7 +1339,7 @@ TEST(ForecastScore, ProcessF)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("F");
+    asScore *score = asScore::GetInstance("F");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1352,7 +1352,7 @@ TEST(ForecastScore, ProcessF)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("F", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("F", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1363,7 +1363,7 @@ TEST(ForecastScore, ProcessF)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessHSS)
+TEST(Score, ProcessHSS)
 {
     // Create data
     a2f vecForecast;
@@ -1371,7 +1371,7 @@ TEST(ForecastScore, ProcessHSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("HSS");
+    asScore *score = asScore::GetInstance("HSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1384,7 +1384,7 @@ TEST(ForecastScore, ProcessHSS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("HSS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("HSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1395,7 +1395,7 @@ TEST(ForecastScore, ProcessHSS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessPSS)
+TEST(Score, ProcessPSS)
 {
     // Create data
     a2f vecForecast;
@@ -1403,7 +1403,7 @@ TEST(ForecastScore, ProcessPSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("PSS");
+    asScore *score = asScore::GetInstance("PSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1416,7 +1416,7 @@ TEST(ForecastScore, ProcessPSS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("PSS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("PSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1427,7 +1427,7 @@ TEST(ForecastScore, ProcessPSS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessGSS)
+TEST(Score, ProcessGSS)
 {
     // Create data
     a2f vecForecast;
@@ -1435,7 +1435,7 @@ TEST(ForecastScore, ProcessGSS)
     InitRealisticDistribution(vecForecast, vecObs);
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("GSS");
+    asScore *score = asScore::GetInstance("GSS");
     score->SetQuantile(0.5f);
     score->SetThreshold(0.6f);
 
@@ -1448,7 +1448,7 @@ TEST(ForecastScore, ProcessGSS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("GSS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("GSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1459,7 +1459,7 @@ TEST(ForecastScore, ProcessGSS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessMAE)
+TEST(Score, ProcessMAE)
 {
     // Sizes
     int timeLength = 10;
@@ -1495,7 +1495,7 @@ TEST(ForecastScore, ProcessMAE)
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("MAE");
+    asScore *score = asScore::GetInstance("MAE");
     score->SetQuantile(0.6f);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1507,7 +1507,7 @@ TEST(ForecastScore, ProcessMAE)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("MAE", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("MAE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1518,7 +1518,7 @@ TEST(ForecastScore, ProcessMAE)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessRMSE)
+TEST(Score, ProcessRMSE)
 {
     // Sizes
     int timeLength = 10;
@@ -1554,7 +1554,7 @@ TEST(ForecastScore, ProcessRMSE)
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("RMSE");
+    asScore *score = asScore::GetInstance("RMSE");
     score->SetQuantile(0.6f);
 
     a1f results = a1f::Zero(vecObs.size());
@@ -1566,7 +1566,7 @@ TEST(ForecastScore, ProcessRMSE)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RMSE", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("RMSE", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1577,7 +1577,7 @@ TEST(ForecastScore, ProcessRMSE)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessBS)
+TEST(Score, ProcessBS)
 {
     // Sizes
     int timeLength = 10;
@@ -1613,7 +1613,7 @@ TEST(ForecastScore, ProcessBS)
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("BS");
+    asScore *score = asScore::GetInstance("BS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
@@ -1626,7 +1626,7 @@ TEST(ForecastScore, ProcessBS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("BS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1637,7 +1637,7 @@ TEST(ForecastScore, ProcessBS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessBSS)
+TEST(Score, ProcessBSS)
 {
     // Sizes
     int timeLength = 10;
@@ -1673,7 +1673,7 @@ TEST(ForecastScore, ProcessBSS)
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("BSS");
+    asScore *score = asScore::GetInstance("BSS");
     score->SetQuantile(0.6f);
     score->SetThreshold(0.4f);
 
@@ -1688,7 +1688,7 @@ TEST(ForecastScore, ProcessBSS)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("BSS", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("BSS", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1699,7 +1699,7 @@ TEST(ForecastScore, ProcessBSS)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessRankHistogram)
+TEST(Score, ProcessRankHistogram)
 {
     // Sizes
     int timeLength = 20;
@@ -1754,7 +1754,7 @@ TEST(ForecastScore, ProcessRankHistogram)
     0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("RankHistogram");
+    asScore *score = asScore::GetInstance("RankHistogram");
 
     a1f results = a1f::Zero(vecObs.size());
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -1790,7 +1790,7 @@ TEST(ForecastScore, ProcessRankHistogram)
     EXPECT_EQ(20, results[18]);
     EXPECT_EQ(24, results[19]);
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogram", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogram", "Total");
     finalScore->SetRanksNb(nanalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     a1f scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
@@ -1813,7 +1813,7 @@ TEST(ForecastScore, ProcessRankHistogram)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessRankHistogramReliability)
+TEST(Score, ProcessRankHistogramReliability)
 {
     wxLogNull logNo;
 
@@ -1870,7 +1870,7 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("RankHistogramReliability");
+    asScore *score = asScore::GetInstance("RankHistogramReliability");
 
     a1f results = a1f::Zero(vecObs.size());
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -1882,7 +1882,7 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("RankHistogramReliability", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");
     finalScore->SetRanksNb(nanalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
@@ -1894,7 +1894,7 @@ TEST(ForecastScore, ProcessRankHistogramReliability)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessCRPSreliability)
+TEST(Score, ProcessCRPSreliability)
 {
     // Sizes
     int timeLength = 15;
@@ -1938,7 +1938,7 @@ TEST(ForecastScore, ProcessCRPSreliability)
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSreliability");
+    asScore *score = asScore::GetInstance("CRPSreliability");
 
     a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -1950,7 +1950,7 @@ TEST(ForecastScore, ProcessCRPSreliability)
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("CRPSreliability", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("CRPSreliability", "Total");
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1961,7 +1961,7 @@ TEST(ForecastScore, ProcessCRPSreliability)
     wxDELETE(finalScore);
 }
 
-TEST(ForecastScore, ProcessCRPSpotential)
+TEST(Score, ProcessCRPSpotential)
 {
     // Sizes
     int timeLength = 15;
@@ -2005,7 +2005,7 @@ TEST(ForecastScore, ProcessCRPSpotential)
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
     // Instantiate the score
-    asForecastScore *score = asForecastScore::GetInstance("CRPSpotential");
+    asScore *score = asScore::GetInstance("CRPSpotential");
 
     a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
@@ -2017,7 +2017,7 @@ TEST(ForecastScore, ProcessCRPSpotential)
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
-    asForecastScoreFinal *finalScore = asForecastScoreFinal::GetInstance("CRPSpotential", "Total");
+    asTotalScore *finalScore = asTotalScore::GetInstance("CRPSpotential", "Total");
     finalScore->SetRanksNb(nanalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);

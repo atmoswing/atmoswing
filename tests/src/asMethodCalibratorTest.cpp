@@ -28,13 +28,13 @@
 
 #include <wx/filename.h>
 #include <wx/dir.h>
-#include "asDataPredictandPrecipitation.h"
+#include "asPredictandPrecipitation.h"
 #include "asProcessor.h"
 #include "asMethodCalibratorSingle.h"
-#include "asResultsAnalogsDates.h"
-#include "asResultsAnalogsValues.h"
-#include "asResultsAnalogsForecastScores.h"
-#include "asResultsAnalogsForecastScoreFinal.h"
+#include "asResultsDates.h"
+#include "asResultsValues.h"
+#include "asResultsScores.h"
+#include "asResultsTotalScore.h"
 #include "asFileAscii.h"
 #include "gtest/gtest.h"
 
@@ -42,7 +42,7 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -68,32 +68,32 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
         bool containsNaNs = false;
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-        calibrator.SetPredictorDataDir(dataPredictorFilePath);
+        wxString predictorFilePath = wxFileName::GetCwd();
+        predictorFilePath.Append("/files/data-ncep-r1/others/");
+        calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -102,22 +102,22 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     // Extract data
     a1f resultsTargetDates(anaDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaDates.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-    a1f resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-    a1f resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
-    float scoreFinal = anaScoreFinal.GetForecastScore();
+    a2f resultsCriteria(anaDates.GetAnalogsCriteria());
+    a2f resultsDates(anaDates.GetAnalogsDates());
+    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
+    float scoreFinal = anaScoreFinal.GetScore();
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     int nbtests = 0;
     if (!shortVersion) {
-        resultFilePath.Append("/files/forecast_score_04.txt");
+        resultFilePath.Append("/files/score_04.txt");
         nbtests = 43;
     } else {
-        resultFilePath.Append("/files/forecast_score_06.txt");
+        resultFilePath.Append("/files/score_06.txt");
         nbtests = 20;
     }
     asFileAscii file(resultFilePath, asFile::ReadOnly);
@@ -161,13 +161,13 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
             file.SkipLines(1);
         }
 
-        float fileForecastScoreCRPS = 0, fileForecastScoreCRPSaccuracy = 0, fileForecastScoreCRPSsharpness = 0;
+        float fileScoreCRPS = 0, fileScoreCRPSaccuracy = 0, fileScoreCRPSsharpness = 0;
 
         if (!shortVersion) {
             file.SkipLines(2);
-            fileForecastScoreCRPS = file.GetFloat();
-            fileForecastScoreCRPSaccuracy = file.GetFloat();
-            fileForecastScoreCRPSsharpness = file.GetFloat();
+            fileScoreCRPS = file.GetFloat();
+            fileScoreCRPSaccuracy = file.GetFloat();
+            fileScoreCRPSsharpness = file.GetFloat();
             file.SkipLines(1);
         } else {
             file.SkipLines(3);
@@ -184,23 +184,23 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
 
         // The CRPS tolerence is huge, as it is not processed with the same P10 !
         if (!shortVersion) {
-            EXPECT_NEAR(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPS, resultsScoreCRPS(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSaccuracy, resultsScoreCRPSaccuracy(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSsharpness, resultsScoreCRPSsharpness(rowTargetDate), 0.1);
         }
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],
-                                      &resultsForecastScoreCRPS[resultsForecastScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
+                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -229,18 +229,10 @@ TEST(MethodCalibrator, Ref1Multithreads)
     Ref1("parameters_calibration_R1_full.xml", false);
 }
 
-TEST(MethodCalibrator, Ref1Insert)
+TEST(MethodCalibrator, Ref1Standard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref1("parameters_calibration_R1_full.xml", false);
-}
-
-TEST(MethodCalibrator, Ref1Splitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref1("parameters_calibration_R1_full.xml", false);
 }
@@ -263,18 +255,10 @@ TEST(MethodCalibrator, Ref1MultithreadsNoPreprocessing)
     Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
 }
 
-TEST(MethodCalibrator, Ref1CalibPeriodInsert)
+TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref1("parameters_calibration_R1_calib_period.xml", true);
-}
-
-TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
@@ -282,7 +266,7 @@ TEST(MethodCalibrator, Ref1CalibPeriodSplitting)
 void Ref2(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -308,18 +292,18 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsDates anaSubDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsDates anaSubDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
@@ -331,14 +315,14 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -347,26 +331,26 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     // Extract data
     a1f resultsTargetDates(anaSubDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-    a1f resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-    a1f resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
+    a2f resultsCriteria(anaSubDates.GetAnalogsCriteria());
+    a2f resultsDates(anaSubDates.GetAnalogsDates());
+    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
 
     float scoreFinal = 0;
     if (!shortVersion) {
-        scoreFinal = anaScoreFinal.GetForecastScore();
+        scoreFinal = anaScoreFinal.GetScore();
     }
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     int nbtests = 0;
     if (!shortVersion) {
-        resultFilePath.Append("/files/forecast_score_05.txt");
+        resultFilePath.Append("/files/score_05.txt");
         nbtests = 30;
     } else {
-        resultFilePath.Append("/files/forecast_score_07.txt");
+        resultFilePath.Append("/files/score_07.txt");
         nbtests = 4;
     }
     asFileAscii file(resultFilePath, asFile::ReadOnly);
@@ -411,13 +395,13 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
             file.SkipLines(1);
         }
 
-        float fileForecastScoreCRPS = 0, fileForecastScoreCRPSaccuracy = 0, fileForecastScoreCRPSsharpness = 0;
+        float fileScoreCRPS = 0, fileScoreCRPSaccuracy = 0, fileScoreCRPSsharpness = 0;
 
         if (!shortVersion) {
             file.SkipLines(2);
-            fileForecastScoreCRPS = file.GetFloat();
-            fileForecastScoreCRPSaccuracy = file.GetFloat();
-            fileForecastScoreCRPSsharpness = file.GetFloat();
+            fileScoreCRPS = file.GetFloat();
+            fileScoreCRPSaccuracy = file.GetFloat();
+            fileScoreCRPSsharpness = file.GetFloat();
             file.SkipLines(1);
         } else {
             file.SkipLines(3);
@@ -433,13 +417,13 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
 
-                if (std::abs(fileAnalogsDates[iAnalog] - resultsAnalogsDates(rowTargetDate, iAnalog)) > 0.0001) {
+                if (std::abs(fileAnalogsDates[iAnalog] - resultsDates(rowTargetDate, iAnalog)) > 0.0001) {
                     wxPrintf(("Date is %s and should be %s.\n"),
-                             asTime::GetStringTime(resultsAnalogsDates(rowTargetDate, iAnalog)),
+                             asTime::GetStringTime(resultsDates(rowTargetDate, iAnalog)),
                              asTime::GetStringTime(fileAnalogsDates[iAnalog]));
                 }
             }
@@ -447,15 +431,15 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
         if (!shortVersion) {
             // The CRPS tolerence is huge, as it is not processed with the same P10 !
-            EXPECT_NEAR(fileForecastScoreCRPS, resultsForecastScoreCRPS(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileForecastScoreCRPSaccuracy, resultsForecastScoreCRPSaccuracy(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileForecastScoreCRPSsharpness, resultsForecastScoreCRPSsharpness(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPS, resultsScoreCRPS(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSaccuracy, resultsScoreCRPSaccuracy(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSsharpness, resultsScoreCRPSsharpness(rowTargetDate), 0.1);
         }
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsForecastScoreCRPS[0],
-                                      &resultsForecastScoreCRPS[resultsForecastScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
+                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -473,18 +457,10 @@ TEST(MethodCalibrator, Ref2Multithreads)
     Ref2("parameters_calibration_R2_full.xml", false);
 }
 
-TEST(MethodCalibrator, Ref2Insert)
+TEST(MethodCalibrator, Ref2Standard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref2("parameters_calibration_R2_full.xml", false);
-}
-
-TEST(MethodCalibrator, Ref2Splitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2("parameters_calibration_R2_full.xml", false);
 }
@@ -498,18 +474,10 @@ TEST(MethodCalibrator, Ref2CalibPeriodMultithreads)
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
 
-TEST(MethodCalibrator, Ref2CalibPeriodInsert)
+TEST(MethodCalibrator, Ref2CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
-
-    Ref2("parameters_calibration_R2_calib_period.xml", true);
-}
-
-TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asFULL_ARRAY);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2("parameters_calibration_R2_calib_period.xml", true);
 }
@@ -517,7 +485,7 @@ TEST(MethodCalibrator, Ref2CalibPeriodSplitting)
 TEST(MethodCalibrator, PreloadingSimple)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     wxString dataFileDir = wxFileName::GetCwd();
     dataFileDir.Append("/files/");
@@ -536,13 +504,13 @@ TEST(MethodCalibrator, PreloadingSimple)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsAnalogsDates anaDatesStd;
-    asResultsAnalogsDates anaDatesPreload;
+    asResultsDates anaDatesStd;
+    asResultsDates anaDatesPreload;
 
     try {
         int step = 0;
@@ -577,7 +545,7 @@ TEST(MethodCalibrator, PreloadingSimple)
 TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     // Get parameters
     asParametersCalibration paramsStd;
@@ -591,13 +559,13 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsAnalogsDates anaDatesStd;
-    asResultsAnalogsDates anaDatesPreload;
+    asResultsDates anaDatesStd;
+    asResultsDates anaDatesPreload;
 
     try {
         int step = 0;
@@ -639,7 +607,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 void Ref1Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -668,32 +636,32 @@ void Ref1Preloading()
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         bool containsNaNs = false;
         int step = 0;
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-        calibrator.SetPredictorDataDir(dataPredictorFilePath);
+        wxString predictorFilePath = wxFileName::GetCwd();
+        predictorFilePath.Append("/files/data-ncep-r1/others/");
+        calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -703,16 +671,16 @@ void Ref1Preloading()
     // Extract data
     a1f resultsTargetDates(anaDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaDates.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaDates.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-    a1f resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-    a1f resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
+    a2f resultsCriteria(anaDates.GetAnalogsCriteria());
+    a2f resultsDates(anaDates.GetAnalogsDates());
+    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
-    resultFilePath.Append("/files/forecast_score_06.txt");
+    resultFilePath.Append("/files/score_06.txt");
     asFileAscii file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
@@ -770,9 +738,9 @@ void Ref1Preloading()
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -796,7 +764,7 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 void Ref1PreloadingSubset()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -824,32 +792,32 @@ void Ref1PreloadingSubset()
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
         bool containsNaNs = false;
-        wxString dataPredictorFilePath = wxFileName::GetCwd();
-        dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-        calibrator.SetPredictorDataDir(dataPredictorFilePath);
+        wxString predictorFilePath = wxFileName::GetCwd();
+        predictorFilePath.Append("/files/data-ncep-r1/others/");
+        calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyAR");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -938,17 +906,17 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asMethodCalibratorSingle calibrator3 = calibrator1;
     asMethodCalibratorSingle calibrator4 = calibrator1;
-    asResultsAnalogsDates anaDatesNoPreprocNoPreload;
-    asResultsAnalogsDates anaDatesNoPreprocPreload;
-    asResultsAnalogsDates anaDatesPreprocNoPreload;
-    asResultsAnalogsDates anaDatesPreprocPreload;
+    asResultsDates anaDatesNoPreprocNoPreload;
+    asResultsDates anaDatesNoPreprocPreload;
+    asResultsDates anaDatesPreprocNoPreload;
+    asResultsDates anaDatesPreprocPreload;
 
     try {
         int step = 0;
@@ -1004,7 +972,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 void Ref2Preloading()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1029,18 +997,18 @@ void Ref2Preloading()
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsDates anaSubDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsDates anaSubDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
@@ -1051,14 +1019,14 @@ void Ref2Preloading()
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -1067,16 +1035,16 @@ void Ref2Preloading()
     // Extract data
     a1f resultsTargetDates(anaSubDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-    a1f resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-    a1f resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
+    a2f resultsCriteria(anaSubDates.GetAnalogsCriteria());
+    a2f resultsDates(anaSubDates.GetAnalogsDates());
+    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
-    resultFilePath.Append("/files/forecast_score_07.txt");
+    resultFilePath.Append("/files/score_07.txt");
     asFileAscii file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
@@ -1134,9 +1102,9 @@ void Ref2Preloading()
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1156,10 +1124,10 @@ TEST(MethodCalibrator, Ref2PreloadingMultithreads)
     Ref2Preloading();
 }
 
-TEST(MethodCalibrator, Ref2PreloadingInsert)
+TEST(MethodCalibrator, Ref2PreloadingStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asINSERT);
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
     Ref2Preloading();
 }
@@ -1167,7 +1135,7 @@ TEST(MethodCalibrator, Ref2PreloadingInsert)
 void Ref2SavingIntermediateResults()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1192,16 +1160,16 @@ void Ref2SavingIntermediateResults()
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
-    asResultsAnalogsDates anaDates1, anaDates2;
-    asResultsAnalogsDates anaSubDates1, anaSubDates2;
-    asResultsAnalogsValues anaValues1, anaValues2;
-    asResultsAnalogsForecastScores anaScoresCRPS1, anaScoresCRPS2;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates1, anaDates2;
+    asResultsDates anaSubDates1, anaSubDates2;
+    asResultsValues anaValues1, anaValues2;
+    asResultsScores anaScoresCRPS1, anaScoresCRPS2;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
@@ -1237,7 +1205,7 @@ void Ref2SavingIntermediateResults()
         ASSERT_TRUE(anaValues2.Load());
         ASSERT_TRUE(anaValues2.GetTargetDatesLength()>0);
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS1, params, anaValues2, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS1, params, anaValues2, step));
         anaScoresCRPS1.Save();
         ASSERT_TRUE(asFile::Exists(anaScoresCRPS1.GetFilePath()));
         // Reload
@@ -1246,7 +1214,7 @@ void Ref2SavingIntermediateResults()
         ASSERT_TRUE(anaScoresCRPS2.Load());
         ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size()>0);
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS2, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS2, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -1255,14 +1223,14 @@ void Ref2SavingIntermediateResults()
     // Extract data
     a1f resultsTargetDates(anaSubDates2.GetTargetDates());
     a1f resultsTargetValues(anaValues2.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaSubDates2.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaSubDates2.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues2.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS2.GetForecastScores());
+    a2f resultsCriteria(anaSubDates2.GetAnalogsCriteria());
+    a2f resultsDates(anaSubDates2.GetAnalogsDates());
+    a2f resultsValues(anaValues2.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS2.GetScores());
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
-    resultFilePath.Append("/files/forecast_score_07.txt");
+    resultFilePath.Append("/files/score_07.txt");
     asFileAscii file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
@@ -1320,9 +1288,9 @@ void Ref2SavingIntermediateResults()
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1351,7 +1319,7 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 void Ref2MergeByHalfAndMultiply()
 {
     // Create predictand database
-    asDataPredictandPrecipitation *predictand = new asDataPredictandPrecipitation(asDataPredictand::Precipitation, asDataPredictand::Daily, asDataPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1376,18 +1344,18 @@ void Ref2MergeByHalfAndMultiply()
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
     wxASSERT(predictand);
     calibrator.SetPredictandDB(predictand);
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsDates anaSubDates;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScoresCRPS;
-    asResultsAnalogsForecastScores anaScoresCRPSsharpness;
-    asResultsAnalogsForecastScores anaScoresCRPSaccuracy;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsDates anaSubDates;
+    asResultsValues anaValues;
+    asResultsScores anaScoresCRPS;
+    asResultsScores anaScoresCRPSsharpness;
+    asResultsScores anaScoresCRPSaccuracy;
+    asResultsTotalScore anaScoreFinal;
 
     try {
         int step = 0;
@@ -1398,14 +1366,14 @@ void Ref2MergeByHalfAndMultiply()
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
-        params.SetForecastScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSsharpness, params, anaValues, step));
-        params.SetForecastScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsForecastScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        params.SetScoreName("CRPSsharpnessEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        params.SetScoreName("CRPSaccuracyEP");
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -1414,16 +1382,16 @@ void Ref2MergeByHalfAndMultiply()
     // Extract data
     a1f resultsTargetDates(anaSubDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsAnalogsCriteria(anaSubDates.GetAnalogsCriteria());
-    a2f resultsAnalogsDates(anaSubDates.GetAnalogsDates());
-    a2f resultsAnalogsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsForecastScoreCRPS(anaScoresCRPS.GetForecastScores());
-    a1f resultsForecastScoreCRPSsharpness(anaScoresCRPSsharpness.GetForecastScores());
-    a1f resultsForecastScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetForecastScores());
+    a2f resultsCriteria(anaSubDates.GetAnalogsCriteria());
+    a2f resultsDates(anaSubDates.GetAnalogsDates());
+    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
+    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
 
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
-    resultFilePath.Append("/files/forecast_score_07.txt");
+    resultFilePath.Append("/files/score_07.txt");
     asFileAscii file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
@@ -1481,9 +1449,9 @@ void Ref2MergeByHalfAndMultiply()
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsAnalogsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsAnalogsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsAnalogsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
     }
@@ -1526,12 +1494,12 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
 
     // Preload data
     asMethodCalibratorSingle calibrator;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
     calibrator.SetPredictandDB(NULL);
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsDates anaSubDates;
+    asResultsDates anaDates;
+    asResultsDates anaSubDates;
 
     try {
         int step = 0;
@@ -1591,13 +1559,13 @@ TEST(MethodCalibrator, NormalizedS1Criteria)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsAnalogsDates anaDatesStd;
-    asResultsAnalogsDates anaDatesNorm;
+    asResultsDates anaDatesStd;
+    asResultsDates anaDatesNorm;
 
     try {
         int step = 0;
@@ -1653,13 +1621,13 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator1;
-    wxString dataPredictorFilePath = wxFileName::GetCwd();
-    dataPredictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(dataPredictorFilePath);
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
     calibrator1.SetPredictandDB(NULL);
     asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsAnalogsDates anaDatesStd;
-    asResultsAnalogsDates anaDatesNorm;
+    asResultsDates anaDatesStd;
+    asResultsDates anaDatesNorm;
 
     try {
         int step = 0;

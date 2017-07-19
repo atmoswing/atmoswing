@@ -64,7 +64,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     resultsAll.Init(_("all_station_best_parameters"));
 
     // Create a analogsdate object to save previous analogs dates selection.
-    asResultsAnalogsDates anaDatesPrevious;
+    asResultsDates anaDatesPrevious;
 
     for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
         vi stationId = stationsId[iStat];
@@ -165,7 +165,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         // Finally calibrate the number of analogs for every step
         wxLogVerbose(_("Find the analogs number for every step."));
         ClearTemp();
-        asResultsAnalogsDates tempDates;
+        asResultsDates tempDates;
         if (!SubProcessAnalogsNumber(params, tempDates))
             return false;
 
@@ -360,14 +360,14 @@ void asMethodCalibratorClassic::BalanceWeights(asParametersCalibration &params, 
 }
 
 bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibration &params,
-                                                     asResultsAnalogsDates &anaDatesPrevious,
+                                                     asResultsDates &anaDatesPrevious,
                                                      asResultsParametersArray &resultsTested, int iStep)
 {
-    asResultsAnalogsDates anaDates;
-    asResultsAnalogsDates anaDatesPreviousSubRuns;
-    asResultsAnalogsValues anaValues;
-    asResultsAnalogsForecastScores anaScores;
-    asResultsAnalogsForecastScoreFinal anaScoreFinal;
+    asResultsDates anaDates;
+    asResultsDates anaDatesPreviousSubRuns;
+    asResultsValues anaValues;
+    asResultsScores anaScores;
+    asResultsTotalScore anaScoreFinal;
 
     wxStopWatch swMap;
 
@@ -387,9 +387,9 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
             }
             if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, iStep))
                 return false;
-            if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[iParam], anaValues, iStep))
+            if (!GetAnalogsScores(anaScores, m_parametersTemp[iParam], anaValues, iStep))
                 return false;
-            if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[iParam], anaScores, iStep))
+            if (!GetAnalogsTotalScore(anaScoreFinal, m_parametersTemp[iParam], anaScores, iStep))
                 return false;
         } else {
             bool continueLoop = true;
@@ -415,17 +415,16 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
             if (continueLoop) {
                 if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, m_parametersTemp[iParam], anaValues, params.GetStepsNb() - 1))
+                if (!GetAnalogsScores(anaScores, m_parametersTemp[iParam], anaValues, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, m_parametersTemp[iParam], anaScores,
-                                                  params.GetStepsNb() - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, m_parametersTemp[iParam], anaScores, params.GetStepsNb() - 1))
                     return false;
             }
         }
 
         // Store the result
-        m_scoresCalibTemp.push_back(anaScoreFinal.GetForecastScore());
-        resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetForecastScore());
+        m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
+        resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetScore());
     }
 
     wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
@@ -433,8 +432,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
     return true;
 }
 
-bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params,
-                                                     asResultsAnalogsDates &anaDatesPrevious,
+bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &params, asResultsDates &anaDatesPrevious,
                                                      asResultsParametersArray &resultsTested, int iStep,
                                                      const asMethodCalibrator::ParamExploration &explo)
 {
@@ -491,11 +489,11 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
             params.FixCoordinates();
 
             // Assess parameters
-            asResultsAnalogsDates anaDates;
-            asResultsAnalogsDates anaDatesPreviousSubRuns;
-            asResultsAnalogsValues anaValues;
-            asResultsAnalogsForecastScores anaScores;
-            asResultsAnalogsForecastScoreFinal anaScoreFinal;
+            asResultsDates anaDates;
+            asResultsDates anaDatesPreviousSubRuns;
+            asResultsValues anaValues;
+            asResultsScores anaScores;
+            asResultsTotalScore anaScoreFinal;
 
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
@@ -512,9 +510,9 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                 }
                 if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
+                if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
+                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
@@ -539,14 +537,14 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                 if (continueLoop) {
                     if (!GetAnalogsValues(anaValues, params, anaDates, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsForecastScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
+                    if (!GetAnalogsScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
                         return false;
                 }
             }
 
-            resultsTested.Add(params, anaScoreFinal.GetForecastScore());
+            resultsTested.Add(params, anaScoreFinal.GetScore());
 
             // If better, store it and try again to resize.
             if (PushBackInTempIfBetter(params, anaScoreFinal)) {
@@ -566,7 +564,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
 }
 
 bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration &params,
-                                                         asResultsAnalogsDates &anaDatesPrevious,
+                                                         asResultsDates &anaDatesPrevious,
                                                          asResultsParametersArray &resultsTested, int iStep,
                                                          const asMethodCalibrator::ParamExploration &explo)
 {
@@ -729,11 +727,11 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
             // Assess parameters
 
             // Assess parameters
-            asResultsAnalogsDates anaDates;
-            asResultsAnalogsDates anaDatesPreviousSubRuns;
-            asResultsAnalogsValues anaValues;
-            asResultsAnalogsForecastScores anaScores;
-            asResultsAnalogsForecastScoreFinal anaScoreFinal;
+            asResultsDates anaDates;
+            asResultsDates anaDatesPreviousSubRuns;
+            asResultsValues anaValues;
+            asResultsScores anaScores;
+            asResultsTotalScore anaScoreFinal;
 
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
@@ -749,9 +747,9 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                 }
                 if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsForecastScores(anaScores, params, anaValues, iStep))
+                if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, iStep))
+                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
@@ -775,14 +773,14 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                 if (continueLoop) {
                     if (!GetAnalogsValues(anaValues, params, anaDates, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsForecastScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
+                    if (!GetAnalogsScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsForecastScoreFinal(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
                         return false;
                 }
             }
 
-            resultsTested.Add(params, anaScoreFinal.GetForecastScore());
+            resultsTested.Add(params, anaScoreFinal.GetScore());
 
             // If better, keep it and start again
             if (KeepIfBetter(params, anaScoreFinal)) {
@@ -880,14 +878,14 @@ void asMethodCalibratorClassic::ReduceNorth(asParametersCalibration &params,
 }
 
 bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration &params,
-                                                         asResultsAnalogsDates &anaDatesPrevious, int iStep)
+                                                         asResultsDates &anaDatesPrevious, int iStep)
 {
     bool containsNaNs = false;
     if (iStep == 0) {
         if (!GetAnalogsDates(anaDatesPrevious, params, iStep, containsNaNs))
             return false;
     } else if (iStep < params.GetStepsNb()) {
-        asResultsAnalogsDates anaDatesPreviousNew;
+        asResultsDates anaDatesPreviousNew;
         if (!GetAnalogsSubDates(anaDatesPreviousNew, params, anaDatesPrevious, iStep, containsNaNs))
             return false;
         anaDatesPrevious = anaDatesPreviousNew;

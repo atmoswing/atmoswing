@@ -167,7 +167,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
         if (ProcessingMethod == (long) asMULTITHREADS) {
-            ProcessingMethod = (long) asINSERT;
+            ProcessingMethod = (long) asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
@@ -276,7 +276,7 @@ void asFramePreferencesForecaster::SavePreferences()
     // Processing
     long ProcessingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
     if (!allowMultithreading && ProcessingMethod == (long) asMULTITHREADS) {
-        ProcessingMethod = (long) asINSERT;
+        ProcessingMethod = (long) asSTANDARD;
     }
     pConfig->Write("/Processing/Method", ProcessingMethod);
 
@@ -293,7 +293,7 @@ void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
-            m_radioBoxProcessingMethods->SetSelection(asINSERT);
+            m_radioBoxProcessingMethods->SetSelection(asSTANDARD);
         }
     } else {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, true);

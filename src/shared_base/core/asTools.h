@@ -154,8 +154,7 @@ public:
 
     static a1i ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance = 0);
 
-    static a1f ExtractUniqueValues(const float *pArrStart, const float *pArrEnd,
-                                            const float tolerance = 0.000001);
+    static a1f ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance = 0.000001);
 
     static a1d ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
                                              const double tolerance = 0.000000001);
@@ -196,8 +195,8 @@ public:
                                       const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue,
-                                       const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance = 0,
+                                       const int showWarning = asSHOW_WARNINGS);
 
     static int SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetValue,
                                      const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
@@ -209,8 +208,8 @@ public:
                                      const double tolerance = 0, const int showWarning = asSHOW_WARNINGS);
 
     template<class T>
-    static int SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue,
-                                      const T tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+    static int SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance = 0,
+                                      const int showWarning = asSHOW_WARNINGS);
 
     static bool SortedArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val);
 

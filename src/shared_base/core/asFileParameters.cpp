@@ -44,7 +44,7 @@ vi asFileParameters::BuildVectorInt(int min, int max, int step)
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%d > max=%d."), min, max));
     }
-    if (step==0) {
+    if (step == 0) {
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
@@ -84,7 +84,7 @@ vf asFileParameters::BuildVectorFloat(float min, float max, float step)
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
-    if (step==0) {
+    if (step == 0) {
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
@@ -124,7 +124,7 @@ vd asFileParameters::BuildVectorDouble(double min, double max, double step)
     if (min>max) {
         asThrowException(wxString::Format(_("Error when building a vector from the parameters file: min=%.2f > max=%.2f."), min, max));
     }
-    if (step==0) {
+    if (step == 0) {
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 

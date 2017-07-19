@@ -44,10 +44,10 @@ asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
           m_firstTimeStepHour(0),
           m_dataPath(wxEmptyString),
           m_coordSys(wxEmptyString),
-          m_parameter(asDataPredictand::Precipitation),
-          m_unit(asDataPredictand::mm),
-          m_temporalResolution(asDataPredictand::Daily),
-          m_spatialAggregation(asDataPredictand::Station)
+          m_parameter(asPredictand::Precipitation),
+          m_unit(asPredictand::mm),
+          m_temporalResolution(asPredictand::Daily),
+          m_spatialAggregation(asPredictand::Station)
 {
     // Get the xml file path
     if (m_catalogFilePath.IsEmpty()) {
@@ -84,13 +84,13 @@ bool asCatalogPredictands::Load()
                 } else if (nodeProp->GetName() == "description") {
                     m_description = xmlFile.GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_parameter = asDataPredictand::StringToParameterEnum(xmlFile.GetString(nodeProp));
+                    m_parameter = asPredictand::StringToParameterEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_unit = asDataPredictand::StringToUnitEnum(xmlFile.GetString(nodeProp));
+                    m_unit = asPredictand::StringToUnitEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_temporalResolution = asDataPredictand::StringToTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                    m_temporalResolution = asPredictand::StringToTemporalResolutionEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_spatialAggregation = asDataPredictand::StringToSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                    m_spatialAggregation = asPredictand::StringToSpatialAggregationEnum(xmlFile.GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
                     m_timeZoneHours = xmlFile.GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
@@ -176,34 +176,34 @@ bool asCatalogPredictands::Load()
 
     // Get the timestep
     switch (m_temporalResolution) {
-        case (asDataPredictand::Daily):
+        case (asPredictand::Daily):
             m_timeStepHours = 24.0;
             break;
-        case (asDataPredictand::SixHourly):
+        case (asPredictand::SixHourly):
             m_timeStepHours = 6.0;
             break;
-        case (asDataPredictand::Hourly):
+        case (asPredictand::Hourly):
             m_timeStepHours = 1.0;
             break;
-        case (asDataPredictand::OneHourlyMTW):
+        case (asPredictand::OneHourlyMTW):
             m_timeStepHours = 1.0;
             break;
-        case (asDataPredictand::ThreeHourlyMTW):
+        case (asPredictand::ThreeHourlyMTW):
             m_timeStepHours = 3.0;
             break;
-        case (asDataPredictand::SixHourlyMTW):
+        case (asPredictand::SixHourlyMTW):
             m_timeStepHours = 6.0;
             break;
-        case (asDataPredictand::TwelveHourlyMTW):
+        case (asPredictand::TwelveHourlyMTW):
             m_timeStepHours = 12.0;
             break;
-        case (asDataPredictand::TwoDays):
+        case (asPredictand::TwoDays):
             m_timeStepHours = 48.0;
             break;
-        case (asDataPredictand::ThreeDays):
+        case (asPredictand::ThreeDays):
             m_timeStepHours = 72.0;
             break;
-        case (asDataPredictand::Weekly):
+        case (asPredictand::Weekly):
             m_timeStepHours = 168.0;
             break;
         default:

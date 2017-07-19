@@ -166,12 +166,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
             if (!ParseAnalogValuesParams(fileParams, nodeProcess))
                 return false;
 
-        } else if (nodeProcess->GetName() == "analog_forecast_score") {
-            if (!ParseForecastScore(fileParams, nodeProcess))
-                return false;
-
-        } else if (nodeProcess->GetName() == "analog_forecast_score_final") {
-            if (!ParseForecastScoreFinal(fileParams, nodeProcess))
+        } else if (nodeProcess->GetName() == "evaluation") {
+            if (!ParseScore(fileParams, nodeProcess))
                 return false;
 
         } else {
@@ -721,36 +717,22 @@ bool asParametersOptimization::ParseAnalogValuesParams(asFileParametersOptimizat
     return true;
 }
 
-bool
-asParametersOptimization::ParseForecastScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess)
+bool asParametersOptimization::ParseScore(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "score") {
-            if (!SetForecastScoreName(fileParams.GetString(nodeParamBlock)))
+            if (!SetScoreName(fileParams.GetString(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "threshold") {
-            SetForecastScoreThreshold(fileParams.GetFloat(nodeParamBlock));
+            SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
-            SetForecastScoreQuantile(fileParams.GetFloat(nodeParamBlock));
+            SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
+        } else if (nodeParamBlock->GetName() == "time_array") {
+            if (!SetScoreTimeArrayMode(fileParams.GetString(nodeParamBlock)))
+                return false;
         } else if (nodeParamBlock->GetName() == "postprocessing") {
             wxLogError(_("The postptocessing is not yet fully implemented."));
-        } else {
-            fileParams.UnknownNode(nodeParamBlock);
-        }
-        nodeParamBlock = nodeParamBlock->GetNext();
-    }
-    return true;
-}
-
-bool asParametersOptimization::ParseForecastScoreFinal(asFileParametersOptimization &fileParams,
-                                                       const wxXmlNode *nodeProcess)
-{
-    wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
-    while (nodeParamBlock) {
-        if (nodeParamBlock->GetName() == "time_array") {
-            if (!SetForecastScoreTimeArrayMode(fileParams.GetString(nodeParamBlock)))
-                return false;
         } else {
             fileParams.UnknownNode(nodeParamBlock);
         }

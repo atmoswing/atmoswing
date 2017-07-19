@@ -164,8 +164,7 @@ void asFileNetcdf::DefDim(const wxString &dimName, const size_t &dimSize)
     }
 }
 
-void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &varSize,
-                          const vstds &dimNames)
+void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &varSize, const vstds &dimNames)
 {
     wxASSERT(m_opened);
 
