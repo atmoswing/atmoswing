@@ -65,8 +65,11 @@ public:
     static bool GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters &params,
                                  asResultsValues &results);
 
-    static void InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float score, int counter, int iTimeArch,
+    static void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
                                a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
+
+    static void InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
+                                          a1f &scoreArrayOneDay, a1f &dateArrayOneDay);
 
     static int FindNextDate(asTimeArray &dateArray, a1d &timeData, int iTimeStart, int iDate);
 

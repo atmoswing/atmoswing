@@ -43,7 +43,7 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> pred
                                                  std::vector<asCriteria *> criteria, asParameters &params, int step,
                                                  vpa2f &vTargData, vpa2f &vArchData, a1i &vRowsNb, a1i &vColsNb,
                                                  int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-                                                 bool *containsNaNs)
+                                                 bool *containsNaNs, bool allowDuplicateDates)
         : asThread(),
           m_pPredictorsArchive(predictorsArchive),
           m_pPredictorsTarget(predictorsTarget),
@@ -58,7 +58,8 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> pred
           m_vRowsNb(vRowsNb),
           m_vColsNb(vColsNb),
           m_pFinalAnalogsCriteria(finalAnalogsCriteria),
-          m_pFinalAnalogsDates(finalAnalogsDates)
+          m_pFinalAnalogsDates(finalAnalogsDates),
+          m_allowDuplicateDates(allowDuplicateDates)
 {
     m_type = asThread::ProcessorGetAnalogsDates;
     m_step = step;
@@ -173,8 +174,19 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                             *m_pContainsNaNs = true;
                         }
 
-                        asProcessor::InsertInArrays(isAsc, analogsNb, timeArchiveData, thisScore, counter, iTimeArch,
-                                       scoreArrayOneDay, dateArrayOneDay);
+                        // Avoid duplicate analog dates
+                        if (!m_allowDuplicateDates && iMem > 0) {
+                            if (counter <= analogsNb - 1) {
+                                wxFAIL;
+                                wxLogError(_("It should not happen that the array of analogue dates is not full when adding members."));
+                                return (wxThread::ExitCode) 1;
+                            }
+                            asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float) timeArchiveData[iTimeArch],
+                                                                   thisScore, scoreArrayOneDay, dateArrayOneDay);
+                        } else {
+                            asProcessor::InsertInArrays(isAsc, analogsNb, (float) timeArchiveData[iTimeArch], thisScore,
+                                                        counter, scoreArrayOneDay, dateArrayOneDay);
+                        }
 
                         counter++;
                     } else {

@@ -65,6 +65,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
     bool parallelEvaluations;
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, true);
+    bool allowDuplicateDates;
+    pConfig->Read("/Optimizer/AllowDuplicateDates", &allowDuplicateDates, false);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
@@ -181,7 +183,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                                               params, step, vTargData, vArchData,
                                                                               vRowsNb, vColsNb, start, end,
                                                                               &finalAnalogsCriteria, &finalAnalogsDates,
-                                                                              flag);
+                                                                              flag, allowDuplicateDates);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -519,7 +521,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         // Reset the index start target
                         int iTimeArchStart = 0;
 
-                        // Loop through the datearray for candidate data
+                        // Loop through the date array for candidate data
                         for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
 
                             int iTimeArchRelative = FindNextDate(dateArrayArchiveSelection, timeArchiveData,
@@ -556,8 +558,19 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                  asTime::GetStringTime(dateArrayArchiveSelection[iDateArch]));
                                 }
 
-                                InsertInArrays(isAsc, analogsNb, timeArchiveData, thisScore, counter, iTimeArch,
-                                               scoreArrayOneDay, dateArrayOneDay);
+                                // Avoid duplicate analog dates
+                                if (!allowDuplicateDates && iMem > 0) {
+                                    if (counter <= analogsNb - 1) {
+                                        wxFAIL;
+                                        wxLogError(_("It should not happen that the array of analogue dates is not full when adding members."));
+                                        return false;
+                                    }
+                                    InsertInArraysNoDuplicate(isAsc, analogsNb, (float) timeArchiveData[iTimeArch],
+                                                              thisScore, scoreArrayOneDay, dateArrayOneDay);
+                                } else {
+                                    InsertInArrays(isAsc, analogsNb, (float) timeArchiveData[iTimeArch], thisScore,
+                                                   counter, scoreArrayOneDay, dateArrayOneDay);
+                                }
 
                                 counter++;
                             } else {
@@ -619,32 +632,30 @@ int asProcessor::FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int
     return asTools::SortedArraySearch(&timeData[iTimeStart], &timeData[timeData.size() - 1], dateArray[iDate], 0.01);
 }
 
-void asProcessor::InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchiveData, float score, int counter,
-                                 int iTimeArch, a1f &scoreArrayOneDay, a1f &dateArrayOneDay)
+void asProcessor::InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,
+                                 a1f &scoreArrayOneDay, a1f &dateArrayOneDay)
 {
     // Check if the array is already full
     if (counter > analogsNb - 1) {
         if (isAsc) {
             if (score < scoreArrayOneDay[analogsNb - 1]) {
                 asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Asc, score,
-                                            (float) timeArchiveData[iTimeArch]);
+                                            &dateArrayOneDay[analogsNb - 1], Asc, score, analogDate);
             }
         } else {
             if (score > scoreArrayOneDay[analogsNb - 1]) {
                 asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Desc, score,
-                                            (float) timeArchiveData[iTimeArch]);
+                                            &dateArrayOneDay[analogsNb - 1], Desc, score, analogDate);
             }
         }
     } else if (counter < analogsNb - 1) {
         // Add score and date to the vectors
         scoreArrayOneDay[counter] = score;
-        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+        dateArrayOneDay[counter] = analogDate;
     } else if (counter == analogsNb - 1) {
         // Add score and date to the vectors
         scoreArrayOneDay[counter] = score;
-        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+        dateArrayOneDay[counter] = analogDate;
 
         // Sort both scores and dates arrays
         if (isAsc) {
@@ -655,6 +666,52 @@ void asProcessor::InsertInArrays(bool isAsc, int analogsNb, const a1d &timeArchi
                                 &dateArrayOneDay[analogsNb - 1], Desc);
         }
     }
+}
+
+void asProcessor::InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float analogDate, float score,
+                                            a1f &scoreArrayOneDay, a1f &dateArrayOneDay)
+{
+
+    if (isAsc) {
+        if (score < scoreArrayOneDay[analogsNb - 1]) {
+
+            // Look for duplicate analogue date
+            for (int i = 0; i < analogsNb; ++i) {
+                if (dateArrayOneDay[i] == analogDate) {
+                    if (score < scoreArrayOneDay[i]) {
+                        dateArrayOneDay[i] = analogDate;
+                        scoreArrayOneDay[i] = score;
+                        asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                            &dateArrayOneDay[analogsNb - 1], Asc);
+                    }
+                    return;
+                }
+            }
+
+            asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                        &dateArrayOneDay[analogsNb - 1], Asc, score, analogDate);
+        }
+    } else {
+        if (score > scoreArrayOneDay[analogsNb - 1]) {
+
+            // Look for duplicate analogue date
+            for (int i = 0; i < analogsNb; ++i) {
+                if (dateArrayOneDay[i] == analogDate) {
+                    if (score > scoreArrayOneDay[i]) {
+                        dateArrayOneDay[i] = analogDate;
+                        scoreArrayOneDay[i] = score;
+                        asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                            &dateArrayOneDay[analogsNb - 1], Desc);
+                    }
+                    return;
+                }
+            }
+
+            asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                        &dateArrayOneDay[analogsNb - 1], Desc, score, analogDate);
+        }
+    }
+
 }
 
 bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
