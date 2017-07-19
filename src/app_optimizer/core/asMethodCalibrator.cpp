@@ -1828,31 +1828,34 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
         return false;
     }
 
+    // Set the maximum and let play with the analogs nb on the score (faster)
+    params.SetAnalogsNumber(iStep, analogsNbVect[rowEnd]);
+
+    // Process first the dates and the values
+    bool containsNaNs = false;
+    if (iStep == 0) {
+        if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+            return false;
+    } else {
+        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+            return false;
+    }
+    if (containsNaNs) {
+        wxLogError(_("The dates selection contains NaNs"));
+        return false;
+    }
+
+    asResultsDates anaDatesTmp(anaDates);
+    a2f dates = anaDates.GetAnalogsDates();
+
     // If at the end of the chain
     if (iStep == params.GetStepsNb() - 1) {
-        // Set the maximum and let play with the analogs nb on the score (faster)
-        params.SetAnalogsNumber(iStep, analogsNbVect[rowEnd]);
 
-        // Process first the dates and the values
-        bool containsNaNs = false;
-        if (iStep == 0) {
-            if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
-                return false;
-        } else {
-            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
-                return false;
-        }
-        if (containsNaNs) {
-            wxLogError(_("The dates selection contains NaNs"));
-            return false;
-        }
         if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
             return false;
 
         asResultsScores anaScores;
         asResultsTotalScore anaScoreFinal;
-        asResultsDates anaDatesTmp(anaDates);
-        a2f dates = anaDates.GetAnalogsDates();
 
         for (int i = 0; i <= rowEnd; i++) {
             params.SetAnalogsNumber(iStep, analogsNbVect[i]);
@@ -1874,30 +1877,18 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
         }
 
     } else {
-        int nextStep = iStep + 1;
-
         for (int i = 0; i <= rowEnd; i++) {
             params.SetAnalogsNumber(iStep, analogsNbVect[i]);
 
             // Fixes and checks
             params.FixAnalogsNb();
 
-            // Process the dates and the values
-            bool containsNaNs = false;
-            if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
-                    return false;
-            } else {
-                if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
-                    return false;
-            }
-            if (containsNaNs) {
-                wxLogError(_("The dates selection contains NaNs"));
-                return false;
-            }
+            // Extract analogs dates from former results
+            a2f subDates = dates.leftCols(params.GetAnalogsNumber(iStep));
+            anaDatesTmp.SetAnalogsDates(subDates);
 
             // Continue
-            if (!SubProcessAnalogsNumber(params, anaDates, nextStep))
+            if (!SubProcessAnalogsNumber(params, anaDatesTmp, iStep + 1))
                 return false;
         }
     }
