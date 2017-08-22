@@ -399,7 +399,7 @@ bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibratio
         if (nodeParamBlock->GetName() == "predictand") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
-                if (nodeParam->GetName() == "station_id") {
+                if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
                     if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
