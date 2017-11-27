@@ -375,6 +375,12 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
             return false;
         }
 
+        // Transform data
+        if (!TransformData(compositeData)) {
+            wxFAIL;
+            return false;
+        }
+
         // Merge the composites into m_data
         if (!MergeComposites(compositeData, dataArea)) {
             wxLogError(_("Merging the composites failed."));
@@ -489,12 +495,6 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompo
     ncFile.Close();
     ThreadsManager().CritSectionNetCDF().Leave();
 
-    // Transform data
-    if (!TransformData(compositeData)) {
-        wxFAIL;
-        return false;
-    }
-
     return true;
 }
 
@@ -551,12 +551,6 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaComposi
     // Close the nc file
     gbFile.Close();
     ThreadsManager().CritSectionGrib().Leave();
-
-    // Transform data
-    if (!TransformData(compositeData)) {
-        wxFAIL;
-        return false;
-    }
 
     return true;
 }
