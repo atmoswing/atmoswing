@@ -7,7 +7,7 @@
 
 AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day. This method is used in different institutions for hydro-meteorological forecasting in the framework of real-time flood management or electricity production.
 
-The model is standalone and automatically handles the download of the GFS global numerical weather prediction forecasts on which the analogy is processed. The development aimed at creating a very modular object oriented tool that can be used to parameterize any known version of the analogue method. There is no limitation on the number of analogy steps, neither on the amount of atmospheric variables used as input.
+The model is standalone and automatically handles the download of the GFS global numerical weather prediction forecasts on which the analogy is processed. The development aimed at creating a very modular object-oriented tool that can be used to parameterize any known version of the analogue method. There is no limitation on the number of analogy steps, neither on the number of atmospheric variables used as input.
 
 The software is written in C++, is cross-platform and open source (under the Common Development and Distribution License Version 1.0 (CDDL-1.0), which can be found in the accompanying license.txt file).
 
@@ -25,12 +25,11 @@ Additionally, multiple unit tests are available and are built along with the sof
 
 The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
 
-1. [Get the required **libraries**](https://bitbucket.org/atmoswing/atmoswing/wiki/Libraries)
-2. [Get the **source code**](https://bitbucket.org/atmoswing/atmoswing/wiki/Source%20code)
-3. [**Configure / build** with CMake](https://bitbucket.org/atmoswing/atmoswing/wiki/Build)
-4. [**Compile**](https://bitbucket.org/atmoswing/atmoswing/wiki/Compile)
-5. [**Test**](https://bitbucket.org/atmoswing/atmoswing/wiki/Test)
-6. [**Install**](https://bitbucket.org/atmoswing/atmoswing/wiki/Install)
+1. [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
+3. [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
+4. [**Compile**](https://github.com/atmoswing/atmoswing/wiki/Compile)
+5. [**Test**](https://github.com/atmoswing/atmoswing/wiki/Test)
+6. [**Install**](https://github.com/atmoswing/atmoswing/wiki/Install)
 
 ## How to contribute ##
 
