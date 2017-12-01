@@ -1,16 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
-
-#### HUNTER
-option(DOWNLOAD_LIBRARIES "Do you want to download the required libraries ?" OFF)
-if (DOWNLOAD_LIBRARIES)
-    include(build/cmake/HunterGate.cmake)
-    set(HUNTER_ROOT ${CMAKE_BINARY_DIR}/hunter)
-    HunterGate(
-            URL "https://github.com/ruslo/hunter/archive/v0.19.14.tar.gz"
-            SHA1 "d4216c82be9c273ce2567b35f75356da045b884f"
-            FILEPATH "/home/phorton/Development/atmoswing/build/cmake/HunterConfig.cmake"
-    )
-endif (DOWNLOAD_LIBRARIES)
+cmake_minimum_required(VERSION 2.8)
 
 #### PROJECT
 if (UNIX)

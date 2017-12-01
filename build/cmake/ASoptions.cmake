@@ -22,9 +22,9 @@ set(EIGEN_VERSION 3.3.4)
 set(GDAL_VERSION 2.2.1)
 
 # Libraries paths
-if (BUILD_VIEWER AND NOT DOWNLOAD_LIBRARIES)
-    set(GDAL_ROOT CACHE PATH "Path to installed Gdal libraries (optional - will be downloaded if not provided)")
-endif (BUILD_VIEWER AND NOT DOWNLOAD_LIBRARIES)
+if (BUILD_VIEWER)
+    set(GDAL_ROOT CACHE PATH "Path to installed Gdal libraries")
+endif (BUILD_VIEWER)
 
 # MSYS condition
 if (WIN32)

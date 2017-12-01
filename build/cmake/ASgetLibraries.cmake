@@ -2,151 +2,63 @@
 include(ExternalProject)
 set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
 
+# WxWidgets (adv lib nedded for the caldendar widget)
+mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
+mark_as_advanced(wxWidgets_with_GUI)
+if (USE_MSYS2)
+    set(wxWidgets_CONFIG_OPTIONS --prefix=${MINGW_PATH})
+endif (USE_MSYS2)
+if (USE_GUI)
+    set(wxWidgets_with_GUI TRUE)
+    find_package(wxWidgets REQUIRED core base adv xml net)
+else (USE_GUI)
+    set(wxWidgets_with_GUI FALSE)
+    find_package(wxWidgets REQUIRED base xml net)
+endif (USE_GUI)
+include("${wxWidgets_USE_FILE}")
+include_directories(${wxWidgets_INCLUDE_DIRS})
 
-# Donwload libraries
-if (DOWNLOAD_LIBRARIES)
-
-    # PNG
-    hunter_add_package(PNG)
-    find_package(PNG CONFIG REQUIRED)
-
-    # Jpeg
-    hunter_add_package(Jpeg)
-    find_package(JPEG CONFIG REQUIRED)
-
-    # WxWidgets
-    hunter_add_package(wxWidgets)
-    if (USE_MSYS2)
-        set(wxWidgets_CONFIG_OPTIONS --prefix=${MINGW_PATH})
-    endif (USE_MSYS2)
-    if (USE_GUI)
-        set(wxWidgets_with_GUI TRUE)
-        find_package(wxWidgets REQUIRED core base adv xml net)
-    else (USE_GUI)
-        set(wxWidgets_with_GUI FALSE)
-        find_package(wxWidgets REQUIRED base xml net)
-    endif (USE_GUI)
-    include(${wxWidgets_USE_FILE})
-    include_directories(${WXWIDGETS_ROOT}/include)
-
-    # OpenSSL
-    hunter_add_package(OpenSSL)
+# libcURL
+if (BUILD_FORECASTER OR BUILD_VIEWER)
+    mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+    mark_as_advanced(CLEAR CURL_LIBRARY)
     find_package(OpenSSL REQUIRED)
-    include_directories("${OPENSSL_INCLUDE_DIR}")
+    find_package(CURL REQUIRED)
+    include_directories(${CURL_INCLUDE_DIRS})
+else (BUILD_FORECASTER OR BUILD_VIEWER)
+    # unset for wxhgversion
+    unset(CURL_INCLUDE_DIR CACHE)
+    unset(CURL_LIBRARY CACHE)
+endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
-    # libcURL
-    configure_file(build/cmake/BuildCurl.txt ${CMAKE_BINARY_DIR}/libcurl/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libcurl" )
-    include(FindLocalCURL)
+# PNG
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
 
-    # HDF5
-    configure_file(build/cmake/BuildHdf5.txt ${CMAKE_BINARY_DIR}/libhdf5/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libhdf5" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libhdf5" )
-    if (WIN32)
-        if (${STATICONLYLIBRARIES})
-            set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF")
-        endif ()
-        set(HDF5_DIR "${EXTERNAL_DIR}/cmake")
-    else (WIN32)
-        if (${STATICONLYLIBRARIES})
-            set(BUILD_OPTIONS "${BUILD_OPTIONS} -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_ANSI_CFLAGS:STRING=-fPIC")
-        endif ()
-        set(HDF5_DIR ${EXTERNAL_DIR}/share/cmake)
-        set(ENV{HDF5_ROOT} "${EXTERNAL_DIR}")
-        set(HDF5_USE_STATIC_LIBRARIES ON)
-        #set (ENV{LD_LIBRARY_PATH} "${EXTERNAL_DIR}/lib")
-    endif (WIN32)
-    find_package(HDF5 REQUIRED C HL)
+# NetCDF (has to be before GDAL)
+mark_as_advanced(CLEAR NETCDF_INCLUDE_DIRECTORIES)
+mark_as_advanced(CLEAR NETCDF_C_LIBRARY)
+find_package(NetCDF 4 MODULE REQUIRED)
+include_directories(${NETCDF_INCLUDE_DIRECTORIES})
 
-    # NetCDF
-    configure_file(build/cmake/BuildNetcdf.txt ${CMAKE_BINARY_DIR}/libnetcdf/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libnetcdf" )
-    find_package(netCDF 4 REQUIRED PATHS ${EXTERNAL_DIR} NO_SYSTEM_ENVIRONMENT_PATH)
+# Jasper
+find_package(Jasper REQUIRED)
+include_directories(${JASPER_INCLUDE_DIR})
+include_directories(${JPEG_INCLUDE_DIR})
 
-    # Jasper
-    configure_file(build/cmake/BuildJasper.txt ${CMAKE_BINARY_DIR}/libjasper/CMakeLists.txt)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
-    execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libjasper" )
-    find_library(JASPER_LIBRARIES NAMES jasper libjasper PATHS ${EXTERNAL_DIR}/lib NO_DEFAULT_PATH)
-
-    # GDAL
-    if (BUILD_VIEWER)
-        configure_file(build/cmake/BuildGdal.txt ${CMAKE_BINARY_DIR}/libgdal/CMakeLists.txt)
-        execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
-        execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/libgdal" )
-        find_package(GDAL 2 REQUIRED PATHS ${EXTERNAL_DIR} NO_DEFAULT_PATH)
-    else (BUILD_VIEWER)
-        # unset for wxhgversion
-        unset(GDAL_INCLUDE_DIR CACHE)
-        unset(GDAL_LIBRARY CACHE)
-    endif (BUILD_VIEWER)
-    set(GDAL_ROOT ${EXTERNAL_DIR})
-
-else(DOWNLOAD_LIBRARIES)
-
-    # WxWidgets (adv lib nedded for the caldendar widget)
-    mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
-    mark_as_advanced(wxWidgets_with_GUI)
-    if (USE_MSYS2)
-        set(wxWidgets_CONFIG_OPTIONS --prefix=${MINGW_PATH})
-    endif (USE_MSYS2)
-    if (USE_GUI)
-        set(wxWidgets_with_GUI TRUE)
-        find_package(wxWidgets REQUIRED core base adv xml net)
-    else (USE_GUI)
-        set(wxWidgets_with_GUI FALSE)
-        find_package(wxWidgets REQUIRED base xml net)
-    endif (USE_GUI)
-    include("${wxWidgets_USE_FILE}")
-    include_directories(${wxWidgets_INCLUDE_DIRS})
-
-    # libcURL
-    if (BUILD_FORECASTER OR BUILD_VIEWER)
-        mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-        mark_as_advanced(CLEAR CURL_LIBRARY)
-        find_package(OpenSSL REQUIRED)
-        find_package(CURL REQUIRED)
-        include_directories(${CURL_INCLUDE_DIRS})
-    else (BUILD_FORECASTER OR BUILD_VIEWER)
-        # unset for wxhgversion
-        unset(CURL_INCLUDE_DIR CACHE)
-        unset(CURL_LIBRARY CACHE)
-    endif (BUILD_FORECASTER OR BUILD_VIEWER)
-
-    # PNG
-    find_package(PNG REQUIRED)
-    include_directories(${PNG_INCLUDE_DIRS})
-
-    # NetCDF (has to be before GDAL)
-    mark_as_advanced(CLEAR NETCDF_INCLUDE_DIRECTORIES)
-    mark_as_advanced(CLEAR NETCDF_C_LIBRARY)
-    find_package(NetCDF 4 MODULE REQUIRED)
-    include_directories(${NETCDF_INCLUDE_DIRECTORIES})
-
-    # Jasper
-    find_package(Jasper REQUIRED)
-    include_directories(${JASPER_INCLUDE_DIR})
-    include_directories(${JPEG_INCLUDE_DIR})
-
-    # GDAL
-    if (BUILD_VIEWER)
-        if (GDAL_ROOT)
-            message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
-            set(ENV{GDAL_ROOT} ${GDAL_ROOT})
-        endif ()
-        find_package(GDAL 2 REQUIRED)
-        include_directories(${GDAL_INCLUDE_DIRS})
-    else (BUILD_VIEWER)
-        # unset for wxhgversion
-        unset(GDAL_INCLUDE_DIR CACHE)
-        unset(GDAL_LIBRARY CACHE)
-    endif (BUILD_VIEWER)
-
-
-endif(DOWNLOAD_LIBRARIES)
+# GDAL
+if (BUILD_VIEWER)
+    if (GDAL_ROOT)
+        message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
+        set(ENV{GDAL_ROOT} ${GDAL_ROOT})
+    endif ()
+    find_package(GDAL 2 REQUIRED)
+    include_directories(${GDAL_INCLUDE_DIRS})
+else (BUILD_VIEWER)
+    # unset for wxhgversion
+    unset(GDAL_INCLUDE_DIR CACHE)
+    unset(GDAL_LIBRARY CACHE)
+endif (BUILD_VIEWER)
 
 # Eigen
 ExternalProject_Add(eigen
@@ -272,3 +184,4 @@ endif (USE_CODECOV)
 
 include_directories(${EXTERNAL_DIR}/include)
 link_directories(${EXTERNAL_DIR}/lib)
+link_directories(${EXTERNAL_DIR}/lib64)
