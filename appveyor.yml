@@ -1,0 +1,49 @@
+version: 1.6.{build}
+
+image: Visual Studio 2017
+
+environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  WXWIN: C:\projects\libs\wxwidgets
+  CFLAGS: /MP
+  CXXFLAGS: /MP
+  
+cache:
+  - C:\projects\libs
+  
+install:
+  - ps: ci/appveyor/install.ps1
+  
+build_script:
+  - echo Running cmake...
+  - cd C:\projects\atmoswing
+  - mkdir bin
+  - cd bin
+  - cmake -G "Visual Studio 15 2017 Win64" -DBUILD_FORECASTER=ON -DwxWidgets_ROOT_DIR=D:\Development\atmoswing-libs\wxwidgets -DwxWidgets_LIB_DIR=D:\Development\atmoswing-libs\wxwidgets\lib\vc_x64_lib -DwxWidgets_CONFIGURATION=mswu ..
+  - cmake --build . --config relwithdebinfo > nul
+
+test_script:
+  - cd C:\projects\atmoswing\bin\tests
+  - ctest -V
+
+after_test:
+  - cd C:\projects\atmoswing\bin
+  - C:\projects\cmake\bin\cpack.exe -C relwithdebinfo -G ZIP
+  - C:\projects\cmake\bin\cpack.exe -C relwithdebinfo -G NSIS
+  - cd C:\projects\atmoswing
+  - copy bin\*win64.exe .\
+  - copy bin\*win64.zip .\
+  - for %%f in (*win64.exe) do (copy /b bin\RelWithDebInfo\AtmoSwing.pdb %%f.pdb)
+
+artifacts:
+  - path: '*win64.exe'
+    name: AtmoSwingInstaller
+    type: file
+
+  - path: '*win64.zip'
+    name: AtmoSwingInstallerZip
+    type: zip
+
+  - path: '*win64.exe.pdb'
+    name: AtmoSwingPdb
+    type: file
