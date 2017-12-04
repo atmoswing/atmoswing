@@ -28,7 +28,7 @@ endif (BUILD_VIEWER)
 
 # MSYS condition
 if (WIN32)
-    option(USE_MSYS2 "Do you want to use MSYS2 ?" ON)
+    option(USE_MSYS2 "Do you want to use MSYS2 ?" OFF)
     if(USE_MSYS2)
         set(MINGW false)
         set(MSYS true)
