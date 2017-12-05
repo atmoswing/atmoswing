@@ -24,6 +24,7 @@ $ZLIB_URL="http://www.zlib.net/zlib1211.zip"
 $HDF5_URL="http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/CMake-hdf5-1.10.1.zip"
 $NETCDF_URL="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.5.0.zip"
 $GDAL_URL="http://download.osgeo.org/gdal/2.2.3/gdal223.zip"
+$JASPER_URL="http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/jasper-1.900.1.zip"
 
 
 # Setup VS environment
@@ -222,4 +223,52 @@ if(!(Test-Path -Path "$LIB_DIR\gdal") -Or $REBUILD_GDAL) {
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR\gdal" CURL_DIR="$LIB_DIR\curl" CURL_INC="-I$LIB_DIR_REV/curl/include" CURL_LIB="$LIB_DIR_REV/curl/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR\gdal" CURL_DIR="$LIB_DIR\curl" CURL_INC="-I$LIB_DIR_REV/curl/include" CURL_LIB="$LIB_DIR_REV/curl/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB install > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR\gdal" CURL_DIR="$LIB_DIR\curl" CURL_INC="-I$LIB_DIR_REV/curl/include" CURL_LIB="$LIB_DIR_REV/curl/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB devinstall > $null
+}
+
+# Install Jasper
+if(!(Test-Path -Path "$LIB_DIR\jasper") -Or $REBUILD_PROJ) {
+  Write-Host "`nBuilding Jasper" -ForegroundColor Yellow
+  cd $TMP_DIR
+  if(Test-Path -Path "$LIB_DIR\jasper") {
+    Remove-Item "$LIB_DIR\jasper" -Force -Recurse
+  }
+  mkdir "$LIB_DIR\jasper" > $null
+  if ($ON_APPVEYOR) {
+    appveyor DownloadFile $JASPER_URL -FileName jasper.zip > $null
+  } else {
+    Invoke-WebRequest -Uri $JASPER_URL -OutFile jasper.zip
+  }
+  7z x jasper.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\jasper-*" "$TMP_DIR\jasper"
+  cd "$TMP_DIR\jasper\src\msvc"
+
+
+msdev jasper.dsp /MAKE "libjasper – Win32 Debug" /REBUILD
+
+
+  nmake -f Makefile.in INSTDIR="$LIB_DIR\jasper" > $null
+  nmake -f makefile.vc INSTDIR="$LIB_DIR\jasper" install-all > $null
+}
+
+# Install ecCodes (DOES NOT WORK)
+if(!(Test-Path -Path "$LIB_DIR\eccodes") -Or $REBUILD_ECCODES) {
+  Write-Host "`nBuilding ecCodes" -ForegroundColor Yellow
+  cd $TMP_DIR
+  if(Test-Path -Path "$LIB_DIR\eccodes") {
+    Remove-Item "$LIB_DIR\eccodes" -Force -Recurse
+  }
+  mkdir "$LIB_DIR\eccodes" > $null
+  if ($ON_APPVEYOR) {
+    appveyor DownloadFile $ECCODES_URL -FileName eccodes.tar.gz > $null
+  } else {
+    Invoke-WebRequest -Uri $ECCODES_URL -OutFile eccodes.tar.gz
+  }
+  7z x eccodes.tar.gz -o"$TMP_DIR" > $null
+  7z x eccodes.tar -o"$TMP_DIR" > $null
+  move "$TMP_DIR\eccodes-*" "$TMP_DIR\eccodes"
+  cd "$TMP_DIR\eccodes"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\eccodes" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DDISABLE_OS_CHECK=ON -DENABLE_FORTRAN=OFF -DENABLE_EXTRA_TESTS=OFF > $null
+  cmake --build . --config release --target eccodes > $null
 }
