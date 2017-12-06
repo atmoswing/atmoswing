@@ -290,7 +290,18 @@ a1f asScore::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElem
     return a1f();
 }
 
-bool asScore::CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+bool asScore::CheckObservedValue(float ObservedVal) const
+{
+    // Check that the observed value is not a NaN
+    if (asTools::IsNaN(ObservedVal)) {
+        wxLogVerbose(_("The observed value is a NaN for the score calculation."));
+        return false;
+    }
+
+    return true;
+}
+
+bool asScore::CheckVectorLength(const a1f &ForcastVals, int nbElements) const
 {
     // Check the element numbers vs vector length
     wxASSERT_MSG(ForcastVals.rows() >= nbElements,
@@ -298,12 +309,6 @@ bool asScore::CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbEleme
     wxASSERT(nbElements > 1);
     if (ForcastVals.rows() < nbElements) {
         wxLogError(_("The required elements number is above the vector length in the score calculation."));
-        return false;
-    }
-
-    // Check that the observed value is not a NaN
-    if (asTools::IsNaN(ObservedVal)) {
-        wxLogWarning(_("The observed value is a NaN for the CRPS score calculation."));
         return false;
     }
 

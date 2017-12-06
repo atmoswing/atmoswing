@@ -49,9 +49,12 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the DF0 processing function"));
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 

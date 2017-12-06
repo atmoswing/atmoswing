@@ -1182,9 +1182,6 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
                         }
                     } else {
                         for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
-                            wxASSERT(!asTools::IsNaN(predictandDataNorm[iStat](predictandIndex)));
-                            wxASSERT(!asTools::IsNaN(predictandDataGross[iStat](predictandIndex)));
-                            wxASSERT(predictandDataNorm[iStat](predictandIndex) < 10000);
                             finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = predictandDataNorm[iStat](
                                     predictandIndex);
                             finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = predictandDataGross[iStat](
@@ -1211,12 +1208,6 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
 
 #ifndef UNIT_TESTING
 #ifdef _DEBUG
-        for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
-            wxASSERT(!asTools::HasNaN(&finalAnalogValuesNorm[iStat](iTargetDatenew, 0),
-                                      &finalAnalogValuesNorm[iStat](iTargetDatenew, analogsNb - 1)));
-            wxASSERT(!asTools::HasNaN(&finalAnalogValuesGross[iStat](iTargetDatenew, 0),
-                                      &finalAnalogValuesGross[iStat](iTargetDatenew, analogsNb - 1)));
-        }
         wxASSERT(!asTools::HasNaN(&finalAnalogCriteria(iTargetDatenew, 0),
                                   &finalAnalogCriteria(iTargetDatenew, analogsNb - 1)));
 #endif

@@ -50,6 +50,15 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_threshold));
 
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     // Create the container to sort the data
     a1f x(nbElements);
 

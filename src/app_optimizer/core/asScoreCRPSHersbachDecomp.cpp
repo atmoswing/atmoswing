@@ -56,12 +56,6 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &Forca
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
-        return a2f();
-    }
-
     // Create the container to sort the data
     a1f x = ForcastVals;
 
