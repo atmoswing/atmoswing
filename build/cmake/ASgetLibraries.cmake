@@ -40,10 +40,10 @@ if (UNIX)
 endif (UNIX)
 
 # NetCDF (has to be before GDAL)
-mark_as_advanced(CLEAR NETCDF_INCLUDE_DIRECTORIES)
-mark_as_advanced(CLEAR NETCDF_C_LIBRARY)
+mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
+mark_as_advanced(CLEAR NETCDF_LIBRARY)
 find_package(NetCDF 4 MODULE REQUIRED)
-include_directories(${NETCDF_INCLUDE_DIRECTORIES})
+include_directories(${NETCDF_INCLUDE_DIRS})
 
 # Jasper
 find_package(Jasper REQUIRED)

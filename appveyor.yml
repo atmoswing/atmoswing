@@ -19,8 +19,8 @@ build_script:
   - cd C:\projects\atmoswing
   - mkdir bin
   - cd bin
-  - cmake -G "Visual Studio 15 2017 Win64" -DBUILD_FORECASTER=ON -DwxWidgets_ROOT_DIR=D:\Development\atmoswing-libs\wxwidgets -DwxWidgets_LIB_DIR=D:\Development\atmoswing-libs\wxwidgets\lib\vc_x64_lib -DwxWidgets_CONFIGURATION=mswu ..
-  - cmake --build . --config relwithdebinfo > nul
+  - cmake -G "Visual Studio 15 2017 Win64" -DBUILD_FORECASTER=ON -DBUILD_OPTIMIZER=ON -DUSE_GUI=ON  -DCMAKE_PREFIX_PATH="C:\projects\libs\wxwidgets;C:\projects\libs\curl;C:\projects\libs\netcdf;C:\projects\libs\jpeg;C:\projects\libs\jasper" -DwxWidgets_CONFIGURATION=mswu ..
+  - cmake --build . --config release > nul
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
@@ -28,12 +28,12 @@ test_script:
 
 after_test:
   - cd C:\projects\atmoswing\bin
-  - C:\projects\cmake\bin\cpack.exe -C relwithdebinfo -G ZIP
-  - C:\projects\cmake\bin\cpack.exe -C relwithdebinfo -G NSIS
+  - C:\projects\cmake\bin\cpack.exe -C release -G ZIP
+  - C:\projects\cmake\bin\cpack.exe -C release -G NSIS
   - cd C:\projects\atmoswing
   - copy bin\*win64.exe .\
   - copy bin\*win64.zip .\
-  - for %%f in (*win64.exe) do (copy /b bin\RelWithDebInfo\AtmoSwing.pdb %%f.pdb)
+  - for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
 
 artifacts:
   - path: '*win64.exe'
