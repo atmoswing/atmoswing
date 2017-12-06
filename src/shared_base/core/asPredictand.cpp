@@ -680,15 +680,9 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
                                                          valTimeMinute, 0);
 
-                        // Check again date vector
-                        if (std::abs(dateData - m_time(timeIndex)) > 0.0001) {
-                            wxString errorMessage = wxString::Format(
-                                    _("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"),
-                                    dateData, asTime::GetStringTime(dateData, "DD.MM.YYYY"), m_time(timeIndex),
-                                    asTime::GetStringTime(m_time(timeIndex), "DD.MM.YYYY"),
-                                    currentData.GetStationFilename(stationIndex));
-                            wxLogError(_("The time value doesn't match: %s"), errorMessage);
-                            return false;
+                        // Find matching date
+                        while (dateData - m_time(timeIndex) > 0.0001) {
+                            timeIndex++;
                         }
                     }
 
@@ -755,15 +749,9 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                         double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
                                                          valTimeMinute, 0);
 
-                        // Check again date vector
-                        if (std::abs(dateData - m_time(timeIndex)) > 0.001) {
-                            wxString errorMessage = wxString::Format(
-                                    _("Value in data : %6.4f (%s), value in time array : %6.4f (%s). In file %s"),
-                                    dateData, asTime::GetStringTime(dateData, "DD.MM.YYYY"), m_time(timeIndex),
-                                    asTime::GetStringTime(m_time(timeIndex), "DD.MM.YYYY"),
-                                    currentData.GetStationFilename(stationIndex));
-                            wxLogError(_("The time value doesn't match: %s"), errorMessage);
-                            return false;
+                        // Find matching date
+                        while (dateData - m_time(timeIndex) > 0.0001) {
+                            timeIndex++;
                         }
                     }
 
