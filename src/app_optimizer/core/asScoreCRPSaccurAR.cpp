@@ -51,6 +51,15 @@ float asScoreCRPSaccurAR::Assess(float ObservedVal, const a1f &ForcastVals, int 
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     asScoreCRPSAR scoreCRPSAR = asScoreCRPSAR();
     float CRPS = scoreCRPSAR.Assess(ObservedVal, ForcastVals, nbElements);
     asScoreCRPSsharpAR scoreCRPSsharpnessAR = asScoreCRPSsharpAR();

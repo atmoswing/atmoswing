@@ -47,6 +47,15 @@ float asScoreRankHistogram::Assess(float ObservedVal, const a1f &ForcastVals, in
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     // Create the container to sort the data
     a1f x = ForcastVals;
 

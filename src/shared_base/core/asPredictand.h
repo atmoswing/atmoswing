@@ -50,7 +50,7 @@ public:
 
     enum Unit
     {
-        nb, mm, m, percent, degC, degK
+        nb, mm, m, in, percent, degC, degK
     };
 
     enum TemporalResolution

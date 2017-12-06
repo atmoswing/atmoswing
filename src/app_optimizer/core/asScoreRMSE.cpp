@@ -52,6 +52,15 @@ float asScoreRMSE::Assess(float ObservedVal, const a1f &ForcastVals, int nbEleme
     wxASSERT(m_quantile > 0);
     wxASSERT(m_quantile < 1);
 
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     // Create the container to sort the data
     a1f x(nbElements);
 

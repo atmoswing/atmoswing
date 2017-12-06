@@ -82,7 +82,9 @@ public:
 
     virtual a1f AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const;
 
-    bool CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const;
+    bool CheckObservedValue(float ObservedVal) const;
+
+    bool CheckVectorLength(const a1f &ForcastVals, int nbElements) const;
 
     int CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const;
 

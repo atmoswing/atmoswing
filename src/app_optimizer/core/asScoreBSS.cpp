@@ -50,8 +50,16 @@ float asScoreBSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-
     wxASSERT(m_scoreClimatology != 0);
+
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
     // First process the BS and then the skill score
     asScoreBS scoreBS = asScoreBS();

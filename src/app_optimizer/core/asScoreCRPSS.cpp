@@ -51,8 +51,16 @@ float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
 {
     wxASSERT(ForcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-
     wxASSERT(m_scoreClimatology != 0);
+
+    // Check inputs
+    if (!CheckObservedValue(ObservedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength( ForcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
     // First process the CRPS and then the skill score
     asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
@@ -66,9 +74,6 @@ float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
 
 bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
-
     // Containers for final results
     a1f scoresClimatology(refVals.size());
 
