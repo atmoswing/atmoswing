@@ -96,17 +96,15 @@ wxString asPredictand::ParameterEnumToString(asPredictand::Parameter parameter)
 asPredictand::Unit asPredictand::StringToUnitEnum(const wxString &unitStr)
 {
 
-    if (unitStr.CmpNoCase("nb") == 0) {
-        return nb;
-    } else if (unitStr.CmpNoCase("number") == 0) {
+    if (unitStr.CmpNoCase("nb") == 0 || unitStr.CmpNoCase("number") == 0) {
         return nb;
     } else if (unitStr.CmpNoCase("mm") == 0) {
         return mm;
     } else if (unitStr.CmpNoCase("m") == 0) {
         return m;
-    } else if (unitStr.CmpNoCase("percent") == 0) {
-        return percent;
-    } else if (unitStr.CmpNoCase("%") == 0) {
+    } else if (unitStr.CmpNoCase("inches") == 0 || unitStr.CmpNoCase("in")) {
+        return in;
+    } else if (unitStr.CmpNoCase("percent") == 0 || unitStr.CmpNoCase("%") == 0) {
         return percent;
     } else if (unitStr.CmpNoCase("degC") == 0) {
         return degC;
