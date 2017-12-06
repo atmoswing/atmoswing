@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<atmoswing version="1.0">
+  <pattern id="NCEI_CDO" name="NCEI Climate Data Online (www7.ncdc.noaa.gov/CDO/cdo)">
+    <structure_type>constant_width</structure_type>
+    <header_lines>1</header_lines>
+    <parse_time>1</parse_time>
+    <time>
+      <year char_start="15" char_end="18"/>
+      <month char_start="19" char_end="20"/>
+      <day char_start="21" char_end="22"/>
+    </time>
+    <data>
+      <value char_start="119" char_end="123"/>
+    </data>
+  </pattern>
+</atmoswing>
