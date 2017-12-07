@@ -8,12 +8,12 @@ $ON_APPVEYOR=$true
 
 # Force rebuilding some libraries
 $REBUILD_WX=$false
+$REBUILD_ZLIB=$false
 $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
 $REBUILD_CURL=$false
 $REBUILD_PROJ=$false
-$REBUILD_ZLIB=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
 $REBUILD_GDAL=$false
@@ -21,12 +21,12 @@ $REBUILD_GDAL=$false
 # Libraries URL
 $CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
 $WX_URL="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.zip"
+$ZLIB_URL="http://www.zlib.net/zlib1211.zip"
 $JPEG_URL="https://github.com/LuaDist/libjpeg/archive/master.zip"
-$PNG_URL="https://download.sourceforge.net/libpng/lpng1634.zip"
+$PNG_URL="https://sourceforge.net/code-snapshots/git/l/li/libpng/code.git/libpng-code-b78804f9a2568b270ebd30eca954ef7447ba92f7.zip"
 $JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.14.zip"
 $CURL_URL="https://github.com/curl/curl/archive/curl-7_54_1.zip"
 $PROJ_URL="https://github.com/OSGeo/proj.4/archive/4.9.3.zip"
-$ZLIB_URL="http://www.zlib.net/zlib1211.zip"
 $HDF5_URL="http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/CMake-hdf5-1.10.1.zip"
 $NETCDF_URL="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.5.0.zip"
 $GDAL_URL="http://download.osgeo.org/gdal/2.2.3/gdal223.zip"
@@ -104,6 +104,20 @@ if(!(Test-Path -Path "$LIB_DIR\wxwidgets") -Or $REBUILD_WX) {
 }
 $env:WXWIN = "$LIB_DIR\wxwidgets"
 
+# Install Zlib
+if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
+  Init-Build "zlib"
+  Download-Lib "zlib" $ZLIB_URL
+  7z x zlib.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\zlib-*" "$TMP_DIR\zlib"
+  cd "$TMP_DIR\zlib"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\zlib" > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+}
+
 # Install Jpeg
 if(!(Test-Path -Path "$LIB_DIR\jpeg") -Or $REBUILD_JPEG) {
   Init-Build "jpeg"
@@ -123,11 +137,11 @@ if(!(Test-Path -Path "$LIB_DIR\png") -Or $REBUILD_PNG) {
   Init-Build "png"
   Download-Lib "png" $PNG_URL
   7z x png.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\lpng*" "$TMP_DIR\png"
+  move "$TMP_DIR\libpng*" "$TMP_DIR\png"
   cd "$TMP_DIR\png"
   mkdir bld > $null
   cd bld
-  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\png" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
+  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\png" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR\zlib" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
@@ -168,20 +182,6 @@ if(!(Test-Path -Path "$LIB_DIR\proj") -Or $REBUILD_PROJ) {
   cd "$TMP_DIR\proj"
   nmake -f makefile.vc INSTDIR="$LIB_DIR\proj" > $null
   nmake -f makefile.vc INSTDIR="$LIB_DIR\proj" install-all > $null
-}
-
-# Install Zlib
-if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
-  Init-Build "zlib"
-  Download-Lib "zlib" $ZLIB_URL
-  7z x zlib.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\zlib-*" "$TMP_DIR\zlib"
-  cd "$TMP_DIR\zlib"
-  mkdir bld > $null
-  cd bld
-  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\zlib" > $null
-  cmake --build . --config release > $null
-  cmake --build . --config release --target INSTALL > $null
 }
 
 # Install HDF5
