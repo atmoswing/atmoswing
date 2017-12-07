@@ -19,7 +19,7 @@ build_script:
   - cd C:\projects\atmoswing
   - mkdir bin
   - cd bin
-  - cmake -G "Visual Studio 15 2017 Win64" -DBUILD_FORECASTER=ON -DBUILD_OPTIMIZER=ON -DUSE_GUI=ON  -DCMAKE_PREFIX_PATH="C:\projects\libs\wxwidgets;C:\projects\libs\curl;C:\projects\libs\netcdf;C:\projects\libs\jpeg;C:\projects\libs\jasper" -DwxWidgets_CONFIGURATION=mswu ..
+  - cmake -G "Visual Studio 15 2017 Win64" -DBUILD_FORECASTER=ON -DBUILD_OPTIMIZER=ON -DBUILD_VIEWER=ON -DUSE_GUI=ON  -DCMAKE_PREFIX_PATH="C:\projects\libs\wxwidgets;C:\projects\libs\curl;C:\projects\libs\netcdf;C:\projects\libs\jpeg;C:\projects\libs\png;C:\projects\libs\jasper;C:\projects\libs\gdal;C:\projects\libs\zlib" -DwxWidgets_CONFIGURATION=mswu ..
   - cmake --build . --config release > nul
 
 test_script:

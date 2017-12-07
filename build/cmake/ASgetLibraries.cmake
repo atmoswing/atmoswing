@@ -34,10 +34,9 @@ else (BUILD_FORECASTER OR BUILD_VIEWER)
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 # PNG
-if (UNIX)
-    find_package(PNG REQUIRED)
-    include_directories(${PNG_INCLUDE_DIRS})
-endif (UNIX)
+set(PNG_FIND_QUIETLY OFF)
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
 
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
