@@ -8,15 +8,15 @@ $ON_APPVEYOR=$true
 
 # Force rebuilding some libraries
 $REBUILD_WX=$false
-$REBUILD_ZLIB=$false
+$REBUILD_ZLIB=$true
 $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
-$REBUILD_CURL=$false
-$REBUILD_PROJ=$false
+$REBUILD_CURL=$true
+$REBUILD_PROJ=$true
 $REBUILD_HDF5=$true
 $REBUILD_NETCDF=$true
-$REBUILD_GDAL=$false
+$REBUILD_GDAL=$true
 
 # Libraries URL
 $CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
