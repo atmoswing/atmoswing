@@ -56,11 +56,7 @@ function Init-Build($name)
 function Download-Lib($name, $url)
 {
 	Write-Host "`nDownloading $name from $url" -ForegroundColor Yellow
-	if ($ON_APPVEYOR) {
-		appveyor DownloadFile $url -FileName "$name.zip"
-	} else {
-		Invoke-WebRequest -Uri $url -OutFile "$name.zip"
-	}
+	Invoke-WebRequest -Uri $url -OutFile "$name.zip"
 }
 
 # All external dependencies are installed in the defined directory
