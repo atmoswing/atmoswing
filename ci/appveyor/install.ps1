@@ -27,7 +27,7 @@ $PNG_URL="https://sourceforge.net/code-snapshots/git/l/li/libpng/code.git/libpng
 $JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.14.zip"
 $CURL_URL="https://github.com/curl/curl/archive/curl-7_54_1.zip"
 $PROJ_URL="https://github.com/OSGeo/proj.4/archive/4.9.3.zip"
-$HDF5_URL="http://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.1/src/CMake-hdf5-1.10.1.zip"
+$HDF5_URL="https://github.com/atmoswing/large-files/raw/master/libraries/CMake-hdf5-1.10.1.zip"
 $NETCDF_URL="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.5.0.zip"
 $GDAL_URL="http://download.osgeo.org/gdal/2.2.3/gdal223.zip"
 
