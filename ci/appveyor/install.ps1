@@ -10,12 +10,12 @@ $ON_APPVEYOR=$true
 $REBUILD_WX=$false
 $REBUILD_ZLIB=$false
 $REBUILD_JPEG=$false
-$REBUILD_PNG=$true
+$REBUILD_PNG=$false
 $REBUILD_JASPER=$false
 $REBUILD_CURL=$false
 $REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
-$REBUILD_NETCDF=$false
+$REBUILD_NETCDF=$true
 $REBUILD_GDAL=$false
 
 # Libraries URL
