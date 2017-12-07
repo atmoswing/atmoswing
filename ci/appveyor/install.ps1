@@ -5,11 +5,11 @@ $CMAKE_DIR="C:\projects\cmake"
 $MSC_VER=1911
 $VS_VER="Visual Studio 15 2017 Win64"
 $ON_APPVEYOR=$true
-$WITH_DEBUG_LIBS=$false
 
 # Force rebuilding some libraries
 $REBUILD_WX=$false
 $REBUILD_JPEG=$false
+$REBUILD_PNG=$false
 $REBUILD_JASPER=$false
 $REBUILD_CURL=$false
 $REBUILD_PROJ=$false
@@ -22,6 +22,7 @@ $REBUILD_GDAL=$false
 $CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
 $WX_URL="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.zip"
 $JPEG_URL="https://github.com/LuaDist/libjpeg/archive/master.zip"
+$PNG_URL="https://download.sourceforge.net/libpng/lpng1634.zip"
 $JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.14.zip"
 $CURL_URL="https://github.com/curl/curl/archive/curl-7_54_1.zip"
 $PROJ_URL="https://github.com/OSGeo/proj.4/archive/4.9.3.zip"
@@ -41,6 +42,26 @@ foreach {
 }
 popd
 Write-Host "`nVisual Studio 2017 Command Prompt variables set." -ForegroundColor Yellow
+
+# Define some functions
+function Init-Build($name)
+{
+	Write-Host "`nBuilding $name" -ForegroundColor Yellow
+	cd $TMP_DIR
+	if(Test-Path -Path "$LIB_DIR\$name") {
+	Remove-Item "$LIB_DIR\$name" -Force -Recurse
+	}
+	mkdir "$LIB_DIR\$name" > $null
+}
+function Download-Lib($name, $url)
+{
+	Write-Host "`nDownloading $name from $url" -ForegroundColor Yellow
+	if ($ON_APPVEYOR) {
+		appveyor DownloadFile $url -FileName "$name.zip" > $null
+	} else {
+		Invoke-WebRequest -Uri $url -OutFile "$name.zip"
+	}
+}
 
 # All external dependencies are installed in the defined directory
 if(!(Test-Path -Path $LIB_DIR)) {
@@ -69,17 +90,8 @@ cmake --version
   
 # Install wxWidgets
 if(!(Test-Path -Path "$LIB_DIR\wxwidgets") -Or $REBUILD_WX) {
-  Write-Host "`nBuilding wxWidgets" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\wxwidgets") {
-    Remove-Item "$LIB_DIR\wxwidgets" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\wxwidgets" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $WX_URL -FileName wxwidgets.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $WX_URL -OutFile wxwidgets.zip
-  }
+  Init-Build "wxwidgets"
+  Download-Lib "wxwidgets" $WX_URL
   7z x wxwidgets.zip -o"$TMP_DIR\wxwidgets" > $null
   cd "$TMP_DIR\wxwidgets\build\msw"
   nmake -f makefile.vc BUILD=release MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=AMD64 > $null
@@ -94,17 +106,8 @@ $env:WXWIN = "$LIB_DIR\wxwidgets"
 
 # Install Jpeg
 if(!(Test-Path -Path "$LIB_DIR\jpeg") -Or $REBUILD_JPEG) {
-  Write-Host "`nBuilding Jpeg" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\jpeg") {
-    Remove-Item "$LIB_DIR\jpeg" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\jpeg" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $JPEG_URL -FileName jpeg.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $JPEG_URL -OutFile jpeg.zip
-  }
+  Init-Build "jpeg"
+  Download-Lib "jpeg" $JPEG_URL
   7z x jpeg.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\libjpeg-*" "$TMP_DIR\jpeg"
   cd "$TMP_DIR\jpeg"
@@ -115,19 +118,24 @@ if(!(Test-Path -Path "$LIB_DIR\jpeg") -Or $REBUILD_JPEG) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+# Install PNG
+if(!(Test-Path -Path "$LIB_DIR\png") -Or $REBUILD_PNG) {
+  Init-Build "png"
+  Download-Lib "png" $PNG_URL
+  7z x png.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\libpng-*" "$TMP_DIR\png"
+  cd "$TMP_DIR\png"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\png" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+}
+
 # Install Jasper
 if(!(Test-Path -Path "$LIB_DIR\jasper") -Or $REBUILD_JASPER) {
-  Write-Host "`nBuilding Jasper" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\jasper") {
-    Remove-Item "$LIB_DIR\jasper" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\jasper" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $JASPER_URL -FileName jasper.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $JASPER_URL -OutFile jasper.zip
-  }
+  Init-Build "jasper"
+  Download-Lib "jasper" $JASPER_URL
   7z x jasper.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\jasper-*" "$TMP_DIR\jasper"
   cd "$TMP_DIR\jasper"
@@ -140,17 +148,8 @@ if(!(Test-Path -Path "$LIB_DIR\jasper") -Or $REBUILD_JASPER) {
 
 # Install curl
 if(!(Test-Path -Path "$LIB_DIR\curl") -Or $REBUILD_CURL) {
-  Write-Host "`nBuilding curl" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\curl") {
-    Remove-Item "$LIB_DIR\curl" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\curl" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $CURL_URL -FileName curl.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $CURL_URL -OutFile curl.zip
-  }
+  Init-Build "curl"
+  Download-Lib "curl" $CURL_URL
   7z x curl.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\curl-*" "$TMP_DIR\curl"
   cd "$TMP_DIR\curl\winbuild"
@@ -162,17 +161,8 @@ if(!(Test-Path -Path "$LIB_DIR\curl") -Or $REBUILD_CURL) {
 
 # Install Proj
 if(!(Test-Path -Path "$LIB_DIR\proj") -Or $REBUILD_PROJ) {
-  Write-Host "`nBuilding Proj" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\proj") {
-    Remove-Item "$LIB_DIR\proj" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\proj" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $PROJ_URL -FileName proj.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $PROJ_URL -OutFile proj.zip
-  }
+  Init-Build "proj"
+  Download-Lib "proj" $PROJ_URL
   7z x proj.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\proj.4-*" "$TMP_DIR\proj"
   cd "$TMP_DIR\proj"
@@ -182,17 +172,8 @@ if(!(Test-Path -Path "$LIB_DIR\proj") -Or $REBUILD_PROJ) {
 
 # Install Zlib
 if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
-  Write-Host "`nBuilding Zlib" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\zlib") {
-    Remove-Item "$LIB_DIR\zlib" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\zlib" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $ZLIB_URL -FileName zlib.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $ZLIB_URL -OutFile zlib.zip
-  }
+  Init-Build "zlib"
+  Download-Lib "zlib" $ZLIB_URL
   7z x zlib.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\zlib-*" "$TMP_DIR\zlib"
   cd "$TMP_DIR\zlib"
@@ -205,17 +186,8 @@ if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
 
 # Install HDF5
 if(!(Test-Path -Path "$LIB_DIR\hdf5") -Or $REBUILD_HDF5) {
-  Write-Host "`nBuilding HDF5" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\hdf5") {
-    Remove-Item "$LIB_DIR\hdf5" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\hdf5" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $HDF5_URL -FileName hdf5.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $HDF5_URL -OutFile hdf5.zip
-  }
+  Init-Build "hdf5"
+  Download-Lib "hdf5" $HDF5_URL
   7z x hdf5.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\CMake-hdf5-*" "$TMP_DIR\hdf5"
   cd "$TMP_DIR\hdf5"
@@ -230,17 +202,8 @@ if(!(Test-Path -Path "$LIB_DIR\hdf5") -Or $REBUILD_HDF5) {
 
 # Install NetCDF
 if(!(Test-Path -Path "$LIB_DIR\netcdf") -Or $REBUILD_NETCDF) {
-  Write-Host "`nBuilding NetCDF" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\netcdf") {
-    Remove-Item "$LIB_DIR\netcdf" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\netcdf" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $NETCDF_URL -FileName netcdf.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $NETCDF_URL -OutFile netcdf.zip
-  }
+  Init-Build "netcdf"
+  Download-Lib "netcdf" $NETCDF_URL
   7z x netcdf.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\netcdf-*" "$TMP_DIR\netcdf"
   cd "$TMP_DIR\netcdf"
@@ -254,17 +217,8 @@ if(!(Test-Path -Path "$LIB_DIR\netcdf") -Or $REBUILD_NETCDF) {
 
 # Install Gdal
 if(!(Test-Path -Path "$LIB_DIR\gdal") -Or $REBUILD_GDAL) {
-  Write-Host "`nBuilding Gdal" -ForegroundColor Yellow
-  cd $TMP_DIR
-  if(Test-Path -Path "$LIB_DIR\gdal") {
-    Remove-Item "$LIB_DIR\gdal" -Force -Recurse
-  }
-  mkdir "$LIB_DIR\gdal" > $null
-  if ($ON_APPVEYOR) {
-    appveyor DownloadFile $GDAL_URL -FileName gdal.zip > $null
-  } else {
-    Invoke-WebRequest -Uri $GDAL_URL -OutFile gdal.zip
-  }
+  Init-Build "gdal"
+  Download-Lib "gdal" $GDAL_URL
   7z x gdal.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\gdal-*" "$TMP_DIR\gdal"
   cd "$TMP_DIR\gdal"
