@@ -57,7 +57,7 @@ function Download-Lib($name, $url)
 {
 	Write-Host "`nDownloading $name from $url" -ForegroundColor Yellow
 	if ($ON_APPVEYOR) {
-		appveyor DownloadFile $url -FileName "$name.zip" > $null
+		appveyor DownloadFile $url -FileName "$name.zip"
 	} else {
 		Invoke-WebRequest -Uri $url -OutFile "$name.zip"
 	}
