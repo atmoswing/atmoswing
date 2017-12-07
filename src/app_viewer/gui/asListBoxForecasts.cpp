@@ -41,18 +41,19 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECTION_CHANGED, wxCommandEvent);
 
 
 asForecastTreeItemData::asForecastTreeItemData(int methodRow, int forecastRow)
-        : wxTreeItemData()
+        : wxTreeItemData(),
+          m_methodRow(methodRow),
+          m_forecastRow(forecastRow)
 {
-    m_methodRow = methodRow;
-    m_forecastRow = forecastRow;
+
 }
 
 
 asMessageForecastChoice::asMessageForecastChoice(int methodRow, int forecastRow)
-        : wxObject()
+        : wxObject(),
+          m_methodRow(methodRow),
+          m_forecastRow(forecastRow)
 {
-    m_methodRow = methodRow;
-    m_forecastRow = forecastRow;
 }
 
 
@@ -60,14 +61,14 @@ asListBoxForecasts::asListBoxForecasts(wxWindow *parent, asForecastManager *fore
                                        const wxPoint &pos, const wxSize &size)
         : wxTreeCtrl(parent, id, pos, size,
                      wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_FULL_ROW_HIGHLIGHT |
-                     wxTR_NO_LINES | wxNO_BORDER, wxDefaultValidator)
+                     wxTR_NO_LINES | wxNO_BORDER, wxDefaultValidator),
+          m_forecastManager(forecastManager),
+          m_skipSlctChangeEvent(false)
 {
-    m_forecastManager = forecastManager;
     CreateImageList();
     unsigned int indent = GetIndent();
     if (indent > 16)
         SetIndent(indent - 5);
-    m_skipSlctChangeEvent = false;
 }
 
 asListBoxForecasts::~asListBoxForecasts()

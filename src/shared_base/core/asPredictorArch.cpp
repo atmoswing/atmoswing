@@ -51,10 +51,11 @@
 
 
 asPredictorArch::asPredictorArch(const wxString &dataId)
-        : asPredictor(dataId)
+        : asPredictor(dataId),
+          m_originalProviderStart(0.0),
+          m_originalProviderEnd(0.0)
 {
-    m_originalProviderStart = 0.0;
-    m_originalProviderEnd = 0.0;
+
 }
 
 asPredictorArch::~asPredictorArch()

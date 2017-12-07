@@ -142,8 +142,8 @@ public:
 protected:
 
 private:
-    bool m_skipSlctChangeEvent;
     asForecastManager *m_forecastManager;
+    bool m_skipSlctChangeEvent;
 
     void OnForecastSlctChange(wxTreeEvent &event);
 

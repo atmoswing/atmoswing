@@ -32,16 +32,15 @@ wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
 asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                                        wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : wxPanel(parent, id, pos, size, style)
+        : wxPanel(parent, id, pos, size, style),
+          m_parent(NULL),
+          m_workspace(workspace),
+          m_forecastManager(forecastManager),
+          m_bmp(NULL),
+          m_gdc(NULL),
+          m_cellWidth(int(40 * g_ppiScaleDc)),
+          m_leadTime(0)
 {
-    m_workspace = workspace;
-    m_forecastManager = forecastManager;
-    m_bmp = NULL;
-    m_gdc = NULL;
-    m_cellWidth = 40 * g_ppiScaleDc;
-    m_parent = NULL;
-    m_leadTime = 0;
-
     Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), NULL, this);
     Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
     Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);

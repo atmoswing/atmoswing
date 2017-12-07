@@ -32,18 +32,19 @@
 
 
 asParametersOptimizationGAs::asParametersOptimizationGAs()
-        : asParametersOptimization()
+        : asParametersOptimization(),
+          m_individualSelfAdaptationMutationRate(0),
+          m_individualSelfAdaptationMutationRadius(0),
+          m_hasChromosomeSelfAdaptationMutationRate(false),
+          m_hasChromosomeSelfAdaptationMutationRadius(false),
+          m_timeArrayAnalogsIntervalDaysIteration(0),
+          m_timeArrayAnalogsIntervalDaysUpperLimit(0),
+          m_timeArrayAnalogsIntervalDaysLowerLimit(0),
+          m_timeArrayAnalogsIntervalDaysLocks(true),
+          m_allParametersCount(0),
+          m_parametersListOver(false)
 {
-    m_individualSelfAdaptationMutationRate = 0;
-    m_individualSelfAdaptationMutationRadius = 0;
-    m_hasChromosomeSelfAdaptationMutationRate = false;
-    m_hasChromosomeSelfAdaptationMutationRadius = false;
-    m_allParametersCount = 0;
-    m_timeArrayAnalogsIntervalDaysIteration = 0;
-    m_timeArrayAnalogsIntervalDaysUpperLimit = 0;
-    m_timeArrayAnalogsIntervalDaysLowerLimit = 0;
-    m_timeArrayAnalogsIntervalDaysLocks = true;
-    m_parametersListOver = false;
+
 }
 
 asParametersOptimizationGAs::~asParametersOptimizationGAs()

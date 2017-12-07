@@ -31,24 +31,22 @@
 asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
                                            const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height,
                                            int flatAllowed)
-        : asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+        : asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed),
+          m_xStep(Xstep),
+          m_yStep(Ystep)
 {
-    if (!IsOnGrid(Xstep, Ystep))
+    if (!IsOnGrid(m_xStep, m_yStep))
         asThrowException(_("The given area does not match a grid."));
-
-    m_xStep = Xstep;
-    m_yStep = Ystep;
 }
 
 asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth,
                                            double Ystep, float Level, float Height, int flatAllowed)
-        : asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+        : asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed),
+          m_xStep(Xstep),
+          m_yStep(Ystep)
 {
-    if (!IsOnGrid(Xstep, Ystep))
+    if (!IsOnGrid(m_xStep, m_yStep))
         asThrowException(_("The given area does not match a grid."));
-
-    m_xStep = Xstep;
-    m_yStep = Ystep;
 }
 
 asGeoAreaRegularGrid::~asGeoAreaRegularGrid()

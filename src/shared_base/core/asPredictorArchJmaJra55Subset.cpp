@@ -36,14 +36,12 @@ asPredictorArchJmaJra55Subset::asPredictorArchJmaJra55Subset(const wxString &dat
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "JMA_JRA_55_subset";
     m_originalProvider = "JMA";
     m_transformedBy = "NCAR/UCAR Data Subset";
     m_datasetName = "Japanese 55-year Reanalysis";
     m_originalProviderStart = asTime::GetMJD(1958, 1, 1);
     m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

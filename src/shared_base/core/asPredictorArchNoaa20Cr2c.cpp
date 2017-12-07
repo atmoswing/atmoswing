@@ -35,13 +35,11 @@ asPredictorArchNoaa20Cr2c::asPredictorArchNoaa20Cr2c(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NOAA_20CR_v2c";
     m_originalProvider = "NOAA";
     m_datasetName = "Twentieth Century Reanalysis (v2c)";
     m_originalProviderStart = asTime::GetMJD(1850, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2014, 12, 31, 18);
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

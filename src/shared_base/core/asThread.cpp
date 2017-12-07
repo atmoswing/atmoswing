@@ -28,10 +28,10 @@
 #include "asThread.h"
 
 
-asThread::asThread()
-        : wxThread(wxTHREAD_DETACHED)
+asThread::asThread(Type type)
+        : wxThread(wxTHREAD_DETACHED),
+          m_type(type)
 {
-    m_type = Undefined;
 }
 
 asThread::~asThread()

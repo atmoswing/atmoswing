@@ -31,11 +31,11 @@
 asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR,
                                                              const Coo &CornerLL, const Coo &CornerLR, double Xstep,
                                                              double Ystep, float Level, float Height, int flatAllowed)
-        : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+        : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed),
+          m_xStep(Xstep),
+          m_yStep(Ystep)
 {
     m_gridType = Regular;
-    m_xStep = Xstep;
-    m_yStep = Ystep;
 
     if (!IsOnGrid(Xstep, Ystep))
         asThrowException(_("The given area does not match a grid."));
@@ -44,11 +44,11 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL
 asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin,
                                                              double Ywidth, double Ystep, float Level, float Height,
                                                              int flatAllowed)
-        : asGeoAreaCompositeGrid(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed)
+        : asGeoAreaCompositeGrid(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed),
+          m_xStep(Xstep),
+          m_yStep(Ystep)
 {
     m_gridType = Regular;
-    m_xStep = Xstep;
-    m_yStep = Ystep;
 
     if (!IsOnGrid(Xstep, Ystep))
         asThrowException(_("The given area does not match a grid."));

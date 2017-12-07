@@ -230,10 +230,10 @@ private:
         std::vector<NcAttStruct> atts;
     };
 
+    NcStruct m_struct;
     int m_fileId;
     int m_status;
     bool m_defineMode;
-    NcStruct m_struct;
 
     void HandleErrorNetcdf();
 

@@ -29,14 +29,10 @@
 #include "asScoreCRPSEP.h"
 
 asScoreCRPSEP::asScoreCRPSEP()
-        : asScore()
+        : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"),
+                  Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSEP;
-    m_name = _("CRPS Exact Primitive");
-    m_fullName = _("Continuous Ranked Probability Score exact solution");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSEP::~asScoreCRPSEP()

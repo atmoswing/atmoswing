@@ -40,7 +40,7 @@ public:
         Regular, GaussianT62, GaussianT382
     };
 
-    asGeo();
+    asGeo(GridType type = Regular);
 
     virtual ~asGeo();
 

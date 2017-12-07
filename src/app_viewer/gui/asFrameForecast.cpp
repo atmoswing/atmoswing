@@ -79,9 +79,9 @@ END_EVENT_TABLE()
 /* vroomDropFiles */
 
 vroomDropFiles::vroomDropFiles(asFrameForecast *parent)
+        : m_loaderFrame(parent)
 {
     wxASSERT(parent);
-    m_loaderFrame = parent;
 }
 
 
@@ -98,9 +98,9 @@ bool vroomDropFiles::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &file
 /* forecastDropFiles */
 
 forecastDropFiles::forecastDropFiles(asFrameForecast *parent)
+        : m_loaderFrame(parent)
 {
     wxASSERT(parent);
-    m_loaderFrame = parent;
 }
 
 

@@ -28,18 +28,18 @@
 #include "asBatchForecasts.h"
 
 asBatchForecasts::asBatchForecasts()
-        : wxObject()
+        : wxObject(),
+          m_hasChanged(false),
+          m_exportSyntheticXml(false)
 {
-    m_hasChanged = false;
-    m_exportSyntheticXml = false;
-    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters" + DS + "BatchForecasts.asfb";
-    m_forecastsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
-    m_exportsOutputDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Exports";
-    m_parametersFileDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Parameters";
-    m_predictorsArchiveDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Archive predictors";
-    m_predictorsRealtimeDirectory =
-            asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Forecasted predictors";
-    m_predictandDBDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Data" + DS + "Predictands";
+    wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing" + DS;
+    m_filePath = baseDir + "Parameters" + DS + "BatchForecasts.asfb";
+    m_forecastsOutputDirectory = baseDir + "Forecasts";
+    m_exportsOutputDirectory = baseDir + "Exports";
+    m_parametersFileDirectory = baseDir + "Parameters";
+    m_predictorsArchiveDirectory = baseDir + "Data" + DS + "Archive predictors";
+    m_predictorsRealtimeDirectory = baseDir + "Data" + DS + "Forecasted predictors";
+    m_predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
 }
 
 asBatchForecasts::~asBatchForecasts()

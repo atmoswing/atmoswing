@@ -35,13 +35,11 @@ asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &d
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "ECMWF_ERA_interim";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA-interim";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

@@ -29,14 +29,9 @@
 #include "asScoreMAE.h"
 
 asScoreMAE::asScoreMAE()
-        : asScore()
+        : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NaNf)
 {
-    m_score = asScore::MAE;
-    m_name = _("Mean absolute error");
-    m_fullName = _("Mean absolute error");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreMAE::~asScoreMAE()

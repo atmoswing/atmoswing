@@ -35,13 +35,11 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_CFSR";
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = NaNd;
     m_strideAllowed = false;

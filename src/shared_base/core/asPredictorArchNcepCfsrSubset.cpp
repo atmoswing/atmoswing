@@ -36,13 +36,11 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
 {
     // Downloaded from http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_CFSR_subset";
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR Subset";
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = NaNd;
     m_strideAllowed = true;

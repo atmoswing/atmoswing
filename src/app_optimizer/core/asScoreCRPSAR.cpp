@@ -30,14 +30,10 @@
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSAR::asScoreCRPSAR()
-        : asScore()
+        : asScore(asScore::CRPSAR, _("CRPS Approx Rectangle"),
+                  _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSAR;
-    m_name = _("CRPS Approx Rectangle");
-    m_fullName = _("Continuous Ranked Probability Score approximation with the rectangle method");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSAR::~asScoreCRPSAR()

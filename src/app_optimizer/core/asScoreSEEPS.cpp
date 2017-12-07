@@ -29,18 +29,14 @@
 #include "asScoreSEEPS.h"
 
 asScoreSEEPS::asScoreSEEPS()
-        : asScore()
+        : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
+                  _("Stable equitable error in probability space"), Asc, NaNf, NaNf, true),
+          m_p1(NaNf),
+          m_p3(NaNf),
+          m_thresNull(0.2f),
+          m_thresHigh(NaNf)
 {
-    m_score = asScore::SEEPS;
-    m_name = _("Stable equitable error in probability space");
-    m_fullName = _("Stable equitable error in probability space");
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
-    m_p1 = NaNf;
-    m_p3 = NaNf;
-    m_thresNull = 0.2f;
-    m_thresHigh = NaNf;
-    m_usesClimatology = true;
+
 }
 
 asScoreSEEPS::~asScoreSEEPS()

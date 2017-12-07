@@ -29,15 +29,11 @@
 #include "asScoreCRPSHersbachDecomp.h"
 
 asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
-        : asScore()
+        : asScore(asScore::CRPSHersbachDecomp, _("CRPS Hersbach decomposition"),
+                  _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)"), Asc, 0, NaNf,
+                  false, false)
 {
-    m_score = asScore::CRPSHersbachDecomp;
-    m_name = _("CRPS Hersbach decomposition");
-    m_fullName = _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
-    m_singleValue = false;
+
 }
 
 asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp()

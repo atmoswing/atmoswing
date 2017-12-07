@@ -70,6 +70,9 @@ public:
 
     asScore();
 
+    asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
+            float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
+
     virtual ~asScore();
 
     static asScore *GetInstance(Score scoreEnums);
@@ -150,9 +153,9 @@ protected:
     Order m_order;
     float m_scaleBest;
     float m_scaleWorst;
-    float m_scoreClimatology;
     bool m_usesClimatology;
     bool m_singleValue;
+    float m_scoreClimatology;
     float m_threshold;
     float m_quantile;
 

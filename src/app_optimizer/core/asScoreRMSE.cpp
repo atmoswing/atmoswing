@@ -29,14 +29,9 @@
 #include "asScoreRMSE.h"
 
 asScoreRMSE::asScoreRMSE()
-        : asScore()
+        : asScore(asScore::RMSE, _("Root mean square error"), _("Root mean square error"), Asc, 0, NaNf)
 {
-    m_score = asScore::RMSE;
-    m_name = _("Root mean square error");
-    m_fullName = _("Root mean square error");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreRMSE::~asScoreRMSE()

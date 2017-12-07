@@ -41,11 +41,12 @@ bool asRemoveDir(const wxString &Path)
 }
 
 asFile::asFile(const wxString &FileName, const ListFileMode &FileMode)
+        : m_fileName(wxFileName(FileName)),
+          m_fileMode(FileMode),
+          m_exists(false),
+          m_opened(false)
 {
-    m_fileName = wxFileName(FileName);
-    m_fileMode = FileMode;
-    m_exists = false;
-    m_opened = false;
+
 }
 
 asFile::~asFile()

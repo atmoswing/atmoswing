@@ -37,7 +37,6 @@ asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, Temporal
                                                SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
-    //ctor
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
 }

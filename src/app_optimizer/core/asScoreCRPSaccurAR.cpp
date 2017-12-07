@@ -31,14 +31,11 @@
 #include "asScoreCRPSsharpAR.h"
 
 asScoreCRPSaccurAR::asScoreCRPSaccurAR()
-        : asScore()
+        : asScore(asScore::CRPSaccuracyAR, _("CRPS Accuracy Approx Rectangle"),
+                  _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0,
+                  NaNf)
 {
-    m_score = asScore::CRPSaccuracyAR;
-    m_name = _("CRPS Accuracy Approx Rectangle");
-    m_fullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSaccurAR::~asScoreCRPSaccurAR()

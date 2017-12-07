@@ -29,13 +29,11 @@
 #include "asGeoPoint.h"
 
 asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
-        : asGeo()
+        : asGeo(),
+          m_point(Point),
+          m_level(Level),
+          m_height(Height)
 {
-    // Set the members
-    m_point = Point;
-    m_level = Level;
-    m_height = Height;
-
     // Initialization and check points
     Init();
 
@@ -43,14 +41,11 @@ asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
 }
 
 asGeoPoint::asGeoPoint(double x, double y, float Level, float Height)
-        : asGeo()
+        : asGeo(),
+          m_point({x, y}),
+          m_level(Level),
+          m_height(Height)
 {
-    // Set the members
-    m_point.x = x;
-    m_point.y = y;
-    m_level = Level;
-    m_height = Height;
-
     // Initialization and check points
     Init();
 

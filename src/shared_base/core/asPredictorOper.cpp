@@ -35,17 +35,19 @@
 
 
 asPredictorOper::asPredictorOper(const wxString &dataId)
-        : asPredictor(dataId)
+        : asPredictor(dataId),
+          m_forecastLeadTimeStart(0.0),
+          m_forecastLeadTimeEnd(0.0),
+          m_forecastLeadTimeStep(0.0),
+          m_runHourStart(0.0),
+          m_runUpdate(0.0),
+          m_runDateInUse(0.0),
+          m_commandDownload(),
+          m_restrictDownloads(false),
+          m_restrictTimeHours(0.0),
+          m_restrictTimeStepHours(0.0)
 {
-    m_runDateInUse = 0.0;
-    m_restrictDownloads = false;
-    m_restrictTimeHours = 0.0;
-    m_restrictTimeStepHours = 0.0;
-    m_forecastLeadTimeStart = 0.0;
-    m_forecastLeadTimeEnd = 0.0;
-    m_forecastLeadTimeStep = 0.0;
-    m_runHourStart = 0.0;
-    m_runUpdate = 0.0;
+
 }
 
 asPredictorOper::~asPredictorOper()

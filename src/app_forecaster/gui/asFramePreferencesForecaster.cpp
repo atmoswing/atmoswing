@@ -31,9 +31,9 @@
 
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
                                                            wxWindowID id)
-        : asFramePreferencesForecasterVirtual(parent, id)
+        : asFramePreferencesForecasterVirtual(parent, id),
+          m_batchForecasts(batchForecasts)
 {
-    m_batchForecasts = batchForecasts;
     LoadPreferences();
     Fit();
 

@@ -37,7 +37,6 @@ asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, Tempor
                                                  SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
-    //ctor
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
 }

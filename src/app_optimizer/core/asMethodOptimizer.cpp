@@ -29,14 +29,13 @@
 #include "asMethodOptimizer.h"
 
 asMethodOptimizer::asMethodOptimizer()
-        : asMethodCalibrator()
+        : asMethodCalibrator(),
+          m_isOver(false),
+          m_skipNext(false),
+          m_optimizerStage(asINITIALIZATION),
+          m_paramsNb(0),
+          m_iterator(0)
 {
-    m_iterator = 0;
-    m_optimizerStage = asINITIALIZATION;
-    m_skipNext = false;
-    m_isOver = false;
-    m_paramsNb = 0;
-
     // Seeds the random generator
     asTools::InitRandom();
 }

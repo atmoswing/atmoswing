@@ -36,14 +36,12 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
         : asPredictorArchNcepReanalysis1Subset(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_Reanalysis_v1_lthe";
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
     m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

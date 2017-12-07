@@ -35,13 +35,11 @@ asPredictorArchEcmwfEra20C::asPredictorArchEcmwfEra20C(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "ECMWF_ERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA 20th Century";
     m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
-    m_timeZoneHours = 0;
     m_timeStepHours = 3;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

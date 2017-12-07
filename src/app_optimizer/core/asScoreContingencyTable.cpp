@@ -29,13 +29,9 @@
 #include "asScoreContingencyTable.h"
 
 asScoreContingencyTable::asScoreContingencyTable()
-        : asScore()
+        : asScore(asScore::ContingencyTable, _("Contingency table"), _("Contingency table"), Asc, NaNf, NaNf)
 {
-    m_score = asScore::ContingencyTable;
-    m_name = _("Contingency table");
-    m_fullName = _("Contingency table class");
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreContingencyTable::~asScoreContingencyTable()

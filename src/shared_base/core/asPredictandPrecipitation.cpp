@@ -35,13 +35,12 @@
 
 asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                      SpatialAggregation dataSpatialAggregation)
-        : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
+        : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation),
+          m_returnPeriodNormalization(10),
+          m_isSqrt(false)
 {
-    //ctor
     m_hasNormalizedData = true;
     m_hasReferenceValues = true;
-    m_returnPeriodNormalization = 10;
-    m_isSqrt = false;
 
     if (dataTemporalResolution == OneHourlyMTW || dataTemporalResolution == ThreeHourlyMTW ||
         dataTemporalResolution == SixHourlyMTW || dataTemporalResolution == TwelveHourlyMTW) {

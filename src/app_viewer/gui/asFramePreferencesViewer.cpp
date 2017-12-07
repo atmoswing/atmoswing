@@ -29,9 +29,9 @@
 #include "asFramePreferencesViewer.h"
 
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
-        : asFramePreferencesViewerVirtual(parent, id)
+        : asFramePreferencesViewerVirtual(parent, id),
+          m_workspace(workspace)
 {
-    m_workspace = workspace;
     LoadPreferences();
     Fit();
 

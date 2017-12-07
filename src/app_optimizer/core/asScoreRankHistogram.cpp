@@ -28,13 +28,10 @@
 #include "asScoreRankHistogram.h"
 
 asScoreRankHistogram::asScoreRankHistogram()
-        : asScore()
+        : asScore(asScore::RankHistogram, _("Rank Histogram"), _("Verification Rank Histogram (Talagrand Diagram)"),
+                  Asc, NaNf, NaNf)
 {
-    m_score = asScore::RankHistogram;
-    m_name = _("Rank Histogram");
-    m_fullName = _("Verification Rank Histogram (Talagrand Diagram)");
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreRankHistogram::~asScoreRankHistogram()

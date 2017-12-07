@@ -32,28 +32,30 @@
 
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, Mode slctmode)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(slctmode),
+          m_start(start),
+          m_end(end),
+          m_timeStepDays(timestephours / 24),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
-    wxASSERT(end > start);
-    wxASSERT(timestephours > 0);
-
-    // Get values
-    m_initialized = false;
-    m_mode = slctmode;
-    m_timeStepDays = timestephours / 24;
-    m_start = start;
-    m_end = end;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
-
+    wxASSERT(m_end > m_start);
+    wxASSERT(m_timeStepDays > 0);
 }
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, const wxString &slctModeString)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_start(start),
+          m_end(end),
+          m_timeStepDays(timestephours / 24),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
-    wxASSERT(end > start);
-    wxASSERT(timestephours > 0);
+    wxASSERT(m_end > m_start);
+    wxASSERT(m_timeStepDays > 0);
 
     if (slctModeString.CmpNoCase("simple") == 0) {
         m_mode = Simple;
@@ -76,28 +78,19 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
         wxLogError(_("Time array mode not correctly defined (%s)!"), slctModeString);
         m_mode = Custom;
     }
-
-    // Get values
-    m_initialized = false;
-    m_timeStepDays = timestephours / 24;
-    m_start = start;
-    m_end = end;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
 }
 
 asTimeArray::asTimeArray()
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_start(0),
+          m_end(0),
+          m_timeStepDays(0),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     // Should not be used for processing, only to get en empty object !
-    m_initialized = false;
-    m_mode = Custom;
-    m_timeStepDays = 0;
-    m_start = 0;
-    m_end = 0;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
 }
 
 asTimeArray::asTimeArray(double date, Mode slctmode)

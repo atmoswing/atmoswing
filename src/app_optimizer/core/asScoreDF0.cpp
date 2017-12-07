@@ -29,14 +29,10 @@
 #include "asScoreDF0.h"
 
 asScoreDF0::asScoreDF0()
-        : asScore()
+        : asScore(asScore::DF0, _("Difference of F(0)"),
+                  _("Absolute difference of the frequency of null precipitations."), Asc, 0, NaNf)
 {
-    m_score = asScore::DF0;
-    m_name = _("Difference of F(0)");
-    m_fullName = _("Absolute difference of the frequency of null precipitations.");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreDF0::~asScoreDF0()

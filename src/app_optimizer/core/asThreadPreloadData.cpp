@@ -30,15 +30,14 @@
 
 asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep,
                                          int iPtor, int iPre)
-        : asThread()
+        : asThread(asThread::PreloadData),
+          m_optimizer(optimizer), // copy pointer
+          m_params(params),
+          m_iStep(iStep),
+          m_iProt(iPtor),
+          m_iDat(iPre)
 {
-    m_type = asThread::PreloadData;
 
-    m_optimizer = optimizer; // copy pointer
-    m_params = params;
-    m_iStep = iStep;
-    m_iProt = iPtor;
-    m_iDat = iPre;
 }
 
 asThreadPreloadData::~asThreadPreloadData()

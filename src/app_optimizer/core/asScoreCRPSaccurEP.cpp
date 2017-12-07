@@ -31,14 +31,10 @@
 #include "asScoreCRPSsharpEP.h"
 
 asScoreCRPSaccurEP::asScoreCRPSaccurEP()
-        : asScore()
+        : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
+                  _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSaccuracyEP;
-    m_name = _("CRPS Accuracy Exact Primitive");
-    m_fullName = _("Continuous Ranked Probability Score Accuracy exact solution");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSaccurEP::~asScoreCRPSaccurEP()

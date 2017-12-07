@@ -30,13 +30,13 @@
 
 asThreadRandomSet::asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params,
                                      float *finalScoreCalib, vf *scoreClimatology)
-        : asThread(),
+        : asThread(asThread::MethodOptimizerRandomSet),
           m_optimizer(optimizer),
           m_params(params),
           m_finalScoreCalib(finalScoreCalib),
           m_scoreClimatology(scoreClimatology)
 {
-    m_type = asThread::MethodOptimizerRandomSet;
+
 }
 
 asThreadRandomSet::~asThreadRandomSet()

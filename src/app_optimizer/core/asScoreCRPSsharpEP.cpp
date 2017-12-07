@@ -30,14 +30,10 @@
 #include "asScoreCRPSEP.h"
 
 asScoreCRPSsharpEP::asScoreCRPSsharpEP()
-        : asScore()
+        : asScore(asScore::CRPSsharpnessEP, _("CRPS Sharpness Exact Primitive"),
+                  _("Continuous Ranked Probability Score Sharpness exact solution"), Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSsharpnessEP;
-    m_name = _("CRPS Sharpness Exact Primitive");
-    m_fullName = _("Continuous Ranked Probability Score Sharpness exact solution");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSsharpEP::~asScoreCRPSsharpEP()

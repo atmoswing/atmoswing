@@ -36,14 +36,12 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NOAA_OISST_v2_subset";
     m_originalProvider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
     m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 12;
     m_strideAllowed = true;

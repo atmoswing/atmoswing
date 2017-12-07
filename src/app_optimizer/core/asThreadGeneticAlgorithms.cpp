@@ -31,13 +31,13 @@
 asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
                                                      asParametersOptimization *params, float *finalScoreCalib,
                                                      vf *scoreClimatology)
-        : asThread(),
+        : asThread(asThread::MethodOptimizerGeneticAlgorithms),
           m_optimizer(optimizer),
           m_params(params),
           m_finalScoreCalib(finalScoreCalib),
           m_scoreClimatology(scoreClimatology)
 {
-    m_type = asThread::MethodOptimizerGeneticAlgorithms;
+
 }
 
 asThreadGeneticAlgorithms::~asThreadGeneticAlgorithms()

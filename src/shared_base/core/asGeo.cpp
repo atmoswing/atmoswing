@@ -28,8 +28,8 @@
 
 #include "asGeo.h"
 
-asGeo::asGeo()
-        : m_gridType(Regular),
+asGeo::asGeo(GridType type)
+        : m_gridType(type),
           m_axisXmin(0),
           m_axisXmax(360),
           m_axisYmin(-90),

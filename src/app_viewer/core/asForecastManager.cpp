@@ -32,11 +32,12 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
 asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
+        : m_parent(parent),
+          m_workspace(workspace),
+          m_aggregator(new asResultsForecastAggregator()),
+          m_leadTimeOrigin(0)
 {
-    m_leadTimeOrigin = 0;
-    m_parent = parent;
-    m_workspace = workspace;
-    m_aggregator = new asResultsForecastAggregator();
+
 }
 
 asForecastManager::~asForecastManager()

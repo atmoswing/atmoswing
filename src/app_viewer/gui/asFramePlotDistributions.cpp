@@ -36,19 +36,18 @@ END_EVENT_TABLE()
 
 asFramePlotDistributions::asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow,
                                                    asForecastManager *forecastManager, wxWindowID id)
-        : asFramePlotDistributionsVirutal(parent, id)
+        : asFramePlotDistributionsVirutal(parent, id),
+          m_forecastManager(forecastManager),
+          m_selectedMethod(methodRow),
+          m_selectedForecast(forecastRow),
+          m_selectedStation(0),
+          m_selectedDate(0),
+          m_xmaxPredictands(0)
 {
     forecastRow = wxMax(forecastRow, 0);
 
     int paneMinSize = (int) (m_splitterPredictands->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitterPredictands->SetMinimumPaneSize(paneMinSize);
-
-    m_forecastManager = forecastManager;
-    m_selectedMethod = methodRow;
-    m_selectedForecast = forecastRow;
-    m_selectedStation = 0;
-    m_selectedDate = 0;
-    m_xmaxPredictands = 0;
 
     m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);
     m_panelPlotPredictands->Layout();

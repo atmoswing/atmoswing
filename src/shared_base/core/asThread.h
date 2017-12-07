@@ -47,7 +47,7 @@ public:
         MethodOptimizerGeneticAlgorithms
     };
 
-    asThread();
+    asThread(Type type = Undefined);
 
     virtual ~asThread();
 

@@ -36,7 +36,6 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
         : asPredictorOper(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NWS_GFS_Forecast";
     m_originalProvider = "NWS";
     m_transformedBy = wxEmptyString;

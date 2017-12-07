@@ -149,15 +149,15 @@ protected:
     bool CheckConsistency();
 
 private:
-    double m_absoluteXmin;
-    double m_absoluteXmax;
-    double m_absoluteYmin;
-    double m_absoluteYmax;
     Coo m_cornerUL;
     Coo m_cornerUR;
     Coo m_cornerLL;
     Coo m_cornerLR;
     int m_flatAllowed;
+    double m_absoluteXmin;
+    double m_absoluteXmax;
+    double m_absoluteYmin;
+    double m_absoluteYmax;
 
     void Init();
 };

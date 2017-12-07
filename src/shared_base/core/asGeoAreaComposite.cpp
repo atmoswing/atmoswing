@@ -30,21 +30,19 @@
 
 asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
                                        const Coo &CornerLR, float Level, float Height, int flatAllowed)
-        : asGeo()
+        : asGeo(Regular),
+          m_level(Level),
+          m_height(Height),
+          m_cornerUL(CornerUL),
+          m_cornerUR(CornerUR),
+          m_cornerLL(CornerLL),
+          m_cornerLR(CornerLR),
+          m_flatAllowed(flatAllowed),
+          m_absoluteXmin(m_cornerUL.x),
+          m_absoluteXmax(m_cornerUR.x),
+          m_absoluteYmin(m_cornerLL.y),
+          m_absoluteYmax(m_cornerUL.y)
 {
-    m_gridType = Regular;
-    m_cornerUL = CornerUL;
-    m_cornerUR = CornerUR;
-    m_cornerLL = CornerLL;
-    m_cornerLR = CornerLR;
-    m_level = Level;
-    m_height = Height;
-    m_flatAllowed = flatAllowed;
-    m_absoluteXmin = m_cornerUL.x;
-    m_absoluteXmax = m_cornerUR.x;
-    m_absoluteYmin = m_cornerLL.y;
-    m_absoluteYmax = m_cornerUL.y;
-
     // Initialization and check points
     Init();
     CreateComposites();
@@ -54,25 +52,19 @@ asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR,
 
 asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level,
                                        float Height, int flatAllowed)
-        : asGeo()
+        : asGeo(Regular),
+          m_level(Level),
+          m_height(Height),
+          m_cornerUL({Xmin, Ymin + Ywidth}),
+          m_cornerUR({Xmin + Xwidth, Ymin + Ywidth}),
+          m_cornerLL({Xmin, Ymin}),
+          m_cornerLR({Xmin + Xwidth, Ymin}),
+          m_flatAllowed(flatAllowed),
+          m_absoluteXmin(m_cornerUL.x),
+          m_absoluteXmax(m_cornerUR.x),
+          m_absoluteYmin(m_cornerLL.y),
+          m_absoluteYmax(m_cornerUL.y)
 {
-    m_gridType = Regular;
-    m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin + Ywidth;
-    m_cornerUR.x = Xmin + Xwidth;
-    m_cornerUR.y = Ymin + Ywidth;
-    m_cornerLL.x = Xmin;
-    m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin + Xwidth;
-    m_cornerLR.y = Ymin;
-    m_level = Level;
-    m_height = Height;
-    m_flatAllowed = flatAllowed;
-    m_absoluteXmin = m_cornerUL.x;
-    m_absoluteXmax = m_cornerUR.x;
-    m_absoluteYmin = m_cornerLL.y;
-    m_absoluteYmax = m_cornerUL.y;
-
     // Initialization and check points
     Init();
     CreateComposites();
@@ -81,24 +73,20 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
 }
 
 asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
-        : asGeo()
+        : asGeo(Regular),
+          m_level(Level),
+          m_height(Height),
+          m_cornerUL({0, 0}),
+          m_cornerUR({0, 0}),
+          m_cornerLL({0, 0}),
+          m_cornerLR({0, 0}),
+          m_flatAllowed(asFLAT_ALLOWED),
+          m_absoluteXmin(0),
+          m_absoluteXmax(0),
+          m_absoluteYmin(0),
+          m_absoluteYmax(0)
 {
-    m_gridType = Regular;
-    m_level = Level;
-    m_height = Height;
-    m_cornerUL.x = 0;
-    m_cornerUL.y = 0;
-    m_cornerUR.x = 0;
-    m_cornerUR.y = 0;
-    m_cornerLL.x = 0;
-    m_cornerLL.y = 0;
-    m_cornerLR.x = 0;
-    m_cornerLR.y = 0;
-    m_flatAllowed = asFLAT_ALLOWED;
-    m_absoluteXmin = 0;
-    m_absoluteXmax = 0;
-    m_absoluteYmin = 0;
-    m_absoluteYmax = 0;
+
 }
 
 asGeoAreaComposite::~asGeoAreaComposite()

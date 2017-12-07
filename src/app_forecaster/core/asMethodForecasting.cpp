@@ -42,13 +42,12 @@
 #endif
 
 asMethodForecasting::asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent)
-        : asMethodStandard()
+        : asMethodStandard(),
+          m_batchForecasts(batchForecasts),
+          m_forecastDate(NaNd),
+          m_parent(parent)
 {
-    m_batchForecasts = batchForecasts;
-    m_forecastDate = NaNd;
-    m_paramsFilePath = wxEmptyString;
-    m_predictandDBFilePath = wxEmptyString;
-    m_parent = parent;
+
 }
 
 asMethodForecasting::~asMethodForecasting()

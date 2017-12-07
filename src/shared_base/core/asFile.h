@@ -65,8 +65,8 @@ public:
     }
 
 protected:
-    ListFileMode m_fileMode;
     wxFileName m_fileName;
+    ListFileMode m_fileMode;
     bool m_exists;
     bool m_opened;
 

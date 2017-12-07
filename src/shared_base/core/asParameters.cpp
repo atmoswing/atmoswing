@@ -33,25 +33,26 @@
 
 
 asParameters::asParameters()
+        : m_archiveStart(0),
+          m_archiveEnd(0),
+          m_timeArrayAnalogsIntervalDays(0),
+          m_predictandStationIds(),
+          m_timeMinHours(0),
+          m_timeMaxHours(0),
+          m_dateProcessed(asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL))),
+          m_timeArrayTargetMode("simple"),
+          m_timeArrayTargetTimeStepHours(0),
+          m_timeArrayTargetPredictandMinThreshold(0),
+          m_timeArrayTargetPredictandMaxThreshold(0),
+          m_timeArrayAnalogsMode("days_interval"),
+          m_timeArrayAnalogsTimeStepHours(0),
+          m_timeArrayAnalogsExcludeDays(0),
+          m_predictandParameter(asPredictand::Precipitation),
+          m_predictandTemporalResolution(asPredictand::Daily),
+          m_predictandSpatialAggregation(asPredictand::Station),
+          m_predictandTimeHours(0)
 {
-    m_dateProcessed = asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL));
-    m_archiveStart = 0;
-    m_archiveEnd = 0;
-    m_timeMinHours = 0;
-    m_timeMaxHours = 0;
-    m_timeArrayTargetMode = "simple";
-    m_timeArrayTargetTimeStepHours = 0;
-    m_timeArrayAnalogsMode = "days_interval";
-    m_timeArrayAnalogsTimeStepHours = 0;
-    m_timeArrayAnalogsExcludeDays = 0;
-    m_timeArrayAnalogsIntervalDays = 0;
-    m_predictandTimeHours = 0;
-    m_predictandParameter = (asPredictand::Parameter) 0;
-    m_predictandTemporalResolution = (asPredictand::TemporalResolution) 0;
-    m_predictandSpatialAggregation = (asPredictand::SpatialAggregation) 0;
-    m_predictandDatasetId = wxEmptyString;
-    m_timeArrayTargetPredictandMinThreshold = 0;
-    m_timeArrayTargetPredictandMaxThreshold = 0;
+
 }
 
 asParameters::~asParameters()

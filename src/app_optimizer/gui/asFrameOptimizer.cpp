@@ -43,11 +43,10 @@
 
 
 asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
-        : asFrameOptimizerVirtual(parent)
+        : asFrameOptimizerVirtual(parent),
+          m_logWindow(nullptr),
+          m_methodCalibrator(nullptr)
 {
-    m_logWindow = NULL;
-    m_methodCalibrator = NULL;
-
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
                        _("Run optimizer now"), NULL);

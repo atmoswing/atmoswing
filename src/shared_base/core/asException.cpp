@@ -28,62 +28,55 @@
 #include "asException.h"
 
 asException::asException()
-        : std::exception()
+        : std::exception(),
+          m_message(wxEmptyString),
+          m_fileName(wxEmptyString),
+          m_lineNum(0)
 {
-    m_message = wxEmptyString;
-    m_fileName = wxEmptyString;
-    m_lineNum = 0;
-
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured."));
 #endif
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line)
+        : std::exception(),
+          m_message(message),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = message;
-    m_fileName = wxfilename;
-    m_lineNum = line;
-
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
 #endif
 }
 
 asException::asException(const std::string &message, const char *filename, unsigned int line)
+        : std::exception(),
+          m_message(wxString(message.c_str(), wxConvUTF8)),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxmessage(message.c_str(), wxConvUTF8);
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = wxmessage;
-    m_fileName = wxfilename;
-    m_fileName = wxString::FromAscii(filename);
-    m_lineNum = line;
-
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
 #endif
 }
 
 asException::asException(const char *message, const char *filename, unsigned int line)
+        : std::exception(),
+          m_message(wxString(message, wxConvUTF8)),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxmessage(message, wxConvUTF8);
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = wxmessage;
-    m_fileName = wxfilename;
-    m_lineNum = line;
-
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
 #endif
 }
 
 asException::asException(const wxString &message, const char *filename, unsigned int line, asException prevexception)
+        : std::exception(),
+          m_message(message),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = message;
-    m_fileName = wxfilename;
-    m_lineNum = line;
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
@@ -98,12 +91,11 @@ asException::asException(const wxString &message, const char *filename, unsigned
 }
 
 asException::asException(const std::string &message, const char *filename, unsigned int line, asException prevexception)
+        : std::exception(),
+          m_message(wxString(message.c_str(), wxConvUTF8)),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxmessage(message.c_str(), wxConvUTF8);
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = wxmessage;
-    m_fileName = wxfilename;
-    m_lineNum = line;
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;
@@ -118,12 +110,11 @@ asException::asException(const std::string &message, const char *filename, unsig
 }
 
 asException::asException(const char *message, const char *filename, unsigned int line, asException prevexception)
+        : std::exception(),
+          m_message(wxString(message, wxConvUTF8)),
+          m_fileName(wxString(filename, wxConvUTF8)),
+          m_lineNum(line)
 {
-    wxString wxmessage(message, wxConvUTF8);
-    wxString wxfilename(filename, wxConvUTF8);
-    m_message = wxmessage;
-    m_fileName = wxfilename;
-    m_lineNum = line;
     m_previous = prevexception.m_previous;
 
     PrevExceptions Previous;

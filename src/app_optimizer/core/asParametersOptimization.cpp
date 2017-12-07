@@ -32,13 +32,14 @@
 
 
 asParametersOptimization::asParametersOptimization()
-        : asParametersScoring()
+        : asParametersScoring(),
+          m_variableParamsNb(0),
+          m_timeArrayAnalogsIntervalDaysIteration(1),
+          m_timeArrayAnalogsIntervalDaysUpperLimit(182),
+          m_timeArrayAnalogsIntervalDaysLowerLimit(10),
+          m_timeArrayAnalogsIntervalDaysLocks(false)
 {
-    m_timeArrayAnalogsIntervalDaysIteration = 1;
-    m_timeArrayAnalogsIntervalDaysUpperLimit = 182;
-    m_timeArrayAnalogsIntervalDaysLowerLimit = 10;
-    m_timeArrayAnalogsIntervalDaysLocks = false;
-    m_variableParamsNb = 0;
+
 }
 
 asParametersOptimization::~asParametersOptimization()

@@ -36,13 +36,11 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
 {
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NASA_MERRA_2";
     m_originalProvider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
     m_originalProviderStart = asTime::GetMJD(1980, 1, 1);
     m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

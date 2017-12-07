@@ -39,16 +39,17 @@
 #endif
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
-        : asMethodOptimizer()
+        : asMethodOptimizer(),
+          m_generationNb(0),
+          m_assessmentCounter(0),
+          m_popSize(0),
+          m_naturalSelectionType(0),
+          m_couplesSelectionType(0),
+          m_crossoverType(0),
+          m_mutationsModeType(0),
+          m_allowElitismForTheBest(true)
 {
-    m_generationNb = 0;
-    m_assessmentCounter = 0;
-    m_popSize = 0;
-    m_naturalSelectionType = 0;
-    m_couplesSelectionType = 0;
-    m_crossoverType = 0;
-    m_mutationsModeType = 0;
-    m_allowElitismForTheBest = true;
+
 }
 
 asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms()

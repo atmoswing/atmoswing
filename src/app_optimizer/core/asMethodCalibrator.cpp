@@ -34,15 +34,12 @@
 #endif
 
 asMethodCalibrator::asMethodCalibrator()
-        : asMethodStandard()
+        : asMethodStandard(),
+          m_scoreOrder(Asc),
+          m_scoreValid(NaNf),
+          m_preloaded(false),
+          m_validationMode(false)
 {
-    m_predictorDataDir = wxEmptyString;
-    m_paramsFilePath = wxEmptyString;
-    m_preloaded = false;
-    m_validationMode = false;
-    m_scoreOrder = Asc;
-    m_scoreValid = NaNf;
-
     // Seeds the random generator
     asTools::InitRandom();
 }

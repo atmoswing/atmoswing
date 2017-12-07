@@ -33,18 +33,15 @@
 
 asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow,
                                                    asForecastManager *forecastManager, wxWindowID id)
-        : asFrameGridAnalogsValuesVirtual(parent)
+        : asFrameGridAnalogsValuesVirtual(parent),
+          m_forecastManager(forecastManager),
+          m_selectedMethod(methodRow),
+          m_selectedForecast(wxMax(forecastRow, 0)),
+          m_selectedStation(0),
+          m_selectedDate(0),
+          m_sortAfterCol(0),
+          m_sortOrder(Asc)
 {
-    forecastRow = wxMax(forecastRow, 0);
-
-    m_forecastManager = forecastManager;
-    m_selectedMethod = methodRow;
-    m_selectedForecast = forecastRow;
-    m_selectedStation = 0;
-    m_selectedDate = 0;
-    m_sortAfterCol = 0;
-    m_sortOrder = Asc;
-
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));

@@ -30,17 +30,15 @@
 
 asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level,
                      float Height, int flatAllowed)
-        : asGeo()
+        : asGeo(),
+          m_cornerUL(CornerUL),
+          m_cornerUR(CornerUR),
+          m_cornerLL(CornerLL),
+          m_cornerLR(CornerLR),
+          m_level(Level),
+          m_height(Height),
+          m_flatAllowed(flatAllowed)
 {
-    // Set the members
-    m_cornerUL = CornerUL;
-    m_cornerUR = CornerUR;
-    m_cornerLL = CornerLL;
-    m_cornerLR = CornerLR;
-    m_level = Level;
-    m_height = Height;
-    m_flatAllowed = flatAllowed;
-
     // Initialization and check points
     Init();
 
@@ -48,7 +46,10 @@ asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &Corner
 }
 
 asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
-        : asGeo()
+        : asGeo(),
+          m_level(Level),
+          m_height(Height),
+          m_flatAllowed(flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
         Ywidth = wxMax(Ywidth, 0.0);
@@ -67,9 +68,6 @@ asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, flo
     m_cornerLL.y = Ymin;
     m_cornerLR.x = Xmin + Xwidth;
     m_cornerLR.y = Ymin;
-    m_level = Level;
-    m_height = Height;
-    m_flatAllowed = flatAllowed;
 
     // Initialization and check points
     Init();
@@ -78,7 +76,10 @@ asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, flo
 }
 
 asGeoArea::asGeoArea(float Level, float Height)
-        : asGeo()
+        : asGeo(),
+          m_level(Level),
+          m_height(Height),
+          m_flatAllowed(asFLAT_ALLOWED)
 {
     // Set the members
     m_cornerUL.x = 0;
@@ -89,9 +90,6 @@ asGeoArea::asGeoArea(float Level, float Height)
     m_cornerLL.y = 0;
     m_cornerLR.x = 0;
     m_cornerLR.y = 0;
-    m_level = Level;
-    m_height = Height;
-    m_flatAllowed = asFLAT_ALLOWED;
 }
 
 asGeoArea::~asGeoArea()

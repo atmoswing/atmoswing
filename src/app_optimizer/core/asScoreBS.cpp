@@ -29,14 +29,8 @@
 #include "asScoreBS.h"
 
 asScoreBS::asScoreBS()
-        : asScore()
+        : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf)
 {
-    m_score = asScore::BS;
-    m_name = _("Brier score");
-    m_fullName = _("Brier score");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
 }
 
 asScoreBS::~asScoreBS()

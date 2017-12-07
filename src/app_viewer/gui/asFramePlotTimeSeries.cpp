@@ -37,17 +37,15 @@ END_EVENT_TABLE()
 
 asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast,
                                              int selectedStation, asForecastManager *forecastManager, wxWindowID id)
-        : asFramePlotTimeSeriesVirtual(parent, id)
+        : asFramePlotTimeSeriesVirtual(parent, id),
+          m_forecastManager(forecastManager),
+          m_selectedStation(selectedStation),
+          m_selectedMethod(selectedMethod),
+          m_selectedForecast(selectedForecast),
+          m_maxVal(100)
 {
-    m_maxVal = 100;
-
     int paneMinSize = (int) (m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitter->SetMinimumPaneSize(paneMinSize);
-
-    m_selectedStation = selectedStation;
-    m_selectedMethod = selectedMethod;
-    m_selectedForecast = selectedForecast;
-    m_forecastManager = forecastManager;
 
     m_panelPlot = new asPanelPlot(m_panelRight);
     m_panelPlot->Layout();

@@ -32,9 +32,10 @@
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
 
 asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id)
-        : asWizardBatchForecastsVirtual(parent, id)
+        : asWizardBatchForecastsVirtual(parent, id),
+          m_batchForecasts(batchForecasts)
 {
-    m_batchForecasts = batchForecasts;
+
 }
 
 asWizardBatchForecasts::~asWizardBatchForecasts()

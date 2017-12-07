@@ -29,13 +29,12 @@
 #include "asFileNetcdf.h"
 
 asFileNetcdf::asFileNetcdf(const wxString &fileName, const ListFileMode &fileMode)
-        : asFile(fileName, fileMode)
+        : asFile(fileName, fileMode),
+          m_fileId(0),
+          m_status(0),
+          m_defineMode(false)
 {
-    m_fileId = 0;
-    m_status = 0;
-    m_struct = NcStruct();
     m_struct.format = Classic;
-    m_defineMode = false;
 }
 
 asFileNetcdf::~asFileNetcdf()

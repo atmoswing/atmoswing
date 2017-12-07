@@ -32,9 +32,9 @@
 
 
 asLog::asLog()
+        : m_logFile(nullptr),
+          m_logChain(nullptr)
 {
-    m_logFile = NULL;
-    m_logChain = NULL;
 }
 
 asLog::~asLog()

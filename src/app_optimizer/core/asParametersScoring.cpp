@@ -31,19 +31,20 @@
 #include <asFileParametersCalibration.h>
 
 asParametersScoring::asParametersScoring()
-        : asParameters()
+        : asParameters(),
+          m_calibrationStart(0),
+          m_calibrationEnd(0),
+          m_score{.name = wxEmptyString,
+                  .timeArrayMode = wxEmptyString,
+                  .timeArrayDate = 0,
+                  .timeArrayIntervalDays = 0,
+                  .postprocess = false,
+                  .postprocessDupliExp = 0,
+                  .postprocessMethod = wxEmptyString,
+                  .threshold = NaNf,
+                  .quantile = NaNf}
 {
-    m_calibrationStart = 0;
-    m_calibrationEnd = 0;
-    m_score.name = wxEmptyString;
-    m_score.timeArrayMode = wxEmptyString;
-    m_score.timeArrayDate = 0;
-    m_score.timeArrayIntervalDays = 0;
-    m_score.postprocess = false;
-    m_score.postprocessDupliExp = 0;
-    m_score.postprocessMethod = wxEmptyString;
-    m_score.threshold = NaNf; // initialization required
-    m_score.quantile = NaNf; // initialization required
+
 }
 
 asParametersScoring::~asParametersScoring()

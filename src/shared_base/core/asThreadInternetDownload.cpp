@@ -34,19 +34,18 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs 
                                                    const wxString &proxyAddress, const long proxyPort,
                                                    const wxString &proxyUser, const wxString &proxyPasswd, int start,
                                                    int end)
-        : asThread()
+        : asThread(),
+          m_urls(urls),
+          m_fileNames(fileNames),
+          m_destinationDir(destinationDir),
+          m_usesProxy(usesProxy),
+          m_proxyAddress(proxyAddress),
+          m_proxyPort(proxyPort),
+          m_proxyUser(proxyUser),
+          m_proxyPasswd(proxyPasswd),
+          m_start(start),
+          m_end(wxMin(end, (int) fileNames.size() - 1)),
 {
-    m_urls = urls;
-    m_fileNames = fileNames;
-    m_destinationDir = destinationDir;
-    m_usesProxy = usesProxy;
-    m_proxyAddress = proxyAddress;
-    m_proxyPort = proxyPort;
-    m_proxyUser = proxyUser;
-    m_proxyPasswd = proxyPasswd;
-    m_start = start;
-    m_end = wxMin(end, (int) m_fileNames.size() - 1);
-
     wxASSERT((unsigned) m_end < urls.size());
     wxASSERT((unsigned) m_end < fileNames.size());
 }

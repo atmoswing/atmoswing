@@ -34,18 +34,13 @@
 
 asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                                            wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebar(parent, id, pos, size, style)
+        : asPanelSidebar(parent, id, pos, size, style),
+          m_workspace(workspace),
+          m_forecastManager(forecastManager),
+          m_panelDrawing(nullptr),
+          m_mode(1)
 {
-    m_workspace = workspace;
-    m_forecastManager = forecastManager;
-
     m_header->SetLabelText(_("Alarms"));
-
-    m_mode = 1; // 1: values
-    // 2: thresholds -> not available yet
-
-    m_panelDrawing = NULL;
-
     m_sizerContent->Fit(this);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), NULL, this);

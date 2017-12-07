@@ -45,16 +45,34 @@
 #include "asScoreRankHistogram.h"
 
 asScore::asScore()
+        : m_score(Undefined),
+          m_order(Asc),
+          m_scaleBest(NaNf),
+          m_scaleWorst(NaNf),
+          m_usesClimatology(false),
+          m_singleValue(true),
+          m_scoreClimatology(0),
+          m_threshold(NaNf),
+          m_quantile(NaNf)
 {
-    m_score = Undefined;
-    m_scoreClimatology = 0;
-    m_threshold = NaNf;
-    m_quantile = NaNf;
-    m_usesClimatology = false;
-    m_singleValue = true;
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
-    m_order = Asc;
+
+}
+
+asScore::asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest,
+                 float scaleWorst, bool usesClimatology, bool singleValue)
+        : m_score(score),
+          m_name(name),
+          m_fullName(fullname),
+          m_order(order),
+          m_scaleBest(scaleBest),
+          m_scaleWorst(scaleWorst),
+          m_usesClimatology(usesClimatology),
+          m_singleValue(singleValue),
+          m_scoreClimatology(0),
+          m_threshold(NaNf),
+          m_quantile(NaNf)
+{
+
 }
 
 asScore *asScore::GetInstance(Score scoreEnum)

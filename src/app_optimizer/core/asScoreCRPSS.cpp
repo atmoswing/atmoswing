@@ -30,16 +30,11 @@
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSS::asScoreCRPSS()
-        : asScore()
+        : asScore(asScore::CRPSS, _("CRPS Skill Score"),
+                  _("Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method"),
+                  Desc, 1, NaNf, true)
 {
-    m_score = asScore::CRPSS;
-    m_name = _("CRPS Skill Score");
-    m_fullName = _(
-            "Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method");
-    m_order = Desc;
-    m_scaleBest = 1;
-    m_scaleWorst = NaNf;
-    m_usesClimatology = true;
+
 }
 
 asScoreCRPSS::~asScoreCRPSS()

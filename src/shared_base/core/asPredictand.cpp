@@ -39,20 +39,20 @@
 
 asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation)
+        : m_fileVersion(1.4f),
+          m_parameter(dataParameter),
+          m_temporalResolution(dataTemporalResolution),
+          m_spatialAggregation(dataSpatialAggregation),
+          m_timeStepDays(0.0),
+          m_timeLength(0),
+          m_stationsNb(0),
+          m_dateProcessed(0.0),
+          m_dateStart(0.0),
+          m_dateEnd(0.0),
+          m_hasNormalizedData(false),
+          m_hasReferenceValues(false)
 {
-    m_parameter = dataParameter;
-    m_temporalResolution = dataTemporalResolution;
-    m_spatialAggregation = dataSpatialAggregation;
-    m_fileVersion = 1.4f;
-    m_hasNormalizedData = false;
-    m_hasReferenceValues = false;
-    m_datasetId = wxEmptyString;
-    m_timeStepDays = 0.0;
-    m_timeLength = 0;
-    m_stationsNb = 0;
-    m_dateProcessed = 0.0;
-    m_dateStart = 0.0;
-    m_dateEnd = 0.0;
+
 }
 
 asPredictand::~asPredictand()

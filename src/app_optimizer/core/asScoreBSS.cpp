@@ -30,15 +30,8 @@
 #include "asScoreBS.h"
 
 asScoreBSS::asScoreBSS()
-        : asScore()
+        : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NaNf, true)
 {
-    m_score = asScore::BSS;
-    m_name = _("BS Skill Score");
-    m_fullName = _("Brier Skill Score");
-    m_order = Desc;
-    m_scaleBest = 1;
-    m_scaleWorst = NaNf;
-    m_usesClimatology = true;
 }
 
 asScoreBSS::~asScoreBSS()

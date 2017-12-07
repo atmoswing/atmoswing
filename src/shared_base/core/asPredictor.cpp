@@ -34,39 +34,32 @@
 
 
 asPredictor::asPredictor(const wxString &dataId)
+        : m_initialized(false),
+          m_axesChecked(false),
+          m_dataId(dataId),
+          m_timeZoneHours(0.0),
+          m_timeStepHours(0.0),
+          m_firstTimeStepHours(0.0),
+          m_parameter(ParameterUndefined),
+          m_unit(UnitUndefined),
+          m_xAxisStep(0.0f),
+          m_yAxisStep(0.0f),
+          m_strideAllowed(false),
+          m_xAxisShift(0.0f),
+          m_yAxisShift(0.0f),
+          m_level(0),
+          m_latPtsnb(0),
+          m_lonPtsnb(0),
+          m_isPreprocessed(false),
+          m_isEnsemble(false),
+          m_canBeClipped(true)
 {
-    m_dataId = dataId;
-    m_level = 0;
-    m_product = wxEmptyString;
-    m_subFolder = wxEmptyString;
-    m_isPreprocessed = false;
-    m_isEnsemble = false;
-    m_transformedBy = wxEmptyString;
-    m_canBeClipped = true;
-    m_latPtsnb = 0;
-    m_lonPtsnb = 0;
-    m_preprocessMethod = wxEmptyString;
-    m_initialized = false;
-    m_axesChecked = false;
-    m_timeZoneHours = 0.0;
-    m_timeStepHours = 0.0;
-    m_firstTimeStepHours = 0.0;
-    m_xAxisStep = 0.0f;
-    m_yAxisStep = 0.0f;
-    m_strideAllowed = false;
-    m_xAxisShift = 0.0f;
-    m_yAxisShift = 0.0f;
-    m_fileStructure.dimLatName = wxEmptyString;
-    m_fileStructure.dimLonName = wxEmptyString;
-    m_fileStructure.dimTimeName = wxEmptyString;
-    m_fileStructure.dimLevelName = wxEmptyString;
+
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
     m_fileIndexes.memberStart = 0;
     m_fileIndexes.memberCount = 1;
-    m_fileExtension = wxEmptyString;
-    m_parameter = ParameterUndefined;
-    m_unit = UnitUndefined;
+
     int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
     AssignGribCode(arr);
 
