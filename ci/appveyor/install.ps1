@@ -123,7 +123,7 @@ if(!(Test-Path -Path "$LIB_DIR\png") -Or $REBUILD_PNG) {
   Init-Build "png"
   Download-Lib "png" $PNG_URL
   7z x png.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\libpng-*" "$TMP_DIR\png"
+  move "$TMP_DIR\lpng*" "$TMP_DIR\png"
   cd "$TMP_DIR\png"
   mkdir bld > $null
   cd bld
