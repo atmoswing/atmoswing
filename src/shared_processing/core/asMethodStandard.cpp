@@ -44,12 +44,10 @@ wxDEFINE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
 
 
 asMethodStandard::asMethodStandard()
+        : m_cancel(false),
+          m_predictandDB(nullptr)
 {
-    m_paramsFilePath = wxEmptyString;
-    m_predictandDBFilePath = wxEmptyString;
-    m_predictorDataDir = wxEmptyString;
-    m_predictandDB = NULL;
-    m_cancel = false;
+
 }
 
 asMethodStandard::~asMethodStandard()

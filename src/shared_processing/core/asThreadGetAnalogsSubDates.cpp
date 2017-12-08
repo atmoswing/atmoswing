@@ -42,7 +42,7 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(std::vector<asPredictor *
                                                        a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria,
                                                        a2f *finalAnalogsDates, a2f *previousAnalogsDates,
                                                        bool *containsNaNs)
-        : asThread(),
+        : asThread(asThread::ProcessorGetAnalogsDates),
           m_pPredictorsArchive(predictorsArchive),
           m_pPredictorsTarget(predictorsTarget),
           m_pTimeArrayArchiveData(timeArrayArchiveData),
@@ -58,7 +58,6 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(std::vector<asPredictor *
           m_pFinalAnalogsDates(finalAnalogsDates),
           m_pPreviousAnalogsDates(previousAnalogsDates)
 {
-    m_type = asThread::ProcessorGetAnalogsDates;
     m_step = step;
     m_start = start;
     m_end = end;

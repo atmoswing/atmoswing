@@ -94,35 +94,32 @@ asTimeArray::asTimeArray()
 }
 
 asTimeArray::asTimeArray(double date, Mode slctmode)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(slctmode),
+          m_start(date),
+          m_end(date),
+          m_timeStepDays(0),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(slctmode == SingleDay);
-
-    // Get values
-    m_initialized = false;
-    m_mode = slctmode;
-    m_timeStepDays = 0;
-    m_start = date;
-    m_end = date;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
 }
 
 asTimeArray::asTimeArray(vd &timeArray)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(timeArray.size() > 1);
     wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
 
     // Get values
-    m_initialized = false;
-    m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
     m_end = timeArray[timeArray.size() - 1];
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
     m_timeArray.resize(timeArray.size());
 
     for (unsigned int i = 0; i < timeArray.size(); i++) {
@@ -131,18 +128,18 @@ asTimeArray::asTimeArray(vd &timeArray)
 }
 
 asTimeArray::asTimeArray(a1d &timeArray)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(timeArray.size() > 0);
 
     // Get values
-    m_initialized = false;
-    m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
     m_end = timeArray[timeArray.size() - 1];
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
     m_timeArray = timeArray;
 }
 

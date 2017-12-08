@@ -33,11 +33,10 @@
 
 asThreadPreprocessGradients::asThreadPreprocessGradients(vva2f *gradients, std::vector<asPredictor *> predictors,
                                                          int start, int end)
-        : asThread(),
+        : asThread(asThread::PreprocessorGradients),
           m_pGradients(gradients),
           m_pPredictors(predictors)
 {
-    m_type = asThread::PreprocessorGradients;
     m_start = start;
     m_end = end;
 }

@@ -29,12 +29,8 @@
 #include "asCriteriaRMSE.h"
 
 asCriteriaRMSE::asCriteriaRMSE()
-        : asCriteria()
+        : asCriteria(asCriteria::RMSE, "RMSE", _("Root Mean Square Error"), Asc)
 {
-    m_criteria = asCriteria::RMSE;
-    m_name = "RMSE";
-    m_fullName = _("Root Mean Square Error");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

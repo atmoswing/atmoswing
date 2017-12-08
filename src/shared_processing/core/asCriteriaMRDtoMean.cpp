@@ -29,12 +29,8 @@
 #include "asCriteriaMRDtoMean.h"
 
 asCriteriaMRDtoMean::asCriteriaMRDtoMean()
-        : asCriteria()
+        : asCriteria(asCriteria::MRDtoMean, "MRDtoMean", _("Mean Relative Differences to the Mean"), Asc)
 {
-    m_criteria = asCriteria::MRDtoMean;
-    m_name = "MRDtoMean";
-    m_fullName = _("Mean Relative Differences to the Mean");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

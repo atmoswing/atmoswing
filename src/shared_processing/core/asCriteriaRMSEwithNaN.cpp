@@ -29,12 +29,8 @@
 #include "asCriteriaRMSEwithNaN.h"
 
 asCriteriaRMSEwithNaN::asCriteriaRMSEwithNaN()
-        : asCriteria()
+        : asCriteria(asCriteria::RMSEwithNaN, "RMSEwithNaN", _("Root Mean Square Error with NaNs management"), Asc)
 {
-    m_criteria = asCriteria::RMSEwithNaN;
-    m_name = "RMSEwithNaN";
-    m_fullName = _("Root Mean Square Error with NaNs management");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

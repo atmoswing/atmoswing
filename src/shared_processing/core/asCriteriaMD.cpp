@@ -29,12 +29,8 @@
 #include "asCriteriaMD.h"
 
 asCriteriaMD::asCriteriaMD()
-        : asCriteria()
+        : asCriteria(asCriteria::MD, "MD", _("Mean Absolute Difference"), Asc)
 {
-    m_criteria = asCriteria::MD;
-    m_name = "MD";
-    m_fullName = _("Mean Absolute Difference");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

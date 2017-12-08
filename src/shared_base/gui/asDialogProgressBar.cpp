@@ -29,14 +29,13 @@
 
 
 asDialogProgressBar::asDialogProgressBar(const wxString &DialogMessage, int ValueMax)
+        : m_progressBar(nullptr),
+          m_initiated(false),
+          m_steps(100),
+          m_delayUpdate(false),
+          m_valueMax(ValueMax),
+          m_currentStepIndex(0)
 {
-    m_progressBar = NULL;
-    m_initiated = false;
-    m_delayUpdate = false;
-    m_steps = 100;
-    m_valueMax = ValueMax;
-    m_currentStepIndex = 0;
-
     if (!g_silentMode) {
         if (ValueMax > 2 * m_steps) {
             m_delayUpdate = true;

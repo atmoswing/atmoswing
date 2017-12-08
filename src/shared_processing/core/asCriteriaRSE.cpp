@@ -29,12 +29,8 @@
 #include "asCriteriaRSE.h"
 
 asCriteriaRSE::asCriteriaRSE()
-        : asCriteria()
+        : asCriteria(asCriteria::RSE, "RSE", _("Root Squared Error"), Asc)
 {
-    m_criteria = asCriteria::RSE;
-    m_name = "RSE";
-    m_fullName = _("Root Squared Error");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

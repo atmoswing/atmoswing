@@ -28,11 +28,10 @@
 #include "asCriteriaNS1grads.h"
 
 asCriteriaNS1grads::asCriteriaNS1grads()
-        : asCriteriaS1grads()
+        : asCriteriaS1grads(),
+          asCriteria(asCriteria::NS1grads, "NS1grads", _("Normalized Teweles-Wobus on gradients"), Asc)
 {
-    m_criteria = asCriteria::NS1grads;
-    m_name = "NS1grads";
-    m_fullName = _("Normalized Teweles-Wobus on gradients");
+
 }
 
 asCriteriaNS1grads::~asCriteriaNS1grads()

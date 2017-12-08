@@ -28,11 +28,9 @@
 #include "asCriteriaNMD.h"
 
 asCriteriaNMD::asCriteriaNMD()
-        : asCriteriaMD()
+        : asCriteriaMD(),
+          asCriteria(asCriteria::NMD, "NMD", _("Normalized Mean Differences"), Asc)
 {
-    m_criteria = asCriteria::NMD;
-    m_name = "NMD";
-    m_fullName = _("Normalized Mean Differences");
     m_needsDataRange = true;
 }
 

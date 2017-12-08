@@ -28,12 +28,10 @@
 #include "asCriteriaNS1.h"
 
 asCriteriaNS1::asCriteriaNS1()
-        : asCriteriaS1()
+        : asCriteriaS1(),
+          asCriteria(asCriteria::NS1, "NS1", _("Normalized Teweles-Wobus"), Asc)
 {
-    m_criteria = asCriteria::NS1;
-    m_name = "NS1";
-    m_fullName = _("Normalized Teweles-Wobus");
-    m_order = Asc;
+
 }
 
 asCriteriaNS1::~asCriteriaNS1()

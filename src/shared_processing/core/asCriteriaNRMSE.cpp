@@ -28,11 +28,9 @@
 #include "asCriteriaNRMSE.h"
 
 asCriteriaNRMSE::asCriteriaNRMSE()
-        : asCriteriaRMSE()
+        : asCriteriaRMSE(),
+          asCriteria(asCriteria::NRMSE, "NRMSE", _("Normalized Root Mean Square Error"), Asc)
 {
-    m_criteria = asCriteria::NRMSE;
-    m_name = "NRMSE";
-    m_fullName = _("Normalized Root Mean Square Error");
     m_needsDataRange = true;
 }
 

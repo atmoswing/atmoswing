@@ -29,12 +29,8 @@
 #include "asCriteriaS1grads.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
-        : asCriteria()
+        : asCriteria(asCriteria::S1grads, "S1grads", _("Teweles-Wobus on gradients"), Asc)
 {
-    m_criteria = asCriteria::S1grads;
-    m_name = "S1grads";
-    m_fullName = _("Teweles-Wobus on gradients");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = 200;
     m_canUseInline = true;
