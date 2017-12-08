@@ -617,6 +617,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             asThrowException(_("The date format is not correctly set"));
     }
 
+    return 0;
 }
 
 bool asTime::IsLeapYear(int year)
