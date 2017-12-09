@@ -99,6 +99,7 @@ if(!(Test-Path -Path "$LIB_DIR\wxwidgets") -Or $REBUILD_WX) {
   move "$TMP_DIR\wxwidgets\lib" "$LIB_DIR\wxwidgets\lib"
 }
 $env:WXWIN = "$LIB_DIR\wxwidgets"
+dir "$LIB_DIR\wxwidgets"
 
 # Install Zlib
 if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
@@ -113,6 +114,7 @@ if(!(Test-Path -Path "$LIB_DIR\zlib") -Or $REBUILD_ZLIB) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$LIB_DIR\zlib"
 
 # Install Jpeg
 if(!(Test-Path -Path "$LIB_DIR\jpeg") -Or $REBUILD_JPEG) {
@@ -127,6 +129,7 @@ if(!(Test-Path -Path "$LIB_DIR\jpeg") -Or $REBUILD_JPEG) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$TMP_DIR\jpeg"
 
 # Install PNG
 if(!(Test-Path -Path "$LIB_DIR\png") -Or $REBUILD_PNG) {
@@ -141,6 +144,7 @@ if(!(Test-Path -Path "$LIB_DIR\png") -Or $REBUILD_PNG) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$TMP_DIR\png"
 
 # Install Jasper
 if(!(Test-Path -Path "$LIB_DIR\jasper") -Or $REBUILD_JASPER) {
@@ -155,6 +159,7 @@ if(!(Test-Path -Path "$LIB_DIR\jasper") -Or $REBUILD_JASPER) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$TMP_DIR\jasper"
 
 # Install curl
 if(!(Test-Path -Path "$LIB_DIR\curl") -Or $REBUILD_CURL) {
@@ -168,6 +173,7 @@ if(!(Test-Path -Path "$LIB_DIR\curl") -Or $REBUILD_CURL) {
   move "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\include" "$LIB_DIR\curl\include"
   move "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\lib" "$LIB_DIR\curl\lib"
 }
+dir "$TMP_DIR\curl"
 
 # Install Proj
 if(!(Test-Path -Path "$LIB_DIR\proj") -Or $REBUILD_PROJ) {
@@ -179,6 +185,7 @@ if(!(Test-Path -Path "$LIB_DIR\proj") -Or $REBUILD_PROJ) {
   nmake -f makefile.vc INSTDIR="$LIB_DIR\proj" > $null
   nmake -f makefile.vc INSTDIR="$LIB_DIR\proj" install-all > $null
 }
+dir "$TMP_DIR\proj"
 
 # Install HDF5
 if(!(Test-Path -Path "$LIB_DIR\hdf5") -Or $REBUILD_HDF5) {
@@ -195,6 +202,7 @@ if(!(Test-Path -Path "$LIB_DIR\hdf5") -Or $REBUILD_HDF5) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$TMP_DIR\hdf5"
 
 # Install NetCDF
 if(!(Test-Path -Path "$LIB_DIR\netcdf") -Or $REBUILD_NETCDF) {
@@ -210,6 +218,7 @@ if(!(Test-Path -Path "$LIB_DIR\netcdf") -Or $REBUILD_NETCDF) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+dir "$TMP_DIR\netcdf"
 
 # Install Gdal
 if(!(Test-Path -Path "$LIB_DIR\gdal") -Or $REBUILD_GDAL) {
@@ -223,3 +232,4 @@ if(!(Test-Path -Path "$LIB_DIR\gdal") -Or $REBUILD_GDAL) {
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR\gdal" CURL_DIR="$LIB_DIR\curl" CURL_INC="-I$LIB_DIR_REV/curl/include" CURL_LIB="$LIB_DIR_REV/curl/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB install > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR\gdal" CURL_DIR="$LIB_DIR\curl" CURL_INC="-I$LIB_DIR_REV/curl/include" CURL_LIB="$LIB_DIR_REV/curl/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB devinstall > $null
 }
+dir "$TMP_DIR\gdal"
