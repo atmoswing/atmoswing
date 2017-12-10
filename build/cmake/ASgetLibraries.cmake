@@ -1,6 +1,7 @@
 # External projects
 include(ExternalProject)
 set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
+set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${EXTERNAL_DIR}")
 
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
@@ -97,10 +98,8 @@ link_libraries(${CURL_LIBRARIES})
 link_libraries(${HDF5_LIBRARIES})
 link_libraries(${JASPER_LIBRARIES})
 link_libraries(${NETCDF_LIBRARIES})
-if (UNIX)
-    link_libraries(${PNG_LIBRARIES})
-    link_libraries(${JPEG_LIBRARY})
-endif (UNIX)
+link_libraries(${PNG_LIBRARIES})
+link_libraries(${JPEG_LIBRARY})
 
 
 # Own libraries
