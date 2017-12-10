@@ -158,6 +158,10 @@ if (BUILD_TESTS)
             GIT_REPOSITORY https://github.com/google/googletest
             UPDATE_COMMAND ""
             CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+            BUILD_COMMAND
+                cmake
+                --build .
+                --config Release
             )
 endif (BUILD_TESTS)
 
