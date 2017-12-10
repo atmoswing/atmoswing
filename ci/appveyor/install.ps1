@@ -14,8 +14,8 @@ $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
 $REBUILD_CURL=$false
 $REBUILD_PROJ=$false
-$REBUILD_HDF5=$true
-$REBUILD_NETCDF=$true
+$REBUILD_HDF5=$false
+$REBUILD_NETCDF=$false
 $REBUILD_GDAL=$false
 
 # Libraries URL

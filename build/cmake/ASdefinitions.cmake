@@ -22,6 +22,7 @@ if (MINGW OR MSYS OR UNIX AND NOT APPLE)
     endif (USE_WXHGVERSION)
 elseif (WIN32)
     if(MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
         # Force to always compile with W4
         if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
             string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
