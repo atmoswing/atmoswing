@@ -8,15 +8,15 @@ $ON_APPVEYOR=$true
 
 # Force rebuilding some libraries
 $REBUILD_WX=$false
-$REBUILD_ZLIB=$true
+$REBUILD_ZLIB=$false
 $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
-$REBUILD_CURL=$true
-$REBUILD_PROJ=$true
+$REBUILD_CURL=$false
+$REBUILD_PROJ=$false
 $REBUILD_HDF5=$true
 $REBUILD_NETCDF=$true
-$REBUILD_GDAL=$true
+$REBUILD_GDAL=$false
 
 # Libraries URL
 $CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
@@ -198,7 +198,7 @@ if(!(Test-Path -Path "$LIB_DIR\hdf5") -Or $REBUILD_HDF5) {
   cd "hdf5"
   mkdir bld > $null
   cd bld
-  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\hdf5" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT=ON -DZLIB_LIBRARIES="$LIB_DIR/zlib/lib/zlib.lib" -DZLIB_INCLUDE_DIRS="$LIB_DIR/zlib/include" > $null
+  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR\hdf5" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT=ON -DCMAKE_PREFIX_PATH="$LIB_DIR\zlib" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
