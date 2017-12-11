@@ -160,9 +160,9 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl") -Or $REBUILD_CURL) {
   move "$TMP_DIR\curl-*" "$TMP_DIR\curl"
   cd "$TMP_DIR\curl\winbuild"
   nmake -f Makefile.vc mode=dll VC=14 DEBUG=NO MACHINE=x64 > $null
-  move "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\bin" "$LIB_DIR"
-  move "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\include" "$LIB_DIR"
-  move "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\lib" "$LIB_DIR"
+  Copy-Item "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\bin\*" "$LIB_DIR\bin"
+  Copy-Item "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\include\*" "$LIB_DIR\include"
+  Copy-Item "$TMP_DIR\curl\builds\libcurl-vc14-x64-release-dll-ipv6-sspi-winssl\lib\*" "$LIB_DIR\lib"
 }
 
 # Install Proj
