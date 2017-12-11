@@ -95,7 +95,6 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   move "$TMP_DIR\wxwidgets\lib" "$LIB_DIR\lib"
 }
 $env:WXWIN = "$LIB_DIR"
-dir "$LIB_DIR"
 
 # Install Zlib
 if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
