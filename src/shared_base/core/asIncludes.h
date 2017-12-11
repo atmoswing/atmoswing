@@ -149,24 +149,22 @@
 #include "asThreadsManager.h"
 
 #if wxUSE_GUI
-
-#   include "asDialogFilePicker.h"
-#   include "asDialogFileSaver.h"
-#   include "asDialogProgressBar.h"
-
+    #include "asDialogFilePicker.h"
+    #include "asDialogFileSaver.h"
+    #include "asDialogProgressBar.h"
 #endif
 
 #ifdef APP_FORECASTER
-#   include "asGlobVarsForecaster.h"
+    #include "asGlobVarsForecaster.h"
 #endif
 #ifdef APP_VIEWER
-#   include "asGlobVarsViewer.h"
+    #include "asGlobVarsViewer.h"
 #endif
 #ifdef APP_OPTIMIZER
-#   include "asGlobVarsOptimizer.h"
+    #include "asGlobVarsOptimizer.h"
 #endif
 #ifdef UNIT_TESTING
-#   include "asGlobVarsOptimizer.h"
+    #include "asGlobVarsOptimizer.h"
 #endif
 
 #endif // ATMOSWINGINC_H_INCLUDED

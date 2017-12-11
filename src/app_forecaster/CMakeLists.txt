@@ -53,7 +53,7 @@ link_libraries(${CURL_LIBRARIES})
 
 if (WIN32)
     if (USE_GUI)
-        add_executable(atmoswing-forecaster WIN32 ${src_app_forecaster} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+        add_executable(atmoswing-forecaster WIN32 ${src_app_forecaster} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
     else (USE_GUI)
         add_executable(atmoswing-forecaster ${src_app_forecaster})
     endif (USE_GUI)
@@ -95,3 +95,8 @@ endif (USE_WXHGVERSION)
 if (USE_VLD)
     target_link_libraries(atmoswing-forecaster ${VLD_LIBRARIES})
 endif (USE_VLD)
+
+
+##### INSTALLER
+
+install ( TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})

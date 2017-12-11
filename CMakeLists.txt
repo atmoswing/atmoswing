@@ -81,6 +81,14 @@ include_directories(${EXTERNAL_DIR}/include)
 link_directories(${EXTERNAL_DIR}/lib)
 link_directories(${EXTERNAL_DIR}/lib64)
 
+# Installer
+set(INSTALL_DIR_BIN bin)
+set(INSTALL_DIR_SHARE share/atmoswing)
+if (WIN32)
+    set(INSTALL_DIR_BIN .)
+    set(INSTALL_DIR_SHARE .)
+endif (WIN32)
+
 
 ##### FIND ANALYSIS TOOLS
 
@@ -110,6 +118,21 @@ if (USE_CODECOV)
 endif (USE_CODECOV)
 
 
+##### EXTERNAL PROJECTS
+
+# Eigen
+ExternalProject_Add(eigen
+        URL http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz
+        UPDATE_COMMAND ""
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND
+        ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
+        ${EXTERNAL_DIR}/include/Eigen
+        )
+
+
 ##### COMPONENTS
 
 # Add components
@@ -127,7 +150,7 @@ if (BUILD_VIEWER)
     add_subdirectory(src/app_viewer)
 endif(BUILD_VIEWER)
 if (BUILD_TESTS)
-    add_subdirectory(tests/src)
+    add_subdirectory(tests)
 endif (BUILD_TESTS)
 
 
@@ -140,4 +163,5 @@ message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINF
 
 
 #### INSTALLER
+
 include(define_installer_options)

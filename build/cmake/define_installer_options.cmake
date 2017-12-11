@@ -1,22 +1,3 @@
-set(INSTALL_DIR_BIN bin)
-set(INSTALL_DIR_SHARE share/atmoswing)
-if (WIN32)
-    set(INSTALL_DIR_BIN .)
-    set(INSTALL_DIR_SHARE .)
-endif (WIN32)
-
-if (BUILD_FORECASTER)
-    install ( TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})
-endif (BUILD_FORECASTER)
-
-if (BUILD_VIEWER)
-    install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
-endif (BUILD_VIEWER)
-
-if (BUILD_OPTIMIZER)
-    # Do not include the optimizer yet.
-    # install ( TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})
-endif (BUILD_OPTIMIZER)
 
 if (WIN32)
     file (GLOB dlls bin/*.dll)

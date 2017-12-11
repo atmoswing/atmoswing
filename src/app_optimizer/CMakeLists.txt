@@ -53,7 +53,7 @@ include_directories(${inc_dirs})
 
 if (WIN32)
     if (USE_GUI)
-        add_executable(atmoswing-optimizer WIN32 ${src_app_optimizer} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+        add_executable(atmoswing-optimizer WIN32 ${src_app_optimizer} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
     else (USE_GUI)
         add_executable(atmoswing-optimizer ${src_app_optimizer})
     endif (USE_GUI)
@@ -105,3 +105,7 @@ if (USE_CUDA)
     target_link_libraries(atmoswing-optimizer ascuda)
 endif (USE_CUDA)
 
+
+##### INSTALLER
+
+install ( TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})

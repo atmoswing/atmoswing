@@ -72,7 +72,7 @@ set(SEARCH_GDAL:BOOL ON)
 set(SEARCH_GEOS:BOOL OFF)
 set(VROOMGIS_PATH:STRING vroomgis/src)
 set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_ROOT})
-add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis)
+add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis ${EXTERNAL_DIR})
 include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/src)
 include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/art)
 
@@ -83,7 +83,7 @@ add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
 ##### DECLARE EXECUTABLE
 
 if (WIN32)
-    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${PROJECT_SOURCE_DIR}/src/shared_base/gui/resource.rc)
+    add_executable(atmoswing-viewer WIN32 ${src_app_viewer} ${CMAKE_SOURCE_DIR}/src/shared_base/gui/resource.rc)
 elseif (UNIX AND NOT APPLE)
     add_executable(atmoswing-viewer ${src_app_viewer})
 elseif (APPLE)
@@ -118,7 +118,7 @@ set_target_properties(atmoswing-viewer PROPERTIES COMPILE_DEFINITIONS "APP_VIEWE
 ##### LINKING
 
 add_dependencies(atmoswing-viewer vroomgis)
-target_link_libraries(asbase ${GDAL_LIBRARIES})
+target_link_libraries(atmoswing-viewer ${GDAL_LIBRARIES})
 target_link_libraries(atmoswing-viewer asbase)
 target_link_libraries(atmoswing-viewer vroomgis)
 target_link_libraries(atmoswing-viewer ${VROOMGIS_LIBRARY})
@@ -134,3 +134,7 @@ if (WIN32)
     target_link_libraries(atmoswing-viewer Psapi.lib)
 endif (WIN32)
 
+
+##### INSTALLER
+
+install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})

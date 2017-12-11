@@ -21,14 +21,14 @@ if (USE_GUI)
     list(APPEND src_shared_base ${src_base_gui_cpp} ${src_base_img_cpp} ${src_lib_awxled_cpp})
 endif (USE_GUI)
 if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asInternet.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asInternet.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asThreadInternetDownload.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asPredictorOper.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asPredictorOper.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asPredictorOperGfsForecast.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/src/shared_base/core/asPredictorOperGfsForecast.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asInternet.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asInternet.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOper.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOper.cpp")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOperGfsForecast.h")
+    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOperGfsForecast.cpp")
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
 
 
@@ -86,25 +86,12 @@ list(APPEND src_lib_g2clib ${src_lib_g2clib_h} ${src_lib_g2clib_c})
 list(REMOVE_DUPLICATES src_shared_base)
 
 # Include source directories
-list(APPEND inc_dirs
-        "${PROJECT_SOURCE_DIR}/src/shared_base/core/"
-        )
+list(APPEND inc_dirs "${PROJECT_SOURCE_DIR}/core/")
+if (USE_GUI)
+    list(APPEND inc_dirs "${PROJECT_SOURCE_DIR}/gui/")
+    list(APPEND inc_dirs "${PROJECT_SOURCE_DIR}/gui/img")
+endif (USE_GUI)
 include_directories(${inc_dirs})
-
-
-##### EXTERNAL PROJECTS
-
-# Eigen
-ExternalProject_Add(eigen
-        URL http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz
-        UPDATE_COMMAND ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
-        ${EXTERNAL_DIR}/include/Eigen
-        )
 
 
 ##### LIBRARIES
@@ -150,7 +137,7 @@ link_libraries(${JPEG_LIBRARY})
 
 # Grib2c
 add_library(g2clib STATIC ${src_lib_g2clib})
-include_directories("src/shared_base/libs/g2clib")
+include_directories("libs/g2clib")
 
 # wxhgversion
 if (USE_GUI)
