@@ -22,21 +22,24 @@ list(REMOVE_DUPLICATES src_app_forecaster)
 
 # Include source directories
 list(APPEND inc_dirs
-        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/core/"
         )
 if (USE_GUI)
     list(APPEND inc_dirs
-            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/"
-            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/img/"
-            "${PROJECT_SOURCE_DIR}/src/shared_base/libs/awxled/"
-            "${PROJECT_SOURCE_DIR}/src/app_forecaster/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/gui/"
             )
 endif (USE_GUI)
 include_directories(${inc_dirs})
 
 
 ##### LIBRARIES
+
+include(define_common_libraries)
 
 # libcURL
 mark_as_advanced(CLEAR CURL_INCLUDE_DIR)

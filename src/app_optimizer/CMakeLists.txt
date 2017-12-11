@@ -34,19 +34,25 @@ list(REMOVE_DUPLICATES src_app_optimizer)
 
 # Include source directories
 list(APPEND inc_dirs
-        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/src/app_optimizer/app/"
-        "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
+        "${PROJECT_SOURCE_DIR}/app/"
+        "${PROJECT_SOURCE_DIR}/core/"
         )
 if (USE_GUI)
     list(APPEND inc_dirs
-            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/"
-            "${PROJECT_SOURCE_DIR}/src/shared_base/gui/img/"
-            "${PROJECT_SOURCE_DIR}/src/shared_base/libs/awxled/"
-            "${PROJECT_SOURCE_DIR}/src/app_optimizer/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
+            "${PROJECT_SOURCE_DIR}/gui/"
             )
 endif (USE_GUI)
 include_directories(${inc_dirs})
+
+
+##### LIBRARIES
+
+include(define_common_libraries)
 
 
 ##### DECLARE EXECUTABLE

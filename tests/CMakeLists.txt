@@ -33,16 +33,19 @@ list(REMOVE_DUPLICATES src_tests)
 
 # Include source directories
 list(APPEND inc_dirs
+        "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${CMAKE_SOURCE_DIR}/src/shared_processing/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_viewer/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/"
         "${PROJECT_SOURCE_DIR}/test/src/"
-        "${PROJECT_SOURCE_DIR}/src/shared_processing/core/"
-        "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/"
-        "${PROJECT_SOURCE_DIR}/src/app_viewer/core/"
-        "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/"
         )
 include_directories(${inc_dirs})
 
 
 ##### LIBRARIES
+
+include(define_common_libraries)
 
 # Google Test
 if (MINGW OR MSYS)

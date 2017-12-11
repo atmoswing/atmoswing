@@ -167,7 +167,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
     m_grid->Hide();
 
     //m_grid->ClearGrid();
-    m_grid->DeleteRows(0, m_grid->GetRows());
+    m_grid->DeleteRows(0, m_grid->GetNumberRows());
     m_grid->InsertRows(0, dates.size());
 
     if (m_sortAfterCol > 0 || m_sortOrder == Desc) {

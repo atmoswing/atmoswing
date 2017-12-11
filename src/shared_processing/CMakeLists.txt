@@ -25,8 +25,22 @@ endif (USE_CUDA)
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_shared_processing)
 
+# Include source directories
+list(APPEND inc_dirs
+        "${CMAKE_SOURCE_DIR}/src/shared_base/core/"
+        "${PROJECT_SOURCE_DIR}/core/"
+        )
+if (USE_GUI)
+    list(APPEND inc_dirs
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
+            "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
+            )
+endif (USE_GUI)
+include_directories(${inc_dirs})
 
 ##### LIBRARIES
+
+include(define_common_libraries)
 
 # CUDA
 if (USE_CUDA)
