@@ -9,7 +9,7 @@ environment:
   CXXFLAGS: /MP
 
 cache:
-
+  - C:\projects\libs
 
 install:
   - ps: ci/appveyor/install.ps1
