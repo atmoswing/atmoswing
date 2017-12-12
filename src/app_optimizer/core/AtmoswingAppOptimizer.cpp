@@ -362,7 +362,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s", g_version, (const wxChar *) date);
+        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
 
         return false; // We don't want to continue
     }
@@ -434,7 +434,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
         if (!logLevelStr.ToLong(&logLevel)) {
-            wxPrintf(_("The value provided for 'log-level' could not be interpreted."));
+            wxPrintf(_("The value provided for 'log-level' could not be interpreted.\n"));
             return false;
         }
 
@@ -761,7 +761,7 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else {
-                wxPrintf("Wrong calibration method selection (%s).", m_calibMethod);
+                wxPrintf("Wrong calibration method selection (%s).\n", m_calibMethod);
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);
