@@ -12,7 +12,7 @@ $REBUILD_ZLIB=$false
 $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
-$REBUILD_CURL=$false
+$REBUILD_CURL=$true
 $REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
@@ -221,4 +221,6 @@ if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {
 }
 
 Get-ChildItem "$LIB_DIR/include"
+
+Write-Host "`curl include dir content: -ForegroundColor Yellow
 Get-ChildItem "$LIB_DIR/include/curl"
