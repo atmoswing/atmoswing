@@ -221,3 +221,4 @@ if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {
 }
 
 Get-ChildItem "$LIB_DIR/include"
+Get-ChildItem "$LIB_DIR/include/curl"
