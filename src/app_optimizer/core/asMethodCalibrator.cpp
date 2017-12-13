@@ -1786,7 +1786,7 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asPa
     }
     asTimeArray timeArray(timeStart, timeEnd, params.GetTimeArrayTargetTimeStepHours(), params.GetScoreTimeArrayMode());
 
-    // TODO (phorton#1#): Fix me: add every options for the Init function (generic version)
+    // TODO: Add every options for the Init function (generic version)
     //    timeArray.Init(params.GetScoreTimeArrayDate(), params.GetForecastScoreTimeArrayIntervalDays());
     timeArray.Init();
     wxLogVerbose(_("Date array created."));

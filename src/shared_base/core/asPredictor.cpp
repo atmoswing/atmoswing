@@ -1350,12 +1350,10 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid 
                         m_data[iTime][iMem].block(0, m_lonPtsnb - blockUR.cols(), blockUR.rows(), blockUR.cols()) = blockUR;
                     } else if (iArea == isblockLL) {
                         blockLL = compositeData[iArea][iTime][iMem];
-                        // TODO (phorton#1#): Implement me!
                         wxLogError(_("Not yet implemented."));
                         return false;
                     } else if (iArea == isblockLR) {
                         blockLR = compositeData[iArea][iTime][iMem];
-                        // TODO (phorton#1#): Implement me!
                         wxLogError(_("Not yet implemented."));
                         return false;
                     } else {

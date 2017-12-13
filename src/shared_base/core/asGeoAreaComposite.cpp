@@ -215,7 +215,6 @@ Coo asGeoAreaComposite::GetCenter() const
         center.y = GetYmin() + (GetYmax() - GetYmin()) / 2;
         return center;
     } else {
-        // TODO (phorton#1#): Implement me !
         asThrowException(_("This case is not managed yet."));
     }
 
@@ -259,7 +258,6 @@ void asGeoAreaComposite::CreateComposites()
         m_composites.push_back(area1);
         m_composites.push_back(area2);
     } else {
-        // TODO (phorton#1#): Implement me and check the other functions (GetCenter(), ...)!
         wxString error = "This case is not managed yet (asGeoAreaComposite::CreateComposites):\n ";
         error.Append(wxString::Format("m_cornerUL.x = %g\n", m_cornerUL.x));
         error.Append(wxString::Format("m_cornerUR.x = %g\n", m_cornerUR.x));

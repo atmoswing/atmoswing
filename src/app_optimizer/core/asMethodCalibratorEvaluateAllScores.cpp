@@ -162,7 +162,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         return false;
     }
 
-    // TODO: set this as an option
+    // TODO: Set this as an option
     bool processContingencyScores = false;
     bool processContinuousScores = true;
     bool processRankHistogramScores = true;

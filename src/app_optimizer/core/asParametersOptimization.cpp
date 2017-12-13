@@ -1328,7 +1328,6 @@ void asParametersOptimization::LockAll()
     return;
 }
 
-// TODO (Pascal#1#): Can be optimized by looping on the given vector (sorted first) instead
 void asParametersOptimization::Unlock(vi &indices)
 {
     int counter = 0;

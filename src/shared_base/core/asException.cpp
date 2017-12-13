@@ -128,7 +128,6 @@ asException::asException(const char *message, const char *filename, unsigned int
 #endif
 }
 
-// TODO (phorton#5#): Is it alright ?
 asException::~asException() throw()
 {
     //dtor

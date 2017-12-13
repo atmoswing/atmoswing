@@ -142,7 +142,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
 bool asProcessorScore::GetAnalogsTotalScore(asResultsScores &anaScores, asTimeArray &timeArray,
                                             asParametersScoring &params, asResultsTotalScore &results)
 {
-    // TODO (phorton#1#): Specify the period in the parameter
+    // TODO: Specify the period in the parameter
     asTotalScore *finalScore = asTotalScore::GetInstance(params.GetScoreName(), "Total");
 
     // Ranks number set for all, but only used for the rank histogram

@@ -223,6 +223,7 @@ private:
 
     struct NcStruct
     {
+        int nUDims;
         vi uDimIds;
         asFileNetcdf::Format format;
         std::vector<NcDimStruct> dims;
