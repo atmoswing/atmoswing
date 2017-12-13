@@ -153,7 +153,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
 }
 
 # Install curl
-if(!(Test-Path -Path "$LIB_DIR\include\curl") -Or $REBUILD_CURL) {
+if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
   Init-Build "curl"
   Download-Lib "curl" $CURL_URL
   7z x curl.zip -o"$TMP_DIR" > $null
