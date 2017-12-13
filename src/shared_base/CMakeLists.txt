@@ -97,6 +97,17 @@ include_directories(${inc_dirs})
 
 include(define_common_libraries)
 
+# libcURL
+if (BUILD_FORECASTER OR BUILD_VIEWER)
+    mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
+    mark_as_advanced(CLEAR CURL_LIBRARY)
+    if (UNIX)
+        find_package(OpenSSL REQUIRED)
+    endif (UNIX)
+    find_package(CURL REQUIRED)
+    include_directories(${CURL_INCLUDE_DIRS})
+endif (BUILD_FORECASTER OR BUILD_VIEWER)
+
 # Grib2c
 add_library(g2clib STATIC ${src_lib_g2clib})
 
@@ -124,11 +135,14 @@ endif (USE_GUI)
 set_target_properties(g2clib PROPERTIES COMPILE_DEFINITIONS "USE_JPEG2000; USE_PNG")
 
 
-
 ##### LINKING
 
 add_dependencies(asbase eigen)
 target_link_libraries(asbase g2clib)
+
+if (BUILD_FORECASTER OR BUILD_VIEWER)
+    target_link_libraries(asbase ${CURL_LIBRARIES})
+endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
 
 #### INSTALLER

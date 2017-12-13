@@ -47,16 +47,6 @@ include_directories(${inc_dirs})
 
 include(define_common_libraries)
 
-# libcURL
-mark_as_advanced(CLEAR CURL_INCLUDE_DIR)
-mark_as_advanced(CLEAR CURL_LIBRARY)
-if (UNIX)
-    find_package(OpenSSL REQUIRED)
-endif (UNIX)
-find_package(CURL REQUIRED)
-include_directories(${CURL_INCLUDE_DIRS})
-link_libraries(${CURL_LIBRARIES})
-
 # GDAL
 if (GDAL_ROOT)
     message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")

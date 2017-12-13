@@ -49,7 +49,6 @@ if (UNIX)
 endif (UNIX)
 find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIRS})
-link_libraries(${CURL_LIBRARIES})
 
 
 ##### DECLARE EXECUTABLE

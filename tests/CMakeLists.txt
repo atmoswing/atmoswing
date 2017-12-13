@@ -108,7 +108,6 @@ endif(WIN32)
 ##### LINKING
 
 add_dependencies(atmoswing-tests googletest)
-target_link_libraries(atmoswing-tests ${CURL_LIBRARY})
 target_link_libraries(atmoswing-tests gtest gtest_main)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
