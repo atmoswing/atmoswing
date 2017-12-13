@@ -34,7 +34,7 @@ if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER)
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER)
 
 # Output path
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # Libraries version
 set(EIGEN_VERSION 3.3.4)
@@ -134,6 +134,13 @@ ExternalProject_Add(eigen
 
 
 ##### COMPONENTS
+
+if (WIN32)
+    set(DLL_DIR ${CMAKE_PREFIX_PATH})
+    foreach(PATH ${CMAKE_PREFIX_PATH})
+        list(APPEND DLL_DIRS ${PATH}/bin)
+    endforeach()
+endif ()
 
 # Add components
 add_subdirectory(src/shared_base)

@@ -141,3 +141,46 @@ endif (WIN32)
 ##### INSTALLER
 
 install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
+
+# Dlls
+if (WIN32)
+    find_file(CURL_DLL_NAME
+            libcurl.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT CURL_DLL_NAME)
+        message(SEND_ERROR "CURL DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CURL_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "CURL DLL: ${CURL_DLL_NAME}")
+
+    find_file(PROJ_DLL_NAME
+            proj.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT PROJ_DLL_NAME)
+        message(SEND_ERROR "PROJ DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PROJ_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "PROJ DLL: ${PROJ_DLL_NAME}")
+
+    find_file(GDAL_DLL_NAME
+            gdal200.dll gdal201.dll gdal202.dll gdal203.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT GDAL_DLL_NAME)
+        message(SEND_ERROR "GDAL DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${GDAL_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
+
+endif (WIN32)

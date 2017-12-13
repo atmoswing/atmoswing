@@ -128,3 +128,49 @@ endif (USE_GUI)
 
 add_dependencies(asbase eigen)
 target_link_libraries(asbase g2clib)
+
+
+#### INSTALLER
+
+# Dlls
+if (WIN32)
+    find_file(PNG_DLL_NAME
+            libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT PNG_DLL_NAME)
+        message(SEND_ERROR "PNG DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PNG_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "PNG DLL: ${PNG_DLL_NAME}")
+
+    find_file(NETCDF_DLL_NAME
+            netcdf.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT NETCDF_DLL_NAME)
+        message(SEND_ERROR "NETCDF DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${NETCDF_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "NETCDF DLL: ${NETCDF_DLL_NAME}")
+
+    find_file(ZLIB_DLL_NAME
+            zlib.dll
+            HINTS ${DLL_DIRS}
+            NO_DEFAULT_PATH)
+    if (NOT ZLIB_DLL_NAME)
+        message(SEND_ERROR "ZLIB DLL not found in ${DLL_DIRS}.")
+    endif ()
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${ZLIB_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    message (STATUS "ZLIB DLL: ${ZLIB_DLL_NAME}")
+
+endif (WIN32)
