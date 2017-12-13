@@ -31,7 +31,6 @@ if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOperGfsForecast.cpp")
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
 
-
 # Grib2c library
 file(GLOB_RECURSE src_lib_g2clib_h libs/g2clib/*.h)
 set(src_lib_g2clib_c

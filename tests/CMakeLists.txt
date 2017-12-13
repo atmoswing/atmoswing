@@ -8,25 +8,33 @@ project(tests)
 # List source files
 file(GLOB_RECURSE src_tests_h src/*.h)
 file(GLOB_RECURSE src_tests_cpp src/*.cpp)
-list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h} ${src_optim_core_h}) # Include optimization files anyway (to test the analogue method)
-list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp} ${src_optim_core_cpp})
+list(APPEND src_tests ${src_tests_h} ${src_viewer_core_h}) # Include optimization files anyway (to test the analogue method)
+list(APPEND src_tests ${src_tests_cpp} ${src_viewer_core_cpp})
 if (BUILD_FORECASTER)
+    file(GLOB_RECURSE src_forec_core_h ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.h)
+    file(GLOB_RECURSE src_forec_core_cpp ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/*.cpp)
     list(APPEND src_tests ${src_forec_core_h})
     list(APPEND src_tests ${src_forec_core_cpp})
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
+    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.h")
+    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
+    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
+    list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
 else (BUILD_FORECASTER)
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/tests/src/asPredictorOperNwsGfsGeneralGridTest.cpp")
-    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/tests/src/asPredictorOperNwsGfsRegularGridTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsGeneralGridTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsRegularGridTest.cpp")
 endif (BUILD_FORECASTER)
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.cpp")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
-list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
+if (BUILD_OPTIMIZER)
+    file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
+    file(GLOB_RECURSE src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
+    list(APPEND src_tests ${src_optim_core_h})
+    list(APPEND src_tests ${src_optim_core_cpp})
+endif (BUILD_OPTIMIZER)
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_tests)
@@ -54,7 +62,7 @@ endif ()
 ExternalProject_Add(googletest
         GIT_REPOSITORY https://github.com/google/googletest
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
+        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
         BUILD_COMMAND
         cmake
         --build .
@@ -102,7 +110,7 @@ endif(WIN32)
 ##### LINKING
 
 add_dependencies(atmoswing-tests googletest)
-target_link_libraries(atmoswing-tests ${CURL_LIBRARIES})
+target_link_libraries(atmoswing-tests ${CURL_LIBRARY})
 target_link_libraries(atmoswing-tests gtest gtest_main)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
