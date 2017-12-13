@@ -76,8 +76,6 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-include(define_shared_compilation_flags)
-
 # Specific definitions
 if (USE_GUI)
     set_target_properties(atmoswing-forecaster PROPERTIES COMPILE_DEFINITIONS "APP_FORECASTER; wxUSE_GUI=1")

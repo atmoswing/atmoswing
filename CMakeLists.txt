@@ -142,6 +142,11 @@ if (WIN32)
     endforeach()
 endif ()
 
+
+##### DISPLAY SOME INFORMATIONS
+
+include(define_shared_compilation_flags)
+
 # Add components
 add_subdirectory(src/shared_base)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER)

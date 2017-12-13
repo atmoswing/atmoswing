@@ -90,8 +90,6 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-include(define_shared_compilation_flags)
-
 # Compilation flags
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
     if (USE_CODECOV)

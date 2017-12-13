@@ -79,8 +79,6 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-include(define_shared_compilation_flags)
-
 # Global definitions
 if (USE_CUDA)
     add_definitions(-DUSE_CUDA)

@@ -103,8 +103,6 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-include(define_shared_compilation_flags)
-
 # Compilation flags
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
     set_target_properties(vroomgis PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")

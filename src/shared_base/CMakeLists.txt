@@ -114,14 +114,15 @@ endif (USE_CPPCHECK)
 
 ##### DEFINITIONS
 
-include(define_shared_compilation_flags)
-
 # Specific definitions
 if (USE_GUI)
     set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
 else (USE_GUI)
     set_target_properties(asbase PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=0")
 endif (USE_GUI)
+
+set_target_properties(g2clib PROPERTIES COMPILE_DEFINITIONS "USE_JPEG2000; USE_PNG")
+
 
 
 ##### LINKING
