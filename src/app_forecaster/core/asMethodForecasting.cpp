@@ -666,7 +666,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     double freeMemMb = freeMem.ToDouble();
     freeMemMb /= 1048576.0; // To Mb
 
-    if (freeMemSize == -1) {
+    if (freeMemSize < 0) {
         wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
     } else {
         wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
@@ -1158,7 +1158,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     double freeMemMb = freeMem.ToDouble();
     freeMemMb /= 1048576.0; // To Mb
 
-    if (freeMemSize == -1) {
+    if (freeMemSize < 0) {
         wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
     } else {
         wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);

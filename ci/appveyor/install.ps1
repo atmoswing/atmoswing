@@ -12,7 +12,7 @@ $REBUILD_ZLIB=$false
 $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
-$REBUILD_CURL=$true
+$REBUILD_CURL=$false
 $REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
@@ -220,7 +220,4 @@ if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=1 GDAL_HOME="$LIB_DIR" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB devinstall
 }
 
-#Get-ChildItem "$LIB_DIR/include"
-
-Write-Host "`curl include dir content:" -ForegroundColor Yellow
-Get-ChildItem "$LIB_DIR/include/curl"
+Get-ChildItem "$LIB_DIR/include"
