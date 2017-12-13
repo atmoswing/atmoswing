@@ -68,3 +68,6 @@ install:
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
+  - if [[ "$TARGET" != "tests" ]]; then exit 0; fi
+  - cd tests
+  - ctest -V
