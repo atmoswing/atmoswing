@@ -251,8 +251,6 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
         return false;
     if (gfld->igdtmpl[9] != 0)
         return false;
-    if (gfld->igdtmpl[10] != 0)
-        return false;
 
     return true;
 }
