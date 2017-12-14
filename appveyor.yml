@@ -33,7 +33,7 @@ after_test:
   - cd C:\projects\atmoswing
   - copy bin\*win64.exe .\
   - copy bin\*win64.zip .\
-  - for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
+  #- for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
 
 artifacts:
   - path: '*win64.exe'
@@ -41,9 +41,9 @@ artifacts:
     type: file
 
   - path: '*win64.zip'
-    name: AtmoSwingInstallerZip
+    name: AtmoSwingZip
     type: zip
 
-  - path: '*win64.exe.pdb'
-    name: AtmoSwingPdb
-    type: file
+  #- path: '*win64.exe.pdb'
+  #  name: AtmoSwingPdb
+  #  type: file
