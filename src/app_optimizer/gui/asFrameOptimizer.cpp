@@ -190,49 +190,49 @@ void asFrameOptimizer::LoadOptions()
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long MethodSelection = pConfig->Read("/Optimizer/MethodSelection", 0l);
-    m_choiceMethod->SetSelection((int) MethodSelection);
-    wxString ParametersFilePath = pConfig->Read("/Optimizer/ParametersFilePath", wxEmptyString);
-    m_filePickerParameters->SetPath(ParametersFilePath);
-    wxString PredictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);
-    m_filePickerPredictand->SetPath(PredictandDBFilePath);
-    wxString PredictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
-    m_dirPickerPredictor->SetPath(PredictorDir);
-    wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
+    long methodSelection = pConfig->Read("/Optimizer/MethodSelection", 0l);
+    m_choiceMethod->SetSelection((int) methodSelection);
+    wxString parametersFilePath = pConfig->Read("/Optimizer/ParametersFilePath", wxEmptyString);
+    m_filePickerParameters->SetPath(parametersFilePath);
+    wxString predictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);
+    m_filePickerPredictand->SetPath(predictandDBFilePath);
+    wxString predictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
+    m_dirPickerPredictor->SetPath(predictorDir);
+    wxString optimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
-    m_dirPickerCalibrationResults->SetPath(OptimizerResultsDir);
+    m_dirPickerCalibrationResults->SetPath(optimizerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
     m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
 
     // Classic+ calibration
-    wxString ClassicPlusResizingIterations = pConfig->Read("/Optimizer/ClassicPlus/ResizingIterations", "1");
-    m_textCtrlClassicPlusResizingIterations->SetValue(ClassicPlusResizingIterations);
-    wxString ClassicPlusStepsLatPertinenceMap = pConfig->Read("/Optimizer/ClassicPlus/StepsLatPertinenceMap", "2");
-    m_textCtrlClassicPlusStepsLatPertinenceMap->SetValue(ClassicPlusStepsLatPertinenceMap);
-    wxString ClassicPlusStepsLonPertinenceMap = pConfig->Read("/Optimizer/ClassicPlus/StepsLonPertinenceMap", "2");
-    m_textCtrlClassicPlusStepsLonPertinenceMap->SetValue(ClassicPlusStepsLonPertinenceMap);
+    wxString classicPlusResizingIterations = pConfig->Read("/Optimizer/ClassicPlus/ResizingIterations", "1");
+    m_textCtrlClassicPlusResizingIterations->SetValue(classicPlusResizingIterations);
+    wxString classicPlusStepsLatPertinenceMap = pConfig->Read("/Optimizer/ClassicPlus/StepsLatPertinenceMap", "2");
+    m_textCtrlClassicPlusStepsLatPertinenceMap->SetValue(classicPlusStepsLatPertinenceMap);
+    wxString classicPlusStepsLonPertinenceMap = pConfig->Read("/Optimizer/ClassicPlus/StepsLonPertinenceMap", "2");
+    m_textCtrlClassicPlusStepsLonPertinenceMap->SetValue(classicPlusStepsLonPertinenceMap);
     bool proceedSequentially;
     pConfig->Read("/Optimizer/ClassicPlus/ProceedSequentially", &proceedSequentially, true);
     m_checkBoxProceedSequentially->SetValue(proceedSequentially);
 
     // Variables exploration
-    wxString VarExploStep = pConfig->Read("/Optimizer/VariablesExplo/Step");
-    m_textCtrlVarExploStepToExplore->SetValue(VarExploStep);
+    wxString varExploStep = pConfig->Read("/Optimizer/VariablesExplo/Step");
+    m_textCtrlVarExploStepToExplore->SetValue(varExploStep);
 
     // Monte Carlo
-    wxString MonteCarloRandomNb = pConfig->Read("/Optimizer/MonteCarlo/RandomNb", "1000");
-    m_textCtrlMonteCarloRandomNb->SetValue(MonteCarloRandomNb);
+    wxString monteCarloRandomNb = pConfig->Read("/Optimizer/MonteCarlo/RandomNb", "1000");
+    m_textCtrlMonteCarloRandomNb->SetValue(monteCarloRandomNb);
 
     // Genetic algorithms
-    long NaturalSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 1l);
-    m_choiceGAsNaturalSelectionOperator->SetSelection((int) NaturalSelectionOperator);
-    long CouplesSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 3l);
-    m_choiceGAsCouplesSelectionOperator->SetSelection((int) CouplesSelectionOperator);
-    long CrossoverOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverOperator", 1l);
-    m_choiceGAsCrossoverOperator->SetSelection((int) CrossoverOperator);
-    long MutationOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
-    m_choiceGAsMutationOperator->SetSelection((int) MutationOperator);
+    long naturalSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 1l);
+    m_choiceGAsNaturalSelectionOperator->SetSelection((int) naturalSelectionOperator);
+    long couplesSelectionOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 3l);
+    m_choiceGAsCouplesSelectionOperator->SetSelection((int) couplesSelectionOperator);
+    long crossoverOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverOperator", 1l);
+    m_choiceGAsCrossoverOperator->SetSelection((int) crossoverOperator);
+    long mutationOperator = pConfig->Read("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
+    m_choiceGAsMutationOperator->SetSelection((int) mutationOperator);
     wxString GAsRunNumbers = pConfig->Read("/Optimizer/GeneticAlgorithms/NbRuns", "20");
     m_textCtrlGAsRunNumbers->SetValue(GAsRunNumbers);
     wxString GAsPopulationSize = pConfig->Read("/Optimizer/GeneticAlgorithms/PopulationSize", "50");
@@ -333,46 +333,46 @@ void asFrameOptimizer::SaveOptions() const
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long MethodSelection = (long) m_choiceMethod->GetSelection();
-    pConfig->Write("/Optimizer/MethodSelection", MethodSelection);
-    wxString ParametersFilePath = m_filePickerParameters->GetPath();
-    pConfig->Write("/Optimizer/ParametersFilePath", ParametersFilePath);
-    wxString PredictandDBFilePath = m_filePickerPredictand->GetPath();
-    pConfig->Write("/Paths/PredictandDBFilePath", PredictandDBFilePath);
-    wxString PredictorDir = m_dirPickerPredictor->GetPath();
-    pConfig->Write("/Paths/PredictorDir", PredictorDir);
-    wxString OptimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
-    pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
+    long methodSelection = (long) m_choiceMethod->GetSelection();
+    pConfig->Write("/Optimizer/MethodSelection", methodSelection);
+    wxString parametersFilePath = m_filePickerParameters->GetPath();
+    pConfig->Write("/Optimizer/ParametersFilePath", parametersFilePath);
+    wxString predictandDBFilePath = m_filePickerPredictand->GetPath();
+    pConfig->Write("/Paths/PredictandDBFilePath", predictandDBFilePath);
+    wxString predictorDir = m_dirPickerPredictor->GetPath();
+    pConfig->Write("/Paths/PredictorDir", predictorDir);
+    wxString optimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
+    pConfig->Write("/Paths/OptimizerResultsDir", optimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
     pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
 
     // Classic+ calibration
-    wxString ClassicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();
-    pConfig->Write("/Optimizer/ClassicPlus/ResizingIterations", ClassicPlusResizingIterations);
-    wxString ClassicPlusStepsLatPertinenceMap = m_textCtrlClassicPlusStepsLatPertinenceMap->GetValue();
-    pConfig->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", ClassicPlusStepsLatPertinenceMap);
-    wxString ClassicPlusStepsLonPertinenceMap = m_textCtrlClassicPlusStepsLonPertinenceMap->GetValue();
-    pConfig->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", ClassicPlusStepsLonPertinenceMap);
+    wxString classicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();
+    pConfig->Write("/Optimizer/ClassicPlus/ResizingIterations", classicPlusResizingIterations);
+    wxString classicPlusStepsLatPertinenceMap = m_textCtrlClassicPlusStepsLatPertinenceMap->GetValue();
+    pConfig->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", classicPlusStepsLatPertinenceMap);
+    wxString classicPlusStepsLonPertinenceMap = m_textCtrlClassicPlusStepsLonPertinenceMap->GetValue();
+    pConfig->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", classicPlusStepsLonPertinenceMap);
     bool proceedSequentially = m_checkBoxProceedSequentially->GetValue();
     pConfig->Write("/Optimizer/ClassicPlus/ProceedSequentially", proceedSequentially);
 
     // Variables exploration
-    wxString VarExploStep = m_textCtrlVarExploStepToExplore->GetValue();
-    pConfig->Write("/Optimizer/VariablesExplo/Step", VarExploStep);
+    wxString varExploStep = m_textCtrlVarExploStepToExplore->GetValue();
+    pConfig->Write("/Optimizer/VariablesExplo/Step", varExploStep);
 
     // Monte Carlo
-    wxString MonteCarloRandomNb = m_textCtrlMonteCarloRandomNb->GetValue();
-    pConfig->Write("/Optimizer/MonteCarlo/RandomNb", MonteCarloRandomNb);
+    wxString monteCarloRandomNb = m_textCtrlMonteCarloRandomNb->GetValue();
+    pConfig->Write("/Optimizer/MonteCarlo/RandomNb", monteCarloRandomNb);
 
     // Genetic algorithms
-    long NaturalSelectionOperator = m_choiceGAsNaturalSelectionOperator->GetSelection();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", NaturalSelectionOperator);
-    long CouplesSelectionOperator = m_choiceGAsCouplesSelectionOperator->GetSelection();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", CouplesSelectionOperator);
-    long CrossoverOperator = m_choiceGAsCrossoverOperator->GetSelection();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", CrossoverOperator);
-    long MutationOperator = m_choiceGAsMutationOperator->GetSelection();
-    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationOperator", MutationOperator);
+    long naturalSelectionOperator = m_choiceGAsNaturalSelectionOperator->GetSelection();
+    pConfig->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", naturalSelectionOperator);
+    long couplesSelectionOperator = m_choiceGAsCouplesSelectionOperator->GetSelection();
+    pConfig->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", couplesSelectionOperator);
+    long crossoverOperator = m_choiceGAsCrossoverOperator->GetSelection();
+    pConfig->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", crossoverOperator);
+    long mutationOperator = m_choiceGAsMutationOperator->GetSelection();
+    pConfig->Write("/Optimizer/GeneticAlgorithms/MutationOperator", mutationOperator);
     wxString GAsRunNumbers = m_textCtrlGAsRunNumbers->GetValue();
     pConfig->Write("/Optimizer/GeneticAlgorithms/NbRuns", GAsRunNumbers);
     wxString GAsPopulationSize = m_textCtrlGAsPopulationSize->GetValue();

@@ -897,7 +897,7 @@ bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration
         double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0);
         int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(iStep, 0);
         int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(iStep, 0);
-        wxLogMessage(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
+        wxLogMessage(_("Area: yMin = %.2f, yPtsNb = %d, xMin = %.2f, xPtsNb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
                      tmpXptsnb);
 
         return false;

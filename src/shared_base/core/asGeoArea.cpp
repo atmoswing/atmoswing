@@ -28,15 +28,15 @@
 
 #include "asGeoArea.h"
 
-asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level,
-                     float Height, int flatAllowed)
+asGeoArea::asGeoArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
+                     float height, int flatAllowed)
         : asGeo(),
-          m_cornerUL(CornerUL),
-          m_cornerUR(CornerUR),
-          m_cornerLL(CornerLL),
-          m_cornerLR(CornerLR),
-          m_level(Level),
-          m_height(Height),
+          m_cornerUL(cornerUL),
+          m_cornerUR(cornerUR),
+          m_cornerLL(cornerLL),
+          m_cornerLR(cornerLR),
+          m_level(level),
+          m_height(height),
           m_flatAllowed(flatAllowed)
 {
     // Initialization and check points
@@ -45,29 +45,29 @@ asGeoArea::asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &Corner
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level, float Height, int flatAllowed)
+asGeoArea::asGeoArea(double xMin, double xWidth, double yMin, double yWidth, float level, float height, int flatAllowed)
         : asGeo(),
-          m_level(Level),
-          m_height(Height),
+          m_level(level),
+          m_height(height),
           m_flatAllowed(flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
-        Ywidth = wxMax(Ywidth, 0.0);
-        Xwidth = wxMax(Xwidth, 0.0);
+        yWidth = wxMax(yWidth, 0.0);
+        xWidth = wxMax(xWidth, 0.0);
     } else {
-        wxASSERT(Ywidth > 0);
-        wxASSERT(Xwidth > 0);
+        wxASSERT(yWidth > 0);
+        wxASSERT(xWidth > 0);
     }
 
     // Set the members
-    m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin + Ywidth;
-    m_cornerUR.x = Xmin + Xwidth;
-    m_cornerUR.y = Ymin + Ywidth;
-    m_cornerLL.x = Xmin;
-    m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin + Xwidth;
-    m_cornerLR.y = Ymin;
+    m_cornerUL.x = xMin;
+    m_cornerUL.y = yMin + yWidth;
+    m_cornerUR.x = xMin + xWidth;
+    m_cornerUR.y = yMin + yWidth;
+    m_cornerLL.x = xMin;
+    m_cornerLL.y = yMin;
+    m_cornerLR.x = xMin + xWidth;
+    m_cornerLR.y = yMin;
 
     // Initialization and check points
     Init();
@@ -75,10 +75,10 @@ asGeoArea::asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, flo
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(float Level, float Height)
+asGeoArea::asGeoArea(float level, float height)
         : asGeo(),
-          m_level(Level),
-          m_height(Height),
+          m_level(level),
+          m_height(height),
           m_flatAllowed(asFLAT_ALLOWED)
 {
     // Set the members
@@ -97,25 +97,25 @@ asGeoArea::~asGeoArea()
     //dtor
 }
 
-void asGeoArea::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
+void asGeoArea::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
-        Ywidth = wxMax(Ywidth, 0.0);
-        Xwidth = wxMax(Xwidth, 0.0);
+        yWidth = wxMax(yWidth, 0.0);
+        xWidth = wxMax(xWidth, 0.0);
     } else {
-        wxASSERT(Ywidth > 0);
-        wxASSERT(Xwidth > 0);
+        wxASSERT(yWidth > 0);
+        wxASSERT(xWidth > 0);
     }
 
     // Set the members
-    m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin + Ywidth;
-    m_cornerUR.x = Xmin + Xwidth;
-    m_cornerUR.y = Ymin + Ywidth;
-    m_cornerLL.x = Xmin;
-    m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin + Xwidth;
-    m_cornerLR.y = Ymin;
+    m_cornerUL.x = xMin;
+    m_cornerUL.y = yMin + yWidth;
+    m_cornerUR.x = xMin + xWidth;
+    m_cornerUR.y = yMin + yWidth;
+    m_cornerLL.x = xMin;
+    m_cornerLL.y = yMin;
+    m_cornerLR.x = xMin + xWidth;
+    m_cornerLR.y = yMin;
     m_flatAllowed = flatAllowed;
 
     // Initialization and check points

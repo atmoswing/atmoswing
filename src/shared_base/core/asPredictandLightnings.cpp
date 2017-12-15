@@ -75,10 +75,10 @@ bool asPredictandLightnings::Load(const wxString &filePath)
 bool asPredictandLightnings::Save(const wxString &destinationDir) const
 {
     // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathSaving(destinationDir);
+    wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(predictandDBFilePath, asFileNetcdf::Replace);
     if (!ncFile.Open())
         return false;
 

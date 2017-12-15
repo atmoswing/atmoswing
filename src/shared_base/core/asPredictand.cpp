@@ -423,14 +423,14 @@ bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
     }
 
     // Get data
-    size_t IndexStart[2] = {0, 0};
-    size_t IndexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
+    size_t indexStart[2] = {0, 0};
+    size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
     m_dataGross.resize(m_timeLength, m_stationsNb);
 
     if (asTools::IsNaN(version) || version <= 1.3) {
-        ncFile.GetVarArray("data_gross", IndexStart, IndexCount, &m_dataGross(0, 0));
+        ncFile.GetVarArray("data_gross", indexStart, indexCount, &m_dataGross(0, 0));
     } else {
-        ncFile.GetVarArray("data", IndexStart, IndexCount, &m_dataGross(0, 0));
+        ncFile.GetVarArray("data", indexStart, indexCount, &m_dataGross(0, 0));
     }
 
     return true;
@@ -443,13 +443,13 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    vstds DimNameTime;
-    DimNameTime.push_back("time");
-    vstds DimNameStations;
-    DimNameStations.push_back("stations");
-    vstds DimNames2D;
-    DimNames2D.push_back("time");
-    DimNames2D.push_back("stations");
+    vstds dimNameTime;
+    dimNameTime.push_back("time");
+    vstds dimNameStations;
+    dimNameStations.push_back("stations");
+    vstds dimNames2D;
+    dimNames2D.push_back("time");
+    dimNames2D.push_back("stations");
 
     // Put general attributes
     ncFile.PutAtt("version", &m_fileVersion);
@@ -462,17 +462,17 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
     ncFile.PutAtt("dataset_id", m_datasetId);
 
     // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("time", NC_DOUBLE, 1, DimNameTime);
-    ncFile.DefVar("data", NC_FLOAT, 2, DimNames2D);
+    ncFile.DefVar("time", NC_DOUBLE, 1, dimNameTime);
+    ncFile.DefVar("data", NC_FLOAT, 2, dimNames2D);
     ncFile.DefVarDeflate("data");
-    ncFile.DefVar("station_names", NC_STRING, 1, DimNameStations);
-    ncFile.DefVar("station_official_ids", NC_STRING, 1, DimNameStations);
-    ncFile.DefVar("station_ids", NC_INT, 1, DimNameStations);
-    ncFile.DefVar("station_heights", NC_FLOAT, 1, DimNameStations);
-    ncFile.DefVar("station_x_coords", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("station_y_coords", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("station_starts", NC_DOUBLE, 1, DimNameStations);
-    ncFile.DefVar("station_ends", NC_DOUBLE, 1, DimNameStations);
+    ncFile.DefVar("station_names", NC_STRING, 1, dimNameStations);
+    ncFile.DefVar("station_official_ids", NC_STRING, 1, dimNameStations);
+    ncFile.DefVar("station_ids", NC_INT, 1, dimNameStations);
+    ncFile.DefVar("station_heights", NC_FLOAT, 1, dimNameStations);
+    ncFile.DefVar("station_x_coords", NC_DOUBLE, 1, dimNameStations);
+    ncFile.DefVar("station_y_coords", NC_DOUBLE, 1, dimNameStations);
+    ncFile.DefVar("station_starts", NC_DOUBLE, 1, dimNameStations);
+    ncFile.DefVar("station_ends", NC_DOUBLE, 1, dimNameStations);
 
     // Put attributes for station_names
     ncFile.PutAtt("long_name", "Stations names", "station_names");

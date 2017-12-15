@@ -31,8 +31,8 @@
 #include <asFileXml.h>
 
 
-asFileDat::asFileDat(const wxString &FileName, const ListFileMode &FileMode)
-        : asFileAscii(FileName, FileMode)
+asFileDat::asFileDat(const wxString &fileName, const ListFileMode &fileMode)
+        : asFileAscii(fileName, fileMode)
 {
 
 }
@@ -74,17 +74,17 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     InitPattern(pattern);
 
     // Load xml file
-    wxString FileName;
+    wxString filePath;
     if (!directory.IsEmpty()) {
-        FileName = directory + DS + fileName + ".xml";
+        filePath = directory + DS + filePath + ".xml";
     } else {
         ThreadsManager().CritSectionConfig().Enter();
-        wxString PatternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
+        wxString patternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
         ThreadsManager().CritSectionConfig().Leave();
-        FileName = PatternsDir + DS + fileName + ".xml";
+        filePath = patternsDir + DS + filePath + ".xml";
     }
 
-    asFileXml xmlFile(FileName, asFile::ReadOnly);
+    asFileXml xmlFile(filePath, asFile::ReadOnly);
     if (!xmlFile.Open()) {
         asThrowException(_("Cannot open the pattern file."));
     }
@@ -190,27 +190,27 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     return pattern;
 }
 
-asFileDat::FileStructType asFileDat::StringToStructType(const wxString &StructTypeStr)
+asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTypeStr)
 {
-    if (StructTypeStr.CmpNoCase("tabs_delimited") == 0) {
+    if (structTypeStr.CmpNoCase("tabs_delimited") == 0) {
         return asFileDat::TabsDelimited;
-    } else if (StructTypeStr.CmpNoCase("constant_width") == 0) {
+    } else if (structTypeStr.CmpNoCase("constant_width") == 0) {
         return asFileDat::ConstantWidth;
     } else {
         asThrowException(_("The file structure type in unknown"));
     }
 }
 
-int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &Pattern)
+int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &pattern)
 {
     int maxwidth = 0;
 
-    maxwidth = wxMax(maxwidth, Pattern.timeYearEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeMonthEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeDayEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeHourEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeMinuteEnd);
-    maxwidth = wxMax(maxwidth, Pattern.dataEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeYearEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeMonthEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeDayEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeHourEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeMinuteEnd);
+    maxwidth = wxMax(maxwidth, pattern.dataEnd);
 
     return maxwidth;
 }

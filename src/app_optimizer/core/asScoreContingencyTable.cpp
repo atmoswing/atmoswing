@@ -39,9 +39,9 @@ asScoreContingencyTable::~asScoreContingencyTable()
     //dtor
 }
 
-float asScoreContingencyTable::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreContingencyTable::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_threshold));
     wxASSERT(!asTools::IsNaN(m_quantile));
@@ -49,10 +49,10 @@ float asScoreContingencyTable::Assess(float ObservedVal, const a1f &ForcastVals,
     wxASSERT(m_quantile < 1);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -61,7 +61,7 @@ float asScoreContingencyTable::Assess(float ObservedVal, const a1f &ForcastVals,
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Contingency table processing function."));
         return NaNf;
@@ -77,19 +77,19 @@ float asScoreContingencyTable::Assess(float ObservedVal, const a1f &ForcastVals,
     float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
 
     // Predicted and observed
-    if (xQuantile >= m_threshold && ObservedVal >= m_threshold) {
+    if (xQuantile >= m_threshold && observedVal >= m_threshold) {
         score = 1;
     }
         // Predicted but not observed
-    else if (xQuantile >= m_threshold && ObservedVal < m_threshold) {
+    else if (xQuantile >= m_threshold && observedVal < m_threshold) {
         score = 2;
     }
         // Not predicted but observed
-    else if (xQuantile < m_threshold && ObservedVal >= m_threshold) {
+    else if (xQuantile < m_threshold && observedVal >= m_threshold) {
         score = 3;
     }
         // Not predicted and not observed
-    else if (xQuantile < m_threshold && ObservedVal < m_threshold) {
+    else if (xQuantile < m_threshold && observedVal < m_threshold) {
         score = 4;
     }
 

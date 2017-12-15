@@ -47,12 +47,12 @@ TEST(PredictorCriteria, ProcessS1)
     // Resize the containers
     int lons = 9;
     int lats = 5;
-    a2f RefZ1000, CandZ1000;
-    RefZ1000.resize(lats, lons);
-    CandZ1000.resize(lats, lons);
-    a2f RefZ500, CandZ500;
-    RefZ500.resize(lats, lons);
-    CandZ500.resize(lats, lons);
+    a2f refZ1000, candZ1000;
+    refZ1000.resize(lats, lons);
+    candZ1000.resize(lats, lons);
+    a2f refZ500, candZ500;
+    refZ500.resize(lats, lons);
+    candZ500.resize(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -60,14 +60,14 @@ TEST(PredictorCriteria, ProcessS1)
     // Get target data Z1000
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefZ1000(iLat, iLon) = file.GetFloat();
+            refZ1000(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(137, RefZ1000(0, 0));
-    EXPECT_FLOAT_EQ(89, RefZ1000(1, 2));
-    EXPECT_FLOAT_EQ(137, RefZ1000(4, 8));
+    EXPECT_FLOAT_EQ(137, refZ1000(0, 0));
+    EXPECT_FLOAT_EQ(89, refZ1000(1, 2));
+    EXPECT_FLOAT_EQ(137, refZ1000(4, 8));
 
     // Skip coasent
     file.SkipLines(3);
@@ -75,13 +75,13 @@ TEST(PredictorCriteria, ProcessS1)
     // Get target data Z500
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefZ500(iLat, iLon) = file.GetFloat();
+            refZ500(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(5426, RefZ500(0, 0));
-    EXPECT_FLOAT_EQ(5721, RefZ500(4, 8));
+    EXPECT_FLOAT_EQ(5426, refZ500(0, 0));
+    EXPECT_FLOAT_EQ(5721, refZ500(4, 8));
 
     // Vectors for candidates results
     int candidatesNb = 10;
@@ -135,12 +135,12 @@ TEST(PredictorCriteria, ProcessS1)
         // Get candidate data Z1000
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandZ1000(iLat, iLon) = file.GetFloat();
+                candZ1000(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ1000[iCand], CandZ1000(4, 8));
+        EXPECT_FLOAT_EQ(checkZ1000[iCand], candZ1000(4, 8));
 
         // Skip coasent
         file.SkipLines(3);
@@ -148,18 +148,18 @@ TEST(PredictorCriteria, ProcessS1)
         // Get candidate data Z500
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandZ500(iLat, iLon) = file.GetFloat();
+                candZ500(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ500[iCand], CandZ500(4, 8));
+        EXPECT_FLOAT_EQ(checkZ500[iCand], candZ500(4, 8));
 
         // Process S1 and check the results
         float resZ1000, resZ500, res;
 
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, RefZ1000.rows(), RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, RefZ500.rows(), RefZ500.cols());
+        resZ1000 = criteria->Assess(refZ1000, candZ1000, refZ1000.rows(), refZ1000.cols());
+        resZ500 = criteria->Assess(refZ500, candZ500, refZ500.rows(), refZ500.cols());
         res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
@@ -179,12 +179,12 @@ TEST(PredictorCriteria, ProcessNS1)
     // Resize the containers
     int lons = 9;
     int lats = 5;
-    a2f RefZ1000, CandZ1000;
-    RefZ1000.resize(lats, lons);
-    CandZ1000.resize(lats, lons);
-    a2f RefZ500, CandZ500;
-    RefZ500.resize(lats, lons);
-    CandZ500.resize(lats, lons);
+    a2f refZ1000, candZ1000;
+    refZ1000.resize(lats, lons);
+    candZ1000.resize(lats, lons);
+    a2f refZ500, candZ500;
+    refZ500.resize(lats, lons);
+    candZ500.resize(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -192,14 +192,14 @@ TEST(PredictorCriteria, ProcessNS1)
     // Get target data Z1000
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefZ1000(iLat, iLon) = file.GetFloat();
+            refZ1000(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(137, RefZ1000(0, 0));
-    EXPECT_FLOAT_EQ(89, RefZ1000(1, 2));
-    EXPECT_FLOAT_EQ(137, RefZ1000(4, 8));
+    EXPECT_FLOAT_EQ(137, refZ1000(0, 0));
+    EXPECT_FLOAT_EQ(89, refZ1000(1, 2));
+    EXPECT_FLOAT_EQ(137, refZ1000(4, 8));
 
     // Skip coasent
     file.SkipLines(3);
@@ -207,13 +207,13 @@ TEST(PredictorCriteria, ProcessNS1)
     // Get target data Z500
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefZ500(iLat, iLon) = file.GetFloat();
+            refZ500(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(5426, RefZ500(0, 0));
-    EXPECT_FLOAT_EQ(5721, RefZ500(4, 8));
+    EXPECT_FLOAT_EQ(5426, refZ500(0, 0));
+    EXPECT_FLOAT_EQ(5721, refZ500(4, 8));
 
     // Vectors for candidates results
     int candidatesNb = 10;
@@ -267,12 +267,12 @@ TEST(PredictorCriteria, ProcessNS1)
         // Get candidate data Z1000
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandZ1000(iLat, iLon) = file.GetFloat();
+                candZ1000(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ1000[iCand], CandZ1000(4, 8) / 200.0f);
+        EXPECT_FLOAT_EQ(checkZ1000[iCand], candZ1000(4, 8) / 200.0f);
 
         // Skip coasent
         file.SkipLines(3);
@@ -280,18 +280,18 @@ TEST(PredictorCriteria, ProcessNS1)
         // Get candidate data Z500
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandZ500(iLat, iLon) = file.GetFloat();
+                candZ500(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkZ500[iCand], CandZ500(4, 8) / 200.0f);
+        EXPECT_FLOAT_EQ(checkZ500[iCand], candZ500(4, 8) / 200.0f);
 
         // Process S1 and check the results
         float resZ1000, resZ500, res;
 
-        resZ1000 = criteria->Assess(RefZ1000, CandZ1000, (int) RefZ1000.rows(), (int) RefZ1000.cols());
-        resZ500 = criteria->Assess(RefZ500, CandZ500, (int) RefZ500.rows(), (int) RefZ500.cols());
+        resZ1000 = criteria->Assess(refZ1000, candZ1000, (int) refZ1000.rows(), (int) refZ1000.cols());
+        resZ500 = criteria->Assess(refZ500, candZ500, (int) refZ500.rows(), (int) refZ500.cols());
         res = (resZ500 + resZ1000) / 2;
         EXPECT_NEAR(critS1[iCand], res, 0.05);
     }
@@ -302,13 +302,13 @@ TEST(PredictorCriteria, ProcessNS1)
 
 TEST(PredictorCriteria, ProcessS1preprocessed)
 {
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -335,19 +335,19 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     // Resize the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    a2f RefOriginal, CandOriginal;
-    RefOriginal.resize(latsOriginal, lonsOriginal);
-    CandOriginal.resize(latsOriginal, lonsOriginal);
+    a2f refOriginal, candOriginal;
+    refOriginal.resize(latsOriginal, lonsOriginal);
+    candOriginal.resize(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    a2f RefPreproc, CandPreproc;
-    RefPreproc.resize(latsPreproc, lonsPreproc);
-    CandPreproc.resize(latsPreproc, lonsPreproc);
+    a2f refPreproc, candPreproc;
+    refPreproc.resize(latsPreproc, lonsPreproc);
+    candPreproc.resize(latsPreproc, lonsPreproc);
 
     // Set target data
-    RefOriginal = hgtOriginal[0][0];
-    RefPreproc = hgtPreproc[0][0];
+    refOriginal = hgtOriginal[0][0];
+    refPreproc = hgtPreproc[0][0];
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
@@ -364,11 +364,11 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
         float S1Original, S1Preproc;
 
         // Get candidate data
-        CandOriginal = hgtOriginal[iCand][0];
-        CandPreproc = hgtPreproc[iCand][0];
+        candOriginal = hgtOriginal[iCand][0];
+        candPreproc = hgtPreproc[iCand][0];
 
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
+        S1Original = criteria->Assess(refOriginal, candOriginal, candOriginal.rows(), candOriginal.cols());
+        S1Preproc = criteriaGrads->Assess(refPreproc, candPreproc, candPreproc.rows(), candPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
     }
 
@@ -381,13 +381,13 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
 
 TEST(PredictorCriteria, ProcessNS1preprocessed)
 {
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -414,19 +414,19 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     // Resize the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    a2f RefOriginal, CandOriginal;
-    RefOriginal.resize(latsOriginal, lonsOriginal);
-    CandOriginal.resize(latsOriginal, lonsOriginal);
+    a2f refOriginal, candOriginal;
+    refOriginal.resize(latsOriginal, lonsOriginal);
+    candOriginal.resize(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    a2f RefPreproc, CandPreproc;
-    RefPreproc.resize(latsPreproc, lonsPreproc);
-    CandPreproc.resize(latsPreproc, lonsPreproc);
+    a2f refPreproc, candPreproc;
+    refPreproc.resize(latsPreproc, lonsPreproc);
+    candPreproc.resize(latsPreproc, lonsPreproc);
 
     // Set target data
-    RefOriginal = hgtOriginal[0][0];
-    RefPreproc = hgtPreproc[0][0];
+    refOriginal = hgtOriginal[0][0];
+    refPreproc = hgtPreproc[0][0];
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
@@ -443,11 +443,11 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
         float S1Original, S1Preproc;
 
         // Get candidate data
-        CandOriginal = hgtOriginal[iCand][0];
-        CandPreproc = hgtPreproc[iCand][0];
+        candOriginal = hgtOriginal[iCand][0];
+        candPreproc = hgtPreproc[iCand][0];
 
-        S1Original = criteria->Assess(RefOriginal, CandOriginal, CandOriginal.rows(), CandOriginal.cols());
-        S1Preproc = criteriaGrads->Assess(RefPreproc, CandPreproc, CandPreproc.rows(), CandPreproc.cols());
+        S1Original = criteria->Assess(refOriginal, candOriginal, candOriginal.rows(), candOriginal.cols());
+        S1Preproc = criteriaGrads->Assess(refPreproc, candPreproc, candPreproc.rows(), candPreproc.cols());
         EXPECT_FLOAT_EQ(S1Original, S1Preproc);
     }
 
@@ -469,15 +469,15 @@ TEST(PredictorCriteria, ProcessRSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    a2f RefPRWTR, CandPRWTR;
-    RefPRWTR.resize(lats, 2 * lons);
-    CandPRWTR.resize(lats, 2 * lons);
-    a2f RefRHUM850, CandRHUM850;
-    RefRHUM850.resize(lats, 2 * lons);
-    CandRHUM850.resize(lats, 2 * lons);
-    a2f RefMulti, CandMulti;
-    RefMulti.resize(lats, 2 * lons);
-    CandMulti.resize(lats, 2 * lons);
+    a2f refPRWTR, candPRWTR;
+    refPRWTR.resize(lats, 2 * lons);
+    candPRWTR.resize(lats, 2 * lons);
+    a2f refRHUM850, candRHUM850;
+    refRHUM850.resize(lats, 2 * lons);
+    candRHUM850.resize(lats, 2 * lons);
+    a2f refMulti, candMulti;
+    refMulti.resize(lats, 2 * lons);
+    candMulti.resize(lats, 2 * lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -485,13 +485,13 @@ TEST(PredictorCriteria, ProcessRSE)
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR(iLat, iLon) = file.GetFloat();
+            refPRWTR(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6f, RefPRWTR(0, 0));
-    EXPECT_FLOAT_EQ(20.4f, RefPRWTR(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, refPRWTR(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, refPRWTR(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -499,13 +499,13 @@ TEST(PredictorCriteria, ProcessRSE)
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR(iLat, iLon + lons) = file.GetFloat();
+            refPRWTR(iLat, iLon + lons) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3f, RefPRWTR(0, 2));
-    EXPECT_FLOAT_EQ(18.1f, RefPRWTR(1, 3));
+    EXPECT_FLOAT_EQ(13.3f, refPRWTR(0, 2));
+    EXPECT_FLOAT_EQ(18.1f, refPRWTR(1, 3));
 
     // Skip coasent
     file.SkipLines(3);
@@ -513,13 +513,13 @@ TEST(PredictorCriteria, ProcessRSE)
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM850(iLat, iLon) = file.GetFloat();
+            refRHUM850(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(82, RefRHUM850(0, 0));
-    EXPECT_FLOAT_EQ(100, RefRHUM850(1, 1));
+    EXPECT_FLOAT_EQ(82, refRHUM850(0, 0));
+    EXPECT_FLOAT_EQ(100, refRHUM850(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -527,18 +527,18 @@ TEST(PredictorCriteria, ProcessRSE)
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM850(iLat, iLon + lons) = file.GetFloat();
+            refRHUM850(iLat, iLon + lons) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(100, RefRHUM850(0, 2));
-    EXPECT_FLOAT_EQ(96, RefRHUM850(1, 3));
+    EXPECT_FLOAT_EQ(100, refRHUM850(0, 2));
+    EXPECT_FLOAT_EQ(96, refRHUM850(1, 3));
 
     // Process to the multiplication
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < 2 * lons; iLon++) {
-            RefMulti(iLat, iLon) = RefPRWTR(iLat, iLon) * RefRHUM850(iLat, iLon);
+            refMulti(iLat, iLon) = refPRWTR(iLat, iLon) * refRHUM850(iLat, iLon);
         }
     }
 
@@ -585,12 +585,12 @@ TEST(PredictorCriteria, ProcessRSE)
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR(iLat, iLon) = file.GetFloat();
+                candPRWTR(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkPRWTR[iCand], CandPRWTR(1, 1));
+        EXPECT_FLOAT_EQ(checkPRWTR[iCand], candPRWTR(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -598,7 +598,7 @@ TEST(PredictorCriteria, ProcessRSE)
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR(iLat, iLon + lons) = file.GetFloat();
+                candPRWTR(iLat, iLon + lons) = file.GetFloat();
             }
         }
 
@@ -608,12 +608,12 @@ TEST(PredictorCriteria, ProcessRSE)
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM850(iLat, iLon) = file.GetFloat();
+                candRHUM850(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkRHUM850[iCand], CandRHUM850(1, 1));
+        EXPECT_FLOAT_EQ(checkRHUM850[iCand], candRHUM850(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -621,21 +621,21 @@ TEST(PredictorCriteria, ProcessRSE)
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM850(iLat, iLon + lons) = file.GetFloat();
+                candRHUM850(iLat, iLon + lons) = file.GetFloat();
             }
         }
 
         // Process to the multiplication
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < 2 * lons; iLon++) {
-                CandMulti(iLat, iLon) = CandPRWTR(iLat, iLon) * CandRHUM850(iLat, iLon);
+                candMulti(iLat, iLon) = candPRWTR(iLat, iLon) * candRHUM850(iLat, iLon);
             }
         }
 
         // Process RMSE and check the results
         float res;
 
-        res = criteria->Assess(RefMulti, CandMulti, RefMulti.rows(), RefMulti.cols());
+        res = criteria->Assess(refMulti, candMulti, refMulti.rows(), refMulti.cols());
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
 
@@ -654,21 +654,21 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    a2f RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
-    RefPRWTR12h.resize(lats, lons);
-    RefPRWTR24h.resize(lats, lons);
-    CandPRWTR12h.resize(lats, lons);
-    CandPRWTR24h.resize(lats, lons);
-    a2f RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
-    RefRHUM85012h.resize(lats, lons);
-    RefRHUM85024h.resize(lats, lons);
-    CandRHUM85012h.resize(lats, lons);
-    CandRHUM85024h.resize(lats, lons);
-    a2f RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
-    RefMulti12h.resize(lats, lons);
-    RefMulti24h.resize(lats, lons);
-    CandMulti12h.resize(lats, lons);
-    CandMulti24h.resize(lats, lons);
+    a2f refPRWTR12h, refPRWTR24h, candPRWTR12h, candPRWTR24h;
+    refPRWTR12h.resize(lats, lons);
+    refPRWTR24h.resize(lats, lons);
+    candPRWTR12h.resize(lats, lons);
+    candPRWTR24h.resize(lats, lons);
+    a2f refRHUM85012h, refRHUM85024h, candRHUM85012h, candRHUM85024h;
+    refRHUM85012h.resize(lats, lons);
+    refRHUM85024h.resize(lats, lons);
+    candRHUM85012h.resize(lats, lons);
+    candRHUM85024h.resize(lats, lons);
+    a2f refMulti12h, refMulti24h, candMulti12h, candMulti24h;
+    refMulti12h.resize(lats, lons);
+    refMulti24h.resize(lats, lons);
+    candMulti12h.resize(lats, lons);
+    candMulti24h.resize(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -676,13 +676,13 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR12h(iLat, iLon) = file.GetFloat();
+            refPRWTR12h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6f, RefPRWTR12h(0, 0));
-    EXPECT_FLOAT_EQ(20.4f, RefPRWTR12h(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, refPRWTR12h(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, refPRWTR12h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -690,13 +690,13 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR24h(iLat, iLon) = file.GetFloat();
+            refPRWTR24h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3f, RefPRWTR24h(0, 0));
-    EXPECT_FLOAT_EQ(18.1f, RefPRWTR24h(1, 1));
+    EXPECT_FLOAT_EQ(13.3f, refPRWTR24h(0, 0));
+    EXPECT_FLOAT_EQ(18.1f, refPRWTR24h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -704,13 +704,13 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM85012h(iLat, iLon) = file.GetFloat();
+            refRHUM85012h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(82, RefRHUM85012h(0, 0));
-    EXPECT_FLOAT_EQ(100, RefRHUM85012h(1, 1));
+    EXPECT_FLOAT_EQ(82, refRHUM85012h(0, 0));
+    EXPECT_FLOAT_EQ(100, refRHUM85012h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -718,17 +718,17 @@ TEST(PredictorCriteria, ProcessRMSE)
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM85024h(iLat, iLon) = file.GetFloat();
+            refRHUM85024h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(100, RefRHUM85024h(0, 0));
-    EXPECT_FLOAT_EQ(96, RefRHUM85024h(1, 1));
+    EXPECT_FLOAT_EQ(100, refRHUM85024h(0, 0));
+    EXPECT_FLOAT_EQ(96, refRHUM85024h(1, 1));
 
     // Process to the multiplication
-    RefMulti12h = RefPRWTR12h * RefRHUM85012h;
-    RefMulti24h = RefPRWTR24h * RefRHUM85024h;
+    refMulti12h = refPRWTR12h * refRHUM85012h;
+    refMulti24h = refPRWTR24h * refRHUM85024h;
 
     // Vectors for candidates results
     int candidatesNb = 7;
@@ -773,12 +773,12 @@ TEST(PredictorCriteria, ProcessRMSE)
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR12h(iLat, iLon) = file.GetFloat();
+                candPRWTR12h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], CandPRWTR12h(1, 1));
+        EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], candPRWTR12h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -786,7 +786,7 @@ TEST(PredictorCriteria, ProcessRMSE)
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR24h(iLat, iLon) = file.GetFloat();
+                candPRWTR24h(iLat, iLon) = file.GetFloat();
             }
         }
 
@@ -796,12 +796,12 @@ TEST(PredictorCriteria, ProcessRMSE)
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM85012h(iLat, iLon) = file.GetFloat();
+                candRHUM85012h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], CandRHUM85012h(1, 1));
+        EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], candRHUM85012h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -809,19 +809,19 @@ TEST(PredictorCriteria, ProcessRMSE)
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM85024h(iLat, iLon) = file.GetFloat();
+                candRHUM85024h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Process to the multiplication
-        CandMulti12h = CandPRWTR12h * CandRHUM85012h;
-        CandMulti24h = CandPRWTR24h * CandRHUM85024h;
+        candMulti12h = candPRWTR12h * candRHUM85012h;
+        candMulti24h = candPRWTR24h * candRHUM85024h;
 
         // Process RMSE and check the results
         float res12h, res24h, res;
 
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
+        res12h = criteria->Assess(refMulti12h, candMulti12h, refMulti12h.rows(), refMulti12h.cols());
+        res24h = criteria->Assess(refMulti24h, candMulti24h, refMulti24h.rows(), refMulti24h.cols());
         res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
@@ -841,21 +841,21 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Resize the containers
     int lons = 2;
     int lats = 2;
-    a2f RefPRWTR12h, RefPRWTR24h, CandPRWTR12h, CandPRWTR24h;
-    RefPRWTR12h.resize(lats, lons);
-    RefPRWTR24h.resize(lats, lons);
-    CandPRWTR12h.resize(lats, lons);
-    CandPRWTR24h.resize(lats, lons);
-    a2f RefRHUM85012h, RefRHUM85024h, CandRHUM85012h, CandRHUM85024h;
-    RefRHUM85012h.resize(lats, lons);
-    RefRHUM85024h.resize(lats, lons);
-    CandRHUM85012h.resize(lats, lons);
-    CandRHUM85024h.resize(lats, lons);
-    a2f RefMulti12h, RefMulti24h, CandMulti12h, CandMulti24h;
-    RefMulti12h.resize(lats, lons);
-    RefMulti24h.resize(lats, lons);
-    CandMulti12h.resize(lats, lons);
-    CandMulti24h.resize(lats, lons);
+    a2f refPRWTR12h, refPRWTR24h, candPRWTR12h, candPRWTR24h;
+    refPRWTR12h.resize(lats, lons);
+    refPRWTR24h.resize(lats, lons);
+    candPRWTR12h.resize(lats, lons);
+    candPRWTR24h.resize(lats, lons);
+    a2f refRHUM85012h, refRHUM85024h, candRHUM85012h, candRHUM85024h;
+    refRHUM85012h.resize(lats, lons);
+    refRHUM85024h.resize(lats, lons);
+    candRHUM85012h.resize(lats, lons);
+    candRHUM85024h.resize(lats, lons);
+    a2f refMulti12h, refMulti24h, candMulti12h, candMulti24h;
+    refMulti12h.resize(lats, lons);
+    refMulti24h.resize(lats, lons);
+    candMulti12h.resize(lats, lons);
+    candMulti24h.resize(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -863,13 +863,13 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Get target data PRWTR12h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR12h(iLat, iLon) = file.GetFloat();
+            refPRWTR12h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.6f, RefPRWTR12h(0, 0));
-    EXPECT_FLOAT_EQ(20.4f, RefPRWTR12h(1, 1));
+    EXPECT_FLOAT_EQ(13.6f, refPRWTR12h(0, 0));
+    EXPECT_FLOAT_EQ(20.4f, refPRWTR12h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -877,13 +877,13 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Get target data PRWTR24h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefPRWTR24h(iLat, iLon) = file.GetFloat();
+            refPRWTR24h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(13.3f, RefPRWTR24h(0, 0));
-    EXPECT_FLOAT_EQ(18.1f, RefPRWTR24h(1, 1));
+    EXPECT_FLOAT_EQ(13.3f, refPRWTR24h(0, 0));
+    EXPECT_FLOAT_EQ(18.1f, refPRWTR24h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -891,13 +891,13 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Get target data RHUM85012h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM85012h(iLat, iLon) = file.GetFloat();
+            refRHUM85012h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(82, RefRHUM85012h(0, 0));
-    EXPECT_FLOAT_EQ(100, RefRHUM85012h(1, 1));
+    EXPECT_FLOAT_EQ(82, refRHUM85012h(0, 0));
+    EXPECT_FLOAT_EQ(100, refRHUM85012h(1, 1));
 
     // Skip coasent
     file.SkipLines(3);
@@ -905,17 +905,17 @@ TEST(PredictorCriteria, ProcessNRMSE)
     // Get target data RHUM85024h
     for (int iLat = 0; iLat < lats; iLat++) {
         for (int iLon = 0; iLon < lons; iLon++) {
-            RefRHUM85024h(iLat, iLon) = file.GetFloat();
+            refRHUM85024h(iLat, iLon) = file.GetFloat();
         }
     }
 
     // Check that the data were correctly read from the file
-    EXPECT_FLOAT_EQ(100, RefRHUM85024h(0, 0));
-    EXPECT_FLOAT_EQ(96, RefRHUM85024h(1, 1));
+    EXPECT_FLOAT_EQ(100, refRHUM85024h(0, 0));
+    EXPECT_FLOAT_EQ(96, refRHUM85024h(1, 1));
 
     // Process to the multiplication
-    RefMulti12h = RefPRWTR12h * RefRHUM85012h;
-    RefMulti24h = RefPRWTR24h * RefRHUM85024h;
+    refMulti12h = refPRWTR12h * refRHUM85012h;
+    refMulti24h = refPRWTR24h * refRHUM85024h;
 
     // Vectors for candidates results
     int candidatesNb = 7;
@@ -961,12 +961,12 @@ TEST(PredictorCriteria, ProcessNRMSE)
         // Get candidate data PRWTR12h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR12h(iLat, iLon) = file.GetFloat();
+                candPRWTR12h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], CandPRWTR12h(1, 1));
+        EXPECT_FLOAT_EQ(checkPRWTR12h[iCand], candPRWTR12h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -974,7 +974,7 @@ TEST(PredictorCriteria, ProcessNRMSE)
         // Get candidate data PRWTR24h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandPRWTR24h(iLat, iLon) = file.GetFloat();
+                candPRWTR24h(iLat, iLon) = file.GetFloat();
             }
         }
 
@@ -984,12 +984,12 @@ TEST(PredictorCriteria, ProcessNRMSE)
         // Get candidate data RHUM85012h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM85012h(iLat, iLon) = file.GetFloat();
+                candRHUM85012h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Check that the data were correctly read from the file
-        EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], CandRHUM85012h(1, 1));
+        EXPECT_FLOAT_EQ(checkRHUM85012h[iCand], candRHUM85012h(1, 1));
 
         // Skip coasent
         file.SkipLines(3);
@@ -997,19 +997,19 @@ TEST(PredictorCriteria, ProcessNRMSE)
         // Get candidate data RHUM85024h
         for (int iLat = 0; iLat < lats; iLat++) {
             for (int iLon = 0; iLon < lons; iLon++) {
-                CandRHUM85024h(iLat, iLon) = file.GetFloat();
+                candRHUM85024h(iLat, iLon) = file.GetFloat();
             }
         }
 
         // Process to the multiplication
-        CandMulti12h = CandPRWTR12h * CandRHUM85012h;
-        CandMulti24h = CandPRWTR24h * CandRHUM85024h;
+        candMulti12h = candPRWTR12h * candRHUM85012h;
+        candMulti24h = candPRWTR24h * candRHUM85024h;
 
         // Process RMSE and check the results
         float res12h, res24h, res;
 
-        res12h = criteria->Assess(RefMulti12h, CandMulti12h, RefMulti12h.rows(), RefMulti12h.cols());
-        res24h = criteria->Assess(RefMulti24h, CandMulti24h, RefMulti24h.rows(), RefMulti24h.cols());
+        res12h = criteria->Assess(refMulti12h, candMulti12h, refMulti12h.rows(), refMulti12h.cols());
+        res24h = criteria->Assess(refMulti24h, candMulti24h, refMulti24h.rows(), refMulti24h.cols());
         res = (res12h + res24h) / 2;
         EXPECT_NEAR(critRMSE[iCand], res, 0.05);
     }
@@ -1020,253 +1020,253 @@ TEST(PredictorCriteria, ProcessNRMSE)
 
 TEST(PredictorCriteria, ProcessDifferences)
 {
-    va2f RefData;
-    a2f Datatmp;
-    Datatmp.resize(2, 2);
+    va2f refData;
+    a2f dataTmp;
+    dataTmp.resize(2, 2);
 
-    Datatmp(0, 0) = 12;
-    Datatmp(0, 1) = 23;
-    Datatmp(1, 0) = 42;
-    Datatmp(1, 1) = 25;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 547;
-    Datatmp(0, 1) = 2364;
-    Datatmp(1, 0) = 2672;
-    Datatmp(1, 1) = 3256;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 5;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 456;
-    Datatmp(0, 1) = 456;
-    Datatmp(1, 0) = 45;
-    Datatmp(1, 1) = 7;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = -324;
-    Datatmp(0, 1) = -345;
-    Datatmp(1, 0) = -23;
-    Datatmp(1, 1) = -26;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = -34;
-    Datatmp(0, 1) = -45;
-    Datatmp(1, 0) = 456;
-    Datatmp(1, 1) = 3;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = 4;
-    Datatmp(0, 1) = 456;
-    Datatmp(1, 0) = 4;
-    Datatmp(1, 1) = 783;
-    RefData.push_back(Datatmp);
-    Datatmp(0, 0) = -345;
-    Datatmp(0, 1) = -325;
-    Datatmp(1, 0) = -27;
-    Datatmp(1, 1) = -475;
-    RefData.push_back(Datatmp);
+    dataTmp(0, 0) = 12;
+    dataTmp(0, 1) = 23;
+    dataTmp(1, 0) = 42;
+    dataTmp(1, 1) = 25;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 547;
+    dataTmp(0, 1) = 2364;
+    dataTmp(1, 0) = 2672;
+    dataTmp(1, 1) = 3256;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 5;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 456;
+    dataTmp(0, 1) = 456;
+    dataTmp(1, 0) = 45;
+    dataTmp(1, 1) = 7;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = -324;
+    dataTmp(0, 1) = -345;
+    dataTmp(1, 0) = -23;
+    dataTmp(1, 1) = -26;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = -34;
+    dataTmp(0, 1) = -45;
+    dataTmp(1, 0) = 456;
+    dataTmp(1, 1) = 3;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = 4;
+    dataTmp(0, 1) = 456;
+    dataTmp(1, 0) = 4;
+    dataTmp(1, 1) = 783;
+    refData.push_back(dataTmp);
+    dataTmp(0, 0) = -345;
+    dataTmp(0, 1) = -325;
+    dataTmp(1, 0) = -27;
+    dataTmp(1, 1) = -475;
+    refData.push_back(dataTmp);
 
-    va2f CandData;
-    Datatmp(0, 0) = 634;
-    Datatmp(0, 1) = 234;
-    Datatmp(1, 0) = 3465;
-    Datatmp(1, 1) = 534;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 7;
-    Datatmp(0, 1) = 3;
-    Datatmp(1, 0) = 35;
-    Datatmp(1, 1) = 4;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 54;
-    Datatmp(0, 1) = 56;
-    Datatmp(1, 0) = 4;
-    Datatmp(1, 1) = 74;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 4;
-    Datatmp(1, 1) = 0;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 34;
-    Datatmp(0, 1) = 2;
-    Datatmp(1, 0) = 235;
-    Datatmp(1, 1) = 6;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = 0;
-    Datatmp(0, 1) = 0;
-    Datatmp(1, 0) = 0;
-    Datatmp(1, 1) = 0;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = -637;
-    Datatmp(0, 1) = -6;
-    Datatmp(1, 0) = -67;
-    Datatmp(1, 1) = 567;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = -37;
-    Datatmp(0, 1) = -65;
-    Datatmp(1, 0) = -4;
-    Datatmp(1, 1) = -1;
-    CandData.push_back(Datatmp);
-    Datatmp(0, 0) = -867;
-    Datatmp(0, 1) = -568;
-    Datatmp(1, 0) = -43;
-    Datatmp(1, 1) = -348;
-    CandData.push_back(Datatmp);
+    va2f candData;
+    dataTmp(0, 0) = 634;
+    dataTmp(0, 1) = 234;
+    dataTmp(1, 0) = 3465;
+    dataTmp(1, 1) = 534;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 7;
+    dataTmp(0, 1) = 3;
+    dataTmp(1, 0) = 35;
+    dataTmp(1, 1) = 4;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 54;
+    dataTmp(0, 1) = 56;
+    dataTmp(1, 0) = 4;
+    dataTmp(1, 1) = 74;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 4;
+    dataTmp(1, 1) = 0;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 34;
+    dataTmp(0, 1) = 2;
+    dataTmp(1, 0) = 235;
+    dataTmp(1, 1) = 6;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = 0;
+    dataTmp(0, 1) = 0;
+    dataTmp(1, 0) = 0;
+    dataTmp(1, 1) = 0;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = -637;
+    dataTmp(0, 1) = -6;
+    dataTmp(1, 0) = -67;
+    dataTmp(1, 1) = 567;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = -37;
+    dataTmp(0, 1) = -65;
+    dataTmp(1, 0) = -4;
+    dataTmp(1, 1) = -1;
+    candData.push_back(dataTmp);
+    dataTmp(0, 0) = -867;
+    dataTmp(0, 1) = -568;
+    dataTmp(1, 0) = -43;
+    dataTmp(1, 1) = -348;
+    candData.push_back(dataTmp);
 
     // SAD
 
-    vf Results;
-    Results.resize(11);
-    Results[0] = 4765;
-    Results[1] = 8790;
-    Results[2] = 188;
-    Results[3] = 0;
-    Results[4] = 9;
-    Results[5] = 964;
-    Results[6] = 995;
-    Results[7] = 538;
-    Results[8] = 1277;
-    Results[9] = 1354;
-    Results[10] = 908;
+    vf results;
+    results.resize(11);
+    results[0] = 4765;
+    results[1] = 8790;
+    results[2] = 188;
+    results[3] = 0;
+    results[4] = 9;
+    results[5] = 964;
+    results[6] = 995;
+    results[7] = 538;
+    results[8] = 1277;
+    results[9] = 1354;
+    results[10] = 908;
 
     asCriteria *criteriaSAD = asCriteria::GetInstance(asCriteria::SAD);
 
     float res;
     for (int i = 0; i < 11; i++) {
-        res = criteriaSAD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
+        res = criteriaSAD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_FLOAT_EQ(results[i], res);
     }
 
     wxDELETE(criteriaSAD);
 
     // MD
 
-    Results[0] = 1191.25;
-    Results[1] = 2197.5;
-    Results[2] = 47;
-    Results[3] = 0;
-    Results[4] = 2.25;
-    Results[5] = 241;
-    Results[6] = 248.75;
-    Results[7] = 134.5;
-    Results[8] = 319.25;
-    Results[9] = 338.5;
-    Results[10] = 227;
+    results[0] = 1191.25;
+    results[1] = 2197.5;
+    results[2] = 47;
+    results[3] = 0;
+    results[4] = 2.25;
+    results[5] = 241;
+    results[6] = 248.75;
+    results[7] = 134.5;
+    results[8] = 319.25;
+    results[9] = 338.5;
+    results[10] = 227;
 
     asCriteria *criteriaMD = asCriteria::GetInstance(asCriteria::MD);
 
     for (int i = 0; i < 11; i++) {
-        res = criteriaMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
+        res = criteriaMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_FLOAT_EQ(results[i], res);
     }
 
     wxDELETE(criteriaMD);
 
     // NMD
 
-    Results[0] = 1191.25f / 2298.0f;
-    Results[1] = 2197.5f / 2298.0f;
-    Results[2] = 47.0f / 2298.0f;
-    Results[3] = 0.0f / 2298.0f;
-    Results[4] = 2.25f / 2298.0f;
-    Results[5] = 241.0f / 2298.0f;
-    Results[6] = 248.75f / 2298.0f;
-    Results[7] = 134.5f / 2298.0f;
-    Results[8] = 319.25f / 2298.0f;
-    Results[9] = 338.5f / 2298.0f;
-    Results[10] = 227.0f / 2298.0f;
+    results[0] = 1191.25f / 2298.0f;
+    results[1] = 2197.5f / 2298.0f;
+    results[2] = 47.0f / 2298.0f;
+    results[3] = 0.0f / 2298.0f;
+    results[4] = 2.25f / 2298.0f;
+    results[5] = 241.0f / 2298.0f;
+    results[6] = 248.75f / 2298.0f;
+    results[7] = 134.5f / 2298.0f;
+    results[8] = 319.25f / 2298.0f;
+    results[9] = 338.5f / 2298.0f;
+    results[10] = 227.0f / 2298.0f;
 
     asCriteria *criteriaNMD = asCriteria::GetInstance(asCriteria::NMD);
     criteriaNMD->SetDataRange(2, 2300.0);
 
     for (int i = 0; i < 11; i++) {
-        res = criteriaNMD->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_FLOAT_EQ(Results[i], res);
+        res = criteriaNMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_FLOAT_EQ(results[i], res);
     }
 
     wxDELETE(criteriaNMD);
 
     // MRDtoMax
 
-    Results[0] = 0.956f;
-    Results[1] = 0.9929f;
-    Results[2] = 1;
-    Results[3] = 0;
-    Results[4] = NaNf;
-    Results[5] = 1;
-    Results[6] = 1.1098f;
-    Results[7] = 1;
-    Results[8] = 1;
-    Results[9] = 1.3130f;
-    Results[10] = 0.4173f;
+    results[0] = 0.956f;
+    results[1] = 0.9929f;
+    results[2] = 1;
+    results[3] = 0;
+    results[4] = NaNf;
+    results[5] = 1;
+    results[6] = 1.1098f;
+    results[7] = 1;
+    results[8] = 1;
+    results[9] = 1.3130f;
+    results[10] = 0.4173f;
 
     asCriteria *criteriaMRDtoMax = asCriteria::GetInstance(asCriteria::MRDtoMax);
 
     for (int i = 0; i < 4; i++) {
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
+        res = criteriaMRDtoMax->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_NEAR(results[i], res, 0.0001);
     }
 
     for (int i = 5; i < 11; i++) {
-        res = criteriaMRDtoMax->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.0001);
+        res = criteriaMRDtoMax->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_NEAR(results[i], res, 0.0001);
     }
 
     wxDELETE(criteriaMRDtoMax);
 
     // MRDtoMean
 
-    Results[0] = 1.835f;
-    Results[1] = 1.972f;
-    Results[2] = 2;
-    Results[3] = 0;
-    Results[4] = NaNf;
-    Results[5] = 2;
-    Results[6] = 2.532f;
-    Results[7] = 2;
-    Results[8] = 2;
-    Results[9] = NaNf;
-    Results[10] = 0.543f;
+    results[0] = 1.835f;
+    results[1] = 1.972f;
+    results[2] = 2;
+    results[3] = 0;
+    results[4] = NaNf;
+    results[5] = 2;
+    results[6] = 2.532f;
+    results[7] = 2;
+    results[8] = 2;
+    results[9] = NaNf;
+    results[10] = 0.543f;
 
     asCriteria *criteriaMRDtoMean = asCriteria::GetInstance(asCriteria::MRDtoMean);
 
     for (int i = 0; i < 4; i++) {
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
+        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_NEAR(results[i], res, 0.001);
     }
 
     for (int i = 5; i < 9; i++) {
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
+        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_NEAR(results[i], res, 0.001);
     }
 
     for (int i = 10; i < 11; i++) {
-        res = criteriaMRDtoMean->Assess(RefData[i], CandData[i], RefData[i].rows(), RefData[i].cols());
-        EXPECT_NEAR(Results[i], res, 0.001);
+        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
+        EXPECT_NEAR(results[i], res, 0.001);
     }
 
     wxDELETE(criteriaMRDtoMean);

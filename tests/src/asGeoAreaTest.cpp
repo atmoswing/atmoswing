@@ -34,37 +34,37 @@ TEST(GeoArea, ConstructorLimitsException)
 {
     wxLogNull logNo;
 
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = -10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = -10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = -10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
 
-    ASSERT_THROW(asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR), asException);
+    ASSERT_THROW(asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR), asException);
 }
 
 TEST(GeoArea, ConstructorAlternativeLimitsException)
 {
     wxLogNull logNo;
 
-    double Xmin = -10;
-    double Xwidth = 30;
-    double Ymin = 30;
-    double Ywidth = 10;
-    ASSERT_THROW(asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth), asException);
+    double xMin = -10;
+    double xWidth = 30;
+    double yMin = 30;
+    double yWidth = 10;
+    ASSERT_THROW(asGeoArea geoArea(xMin, xWidth, yMin, yWidth), asException);
 }
 
 TEST(GeoArea, CheckConsistency)
 {
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 30;
-    double Ywidth = 10;
-    asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth);
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 30;
+    double yWidth = 10;
+    asGeoArea geoArea(xMin, xWidth, yMin, yWidth);
 
     EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLL().y);
     EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLR().y);
@@ -74,48 +74,48 @@ TEST(GeoArea, CheckConsistency)
 
 TEST(GeoArea, IsRectangleTrue)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
 
     EXPECT_TRUE(geoArea.IsRectangle());
 }
 
 TEST(GeoArea, IsRectangleFalse)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 15;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 15;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
 
     EXPECT_FALSE(geoArea.IsRectangle());
 }
 
 TEST(GeoArea, GetBounds)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
 
     EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
     EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
@@ -125,16 +125,16 @@ TEST(GeoArea, GetBounds)
 
 TEST(GeoArea, GetCenter)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
-    asGeoArea geoArea(CornerUL, CornerUR, CornerLL, CornerLR);
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
+    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
 
     Coo center = geoArea.GetCenter();
     EXPECT_DOUBLE_EQ(15, center.x);
@@ -143,12 +143,12 @@ TEST(GeoArea, GetCenter)
 
 TEST(GeoArea, NegativeSize)
 {
-    double Xmin = 10;
-    double Xwidth = -7;
-    double Ymin = 46;
-    double Ywidth = -2;
+    double xMin = 10;
+    double xWidth = -7;
+    double yMin = 46;
+    double yWidth = -2;
 
-    asGeoArea geoArea(Xmin, Xwidth, Ymin, Ywidth, asNONE, asNONE, asFLAT_ALLOWED);
+    asGeoArea geoArea(xMin, xWidth, yMin, yWidth, asNONE, asNONE, asFLAT_ALLOWED);
 
     EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
     EXPECT_DOUBLE_EQ(46, geoArea.GetYmin());

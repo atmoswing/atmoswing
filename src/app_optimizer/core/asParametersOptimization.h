@@ -165,7 +165,7 @@ public:
     bool SetPredictorXminIteration(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].xMin = val;
@@ -180,7 +180,7 @@ public:
     bool SetPredictorXptsnbIteration(int iStep, int iPtor, int val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].xPtsNb = val;
@@ -195,7 +195,7 @@ public:
     bool SetPredictorYminIteration(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].yMin = val;
@@ -210,7 +210,7 @@ public:
     bool SetPredictorYptsnbIteration(int iStep, int iPtor, int val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].yPtsNb = val;
@@ -307,7 +307,7 @@ public:
     bool SetPredictorXminUpperLimit(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].xMin = val;
@@ -322,7 +322,7 @@ public:
     bool SetPredictorXptsnbUpperLimit(int iStep, int iPtor, int val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].xPtsNb = val;
@@ -337,7 +337,7 @@ public:
     bool SetPredictorYminUpperLimit(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].yMin = val;
@@ -352,7 +352,7 @@ public:
     bool SetPredictorYptsnbUpperLimit(int iStep, int iPtor, int val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].yPtsNb = val;
@@ -449,7 +449,7 @@ public:
     bool SetPredictorXminLowerLimit(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].xMin = val;
@@ -464,7 +464,7 @@ public:
     bool SetPredictorXptsnbLowerLimit(int iStep, int iPtor, int val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].xPtsNb = val;
@@ -479,7 +479,7 @@ public:
     bool SetPredictorYminLowerLimit(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].yMin = val;
@@ -494,7 +494,7 @@ public:
     bool SetPredictorYptsnbLowerLimit(int iStep, int iPtor, double val)
     {
         if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].yPtsNb = (int) val;

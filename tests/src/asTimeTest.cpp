@@ -51,68 +51,68 @@ TEST(Time, IsLeapYearNo)
 
 TEST(Time, GetMJDNormal_20040101)
 {
-    double Result = asTime::GetMJD(2004, 1, 1, 0, 0, 0, asUSE_NORMAL_METHOD);
-    EXPECT_DOUBLE_EQ(53005, Result);
+    double result = asTime::GetMJD(2004, 1, 1, 0, 0, 0, asUSE_NORMAL_METHOD);
+    EXPECT_DOUBLE_EQ(53005, result);
 }
 
 TEST(Time, GetMJDNormal_20040101_120000)
 {
-    double Result = asTime::GetMJD(2004, 1, 1, 12, 0, 0, asUSE_NORMAL_METHOD);
-    EXPECT_DOUBLE_EQ(53005.5, Result);
+    double result = asTime::GetMJD(2004, 1, 1, 12, 0, 0, asUSE_NORMAL_METHOD);
+    EXPECT_DOUBLE_EQ(53005.5, result);
 }
 
 TEST(Time, GetMJDNormal_20101104_120000)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 12, 0, 0, asUSE_NORMAL_METHOD);
-    EXPECT_DOUBLE_EQ(55504.5, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 12, 0, 0, asUSE_NORMAL_METHOD);
+    EXPECT_DOUBLE_EQ(55504.5, result);
 }
 
 TEST(Time, GetMJDNormal_20101104_100000)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 10, 0, 0, asUSE_NORMAL_METHOD);
-    EXPECT_DOUBLE_EQ(55504.41666666651, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 10, 0, 0, asUSE_NORMAL_METHOD);
+    EXPECT_DOUBLE_EQ(55504.41666666651, result);
 }
 
 TEST(Time, GetMJDNormal_20101104_103245)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 10, 32, 45, asUSE_NORMAL_METHOD);
-    EXPECT_DOUBLE_EQ(55504.43940972211, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 10, 32, 45, asUSE_NORMAL_METHOD);
+    EXPECT_DOUBLE_EQ(55504.43940972211, result);
 }
 
 TEST(Time, GetMJDAlternate_20040101)
 {
-    double Result = asTime::GetMJD(2004, 1, 1, 0, 0, 0, asUSE_ALTERNATE_METHOD);
-    EXPECT_DOUBLE_EQ(53005, Result);
+    double result = asTime::GetMJD(2004, 1, 1, 0, 0, 0, asUSE_ALTERNATE_METHOD);
+    EXPECT_DOUBLE_EQ(53005, result);
 }
 
 TEST(Time, GetMJDAlternate_20040101_120000)
 {
-    double Result = asTime::GetMJD(2004, 1, 1, 12, 0, 0, asUSE_ALTERNATE_METHOD);
-    EXPECT_DOUBLE_EQ(53005.5, Result);
+    double result = asTime::GetMJD(2004, 1, 1, 12, 0, 0, asUSE_ALTERNATE_METHOD);
+    EXPECT_DOUBLE_EQ(53005.5, result);
 }
 
 TEST(Time, GetMJDAlternate_20101104_120000)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 12, 0, 0, asUSE_ALTERNATE_METHOD);
-    EXPECT_DOUBLE_EQ(55504.5, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 12, 0, 0, asUSE_ALTERNATE_METHOD);
+    EXPECT_DOUBLE_EQ(55504.5, result);
 }
 
 TEST(Time, GetMJDAlternate_20101104_100000)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 10, 0, 0, asUSE_ALTERNATE_METHOD);
-    EXPECT_DOUBLE_EQ(55504.41666666651, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 10, 0, 0, asUSE_ALTERNATE_METHOD);
+    EXPECT_DOUBLE_EQ(55504.41666666651, result);
 }
 
 TEST(Time, GetMJDAlternate_20101104_103245)
 {
-    double Result = asTime::GetMJD(2010, 11, 4, 10, 32, 45, asUSE_ALTERNATE_METHOD);
-    EXPECT_DOUBLE_EQ(55504.43940972211, Result);
+    double result = asTime::GetMJD(2010, 11, 4, 10, 32, 45, asUSE_ALTERNATE_METHOD);
+    EXPECT_DOUBLE_EQ(55504.43940972211, result);
 }
 
 TEST(Time, GetTimeStructNormal_20040101)
 {
-    double Mjd = 53005;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 53005;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -121,8 +121,8 @@ TEST(Time, GetTimeStructNormal_20040101)
 
 TEST(Time, GetTimeStructNormal_20040101_120000)
 {
-    double Mjd = 53005.5;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 53005.5;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -132,8 +132,8 @@ TEST(Time, GetTimeStructNormal_20040101_120000)
 
 TEST(Time, GetTimeStructNormal_20101104_120000)
 {
-    double Mjd = 55504.5;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.5;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -143,8 +143,8 @@ TEST(Time, GetTimeStructNormal_20101104_120000)
 
 TEST(Time, GetTimeStructNormal_20101104_100000)
 {
-    double Mjd = 55504.41666666651;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.41666666651;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -154,8 +154,8 @@ TEST(Time, GetTimeStructNormal_20101104_100000)
 
 TEST(Time, GetTimeStructNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_NORMAL_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -167,8 +167,8 @@ TEST(Time, GetTimeStructNormal_20101104_103245)
 
 TEST(Time, GetTimeStructAlternate_20040101)
 {
-    double Mjd = 53005;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 53005;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -177,8 +177,8 @@ TEST(Time, GetTimeStructAlternate_20040101)
 
 TEST(Time, GetTimeStructAlternate_20040101_120000)
 {
-    double Mjd = 53005.5;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 53005.5;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2004, date.year);
     EXPECT_EQ(1, date.month);
@@ -188,8 +188,8 @@ TEST(Time, GetTimeStructAlternate_20040101_120000)
 
 TEST(Time, GetTimeStructAlternate_20101104_120000)
 {
-    double Mjd = 55504.5;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.5;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -199,8 +199,8 @@ TEST(Time, GetTimeStructAlternate_20101104_120000)
 
 TEST(Time, GetTimeStructAlternate_20101104_100000)
 {
-    double Mjd = 55504.41666666651;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.41666666651;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -212,8 +212,8 @@ TEST(Time, GetTimeStructAlternate_20101104_100000)
 
 TEST(Time, GetTimeStructAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    Time date = asTime::GetTimeStruct(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    Time date = asTime::GetTimeStruct(mjd, asUSE_ALTERNATE_METHOD);
 
     EXPECT_EQ(2010, date.year);
     EXPECT_EQ(11, date.month);
@@ -237,98 +237,98 @@ TEST(Time, GetTimeStructOther)
 
 TEST(Time, GetYearNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetYear(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetYear(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(2010, Result);
+    EXPECT_EQ(2010, result);
 }
 
 TEST(Time, GetYearAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetYear(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetYear(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(2010, Result);
+    EXPECT_EQ(2010, result);
 }
 
 TEST(Time, GetMonthNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetMonth(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetMonth(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(11, Result);
+    EXPECT_EQ(11, result);
 }
 
 TEST(Time, GetMonthAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetMonth(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetMonth(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(11, Result);
+    EXPECT_EQ(11, result);
 }
 
 TEST(Time, GetDayNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetDay(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetDay(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(4, Result);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Time, GetDayAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetDay(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetDay(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(4, Result);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Time, GetHourNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetHour(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetHour(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(10, Result);
+    EXPECT_EQ(10, result);
 }
 
 TEST(Time, GetHourAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetHour(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetHour(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(10, Result);
+    EXPECT_EQ(10, result);
 }
 
 TEST(Time, GetMinuteNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetMinute(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetMinute(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(32, Result);
+    EXPECT_EQ(32, result);
 }
 
 TEST(Time, GetMinuteAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetMinute(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetMinute(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(32, Result);
+    EXPECT_EQ(32, result);
 }
 
 TEST(Time, GetSecondNormal_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetSecond(Mjd, asUSE_NORMAL_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetSecond(mjd, asUSE_NORMAL_METHOD);
 
-    EXPECT_EQ(45, Result);
+    EXPECT_EQ(45, result);
 }
 
 TEST(Time, GetSecondAlternate_20101104_103245)
 {
-    double Mjd = 55504.43940972211;
-    int Result = asTime::GetSecond(Mjd, asUSE_ALTERNATE_METHOD);
+    double mjd = 55504.43940972211;
+    int result = asTime::GetSecond(mjd, asUSE_ALTERNATE_METHOD);
 
-    EXPECT_EQ(45, Result);
+    EXPECT_EQ(45, result);
 }
 
 TEST(Time, NowLocalMJD)
@@ -365,13 +365,13 @@ TEST(Time, NowTimeStruct)
 
 TEST(Time, GetStringDateMJD)
 {
-    double Mjd = 55504.43940972211;
+    double mjd = 55504.43940972211;
 
-    wxString datestr = asTime::GetStringTime(Mjd, classic);
+    wxString datestr = asTime::GetStringTime(mjd, classic);
 
-    int Result = datestr.CompareTo(_T("04.11.2010"));
+    int result = datestr.CompareTo(_T("04.11.2010"));
 
-    EXPECT_EQ(0, Result);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Time, GetStringDateTimeStruct)
@@ -386,20 +386,20 @@ TEST(Time, GetStringDateTimeStruct)
 
     wxString datestr = asTime::GetStringTime(date, classic);
 
-    int Result = datestr.CompareTo(_T("04.11.2010"));
+    int result = datestr.CompareTo(_T("04.11.2010"));
 
-    EXPECT_EQ(0, Result);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Time, GetStringDateReverseMJD)
 {
-    double Mjd = 55504.43940972211;
+    double mjd = 55504.43940972211;
 
-    wxString datestr = asTime::GetStringTime(Mjd, YYYYMMDD);
+    wxString datestr = asTime::GetStringTime(mjd, YYYYMMDD);
 
-    int Result = datestr.CompareTo(_T("2010/11/04"));
+    int result = datestr.CompareTo(_T("2010/11/04"));
 
-    EXPECT_EQ(0, Result);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Time, GetStringDateReverseTimeStruct)
@@ -414,9 +414,9 @@ TEST(Time, GetStringDateReverseTimeStruct)
 
     wxString datestr = asTime::GetStringTime(date, YYYYMMDD);
 
-    int Result = datestr.CompareTo(_T("2010/11/04"));
+    int result = datestr.CompareTo(_T("2010/11/04"));
 
-    EXPECT_EQ(0, Result);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Time, GetStringTimeTimeStruct)
@@ -431,9 +431,9 @@ TEST(Time, GetStringTimeTimeStruct)
 
     wxString datestr = asTime::GetStringTime(date, timeonly);
 
-    int Result = datestr.CompareTo(_T("03:05"));
+    int result = datestr.CompareTo(_T("03:05"));
 
-    EXPECT_EQ(0, Result);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYY)

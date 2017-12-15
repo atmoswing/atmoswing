@@ -273,8 +273,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             //std::fill(resultingDates.begin(), resultingDates.end(), NaNf);
 
             // Containers for daily results
-            a1f ScoreArrayOneDay(analogsNb);
-            a1f DateArrayOneDay(analogsNb);
+            a1f scoreArrayOneDay(analogsNb);
+            a1f dateArrayOneDay(analogsNb);
 
             // Containers for the indices
             vi lengths(timeTargetSelectionSize);
@@ -393,7 +393,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                             {
                                 containsNaNs = true;
                                 wxLogWarning(_("NaNs were found in the criteria values."));
-                                wxLogWarning(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[iDateTarg]) , asTime::GetStringTime(DateArrayOneDay[iDateArch]));
+                                wxLogWarning(_("Target date: %s, archive date: %s."),asTime::GetStringTime(timeTargetSelection[iDateTarg]) , asTime::GetStringTime(dateArrayOneDay[iDateArch]));
                             }
 #endif
 
@@ -402,35 +402,35 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         {
                             if (isAsc)
                             {
-                                if (vectCriteria[iDateArch]<ScoreArrayOneDay[analogsNb-1])
+                                if (vectCriteria[iDateArch]<scoreArrayOneDay[analogsNb-1])
                                 {
-                                    asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Asc, vectCriteria[iDateArch], vectDates[iDateArch]);
+                                    asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb-1], &dateArrayOneDay[0], &dateArrayOneDay[analogsNb-1], Asc, vectCriteria[iDateArch], vectDates[iDateArch]);
                                 }
                             } else {
-                                if (vectCriteria[iDateArch]>ScoreArrayOneDay[analogsNb-1])
+                                if (vectCriteria[iDateArch]>scoreArrayOneDay[analogsNb-1])
                                 {
-                                    asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Desc, vectCriteria[iDateArch], vectDates[iDateArch]);
+                                    asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb-1], &dateArrayOneDay[0], &dateArrayOneDay[analogsNb-1], Desc, vectCriteria[iDateArch], vectDates[iDateArch]);
                                 }
                             }
                         }
                         else if (resCounter<analogsNb-1)
                         {
                             // Add score and date to the vectors
-                            ScoreArrayOneDay[resCounter] = vectCriteria[iDateArch];
-                            DateArrayOneDay[resCounter] = vectDates[iDateArch];
+                            scoreArrayOneDay[resCounter] = vectCriteria[iDateArch];
+                            dateArrayOneDay[resCounter] = vectDates[iDateArch];
                         }
                         else if (resCounter==analogsNb-1)
                         {
                             // Add score and date to the vectors
-                            ScoreArrayOneDay[resCounter] = vectCriteria[iDateArch];
-                            DateArrayOneDay[resCounter] = vectDates[iDateArch];
+                            scoreArrayOneDay[resCounter] = vectCriteria[iDateArch];
+                            dateArrayOneDay[resCounter] = vectDates[iDateArch];
 
                             // Sort both scores and dates arrays
                             if (isAsc)
                             {
-                                asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Asc);
+                                asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb-1], &dateArrayOneDay[0], &dateArrayOneDay[analogsNb-1], Asc);
                             } else {
-                                asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb-1], &DateArrayOneDay[0], &DateArrayOneDay[analogsNb-1], Desc);
+                                asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb-1], &dateArrayOneDay[0], &dateArrayOneDay[analogsNb-1], Desc);
                             }
                         }
 
@@ -441,8 +441,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     if (resCounter>=analogsNb)
                     {
                         // Copy results
-                        finalAnalogsCriteria.row(iDateTarg) = ScoreArrayOneDay.head(analogsNb).transpose();
-                        finalAnalogsDates.row(iDateTarg) = DateArrayOneDay.head(analogsNb).transpose();
+                        finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
+                        finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
                     }
                     else
                     {

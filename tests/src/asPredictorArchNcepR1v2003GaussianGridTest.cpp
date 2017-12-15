@@ -35,14 +35,14 @@
 
 TEST(PredictorArchNcepR1v2003Gaussian, LoadEasy)
 {
-    double Xmin = 7.5;
-    int Xptsnb = 5;
-    double Ymin = 29.523;
-    int Yptsnb = 3;
+    double xMin = 7.5;
+    int xPtsNb = 5;
+    double yMin = 29.523;
+    int yPtsNb = 3;
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -124,14 +124,14 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadEasy)
 
 TEST(PredictorArchNcepR1v2003Gaussian, LoadComposite)
 {
-    double Xmin = -7.5;
-    int Xptsnb = 7;
-    double Ymin = 29.523;
-    int Yptsnb = 3;
+    double xMin = -7.5;
+    int xPtsNb = 7;
+    double yMin = 29.523;
+    int yPtsNb = 3;
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -205,14 +205,14 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadComposite)
 
 TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeft)
 {
-    double Xmin = 0;
-    int Xptsnb = 3;
-    double Ymin = 29.523;
-    int Yptsnb = 3;
+    double xMin = 0;
+    int xPtsNb = 3;
+    double yMin = 29.523;
+    int yPtsNb = 3;
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -274,14 +274,14 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeft)
 
 TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeftOn720)
 {
-    double Xmin = 360;
-    int Xptsnb = 3;
-    double Ymin = 29.523;
-    int Yptsnb = 3;
+    double xMin = 360;
+    int xPtsNb = 3;
+    double yMin = 29.523;
+    int yPtsNb = 3;
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -343,14 +343,14 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeftOn720)
 
 TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderRight)
 {
-    double Xmin = 352.5;
-    int Xptsnb = 5;
-    double Ymin = 29.523;
-    int Yptsnb = 3;
+    double xMin = 352.5;
+    int xPtsNb = 5;
+    double yMin = 29.523;
+    int yPtsNb = 3;
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -418,15 +418,15 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderRight)
 
 TEST(PredictorArchNcepR1v2003Gaussian, SetData)
 {
-    double Xmin = -7.5;
-    int Xptsnb = 4;
-    double Ymin = 29.523;
-    int Yptsnb = 2;
+    double xMin = -7.5;
+    int xPtsNb = 4;
+    double yMin = 29.523;
+    int yPtsNb = 2;
     double steplon = 0;
     double steplat = 0;
     double level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);

@@ -34,14 +34,14 @@
 
 TEST(PredictorArchNasaMerra2Regular, LoadEasy)
 {
-    double Xmin = 2.5;
-    double Xwidth = 5;
-    double Xstep = 0.625;
-    double Ymin = 75;
-    double Ywidth = 2;
-    double Ystep = 0.5;
+    double xMin = 2.5;
+    double xWidth = 5;
+    double xStep = 0.625;
+    double yMin = 75;
+    double yWidth = 2;
+    double yStep = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -100,14 +100,14 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
 
 TEST(PredictorArchNasaMerra2Regular, LoadComposite)
 {
-    double Xmin = 177.5;
-    double Xwidth = 5;
-    double Xstep = 0.625;
-    double Ymin = 75;
-    double Ywidth = 2;
-    double Ystep = 0.5;
+    double xMin = 177.5;
+    double xWidth = 5;
+    double xStep = 0.625;
+    double yMin = 75;
+    double yWidth = 2;
+    double yStep = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

@@ -309,33 +309,33 @@ bool asParametersScoring::PreprocessingPropertiesOk()
 
 wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const
 {
-    wxString Ids;
+    wxString ids;
 
     for (int i = 0; i < (int) predictandStationIdsVect.size(); i++) {
         vi predictandStationIds = predictandStationIdsVect[i];
 
         if (predictandStationIds.size() == 1) {
-            Ids << predictandStationIds[0];
+            ids << predictandStationIds[0];
         } else {
-            Ids.Append("(");
+            ids.Append("(");
 
             for (int j = 0; j < (int) predictandStationIds.size(); j++) {
-                Ids << predictandStationIds[j];
+                ids << predictandStationIds[j];
 
                 if (j < (int) predictandStationIds.size() - 1) {
-                    Ids.Append(",");
+                    ids.Append(",");
                 }
             }
 
-            Ids.Append(")");
+            ids.Append(")");
         }
 
         if (i < (int) predictandStationIdsVect.size() - 1) {
-            Ids.Append(",");
+            ids.Append(",");
         }
     }
 
-    return Ids;
+    return ids;
 }
 
 wxString asParametersScoring::Print() const

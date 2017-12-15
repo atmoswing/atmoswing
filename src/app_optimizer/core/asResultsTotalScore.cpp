@@ -81,11 +81,11 @@ bool asResultsTotalScore::Save()
     ncFile.DefDim("score");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    vstds DimNames1;
-    DimNames1.push_back("score");
+    vstds dimNames1;
+    dimNames1.push_back("score");
 
     // Define variables
-    ncFile.DefVar("score", NC_FLOAT, 1, DimNames1);
+    ncFile.DefVar("score", NC_FLOAT, 1, dimNames1);
 
     // Put attributes
     DefTotalScoreAttributes(ncFile);

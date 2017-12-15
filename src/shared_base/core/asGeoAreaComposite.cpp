@@ -28,15 +28,15 @@
 
 #include "asGeoAreaComposite.h"
 
-asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
-                                       const Coo &CornerLR, float Level, float Height, int flatAllowed)
+asGeoAreaComposite::asGeoAreaComposite(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
+                                       const Coo &cornerLR, float level, float height, int flatAllowed)
         : asGeo(Regular),
-          m_level(Level),
-          m_height(Height),
-          m_cornerUL(CornerUL),
-          m_cornerUR(CornerUR),
-          m_cornerLL(CornerLL),
-          m_cornerLR(CornerLR),
+          m_level(level),
+          m_height(height),
+          m_cornerUL(cornerUL),
+          m_cornerUR(cornerUR),
+          m_cornerLL(cornerLL),
+          m_cornerLR(cornerLR),
           m_flatAllowed(flatAllowed),
           m_absoluteXmin(m_cornerUL.x),
           m_absoluteXmax(m_cornerUR.x),
@@ -50,15 +50,15 @@ asGeoAreaComposite::asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR,
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level,
-                                       float Height, int flatAllowed)
+asGeoAreaComposite::asGeoAreaComposite(double xMin, double xWidth, double yMin, double yWidth, float level,
+                                       float height, int flatAllowed)
         : asGeo(Regular),
-          m_level(Level),
-          m_height(Height),
-          m_cornerUL({Xmin, Ymin + Ywidth}),
-          m_cornerUR({Xmin + Xwidth, Ymin + Ywidth}),
-          m_cornerLL({Xmin, Ymin}),
-          m_cornerLR({Xmin + Xwidth, Ymin}),
+          m_level(level),
+          m_height(height),
+          m_cornerUL({xMin, yMin + yWidth}),
+          m_cornerUR({xMin + xWidth, yMin + yWidth}),
+          m_cornerLL({xMin, yMin}),
+          m_cornerLR({xMin + xWidth, yMin}),
           m_flatAllowed(flatAllowed),
           m_absoluteXmin(m_cornerUL.x),
           m_absoluteXmax(m_cornerUR.x),
@@ -72,10 +72,10 @@ asGeoAreaComposite::asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, 
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asGeoAreaComposite::asGeoAreaComposite(float Level, float Height)
+asGeoAreaComposite::asGeoAreaComposite(float level, float height)
         : asGeo(Regular),
-          m_level(Level),
-          m_height(Height),
+          m_level(level),
+          m_height(height),
           m_cornerUL({0, 0}),
           m_cornerUR({0, 0}),
           m_cornerLL({0, 0}),
@@ -94,16 +94,16 @@ asGeoAreaComposite::~asGeoAreaComposite()
     //dtor
 }
 
-void asGeoAreaComposite::Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed)
+void asGeoAreaComposite::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
 {
-    m_cornerUL.x = Xmin;
-    m_cornerUL.y = Ymin + Ywidth;
-    m_cornerUR.x = Xmin + Xwidth;
-    m_cornerUR.y = Ymin + Ywidth;
-    m_cornerLL.x = Xmin;
-    m_cornerLL.y = Ymin;
-    m_cornerLR.x = Xmin + Xwidth;
-    m_cornerLR.y = Ymin;
+    m_cornerUL.x = xMin;
+    m_cornerUL.y = yMin + yWidth;
+    m_cornerUR.x = xMin + xWidth;
+    m_cornerUR.y = yMin + yWidth;
+    m_cornerLL.x = xMin;
+    m_cornerLL.y = yMin;
+    m_cornerLR.x = xMin + xWidth;
+    m_cornerLR.y = yMin;
     m_flatAllowed = flatAllowed;
     m_absoluteXmin = m_cornerUL.x;
     m_absoluteXmax = m_cornerUR.x;
@@ -164,38 +164,38 @@ bool asGeoAreaComposite::CheckConsistency()
 
 double asGeoAreaComposite::GetXmin() const
 {
-    double RealXmin = Infd;
+    double realXmin = Infd;
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        RealXmin = wxMin(RealXmin, m_composites[iArea].GetXmin());
+        realXmin = wxMin(realXmin, m_composites[iArea].GetXmin());
     }
-    return RealXmin;
+    return realXmin;
 }
 
 double asGeoAreaComposite::GetXmax() const
 {
-    double RealXmax = -Infd;
+    double realXmax = -Infd;
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        RealXmax = wxMax(RealXmax, m_composites[iArea].GetXmax());
+        realXmax = wxMax(realXmax, m_composites[iArea].GetXmax());
     }
-    return RealXmax;
+    return realXmax;
 }
 
 double asGeoAreaComposite::GetYmin() const
 {
-    double RealYmin = Infd;
+    double realYmin = Infd;
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        RealYmin = wxMin(RealYmin, m_composites[iArea].GetYmin());
+        realYmin = wxMin(realYmin, m_composites[iArea].GetYmin());
     }
-    return RealYmin;
+    return realYmin;
 }
 
 double asGeoAreaComposite::GetYmax() const
 {
-    double RealYmax = -Infd;
+    double realYmax = -Infd;
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        RealYmax = wxMax(RealYmax, m_composites[iArea].GetYmax());
+        realYmax = wxMax(realYmax, m_composites[iArea].GetYmax());
     }
-    return RealYmax;
+    return realYmax;
 }
 
 Coo asGeoAreaComposite::GetCenter() const
@@ -209,9 +209,9 @@ Coo asGeoAreaComposite::GetCenter() const
                (m_cornerLR.y < m_cornerUR.y)) {
         double CornerUR = 360 + m_cornerUR.x;
         double CornerLR = 360 + m_cornerLR.x;
-        double Xmin = wxMin(m_cornerUL.x, m_cornerLL.x);
-        double Xmax = wxMin(CornerUR, CornerLR);
-        center.x = Xmin + (Xmax - Xmin) / 2;
+        double xMin = wxMin(m_cornerUL.x, m_cornerLL.x);
+        double xMax = wxMin(CornerUR, CornerLR);
+        center.x = xMin + (xMax - xMin) / 2;
         center.y = GetYmin() + (GetYmax() - GetYmin()) / 2;
         return center;
     } else {

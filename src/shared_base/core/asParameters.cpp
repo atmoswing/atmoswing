@@ -468,16 +468,16 @@ bool asParameters::SetSpatialWindowProperties()
             if (GetPredictorYptsnb(iStep, iPtor) == 0)
                 SetPredictorYptsnb(iStep, iPtor, 1);
 
-            double Xshift = std::fmod(GetPredictorXmin(iStep, iPtor), GetPredictorXstep(iStep, iPtor));
-            if (Xshift < 0)
-                Xshift += GetPredictorXstep(iStep, iPtor);
-            if (!SetPredictorXshift(iStep, iPtor, Xshift))
+            double xShift = std::fmod(GetPredictorXmin(iStep, iPtor), GetPredictorXstep(iStep, iPtor));
+            if (xShift < 0)
+                xShift += GetPredictorXstep(iStep, iPtor);
+            if (!SetPredictorXshift(iStep, iPtor, xShift))
                 return false;
 
-            double Yshift = std::fmod(GetPredictorYmin(iStep, iPtor), GetPredictorYstep(iStep, iPtor));
-            if (Yshift < 0)
-                Yshift += GetPredictorYstep(iStep, iPtor);
-            if (!SetPredictorYshift(iStep, iPtor, Yshift))
+            double yShift = std::fmod(GetPredictorYmin(iStep, iPtor), GetPredictorYstep(iStep, iPtor));
+            if (yShift < 0)
+                yShift += GetPredictorYstep(iStep, iPtor);
+            if (!SetPredictorYshift(iStep, iPtor, yShift))
                 return false;
 
             if (GetPredictorXptsnb(iStep, iPtor) == 1 || GetPredictorYptsnb(iStep, iPtor) == 1) {
@@ -830,25 +830,25 @@ vi asParameters::GetFileStationIds(wxString stationIdsString)
 
 wxString asParameters::GetPredictandStationIdsString() const
 {
-    wxString Ids;
+    wxString ids;
 
     if (m_predictandStationIds.size() == 1) {
-        Ids << m_predictandStationIds[0];
+        ids << m_predictandStationIds[0];
     } else {
-        Ids = "(";
+        ids = "(";
 
         for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
-            Ids << m_predictandStationIds[i];
+            ids << m_predictandStationIds[i];
 
             if (i < (int) m_predictandStationIds.size() - 1) {
-                Ids.Append(",");
+                ids.Append(",");
             }
         }
 
-        Ids.Append(")");
+        ids.Append(")");
     }
 
-    return Ids;
+    return ids;
 }
 
 bool asParameters::FixTimeLimits()
@@ -981,12 +981,12 @@ wxString asParameters::Print() const
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(iStep, iPtor)));
-            content.Append(wxString::Format("Xmin\t%g\t", GetPredictorXmin(iStep, iPtor)));
-            content.Append(wxString::Format("Xptsnb\t%d\t", GetPredictorXptsnb(iStep, iPtor)));
-            content.Append(wxString::Format("Xstep\t%g\t", GetPredictorXstep(iStep, iPtor)));
-            content.Append(wxString::Format("Ymin\t%g\t", GetPredictorYmin(iStep, iPtor)));
-            content.Append(wxString::Format("Yptsnb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
-            content.Append(wxString::Format("Ystep\t%g\t", GetPredictorYstep(iStep, iPtor)));
+            content.Append(wxString::Format("xMin\t%g\t", GetPredictorXmin(iStep, iPtor)));
+            content.Append(wxString::Format("xPtsNb\t%d\t", GetPredictorXptsnb(iStep, iPtor)));
+            content.Append(wxString::Format("xStep\t%g\t", GetPredictorXstep(iStep, iPtor)));
+            content.Append(wxString::Format("yMin\t%g\t", GetPredictorYmin(iStep, iPtor)));
+            content.Append(wxString::Format("yPtsNb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
+            content.Append(wxString::Format("yStep\t%g\t", GetPredictorYstep(iStep, iPtor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(iStep, iPtor)));
             content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(iStep, iPtor)));
         }
@@ -1137,10 +1137,10 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
             }
 
-            iLeft = stringVals.Find("Xmin");
+            iLeft = stringVals.Find("xMin");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Umin");
-            iRight = stringVals.Find("Xptsnb");
+            iRight = stringVals.Find("xPtsNb");
             if (iRight < 0)
                 iRight = stringVals.Find("Uptsnb");
             if (iLeft < 0 || iRight < 0) {
@@ -1158,10 +1158,10 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             }
             stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
-            iLeft = stringVals.Find("Xptsnb");
+            iLeft = stringVals.Find("xPtsNb");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Uptsnb");
-            iRight = stringVals.Find("Xstep");
+            iRight = stringVals.Find("xStep");
             if (iRight < 0)
                 iRight = stringVals.Find("Ustep");
             if (iLeft < 0 || iRight < 0) {
@@ -1179,10 +1179,10 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             }
             stringVals = stringVals.SubString(iRight, stringVals.Length());
 
-            iLeft = stringVals.Find("Xstep");
+            iLeft = stringVals.Find("xStep");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Ustep");
-            iRight = stringVals.Find("Ymin");
+            iRight = stringVals.Find("yMin");
             if (iRight < 0)
                 iRight = stringVals.Find("Vmin");
             if (iLeft < 0 || iRight < 0) {
@@ -1200,10 +1200,10 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             }
             stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
-            iLeft = stringVals.Find("Ymin");
+            iLeft = stringVals.Find("yMin");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Vmin");
-            iRight = stringVals.Find("Yptsnb");
+            iRight = stringVals.Find("yPtsNb");
             if (iRight < 0)
                 iRight = stringVals.Find("Vptsnb");
             if (iLeft < 0 || iRight < 0) {
@@ -1221,10 +1221,10 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             }
             stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
-            iLeft = stringVals.Find("Yptsnb");
+            iLeft = stringVals.Find("yPtsNb");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Vptsnb");
-            iRight = stringVals.Find("Ystep");
+            iRight = stringVals.Find("yStep");
             if (iRight < 0)
                 iRight = stringVals.Find("Vstep");
             if (iLeft < 0 || iRight < 0) {
@@ -1242,7 +1242,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             }
             stringVals = stringVals.SubString((size_t) iRight, stringVals.Length());
 
-            iLeft = stringVals.Find("Ystep");
+            iLeft = stringVals.Find("yStep");
             if (iLeft < 0)
                 iLeft = stringVals.Find("Vstep");
             iRight = stringVals.Find("Weight");

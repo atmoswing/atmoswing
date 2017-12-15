@@ -279,74 +279,74 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 
 bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 {
-    double Xmin = desiredArea->GetAbsoluteXmin();
-    double Xmax = desiredArea->GetAbsoluteXmax();
+    double xMin = desiredArea->GetAbsoluteXmin();
+    double xMax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 0);
     float toleranceLon = 0.1;
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
     }
-    int XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmin, toleranceLon,
+    int xStartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon,
                                                  asHIDE_WARNINGS);
-    int XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], Xmax, toleranceLon,
+    int xEndIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon,
                                                asHIDE_WARNINGS);
-    if (XstartIndex < 0) {
-        XstartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
-                                                 Xmin + desiredArea->GetAxisXmax());
-        XendIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
-                                               Xmax + desiredArea->GetAxisXmax());
-        if (XstartIndex < 0 || XendIndex < 0) {
+    if (xStartIndex < 0) {
+        xStartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
+                                                 xMin + desiredArea->GetAxisXmax());
+        xEndIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
+                                               xMax + desiredArea->GetAxisXmax());
+        if (xStartIndex < 0 || xEndIndex < 0) {
             wxLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin + desiredArea->GetAxisXmax(),
-                       Xmax + desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
+            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin + desiredArea->GetAxisXmax(),
+                       xMax + desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
             return false;
         }
     }
-    if (XstartIndex < 0 || XendIndex < 0) {
+    if (xStartIndex < 0 || xEndIndex < 0) {
         wxLogError(_("An error occured while trying to clip data to another area."));
-        wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), Xmin, Xmax, m_axisLon[0],
+        wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin, xMax, m_axisLon[0],
                    m_axisLon[m_axisLon.size() - 1]);
         return false;
     }
-    int Xlength = XendIndex - XstartIndex + 1;
+    int xLength = xEndIndex - xStartIndex + 1;
 
-    double Ymin = desiredArea->GetAbsoluteYmin();
-    double Ymax = desiredArea->GetAbsoluteYmax();
+    double yMin = desiredArea->GetAbsoluteYmin();
+    double yMax = desiredArea->GetAbsoluteYmax();
     wxASSERT(m_axisLat.size() > 0);
     float toleranceLat = 0.1;
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }
-    int YstartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymin, toleranceLat,
+    int yStartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMin, toleranceLat,
                                                  asHIDE_WARNINGS);
-    int YendIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], Ymax, toleranceLat,
+    int yEndIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMax, toleranceLat,
                                                asHIDE_WARNINGS);
-    if (YstartIndex < 0 || YendIndex < 0) {
+    if (yStartIndex < 0 || yEndIndex < 0) {
         wxLogError(_("An error occured while trying to clip data to another area."));
-        wxLogError(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), Ymin, Ymax, m_axisLat[0],
+        wxLogError(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), yMin, yMax, m_axisLat[0],
                    m_axisLat[m_axisLat.size() - 1]);
         return false;
     }
 
-    int YstartIndexReal = wxMin(YstartIndex, YendIndex);
-    int Ylength = std::abs(YendIndex - YstartIndex) + 1;
+    int yStartIndexReal = wxMin(yStartIndex, yEndIndex);
+    int yLength = std::abs(yEndIndex - yStartIndex) + 1;
 
     // Check if already the correct size
-    if (YstartIndexReal == 0 && XstartIndex == 0 && Ylength == m_axisLat.size() && Xlength == m_axisLon.size()) {
+    if (yStartIndexReal == 0 && xStartIndex == 0 && yLength == m_axisLat.size() && xLength == m_axisLon.size()) {
         if (IsPreprocessed()) {
             if (m_data[0][0].cols() == m_axisLon.size() && m_data[0][0].rows() == 2 * m_axisLat.size()) {
                 // Nothing to do
                 return true;
             } else {
                 // Clear axes
-                a1f newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
+                a1f newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
                     newAxisLon[i] = NaNf;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
+                a1f newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
                     newAxisLat[i] = NaNf;
                 }
                 m_axisLat = newAxisLat;
@@ -394,25 +394,25 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
-                        a2f dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength - 1, Xlength);
-                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
-                                                            Xlength - 1);
+                        a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength - 1, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength - 1);
                         // Needs to be 0-filled for further simplification.
-                        a2f datMerged = a2f::Zero(2 * Ylength, Xlength);
-                        datMerged.block(0, 0, Ylength - 1, Xlength) = dat1;
-                        datMerged.block(Ylength, 0, Ylength, Xlength - 1) = dat2;
+                        a2f datMerged = a2f::Zero(2 * yLength, xLength);
+                        datMerged.block(0, 0, yLength - 1, xLength) = dat1;
+                        datMerged.block(yLength, 0, yLength, xLength - 1) = dat2;
                         m_data[i][j] = datMerged;
                     }
                 }
 
-                a1f newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
+                a1f newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
                     newAxisLon[i] = NaNf;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
+                a1f newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
                     newAxisLat[i] = NaNf;
                 }
                 m_axisLat = newAxisLat;
@@ -435,24 +435,24 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
-                        a2f dat1 = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
-                        a2f dat2 = originalData[i][j].block(YstartIndexReal + m_axisLat.size(), XstartIndex, Ylength,
-                                                            Xlength);
-                        a2f datMerged(2 * Ylength, Xlength);
-                        datMerged.block(0, 0, Ylength, Xlength) = dat1;
-                        datMerged.block(Ylength, 0, Ylength, Xlength) = dat2;
+                        a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength);
+                        a2f datMerged(2 * yLength, xLength);
+                        datMerged.block(0, 0, yLength, xLength) = dat1;
+                        datMerged.block(yLength, 0, yLength, xLength) = dat2;
                         m_data[i][j] = datMerged;
                     }
                 }
 
-                a1f newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
+                a1f newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
                     newAxisLon[i] = NaNf;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
+                a1f newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
                     newAxisLat[i] = NaNf;
                 }
                 m_axisLat = newAxisLat;
@@ -477,18 +477,18 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
-                        m_data[i][j] = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+                        m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
                     }
                 }
 
-                a1f newAxisLon(Xlength);
-                for (int i = 0; i < Xlength; i++) {
+                a1f newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
                     newAxisLon[i] = NaNf;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * Ylength);
-                for (int i = 0; i < 2 * Ylength; i++) {
+                a1f newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
                     newAxisLat[i] = NaNf;
                 }
                 m_axisLat = newAxisLat;
@@ -508,19 +508,19 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     vva2f originalData = m_data;
     for (unsigned int i = 0; i < originalData.size(); i++) {
         for (unsigned int j = 0; j < originalData[i].size(); j++) {
-            m_data[i][j] = originalData[i][j].block(YstartIndexReal, XstartIndex, Ylength, Xlength);
+            m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
         }
     }
 
-    a1f newAxisLon(Xlength);
-    for (int i = 0; i < Xlength; i++) {
-        newAxisLon[i] = m_axisLon[XstartIndex + i];
+    a1f newAxisLon(xLength);
+    for (int i = 0; i < xLength; i++) {
+        newAxisLon[i] = m_axisLon[xStartIndex + i];
     }
     m_axisLon = newAxisLon;
 
-    a1f newAxisLat(Ylength);
-    for (int i = 0; i < Ylength; i++) {
-        newAxisLat[i] = m_axisLat[YstartIndexReal + i];
+    a1f newAxisLat(yLength);
+    for (int i = 0; i < yLength; i++) {
+        newAxisLat[i] = m_axisLat[yStartIndexReal + i];
     }
     m_axisLat = newAxisLat;
 

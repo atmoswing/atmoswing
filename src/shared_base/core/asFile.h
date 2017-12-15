@@ -30,7 +30,7 @@
 
 #include "asIncludes.h"
 
-bool asRemoveDir(const wxString &Path);
+bool asRemoveDir(const wxString &path);
 
 class asFile
         : public wxObject
@@ -45,11 +45,11 @@ public:
         Append    // add content to an already existing file
     };
 
-    asFile(const wxString &FileName, const ListFileMode &FileMode = asFile::ReadOnly);
+    asFile(const wxString &fileName, const ListFileMode &fileMode = asFile::ReadOnly);
 
     virtual ~asFile();
 
-    static bool Exists(const wxString &FilePath);
+    static bool Exists(const wxString &filePath);
 
     bool Find();
 

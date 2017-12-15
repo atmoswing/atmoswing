@@ -36,7 +36,7 @@ class asFileParameters
         : public asFileXml
 {
 public:
-    asFileParameters(const wxString &FileName, const ListFileMode &FileMode);
+    asFileParameters(const wxString &fileName, const ListFileMode &fileMode);
 
     virtual ~asFileParameters();
 

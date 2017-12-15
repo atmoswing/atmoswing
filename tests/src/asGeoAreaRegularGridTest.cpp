@@ -34,59 +34,59 @@ TEST(GeoAreaRegularGrid, ConstructorLimitsException)
 {
     wxLogNull logNo;
 
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = -10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = -10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = -10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = -10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
     double step = 2.5;
 
-    ASSERT_THROW(asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+    ASSERT_THROW(asGeoAreaRegularGrid geoArea(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
 }
 
 TEST(GeoAreaRegularGrid, ConstructorAlternativeLimitsException)
 {
     wxLogNull logNo;
 
-    double Xmin = -10;
-    double Xwidth = 30;
-    double Ymin = 30;
-    double Ywidth = 10;
+    double xMin = -10;
+    double xWidth = 30;
+    double yMin = 30;
+    double yWidth = 10;
     double step = 2.5;
 
-    ASSERT_THROW(asGeoAreaRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+    ASSERT_THROW(asGeoAreaRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step), asException);
 }
 
 TEST(GeoAreaRegularGrid, ConstructorStepException)
 {
     wxLogNull logNo;
 
-    double Xmin = -10;
-    double Xwidth = 30;
-    double Ymin = 30;
-    double Ywidth = 10;
+    double xMin = -10;
+    double xWidth = 30;
+    double yMin = 30;
+    double yWidth = 10;
     double step = 2.7;
 
-    ASSERT_THROW(asGeoAreaRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step), asException);
+    ASSERT_THROW(asGeoAreaRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step), asException);
 }
 
 TEST(GeoAreaRegularGrid, IsRectangleTrue)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoArea(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     EXPECT_TRUE(geoArea.IsRectangle());
 }
@@ -95,33 +95,33 @@ TEST(GeoAreaRegularGrid, IsRectangleFalse)
 {
     wxLogNull logNo;
 
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 15;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 15;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
     double step = 2.5;
 
-    ASSERT_THROW(asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step), asException);
+    ASSERT_THROW(asGeoAreaRegularGrid geoArea(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
 }
 
 TEST(GeoAreaRegularGrid, GetBounds)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoArea(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
     EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
@@ -131,17 +131,17 @@ TEST(GeoAreaRegularGrid, GetBounds)
 
 TEST(GeoAreaRegularGrid, GetCenter)
 {
-    Coo CornerUL, CornerUR, CornerLL, CornerLR;
-    CornerUL.x = 10;
-    CornerUL.y = 40;
-    CornerUR.x = 20;
-    CornerUR.y = 40;
-    CornerLL.x = 10;
-    CornerLL.y = 30;
-    CornerLR.x = 20;
-    CornerLR.y = 30;
+    Coo cornerUL, cornerUR, cornerLL, cornerLR;
+    cornerUL.x = 10;
+    cornerUL.y = 40;
+    cornerUR.x = 20;
+    cornerUR.y = 40;
+    cornerLL.x = 10;
+    cornerLL.y = 30;
+    cornerLR.x = 20;
+    cornerLR.y = 30;
     double step = 2.5;
-    asGeoAreaRegularGrid geoArea(CornerUL, CornerUR, CornerLL, CornerLR, step, step);
+    asGeoAreaRegularGrid geoArea(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
     Coo center = geoArea.GetCenter();
     EXPECT_DOUBLE_EQ(15, center.x);
@@ -150,12 +150,12 @@ TEST(GeoAreaRegularGrid, GetCenter)
 
 TEST(GeoAreaRegularGrid, GetAxes)
 {
-    double Xmin = 5;
-    double Xwidth = 20;
-    double Ymin = 45;
-    double Ywidth = 2.5;
+    double xMin = 5;
+    double xWidth = 20;
+    double yMin = 45;
+    double yWidth = 2.5;
     double step = 2.5;
-    asGeoAreaRegularGrid geoArea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step);
 
     a1d uaxis;
     uaxis.resize(geoArea.GetXaxisPtsnb());

@@ -100,14 +100,14 @@ void asFramePreferencesForecaster::LoadPreferences()
     bool checkBoxProxy;
     pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
     m_checkBoxProxy->SetValue(checkBoxProxy);
-    wxString ProxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_textCtrlProxyAddress->SetValue(ProxyAddress);
-    wxString ProxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_textCtrlProxyPort->SetValue(ProxyPort);
-    wxString ProxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_textCtrlProxyUser->SetValue(ProxyUser);
-    wxString ProxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_textCtrlProxyPasswd->SetValue(ProxyPasswd);
+    wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
+    m_textCtrlProxyAddress->SetValue(proxyAddress);
+    wxString proxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
+    m_textCtrlProxyPort->SetValue(proxyPort);
+    wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
+    m_textCtrlProxyUser->SetValue(proxyUser);
+    wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
+    m_textCtrlProxyPasswd->SetValue(proxyPasswd);
 
     /*
      * Advanced
@@ -129,12 +129,12 @@ void asFramePreferencesForecaster::LoadPreferences()
     // Downloads
     int maxPrevStepsNb = 5;
     wxString maxPrevStepsNbStr = wxString::Format("%d", maxPrevStepsNb);
-    wxString InternetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
-    m_textCtrlMaxPrevStepsNb->SetValue(InternetMaxPrevStepsNb);
+    wxString internetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
+    m_textCtrlMaxPrevStepsNb->SetValue(internetMaxPrevStepsNb);
     int maxParallelRequests = 5;
     wxString maxParallelRequestsStr = wxString::Format("%d", maxParallelRequests);
-    wxString InternetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
-    m_textCtrlMaxRequestsNb->SetValue(InternetParallelRequestsNb);
+    wxString internetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
+    m_textCtrlMaxRequestsNb->SetValue(internetParallelRequestsNb);
     bool restrictDownloads;
     pConfig->Read("/Internet/RestrictDownloads", &restrictDownloads, true);
     m_checkBoxRestrictDownloads->SetValue(restrictDownloads);
@@ -156,23 +156,23 @@ void asFramePreferencesForecaster::LoadPreferences()
     if (maxThreads == -1)
         maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    m_textCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
-    m_sliderThreadsPriority->SetValue((int) ProcessingThreadsPriority);
+    wxString maxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    m_textCtrlThreadsNb->SetValue(maxThreadNb);
+    long threadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
+    m_sliderThreadsPriority->SetValue((int) threadsPriority);
 
     // Processing
     long defaultMethod = (long) asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
-        if (ProcessingMethod == (long) asMULTITHREADS) {
-            ProcessingMethod = (long) asSTANDARD;
+        if (processingMethod == (long) asMULTITHREADS) {
+            processingMethod = (long) asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int) ProcessingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int) processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -217,14 +217,14 @@ void asFramePreferencesForecaster::SavePreferences()
     // Proxy
     bool checkBoxProxy = m_checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString ProxyAddress = m_textCtrlProxyAddress->GetValue();
-    pConfig->Write("/Internet/ProxyAddress", ProxyAddress);
-    wxString ProxyPort = m_textCtrlProxyPort->GetValue();
-    pConfig->Write("/Internet/ProxyPort", ProxyPort);
-    wxString ProxyUser = m_textCtrlProxyUser->GetValue();
-    pConfig->Write("/Internet/ProxyUser", ProxyUser);
-    wxString ProxyPasswd = m_textCtrlProxyPasswd->GetValue();
-    pConfig->Write("/Internet/ProxyPasswd", ProxyPasswd);
+    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    pConfig->Write("/Internet/ProxyAddress", proxyAddress);
+    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    pConfig->Write("/Internet/ProxyPort", proxyPort);
+    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    pConfig->Write("/Internet/ProxyUser", proxyUser);
+    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
     /*
      * Advanced
@@ -244,14 +244,14 @@ void asFramePreferencesForecaster::SavePreferences()
     }
 
     // Downloads
-    wxString InternetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
-    if (!InternetMaxPrevStepsNb.IsNumber())
-        InternetMaxPrevStepsNb = "5";
-    pConfig->Write("/Internet/MaxPreviousStepsNb", InternetMaxPrevStepsNb);
-    wxString InternetParallelRequestsNb = m_textCtrlMaxRequestsNb->GetValue();
-    if (!InternetParallelRequestsNb.IsNumber())
-        InternetParallelRequestsNb = "5";
-    pConfig->Write("/Internet/ParallelRequestsNb", InternetParallelRequestsNb);
+    wxString internetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
+    if (!internetMaxPrevStepsNb.IsNumber())
+        internetMaxPrevStepsNb = "5";
+    pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
+    wxString internetParallelRequestsNb = m_textCtrlMaxRequestsNb->GetValue();
+    if (!internetParallelRequestsNb.IsNumber())
+        internetParallelRequestsNb = "5";
+    pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
     bool restrictDownloads = m_checkBoxRestrictDownloads->GetValue();
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
 
@@ -266,19 +266,19 @@ void asFramePreferencesForecaster::SavePreferences()
     // Multithreading
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
-    wxString ProcessingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
-    if (!ProcessingMaxThreadNb.IsNumber())
-        ProcessingMaxThreadNb = "2";
-    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
-    pConfig->Write("/Processing/ThreadsPriority", ProcessingThreadsPriority);
+    wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
+    if (!processingMaxThreadNb.IsNumber())
+        processingMaxThreadNb = "2";
+    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    long processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    long ProcessingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
-    if (!allowMultithreading && ProcessingMethod == (long) asMULTITHREADS) {
-        ProcessingMethod = (long) asSTANDARD;
+    long processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
+    if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
+        processingMethod = (long) asSTANDARD;
     }
-    pConfig->Write("/Processing/Method", ProcessingMethod);
+    pConfig->Write("/Processing/Method", processingMethod);
 
     if (GetParent() != NULL) {
         GetParent()->Update();

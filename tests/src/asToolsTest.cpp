@@ -33,960 +33,960 @@
 
 TEST(Tools, IsRoundFloatTrue)
 {
-    float Value = 2;
-    EXPECT_TRUE(asTools::IsRound(Value));
+    float value = 2;
+    EXPECT_TRUE(asTools::IsRound(value));
 }
 
 TEST(Tools, IsRoundFloatFalse)
 {
-    float Value = 2.0001f;
-    EXPECT_FALSE(asTools::IsRound(Value));
+    float value = 2.0001f;
+    EXPECT_FALSE(asTools::IsRound(value));
 }
 
 TEST(Tools, IsRoundDoubleFalse)
 {
-    double Value = 2.00000001;
-    EXPECT_FALSE(asTools::IsRound(Value));
+    double value = 2.00000001;
+    EXPECT_FALSE(asTools::IsRound(value));
 }
 
 TEST(Tools, RoundFloatUp)
 {
-    float Value = 2.5;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(3, Result);
+    float value = 2.5;
+    float result = asTools::Round(value);
+    EXPECT_EQ(3, result);
 }
 
 TEST(Tools, RoundDoubleUp)
 {
-    double Value = 2.5;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(3, Result);
+    double value = 2.5;
+    double result = asTools::Round(value);
+    EXPECT_EQ(3, result);
 }
 
 TEST(Tools, RoundFloatDown)
 {
-    float Value = 2.49999f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(2, Result);
+    float value = 2.49999f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(2, result);
 }
 
 TEST(Tools, RoundDoubleDown)
 {
-    double Value = 2.499999999999;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(2, Result);
+    double value = 2.499999999999;
+    double result = asTools::Round(value);
+    EXPECT_EQ(2, result);
 }
 
 TEST(Tools, RoundNegativeFloatDown)
 {
-    float Value = -2.5f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(-3, Result);
+    float value = -2.5f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(-3, result);
 }
 
 TEST(Tools, RoundNegativeDoubleDown)
 {
-    double Value = -2.5;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(-3, Result);
+    double value = -2.5;
+    double result = asTools::Round(value);
+    EXPECT_EQ(-3, result);
 }
 
 TEST(Tools, RoundNegativeFloatUp)
 {
-    float Value = -2.49999f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(-2, Result);
+    float value = -2.49999f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(-2, result);
 }
 
 TEST(Tools, RoundNegativeDoubleUp)
 {
-    double Value = -2.499999999999;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(-2, Result);
+    double value = -2.499999999999;
+    double result = asTools::Round(value);
+    EXPECT_EQ(-2, result);
 }
 
 TEST(Tools, RoundSmallFloatUp)
 {
-    float Value = 0.5;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(1, Result);
+    float value = 0.5;
+    float result = asTools::Round(value);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, RoundSmallDoubleUp)
 {
-    double Value = 0.5;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(1, Result);
+    double value = 0.5;
+    double result = asTools::Round(value);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, RoundSmallFloatDown)
 {
-    float Value = 0.49999f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(0, Result);
+    float value = 0.49999f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, RoundSmallDoubleDown)
 {
-    double Value = 0.499999999999;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(0, Result);
+    double value = 0.499999999999;
+    double result = asTools::Round(value);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, RoundSmallNegativeFloatDown)
 {
-    float Value = -0.5f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(-1, Result);
+    float value = -0.5f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(-1, result);
 }
 
 TEST(Tools, RoundSmallNegativeDoubleDown)
 {
-    double Value = -0.5;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(-1, Result);
+    double value = -0.5;
+    double result = asTools::Round(value);
+    EXPECT_EQ(-1, result);
 }
 
 TEST(Tools, RoundSmallNegativeFloatUp)
 {
-    float Value = -0.49999f;
-    float Result = asTools::Round(Value);
-    EXPECT_EQ(0, Result);
+    float value = -0.49999f;
+    float result = asTools::Round(value);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, RoundSmallNegativeDoubleUp)
 {
-    double Value = -0.499999999999;
-    double Result = asTools::Round(Value);
-    EXPECT_EQ(0, Result);
+    double value = -0.499999999999;
+    double result = asTools::Round(value);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, IsNaNOne)
 {
-    int Value = 1;
-    EXPECT_FALSE(asTools::IsNaN((float) Value));
+    int value = 1;
+    EXPECT_FALSE(asTools::IsNaN((float) value));
 }
 
 TEST(Tools, IsNaNZero)
 {
-    int Value = 0;
-    EXPECT_FALSE(asTools::IsNaN((float) Value));
+    int value = 0;
+    EXPECT_FALSE(asTools::IsNaN((float) value));
 }
 
 TEST(Tools, IsNaNFloatTrue)
 {
-    float Value = NaNf;
-    EXPECT_TRUE(asTools::IsNaN(Value));
+    float value = NaNf;
+    EXPECT_TRUE(asTools::IsNaN(value));
 }
 
 TEST(Tools, IsNaNDoubleTrue)
 {
-    double Value = NaNd;
-    EXPECT_TRUE(asTools::IsNaN(Value));
+    double value = NaNd;
+    EXPECT_TRUE(asTools::IsNaN(value));
 }
 
 TEST(Tools, IsInfFloatFalse)
 {
-    float Value = -2151;
-    EXPECT_FALSE(asTools::IsInf(Value));
+    float value = -2151;
+    EXPECT_FALSE(asTools::IsInf(value));
 }
 
 TEST(Tools, IsInfDoubleFalse)
 {
-    double Value = -2151;
-    EXPECT_FALSE(asTools::IsInf(Value));
+    double value = -2151;
+    EXPECT_FALSE(asTools::IsInf(value));
 }
 
 TEST(Tools, IsInfLongDoubleFalse)
 {
-    long double Value = -2151;
-    EXPECT_FALSE(asTools::IsInf(Value));
+    long double value = -2151;
+    EXPECT_FALSE(asTools::IsInf(value));
 }
 
 TEST(Tools, IsInfFloatTrue)
 {
-    float Value = Inff;
-    EXPECT_TRUE(asTools::IsInf(Value));
+    float value = Inff;
+    EXPECT_TRUE(asTools::IsInf(value));
 }
 
 TEST(Tools, IsInfDoubleTrue)
 {
-    double Value = Infd;
-    EXPECT_TRUE(asTools::IsInf(Value));
+    double value = Infd;
+    EXPECT_TRUE(asTools::IsInf(value));
 }
 
 TEST(Tools, IsInfLongDoubleTrue)
 {
-    long double Value = Infld;
-    EXPECT_TRUE(asTools::IsInf(Value));
+    long double value = Infld;
+    EXPECT_TRUE(asTools::IsInf(value));
 }
 
 TEST(Tools, CountNotNaNFloat)
 {
-    float Array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
-    float *pVectStart = &Array[0];
-    float *pVectEnd = &Array[9];
-    int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
-    EXPECT_EQ(8, Result);
+    float array[] = {0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
+    float *pVectStart = &array[0];
+    float *pVectEnd = &array[9];
+    int result = asTools::CountNotNaN(pVectStart, pVectEnd);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, CountNotNaNDouble)
 {
-    double Array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
-    int Result = asTools::CountNotNaN(pVectStart, pVectEnd);
-    EXPECT_EQ(8, Result);
+    double array[] = {0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
+    int result = asTools::CountNotNaN(pVectStart, pVectEnd);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, FindMinInt)
 {
-    int Array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
-    int Result = asTools::MinArray(&Array[0], &Array[11]);
-    EXPECT_EQ(-1, Result);
+    int array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
+    int result = asTools::MinArray(&array[0], &array[11]);
+    EXPECT_EQ(-1, result);
 }
 
 TEST(Tools, FindMinFloat)
 {
-    float Array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
-    float Result = asTools::MinArray(&Array[0], &Array[11]);
-    EXPECT_FLOAT_EQ(0.3465, Result);
+    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
+    float result = asTools::MinArray(&array[0], &array[11]);
+    EXPECT_FLOAT_EQ(0.3465, result);
 }
 
 TEST(Tools, FindMinDouble)
 {
-    double Array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
-    double Result = asTools::MinArray(&Array[0], &Array[11]);
-    EXPECT_DOUBLE_EQ(0.3465, Result);
+    double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10, NaNd};
+    double result = asTools::MinArray(&array[0], &array[11]);
+    EXPECT_DOUBLE_EQ(0.3465, result);
 }
 
 TEST(Tools, FindMaxInt)
 {
-    int Array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
-    int Result = asTools::MaxArray(&Array[0], &Array[11]);
-    EXPECT_EQ(10, Result);
+    int array[] = {0, 0, -1, 1, 2, 3, 5, 0, 8, 9, 10, 0};
+    int result = asTools::MaxArray(&array[0], &array[11]);
+    EXPECT_EQ(10, result);
 }
 
 TEST(Tools, FindMaxFloat)
 {
-    float Array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f,
+    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f,
                      NaNf};
-    float Result = asTools::MaxArray(&Array[0], &Array[11]);
-    EXPECT_FLOAT_EQ(10.12, Result);
+    float result = asTools::MaxArray(&array[0], &array[11]);
+    EXPECT_FLOAT_EQ(10.12, result);
 }
 
 TEST(Tools, FindMaxDouble)
 {
-    double Array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10.12, NaNd};
-    double Result = asTools::MaxArray(&Array[0], &Array[11]);
-    EXPECT_DOUBLE_EQ(10.12, Result);
+    double array[] = {NaNd, NaNd, 0.3465, 1.345, 2.76, 3.69, 5.58, NaNd, 8.34, 9.75, 10.12, NaNd};
+    double result = asTools::MaxArray(&array[0], &array[11]);
+    EXPECT_DOUBLE_EQ(10.12, result);
 }
 
 TEST(Tools, FindMinStepInt)
 {
-    int Array[] = {0, 10, 0, 1, 3, 5, 0, 8, 2, 9, 0, 0};
-    int Result = asTools::MinArrayStep(&Array[0], &Array[11], 0);
-    EXPECT_EQ(1, Result);
+    int array[] = {0, 10, 0, 1, 3, 5, 0, 8, 2, 9, 0, 0};
+    int result = asTools::MinArrayStep(&array[0], &array[11], 0);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, FindMinStepFloat)
 {
-    float Array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
+    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
                      NaNf};
-    float Result = asTools::MinArrayStep(&Array[0], &Array[11], 0.0001f);
-    EXPECT_FLOAT_EQ(0.37, Result);
+    float result = asTools::MinArrayStep(&array[0], &array[11], 0.0001f);
+    EXPECT_FLOAT_EQ(0.37, result);
 }
 
 TEST(Tools, FindMinStepDouble)
 {
-    double Array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
+    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
                       NaNd};
-    double Result = asTools::MinArrayStep(&Array[0], &Array[11]);
-    EXPECT_FLOAT_EQ(0.37, Result);
+    double result = asTools::MinArrayStep(&array[0], &array[11]);
+    EXPECT_FLOAT_EQ(0.37, result);
 }
 
 TEST(Tools, ExtractUniqueValuesInt)
 {
-    int Array[] = {0, 10, 0, 1, 3, 5, 1, 8, 2, 9, 0, 9};;
-    a1i Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
-    EXPECT_EQ(0, Result[0]);
-    EXPECT_EQ(1, Result[1]);
-    EXPECT_EQ(2, Result[2]);
-    EXPECT_EQ(3, Result[3]);
-    EXPECT_EQ(5, Result[4]);
-    EXPECT_EQ(8, Result[5]);
-    EXPECT_EQ(9, Result[6]);
-    EXPECT_EQ(10, Result[7]);
+    int array[] = {0, 10, 0, 1, 3, 5, 1, 8, 2, 9, 0, 9};;
+    a1i result(asTools::ExtractUniqueValues(&array[0], &array[11]));
+    EXPECT_EQ(0, result[0]);
+    EXPECT_EQ(1, result[1]);
+    EXPECT_EQ(2, result[2]);
+    EXPECT_EQ(3, result[3]);
+    EXPECT_EQ(5, result[4]);
+    EXPECT_EQ(8, result[5]);
+    EXPECT_EQ(9, result[6]);
+    EXPECT_EQ(10, result[7]);
 }
 
 TEST(Tools, ExtractUniqueValuesFloat)
 {
-    float Array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
+    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
                      NaNf};
-    a1f Result(asTools::ExtractUniqueValues(&Array[0], &Array[11], 0.0001f));
-    EXPECT_FLOAT_EQ(0.3465, Result[0]);
-    EXPECT_FLOAT_EQ(1.345, Result[1]);
-    EXPECT_FLOAT_EQ(2.76, Result[2]);
-    EXPECT_FLOAT_EQ(3.69, Result[3]);
-    EXPECT_FLOAT_EQ(5.58, Result[4]);
-    EXPECT_FLOAT_EQ(8.34, Result[5]);
-    EXPECT_FLOAT_EQ(9.75, Result[6]);
-    EXPECT_FLOAT_EQ(10.12, Result[7]);
+    a1f result(asTools::ExtractUniqueValues(&array[0], &array[11], 0.0001f));
+    EXPECT_FLOAT_EQ(0.3465, result[0]);
+    EXPECT_FLOAT_EQ(1.345, result[1]);
+    EXPECT_FLOAT_EQ(2.76, result[2]);
+    EXPECT_FLOAT_EQ(3.69, result[3]);
+    EXPECT_FLOAT_EQ(5.58, result[4]);
+    EXPECT_FLOAT_EQ(8.34, result[5]);
+    EXPECT_FLOAT_EQ(9.75, result[6]);
+    EXPECT_FLOAT_EQ(10.12, result[7]);
 }
 
 TEST(Tools, ExtractUniqueValuesDouble)
 {
-    double Array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
+    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
                       NaNd};
-    a1d Result(asTools::ExtractUniqueValues(&Array[0], &Array[11]));
-    EXPECT_DOUBLE_EQ(0.3465, Result[0]);
-    EXPECT_DOUBLE_EQ(1.345, Result[1]);
-    EXPECT_DOUBLE_EQ(2.76, Result[2]);
-    EXPECT_DOUBLE_EQ(3.69, Result[3]);
-    EXPECT_DOUBLE_EQ(5.58, Result[4]);
-    EXPECT_DOUBLE_EQ(8.34, Result[5]);
-    EXPECT_DOUBLE_EQ(9.75, Result[6]);
-    EXPECT_DOUBLE_EQ(10.12, Result[7]);
+    a1d result(asTools::ExtractUniqueValues(&array[0], &array[11]));
+    EXPECT_DOUBLE_EQ(0.3465, result[0]);
+    EXPECT_DOUBLE_EQ(1.345, result[1]);
+    EXPECT_DOUBLE_EQ(2.76, result[2]);
+    EXPECT_DOUBLE_EQ(3.69, result[3]);
+    EXPECT_DOUBLE_EQ(5.58, result[4]);
+    EXPECT_DOUBLE_EQ(8.34, result[5]);
+    EXPECT_DOUBLE_EQ(9.75, result[6]);
+    EXPECT_DOUBLE_EQ(10.12, result[7]);
 }
 
 TEST(Tools, SortedArraySearchIntAscFirst)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 0;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscMid)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(6, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(6, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscLast)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 100;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscOutofRange)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 1000;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscNotFound)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 6;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerFirst)
 {
-    int Array[] = {0, 3, 4, 5, 6, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 3, 4, 5, 6, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerFirstLimit)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerMid)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerMidLimit)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerLast)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 102;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntAscTolerLastLimit)
 {
-    int Array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 2, 3, 5, 7, 8, 9, 10, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 102;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescFirst)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 100;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescMid)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(3, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(3, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescLast)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 0;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescOutofRange)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescNotFound)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 6;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerFirst)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerFirstLimit)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerMid)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(1, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerMidLimit)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(1, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerLast)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 102;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntDescTolerLastLimit)
 {
-    int Array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 10, 9, 8, 7, 5, 3, 2, 1, 0};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int targetvalue = 102;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntUniqueVal)
 {
-    int Array[] = {9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[0];
+    int array[] = {9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[0];
     int targetvalue = 9;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntUniqueValToler)
 {
-    int Array[] = {9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[0];
+    int array[] = {9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[0];
     int targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntUniqueValOutofRange)
 {
-    int Array[] = {9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[0];
+    int array[] = {9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[0];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchIntArraySameVal)
 {
-    int Array[] = {9, 9, 9, 9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[3];
+    int array[] = {9, 9, 9, 9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[3];
     int targetvalue = 9;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntArraySameValTolerDown)
 {
-    int Array[] = {9, 9, 9, 9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[3];
+    int array[] = {9, 9, 9, 9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[3];
     int targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntArraySameValTolerUp)
 {
-    int Array[] = {9, 9, 9, 9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[3];
+    int array[] = {9, 9, 9, 9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[3];
     int targetvalue = 10;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchIntArraySameValOutofRange)
 {
-    int Array[] = {9, 9, 9, 9};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[3];
+    int array[] = {9, 9, 9, 9};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[3];
     int targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscFirst)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscMid)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.75;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(5, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(5, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscLast)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 100;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscOutofRange)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscNotFound)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 6;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerFirst)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1.12;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerFirstLimit)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerFirstOutLimit)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerMid)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerMidLimit)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11.45;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerMidLimitOut)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11.45;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.99, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.99, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerLast)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 102.21;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerLastLimit)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 101.5;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleAscTolerLastOutLimit)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 101.5;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.499, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.499, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescFirst)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 100;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescMid)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.75;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(4, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescLast)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescOutofRange)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescNotFound)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 6.2;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.0, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerFirst)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerFirstLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.354);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerFirstOutLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.353, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerMid)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11.23;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(1, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerMidLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11.45;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(1, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerMidOutLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 11.45;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.999, asHIDE_WARNINGS);
-    EXPECT_EQ(asNOT_FOUND, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.999, asHIDE_WARNINGS);
+    EXPECT_EQ(asNOT_FOUND, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerLast)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 102.42;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 3);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerLastLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 102.21;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.21);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.21);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleDescTolerLastOutLimit)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 102.21;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.2, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 2.2, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleUniqueVal)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 9.3401;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleUniqueValToler)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.3401);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.3401);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleUniqueValOutofRange)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleArraySameVal)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 9.34;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleArraySameValTolerDown)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 8;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1.5);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleArraySameValTolerUp)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 10;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchDoubleArraySameValOutofRange)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 1, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchRoleOfToleranceInSearch)
@@ -998,748 +998,748 @@ TEST(Tools, SortedArraySearchRoleOfToleranceInSearch)
     double *pVectStart = &values[0];
     double *pVectEnd = &values[93];
     double targetvalue = 29.523;
-    int Result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.01);
-    EXPECT_EQ(62, Result);
+    int result = asTools::SortedArraySearch(pVectStart, pVectEnd, targetvalue, 0.01);
+    EXPECT_EQ(62, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleAscFirst)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.394;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleAscMid)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(5, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(5, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleAscLast)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 99.9;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleAscOutofRange)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleDescFirst)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 100;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleDescMid)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(4, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleDescLast)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleDescOutofRange)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleUniqueVal)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 9.3401;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleUniqueValOutofRange)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleArraySameVal)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 9.34;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchClosestDoubleArraySameValOutofRange)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchClosest(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleAscFirst)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 1.394;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleAscMid)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(4, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleAscLast)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 99.9;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleAscLastExact)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 100;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleAscOutofRange)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleDescFirst)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 40.12;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(1, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(1, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleDescMid)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(5, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(5, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleDescLast)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.360;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleDescLastExact)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleDescOutofRange)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleUniqueVal)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 9.3401;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleUniqueValOutofRange)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleArraySameVal)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 9.34;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchFloorDoubleArraySameValOutofRange)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleAscFirst)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleAscMid)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(5, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(5, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleAscLast)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 10.46;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleAscLastExact)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 100;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleAscOutofRange)
 {
-    double Array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleDescFirst)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 40.12;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleDescMid)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 5.55;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(4, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(4, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleDescLast)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.360;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(8, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(8, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleDescLastExact)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = 0.354;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(9, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(9, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleDescOutofRange)
 {
-    double Array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleUniqueVal)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 9.3401;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleUniqueValOutofRange)
 {
-    double Array[] = {9.3401};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[0];
+    double array[] = {9.3401};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleArraySameVal)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 9.34;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
-    EXPECT_EQ(0, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue);
+    EXPECT_EQ(0, result);
 }
 
 TEST(Tools, SortedArraySearchCeilDoubleArraySameValOutofRange)
 {
-    double Array[] = {9.34, 9.34, 9.34, 9.34};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[3];
+    double array[] = {9.34, 9.34, 9.34, 9.34};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int Result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
-    EXPECT_EQ(asOUT_OF_RANGE, Result);
+    int result = asTools::SortedArraySearchCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
 TEST(Tools, SortedArrayInsertIntAscFirst)
 {
-    int Array[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 1;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    int ArrayResults[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
+    int arrayResults[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntAscFirstNeg)
 {
-    int Array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = -2;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    int ArrayResults[] = {-2, 0, 1, 4, 6, 9, 17, 18, 20, 40};
+    int arrayResults[] = {-2, 0, 1, 4, 6, 9, 17, 18, 20, 40};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntAscMid)
 {
-    int Array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 8;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    int ArrayResults[] = {0, 1, 4, 6, 8, 9, 17, 18, 20, 40};
+    int arrayResults[] = {0, 1, 4, 6, 8, 9, 17, 18, 20, 40};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntAscEnd)
 {
-    int Array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 100};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 90;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    int ArrayResults[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 90};
+    int arrayResults[] = {0, 1, 4, 6, 9, 17, 18, 20, 40, 90};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertFloatAscMid)
 {
-    float Array[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.1357f, 17.23456f, 18.2364f, 20.75f, 40.54f, 100.235f};
-    float *pVectStart = &Array[0];
-    float *pVectEnd = &Array[9];
+    float array[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.1357f, 17.23456f, 18.2364f, 20.75f, 40.54f, 100.235f};
+    float *pVectStart = &array[0];
+    float *pVectEnd = &array[9];
     float newvalue = 9.105646f;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    float ArrayResults[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.105646f, 9.1357f, 17.23456f, 18.2364f, 20.75f,
+    float arrayResults[] = {0.134631f, 1.13613f, 4.346f, 6.835f, 9.105646f, 9.1357f, 17.23456f, 18.2364f, 20.75f,
                             40.54f};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_FLOAT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_FLOAT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertDoubleAscMid)
 {
-    double Array[] = {0.134631, 1.13613, 4.346, 6.835, 9.1357, 17.23456, 18.2364, 20.75, 40.54, 100.235};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double array[] = {0.134631, 1.13613, 4.346, 6.835, 9.1357, 17.23456, 18.2364, 20.75, 40.54, 100.235};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     double newvalue = 9.105646;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Asc, newvalue));
-    double ArrayResults[] = {0.134631, 1.13613, 4.346, 6.835, 9.105646, 9.1357, 17.23456, 18.2364, 20.75, 40.54};
+    double arrayResults[] = {0.134631, 1.13613, 4.346, 6.835, 9.105646, 9.1357, 17.23456, 18.2364, 20.75, 40.54};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayResults[i], Array[i]);
+        EXPECT_DOUBLE_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntDescFirst)
 {
-    int Array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 101;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
-    int ArrayResults[] = {101, 100, 40, 20, 18, 17, 9, 6, 4, 3};
+    int arrayResults[] = {101, 100, 40, 20, 18, 17, 9, 6, 4, 3};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntDescMid)
 {
-    int Array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 8;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
-    int ArrayResults[] = {100, 40, 20, 18, 17, 9, 8, 6, 4, 3};
+    int arrayResults[] = {100, 40, 20, 18, 17, 9, 8, 6, 4, 3};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertIntDescEnd)
 {
-    int Array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
-    int *pVectStart = &Array[0];
-    int *pVectEnd = &Array[9];
+    int array[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 2};
+    int *pVectStart = &array[0];
+    int *pVectEnd = &array[9];
     int newvalue = 3;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
-    int ArrayResults[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 3};
+    int arrayResults[] = {100, 40, 20, 18, 17, 9, 6, 4, 3, 3};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArrayInsertFloatDescMid)
 {
-    float Array[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 6.1346f, 4.7135f, 3.1f, 2.2345f};
-    float *pVectStart = &Array[0];
-    float *pVectEnd = &Array[9];
+    float array[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 6.1346f, 4.7135f, 3.1f, 2.2345f};
+    float *pVectStart = &array[0];
+    float *pVectEnd = &array[9];
     float newvalue = 9.105646f;
     EXPECT_TRUE(asTools::SortedArrayInsert(pVectStart, pVectEnd, Desc, newvalue));
-    float ArrayResults[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 9.105646f, 6.1346f, 4.7135f, 3.1f};
+    float arrayResults[] = {100.1345f, 40.2345f, 20.2345f, 18.567f, 17.2134f, 9.67f, 9.105646f, 6.1346f, 4.7135f, 3.1f};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_FLOAT_EQ(ArrayResults[i], Array[i]);
+        EXPECT_FLOAT_EQ(arrayResults[i], array[i]);
     }
 }
 
 TEST(Tools, SortedArraysInsertIntAscFirst)
 {
-    int ArrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
-    int ArrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
+    int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 1;
     int newvalueOther = 11;
     EXPECT_TRUE(
-            asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef,
+            asTools::SortedArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
                                         newvalueOther));
-    int ArrayResultsRef[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
-    int ArrayResultsOther[] = {11, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int arrayResultsRef[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
+    int arrayResultsOther[] = {11, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResultsRef[i], ArrayRef[i]);
-        EXPECT_EQ(ArrayResultsOther[i], ArrayOther[i]);
+        EXPECT_EQ(arrayResultsRef[i], arrayRef[i]);
+        EXPECT_EQ(arrayResultsOther[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortedArraysInsertIntAscMid)
 {
-    int ArrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
-    int ArrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
+    int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 11;
     int newvalueOther = 11;
     EXPECT_TRUE(
-            asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef,
+            asTools::SortedArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
                                         newvalueOther));
-    int ArrayResultsRef[] = {2, 3, 4, 6, 9, 11, 17, 18, 20, 40};
-    int ArrayResultsOther[] = {1, 2, 3, 4, 5, 11, 6, 7, 8, 9};
+    int arrayResultsRef[] = {2, 3, 4, 6, 9, 11, 17, 18, 20, 40};
+    int arrayResultsOther[] = {1, 2, 3, 4, 5, 11, 6, 7, 8, 9};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResultsRef[i], ArrayRef[i]);
-        EXPECT_EQ(ArrayResultsOther[i], ArrayOther[i]);
+        EXPECT_EQ(arrayResultsRef[i], arrayRef[i]);
+        EXPECT_EQ(arrayResultsOther[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortedArraysInsertIntAscLast)
 {
-    int ArrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
-    int ArrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arrayRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 100};
+    int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 99;
     int newvalueOther = 11;
     EXPECT_TRUE(
-            asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef,
+            asTools::SortedArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
                                         newvalueOther));
-    int ArrayResultsRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 99};
-    int ArrayResultsOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 11};
+    int arrayResultsRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 99};
+    int arrayResultsOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 11};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_EQ(ArrayResultsRef[i], ArrayRef[i]);
-        EXPECT_EQ(ArrayResultsOther[i], ArrayOther[i]);
+        EXPECT_EQ(arrayResultsRef[i], arrayRef[i]);
+        EXPECT_EQ(arrayResultsOther[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortedArraysInsertFloatAscMid)
 {
-    float ArrayRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 17.245f, 18.0f, 20.67f, 40.25f, 100.25f};
-    float ArrayOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f, 10.715f};
+    float arrayRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 17.245f, 18.0f, 20.67f, 40.25f, 100.25f};
+    float arrayOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f, 10.715f};
     float newvalueRef = 11.175f;
     float newvalueOther = 11.1346f;
     EXPECT_TRUE(
-            asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef,
+            asTools::SortedArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
                                         newvalueOther));
-    float ArrayResultsRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 11.175f, 17.245f, 18.0f, 20.67f, 40.25f};
-    float ArrayResultsOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 11.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f};
+    float arrayResultsRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 11.175f, 17.245f, 18.0f, 20.67f, 40.25f};
+    float arrayResultsOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 11.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_FLOAT_EQ(ArrayResultsRef[i], ArrayRef[i]);
-        EXPECT_FLOAT_EQ(ArrayResultsOther[i], ArrayOther[i]);
+        EXPECT_FLOAT_EQ(arrayResultsRef[i], arrayRef[i]);
+        EXPECT_FLOAT_EQ(arrayResultsOther[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortedArraysInsertDoubleAscMid)
 {
-    double ArrayRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 17.245, 18, 20.67, 40.25, 100.25};
-    double ArrayOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 6.715, 7.1346, 8.1357, 9.1346, 10.715};
+    double arrayRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 17.245, 18, 20.67, 40.25, 100.25};
+    double arrayOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 6.715, 7.1346, 8.1357, 9.1346, 10.715};
     double newvalueRef = 11.175;
     double newvalueOther = 11.1346;
     EXPECT_TRUE(
-            asTools::SortedArraysInsert(&ArrayRef[0], &ArrayRef[9], &ArrayOther[0], &ArrayOther[9], Asc, newvalueRef,
+            asTools::SortedArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
                                         newvalueOther));
-    double ArrayResultsRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 11.175, 17.245, 18, 20.67, 40.25};
-    double ArrayResultsOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 11.1346, 6.715, 7.1346, 8.1357, 9.1346};
+    double arrayResultsRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 11.175, 17.245, 18, 20.67, 40.25};
+    double arrayResultsOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 11.1346, 6.715, 7.1346, 8.1357, 9.1346};
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayResultsRef[i], ArrayRef[i]);
-        EXPECT_DOUBLE_EQ(ArrayResultsOther[i], ArrayOther[i]);
+        EXPECT_DOUBLE_EQ(arrayResultsRef[i], arrayRef[i]);
+        EXPECT_DOUBLE_EQ(arrayResultsOther[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortArrayAsc)
 {
-    double ArrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double Array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double arrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     EXPECT_TRUE(asTools::SortArray(pVectStart, pVectEnd, Asc));
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayRef[i], Array[i]);
+        EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
     }
 }
 
 TEST(Tools, SortArrayDesc)
 {
-    double ArrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double Array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
+    double arrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
     EXPECT_TRUE(asTools::SortArray(pVectStart, pVectEnd, Desc));
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayRef[i], Array[i]);
+        EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
     }
 }
 
 TEST(Tools, SortArraysAsc)
 {
-    double ArrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
-    double Array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double ArrayOtherRef[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    double ArrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
-    double *pVectStartOther = &ArrayOther[0];
-    double *pVectEndOther = &ArrayOther[9];
+    double arrayRef[] = {0.354, 1.932, 2.7, 3.56, 5.021, 5.75, 8.2, 9.65, 10.45, 100};
+    double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
+    double arrayOtherRef[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    double arrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
+    double *pVectStartOther = &arrayOther[0];
+    double *pVectEndOther = &arrayOther[9];
     EXPECT_TRUE(asTools::SortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Asc));
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayRef[i], Array[i]);
-        EXPECT_DOUBLE_EQ(ArrayOtherRef[i], ArrayOther[i]);
+        EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
+        EXPECT_DOUBLE_EQ(arrayOtherRef[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, SortArraysDesc)
 {
-    double ArrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
-    double Array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
-    double ArrayOtherRef[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    double ArrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
-    double *pVectStart = &Array[0];
-    double *pVectEnd = &Array[9];
-    double *pVectStartOther = &ArrayOther[0];
-    double *pVectEndOther = &ArrayOther[9];
+    double arrayRef[] = {100, 10.45, 9.65, 8.2, 5.75, 5.021, 3.56, 2.7, 1.932, 0.354};
+    double array[] = {9.65, 2.7, 0.354, 100, 5.75, 1.932, 8.2, 10.45, 5.021, 3.56};
+    double arrayOtherRef[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    double arrayOther[] = {8, 3, 1, 10, 6, 2, 7, 9, 5, 4};
+    double *pVectStart = &array[0];
+    double *pVectEnd = &array[9];
+    double *pVectStartOther = &arrayOther[0];
+    double *pVectEndOther = &arrayOther[9];
     EXPECT_TRUE(asTools::SortArrays(pVectStart, pVectEnd, pVectStartOther, pVectEndOther, Desc));
     for (int i = 0; i < 10; ++i) {
-        EXPECT_DOUBLE_EQ(ArrayRef[i], Array[i]);
-        EXPECT_DOUBLE_EQ(ArrayOtherRef[i], ArrayOther[i]);
+        EXPECT_DOUBLE_EQ(arrayRef[i], array[i]);
+        EXPECT_DOUBLE_EQ(arrayOtherRef[i], arrayOther[i]);
     }
 }
 
 TEST(Tools, MeanInt)
 {
-    int Array[] = {36, 8, 4, 6, 9, 56, 234, 45, 2475, 8, 2, 68, 9};
-    float result = asTools::Mean(&Array[0], &Array[12]);
+    int array[] = {36, 8, 4, 6, 9, 56, 234, 45, 2475, 8, 2, 68, 9};
+    float result = asTools::Mean(&array[0], &array[12]);
     EXPECT_FLOAT_EQ(227.692308, result);
 }
 
 TEST(Tools, MeanFloat)
 {
-    float Array[] = {36.6348600000f, 8.6544964000f, 4.2346846410f, 6.5284684000f, 9.5498463130f, 56.6546544100f,
+    float array[] = {36.6348600000f, 8.6544964000f, 4.2346846410f, 6.5284684000f, 9.5498463130f, 56.6546544100f,
                      234.6549840000f, 45.6876513510f, 2475.6465413513f, 8.8765431894f, 2.7764850000f, 68.1000000000f,
                      9.6846510000f};
-    float result = asTools::Mean(&Array[0], &Array[12]);
+    float result = asTools::Mean(&array[0], &array[12]);
     EXPECT_FLOAT_EQ(228.283374311977, result);
 }
 
 TEST(Tools, MeanDouble)
 {
-    double Array[] = {36.6348600000, 8.6544964000, 4.2346846410, 6.5284684000, 9.5498463130, 56.6546544100,
+    double array[] = {36.6348600000, 8.6544964000, 4.2346846410, 6.5284684000, 9.5498463130, 56.6546544100,
                       234.6549840000, 45.6876513510, 2475.6465413513, 8.8765431894, 2.7764850000, 68.1000000000,
                       9.6846510000};
-    double result = asTools::Mean(&Array[0], &Array[12]);
+    double result = asTools::Mean(&array[0], &array[12]);
     EXPECT_DOUBLE_EQ(228.283374311977, result);
 }
 
 TEST(Tools, SdtDevSampleIntSample)
 {
-    int Array[] = {6, 113, 78, 35, 23, 56, 23, 2};
-    float result = asTools::StDev(&Array[0], &Array[7], asSAMPLE);
+    int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
+    float result = asTools::StDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.17254062, result);
 }
 
 TEST(Tools, SdtDevSampleIntEntirePop)
 {
-    int Array[] = {6, 113, 78, 35, 23, 56, 23, 2};
-    float result = asTools::StDev(&Array[0], &Array[7], asENTIRE_POPULATION);
+    int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
+    float result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.70714214, result);
 }
 
 TEST(Tools, SdtDevSampleFloatSample)
 {
-    float Array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
-    float result = asTools::StDev(&Array[0], &Array[7], asSAMPLE);
+    float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
+    float result = asTools::StDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.05574973, result);
 }
 
 TEST(Tools, SdtDevSampleFloatEntirePop)
 {
-    float Array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
-    float result = asTools::StDev(&Array[0], &Array[7], asENTIRE_POPULATION);
+    float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
+    float result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.59789427, result);
 }
 
 TEST(Tools, SdtDevSampleDoubleSample)
 {
-    double Array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
-    double result = asTools::StDev(&Array[0], &Array[7], asSAMPLE);
+    double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
+    double result = asTools::StDev(&array[0], &array[7], asSAMPLE);
     EXPECT_FLOAT_EQ(38.05574973, result);
 }
 
 TEST(Tools, SdtDevSampleDoubleEntirePop)
 {
-    double Array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
-    double result = asTools::StDev(&Array[0], &Array[7], asENTIRE_POPULATION);
+    double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
+    double result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
     EXPECT_FLOAT_EQ(35.59789427, result);
 }
 

@@ -167,15 +167,15 @@ void asFileNetcdf::DefVar(const wxString &varName, nc_type dataType, const int &
 {
     wxASSERT(m_opened);
 
-    int varId, dimId, NDims;
+    int varId, dimId, nDims;
     vi dimIds;
 
     // Check that the file is in define mode
     CheckDefModeOpen();
 
-    NDims = (int) dimNames.size();
+    nDims = (int) dimNames.size();
 
-    for (int i = 0; i < NDims; i++) {
+    for (int i = 0; i < nDims; i++) {
         m_status = nc_inq_dimid(m_fileId, dimNames[i].data(), &dimId);
         if (m_status)
             HandleErrorNetcdf();

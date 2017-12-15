@@ -118,14 +118,14 @@ void asFramePreferencesViewer::LoadPreferences()
     bool checkBoxProxy;
     pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
     m_checkBoxProxy->SetValue(checkBoxProxy);
-    wxString ProxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_textCtrlProxyAddress->SetValue(ProxyAddress);
-    wxString ProxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_textCtrlProxyPort->SetValue(ProxyPort);
-    wxString ProxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_textCtrlProxyUser->SetValue(ProxyUser);
-    wxString ProxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_textCtrlProxyPasswd->SetValue(ProxyPasswd);
+    wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
+    m_textCtrlProxyAddress->SetValue(proxyAddress);
+    wxString proxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
+    m_textCtrlProxyPort->SetValue(proxyPort);
+    wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
+    m_textCtrlProxyUser->SetValue(proxyUser);
+    wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
+    m_textCtrlProxyPasswd->SetValue(proxyPasswd);
 
     /*
      * Advanced
@@ -219,14 +219,14 @@ void asFramePreferencesViewer::SavePreferences()
     // Proxy
     bool checkBoxProxy = m_checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString ProxyAddress = m_textCtrlProxyAddress->GetValue();
-    pConfig->Write("/Internet/ProxyAddress", ProxyAddress);
-    wxString ProxyPort = m_textCtrlProxyPort->GetValue();
-    pConfig->Write("/Internet/ProxyPort", ProxyPort);
-    wxString ProxyUser = m_textCtrlProxyUser->GetValue();
-    pConfig->Write("/Internet/ProxyUser", ProxyUser);
-    wxString ProxyPasswd = m_textCtrlProxyPasswd->GetValue();
-    pConfig->Write("/Internet/ProxyPasswd", ProxyPasswd);
+    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    pConfig->Write("/Internet/ProxyAddress", proxyAddress);
+    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    pConfig->Write("/Internet/ProxyPort", proxyPort);
+    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    pConfig->Write("/Internet/ProxyUser", proxyUser);
+    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
     /*
      * Advanced

@@ -9,7 +9,7 @@
  * See the License for the specific language governing permissions
  * and limitations under the License.
  * 
- * When distributing Covered Code, include this CDDL Header Notice in 
+ * When distributing Covered Code, include this CDDL Header Notice in
  * each file and include the License file (licence.txt). If applicable, 
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
@@ -36,7 +36,7 @@ class asFileParametersStandard
         : public asFileParameters
 {
 public:
-    asFileParametersStandard(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
+    asFileParametersStandard(const wxString &fileName, const ListFileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersStandard();
 

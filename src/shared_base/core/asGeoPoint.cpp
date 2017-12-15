@@ -28,11 +28,11 @@
 
 #include "asGeoPoint.h"
 
-asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
+asGeoPoint::asGeoPoint(const Coo &point, float level, float height)
         : asGeo(),
-          m_point(Point),
-          m_level(Level),
-          m_height(Height)
+          m_point(point),
+          m_level(level),
+          m_height(height)
 {
     // Initialization and check points
     Init();
@@ -40,11 +40,11 @@ asGeoPoint::asGeoPoint(const Coo &Point, float Level, float Height)
     wxLogVerbose(_("The point was successfully created."));
 }
 
-asGeoPoint::asGeoPoint(double x, double y, float Level, float Height)
+asGeoPoint::asGeoPoint(double x, double y, float level, float height)
         : asGeo(),
           m_point({x, y}),
-          m_level(Level),
-          m_height(Height)
+          m_level(level),
+          m_height(height)
 {
     // Initialization and check points
     Init();

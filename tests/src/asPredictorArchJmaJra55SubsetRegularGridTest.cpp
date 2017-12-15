@@ -34,14 +34,14 @@
 
 TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
 {
-    double Xmin = 360;
-    double Xwidth = 10;
-    double Xstep = 1.250;
-    double Ymin = 75;
-    double Ywidth = 5;
-    double Ystep = 1.250;
+    double xMin = 360;
+    double xWidth = 10;
+    double xStep = 1.250;
+    double yMin = 75;
+    double yWidth = 5;
+    double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -100,14 +100,14 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
 
 TEST(PredictorArchJmaJra55SubsetRegular, Around360)
 {
-    double Xmin = 355;
-    double Xwidth = 10;
-    double Xstep = 1.250;
-    double Ymin = 75;
-    double Ywidth = 5;
-    double Ystep = 1.250;
+    double xMin = 355;
+    double xWidth = 10;
+    double xStep = 1.250;
+    double yMin = 75;
+    double yWidth = 5;
+    double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);

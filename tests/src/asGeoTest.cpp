@@ -33,106 +33,106 @@
 TEST(Geo, CheckPointWGS84True)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 10;
-    Point.y = 10;
-    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
+    Coo point;
+    point.x = 10;
+    point.y = 10;
+    EXPECT_TRUE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
 TEST(Geo, CheckPointWGS84UVMaxTrue)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 360;
-    Point.y = 90;
-    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
+    Coo point;
+    point.x = 360;
+    point.y = 90;
+    EXPECT_TRUE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
 TEST(Geo, CheckPointWGS84UVMinTrue)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 0;
-    Point.y = -90;
-    EXPECT_TRUE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
+    Coo point;
+    point.x = 0;
+    point.y = -90;
+    EXPECT_TRUE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
 TEST(Geo, CheckPointWGS84UTooHigh)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 360.1;
-    Point.y = 10;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
-    EXPECT_DOUBLE_EQ(360.1, Point.x);
+    Coo point;
+    point.x = 360.1;
+    point.y = 10;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_DOUBLE_EQ(360.1, point.x);
 }
 
 TEST(Geo, CheckPointWGS84UTooLow)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = -0.1;
-    Point.y = 10;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
-    EXPECT_DOUBLE_EQ(-0.1, Point.x);
+    Coo point;
+    point.x = -0.1;
+    point.y = 10;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
 TEST(Geo, CheckPointWGS84VTooHigh)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 10;
-    Point.y = 90.1;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
-    EXPECT_DOUBLE_EQ(90.1, Point.y);
+    Coo point;
+    point.x = 10;
+    point.y = 90.1;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_DOUBLE_EQ(90.1, point.y);
 }
 
 TEST(Geo, CheckPointWGS84VTooLow)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 10;
-    Point.y = -90.1;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_FORBIDDEN));
-    EXPECT_DOUBLE_EQ(-90.1, Point.y);
+    Coo point;
+    point.x = 10;
+    point.y = -90.1;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_FORBIDDEN));
+    EXPECT_DOUBLE_EQ(-90.1, point.y);
 }
 
 TEST(Geo, CheckPointWGS84UTooHighCorr)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 360.1;
-    Point.y = 10;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
-    EXPECT_FLOAT_EQ(0.1, Point.x);
+    Coo point;
+    point.x = 360.1;
+    point.y = 10;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_FLOAT_EQ(0.1, point.x);
 }
 
 TEST(Geo, CheckPointWGS84UTooLowCorr)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = -0.1;
-    Point.y = 10;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(359.9, Point.x);
+    Coo point;
+    point.x = -0.1;
+    point.y = 10;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(359.9, point.x);
 }
 
 TEST(Geo, CheckPointWGS84VTooHighCorr)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 10;
-    Point.y = 90.1;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(89.9, Point.y);
+    Coo point;
+    point.x = 10;
+    point.y = 90.1;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(89.9, point.y);
 }
 
 TEST(Geo, CheckPointWGS84VTooLowCorr)
 {
     asGeo geo;
-    Coo Point;
-    Point.x = 10;
-    Point.y = -90.1;
-    EXPECT_FALSE(geo.CheckPoint(Point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(-89.9, Point.y);
+    Coo point;
+    point.x = 10;
+    point.y = -90.1;
+    EXPECT_FALSE(geo.CheckPoint(point, asEDIT_ALLOWED));
+    EXPECT_DOUBLE_EQ(-89.9, point.y);
 }

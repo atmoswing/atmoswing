@@ -42,24 +42,24 @@ asScoreCRPSaccurEP::~asScoreCRPSaccurEP()
     //dtor
 }
 
-float asScoreCRPSaccurEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSaccurEP::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
-    float CRPS = scoreCRPSEP.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPS = scoreCRPSEP.Assess(observedVal, forcastVals, nbElements);
     asScoreCRPSsharpEP scoreCRPSsharpnessEP = asScoreCRPSsharpEP();
-    float CRPSsharpness = scoreCRPSsharpnessEP.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPSsharpness = scoreCRPSsharpnessEP.Assess(observedVal, forcastVals, nbElements);
 
     return CRPS - CRPSsharpness;
 }

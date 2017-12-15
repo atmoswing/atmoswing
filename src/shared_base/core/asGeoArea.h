@@ -36,17 +36,17 @@ class asGeoArea
         : public asGeo
 {
 public:
-    asGeoArea(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR, float Level = asNONE,
-              float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
+              float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoArea(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE, float Height = asNONE,
+    asGeoArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
               int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoArea(float Level = asNONE, float Height = asNONE);
+    asGeoArea(float level = asNONE, float height = asNONE);
 
     virtual ~asGeoArea();
 
-    void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
+    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
     Coo GetCornerUL() const
     {

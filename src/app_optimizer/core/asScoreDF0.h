@@ -40,7 +40,7 @@ public:
 
     ~asScoreDF0();
 
-    float Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const;
+    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const;
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 

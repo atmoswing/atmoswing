@@ -40,26 +40,26 @@ asScoreDF0::~asScoreDF0()
     //dtor
 }
 
-float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreDF0::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
     a1f x(nbElements);
-    float xObs = ObservedVal;
+    float xObs = observedVal;
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the DF0 processing function."));
         return NaNf;

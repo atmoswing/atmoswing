@@ -36,12 +36,12 @@ class asGeoAreaGaussianGrid
         : public asGeoArea
 {
 public:
-    asGeoAreaGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                          asGeo::GridType type, float Level = asNONE, float Height = asNONE,
+    asGeoAreaGaussianGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                          asGeo::GridType type, float level = asNONE, float height = asNONE,
                           int flatAllowed = asFLAT_ALLOWED);
 
-    asGeoAreaGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb, asGeo::GridType type, float Level = asNONE,
-                          float Height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, asGeo::GridType type, float level = asNONE,
+                          float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     virtual ~asGeoAreaGaussianGrid();
 
@@ -65,7 +65,7 @@ private:
 
     bool IsOnGrid(const Coo &point) const;
 
-    bool IsOnGrid(double Xcoord, double Ycoord) const;
+    bool IsOnGrid(double xCoord, double yCoord) const;
 };
 
 #endif // asGeoAreaGaussianGrid_H

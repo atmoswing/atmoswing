@@ -37,12 +37,12 @@ class asGeoAreaCompositeGaussianGrid
         : public asGeoAreaCompositeGrid
 {
 public:
-    asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                                   asGeo::GridType type = GaussianT62, float Level = asNONE, float Height = asNONE,
+    asGeoAreaCompositeGaussianGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                                   asGeo::GridType type = GaussianT62, float level = asNONE, float height = asNONE,
                                    int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb,
-                                   asGeo::GridType type = GaussianT382, float Level = asNONE, float Height = asNONE,
+    asGeoAreaCompositeGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb,
+                                   asGeo::GridType type = GaussianT382, float level = asNONE, float height = asNONE,
                                    int flatAllowed = asFLAT_FORBIDDEN);
 
     virtual ~asGeoAreaCompositeGaussianGrid();
@@ -87,7 +87,7 @@ private:
 
     bool IsOnGrid(const Coo &point) const;
 
-    bool IsOnGrid(double Xcoord, double Ycoord) const;
+    bool IsOnGrid(double xCoord, double yCoord) const;
 };
 
 #endif // asGeoAreaCompositeGaussianGrid_H

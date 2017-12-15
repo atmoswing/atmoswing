@@ -37,21 +37,21 @@ class asGeoAreaCompositeGrid
 {
 public:
 
-    asGeoAreaCompositeGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                           float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                           float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE,
-                           float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
+                           float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(float Level = asNONE, float Height = asNONE);
+    asGeoAreaCompositeGrid(float level = asNONE, float height = asNONE);
 
-    static asGeoAreaCompositeGrid *GetInstance(const wxString &type, double Xmin, int Xptsnb, double Xstep, double Ymin,
-                                               int Yptsnb, double Ystep, float Level = asNONE, float Height = asNONE,
+    static asGeoAreaCompositeGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                               int yPtsNb, double yStep, float level = asNONE, float height = asNONE,
                                                int flatAllowed = asFLAT_FORBIDDEN);
 
-    static a1d GetXaxis(const wxString &type, double Xmin, double Xmax, double Xstep = 0);
+    static a1d GetXaxis(const wxString &type, double xMin, double xMax, double xStep = 0);
 
-    static a1d GetYaxis(const wxString &type, double Ymin, double Ymax, double Ystep = 0);
+    static a1d GetYaxis(const wxString &type, double yMin, double yMax, double yStep = 0);
 
     virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
 

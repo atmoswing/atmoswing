@@ -32,10 +32,10 @@
 
 TEST(GeoPoint, ConstructorDefault)
 {
-    Coo Point;
-    Point.x = 7;
-    Point.y = 46;
-    asGeoPoint geoPoint(Point);
+    Coo point;
+    point.x = 7;
+    point.y = 46;
+    asGeoPoint geoPoint(point);
 
     EXPECT_DOUBLE_EQ(7, geoPoint.GetX());
     EXPECT_DOUBLE_EQ(46, geoPoint.GetY());
@@ -74,10 +74,10 @@ TEST(GeoPoint, ConstructorOutBoundsLat)
 TEST(GeoPoint, SetCooOutBounds)
 {
     asGeoPoint geoPoint(0, 0);
-    Coo Point;
-    Point.x = -10;
-    Point.y = 46;
-    geoPoint.SetCoo(Point);
+    Coo point;
+    point.x = -10;
+    point.y = 46;
+    geoPoint.SetCoo(point);
 
     EXPECT_DOUBLE_EQ(350, geoPoint.GetX());
     EXPECT_DOUBLE_EQ(46, geoPoint.GetY());

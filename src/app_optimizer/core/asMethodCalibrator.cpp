@@ -715,15 +715,15 @@ bool asMethodCalibrator::PreloadDataWithoutPreprocessing(asParametersScoring &pa
             timeArray.Init();
 
             asGeo geo;
-            double Ymax = params.GetPreloadYmin(iStep, iPtor) +
+            double yMax = params.GetPreloadYmin(iStep, iPtor) +
                           params.GetPredictorYstep(iStep, iPtor) * (double) (params.GetPreloadYptsnb(iStep, iPtor) - 1);
-            if (Ymax > geo.GetAxisYmax()) {
-                double diff = Ymax - geo.GetAxisYmax();
+            if (yMax > geo.GetAxisYmax()) {
+                double diff = yMax - geo.GetAxisYmax();
                 int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(iStep, iPtor));
                 params.SetPreloadYptsnb(iStep, iPtor, params.GetPreloadYptsnb(iStep, iPtor) - removePts);
-                wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), Ymax,
-                             Ymax - diff);
-                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, Ymax, geo.GetAxisYmax(),
+                wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), yMax,
+                             yMax - diff);
+                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, yMax, geo.GetAxisYmax(),
                              params.GetPredictorYstep(iStep, iPtor));
             }
 
@@ -901,14 +901,14 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
                 }
 
                 asGeo geo;
-                double Ymax = params.GetPreloadYmin(iStep, iPtor) + params.GetPredictorYstep(iStep, iPtor) *
+                double yMax = params.GetPreloadYmin(iStep, iPtor) + params.GetPredictorYstep(iStep, iPtor) *
                                                                     double(params.GetPreloadYptsnb(iStep, iPtor) - 1);
-                if (Ymax > geo.GetAxisYmax()) {
-                    double diff = Ymax - geo.GetAxisYmax();
+                if (yMax > geo.GetAxisYmax()) {
+                    double diff = yMax - geo.GetAxisYmax();
                     int removePts = (int) asTools::Round(diff / params.GetPredictorYstep(iStep, iPtor));
                     params.SetPreloadYptsnb(iStep, iPtor, params.GetPreloadYptsnb(iStep, iPtor) - removePts);
-                    wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), Ymax,
-                                 Ymax - diff);
+                    wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), yMax,
+                                 yMax - diff);
                 }
 
                 // Area object instantiation

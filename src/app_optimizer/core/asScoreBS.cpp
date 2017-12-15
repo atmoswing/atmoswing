@@ -38,17 +38,17 @@ asScoreBS::~asScoreBS()
     //dtor
 }
 
-float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_threshold));
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -57,7 +57,7 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNf;
@@ -96,7 +96,7 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     }
 
     float probaObservedVal = 0;
-    if (ObservedVal >= m_threshold) {
+    if (observedVal >= m_threshold) {
         probaObservedVal = 1;
     }
 

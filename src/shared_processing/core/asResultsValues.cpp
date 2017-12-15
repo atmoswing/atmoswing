@@ -72,9 +72,9 @@ bool asResultsValues::Save()
     BuildFileName();
 
     // Get the elements size
-    size_t Ntime = (size_t) m_analogsCriteria.rows();
-    size_t Nanalogs = (size_t) m_analogsCriteria.cols();
-    size_t Nstations = m_predictandStationIds.size();
+    size_t nTime = (size_t) m_analogsCriteria.rows();
+    size_t nAnalogs = (size_t) m_analogsCriteria.cols();
+    size_t nStations = m_predictandStationIds.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -86,9 +86,9 @@ bool asResultsValues::Save()
     }
 
     // Define dimensions.
-    ncFile.DefDim("stations", Nstations);
-    ncFile.DefDim("time", Ntime);
-    ncFile.DefDim("analogs", Nanalogs);
+    ncFile.DefDim("stations", nStations);
+    ncFile.DefDim("time", nTime);
+    ncFile.DefDim("analogs", nAnalogs);
 
     // The dimensions name array is used to pass the dimensions to the variable.
     vstds dimS;
@@ -131,15 +131,15 @@ bool asResultsValues::Save()
 
     // Provide sizes for variables
     size_t startS[] = {0};
-    size_t countS[] = {Nstations};
+    size_t countS[] = {nStations};
     size_t startT[] = {0};
-    size_t countT[] = {Ntime};
+    size_t countT[] = {nTime};
     size_t startTA[] = {0, 0};
-    size_t countTA[] = {Ntime, Nanalogs};
+    size_t countTA[] = {nTime, nAnalogs};
     size_t startST[] = {0, 0};
-    size_t countST[] = {Nstations, Ntime};
+    size_t countST[] = {nStations, nTime};
     size_t startSTA[] = {0, 0, 0};
-    size_t countSTA[] = {Nstations, Ntime, Nanalogs};
+    size_t countSTA[] = {nStations, nTime, nAnalogs};
 
     // Write data
     ncFile.PutVarArray("stations", startS, countS, &m_targetDates(0));
@@ -175,29 +175,29 @@ bool asResultsValues::Load()
     }
 
     // Get the elements size
-    size_t Nstations = ncFile.GetDimLength("stations");
-    size_t Ntime = ncFile.GetDimLength("time");
-    size_t Nanalogs = ncFile.GetDimLength("analogs");
+    size_t nStations = ncFile.GetDimLength("stations");
+    size_t nTime = ncFile.GetDimLength("time");
+    size_t nAnalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_targetDates.resize(Ntime);
+    m_targetDates.resize(nTime);
     ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Sizes
     size_t startTA[] = {0, 0};
-    size_t countTA[] = {Ntime, Nanalogs};
+    size_t countTA[] = {nTime, nAnalogs};
     size_t startST[] = {0, 0};
-    size_t countST[] = {Nstations, Ntime};
+    size_t countST[] = {nStations, nTime};
     size_t startSTA[] = {0, 0, 0};
-    size_t countSTA[] = {Nstations, Ntime, Nanalogs};
+    size_t countSTA[] = {nStations, nTime, nAnalogs};
 
     // Resize containers
-    m_predictandStationIds.resize(Nstations);
-    m_targetValuesNorm.resize(Nstations, a1f(Ntime));
-    m_targetValuesGross.resize(Nstations, a1f(Ntime));
-    m_analogsCriteria.resize(Ntime, Nanalogs);
-    m_analogsValuesNorm.resize(Nstations, a2f(Ntime, Nanalogs));
-    m_analogsValuesGross.resize(Nstations, a2f(Ntime, Nanalogs));
+    m_predictandStationIds.resize(nStations);
+    m_targetValuesNorm.resize(nStations, a1f(nTime));
+    m_targetValuesGross.resize(nStations, a1f(nTime));
+    m_analogsCriteria.resize(nTime, nAnalogs);
+    m_analogsValuesNorm.resize(nStations, a2f(nTime, nAnalogs));
+    m_analogsValuesGross.resize(nStations, a2f(nTime, nAnalogs));
 
     // Get data
     ncFile.GetVar("stations", &m_predictandStationIds[0]);

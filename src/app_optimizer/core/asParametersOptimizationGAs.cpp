@@ -389,25 +389,25 @@ int asParametersOptimizationGAs::GetParamType(int index)
                 counter++;
             }
 
-            // Xmin
+            // xMin
             if (counter == index) {
                 return 1;
             }
             counter++;
 
-            // Xptsnb
+            // xPtsNb
             if (counter == index) {
                 return 1;
             }
             counter++;
 
-            // Ymin
+            // yMin
             if (counter == index) {
                 return 1;
             }
             counter++;
 
-            // Yptsnb
+            // yPtsNb
             if (counter == index) {
                 return 1;
             }

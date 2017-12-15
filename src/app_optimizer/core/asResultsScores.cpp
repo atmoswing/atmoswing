@@ -72,7 +72,7 @@ bool asResultsScores::Save()
     wxLogVerbose(_("Saving intermediate file: %s"), m_filePath);
 
     // Get the elements size
-    size_t Ntime = (size_t) m_scores.rows();
+    size_t nTime = (size_t) m_scores.rows();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -87,12 +87,12 @@ bool asResultsScores::Save()
     ncFile.DefDim("time");
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    vstds DimNames1;
-    DimNames1.push_back("time");
+    vstds dimNames1;
+    dimNames1.push_back("time");
 
     // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
-    ncFile.DefVar("scores", NC_FLOAT, 1, DimNames1);
+    ncFile.DefVar("target_dates", NC_FLOAT, 1, dimNames1);
+    ncFile.DefVar("scores", NC_FLOAT, 1, dimNames1);
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
@@ -103,7 +103,7 @@ bool asResultsScores::Save()
 
     // Provide sizes for variables
     size_t start1D[] = {0};
-    size_t count1D[] = {Ntime};
+    size_t count1D[] = {nTime};
 
     // Write data
     ncFile.PutVarArray("target_dates", start1D, count1D, &m_targetDates(0));

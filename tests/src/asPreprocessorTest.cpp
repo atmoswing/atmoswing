@@ -39,13 +39,13 @@ TEST(Preprocessor, Gradients)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
     EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
@@ -206,13 +206,13 @@ TEST(Preprocessor, GradientsMultithreading)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
     EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());

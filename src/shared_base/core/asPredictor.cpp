@@ -78,60 +78,60 @@ asPredictor::~asPredictor()
 
 }
 
-asPredictor::Parameter asPredictor::StringToParameterEnum(const wxString &ParameterStr)
+asPredictor::Parameter asPredictor::StringToParameterEnum(const wxString &parameterStr)
 {
-    if (ParameterStr.CmpNoCase("AirTemperature") == 0) {
+    if (parameterStr.CmpNoCase("AirTemperature") == 0) {
         return AirTemperature;
-    } else if (ParameterStr.CmpNoCase("GeopotentialHeight") == 0) {
+    } else if (parameterStr.CmpNoCase("GeopotentialHeight") == 0) {
         return GeopotentialHeight;
-    } else if (ParameterStr.CmpNoCase("PrecipitableWater") == 0) {
+    } else if (parameterStr.CmpNoCase("PrecipitableWater") == 0) {
         return PrecipitableWater;
-    } else if (ParameterStr.CmpNoCase("PrecipitationRate") == 0) {
+    } else if (parameterStr.CmpNoCase("PrecipitationRate") == 0) {
         return PrecipitationRate;
-    } else if (ParameterStr.CmpNoCase("RelativeHumidity") == 0) {
+    } else if (parameterStr.CmpNoCase("RelativeHumidity") == 0) {
         return RelativeHumidity;
-    } else if (ParameterStr.CmpNoCase("SpecificHumidity") == 0) {
+    } else if (parameterStr.CmpNoCase("SpecificHumidity") == 0) {
         return SpecificHumidity;
-    } else if (ParameterStr.CmpNoCase("VerticalVelocity") == 0) {
+    } else if (parameterStr.CmpNoCase("VerticalVelocity") == 0) {
         return VerticalVelocity;
-    } else if (ParameterStr.CmpNoCase("Wind") == 0) {
+    } else if (parameterStr.CmpNoCase("Wind") == 0) {
         return Wind;
-    } else if (ParameterStr.CmpNoCase("Uwind") == 0) {
+    } else if (parameterStr.CmpNoCase("Uwind") == 0) {
         return Uwind;
-    } else if (ParameterStr.CmpNoCase("Vwind") == 0) {
+    } else if (parameterStr.CmpNoCase("Vwind") == 0) {
         return Vwind;
-    } else if (ParameterStr.CmpNoCase("SurfaceLiftedIndex") == 0) {
+    } else if (parameterStr.CmpNoCase("SurfaceLiftedIndex") == 0) {
         return SurfaceLiftedIndex;
-    } else if (ParameterStr.CmpNoCase("PotentialTemperature") == 0) {
+    } else if (parameterStr.CmpNoCase("PotentialTemperature") == 0) {
         return PotentialTemperature;
-    } else if (ParameterStr.CmpNoCase("Pressure") == 0) {
+    } else if (parameterStr.CmpNoCase("Pressure") == 0) {
         return Pressure;
-    } else if (ParameterStr.CmpNoCase("PotentialEvaporation") == 0) {
+    } else if (parameterStr.CmpNoCase("PotentialEvaporation") == 0) {
         return PotentialEvaporation;
-    } else if (ParameterStr.CmpNoCase("SoilTemperature") == 0) {
+    } else if (parameterStr.CmpNoCase("SoilTemperature") == 0) {
         return SoilTemperature;
-    } else if (ParameterStr.CmpNoCase("CloudCover") == 0) {
+    } else if (parameterStr.CmpNoCase("CloudCover") == 0) {
         return CloudCover;
-    } else if (ParameterStr.CmpNoCase("SoilMoisture") == 0) {
+    } else if (parameterStr.CmpNoCase("SoilMoisture") == 0) {
         return SoilMoisture;
-    } else if (ParameterStr.CmpNoCase("SnowWaterEquivalent") == 0) {
+    } else if (parameterStr.CmpNoCase("SnowWaterEquivalent") == 0) {
         return SnowWaterEquivalent;
-    } else if (ParameterStr.CmpNoCase("Radiation") == 0) {
+    } else if (parameterStr.CmpNoCase("Radiation") == 0) {
         return Radiation;
-    } else if (ParameterStr.CmpNoCase("MomentumFlux") == 0) {
+    } else if (parameterStr.CmpNoCase("MomentumFlux") == 0) {
         return MomentumFlux;
-    } else if (ParameterStr.CmpNoCase("GravityWaveStress") == 0) {
+    } else if (parameterStr.CmpNoCase("GravityWaveStress") == 0) {
         return GravityWaveStress;
-    } else if (ParameterStr.CmpNoCase("SeaSurfaceTemperature") == 0) {
+    } else if (parameterStr.CmpNoCase("SeaSurfaceTemperature") == 0) {
         return SeaSurfaceTemperature;
-    } else if (ParameterStr.CmpNoCase("SST") == 0) {
+    } else if (parameterStr.CmpNoCase("SST") == 0) {
         return SeaSurfaceTemperature;
-    } else if (ParameterStr.CmpNoCase("SeaSurfaceTemperatureAnomaly") == 0) {
+    } else if (parameterStr.CmpNoCase("SeaSurfaceTemperatureAnomaly") == 0) {
         return SeaSurfaceTemperatureAnomaly;
-    } else if (ParameterStr.CmpNoCase("SSTAnomaly") == 0) {
+    } else if (parameterStr.CmpNoCase("SSTAnomaly") == 0) {
         return SeaSurfaceTemperatureAnomaly;
     } else {
-        asThrowException(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), ParameterStr));
+        asThrowException(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr));
     }
     return GeopotentialHeight;
 }
@@ -191,61 +191,61 @@ wxString asPredictor::ParameterEnumToString(asPredictor::Parameter dataParameter
     return wxEmptyString;
 }
 
-asPredictor::Unit asPredictor::StringToUnitEnum(const wxString &UnitStr)
+asPredictor::Unit asPredictor::StringToUnitEnum(const wxString &unitStr)
 {
 
-    if (UnitStr.CmpNoCase("nb") == 0) {
+    if (unitStr.CmpNoCase("nb") == 0) {
         return nb;
-    } else if (UnitStr.CmpNoCase("number") == 0) {
+    } else if (unitStr.CmpNoCase("number") == 0) {
         return nb;
-    } else if (UnitStr.CmpNoCase("mm") == 0) {
+    } else if (unitStr.CmpNoCase("mm") == 0) {
         return mm;
-    } else if (UnitStr.CmpNoCase("m") == 0) {
+    } else if (unitStr.CmpNoCase("m") == 0) {
         return m;
-    } else if (UnitStr.CmpNoCase("km") == 0) {
+    } else if (unitStr.CmpNoCase("km") == 0) {
         return km;
-    } else if (UnitStr.CmpNoCase("percent") == 0) {
+    } else if (unitStr.CmpNoCase("percent") == 0) {
         return percent;
-    } else if (UnitStr.CmpNoCase("fraction") == 0) {
+    } else if (unitStr.CmpNoCase("fraction") == 0) {
         return fraction;
-    } else if (UnitStr.CmpNoCase("%") == 0) {
+    } else if (unitStr.CmpNoCase("%") == 0) {
         return percent;
-    } else if (UnitStr.CmpNoCase("degC") == 0) {
+    } else if (unitStr.CmpNoCase("degC") == 0) {
         return degC;
-    } else if (UnitStr.CmpNoCase("degK") == 0) {
+    } else if (unitStr.CmpNoCase("degK") == 0) {
         return degK;
-    } else if (UnitStr.CmpNoCase("Pa") == 0) {
+    } else if (unitStr.CmpNoCase("Pa") == 0) {
         return Pa;
-    } else if (UnitStr.CmpNoCase("Pa_s") == 0) {
+    } else if (unitStr.CmpNoCase("Pa_s") == 0) {
         return Pa_s;
-    } else if (UnitStr.CmpNoCase("Pa/s") == 0) {
+    } else if (unitStr.CmpNoCase("Pa/s") == 0) {
         return Pa_s;
-    } else if (UnitStr.CmpNoCase("kg_kg") == 0) {
+    } else if (unitStr.CmpNoCase("kg_kg") == 0) {
         return kg_kg;
-    } else if (UnitStr.CmpNoCase("kg/kg") == 0) {
+    } else if (unitStr.CmpNoCase("kg/kg") == 0) {
         return kg_kg;
-    } else if (UnitStr.CmpNoCase("m_s") == 0) {
+    } else if (unitStr.CmpNoCase("m_s") == 0) {
         return m_s;
-    } else if (UnitStr.CmpNoCase("m/s") == 0) {
+    } else if (unitStr.CmpNoCase("m/s") == 0) {
         return m_s;
-    } else if (UnitStr.CmpNoCase("W_m2") == 0) {
+    } else if (unitStr.CmpNoCase("W_m2") == 0) {
         return W_m2;
-    } else if (UnitStr.CmpNoCase("W/m2") == 0) {
+    } else if (unitStr.CmpNoCase("W/m2") == 0) {
         return W_m2;
-    } else if (UnitStr.CmpNoCase("kg_m2") == 0) {
+    } else if (unitStr.CmpNoCase("kg_m2") == 0) {
         return kg_m2;
-    } else if (UnitStr.CmpNoCase("kg/m2") == 0) {
+    } else if (unitStr.CmpNoCase("kg/m2") == 0) {
         return kg_m2;
-    } else if (UnitStr.CmpNoCase("kg_m2_s") == 0) {
+    } else if (unitStr.CmpNoCase("kg_m2_s") == 0) {
         return kg_m2_s;
-    } else if (UnitStr.CmpNoCase("kg/m2/s") == 0) {
+    } else if (unitStr.CmpNoCase("kg/m2/s") == 0) {
         return kg_m2_s;
-    } else if (UnitStr.CmpNoCase("N_m2") == 0) {
+    } else if (unitStr.CmpNoCase("N_m2") == 0) {
         return N_m2;
-    } else if (UnitStr.CmpNoCase("N/m2") == 0) {
+    } else if (unitStr.CmpNoCase("N/m2") == 0) {
         return N_m2;
     } else {
-        asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), UnitStr));
+        asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), unitStr));
     }
     return m;
 }
@@ -779,12 +779,12 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                         dataArea->RemoveLastRowOnComposite(iComp);
                     } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
                         wxLogVerbose(_("Correcting the longitude extent according to the file limits."));
-                        double Xwidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
-                        wxASSERT(Xwidth >= 0);
-                        int Xptsnb = 1 + Xwidth / dataArea->GetXstep();
-                        wxLogDebug(_("xPtsNb = %d."), Xptsnb);
+                        double xWidth = m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1] - dataArea->GetAbsoluteXmin();
+                        wxASSERT(xWidth >= 0);
+                        int xPtsNb = 1 + xWidth / dataArea->GetXstep();
+                        wxLogDebug(_("xPtsNb = %d."), xPtsNb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), Xptsnb,
+                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), xPtsNb,
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
                                 dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
@@ -814,13 +814,13 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                     if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] &&
                         axisLatComp[0] < m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]) {
                         wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
-                        double Ywidth = m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] - dataArea->GetAbsoluteYmin();
-                        wxASSERT(Ywidth >= 0);
-                        int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        wxLogDebug(_("yPtsNb = %d."), Yptsnb);
+                        double yWidth = m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1] - dataArea->GetAbsoluteYmin();
+                        wxASSERT(yWidth >= 0);
+                        int yPtsNb = 1 + yWidth / dataArea->GetYstep();
+                        wxLogDebug(_("yPtsNb = %d."), yPtsNb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),
+                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
                                 dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);
@@ -833,13 +833,13 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                     // Condition for change: The composite must not be fully outside (considered as handled).
                     if (axisLatComp[axisLatComp.size() - 1] > m_fileStructure.axisLat[0] && axisLatComp[0] < m_fileStructure.axisLat[0]) {
                         wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
-                        double Ywidth = m_fileStructure.axisLat[0] - dataArea->GetAbsoluteYmin();
-                        wxASSERT(Ywidth >= 0);
-                        int Yptsnb = 1 + Ywidth / dataArea->GetYstep();
-                        wxLogDebug(_("yPtsNb = %d."), Yptsnb);
+                        double yWidth = m_fileStructure.axisLat[0] - dataArea->GetAbsoluteYmin();
+                        wxASSERT(yWidth >= 0);
+                        int yPtsNb = 1 + yWidth / dataArea->GetYstep();
+                        wxLogDebug(_("yPtsNb = %d."), yPtsNb);
                         asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), Yptsnb, dataArea->GetYstep(),
+                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
                                 dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
 
                         wxDELETE(dataArea);

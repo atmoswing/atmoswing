@@ -449,27 +449,27 @@ bool asParametersCalibration::SetSpatialWindowProperties()
             if (GetPredictorXstep(iStep, iPtor) == 0) {
                 SetPredictorXshift(iStep, iPtor, 0);
             } else {
-                double Xshift = std::fmod(GetPredictorXminVector(iStep, iPtor)[0], GetPredictorXstep(iStep, iPtor));
-                if (Xshift < 0)
-                    Xshift += GetPredictorXstep(iStep, iPtor);
-                if (!SetPredictorXshift(iStep, iPtor, Xshift))
+                double xShift = std::fmod(GetPredictorXminVector(iStep, iPtor)[0], GetPredictorXstep(iStep, iPtor));
+                if (xShift < 0)
+                    xShift += GetPredictorXstep(iStep, iPtor);
+                if (!SetPredictorXshift(iStep, iPtor, xShift))
                     return false;
             }
 
             if (GetPredictorYstep(iStep, iPtor) == 0) {
                 SetPredictorYshift(iStep, iPtor, 0);
             } else {
-                double Yshift = std::fmod(GetPredictorYminVector(iStep, iPtor)[0], GetPredictorYstep(iStep, iPtor));
-                if (Yshift < 0)
-                    Yshift += GetPredictorYstep(iStep, iPtor);
-                if (!SetPredictorYshift(iStep, iPtor, Yshift))
+                double yShift = std::fmod(GetPredictorYminVector(iStep, iPtor)[0], GetPredictorYstep(iStep, iPtor));
+                if (yShift < 0)
+                    yShift += GetPredictorYstep(iStep, iPtor);
+                if (!SetPredictorYshift(iStep, iPtor, yShift))
                     return false;
             }
 
-            vi uptsnbs = GetPredictorXptsnbVector(iStep, iPtor);
-            vi vptsnbs = GetPredictorYptsnbVector(iStep, iPtor);
-            if (asTools::MinArray(&uptsnbs[0], &uptsnbs[uptsnbs.size() - 1]) <= 1 ||
-                asTools::MinArray(&vptsnbs[0], &vptsnbs[vptsnbs.size() - 1]) <= 1) {
+            vi xPtsNbs = GetPredictorXptsnbVector(iStep, iPtor);
+            vi yPtsNbs = GetPredictorYptsnbVector(iStep, iPtor);
+            if (asTools::MinArray(&xPtsNbs[0], &xPtsNbs[xPtsNbs.size() - 1]) <= 1 ||
+                asTools::MinArray(&yPtsNbs[0], &yPtsNbs[yPtsNbs.size() - 1]) <= 1) {
                 SetPredictorFlatAllowed(iStep, iPtor, asFLAT_ALLOWED);
             }
         }
@@ -617,7 +617,7 @@ vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParam
         }
 
     } else {
-        wxLogVerbose(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxLogVerbose(_("The method is not correctly defined for xMin in the calibration parameters file."));
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }
@@ -655,7 +655,7 @@ vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParam
         }
 
     } else {
-        wxLogVerbose(_("The method is not correctly defined for Xmin in the calibration parameters file."));
+        wxLogVerbose(_("The method is not correctly defined for xMin in the calibration parameters file."));
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }

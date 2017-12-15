@@ -42,17 +42,17 @@ asScoreCRPSS::~asScoreCRPSS()
     //dtor
 }
 
-float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(m_scoreClimatology != 0);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -61,7 +61,7 @@ float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
     asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
     scoreCRPS.SetThreshold(GetThreshold());
     scoreCRPS.SetQuantile(GetQuantile());
-    float score = scoreCRPS.Assess(ObservedVal, ForcastVals, nbElements);
+    float score = scoreCRPS.Assess(observedVal, forcastVals, nbElements);
     float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
     return skillScore;

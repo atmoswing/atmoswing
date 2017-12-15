@@ -29,8 +29,8 @@
 #include "asFileXml.h"
 
 
-asFileXml::asFileXml(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode)
+asFileXml::asFileXml(const wxString &fileName, const ListFileMode &fileMode)
+        : asFile(fileName, fileMode)
 {
 
 }

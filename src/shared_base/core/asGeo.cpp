@@ -43,32 +43,32 @@ asGeo::~asGeo()
     //dtor
 }
 
-bool asGeo::CheckPoint(Coo &Point, int ChangesAllowed)
+bool asGeo::CheckPoint(Coo &point, int changesAllowed)
 {
     // We always consider WGS84 for the predictors
-    if (Point.y < m_axisYmin) {
-        if (ChangesAllowed == asEDIT_ALLOWED) {
-            Point.y = m_axisYmin + (m_axisYmin - Point.y);
-            Point.x = Point.x + 180;
+    if (point.y < m_axisYmin) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.y = m_axisYmin + (m_axisYmin - point.y);
+            point.x = point.x + 180;
         }
         return false;
     }
-    if (Point.y > m_axisYmax) {
-        if (ChangesAllowed == asEDIT_ALLOWED) {
-            Point.y = m_axisYmax + (m_axisYmax - Point.y);
-            Point.x = Point.x + 180;
+    if (point.y > m_axisYmax) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.y = m_axisYmax + (m_axisYmax - point.y);
+            point.x = point.x + 180;
         }
         return false;
     }
-    if (Point.x < m_axisXmin) {
-        if (ChangesAllowed == asEDIT_ALLOWED) {
-            Point.x += m_axisXmax;
+    if (point.x < m_axisXmin) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.x += m_axisXmax;
         }
         return false;
     }
-    if (Point.x > m_axisXmax) {
-        if (ChangesAllowed == asEDIT_ALLOWED) {
-            Point.x -= m_axisXmax;
+    if (point.x > m_axisXmax) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.x -= m_axisXmax;
         }
         return false;
     }

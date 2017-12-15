@@ -28,8 +28,8 @@
 
 #include "asFileParameters.h"
 
-asFileParameters::asFileParameters(const wxString &FileName, const ListFileMode &FileMode)
-        : asFileXml(FileName, FileMode)
+asFileParameters::asFileParameters(const wxString &fileName, const ListFileMode &fileMode)
+        : asFileXml(fileName, fileMode)
 {
     // FindAndOpen() processed by asFileXml
 }

@@ -28,29 +28,29 @@
 
 #include "asGeoAreaCompositeRegularGrid.h"
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR,
-                                                             const Coo &CornerLL, const Coo &CornerLR, double Xstep,
-                                                             double Ystep, float Level, float Height, int flatAllowed)
-        : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed),
-          m_xStep(Xstep),
-          m_yStep(Ystep)
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &cornerUL, const Coo &cornerUR,
+                                                             const Coo &cornerLL, const Coo &cornerLR, double xStep,
+                                                             double yStep, float level, float height, int flatAllowed)
+        : asGeoAreaCompositeGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+          m_xStep(xStep),
+          m_yStep(yStep)
 {
     m_gridType = Regular;
 
-    if (!IsOnGrid(Xstep, Ystep))
+    if (!IsOnGrid(xStep, yStep))
         asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin,
-                                                             double Ywidth, double Ystep, float Level, float Height,
+asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double xMin, double xWidth, double xStep, double yMin,
+                                                             double yWidth, double yStep, float level, float height,
                                                              int flatAllowed)
-        : asGeoAreaCompositeGrid(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed),
-          m_xStep(Xstep),
-          m_yStep(Ystep)
+        : asGeoAreaCompositeGrid(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+          m_xStep(xStep),
+          m_yStep(yStep)
 {
     m_gridType = Regular;
 
-    if (!IsOnGrid(Xstep, Ystep))
+    if (!IsOnGrid(xStep, yStep))
         asThrowException(_("The given area does not match a grid."));
 }
 
@@ -77,47 +77,46 @@ a1d asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetXaxisCompositePtsnb(compositeNb);
-    a1d Xaxis(size);
+    a1d xAxis(size);
 
     // Build array
-    double Xmin = GetComposite(compositeNb).GetXmin();
+    double xMin = GetComposite(compositeNb).GetXmin();
     if (compositeNb == 0) // Left border
     {
-        double Xmax = GetComposite(compositeNb).GetXmax();
-        double restovers = Xmax - Xmin - m_xStep * (size - 1);
-        Xmin += restovers;
+        double xMax = GetComposite(compositeNb).GetXmax();
+        double restovers = xMax - xMin - m_xStep * (size - 1);
+        xMin += restovers;
     }
 
     for (int i = 0; i < size; i++) {
-        Xaxis(i) = Xmin + (double) i * m_xStep;
+        xAxis(i) = xMin + (double) i * m_xStep;
     }
-    //wxASSERT_MSG(Xaxis(size-1)==GetComposite(compositeNb).GetXmax(), wxString::Format("Xaxis(size-1)=%f, GetComposite(%d).GetXmax()=%f", Xaxis(size-1), compositeNb, GetComposite(compositeNb).GetXmax()));  // Not always true
 
-    return Xaxis;
+    return xAxis;
 }
 
 a1d asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetYaxisCompositePtsnb(compositeNb);
-    a1d Yaxis(size);
+    a1d yAxis(size);
 
     // Build array
-    double Ymin = GetComposite(compositeNb).GetYmin();
+    double yMin = GetComposite(compositeNb).GetYmin();
     // FIXME (Pascal#3#): Check the compositeNb==0 in this case
     if (compositeNb == 0) // Not sure...
     {
-        double Ymax = GetComposite(compositeNb).GetYmax();
-        double restovers = Ymax - Ymin - m_yStep * (size - 1);
-        Ymin += restovers;
+        double yMax = GetComposite(compositeNb).GetYmax();
+        double restovers = yMax - yMin - m_yStep * (size - 1);
+        yMin += restovers;
     }
 
     for (int i = 0; i < size; i++) {
-        Yaxis(i) = Ymin + i * m_yStep;
+        yAxis(i) = yMin + i * m_yStep;
     }
     //wxASSERT(Yaxis(size-1)==GetComposite(compositeNb).GetYmax()); // Not always true
 
-    return Yaxis;
+    return yAxis;
 }
 
 int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)

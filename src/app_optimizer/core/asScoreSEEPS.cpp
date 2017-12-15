@@ -44,9 +44,9 @@ asScoreSEEPS::~asScoreSEEPS()
     //dtor
 }
 
-float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreSEEPS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asTools::IsNaN(m_p1));
     wxASSERT(!asTools::IsNaN(m_p3));
@@ -56,10 +56,10 @@ float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
     wxASSERT(m_quantile < 1);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -68,7 +68,7 @@ float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNf;
@@ -81,7 +81,7 @@ float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
 
     // Get value for quantile
     float fcstV = asTools::GetValueForQuantile(cleanValues, m_quantile);
-    float obsV = ObservedVal;
+    float obsV = observedVal;
 
     float score = 0;
 

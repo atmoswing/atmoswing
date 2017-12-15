@@ -36,17 +36,17 @@ class asGeoAreaComposite
         : public asGeo
 {
 public:
-    asGeoAreaComposite(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                       float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaComposite(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                       float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaComposite(double Xmin, double Xwidth, double Ymin, double Ywidth, float Level = asNONE,
-                       float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaComposite(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
+                       float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaComposite(float Level = asNONE, float Height = asNONE);
+    asGeoAreaComposite(float level = asNONE, float height = asNONE);
 
     virtual ~asGeoAreaComposite();
 
-    void Generate(double Xmin, double Xwidth, double Ymin, double Ywidth, int flatAllowed = asFLAT_FORBIDDEN);
+    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
     Coo GetCornerUL() const
     {
@@ -128,11 +128,11 @@ public:
         return m_composites;
     }
 
-    asGeoArea GetComposite(int Id) const
+    asGeoArea GetComposite(int id) const
     {
-        if (Id >= m_composites.size())
+        if (id >= m_composites.size())
             asThrowException(_("The composite area doesn't exist."));
-        return m_composites[Id];
+        return m_composites[id];
     }
 
     bool IsRectangle() const;

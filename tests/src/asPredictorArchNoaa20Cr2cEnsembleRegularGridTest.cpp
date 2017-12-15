@@ -34,12 +34,12 @@
 
 TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
 {
-    double Xmin = 10;
-    double Xwidth = 8;
-    double Ymin = 70;
-    double Ywidth = 4;
+    double xMin = 10;
+    double xWidth = 8;
+    double yMin = 70;
+    double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -93,12 +93,12 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
 
 TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
 {
-    double Xmin = 10;
-    double Xwidth = 8;
-    double Ymin = 70;
-    double Ywidth = 4;
+    double xMin = 10;
+    double xWidth = 8;
+    double yMin = 70;
+    double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -152,12 +152,12 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
 
 TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
 {
-    double Xmin = -8;
-    double Xwidth = 12;
-    double Ymin = 70;
-    double Ywidth = 4;
+    double xMin = -8;
+    double xWidth = 12;
+    double yMin = 70;
+    double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -215,12 +215,12 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
 
 TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 4;
-    double Ymin = 70;
-    double Ywidth = 4;
+    double xMin = 0;
+    double xWidth = 4;
+    double yMin = 70;
+    double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -270,12 +270,12 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
 
 TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderRight)
 {
-    double Xmin = 352;
-    double Xwidth = 8;
-    double Ymin = 70;
-    double Ywidth = 4;
+    double xMin = 352;
+    double xWidth = 8;
+    double yMin = 70;
+    double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

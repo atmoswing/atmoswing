@@ -27,22 +27,22 @@
 
 #include "asFile.h"
 
-bool asRemoveDir(const wxString &Path)
+bool asRemoveDir(const wxString &path)
 {
-    wxString f = wxFindFirstFile(Path + "/*.*");
+    wxString f = wxFindFirstFile(path + "/*.*");
     while (!f.empty()) {
         if (!wxRemoveFile(f))
             return false;
         f = wxFindNextFile();
     }
 
-    return wxRmdir(Path);
+    return wxRmdir(path);
 
 }
 
-asFile::asFile(const wxString &FileName, const ListFileMode &FileMode)
-        : m_fileName(wxFileName(FileName)),
-          m_fileMode(FileMode),
+asFile::asFile(const wxString &fileName, const ListFileMode &fileMode)
+        : m_fileName(wxFileName(fileName)),
+          m_fileMode(fileMode),
           m_exists(false),
           m_opened(false)
 {
@@ -54,9 +54,9 @@ asFile::~asFile()
     DoClose();
 }
 
-bool asFile::Exists(const wxString &FilePath)
+bool asFile::Exists(const wxString &filePath)
 {
-    return wxFileName::FileExists(FilePath);
+    return wxFileName::FileExists(filePath);
 }
 
 bool asFile::Find()

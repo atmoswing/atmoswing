@@ -44,7 +44,7 @@ public:
 
     virtual ~asGeo();
 
-    bool CheckPoint(Coo &Point, int ChangesAllowed = asEDIT_FORBIDDEN);
+    bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
 
     GridType GetGridType() const
     {

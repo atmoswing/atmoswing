@@ -58,7 +58,7 @@ public:
         int dataEnd;
     };
 
-    asFileDat(const wxString &FileName, const ListFileMode &FileMode);
+    asFileDat(const wxString &fileName, const ListFileMode &fileMode);
 
     virtual ~asFileDat();
 
@@ -66,14 +66,14 @@ public:
 
     static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
 
-    static int GetPatternLineMaxCharWidth(const Pattern &Pattern);
+    static int GetPatternLineMaxCharWidth(const Pattern &pattern);
 
 protected:
 
 private:
     static void InitPattern(Pattern &pattern);
 
-    static FileStructType StringToStructType(const wxString &StructTypeStr);
+    static FileStructType StringToStructType(const wxString &structTypeStr);
 };
 
 #endif // ASFILEDAT_H

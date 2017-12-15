@@ -28,12 +28,12 @@
 
 #include "asFileGrib2.h"
 
-asFileGrib2::asFileGrib2(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode),
+asFileGrib2::asFileGrib2(const wxString &fileName, const ListFileMode &fileMode)
+        : asFile(fileName, fileMode),
           m_filtPtr(NULL),
           m_index(asNOT_FOUND)
 {
-    switch (FileMode) {
+    switch (fileMode) {
         case (ReadOnly):
             // OK
             break;

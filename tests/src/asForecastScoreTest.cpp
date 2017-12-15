@@ -42,34 +42,34 @@ TEST(Score, ProcessCRPSapproxRectangle)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -93,34 +93,34 @@ TEST(Score, ProcessCRPSexactPrimitive)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSEP");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -144,34 +144,34 @@ TEST(Score, ProcessCRPSapproxRectangle1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSAR");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -195,34 +195,34 @@ TEST(Score, ProcessCRPSexactPrimitive1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -246,34 +246,34 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -297,34 +297,34 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         float target = file.GetFloat();
 
@@ -348,34 +348,34 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -401,34 +401,34 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSsharpnessEP");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -454,34 +454,34 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSsharpnessAR");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -507,34 +507,34 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -560,34 +560,34 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSsharpnessAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -613,34 +613,34 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSsharpnessEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(2);
         float target = file.GetFloat();
@@ -666,34 +666,34 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -718,34 +718,34 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive)
     file.Open();
 
     // Test numbers
-    int nbtests = 17;
+    int nbTests = 17;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSaccuracyEP");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -770,34 +770,34 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSaccuracyAR");
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -822,34 +822,34 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 50;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 50;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -874,34 +874,34 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSaccuracyAR);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -926,34 +926,34 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     file.Open();
 
     // Test numbers
-    int nbtests = 30;
+    int nbTests = 30;
 
     // P10
     float P10 = 70.82f;
 
     // Resize the containers
-    int nanalogs = 30;
-    a1f ForcastVals;
-    ForcastVals.resize(nanalogs);
+    int nAnalogs = 30;
+    a1f forcastVals;
+    forcastVals.resize(nAnalogs);
 
     // Instantiate the score
     asScore *score = asScore::GetInstance(asScore::CRPSaccuracyEP);
 
-    for (int iTest = 0; iTest < nbtests; iTest++) {
+    for (int iTest = 0; iTest < nbTests; iTest++) {
         // Skip the header
         file.SkipLines(1);
 
         // Load data
         file.SkipElements(3);
-        float ObservedVal = (float) sqrt(file.GetFloat() / P10);
+        float observedVal = (float) sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            ForcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            forcastVals[iAnalog] = (float) sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
-        float result = score->Assess(ObservedVal, ForcastVals, nanalogs);
+        float result = score->Assess(observedVal, forcastVals, nAnalogs);
         file.SkipLines(2);
         file.SkipElements(1);
         float target = file.GetFloat();
@@ -975,18 +975,18 @@ void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
     int timeLength = 410;
 
     // Resize the containers
-    int nanalogs = 50;
-    vecForecast = a2f::Zero(timeLength, nanalogs);
+    int nAnalogs = 50;
+    vecForecast = a2f::Zero(timeLength, nAnalogs);
     vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
         vecObs[iTime] = (float) asTools::Random(0.0, 0.4999999);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             singleDay[iAnalog] = (float) asTools::Random(0.0, 0.4999999);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1079,18 +1079,18 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
     int timeLength = 2803;
 
     // Resize the containers
-    int nanalogs = 50;
-    vecForecast = a2f::Zero(timeLength, nanalogs);
+    int nAnalogs = 50;
+    vecForecast = a2f::Zero(timeLength, nAnalogs);
     vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
         vecObs[iTime] = (float) asTools::Random(0.0, 0.5999999);
-        for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
+        for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1107,7 +1107,7 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
             singleDay[iAnalog] = asTools::Random(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1124,7 +1124,7 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
             singleDay[iAnalog] = (float) asTools::Random(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nanalogs - 1], Asc);
+        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1463,12 +1463,12 @@ TEST(Score, ProcessMAE)
 {
     // Sizes
     int timeLength = 10;
-    int nanalogs = 20;
+    int nAnalogs = 20;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1522,12 +1522,12 @@ TEST(Score, ProcessRMSE)
 {
     // Sizes
     int timeLength = 10;
-    int nanalogs = 20;
+    int nAnalogs = 20;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1581,12 +1581,12 @@ TEST(Score, ProcessBS)
 {
     // Sizes
     int timeLength = 10;
-    int nanalogs = 20;
+    int nAnalogs = 20;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1641,12 +1641,12 @@ TEST(Score, ProcessBSS)
 {
     // Sizes
     int timeLength = 10;
-    int nanalogs = 20;
+    int nAnalogs = 20;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
-    a1f singleDay = a1f::Zero(nanalogs);
+    a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
     vecForecast.row(0) <<
@@ -1703,10 +1703,10 @@ TEST(Score, ProcessRankHistogram)
 {
     // Sizes
     int timeLength = 20;
-    int nanalogs = 30;
+    int nAnalogs = 30;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
@@ -1761,7 +1761,7 @@ TEST(Score, ProcessRankHistogram)
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
@@ -1791,7 +1791,7 @@ TEST(Score, ProcessRankHistogram)
     EXPECT_EQ(24, results[19]);
 
     asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogram", "Total");
-    finalScore->SetRanksNb(nanalogs + 1);
+    finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     a1f scoreVal = finalScore->AssessOnArray(pseudoDates, results, emptyTimeArray);
 
@@ -1819,10 +1819,10 @@ TEST(Score, ProcessRankHistogramReliability)
 
     // Sizes
     int timeLength = 20;
-    int nanalogs = 30;
+    int nAnalogs = 30;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
@@ -1877,13 +1877,13 @@ TEST(Score, ProcessRankHistogramReliability)
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
         EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");
-    finalScore->SetRanksNb(nanalogs + 1);
+    finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
@@ -1898,10 +1898,10 @@ TEST(Score, ProcessCRPSreliability)
 {
     // Sizes
     int timeLength = 15;
-    int nanalogs = 21;
+    int nAnalogs = 21;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
@@ -1940,12 +1940,12 @@ TEST(Score, ProcessCRPSreliability)
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSreliability");
 
-    a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
+    a2f results = a2f::Zero(vecObs.size(), 3 * (nAnalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
@@ -1965,10 +1965,10 @@ TEST(Score, ProcessCRPSpotential)
 {
     // Sizes
     int timeLength = 15;
-    int nanalogs = 21;
+    int nAnalogs = 21;
 
     // Resize the containers
-    a2f vecForecast = a2f::Zero(timeLength, nanalogs);
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
     vecForecast.row(0) <<
@@ -2007,18 +2007,18 @@ TEST(Score, ProcessCRPSpotential)
     // Instantiate the score
     asScore *score = asScore::GetInstance("CRPSpotential");
 
-    a2f results = a2f::Zero(vecObs.size(), 3 * (nanalogs + 1));
+    a2f results = a2f::Zero(vecObs.size(), 3 * (nAnalogs + 1));
     a1f pseudoDates = a1f::Zero(vecObs.size());
 
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
-        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nanalogs);
+        a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results.row(iTime) = res;
         EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("CRPSpotential", "Total");
-    finalScore->SetRanksNb(nanalogs + 1);
+    finalScore->SetRanksNb(nAnalogs + 1);
     asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 

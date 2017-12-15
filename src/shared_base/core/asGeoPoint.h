@@ -36,9 +36,9 @@ class asGeoPoint
         : public asGeo
 {
 public:
-    asGeoPoint(const Coo &Point, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(const Coo &point, float level = asNONE, float height = asNONE);
 
-    asGeoPoint(double x, double y, float Level = asNONE, float Height = asNONE);
+    asGeoPoint(double x, double y, float level = asNONE, float height = asNONE);
 
     virtual ~asGeoPoint();
 

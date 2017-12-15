@@ -39,17 +39,17 @@ asScoreBSS::~asScoreBSS()
     //dtor
 }
 
-float asScoreBSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreBSS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(m_scoreClimatology != 0);
 
     // Check inputs
-    if (!CheckObservedValue(ObservedVal)) {
+    if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( ForcastVals, nbElements)) {
+    if (!CheckVectorLength( forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -58,7 +58,7 @@ float asScoreBSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
     asScoreBS scoreBS = asScoreBS();
     scoreBS.SetThreshold(GetThreshold());
     scoreBS.SetQuantile(GetQuantile());
-    float score = scoreBS.Assess(ObservedVal, ForcastVals, nbElements);
+    float score = scoreBS.Assess(observedVal, forcastVals, nbElements);
     float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
     return skillScore;

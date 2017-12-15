@@ -44,20 +44,20 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
     m_choiceDataSpatAggreg->SetSelection((int) choiceDataSpatAggreg);
     wxString ReturnPeriodNorm = pConfig->Read("/PredictandDBToolbox/ReturnPeriodNorm", "10");
     m_textCtrlReturnPeriod->SetValue(ReturnPeriodNorm);
-    bool NormalizeByReturnPeriod = true;
-    pConfig->Read("/PredictandDBToolbox/NormalizeByReturnPeriod", &NormalizeByReturnPeriod);
-    m_checkBoxReturnPeriod->SetValue(NormalizeByReturnPeriod);
-    bool ProcessSquareRoot = false;
-    pConfig->Read("/PredictandDBToolbox/ProcessSquareRoot", &ProcessSquareRoot);
-    m_checkBoxSqrt->SetValue(ProcessSquareRoot);
+    bool normalizeByReturnPeriod = true;
+    pConfig->Read("/PredictandDBToolbox/NormalizeByReturnPeriod", &normalizeByReturnPeriod);
+    m_checkBoxReturnPeriod->SetValue(normalizeByReturnPeriod);
+    bool processSquareRoot = false;
+    pConfig->Read("/PredictandDBToolbox/ProcessSquareRoot", &processSquareRoot);
+    m_checkBoxSqrt->SetValue(processSquareRoot);
     wxString catalogPath = pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString);
     m_filePickerCatalogPath->SetPath(catalogPath);
-    wxString PredictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
-    m_dirPickerDataDir->SetPath(PredictandDataDir);
-    wxString DestinationDir = pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString);
-    m_dirPickerDestinationDir->SetPath(DestinationDir);
-    wxString PatternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
-    m_dirPickerPatternsDir->SetPath(PatternsDir);
+    wxString predictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
+    m_dirPickerDataDir->SetPath(predictandDataDir);
+    wxString destinationDir = pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString);
+    m_dirPickerDestinationDir->SetPath(destinationDir);
+    wxString patternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
+    m_dirPickerPatternsDir->SetPath(patternsDir);
 
     ToggleProcessing();
 
@@ -80,20 +80,20 @@ void asFramePredictandDB::OnSaveDefault(wxCommandEvent &event)
     long choiceDataSpatAggreg = (long) m_choiceDataSpatAggreg->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataSpatAggreg", choiceDataSpatAggreg);
     m_choiceDataSpatAggreg->SetSelection((int) choiceDataSpatAggreg);
-    wxString ReturnPeriodNorm = m_textCtrlReturnPeriod->GetValue();
-    pConfig->Write("/PredictandDBToolbox/ReturnPeriodNorm", ReturnPeriodNorm);
-    bool NormalizeByReturnPeriod = m_checkBoxReturnPeriod->GetValue();
-    pConfig->Write("/PredictandDBToolbox/NormalizeByReturnPeriod", NormalizeByReturnPeriod);
-    bool ProcessSquareRoot = m_checkBoxSqrt->GetValue();
-    pConfig->Write("/PredictandDBToolbox/ProcessSquareRoot", ProcessSquareRoot);
+    wxString returnPeriodNorm = m_textCtrlReturnPeriod->GetValue();
+    pConfig->Write("/PredictandDBToolbox/ReturnPeriodNorm", returnPeriodNorm);
+    bool normalizeByReturnPeriod = m_checkBoxReturnPeriod->GetValue();
+    pConfig->Write("/PredictandDBToolbox/NormalizeByReturnPeriod", normalizeByReturnPeriod);
+    bool processSquareRoot = m_checkBoxSqrt->GetValue();
+    pConfig->Write("/PredictandDBToolbox/ProcessSquareRoot", processSquareRoot);
     wxString catalogPath = m_filePickerCatalogPath->GetPath();
     pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
-    wxString PredictandDataDir = m_dirPickerDataDir->GetPath();
-    pConfig->Write("/PredictandDBToolbox/PredictandDataDir", PredictandDataDir);
-    wxString DestinationDir = m_dirPickerDestinationDir->GetPath();
-    pConfig->Write("/PredictandDBToolbox/DestinationDir", DestinationDir);
-    wxString PatternsDir = m_dirPickerPatternsDir->GetPath();
-    pConfig->Write("/PredictandDBToolbox/PatternsDir", PatternsDir);
+    wxString predictandDataDir = m_dirPickerDataDir->GetPath();
+    pConfig->Write("/PredictandDBToolbox/PredictandDataDir", predictandDataDir);
+    wxString destinationDir = m_dirPickerDestinationDir->GetPath();
+    pConfig->Write("/PredictandDBToolbox/DestinationDir", destinationDir);
+    wxString patternsDir = m_dirPickerPatternsDir->GetPath();
+    pConfig->Write("/PredictandDBToolbox/PatternsDir", patternsDir);
 
     pConfig->Flush();
 }

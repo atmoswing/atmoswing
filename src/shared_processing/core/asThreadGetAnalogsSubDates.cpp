@@ -98,8 +98,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
 
     // Containers for daily results
     a1f currentAnalogsDates(analogsNbPrevious);
-    a1f ScoreArrayOneDay(analogsNb);
-    a1f DateArrayOneDay(analogsNb);
+    a1f scoreArrayOneDay(analogsNb);
+    a1f dateArrayOneDay(analogsNb);
 
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end); iDateTarg++)
@@ -162,34 +162,34 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                     // Check if the array is already full
                     if (counter > analogsNb - 1) {
                         if (isasc) {
-                            if (thisscore < ScoreArrayOneDay[analogsNb - 1]) {
-                                asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb - 1],
-                                                            &DateArrayOneDay[0], &DateArrayOneDay[analogsNb - 1], Asc,
+                            if (thisscore < scoreArrayOneDay[analogsNb - 1]) {
+                                asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                                            &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc,
                                                             thisscore, (float) timeArchiveData[iTimeArch]);
                             }
                         } else {
-                            if (thisscore > ScoreArrayOneDay[analogsNb - 1]) {
-                                asTools::SortedArraysInsert(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb - 1],
-                                                            &DateArrayOneDay[0], &DateArrayOneDay[analogsNb - 1], Desc,
+                            if (thisscore > scoreArrayOneDay[analogsNb - 1]) {
+                                asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                                            &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc,
                                                             thisscore, (float) timeArchiveData[iTimeArch]);
                             }
                         }
                     } else if (counter < analogsNb - 1) {
                         // Add score and date to the vectors
-                        ScoreArrayOneDay[counter] = thisscore;
-                        DateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+                        scoreArrayOneDay[counter] = thisscore;
+                        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
                     } else if (counter == analogsNb - 1) {
                         // Add score and date to the vectors
-                        ScoreArrayOneDay[counter] = thisscore;
-                        DateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+                        scoreArrayOneDay[counter] = thisscore;
+                        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
 
                         // Sort both scores and dates arrays
                         if (isasc) {
-                            asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb - 1],
-                                                &DateArrayOneDay[0], &DateArrayOneDay[analogsNb - 1], Asc);
+                            asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc);
                         } else {
-                            asTools::SortArrays(&ScoreArrayOneDay[0], &ScoreArrayOneDay[analogsNb - 1],
-                                                &DateArrayOneDay[0], &DateArrayOneDay[analogsNb - 1], Desc);
+                            asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc);
                         }
                     }
 
@@ -204,8 +204,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
         // Check that the number of occurrences are larger than the desired analogs number. If not, set a warning
         if (counter >= analogsNb) {
             // Copy results
-            m_pFinalAnalogsCriteria->row(iDateTarg) = ScoreArrayOneDay.head(analogsNb).transpose();
-            m_pFinalAnalogsDates->row(iDateTarg) = DateArrayOneDay.head(analogsNb).transpose();
+            m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
+            m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
         } else {
             wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
             wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);

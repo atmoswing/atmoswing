@@ -28,22 +28,22 @@
 
 #include "asGeoAreaRegularGrid.h"
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL,
-                                           const Coo &CornerLR, double Xstep, double Ystep, float Level, float Height,
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
+                                           const Coo &cornerLR, double xStep, double yStep, float level, float height,
                                            int flatAllowed)
-        : asGeoArea(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed),
-          m_xStep(Xstep),
-          m_yStep(Ystep)
+        : asGeoArea(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+          m_xStep(xStep),
+          m_yStep(yStep)
 {
     if (!IsOnGrid(m_xStep, m_yStep))
         asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth,
-                                           double Ystep, float Level, float Height, int flatAllowed)
-        : asGeoArea(Xmin, Xwidth, Ymin, Ywidth, Level, Height, flatAllowed),
-          m_xStep(Xstep),
-          m_yStep(Ystep)
+asGeoAreaRegularGrid::asGeoAreaRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth,
+                                           double yStep, float level, float height, int flatAllowed)
+        : asGeoArea(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+          m_xStep(xStep),
+          m_yStep(yStep)
 {
     if (!IsOnGrid(m_xStep, m_yStep))
         asThrowException(_("The given area does not match a grid."));
@@ -70,32 +70,32 @@ a1d asGeoAreaRegularGrid::GetXaxis() const
 {
     // Get axis size
     int ptsnb = GetXaxisPtsnb();
-    a1d Xaxis(ptsnb);
+    a1d xAxis(ptsnb);
 
     // Build array
-    double Xmin = GetXmin();
+    double xMin = GetXmin();
     for (int i = 0; i < ptsnb; i++) {
-        Xaxis(i) = Xmin + i * m_xStep;
+        xAxis(i) = xMin + i * m_xStep;
     }
-    wxASSERT(Xaxis(ptsnb - 1) == GetXmax());
+    wxASSERT(xAxis(ptsnb - 1) == GetXmax());
 
-    return Xaxis;
+    return xAxis;
 }
 
 a1d asGeoAreaRegularGrid::GetYaxis() const
 {
     // Get axis size
     int ptsnb = GetYaxisPtsnb();
-    a1d Yaxis(ptsnb);
+    a1d yAxis(ptsnb);
 
     // Build array
     double vmin = GetYmin();
     for (int i = 0; i < ptsnb; i++) {
-        Yaxis(i) = vmin + i * m_yStep;
+        yAxis(i) = vmin + i * m_yStep;
     }
-    wxASSERT(Yaxis(ptsnb - 1) == GetYmax());
+    wxASSERT(yAxis(ptsnb - 1) == GetYmax());
 
-    return Yaxis;
+    return yAxis;
 }
 
 bool asGeoAreaRegularGrid::IsOnGrid(double step) const

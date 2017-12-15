@@ -27,8 +27,8 @@
 
 #include "asFileAscii.h"
 
-asFileAscii::asFileAscii(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode)
+asFileAscii::asFileAscii(const wxString &fileName, const ListFileMode &fileMode)
+        : asFile(fileName, fileMode)
 {
 
 }
@@ -81,14 +81,14 @@ bool asFileAscii::Close()
     return true;
 }
 
-void asFileAscii::AddLineContent(const wxString &LineContent)
+void asFileAscii::AddLineContent(const wxString &lineContent)
 {
     wxASSERT(m_opened);
 
-    wxString LineContentCopy = LineContent;
-    LineContentCopy.Append("\n");
+    wxString lineContentCopy = lineContent;
+    lineContentCopy.Append("\n");
 
-    m_file << LineContentCopy.mb_str();
+    m_file << lineContentCopy.mb_str();
 
     // Check the state flags
     if (m_file.fail())
@@ -114,9 +114,9 @@ const wxString asFileAscii::GetLineContent()
                                           m_fileName.GetFullPath()));
     }
 
-    wxString LineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);
+    wxString lineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);
 
-    return LineContent;
+    return lineContent;
 }
 
 const wxString asFileAscii::GetFullContent()
@@ -136,9 +136,7 @@ const wxString asFileAscii::GetFullContent()
                     wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
     }
 
-    wxString Content(apptmpContent.c_str(), wxConvUTF8);
-
-    return Content;
+    return wxString(apptmpContent.c_str(), wxConvUTF8);
 }
 
 const wxString asFileAscii::GetFullContentWhithoutReturns()
@@ -158,9 +156,7 @@ const wxString asFileAscii::GetFullContentWhithoutReturns()
         asThrowException(
                 wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
 
-    wxString Content(apptmpContent.c_str(), wxConvUTF8);
-
-    return Content;
+    return wxString(apptmpContent.c_str(), wxConvUTF8);
 }
 
 int asFileAscii::GetInt()

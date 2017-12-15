@@ -28,31 +28,31 @@
 
 #include "asGeoAreaCompositeGaussianGrid.h"
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &CornerUL, const Coo &CornerUR,
-                                                               const Coo &CornerLL, const Coo &CornerLR,
-                                                               asGeo::GridType type, float Level, float Height,
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &cornerUL, const Coo &cornerUR,
+                                                               const Coo &cornerLL, const Coo &cornerLR,
+                                                               asGeo::GridType type, float level, float height,
                                                                int flatAllowed)
-        : asGeoAreaCompositeGrid(CornerUL, CornerUR, CornerLL, CornerLR, Level, Height, flatAllowed)
+        : asGeoAreaCompositeGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
 {
     m_gridType = type;
 
     asGeoAreaGaussianGrid::BuildLonAxis(m_fullAxisX, type);
     asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
 
-    if (!IsOnGrid(CornerUL))
+    if (!IsOnGrid(cornerUL))
         asThrowException(_("The given area does not match a gaussian grid."));
-    if (!IsOnGrid(CornerUR))
+    if (!IsOnGrid(cornerUR))
         asThrowException(_("The given area does not match a gaussian grid."));
-    if (!IsOnGrid(CornerLL))
+    if (!IsOnGrid(cornerLL))
         asThrowException(_("The given area does not match a gaussian grid."));
-    if (!IsOnGrid(CornerLR))
+    if (!IsOnGrid(cornerLR))
         asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double Xmin, int Xptsnb, double Ymin, int Yptsnb,
-                                                               asGeo::GridType type, float Level, float Height,
+asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb,
+                                                               asGeo::GridType type, float level, float height,
                                                                int flatAllowed)
-        : asGeoAreaCompositeGrid(Level, Height)
+        : asGeoAreaCompositeGrid(level, height)
 {
     m_gridType = type;
 
@@ -60,36 +60,36 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double Xmin, int 
     asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
 
     // Check input
-    if (!IsOnGrid(Xmin, Ymin))
-        asThrowException(wxString::Format(_("The given area does not match a gaussian grid (Xmin = %g, Ymin = %g)."),
-                                          Xmin, Ymin));
+    if (!IsOnGrid(xMin, yMin))
+        asThrowException(wxString::Format(_("The given area does not match a gaussian grid (xMin = %g, yMin = %g)."),
+                                          xMin, yMin));
 
     // Get real size to generate parent member variables
-    int indexXmin = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
-    int indexYmin = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);
+    int indexXmin = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int indexYmin = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
     wxASSERT(indexXmin >= 0);
     wxASSERT(indexYmin >= 0);
-    wxASSERT(m_fullAxisX.size() > indexXmin + Xptsnb - 1);
-    wxASSERT(m_fullAxisY.size() > indexYmin + Yptsnb - 1);
-    wxASSERT(Xptsnb >= 0);
-    wxASSERT(Yptsnb >= 0);
-    if (m_fullAxisX.size() <= indexXmin + Xptsnb - 1)
+    wxASSERT(m_fullAxisX.size() > indexXmin + xPtsNb - 1);
+    wxASSERT(m_fullAxisY.size() > indexYmin + yPtsNb - 1);
+    wxASSERT(xPtsNb >= 0);
+    wxASSERT(yPtsNb >= 0);
+    if (m_fullAxisX.size() <= indexXmin + xPtsNb - 1)
         asThrowException(_("The given width exceeds the grid size of the Gaussian grid."));
-    if (m_fullAxisY.size() <= indexYmin + Yptsnb - 1)
+    if (m_fullAxisY.size() <= indexYmin + yPtsNb - 1)
         asThrowException(_("The given height exceeds the grid size of the Gaussian grid."));
-    if (Xptsnb < 0)
+    if (xPtsNb < 0)
         asThrowException(wxString::Format(_("The given width (points number) is not consistent in the Gaussian grid: %d"),
-                                          Xptsnb));
-    if (Yptsnb < 0)
+                                          xPtsNb));
+    if (yPtsNb < 0)
         asThrowException(wxString::Format(_("The given height (points number) is not consistent in the Gaussian grid: %d"),
-                                          Yptsnb));
+                                          yPtsNb));
     if (indexXmin < 0 || indexYmin < 0)
         asThrowException(_("Negative indices found when building the Gaussian grid."));
-    double Xwidth = m_fullAxisX[indexXmin + Xptsnb - 1] - m_fullAxisX[indexXmin];
-    double Ywidth = m_fullAxisY[indexYmin + Yptsnb - 1] - m_fullAxisY[indexYmin];
+    double xWidth = m_fullAxisX[indexXmin + xPtsNb - 1] - m_fullAxisX[indexXmin];
+    double yWidth = m_fullAxisY[indexYmin + yPtsNb - 1] - m_fullAxisY[indexYmin];
 
     // Regenerate with correct sizes
-    Generate(Xmin, Xwidth, Ymin, Ywidth, flatAllowed);
+    Generate(xMin, xWidth, yMin, yWidth, flatAllowed);
 }
 
 asGeoAreaCompositeGaussianGrid::~asGeoAreaCompositeGaussianGrid()
@@ -110,46 +110,46 @@ bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *othera
 
 a1d asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
 {
-    double Xmin = GetComposite(compositeNb).GetXmin();
-    double Xmax = GetComposite(compositeNb).GetXmax();
+    double xMin = GetComposite(compositeNb).GetXmin();
+    double xMax = GetComposite(compositeNb).GetXmax();
 
-    int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
-    int XmaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmax, 0.01);
+    int xMinIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int xMaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
 
-    wxASSERT(XminIndex >= 0);
-    wxASSERT(XmaxIndex >= 0);
-    wxASSERT(XmaxIndex >= XminIndex);
+    wxASSERT(xMinIndex >= 0);
+    wxASSERT(xMaxIndex >= 0);
+    wxASSERT(xMaxIndex >= xMinIndex);
 
-    return m_fullAxisX.segment(XminIndex, XmaxIndex - XminIndex + 1);
+    return m_fullAxisX.segment(xMinIndex, xMaxIndex - xMinIndex + 1);
 }
 
 a1d asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
 {
-    double Ymin = GetComposite(compositeNb).GetYmin();
-    double Ymax = GetComposite(compositeNb).GetYmax();
+    double yMin = GetComposite(compositeNb).GetYmin();
+    double yMax = GetComposite(compositeNb).GetYmax();
 
-    int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);
-    int YmaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymax, 0.01);
+    int yMinIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
+    int yMaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
 
-    wxASSERT(YminIndex >= 0);
-    wxASSERT(YmaxIndex >= 0);
-    wxASSERT(YmaxIndex >= YminIndex);
+    wxASSERT(yMinIndex >= 0);
+    wxASSERT(yMaxIndex >= 0);
+    wxASSERT(yMaxIndex >= yMinIndex);
 
-    return m_fullAxisY.segment(YminIndex, YmaxIndex - YminIndex + 1);
+    return m_fullAxisY.segment(yMinIndex, yMaxIndex - yMinIndex + 1);
 }
 
 int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
-    double Xmin = GetComposite(compositeNb).GetXmin();
-    double Xmax = GetComposite(compositeNb).GetXmax();
+    double xMin = GetComposite(compositeNb).GetXmin();
+    double xMax = GetComposite(compositeNb).GetXmax();
 
-    int XminIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmin, 0.01);
-    int XmaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xmax, 0.01);
+    int xMinIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int xMaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
 
-    wxASSERT(XminIndex >= 0);
-    wxASSERT(XmaxIndex >= 0);
+    wxASSERT(xMinIndex >= 0);
+    wxASSERT(xMaxIndex >= 0);
 
-    int ptsnb = XmaxIndex - XminIndex;
+    int ptsnb = xMaxIndex - xMinIndex;
 
     if (compositeNb == 0) // from 0
     {
@@ -166,16 +166,16 @@ int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
 
 int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
-    double Ymin = GetComposite(compositeNb).GetYmin();
-    double Ymax = GetComposite(compositeNb).GetYmax();
+    double yMin = GetComposite(compositeNb).GetYmin();
+    double yMax = GetComposite(compositeNb).GetYmax();
 
-    int YminIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymin, 0.01);
-    int YmaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ymax, 0.01);
+    int yMinIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
+    int yMaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
 
-    wxASSERT(YminIndex >= 0);
-    wxASSERT(YmaxIndex >= 0);
+    wxASSERT(yMinIndex >= 0);
+    wxASSERT(yMaxIndex >= 0);
 
-    int ptsnb = YmaxIndex - YminIndex;
+    int ptsnb = yMaxIndex - yMinIndex;
     ptsnb += 1;
 
     return ptsnb;
@@ -283,13 +283,13 @@ bool asGeoAreaCompositeGaussianGrid::IsOnGrid(const Coo &point) const
     return true;
 }
 
-bool asGeoAreaCompositeGaussianGrid::IsOnGrid(double Xcoord, double Ycoord) const
+bool asGeoAreaCompositeGaussianGrid::IsOnGrid(double xCoord, double yCoord) const
 {
-    int foundX = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], Xcoord, 0.01);
+    int foundX = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xCoord, 0.01);
     if ((foundX == asNOT_FOUND) || (foundX == asOUT_OF_RANGE))
         return false;
 
-    int foundY = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], Ycoord, 0.01);
+    int foundY = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yCoord, 0.01);
     if ((foundY == asNOT_FOUND) || (foundY == asOUT_OF_RANGE))
         return false;
 

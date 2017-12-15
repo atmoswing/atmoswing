@@ -69,8 +69,8 @@ bool asResultsDates::Save()
     BuildFileName();
 
     // Get the elements size
-    size_t Ntime = (size_t) m_analogsCriteria.rows();
-    size_t Nanalogs = (size_t) m_analogsCriteria.cols();
+    size_t nTime = (size_t) m_analogsCriteria.rows();
+    size_t nAnalogs = (size_t) m_analogsCriteria.cols();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -83,19 +83,19 @@ bool asResultsDates::Save()
 
     // Define dimensions. Time is the unlimited dimension.
     ncFile.DefDim("time");
-    ncFile.DefDim("analogs", Nanalogs);
+    ncFile.DefDim("analogs", nAnalogs);
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    vstds DimNames1;
-    DimNames1.push_back("time");
-    vstds DimNames2;
-    DimNames2.push_back("time");
-    DimNames2.push_back("analogs");
+    vstds dimNames1;
+    dimNames1.push_back("time");
+    vstds dimNames2;
+    dimNames2.push_back("time");
+    dimNames2.push_back("analogs");
 
     // Define variables: the analogcriteria and the corresponding dates
-    ncFile.DefVar("target_dates", NC_FLOAT, 1, DimNames1);
-    ncFile.DefVar("analog_criteria", NC_FLOAT, 2, DimNames2);
-    ncFile.DefVar("analog_dates", NC_FLOAT, 2, DimNames2);
+    ncFile.DefVar("target_dates", NC_FLOAT, 1, dimNames1);
+    ncFile.DefVar("analog_criteria", NC_FLOAT, 2, dimNames2);
+    ncFile.DefVar("analog_dates", NC_FLOAT, 2, dimNames2);
     ncFile.DefVarDeflate("analog_dates");
 
     // Put attributes
@@ -108,9 +108,9 @@ bool asResultsDates::Save()
 
     // Provide sizes for variables
     size_t start1D[] = {0};
-    size_t count1D[] = {Ntime};
+    size_t count1D[] = {nTime};
     size_t start2D[] = {0, 0};
-    size_t count2D[] = {Ntime, Nanalogs};
+    size_t count2D[] = {nTime, nAnalogs};
 
     // Write data
     ncFile.PutVarArray("target_dates", start1D, count1D, &m_targetDates(0));
@@ -141,11 +141,11 @@ bool asResultsDates::Load()
     }
 
     // Get the elements size
-    size_t Ntime = ncFile.GetDimLength("time");
-    size_t Nanalogs = ncFile.GetDimLength("analogs");
+    size_t nTime = ncFile.GetDimLength("time");
+    size_t nAnalogs = ncFile.GetDimLength("analogs");
 
     // Get time
-    m_targetDates.resize(Ntime);
+    m_targetDates.resize(nTime);
     ncFile.GetVar("target_dates", &m_targetDates[0]);
 
     // Check last value
@@ -157,11 +157,11 @@ bool asResultsDates::Load()
 
     // Sizes
     size_t startTA[] = {0, 0};
-    size_t countTA[] = {Ntime, Nanalogs};
+    size_t countTA[] = {nTime, nAnalogs};
 
     // Resize containers
-    m_analogsCriteria.resize(Ntime, Nanalogs);
-    m_analogsDates.resize(Ntime, Nanalogs);
+    m_analogsCriteria.resize(nTime, nAnalogs);
+    m_analogsDates.resize(nTime, nAnalogs);
 
     // Get data
     ncFile.GetVarArray("analog_criteria", startTA, countTA, &m_analogsCriteria(0));

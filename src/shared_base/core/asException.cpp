@@ -79,11 +79,11 @@ asException::asException(const wxString &message, const char *filename, unsigned
 {
     m_previous = prevexception.m_previous;
 
-    PrevExceptions Previous;
-    Previous.message = prevexception.m_message;
-    Previous.fileName = prevexception.m_fileName;
-    Previous.lineNum = prevexception.m_lineNum;
-    m_previous.push_back(&Previous);
+    PrevExceptions previous;
+    previous.message = prevexception.m_message;
+    previous.fileName = prevexception.m_fileName;
+    previous.lineNum = prevexception.m_lineNum;
+    m_previous.push_back(&previous);
 
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
@@ -98,11 +98,11 @@ asException::asException(const std::string &message, const char *filename, unsig
 {
     m_previous = prevexception.m_previous;
 
-    PrevExceptions Previous;
-    Previous.message = prevexception.m_message;
-    Previous.fileName = prevexception.m_fileName;
-    Previous.lineNum = prevexception.m_lineNum;
-    m_previous.push_back(&Previous);
+    PrevExceptions previous;
+    previous.message = prevexception.m_message;
+    previous.fileName = prevexception.m_fileName;
+    previous.lineNum = prevexception.m_lineNum;
+    m_previous.push_back(&previous);
 
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
@@ -117,11 +117,11 @@ asException::asException(const char *message, const char *filename, unsigned int
 {
     m_previous = prevexception.m_previous;
 
-    PrevExceptions Previous;
-    Previous.message = prevexception.m_message;
-    Previous.fileName = prevexception.m_fileName;
-    Previous.lineNum = prevexception.m_lineNum;
-    m_previous.push_back(&Previous);
+    PrevExceptions previous;
+    previous.message = prevexception.m_message;
+    previous.fileName = prevexception.m_fileName;
+    previous.lineNum = prevexception.m_lineNum;
+    m_previous.push_back(&previous);
 
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);

@@ -34,13 +34,13 @@
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
 {
-    double Xmin = 10;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 10;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -116,13 +116,13 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
 {
-    double Xmin = -3;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = -3;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -182,13 +182,13 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 0;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -244,13 +244,13 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
 {
-    double Xmin = 360;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 360;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -306,13 +306,13 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderRight)
 {
-    double Xmin = -3;
-    double Xwidth = 3;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = -3;
+    double xWidth = 3;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);

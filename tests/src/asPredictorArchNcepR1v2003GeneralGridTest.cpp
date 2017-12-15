@@ -35,14 +35,14 @@
 
 TEST(PredictorArchNcepR1v2003General, LoadEasy)
 {
-    double Xmin = 10;
-    int Xptsnb = 5;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = 10;
+    int xPtsNb = 5;
+    double yMin = 35;
+    int yPtsNb = 3;
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -124,14 +124,14 @@ TEST(PredictorArchNcepR1v2003General, LoadEasy)
 
 TEST(PredictorArchNcepR1v2003General, LoadComposite)
 {
-    double Xmin = -10;
-    int Xptsnb = 7;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = -10;
+    int xPtsNb = 7;
+    double yMin = 35;
+    int yPtsNb = 3;
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -221,14 +221,14 @@ TEST(PredictorArchNcepR1v2003General, LoadComposite)
 
 TEST(PredictorArchNcepR1v2003General, LoadBorderLeft)
 {
-    double Xmin = 0;
-    int Xptsnb = 3;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = 0;
+    int xPtsNb = 3;
+    double yMin = 35;
+    int yPtsNb = 3;
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -290,14 +290,14 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeft)
 
 TEST(PredictorArchNcepR1v2003General, LoadBorderLeftOn720)
 {
-    double Xmin = 360;
-    int Xptsnb = 3;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = 360;
+    int xPtsNb = 3;
+    double yMin = 35;
+    int yPtsNb = 3;
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -359,14 +359,14 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeftOn720)
 
 TEST(PredictorArchNcepR1v2003General, LoadBorderRight)
 {
-    double Xmin = 350;
-    int Xptsnb = 5;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = 350;
+    int xPtsNb = 5;
+    double yMin = 35;
+    int yPtsNb = 3;
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -434,15 +434,15 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderRight)
 
 TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLon)
 {
-    double Xmin = -10;
-    int Xptsnb = 7;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = -10;
+    int xPtsNb = 7;
+    double yMin = 35;
+    int yPtsNb = 3;
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -507,15 +507,15 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLon)
 
 TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonMoved)
 {
-    double Xmin = -7.5;
-    int Xptsnb = 5;
-    double Ymin = 35;
-    int Yptsnb = 3;
+    double xMin = -7.5;
+    int xPtsNb = 5;
+    double yMin = 35;
+    int yPtsNb = 3;
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -565,15 +565,15 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonMoved)
 
 TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLat)
 {
-    double Xmin = -10;
-    int Xptsnb = 4;
-    double Ymin = 35;
-    int Yptsnb = 2;
+    double xMin = -10;
+    int xPtsNb = 4;
+    double yMin = 35;
+    int yPtsNb = 2;
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -632,15 +632,15 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLat)
 
 TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLatTime)
 {
-    double Xmin = -10;
-    int Xptsnb = 4;
-    double Ymin = 35;
-    int Yptsnb = 2;
+    double xMin = -10;
+    int xPtsNb = 4;
+    double yMin = 35;
+    int yPtsNb = 2;
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -688,15 +688,15 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLatTime)
 
 TEST(PredictorArchNcepR1v2003General, SetData)
 {
-    double Xmin = -10;
-    int Xptsnb = 4;
-    double Ymin = 35;
-    int Yptsnb = 2;
+    double xMin = -10;
+    int xPtsNb = 4;
+    double yMin = 35;
+    int yPtsNb = 2;
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, steplon, Ymin, Yptsnb,
+    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);

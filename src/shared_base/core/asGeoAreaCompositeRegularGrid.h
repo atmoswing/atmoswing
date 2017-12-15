@@ -36,12 +36,12 @@ class asGeoAreaCompositeRegularGrid
         : public asGeoAreaCompositeGrid
 {
 public:
-    asGeoAreaCompositeRegularGrid(const Coo &CornerUL, const Coo &CornerUR, const Coo &CornerLL, const Coo &CornerLR,
-                                  double Xstep, double Ystep, float Level = asNONE, float Height = asNONE,
+    asGeoAreaCompositeRegularGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                                  double xStep, double yStep, float level = asNONE, float height = asNONE,
                                   int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeRegularGrid(double Xmin, double Xwidth, double Xstep, double Ymin, double Ywidth, double Ystep,
-                                  float Level = asNONE, float Height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asGeoAreaCompositeRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                                  float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     virtual ~asGeoAreaCompositeRegularGrid();
 

@@ -28,25 +28,25 @@
 #include "asDialogProgressBar.h"
 
 
-asDialogProgressBar::asDialogProgressBar(const wxString &DialogMessage, int ValueMax)
+asDialogProgressBar::asDialogProgressBar(const wxString &dialogMessage, int valueMax)
         : m_progressBar(nullptr),
           m_initiated(false),
           m_steps(100),
           m_delayUpdate(false),
-          m_valueMax(ValueMax),
+          m_valueMax(valueMax),
           m_currentStepIndex(0)
 {
     if (!g_silentMode) {
-        if (ValueMax > 2 * m_steps) {
+        if (valueMax > 2 * m_steps) {
             m_delayUpdate = true;
             m_vectorSteps.resize((unsigned long) (m_steps + 1));
             for (int i = 0; i <= m_steps; i++) {
-                m_vectorSteps[i] = i * ValueMax / m_steps;
+                m_vectorSteps[i] = i * valueMax / m_steps;
             }
         }
 
-        if (ValueMax > 10) {
-            m_progressBar = new wxProgressDialog(_("Please wait"), DialogMessage, ValueMax, NULL,
+        if (valueMax > 10) {
+            m_progressBar = new wxProgressDialog(_("Please wait"), dialogMessage, valueMax, NULL,
                                                  wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME |
                                                  wxPD_ELAPSED_TIME | wxPD_SMOOTH); // wxPD_APP_MODAL |
             m_initiated = true;
@@ -75,28 +75,28 @@ void asDialogProgressBar::Destroy()
     }
 }
 
-bool asDialogProgressBar::Update(int Value, const wxString &Message)
+bool asDialogProgressBar::Update(int value, const wxString &message)
 {
-    wxString NewMessage = Message;
+    wxString newMessage = message;
 
     if (m_initiated) {
         if (m_delayUpdate) {
-            if (Value >= m_vectorSteps[m_currentStepIndex]) {
+            if (value >= m_vectorSteps[m_currentStepIndex]) {
                 m_currentStepIndex++;
                 if (g_verboseMode) {
-                    if (!Message.IsEmpty()) {
-                        NewMessage = Message + wxString::Format("(%d/%d)", Value, m_valueMax);
+                    if (!message.IsEmpty()) {
+                        newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
                     }
                 }
-                return m_progressBar->Update(Value, NewMessage);
+                return m_progressBar->Update(value, newMessage);
             }
         } else {
             if (g_verboseMode) {
-                if (!Message.IsEmpty()) {
-                    NewMessage = Message + wxString::Format("(%d/%d)", Value, m_valueMax);
+                if (!message.IsEmpty()) {
+                    newMessage = message + wxString::Format("(%d/%d)", value, m_valueMax);
                 }
             }
-            return m_progressBar->Update(Value, NewMessage);
+            return m_progressBar->Update(value, newMessage);
         }
     }
     return true;

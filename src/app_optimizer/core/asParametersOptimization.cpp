@@ -746,16 +746,16 @@ bool asParametersOptimization::SetSpatialWindowProperties()
 {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-            double Xshift = std::fmod(GetPredictorXminLowerLimit(iStep, iPtor), GetPredictorXstep(iStep, iPtor));
-            if (Xshift < 0)
-                Xshift += GetPredictorXstep(iStep, iPtor);
-            if (!SetPredictorXshift(iStep, iPtor, Xshift))
+            double xShift = std::fmod(GetPredictorXminLowerLimit(iStep, iPtor), GetPredictorXstep(iStep, iPtor));
+            if (xShift < 0)
+                xShift += GetPredictorXstep(iStep, iPtor);
+            if (!SetPredictorXshift(iStep, iPtor, xShift))
                 return false;
 
-            double Yshift = std::fmod(GetPredictorYminLowerLimit(iStep, iPtor), GetPredictorYstep(iStep, iPtor));
-            if (Yshift < 0)
-                Yshift += GetPredictorYstep(iStep, iPtor);
-            if (!SetPredictorYshift(iStep, iPtor, Yshift))
+            double yShift = std::fmod(GetPredictorYminLowerLimit(iStep, iPtor), GetPredictorYstep(iStep, iPtor));
+            if (yShift < 0)
+                yShift += GetPredictorYstep(iStep, iPtor);
+            if (!SetPredictorYshift(iStep, iPtor, yShift))
                 return false;
 
             if (GetPredictorXptsnbLowerLimit(iStep, iPtor) <= 1 || GetPredictorYptsnbLowerLimit(iStep, iPtor) <= 1)
@@ -790,21 +790,21 @@ bool asParametersOptimization::SetPreloadingProperties()
                 }
 
                 if (!IsPredictorXptsnbLocked(iStep, iPtor)) {
-                    int Xbaseptsnb = std::abs(
+                    int xBasePtsNb = std::abs(
                             GetPredictorXminUpperLimit(iStep, iPtor) - GetPredictorXminLowerLimit(iStep, iPtor)) /
                                      GetPredictorXstep(iStep, iPtor);
                     SetPreloadXptsnb(iStep, iPtor,
-                                     Xbaseptsnb + GetPredictorXptsnbUpperLimit(iStep, iPtor)); // No need to add +1
+                                     xBasePtsNb + GetPredictorXptsnbUpperLimit(iStep, iPtor)); // No need to add +1
                 } else {
                     SetPreloadXptsnb(iStep, iPtor, GetPredictorXptsnb(iStep, iPtor));
                 }
 
                 if (!IsPredictorYptsnbLocked(iStep, iPtor)) {
-                    int Ybaseptsnb = std::abs(
+                    int yBasePtsNb = std::abs(
                             GetPredictorYminUpperLimit(iStep, iPtor) - GetPredictorYminLowerLimit(iStep, iPtor)) /
                                      GetPredictorYstep(iStep, iPtor);
                     SetPreloadYptsnb(iStep, iPtor,
-                                     Ybaseptsnb + GetPredictorYptsnbUpperLimit(iStep, iPtor)); // No need to add +1
+                                     yBasePtsNb + GetPredictorYptsnbUpperLimit(iStep, iPtor)); // No need to add +1
                 } else {
                     SetPreloadYptsnb(iStep, iPtor, GetPredictorYptsnb(iStep, iPtor));
                 }

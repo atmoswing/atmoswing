@@ -134,7 +134,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #if wxUSE_GUI
             // The progress bar
             wxString dialogmessage = _("Downloading predictors.\n");
-            asDialogProgressBar ProgressBar(dialogmessage, urls.size());
+            asDialogProgressBar progressBar(dialogmessage, urls.size());
 #endif
 
             // Set a buffer for the error messages
@@ -170,7 +170,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) +
                                                wxString::Format(_("Downloading: %d / %d files"), iFile + 1,
                                                                 (int) urls.size());
-                if (!ProgressBar.Update(iFile, updatedialogmessage)) {
+                if (!progressBar.Update(iFile, updatedialogmessage)) {
                     wxLogVerbose(_("The download has been canceled by the user."));
                     wxDELETEA(errorbuffer);
                     return asCANCELLED;
@@ -227,7 +227,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             }
 
 #if wxUSE_GUI
-            ProgressBar.Destroy();
+            progressBar.Destroy();
 #endif
 
             // Always cleanup

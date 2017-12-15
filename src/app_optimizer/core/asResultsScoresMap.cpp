@@ -129,9 +129,9 @@ bool asResultsScoresMap::Save(asParametersCalibration &params)
     MakeMap();
 
     // Get the elements size
-    size_t Nlon = (size_t) m_mapLon.size();
-    size_t Nlat = (size_t) m_mapLat.size();
-    size_t Nlevel = (size_t) m_mapLevel.size();
+    size_t nLon = (size_t) m_mapLon.size();
+    size_t nLat = (size_t) m_mapLat.size();
+    size_t nLevel = (size_t) m_mapLevel.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -143,27 +143,27 @@ bool asResultsScoresMap::Save(asParametersCalibration &params)
     }
 
     // Define dimensions. Time is the unlimited dimension.
-    ncFile.DefDim("lon", Nlon);
-    ncFile.DefDim("lat", Nlat);
-    ncFile.DefDim("level", Nlevel);
+    ncFile.DefDim("lon", nLon);
+    ncFile.DefDim("lat", nLat);
+    ncFile.DefDim("level", nLevel);
 
     // The dimensions name array is used to pass the dimensions to the variable.
-    vstds DimNamesLon;
-    DimNamesLon.push_back("lon");
-    vstds DimNamesLat;
-    DimNamesLat.push_back("lat");
-    vstds DimNamesLevel;
-    DimNamesLevel.push_back("level");
-    vstds DimNames3;
-    DimNames3.push_back("level");
-    DimNames3.push_back("lat");
-    DimNames3.push_back("lon");
+    vstds dimNamesLon;
+    dimNamesLon.push_back("lon");
+    vstds dimNamesLat;
+    dimNamesLat.push_back("lat");
+    vstds dimNamesLevel;
+    dimNamesLevel.push_back("level");
+    vstds dimNames3;
+    dimNames3.push_back("level");
+    dimNames3.push_back("lat");
+    dimNames3.push_back("lon");
 
     // Define variables: the scores and the corresponding dates
-    ncFile.DefVar("scores", NC_FLOAT, 3, DimNames3);
-    ncFile.DefVar("lat", NC_FLOAT, 1, DimNamesLat);
-    ncFile.DefVar("level", NC_FLOAT, 1, DimNamesLevel);
-    ncFile.DefVar("lon", NC_FLOAT, 1, DimNamesLon);
+    ncFile.DefVar("scores", NC_FLOAT, 3, dimNames3);
+    ncFile.DefVar("lat", NC_FLOAT, 1, dimNamesLat);
+    ncFile.DefVar("level", NC_FLOAT, 1, dimNamesLevel);
+    ncFile.DefVar("lon", NC_FLOAT, 1, dimNamesLon);
 
     // Put global attributes
     ncFile.PutAtt("Conventions", "COARDS");
@@ -179,24 +179,24 @@ bool asResultsScoresMap::Save(asParametersCalibration &params)
 
     // Provide sizes for variables
     size_t startLon[] = {0};
-    size_t countLon[] = {Nlon};
+    size_t countLon[] = {nLon};
     size_t startLat[] = {0};
-    size_t countLat[] = {Nlat};
+    size_t countLat[] = {nLat};
     size_t startLevel[] = {0};
-    size_t countLevel[] = {Nlevel};
+    size_t countLevel[] = {nLevel};
     size_t start3[] = {0, 0, 0};
-    size_t count3[] = {Nlevel, Nlat, Nlon};
+    size_t count3[] = {nLevel, nLat, nLon};
 
     // Set the scores in a vector
-    vf scores(Nlevel * Nlat * Nlon);
+    vf scores(nLevel * nLat * nLon);
     int ind = 0;
 
-    for (unsigned int iLevel = 0; iLevel < Nlevel; iLevel++) {
-        for (unsigned int iLat = 0; iLat < Nlat; iLat++) {
-            for (unsigned int iLon = 0; iLon < Nlon; iLon++) {
+    for (unsigned int iLevel = 0; iLevel < nLevel; iLevel++) {
+        for (unsigned int iLat = 0; iLat < nLat; iLat++) {
+            for (unsigned int iLon = 0; iLon < nLon; iLon++) {
                 ind = iLon;
-                ind += iLat * Nlon;
-                ind += iLevel * Nlon * Nlat;
+                ind += iLat * nLon;
+                ind += iLevel * nLon * nLat;
                 scores[ind] = m_mapScores[iLevel](iLat, iLon);
             }
         }
