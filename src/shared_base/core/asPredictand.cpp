@@ -596,7 +596,7 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
 }
 
 bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                                      const wxString &directory, const wxString &patternDir)
+                                  const wxString &directory, const wxString &patternDir)
 {
     // Load file
     wxString fileFullPath;

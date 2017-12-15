@@ -35,16 +35,16 @@ g2int getgridindex(g2int number)
 !
 !$$$*/
 {
-           g2int j,getgridindex=-1;
+    g2int j, getgridindex = -1;
 
-           for (j=0;j<MAXGRIDTEMP;j++) {
-              if (number == templatesgrid[j].template_num) {
-                 getgridindex=j;
-                 return(getgridindex);
-              }
-           }
+    for (j = 0; j < MAXGRIDTEMP; j++) {
+        if (number == templatesgrid[j].template_num) {
+            getgridindex = j;
+            return (getgridindex);
+        }
+    }
 
-           return(getgridindex);
+    return (getgridindex);
 }
 
 gtemplate *getgridtemplate(g2int number)
@@ -83,32 +83,31 @@ gtemplate *getgridtemplate(g2int number)
 !
 !$$$*/
 {
-           g2int index;
-           gtemplate *new;
+    g2int index;
+    gtemplate *new;
 
-           index=getgridindex(number);
+    index = getgridindex(number);
 
-           if (index != -1) {
-              new=(gtemplate *)malloc(sizeof(gtemplate));
-              new->type=3;
-              new->num=templatesgrid[index].template_num;
-              new->maplen=templatesgrid[index].mapgridlen;
-              new->needext=templatesgrid[index].needext;
-              new->map=(g2int *)templatesgrid[index].mapgrid;
-              new->extlen=0;
-              new->ext=0;        //NULL
-              return(new);
-           }
-           else {
-             printf("getgridtemplate: GDT Template 3.%d not defined.\n",(int)number);
-             return(0);        //NULL
-           }
+    if (index != -1) {
+        new = (gtemplate *) malloc(sizeof(gtemplate));
+        new->type = 3;
+        new->num = templatesgrid[index].template_num;
+        new->maplen = templatesgrid[index].mapgridlen;
+        new->needext = templatesgrid[index].needext;
+        new->map = (g2int *) templatesgrid[index].mapgrid;
+        new->extlen = 0;
+        new->ext = 0;        //NULL
+        return (new);
+    } else {
+        printf("getgridtemplate: GDT Template 3.%d not defined.\n", (int) number);
+        return (0);        //NULL
+    }
 
-         return(0);        //NULL
+    return (0);        //NULL
 }
 
 
-gtemplate *extgridtemplate(g2int number,g2int *list)
+gtemplate *extgridtemplate(g2int number, g2int *list)
 /*!$$$  SUBPROGRAM DOCUMENTATION BLOCK
 !                .      .    .                                       .
 ! SUBPROGRAM:    extgridtemplate 
@@ -144,67 +143,62 @@ gtemplate *extgridtemplate(g2int number,g2int *list)
 !
 !$$$*/
 {
-           gtemplate *new;
-           g2int index,i;
+    gtemplate *new;
+    g2int index, i;
 
-           index=getgridindex(number);
-           if (index == -1) return(0);
+    index = getgridindex(number);
+    if (index == -1) return (0);
 
-           new=getgridtemplate(number);
+    new = getgridtemplate(number);
 
-           if ( ! new->needext ) return(new);
+    if (!new->needext) return (new);
 
-           if ( number == 120 ) {
-              new->extlen=list[1]*2;
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 if ( i%2 == 0 ) {
-                    new->ext[i]=2;
-                 }
-                 else {
-                    new->ext[i]=-2;
-                 }
-              }
-           }
-           else if ( number == 4 ) {
-              new->extlen=list[7];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=4;
-              }
-              new->extlen=list[8];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=-4;
-              }
-           }
-           else if ( number == 5 ) {
-              new->extlen=list[7];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=4;
-              }
-              new->extlen=list[8];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=-4;
-              }
-           }
-           else if ( number == 1000 ) {
-              new->extlen=list[19];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=4;
-              }
-           }
-           else if ( number == 1200 ) {
-              new->extlen=list[15];
-              new->ext=(g2int *)malloc(sizeof(g2int)*new->extlen);
-              for (i=0;i<new->extlen;i++) {
-                 new->ext[i]=4;
-              }
-           }
+    if (number == 120) {
+        new->extlen = list[1] * 2;
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            if (i % 2 == 0) {
+                new->ext[i] = 2;
+            } else {
+                new->ext[i] = -2;
+            }
+        }
+    } else if (number == 4) {
+        new->extlen = list[7];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = 4;
+        }
+        new->extlen = list[8];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = -4;
+        }
+    } else if (number == 5) {
+        new->extlen = list[7];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = 4;
+        }
+        new->extlen = list[8];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = -4;
+        }
+    } else if (number == 1000) {
+        new->extlen = list[19];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = 4;
+        }
+    } else if (number == 1200) {
+        new->extlen = list[15];
+        new->ext = (g2int *) malloc(sizeof(g2int) * new->extlen);
+        for (i = 0; i < new->extlen; i++) {
+            new->ext[i] = 4;
+        }
+    }
 
-           return(new);
+    return (new);
 
 }

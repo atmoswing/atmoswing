@@ -64,7 +64,7 @@ set(VROOMGIS_PATH:STRING vroomgis/src)
 set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_ROOT})
 configure_file(${CMAKE_SOURCE_DIR}/build/cmake/GetVroomgis.txt ${CMAKE_BINARY_DIR}/vroomgis/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
-execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis" )
+execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
 add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis ${EXTERNAL_DIR})
 include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/src)
 include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/art)
@@ -128,7 +128,7 @@ endif (WIN32)
 
 ##### INSTALLER
 
-install ( TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 
 # Dlls
 if (WIN32)
@@ -143,7 +143,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CURL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "CURL DLL: ${CURL_DLL_NAME}")
+    message(STATUS "CURL DLL: ${CURL_DLL_NAME}")
 
     find_file(PROJ_DLL_NAME
             proj.dll
@@ -156,7 +156,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${PROJ_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "PROJ DLL: ${PROJ_DLL_NAME}")
+    message(STATUS "PROJ DLL: ${PROJ_DLL_NAME}")
 
     find_file(GDAL_DLL_NAME
             gdal200.dll gdal201.dll gdal202.dll gdal203.dll
@@ -169,6 +169,6 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${GDAL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
+    message(STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
 
 endif (WIN32)

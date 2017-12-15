@@ -114,7 +114,7 @@ void asForecastManager::ClearForecasts()
     m_directoriesPastForecasts.Clear();
 
 #if wxUSE_GUI
-    wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
+    wxCommandEvent eventClear(asEVT_ACTION_FORECAST_CLEAR);
     if (m_parent != NULL) {
         m_parent->ProcessWindowEvent(eventClear);
     }
@@ -158,8 +158,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
         // Send event
         wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
         if (m_parent != NULL) {
-            if (doRefresh)
-            {
+            if (doRefresh) {
                 eventNew.SetString("last");
             }
             m_parent->ProcessWindowEvent(eventNew);

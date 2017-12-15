@@ -13,20 +13,21 @@
 /*#include "f2c.h"*/
 #include <stdlib.h>
 #include "grib2.h"
+
 typedef g2int integer;
 typedef g2int logical;
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ int pack_gp(integer *kfildo, integer *ic, integer *nxy, 
-	integer *is523, integer *minpk, integer *inc, integer *missp, integer 
-	*misss, integer *jmin, integer *jmax, integer *lbit, integer *nov, 
-	integer *ndg, integer *lx, integer *ibit, integer *jbit, integer *
-	kbit, integer *novref, integer *lbitref, integer *ier)
+/* Subroutine */ int pack_gp(integer *kfildo, integer *ic, integer *nxy,
+                             integer *is523, integer *minpk, integer *inc, integer *missp, integer
+                             *misss, integer *jmin, integer *jmax, integer *lbit, integer *nov,
+                             integer *ndg, integer *lx, integer *ibit, integer *jbit, integer *
+kbit, integer *novref, integer *lbitref, integer *ier)
 {
     /* Initialized data */
 
-    const  integer mallow = 1073741825;   /*  MALLOW=2**30+1  */
+    const integer mallow = 1073741825;   /*  MALLOW=2**30+1  */
     static integer ifeed = 12;
     static integer ifirst = 0;
 
@@ -38,14 +39,14 @@ typedef g2int logical;
     static logical adda;
     static integer ired, kinc, mina, maxa, minb, maxb, minc, maxc, ibxx2[31];
     static char cfeed[1];
-    static integer nenda, nendb, ibita, ibitb, minak, minbk, maxak, maxbk, 
-	    minck, maxck, nouta, lmiss, itest, nount;
-    extern /* Subroutine */ int reduce(integer *, integer *, integer *, 
-	    integer *, integer *, integer *, integer *, integer *, integer *, 
-	    integer *, integer *, integer *, integer *);
-    static integer ibitbs, mislla, misllb, misllc, iersav, lminpk, ktotal, 
-	    kounta, kountb, kstart, mstart, mintst, maxtst, 
-	    kounts, mintstk, maxtstk;
+    static integer nenda, nendb, ibita, ibitb, minak, minbk, maxak, maxbk,
+            minck, maxck, nouta, lmiss, itest, nount;
+    extern /* Subroutine */ int reduce(integer *, integer *, integer *,
+                                       integer *, integer *, integer *, integer *, integer *, integer *,
+                                       integer *, integer *, integer *, integer *);
+    static integer ibitbs, mislla, misllb, misllc, iersav, lminpk, ktotal,
+            kounta, kountb, kstart, mstart, mintst, maxtst,
+            kounts, mintstk, maxtstk;
     integer *misslx;
 
 
@@ -334,7 +335,7 @@ typedef g2int logical;
 
 
 /*        MISSLX( ) was AN AUTOMATIC ARRAY. */
-    misslx = (integer *)calloc(*ndg,sizeof(integer));
+    misslx = (integer *) calloc(*ndg, sizeof(integer));
 
 
     /* Parameter adjustments */
@@ -349,7 +350,7 @@ typedef g2int logical;
     *ier = 0;
     iersav = 0;
 /*     CALL TIMPR(KFILDO,KFILDO,'START PACK_GP        ') */
-    *(unsigned char *)cfeed = (char) ifeed;
+    *(unsigned char *) cfeed = (char) ifeed;
 
     ired = 0;
 /*        IRED IS A FLAG.  WHEN ZERO, REDUCE WILL BE CALLED. */
@@ -357,7 +358,7 @@ typedef g2int logical;
 /*        THIS CASE PACK_GP EXECUTES AGAIN EXCEPT FOR REDUCE. */
 
     if (*inc <= 0) {
-	iersav = 717;
+        iersav = 717;
 /*        WRITE(KFILDO,101)INC */
 /* 101     FORMAT(/' ****INC ='I8,' NOT CORRECT IN PACK_GP.  1 IS USED.') */
     }
@@ -367,7 +368,7 @@ typedef g2int logical;
 /*        WILL COMPLETE WITHOUT SUBROUTINE REDUCE.  A NON FATAL */
 /*        DIAGNOSTIC RETURN IS PROVIDED. */
 
-L102:
+    L102:
     /*kinc = max(*inc,1);*/
     kinc = (*inc > 1) ? *inc : 1;
     lminpk = *minpk;
@@ -375,30 +376,30 @@ L102:
 /*         CALCULATE THE POWERS OF 2 THE FIRST TIME ENTERED. */
 
     if (ifirst == 0) {
-	ifirst = 1;
-	ibxx2[0] = 1;
+        ifirst = 1;
+        ibxx2[0] = 1;
 
-	for (j = 1; j <= 30; ++j) {
-	    ibxx2[j] = ibxx2[j - 1] << 1;
+        for (j = 1; j <= 30; ++j) {
+            ibxx2[j] = ibxx2[j - 1] << 1;
 /* L104: */
-	}
+        }
 
     }
 
 /*        THERE WILL BE A RESTART AT 105 IS NDG IS NOT LARGE ENOUGH. */
 /*        A NON FATAL DIAGNOSTIC RETURN IS PROVIDED. */
 
-L105:
+    L105:
     kstart = 1;
     ktotal = 0;
     *lx = 0;
     adda = FALSE_;
     lmiss = 0;
     if (*is523 == 1) {
-	lmiss = 1;
+        lmiss = 1;
     }
     if (*is523 == 2) {
-	lmiss = 2;
+        lmiss = 2;
     }
 
 /*        ************************************* */
@@ -429,7 +430,7 @@ L105:
     /*nenda = min(i__1,*nxy);*/
     nenda = (i__1 < *nxy) ? i__1 : *nxy;
     if (*nxy - nenda <= lminpk / 2) {
-	nenda = *nxy;
+        nenda = *nxy;
     }
 /*        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY */
 /*        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS */
@@ -448,130 +449,128 @@ L105:
     if (nenda != *nxy && ic[kstart] == ic[kstart + 1]) {
 /*           NO NEED TO EXECUTE IF FIRST TWO VALUES ARE NOT EQUAL. */
 
-	if (*is523 == 0) {
+        if (*is523 == 0) {
 /*              THIS LOOP IS FOR NO MISSING VALUES. */
 
-	    i__1 = *nxy;
-	    for (k = kstart + 1; k <= i__1; ++k) {
+            i__1 = *nxy;
+            for (k = kstart + 1; k <= i__1; ++k) {
 
-		if (ic[k] != ic[kstart]) {
+                if (ic[k] != ic[kstart]) {
 /* Computing MAX */
-		    i__2 = nenda, i__3 = k - 1;
-		    /*nenda = max(i__2,i__3);*/
-		    nenda = (i__2 > i__3) ? i__2 : i__3;
-		    goto L114;
-		}
+                    i__2 = nenda, i__3 = k - 1;
+                    /*nenda = max(i__2,i__3);*/
+                    nenda = (i__2 > i__3) ? i__2 : i__3;
+                    goto L114;
+                }
 
 /* L111: */
-	    }
+            }
 
-	    nenda = *nxy;
+            nenda = *nxy;
 /*              FALL THROUGH THE LOOP MEANS ALL VALUES ARE THE SAME. */
 
-	} else if (*is523 == 1) {
+        } else if (*is523 == 1) {
 /*              THIS LOOP IS FOR PRIMARY MISSING VALUES ONLY. */
 
-	    i__1 = *nxy;
-	    for (k = kstart + 1; k <= i__1; ++k) {
+            i__1 = *nxy;
+            for (k = kstart + 1; k <= i__1; ++k) {
 
-		if (ic[k] != *missp) {
+                if (ic[k] != *missp) {
 
-		    if (ic[k] != ic[kstart]) {
+                    if (ic[k] != ic[kstart]) {
 /* Computing MAX */
-			i__2 = nenda, i__3 = k - 1;
-			/*nenda = max(i__2,i__3);*/
-			nenda = (i__2 > i__3) ? i__2 : i__3;
-			goto L114;
-		    }
+                        i__2 = nenda, i__3 = k - 1;
+                        /*nenda = max(i__2,i__3);*/
+                        nenda = (i__2 > i__3) ? i__2 : i__3;
+                        goto L114;
+                    }
 
-		}
+                }
 
 /* L112: */
-	    }
+            }
 
-	    nenda = *nxy;
+            nenda = *nxy;
 /*              FALL THROUGH THE LOOP MEANS ALL VALUES ARE THE SAME. */
 
-	} else {
+        } else {
 /*              THIS LOOP IS FOR PRIMARY AND SECONDARY MISSING VALUES. */
 
-	    i__1 = *nxy;
-	    for (k = kstart + 1; k <= i__1; ++k) {
+            i__1 = *nxy;
+            for (k = kstart + 1; k <= i__1; ++k) {
 
-		if (ic[k] != *missp && ic[k] != *misss) {
+                if (ic[k] != *missp && ic[k] != *misss) {
 
-		    if (ic[k] != ic[kstart]) {
+                    if (ic[k] != ic[kstart]) {
 /* Computing MAX */
-			i__2 = nenda, i__3 = k - 1;
-			/*nenda = max(i__2,i__3);*/
-			nenda = (i__2 > i__3) ? i__2 : i__3;
-			goto L114;
-		    }
+                        i__2 = nenda, i__3 = k - 1;
+                        /*nenda = max(i__2,i__3);*/
+                        nenda = (i__2 > i__3) ? i__2 : i__3;
+                        goto L114;
+                    }
 
-		}
+                }
 
 /* L113: */
-	    }
+            }
 
-	    nenda = *nxy;
+            nenda = *nxy;
 /*              FALL THROUGH THE LOOP MEANS ALL VALUES ARE THE SAME. */
-	}
+        }
 
     }
 
-L114:
+    L114:
     if (*is523 == 0) {
 
-	i__1 = nenda;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] < mina) {
-		mina = ic[k];
-		minak = k;
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-		maxak = k;
-	    }
+        i__1 = nenda;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] < mina) {
+                mina = ic[k];
+                minak = k;
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+                maxak = k;
+            }
 /* L115: */
-	}
+        }
 
     } else if (*is523 == 1) {
 
-	i__1 = nenda;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp) {
-		goto L117;
-	    }
-	    if (ic[k] < mina) {
-		mina = ic[k];
-		minak = k;
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-		maxak = k;
-	    }
-L117:
-	    ;
-	}
+        i__1 = nenda;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] == *missp) {
+                goto L117;
+            }
+            if (ic[k] < mina) {
+                mina = ic[k];
+                minak = k;
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+                maxak = k;
+            }
+            L117:;
+        }
 
     } else {
 
-	i__1 = nenda;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp || ic[k] == *misss) {
-		goto L120;
-	    }
-	    if (ic[k] < mina) {
-		mina = ic[k];
-		minak = k;
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-		maxak = k;
-	    }
-L120:
-	    ;
-	}
+        i__1 = nenda;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] == *missp || ic[k] == *misss) {
+                goto L120;
+            }
+            if (ic[k] < mina) {
+                mina = ic[k];
+                minak = k;
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+                maxak = k;
+            }
+            L120:;
+        }
 
     }
 
@@ -582,7 +581,7 @@ L120:
     ktotal += kounta;
     mislla = 0;
     if (mina != mallow) {
-	goto L125;
+        goto L125;
     }
 /*        ALL MISSING VALUES MUST BE ACCOMMODATED. */
     mina = 0;
@@ -590,19 +589,19 @@ L120:
     mislla = 1;
     ibitb = 0;
     if (*is523 != 2) {
-	goto L130;
+        goto L130;
     }
 /*        WHEN ALL VALUES ARE MISSING AND THERE ARE NO */
 /*        SECONDARY MISSING VALUES, IBITA = 0. */
 /*        OTHERWISE, IBITA MUST BE CALCULATED. */
 
-L125:
+    L125:
     itest = maxa - mina + lmiss;
 
     for (ibita = 0; ibita <= 30; ++ibita) {
-	if (itest < ibxx2[ibita]) {
-	    goto L130;
-	}
+        if (itest < ibxx2[ibita]) {
+            goto L130;
+        }
 /* ***        THIS TEST IS THE SAME AS: */
 /* ***     IF(MAXA-MINA.LT.IBXX2(IBITA)-LMISS)GO TO 130 */
 /* L126: */
@@ -614,15 +613,15 @@ L125:
     *ier = 706;
     goto L900;
 
-L130:
+    L130:
 
 /* ***D     WRITE(KFILDO,131)KOUNTA,KTOTAL,MINA,MAXA,IBITA,MISLLA */
 /* ***D131  FORMAT(' AT 130, KOUNTA ='I8,'  KTOTAL ='I8,'  MINA ='I8, */
 /* ***D    1       '  MAXA ='I8,'  IBITA ='I3,'  MISLLA ='I3) */
 
-L133:
+    L133:
     if (ktotal >= *nxy) {
-	goto L200;
+        goto L200;
     }
 
 /*        ************************************* */
@@ -632,7 +631,7 @@ L133:
 
 /*        ************************************* */
 
-L140:
+    L140:
     minb = mallow;
     maxb = -mallow;
     minbk = mallow;
@@ -647,28 +646,28 @@ L140:
 
     if (mstart < *nxy) {
 
-	if (*is523 == 0) {
+        if (*is523 == 0) {
 /*              THIS LOOP IS FOR NO MISSING VALUES. */
 
-	    i__1 = *nxy;
-	    for (k = mstart + 1; k <= i__1; ++k) {
+            i__1 = *nxy;
+            for (k = mstart + 1; k <= i__1; ++k) {
 
-		if (ic[k] != ic[mstart]) {
-		    nendb = k - 1;
-		    goto L150;
-		}
+                if (ic[k] != ic[mstart]) {
+                    nendb = k - 1;
+                    goto L150;
+                }
 
 /* L145: */
-	    }
+            }
 
-	    nendb = *nxy;
+            nendb = *nxy;
 /*              FALL THROUGH THE LOOP MEANS ALL REMAINING VALUES */
 /*              ARE THE SAME. */
-	}
+        }
 
     }
 
-L150:
+    L150:
 /* Computing MAX */
 /* Computing MIN */
     i__3 = ktotal + lminpk;
@@ -679,7 +678,7 @@ L150:
 /* **** 150  NENDB=MIN(KTOTAL+LMINPK,NXY) */
 
     if (*nxy - nendb <= lminpk / 2) {
-	nendb = *nxy;
+        nendb = *nxy;
     }
 /*        ABOVE STATEMENT GUARANTEES THE LAST GROUP IS GT LMINPK/2 BY */
 /*        MAKING THE ACTUAL GROUP LARGER.  IF A PROVISION LIKE THIS IS */
@@ -691,67 +690,65 @@ L150:
 
     if (*is523 == 0) {
 
-	i__1 = nendb;
-	for (k = mstart; k <= i__1; ++k) {
-	    if (ic[k] <= minb) {
-		minb = ic[k];
+        i__1 = nendb;
+        for (k = mstart; k <= i__1; ++k) {
+            if (ic[k] <= minb) {
+                minb = ic[k];
 /*              NOTE LE, NOT LT.  LT COULD BE USED BUT THEN A */
 /*              RECOMPUTE OVER THE WHOLE GROUP WOULD BE NEEDED */
 /*              MORE OFTEN.  SAME REASONING FOR GE AND OTHER */
 /*              LOOPS BELOW. */
-		minbk = k;
-	    }
-	    if (ic[k] >= maxb) {
-		maxb = ic[k];
-		maxbk = k;
-	    }
+                minbk = k;
+            }
+            if (ic[k] >= maxb) {
+                maxb = ic[k];
+                maxbk = k;
+            }
 /* L155: */
-	}
+        }
 
     } else if (*is523 == 1) {
 
-	i__1 = nendb;
-	for (k = mstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp) {
-		goto L157;
-	    }
-	    if (ic[k] <= minb) {
-		minb = ic[k];
-		minbk = k;
-	    }
-	    if (ic[k] >= maxb) {
-		maxb = ic[k];
-		maxbk = k;
-	    }
-L157:
-	    ;
-	}
+        i__1 = nendb;
+        for (k = mstart; k <= i__1; ++k) {
+            if (ic[k] == *missp) {
+                goto L157;
+            }
+            if (ic[k] <= minb) {
+                minb = ic[k];
+                minbk = k;
+            }
+            if (ic[k] >= maxb) {
+                maxb = ic[k];
+                maxbk = k;
+            }
+            L157:;
+        }
 
     } else {
 
-	i__1 = nendb;
-	for (k = mstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp || ic[k] == *misss) {
-		goto L160;
-	    }
-	    if (ic[k] <= minb) {
-		minb = ic[k];
-		minbk = k;
-	    }
-	    if (ic[k] >= maxb) {
-		maxb = ic[k];
-		maxbk = k;
-	    }
-L160:
-	    ;
-	}
+        i__1 = nendb;
+        for (k = mstart; k <= i__1; ++k) {
+            if (ic[k] == *missp || ic[k] == *misss) {
+                goto L160;
+            }
+            if (ic[k] <= minb) {
+                minb = ic[k];
+                minbk = k;
+            }
+            if (ic[k] >= maxb) {
+                maxb = ic[k];
+                maxbk = k;
+            }
+            L160:;
+        }
 
     }
 
     kountb = nendb - ktotal;
     misllb = 0;
     if (minb != mallow) {
-	goto L165;
+        goto L165;
     }
 /*        ALL MISSING VALUES MUST BE ACCOMMODATED. */
     minb = 0;
@@ -760,17 +757,17 @@ L160:
     ibitb = 0;
 
     if (*is523 != 2) {
-	goto L170;
+        goto L170;
     }
 /*        WHEN ALL VALUES ARE MISSING AND THERE ARE NO SECONDARY */
 /*        MISSING VALUES, IBITB = 0.  OTHERWISE, IBITB MUST BE */
 /*        CALCULATED. */
 
-L165:
+    L165:
     for (ibitb = ibitbs; ibitb <= 30; ++ibitb) {
-	if (maxb - minb < ibxx2[ibitb] - lmiss) {
-	    goto L170;
-	}
+        if (maxb - minb < ibxx2[ibitb] - lmiss) {
+            goto L170;
+        }
 /* L166: */
     }
 
@@ -785,7 +782,7 @@ L165:
 /*        IF NOT, TRY TO ADD A'S POINTS TO B, UNLESS ADDITION TO A */
 /*        HAS BEEN DONE.  THIS LATTER IS CONTROLLED WITH ADDA. */
 
-L170:
+    L170:
 
 /* ***D     WRITE(KFILDO,171)KOUNTA,KTOTAL,MINA,MAXA,IBITA,MISLLA, */
 /* ***D    1                               MINB,MAXB,IBITB,MISLLB */
@@ -794,10 +791,10 @@ L170:
 /* ***D    2       '  MINB ='I8,'  MAXB ='I8,'  IBITB ='I3,'  MISLLB ='I3) */
 
     if (ibitb >= ibita) {
-	goto L180;
+        goto L180;
     }
     if (adda) {
-	goto L200;
+        goto L200;
     }
 
 /*        ************************************* */
@@ -820,90 +817,90 @@ L170:
 
     if (*is523 == 0) {
 
-	i__1 = kstart;
-	for (k = ktotal; k >= i__1; --k) {
+        i__1 = kstart;
+        for (k = ktotal; k >= i__1; --k) {
 /*           START WITH THE END OF THE GROUP AND WORK BACKWARDS. */
-	    if (ic[k] < minb) {
-		mintst = ic[k];
-		mintstk = k;
-	    } else if (ic[k] > maxb) {
-		maxtst = ic[k];
-		maxtstk = k;
-	    }
-	    if (maxtst - mintst >= ibxx2[ibitb]) {
-		goto L174;
-	    }
+            if (ic[k] < minb) {
+                mintst = ic[k];
+                mintstk = k;
+            } else if (ic[k] > maxb) {
+                maxtst = ic[k];
+                maxtstk = k;
+            }
+            if (maxtst - mintst >= ibxx2[ibitb]) {
+                goto L174;
+            }
 /*           NOTE THAT FOR THIS LOOP, LMISS = 0. */
-	    minb = mintst;
-	    maxb = maxtst;
-	    minbk = mintstk;
-	    maxbk = maxtstk;
-	    --kounta;
+            minb = mintst;
+            maxb = maxtst;
+            minbk = mintstk;
+            maxbk = maxtstk;
+            --kounta;
 /*           THERE IS ONE LESS POINT NOW IN A. */
 /* L1715: */
-	}
+        }
 
     } else if (*is523 == 1) {
 
-	i__1 = kstart;
-	for (k = ktotal; k >= i__1; --k) {
+        i__1 = kstart;
+        for (k = ktotal; k >= i__1; --k) {
 /*           START WITH THE END OF THE GROUP AND WORK BACKWARDS. */
-	    if (ic[k] == *missp) {
-		goto L1718;
-	    }
-	    if (ic[k] < minb) {
-		mintst = ic[k];
-		mintstk = k;
-	    } else if (ic[k] > maxb) {
-		maxtst = ic[k];
-		maxtstk = k;
-	    }
-	    if (maxtst - mintst >= ibxx2[ibitb] - lmiss) {
-		goto L174;
-	    }
+            if (ic[k] == *missp) {
+                goto L1718;
+            }
+            if (ic[k] < minb) {
+                mintst = ic[k];
+                mintstk = k;
+            } else if (ic[k] > maxb) {
+                maxtst = ic[k];
+                maxtstk = k;
+            }
+            if (maxtst - mintst >= ibxx2[ibitb] - lmiss) {
+                goto L174;
+            }
 /*           FOR THIS LOOP, LMISS = 1. */
-	    minb = mintst;
-	    maxb = maxtst;
-	    minbk = mintstk;
-	    maxbk = maxtstk;
-	    misllb = 0;
+            minb = mintst;
+            maxb = maxtst;
+            minbk = mintstk;
+            maxbk = maxtstk;
+            misllb = 0;
 /*           WHEN THE POINT IS NON MISSING, MISLLB SET = 0. */
-L1718:
-	    --kounta;
+            L1718:
+            --kounta;
 /*           THERE IS ONE LESS POINT NOW IN A. */
 /* L1719: */
-	}
+        }
 
     } else {
 
-	i__1 = kstart;
-	for (k = ktotal; k >= i__1; --k) {
+        i__1 = kstart;
+        for (k = ktotal; k >= i__1; --k) {
 /*           START WITH THE END OF THE GROUP AND WORK BACKWARDS. */
-	    if (ic[k] == *missp || ic[k] == *misss) {
-		goto L1729;
-	    }
-	    if (ic[k] < minb) {
-		mintst = ic[k];
-		mintstk = k;
-	    } else if (ic[k] > maxb) {
-		maxtst = ic[k];
-		maxtstk = k;
-	    }
-	    if (maxtst - mintst >= ibxx2[ibitb] - lmiss) {
-		goto L174;
-	    }
+            if (ic[k] == *missp || ic[k] == *misss) {
+                goto L1729;
+            }
+            if (ic[k] < minb) {
+                mintst = ic[k];
+                mintstk = k;
+            } else if (ic[k] > maxb) {
+                maxtst = ic[k];
+                maxtstk = k;
+            }
+            if (maxtst - mintst >= ibxx2[ibitb] - lmiss) {
+                goto L174;
+            }
 /*           FOR THIS LOOP, LMISS = 2. */
-	    minb = mintst;
-	    maxb = maxtst;
-	    minbk = mintstk;
-	    maxbk = maxtstk;
-	    misllb = 0;
+            minb = mintst;
+            maxb = maxtst;
+            minbk = mintstk;
+            maxbk = maxtstk;
+            misllb = 0;
 /*           WHEN THE POINT IS NON MISSING, MISLLB SET = 0. */
-L1729:
-	    --kounta;
+            L1729:
+            --kounta;
 /*           THERE IS ONE LESS POINT NOW IN A. */
 /* L173: */
-	}
+        }
 
     }
 
@@ -914,9 +911,9 @@ L1729:
 /*        NEEDED TO PACK GROUP B HAVE NOT INCREASED, THE END POINTS */
 /*        OF THE RANGE MAY HAVE). */
 
-L174:
+    L174:
     if (kounta == kounts) {
-	goto L200;
+        goto L200;
     }
 /*        ON TRANSFER, GROUP A WAS NOT CHANGED.  CLOSE IT OUT. */
 
@@ -930,7 +927,7 @@ L174:
     ktotal -= nouta;
     kountb += nouta;
     if (nenda - nouta > minak && nenda - nouta > maxak) {
-	goto L200;
+        goto L200;
     }
 /*        WHEN THE ABOVE TEST IS MET, THE MIN AND MAX OF THE */
 /*        CURRENT GROUP A WERE WITHIN THE OLD GROUP A, SO THE */
@@ -945,75 +942,73 @@ L174:
 
     if (*is523 == 0) {
 
-	i__1 = nenda - nouta;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] < mina) {
-		mina = ic[k];
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-	    }
+        i__1 = nenda - nouta;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] < mina) {
+                mina = ic[k];
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+            }
 /* L1742: */
-	}
+        }
 
     } else if (*is523 == 1) {
 
-	i__1 = nenda - nouta;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp) {
-		goto L1744;
-	    }
-	    if (ic[k] < mina) {
-		mina = ic[k];
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-	    }
-L1744:
-	    ;
-	}
+        i__1 = nenda - nouta;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] == *missp) {
+                goto L1744;
+            }
+            if (ic[k] < mina) {
+                mina = ic[k];
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+            }
+            L1744:;
+        }
 
     } else {
 
-	i__1 = nenda - nouta;
-	for (k = kstart; k <= i__1; ++k) {
-	    if (ic[k] == *missp || ic[k] == *misss) {
-		goto L175;
-	    }
-	    if (ic[k] < mina) {
-		mina = ic[k];
-	    }
-	    if (ic[k] > maxa) {
-		maxa = ic[k];
-	    }
-L175:
-	    ;
-	}
+        i__1 = nenda - nouta;
+        for (k = kstart; k <= i__1; ++k) {
+            if (ic[k] == *missp || ic[k] == *misss) {
+                goto L175;
+            }
+            if (ic[k] < mina) {
+                mina = ic[k];
+            }
+            if (ic[k] > maxa) {
+                maxa = ic[k];
+            }
+            L175:;
+        }
 
     }
 
     mislla = 0;
     if (mina != mallow) {
-	goto L1750;
+        goto L1750;
     }
 /*        ALL MISSING VALUES MUST BE ACCOMMODATED. */
     mina = 0;
     maxa = 0;
     mislla = 1;
     if (*is523 != 2) {
-	goto L177;
+        goto L177;
     }
 /*        WHEN ALL VALUES ARE MISSING AND THERE ARE NO SECONDARY */
 /*        MISSING VALUES IBITA = 0 AS ORIGINALLY SET.  OTHERWISE, */
 /*        IBITA MUST BE CALCULATED. */
 
-L1750:
+    L1750:
     itest = maxa - mina + lmiss;
 
     for (ibita = 0; ibita <= 30; ++ibita) {
-	if (itest < ibxx2[ibita]) {
-	    goto L177;
-	}
+        if (itest < ibxx2[ibita]) {
+            goto L177;
+        }
 /* ***        THIS TEST IS THE SAME AS: */
 /* ***         IF(MAXA-MINA.LT.IBXX2(IBITA)-LMISS)GO TO 177 */
 /* L176: */
@@ -1025,7 +1020,7 @@ L1750:
     *ier = 706;
     goto L900;
 
-L177:
+    L177:
     goto L200;
 
 /*        ************************************* */
@@ -1036,22 +1031,22 @@ L177:
 
 /*        ************************************* */
 
-L180:
+    L180:
     if (mislla == 1) {
-	minc = mallow;
-	minck = mallow;
-	maxc = -mallow;
-	maxck = -mallow;
+        minc = mallow;
+        minck = mallow;
+        maxc = -mallow;
+        maxck = -mallow;
     } else {
-	minc = mina;
-	maxc = maxa;
-	minck = minak;
-	maxck = minak;
+        minc = mina;
+        maxc = maxa;
+        minck = minak;
+        maxck = minak;
     }
 
     nount = 0;
     if (*nxy - (ktotal + kinc) <= lminpk / 2) {
-	kinc = *nxy - ktotal;
+        kinc = *nxy - ktotal;
     }
 /*        ABOVE STATEMENT CONSTRAINS THE LAST GROUP TO BE NOT LESS THAN */
 /*        LMINPK/2 IN SIZE.  IF A PROVISION LIKE THIS IS NOT INCLUDED, */
@@ -1065,67 +1060,67 @@ L180:
     if (*is523 == 0) {
 
 /* Computing MIN */
-	i__2 = ktotal + kinc;
-	/*i__1 = min(i__2,*nxy);*/
-	i__1 = (i__2 < *nxy) ? i__2 : *nxy;
-	for (k = ktotal + 1; k <= i__1; ++k) {
-	    if (ic[k] < minc) {
-		minc = ic[k];
-		minck = k;
-	    }
-	    if (ic[k] > maxc) {
-		maxc = ic[k];
-		maxck = k;
-	    }
-	    ++nount;
+        i__2 = ktotal + kinc;
+        /*i__1 = min(i__2,*nxy);*/
+        i__1 = (i__2 < *nxy) ? i__2 : *nxy;
+        for (k = ktotal + 1; k <= i__1; ++k) {
+            if (ic[k] < minc) {
+                minc = ic[k];
+                minck = k;
+            }
+            if (ic[k] > maxc) {
+                maxc = ic[k];
+                maxck = k;
+            }
+            ++nount;
 /* L185: */
-	}
+        }
 
     } else if (*is523 == 1) {
 
 /* Computing MIN */
-	i__2 = ktotal + kinc;
-	/*i__1 = min(i__2,*nxy);*/
-	i__1 = (i__2 < *nxy) ? i__2 : *nxy;
-	for (k = ktotal + 1; k <= i__1; ++k) {
-	    if (ic[k] == *missp) {
-		goto L186;
-	    }
-	    if (ic[k] < minc) {
-		minc = ic[k];
-		minck = k;
-	    }
-	    if (ic[k] > maxc) {
-		maxc = ic[k];
-		maxck = k;
-	    }
-L186:
-	    ++nount;
+        i__2 = ktotal + kinc;
+        /*i__1 = min(i__2,*nxy);*/
+        i__1 = (i__2 < *nxy) ? i__2 : *nxy;
+        for (k = ktotal + 1; k <= i__1; ++k) {
+            if (ic[k] == *missp) {
+                goto L186;
+            }
+            if (ic[k] < minc) {
+                minc = ic[k];
+                minck = k;
+            }
+            if (ic[k] > maxc) {
+                maxc = ic[k];
+                maxck = k;
+            }
+            L186:
+            ++nount;
 /* L187: */
-	}
+        }
 
     } else {
 
 /* Computing MIN */
-	i__2 = ktotal + kinc;
-	/*i__1 = min(i__2,*nxy);*/
-	i__1 = (i__2 < *nxy) ? i__2 : *nxy;
-	for (k = ktotal + 1; k <= i__1; ++k) {
-	    if (ic[k] == *missp || ic[k] == *misss) {
-		goto L189;
-	    }
-	    if (ic[k] < minc) {
-		minc = ic[k];
-		minck = k;
-	    }
-	    if (ic[k] > maxc) {
-		maxc = ic[k];
-		maxck = k;
-	    }
-L189:
-	    ++nount;
+        i__2 = ktotal + kinc;
+        /*i__1 = min(i__2,*nxy);*/
+        i__1 = (i__2 < *nxy) ? i__2 : *nxy;
+        for (k = ktotal + 1; k <= i__1; ++k) {
+            if (ic[k] == *missp || ic[k] == *misss) {
+                goto L189;
+            }
+            if (ic[k] < minc) {
+                minc = ic[k];
+                minck = k;
+            }
+            if (ic[k] > maxc) {
+                maxc = ic[k];
+                maxck = k;
+            }
+            L189:
+            ++nount;
 /* L190: */
-	}
+        }
 
     }
 
@@ -1140,21 +1135,21 @@ L189:
 /*        THEN THIS GROUP A IS A GROUP TO PACK. */
 
     if (minc == mallow) {
-	minc = mina;
-	maxc = maxa;
-	minck = minak;
-	maxck = maxak;
-	misllc = 1;
-	goto L195;
+        minc = mina;
+        maxc = maxa;
+        minck = minak;
+        maxck = maxak;
+        misllc = 1;
+        goto L195;
 /*           WHEN THE NEW VALUE(S) ARE MISSING, THEY CAN ALWAYS */
 /*           BE ADDED. */
 
     } else {
-	misllc = 0;
+        misllc = 0;
     }
 
     if (maxc - minc >= ibxx2[ibita] - lmiss) {
-	goto L200;
+        goto L200;
     }
 
 /*        THE BITS NECESSARY FOR GROUP C HAS NOT INCREASED FROM THE */
@@ -1162,7 +1157,7 @@ L189:
 /*        COMPUTE THE NEXT GROUP B, ETC., UNLESS ALL POINTS HAVE BEEN */
 /*        USED. */
 
-L195:
+    L195:
     ktotal += nount;
     kounta += nount;
     mina = minc;
@@ -1172,20 +1167,20 @@ L195:
     mislla = misllc;
     adda = TRUE_;
     if (ktotal >= *nxy) {
-	goto L200;
+        goto L200;
     }
 
     if (minbk > ktotal && maxbk > ktotal) {
-	mstart = nendb + 1;
+        mstart = nendb + 1;
 /*           THE MAX AND MIN OF GROUP B WERE NOT FROM THE POINTS */
 /*           REMOVED, SO THE WHOLE GROUP DOES NOT HAVE TO BE LOOKED */
 /*           AT TO DETERMINE THE NEW MAX AND MIN.  RATHER START */
 /*           JUST BEYOND THE OLD NENDB. */
-	ibitbs = ibitb;
-	nendb = 1;
-	goto L150;
+        ibitbs = ibitb;
+        nendb = 1;
+        goto L150;
     } else {
-	goto L140;
+        goto L140;
     }
 
 /*        ************************************* */
@@ -1195,10 +1190,10 @@ L195:
 
 /*        ************************************* */
 
-L200:
+    L200:
     ++(*lx);
     if (*lx <= *ndg) {
-	goto L205;
+        goto L205;
     }
     lminpk += lminpk / 2;
 /*     WRITE(KFILDO,201)NDG,LMINPK,LX */
@@ -1208,7 +1203,7 @@ L200:
     iersav = 716;
     goto L105;
 
-L205:
+    L205:
     jmin[*lx] = mina;
     jmax[*lx] = maxa;
     lbit[*lx] = ibita;
@@ -1216,9 +1211,9 @@ L205:
     kstart = ktotal + 1;
 
     if (mislla == 0) {
-	misslx[*lx - 1] = mallow;
+        misslx[*lx - 1] = mallow;
     } else {
-	misslx[*lx - 1] = ic[ktotal];
+        misslx[*lx - 1] = ic[ktotal];
 /*           IC(KTOTAL) WAS THE LAST VALUE PROCESSED.  IF MISLLA NE 0, */
 /*           THIS MUST BE THE MISSING VALUE FOR THIS GROUP. */
     }
@@ -1230,7 +1225,7 @@ L205:
 /* ***D    2       '  LBIT(LX) ='I5,'  NOV(LX) ='I8,'  MISSLX(LX) =',I7) */
 
     if (ktotal >= *nxy) {
-	goto L209;
+        goto L209;
     }
 
 /*        THE NEW GROUP A WILL BE THE PREVIOUS GROUP B.  SET LIMITS, ETC. */
@@ -1254,19 +1249,18 @@ L205:
 
 /*        ************************************* */
 
-L209:
+    L209:
     *ibit = 0;
 
     i__1 = *lx;
     for (l = 1; l <= i__1; ++l) {
-L210:
-	if (jmin[l] < ibxx2[*ibit]) {
-	    goto L220;
-	}
-	++(*ibit);
-	goto L210;
-L220:
-	;
+        L210:
+        if (jmin[l] < ibxx2[*ibit]) {
+            goto L220;
+        }
+        ++(*ibit);
+        goto L210;
+        L220:;
     }
 
 /*        INSERT THE VALUE IN JMIN( ) TO BE USED FOR ALL MISSING */
@@ -1275,19 +1269,19 @@ L220:
 
     if (*is523 == 1) {
 
-	i__1 = *lx;
-	for (l = 1; l <= i__1; ++l) {
+        i__1 = *lx;
+        for (l = 1; l <= i__1; ++l) {
 
-	    if (lbit[l] == 0) {
+            if (lbit[l] == 0) {
 
-		if (misslx[l - 1] == *missp) {
-		    jmin[l] = ibxx2[*ibit] - 1;
-		}
+                if (misslx[l - 1] == *missp) {
+                    jmin[l] = ibxx2[*ibit] - 1;
+                }
 
-	    }
+            }
 
 /* L226: */
-	}
+        }
 
     }
 
@@ -1310,19 +1304,19 @@ L220:
 
     i__1 = *lx;
     for (k = 1; k <= i__1; ++k) {
-	if (lbit[k] < *lbitref) {
-	    *lbitref = lbit[k];
-	}
+        if (lbit[k] < *lbitref) {
+            *lbitref = lbit[k];
+        }
 /* L230: */
     }
 
     if (*lbitref != 0) {
 
-	i__1 = *lx;
-	for (k = 1; k <= i__1; ++k) {
-	    lbit[k] -= *lbitref;
+        i__1 = *lx;
+        for (k = 1; k <= i__1; ++k) {
+            lbit[k] -= *lbitref;
 /* L240: */
-	}
+        }
 
     }
 
@@ -1338,14 +1332,13 @@ L220:
 
     i__1 = *lx;
     for (k = 1; k <= i__1; ++k) {
-L310:
-	if (lbit[k] < ibxx2[*jbit]) {
-	    goto L320;
-	}
-	++(*jbit);
-	goto L310;
-L320:
-	;
+        L310:
+        if (lbit[k] < ibxx2[*jbit]) {
+            goto L320;
+        }
+        ++(*jbit);
+        goto L310;
+        L320:;
     }
 
 /*        ************************************* */
@@ -1367,19 +1360,19 @@ L320:
 
     i__1 = *lx;
     for (k = 1; k <= i__1; ++k) {
-	if (nov[k] < *novref) {
-	    *novref = nov[k];
-	}
+        if (nov[k] < *novref) {
+            *novref = nov[k];
+        }
 /* L400: */
     }
 
     if (*novref > 0) {
 
-	i__1 = *lx;
-	for (k = 1; k <= i__1; ++k) {
-	    nov[k] -= *novref;
+        i__1 = *lx;
+        for (k = 1; k <= i__1; ++k) {
+            nov[k] -= *novref;
 /* L405: */
-	}
+        }
 
     }
 
@@ -1400,48 +1393,47 @@ L320:
 
     i__1 = *lx;
     for (k = 1; k <= i__1; ++k) {
-L410:
-	if (nov[k] < ibxx2[*kbit]) {
-	    goto L420;
-	}
-	++(*kbit);
-	goto L410;
-L420:
-	;
+        L410:
+        if (nov[k] < ibxx2[*kbit]) {
+            goto L420;
+        }
+        ++(*kbit);
+        goto L410;
+        L420:;
     }
 
 /*        DETERMINE WHETHER THE GROUP SIZES SHOULD BE REDUCED */
 /*        FOR SPACE EFFICIENCY. */
 
     if (ired == 0) {
-	reduce(kfildo, &jmin[1], &jmax[1], &lbit[1], &nov[1], lx, ndg, ibit, 
-		jbit, kbit, novref, ibxx2, ier);
+        reduce(kfildo, &jmin[1], &jmax[1], &lbit[1], &nov[1], lx, ndg, ibit,
+               jbit, kbit, novref, ibxx2, ier);
 
-	if (*ier == 714 || *ier == 715) {
+        if (*ier == 714 || *ier == 715) {
 /*              REDUCE HAS ABORTED.  REEXECUTE PACK_GP WITHOUT REDUCE. */
 /*              PROVIDE FOR A NON FATAL RETURN FROM REDUCE. */
-	    iersav = *ier;
-	    ired = 1;
-	    *ier = 0;
-	    goto L102;
-	}
+            iersav = *ier;
+            ired = 1;
+            *ier = 0;
+            goto L102;
+        }
 
     }
 
-    if ( misslx != 0 ) {
-         free(misslx);
-         misslx=0;
+    if (misslx != 0) {
+        free(misslx);
+        misslx = 0;
     }
 /*     CALL TIMPR(KFILDO,KFILDO,'END   PACK_GP        ') */
     if (iersav != 0) {
-	*ier = iersav;
-	return 0;
+        *ier = iersav;
+        return 0;
     }
 
 /* 900  IF(IER.NE.0)RETURN1 */
 
-L900:
-    if ( misslx != 0 ) free(misslx);
+    L900:
+    if (misslx != 0) free(misslx);
     return 0;
 } /* pack_gp__ */
 

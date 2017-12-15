@@ -61,70 +61,70 @@ IMPLEMENT_APP(AtmoswingAppOptimizer)
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-{
-    { wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit" },
-    { wxCMD_LINE_SWITCH, "s", "silent", "Silent mode" },
-    { wxCMD_LINE_SWITCH, "l", "local", "Work in local directory" },
-    { wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use" },
-    { wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run" },
-    { wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the calibration parameters" },
-    { wxCMD_LINE_OPTION, NULL, "predictand-db", "The predictand DB" },
-    { wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID" },
-    { wxCMD_LINE_OPTION, NULL, "dir-predictors", "The predictors directory" },
-    { wxCMD_LINE_OPTION, NULL, "skip-valid", "Skip the validation calculation" },
-    { wxCMD_LINE_OPTION, NULL, "calibration-method", "Choice of the calibration method"
-                                 "\n \t\t\t\t single: single assessment"
-                                 "\n \t\t\t\t classic: classic calibration"
-                                 "\n \t\t\t\t classicp: classic+ calibration"
-                                 "\n \t\t\t\t varexplocp: variables exploration classic+"
-                                 "\n \t\t\t\t evalscores: evaluate all scores" },
-    { wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration", "Classic plus: resizing iteration" },
-    { wxCMD_LINE_OPTION, NULL, "cp-lat-step", "Classic plus: steps in latitudes for the relevance map" },
-    { wxCMD_LINE_OPTION, NULL, "cp-lon-step", "Classic plus: steps in longitudes for the relevance map" },
-    { wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially" },
-    { wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step" },
-    { wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: options MonteCarloRandomNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel", "GAs: options NaturalSelectionOperator" },
-    { wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: options CouplesSelectionOperator" },
-    { wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: options CrossoverOperator" },
-    { wxCMD_LINE_OPTION, NULL, "ga-ope-mut", "GAs: options MutationOperator" },
-    { wxCMD_LINE_OPTION, NULL, "ga-pop-size", "GAs: options GAsPopulationSize" },
-    { wxCMD_LINE_OPTION, NULL, "ga-conv-steps", "GAs: options GAsConvergenceStepsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-interm-gen", "GAs: options GAsRatioIntermediateGeneration" },
-    { wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p", "GAs: options GAsNaturalSelectionTournamentProbability" },
-    { wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb", "GAs: options GAsCouplesSelectionTournamentNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb", "GAs: options GAsCrossoverMultiplePointsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb", "GAs: options GAsCrossoverBlendingPointsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b", "GAs: options GAsCrossoverBlendingShareBeta" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb", "GAs: options GAsCrossoverLinearPointsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb", "GAs: options GAsCrossoverHeuristicPointsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b", "GAs: options GAsCrossoverHeuristicShareBeta" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb", "GAs: options GAsCrossoverBinaryLikePointsNb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b", "GAs: options GAsCrossoverBinaryLikeShareBeta" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p", "GAs: options GAsMutationsUniformConstantProbability" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p", "GAs: options GAsMutationsNormalConstantProbability" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev", "GAs: options GAsMutationsNormalConstantStdDevRatioRange" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens", "GAs: options GAsMutationsUniformVariableMaxGensNbVar" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt", "GAs: options GAsMutationsUniformVariableProbabilityStart" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end", "GAs: options GAsMutationsUniformVariableProbabilityEnd" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p", "GAs: options GAsMutationsNormalVariableMaxGensNbVarProb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d", "GAs: options GAsMutationsNormalVariableMaxGensNbVarStdDev" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt", "GAs: options GAsMutationsNormalVariableProbabilityStart" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end", "GAs: options GAsMutationsNormalVariableProbabilityEnd" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt", "GAs: options GAsMutationsNormalVariableStdDevStart" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end", "GAs: options GAsMutationsNormalVariableStdDevEnd" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p", "GAs: options GAsMutationsNonUniformProb" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: options GAsMutationsNonUniformMaxGensNbVar" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: options GAsMutationsNonUniformMinRate" },
-    { wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: options GAsMutationsMultiScaleProb" },
+        {
+                {wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
+                {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
+                {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
+                {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
+                {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
+                {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
+                {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
+                {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
+                {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
+                {wxCMD_LINE_OPTION, NULL, "skip-valid",              "Skip the validation calculation"},
+                {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
+                                                                             "\n \t\t\t\t single: single assessment"
+                                                                             "\n \t\t\t\t classic: classic calibration"
+                                                                             "\n \t\t\t\t classicp: classic+ calibration"
+                                                                             "\n \t\t\t\t varexplocp: variables exploration classic+"
+                                                                             "\n \t\t\t\t evalscores: evaluate all scores"},
+                {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration",   "Classic plus: resizing iteration"},
+                {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
+                {wxCMD_LINE_OPTION, NULL, "cp-lon-step",             "Classic plus: steps in longitudes for the relevance map"},
+                {wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
+                {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step"},
+                {wxCMD_LINE_OPTION, NULL, "mc-runs-nb",              "Monte Carlo: options MonteCarloRandomNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel",          "GAs: options NaturalSelectionOperator"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel",         "GAs: options CouplesSelectionOperator"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-cross",            "GAs: options CrossoverOperator"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-mut",              "GAs: options MutationOperator"},
+                {wxCMD_LINE_OPTION, NULL, "ga-pop-size",             "GAs: options GAsPopulationSize"},
+                {wxCMD_LINE_OPTION, NULL, "ga-conv-steps",           "GAs: options GAsConvergenceStepsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-interm-gen",           "GAs: options GAsRatioIntermediateGeneration"},
+                {wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p",       "GAs: options GAsNaturalSelectionTournamentProbability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb",     "GAs: options GAsCouplesSelectionTournamentNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb",     "GAs: options GAsCrossoverMultiplePointsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb",     "GAs: options GAsCrossoverBlendingPointsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b",   "GAs: options GAsCrossoverBlendingShareBeta"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb",      "GAs: options GAsCrossoverLinearPointsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb",     "GAs: options GAsCrossoverHeuristicPointsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b",   "GAs: options GAsCrossoverHeuristicShareBeta"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb",      "GAs: options GAsCrossoverBinaryLikePointsNb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b",    "GAs: options GAsCrossoverBinaryLikeShareBeta"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p",       "GAs: options GAsMutationsUniformConstantProbability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p",       "GAs: options GAsMutationsNormalConstantProbability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev",     "GAs: options GAsMutationsNormalConstantStdDevRatioRange"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens",    "GAs: options GAsMutationsUniformVariableMaxGensNbVar"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt",  "GAs: options GAsMutationsUniformVariableProbabilityStart"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end",   "GAs: options GAsMutationsUniformVariableProbabilityEnd"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",  "GAs: options GAsMutationsNormalVariableMaxGensNbVarProb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",  "GAs: options GAsMutationsNormalVariableMaxGensNbVarStdDev"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt",  "GAs: options GAsMutationsNormalVariableProbabilityStart"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end",   "GAs: options GAsMutationsNormalVariableProbabilityEnd"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt",  "GAs: options GAsMutationsNormalVariableStdDevStart"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end",   "GAs: options GAsMutationsNormalVariableStdDevEnd"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p",        "GAs: options GAsMutationsNonUniformProb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens",     "GAs: options GAsMutationsNonUniformMaxGensNbVar"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r",    "GAs: options GAsMutationsNonUniformMinRate"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p",    "GAs: options GAsMutationsMultiScaleProb"},
 
-    { wxCMD_LINE_OPTION, NULL, "log-level", "Set a log level"
-                                 "\n \t\t\t\t 1: errors"
-                                 "\n \t\t\t\t 2: warnings"
-                                 "\n \t\t\t\t 3: verbose"
-                                 "\n \t\t\t\t 4: debug" },
+                {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
+                                                                             "\n \t\t\t\t 1: errors"
+                                                                             "\n \t\t\t\t 2: warnings"
+                                                                             "\n \t\t\t\t 3: verbose"
+                                                                             "\n \t\t\t\t 4: debug"},
 
-                                                   {wxCMD_LINE_NONE}};
+                {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppOptimizer::OnInit()
 {

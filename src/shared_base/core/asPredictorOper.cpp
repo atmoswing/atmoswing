@@ -377,7 +377,7 @@ bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 }
 
 bool asPredictorOper::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                             asTimeArray &timeArray, vvva2f &compositeData)
+                                      asTimeArray &timeArray, vvva2f &compositeData)
 {
     return false;
 }

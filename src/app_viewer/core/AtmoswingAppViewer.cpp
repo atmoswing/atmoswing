@@ -44,15 +44,15 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include "images.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-    {{wxCMD_LINE_SWITCH, "h", "help",      "This help text"},
-    {wxCMD_LINE_SWITCH, "v", "version",   "Show version number and quit"},
-    {wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
-                             "\n \t\t\t\t 0: minimum"
-                             "\n \t\t\t\t 1: errors"
-                             "\n \t\t\t\t 2: warnings"
-                             "\n \t\t\t\t 3: verbose"},
-    {wxCMD_LINE_PARAM, NULL, NULL,        "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-    {wxCMD_LINE_NONE}};
+        {{wxCMD_LINE_SWITCH, "h", "help",      "This help text"},
+         {wxCMD_LINE_SWITCH, "v", "version",   "Show version number and quit"},
+         {wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
+                                                       "\n \t\t\t\t 0: minimum"
+                                                       "\n \t\t\t\t 1: errors"
+                                                       "\n \t\t\t\t 2: warnings"
+                                                       "\n \t\t\t\t 3: verbose"},
+         {wxCMD_LINE_PARAM, NULL, NULL,        "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+         {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppViewer::OnInit()
 {

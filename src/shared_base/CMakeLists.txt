@@ -160,7 +160,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${PNG_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "PNG DLL: ${PNG_DLL_NAME}")
+    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
 
     find_file(NETCDF_DLL_NAME
             netcdf.dll
@@ -173,7 +173,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${NETCDF_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "NETCDF DLL: ${NETCDF_DLL_NAME}")
+    message(STATUS "NETCDF DLL: ${NETCDF_DLL_NAME}")
 
     find_file(ZLIB_DLL_NAME
             zlib.dll
@@ -186,6 +186,6 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${ZLIB_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message (STATUS "ZLIB DLL: ${ZLIB_DLL_NAME}")
+    message(STATUS "ZLIB DLL: ${ZLIB_DLL_NAME}")
 
 endif (WIN32)

@@ -50,9 +50,9 @@ struct cudaPredictorsDataPropStruct
 class asProcessorCuda
 {
 public:
-    static bool ProcessCriteria(std::vector<std::vector<float *> > &data, std::vector<int> &indicesTarg,
-                                std::vector<std::vector<int> > &indicesArch,
-                                std::vector<std::vector<float> > &resultingCriteria, std::vector<int> &lengths,
+    static bool ProcessCriteria(std::vector <std::vector<float *>> &data, std::vector<int> &indicesTarg,
+                                std::vector <std::vector<int>> &indicesArch,
+                                std::vector <std::vector<float>> &resultingCriteria, std::vector<int> &lengths,
                                 std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights);
 
 protected:

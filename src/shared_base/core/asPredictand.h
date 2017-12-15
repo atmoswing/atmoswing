@@ -55,7 +55,16 @@ public:
 
     enum TemporalResolution
     {
-        Daily, SixHourly, Hourly, OneHourlyMTW, ThreeHourlyMTW, SixHourlyMTW, TwelveHourlyMTW, TwoDays, ThreeDays, Weekly
+        Daily,
+        SixHourly,
+        Hourly,
+        OneHourlyMTW,
+        ThreeHourlyMTW,
+        SixHourlyMTW,
+        TwelveHourlyMTW,
+        TwoDays,
+        ThreeDays,
+        Weekly
     };
 
     enum SpatialAggregation
@@ -64,7 +73,7 @@ public:
     };
 
     asPredictand(Parameter parameter, TemporalResolution temporalResolution,
-                     SpatialAggregation spatialAggregation);
+                 SpatialAggregation spatialAggregation);
 
     virtual ~asPredictand();
 
@@ -86,7 +95,7 @@ public:
                                      const wxString &spatialAggregationStr);
 
     static asPredictand *GetInstance(Parameter parameter, TemporalResolution temporalResolution,
-                                         SpatialAggregation spatialAggregation);
+                                     SpatialAggregation spatialAggregation);
 
     static asPredictand *GetInstance(const wxString &filePath);
 

@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "grib2.h"
 
-g2int g2_unpack3(unsigned char *,g2int *,g2int **,g2int **,
-                         g2int *,g2int **,g2int *);
+g2int g2_unpack3(unsigned char *, g2int *, g2int **, g2int **,
+                 g2int *, g2int **, g2int *);
 
-g2int getpoly(unsigned char *csec3,g2int *jj,g2int *kk,g2int *mm)
+g2int getpoly(unsigned char *csec3, g2int *jj, g2int *kk, g2int *mm)
 //$$$  SUBPROGRAM DOCUMENTATION BLOCK
 //                .      .    .                                       .
 // SUBPROGRAM:    getpoly 
@@ -36,45 +36,42 @@ g2int getpoly(unsigned char *csec3,g2int *jj,g2int *kk,g2int *mm)
 //
 //$$$
 {
-    
-      g2int   *igdstmpl,*list_opt;
-      g2int   *igds;
-      g2int   iofst,igdtlen,num_opt,jerr;
 
-      iofst=0;       // set offset to beginning of section
-      jerr=g2_unpack3(csec3,&iofst,&igds,&igdstmpl,
-                      &igdtlen,&list_opt,&num_opt);
-      if (jerr == 0) {
-         switch ( igds[4] )     //  Template number
-         {
-           case 50:     // Spherical harmonic coefficients
-           case 51:
-           case 52:
-           case 53:
-           {
-              *jj=igdstmpl[0];
-              *kk=igdstmpl[1];
-              *mm=igdstmpl[2];
-              break;
-           }
-           default:
-           {
-              *jj=0;
-              *kk=0;
-              *mm=0;
-              break;
-           }
-         }     // end switch
-      }
-      else {
-         *jj=0;
-         *kk=0;
-         *mm=0;
-      }
-        
-      if (igds != 0) free(igds);
-      if (igdstmpl != 0) free(igdstmpl);
-      if (list_opt != 0) free(list_opt);
+    g2int *igdstmpl, *list_opt;
+    g2int *igds;
+    g2int iofst, igdtlen, num_opt, jerr;
 
-      return 0;
+    iofst = 0;       // set offset to beginning of section
+    jerr = g2_unpack3(csec3, &iofst, &igds, &igdstmpl,
+                      &igdtlen, &list_opt, &num_opt);
+    if (jerr == 0) {
+        switch (igds[4])     //  Template number
+        {
+            case 50:     // Spherical harmonic coefficients
+            case 51:
+            case 52:
+            case 53: {
+                *jj = igdstmpl[0];
+                *kk = igdstmpl[1];
+                *mm = igdstmpl[2];
+                break;
+            }
+            default: {
+                *jj = 0;
+                *kk = 0;
+                *mm = 0;
+                break;
+            }
+        }     // end switch
+    } else {
+        *jj = 0;
+        *kk = 0;
+        *mm = 0;
+    }
+
+    if (igds != 0) free(igds);
+    if (igdstmpl != 0) free(igdstmpl);
+    if (list_opt != 0) free(list_opt);
+
+    return 0;
 }

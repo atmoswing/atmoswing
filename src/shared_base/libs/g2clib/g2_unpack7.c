@@ -4,18 +4,25 @@
 #include <string.h>
 #include "grib2.h"
 
-g2int simunpack(unsigned char *,g2int *, g2int,g2float *);
-int comunpack(unsigned char *,g2int,g2int,g2int *,g2int,g2float *);
-g2int specunpack(unsigned char *,g2int *,g2int,g2int,g2int, g2int, g2float *);
+g2int simunpack(unsigned char *, g2int *, g2int, g2float *);
+
+int comunpack(unsigned char *, g2int, g2int, g2int *, g2int, g2float *);
+
+g2int specunpack(unsigned char *, g2int *, g2int, g2int, g2int, g2int, g2float *);
+
 #ifdef USE_PNG
-  g2int pngunpack(unsigned char *,g2int,g2int *,g2int, g2float *);
+
+g2int pngunpack(unsigned char *, g2int, g2int *, g2int, g2float *);
+
 #endif  /* USE_PNG */
 #ifdef USE_JPEG2000
-  g2int jpcunpack(unsigned char *,g2int,g2int *,g2int, g2float *);
+
+g2int jpcunpack(unsigned char *, g2int, g2int *, g2int, g2float *);
+
 #endif  /* USE_JPEG2000 */
 
-g2int g2_unpack7(unsigned char *cgrib,g2int *iofst,g2int igdsnum,g2int *igdstmpl,
-               g2int idrsnum,g2int *idrstmpl,g2int ndpts,g2float **fld)
+g2int g2_unpack7(unsigned char *cgrib, g2int *iofst, g2int igdsnum, g2int *igdstmpl,
+                 g2int idrsnum, g2int *idrstmpl, g2int ndpts, g2float **fld)
 //$$$  SUBPROGRAM DOCUMENTATION BLOCK
 //                .      .    .                                       .
 // SUBPROGRAM:    g2_unpack7 
@@ -78,75 +85,72 @@ g2int g2_unpack7(unsigned char *cgrib,g2int *iofst,g2int igdsnum,g2int *igdstmpl
 //
 //$$$//
 {
-      g2int ierr,isecnum;
-      g2int ipos,lensec;
-      g2float *lfld;
+    g2int ierr, isecnum;
+    g2int ipos, lensec;
+    g2float *lfld;
 
-      ierr=0;
-      *fld=0;     //NULL
+    ierr = 0;
+    *fld = 0;     //NULL
 
-      gbit(cgrib,&lensec,*iofst,32);        // Get Length of Section
-      *iofst=*iofst+32;    
-      gbit(cgrib,&isecnum,*iofst,8);         // Get Section Number
-      *iofst=*iofst+8;
+    gbit(cgrib, &lensec, *iofst, 32);        // Get Length of Section
+    *iofst = *iofst + 32;
+    gbit(cgrib, &isecnum, *iofst, 8);         // Get Section Number
+    *iofst = *iofst + 8;
 
-      if ( isecnum != 7 ) {
-         ierr=2;
-         //fprintf(stderr,"g2_unpack7: Not Section 7 data.\n");
-         return(ierr);
-      }
+    if (isecnum != 7) {
+        ierr = 2;
+        //fprintf(stderr,"g2_unpack7: Not Section 7 data.\n");
+        return (ierr);
+    }
 
-      ipos=(*iofst/8);
-      lfld=(g2float *)calloc(ndpts ? ndpts : 1,sizeof(g2float));
-      if (lfld == 0) {
-         ierr=6;
-         return(ierr);
-      }
-      else {
-         *fld=lfld;
-      }
+    ipos = (*iofst / 8);
+    lfld = (g2float *) calloc(ndpts ? ndpts : 1, sizeof(g2float));
+    if (lfld == 0) {
+        ierr = 6;
+        return (ierr);
+    } else {
+        *fld = lfld;
+    }
 
-      if (idrsnum == 0) 
-        simunpack(cgrib+ipos,idrstmpl,ndpts,lfld);
-      else if (idrsnum == 2 || idrsnum == 3) {
-        if (comunpack(cgrib+ipos,lensec,idrsnum,idrstmpl,ndpts,lfld) != 0) {
-          return 7;
+    if (idrsnum == 0)
+        simunpack(cgrib + ipos, idrstmpl, ndpts, lfld);
+    else if (idrsnum == 2 || idrsnum == 3) {
+        if (comunpack(cgrib + ipos, lensec, idrsnum, idrstmpl, ndpts, lfld) != 0) {
+            return 7;
         }
-      }
-      else if (idrsnum == 50) {            // Spectral Simple
-        simunpack(cgrib+ipos,idrstmpl,ndpts-1,lfld+1);
-        rdieee(idrstmpl+4,lfld+0,1);
-      }
-      else if (idrsnum == 51)              //  Spectral complex
-        if ( igdsnum>=50 && igdsnum <=53 ) 
-          specunpack(cgrib+ipos,idrstmpl,ndpts,igdstmpl[0],igdstmpl[2],igdstmpl[2],lfld);
+    } else if (idrsnum == 50) {            // Spectral Simple
+        simunpack(cgrib + ipos, idrstmpl, ndpts - 1, lfld + 1);
+        rdieee(idrstmpl + 4, lfld + 0, 1);
+    } else if (idrsnum == 51)              //  Spectral complex
+        if (igdsnum >= 50 && igdsnum <= 53)
+            specunpack(cgrib + ipos, idrstmpl, ndpts, igdstmpl[0], igdstmpl[2], igdstmpl[2], lfld);
         else {
-          fprintf(stderr,"g2_unpack7: Cannot use GDT 3.%d to unpack Data Section 5.51.\n",(int)igdsnum);
-          ierr=5;
-          if ( lfld != 0 ) free(lfld);
-          *fld=0;     //NULL
-          return(ierr);
+            fprintf(stderr, "g2_unpack7: Cannot use GDT 3.%d to unpack Data Section 5.51.\n", (int) igdsnum);
+            ierr = 5;
+            if (lfld != 0) free(lfld);
+            *fld = 0;     //NULL
+            return (ierr);
         }
 #ifdef USE_JPEG2000
-      else if (idrsnum == 40 || idrsnum == 40000) {
-        jpcunpack(cgrib+ipos,lensec-5,idrstmpl,ndpts,lfld);
-        }
+    else if (idrsnum == 40 || idrsnum == 40000) {
+        jpcunpack(cgrib + ipos, lensec - 5, idrstmpl, ndpts, lfld);
+    }
 #endif  /* USE_JPEG2000 */
 #ifdef USE_PNG
-      else if (idrsnum == 41 || idrsnum == 40010) {
-        pngunpack(cgrib+ipos,lensec-5,idrstmpl,ndpts,lfld);
-        }
+    else if (idrsnum == 41 || idrsnum == 40010) {
+        pngunpack(cgrib + ipos, lensec - 5, idrstmpl, ndpts, lfld);
+    }
 #endif  /* USE_PNG */
-      else {
-        fprintf(stderr,"g2_unpack7: Data Representation Template 5.%d not yet implemented.\n",(int)idrsnum);
-        ierr=4;
-        if ( lfld != 0 ) free(lfld);
-        *fld=0;     //NULL
-        return(ierr);
-      }
+    else {
+        fprintf(stderr, "g2_unpack7: Data Representation Template 5.%d not yet implemented.\n", (int) idrsnum);
+        ierr = 4;
+        if (lfld != 0) free(lfld);
+        *fld = 0;     //NULL
+        return (ierr);
+    }
 
-      *iofst=*iofst+(8*lensec);
-      
-      return(ierr);    // End of Section 7 processing
+    *iofst = *iofst + (8 * lensec);
+
+    return (ierr);    // End of Section 7 processing
 
 }

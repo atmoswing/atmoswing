@@ -99,4 +99,4 @@ endif (USE_VLD)
 
 ##### INSTALLER
 
-install ( TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-forecaster DESTINATION ${INSTALL_DIR_BIN})

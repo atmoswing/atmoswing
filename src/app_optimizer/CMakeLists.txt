@@ -112,4 +112,4 @@ endif (USE_CUDA)
 
 ##### INSTALLER
 
-install ( TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})
+install(TARGETS atmoswing-optimizer DESTINATION ${INSTALL_DIR_BIN})

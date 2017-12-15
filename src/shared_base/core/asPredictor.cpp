@@ -444,7 +444,7 @@ bool asPredictor::LoadFullArea(double date, float level)
 
 
 bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                   asTimeArray &timeArray, vvva2f &compositeData)
+                                        asTimeArray &timeArray, vvva2f &compositeData)
 {
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -492,7 +492,7 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompo
 }
 
 bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                 asTimeArray &timeArray, vvva2f &compositeData)
+                                      asTimeArray &timeArray, vvva2f &compositeData)
 {
     // Open the Grib file
     ThreadsManager().CritSectionGrib().Enter();

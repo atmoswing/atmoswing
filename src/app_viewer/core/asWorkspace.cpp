@@ -97,19 +97,19 @@ bool asWorkspace::Load(const wxString &filePath)
                         } else if (nodeLayerData->GetName() == "line_width") {
                             m_layerLineWidths.push_back(fileWorkspace.GetInt(nodeLayerData));
 #if wxUSE_GUI
-                            } else if (nodeLayerData->GetName() == "line_color") {
-                                wxString lineColorStr = fileWorkspace.GetString(nodeLayerData);
-                                wxColour lineColor;
-                                wxFromString(lineColorStr, &lineColor);
-                                m_layerLineColors.push_back(lineColor);
-                            } else if (nodeLayerData->GetName() == "fill_color") {
-                                wxString fillColorStr = fileWorkspace.GetString(nodeLayerData);
-                                wxColour fillColor;
-                                wxFromString(fillColorStr, &fillColor);
-                                m_layerFillColors.push_back(fillColor);
-                            } else if (nodeLayerData->GetName() == "brush_style") {
-                                wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetInt(nodeLayerData);
-                                m_layerBrushStyles.push_back(brushStyle);
+                        } else if (nodeLayerData->GetName() == "line_color") {
+                            wxString lineColorStr = fileWorkspace.GetString(nodeLayerData);
+                            wxColour lineColor;
+                            wxFromString(lineColorStr, &lineColor);
+                            m_layerLineColors.push_back(lineColor);
+                        } else if (nodeLayerData->GetName() == "fill_color") {
+                            wxString fillColorStr = fileWorkspace.GetString(nodeLayerData);
+                            wxColour fillColor;
+                            wxFromString(fillColorStr, &fillColor);
+                            m_layerFillColors.push_back(fillColor);
+                        } else if (nodeLayerData->GetName() == "brush_style") {
+                            wxBrushStyle brushStyle = (wxBrushStyle) fileWorkspace.GetInt(nodeLayerData);
+                            m_layerBrushStyles.push_back(brushStyle);
 #endif
                         } else {
                             fileWorkspace.UnknownNode(nodeLayerData);
@@ -126,10 +126,10 @@ bool asWorkspace::Load(const wxString &filePath)
 
             if (m_layerPaths.size() != m_layerTypes.size() || m_layerPaths.size() != m_layerTransparencies.size() ||
                 m_layerPaths.size() != m_layerVisibilities.size() || m_layerPaths.size() != m_layerLineWidths.size()
-#if wxUSE_GUI
-                || m_layerPaths.size()!=m_layerLineColors.size()
-                || m_layerPaths.size()!=m_layerFillColors.size()
-                || m_layerPaths.size()!=m_layerBrushStyles.size()
+                #if wxUSE_GUI
+                || m_layerPaths.size() != m_layerLineColors.size()
+                || m_layerPaths.size() != m_layerFillColors.size()
+                || m_layerPaths.size() != m_layerBrushStyles.size()
 #endif
                     ) {
                 wxLogError(_("The number of elements in the layers is not consistent in the workspace file."));

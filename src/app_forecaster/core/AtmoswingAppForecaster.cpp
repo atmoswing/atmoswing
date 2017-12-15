@@ -57,21 +57,21 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
         {{wxCMD_LINE_SWITCH, "h",  "help",          "This help text"},
-        {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
-        {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
-        {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
-        {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
-        {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
-        {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
-        {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
-                                                          "\n \t\t\t\t 0: minimum"
-                                                          "\n \t\t\t\t 1: errors"
-                                                          "\n \t\t\t\t 2: warnings (default)"
-                                                          "\n \t\t\t\t 3: verbose"},
-        {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
-        {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
-        {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-        {wxCMD_LINE_NONE}};
+         {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
+         {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
+         {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
+         {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
+         {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
+         {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
+         {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
+                                                            "\n \t\t\t\t 0: minimum"
+                                                            "\n \t\t\t\t 1: errors"
+                                                            "\n \t\t\t\t 2: warnings (default)"
+                                                            "\n \t\t\t\t 3: verbose"},
+         {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
+         {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
+         {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+         {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppForecaster::OnInit()
 {

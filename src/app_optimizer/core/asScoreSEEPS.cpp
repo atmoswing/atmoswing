@@ -59,7 +59,7 @@ float asScoreSEEPS::Assess(float observedVal, const a1f &forcastVals, int nbElem
     if (!CheckObservedValue(observedVal)) {
         return NaNf;
     }
-    if (!CheckVectorLength( forcastVals, nbElements)) {
+    if (!CheckVectorLength(forcastVals, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }

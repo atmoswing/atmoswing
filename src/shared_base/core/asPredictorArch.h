@@ -43,7 +43,7 @@ public:
     virtual ~asPredictorArch();
 
     static asPredictorArch *GetInstance(const wxString &datasetId, const wxString &dataId,
-                                               const wxString &directory = wxEmptyString);
+                                        const wxString &directory = wxEmptyString);
 
     virtual bool Init();
 

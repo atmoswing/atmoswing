@@ -1,6 +1,6 @@
 #include "grib2.h"
 
-void cmplxpack(g2float *fld,g2int ndpts, g2int idrsnum,g2int *idrstmpl,
+void cmplxpack(g2float *fld, g2int ndpts, g2int idrsnum, g2int *idrstmpl,
                unsigned char *cpack, g2int *lcpack)
 //$$$  SUBPROGRAM DOCUMENTATION BLOCK
 //                .      .    .                                       .
@@ -59,17 +59,15 @@ void cmplxpack(g2float *fld,g2int ndpts, g2int idrsnum,g2int *idrstmpl,
 //
 //$$$
 {
-      
 
-      if ( idrstmpl[6] == 0 ) {       // No internal missing values
-         compack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack);
-      }
-      else if ( idrstmpl[6] == 1  ||  idrstmpl[6] == 2) {
-         misspack(fld,ndpts,idrsnum,idrstmpl,cpack,lcpack);
-      }
-      else {
-         printf("cmplxpack: Don:t recognize Missing value option.");
-         *lcpack=-1;
-      }
+
+    if (idrstmpl[6] == 0) {       // No internal missing values
+        compack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack);
+    } else if (idrstmpl[6] == 1 || idrstmpl[6] == 2) {
+        misspack(fld, ndpts, idrsnum, idrstmpl, cpack, lcpack);
+    } else {
+        printf("cmplxpack: Don:t recognize Missing value option.");
+        *lcpack = -1;
+    }
 
 }

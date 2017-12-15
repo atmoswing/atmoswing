@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "grib2.h"
 
-g2int g2_unpack1(unsigned char *cgrib,g2int *iofst,g2int **ids,g2int *idslen)
+g2int g2_unpack1(unsigned char *cgrib, g2int *iofst, g2int **ids, g2int *idslen)
 /*//$$$  SUBPROGRAM DOCUMENTATION BLOCK
 //                .      .    .                                       .
 // SUBPROGRAM:    g2_unpack1 
@@ -59,41 +59,41 @@ g2int g2_unpack1(unsigned char *cgrib,g2int *iofst,g2int **ids,g2int *idslen)
 */
 {
 
-      g2int i,lensec,nbits,ierr,isecnum;
-      g2int mapid[13]={2,2,1,1,1,2,1,1,1,1,1,1,1};
+    g2int i, lensec, nbits, ierr, isecnum;
+    g2int mapid[13] = {2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1};
 
-      ierr=0;
-      *idslen=13;
-      *ids=0;
+    ierr = 0;
+    *idslen = 13;
+    *ids = 0;
 
-      gbit(cgrib,&lensec,*iofst,32);        // Get Length of Section
-      *iofst=*iofst+32;
-      gbit(cgrib,&isecnum,*iofst,8);         // Get Section Number
-      *iofst=*iofst+8;
+    gbit(cgrib, &lensec, *iofst, 32);        // Get Length of Section
+    *iofst = *iofst + 32;
+    gbit(cgrib, &isecnum, *iofst, 8);         // Get Section Number
+    *iofst = *iofst + 8;
 
-      if ( isecnum != 1 ) {
-         ierr=2;
-         *idslen=13;
-         fprintf(stderr,"g2_unpack1: Not Section 1 data.\n");
-         return(ierr);
-      }
+    if (isecnum != 1) {
+        ierr = 2;
+        *idslen = 13;
+        fprintf(stderr, "g2_unpack1: Not Section 1 data.\n");
+        return (ierr);
+    }
 
-      //
-      //   Unpack each value into array ids from the
-      //   the appropriate number of octets, which are specified in
-      //   corresponding entries in array mapid.
-      //
-      *ids=(g2int *)calloc(*idslen,sizeof(g2int));
-      if (*ids == 0) {
-         ierr=6;
-         return(ierr);
-      }
-      
-      for (i=0;i<*idslen;i++) {
-        nbits=mapid[i]*8;
-        gbit(cgrib,*ids+i,*iofst,nbits);
-        *iofst=*iofst+nbits;
-      }
-      
-      return(ierr);    // End of Section 1 processing
+    //
+    //   Unpack each value into array ids from the
+    //   the appropriate number of octets, which are specified in
+    //   corresponding entries in array mapid.
+    //
+    *ids = (g2int *) calloc(*idslen, sizeof(g2int));
+    if (*ids == 0) {
+        ierr = 6;
+        return (ierr);
+    }
+
+    for (i = 0; i < *idslen; i++) {
+        nbits = mapid[i] * 8;
+        gbit(cgrib, *ids + i, *iofst, nbits);
+        *iofst = *iofst + nbits;
+    }
+
+    return (ierr);    // End of Section 1 processing
 }

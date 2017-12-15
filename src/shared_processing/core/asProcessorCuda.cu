@@ -110,9 +110,9 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
 }
 
 
-bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *> > &data, std::vector<int> &indicesTarg,
-                                      std::vector<std::vector<int> > &indicesArch,
-                                      std::vector<std::vector<float> > &resultingCriteria, std::vector<int> &lengths,
+bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data, std::vector<int> &indicesTarg,
+                                      std::vector <std::vector<int>> &indicesArch,
+                                      std::vector <std::vector<float>> &resultingCriteria, std::vector<int> &lengths,
                                       std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights)
 {
     // Error var

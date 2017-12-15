@@ -157,7 +157,7 @@ public:
     static a1f ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance = 0.000001);
 
     static a1d ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
-                                             const double tolerance = 0.000000001);
+                                   const double tolerance = 0.000000001);
 
     static int SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetValue,
                                  const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);

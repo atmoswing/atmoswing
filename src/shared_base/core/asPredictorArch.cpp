@@ -64,7 +64,7 @@ asPredictorArch::~asPredictorArch()
 }
 
 asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const wxString &dataId,
-                                                            const wxString &directory)
+                                              const wxString &directory)
 {
     asPredictorArch *predictor = NULL;
 
@@ -580,7 +580,7 @@ vwxs asPredictorArch::GetListOfFiles(asTimeArray &timeArray) const
 }
 
 bool asPredictorArch::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                            asTimeArray &timeArray, vvva2f &compositeData)
+                                      asTimeArray &timeArray, vvva2f &compositeData)
 {
     return false;
 }
