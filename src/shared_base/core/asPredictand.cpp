@@ -555,8 +555,8 @@ bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_
     return true;
 }
 
-bool asPredictand::ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                             const wxString &AlternatePatternDir)
+bool asPredictand::ParseData(const wxString &catalogFile, const wxString &directory,
+                             const wxString &patternDir)
 {
 #if wxUSE_GUI
     // The progress bar
@@ -564,7 +564,7 @@ bool asPredictand::ParseData(const wxString &catalogFilePath, const wxString &Al
 #endif
 
     // Get catalog
-    asCatalogPredictands catalog(catalogFilePath);
+    asCatalogPredictands catalog(catalogFile);
     catalog.Load();
 
     // Get the stations list
@@ -584,7 +584,7 @@ bool asPredictand::ParseData(const wxString &catalogFilePath, const wxString &Al
             return false;
 
         // Get file content
-        if (!GetFileContent(catalog, iStat, AlternateDataDir, AlternatePatternDir))
+        if (!GetFileContent(catalog, iStat, directory, patternDir))
             return false;
     }
 
@@ -596,12 +596,12 @@ bool asPredictand::ParseData(const wxString &catalogFilePath, const wxString &Al
 }
 
 bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                                      const wxString &AlternateDataDir, const wxString &AlternatePatternDir)
+                                      const wxString &directory, const wxString &patternDir)
 {
     // Load file
     wxString fileFullPath;
-    if (!AlternateDataDir.IsEmpty()) {
-        fileFullPath = AlternateDataDir + DS + currentData.GetStationFilename(stationIndex);
+    if (!directory.IsEmpty()) {
+        fileFullPath = directory + DS + currentData.GetStationFilename(stationIndex);
     } else {
         fileFullPath = currentData.GetDataPath() + currentData.GetStationFilename(stationIndex);
     }
@@ -611,7 +611,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
 
     // Get the parsing format
     wxString stationFilePattern = currentData.GetStationFilepattern(stationIndex);
-    asFileDat::Pattern filePattern = asFileDat::GetPattern(stationFilePattern, AlternatePatternDir);
+    asFileDat::Pattern filePattern = asFileDat::GetPattern(stationFilePattern, patternDir);
     size_t maxCharWidth = asFileDat::GetPatternLineMaxCharWidth(filePattern);
 
     // Jump the header

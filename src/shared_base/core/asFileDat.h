@@ -64,7 +64,7 @@ public:
 
     bool Close();
 
-    static Pattern GetPattern(const wxString &FilePatternName, const wxString &AlternatePatternDir = wxEmptyString);
+    static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
 
     static int GetPatternLineMaxCharWidth(const Pattern &Pattern);
 

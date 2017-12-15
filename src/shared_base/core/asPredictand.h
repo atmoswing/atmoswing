@@ -90,13 +90,13 @@ public:
 
     static asPredictand *GetInstance(const wxString &filePath);
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString) = 0;
+    virtual bool Load(const wxString &filePath = wxEmptyString) = 0;
 
-    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) const = 0;
+    virtual bool Save(const wxString &filePath = wxEmptyString) const = 0;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                                   const wxString &AlternatePatternDir = wxEmptyString,
-                                   const wxString &AlternateDestinationDir = wxEmptyString) = 0;
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+                                   const wxString &patternDir = wxEmptyString,
+                                   const wxString &destinationDir = wxEmptyString) = 0;
 
     virtual a1f GetReferenceAxis() const
     {
@@ -297,16 +297,16 @@ protected:
 
     bool SaveCommonData(asFileNetcdf &ncFile) const;
 
-    bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                   const wxString &AlternatePatternDir = wxEmptyString);
+    bool ParseData(const wxString &catalogFile, const wxString &directory = wxEmptyString,
+                   const wxString &patternDir = wxEmptyString);
 
     a2f GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
 
     bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
 
     bool GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                        const wxString &AlternateDataDir = wxEmptyString,
-                        const wxString &AlternatePatternDir = wxEmptyString);
+                        const wxString &directory = wxEmptyString,
+                        const wxString &patternDir = wxEmptyString);
 
 private:
 

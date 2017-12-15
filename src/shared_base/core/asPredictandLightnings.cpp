@@ -72,10 +72,10 @@ bool asPredictandLightnings::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandLightnings::Save(const wxString &AlternateDestinationDir) const
+bool asPredictandLightnings::Save(const wxString &destinationDir) const
 {
     // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);
+    wxString PredictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
@@ -97,9 +97,8 @@ bool asPredictandLightnings::Save(const wxString &AlternateDestinationDir) const
     return true;
 }
 
-bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                               const wxString &AlternatePatternDir,
-                                               const wxString &AlternateDestinationDir)
+bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+                                               const wxString &patternDir, const wxString &destinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -114,10 +113,10 @@ bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, 
         return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir))
+    if (!ParseData(catalogFilePath, dataDir, patternDir))
         return false;
 
-    Save(AlternateDestinationDir);
+    Save(destinationDir);
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));

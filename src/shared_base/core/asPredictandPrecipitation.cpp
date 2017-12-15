@@ -105,10 +105,10 @@ bool asPredictandPrecipitation::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandPrecipitation::Save(const wxString &AlternateDestinationDir) const
+bool asPredictandPrecipitation::Save(const wxString &destinationDir) const
 {
     // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);
+    wxString PredictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
@@ -190,9 +190,9 @@ bool asPredictandPrecipitation::Save(const wxString &AlternateDestinationDir) co
     return true;
 }
 
-bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                                  const wxString &AlternatePatternDir,
-                                                  const wxString &AlternateDestinationDir)
+bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+                                                  const wxString &patternDir,
+                                                  const wxString &destinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -207,7 +207,7 @@ bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePat
         return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir))
+    if (!ParseData(catalogFilePath, dataDir, patternDir))
         return false;
 
     if (m_hasNormalizedData) {
@@ -224,7 +224,7 @@ bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePat
             return false;
     }
 
-    Save(AlternateDestinationDir);
+    Save(destinationDir);
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));

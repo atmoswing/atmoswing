@@ -44,11 +44,11 @@ public:
 
     virtual bool Load(const wxString &filePath);
 
-    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString) const;
+    virtual bool Save(const wxString &destinationDir = wxEmptyString) const;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                                   const wxString &AlternatePatternDir = wxEmptyString,
-                                   const wxString &AlternateDestinationDir = wxEmptyString);
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+                                   const wxString &patternDir = wxEmptyString,
+                                   const wxString &destinationDir = wxEmptyString);
 
     virtual a1f GetReferenceAxis() const
     {
