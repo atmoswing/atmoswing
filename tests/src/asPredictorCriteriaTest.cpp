@@ -323,7 +323,7 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
@@ -402,7 +402,7 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&geoArea, timearray));
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 

@@ -27,6 +27,8 @@
  */
 
 #include "asMethodStandard.h"
+#include "asPredictorArch.h"
+#include "asPreprocessor.h"
 
 
 wxDEFINE_EVENT(asEVT_STATUS_STARTING, wxCommandEvent);
@@ -99,4 +101,11 @@ bool asMethodStandard::LoadPredictandDB(const wxString &predictandDBFilePath)
 void asMethodStandard::Cancel()
 {
     m_cancel = true;
+}
+
+bool asMethodStandard::Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result)
+{
+    std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
+
+    return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }

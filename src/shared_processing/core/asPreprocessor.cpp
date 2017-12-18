@@ -29,42 +29,9 @@
 #include "asPreprocessor.h"
 
 #include <asPredictor.h>
-#include <asPredictorArch.h>
-
-#ifndef MINIMAL_LINKS
-
-#include <asPredictorOper.h>
-
-#endif
 
 #include <asThreadPreprocessGradients.h>
 
-
-bool asPreprocessor::Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result)
-{
-    std::vector<asPredictor *> ptorsPredictors(predictors.size());
-
-    for (unsigned int i = 0; i < predictors.size(); i++) {
-        ptorsPredictors[i] = predictors[i];
-    }
-
-    return Preprocess(ptorsPredictors, method, result);
-}
-
-#ifndef MINIMAL_LINKS
-
-bool asPreprocessor::Preprocess(std::vector<asPredictorOper *> predictors, const wxString &method, asPredictor *result)
-{
-    std::vector<asPredictor *> ptorsPredictors(predictors.size());
-
-    for (unsigned int i = 0; i < predictors.size(); i++) {
-        ptorsPredictors[i] = predictors[i];
-    }
-
-    return Preprocess(ptorsPredictors, method, result);
-}
-
-#endif
 
 bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result)
 {

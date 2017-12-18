@@ -75,7 +75,7 @@ TEST(Preprocessor, Gradients)
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -242,7 +242,7 @@ TEST(Preprocessor, GradientsMultithreading)
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -382,7 +382,7 @@ TEST(Preprocessor, Addition)
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
@@ -497,7 +497,7 @@ TEST(Preprocessor, Average)
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
@@ -608,7 +608,7 @@ TEST(Preprocessor, Difference)
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 
@@ -707,7 +707,7 @@ TEST(Preprocessor, Multiplication)
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 

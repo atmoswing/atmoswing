@@ -33,6 +33,10 @@
 #include <asPredictand.h>
 
 
+class asPredictorArch;
+class asPredictor;
+
+
 class asMethodStandard
         : public wxObject
 {
@@ -73,6 +77,8 @@ protected:
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
     asPredictand *m_predictandDB;
+
+    bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result);
 
 private:
 };

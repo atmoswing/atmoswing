@@ -573,6 +573,14 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
     return true;
 }
 
+bool asMethodForecasting::PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors,
+                                                       const wxString &method, asPredictor *result)
+{
+    std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
+
+    return asPreprocessor::Preprocess(ptorsPredictors, method, result);
+}
+
 bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep)
 {
     // Initialize the result object
@@ -958,8 +966,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 return false;
             }
 
-            if (!asPreprocessor::Preprocess(m_storagePredictorsArchivePreprocess,
-                                            params.GetPreprocessMethod(iStep, iPtor), predictorArchive)) {
+            if (!Preprocess(m_storagePredictorsArchivePreprocess, params.GetPreprocessMethod(iStep, iPtor),
+                            predictorArchive)) {
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 return false;
@@ -973,8 +981,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
 
-            if (!asPreprocessor::Preprocess(m_storagePredictorsRealtimePreprocess,
-                                            params.GetPreprocessMethod(iStep, iPtor), predictorRealtime)) {
+            if (!PreprocessRealtimePredictors(m_storagePredictorsRealtimePreprocess,
+                                              params.GetPreprocessMethod(iStep, iPtor),
+                                              predictorRealtime)) {
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
@@ -1441,8 +1450,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 return false;
             }
 
-            if (!asPreprocessor::Preprocess(m_storagePredictorsArchivePreprocess,
-                                            params.GetPreprocessMethod(iStep, iPtor), predictorArchive)) {
+            if (!Preprocess(m_storagePredictorsArchivePreprocess, params.GetPreprocessMethod(iStep, iPtor),
+                            predictorArchive)) {
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 return false;
@@ -1456,8 +1465,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
 
-            if (!asPreprocessor::Preprocess(m_storagePredictorsRealtimePreprocess,
-                                            params.GetPreprocessMethod(iStep, iPtor), predictorRealtime)) {
+            if (!PreprocessRealtimePredictors(m_storagePredictorsRealtimePreprocess,
+                                              params.GetPreprocessMethod(iStep, iPtor), predictorRealtime)) {
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);

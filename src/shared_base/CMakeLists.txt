@@ -25,10 +25,6 @@ if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asInternet.cpp")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.h")
     list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asThreadInternetDownload.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOper.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOper.cpp")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOperGfsForecast.h")
-    list(REMOVE_ITEM src_shared_base "${PROJECT_SOURCE_DIR}/core/asPredictorOperGfsForecast.cpp")
 endif (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER)
 
 # Grib2c library
