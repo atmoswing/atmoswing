@@ -27,7 +27,7 @@
  */
 
 #include "asMethodCalibrator.h"
-#include "asThreadPreloadData.h"
+#include "asThreadPreloadDataOptimizer.h"
 
 #ifndef UNIT_TESTING
 
@@ -369,7 +369,7 @@ bool asMethodCalibrator::ProceedToDataPreloading(asParametersScoring &params)
                             continue;
                         }
                         if (parallelDataLoad) {
-                            asThreadPreloadData *thread = new asThreadPreloadData(this, params, iStep, iPtor, iPre);
+                            asThreadPreloadDataOptimizer *thread = new asThreadPreloadDataOptimizer(this, params, iStep, iPtor, iPre);
                             if (!ThreadsManager().HasFreeThread(thread->GetType())) {
                                 ThreadsManager().WaitForFreeThread(thread->GetType());
                             }
@@ -948,7 +948,7 @@ bool asMethodCalibrator::PreloadDataWithPreprocessing(asParametersScoring &param
             asPredictorArch *predictor = new asPredictorArch(*predictorsPreprocess[0]);
 
             try {
-                if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor),
+                if (!Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor),
                                                 predictor)) {
                     wxLogError(_("Data preprocessing failed."));
                     wxDELETE(predictor);
@@ -1180,7 +1180,7 @@ bool asMethodCalibrator::ExtractPreloadedData(std::vector<asPredictor *> &predic
         predictorsPreprocess.push_back(desiredPredictor);
 
         asPredictorArch *newPredictor = new asPredictorArch(*predictorsPreprocess[0]);
-        if (!asPreprocessor::Preprocess(predictorsPreprocess, "Gradients", newPredictor)) {
+        if (!Preprocess(predictorsPreprocess, "Gradients", newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
             wxDELETE(newPredictor);
@@ -1336,7 +1336,7 @@ bool asMethodCalibrator::ExtractDataWithPreprocessing(std::vector<asPredictor *>
     }
 
     asPredictorArch *predictor = new asPredictorArch(*predictorsPreprocess[0]);
-    if (!asPreprocessor::Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor), predictor)) {
+    if (!Preprocess(predictorsPreprocess, params.GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
         wxDELETE(predictor);
