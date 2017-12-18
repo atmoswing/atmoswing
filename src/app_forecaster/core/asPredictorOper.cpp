@@ -30,7 +30,7 @@
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
-#include <asPredictorOperGfsForecast.h>
+#include "asPredictorOperGfsForecast.h"
 #include <asInternet.h>
 
 

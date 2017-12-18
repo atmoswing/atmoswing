@@ -74,6 +74,9 @@ public:
 protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
+    bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
+                                      asPredictor *result);
+
     bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
 
     bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params, asResultsForecast &resultsPrev,

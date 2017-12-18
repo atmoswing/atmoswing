@@ -26,9 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asThreadPreloadData.h"
+#include "asThreadPreloadDataOptimizer.h"
 
-asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep,
+asThreadPreloadDataOptimizer::asThreadPreloadDataOptimizer(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep,
                                          int iPtor, int iPre)
         : asThread(asThread::PreloadData),
           m_optimizer(optimizer), // copy pointer
@@ -40,12 +40,12 @@ asThreadPreloadData::asThreadPreloadData(asMethodCalibrator *optimizer, asParame
 
 }
 
-asThreadPreloadData::~asThreadPreloadData()
+asThreadPreloadDataOptimizer::~asThreadPreloadDataOptimizer()
 {
     //dtor
 }
 
-wxThread::ExitCode asThreadPreloadData::Entry()
+wxThread::ExitCode asThreadPreloadDataOptimizer::Entry()
 {
     if (!m_params.NeedsPreprocessing(m_iStep, m_iProt)) {
         if (!m_optimizer->PreloadDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {

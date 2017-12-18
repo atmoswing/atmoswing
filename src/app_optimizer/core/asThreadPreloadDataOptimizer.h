@@ -33,13 +33,13 @@
 #include <asIncludes.h>
 #include "asMethodCalibrator.h"
 
-class asThreadPreloadData
+class asThreadPreloadDataOptimizer
         : public asThread
 {
 public:
-    asThreadPreloadData(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep, int iPtor, int iPre);
+    asThreadPreloadDataOptimizer(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep, int iPtor, int iPre);
 
-    virtual ~asThreadPreloadData();
+    virtual ~asThreadPreloadDataOptimizer();
 
     ExitCode Entry();
 

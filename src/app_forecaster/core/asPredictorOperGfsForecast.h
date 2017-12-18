@@ -30,7 +30,7 @@
 #define ASPREDICTOROPERGFSFORECAST_H
 
 #include <asIncludes.h>
-#include <asPredictorOper.h>
+#include "asPredictorOper.h"
 
 class asGeoArea;
 
