@@ -173,7 +173,7 @@ void vrLayerVectorFcstDots::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path,
         colour.Set(255, (255 - valColour), 0);
     }
 
-    wxBrush brush(colour, wxSOLID);
+    wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
     gdc->SetBrush(brush);
     gdc->DrawPath(path);
 }

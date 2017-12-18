@@ -624,7 +624,7 @@ bool asFileNetcdf::HasAttribute(const wxString &attName, const wxString &varName
     } else { // Variable attribute
         int varId = GetVarId(varName);
         if (varId == asNOT_FOUND)
-            return asNOT_FOUND;
+            return false;
         for (int iAtt = 0; iAtt < GetVarAttsNb(varId); iAtt++) {
             if (m_struct.vars[varId].atts[iAtt].name.IsSameAs(attName)) {
                 return true;

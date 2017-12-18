@@ -282,7 +282,7 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double xMin = desiredArea->GetAbsoluteXmin();
     double xMax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 0);
-    float toleranceLon = 0.1;
+    float toleranceLon = 0.1f;
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
     }
@@ -313,7 +313,7 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     double yMin = desiredArea->GetAbsoluteYmin();
     double yMax = desiredArea->GetAbsoluteYmax();
     wxASSERT(m_axisLat.size() > 0);
-    float toleranceLat = 0.1;
+    float toleranceLat = 0.1f;
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }

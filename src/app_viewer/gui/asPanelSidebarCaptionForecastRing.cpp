@@ -382,7 +382,7 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarOtherClasses(wxGrap
 
     wxColour colour = wxColour();
     colour.Set(255, 255, 255);
-    wxBrush brush1(colour, wxSOLID);
+    wxBrush brush1(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush1);
     gc->DrawPath(pathBox1);
 
@@ -395,7 +395,7 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarOtherClasses(wxGrap
     pathBox2.CloseSubpath();
 
     colour.Set(150, 150, 150);
-    wxBrush brush2(colour, wxSOLID);
+    wxBrush brush2(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush2);
     gc->DrawPath(pathBox2);
 

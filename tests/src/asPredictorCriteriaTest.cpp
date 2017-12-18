@@ -951,7 +951,7 @@ TEST(PredictorCriteria, ProcessNRMSE)
 
     // Instantiate the criteria
     asCriteria *criteria = asCriteria::GetInstance(_("NRMSE"));
-    criteria->SetDataRange(62.1, 2053.4); // fake range here...
+    criteria->SetDataRange(62.1f, 2053.4f); // fake range here...
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {

@@ -563,12 +563,12 @@ bool asMethodCalibrator::PointersShared(asParametersScoring &params, int iStep, 
                 } else {
                     int preprocessSize = params.GetPreprocessSize(iStep, iPtor);
 
-                    for (int iPre = 0; iPre < preprocessSize; iPre++) {
-                        if (!params.GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(
-                                params.GetPreprocessDatasetId(prev_step, prev_ptor, iPre), false))
+                    for (int i = 0; i < preprocessSize; i++) {
+                        if (!params.GetPreprocessDatasetId(iStep, iPtor, i).IsSameAs(
+                                params.GetPreprocessDatasetId(prev_step, prev_ptor, i), false))
                             share = false;
-                        if (!params.GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(
-                                params.GetPreprocessDataId(prev_step, prev_ptor, iPre), false))
+                        if (!params.GetPreprocessDataId(iStep, iPtor, i).IsSameAs(
+                                params.GetPreprocessDataId(prev_step, prev_ptor, i), false))
                             share = false;
                     }
                 }

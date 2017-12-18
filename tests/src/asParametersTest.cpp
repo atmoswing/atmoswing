@@ -63,7 +63,7 @@ TEST(Parameters, ParametersLoadFromFile)
     EXPECT_EQ(5, params.GetPredictorYptsnb(0, 0));
     EXPECT_EQ(2.5, params.GetPredictorYstep(0, 0));
     EXPECT_TRUE(params.GetPredictorCriteria(0, 0).IsSameAs("S1"));
-    EXPECT_FLOAT_EQ(0.6, params.GetPredictorWeight(0, 0));
+    EXPECT_FLOAT_EQ(0.6f, params.GetPredictorWeight(0, 0));
 
     EXPECT_TRUE(params.NeedsPreprocessing(0, 1));
     EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("gradients"));
@@ -80,7 +80,7 @@ TEST(Parameters, ParametersLoadFromFile)
     EXPECT_EQ(7, params.GetPredictorYptsnb(0, 1));
     EXPECT_EQ(2.5, params.GetPredictorYstep(0, 1));
     EXPECT_TRUE(params.GetPredictorCriteria(0, 1).IsSameAs("S1"));
-    EXPECT_FLOAT_EQ(0.4, params.GetPredictorWeight(0, 1));
+    EXPECT_FLOAT_EQ(0.4f, params.GetPredictorWeight(0, 1));
 
     EXPECT_EQ(40, params.GetPredictandStationIds()[0]);
 }

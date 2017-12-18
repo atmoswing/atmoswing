@@ -104,7 +104,7 @@ TEST(Geo, CheckPointWGS84UTooHighCorr)
     point.x = 360.1;
     point.y = 10;
     EXPECT_FALSE(geo.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_FLOAT_EQ(0.1, point.x);
+    EXPECT_FLOAT_EQ(0.1f, point.x);
 }
 
 TEST(Geo, CheckPointWGS84UTooLowCorr)

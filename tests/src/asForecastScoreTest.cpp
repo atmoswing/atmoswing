@@ -1888,7 +1888,7 @@ TEST(Score, ProcessRankHistogramReliability)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Values processed on Excel
-    EXPECT_FLOAT_EQ(2.3300, scoreVal);
+    EXPECT_FLOAT_EQ(2.3300f, scoreVal);
 
     wxDELETE(score);
     wxDELETE(finalScore);

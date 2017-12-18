@@ -50,7 +50,7 @@ vi asFileParameters::BuildVectorInt(int min, int max, int step)
 
     unsigned int stepsnb = (unsigned int) 1 + (max - min) / step;
     vi vect(stepsnb);
-    for (int i = 0; i < stepsnb; i++) {
+    for (unsigned int i = 0; i < stepsnb; i++) {
         vect[i] = min + i * step;
     }
 

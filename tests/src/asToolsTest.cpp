@@ -250,7 +250,7 @@ TEST(Tools, FindMinFloat)
 {
     float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.0f, NaNf};
     float result = asTools::MinArray(&array[0], &array[11]);
-    EXPECT_FLOAT_EQ(0.3465, result);
+    EXPECT_FLOAT_EQ(0.3465f, result);
 }
 
 TEST(Tools, FindMinDouble)
@@ -272,7 +272,7 @@ TEST(Tools, FindMaxFloat)
     float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f,
                      NaNf};
     float result = asTools::MaxArray(&array[0], &array[11]);
-    EXPECT_FLOAT_EQ(10.12, result);
+    EXPECT_FLOAT_EQ(10.12f, result);
 }
 
 TEST(Tools, FindMaxDouble)
@@ -294,7 +294,7 @@ TEST(Tools, FindMinStepFloat)
     float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
                      NaNf};
     float result = asTools::MinArrayStep(&array[0], &array[11], 0.0001f);
-    EXPECT_FLOAT_EQ(0.37, result);
+    EXPECT_FLOAT_EQ(0.37f, result);
 }
 
 TEST(Tools, FindMinStepDouble)
@@ -302,7 +302,7 @@ TEST(Tools, FindMinStepDouble)
     double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
                       NaNd};
     double result = asTools::MinArrayStep(&array[0], &array[11]);
-    EXPECT_FLOAT_EQ(0.37, result);
+    EXPECT_FLOAT_EQ(0.37f, result);
 }
 
 TEST(Tools, ExtractUniqueValuesInt)
@@ -324,14 +324,14 @@ TEST(Tools, ExtractUniqueValuesFloat)
     float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
                      NaNf};
     a1f result(asTools::ExtractUniqueValues(&array[0], &array[11], 0.0001f));
-    EXPECT_FLOAT_EQ(0.3465, result[0]);
-    EXPECT_FLOAT_EQ(1.345, result[1]);
-    EXPECT_FLOAT_EQ(2.76, result[2]);
-    EXPECT_FLOAT_EQ(3.69, result[3]);
-    EXPECT_FLOAT_EQ(5.58, result[4]);
-    EXPECT_FLOAT_EQ(8.34, result[5]);
-    EXPECT_FLOAT_EQ(9.75, result[6]);
-    EXPECT_FLOAT_EQ(10.12, result[7]);
+    EXPECT_FLOAT_EQ(0.3465f, result[0]);
+    EXPECT_FLOAT_EQ(1.345f, result[1]);
+    EXPECT_FLOAT_EQ(2.76f, result[2]);
+    EXPECT_FLOAT_EQ(3.69f, result[3]);
+    EXPECT_FLOAT_EQ(5.58f, result[4]);
+    EXPECT_FLOAT_EQ(8.34f, result[5]);
+    EXPECT_FLOAT_EQ(9.75f, result[6]);
+    EXPECT_FLOAT_EQ(10.12f, result[7]);
 }
 
 TEST(Tools, ExtractUniqueValuesDouble)
@@ -1680,7 +1680,7 @@ TEST(Tools, MeanInt)
 {
     int array[] = {36, 8, 4, 6, 9, 56, 234, 45, 2475, 8, 2, 68, 9};
     float result = asTools::Mean(&array[0], &array[12]);
-    EXPECT_FLOAT_EQ(227.692308, result);
+    EXPECT_FLOAT_EQ(227.692308f, result);
 }
 
 TEST(Tools, MeanFloat)
@@ -1689,7 +1689,7 @@ TEST(Tools, MeanFloat)
                      234.6549840000f, 45.6876513510f, 2475.6465413513f, 8.8765431894f, 2.7764850000f, 68.1000000000f,
                      9.6846510000f};
     float result = asTools::Mean(&array[0], &array[12]);
-    EXPECT_FLOAT_EQ(228.283374311977, result);
+    EXPECT_FLOAT_EQ(228.283374311977f, result);
 }
 
 TEST(Tools, MeanDouble)
@@ -1705,42 +1705,42 @@ TEST(Tools, SdtDevSampleIntSample)
 {
     int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asTools::StDev(&array[0], &array[7], asSAMPLE);
-    EXPECT_FLOAT_EQ(38.17254062, result);
+    EXPECT_FLOAT_EQ(38.17254062f, result);
 }
 
 TEST(Tools, SdtDevSampleIntEntirePop)
 {
     int array[] = {6, 113, 78, 35, 23, 56, 23, 2};
     float result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
-    EXPECT_FLOAT_EQ(35.70714214, result);
+    EXPECT_FLOAT_EQ(35.70714214f, result);
 }
 
 TEST(Tools, SdtDevSampleFloatSample)
 {
     float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asTools::StDev(&array[0], &array[7], asSAMPLE);
-    EXPECT_FLOAT_EQ(38.05574973, result);
+    EXPECT_FLOAT_EQ(38.05574973f, result);
 }
 
 TEST(Tools, SdtDevSampleFloatEntirePop)
 {
     float array[] = {6.1465134f, 113.134613f, 78.214334f, 35.23562346f, 23.21342f, 56.4527245f, 23.24657457f, 2.98467f};
     float result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
-    EXPECT_FLOAT_EQ(35.59789427, result);
+    EXPECT_FLOAT_EQ(35.59789427f, result);
 }
 
 TEST(Tools, SdtDevSampleDoubleSample)
 {
     double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asTools::StDev(&array[0], &array[7], asSAMPLE);
-    EXPECT_FLOAT_EQ(38.05574973, result);
+    EXPECT_FLOAT_EQ(38.05574973f, result);
 }
 
 TEST(Tools, SdtDevSampleDoubleEntirePop)
 {
     double array[] = {6.1465134, 113.134613, 78.214334, 35.23562346, 23.21342, 56.4527245, 23.24657457, 2.98467};
     double result = asTools::StDev(&array[0], &array[7], asENTIRE_POPULATION);
-    EXPECT_FLOAT_EQ(35.59789427, result);
+    EXPECT_FLOAT_EQ(35.59789427f, result);
 }
 
 TEST(Tools, RandomInt)
