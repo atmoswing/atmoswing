@@ -1,13 +1,11 @@
 
 if (WIN32)
-    file (GLOB dlls bin/*.dll)
-    install(
-            PROGRAMS ${dlls}
-            DESTINATION .
-    )
+    file(GLOB dlls ${CMAKE_BINARY_DIR}/*.dll)
+    install(PROGRAMS ${dlls} DESTINATION bin)
 
     # pack the Visual C++ Redistributable for Visual Studio
     include(InstallRequiredSystemLibraries)
+    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
 endif (WIN32)
 
 install (
@@ -27,7 +25,7 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 set(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day.")
-set(CPACK_PACKAGE_VENDOR "Terranum")
+set(CPACK_PACKAGE_VENDOR "AtmoSwing")
 set(CPACK_STRIP_FILES ON) # tell cpack to strip all debug symbols from all files
 
 # IDENTIFY ARCHITECTURE
@@ -75,7 +73,7 @@ if (WIN32)
     set(CPACK_GENERATOR "NSIS")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY "AtmoSwing")
     set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}")
-    set(CPACK_PACKAGE_EXECUTABLES "atmoswing-viewer;AtmoSwing viewer;atmoswing-forecaster;AtmoSwing forecaster")
+    set(CPACK_PACKAGE_EXECUTABLES "atmoswing-viewer;AtmoSwing viewer;atmoswing-forecaster;AtmoSwing forecaster;atmoswing-optimizer;AtmoSwing optimizer")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}")
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/../cpack/license.txt")
     set(CPACK_NSIS_DISPLAY_NAME "AtmoSwing")

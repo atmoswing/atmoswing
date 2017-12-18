@@ -12,8 +12,8 @@ endif (UNIX)
 
 # Version number
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "4")
-set(VERSION_PATCH "2")
+set(VERSION_MINOR "5")
+set(VERSION_PATCH "0")
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
@@ -88,10 +88,6 @@ link_directories(${EXTERNAL_DIR}/lib64)
 # Installer
 set(INSTALL_DIR_BIN bin)
 set(INSTALL_DIR_SHARE share/atmoswing)
-if (WIN32)
-    set(INSTALL_DIR_BIN .)
-    set(INSTALL_DIR_SHARE .)
-endif (WIN32)
 
 
 ##### FIND ANALYSIS TOOLS
