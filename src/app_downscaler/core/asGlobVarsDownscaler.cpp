@@ -22,15 +22,13 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#include "asGlobVarsOptimizer.h"
+#include "asGlobVarsDownscaler.h"
 
 bool g_local = false;
 int g_runNb = 0;
-bool g_resumePreviousRun = false;
 
 #if wxUSE_GUI
 wxColour g_linuxBgColour = wxColour(242, 241, 240);

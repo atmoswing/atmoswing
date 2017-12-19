@@ -31,7 +31,6 @@
 
 #include "asIncludes.h"
 
-extern bool g_distributionVersion;
 extern bool g_local;
 extern int g_runNb;
 extern bool g_resumePreviousRun;
