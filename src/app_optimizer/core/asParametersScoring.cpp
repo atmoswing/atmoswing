@@ -255,13 +255,12 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     return true;
 }
 
-bool asParametersScoring::PreprocessingPropertiesOk()
+bool asParametersScoring::PreprocessingDataIdsOk()
 {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
-                wxString method = GetPreprocessMethod(iStep, iPtor);
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Check that the data ID is unique
@@ -270,35 +269,6 @@ bool asParametersScoring::PreprocessingPropertiesOk()
                         wxLogError(_("The preprocess dataId must be unique with the preload option."));
                         return false;
                     }
-                }
-
-                // Different actions depending on the preprocessing method.
-                wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
-                if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
-                    method.IsSameAs("Average")) {
-                    // No constraints
-                } else if (method.IsSameAs("Gradients")) {
-                    if (preprocSize != 1) {
-                        wxLogError(msg, preprocSize, 1, "Gradient");
-                        return false;
-                    }
-                } else if (method.IsSameAs("HumidityFlux")) {
-                    if (preprocSize != 4) {
-                        wxLogError(msg, preprocSize, 4, "HumidityFlux");
-                        return false;
-                    }
-                } else if (method.IsSameAs("HumidityIndex")) {
-                    if (preprocSize != 2) {
-                        wxLogError(msg, preprocSize, 2, "HumidityIndex");
-                        return false;
-                    }
-                } else if (method.IsSameAs("FormerHumidityIndex")) {
-                    if (preprocSize != 4) {
-                        wxLogError(msg, preprocSize, 4, "FormerHumidityIndex");
-                        return false;
-                    }
-                } else {
-                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
             }
         }

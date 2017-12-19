@@ -179,6 +179,8 @@ bool asParametersOptimization::LoadFromFile(const wxString &filePath)
     }
 
     // Set properties
+    if (!PreprocessingDataIdsOk())
+        return false;
     if (!PreprocessingPropertiesOk())
         return false;
     SetSpatialWindowProperties();

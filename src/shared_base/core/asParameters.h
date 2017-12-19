@@ -111,6 +111,8 @@ public:
 
     virtual bool InputsOK() const;
 
+    bool PreprocessingPropertiesOk() const;
+
     static vi GetFileStationIds(wxString stationIdsString);
 
     wxString GetPredictandStationIdsString() const;

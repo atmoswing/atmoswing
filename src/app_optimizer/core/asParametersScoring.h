@@ -123,6 +123,8 @@ public:
 
     bool GenerateSimpleParametersFile(const wxString &filePath) const;
 
+    bool PreprocessingDataIdsOk();
+
     bool PreprocessingPropertiesOk();
 
     wxString GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const;

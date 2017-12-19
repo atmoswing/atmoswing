@@ -81,7 +81,6 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
 
-        // Description
         if (nodeProcess->GetName() == "description") {
             if (!ParseDescription(fileParams, nodeProcess))
                 return false;
@@ -108,6 +107,8 @@ bool asParametersForecast::LoadFromFile(const wxString &filePath)
     }
 
     // Set properties
+    if (!PreprocessingPropertiesOk())
+        return false;
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
