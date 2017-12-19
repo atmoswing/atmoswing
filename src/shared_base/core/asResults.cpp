@@ -82,7 +82,7 @@ wxString asResults::GetPredictandStationIdsList() const
 bool asResults::DefTargetDatesAttributes(asFileNetcdf &ncFile) const
 {
     ncFile.PutAtt("long_name", "Target dates", "target_dates");
-    ncFile.PutAtt("var_desc", "Date of the day to forecast", "target_dates");
+    ncFile.PutAtt("var_desc", "Date of the day to predict", "target_dates");
     ncFile.PutAtt("units", "Modified Julian Day Number (MJD)", "target_dates");
     return true;
 }

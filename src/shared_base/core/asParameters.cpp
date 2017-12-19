@@ -30,6 +30,7 @@
 
 #include "asFileAscii.h"
 #include <wx/tokenzr.h>
+#include "asFileParameters.h"
 
 
 asParameters::asParameters()
@@ -144,7 +145,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
         return false;
     }
 
-    asFileParametersStandard fileParams(filePath, asFile::ReadOnly);
+    asFileParameters fileParams(filePath, asFile::ReadOnly);
     if (!fileParams.Open())
         return false;
 
@@ -198,7 +199,7 @@ bool asParameters::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-bool asParameters::ParseDescription(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess)
+bool asParameters::ParseDescription(asFileParameters &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
@@ -220,7 +221,7 @@ bool asParameters::ParseDescription(asFileParametersStandard &fileParams, const 
     return true;
 }
 
-bool asParameters::ParseTimeProperties(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess)
+bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
@@ -297,7 +298,7 @@ bool asParameters::ParseTimeProperties(asFileParametersStandard &fileParams, con
     return true;
 }
 
-bool asParameters::ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep, const wxXmlNode *nodeProcess)
+bool asParameters::ParseAnalogDatesParams(asFileParameters &fileParams, int iStep, const wxXmlNode *nodeProcess)
 {
     int iPtor = 0;
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
@@ -321,8 +322,7 @@ bool asParameters::ParseAnalogDatesParams(asFileParametersStandard &fileParams, 
     return true;
 }
 
-bool asParameters::ParsePredictors(asFileParametersStandard &fileParams, int iStep, int iPtor,
-                                   const wxXmlNode *nodeParamBlock)
+bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock)
 {
     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
     while (nodeParam) {
@@ -391,7 +391,7 @@ bool asParameters::ParsePredictors(asFileParametersStandard &fileParams, int iSt
     return true;
 }
 
-bool asParameters::ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int iStep, int iPtor,
+bool asParameters::ParsePreprocessedPredictors(asFileParameters &fileParams, int iStep, int iPtor,
                                                const wxXmlNode *nodeParam)
 {
     int iPre = 0;
@@ -432,7 +432,7 @@ bool asParameters::ParsePreprocessedPredictors(asFileParametersStandard &filePar
     return true;
 }
 
-bool asParameters::ParseAnalogValuesParams(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess)
+bool asParameters::ParseAnalogValuesParams(asFileParameters &fileParams, const wxXmlNode *nodeProcess)
 {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {

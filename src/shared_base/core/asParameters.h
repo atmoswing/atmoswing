@@ -32,7 +32,9 @@
 #include <wx/xml/xml.h>
 #include "asIncludes.h"
 #include "asPredictand.h"
-#include "asFileParametersStandard.h"
+
+
+class asFileParameters;
 
 
 class asParameters
@@ -652,18 +654,18 @@ private:
     wxString m_predictandDatasetId;
     double m_predictandTimeHours;
 
-    bool ParseDescription(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParameters &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    bool ParsePredictors(asFileParametersStandard &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
+    bool ParsePredictors(asFileParameters &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
 
-    bool ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int iStep, int iPtor,
+    bool ParsePreprocessedPredictors(asFileParameters &fileParams, int iStep, int iPtor,
                                      const wxXmlNode *nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
 };
 

@@ -29,7 +29,7 @@
 #define ASRESULTSFORECASTAGGREGATOR_H
 
 #include <asIncludes.h>
-#include <asResultsForecast.h>
+#include "asResultsForecast.h"
 
 class asResultsForecastAggregator
         : public wxObject

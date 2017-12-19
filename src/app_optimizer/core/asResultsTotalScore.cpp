@@ -53,7 +53,7 @@ void asResultsTotalScore::Init(asParametersScoring &params)
 void asResultsTotalScore::BuildFileName()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
+    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     if (!m_subFolder.IsEmpty()) {
         m_filePath.Append(DS);

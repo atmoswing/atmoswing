@@ -40,9 +40,9 @@ public:
 
     virtual ~asFileParameters();
 
-    virtual bool EditRootElement() = 0;
+    virtual bool EditRootElement();
 
-    virtual bool CheckRootElement() const = 0;
+    virtual bool CheckRootElement() const;
 
     static vi BuildVectorInt(int min, int max, int step);
 

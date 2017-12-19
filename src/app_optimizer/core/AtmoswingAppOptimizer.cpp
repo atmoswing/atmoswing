@@ -262,7 +262,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/General/Responsive", false);
         pConfig->Write("/General/DisplayLogWindow", false);
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
-        pConfig->Write("/Paths/OptimizerResultsDir", GetLocalPath() + "results");
+        pConfig->Write("/Paths/ResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
@@ -272,7 +272,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
             pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
         }
         if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
-            pConfig->Write("/Optimizer/ParallelEvaluations", true);
+            pConfig->Write("/Processing/ParallelEvaluations", true);
         }
 
         pConfig->Flush();

@@ -198,11 +198,11 @@ void asFrameOptimizer::LoadOptions()
     m_filePickerPredictand->SetPath(predictandDBFilePath);
     wxString predictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
     m_dirPickerPredictor->SetPath(predictorDir);
-    wxString optimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
+    wxString optimizerResultsDir = pConfig->Read("/Paths/ResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
     m_dirPickerCalibrationResults->SetPath(optimizerResultsDir);
     bool parallelEvaluations;
-    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
+    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, false);
     m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
 
     // Classic+ calibration
@@ -342,9 +342,9 @@ void asFrameOptimizer::SaveOptions() const
     wxString predictorDir = m_dirPickerPredictor->GetPath();
     pConfig->Write("/Paths/PredictorDir", predictorDir);
     wxString optimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
-    pConfig->Write("/Paths/OptimizerResultsDir", optimizerResultsDir);
+    pConfig->Write("/Paths/ResultsDir", optimizerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
-    pConfig->Write("/Optimizer/ParallelEvaluations", parallelEvaluations);
+    pConfig->Write("/Processing/ParallelEvaluations", parallelEvaluations);
 
     // Classic+ calibration
     wxString classicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();

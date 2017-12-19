@@ -39,6 +39,20 @@ asFileParameters::~asFileParameters()
     //dtor
 }
 
+bool asFileParameters::EditRootElement()
+{
+    wxLogError(_("The class asFileParameters should not be used directly. Use a derived class."));
+
+    return false;
+}
+
+bool asFileParameters::CheckRootElement() const
+{
+    wxLogError(_("The class asFileParameters should not be used directly. Use a derived class."));
+
+    return false;
+}
+
 vi asFileParameters::BuildVectorInt(int min, int max, int step)
 {
     if (min>max) {
@@ -214,7 +228,7 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node)
 
         vect = BuildVectorInt(min, max, step);
     } else {
-        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
+        wxLogVerbose(_("The method is not correctly defined for %s in the parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
     }
@@ -263,7 +277,7 @@ vf asFileParameters::GetVectorFloat(wxXmlNode *node)
 
         vect = BuildVectorFloat(min, max, step);
     } else {
-        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
+        wxLogVerbose(_("The method is not correctly defined for %s in the parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);
     }
@@ -309,7 +323,7 @@ vd asFileParameters::GetVectorDouble(wxXmlNode *node)
 
         vect = BuildVectorDouble(min, max, step);
     } else {
-        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
+        wxLogVerbose(_("The method is not correctly defined for %s in the parameters file."), nodeName);
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorDouble(valueStr);
     }
@@ -334,7 +348,7 @@ vwxs asFileParameters::GetVectorString(wxXmlNode *node)
         wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     } else {
-        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
+        wxLogVerbose(_("The method is not correctly defined for %s in the parameters file."), nodeName);
         wxString value = node->GetChildren()->GetContent();
         vect = BuildVectorString(value);
     }
@@ -414,7 +428,7 @@ vvi asFileParameters::GetStationIdsVector(wxXmlNode *node)
             vect.push_back(id);
         }
     } else {
-        wxLogVerbose(_("The method is not correctly defined for %s in the calibration parameters file."), nodeName);
+        wxLogVerbose(_("The method is not correctly defined for %s in the parameters file."), nodeName);
         return vvi(0);
     }
 
