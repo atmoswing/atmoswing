@@ -37,7 +37,7 @@ TEST(Parameters, ParametersLoadFromFile)
     filepath.Append("/files/parameters_standard_read.xml");
 
     asParameters params;
-    params.LoadFromFile(filepath);
+    ASSERT_TRUE(params.LoadFromFile(filepath));
 
     EXPECT_EQ(asTime::GetMJD(1962, 1, 1), params.GetArchiveStart());
     EXPECT_EQ(asTime::GetMJD(2008, 12, 31), params.GetArchiveEnd());

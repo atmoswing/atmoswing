@@ -41,16 +41,22 @@ asFileParameters::~asFileParameters()
 
 bool asFileParameters::EditRootElement()
 {
-    wxLogError(_("The class asFileParameters should not be used directly. Use a derived class."));
-
-    return false;
+    if (!GetRoot())
+        return false;
+    GetRoot()->AddAttribute("target", "undefined");
+    return true;
 }
 
 bool asFileParameters::CheckRootElement() const
 {
-    wxLogError(_("The class asFileParameters should not be used directly. Use a derived class."));
+    if (!GetRoot())
+        return false;
+    if (!IsAnAtmoSwingFile())
+        return false;
+    if (!FileVersionIsOrAbove(1.0))
+        return false;
 
-    return false;
+    return true;
 }
 
 vi asFileParameters::BuildVectorInt(int min, int max, int step)
