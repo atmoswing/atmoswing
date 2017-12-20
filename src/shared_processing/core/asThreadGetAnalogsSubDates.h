@@ -47,7 +47,7 @@ public:
     asThreadGetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
                                std::vector<asPredictor *> predictorsTarget, asTimeArray *timeArrayArchiveData,
                                asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
-                               std::vector<asCriteria *> criteria, asParameters &params, int step, vpa2f &vRefData,
+                               std::vector<asCriteria *> criteria, asParameters *params, int step, vpa2f &vRefData,
                                vpa2f &vEvalData, a1i &vRowsNb, a1i &vColsNb, int start, int end,
                                a2f *finalAnalogsCriteria, a2f *finalAnalogsDates, a2f *previousAnalogsDates,
                                bool *containsNaNs);
@@ -65,7 +65,7 @@ private:
     asTimeArray *m_pTimeArrayTargetData;
     a1f *m_pTimeTargetSelection;
     std::vector<asCriteria *> m_criteria;
-    asParameters m_params;
+    asParameters *m_params;
     int m_step;
     vpa2f m_vTargData;
     vpa2f m_vArchData;

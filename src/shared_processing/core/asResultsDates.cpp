@@ -40,9 +40,9 @@ asResultsDates::~asResultsDates()
 {
 }
 
-void asResultsDates::Init(asParameters &params)
+void asResultsDates::Init(asParameters *params)
 {
-    m_predictandStationIds = params.GetPredictandStationIds();
+    m_predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);

@@ -42,7 +42,7 @@ public:
 
     virtual ~asResultsTotalScore();
 
-    void Init(asParametersScoring &params);
+    void Init();
 
     float GetScore() const
     {

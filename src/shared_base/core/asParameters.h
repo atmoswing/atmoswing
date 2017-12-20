@@ -626,6 +626,11 @@ public:
         return (int) m_steps[iStep].predictors.size();
     }
 
+    virtual int GetPredictorDataIdNb(int iStep, int iPtor) const
+    {
+        return 1;
+    }
+
 protected:
     wxString m_methodId;
     wxString m_methodIdDisplay;

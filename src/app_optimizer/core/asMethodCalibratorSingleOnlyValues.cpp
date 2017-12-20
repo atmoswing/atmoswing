@@ -172,17 +172,17 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
         for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                     return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
                 wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
-            if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
+            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
                 return false;
 
             // Keep the analogs dates of the best parameters set

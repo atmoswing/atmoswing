@@ -125,8 +125,6 @@ public:
 
     bool PreprocessingDataIdsOk();
 
-    bool PreprocessingPropertiesOk();
-
     wxString GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const;
 
     wxString Print() const;
@@ -525,6 +523,11 @@ public:
     vwxs GetPredictorDataIdVector(int iStep, int iPtor) const
     {
         return m_stepsVect[iStep].predictors[iPtor].dataId;
+    }
+
+    int GetPredictorDataIdNb(int iStep, int iPtor) const
+    {
+        return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
     bool SetPredictorDataIdVector(int iStep, int iPtor, vwxs val)

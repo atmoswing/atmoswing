@@ -58,11 +58,11 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                 return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                 return false;
         }
         if (containsNaNs) {
@@ -70,11 +70,11 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
             return false;
         }
     }
-    if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("calibration");
@@ -107,11 +107,11 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                 return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                 return false;
         }
         if (containsNaNs) {
@@ -119,11 +119,11 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
             return false;
         }
     }
-    if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
         return false;
-    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
         return false;
-    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
         return false;
 
     anaDates.SetSubFolder("validation");

@@ -43,7 +43,7 @@ asResultsTotalScore::~asResultsTotalScore()
 {
 }
 
-void asResultsTotalScore::Init(asParametersScoring &params)
+void asResultsTotalScore::Init()
 {
     // Set to nan to avoid keeping old results
     m_score = NaNf;

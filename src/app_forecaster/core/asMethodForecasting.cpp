@@ -1037,7 +1037,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
         // Create a standard analogs dates result object
         asResultsDates anaDates;
         anaDates.SetCurrentStep(iStep);
-        anaDates.Init(params);
+        anaDates.Init(&params);
 
         // Time array with one value
         timeArrayTargetVectUnique[0] = timeArrayTarget[iLead];
@@ -1046,7 +1046,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 
         if (!asProcessor::GetAnalogsDates(m_storagePredictorsArchive, m_storagePredictorsRealtime, timeArrayArchive,
                                           timeArrayArchive, timeArrayTarget, timeArrayTargetLeadTime, m_storageCriteria,
-                                          params, iStep, anaDates, containsNaNs)) {
+                                          &params, iStep, anaDates, containsNaNs)) {
             wxLogError(_("Failed processing the analogs dates."));
             return false;
         }
@@ -1515,7 +1515,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         // Create a analogs date object for previous results
         asResultsDates anaDatesPrev;
         anaDatesPrev.SetCurrentStep(iStep - 1);
-        anaDatesPrev.Init(params);
+        anaDatesPrev.Init(&params);
 
         // Set the corresponding analogs number
         params.SetAnalogsNumber(iStep - 1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
@@ -1524,7 +1524,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         // Create a standard analogs dates result object
         asResultsDates anaDates;
         anaDates.SetCurrentStep(iStep);
-        anaDates.Init(params);
+        anaDates.Init(&params);
 
         a1f datesPrev = resultsPrev.GetAnalogsDates(iLead);
         a2f datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep - 1, iLead));
@@ -1542,7 +1542,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         bool containsNaNs = false;
 
         if (!asProcessor::GetAnalogsSubDates(m_storagePredictorsArchive, m_storagePredictorsRealtime, timeArrayArchive,
-                                             timeArrayTarget, anaDatesPrev, m_storageCriteria, params, iStep, anaDates,
+                                             timeArrayTarget, anaDatesPrev, m_storageCriteria, &params, iStep, anaDates,
                                              containsNaNs)) {
             wxLogError(_("Failed processing the analogs dates."));
             return false;
@@ -1605,7 +1605,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
 
         asResultsDates anaDates;
         anaDates.SetCurrentStep(iStep);
-        anaDates.Init(params);
+        anaDates.Init(&params);
 
         a1f datesPrev = results.GetAnalogsDates(iLead);
         a2f datesPrev2D(1, params.GetAnalogsNumberLeadTime(iStep, iLead));
@@ -1632,9 +1632,9 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
             // Create a standard analogs values result object
             asResultsValues anaValues = asResultsValues();
             anaValues.SetCurrentStep(iStep);
-            anaValues.Init(params);
+            anaValues.Init(&params);
 
-            if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, params, anaValues)) {
+            if (!asProcessor::GetAnalogsValues(*m_predictandDB, anaDates, &params, anaValues)) {
                 wxLogError(_("Failed setting the predictand values to the corresponding analog dates."));
                 return false;
             }
@@ -1657,6 +1657,16 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
     wxLogVerbose(_("Predictands association over."));
 
     return true;
+}
+
+double asMethodForecasting::GetEffectiveArchiveDataStart(asParameters *params) const
+{
+    return GetTimeStartArchive(params);
+}
+
+double asMethodForecasting::GetEffectiveArchiveDataEnd(asParameters *params) const
+{
+    return GetTimeEndArchive(params);
 }
 
 void asMethodForecasting::Cleanup()

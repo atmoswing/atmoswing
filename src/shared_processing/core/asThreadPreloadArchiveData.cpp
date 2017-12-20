@@ -26,33 +26,34 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asThreadPreloadDataOptimizer.h"
+#include "asThreadPreloadArchiveData.h"
+#include "asParameters.h"
 
-asThreadPreloadDataOptimizer::asThreadPreloadDataOptimizer(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep,
-                                         int iPtor, int iPre)
+asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep,
+                                                       int iPtor, int i)
         : asThread(asThread::PreloadData),
-          m_optimizer(optimizer), // copy pointer
+          m_method(method), // copy pointer
           m_params(params),
           m_iStep(iStep),
           m_iProt(iPtor),
-          m_iDat(iPre)
+          m_iDat(i)
 {
 
 }
 
-asThreadPreloadDataOptimizer::~asThreadPreloadDataOptimizer()
+asThreadPreloadArchiveData::~asThreadPreloadArchiveData()
 {
     //dtor
 }
 
-wxThread::ExitCode asThreadPreloadDataOptimizer::Entry()
+wxThread::ExitCode asThreadPreloadArchiveData::Entry()
 {
-    if (!m_params.NeedsPreprocessing(m_iStep, m_iProt)) {
-        if (!m_optimizer->PreloadDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
+    if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
+        if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
             return (wxThread::ExitCode) 1;
         }
     } else {
-        if (!m_optimizer->PreloadDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
+        if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
             return (wxThread::ExitCode) 1;
         }
     }

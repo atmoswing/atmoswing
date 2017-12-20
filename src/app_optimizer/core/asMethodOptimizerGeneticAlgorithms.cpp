@@ -182,23 +182,23 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
         m_isOver = false;
         ClearAll();
         if (!ManageOneRun()) {
-            DeletePreloadedData();
+            DeletePreloadedArchiveData();
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in GAs: %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception in the GAs: %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     }
 
     // Delete preloaded data
-    DeletePreloadedData();
+    DeletePreloadedArchiveData();
 
     return true;
 }
@@ -256,19 +256,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Preload data
     try {
-        if (!PreloadData(params)) {
+        if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception in the data preloading (in GAs): %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     }
 
@@ -448,11 +448,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
                     if (iStep == 0) {
-                        if (!GetAnalogsDates(anaDates, *newParams, iStep, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, newParams, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, *newParams, anaDatesPrevious, iStep, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, newParams, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -461,11 +461,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         return false;
                     }
                 }
-                if (!GetAnalogsValues(anaValues, *newParams, anaDates, stepsNb - 1))
+                if (!GetAnalogsValues(anaValues, newParams, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, *newParams, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, newParams, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, *newParams, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, newParams, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result

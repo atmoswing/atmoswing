@@ -72,3 +72,5 @@ endif (USE_CPPCHECK)
 ##### LINKING
 
 add_dependencies(asprocessing eigen)
+add_dependencies(asprocessing asbase)
+target_link_libraries(asprocessing asbase)

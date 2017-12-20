@@ -54,7 +54,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                   std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                   asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData,
                                   asTimeArray &timeArrayTargetSelection, std::vector<asCriteria *> criteria,
-                                  asParameters &params, int step, asResultsDates &results, bool &containsNaNs)
+                                  asParameters *params, int step, asResultsDates &results, bool &containsNaNs)
 {
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
@@ -97,7 +97,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     int timeTargetSelectionSize = (int) timeTargetSelection.size();
     wxASSERT(criteria[0]);
     bool isAsc = (criteria[0]->GetOrder() == Asc);
-    unsigned int predictorsNb = (unsigned int) params.GetPredictorsNb(step);
+    unsigned int predictorsNb = (unsigned int) params->GetPredictorsNb(step);
     unsigned int membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
 
     wxASSERT(predictorsArchive.size() > 0);
@@ -106,7 +106,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                   predictorsNb));
 
     // Check analogs number. Correct if superior to the time serie
-    int analogsNb = params.GetAnalogsNumber(step);
+    int analogsNb = params->GetAnalogsNumber(step);
     if (analogsNb > timeArrayArchiveSelection.GetSize() * predictorsArchive[0]->GetMembersNb()) {
         wxLogError(_("The given analog number is superior to the time serie."));
         return false;
@@ -261,7 +261,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             }
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
-            asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(), timeArrayArchiveSelection.GetEnd(), params.GetTimeArrayAnalogsTimeStepHours(), params.GetTimeArrayAnalogsMode());
+            asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(), timeArrayArchiveSelection.GetEnd(), params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
             if(timeArrayArchiveSelection.HasForbiddenYears())
             {
                 dateArrayArchiveSelection.SetForbiddenYears(timeArrayArchiveSelection.GetForbiddenYears());
@@ -288,7 +288,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             for (int iPtor=0; iPtor<predictorsNb; iPtor++)
             {
-                weights[iPtor] = params.GetPredictorWeight(step, iPtor);
+                weights[iPtor] = params->GetPredictorWeight(step, iPtor);
                 colsNb[iPtor] = vRowsNb[iPtor];
                 rowsNb[iPtor] = vColsNb[iPtor];
             }
@@ -324,7 +324,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     indicesTarg[iDateTarg] = iTimeTarg;
 
                     // DateArray initialization
-                    dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], params.GetTimeArrayAnalogsIntervalDays(), params.GetTimeArrayAnalogsExcludeDays());
+                    dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], params->GetTimeArrayAnalogsIntervalDays(), params->GetTimeArrayAnalogsExcludeDays());
 
                     // Counter representing the current index
                     counter = 0;
@@ -447,7 +447,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     else
                     {
                         wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
-                        wxLogWarning(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."), analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(), params.GetTimeArrayAnalogsIntervalDays());
+                        wxLogWarning(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."), analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(), params->GetTimeArrayAnalogsIntervalDays());
                     }
                 }
 
@@ -482,8 +482,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
                                                   timeArrayArchiveSelection.GetEnd(),
-                                                  params.GetTimeArrayAnalogsTimeStepHours(),
-                                                  params.GetTimeArrayAnalogsMode());
+                                                  params->GetTimeArrayAnalogsTimeStepHours(),
+                                                  params->GetTimeArrayAnalogsMode());
             if (timeArrayArchiveSelection.HasForbiddenYears()) {
                 dateArrayArchiveSelection.SetForbiddenYears(timeArrayArchiveSelection.GetForbiddenYears());
             }
@@ -504,8 +504,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                     // DateArray object initialization.
                     dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg],
-                                                   params.GetTimeArrayAnalogsIntervalDays(),
-                                                   params.GetTimeArrayAnalogsExcludeDays());
+                                                   params->GetTimeArrayAnalogsIntervalDays(),
+                                                   params->GetTimeArrayAnalogsExcludeDays());
 
                     // Counter representing the current index
                     int counter = 0;
@@ -547,7 +547,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                                              vRowsNb[iPtor], vColsNb[iPtor]);
 
                                     // Weight and add the score
-                                    thisScore += tmpScore * params.GetPredictorWeight(step, iPtor);
+                                    thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
 
                                 }
                                 if (asTools::IsNaN(thisScore)) {
@@ -717,7 +717,7 @@ void asProcessor::InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float ana
 bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
                                      std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                      asTimeArray &timeArrayTargetData, asResultsDates &anaDates,
-                                     std::vector<asCriteria *> criteria, asParameters &params, int step,
+                                     std::vector<asCriteria *> criteria, asParameters *params, int step,
                                      asResultsDates &results, bool &containsNaNs)
 {
     // Get the processing method
@@ -766,13 +766,13 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     wxASSERT(timeTargetSelectionSize > 0);
     a2f analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder() == Asc);
-    unsigned int predictorsNb = (unsigned int) params.GetPredictorsNb(step);
+    unsigned int predictorsNb = (unsigned int) params->GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
     unsigned int membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
 
     // Check the analogs number. Correct if superior to the time serie
-    int analogsNb = params.GetAnalogsNumber(step);
-    int analogsNbPrevious = params.GetAnalogsNumber(step - 1);
+    int analogsNb = params->GetAnalogsNumber(step);
+    int analogsNbPrevious = params->GetAnalogsNumber(step - 1);
     if (analogsNb > analogsNbPrevious) {
         wxLogError(_("The given analog number (%d) is superior to the previous step (%d)."), analogsNb,
                    analogsNbPrevious);
@@ -942,7 +942,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                                                                          vRowsNb[iPtor], vColsNb[iPtor]);
 
                                 // Weight and add the score
-                                thisscore += tmpscore * params.GetPredictorWeight(step, iPtor);
+                                thisscore += tmpscore * params->GetPredictorWeight(step, iPtor);
                             }
                             if (asTools::IsNaN(thisscore)) {
                                 containsNaNs = true;
@@ -1034,7 +1034,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     return true;
 }
 
-bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters &params,
+bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters *params,
                                    asResultsValues &results)
 {
     // Extract Data
@@ -1042,7 +1042,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     a2f analogsDates = anaDates.GetAnalogsDates();
     a2f analogsCriteria = anaDates.GetAnalogsCriteria();
     a1d predictandTime = predictand.GetTime();
-    vi stations = params.GetPredictandStationIds();
+    vi stations = params->GetPredictandStationIds();
     int stationsNb = (int) stations.size();
     va1f predictandDataNorm((unsigned long) stationsNb);
     va1f predictandDataGross((unsigned long) stationsNb);
@@ -1059,17 +1059,17 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
 
     // Correct the time arrays to account for predictand time and not predictors time
     for (int iTime = 0; iTime < timeTargetSelectionLength; iTime++) {
-        timeTargetSelection[iTime] -= params.GetTimeShiftDays();
+        timeTargetSelection[iTime] -= params->GetTimeShiftDays();
 
         for (int iAnalog = 0; iAnalog < analogsNb; iAnalog++) {
-            analogsDates(iTime, iAnalog) -= params.GetTimeShiftDays();
+            analogsDates(iTime, iAnalog) -= params->GetTimeShiftDays();
         }
     }
 
     // Get start and end dates
     double timeStart, timeEnd;
-    timeStart = wxMax(predictandTime[0], params.GetArchiveStart());
-    timeEnd = wxMin(predictandTime[predictandTimeLength - 1], params.GetArchiveEnd());
+    timeStart = wxMax(predictandTime[0], params->GetArchiveStart());
+    timeEnd = wxMin(predictandTime[predictandTimeLength - 1], params->GetArchiveEnd());
 
     // Check if data are effectively available for this period
     int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],
@@ -1127,7 +1127,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     }
 
     // Some variables
-    float predictandTimeDays = params.GetPredictandTimeHours() / 24.0;
+    float predictandTimeDays = params->GetPredictandTimeHours() / 24.0;
 
     // Resize containers
     wxASSERT(targTimeLength > 0);

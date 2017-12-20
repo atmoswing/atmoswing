@@ -86,6 +86,10 @@ protected:
 
     void DeletePreprocessData();
 
+    double GetEffectiveArchiveDataStart(asParameters *params) const;
+
+    double GetEffectiveArchiveDataEnd(asParameters *params) const;
+
     void Cleanup();
 
 private:

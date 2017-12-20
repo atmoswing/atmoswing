@@ -31,22 +31,22 @@
 
 #include <asThread.h>
 #include <asIncludes.h>
-#include "asMethodCalibrator.h"
+#include "asMethodStandard.h"
 
-class asThreadPreloadDataOptimizer
+class asThreadPreloadArchiveData
         : public asThread
 {
 public:
-    asThreadPreloadDataOptimizer(asMethodCalibrator *optimizer, asParametersScoring &params, int iStep, int iPtor, int iPre);
+    asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep, int iPtor, int i);
 
-    virtual ~asThreadPreloadDataOptimizer();
+    virtual ~asThreadPreloadArchiveData();
 
     ExitCode Entry();
 
 protected:
 private:
-    asMethodCalibrator *m_optimizer;
-    asParametersScoring m_params;
+    asMethodStandard *m_method;
+    asParameters *m_params;
     int m_iStep;
     int m_iProt;
     int m_iDat;

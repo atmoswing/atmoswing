@@ -46,7 +46,7 @@ asResultsScoresMap::~asResultsScoresMap()
     //dtor
 }
 
-void asResultsScoresMap::Init(asParametersScoring &params)
+void asResultsScoresMap::Init()
 {
     BuildFileName();
 

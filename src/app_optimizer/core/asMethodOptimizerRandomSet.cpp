@@ -85,7 +85,7 @@ bool asMethodOptimizerRandomSet::Manager()
                                                GetPredictandStationIdsList(stationId).c_str()));
 
     // Preload data
-    if (!PreloadData(params)) {
+    if (!PreloadArchiveData(&params)) {
         wxLogError(_("Could not preload the data."));
         return false;
     }
@@ -227,11 +227,11 @@ bool asMethodOptimizerRandomSet::Manager()
                 for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
                     if (iStep == 0) {
-                        if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -240,11 +240,11 @@ bool asMethodOptimizerRandomSet::Manager()
                         return false;
                     }
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+                if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
@@ -283,7 +283,7 @@ bool asMethodOptimizerRandomSet::Manager()
         return false;
 
     // Delete preloaded data
-    DeletePreloadedData();
+    DeletePreloadedArchiveData();
 
     return true;
 }

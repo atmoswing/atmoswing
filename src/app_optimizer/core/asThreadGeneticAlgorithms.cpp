@@ -73,13 +73,13 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!m_optimizer->GetAnalogsDates(anaDates, *m_params, iStep, containsNaNs)) {
+            if (!m_optimizer->GetAnalogsDates(anaDates, m_params, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs dates"));
                 return NULL;
             }
             anaDatesPrevious = anaDates;
         } else {
-            if (!m_optimizer->GetAnalogsSubDates(anaDates, *m_params, anaDatesPrevious, iStep, containsNaNs)) {
+            if (!m_optimizer->GetAnalogsSubDates(anaDates, m_params, anaDatesPrevious, iStep, containsNaNs)) {
                 wxLogError(_("Failed processing the analogs sub dates"));
                 return NULL;
             }
@@ -95,15 +95,15 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
             return NULL;
         }
     }
-    if (!m_optimizer->GetAnalogsValues(anaValues, *m_params, anaDates, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
         wxLogError(_("Failed processing the analogs values"));
         return NULL;
     }
-    if (!m_optimizer->GetAnalogsScores(anaScores, *m_params, anaValues, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsScores(anaScores, m_params, anaValues, stepsNb - 1)) {
         wxLogError(_("Failed processing the scores"));
         return NULL;
     }
-    if (!m_optimizer->GetAnalogsTotalScore(anaScoreFinal, *m_params, anaScores, stepsNb - 1)) {
+    if (!m_optimizer->GetAnalogsTotalScore(anaScoreFinal, m_params, anaScores, stepsNb - 1)) {
         wxLogError(_("Failed processing the total score"));
         return NULL;
     }

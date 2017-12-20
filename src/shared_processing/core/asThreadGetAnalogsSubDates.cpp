@@ -37,7 +37,7 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(std::vector<asPredictor *
                                                        std::vector<asPredictor *> predictorsTarget,
                                                        asTimeArray *timeArrayArchiveData,
                                                        asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
-                                                       std::vector<asCriteria *> criteria, asParameters &params,
+                                                       std::vector<asCriteria *> criteria, asParameters *params,
                                                        int step, vpa2f &vTargData, vpa2f &vArchData, a1i &vRowsNb,
                                                        a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria,
                                                        a2f *finalAnalogsDates, a2f *previousAnalogsDates,
@@ -85,10 +85,10 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     float tmpscore, thisscore;
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
-    int predictorsNb = m_params.GetPredictorsNb(m_step);
+    int predictorsNb = m_params->GetPredictorsNb(m_step);
     unsigned int membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
-    int analogsNbPrevious = m_params.GetAnalogsNumber(m_step - 1);
-    int analogsNb = m_params.GetAnalogsNumber(m_step);
+    int analogsNbPrevious = m_params->GetAnalogsNumber(m_step - 1);
+    int analogsNb = m_params->GetAnalogsNumber(m_step);
     bool isasc = (m_criteria[0]->GetOrder() == Asc);
 
     wxASSERT(m_end < m_pTimeTargetSelection->size());
@@ -153,7 +153,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                                                              m_vColsNb[iPtor]);
 
                         // Weight and add the score
-                        thisscore += tmpscore * m_params.GetPredictorWeight(m_step, iPtor);
+                        thisscore += tmpscore * m_params->GetPredictorWeight(m_step, iPtor);
                     }
                     if (asTools::IsNaN(thisscore)) {
                         *m_pContainsNaNs = true;
