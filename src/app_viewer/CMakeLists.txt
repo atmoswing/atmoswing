@@ -12,6 +12,12 @@ file(GLOB_RECURSE src_viewer_gui_h gui/*.h)
 file(GLOB_RECURSE src_viewer_gui_cpp gui/*.cpp)
 list(APPEND src_app_viewer ${src_viewer_core_h} ${src_viewer_gui_h})
 list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
+list(APPEND src_app_viewer
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecast.h
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecast.cpp
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.h
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.cpp
+        )
 
 # wxPlotCtrl library (and dependences)
 file(GLOB_RECURSE src_lib_wxmathplot_h libs/wxmathplot/*.h)
