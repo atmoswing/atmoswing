@@ -92,6 +92,8 @@ protected:
 
     bool Preprocess(std::vector<asPredictorModSim *> predictors, const wxString &method, asPredictor *result);
 
+    bool SaveDetails(asParametersDownscaling *params);
+
     void Cleanup(std::vector<asPredictorModSim *> predictorsPreprocess);
 
 private:
@@ -103,8 +105,6 @@ private:
     double GetTimeStartDownscaling(asParametersDownscaling *params) const;
 
     double GetTimeEndDownscaling(asParametersDownscaling *params) const;
-
-    bool SaveDetails(asParametersDownscaling *params);
 };
 
 #endif // ASMETHODDOWNSCALER_H
