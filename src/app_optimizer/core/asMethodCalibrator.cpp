@@ -358,7 +358,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
 
     // Get start and end dates
     a1d predictandTime = m_predictandDB->GetTime();
-    float predictandTimeDays = float(params->GetPredictandTimeHours() / 24.0);
+    auto predictandTimeDays = float(params->GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0], params->GetCalibrationStart());
     timeStart = floor(timeStart) + predictandTimeDays;

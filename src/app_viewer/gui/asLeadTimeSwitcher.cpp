@@ -101,7 +101,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
     // Create graphics context
     wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
-    if (gc && !values.empty()) {
+    if (gc && values.size() > 0) {
         gc->SetPen(*wxBLACK);
         wxFont datesFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         gc->SetFont(datesFont, *wxBLACK);
