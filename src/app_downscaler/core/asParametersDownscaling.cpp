@@ -52,10 +52,9 @@ void asParametersDownscaling::AddPredictorModelSim(ParamsStepModelSim &step)
 {
     ParamsPredictorModelSim predictor;
 
-    predictor.archiveDatasetId = wxEmptyString;
-    predictor.archiveDataId = wxEmptyString;
-    predictor.modelSimDatasetId = wxEmptyString;
-    predictor.modelSimDataId = wxEmptyString;
+    predictor.datasetId = wxEmptyString;
+    predictor.dataId = wxEmptyString;
+    predictor.membersNb = 1;
 
     step.predictors.push_back(predictor);
 }
@@ -272,10 +271,10 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     if (!SetPredictorModelSimDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "archive_dataset_id") {
-                    if (!SetPredictorArchiveDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "archive_data_id") {
-                    if (!SetPredictorArchiveDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "level") {
                     if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
@@ -354,10 +353,10 @@ bool asParametersDownscaling::ParsePreprocessedPredictors(asFileParametersDownsc
                     if (!SetPreprocessModelSimDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "archive_dataset_id") {
-                    if (!SetPreprocessArchiveDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "archive_data_id") {
-                    if (!SetPreprocessArchiveDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "level") {
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
@@ -482,12 +481,12 @@ bool asParametersDownscaling::InputsOK() const
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessArchiveDatasetId(i, j, k).IsEmpty()) {
+                    if (GetPreprocessDatasetId(i, j, k).IsEmpty()) {
                         wxLogError(_("The archive dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessArchiveDataId(i, j, k).IsEmpty()) {
+                    if (GetPreprocessDataId(i, j, k).IsEmpty()) {
                         wxLogError(_("The archive data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
@@ -504,12 +503,12 @@ bool asParametersDownscaling::InputsOK() const
                                i, j);
                     return false;
                 }
-                if (GetPredictorArchiveDatasetId(i, j).IsEmpty()) {
+                if (GetPredictorDatasetId(i, j).IsEmpty()) {
                     wxLogError(_("The archive dataset (step %d, predictor %d) was not provided in the parameters file."),
                                i, j);
                     return false;
                 }
-                if (GetPredictorArchiveDataId(i, j).IsEmpty()) {
+                if (GetPredictorDataId(i, j).IsEmpty()) {
                     wxLogError(_("The archive data (step %d, predictor %d) was not provided in the parameters file."),
                                i, j);
                     return false;
@@ -608,33 +607,13 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val)
     return true;
 }
 
-bool asParametersDownscaling::SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val)
-{
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor archive dataset ID is null"));
-        return false;
-    }
-    m_stepsModelSim[iStep].predictors[iPtor].archiveDatasetId = val;
-    return true;
-}
-
-bool asParametersDownscaling::SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val)
-{
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor archive data ID is null"));
-        return false;
-    }
-    m_stepsModelSim[iStep].predictors[iPtor].archiveDataId = val;
-    return true;
-}
-
 bool asParametersDownscaling::SetPredictorModelSimDatasetId(int iStep, int iPtor, const wxString &val)
 {
     if (val.IsEmpty()) {
         wxLogError(_("The provided value for the predictor model simulation dataset ID is null"));
         return false;
     }
-    m_stepsModelSim[iStep].predictors[iPtor].modelSimDatasetId = val;
+    m_stepsModelSim[iStep].predictors[iPtor].datasetId = val;
     return true;
 }
 
@@ -644,68 +623,16 @@ bool asParametersDownscaling::SetPredictorModelSimDataId(int iStep, int iPtor, c
         wxLogError(_("The provided value for the predictor model simulation data ID is null"));
         return false;
     }
-    m_stepsModelSim[iStep].predictors[iPtor].modelSimDataId = val;
-    return true;
-}
-
-wxString asParametersDownscaling::GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const
-{
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
-    } else {
-        wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
-        return wxEmptyString;
-    }
-}
-
-bool asParametersDownscaling::SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val)
-{
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess archive dataset ID is null"));
-        return false;
-    }
-
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
-    } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
-    }
-
-    return true;
-}
-
-wxString asParametersDownscaling::GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const
-{
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
-    } else {
-        wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
-        return wxEmptyString;
-    }
-}
-
-bool asParametersDownscaling::SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val)
-{
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess archive data ID is null"));
-        return false;
-    }
-
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
-    } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDataIds.push_back(val);
-    }
-
+    m_stepsModelSim[iStep].predictors[iPtor].dataId = val;
     return true;
 }
 
 wxString asParametersDownscaling::GetPreprocessModelSimDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDatasetIds[iPre];
+    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+        return m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessModelSimDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -717,10 +644,10 @@ bool asParametersDownscaling::SetPreprocessModelSimDatasetId(int iStep, int iPto
         return false;
     }
 
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDatasetIds[iPre] = val;
+    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+        m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDatasetIds.push_back(val);
+        m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
     }
 
     return true;
@@ -728,10 +655,10 @@ bool asParametersDownscaling::SetPreprocessModelSimDatasetId(int iStep, int iPto
 
 wxString asParametersDownscaling::GetPreprocessModelSimDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDataIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDataIds[iPre];
+    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+        return m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessModelSimDatasetIds in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
@@ -743,10 +670,10 @@ bool asParametersDownscaling::SetPreprocessModelSimDataId(int iStep, int iPtor, 
         return false;
     }
 
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDataIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDataIds[iPre] = val;
+    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+        m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimDataIds.push_back(val);
+        m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
     }
 
     return true;

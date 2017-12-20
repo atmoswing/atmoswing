@@ -40,18 +40,12 @@ class asParametersDownscaling
 public:
     typedef struct
     {
-        wxString archiveDatasetId;
-        wxString archiveDataId;
-        int archiveMembersNb;
-        wxString modelSimDatasetId;
-        wxString modelSimDataId;
-        int modelSimMembersNb;
-        vwxs preprocessArchiveDatasetIds;
-        vwxs preprocessArchiveDataIds;
-        int preprocessArchiveMembersNb;
-        vwxs preprocessModelSimDatasetIds;
-        vwxs preprocessModelSimDataIds;
-        int preprocessModelSimMembersNb;
+        wxString datasetId;
+        wxString dataId;
+        int membersNb;
+        vwxs preprocessDatasetIds;
+        vwxs preprocessDataIds;
+        int preprocessMembersNb;
     } ParamsPredictorModelSim;
 
     typedef std::vector<ParamsPredictorModelSim> VectorParamsPredictorsModelSim;
@@ -86,46 +80,19 @@ public:
 
     bool SetPredictandStationIdsVector(vvi val);
 
-    wxString GetPredictorArchiveDatasetId(int iStep, int iPtor) const
-    {
-        return m_stepsModelSim[iStep].predictors[iPtor].archiveDatasetId;
-    }
-
-    bool SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val);
-
-    wxString GetPredictorArchiveDataId(int iStep, int iPtor) const
-    {
-        return m_stepsModelSim[iStep].predictors[iPtor].archiveDataId;
-    }
-
-    bool SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val);
-
     wxString GetPredictorModelSimDatasetId(int iStep, int iPtor) const
     {
-        return m_stepsModelSim[iStep].predictors[iPtor].modelSimDatasetId;
+        return m_stepsModelSim[iStep].predictors[iPtor].datasetId;
     }
 
     bool SetPredictorModelSimDatasetId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorModelSimDataId(int iStep, int iPtor) const
     {
-        return m_stepsModelSim[iStep].predictors[iPtor].modelSimDataId;
+        return m_stepsModelSim[iStep].predictors[iPtor].dataId;
     }
 
     bool SetPredictorModelSimDataId(int iStep, int iPtor, const wxString &val);
-
-    int GetPreprocessSize(int iStep, int iPtor) const
-    {
-        return (int) m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
-    }
-
-    wxString GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const;
-
-    bool SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
-
-    wxString GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const;
-
-    bool SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessModelSimDatasetId(int iStep, int iPtor, int iPre) const;
 
@@ -135,45 +102,24 @@ public:
 
     bool SetPreprocessModelSimDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-
-    void SetPredictorArchiveMembersNb(int iStep, int iPtor, int val)
-    {
-        m_stepsModelSim[iStep].predictors[iPtor].archiveMembersNb = val;
-    }
-
-    int GetPredictorArchiveMembersNb(int iStep, int iPtor) const
-    {
-        return m_stepsModelSim[iStep].predictors[iPtor].archiveMembersNb;
-    }
-
     void SetPredictorModelSimMembersNb(int iStep, int iPtor, int val)
     {
-        m_stepsModelSim[iStep].predictors[iPtor].modelSimMembersNb = val;
+        m_stepsModelSim[iStep].predictors[iPtor].membersNb = val;
     }
 
     int GetPredictorModelSimMembersNb(int iStep, int iPtor) const
     {
-        return m_stepsModelSim[iStep].predictors[iPtor].modelSimMembersNb;
-    }
-
-    void SetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre, int val)
-    {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveMembersNb = val;
-    }
-
-    int GetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre) const
-    {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessArchiveMembersNb;
+        return m_stepsModelSim[iStep].predictors[iPtor].membersNb;
     }
 
     void SetPreprocessModelSimMembersNb(int iStep, int iPtor, int iPre, int val)
     {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimMembersNb = val;
+        m_stepsModelSim[iStep].predictors[iPtor].preprocessMembersNb = val;
     }
 
     int GetPreprocessModelSimMembersNb(int iStep, int iPtor, int iPre) const
     {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessModelSimMembersNb;
+        return m_stepsModelSim[iStep].predictors[iPtor].preprocessMembersNb;
     }
 
     bool SetDownscalingYearStart(int val)
