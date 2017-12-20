@@ -41,3 +41,29 @@ asPredictorModSim::~asPredictorModSim()
 {
 
 }
+
+asPredictorModSim *asPredictorModSim::GetInstance(const wxString &datasetId, const wxString &dataId,
+                                                  const wxString &directory)
+{
+    asPredictorModSim *predictor = nullptr;
+
+    if (datasetId.IsSameAs("CMIP5", false)) {
+        //predictor = new asPredictorModSimCMIP5(dataId);
+    } else if (datasetId.IsSameAs("CORDEX", false)) {
+        //predictor = new asPredictorModSimCORDEX(dataId);
+    } else {
+        wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
+        return nullptr;
+    }
+
+    if (!directory.IsEmpty()) {
+        predictor->SetDirectoryPath(directory);
+    }
+
+    if (!predictor->Init()) {
+        wxLogError(_("The predictor did not initialize correctly."));
+        return NULL;
+    }
+
+    return predictor;
+}

@@ -41,7 +41,8 @@ public:
 
     virtual ~asPredictorModSim();
 
-    bool Init();
+    static asPredictorModSim *GetInstance(const wxString &datasetId, const wxString &dataId,
+                                          const wxString &directory = wxEmptyString);
 
 protected:
 
