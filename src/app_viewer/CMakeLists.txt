@@ -39,6 +39,7 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/shared_base/gui/"
         "${CMAKE_SOURCE_DIR}/src/shared_base/gui/img/"
         "${CMAKE_SOURCE_DIR}/src/shared_base/libs/awxled/"
+        "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
         "${PROJECT_SOURCE_DIR}/core/"
         "${PROJECT_SOURCE_DIR}/gui/"
         "${PROJECT_SOURCE_DIR}/libs/wxmathplot/"
