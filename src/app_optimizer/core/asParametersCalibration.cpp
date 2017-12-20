@@ -717,7 +717,7 @@ bool asParametersCalibration::InputsOK() const
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
-        if (GetTimeArrayAnalogsIntervalDaysVector().size() == 0) {
+        if (GetTimeArrayAnalogsIntervalDaysVector().empty()) {
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
@@ -729,7 +729,7 @@ bool asParametersCalibration::InputsOK() const
 
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (GetAnalogsNumberVector(i).size() == 0) {
+        if (GetAnalogsNumberVector(i).empty()) {
             wxLogError(wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."),
                                         i));
             return false;
@@ -749,17 +749,17 @@ bool asParametersCalibration::InputsOK() const
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessDataIdVector(i, j, k).size() == 0) {
+                    if (GetPreprocessDataIdVector(i, j, k).empty()) {
                         wxLogError(_("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessLevelVector(i, j, k).size() == 0) {
+                    if (GetPreprocessLevelVector(i, j, k).empty()) {
                         wxLogError(_("The level for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessTimeHoursVector(i, j, k).size() == 0) {
+                    if (GetPreprocessTimeHoursVector(i, j, k).empty()) {
                         wxLogError(_("The time for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
@@ -770,15 +770,15 @@ bool asParametersCalibration::InputsOK() const
                     wxLogError(_("The dataset (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
-                if (GetPredictorDataIdVector(i, j).size() == 0) {
+                if (GetPredictorDataIdVector(i, j).empty()) {
                     wxLogError(_("The data (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
-                if (GetPredictorLevelVector(i, j).size() == 0) {
+                if (GetPredictorLevelVector(i, j).empty()) {
                     wxLogError(_("The level (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
-                if (GetPredictorTimeHoursVector(i, j).size() == 0) {
+                if (GetPredictorTimeHoursVector(i, j).empty()) {
                     wxLogError(_("The time (step %d, predictor %d) was not provided in the parameters file."), i, j);
                     return false;
                 }
@@ -788,25 +788,25 @@ bool asParametersCalibration::InputsOK() const
                 wxLogError(_("The grid type (step %d, predictor %d) is empty in the parameters file."), i, j);
                 return false;
             }
-            if (GetPredictorXminVector(i, j).size() == 0) {
+            if (GetPredictorXminVector(i, j).empty()) {
                 wxLogError(_("The X min value (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
-            if (GetPredictorXptsnbVector(i, j).size() == 0) {
+            if (GetPredictorXptsnbVector(i, j).empty()) {
                 wxLogError(_("The X points nb value (step %d, predictor %d) was not provided in the parameters file."),
                            i, j);
                 return false;
             }
-            if (GetPredictorYminVector(i, j).size() == 0) {
+            if (GetPredictorYminVector(i, j).empty()) {
                 wxLogError(_("The Y min value (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
-            if (GetPredictorYptsnbVector(i, j).size() == 0) {
+            if (GetPredictorYptsnbVector(i, j).empty()) {
                 wxLogError(_("The Y points nb value (step %d, predictor %d) was not provided in the parameters file."),
                            i, j);
                 return false;
             }
-            if (GetPredictorCriteriaVector(i, j).size() == 0) {
+            if (GetPredictorCriteriaVector(i, j).empty()) {
                 wxLogError(_("The criteria (step %d, predictor %d) was not provided in the parameters file."), i, j);
                 return false;
             }
@@ -814,19 +814,19 @@ bool asParametersCalibration::InputsOK() const
     }
 
     // Analog values
-    if (GetPredictandStationIdsVector().size() == 0) {
+    if (GetPredictandStationIdsVector().empty()) {
         wxLogWarning(_("The station ID was not provided in the parameters file (it can be on purpose)."));
         // allowed
     }
 
     // Forecast scores
-    if (GetScoreNameVector().size() == 0) {
+    if (GetScoreNameVector().empty()) {
         wxLogWarning(_("The score was not provided in the parameters file."));
         return false;
     }
 
     // Forecast score final
-    if (GetScoreTimeArrayModeVector().size() == 0) {
+    if (GetScoreTimeArrayModeVector().empty()) {
         wxLogWarning(_("The total score was not provided in the parameters file."));
         return false;
     }
@@ -859,10 +859,10 @@ bool asParametersCalibration::FixTimeLimits()
 
 void asParametersCalibration::InitValues()
 {
-    wxASSERT(m_predictandStationIdsVect.size() > 0);
-    wxASSERT(m_timeArrayAnalogsIntervalDaysVect.size() > 0);
-    wxASSERT(m_scoreVect.name.size() > 0);
-    wxASSERT(m_scoreVect.timeArrayMode.size() > 0);
+    wxASSERT(!m_predictandStationIdsVect.empty());
+    wxASSERT(!m_timeArrayAnalogsIntervalDaysVect.empty());
+    wxASSERT(!m_scoreVect.name.empty());
+    wxASSERT(m_scoreVect.timeArrayMode.empty());
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];
@@ -878,12 +878,12 @@ void asParametersCalibration::InitValues()
                 unsigned long subDataNb = m_stepsVect[i].predictors[j].preprocessDataId.size();
                 wxASSERT(subDataNb > 0);
                 for (int k = 0; k < subDataNb; k++) {
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId.size() > 0);
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId[k].size() > 0);
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels.size() > 0);
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels[k].size() > 0);
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessTimeHours.size() > 0);
-                    wxASSERT(m_stepsVect[i].predictors[j].preprocessTimeHours[k].size() > 0);
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId.empty());
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId[k].empty());
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessLevels.empty());
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessLevels[k].empty());
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessTimeHours.empty());
+                    wxASSERT(!m_stepsVect[i].predictors[j].preprocessTimeHours[k].empty());
                     SetPreprocessDataId(i, j, k, m_stepsVect[i].predictors[j].preprocessDataId[k][0]);
                     SetPreprocessLevel(i, j, k, m_stepsVect[i].predictors[j].preprocessLevels[k][0]);
                     SetPreprocessTimeHours(i, j, k, m_stepsVect[i].predictors[j].preprocessTimeHours[k][0]);

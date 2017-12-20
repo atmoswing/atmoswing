@@ -75,7 +75,7 @@ bool asPreprocessor::PreprocessGradients(std::vector<asPredictor *> predictors, 
     ThreadsManager().CritSectionConfig().Leave();
 
     // Only one predictor
-    wxASSERT(predictors.size() > 0);
+    wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
     if (predictors.size() != 1) {
         wxLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));

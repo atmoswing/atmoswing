@@ -191,7 +191,7 @@ public:
 
     int GetMembersNb() const
     {
-        wxASSERT(m_data.size() > 0);
+        wxASSERT(!m_data.empty());
 
         return (int) m_data[0].size();
     }

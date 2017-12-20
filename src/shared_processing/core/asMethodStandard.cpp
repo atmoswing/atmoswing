@@ -420,8 +420,8 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
 
         vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
         vd preloadTimeHours = params->GetPreloadTimeHours(iStep, iPtor);
-        wxASSERT(preloadLevels.size() > 0);
-        wxASSERT(preloadTimeHours.size() > 0);
+        wxASSERT(!preloadLevels.empty());
+        wxASSERT(!preloadTimeHours.empty());
 
         m_preloadedArchivePointerCopy[iStep][iPtor][iPre] = true;
 
@@ -457,8 +457,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
     vd preloadTimeHours = params->GetPreloadTimeHours(iStep, iPtor);
     wxASSERT(preloadDataIds.size() > i);
-    wxASSERT(preloadLevels.size() > 0);
-    wxASSERT(preloadTimeHours.size() > 0);
+    wxASSERT(!preloadLevels.empty());
+    wxASSERT(!preloadTimeHours.empty());
 
     // Load data for every level and every hour
     for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
@@ -838,8 +838,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     }
 
     if (!params->NeedsPreprocessing(iStep, iPtor)) {
-        wxASSERT(preloadLevels.size() > 0);
-        wxASSERT(preloadTimeHours.size() > 0);
+        wxASSERT(!preloadLevels.empty());
+        wxASSERT(!preloadTimeHours.empty());
 
         level = params->GetPredictorLevel(iStep, iPtor);
         time = params->GetPredictorTimeHours(iStep, iPtor);
@@ -885,10 +885,10 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         }
 
         // Get level and hour indices
-        if (preloadLevels.size() > 0) {
+        if (!preloadLevels.empty()) {
             iLevel = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
         }
-        if (preloadTimeHours.size() > 0) {
+        if (!preloadTimeHours.empty()) {
             iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1],
                                                time);
         }
@@ -1130,7 +1130,7 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
 
 void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictorsPreprocess)
 {
-    if (predictorsPreprocess.size() > 0) {
+    if (!predictorsPreprocess.empty()) {
         for (unsigned int i = 0; i < predictorsPreprocess.size(); i++) {
             wxDELETE(predictorsPreprocess[i]);
         }
@@ -1140,7 +1140,7 @@ void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictorsPreproce
 
 void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
 {
-    if (predictors.size() > 0) {
+    if (!predictors.empty()) {
         for (unsigned int i = 0; i < predictors.size(); i++) {
             wxDELETE(predictors[i]);
         }
@@ -1150,7 +1150,7 @@ void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
 
 void asMethodStandard::Cleanup(std::vector<asCriteria *> criteria)
 {
-    if (criteria.size() > 0) {
+    if (!criteria.empty()) {
         for (unsigned int i = 0; i < criteria.size(); i++) {
             wxDELETE(criteria[i]);
         }
@@ -1193,8 +1193,8 @@ bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int i
         }
     }
 
-    wxASSERT(levels.size() > 0);
-    wxASSERT(hours.size() > 0);
+    wxASSERT(!levels.empty());
+    wxASSERT(!hours.empty());
     wxASSERT(levels.size() == hours.size());
 
     int randomIndex = asTools::Random(0, levels.size() - 1, 1);

@@ -571,7 +571,7 @@ bool asParametersDownscaling::FixTimeLimits()
 
 void asParametersDownscaling::InitValues()
 {
-    wxASSERT(m_predictandStationIdsVect.size() > 0);
+    wxASSERT(!m_predictandStationIdsVect.empty());
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];

@@ -172,7 +172,7 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
         double valFirstTime = m_fileStructure.axisTimeFirstValue;
         m_fileIndexes.timeStart = 0;
         m_fileIndexes.cutStart = 0;
-        bool firstFile = (compositeData[0].size() == 0);
+        bool firstFile = (compositeData[0].empty());
         if (firstFile) {
             m_fileIndexes.cutStart = int(timeArrayIndexStart);
         }
@@ -281,7 +281,7 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 {
     double xMin = desiredArea->GetAbsoluteXmin();
     double xMax = desiredArea->GetAbsoluteXmax();
-    wxASSERT(m_axisLon.size() > 0);
+    wxASSERT(!m_axisLon.empty());
     float toleranceLon = 0.1f;
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
@@ -312,7 +312,7 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
 
     double yMin = desiredArea->GetAbsoluteYmin();
     double yMax = desiredArea->GetAbsoluteYmax();
-    wxASSERT(m_axisLat.size() > 0);
+    wxASSERT(!m_axisLat.empty());
     float toleranceLat = 0.1f;
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;

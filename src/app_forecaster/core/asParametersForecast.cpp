@@ -135,15 +135,15 @@ bool asParametersForecast::ParseDescription(asFileParametersForecast &fileParams
             SetMethodId(fileParams.GetString(nodeParam));
         } else if (nodeParam->GetName() == "method_id_display") {
             SetMethodIdDisplay(fileParams.GetString(nodeParam));
-            wxASSERT(GetMethodIdDisplay().size() > 0);
+            wxASSERT(!GetMethodIdDisplay().empty());
         } else if (nodeParam->GetName() == "specific_tag") {
             SetSpecificTag(fileParams.GetString(nodeParam));
         } else if (nodeParam->GetName() == "specific_tag_display") {
             SetSpecificTagDisplay(fileParams.GetString(nodeParam));
-            wxASSERT(GetSpecificTagDisplay().size() > 0);
+            wxASSERT(!GetSpecificTagDisplay().empty());
         } else if (nodeParam->GetName() == "description") {
             SetDescription(fileParams.GetString(nodeParam));
-            wxASSERT(GetDescription().size() > 0);
+            wxASSERT(!GetDescription().empty());
         } else {
             fileParams.UnknownNode(nodeParam);
         }
@@ -391,7 +391,7 @@ bool asParametersForecast::ParseAnalogValuesParams(asFileParametersForecast &fil
 bool asParametersForecast::InputsOK() const
 {
     // Time properties
-    if (GetLeadTimeDaysVector().size() == 0) {
+    if (GetLeadTimeDaysVector().empty()) {
         wxLogError(_("The lead times were not provided in the parameters file."));
         return false;
     }

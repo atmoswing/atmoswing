@@ -1171,7 +1171,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
 void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints)
 {
-    wxASSERT(crossingPoints.size() > 0);
+    wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
@@ -1227,7 +1227,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
 void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
                                                     bool shareBeta, double betaMin, double betaMax)
 {
-    wxASSERT(crossingPoints.size() > 0);
+    wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
@@ -1290,7 +1290,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
 void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
                                                      bool shareBeta, double betaMin, double betaMax)
 {
-    wxASSERT(crossingPoints.size() > 0);
+    wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
@@ -1354,7 +1354,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
 void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
                                                       bool shareBeta, double betaMin, double betaMax)
 {
-    wxASSERT(crossingPoints.size() > 0);
+    wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
@@ -1441,7 +1441,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
 void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &otherParam,
                                                   asParametersOptimizationGAs &thirdParam, vi &crossingPoints)
 {
-    wxASSERT(crossingPoints.size() > 0);
+    wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
     asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
@@ -1693,7 +1693,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated)
 {
-    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > 0);
+    wxASSERT(!m_chromosomeSelfAdaptationMutationRate.empty());
     wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
 
     // Mutate mutation probability
@@ -1727,8 +1727,8 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated)
 {
-    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > 0);
-    wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size() > 0);
+    wxASSERT(!m_chromosomeSelfAdaptationMutationRate.empty());
+    wxASSERT(!m_chromosomeSelfAdaptationMutationRadius.empty());
     wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == m_chromosomeSelfAdaptationMutationRadius.size());
     wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
 

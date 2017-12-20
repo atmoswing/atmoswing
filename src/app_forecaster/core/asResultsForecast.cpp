@@ -127,20 +127,20 @@ void asResultsForecast::BuildFileName()
 bool asResultsForecast::Save()
 {
     wxASSERT(!m_filePath.IsEmpty());
-    wxASSERT(m_targetDates.size() > 0);
-    wxASSERT(m_analogsNb.size() > 0);
-    wxASSERT(m_stationNames.size() > 0);
-    wxASSERT(m_stationOfficialIds.size() > 0);
-    wxASSERT(m_stationHeights.size() > 0);
-    wxASSERT(m_stationIds.size() > 0);
-    wxASSERT(m_analogsCriteria.size() > 0);
-    wxASSERT(m_analogsDates.size() > 0);
-    wxASSERT(m_analogsValuesGross.size() > 0);
-    wxASSERT(m_stationXCoords.size() > 0);
-    wxASSERT(m_stationYCoords.size() > 0);
+    wxASSERT(!m_targetDates.empty());
+    wxASSERT(!m_analogsNb.empty());
+    wxASSERT(!m_stationNames.empty());
+    wxASSERT(!m_stationOfficialIds.empty());
+    wxASSERT(!m_stationHeights.empty());
+    wxASSERT(!m_stationIds.empty());
+    wxASSERT(!m_analogsCriteria.empty());
+    wxASSERT(!m_analogsDates.empty());
+    wxASSERT(!m_analogsValuesGross.empty());
+    wxASSERT(!m_stationXCoords.empty());
+    wxASSERT(!m_stationYCoords.empty());
 
     if (m_hasReferenceValues) {
-        wxASSERT(m_referenceAxis.size() > 0);
+        wxASSERT(!m_referenceAxis.empty());
         wxASSERT(m_referenceValues.cols() > 0);
         wxASSERT(m_referenceValues.rows() > 0);
     }
@@ -583,18 +583,18 @@ bool asResultsForecast::Load()
 
     wxASSERT(!m_filePath.IsEmpty());
     wxASSERT(!m_predictandDatasetId.IsEmpty());
-    wxASSERT(m_targetDates.size() > 0);
-    wxASSERT(m_analogsNb.size() > 0);
-    wxASSERT(m_stationIds.size() > 0);
-    wxASSERT(m_stationNames.size() > 0);
-    wxASSERT(m_stationHeights.size() > 0);
-    wxASSERT(m_analogsCriteria.size() > 0);
-    wxASSERT(m_analogsDates.size() > 0);
-    wxASSERT(m_analogsValuesGross.size() > 0);
-    wxASSERT(m_stationXCoords.size() > 0);
-    wxASSERT(m_stationYCoords.size() > 0);
+    wxASSERT(!m_targetDates.empty());
+    wxASSERT(!m_analogsNb.empty());
+    wxASSERT(!m_stationIds.empty());
+    wxASSERT(!m_stationNames.empty());
+    wxASSERT(!m_stationHeights.empty());
+    wxASSERT(!m_analogsCriteria.empty());
+    wxASSERT(!m_analogsDates.empty());
+    wxASSERT(!m_analogsValuesGross.empty());
+    wxASSERT(!m_stationXCoords.empty());
+    wxASSERT(!m_stationYCoords.empty());
     if (m_hasReferenceValues) {
-        wxASSERT(m_referenceAxis.size() > 0);
+        wxASSERT(!m_referenceAxis.empty());
         wxASSERT(m_referenceValues.cols() > 0);
         wxASSERT(m_referenceValues.rows() > 0);
     }

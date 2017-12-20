@@ -126,8 +126,8 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
 
 bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results)
 {
-    wxASSERT(m_parameters.size() > 0);
-    wxASSERT(m_scoresCalib.size() > 0);
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_scoresCalib.empty());
 
     // Extract selected parameters & best parameters
     float bestscore = m_scoresCalib[0];
@@ -230,7 +230,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     asParametersOptimizationGAs params;
     if (!params.LoadFromFile(m_paramsFilePath))
         return false;
-    if (m_predictandStationIds.size() > 0) {
+    if (!m_predictandStationIds.empty()) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
 
@@ -327,7 +327,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.size() == 0) {
+                if (scoreClim.empty()) {
                     ThreadsManager().Wait(threadType);
 
 #ifndef UNIT_TESTING
@@ -916,7 +916,7 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
     SortScoresAndParameters();
 
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the previous best.
-    if (m_allowElitismForTheBest && m_parametersTemp.size() > 0) {
+    if (m_allowElitismForTheBest && !m_parametersTemp.empty()) {
         switch (m_scoreOrder) {
             case (Asc): {
                 float actualBest = m_scoresCalib[0];
@@ -1355,7 +1355,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1416,7 +1416,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1493,7 +1493,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 param1 = m_parametersTemp[partner1];
                 asParametersOptimizationGAs param2;
                 param2 = m_parametersTemp[partner2];
-                if (crossingPoints.size() > 0) {
+                if (!crossingPoints.empty()) {
                     param1.SimpleCrossover(param2, crossingPoints);
                 }
 
@@ -1530,7 +1530,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1586,7 +1586,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1662,7 +1662,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1722,7 +1722,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
                     int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {

@@ -147,7 +147,7 @@ void asMethodCalibrator::RemoveNaNsInTemp()
     m_parametersTemp = copyParametersTemp;
 
     wxASSERT(m_parametersTemp.size() == m_scoresCalibTemp.size());
-    wxASSERT(m_parametersTemp.size() > 0);
+    wxASSERT(!m_parametersTemp.empty());
 }
 
 void asMethodCalibrator::KeepBestTemp()
@@ -164,11 +164,11 @@ void asMethodCalibrator::PushBackFirstTemp()
 
 void asMethodCalibrator::KeepFirstTemp()
 {
-    wxASSERT(m_parameters.size() > 0);
-    wxASSERT(m_parametersTemp.size() > 0);
-    wxASSERT(m_scoresCalibTemp.size() > 0);
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_parametersTemp.empty());
+    wxASSERT(!m_scoresCalibTemp.empty());
     m_parameters[0] = m_parametersTemp[0];
-    if (m_scoresCalib.size() == 0) {
+    if (m_scoresCalib.empty()) {
         m_scoresCalib.push_back(m_scoresCalibTemp[0]);
     } else {
         m_scoresCalib[0] = m_scoresCalibTemp[0];
@@ -178,8 +178,8 @@ void asMethodCalibrator::KeepFirstTemp()
 void asMethodCalibrator::SortScoresAndParametersTemp()
 {
     wxASSERT(m_scoresCalibTemp.size() == m_parametersTemp.size());
-    wxASSERT(m_scoresCalibTemp.size() > 0);
-    wxASSERT(m_parametersTemp.size() > 0);
+    wxASSERT(!m_scoresCalibTemp.empty());
+    wxASSERT(!m_parametersTemp.empty());
 
     if (m_parametersTemp.size() == 1)
         return;
@@ -235,8 +235,8 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
     switch (m_scoreOrder) {
         case Asc:
             if (thisScore < m_scoresCalib[0]) {
-                wxASSERT(m_parameters.size() > 0);
-                wxASSERT(m_scoresCalib.size() > 0);
+                wxASSERT(!m_parameters.empty());
+                wxASSERT(!m_scoresCalib.empty());
                 m_parameters[0] = params;
                 m_scoresCalib[0] = thisScore;
                 return true;
@@ -245,8 +245,8 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
 
         case Desc:
             if (thisScore > m_scoresCalib[0]) {
-                wxASSERT(m_parameters.size() > 0);
-                wxASSERT(m_scoresCalib.size() > 0);
+                wxASSERT(!m_parameters.empty());
+                wxASSERT(!m_scoresCalib.empty());
                 m_parameters[0] = params;
                 m_scoresCalib[0] = thisScore;
                 return true;
@@ -272,8 +272,8 @@ bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results
 
 bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
 {
-    wxASSERT(m_parameters.size() > 0);
-    wxASSERT(m_scoresCalib.size() > 0);
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_scoresCalib.empty());
 
     // Extract selected parameters & best parameters
     float bestScore = m_scoresCalib[0];
@@ -693,7 +693,7 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParameters
     score->SetQuantile(params->GetScoreQuantile());
     score->SetThreshold(params->GetScoreThreshold());
 
-    if (score->UsesClimatology() && m_scoreClimatology.size() == 0) {
+    if (score->UsesClimatology() && m_scoreClimatology.empty()) {
         wxLogVerbose(_("Processing the score of the climatology."));
 
         va1f climatologyData = GetClimatologyData(params);

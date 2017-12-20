@@ -128,7 +128,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                     return false;
 
                 // Keep the best parameter set
-                wxASSERT(m_parametersTemp.size() > 0);
+                wxASSERT(!m_parametersTemp.empty());
                 RemoveNaNsInTemp();
                 PushBackBestTemp();
                 wxASSERT(m_parameters.size() == 1);
@@ -176,9 +176,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         resultsTested.Print();
 
         // Keep the best parameter set
-        wxASSERT(m_parameters.size() > 0);
-        wxASSERT(m_parametersTemp.size() > 0);
-        wxASSERT(m_scoresCalibTemp.size() > 0);
+        wxASSERT(!m_parameters.empty());
+        wxASSERT(!m_parametersTemp.empty());
+        wxASSERT(!m_scoresCalibTemp.empty());
         KeepBestTemp();
         ClearTemp();
 
@@ -553,7 +553,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
 
         // Apply the resizing that provides the best improvement
-        if (m_parametersTemp.size() > 0) {
+        if (!m_parametersTemp.empty()) {
             KeepBestTemp();
         }
     }

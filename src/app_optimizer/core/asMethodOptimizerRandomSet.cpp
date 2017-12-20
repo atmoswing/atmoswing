@@ -63,7 +63,7 @@ bool asMethodOptimizerRandomSet::Manager()
     asParametersOptimization params;
     if (!params.LoadFromFile(m_paramsFilePath))
         return false;
-    if (m_predictandStationIds.size() > 0) {
+    if (!m_predictandStationIds.empty()) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
 
@@ -132,7 +132,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.size() == 0) {
+                if (scoreClim.empty()) {
                     ThreadsManager().Wait(threadType);
 
 #ifndef UNIT_TESTING

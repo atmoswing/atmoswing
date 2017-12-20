@@ -643,7 +643,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
         double tmpDate = floor(m_forecastDate) + leadTime[i];
         tmpTimeArray.push_back(tmpDate);
     }
-    wxASSERT(tmpTimeArray.size() > 0);
+    wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];
     double timeEndTarget = tmpTimeArray[tmpTimeArray.size() - 1];
 
@@ -1136,7 +1136,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         double tmpDate = floor(m_forecastDate) + leadTime[i];
         tmpTimeArray.push_back(tmpDate);
     }
-    wxASSERT(tmpTimeArray.size() > 0);
+    wxASSERT(!tmpTimeArray.empty());
     double timeStartTarget = tmpTimeArray[0];
     double timeEndTarget = tmpTimeArray[tmpTimeArray.size() - 1];
 
@@ -1582,7 +1582,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
     // Extract the stations IDs and coordinates
     wxASSERT(m_predictandDB->GetStationsNb() > 0);
     a1i stationsId = m_predictandDB->GetStationsIdArray();
-    wxASSERT(stationsId.size() > 0);
+    wxASSERT(!stationsId.empty());
     results.SetStationIds(stationsId);
     results.SetStationOfficialIds(m_predictandDB->GetStationOfficialIdsArray());
     results.SetStationNames(m_predictandDB->GetStationNamesArray());
@@ -1673,21 +1673,21 @@ void asMethodForecasting::Cleanup()
 {
     DeletePreprocessData();
 
-    if (m_storagePredictorsArchive.size() > 0) {
+    if (!m_storagePredictorsArchive.empty()) {
         for (unsigned int i = 0; i < m_storagePredictorsArchive.size(); i++) {
             wxDELETE(m_storagePredictorsArchive[i]);
         }
         m_storagePredictorsArchive.resize(0);
     }
 
-    if (m_storagePredictorsRealtime.size() > 0) {
+    if (!m_storagePredictorsRealtime.empty()) {
         for (unsigned int i = 0; i < m_storagePredictorsRealtime.size(); i++) {
             wxDELETE(m_storagePredictorsRealtime[i]);
         }
         m_storagePredictorsRealtime.resize(0);
     }
 
-    if (m_storageCriteria.size() > 0) {
+    if (!m_storageCriteria.empty()) {
         for (unsigned int i = 0; i < m_storageCriteria.size(); i++) {
             wxDELETE(m_storageCriteria[i]);
         }

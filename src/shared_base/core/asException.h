@@ -80,7 +80,7 @@ public:
 
     bool HasChild() const
     {
-        return m_previous.size() > 0;
+        return !m_previous.empty();
     }
 
     virtual const char *what() const throw()

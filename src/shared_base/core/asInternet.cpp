@@ -92,7 +92,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
         for (int iThread = 0; iThread < parallelRequests; iThread++) {
             int start = end + 1;
             end = ceil(((float) (iThread + 1) * (float) (fileNames.size() - 1) / (float) parallelRequests));
-            wxASSERT(fileNames.size() > 0);
+            wxASSERT(!fileNames.empty());
             wxASSERT(end >= start);
             wxASSERT_MSG((unsigned) end < fileNames.size(),
                          wxString::Format("Size of fileNames = %d, desired end = %d", (int) fileNames.size(), end));

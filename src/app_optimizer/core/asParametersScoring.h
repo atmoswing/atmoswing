@@ -194,7 +194,7 @@ public:
 
     bool HasValidationPeriod() const
     {
-        return m_validationYears.size() > 0;
+        return !m_validationYears.empty();
     }
 
     wxString GetScoreName() const

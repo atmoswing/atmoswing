@@ -252,7 +252,7 @@ asPredictor::Unit asPredictor::StringToUnitEnum(const wxString &unitStr)
 
 bool asPredictor::SetData(vva2f &val)
 {
-    wxASSERT(m_time.size() > 0);
+    wxASSERT(!m_time.empty());
     wxASSERT((int) m_time.size() == (int) val.size());
 
     m_latPtsnb = (int) val[0][0].rows();
@@ -266,7 +266,7 @@ bool asPredictor::SetData(vva2f &val)
 
 bool asPredictor::CheckFilesPresence(vwxs &filesList)
 {
-    if (filesList.size() == 0) {
+    if (filesList.empty()) {
         wxLogError(_("Empty files list."));
         return false;
     }
@@ -750,8 +750,8 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
 
 asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData)
 {
-    wxASSERT(m_fileStructure.axisLon.size() > 0);
-    wxASSERT(m_fileStructure.axisLat.size() > 0);
+    wxASSERT(!m_fileStructure.axisLon.empty());
+    wxASSERT(!m_fileStructure.axisLat.empty());
 
     if (!m_axesChecked) {
         if (dataArea == NULL) {
@@ -1268,7 +1268,7 @@ bool asPredictor::Inline()
         return true;
     }
 
-    wxASSERT(m_data.size() > 0);
+    wxASSERT(!m_data.empty());
 
     unsigned int timeSize = (unsigned int) m_data.size();
     unsigned int membersNb = (unsigned int) m_data[0].size();

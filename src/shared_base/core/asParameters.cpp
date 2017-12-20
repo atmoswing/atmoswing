@@ -760,7 +760,7 @@ void asParameters::SortLevelsAndTime()
 
         // Sort
         while (true) {
-            if (oldPtors.size() == 0) {
+            if (oldPtors.empty()) {
                 break;
             }
 
