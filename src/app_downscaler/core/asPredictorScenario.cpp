@@ -25,32 +25,32 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorModSim.h"
+#include "asPredictorScenario.h"
 
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 
 
-asPredictorModSim::asPredictorModSim(const wxString &dataId)
+asPredictorScenario::asPredictorScenario(const wxString &dataId)
         : asPredictorArch(dataId)
 {
 
 }
 
-asPredictorModSim::~asPredictorModSim()
+asPredictorScenario::~asPredictorScenario()
 {
 
 }
 
-asPredictorModSim *asPredictorModSim::GetInstance(const wxString &datasetId, const wxString &dataId,
+asPredictorScenario *asPredictorScenario::GetInstance(const wxString &datasetId, const wxString &dataId,
                                                   const wxString &directory)
 {
-    asPredictorModSim *predictor = nullptr;
+    asPredictorScenario *predictor = nullptr;
 
     if (datasetId.IsSameAs("CMIP5", false)) {
-        //predictor = new asPredictorModSimCMIP5(dataId);
+        //predictor = new asPredictorScenarioCMIP5(dataId);
     } else if (datasetId.IsSameAs("CORDEX", false)) {
-        //predictor = new asPredictorModSimCORDEX(dataId);
+        //predictor = new asPredictorScenarioCORDEX(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

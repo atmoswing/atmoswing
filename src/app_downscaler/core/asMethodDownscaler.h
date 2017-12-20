@@ -34,7 +34,7 @@
 class asResultsDates;
 class asParametersDownscaling;
 class asResultsValues;
-class asPredictorModSim;
+class asPredictorScenario;
 class asCriteria;
 
 
@@ -62,9 +62,9 @@ public:
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-    bool IsModSimPointerCopy(int iStep, int iPtor, int iPre) const
+    bool IsScenarioPointerCopy(int iStep, int iPtor, int iPre) const
     {
-        return m_preloadedModSimPointerCopy[iStep][iPtor][iPre];
+        return m_preloadedScenarioPointerCopy[iStep][iPtor][iPre];
     }
 
     void SetPredictandStationIds(vi val)
@@ -73,34 +73,34 @@ public:
     }
 
 protected:
-    wxString m_predictorModelSimDataDir;
+    wxString m_predictorScenarioDataDir;
     vi m_predictandStationIds;
     std::vector<asParametersDownscaling> m_parameters;
 
     virtual bool Downscale(asParametersDownscaling &params) = 0;
 
-    bool LoadModelSimulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
+    bool LoadScenarioulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
                                  double timeStartData, double timeEndData);
 
-    bool ExtractModelSimulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
+    bool ExtractScenarioulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
                                                         asParametersDownscaling *params, int iStep, int iPtor,
                                                         double timeStartData, double timeEndData);
 
-    bool ExtractModelSimulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
+    bool ExtractScenarioulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
                                                      asParametersDownscaling *params, int iStep, int iPtor,
                                                      double timeStartData, double timeEndData);
 
-    bool Preprocess(std::vector<asPredictorModSim *> predictors, const wxString &method, asPredictor *result);
+    bool Preprocess(std::vector<asPredictorScenario *> predictors, const wxString &method, asPredictor *result);
 
     bool SaveDetails(asParametersDownscaling *params);
 
-    void Cleanup(std::vector<asPredictorModSim *> predictorsPreprocess);
+    void Cleanup(std::vector<asPredictorScenario *> predictorsPreprocess);
 
 private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorModSim *> > > > > m_preloadedModSim;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorScenario *> > > > > m_preloadedScenario;
     std::vector<vvb> m_preloadedArchivePointerCopy;
-    std::vector<vvb> m_preloadedModSimPointerCopy;
+    std::vector<vvb> m_preloadedScenarioPointerCopy;
 
     double GetTimeStartDownscaling(asParametersDownscaling *params) const;
 

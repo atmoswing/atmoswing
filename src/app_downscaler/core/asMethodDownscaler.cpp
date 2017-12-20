@@ -29,7 +29,7 @@
 #include <asIncludes.h>
 #include <asParametersDownscaling.h>
 #include <asResultsDates.h>
-#include <asPredictorModSim.h>
+#include <asPredictorScenario.h>
 #include <asResultsDates.h>
 #include <asResultsValues.h>
 #include <asCriteria.h>
@@ -160,12 +160,12 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
         return false;
     }
 
-    // Load the model simulation data
-    std::vector<asPredictor *> predictorsModSim;
-    if (!LoadModelSimulationData(predictorsModSim, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
+    // Load the scenario data
+    std::vector<asPredictor *> predictorsScenario;
+    if (!LoadScenarioulationData(predictorsScenario, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictorsArch);
-        Cleanup(predictorsModSim);
+        Cleanup(predictorsScenario);
         return false;
     }
 
@@ -204,18 +204,18 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     // Send data and criteria to processor
     wxLogVerbose(_("Start processing the comparison."));
 
-    if (!asProcessor::GetAnalogsDates(predictorsArch, predictorsModSim, timeArrayArchive, timeArrayArchive, timeArrayTarget,
+    if (!asProcessor::GetAnalogsDates(predictorsArch, predictorsScenario, timeArrayArchive, timeArrayArchive, timeArrayTarget,
                                       timeArrayTarget, criteria, params, iStep, results, containsNaNs)) {
         wxLogError(_("Failed processing the analogs dates."));
         Cleanup(predictorsArch);
-        Cleanup(predictorsModSim);
+        Cleanup(predictorsScenario);
         Cleanup(criteria);
         return false;
     }
     wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictorsArch);
-    Cleanup(predictorsModSim);
+    Cleanup(predictorsScenario);
     Cleanup(criteria);
 
     return true;
@@ -336,31 +336,31 @@ bool asMethodDownscaler::SaveDetails(asParametersDownscaling *params)
     return true;
 }
 
-bool asMethodDownscaler::LoadModelSimulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
+bool asMethodDownscaler::LoadScenarioulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
                                                  int iStep, double timeStartData, double timeEndData)
 {
     try {
         // Loop through every predictor
         for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
-            wxLogVerbose(_("Loading model simulation data."));
+            wxLogVerbose(_("Loading model scenario."));
 
             if (!params->NeedsPreprocessing(iStep, iPtor)) {
-                if (!ExtractModelSimulationDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
+                if (!ExtractScenarioulationDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
                                                                     timeEndData)) {
                     return false;
                 }
             } else {
-                if (!ExtractModelSimulationDataWithPreprocessing(predictors, params, iStep, iPtor, timeStartData,
+                if (!ExtractScenarioulationDataWithPreprocessing(predictors, params, iStep, iPtor, timeStartData,
                                                                  timeEndData)) {
                     return false;
                 }
             }
 
-            wxLogVerbose(_("Model simulation data loaded."));
+            wxLogVerbose(_("Scenario data loaded."));
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation in the model simulation data loading: %s"), msg);
+        wxLogError(_("Bad allocation in the scenario data loading: %s"), msg);
         return false;
     } catch (asException &e) {
         wxString fullMessage = e.GetFullMessage();
@@ -371,14 +371,14 @@ bool asMethodDownscaler::LoadModelSimulationData(std::vector<asPredictor *> &pre
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the model simulation data loading: %s"), msg);
+        wxLogError(_("Exception in the scenario data loading: %s"), msg);
         return false;
     }
 
     return true;
 }
 
-bool asMethodDownscaler::ExtractModelSimulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
+bool asMethodDownscaler::ExtractScenarioulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
                                                                         asParametersDownscaling *params, int iStep,
                                                                         int iPtor, double timeStartData,
                                                                         double timeEndData)
@@ -391,16 +391,16 @@ bool asMethodDownscaler::ExtractModelSimulationDataWithoutPreprocessing(std::vec
     timeArray.Init();
 
     // Loading the datasets information
-    asPredictorModSim *predictor = asPredictorModSim::GetInstance(params->GetPredictorModelSimDatasetId(iStep, iPtor),
-                                                                  params->GetPredictorModelSimDataId(iStep, iPtor),
-                                                                  m_predictorModelSimDataDir);
+    asPredictorScenario *predictor = asPredictorScenario::GetInstance(params->GetPredictorScenarioDatasetId(iStep, iPtor),
+                                                                  params->GetPredictorScenarioDataId(iStep, iPtor),
+                                                                  m_predictorScenarioDataDir);
     if (!predictor) {
         return false;
     }
 
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
-        predictor->SelectMembers(params->GetPredictorModelSimMembersNb(iStep, iPtor));
+        predictor->SelectMembers(params->GetPredictorScenarioMembersNb(iStep, iPtor));
     }
 
     // Area object instantiation
@@ -438,12 +438,12 @@ bool asMethodDownscaler::ExtractModelSimulationDataWithoutPreprocessing(std::vec
     return true;
 }
 
-bool asMethodDownscaler::ExtractModelSimulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
+bool asMethodDownscaler::ExtractScenarioulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
                                                                      asParametersDownscaling *params, int iStep,
                                                                      int iPtor, double timeStartData,
                                                                      double timeEndData)
 {
-    std::vector<asPredictorModSim *> predictorsPreprocess;
+    std::vector<asPredictorScenario *> predictorsPreprocess;
 
     int preprocessSize = params->GetPreprocessSize(iStep, iPtor);
 
@@ -460,10 +460,10 @@ bool asMethodDownscaler::ExtractModelSimulationDataWithPreprocessing(std::vector
         timeArray.Init();
 
         // Loading the dataset information
-        asPredictorModSim *predictorPreprocess = asPredictorModSim::GetInstance(
-                params->GetPreprocessModelSimDatasetId(iStep, iPtor, iPre),
-                params->GetPreprocessModelSimDataId(iStep, iPtor, iPre),
-                m_predictorModelSimDataDir);
+        asPredictorScenario *predictorPreprocess = asPredictorScenario::GetInstance(
+                params->GetPreprocessScenarioDatasetId(iStep, iPtor, iPre),
+                params->GetPreprocessScenarioDataId(iStep, iPtor, iPre),
+                m_predictorScenarioDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
@@ -520,7 +520,7 @@ bool asMethodDownscaler::ExtractModelSimulationDataWithPreprocessing(std::vector
         params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
     }
 
-    auto *predictor = new asPredictorModSim(*predictorsPreprocess[0]);
+    auto *predictor = new asPredictorScenario(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
@@ -534,14 +534,14 @@ bool asMethodDownscaler::ExtractModelSimulationDataWithPreprocessing(std::vector
     return true;
 }
 
-bool asMethodDownscaler::Preprocess(std::vector<asPredictorModSim *> predictors, const wxString &method, asPredictor *result)
+bool asMethodDownscaler::Preprocess(std::vector<asPredictorScenario *> predictors, const wxString &method, asPredictor *result)
 {
     std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorModSim *> predictorsPreprocess)
+void asMethodDownscaler::Cleanup(std::vector<asPredictorScenario *> predictorsPreprocess)
 {
     if (!predictorsPreprocess.empty()) {
         for (auto &predictorsPreproces : predictorsPreprocess) {

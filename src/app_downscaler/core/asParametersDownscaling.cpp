@@ -44,13 +44,13 @@ asParametersDownscaling::~asParametersDownscaling()
 void asParametersDownscaling::AddStep()
 {
     asParameters::AddStep();
-    ParamsStepModelSim stepVect;
-    m_stepsModelSim.push_back(stepVect);
+    ParamsStepScenario stepVect;
+    m_stepsScenarion.push_back(stepVect);
 }
 
-void asParametersDownscaling::AddPredictorModelSim(ParamsStepModelSim &step)
+void asParametersDownscaling::AddPredictorScenario(ParamsStepScenario &step)
 {
-    ParamsPredictorModelSim predictor;
+    ParamsPredictorScenario predictor;
 
     predictor.datasetId = wxEmptyString;
     predictor.dataId = wxEmptyString;
@@ -253,7 +253,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                 return false;
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
-            AddPredictorModelSim(m_stepsModelSim[iStep]);
+            AddPredictorScenario(m_stepsScenarion[iStep]);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -264,11 +264,11 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
                         return false;
-                } else if (nodeParam->GetName() == "modelsim_dataset_id") {
-                    if (!SetPredictorModelSimDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                } else if (nodeParam->GetName() == "scenario_dataset_id") {
+                    if (!SetPredictorScenarioDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
                         return false;
-                } else if (nodeParam->GetName() == "modelsim_data_id") {
-                    if (!SetPredictorModelSimDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                } else if (nodeParam->GetName() == "scenario_data_id") {
+                    if (!SetPredictorScenarioDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "archive_dataset_id") {
                     if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
@@ -346,11 +346,11 @@ bool asParametersDownscaling::ParsePreprocessedPredictors(asFileParametersDownsc
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
             wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
             while (nodeParamPreprocess) {
-                if (nodeParamPreprocess->GetName() == "modelsim_dataset_id") {
-                    if (!SetPreprocessModelSimDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                if (nodeParamPreprocess->GetName() == "scenario_dataset_id") {
+                    if (!SetPreprocessScenarioDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
-                } else if (nodeParamPreprocess->GetName() == "modelsim_data_id") {
-                    if (!SetPreprocessModelSimDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                } else if (nodeParamPreprocess->GetName() == "scenario_data_id") {
+                    if (!SetPreprocessScenarioDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "archive_dataset_id") {
                     if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
@@ -471,13 +471,13 @@ bool asParametersDownscaling::InputsOK() const
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (GetPreprocessModelSimDatasetId(i, j, k).IsEmpty()) {
-                        wxLogError(_("The model simulation dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                    if (GetPreprocessScenarioDatasetId(i, j, k).IsEmpty()) {
+                        wxLogError(_("The scenario dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
                     }
-                    if (GetPreprocessModelSimDataId(i, j, k).IsEmpty()) {
-                        wxLogError(_("The model simulation data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                    if (GetPreprocessScenarioDataId(i, j, k).IsEmpty()) {
+                        wxLogError(_("The scenario data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
                                    i, j);
                         return false;
                     }
@@ -493,13 +493,13 @@ bool asParametersDownscaling::InputsOK() const
                     }
                 }
             } else {
-                if (GetPredictorModelSimDatasetId(i, j).IsEmpty()) {
-                    wxLogError(_("The model simulation dataset (step %d, predictor %d) was not provided in the parameters file."),
+                if (GetPredictorScenarioDatasetId(i, j).IsEmpty()) {
+                    wxLogError(_("The scenario dataset (step %d, predictor %d) was not provided in the parameters file."),
                                i, j);
                     return false;
                 }
-                if (GetPredictorModelSimDataId(i, j).IsEmpty()) {
-                    wxLogError(_("The model simulation data (step %d, predictor %d) was not provided in the parameters file."),
+                if (GetPredictorScenarioDataId(i, j).IsEmpty()) {
+                    wxLogError(_("The scenario data (step %d, predictor %d) was not provided in the parameters file."),
                                i, j);
                     return false;
                 }
@@ -607,73 +607,73 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val)
     return true;
 }
 
-bool asParametersDownscaling::SetPredictorModelSimDatasetId(int iStep, int iPtor, const wxString &val)
+bool asParametersDownscaling::SetPredictorScenarioDatasetId(int iStep, int iPtor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor model simulation dataset ID is null"));
+        wxLogError(_("The provided value for the predictor scenario dataset ID is null"));
         return false;
     }
-    m_stepsModelSim[iStep].predictors[iPtor].datasetId = val;
+    m_stepsScenarion[iStep].predictors[iPtor].datasetId = val;
     return true;
 }
 
-bool asParametersDownscaling::SetPredictorModelSimDataId(int iStep, int iPtor, const wxString &val)
+bool asParametersDownscaling::SetPredictorScenarioDataId(int iStep, int iPtor, const wxString &val)
 {
     if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor model simulation data ID is null"));
+        wxLogError(_("The provided value for the predictor scenario data ID is null"));
         return false;
     }
-    m_stepsModelSim[iStep].predictors[iPtor].dataId = val;
+    m_stepsScenarion[iStep].predictors[iPtor].dataId = val;
     return true;
 }
 
-wxString asParametersDownscaling::GetPreprocessModelSimDatasetId(int iStep, int iPtor, int iPre) const
+wxString asParametersDownscaling::GetPreprocessScenarioDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
+    if (m_stepsScenarion[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+        return m_stepsScenarion[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
 
-bool asParametersDownscaling::SetPreprocessModelSimDatasetId(int iStep, int iPtor, int iPre, const wxString &val)
+bool asParametersDownscaling::SetPreprocessScenarioDatasetId(int iStep, int iPtor, int iPre, const wxString &val)
 {
     if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess model simulation dataset ID is null"));
+        wxLogError(_("The provided value for the preprocess scenario dataset ID is null"));
         return false;
     }
 
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
+    if (m_stepsScenarion[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+        m_stepsScenarion[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
+        m_stepsScenarion[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
     }
 
     return true;
 }
 
-wxString asParametersDownscaling::GetPreprocessModelSimDataId(int iStep, int iPtor, int iPre) const
+wxString asParametersDownscaling::GetPreprocessScenarioDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
-        return m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds[iPre];
+    if (m_stepsScenarion[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+        return m_stepsScenarion[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
         return wxEmptyString;
     }
 }
 
-bool asParametersDownscaling::SetPreprocessModelSimDataId(int iStep, int iPtor, int iPre, const wxString &val)
+bool asParametersDownscaling::SetPreprocessScenarioDataId(int iStep, int iPtor, int iPre, const wxString &val)
 {
     if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess model simulation data ID is null"));
+        wxLogError(_("The provided value for the preprocess scenario data ID is null"));
         return false;
     }
 
-    if (m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
+    if (m_stepsScenarion[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+        m_stepsScenarion[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
-        m_stepsModelSim[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
+        m_stepsScenarion[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
     }
 
     return true;
