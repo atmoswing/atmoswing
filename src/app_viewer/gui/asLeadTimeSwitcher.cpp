@@ -110,7 +110,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
 
         // For every lead time
         for (int iLead = 0; iLead < dates.size(); iLead++) {
-            gc->SetPen(wxPen(GetBackgroundColour(), 3, wxSOLID));
+            gc->SetPen(wxPen(GetBackgroundColour(), 3, wxPENSTYLE_SOLID));
 
             wxGraphicsPath path = gc->CreatePath();
             CreatePath(path, iLead);
@@ -122,7 +122,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
         }
 
         // For the global view option
-        gc->SetPen(wxPen(*wxWHITE, 1, wxSOLID));
+        gc->SetPen(wxPen(*wxWHITE, 1, wxPENSTYLE_SOLID));
         wxGraphicsPath path = gc->CreatePath();
 
         int segmentsTot = 7;
@@ -175,8 +175,8 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
         // Set Lead time marker
         wxGraphicsPath markerPath = gc->CreatePath();
         CreatePathMarker(markerPath, leadTime);
-        gc->SetBrush(wxBrush(*wxWHITE, wxSOLID));
-        gc->SetPen(wxPen(*wxBLACK, 1, wxSOLID));
+        gc->SetBrush(wxBrush(*wxWHITE, wxBRUSHSTYLE_SOLID));
+        gc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
         gc->DrawPath(markerPath);
 
         wxDELETE(gc);
@@ -299,7 +299,7 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
         colour.Set(255, (255 - valColour), 0);
     }
 
-    wxBrush brush(colour, wxSOLID);
+    wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush);
     gc->DrawPath(path);
 }

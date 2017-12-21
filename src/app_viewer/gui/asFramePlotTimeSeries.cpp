@@ -126,7 +126,7 @@ void asFramePlotTimeSeries::InitCheckListBox()
     }
     m_checkListPast->Set(listPast);
 
-    for (unsigned int i = 0; i < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); i++) {
+    for (int i = 0; i < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); i++) {
         m_checkListPast->Check(i);
     }
 }

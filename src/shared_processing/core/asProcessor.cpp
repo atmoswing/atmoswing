@@ -118,7 +118,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
-    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         wxASSERT((int) predictorsArchive.size() > iPtor);
         wxASSERT(predictorsArchive[iPtor]);
         wxASSERT(!predictorsArchive[iPtor]->GetData().empty());
@@ -511,10 +511,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int counter = 0;
 
                     // Loop over the members
-                    for (int iMem = 0; iMem < membersNb; ++iMem) {
+                    for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
 
                         // Extract target data
-                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                        for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
                         }
 
@@ -535,7 +535,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                                 // Process the criteria
                                 float thisScore = 0;
-                                for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                                for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                                     // Get data
                                     vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
 
@@ -785,7 +785,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
-    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         vRowsNb[iPtor] = (int) predictorsArchive[iPtor]->GetData()[0][0].rows();
         vColsNb[iPtor] = (int) predictorsArchive[iPtor]->GetData()[0][0].cols();
 
@@ -882,7 +882,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             a1f dateArrayOneDay(analogsNb);
 
             // Loop through every timestep as target data
-            for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
+            for (unsigned int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
                 int iTimeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                                            timeTargetSelection[iAnalogDate], 0.01);
                 wxASSERT_MSG(iTimeTarg >= 0, wxString::Format(_("Looking for %s in betwwen %s and %s."),
@@ -906,10 +906,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                 int counter = 0;
 
                 // Loop over the members
-                for (int iMem = 0; iMem < membersNb; ++iMem) {
+                for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
 
                     // Extract target data
-                    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                         vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
                     }
 
@@ -924,7 +924,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                         if (iTimeArch != asNOT_FOUND && iTimeArch != asOUT_OF_RANGE) {
                             // Process the criteria
                             float thisscore = 0;
-                            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                            for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                                 // Get data
                                 vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
 

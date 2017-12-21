@@ -15,6 +15,8 @@ list(APPEND src_app_viewer ${src_viewer_core_cpp} ${src_viewer_gui_cpp})
 list(APPEND src_app_viewer
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecast.h
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecast.cpp
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecastAggregator.h
+        ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asResultsForecastAggregator.cpp
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.h
         ${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asFileParametersForecast.cpp
         )

@@ -530,7 +530,7 @@ bool asFrameForecast::SaveWorkspace()
     // Update the GIS layers
     m_workspace.ClearLayers();
     int counter = -1;
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         wxFileName fileName = m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName();
         wxString path = fileName.GetFullPath();
 
@@ -1084,7 +1084,7 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
 
     // Creates the list of layers
     wxArrayString layersName;
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
         wxASSERT(renderer);
         layersName.Add(renderer->GetLayer()->GetDisplayName().GetFullName());
@@ -1585,7 +1585,7 @@ void asFrameForecast::OnMoveLayer(wxCommandEvent &event)
     // Contextual menu
     wxMenu posMenu;
     posMenu.SetTitle(_("Move layer to following position"));
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         posMenu.Append(asID_MENU_POPUP_LAYER + i, wxString::Format("%d - %s", i + 1, m_viewerLayerManager->GetRenderer(
                 i)->GetLayer()->GetDisplayName().GetFullName()));
     }

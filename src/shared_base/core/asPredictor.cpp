@@ -1001,7 +1001,6 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const
         }
     }
 
-
     return NULL;
 }
 
@@ -1281,9 +1280,9 @@ bool asPredictor::Inline()
     newData.reserve((unsigned int) (membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
     newData.resize(timeSize);
 
-    for (int iTime = 0; iTime < timeSize; iTime++) {
-        for (int iMem = 0; iMem < membersNb; iMem++) {
-            for (int iRow = 0; iRow < rows; iRow++) {
+    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
+        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+            for (unsigned int iRow = 0; iRow < rows; iRow++) {
                 inlineData.block(0, iRow * cols, 1, cols) = m_data[iTime][iMem].row(iRow);
             }
             newData[iTime].push_back(inlineData);
@@ -1338,8 +1337,8 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid 
         }
 
         // Merge the composite data together
-        for (int iTime = 0; iTime < sizeTime; iTime++) {
-            for (int iMem = 0; iMem < membersNb; iMem++) {
+        for (unsigned int iTime = 0; iTime < sizeTime; iTime++) {
+            for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
                 // Append the composite areas
                 for (int iArea = 0; iArea < area->GetNbComposites(); iArea++) {
                     if (iArea == isblockUL) {

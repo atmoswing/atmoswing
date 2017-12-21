@@ -120,7 +120,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
         int counter = 0;
 
         // Loop over the members
-        for (int iMem = 0; iMem < membersNb; ++iMem) {
+        for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
 
             // Extract target data
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {

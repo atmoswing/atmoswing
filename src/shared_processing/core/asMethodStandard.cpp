@@ -155,14 +155,14 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *pa
                 m_preloadedArchivePointerCopy[iStep][iPtor].resize(preloadDataIdsSize);
                 m_preloadedArchive[iStep][iPtor].resize(preloadDataIdsSize);
 
-                for (int iDat = 0; iDat < preloadDataIdsSize; iDat++) {
+                for (unsigned int iDat = 0; iDat < preloadDataIdsSize; iDat++) {
                     m_preloadedArchivePointerCopy[iStep][iPtor][iDat] = false;
                     m_preloadedArchive[iStep][iPtor][iDat].resize(preloadLevelsSize);
 
                     // Load data for every level and every hour
-                    for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
+                    for (unsigned int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
                         m_preloadedArchive[iStep][iPtor][iDat][iLevel].resize(preloadTimeHoursSize);
-                        for (int iHour = 0; iHour < preloadTimeHoursSize; iHour++) {
+                        for (unsigned int iHour = 0; iHour < preloadTimeHoursSize; iHour++) {
                             m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = NULL;
                         }
                     }

@@ -58,7 +58,7 @@ void awxLed::DrawOnBitmap()
     wxMemoryDC dc;
     dc.SelectObject(*m_bitmap);
 
-    wxBrush brush(this->GetBackgroundColour(), wxSOLID);
+    wxBrush brush(this->GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
     dc.SetBackground(brush);
 #if defined(__UNIX__)
     dc.SetBackground(wxBrush(wxColour(242, 241, 240)));

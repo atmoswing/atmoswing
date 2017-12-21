@@ -236,7 +236,7 @@ void asForecastViewer::Redraw()
 
     // Check if memory layer already added
     m_viewerLayerManager->FreezeBegin();
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -246,7 +246,7 @@ void asForecastViewer::Redraw()
             m_layerManager->Close(layer);
         }
     }
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -385,7 +385,7 @@ void asForecastViewer::Redraw()
             }
 
             // Loop over the lead times
-            for (unsigned int iLead = 0; iLead < leadTimeSize; iLead++) {
+            for (int iLead = 0; iLead < leadTimeSize; iLead++) {
                 a1f values = forecast->GetAnalogsValuesGross(iLead, iStat);
 
                 if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {

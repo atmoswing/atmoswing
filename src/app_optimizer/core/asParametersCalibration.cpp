@@ -877,7 +877,7 @@ void asParametersCalibration::InitValues()
             if (NeedsPreprocessing(i, j)) {
                 unsigned long subDataNb = m_stepsVect[i].predictors[j].preprocessDataId.size();
                 wxASSERT(subDataNb > 0);
-                for (int k = 0; k < subDataNb; k++) {
+                for (unsigned int k = 0; k < subDataNb; k++) {
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId.empty());
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId[k].empty());
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessLevels.empty());
