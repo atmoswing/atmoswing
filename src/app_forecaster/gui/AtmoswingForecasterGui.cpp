@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Nov  6 2017)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #include "wx/wxprec.h"
@@ -47,7 +47,14 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer35->Add( m_staticTextForecastHour, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
 	
 	m_textCtrlForecastHour = new wxTextCtrl( sbSizer13->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
-	m_textCtrlForecastHour->SetMaxLength( 2 ); 
+	#ifdef __WXGTK__
+	if ( !m_textCtrlForecastHour->HasFlag( wxTE_MULTILINE ) )
+	{
+	m_textCtrlForecastHour->SetMaxLength( 2 );
+	}
+	#else
+	m_textCtrlForecastHour->SetMaxLength( 2 );
+	#endif
 	bSizer35->Add( m_textCtrlForecastHour, 0, wxALL, 5 );
 	
 	m_bpButtonNow = new wxBitmapButton( sbSizer13->GetStaticBox(), wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
@@ -346,7 +353,6 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer11->Add( m_checkBoxReturnPeriod, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlReturnPeriod = new wxTextCtrl( sbSizer1->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlReturnPeriod->SetMaxLength( 0 ); 
 	bSizer11->Add( m_textCtrlReturnPeriod, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticTextYears = new wxStaticText( sbSizer1->GetStaticBox(), wxID_ANY, _("years"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -456,7 +462,6 @@ asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id,
 	m_sizerFilename = new wxBoxSizer( wxVERTICAL );
 	
 	m_textCtrlParametersFileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlParametersFileName->SetMaxLength( 0 ); 
 	m_textCtrlParametersFileName->SetToolTip( _("Enter the parameters file name...") );
 	
 	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
@@ -615,7 +620,6 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer34->Add( m_staticTextProxyAddress, 0, wxALL, 5 );
 	
 	m_textCtrlProxyAddress = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 180,-1 ), 0 );
-	m_textCtrlProxyAddress->SetMaxLength( 0 ); 
 	bSizer34->Add( m_textCtrlProxyAddress, 1, wxALL, 5 );
 	
 	m_staticTextProxyPort = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Port"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -623,7 +627,6 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer34->Add( m_staticTextProxyPort, 0, wxALL, 5 );
 	
 	m_textCtrlProxyPort = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlProxyPort->SetMaxLength( 0 ); 
 	bSizer34->Add( m_textCtrlProxyPort, 0, wxALL, 5 );
 	
 	
@@ -637,7 +640,6 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer35->Add( m_staticTextProxyUser, 0, wxALL, 5 );
 	
 	m_textCtrlProxyUser = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
-	m_textCtrlProxyUser->SetMaxLength( 0 ); 
 	bSizer35->Add( m_textCtrlProxyUser, 1, wxALL, 5 );
 	
 	m_staticTextProxyPasswd = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -645,7 +647,6 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer35->Add( m_staticTextProxyPasswd, 0, wxALL, 5 );
 	
 	m_textCtrlProxyPasswd = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-	m_textCtrlProxyPasswd->SetMaxLength( 0 ); 
 	bSizer35->Add( m_textCtrlProxyPasswd, 1, wxALL, 5 );
 	
 	
@@ -687,7 +688,14 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	fgSizer2->Add( m_staticTextNumberFails, 0, wxALL, 5 );
 	
 	m_textCtrlMaxPrevStepsNb = new wxTextCtrl( sbSizer11->GetStaticBox(), wxID_ANY, _("5"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	m_textCtrlMaxPrevStepsNb->SetMaxLength( 1 ); 
+	#ifdef __WXGTK__
+	if ( !m_textCtrlMaxPrevStepsNb->HasFlag( wxTE_MULTILINE ) )
+	{
+	m_textCtrlMaxPrevStepsNb->SetMaxLength( 1 );
+	}
+	#else
+	m_textCtrlMaxPrevStepsNb->SetMaxLength( 1 );
+	#endif
 	fgSizer2->Add( m_textCtrlMaxPrevStepsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_staticTextMaxRequestsNb = new wxStaticText( sbSizer11->GetStaticBox(), wxID_ANY, _("Maximum parallel requests number"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -695,7 +703,14 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	fgSizer2->Add( m_staticTextMaxRequestsNb, 0, wxALL, 5 );
 	
 	m_textCtrlMaxRequestsNb = new wxTextCtrl( sbSizer11->GetStaticBox(), wxID_ANY, _("3"), wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	m_textCtrlMaxRequestsNb->SetMaxLength( 1 ); 
+	#ifdef __WXGTK__
+	if ( !m_textCtrlMaxRequestsNb->HasFlag( wxTE_MULTILINE ) )
+	{
+	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
+	}
+	#else
+	m_textCtrlMaxRequestsNb->SetMaxLength( 1 );
+	#endif
 	fgSizer2->Add( m_textCtrlMaxRequestsNb, 0, wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	m_checkBoxRestrictDownloads = new wxCheckBox( sbSizer11->GetStaticBox(), wxID_ANY, _("Restrict downloads to needed lead times."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -747,7 +762,6 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer221->Add( m_staticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlThreadsNb = new wxTextCtrl( sbSizer15->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	m_textCtrlThreadsNb->SetMaxLength( 0 ); 
 	bSizer221->Add( m_textCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
@@ -893,7 +907,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	
 	m_staticText37 = new wxStaticText( m_wizPage1, wxID_ANY, _("Load / create a batch file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText37->Wrap( -1 );
-	m_staticText37->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_staticText37->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	
 	bSizer48->Add( m_staticText37, 0, wxALL, 5 );
 	
@@ -920,7 +934,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	
 	m_staticText36 = new wxStaticText( m_wizPage2, wxID_ANY, _("Create a new batch file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText36->Wrap( -1 );
-	m_staticText36->SetFont( wxFont( 13, 70, 90, 90, false, wxEmptyString ) );
+	m_staticText36->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	
 	bSizer49->Add( m_staticText36, 0, wxALL, 5 );
 	
