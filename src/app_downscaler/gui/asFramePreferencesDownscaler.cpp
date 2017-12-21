@@ -60,6 +60,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
         m_dirPickerPredictandDB->SetBackgroundColour(col);
         m_dirPickerIntermediateResults->SetBackgroundColour(col);
         m_dirPickerArchivePredictors->SetBackgroundColour(col);
+        m_dirPickerScenarioPredictors->SetBackgroundColour(col);
     }
 
     /*
@@ -80,6 +81,8 @@ void asFramePreferencesDownscaler::LoadPreferences()
     m_dirPickerPredictandDB->SetPath(predictandDBDir);
     wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     m_dirPickerArchivePredictors->SetPath(archivePredictorsDir);
+    wxString scenarioPredictorsDir = pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors");
+    m_dirPickerScenarioPredictors->SetPath(scenarioPredictorsDir);
 
     /*
      * Advanced
@@ -159,6 +162,8 @@ void asFramePreferencesDownscaler::SavePreferences() const
     pConfig->Write("/Paths/DataPredictandDBDir", predictandDBDir);
     wxString archivePredictorsDir = m_dirPickerArchivePredictors->GetPath();
     pConfig->Write("/Paths/ArchivePredictorsDir", archivePredictorsDir);
+    wxString scenarioPredictorsDir = m_dirPickerScenarioPredictors->GetPath();
+    pConfig->Write("/Paths/ScenarioPredictorsDir", scenarioPredictorsDir);
 
     /*
      * Advanced

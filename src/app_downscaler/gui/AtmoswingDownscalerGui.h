@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Nov  6 2017)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef __ATMOSWINGDOWNSCALERGUI_H__
@@ -22,19 +22,19 @@
 #include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
+#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/textctrl.h>
-#include <wx/statbox.h>
-#include <wx/notebook.h>
-#include <wx/button.h>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
 #include <wx/radiobox.h>
+#include <wx/statbox.h>
+#include <wx/textctrl.h>
 #include <wx/slider.h>
+#include <wx/notebook.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -42,13 +42,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameDownscalerVirtual : public wxFrame
+class asFrameDownscalerVirtual : public wxFrame 
 {
 	private:
 	
 	protected:
 		wxPanel* m_panelMain;
-		wxNotebook* m_notebookBase;
 		wxPanel* m_panelControls;
 		wxStaticText* m_staticTextMethod;
 		wxChoice* m_choiceMethod;
@@ -56,105 +55,15 @@ class asFrameDownscalerVirtual : public wxFrame
 		wxFilePickerCtrl* m_filePickerParameters;
 		wxStaticText* m_staticTextFilePredictand;
 		wxFilePickerCtrl* m_filePickerPredictand;
-		wxStaticText* m_staticTextPredictorDir;
-		wxDirPickerCtrl* m_dirPickerPredictor;
+		wxStaticText* m_staticTextArchivePredictorDir;
+		wxDirPickerCtrl* m_dirPickerArchivePredictor;
+		wxStaticText* m_staticTextScenarioPredictorDir;
+		wxDirPickerCtrl* m_dirPickerScenarioPredictor;
 		wxStaticText* m_staticTextDownscalingResultsDir;
 		wxDirPickerCtrl* m_dirPickerDownscalingResults;
 		wxCheckBox* m_checkBoxParallelEvaluations;
 		wxStaticText* m_staticTextStateLabel;
 		wxStaticText* m_staticTextState;
-		wxPanel* m_panelOptions;
-		wxNotebook* m_notebookOptions;
-		wxPanel* m_panelSingle;
-		wxStaticText* m_staticTextClassicPlusStepsLonPertinenceMap;
-		wxTextCtrl* m_textCtrlClassicPlusStepsLonPertinenceMap;
-		wxStaticText* m_staticTextClassicPlusStepsLatPertinenceMap;
-		wxTextCtrl* m_textCtrlClassicPlusStepsLatPertinenceMap;
-		wxStaticText* m_staticTextClassicPlusResizingIterations;
-		wxTextCtrl* m_textCtrlClassicPlusResizingIterations;
-		wxCheckBox* m_checkBoxProceedSequentially;
-		wxStaticText* m_staticTextSpacer;
-		wxCheckBox* m_checkBoxClassicPlusResize;
-		wxStaticText* m_staticText66;
-		wxStaticText* m_staticText67;
-		wxStaticText* m_staticTextMonteCarloRandomNb;
-		wxTextCtrl* m_textCtrlMonteCarloRandomNb;
-		wxStaticText* m_staticTextVarExploStepToExplore;
-		wxTextCtrl* m_textCtrlVarExploStepToExplore;
-		wxPanel* m_panelGeneticAlgoritms;
-		wxStaticText* m_staticTextGAsNaturalSelectionOperator;
-		wxChoice* m_choiceGAsNaturalSelectionOperator;
-		wxStaticText* m_staticTextGAsCouplesSelectionOperator;
-		wxChoice* m_choiceGAsCouplesSelectionOperator;
-		wxStaticText* m_staticTextGAsCrossoverOperator;
-		wxChoice* m_choiceGAsCrossoverOperator;
-		wxStaticText* m_staticTextGAsMutationOperator;
-		wxChoice* m_choiceGAsMutationOperator;
-		wxStaticText* m_staticTextGAsRunNumbers;
-		wxTextCtrl* m_textCtrlGAsRunNumbers;
-		wxStaticText* m_staticTextGAsPopulationSize;
-		wxTextCtrl* m_textCtrlGAsPopulationSize;
-		wxStaticText* m_staticTextGAsConvergenceNb;
-		wxTextCtrl* m_textCtrlGAsConvergenceNb;
-		wxStaticText* m_staticTextGAsRatioIntermGen;
-		wxTextCtrl* m_textCtrlGAsRatioIntermGen;
-		wxCheckBox* m_checkBoxGAsAllowElitism;
-		wxNotebook* m_notebookGAoptions;
-		wxPanel* m_panelSelections;
-		wxStaticText* m_staticTextGAsNaturalSlctTournamentProb;
-		wxTextCtrl* m_textCtrlGAsNaturalSlctTournamentProb;
-		wxStaticText* m_staticTextGAsCouplesSlctTournamentNb;
-		wxTextCtrl* m_textCtrlGAsCouplesSlctTournamentNb;
-		wxPanel* m_panelCrossover;
-		wxStaticText* m_staticTextGAsCrossoverMultipleNbPts;
-		wxTextCtrl* m_textCtrlGAsCrossoverMultipleNbPts;
-		wxStaticText* m_staticTextGAsCrossoverBlendingNbPts;
-		wxTextCtrl* m_textCtrlGAsCrossoverBlendingNbPts;
-		wxStaticText* m_staticTextGAsCrossoverBlendingShareBeta;
-		wxCheckBox* m_checkBoxGAsCrossoverBlendingShareBeta;
-		wxStaticText* m_staticTextGAsCrossoverLinearNbPts;
-		wxTextCtrl* m_textCtrlGAsCrossoverLinearNbPts;
-		wxStaticText* m_staticTextGAsCrossoverHeuristicNbPts;
-		wxTextCtrl* m_textCtrlGAsCrossoverHeuristicNbPts;
-		wxStaticText* m_staticTextGAsCrossoverHeuristicShareBeta;
-		wxCheckBox* m_checkBoxGAsCrossoverHeuristicShareBeta;
-		wxStaticText* m_staticTextGAsCrossoverBinLikeNbPts;
-		wxTextCtrl* m_textCtrlGAsCrossoverBinLikeNbPts;
-		wxStaticText* m_staticTextGAsCrossoverBinLikeShareBeta;
-		wxCheckBox* m_checkBoxGAsCrossoverBinLikeShareBeta;
-		wxPanel* m_panelMutation;
-		wxStaticText* m_staticTextGAsMutationsUniformCstProb;
-		wxTextCtrl* m_textCtrlGAsMutationsUniformCstProb;
-		wxStaticText* m_staticTextGAsMutationsNormalCstProb;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalCstProb;
-		wxStaticText* m_staticTextGAsMutationsNormalCstStdDev;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalCstStdDev;
-		wxStaticText* m_staticTextGAsMutationsUniformVarMaxGensNb;
-		wxTextCtrl* m_textCtrlGAsMutationsUniformVarMaxGensNb;
-		wxStaticText* m_staticTextGAsMutationsUniformVarProbStart;
-		wxTextCtrl* m_textCtrlGAsMutationsUniformVarProbStart;
-		wxStaticText* m_staticTextGAsMutationsUniformVarProbEnd;
-		wxTextCtrl* m_textCtrlGAsMutationsUniformVarProbEnd;
-		wxStaticText* m_staticTextGAsMutationsMultiScaleProb;
-		wxTextCtrl* m_textCtrlGAsMutationsMultiScaleProb;
-		wxStaticText* m_staticTextGAsMutationsNormalVarMaxGensNbProb;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarMaxGensNbProb;
-		wxStaticText* m_staticTextGAsMutationsNormalVarMaxGensNbStdDev;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev;
-		wxStaticText* m_staticTextGAsMutationsNormalVarProbStart;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarProbStart;
-		wxStaticText* m_staticTextGAsMutationsNormalVarProbEnd;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarProbEnd;
-		wxStaticText* m_staticTextGAsMutationsNormalVarStdDevStart;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarStdDevStart;
-		wxStaticText* m_staticTextGAsMutationsNormalVarStdDevEnd;
-		wxTextCtrl* m_textCtrlGAsMutationsNormalVarStdDevEnd;
-		wxStaticText* m_staticTextGAsMutationsNonUniformProb;
-		wxTextCtrl* m_textCtrlGAsMutationsNonUniformProb;
-		wxStaticText* m_staticTextGAsMutationsNonUniformGensNb;
-		wxTextCtrl* m_textCtrlGAsMutationsNonUniformGensNb;
-		wxStaticText* m_staticTextGAsMutationsNonUniformMinRate;
-		wxTextCtrl* m_textCtrlGAsMutationsNonUniformMinRate;
 		wxButton* m_buttonSaveDefault;
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuOptions;
@@ -185,7 +94,7 @@ class asFrameDownscalerVirtual : public wxFrame
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePreferencesDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesDownscalerVirtual : public wxFrame
+class asFramePreferencesDownscalerVirtual : public wxFrame 
 {
 	private:
 	
@@ -198,6 +107,8 @@ class asFramePreferencesDownscalerVirtual : public wxFrame
 		wxCheckBox* m_checkBoxSaveLogFile;
 		wxStaticText* m_staticTextArchivePredictorsDir;
 		wxDirPickerCtrl* m_dirPickerArchivePredictors;
+		wxStaticText* m_staticTextScenarioPredictorsDir;
+		wxDirPickerCtrl* m_dirPickerScenarioPredictors;
 		wxStaticText* m_staticTextPredictandDBDir;
 		wxDirPickerCtrl* m_dirPickerPredictandDB;
 		wxPanel* m_panelAdvanced;
