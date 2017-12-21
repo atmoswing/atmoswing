@@ -22,8 +22,7 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
 #ifdef WX_PRECOMP
@@ -58,9 +57,10 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame *frame)
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrame/x", 50), y = pConfig->Read("/MainFrame/y", 50), w = pConfig->Read("/MainFrame/w",
-                                                                                                        minWidth), h = pConfig->Read(
-            "/MainFrame/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50),
+        y = pConfig->Read("/MainFrame/y", 50),
+        w = pConfig->Read("/MainFrame/w", minWidth),
+        h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;
@@ -126,6 +126,8 @@ void AtmoswingFrameDownscaler::SetDefaultOptions()
     pConfig->Write("/Paths/DownscalerResultsDir", downscalerResultsDir);
     wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", archivePredictorsDir);
+    wxString scenarioPredictorsDir = pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors");
+    pConfig->Write("/Paths/ScenarioPredictorsDir", scenarioPredictorsDir);
 
     // Processing
     bool allowMultithreading;
