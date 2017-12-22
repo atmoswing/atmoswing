@@ -41,17 +41,18 @@
 
 #endif
 
-#include "asMethodDownscalerSingle.h"
+#include "asMethodDownscalerClassic.h"
 
 
 IMPLEMENT_APP(AtmoswingAppDownscaler)
 
 #include <asFileAscii.h>
-#include <asMethodDownscalerSingle.h>
+#include <asMethodDownscalerClassic.h>
 
 #if wxUSE_GUI
 
 #include "images.h"
+#include "asParameters.h"
 
 #endif
 
@@ -67,11 +68,13 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                 {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
                 {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors",  "The archive predictors directory"},
                 {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
+                {wxCMD_LINE_OPTION, NULL, "donwscaling-method",      "Choice of the downscaling method"
+                                          "\n                            classic: classic downscaling"},
                 {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
-                                                                             "\n \t\t\t\t 1: errors"
-                                                                             "\n \t\t\t\t 2: warnings"
-                                                                             "\n \t\t\t\t 3: verbose"
-                                                                             "\n \t\t\t\t 4: debug"},
+                                          "\n                            1: errors"
+                                          "\n                            2: warnings"
+                                          "\n                            3: verbose"
+                                          "\n                            4: debug"},
 
                 {wxCMD_LINE_NONE}};
 
@@ -89,11 +92,12 @@ bool AtmoswingAppDownscaler::OnInit()
 
     g_guiMode = true;
     g_local = false;
-    m_downsParamsFile = wxEmptyString;
+    m_downscalingParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
     m_predictandStationIds = vi(0);
     m_predictorsArchiveDir = wxEmptyString;
-    m_downsMethod = wxEmptyString;
+    m_predictorsScenarioDir = wxEmptyString;
+    m_downscalingMethod = wxEmptyString;
     m_forceQuit = false;
 #if wxUSE_GUI
     m_singleInstanceChecker = nullptr;
@@ -202,7 +206,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
-        if (m_downsMethod.IsSameAs("ga", false)) {
+        if (m_downscalingMethod.IsSameAs("ga", false)) {
             pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
             pConfig->Write("/Downscaler/GeneticAlgorithms/AllowElitismForTheBest", true);
         }
@@ -272,7 +276,9 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
             // Check if path already exists
             if (wxFileName::Exists(localPath)) {
-                g_resumePreviousRun = true;
+                wxPrintf(_("A directory with the same name already exists.\n"));
+                wxLogError(_("A directory with the same name already exists."));
+                return false;
             } else {
                 // Create directory
                 wxFileName userDir = wxFileName::DirName(localPath);
@@ -283,14 +289,6 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         // Create local ini file
         wxString iniPath = localPath;
         iniPath.Append("AtmoSwing.ini");
-        if (g_resumePreviousRun) {
-            int increment = 1;
-            while (wxFileName::Exists(iniPath)) {
-                increment++;
-                iniPath = localPath;
-                iniPath.Append(wxString::Format("AtmoSwing-%d.ini", increment));
-            }
-        }
 
         // Set the local config object
         wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, iniPath, iniPath, wxCONFIG_USE_LOCAL_FILE);
@@ -338,13 +336,13 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     // Check for a downscaling params file
-    if (parser.Found("file-parameters", &m_downsParamsFile)) {
+    if (parser.Found("file-parameters", &m_downscalingParamsFile)) {
         if (g_local) {
-            m_downsParamsFile = wxFileName::GetCwd() + DS + m_downsParamsFile;
+            m_downscalingParamsFile = wxFileName::GetCwd() + DS + m_downscalingParamsFile;
         }
 
-        if (!wxFileName::FileExists(m_downsParamsFile)) {
-            wxLogError(_("The given downscaling file (%s) couldn't be found."), m_downsParamsFile);
+        if (!wxFileName::FileExists(m_downscalingParamsFile)) {
+            wxLogError(_("The given downscaling file (%s) couldn't be found."), m_downscalingParamsFile);
             return false;
         }
     }
@@ -384,12 +382,12 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
      */
 
     // Check for a downscaling method option
-    if (parser.Found("downscaling-method", &m_downsMethod)) {
+    if (parser.Found("downscaling-method", &m_downscalingMethod)) {
         if (!InitForCmdLineOnly()) {
             wxLogError(_("Initialization for command-line interface failed."));
             return false;
         }
-        wxLogVerbose(_("Given downscaling method: %s"), m_downsMethod);
+        wxLogVerbose(_("Given downscaling method: %s"), m_downscalingMethod);
         return true;
     }
 
@@ -404,7 +402,7 @@ int AtmoswingAppDownscaler::OnRun()
     }
 
     if (!g_guiMode) {
-        if (m_downsParamsFile.IsEmpty()) {
+        if (m_downscalingParamsFile.IsEmpty()) {
             wxLogError(_("The parameters file is not given."));
             return 1001;
         }
@@ -420,15 +418,15 @@ int AtmoswingAppDownscaler::OnRun()
         }
 
         try {
-            if (m_downsMethod.IsSameAs("single", false)) {
-                asMethodDownscalerSingle downscaler;
-                downscaler.SetParamsFilePath(m_downsParamsFile);
+            if (m_downscalingMethod.IsSameAs("classic", false)) {
+                asMethodDownscalerClassic downscaler;
+                downscaler.SetParamsFilePath(m_downscalingParamsFile);
                 downscaler.SetPredictandDBFilePath(m_predictandDB);
                 downscaler.SetPredictandStationIds(m_predictandStationIds);
                 downscaler.SetPredictorDataDir(m_predictorsArchiveDir);
                 downscaler.Manager();
             } else {
-                wxPrintf("Wrong downscaling method selection (%s).\n", m_downsMethod);
+                wxPrintf("Wrong downscaling method selection (%s).\n", m_downscalingMethod);
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);

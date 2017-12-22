@@ -252,7 +252,7 @@ asPredictor::Unit asPredictor::StringToUnitEnum(const wxString &unitStr)
 
 bool asPredictor::SetData(vva2f &val)
 {
-    wxASSERT(!m_time.empty());
+    wxASSERT(m_time.size()> 0);
     wxASSERT((int) m_time.size() == (int) val.size());
 
     m_latPtsnb = (int) val[0][0].rows();
@@ -750,8 +750,8 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
 
 asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData)
 {
-    wxASSERT(!m_fileStructure.axisLon.empty());
-    wxASSERT(!m_fileStructure.axisLat.empty());
+    wxASSERT(m_fileStructure.axisLon.size()> 0);
+    wxASSERT(m_fileStructure.axisLat.size()> 0);
 
     if (!m_axesChecked) {
         if (dataArea == NULL) {

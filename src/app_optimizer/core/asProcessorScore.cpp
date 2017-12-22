@@ -50,7 +50,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
     va1f targetValues = anaValues.GetTargetValues();
     a2f analogsCriteria = anaValues.GetAnalogsCriteria();
     va2f analogsValues = anaValues.GetAnalogsValues();
-    wxASSERT(!timeTargetSelection.empty());
+    wxASSERT(timeTargetSelection.size() > 0);
     wxASSERT(!analogsValues.empty());
     int timeTargetSelectionLength = anaValues.GetTargetDatesLength();
     int analogsNbDates = analogsValues[0].cols();

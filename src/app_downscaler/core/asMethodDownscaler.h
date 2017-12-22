@@ -72,6 +72,11 @@ public:
         m_predictandStationIds = val;
     }
 
+    void SetPredictorScenarioDataDir(const wxString &val)
+    {
+        m_predictorScenarioDataDir = val;
+    }
+
 protected:
     wxString m_predictorScenarioDataDir;
     vi m_predictandStationIds;
@@ -94,7 +99,13 @@ protected:
 
     bool SaveDetails(asParametersDownscaling *params);
 
-    void Cleanup(std::vector<asPredictorScenario *> predictorsPreprocess);
+    void Cleanup(std::vector<asPredictorScenario *> predictors);
+
+    void Cleanup(std::vector<asPredictorArch *> predictors);
+
+    void Cleanup(std::vector<asPredictor *> predictors);
+
+    void Cleanup(std::vector<asCriteria *> criteria);
 
 private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
@@ -105,6 +116,10 @@ private:
     double GetTimeStartDownscaling(asParametersDownscaling *params) const;
 
     double GetTimeEndDownscaling(asParametersDownscaling *params) const;
+
+    double GetEffectiveArchiveDataStart(asParameters *params) const;
+
+    double GetEffectiveArchiveDataEnd(asParameters *params) const;
 };
 
 #endif // ASMETHODDOWNSCALER_H

@@ -1128,13 +1128,13 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
     return true;
 }
 
-void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictorsPreprocess)
+void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictors)
 {
-    if (!predictorsPreprocess.empty()) {
-        for (unsigned int i = 0; i < predictorsPreprocess.size(); i++) {
-            wxDELETE(predictorsPreprocess[i]);
+    if (!predictors.empty()) {
+        for (unsigned int i = 0; i < predictors.size(); i++) {
+            wxDELETE(predictors[i]);
         }
-        predictorsPreprocess.resize(0);
+        predictors.resize(0);
     }
 }
 

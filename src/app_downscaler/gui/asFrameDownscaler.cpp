@@ -256,8 +256,8 @@ void asFrameDownscaler::Launch(wxCommandEvent &event)
         if (m_methodDownscaler) {
             m_methodDownscaler->SetParamsFilePath(m_filePickerParameters->GetPath());
             m_methodDownscaler->SetPredictandDBFilePath(m_filePickerPredictand->GetPath());
-            m_methodDownscaler->SetArchivePredictorDataDir(m_dirPickerArchivePredictor->GetPath());
-            m_methodDownscaler->SetScenarioPredictorDataDir(m_dirPickerScenarioPredictor->GetPath());
+            m_methodDownscaler->SetPredictorDataDir(m_dirPickerArchivePredictor->GetPath());
+            m_methodDownscaler->SetPredictorScenarioDataDir(m_dirPickerScenarioPredictor->GetPath());
             m_methodDownscaler->Manager();
         }
     } catch (std::bad_alloc &ba) {

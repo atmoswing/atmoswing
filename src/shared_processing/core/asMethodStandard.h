@@ -125,11 +125,11 @@ protected:
 
     virtual void InitializePreloadedArchiveDataContainers(asParameters *params);
 
-    void Cleanup(std::vector<asPredictorArch *> predictorsPreprocess);
+    virtual void Cleanup(std::vector<asPredictorArch *> predictors);
 
-    void Cleanup(std::vector<asPredictor *> predictors);
+    virtual void Cleanup(std::vector<asPredictor *> predictors);
 
-    void Cleanup(std::vector<asCriteria *> criteria);
+    virtual void Cleanup(std::vector<asCriteria *> criteria);
 
     void DeletePreloadedArchiveData();
 

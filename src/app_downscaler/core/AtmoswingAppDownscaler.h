@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef AtmoswingAPPDownscaler_H
-#define AtmoswingAPPDownscaler_H
+#ifndef ATMOSWINGAPPDOWNSCALER_H
+#define ATMOSWINGAPPDOWNSCALER_H
 
 #include <wx/app.h>
 #include <wx/snglinst.h>
@@ -74,10 +74,11 @@ public:
     virtual void OnUnhandledException();
 
 private:
-    wxString m_downsParamsFile;
-    wxString m_downsMethod;
+    wxString m_downscalingParamsFile;
+    wxString m_downscalingMethod;
     wxString m_predictandDB;
     wxString m_predictorsArchiveDir;
+    wxString m_predictorsScenarioDir;
     vi m_predictandStationIds;
     bool m_forceQuit;
 #if wxUSE_GUI

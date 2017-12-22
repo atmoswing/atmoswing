@@ -69,7 +69,7 @@ float asCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int
     }
 
     wxASSERT(mse >= 0);
-    wxASSERT(!refData.empty());
+    wxASSERT(refData.size() > 0);
 
     if (finalsize == 0) {
         wxLogVerbose(_("Only NaNs in the criteria calculation."));

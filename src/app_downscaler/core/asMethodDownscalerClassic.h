@@ -31,13 +31,13 @@
 #include "asMethodDownscaler.h"
 
 
-class asMethodDownscalerSingle
+class asMethodDownscalerClassic
         : public asMethodDownscaler
 {
 public:
-    asMethodDownscalerSingle();
+    asMethodDownscalerClassic();
 
-    virtual ~asMethodDownscalerSingle();
+    virtual ~asMethodDownscalerClassic();
 
 protected:
     virtual bool Downscale(asParametersDownscaling &params);

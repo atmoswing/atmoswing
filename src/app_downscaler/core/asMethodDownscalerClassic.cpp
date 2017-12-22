@@ -25,23 +25,23 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#include "asMethodDownscalerSingle.h"
+#include "asMethodDownscalerClassic.h"
 #include "asResultsDates.h"
 #include "asResultsValues.h"
 #include "asParametersDownscaling.h"
 
-asMethodDownscalerSingle::asMethodDownscalerSingle()
+asMethodDownscalerClassic::asMethodDownscalerClassic()
         : asMethodDownscaler()
 {
 
 }
 
-asMethodDownscalerSingle::~asMethodDownscalerSingle()
+asMethodDownscalerClassic::~asMethodDownscalerClassic()
 {
 
 }
 
-bool asMethodDownscalerSingle::Downscale(asParametersDownscaling &params)
+bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params)
 {
     // Extract the stations IDs
     vvi stationsId = params.GetPredictandStationIdsVector();

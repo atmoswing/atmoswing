@@ -82,7 +82,7 @@ a1d asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double xMin, double x
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
-    wxASSERT(!axis.empty());
+    wxASSERT(axis.size() > 0);
 
     int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], xMin);
     int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], xMax);
@@ -112,7 +112,7 @@ a1d asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double yMin, double y
         asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
     }
 
-    wxASSERT(!axis.empty());
+    wxASSERT(axis.size() > 0);
 
     int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], yMin);
     int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], yMax);

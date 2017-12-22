@@ -1582,7 +1582,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
     // Extract the stations IDs and coordinates
     wxASSERT(m_predictandDB->GetStationsNb() > 0);
     a1i stationsId = m_predictandDB->GetStationsIdArray();
-    wxASSERT(!stationsId.empty());
+    wxASSERT(stationsId.size() > 0);
     results.SetStationIds(stationsId);
     results.SetStationOfficialIds(m_predictandDB->GetStationOfficialIdsArray());
     results.SetStationNames(m_predictandDB->GetStationNamesArray());

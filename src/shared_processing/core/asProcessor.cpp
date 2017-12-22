@@ -465,7 +465,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
         case (asSTANDARD): {
             // Extract some data
             a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
-            wxASSERT(!timeArchiveData.empty());
+            wxASSERT(timeArchiveData.size() > 0);
             wxASSERT(!predictorsArchive.empty());
             wxASSERT(!predictorsArchive[0]->GetData().empty());
             wxASSERT_MSG(timeArchiveData.size() == predictorsArchive[0]->GetData().size(),
@@ -1021,9 +1021,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 #endif
 
     // Copy results to the resulting object
-    wxASSERT(!timeTargetSelection.empty());
-    wxASSERT(!finalAnalogsCriteria.empty());
-    wxASSERT(!finalAnalogsDates.empty());
+    wxASSERT(!timeTargetSelection.size() > 0);
+    wxASSERT(!finalAnalogsCriteria.size() > 0);
+    wxASSERT(!finalAnalogsDates.size() > 0);
     results.SetTargetDates(timeTargetSelection);
     results.SetAnalogsCriteria(finalAnalogsCriteria);
     results.SetAnalogsDates(finalAnalogsDates);

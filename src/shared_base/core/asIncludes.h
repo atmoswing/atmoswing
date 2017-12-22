@@ -163,6 +163,9 @@
 #ifdef APP_OPTIMIZER
     #include "asGlobVarsOptimizer.h"
 #endif
+#ifdef APP_DOWNSCALER
+    #include "asGlobVarsDownscaler.h"
+#endif
 #ifdef UNIT_TESTING
     #include "asGlobVarsOptimizer.h"
 #endif

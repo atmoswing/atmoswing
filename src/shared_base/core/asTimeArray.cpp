@@ -134,7 +134,7 @@ asTimeArray::asTimeArray(a1d &timeArray)
           m_intervalDays(0),
           m_exclusionDays(0)
 {
-    wxASSERT(!timeArray.empty());
+    wxASSERT(timeArray.size() > 0);
 
     // Get values
     m_timeStepDays = timeArray[1] - timeArray[0];
@@ -829,7 +829,7 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 
 bool asTimeArray::RemoveYears(const vi &years)
 {
-    wxASSERT(!m_timeArray.empty());
+    wxASSERT(m_timeArray.size() > 0);
     wxASSERT(!years.empty());
 
     vi yearsRemove = years;
@@ -882,7 +882,7 @@ bool asTimeArray::RemoveYears(const vi &years)
 
 bool asTimeArray::KeepOnlyYears(const vi &years)
 {
-    wxASSERT(!m_timeArray.empty());
+    wxASSERT(m_timeArray.size() > 0);
     wxASSERT(!years.empty());
 
     vi yearsKeep = years;

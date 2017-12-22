@@ -43,8 +43,7 @@
 #endif
 
 asMethodDownscaler::asMethodDownscaler()
-        : asMethodStandard(),
-          m_preloaded(false)
+        : asMethodStandard()
 {
     // Seeds the random generator
     asTools::InitRandom();
@@ -120,6 +119,16 @@ double asMethodDownscaler::GetTimeEndDownscaling(asParametersDownscaling *params
     timeEndDownscaling = wxMin(timeEndDownscaling, timeEndDownscaling - params->GetTimeSpanDays());
 
     return timeEndDownscaling;
+}
+
+double asMethodDownscaler::GetEffectiveArchiveDataStart(asParameters *params) const
+{
+    return GetTimeStartArchive(params);
+}
+
+double asMethodDownscaler::GetEffectiveArchiveDataEnd(asParameters *params) const
+{
+    return GetTimeEndArchive(params);
 }
 
 bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep,
@@ -541,12 +550,42 @@ bool asMethodDownscaler::Preprocess(std::vector<asPredictorScenario *> predictor
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorScenario *> predictorsPreprocess)
+void asMethodDownscaler::Cleanup(std::vector<asPredictorScenario *> predictors)
 {
-    if (!predictorsPreprocess.empty()) {
-        for (auto &predictorsPreproces : predictorsPreprocess) {
-            wxDELETE(predictorsPreproces);
+    if (!predictors.empty()) {
+        for (auto &predictor : predictors) {
+            wxDELETE(predictor);
         }
-        predictorsPreprocess.resize(0);
+        predictors.resize(0);
+    }
+}
+
+void asMethodDownscaler::Cleanup(std::vector<asPredictorArch *> predictors)
+{
+    if (!predictors.empty()) {
+        for (auto &predictor : predictors) {
+            wxDELETE(predictor);
+        }
+        predictors.resize(0);
+    }
+}
+
+void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
+{
+    if (!predictors.empty()) {
+        for (auto &predictor : predictors) {
+            wxDELETE(predictor);
+        }
+        predictors.resize(0);
+    }
+}
+
+void asMethodDownscaler::Cleanup(std::vector<asCriteria *> criteria)
+{
+    if (!criteria.empty()) {
+        for (unsigned int i = 0; i < criteria.size(); i++) {
+            wxDELETE(criteria[i]);
+        }
+        criteria.resize(0);
     }
 }
