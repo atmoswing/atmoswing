@@ -73,7 +73,15 @@ ExternalProject_Add(googletest
         --build .
         --config Release
         )
-
+ExternalProject_Add(googletestd
+        GIT_REPOSITORY https://github.com/google/googletest
+        UPDATE_COMMAND ""
+        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
+        BUILD_COMMAND
+        cmake
+        --build .
+        --config Debug
+        )
 
 ##### DECLARE EXECUTABLE
 
@@ -115,9 +123,10 @@ endif(WIN32)
 add_dependencies(atmoswing-tests googletest)
 add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
-target_link_libraries(atmoswing-tests gtest gtest_main)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
+target_link_libraries(atmoswing-tests debug gtestd gtest_maind)
+target_link_libraries(atmoswing-tests optimized gtest gtest_main)
 if (UNIX)
     target_link_libraries(atmoswing-tests pthread)
 endif (UNIX)
