@@ -42,6 +42,7 @@
 #endif
 
 #include "asMethodDownscalerClassic.h"
+#include "asParameters.h"
 
 
 IMPLEMENT_APP(AtmoswingAppDownscaler)
