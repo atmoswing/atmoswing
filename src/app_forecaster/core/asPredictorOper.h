@@ -54,7 +54,7 @@ public:
 
     bool BuildFilenamesUrls();
 
-    void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours);
+    void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours, int leadTimeNb);
 
     void SetRestrictDownloads(bool val)
     {

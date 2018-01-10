@@ -436,7 +436,8 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             // Restriction needed
             wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours());
+                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetLeadTimeNb());
 
             // Update forecasting date
             if (!predictorRealtime->BuildFilenamesUrls()) {
@@ -520,7 +521,8 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                 // Restriction needed
                 wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours());
+                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetLeadTimeNb());
 
                 // Update forecasting date
                 if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
@@ -752,7 +754,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             // Restriction needed
             wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours());
+                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetLeadTimeNb());
 
             // Update
             if (!predictorRealtime->BuildFilenamesUrls()) {
@@ -884,7 +887,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 // Restriction needed
                 wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours());
+                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetLeadTimeNb());
 
                 // Update
                 if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
@@ -1239,7 +1243,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             // Restriction needed
             wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours());
+                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetLeadTimeNb());
 
             // Update
             if (!predictorRealtime->BuildFilenamesUrls()) {
@@ -1360,7 +1365,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 // Restriction needed
                 wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours());
+                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetLeadTimeNb());
 
                 // Update
                 if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
