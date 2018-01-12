@@ -53,6 +53,7 @@ atmoswing-forecaster
 atmoswing-tests
 atmoswing-viewer
 atmoswing-optimizer
+atmoswing-downscaler
 bin/
 *.rej
 .idea/*
