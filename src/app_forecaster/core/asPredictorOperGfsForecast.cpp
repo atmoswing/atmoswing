@@ -67,49 +67,51 @@ asPredictorOperGfsForecast::~asPredictorOperGfsForecast()
 
 bool asPredictorOperGfsForecast::Init()
 {
+    wxConfigBase *pConfig = wxFileConfig::Get();
+
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
 
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false)) {
         m_parameter = GeopotentialHeight;
         m_gribCode = {0, 3, 5, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/hgt", m_commandDownload);
         m_fileVariableName = "HGT";
         m_unit = m;
-    } else if (m_dataId.IsSameAs("air", false)) {
+    } else if (m_dataId.IsSameAs("air", false) || m_dataId.IsSameAs("temp", false)) {
         m_parameter = AirTemperature;
         m_gribCode = {0, 0, 0, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/temp", m_commandDownload);
         m_fileVariableName = "TEMP";
         m_unit = degK;
-    } else if (m_dataId.IsSameAs("omega", false)) {
+    } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
         m_parameter = VerticalVelocity;
         m_gribCode = {0, 2, 8, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vvel", m_commandDownload);
         m_fileVariableName = "VVEL";
         m_unit = Pa_s;
-    } else if (m_dataId.IsSameAs("rhum", false)) {
+    } else if (m_dataId.IsSameAs("rhum", false) || m_dataId.IsSameAs("rh", false)) {
         m_parameter = RelativeHumidity;
         m_gribCode = {0, 1, 1, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/rh", m_commandDownload);
         m_fileVariableName = "RH";
         m_unit = percent;
-    } else if (m_dataId.IsSameAs("uwnd", false)) {
+    } else if (m_dataId.IsSameAs("uwnd", false) || m_dataId.IsSameAs("ugrd", false)) {
         m_parameter = Uwind;
         m_gribCode = {0, 2, 2, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/uwnd", m_commandDownload);
         m_fileVariableName = "UGRD";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("vwnd", false)) {
+    } else if (m_dataId.IsSameAs("vwnd", false) || m_dataId.IsSameAs("vgrd", false)) {
         m_parameter = Vwind;
         m_gribCode = {0, 2, 3, 100};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vwnd", m_commandDownload);
         m_fileVariableName = "VGRD";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("prwtr", false)) {
+    } else if (m_dataId.IsSameAs("prwtr", false) || m_dataId.IsSameAs("pwat", false)) {
         m_parameter = PrecipitableWater;
         m_gribCode = {0, 1, 3, 200};
-        m_commandDownload = "http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDDhh]";
+        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/pwat", m_commandDownload);
         m_fileVariableName = "PWAT";
         m_unit = mm;
     } else {

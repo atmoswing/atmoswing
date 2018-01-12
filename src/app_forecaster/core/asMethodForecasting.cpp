@@ -63,6 +63,7 @@ void asMethodForecasting::ClearForecasts()
 bool asMethodForecasting::Manager()
 {
     ClearForecasts();
+    asPredictorOper::SetDefaultPredictorsUrls();
 
 #if wxUSE_GUI
     if (g_responsive)
@@ -391,8 +392,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 {
     // Get preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long maxPrevStepsNbDef = 5;
-    long maxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbDef);
+    long maxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", (long) 5);
 
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 #if wxUSE_GUI

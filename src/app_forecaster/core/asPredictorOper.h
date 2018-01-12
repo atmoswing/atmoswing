@@ -40,6 +40,8 @@ public:
 
     virtual ~asPredictorOper();
 
+    static void SetDefaultPredictorsUrls();
+
     static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
 
     virtual bool Init();
@@ -239,8 +241,6 @@ protected:
     virtual bool CheckTimeArray(asTimeArray &timeArray) const;
 
     virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
-
-private:
 
 };
 
