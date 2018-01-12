@@ -276,13 +276,13 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asPredictor *> predict
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    auto rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    auto colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    auto timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    auto membersNb = (unsigned int) predictors[0]->GetMembersNb();
 
-    wxASSERT(rowsNb > 1);
-    wxASSERT(colsNb > 1);
+    wxASSERT(rowsNb > 0);
+    wxASSERT(colsNb > 0);
     wxASSERT(timeSize > 0);
     wxASSERT(membersNb > 0);
 

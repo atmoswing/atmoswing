@@ -119,7 +119,7 @@ public:
 
     vva2f &GetData()
     {
-        wxASSERT((int) m_data.size() == (int) m_time.size());
+        wxASSERT((int) m_data.size() >= (int) m_time.size());
         wxASSERT(m_data.size() >= 1);
         wxASSERT(m_data[0].size() >= 1);
         wxASSERT(m_data[0][0].cols() > 0);

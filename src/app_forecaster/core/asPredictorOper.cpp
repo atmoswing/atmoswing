@@ -141,7 +141,7 @@ void asPredictorOper::RestrictTimeArray(double restrictTimeHours, double restric
     m_restrictDownloads = true;
     m_restrictTimeHours = restrictTimeHours;
     m_restrictTimeStepHours = restrictTimeStepHours;
-    m_forecastLeadTimeEnd = 24 * leadTimeNb;
+    m_forecastLeadTimeEnd = 24 * (leadTimeNb + floor(restrictTimeHours / restrictTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictTimeHours > -100);
     wxASSERT(m_restrictTimeHours < 100);

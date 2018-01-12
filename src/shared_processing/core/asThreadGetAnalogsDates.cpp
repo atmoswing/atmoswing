@@ -94,7 +94,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
     wxASSERT(m_end < timeTargetSelection.size());
     wxASSERT(timeArchiveData.size() == (m_pPredictorsArchive)[0]->GetData().size());
-    wxASSERT(timeTargetData.size() == (m_pPredictorsTarget)[0]->GetData().size());
+    wxASSERT(timeTargetData.size() <= (m_pPredictorsTarget)[0]->GetData().size());
     wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results

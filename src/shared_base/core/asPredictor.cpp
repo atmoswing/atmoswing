@@ -389,7 +389,7 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
         }
 
         // Check the data container length
-        if ((unsigned) m_time.size() != m_data.size()) {
+        if ((unsigned) m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."), (int)m_time.size(), (int)m_data.size());
             wxDELETE(dataArea);
             return false;
