@@ -27,6 +27,11 @@ set(CPACK_PACKAGE_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day.")
 set(CPACK_PACKAGE_VENDOR "AtmoSwing")
 set(CPACK_STRIP_FILES ON) # tell cpack to strip all debug symbols from all files
+if (USE_GUI)
+    set(CPACK_PACKAGE_TAG "desktop")
+else()
+    set(CPACK_PACKAGE_TAG "server")
+endif ()
 
 # IDENTIFY ARCHITECTURE
 
@@ -62,9 +67,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES Darwin)
 
 # OS SPECIFIC PROPERTIES
 
+set(CPACK_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_TAG}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}")
+
 if (APPLE)
     set(CPACK_GENERATOR "DragNDrop")
-    set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${CPACK_PACKAGE_VERSION}")
+    set(CPACK_PACKAGE_FILE_NAME "${CPACK_FILE_NAME}")
     set(CPACK_DMG_VOLUME_NAME "${CMAKE_PROJECT_NAME}")
     set(CPACK_DMG_FORMAT "UDBZ")
 endif (APPLE)
@@ -72,7 +79,7 @@ endif (APPLE)
 if (WIN32)
     set(CPACK_GENERATOR "NSIS")
     set(CPACK_PACKAGE_INSTALL_DIRECTORY "AtmoSwing")
-    set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_ARCH}")
+    set(CPACK_PACKAGE_FILE_NAME "${CPACK_FILE_NAME}")
     set(CPACK_PACKAGE_EXECUTABLES "atmoswing-viewer;AtmoSwing viewer;atmoswing-forecaster;AtmoSwing forecaster;atmoswing-optimizer;AtmoSwing optimizer")
     set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}")
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/../cpack/license.txt")
@@ -108,7 +115,7 @@ if (UNIX AND NOT APPLE)
         install(FILES cpack/atmoswing-optimizer.desktop DESTINATION share/applications)
     endif (BUILD_OPTIMIZER)
     set(CPACK_GENERATOR "DEB")
-    set(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
+    set(CPACK_PACKAGE_NAME "${CPACK_FILE_NAME}")
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pascal Horton <pascal.horton@terranum.ch>")
     set(CPACK_PACKAGE_VENDOR "Terranum")
