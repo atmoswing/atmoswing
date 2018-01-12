@@ -294,8 +294,8 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         return false;
 
     // Resulting object
-    asResultsForecast *resultsPrevious = new asResultsForecast();
-    asResultsForecast *results = new asResultsForecast();
+    auto *resultsPrevious = new asResultsForecast();
+    auto *results = new asResultsForecast();
     results->SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
@@ -643,11 +643,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     // Target time array
     vi leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
-    for (unsigned int i = 0; i < leadTime.size(); i++) {
-        if (leadTime[i] > lastLeadTime)
+    for (int i : leadTime) {
+        if (i > lastLeadTime)
             break;
 
-        double tmpDate = floor(m_forecastDate) + leadTime[i];
+        double tmpDate = floor(m_forecastDate) + i;
         tmpTimeArray.push_back(tmpDate);
     }
     wxASSERT(!tmpTimeArray.empty());

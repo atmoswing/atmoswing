@@ -30,7 +30,7 @@
 
 asFileGrib2::asFileGrib2(const wxString &fileName, const ListFileMode &fileMode)
         : asFile(fileName, fileMode),
-          m_filtPtr(NULL),
+          m_filtPtr(nullptr),
           m_index(asNOT_FOUND)
 {
     switch (fileMode) {
@@ -67,8 +67,9 @@ bool asFileGrib2::Open()
 
 bool asFileGrib2::Close()
 {
-    if (m_filtPtr != NULL) {
-        m_filtPtr = NULL;
+    if (m_filtPtr != nullptr) {
+        fclose(m_filtPtr);
+        m_filtPtr = nullptr;
     }
     return true;
 }
@@ -81,7 +82,7 @@ bool asFileGrib2::OpenDataset()
     // Open file
     m_filtPtr = fopen(filePath.mb_str(), "r");
 
-    if (m_filtPtr == NULL) // Failed
+    if (m_filtPtr == nullptr) // Failed
     {
         wxLogError(_("The opening of the grib file failed."));
         wxFAIL;
@@ -115,7 +116,7 @@ bool asFileGrib2::ParseStructure()
         }
 
         // Read block of data from stream
-        unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
+        auto *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
         size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
         if (nbBytesRead == 0) {
             free(cgrib);
@@ -144,7 +145,7 @@ bool asFileGrib2::ParseStructure()
                                                 (int) listSec1[8], (int) listSec1[9]));
 
             // Get all the metadata for a given data field
-            gribfield *gfld = NULL;
+            gribfield *gfld = nullptr;
             int unpack = 0;
             g2int expand = 0;
             ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
@@ -190,8 +191,8 @@ bool asFileGrib2::ParseStructure()
     }
 
     // Check unique time value
-    for (int i = 0; i < m_times.size(); ++i) {
-        if (m_times[i] != m_times[0]) {
+    for (double time : m_times) {
+        if (time != m_times[0]) {
             wxLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
             return false;
         }
@@ -373,7 +374,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     }
 
     // Read block of data from stream
-    unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
+    auto *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
     size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
     if (nbBytesRead == 0) {
         free(cgrib);
