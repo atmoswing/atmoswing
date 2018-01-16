@@ -19,6 +19,6 @@ foreach {
 popd
 Write-Host "`nVisual Studio 2017 Command Prompt variables set." -ForegroundColor Yellow
 
-. .\libs-server-install.ps1
+Invoke-Expression -Command $PSScriptRoot\libs-server-install.ps1
 
 Get-ChildItem "$LIB_DIR/include"

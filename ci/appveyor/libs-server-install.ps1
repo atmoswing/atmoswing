@@ -32,7 +32,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
 $env:WXWIN = "$LIB_DIR"
 
 
-. .\libs-common-install.ps1
+Invoke-Expression -Command $PSScriptRoot\libs-common-install.ps1
 
 
 Get-ChildItem "$LIB_DIR/include"
