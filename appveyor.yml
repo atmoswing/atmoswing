@@ -20,10 +20,6 @@ cache:
   - C:\projects\libs
 
 install:
-  - ps: Write-Host "$env:version"
-  - ps: Write-Host $env:version
-  - ps: Write-Host %version%
-  - ps: Write-Host "ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1"
   - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1"
   
 build_script:
