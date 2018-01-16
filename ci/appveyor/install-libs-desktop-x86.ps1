@@ -1,4 +1,4 @@
-Invoke-Expression -Command $PSScriptRoot\libs-common-definitions.ps1
+. $PSScriptRoot\libs-common-definitions.ps1
 
 # Options
 $VS_VER="Visual Studio 15 2017"
@@ -19,6 +19,6 @@ foreach {
 popd
 Write-Host "`nVisual Studio 2017 Command Prompt variables set." -ForegroundColor Yellow
 
-Invoke-Expression -Command $PSScriptRoot\libs-desktop-install.ps1
+. $PSScriptRoot\libs-desktop-install.ps1
 
 Get-ChildItem "$LIB_DIR/include"

@@ -32,7 +32,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
 $env:WXWIN = "$LIB_DIR"
 
 
-Invoke-Expression -Command $PSScriptRoot\libs-common-install.ps1
+. $PSScriptRoot\libs-common-install.ps1
 
 
 # Install Gdal
