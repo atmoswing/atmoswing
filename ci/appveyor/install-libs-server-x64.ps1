@@ -1,4 +1,4 @@
-Invoke-Expression .\$PSScriptRoot\libs-common-definitions.ps1
+Invoke-Expression -Command $PSScriptRoot\libs-common-definitions.ps1
 
 # Options
 $VS_VER="Visual Studio 15 2017 Win64"
