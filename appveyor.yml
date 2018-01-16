@@ -24,10 +24,10 @@ install:
   - ps: Write-Host $env:version
   - ps: Write-Host %version%
   - ps: Write-Host "ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1"
-  - ps: ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1
+  - ps: "ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1"
   
 build_script:
-  - ps: ci/appveyor/build-$env:version-$env:PLATFORM.ps1
+  - ps: "ci/appveyor/build-$env:version-$env:PLATFORM.ps1"
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
