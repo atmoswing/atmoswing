@@ -120,7 +120,7 @@ bool asPredictorOperGfsForecast::Init()
     }
 
     // Check data ID
-    if (m_commandDownload.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileVariableName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
