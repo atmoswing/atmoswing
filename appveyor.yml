@@ -20,10 +20,10 @@ cache:
   - C:\projects\libs
 
 install:
-  - ps: ci/appveyor/install-libs-%version%-%PLATFORM%.ps1
+  - ps: 'ci/appveyor/install-libs-%version%-%PLATFORM%.ps1'
   
 build_script:
-  - ps: ci/appveyor/build-%version%-%PLATFORM%.ps1
+  - ps: 'ci/appveyor/build-%version%-%PLATFORM%.ps1'
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
