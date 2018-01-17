@@ -105,7 +105,7 @@ if (USE_VLD)
 endif (USE_VLD)
 if (USE_CUDA)
     add_dependencies(atmoswing-optimizer ascuda)
-    target_link_libraries(ascuda ${CUDA_CUDA_LIBRARY})
+    target_link_libraries(ascuda ${CUDA_LIBRARIES})
     target_link_libraries(atmoswing-optimizer ascuda)
 endif (USE_CUDA)
 
