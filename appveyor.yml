@@ -4,14 +4,13 @@ image: Visual Studio 2017
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
-  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: "-t7z -m0=lzma -mx=9"
   WXWIN: C:\projects\libs\wxwidgets
   CFLAGS: /MP
   CXXFLAGS: /MP
 
   matrix:
-    - version: server
-    - version: desktop
+    - apptype: server
+    - apptype: desktop
 
 platform:
   - x86
@@ -21,11 +20,11 @@ cache:
   - C:\projects\libs -> ci/appveyor/cache-version.txt
 
 install:
-  - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:version-$env:PLATFORM.ps1"
+  - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:apptype-$env:PLATFORM.ps1"
   
 build_script:
   - cd C:\projects\atmoswing
-  - ps: Invoke-Expression -Command "ci/appveyor/build-$env:version-$env:PLATFORM.ps1"
+  #- ps: Invoke-Expression -Command "ci/appveyor/build-$env:apptype-$env:PLATFORM.ps1"
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
@@ -41,6 +40,10 @@ after_test:
   - copy bin\*win64.exe .\
   - copy bin\*win64.zip .\
   #- for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
+
+on_failure:
+  - appveyor PushArtifact CMakeFiles/CMakeOutput.log
+  - appveyor PushArtifact CMakeFiles/CMakeError.log
 
 artifacts:
   - path: '*win64.exe'
