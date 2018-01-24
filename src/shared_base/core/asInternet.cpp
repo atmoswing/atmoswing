@@ -116,8 +116,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #endif
 
         // Check the files
-        for (unsigned int iFile = 0; iFile < fileNames.size(); iFile++) {
-            wxString fileName = fileNames[iFile];
+        for (auto fileName : fileNames) {
             wxString filePath = destinationDir + DS + fileName;
             if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
@@ -184,8 +183,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                                             NULL};
 
                     // Define the URL
-                    wxCharBuffer buffer = url.ToUTF8();
-                    curl_easy_setopt(curl, CURLOPT_URL, buffer.data());
+                    curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));
                     // Define our callback to get called when there's data to be written
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
                     // Set a pointer to our struct to pass to the callback
@@ -194,16 +192,14 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     // If a proxy is used
                     if (usesProxy) {
                         if (!proxyAddress.IsEmpty()) {
-                            wxCharBuffer proxyAddressBuffer = proxyAddress.ToUTF8();
-                            curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
+                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char *) proxyAddress.mb_str(wxConvUTF8));
                         }
                         if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
                         if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
-                            wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
-                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
+                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *) proxyLogin.mb_str(wxConvUTF8));
                         }
                     }
 

@@ -97,8 +97,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                                                     NULL};
 
                 // Define the URL
-                wxCharBuffer buffer = url.ToUTF8();
-                curl_easy_setopt(curl, CURLOPT_URL, buffer.data());
+                curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));
                 // Define our callback to get called when there's data to be written
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, asInternet::WriteFile);
                 // Set a pointer to our struct to pass to the callback
@@ -107,16 +106,14 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 // If a proxy is used
                 if (m_usesProxy) {
                     if (!m_proxyAddress.IsEmpty()) {
-                        wxCharBuffer proxyAddressBuffer = m_proxyAddress.ToUTF8();
-                        curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
+                        curl_easy_setopt(curl, CURLOPT_PROXY, (const char *) m_proxyAddress.mb_str(wxConvUTF8));
                     }
                     if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
                     if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
-                        wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
-                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
+                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *) proxyLogin.mb_str(wxConvUTF8));
                     }
                 }
 
