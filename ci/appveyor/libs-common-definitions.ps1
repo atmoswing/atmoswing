@@ -1,9 +1,14 @@
 # Options
-$TMP_DIR="C:\projects\tmp"
-$LIB_DIR="C:\projects\libs"
-$CMAKE_DIR="C:\projects\cmake"
 $MSC_VER=1911
-$ON_APPVEYOR=$true
+if ($APPVEYOR) {
+  $TMP_DIR="C:\projects\tmp"
+  $LIB_DIR="C:\projects\libs"
+  $CMAKE_DIR="C:\projects\cmake"
+} else {
+  $TMP_DIR="C:\Users\$env:UserName\Downloads\tmp"
+  $LIB_DIR="C:\Users\$env:UserName\AtmoSwing-libs"
+  $CMAKE_DIR="C:\Program Files\CMake\bin"
+}
 
 # Force rebuilding some libraries
 $REBUILD_WX=$false
@@ -26,7 +31,7 @@ $JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.14.zip"
 $CURL_URL="https://github.com/curl/curl/archive/curl-7_54_1.zip"
 $PROJ_URL="https://github.com/OSGeo/proj.4/archive/4.9.3.zip"
 $HDF5_URL="https://github.com/atmoswing/large-files/raw/master/libraries/CMake-hdf5-1.10.1.zip"
-$NETCDF_URL="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.5.0.zip"
+$NETCDF_URL="https://github.com/atmoswing/large-files/raw/master/libraries/netcdf-4.5.0.zip"
 $GDAL_URL="http://download.osgeo.org/gdal/2.2.3/gdal223.zip"
 
 # Define some functions

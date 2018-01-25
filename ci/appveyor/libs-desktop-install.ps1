@@ -1,19 +1,21 @@
 # Install a recent CMake
-Write-Host "`nInstalling CMake" -ForegroundColor Yellow
-cd $TMP_DIR
-if ($ON_APPVEYOR) {
-  appveyor DownloadFile $CMAKE_URL -FileName cmake.zip > $null
-} else {
-  Invoke-WebRequest -Uri $CMAKE_URL -OutFile cmake.zip
+if ($APPVEYOR) {
+  Write-Host "`nInstalling CMake" -ForegroundColor Yellow
+  cd $TMP_DIR
+  if ($APPVEYOR) {
+    appveyor DownloadFile $CMAKE_URL -FileName cmake.zip > $null
+  } else {
+    Invoke-WebRequest -Uri $CMAKE_URL -OutFile cmake.zip
+  }
+  7z x cmake.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\cmake-*" "$CMAKE_DIR"
+  $path = $env:Path
+  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Program Files (x86)\CMake\bin' }) -join ';'
+  $path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Tools\NuGet' }) -join ';'
+  $env:Path = $path
+  $env:Path += ";$CMAKE_DIR\bin"
 }
-7z x cmake.zip -o"$TMP_DIR" > $null
-move "$TMP_DIR\cmake-*" "$CMAKE_DIR"
-$path = $env:Path
-$path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Program Files (x86)\CMake\bin' }) -join ';'
-$path = ($path.Split(';') | Where-Object { $_ -ne 'C:\Tools\NuGet' }) -join ';'
-$env:Path = $path
-$env:Path += ";$CMAKE_DIR\bin"
-cmake --version
+Write-Host "`n$(cmake --version)" -ForegroundColor Yellow
 
 # Install wxWidgets
 if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
@@ -24,7 +26,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   nmake -f makefile.vc BUILD=release MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=$WX_TARGET_CPU > $null
   nmake -f makefile.vc BUILD=debug MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=$WX_TARGET_CPU > $null
   move "$TMP_DIR\wxwidgets\include" "$LIB_DIR\include"
-  copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\setup.h" "$LIB_DIR\wxwidgets\include\wx\setup.h"
+  copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\setup.h" "$LIB_DIR\include\wx\setup.h"
   move "$LIB_DIR\include\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h_old"
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h"
   move "$TMP_DIR\wxwidgets\lib" "$LIB_DIR\lib"
