@@ -96,7 +96,7 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
 
             for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
                 dividend += abs(data[targIndex] - data[archIndex]);
-                divisor += max(abs(data[targIndex]), abs(data[archIndex]));
+                divisor += fmax(abs(data[targIndex]), abs(data[archIndex]));
 
                 targIndex++;
                 archIndex++;
@@ -360,8 +360,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data, 
         int blocksNb = rowsNbPerStream / threadsPerBlock;
         int n_targ = lengths.size();
         int n_cand = lengthsSum;
-        gpuPredictorCriteriaS1grads << < blocksNb, threadsPerBlock, 0, stream[i] >> >
-                                                                       (devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, n_targ, n_cand, offset);
+        gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock, 0, stream[i]>>>(devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, n_targ, n_cand, offset);
     }
 
     // Check for any errors launching the kernel
