@@ -13,18 +13,17 @@ environment:
     - apptype: desktop
 
 platform:
-  - x86
   - x64
 
 cache:
   - C:\projects\libs -> ci/appveyor/cache-version.txt
 
 install:
-  - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:apptype-$env:PLATFORM.ps1"
+  - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:apptype.ps1"
   
 build_script:
   - cd C:\projects\atmoswing
-  - ps: Invoke-Expression -Command "ci/appveyor/build-$env:apptype-$env:PLATFORM.ps1"
+  - ps: Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1"
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
@@ -35,31 +34,20 @@ after_test:
   - cpack -C release -G ZIP
   - cpack -C release -G NSIS
   - cd C:\projects\atmoswing
-  - copy bin\*win32.exe .\
-  - copy bin\*win32.zip .\
   - copy bin\*win64.exe .\
   - copy bin\*win64.zip .\
   #- for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
 
 on_failure:
   - appveyor PushArtifact CMakeFiles/CMakeOutput.log
-  - appveyor PushArtifact CMakeFiles/CMakeError.log
 
 artifacts:
   - path: '*win64.exe'
     name: AtmoSwingInstaller64
     type: file
 
-  - path: '*win32.exe'
-    name: AtmoSwingInstaller32
-    type: file
-
   - path: '*win64.zip'
     name: AtmoSwingZip64
-    type: zip
-
-  - path: '*win32.zip'
-    name: AtmoSwingZip32
     type: zip
 
   #- path: '*win64.exe.pdb'
