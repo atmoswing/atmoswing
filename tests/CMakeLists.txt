@@ -22,21 +22,21 @@ if (BUILD_FORECASTER)
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/asGlobVarsForecaster.cpp")
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.h")
     list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/AtmoswingAppForecaster.cpp")
-else (BUILD_FORECASTER)
+else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsGeneralGridTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsRegularGridTest.cpp")
-endif (BUILD_FORECASTER)
+endif ()
 if (BUILD_OPTIMIZER)
     file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
     file(GLOB_RECURSE src_optim_core_cpp ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.cpp)
     list(APPEND src_tests ${src_optim_core_h})
     list(APPEND src_tests ${src_optim_core_cpp})
-else (BUILD_OPTIMIZER)
+else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asForecastScoreTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asMethodCalibratorTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersOptimizationTest.cpp")
-endif (BUILD_OPTIMIZER)
+endif ()
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
@@ -70,20 +70,8 @@ endif ()
 ExternalProject_Add(googletest
         GIT_REPOSITORY https://github.com/google/googletest
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
-        BUILD_COMMAND
-        cmake
-        --build .
-        --config Release
-        )
-ExternalProject_Add(googletestd
-        GIT_REPOSITORY https://github.com/google/googletest
-        UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=Release -Dgtest_force_shared_crt=ON
-        BUILD_COMMAND
-        cmake
-        --build .
-        --config Debug
+        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -Dgtest_force_shared_crt=ON
+        BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
 
 ##### DECLARE EXECUTABLE
@@ -94,14 +82,14 @@ elseif (UNIX AND NOT APPLE)
     add_executable(atmoswing-tests ${src_tests})
 elseif (APPLE)
     add_executable(atmoswing-tests MACOSX_BUNDLE ${src_tests})
-else (WIN32)
+else ()
     add_executable(atmoswing-tests ${src_tests})
-endif (WIN32)
+endif ()
 
 # Cppcheck
 if (USE_CPPCHECK)
     add_cppcheck(atmoswing-tests STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
-endif (USE_CPPCHECK)
+endif ()
 
 
 ##### DEFINITIONS
@@ -110,15 +98,15 @@ endif (USE_CPPCHECK)
 if (MINGW OR MSYS OR UNIX AND NOT APPLE)
     if (USE_CODECOV)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -g -O0 -fprofile-arcs -ftest-coverage")
-    endif (USE_CODECOV)
+    endif ()
 endif ()
 
 if(WIN32)
     set_target_properties(atmoswing-tests PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
     set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0; _CONSOLE")
-else(WIN32)
+else()
     set_target_properties(atmoswing-tests PROPERTIES COMPILE_DEFINITIONS "UNIT_TESTING; wxUSE_GUI=0")
-endif(WIN32)
+endif()
 
 
 ##### LINKING
@@ -128,24 +116,24 @@ add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
-if (WIN32)
-    target_link_libraries(atmoswing-tests debug gtestd gtest_maind)
-    target_link_libraries(atmoswing-tests optimized gtest gtest_main)
-else (WIN32)
+if(WIN32)
+    target_link_libraries(atmoswing-tests debug gtestd debug gtest_maind)
+    target_link_libraries(atmoswing-tests optimized gtest optimized gtest_main)
+else()
     target_link_libraries(atmoswing-tests gtest gtest_main)
-endif (WIN32)
+endif()
 if (UNIX)
     target_link_libraries(atmoswing-tests pthread)
-endif (UNIX)
+endif ()
 if (USE_VLD)
     target_link_libraries(atmoswing-tests ${VLD_LIBRARIES})
-endif (USE_VLD)
+endif ()
 if (USE_CUDA)
     add_dependencies(atmoswing-tests ascuda)
     target_link_libraries(ascuda ${CUDA_LIBRARIES})
     target_link_libraries(atmoswing-tests ascuda)
     add_definitions(-DUSE_CUDA)
-endif (USE_CUDA)
+endif ()
 
 
 ##### DLLS
@@ -160,7 +148,7 @@ if (WIN32)
             COMMAND copy
             ${ALL_DLL_PATH_ORIGIN}
             ${ALL_DLL_PATH_DESTINATION})
-endif (WIN32)
+endif ()
 
 
 ##### CTEST
