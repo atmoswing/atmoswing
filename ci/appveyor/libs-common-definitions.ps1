@@ -1,6 +1,6 @@
 # Options
 $MSC_VER=1911
-if ($APPVEYOR) {
+if ($env:APPVEYOR) {
   $TMP_DIR="C:\projects\tmp"
   $LIB_DIR="C:\projects\libs"
   $CMAKE_DIR="C:\projects\cmake"
