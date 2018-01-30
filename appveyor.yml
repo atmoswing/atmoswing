@@ -32,8 +32,8 @@ test_script:
 
 after_test:
   - cd C:\projects\atmoswing\bin
-  - C:\projects\cmake\bin\cpack.exe -C release -G ZIP
-  - C:\projects\cmake\bin\cpack.exe -C release -G NSIS
+  - cpack -C release -G ZIP
+  - cpack -C release -G NSIS
   - cd C:\projects\atmoswing
   - copy bin\*win32.exe .\
   - copy bin\*win32.zip .\
