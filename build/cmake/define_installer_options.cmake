@@ -1,22 +1,6 @@
 
-if (WIN32)
-    file(GLOB dlls ${CMAKE_BINARY_DIR}/*.dll)
-    install(PROGRAMS ${dlls} DESTINATION bin)
-
-    # pack the Visual C++ Redistributable for Visual Studio
-    include(InstallRequiredSystemLibraries)
-    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
-endif (WIN32)
-
-install (
-        FILES license.txt notice.txt
-        DESTINATION ${INSTALL_DIR_SHARE}
-)
-
-install (
-        DIRECTORY data
-        DESTINATION ${INSTALL_DIR_SHARE}
-)
+install (FILES license.txt notice.txt DESTINATION ${INSTALL_DIR_SHARE})
+install (DIRECTORY data DESTINATION ${INSTALL_DIR_SHARE})
 
 # COMMON PROPERTIES
 

@@ -134,16 +134,6 @@ ExternalProject_Add(eigen
         )
 
 
-##### COMPONENTS
-
-if (WIN32)
-    set(DLL_DIR ${CMAKE_PREFIX_PATH})
-    foreach(PATH ${CMAKE_PREFIX_PATH})
-        list(APPEND DLL_DIRS ${PATH}/bin)
-    endforeach()
-endif ()
-
-
 ##### DISPLAY SOME INFORMATIONS
 
 include(define_shared_compilation_flags)
