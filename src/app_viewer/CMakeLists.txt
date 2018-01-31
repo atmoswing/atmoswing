@@ -150,10 +150,11 @@ if (WIN32)
     if (NOT GDAL_DLL_NAME)
         message(SEND_ERROR "GDAL DLL not found.")
     endif ()
+    message(STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
     add_custom_command(TARGET atmoswing-viewer POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${GDAL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    message(STATUS "GDAL DLL: ${GDAL_DLL_NAME}")
+    install(FILES ${GDAL_DLL_NAME} DESTINATION bin)
 
 endif (WIN32)
