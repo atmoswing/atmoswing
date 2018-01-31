@@ -152,7 +152,7 @@ if (WIN32)
 
     # Png
     find_file(PNG_DLL_NAME
-            libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
+            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)

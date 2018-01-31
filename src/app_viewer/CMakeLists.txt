@@ -143,7 +143,7 @@ install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 if (WIN32)
 
     find_file(GDAL_DLL_NAME
-            gdal200.dll gdal201.dll gdal202.dll gdal203.dll
+            NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)

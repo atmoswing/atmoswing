@@ -36,5 +36,3 @@ $env:WXWIN = "$LIB_DIR"
 
 . $PSScriptRoot\libs-common-install.ps1
 
-
-Get-ChildItem "$LIB_DIR/include"
