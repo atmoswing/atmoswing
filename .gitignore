@@ -10,9 +10,9 @@ syntax: glob
 */ZERO_CHECK.*
 *.dir/*
 */CMakeCache.txt
-**cmake_install.cmake
+**/cmake_install.cmake
 */wxhgversion_param.h
-**Makefile
+**/Makefile
 *~
 *.vcxproj*
 *.opensdf
@@ -64,5 +64,8 @@ cmake-build-debug/
 cmake-build-release/
 cmake-build-relwithdebinfo/
 external/
-vroomgis/
+*/vroomgis/
+**/eigen-prefix/
+**/googletest-prefix/
 *.resolve
+
