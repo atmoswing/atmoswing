@@ -28,9 +28,8 @@
 #ifndef ASPROCESSORCUDA_H
 #define ASPROCESSORCUDA_H
 
-#define USE_PINNED_MEM 1
-
 #define STRUCT_MAX_SIZE 12
+#define USE_STREAMS 1
 
 #include <vector>
 
@@ -50,10 +49,15 @@ struct cudaPredictorsDataPropStruct
 class asProcessorCuda
 {
 public:
-    static bool ProcessCriteria(std::vector <std::vector<float *>> &data, std::vector<int> &indicesTarg,
+    static bool ProcessCriteria(std::vector <std::vector<float *>> &data,
+                                std::vector<int> &indicesTarg,
                                 std::vector <std::vector<int>> &indicesArch,
-                                std::vector <std::vector<float>> &resultingCriteria, std::vector<int> &lengths,
-                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights);
+                                std::vector <std::vector<float>> &resultingCriteria,
+                                std::vector<int> &nbArchCandidates,
+                                std::vector<int> &colsNb, std::vector<int> &rowsNb,
+                                std::vector<float> &weights);
+
+    static bool SelectBestDevice();
 
 protected:
 

@@ -88,7 +88,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     // Some other variables
     int iTimeTarg, iTimeArch;
     int predictorsNb = m_params->GetPredictorsNb(m_step);
-    unsigned int membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
+    auto membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
     int analogsNb = m_params->GetAnalogsNumber(m_step);
     bool isAsc = (m_criteria[0]->GetOrder() == Asc);
 
@@ -101,7 +101,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     a1f scoreArrayOneDay(analogsNb);
     a1f dateArrayOneDay(analogsNb);
 
-    // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
+    // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
+    // the predictors we are interested in, but which didn't take place at the same time.
     asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),
                                           m_pTimeArrayArchiveSelection->GetEnd(),
                                           m_params->GetTimeArrayAnalogsTimeStepHours(),

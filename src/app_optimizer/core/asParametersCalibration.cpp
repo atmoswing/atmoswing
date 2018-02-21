@@ -862,7 +862,7 @@ void asParametersCalibration::InitValues()
     wxASSERT(!m_predictandStationIdsVect.empty());
     wxASSERT(!m_timeArrayAnalogsIntervalDaysVect.empty());
     wxASSERT(!m_scoreVect.name.empty());
-    wxASSERT(m_scoreVect.timeArrayMode.empty());
+    wxASSERT(!m_scoreVect.timeArrayMode.empty());
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];

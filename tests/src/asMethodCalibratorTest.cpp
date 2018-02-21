@@ -214,9 +214,68 @@ TEST(MethodCalibrator, Ref1Cuda)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int) asCUDA);
 
-    Ref1("parameters_calibration_R1_full.xml", false);
+    wxString paramsFile = "parameters_calibration_R1_shorter.xml";
+
+    // Get parameters
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/");
+    paramsFilePath.Append(paramsFile);
+    asParametersCalibration params;
+    ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibratorCPU, calibratorGPU;
+    asResultsDates anaDatesCPU, anaDatesGPU;
+
+    try {
+        int step = 0;
+        bool containsNaNs = false;
+        wxString predictorFilePath = wxFileName::GetCwd();
+        predictorFilePath.Append("/files/data-ncep-r1/others/");
+        calibratorCPU.SetPredictorDataDir(predictorFilePath);
+        calibratorGPU.SetPredictorDataDir(predictorFilePath);
+
+        // CPU
+        wxStopWatch sw1;
+        pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+        ASSERT_TRUE(calibratorCPU.GetAnalogsDates(anaDatesCPU, &params, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        wxPrintf(_("CPU (multithreaded) time: %.3f sec"), float(sw1.Time()) / 1000.0f);
+        wxLogError(_("CPU (multithreaded) time: %.3f sec"), float(sw1.Time()) / 1000.0f);
+
+        // GPU
+        wxStopWatch sw2;
+        pConfig->Write("/Processing/Method", (int) asCUDA);
+        ASSERT_TRUE(calibratorGPU.GetAnalogsDates(anaDatesGPU, &params, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        wxPrintf(_("GPU time: %.3f sec"), float(sw2.Time()) / 1000.0f);
+        wxLogError(_("GPU time: %.3f sec"), float(sw2.Time()) / 1000.0f);
+
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
+        return;
+    }
+
+    // Extract data
+    a1f resultsTargetDatesCPU(anaDatesCPU.GetTargetDates());
+    a2f resultsCriteriaCPU(anaDatesCPU.GetAnalogsCriteria());
+    a2f resultsAnalogDatesCPU(anaDatesCPU.GetAnalogsDates());
+    a1f resultsTargetDatesGPU(anaDatesGPU.GetTargetDates());
+    a2f resultsCriteriaGPU(anaDatesGPU.GetAnalogsCriteria());
+    a2f resultsAnalogDatesGPU(anaDatesGPU.GetAnalogsDates());
+
+    // Check results
+    for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
+        EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
+        for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
+            EXPECT_FLOAT_EQ(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j));
+            if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.00001) {
+                EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
+            }
+        }
+    }
+
 }
 #endif
 

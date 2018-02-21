@@ -151,70 +151,20 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
     switch (method) {
 
-        case (asMULTITHREADS): {
-
-            // Get threads number
-            int threadsNb = ThreadsManager().GetAvailableThreadsNb();
-
-            // Adapt to the number of targets
-            if (2 * threadsNb > timeTargetSelectionSize) {
-                threadsNb = 1;
-            }
-
-            // Create and give data
-            int end = -1;
-            int threadType = -1;
-            std::vector<bool *> vContainsNaNs;
-            for (int iThread = 0; iThread < threadsNb; iThread++) {
-                bool *flag = new bool;
-                *flag = false;
-                vContainsNaNs.push_back(flag);
-                int start = end + 1;
-                end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
-                wxASSERT_MSG(end >= start,
-                             wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
-                                              timeTargetSelectionSize));
-
-                asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive, predictorsTarget,
-                                                                              &timeArrayArchiveData,
-                                                                              &timeArrayArchiveSelection,
-                                                                              &timeArrayTargetData,
-                                                                              &timeArrayTargetSelection, criteria,
-                                                                              params, step, vTargData, vArchData,
-                                                                              vRowsNb, vColsNb, start, end,
-                                                                              &finalAnalogsCriteria, &finalAnalogsDates,
-                                                                              flag, allowDuplicateDates);
-                threadType = thread->GetType();
-
-                ThreadsManager().AddThread(thread);
-            }
-
-            // Wait until all done
-            ThreadsManager().Wait(threadType);
-
-            // Flush logs
-            if (!parallelEvaluations)
-                wxLog::FlushActive();
-
-            for (unsigned int i = 0; i < vContainsNaNs.size(); i++) {
-                if (*vContainsNaNs[i]) {
-                    containsNaNs = true;
-                }
-                wxDELETE(vContainsNaNs[i]);
-            }
-            if (containsNaNs) {
-                wxLogWarning(_("NaNs were found in the criteria values."));
-            }
-
-            break;
-        }
-
 #ifdef USE_CUDA
         case (asCUDA): {
             // Check criteria compatibility
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 if (criteria[iPtor]->GetType() != criteria[0]->GetType()) {
                     wxLogError(_("For CUDA implementation, every predictors in the same analogy level must share the same criterion."));
+                    return false;
+                }
+            }
+
+            // Check no members
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                if (predictorsArchive[iPtor]->GetMembersNb() > 1) {
+                    wxLogError(_("No support for ensemble datasets in CUDA yet."));
                     return false;
                 }
             }
@@ -249,12 +199,13 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Copy predictor data
             for (int iTime = 0; iTime < timeArchiveDataSize; iTime++) {
                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                    vpData[iPtor] = (float *) predictorsArchive[iPtor]->GetData()[iTime].data();
+                    vpData[iPtor] = predictorsArchive[iPtor]->GetData()[iTime][0].data();
                 }
                 vvpData[iTime] = vpData;
             }
 
-            // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
+            // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it
+            // picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
                                                   timeArrayArchiveSelection.GetEnd(),
                                                   params->GetTimeArrayAnalogsTimeStepHours(),
@@ -273,7 +224,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             a1f dateArrayOneDay(analogsNb);
 
             // Containers for the indices
-            vi lengths(timeTargetSelectionSize);
+            vi nbArchCandidates(timeTargetSelectionSize);
             vi indicesTarg(timeTargetSelectionSize);
             std::vector<vi> indicesArch(timeTargetSelectionSize);
 
@@ -284,8 +235,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
-                colsNb[iPtor] = vRowsNb[iPtor];
-                rowsNb[iPtor] = vColsNb[iPtor];
+                colsNb[iPtor] = vColsNb[iPtor];
+                rowsNb[iPtor] = vRowsNb[iPtor];
             }
 
             // Some other variables
@@ -337,8 +288,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
                         // Check if the next data is the following. If not, search for it in the array.
                         if (timeArchiveDataSize > iTimeArchStart + 1 &&
-                            std::abs(dateArrayArchiveSelection[iDateArch] - timeArchiveData[iTimeArchStart + 1]) <
-                            0.01) {
+                                std::abs(dateArrayArchiveSelection[iDateArch] - timeArchiveData[iTimeArchStart + 1]) < 0.01) {
                             iTimeArchRelative = 1;
                         } else {
                             iTimeArchRelative = asTools::SortedArraySearch(&timeArchiveData[iTimeArchStart],
@@ -362,7 +312,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     }
 
                     // Keep the indices
-                    lengths[iDateTarg] = counter;
+                    nbArchCandidates[iDateTarg] = counter;
                     indicesArch[iDateTarg] = currentIndices;
                     resultingDates[iDateTarg] = currentDates;
                 }
@@ -370,8 +320,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             /* Then we process on GPU */
 
-            if (asProcessorCuda::ProcessCriteria(vvpData, indicesTarg, indicesArch, resultingCriteria, lengths, colsNb,
-                                                 rowsNb, weights)) {
+            if (asProcessorCuda::ProcessCriteria(vvpData, indicesTarg, indicesArch, resultingCriteria, nbArchCandidates,
+                                                 colsNb, rowsNb, weights)) {
                 /* If succeeded, we work on the outputs */
 
                 for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
@@ -448,9 +398,67 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 break;
             }
 
-            /* Else we continue on asSTANDARD */
+            /* Else we continue on asMULTITHREADS */
         }
 #endif
+
+        case (asMULTITHREADS): {
+
+            // Get threads number
+            int threadsNb = ThreadsManager().GetAvailableThreadsNb();
+
+            // Adapt to the number of targets
+            if (2 * threadsNb > timeTargetSelectionSize) {
+                threadsNb = 1;
+            }
+
+            // Create and give data
+            int end = -1;
+            int threadType = -1;
+            std::vector<bool *> vContainsNaNs;
+            for (int iThread = 0; iThread < threadsNb; iThread++) {
+                bool *flag = new bool;
+                *flag = false;
+                vContainsNaNs.push_back(flag);
+                int start = end + 1;
+                end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
+                wxASSERT_MSG(end >= start,
+                             wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
+                                              timeTargetSelectionSize));
+
+                asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive, predictorsTarget,
+                                                                              &timeArrayArchiveData,
+                                                                              &timeArrayArchiveSelection,
+                                                                              &timeArrayTargetData,
+                                                                              &timeArrayTargetSelection, criteria,
+                                                                              params, step, vTargData, vArchData,
+                                                                              vRowsNb, vColsNb, start, end,
+                                                                              &finalAnalogsCriteria, &finalAnalogsDates,
+                                                                              flag, allowDuplicateDates);
+                threadType = thread->GetType();
+
+                ThreadsManager().AddThread(thread);
+            }
+
+            // Wait until all done
+            ThreadsManager().Wait(threadType);
+
+            // Flush logs
+            if (!parallelEvaluations)
+                wxLog::FlushActive();
+
+            for (auto &vContainsNaN : vContainsNaNs) {
+                if (*vContainsNaN) {
+                    containsNaNs = true;
+                }
+                wxDELETE(vContainsNaN);
+            }
+            if (containsNaNs) {
+                wxLogWarning(_("NaNs were found in the criteria values."));
+            }
+
+            break;
+        }
 
         case (asSTANDARD): {
             // Extract some data
@@ -775,7 +783,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
-    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         vRowsNb[iPtor] = (int) predictorsArchive[iPtor]->GetData()[0][0].rows();
         vColsNb[iPtor] = (int) predictorsArchive[iPtor]->GetData()[0][0].cols();
 
