@@ -135,7 +135,7 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
             while (i_cand < indexStart[i_targ]) {
                 i_targ--;
                 if (i_targ < 0) {
-                    //printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
+                    printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
                     criteria[i_cand] = 9999;
                     return;
                 }
@@ -146,7 +146,7 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
             while (i_cand >= indexStart[i_targ + 1]) {
                 i_targ++;
                 if (i_targ >= n_targ) {
-                    //printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
+                    printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
                     criteria[i_cand] = 9999;
                     return;
                 }

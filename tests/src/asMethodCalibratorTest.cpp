@@ -241,16 +241,14 @@ TEST(MethodCalibrator, Ref1Cuda)
         pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
         ASSERT_TRUE(calibratorCPU.GetAnalogsDates(anaDatesCPU, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        wxPrintf(_("CPU (multithreaded) time: %.3f sec"), float(sw1.Time()) / 1000.0f);
-        wxLogError(_("CPU (multithreaded) time: %.3f sec"), float(sw1.Time()) / 1000.0f);
+        printf(_("--- CPU (multithreaded) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
 
         // GPU
         wxStopWatch sw2;
         pConfig->Write("/Processing/Method", (int) asCUDA);
         ASSERT_TRUE(calibratorGPU.GetAnalogsDates(anaDatesGPU, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        wxPrintf(_("GPU time: %.3f sec"), float(sw2.Time()) / 1000.0f);
-        wxLogError(_("GPU time: %.3f sec"), float(sw2.Time()) / 1000.0f);
+        printf(_("--- GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
 
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
