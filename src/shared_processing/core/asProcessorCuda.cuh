@@ -29,7 +29,7 @@
 #define ASPROCESSORCUDA_H
 
 #define STRUCT_MAX_SIZE 12
-#define USE_STREAMS 1
+#define USE_STREAMS 0
 
 #include <vector>
 

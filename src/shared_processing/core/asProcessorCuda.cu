@@ -113,7 +113,10 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 
 #else
 
-    for (int i_cand = 0; i_cand < n_cand; ++i_cand) {
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i_cand = index; i_cand < n_cand; i_cand += stride) {
 
         // Find the target index
         float meanNbCand = float(n_cand) / float(n_targ);
@@ -223,11 +226,17 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     }
     indexStart[nbArchCandidates.size()] = nbArchCandidatesSum;
 
+    // Blocks of threads
+    int n_targ = nbArchCandidates.size();
+    int n_cand = nbArchCandidatesSum;
+    // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
+    const int threadsPerBlock = 1024; // no need to change
+    int blocksNb = (n_cand + threadsPerBlock - 1) / threadsPerBlock;
+
+
 #if USE_STREAMS
     // Create streams
     const int nStreams = 4; // no need to change
-    //The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
-    const int threadsPerBlock = 1024; // no need to change
     // rowsNbPerStream must be dividable by nStreams and threadsPerBlock
     int rowsNbPerStream = ceil(float(nbArchCandidatesSum) / float(nStreams * threadsPerBlock)) * threadsPerBlock;
     // Streams
@@ -283,7 +292,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
             for (int iPt = 0; iPt < struc.ptsNb[iPtor]; iPt++) {
                 arrData[iDay * struc.totPtsNb + struc.indexStart[iPtor] + iPt] = data[iDay][iPtor][iPt];
             }
-            //std::copy(vvpArchData[iDay][iPtor], vvpArchData[iDay][iPtor] + struc.indexEnd[iPtor], arrArchData + iDay*struc.totPtsNb + struc.indexStart[iPtor]); -> fails
         }
     }
 
@@ -305,13 +313,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
 #if USE_STREAMS
     for (int i = 0; i < nStreams; i++) {
         int offset = i * rowsNbPerStream;
-        int blocksNb = rowsNbPerStream / threadsPerBlock;
-        int n_targ = nbArchCandidates.size();
-        int n_cand = nbArchCandidatesSum;
+        blocksNb = rowsNbPerStream / threadsPerBlock;
         gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, offset);
     }
 #else
-    gpuPredictorCriteriaS1grads<<<1, 1>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, nbArchCandidates.size(), nbArchCandidatesSum, 0);
+    gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, 0);
 #endif
 
     // Check for any errors launching the kernel
