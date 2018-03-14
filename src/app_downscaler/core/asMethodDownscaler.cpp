@@ -29,7 +29,7 @@
 #include <asIncludes.h>
 #include <asParametersDownscaling.h>
 #include <asResultsDates.h>
-#include <asPredictorScenario.h>
+#include "asPredictorProj.h"
 #include <asResultsDates.h>
 #include <asResultsValues.h>
 #include <asCriteria.h>
