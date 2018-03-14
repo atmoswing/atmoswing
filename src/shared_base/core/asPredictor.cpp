@@ -550,35 +550,66 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaComposi
 
 bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile)
 {
-    // Get full axes from the netcdf file
-    m_fileStructure.axisLon = a1f(ncFile.GetVarLength(m_fileStructure.dimLonName));
-    m_fileStructure.axisLat = a1f(ncFile.GetVarLength(m_fileStructure.dimLatName));
+    if (!ExtractSpatialAxes(ncFile)) return false;
+    if (!ExtractLevelAxis(ncFile)) return false;
+    if (!ExtractTimeAxis(ncFile)) return false;
 
-    wxASSERT(ncFile.GetVarType(m_fileStructure.dimLonName) == ncFile.GetVarType(m_fileStructure.dimLatName));
-    nc_type ncTypeAxes = ncFile.GetVarType(m_fileStructure.dimLonName);
-    switch (ncTypeAxes) {
-        case NC_FLOAT:
-            ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
-            ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
+    return CheckFileStructure();
+}
+
+bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
+{
+    // Time dimension takes ages to load !! Avoid and get the first value.
+    m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
+
+    double timeFirstVal, timeLastVal;
+    nc_type ncTypeTime = ncFile.GetVarType(m_fileStructure.dimTimeName);
+    switch (ncTypeTime) {
+        case NC_DOUBLE:
+            timeFirstVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0);
+            timeLastVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
             break;
-        case NC_DOUBLE: {
-            a1d axisLonDouble(ncFile.GetVarLength(m_fileStructure.dimLonName));
-            a1d axisLatDouble(ncFile.GetVarLength(m_fileStructure.dimLatName));
-            ncFile.GetVar(m_fileStructure.dimLonName, &axisLonDouble[0]);
-            ncFile.GetVar(m_fileStructure.dimLatName, &axisLatDouble[0]);
-            for (int i = 0; i < axisLonDouble.size(); ++i) {
-                m_fileStructure.axisLon[i] = (float) axisLonDouble[i];
-            }
-            for (int i = 0; i < axisLatDouble.size(); ++i) {
-                m_fileStructure.axisLat[i] = (float) axisLatDouble[i];
-            }
-        }
+        case NC_FLOAT:
+            timeFirstVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName,
+                                                         m_fileStructure.axisTimeLength - 1);
+            break;
+        case NC_INT:
+            timeFirstVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, 0);
+            timeLastVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
             break;
         default:
-            wxLogError(_("Variable type not supported yet for the level dimension."));
+            wxLogError(_("Variable type not supported yet for the time dimension."));
             return false;
     }
 
+    double refValue = NaNd;
+    if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false) ||
+        m_datasetId.IsSameAs("NCEP_CFSR_subset", false) || m_datasetId.IsSameAs("CMIP5", false)) {
+
+        wxString refValueStr = ncFile.GetAttString("units", "time");
+        int start = refValueStr.Find("since");
+        if (start != wxNOT_FOUND) {
+            refValueStr = refValueStr.Remove(0, (size_t) start + 6);
+            int end = refValueStr.Find(" ");
+            if (end != wxNOT_FOUND) {
+                refValueStr = refValueStr.Remove((size_t) end, refValueStr.Length() - end);
+            }
+            refValue = asTime::GetTimeFromString(refValueStr);
+        } else {
+            wxLogError(_("Time reference could not be extracted."));
+            return false;
+        }
+    }
+
+    m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal, refValue);
+    m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal, refValue);
+
+    return true;
+}
+
+bool asPredictor::ExtractLevelAxis(asFileNetcdf &ncFile)
+{
     if (m_fileStructure.hasLevelDimension) {
         m_fileStructure.axisLevel = a1f(ncFile.GetVarLength(m_fileStructure.dimLevelName));
 
@@ -609,45 +640,40 @@ bool asPredictor::ParseFileStructure(asFileNetcdf &ncFile)
         }
     }
 
-    // Time dimension takes ages to load !! Avoid and get the first value.
-    m_fileStructure.axisTimeLength = ncFile.GetVarLength(m_fileStructure.dimTimeName);
+    return true;
+}
 
-    double timeFirstVal, timeLastVal;
-    nc_type ncTypeTime = ncFile.GetVarType(m_fileStructure.dimTimeName);
-    switch (ncTypeTime) {
-        case NC_DOUBLE:
-            timeFirstVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, 0);
-            timeLastVal = ncFile.GetVarOneDouble(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
-            break;
+bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
+{
+    m_fileStructure.axisLon = a1f(ncFile.GetVarLength(m_fileStructure.dimLonName));
+    m_fileStructure.axisLat = a1f(ncFile.GetVarLength(m_fileStructure.dimLatName));
+
+    wxASSERT(ncFile.GetVarType(m_fileStructure.dimLonName) == ncFile.GetVarType(m_fileStructure.dimLatName));
+    nc_type ncTypeAxes = ncFile.GetVarType(m_fileStructure.dimLonName);
+    switch (ncTypeAxes) {
         case NC_FLOAT:
-            timeFirstVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName, 0);
-            timeLastVal = (double) ncFile.GetVarOneFloat(m_fileStructure.dimTimeName,
-                                                         m_fileStructure.axisTimeLength - 1);
+            ncFile.GetVar(m_fileStructure.dimLonName, &m_fileStructure.axisLon[0]);
+            ncFile.GetVar(m_fileStructure.dimLatName, &m_fileStructure.axisLat[0]);
             break;
-        case NC_INT:
-            timeFirstVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, 0);
-            timeLastVal = (double) ncFile.GetVarOneInt(m_fileStructure.dimTimeName, m_fileStructure.axisTimeLength - 1);
+        case NC_DOUBLE: {
+            a1d axisLonDouble(ncFile.GetVarLength(m_fileStructure.dimLonName));
+            a1d axisLatDouble(ncFile.GetVarLength(m_fileStructure.dimLatName));
+            ncFile.GetVar(m_fileStructure.dimLonName, &axisLonDouble[0]);
+            ncFile.GetVar(m_fileStructure.dimLatName, &axisLatDouble[0]);
+            for (int i = 0; i < axisLonDouble.size(); ++i) {
+                m_fileStructure.axisLon[i] = (float) axisLonDouble[i];
+            }
+            for (int i = 0; i < axisLatDouble.size(); ++i) {
+                m_fileStructure.axisLat[i] = (float) axisLatDouble[i];
+            }
+        }
             break;
         default:
-            wxLogError(_("Variable type not supported yet for the time dimension."));
+            wxLogError(_("Variable type not supported yet for the level dimension."));
             return false;
     }
 
-    double refValue = NaNd;
-    if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
-        wxString refValueStr = ncFile.GetAttString("units", "time");
-        refValueStr = refValueStr.Remove(0, 14);
-        refValue = asTime::GetTimeFromString(refValueStr);
-    } else if (m_datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
-        wxString refValueStr = ncFile.GetAttString("units", "time");
-        refValueStr = refValueStr.Mid(12, 10);
-        refValue = asTime::GetTimeFromString(refValueStr);
-    }
-
-    m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal, refValue);
-    m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal, refValue);
-
-    return CheckFileStructure();
+    return true;
 }
 
 bool asPredictor::ParseFileStructure(asFileGrib2 &gbFile)

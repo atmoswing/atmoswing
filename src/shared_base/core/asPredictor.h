@@ -77,8 +77,8 @@ public:
 
     enum Unit
     {
-        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2,
-        kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
+        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, g_kg, kg_kg, m_s, W_m2,
+        kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
     };
 
     asPredictor(const wxString &dataId);
@@ -467,6 +467,12 @@ protected:
 
 private:
     wxString m_directoryPath;
+
+    bool ExtractSpatialAxes(asFileNetcdf &ncFile);
+
+    bool ExtractLevelAxis(asFileNetcdf &ncFile);
+
+    bool ExtractTimeAxis(asFileNetcdf &ncFile);
 };
 
 #endif // ASPREDICTOR_H
