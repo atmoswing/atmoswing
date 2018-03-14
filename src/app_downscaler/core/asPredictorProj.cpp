@@ -25,30 +25,31 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorScenario.h"
+#include "asPredictorProj.h"
 
-#include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include "asTimeArray.h"
+#include "asGeoAreaCompositeGrid.h"
+#include "asPredictorProjCMIP5.h"
 
 
-asPredictorScenario::asPredictorScenario(const wxString &dataId)
+asPredictorProj::asPredictorProj(const wxString &dataId)
         : asPredictorArch(dataId)
 {
 
 }
 
-asPredictorScenario::~asPredictorScenario()
+asPredictorProj::~asPredictorProj()
 {
 
 }
 
-asPredictorScenario *asPredictorScenario::GetInstance(const wxString &datasetId, const wxString &dataId,
+asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &dataId,
                                                   const wxString &directory)
 {
-    asPredictorScenario *predictor = nullptr;
+    asPredictorProj *predictor = nullptr;
 
     if (datasetId.IsSameAs("CMIP5", false)) {
-        //predictor = new asPredictorScenarioCMIP5(dataId);
+        predictor = new asPredictorProjCMIP5(dataId);
     } else if (datasetId.IsSameAs("CORDEX", false)) {
         //predictor = new asPredictorScenarioCORDEX(dataId);
     } else {
@@ -62,7 +63,7 @@ asPredictorScenario *asPredictorScenario::GetInstance(const wxString &datasetId,
 
     if (!predictor->Init()) {
         wxLogError(_("The predictor did not initialize correctly."));
-        return NULL;
+        return nullptr;
     }
 
     return predictor;

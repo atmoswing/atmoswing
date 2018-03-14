@@ -25,24 +25,23 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORScenario_H
-#define ASPREDICTORScenario_H
+#ifndef ASPREDICTORPROJ_H
+#define ASPREDICTORPROJ_H
 
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
 class asGeoArea;
 
-class asPredictorScenario
-        : public asPredictorArch
-{
+class asPredictorProj
+        : public asPredictorArch {
 public:
-    asPredictorScenario(const wxString &dataId);
+    asPredictorProj(const wxString &dataId);
 
-    virtual ~asPredictorScenario();
+    virtual ~asPredictorProj();
 
-    static asPredictorScenario *GetInstance(const wxString &datasetId, const wxString &dataId,
-                                          const wxString &directory = wxEmptyString);
+    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &dataId,
+                                        const wxString &directory = wxEmptyString);
 
 protected:
 
@@ -51,4 +50,4 @@ private:
 
 };
 
-#endif // ASPREDICTORScenario_H
+#endif // ASPREDICTORPROJ_H
