@@ -34,7 +34,7 @@
 class asResultsDates;
 class asParametersDownscaling;
 class asResultsValues;
-class asPredictorScenario;
+class asPredictorProj;
 class asCriteria;
 
 
@@ -62,9 +62,9 @@ public:
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-    bool IsScenarioPointerCopy(int iStep, int iPtor, int iPre) const
+    bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const
     {
-        return m_preloadedScenarioPointerCopy[iStep][iPtor][iPre];
+        return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
     }
 
     void SetPredictandStationIds(vi val)
@@ -72,34 +72,34 @@ public:
         m_predictandStationIds = val;
     }
 
-    void SetPredictorScenarioDataDir(const wxString &val)
+    void SetPredictorProjectionDataDir(const wxString &val)
     {
-        m_predictorScenarioDataDir = val;
+        m_predictorProjectionDataDir = val;
     }
 
 protected:
-    wxString m_predictorScenarioDataDir;
+    wxString m_predictorProjectionDataDir;
     vi m_predictandStationIds;
     std::vector<asParametersDownscaling> m_parameters;
 
     virtual bool Downscale(asParametersDownscaling &params) = 0;
 
-    bool LoadScenarioulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
-                                 double timeStartData, double timeEndData);
+    bool LoadProjectionData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params, int iStep,
+                            double timeStartData, double timeEndData);
 
-    bool ExtractScenarioulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
-                                                        asParametersDownscaling *params, int iStep, int iPtor,
-                                                        double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
+                                                   asParametersDownscaling *params, int iStep, int iPtor,
+                                                   double timeStartData, double timeEndData);
 
-    bool ExtractScenarioulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
-                                                     asParametersDownscaling *params, int iStep, int iPtor,
-                                                     double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors,
+                                                asParametersDownscaling *params, int iStep, int iPtor,
+                                                double timeStartData, double timeEndData);
 
-    bool Preprocess(std::vector<asPredictorScenario *> predictors, const wxString &method, asPredictor *result);
+    bool Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method, asPredictor *result);
 
     bool SaveDetails(asParametersDownscaling *params);
 
-    void Cleanup(std::vector<asPredictorScenario *> predictors);
+    void Cleanup(std::vector<asPredictorProj *> predictors);
 
     void Cleanup(std::vector<asPredictorArch *> predictors);
 
@@ -109,9 +109,9 @@ protected:
 
 private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorScenario *> > > > > m_preloadedScenario;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
     std::vector<vvb> m_preloadedArchivePointerCopy;
-    std::vector<vvb> m_preloadedScenarioPointerCopy;
+    std::vector<vvb> m_preloadedProjectionPointerCopy;
 
     double GetTimeStartDownscaling(asParametersDownscaling *params) const;
 

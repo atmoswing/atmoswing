@@ -170,11 +170,11 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     }
 
     // Load the scenario data
-    std::vector<asPredictor *> predictorsScenario;
-    if (!LoadScenarioulationData(predictorsScenario, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
+    std::vector<asPredictor *> predictorsProj;
+    if (!LoadProjectionData(predictorsProj, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictorsArch);
-        Cleanup(predictorsScenario);
+        Cleanup(predictorsProj);
         return false;
     }
 
@@ -195,11 +195,17 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 #ifdef _DEBUG
     int prevTimeSize = 0;
 
-    for (unsigned int i = 0; i < predictors.size(); i++) {
+    for (unsigned int i = 0; i < predictorsProj.size(); i++) {
         if (i > 0) {
-            wxASSERT(predictors[i]->GetTimeSize() == prevTimeSize);
+            wxASSERT(predictorsProj[i]->GetTimeSize() == prevTimeSize);
         }
-        prevTimeSize = predictors[i]->GetTimeSize();
+        prevTimeSize = predictorsProj[i]->GetTimeSize();
+    }
+    for (unsigned int i = 0; i < predictorsArch.size(); i++) {
+        if (i > 0) {
+            wxASSERT(predictorsArch[i]->GetTimeSize() == prevTimeSize);
+        }
+        prevTimeSize = predictorsArch[i]->GetTimeSize();
     }
 #endif // _DEBUG
 
@@ -213,18 +219,18 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     // Send data and criteria to processor
     wxLogVerbose(_("Start processing the comparison."));
 
-    if (!asProcessor::GetAnalogsDates(predictorsArch, predictorsScenario, timeArrayArchive, timeArrayArchive, timeArrayTarget,
+    if (!asProcessor::GetAnalogsDates(predictorsArch, predictorsProj, timeArrayArchive, timeArrayArchive, timeArrayTarget,
                                       timeArrayTarget, criteria, params, iStep, results, containsNaNs)) {
         wxLogError(_("Failed processing the analogs dates."));
         Cleanup(predictorsArch);
-        Cleanup(predictorsScenario);
+        Cleanup(predictorsProj);
         Cleanup(criteria);
         return false;
     }
     wxLogVerbose(_("The processing is over."));
 
     Cleanup(predictorsArch);
-    Cleanup(predictorsScenario);
+    Cleanup(predictorsProj);
     Cleanup(criteria);
 
     return true;
@@ -345,8 +351,8 @@ bool asMethodDownscaler::SaveDetails(asParametersDownscaling *params)
     return true;
 }
 
-bool asMethodDownscaler::LoadScenarioulationData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
-                                                 int iStep, double timeStartData, double timeEndData)
+bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
+                                            int iStep, double timeStartData, double timeEndData)
 {
     try {
         // Loop through every predictor
@@ -354,18 +360,18 @@ bool asMethodDownscaler::LoadScenarioulationData(std::vector<asPredictor *> &pre
             wxLogVerbose(_("Loading model scenario."));
 
             if (!params->NeedsPreprocessing(iStep, iPtor)) {
-                if (!ExtractScenarioulationDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
-                                                                    timeEndData)) {
+                if (!ExtractProjectionDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
+                                                               timeEndData)) {
                     return false;
                 }
             } else {
-                if (!ExtractScenarioulationDataWithPreprocessing(predictors, params, iStep, iPtor, timeStartData,
-                                                                 timeEndData)) {
+                if (!ExtractProjectionDataWithPreprocessing(predictors, params, iStep, iPtor, timeStartData,
+                                                            timeEndData)) {
                     return false;
                 }
             }
 
-            wxLogVerbose(_("Scenario data loaded."));
+            wxLogVerbose(_("Projection data loaded."));
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
@@ -387,10 +393,10 @@ bool asMethodDownscaler::LoadScenarioulationData(std::vector<asPredictor *> &pre
     return true;
 }
 
-bool asMethodDownscaler::ExtractScenarioulationDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
-                                                                        asParametersDownscaling *params, int iStep,
-                                                                        int iPtor, double timeStartData,
-                                                                        double timeEndData)
+bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
+                                                                   asParametersDownscaling *params, int iStep,
+                                                                   int iPtor, double timeStartData,
+                                                                   double timeEndData)
 {
     // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
     // and the predictor dates are aligned with the target dates, but the dates are not the same.
@@ -400,16 +406,18 @@ bool asMethodDownscaler::ExtractScenarioulationDataWithoutPreprocessing(std::vec
     timeArray.Init();
 
     // Loading the datasets information
-    asPredictorScenario *predictor = asPredictorScenario::GetInstance(params->GetPredictorScenarioDatasetId(iStep, iPtor),
-                                                                  params->GetPredictorScenarioDataId(iStep, iPtor),
-                                                                  m_predictorScenarioDataDir);
+    asPredictorProj *predictor = asPredictorProj::GetInstance(params->GetPredictorProjDatasetId(iStep, iPtor),
+                                                              params->GetModel(),
+                                                              params->GetScenario(),
+                                                              params->GetPredictorProjDataId(iStep, iPtor),
+                                                              m_predictorProjectionDataDir);
     if (!predictor) {
         return false;
     }
 
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
-        predictor->SelectMembers(params->GetPredictorScenarioMembersNb(iStep, iPtor));
+        predictor->SelectMembers(params->GetPredictorProjMembersNb(iStep, iPtor));
     }
 
     // Area object instantiation
@@ -447,12 +455,12 @@ bool asMethodDownscaler::ExtractScenarioulationDataWithoutPreprocessing(std::vec
     return true;
 }
 
-bool asMethodDownscaler::ExtractScenarioulationDataWithPreprocessing(std::vector<asPredictor *> &predictors,
-                                                                     asParametersDownscaling *params, int iStep,
-                                                                     int iPtor, double timeStartData,
-                                                                     double timeEndData)
+bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors,
+                                                                asParametersDownscaling *params, int iStep,
+                                                                int iPtor, double timeStartData,
+                                                                double timeEndData)
 {
-    std::vector<asPredictorScenario *> predictorsPreprocess;
+    std::vector<asPredictorProj *> predictorsPreprocess;
 
     int preprocessSize = params->GetPreprocessSize(iStep, iPtor);
 
@@ -469,10 +477,12 @@ bool asMethodDownscaler::ExtractScenarioulationDataWithPreprocessing(std::vector
         timeArray.Init();
 
         // Loading the dataset information
-        asPredictorScenario *predictorPreprocess = asPredictorScenario::GetInstance(
-                params->GetPreprocessScenarioDatasetId(iStep, iPtor, iPre),
-                params->GetPreprocessScenarioDataId(iStep, iPtor, iPre),
-                m_predictorScenarioDataDir);
+        asPredictorProj *predictorPreprocess = asPredictorProj::GetInstance(
+                params->GetPreprocessProjDatasetId(iStep, iPtor, iPre),
+                params->GetModel(),
+                params->GetScenario(),
+                params->GetPreprocessProjDataId(iStep, iPtor, iPre),
+                m_predictorProjectionDataDir);
         if (!predictorPreprocess) {
             Cleanup(predictorsPreprocess);
             return false;
@@ -529,7 +539,7 @@ bool asMethodDownscaler::ExtractScenarioulationDataWithPreprocessing(std::vector
         params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
     }
 
-    auto *predictor = new asPredictorScenario(*predictorsPreprocess[0]);
+    auto *predictor = new asPredictorProj(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
         wxLogError(_("Data preprocessing failed."));
         Cleanup(predictorsPreprocess);
@@ -543,14 +553,14 @@ bool asMethodDownscaler::ExtractScenarioulationDataWithPreprocessing(std::vector
     return true;
 }
 
-bool asMethodDownscaler::Preprocess(std::vector<asPredictorScenario *> predictors, const wxString &method, asPredictor *result)
+bool asMethodDownscaler::Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method, asPredictor *result)
 {
     std::vector<asPredictor *> ptorsPredictors(predictors.begin(), predictors.end());
 
     return asPreprocessor::Preprocess(ptorsPredictors, method, result);
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorScenario *> predictors)
+void asMethodDownscaler::Cleanup(std::vector<asPredictorProj *> predictors)
 {
     if (!predictors.empty()) {
         for (auto &predictor : predictors) {

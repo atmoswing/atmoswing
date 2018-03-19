@@ -43,13 +43,13 @@ asPredictorProj::~asPredictorProj()
 
 }
 
-asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &dataId,
-                                                  const wxString &directory)
+asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
+                                              const wxString &dataId, const wxString &directory)
 {
     asPredictorProj *predictor = nullptr;
 
     if (datasetId.IsSameAs("CMIP5", false)) {
-        predictor = new asPredictorProjCMIP5(dataId);
+        predictor = new asPredictorProjCMIP5(dataId, model, scenario);
     } else if (datasetId.IsSameAs("CORDEX", false)) {
         //predictor = new asPredictorScenarioCORDEX(dataId);
     } else {

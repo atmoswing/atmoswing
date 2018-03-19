@@ -40,8 +40,8 @@ public:
 
     virtual ~asPredictorProj();
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &dataId,
-                                        const wxString &directory = wxEmptyString);
+    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
+                                        const wxString &dataId, const wxString &directory = wxEmptyString);
 
 protected:
 

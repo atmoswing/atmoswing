@@ -46,16 +46,16 @@ public:
         vwxs preprocessDatasetIds;
         vwxs preprocessDataIds;
         int preprocessMembersNb;
-    } ParamsPredictorScenario;
+    } ParamsPredictorProj;
 
-    typedef std::vector<ParamsPredictorScenario> VectorParamsPredictorsScenario;
+    typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
 
     typedef struct
     {
-        VectorParamsPredictorsScenario predictors;
-    } ParamsStepScenario;
+        VectorParamsPredictorsProj predictors;
+    } ParamsStepProj;
 
-    typedef std::vector<ParamsStepScenario> VectorParamsStepScenario;
+    typedef std::vector<ParamsStepProj> VectorParamsStepProj;
 
     asParametersDownscaling();
 
@@ -63,7 +63,7 @@ public:
 
     void AddStep();
 
-    void AddPredictorScenario(ParamsStepScenario &step);
+    void AddPredictorProj(ParamsStepProj &step);
 
     bool LoadFromFile(const wxString &filePath);
 
@@ -73,6 +73,26 @@ public:
 
     void InitValues();
 
+    void SetModel(const wxString &model)
+    {
+        m_model = model;
+    }
+
+    wxString GetModel() const
+    {
+        return m_model;
+    }
+
+    void SetScenario(const wxString &scenario)
+    {
+        m_scenario = scenario;
+    }
+
+    wxString GetScenario() const
+    {
+        return m_scenario;
+    }
+
     vvi GetPredictandStationIdsVector() const
     {
         return m_predictandStationIdsVect;
@@ -80,46 +100,46 @@ public:
 
     bool SetPredictandStationIdsVector(vvi val);
 
-    wxString GetPredictorScenarioDatasetId(int iStep, int iPtor) const
+    wxString GetPredictorProjDatasetId(int iStep, int iPtor) const
     {
-        return m_stepsScenarion[iStep].predictors[iPtor].datasetId;
+        return m_stepsProj[iStep].predictors[iPtor].datasetId;
     }
 
-    bool SetPredictorScenarioDatasetId(int iStep, int iPtor, const wxString &val);
+    bool SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPredictorScenarioDataId(int iStep, int iPtor) const
+    wxString GetPredictorProjDataId(int iStep, int iPtor) const
     {
-        return m_stepsScenarion[iStep].predictors[iPtor].dataId;
+        return m_stepsProj[iStep].predictors[iPtor].dataId;
     }
 
-    bool SetPredictorScenarioDataId(int iStep, int iPtor, const wxString &val);
+    bool SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPreprocessScenarioDatasetId(int iStep, int iPtor, int iPre) const;
+    wxString GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessScenarioDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    bool SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    wxString GetPreprocessScenarioDataId(int iStep, int iPtor, int iPre) const;
+    wxString GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessScenarioDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    bool SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    void SetPredictorScenarioMembersNb(int iStep, int iPtor, int val)
+    void SetPredictorProjMembersNb(int iStep, int iPtor, int val)
     {
-        m_stepsScenarion[iStep].predictors[iPtor].membersNb = val;
+        m_stepsProj[iStep].predictors[iPtor].membersNb = val;
     }
 
-    int GetPredictorScenarioMembersNb(int iStep, int iPtor) const
+    int GetPredictorProjMembersNb(int iStep, int iPtor) const
     {
-        return m_stepsScenarion[iStep].predictors[iPtor].membersNb;
+        return m_stepsProj[iStep].predictors[iPtor].membersNb;
     }
 
-    void SetPreprocessScenarioMembersNb(int iStep, int iPtor, int iPre, int val)
+    void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val)
     {
-        m_stepsScenarion[iStep].predictors[iPtor].preprocessMembersNb = val;
+        m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb = val;
     }
 
-    int GetPreprocessScenarioMembersNb(int iStep, int iPtor, int iPre) const
+    int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const
     {
-        return m_stepsScenarion[iStep].predictors[iPtor].preprocessMembersNb;
+        return m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
     }
 
     bool SetDownscalingYearStart(int val)
@@ -161,8 +181,10 @@ protected:
     double m_downscalingEnd;
 
 private:
+    wxString m_model;
+    wxString m_scenario;
     vvi m_predictandStationIdsVect;
-    VectorParamsStepScenario m_stepsScenarion;
+    VectorParamsStepProj m_stepsProj;
 
     bool ParseDescription(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
 
