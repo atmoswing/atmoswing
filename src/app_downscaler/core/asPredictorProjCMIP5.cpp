@@ -30,16 +30,18 @@
 #include <asTimeArray.h>
 #include <asGeoAreaCompositeGrid.h>
 #include <wx/dir.h>
+#include <wx/regex.h>
 
 
-asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId)
-        : asPredictorProj(dataId)
+asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId, const wxString &model, const wxString &scenario)
+        : asPredictorProj(dataId, model, scenario)
 {
     // Downloaded from https://esgf-node.llnl.gov/search/cmip5/
     // Set the basic properties.
     m_datasetId = "CMIP5";
     m_originalProvider = "various";
     m_datasetName = "CFSR Subset";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = NaNd;
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
@@ -145,7 +147,7 @@ bool asPredictorProjCMIP5::Init()
     } else {
         asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
     }
-    m_fileNamePattern = m_fileVariableName + "*" + m_model + "*.nc";
+    m_fileNamePattern = m_fileVariableName + "*" + m_model + "*" + m_scenario + "*.nc";
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
@@ -167,31 +169,42 @@ bool asPredictorProjCMIP5::Init()
     return true;
 }
 
-vwxs asPredictorProjCMIP5::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorProjCMIP5::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     wxArrayString listFiles;
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
     if (nbFiles == 0) {
-        asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), filePattern));
+        asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
     }
 
     // Sort the list of files
     listFiles.Sort();
 
+    // Check if file is in time range
+    double firstYear = timeArray.GetStartingYear();
+    double lastYear = timeArray.GetEndingYear();
+
     for (int i = 0; i < listFiles.Count(); ++i) {
-        files.push_back(wxString(listFiles.Item(i)));
+
+        wxRegEx reDates("\\d{8}-\\d{8}");
+        if (!reDates.Matches(listFiles.Item(i))) {
+            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file : %s."), listFiles.Item(i)));
+
+        }
+
+        wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
+        double fileStartYear = 0;
+        double fileEndYear = 0;
+        datesSrt.Mid(0, 4).ToDouble(&fileStartYear);
+        datesSrt.Mid(9, 4).ToDouble(&fileEndYear);
+
+        if (fileEndYear < firstYear || fileStartYear > lastYear) {
+            continue;
+        }
+
+        m_files.push_back(listFiles.Item(i));
     }
-
-    return files;
-}
-
-bool asPredictorProjCMIP5::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                    asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorProjCMIP5::ConvertToMjd(double timeValue, double refValue) const
