@@ -28,7 +28,7 @@
 
 #include "asFileGrib2.h"
 
-asFileGrib2::asFileGrib2(const wxString &fileName, const ListFileMode &fileMode)
+asFileGrib2::asFileGrib2(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode),
           m_filtPtr(nullptr),
           m_index(asNOT_FOUND)

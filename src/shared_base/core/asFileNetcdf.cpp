@@ -28,7 +28,7 @@
 
 #include "asFileNetcdf.h"
 
-asFileNetcdf::asFileNetcdf(const wxString &fileName, const ListFileMode &fileMode)
+asFileNetcdf::asFileNetcdf(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode),
           m_fileId(0),
           m_status(0),

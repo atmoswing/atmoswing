@@ -40,6 +40,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_originalProvider = "NWS";
     m_transformedBy = wxEmptyString;
     m_datasetName = "Global Forecast System";
+    m_fileType = asFile::Grib2;
     m_timeZoneHours = 0;
     m_forecastLeadTimeStart = 0;
     m_forecastLeadTimeEnd = 240; // After 240h, available in another temporal resolution
@@ -130,11 +131,4 @@ bool asPredictorOperGfsForecast::Init()
     m_initialized = true;
 
     return true;
-}
-
-bool asPredictorOperGfsForecast::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                 asTimeArray &timeArray, vvva2f &compositeData)
-{
-    wxASSERT(GetFileNames().size() >= (unsigned) timeArray.GetSize());
-    return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }

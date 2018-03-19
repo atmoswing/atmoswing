@@ -38,6 +38,7 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
     m_datasetId = "NCEP_CFSR";
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR";
+    m_fileType = asFile::Grib2;
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeStepHours = 6;
@@ -145,10 +146,4 @@ void asPredictorArchNcepCfsr::ListFiles(asTimeArray &timeArray)
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
                                                                     t.month, t.day, t.year, t.month, t.day, t.hour));
     }
-}
-
-bool asPredictorArchNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                              asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }

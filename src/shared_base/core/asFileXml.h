@@ -39,7 +39,7 @@ class asFileXml
         : public asFile
 {
 public:
-    asFileXml(const wxString &fileName, const ListFileMode &fileMode);
+    asFileXml(const wxString &fileName, const FileMode &fileMode);
 
     virtual ~asFileXml();
 

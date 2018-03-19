@@ -347,8 +347,6 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
             return false;
         }
 
-
-
         // Create a new area matching the dataset
         asGeoAreaCompositeGrid *dataArea = CreateMatchingArea(desiredArea);
 
@@ -448,6 +446,33 @@ bool asPredictor::LoadFullArea(double date, float level)
     m_level = level;
 
     return Load(NULL, timeArray);
+}
+
+bool asPredictor::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
+{
+    switch (m_fileType) {
+        case (asFile::Netcdf) : {
+            for (const auto &fileName : m_files) {
+                if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData)) {
+                    return false;
+                }
+            }
+            break;
+        }
+        case (asFile::Grib2) : {
+            for (const auto &fileName : m_files) {
+                if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
+                    return false;
+                }
+            }
+            break;
+        }
+        default: {
+            wxLogError(_("Predictor file type not correctly defined."));
+        }
+    }
+
+    return true;
 }
 
 bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

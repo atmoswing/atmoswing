@@ -39,6 +39,7 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     m_datasetId = "NASA_MERRA_2";
     m_originalProvider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1980, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
@@ -140,12 +141,6 @@ void asPredictorArchNasaMerra2::ListFiles(asTimeArray &timeArray)
             tLast = t;
         }
     }
-}
-
-bool asPredictorArchNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNasaMerra2::ConvertToMjd(double timeValue, double refValue) const

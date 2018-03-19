@@ -40,6 +40,7 @@ asPredictorArchJmaJra55Subset::asPredictorArchJmaJra55Subset(const wxString &dat
     m_originalProvider = "JMA";
     m_transformedBy = "NCAR/UCAR Data Subset";
     m_datasetName = "Japanese 55-year Reanalysis";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1958, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
@@ -277,12 +278,6 @@ void asPredictorArchJmaJra55Subset::ListFiles(asTimeArray &timeArray)
             m_files.push_back(wxString(listFiles.Item(0)));
         }
     }
-}
-
-bool asPredictorArchJmaJra55Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                    asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchJmaJra55Subset::ConvertToMjd(double timeValue, double refValue) const

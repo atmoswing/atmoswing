@@ -39,6 +39,7 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
     m_datasetId = "NCEP_CFSR_subset";
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR Subset";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
     m_timeStepHours = 6;
@@ -195,12 +196,6 @@ void asPredictorArchNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
             break;
         }
     }
-}
-
-bool asPredictorArchNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                    asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNcepCfsrSubset::ConvertToMjd(double timeValue, double refValue) const

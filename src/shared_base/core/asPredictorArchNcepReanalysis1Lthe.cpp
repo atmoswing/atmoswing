@@ -40,6 +40,7 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
@@ -127,12 +128,6 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
 void asPredictorArchNcepReanalysis1Lthe::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-}
-
-bool asPredictorArchNcepReanalysis1Lthe::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                         asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNcepReanalysis1Lthe::ConvertToMjd(double timeValue, double refValue) const

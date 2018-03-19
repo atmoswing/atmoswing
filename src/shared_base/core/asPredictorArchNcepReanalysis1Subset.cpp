@@ -40,6 +40,7 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
     m_originalProvider = "NCEP/NCAR";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
@@ -150,12 +151,6 @@ bool asPredictorArchNcepReanalysis1Subset::Init()
 void asPredictorArchNcepReanalysis1Subset::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-}
-
-bool asPredictorArchNcepReanalysis1Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                           asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNcepReanalysis1Subset::ConvertToMjd(double timeValue, double refValue) const

@@ -38,6 +38,7 @@ asPredictorArchEcmwfCera20C::asPredictorArchEcmwfCera20C(const wxString &dataId)
     m_datasetId = "ECMWF_CERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "Coupled ERA 20th Century";
+    m_fileType = asFile::Netcdf;
     m_isEnsemble = true;
     m_originalProviderStart = asTime::GetMJD(1901, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
@@ -154,12 +155,6 @@ void asPredictorArchEcmwfCera20C::ListFiles(asTimeArray &timeArray)
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-}
-
-bool asPredictorArchEcmwfCera20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                  asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchEcmwfCera20C::ConvertToMjd(double timeValue, double refValue) const

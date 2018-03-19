@@ -44,7 +44,7 @@ class asFileGrib2
         : public asFile
 {
 public:
-    asFileGrib2(const wxString &fileName, const ListFileMode &fileMode);
+    asFileGrib2(const wxString &fileName, const FileMode &fileMode);
 
     virtual ~asFileGrib2();
 

@@ -38,6 +38,7 @@ asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &d
     m_datasetId = "ECMWF_ERA_interim";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA-interim";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
@@ -151,12 +152,6 @@ bool asPredictorArchEcmwfEraInterim::Init()
 void asPredictorArchEcmwfEraInterim::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-}
-
-bool asPredictorArchEcmwfEraInterim::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                     asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchEcmwfEraInterim::ConvertToMjd(double timeValue, double refValue) const

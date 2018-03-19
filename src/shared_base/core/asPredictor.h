@@ -380,6 +380,7 @@ protected:
     };
     FileStructure m_fileStructure;
     FileIndexes m_fileIndexes;
+    asFile::FileType m_fileType;
     bool m_initialized;
     bool m_axesChecked;
     wxString m_subFolder;
@@ -419,14 +420,11 @@ protected:
 
     virtual void ListFiles(asTimeArray &timeArray) = 0;
 
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData) = 0;
+    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
-
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 
     virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 

@@ -39,6 +39,7 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
     m_datasetId = "NOAA_OISST_v2";
     m_originalProvider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
@@ -106,12 +107,6 @@ void asPredictorArchNoaaOisst2::ListFiles(asTimeArray &timeArray)
                           wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
                                            asTime::GetMonth(date), asTime::GetDay(date)));
     }
-}
-
-bool asPredictorArchNoaaOisst2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const

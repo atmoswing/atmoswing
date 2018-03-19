@@ -29,7 +29,7 @@
 #include "asFileXml.h"
 
 
-asFileXml::asFileXml(const wxString &fileName, const ListFileMode &fileMode)
+asFileXml::asFileXml(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode)
 {
 

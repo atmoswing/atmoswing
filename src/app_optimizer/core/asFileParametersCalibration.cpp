@@ -28,7 +28,7 @@
 
 #include "asFileParametersCalibration.h"
 
-asFileParametersCalibration::asFileParametersCalibration(const wxString &fileName, const ListFileMode &fileMode)
+asFileParametersCalibration::asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode)
         : asFileParameters(fileName, fileMode)
 {
     // FindAndOpen() processed by asFileXml

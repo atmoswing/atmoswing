@@ -126,31 +126,6 @@ bool asPredictorArch::Init()
     return false;
 }
 
-bool asPredictorArch::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
-{
-#if wxUSE_GUI
-    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(m_files.size()));
-#endif
-
-    for (int i = 0; i < m_files.size(); i++) {
-        wxString fileName = m_files[i];
-
-#if wxUSE_GUI
-        // Update the progress bar
-        if (!progressBar.Update(i, wxString::Format(_("File: %s"), fileName))) {
-            wxLogWarning(_("The process has been canceled by the user."));
-            return false;
-        }
-#endif
-
-        if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fileIndexes.areas.clear();
@@ -571,12 +546,6 @@ bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const
 void asPredictorArch::ListFiles(asTimeArray &timeArray)
 {
     m_files = vwxs();
-}
-
-bool asPredictorArch::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                      asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return false;
 }
 
 double asPredictorArch::ConvertToMjd(double timeValue, double refValue) const

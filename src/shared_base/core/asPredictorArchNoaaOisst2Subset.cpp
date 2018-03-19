@@ -40,6 +40,7 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
     m_originalProvider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
@@ -106,12 +107,6 @@ bool asPredictorArchNoaaOisst2Subset::Init()
 void asPredictorArchNoaaOisst2Subset::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-}
-
-bool asPredictorArchNoaaOisst2Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                      asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNoaaOisst2Subset::ConvertToMjd(double timeValue, double refValue) const

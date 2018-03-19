@@ -38,6 +38,7 @@ asPredictorArchNoaa20Cr2c::asPredictorArchNoaa20Cr2c(const wxString &dataId)
     m_datasetId = "NOAA_20CR_v2c";
     m_originalProvider = "NOAA";
     m_datasetName = "Twentieth Century Reanalysis (v2c)";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1850, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2014, 12, 31, 18);
     m_timeStepHours = 6;
@@ -178,12 +179,6 @@ void asPredictorArchNoaa20Cr2c::ListFiles(asTimeArray &timeArray)
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-}
-
-bool asPredictorArchNoaa20Cr2c::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNoaa20Cr2c::ConvertToMjd(double timeValue, double refValue) const

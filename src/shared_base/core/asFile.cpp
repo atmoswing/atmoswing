@@ -40,7 +40,7 @@ bool asRemoveDir(const wxString &path)
 
 }
 
-asFile::asFile(const wxString &fileName, const ListFileMode &fileMode)
+asFile::asFile(const wxString &fileName, const FileMode &fileMode)
         : m_fileName(wxFileName(fileName)),
           m_fileMode(fileMode),
           m_exists(false),

@@ -47,8 +47,6 @@ public:
 
     virtual bool Init();
 
-    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
-
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
     double GetOriginalProviderStart() const
@@ -67,9 +65,6 @@ protected:
     wxString m_fileNamePattern;
 
     virtual void ListFiles(asTimeArray &timeArray);
-
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
 

@@ -51,7 +51,7 @@ public:
         Netcdf4Classic = NC_FORMAT_NETCDF4_CLASSIC
     };
 
-    asFileNetcdf(const wxString &fileName, const ListFileMode &fileMode);
+    asFileNetcdf(const wxString &fileName, const FileMode &fileMode);
 
     virtual ~asFileNetcdf();
 

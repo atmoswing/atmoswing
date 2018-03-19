@@ -36,7 +36,7 @@ class asFile
         : public wxObject
 {
 public:
-    enum ListFileMode
+    enum FileMode
     {
         ReadOnly, // file exists, open read-only
         Write,    // file exists, open for writing
@@ -45,7 +45,14 @@ public:
         Append    // add content to an already existing file
     };
 
-    asFile(const wxString &fileName, const ListFileMode &fileMode = asFile::ReadOnly);
+    enum FileType
+    {
+        Netcdf,
+        Grib2,
+        Ascii
+    };
+
+    asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
 
     virtual ~asFile();
 
@@ -66,7 +73,7 @@ public:
 
 protected:
     wxFileName m_fileName;
-    ListFileMode m_fileMode;
+    FileMode m_fileMode;
     bool m_exists;
     bool m_opened;
 

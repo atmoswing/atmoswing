@@ -31,7 +31,7 @@
 #include <asFileXml.h>
 
 
-asFileDat::asFileDat(const wxString &fileName, const ListFileMode &fileMode)
+asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode)
         : asFileAscii(fileName, fileMode)
 {
 

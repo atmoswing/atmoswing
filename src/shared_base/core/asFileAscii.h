@@ -43,7 +43,7 @@ public:
         ConstantWidth, TabsDelimited
     };
 
-    asFileAscii(const wxString &fileName, const asFile::ListFileMode &fileMode);
+    asFileAscii(const wxString &fileName, const asFile::FileMode &fileMode);
 
     virtual ~asFileAscii();
 

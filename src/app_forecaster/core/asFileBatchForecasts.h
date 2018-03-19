@@ -37,7 +37,7 @@ class asFileBatchForecasts
         : public asFileXml
 {
 public:
-    asFileBatchForecasts(const wxString &fileName, const ListFileMode &fileMode);
+    asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
 
     virtual ~asFileBatchForecasts();
 

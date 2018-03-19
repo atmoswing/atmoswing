@@ -38,6 +38,7 @@ asPredictorArchEcmwfEra20C::asPredictorArchEcmwfEra20C(const wxString &dataId)
     m_datasetId = "ECMWF_ERA_20C_3h";
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA 20th Century";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1900, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2010, 12, 31);
     m_timeStepHours = 3;
@@ -150,12 +151,6 @@ bool asPredictorArchEcmwfEra20C::Init()
 void asPredictorArchEcmwfEra20C::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-}
-
-bool asPredictorArchEcmwfEra20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                 asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchEcmwfEra20C::ConvertToMjd(double timeValue, double refValue) const

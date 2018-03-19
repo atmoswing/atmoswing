@@ -28,7 +28,7 @@
 
 #include "asFileBatchForecasts.h"
 
-asFileBatchForecasts::asFileBatchForecasts(const wxString &fileName, const ListFileMode &fileMode)
+asFileBatchForecasts::asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode)
         : asFileXml(fileName, fileMode)
 {
     // FindAndOpen() processed by asFileXml

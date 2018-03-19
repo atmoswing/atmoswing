@@ -39,6 +39,7 @@ asPredictorArchNcepReanalysis2::asPredictorArchNcepReanalysis2(const wxString &d
     m_datasetId = "NCEP_Reanalysis_v2";
     m_originalProvider = "NCEP/DOE";
     m_datasetName = "Reanalysis 2";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
     m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
@@ -361,12 +362,6 @@ void asPredictorArchNcepReanalysis2::ListFiles(asTimeArray &timeArray)
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-}
-
-bool asPredictorArchNcepReanalysis2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                     asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNcepReanalysis2::ConvertToMjd(double timeValue, double refValue) const

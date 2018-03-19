@@ -27,7 +27,7 @@
 
 #include "asFileAscii.h"
 
-asFileAscii::asFileAscii(const wxString &fileName, const ListFileMode &fileMode)
+asFileAscii::asFileAscii(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode)
 {
 

@@ -37,6 +37,7 @@ asPredictorArchJmaJra55CSubset::asPredictorArchJmaJra55CSubset(const wxString &d
     // Set the basic properties.
     m_datasetId = "JMA_JRA_55C_subset";
     m_datasetName = "Japanese 55-year Reanalysis Conventional";
+    m_fileType = asFile::Netcdf;
     m_originalProviderStart = asTime::GetMJD(1973, 1, 1);
     m_originalProviderEnd = asTime::GetMJD(2012, 12, 31, 18);
 }

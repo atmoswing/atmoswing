@@ -58,7 +58,7 @@ public:
         int dataEnd;
     };
 
-    asFileDat(const wxString &fileName, const ListFileMode &fileMode);
+    asFileDat(const wxString &fileName, const FileMode &fileMode);
 
     virtual ~asFileDat();
 

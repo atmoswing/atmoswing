@@ -290,19 +290,6 @@ bool asPredictorOper::BuildFilenamesUrls()
     return true;
 }
 
-bool asPredictorOper::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
-{
-    for (int i = 0; i < m_files.size(); i++) {
-        wxString fileName = m_files[i];
-
-        if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 void asPredictorOper::ListFiles(asTimeArray &timeArray)
 {
     for (int iFile = 0; iFile < m_fileNames.size(); iFile++) {
@@ -403,12 +390,6 @@ bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
     }
 
     return true;
-}
-
-bool asPredictorOper::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                      asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return false;
 }
 
 double asPredictorOper::ConvertToMjd(double timeValue, double refValue) const
