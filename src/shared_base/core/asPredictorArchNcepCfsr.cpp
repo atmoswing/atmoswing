@@ -136,18 +136,15 @@ bool asPredictorArchNcepCfsr::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepCfsr::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
     a1d tArray = timeArray.GetTimeArray();
 
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
-                                                                  t.month, t.day, t.year, t.month, t.day, t.hour));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
+                                                                    t.month, t.day, t.year, t.month, t.day, t.hour));
     }
-
-    return files;
 }
 
 bool asPredictorArchNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

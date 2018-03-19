@@ -44,7 +44,7 @@ public:
     bool Init();
 
 protected:
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    virtual void ListFiles(asTimeArray &timeArray);
 
 private:
 

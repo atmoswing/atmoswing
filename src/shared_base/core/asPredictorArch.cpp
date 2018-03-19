@@ -128,18 +128,12 @@ bool asPredictorArch::Init()
 
 bool asPredictorArch::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
-    vwxs filesList = GetListOfFiles(timeArray);
-
-    if (!CheckFilesPresence(filesList)) {
-        return false;
-    }
-
 #if wxUSE_GUI
-    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(filesList.size()));
+    asDialogProgressBar progressBar(_("Loading data from files.\n"), int(m_files.size()));
 #endif
 
-    for (int i = 0; i < filesList.size(); i++) {
-        wxString fileName = filesList[i];
+    for (int i = 0; i < m_files.size(); i++) {
+        wxString fileName = m_files[i];
 
 #if wxUSE_GUI
         // Update the progress bar
@@ -574,9 +568,9 @@ bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const
     return true;
 }
 
-vwxs asPredictorArch::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArch::ListFiles(asTimeArray &timeArray)
 {
-    return vwxs();
+    m_files = vwxs();
 }
 
 bool asPredictorArch::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

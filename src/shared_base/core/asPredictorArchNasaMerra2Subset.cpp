@@ -261,9 +261,8 @@ bool asPredictorArchNasaMerra2Subset::Init()
     return true;
 }
 
-vwxs asPredictorArchNasaMerra2Subset::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNasaMerra2Subset::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -283,10 +282,8 @@ vwxs asPredictorArchNasaMerra2Subset::GetListOfFiles(asTimeArray &timeArray) con
                 path.Replace("MERRA2_*00", "MERRA2_400");
             }
 
-            files.push_back(path);
+            m_files.push_back(path);
             tLast = t;
         }
     }
-
-    return files;
 }

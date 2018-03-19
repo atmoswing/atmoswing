@@ -66,7 +66,7 @@ protected:
     double m_originalProviderEnd;
     wxString m_fileNamePattern;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    virtual void ListFiles(asTimeArray &timeArray);
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  vvva2f &compositeData);

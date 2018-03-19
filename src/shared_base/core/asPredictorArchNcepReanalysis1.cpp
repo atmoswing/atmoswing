@@ -449,15 +449,11 @@ bool asPredictorArchNcepReanalysis1::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepReanalysis1::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepReanalysis1::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-
-    return files;
 }
 
 bool asPredictorArchNcepReanalysis1::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

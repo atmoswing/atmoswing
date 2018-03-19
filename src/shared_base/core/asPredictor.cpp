@@ -264,27 +264,27 @@ bool asPredictor::SetData(vva2f &val)
     return true;
 }
 
-bool asPredictor::CheckFilesPresence(vwxs &filesList)
+bool asPredictor::CheckFilesPresence()
 {
-    if (filesList.empty()) {
+    if (m_files.empty()) {
         wxLogError(_("Empty files list."));
         return false;
     }
 
     int nbDirsToRemove = 0;
 
-    for (int i = 0; i < filesList.size(); i++) {
+    for (int i = 0; i < m_files.size(); i++) {
         if (i > 0 && nbDirsToRemove > 0) {
-            wxFileName fileName(filesList[i]);
+            wxFileName fileName(m_files[i]);
             for (int j = 0; j < nbDirsToRemove; ++j) {
                 fileName.RemoveLastDir();
             }
-            filesList[i] = fileName.GetFullPath();
+            m_files[i] = fileName.GetFullPath();
         }
 
-        if (!wxFile::Exists(filesList[i])) {
+        if (!wxFile::Exists(m_files[i])) {
             // Search recursively in the parent directory
-            wxFileName fileName(filesList[i]);
+            wxFileName fileName(m_files[i]);
             while (true) {
                 // Check for wildcards
                 if (wxIsWild(fileName.GetPath())) {
@@ -294,7 +294,7 @@ bool asPredictor::CheckFilesPresence(vwxs &filesList)
                     wxArrayString files;
                     size_t nb = wxDir::GetAllFiles(fileName.GetPath(), &files, fileName.GetFullName());
                     if (nb == 1) {
-                        filesList[i] = files[0];
+                        m_files[i] = files[0];
                         break;
                     } else if (nb > 1) {
                         wxLogError(_("Multiple files were found matching the name %s:"), fileName.GetFullName());
@@ -307,14 +307,14 @@ bool asPredictor::CheckFilesPresence(vwxs &filesList)
 
                 if (i == 0) {
                     if (fileName.GetDirCount() < 2) {
-                        wxLogError(_("File not found: %s"), filesList[i]);
+                        wxLogError(_("File not found: %s"), m_files[i]);
                         return false;
                     }
 
                     fileName.RemoveLastDir();
                     nbDirsToRemove++;
                     if (fileName.Exists()) {
-                        filesList[i] = fileName.GetFullPath();
+                        m_files[i] = fileName.GetFullPath();
                         break;
                     }
                 }
@@ -340,6 +340,14 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
             wxLogError(_("The time array is not valid to load data."));
             return false;
         }
+
+        // List files and check availability
+        ListFiles(timeArray);
+        if (!CheckFilesPresence()) {
+            return false;
+        }
+
+
 
         // Create a new area matching the dataset
         asGeoAreaCompositeGrid *dataArea = CreateMatchingArea(desiredArea);
@@ -441,7 +449,6 @@ bool asPredictor::LoadFullArea(double date, float level)
 
     return Load(NULL, timeArray);
 }
-
 
 bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                         asTimeArray &timeArray, vvva2f &compositeData)

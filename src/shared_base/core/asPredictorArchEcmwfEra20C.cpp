@@ -147,13 +147,9 @@ bool asPredictorArchEcmwfEra20C::Init()
     return true;
 }
 
-vwxs asPredictorArchEcmwfEra20C::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchEcmwfEra20C::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 bool asPredictorArchEcmwfEra20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

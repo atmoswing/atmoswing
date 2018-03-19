@@ -149,15 +149,11 @@ bool asPredictorArchEcmwfCera20C::Init()
     return true;
 }
 
-vwxs asPredictorArchEcmwfCera20C::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchEcmwfCera20C::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-
-    return files;
 }
 
 bool asPredictorArchEcmwfCera20C::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

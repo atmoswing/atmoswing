@@ -235,10 +235,8 @@ bool asPredictorArchJmaJra55Subset::Init()
     return true;
 }
 
-vwxs asPredictorArchJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchJmaJra55Subset::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         int firstMonth = 1;
         int lastMonth = 12;
@@ -262,7 +260,7 @@ vwxs asPredictorArchJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
                                                       filePattern));
                 }
 
-                files.push_back(wxString(listFiles.Item(0)));
+                m_files.push_back(wxString(listFiles.Item(0)));
             }
         } else {
             wxString filePattern = wxString::Format(m_fileNamePattern, iYear, firstMonth);
@@ -276,11 +274,9 @@ vwxs asPredictorArchJmaJra55Subset::GetListOfFiles(asTimeArray &timeArray) const
                                                   filePattern));
             }
 
-            files.push_back(wxString(listFiles.Item(0)));
+            m_files.push_back(wxString(listFiles.Item(0)));
         }
     }
-
-    return files;
 }
 
 bool asPredictorArchJmaJra55Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

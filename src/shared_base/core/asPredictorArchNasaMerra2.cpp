@@ -114,9 +114,8 @@ bool asPredictorArchNasaMerra2::Init()
     return true;
 }
 
-vwxs asPredictorArchNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNasaMerra2::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -137,12 +136,10 @@ vwxs asPredictorArchNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
                 path.Replace("MERRA2_*00", "MERRA2_400");
             }
 
-            files.push_back(path);
+            m_files.push_back(path);
             tLast = t;
         }
     }
-
-    return files;
 }
 
 bool asPredictorArchNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

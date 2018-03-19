@@ -164,10 +164,8 @@ bool asPredictorArchNcepCfsrSubset::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     int firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
@@ -175,7 +173,7 @@ vwxs asPredictorArchNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
     while (true) {
         Time t1 = asTime::GetTimeStruct(fileStart);
         Time t2 = asTime::GetTimeStruct(fileEnd);
-        files.push_back(GetFullDirectoryPath() +
+        m_files.push_back(GetFullDirectoryPath() +
                         wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
         fileStart = fileEnd + 1;
         fileEnd = fileStart + 4;
@@ -197,8 +195,6 @@ vwxs asPredictorArchNcepCfsrSubset::GetListOfFiles(asTimeArray &timeArray) const
             break;
         }
     }
-
-    return files;
 }
 
 bool asPredictorArchNcepCfsrSubset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

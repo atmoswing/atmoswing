@@ -95,7 +95,7 @@ public:
 
     void CheckLevelTypeIsDefined();
 
-    bool CheckFilesPresence(vwxs &filesList);
+    bool CheckFilesPresence();
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
 
@@ -415,8 +415,9 @@ protected:
     bool m_canBeClipped;
     wxString m_fileExtension;
     wxString m_preprocessMethod;
+    vwxs m_files;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const = 0;
+    virtual void ListFiles(asTimeArray &timeArray) = 0;
 
     virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                  vvva2f &compositeData) = 0;

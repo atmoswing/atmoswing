@@ -98,18 +98,14 @@ bool asPredictorArchNoaaOisst2::Init()
     return true;
 }
 
-vwxs asPredictorArchNoaaOisst2::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNoaaOisst2::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
-        files.push_back(GetFullDirectoryPath() +
-                        wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
-                                         asTime::GetMonth(date), asTime::GetDay(date)));
+        m_files.push_back(GetFullDirectoryPath() +
+                          wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
+                                           asTime::GetMonth(date), asTime::GetDay(date)));
     }
-
-    return files;
 }
 
 bool asPredictorArchNoaaOisst2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

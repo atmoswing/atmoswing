@@ -225,7 +225,7 @@ protected:
     vwxs m_urls;
     vd m_dataDates;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    virtual void ListFiles(asTimeArray &timeArray);
 
     int *GetIndexesStartGrib(int iArea) const;
 

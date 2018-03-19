@@ -124,13 +124,9 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepReanalysis1Lthe::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 bool asPredictorArchNcepReanalysis1Lthe::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,

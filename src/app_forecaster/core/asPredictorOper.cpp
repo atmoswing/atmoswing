@@ -292,14 +292,8 @@ bool asPredictorOper::BuildFilenamesUrls()
 
 bool asPredictorOper::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
-    vwxs filesList = GetListOfFiles(timeArray);
-
-    if (!CheckFilesPresence(filesList)) {
-        return false;
-    }
-
-    for (int i = 0; i < filesList.size(); i++) {
-        wxString fileName = filesList[i];
+    for (int i = 0; i < m_files.size(); i++) {
+        wxString fileName = m_files[i];
 
         if (!ExtractFromFile(fileName, dataArea, timeArray, compositeData)) {
             return false;
@@ -309,10 +303,8 @@ bool asPredictorOper::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTime
     return true;
 }
 
-vwxs asPredictorOper::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorOper::ListFiles(asTimeArray &timeArray)
 {
-    vwxs filesList;
-
     for (int iFile = 0; iFile < m_fileNames.size(); iFile++) {
         wxString filePath = wxEmptyString;
 
@@ -324,10 +316,8 @@ vwxs asPredictorOper::GetListOfFiles(asTimeArray &timeArray) const
         }
         filePath.Append(m_fileNames[iFile]);
 
-        filesList.push_back(filePath);
+        m_files.push_back(filePath);
     }
-
-    return filesList;
 }
 
 bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
