@@ -32,8 +32,10 @@
 #include "asPredictorProjCMIP5.h"
 
 
-asPredictorProj::asPredictorProj(const wxString &dataId)
-        : asPredictorArch(dataId)
+asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario)
+        : asPredictorArch(dataId),
+          m_model(model),
+          m_scenario(scenario)
 {
 
 }

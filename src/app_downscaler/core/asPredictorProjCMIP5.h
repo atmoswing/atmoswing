@@ -37,7 +37,7 @@ class asPredictorProjCMIP5
         : public asPredictorProj
 {
 public:
-    asPredictorProjCMIP5(const wxString &dataId);
+    asPredictorProjCMIP5(const wxString &dataId, const wxString &model, const wxString &scenario);
 
     virtual ~asPredictorProjCMIP5();
 
@@ -52,7 +52,6 @@ protected:
     double ConvertToMjd(double timeValue, double refValue) const;
 
 private:
-    wxString m_model;
 
 };
 

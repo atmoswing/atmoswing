@@ -36,7 +36,7 @@ class asGeoArea;
 class asPredictorProj
         : public asPredictorArch {
 public:
-    asPredictorProj(const wxString &dataId);
+    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
 
     virtual ~asPredictorProj();
 
@@ -44,6 +44,8 @@ public:
                                         const wxString &dataId, const wxString &directory = wxEmptyString);
 
 protected:
+    wxString m_model;
+    wxString m_scenario;
 
 
 private:
