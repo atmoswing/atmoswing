@@ -44,8 +44,8 @@ TEST(PredictorArchNcepR2Regular, LoadEasy)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -130,8 +130,8 @@ TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -160,8 +160,8 @@ TEST(PredictorArchNcepR2Regular, LoadComposite)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -254,8 +254,8 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -320,8 +320,8 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -386,8 +386,8 @@ TEST(PredictorArchNcepR2Regular, LoadBorderRight)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -459,8 +459,8 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -533,8 +533,8 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -588,8 +588,8 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
@@ -652,8 +652,8 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLatTime)
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 24;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 24;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
