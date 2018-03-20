@@ -45,16 +45,6 @@ public:
 
     virtual ~asGeoAreaRegularGrid();
 
-    double GetXstep() const
-    {
-        return m_xStep;
-    }
-
-    double GetYstep() const
-    {
-        return m_yStep;
-    }
-
     int GetXaxisPtsnb() const;
 
     int GetYaxisPtsnb() const;

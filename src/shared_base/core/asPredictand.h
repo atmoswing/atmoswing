@@ -136,55 +136,14 @@ public:
         return m_parameter;
     }
 
-    void SetDataParameter(Parameter val)
-    {
-        m_parameter = val;
-    }
-
     TemporalResolution GetDataTemporalResolution() const
     {
         return m_temporalResolution;
     }
 
-    void SetDataTemporalResolution(TemporalResolution val)
-    {
-        m_temporalResolution = val;
-    }
-
     SpatialAggregation GetDataSpatialAggregation() const
     {
         return m_spatialAggregation;
-    }
-
-    void SetDataSpatialAggregation(SpatialAggregation val)
-    {
-        m_spatialAggregation = val;
-    }
-
-    bool HasNormalizedData() const
-    {
-        return m_hasNormalizedData;
-    }
-
-    void SetHasReferenceValues(bool val)
-    {
-        m_hasReferenceValues = val;
-        m_hasNormalizedData = val;
-    }
-
-    bool HasReferenceValues() const
-    {
-        return m_hasReferenceValues;
-    }
-
-    double GetTimeStepDays() const
-    {
-        return m_timeStepDays;
-    }
-
-    double GetTimeStepHours() const
-    {
-        return m_timeStepDays * 24;
     }
 
     int GetStationsNb() const
@@ -227,24 +186,10 @@ public:
         return m_stationYCoords;
     }
 
-    a2f &GetDataGross()
-    {
-        return m_dataGross;
-    }
-
     a1f GetDataGrossStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataGross.col(indexStation);
-    }
-
-    a2f &GetDataNormalized()
-    {
-        if (m_hasNormalizedData) {
-            return m_dataNormalized;
-        } else {
-            return m_dataGross;
-        }
     }
 
     a1f GetDataNormalizedStation(int predictandStationId) const

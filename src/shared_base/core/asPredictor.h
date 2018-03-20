@@ -85,12 +85,6 @@ public:
 
     virtual ~asPredictor();
 
-    static Parameter StringToParameterEnum(const wxString &parameterStr);
-
-    static wxString ParameterEnumToString(Parameter parameter);
-
-    static Unit StringToUnitEnum(const wxString &unitStr);
-
     virtual bool Init() = 0;
 
     void CheckLevelTypeIsDefined();
@@ -104,8 +98,6 @@ public:
     bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
 
     bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
-
-    bool LoadFullArea(double date, float level);
 
     bool TransformData(vvva2f &compositeData);
 
@@ -128,21 +120,6 @@ public:
         wxASSERT(m_data[1][0].rows() > 0);
 
         return m_data;
-    }
-
-    a1d &GetTime()
-    {
-        return m_time;
-    }
-
-    a1f GetAxisLon() const
-    {
-        return m_axisLon;
-    }
-
-    a1f GetAxisLat() const
-    {
-        return m_axisLat;
     }
 
     Parameter GetParameter() const
@@ -206,22 +183,7 @@ public:
         return m_lonPtsnb;
     }
 
-    double GetTimeStart() const
-    {
-        return m_time[0];
-    }
-
-    double GetTimeEnd() const
-    {
-        return m_time[m_time.size() - 1];
-    }
-
     bool IsPreprocessed() const
-    {
-        return m_isPreprocessed;
-    }
-
-    bool GetIsPreprocessed() const
     {
         return m_isPreprocessed;
     }
@@ -251,24 +213,9 @@ public:
         return m_preprocessMethod;
     }
 
-    void SetPreprocessMethod(wxString val)
+    void SetPreprocessMethod(const wxString &val)
     {
         m_preprocessMethod = val;
-    }
-
-    wxString GetDataId() const
-    {
-        return m_dataId;
-    }
-
-    wxString GetDatasetName() const
-    {
-        return m_datasetName;
-    }
-
-    double GetXaxisStep() const
-    {
-        return m_xAxisStep;
     }
 
     void SetXaxisStep(const double val)
@@ -276,24 +223,9 @@ public:
         m_xAxisStep = (float) val;
     }
 
-    double GetXaxisShift() const
-    {
-        return m_xAxisShift;
-    }
-
-    double GetYaxisStep() const
-    {
-        return m_yAxisStep;
-    }
-
     void SetYaxisStep(const double val)
     {
         m_yAxisStep = (float) val;
-    }
-
-    double GetYaxisShift() const
-    {
-        return m_yAxisShift;
     }
 
     void SelectFirstMember()

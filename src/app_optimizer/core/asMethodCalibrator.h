@@ -105,11 +105,6 @@ public:
 
     virtual bool Validate(asParametersCalibration *params);
 
-    void SetScore(float valCalib)
-    {
-        m_scoresCalibTemp.push_back(valCalib);
-    }
-
     void SetScoreOrder(Order val)
     {
         m_scoreOrder = val;

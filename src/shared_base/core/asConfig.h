@@ -46,8 +46,6 @@ public:
 
     static wxString CreateTempFileName(const wxString &prefix);
 
-    static wxString GetDataDir();
-
     static wxString GetSoftDir();
 
     static wxString GetUserDataDir();
@@ -55,8 +53,6 @@ public:
     static wxString GetDocumentsDir();
 
     static wxString GetDefaultUserWorkingDir();
-
-    static wxString GetDefaultUserConfigDir();
 
 protected:
 

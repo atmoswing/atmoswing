@@ -57,13 +57,11 @@ public:
 
     asResultsForecast *GetForecast(int methodRow, int forecastRow) const;
 
-    asResultsForecast *GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const;
+    asResultsForecast *GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const;
 
     wxString GetForecastName(int methodRow, int forecastRow) const;
 
     wxString GetMethodName(int methodRow) const;
-
-    vwxs GetAllMethodIds() const;
 
     vwxs GetAllMethodNames() const;
 
@@ -71,11 +69,7 @@ public:
 
     wxArrayString GetAllForecastNamesWxArray() const;
 
-    vwxs GetFilePaths() const;
-
     wxString GetFilePath(int methodRow, int forecastRow) const;
-
-    wxArrayString GetFilePathsWxArray() const;
 
     a1f GetTargetDates(int methodRow) const;
 

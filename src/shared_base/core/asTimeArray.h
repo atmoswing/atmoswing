@@ -113,11 +113,6 @@ public:
 
     bool KeepOnlyYears(const vi &years);
 
-    Mode GetMode() const
-    {
-        return m_mode;
-    }
-
     bool IsSimpleMode() const
     {
         return (m_mode == Simple) || (m_mode == SingleDay);
@@ -165,11 +160,6 @@ public:
         return GetMonth(m_end);
     }
 
-    int GetEndingDay() const
-    {
-        return GetDay(m_end);
-    }
-
     double GetEndingHour() const
     {
         double fractpart, intpart;
@@ -195,16 +185,6 @@ public:
     double GetIntervalDays() const
     {
         return m_intervalDays;
-    }
-
-    double GetExclusionHours() const
-    {
-        return m_exclusionDays * 24;
-    }
-
-    double GetExclusionDays() const
-    {
-        return m_exclusionDays;
     }
 
     a1d GetTimeArray() const

@@ -47,15 +47,6 @@ public:
         return m_targetDates;
     }
 
-    void SetTargetDates(a1d &refDates)
-    {
-        m_targetDates.resize(refDates.rows());
-        for (int i = 0; i < refDates.size(); i++) {
-            m_targetDates[i] = (float) refDates[i];
-            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
-        }
-    }
-
     void SetTargetDates(a1f &refDates)
     {
         m_targetDates.resize(refDates.rows());
@@ -67,24 +58,9 @@ public:
         return m_targetValuesNorm;
     }
 
-    void SetTargetValues(va1f &targetValues)
-    {
-        m_targetValuesNorm = targetValues;
-    }
-
-    va1f &GetTargetValuesNorm()
-    {
-        return m_targetValuesNorm;
-    }
-
     void SetTargetValuesNorm(va1f &targetValuesNorm)
     {
         m_targetValuesNorm = targetValuesNorm;
-    }
-
-    va1f &GetTargetValuesGross()
-    {
-        return m_targetValuesGross;
     }
 
     void SetTargetValuesGross(va1f &targetValuesGross)
@@ -104,16 +80,6 @@ public:
     }
 
     va2f &GetAnalogsValues()
-    {
-        return m_analogsValuesNorm;
-    }
-
-    void SetAnalogsValues(va2f &analogsValues)
-    {
-        m_analogsValuesNorm = analogsValues;
-    }
-
-    va2f GetAnalogsValuesNorm() const
     {
         return m_analogsValuesNorm;
     }

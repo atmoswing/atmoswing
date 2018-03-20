@@ -43,7 +43,7 @@ asResultsForecast::asResultsForecast()
           m_predictandSpatialAggregation(asPredictand::Station),
           m_predictandDatasetId(wxEmptyString),
           m_predictandDatabase(wxEmptyString),
-          m_forecastsDirectory(wxEmptyString),
+          m_forecastsDir(wxEmptyString),
           m_hasReferenceValues(false),
           m_leadTimeOrigin(0.0)
 {
@@ -92,14 +92,14 @@ void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin
 
 void asResultsForecast::BuildFileName()
 {
-    wxASSERT(!m_forecastsDirectory.IsEmpty());
+    wxASSERT(!m_forecastsDir.IsEmpty());
 
     if (m_methodId.IsEmpty() || m_specificTag.IsEmpty()) {
         wxLogError(_("The provided ID or the tag is empty, which isn't allowed !"));
     }
 
     // Base directory
-    m_filePath = m_forecastsDirectory;
+    m_filePath = m_forecastsDir;
     m_filePath.Append(DS);
     if (!m_subFolder.IsEmpty()) {
         m_filePath.Append(DS);

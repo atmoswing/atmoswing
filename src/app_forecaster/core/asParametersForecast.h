@@ -101,16 +101,6 @@ public:
         return m_leadTimeDaysVect;
     }
 
-    int GetLeadTimeDays(int iLead) const
-    {
-        return m_leadTimeDaysVect[iLead];
-    }
-
-    int GetLeadTimeHours(int iLead) const
-    {
-        return (int) (m_leadTimeDaysVect[iLead] * 24.0);
-    }
-
     bool SetAnalogsNumberLeadTimeVector(int iStep, vi val);
 
     vi GetAnalogsNumberLeadTimeVector(int iStep) const
@@ -173,19 +163,9 @@ public:
 
     bool SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    void SetPredictorArchiveMembersNb(int iStep, int iPtor, int val)
-    {
-        m_stepsForecast[iStep].predictors[iPtor].archiveMembersNb = val;
-    }
-
     int GetPredictorArchiveMembersNb(int iStep, int iPtor) const
     {
         return m_stepsForecast[iStep].predictors[iPtor].archiveMembersNb;
-    }
-
-    void SetPredictorRealtimeMembersNb(int iStep, int iPtor, int val)
-    {
-        m_stepsForecast[iStep].predictors[iPtor].realtimeMembersNb = val;
     }
 
     int GetPredictorRealtimeMembersNb(int iStep, int iPtor) const
@@ -193,19 +173,9 @@ public:
         return m_stepsForecast[iStep].predictors[iPtor].realtimeMembersNb;
     }
 
-    void SetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre, int val)
-    {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveMembersNb = val;
-    }
-
     int GetPreprocessArchiveMembersNb(int iStep, int iPtor, int iPre) const
     {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveMembersNb;
-    }
-
-    void SetPreprocessRealtimeMembersNb(int iStep, int iPtor, int iPre, int val)
-    {
-        m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeMembersNb = val;
     }
 
     int GetPreprocessRealtimeMembersNb(int iStep, int iPtor, int iPre) const

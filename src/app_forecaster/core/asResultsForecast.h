@@ -51,14 +51,9 @@ public:
 
     int GetStationRowFromId(int stationId) const;
 
-    wxString GetForecastsDirectory() const
-    {
-        return m_forecastsDirectory;
-    }
-
     void SetForecastsDirectory(const wxString &val)
     {
-        m_forecastsDirectory = val;
+        m_forecastsDir = val;
     }
 
     wxString GetPredictandDatasetId() const
@@ -74,11 +69,6 @@ public:
     wxString GetPredictandDatabase() const
     {
         return m_predictandDatabase;
-    }
-
-    void SetPredictandDatabase(const wxString &val)
-    {
-        m_predictandDatabase = val;
     }
 
     vi GetPredictandStationIds() const
@@ -133,19 +123,9 @@ public:
         return m_methodId;
     }
 
-    void SetMethodId(const wxString &val)
-    {
-        m_methodId = val;
-    }
-
     wxString GetMethodIdDisplay() const
     {
         return m_methodIdDisplay;
-    }
-
-    void SetMethodIdDisplay(const wxString &val)
-    {
-        m_methodIdDisplay = val;
     }
 
     wxString GetSpecificTag() const
@@ -153,29 +133,14 @@ public:
         return m_specificTag;
     }
 
-    void SetSpecificTag(const wxString &val)
-    {
-        m_specificTag = val;
-    }
-
     wxString GetSpecificTagDisplay() const
     {
         return m_specificTagDisplay;
     }
 
-    void SetSpecificTagDisplay(const wxString &val)
-    {
-        m_specificTagDisplay = val;
-    }
-
     wxString GetDescription() const
     {
         return m_description;
-    }
-
-    void SetDescription(const wxString &val)
-    {
-        m_description = val;
     }
 
     double GetLeadTimeOrigin() const
@@ -253,11 +218,6 @@ public:
         m_stationHeights = stationsHeights;
     }
 
-    a1d GetStationXCoords() const
-    {
-        return m_stationXCoords;
-    }
-
     double GetStationXCoord(int i) const
     {
         wxASSERT(i >= 0);
@@ -268,11 +228,6 @@ public:
     void SetStationXCoords(const a1d &stationsXCoords)
     {
         m_stationXCoords = stationsXCoords;
-    }
-
-    a1d GetStationYCoords() const
-    {
-        return m_stationYCoords;
     }
 
     double GetStationYCoord(int i) const
@@ -402,12 +357,6 @@ public:
         }
     }
 
-    int GetAnalogsDatesLength(int i) const
-    {
-        wxASSERT(m_analogsDates.size() > (unsigned) i);
-        return (int) m_analogsDates[i].size();
-    }
-
     int GetAnalogsNumber(int i) const
     {
         wxASSERT(m_analogsDates.size() > (unsigned) i);
@@ -452,7 +401,7 @@ private:
     wxString m_predictandDatasetId;
     wxString m_predictandDatabase;
     vi m_predictandStationIds;
-    wxString m_forecastsDirectory;
+    wxString m_forecastsDir;
     bool m_hasReferenceValues;
     double m_leadTimeOrigin;
     a1f m_targetDates;

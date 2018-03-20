@@ -49,10 +49,6 @@ public:
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
-    void SetFileNamePattern(const wxString &val)
-    {
-        m_fileNamePattern = val;
-    }
 
 protected:
     wxString m_fileNamePattern;

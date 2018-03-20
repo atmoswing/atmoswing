@@ -130,11 +130,7 @@ public:
 
     double GetPredictorTimeHoursUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorXminIteration(int iStep, int iPtor) const;
-
     int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
-
-    double GetPredictorYminIteration(int iStep, int iPtor) const;
 
     int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 

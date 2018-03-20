@@ -43,29 +43,14 @@ class asForecastTreeItemData
 public:
     asForecastTreeItemData(int methodRow, int forecastRow);
 
-    bool IsAggregator() const
-    {
-        return (m_forecastRow < 0);
-    }
-
     int GetMethodRow() const
     {
         return m_methodRow;
     }
 
-    void SetMethodRow(int methodRow)
-    {
-        m_methodRow = methodRow;
-    }
-
     int GetForecastRow() const
     {
         return m_forecastRow;
-    }
-
-    void SetForecastRow(int forecastRow)
-    {
-        m_forecastRow = forecastRow;
     }
 
 private:
@@ -80,29 +65,14 @@ class asMessageForecastChoice
 public:
     asMessageForecastChoice(int methodRow, int forecastRow);
 
-    bool IsAggregator() const
-    {
-        return (m_forecastRow < 0);
-    }
-
     int GetMethodRow() const
     {
         return m_methodRow;
     }
 
-    void SetMethodRow(int methodRow)
-    {
-        m_methodRow = methodRow;
-    }
-
     int GetForecastRow() const
     {
         return m_forecastRow;
-    }
-
-    void SetForecastRow(int forecastRow)
-    {
-        m_forecastRow = forecastRow;
     }
 
 private:

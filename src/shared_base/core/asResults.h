@@ -45,24 +45,9 @@ public:
 
     wxString GetPredictandStationIdsList() const;
 
-    int GetCurrentStep() const
-    {
-        return m_currentStep;
-    }
-
     void SetCurrentStep(int val)
     {
         m_currentStep = val;
-    }
-
-    double GetDateProcessed() const
-    {
-        return m_dateProcessed;
-    }
-
-    void SetDateProcessed(double val)
-    {
-        m_dateProcessed = val;
     }
 
     wxString GetFilePath() const

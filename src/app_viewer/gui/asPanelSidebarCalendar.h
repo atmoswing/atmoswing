@@ -47,24 +47,6 @@ public:
 
     void SetPresentDate();
 
-    wxCalendarCtrl *GetCalendar() const
-    {
-        return m_calendarForecastDate;
-    }
-
-    wxDateTime GetDate() const
-    {
-        return m_calendarForecastDate->GetDate();
-    }
-
-    double GetHour() const
-    {
-        wxString forecastHourStr = m_textCtrlForecastHour->GetValue();
-        double forecastHour = 0;
-        forecastHourStr.ToDouble(&forecastHour);
-        return forecastHour;
-    }
-
 private:
     wxCalendarCtrl *m_calendarForecastDate;
     wxStaticText *m_staticTextForecastHour;

@@ -58,59 +58,9 @@ public:
 
     void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours, int leadTimeNb);
 
-    void SetRestrictDownloads(bool val)
-    {
-        m_restrictDownloads = val;
-    }
-
-    double GetForecastLeadTimeStart() const
-    {
-        return m_leadTimeStart;
-    }
-
-    void SetForecastLeadTimeStart(int val)
-    {
-        m_leadTimeStart = val;
-    }
-
     double GetForecastLeadTimeEnd() const
     {
         return m_leadTimeEnd;
-    }
-
-    void SetForecastLeadTimeEnd(int val)
-    {
-        m_leadTimeEnd = val;
-    }
-
-    double GetForecastLeadTimeStep() const
-    {
-        return m_leadTimeStep;
-    }
-
-    void SetForecastLeadTimeStep(int val)
-    {
-        m_leadTimeStep = val;
-    }
-
-    double GetRunHourStart() const
-    {
-        return m_runHourStart;
-    }
-
-    void SetRunHourStart(int val)
-    {
-        m_runHourStart = val;
-    }
-
-    double GetRunUpdate() const
-    {
-        return m_runUpdate;
-    }
-
-    void SetRunUpdate(double val)
-    {
-        m_runUpdate = val;
     }
 
     double GetRunDateInUse() const
@@ -118,38 +68,9 @@ public:
         return m_runDateInUse;
     }
 
-    wxString GetCommandDownload() const
-    {
-        return m_commandDownload;
-    }
-
-    void SetCommandDownload(const wxString &val)
-    {
-        m_commandDownload = val;
-    }
-
-    int GetUlrsNb() const
-    {
-        int urlsNb = (int) m_urls.size();
-        return urlsNb;
-    }
-
     vwxs GetUrls() const
     {
         return m_urls;
-    }
-
-    wxString GetUrl(int i) const
-    {
-        wxASSERT(m_fileNames.size() == m_urls.size());
-        if ((unsigned) i >= m_urls.size())
-            return wxEmptyString;
-        return m_urls[i];
-    }
-
-    void SetUrls(const vwxs &val)
-    {
-        m_urls = val;
     }
 
     vwxs GetFileNames() const
@@ -162,46 +83,9 @@ public:
         m_fileNames = val;
     }
 
-    wxString GetFileName(int i) const
-    {
-        wxASSERT(m_fileNames.size() == m_urls.size());
-        if ((unsigned) i >= m_fileNames.size())
-            return wxEmptyString;
-        return m_fileNames[i];
-    }
-
-    int GetDatesNb() const
-    {
-        wxASSERT(m_dataDates.size() == m_urls.size());
-        wxASSERT(m_dataDates.size() == m_fileNames.size());
-        int datesNb = m_dataDates.size();
-        return datesNb;
-    }
-
     vd GetDataDates() const
     {
         return m_dataDates;
-    }
-
-    double GetDataDate(int i) const
-    {
-        wxASSERT(m_dataDates.size() == m_urls.size());
-        wxASSERT(m_dataDates.size() == m_fileNames.size());
-        if ((unsigned) i >= m_dataDates.size())
-            return asNOT_VALID;
-        return m_dataDates[i];
-    }
-
-    double GetLastDataDate() const
-    {
-        wxASSERT(m_dataDates.size() == m_urls.size());
-        wxASSERT(m_dataDates.size() == m_fileNames.size());
-        return m_dataDates[m_dataDates.size() - 1];
-    }
-
-    wxString GetPredictorsRealtimeDirectory() const
-    {
-        return m_predictorsRealtimeDir;
     }
 
     void SetPredictorsRealtimeDirectory(const wxString &dir)

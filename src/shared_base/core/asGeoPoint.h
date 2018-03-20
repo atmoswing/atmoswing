@@ -42,11 +42,6 @@ public:
 
     virtual ~asGeoPoint();
 
-    Coo GetCoo()
-    {
-        return m_point;
-    }
-
     void SetCoo(const Coo &val)
     {
         m_point = val;
@@ -61,11 +56,6 @@ public:
     double GetY() const
     {
         return m_point.y;
-    }
-
-    float GetLevel() const
-    {
-        return m_level;
     }
 
     void SetLevel(float val)

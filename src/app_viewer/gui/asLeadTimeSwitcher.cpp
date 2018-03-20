@@ -195,17 +195,6 @@ void asLeadTimeSwitcher::SetBitmap(wxBitmap *bmp)
     }
 }
 
-wxBitmap *asLeadTimeSwitcher::GetBitmap()
-{
-    wxASSERT(m_bmp);
-
-    if (m_bmp != NULL) {
-        return m_bmp;
-    }
-
-    return NULL;
-}
-
 void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event)
 {
     if (m_bmp != NULL) {

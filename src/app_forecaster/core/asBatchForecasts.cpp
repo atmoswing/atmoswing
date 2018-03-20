@@ -144,12 +144,6 @@ void asBatchForecasts::ClearForecasts()
     m_forecastFileNames.clear();
 }
 
-void asBatchForecasts::AddForecast()
-{
-    unsigned long nb = m_forecastFileNames.size() + 1;
-    m_forecastFileNames.resize(nb);
-}
-
 bool asBatchForecasts::HasExports() const
 {
     return m_exportSyntheticXml;

@@ -67,8 +67,6 @@ private:
 
     void SetLeadTimeMarker(int leadTime);
 
-    wxBitmap *GetBitmap();
-
     void CreatePath(wxGraphicsPath &path, int iCol);
 
     void CreatePathRing(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);

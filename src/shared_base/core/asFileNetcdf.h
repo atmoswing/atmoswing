@@ -162,11 +162,6 @@ public:
 
     nc_type GetVarType(const wxString &varName);
 
-    int GetFileId() const
-    {
-        return m_fileId;
-    }
-
     size_t GetVarsNb() const
     {
         return m_struct.vars.size();

@@ -237,16 +237,6 @@ public:
         return true;
     }
 
-    double GetTimeMinHours() const
-    {
-        return m_timeMinHours;
-    }
-
-    double GetTimeMaxHours() const
-    {
-        return m_timeMaxHours;
-    }
-
     int GetTimeShiftDays() const
     {
         int shift = 0;
@@ -337,43 +327,6 @@ public:
     }
 
     bool SetPredictandStationIds(vi val);
-
-    wxString GePredictandtDatasetId() const
-    {
-        return m_predictandDatasetId;
-    }
-
-    bool SetPredictandDatasetId(const wxString &val);
-
-    asPredictand::Parameter GetPredictandParameter() const
-    {
-        return m_predictandParameter;
-    }
-
-    void SetPredictandParameter(asPredictand::Parameter val)
-    {
-        m_predictandParameter = val;
-    }
-
-    asPredictand::TemporalResolution GetPredictandTemporalResolution() const
-    {
-        return m_predictandTemporalResolution;
-    }
-
-    void SetPredictandTemporalResolution(asPredictand::TemporalResolution val)
-    {
-        m_predictandTemporalResolution = val;
-    }
-
-    asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
-    {
-        return m_predictandSpatialAggregation;
-    }
-
-    void SetPredictandSpatialAggregation(asPredictand::SpatialAggregation val)
-    {
-        m_predictandSpatialAggregation = val;
-    }
 
     double GetPredictandTimeHours() const
     {

@@ -78,15 +78,6 @@ wxString asConfig::CreateTempFileName(const wxString &prefix)
     return pathTry;
 }
 
-wxString asConfig::GetDataDir()
-{
-    ThreadsManager().CritSectionConfig().Enter();
-    wxString dirData = wxStandardPaths::Get().GetDataDir();
-    ThreadsManager().CritSectionConfig().Leave();
-    dirData.Append(DS);
-    return dirData;
-}
-
 wxString asConfig::GetSoftDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
@@ -132,10 +123,4 @@ wxString asConfig::GetDefaultUserWorkingDir()
 {
     wxString dirData = GetUserDataDir() + DS + "Data" + DS;
     return dirData;
-}
-
-wxString asConfig::GetDefaultUserConfigDir()
-{
-    wxString dirConfig = GetUserDataDir() + DS + "Config" + DS;
-    return dirConfig;
 }

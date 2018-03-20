@@ -66,11 +66,6 @@ public:
         m_filePath = path;
     }
 
-    wxString GetCoordinateSys() const
-    {
-        return m_coordinateSys;
-    }
-
     wxString GetForecastsDirectory() const
     {
         return m_forecastsDirectory;

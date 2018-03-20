@@ -65,12 +65,6 @@ public:
         m_hasSingleValue = false;
     }
 
-    void SetScoreArray(a1f val)
-    {
-        m_scoreArray = val;
-        m_hasSingleValue = false;
-    }
-
     bool Save();
 
     bool Load();

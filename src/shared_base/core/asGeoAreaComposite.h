@@ -98,16 +98,6 @@ public:
         return m_absoluteYmax;
     }
 
-    double GetAbsoluteXwidth() const
-    {
-        return std::abs(m_absoluteXmax - m_absoluteXmin);
-    }
-
-    double GetAbsoluteYwidth() const
-    {
-        return std::abs(m_absoluteYmax - m_absoluteYmin);
-    }
-
     double GetXmin() const;
 
     double GetXmax() const;
@@ -121,11 +111,6 @@ public:
     int GetNbComposites() const
     {
         return (int) m_composites.size();
-    }
-
-    std::vector<asGeoArea> GetComposites() const
-    {
-        return m_composites;
     }
 
     asGeoArea GetComposite(int id) const

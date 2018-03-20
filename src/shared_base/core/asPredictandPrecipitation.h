@@ -72,19 +72,9 @@ public:
         m_returnPeriodNormalization = val;
     }
 
-    float GetReturnPeriodNormalization() const
-    {
-        return m_returnPeriodNormalization;
-    }
-
     void SetIsSqrt(bool val)
     {
         m_isSqrt = val;
-    }
-
-    bool IsSqrt() const
-    {
-        return m_isSqrt;
     }
 
 

@@ -191,11 +191,11 @@ asResultsForecast *asResultsForecastAggregator::GetForecast(int methodRow, int f
     return m_forecasts[methodRow][forecastRow];
 }
 
-asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadtimeRow) const
+asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const
 {
     wxASSERT(m_pastForecasts.size() > (unsigned) methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > (unsigned) forecastRow);
-    return m_pastForecasts[methodRow][forecastRow][leadtimeRow];
+    return m_pastForecasts[methodRow][forecastRow][leadTimeRow];
 }
 
 wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecastRow) const
@@ -245,18 +245,6 @@ wxString asResultsForecastAggregator::GetMethodName(int methodRow) const
     wxASSERT(!name.IsEmpty());
 
     return name;
-}
-
-vwxs asResultsForecastAggregator::GetAllMethodIds() const
-{
-    vwxs methodsIds;
-
-    for (int methodRow = 1; methodRow < (int) m_forecasts.size(); methodRow++) {
-        wxASSERT(!m_forecasts[methodRow].empty());
-        methodsIds.push_back(m_forecasts[methodRow][0]->GetMethodId());
-    }
-
-    return methodsIds;
 }
 
 vwxs asResultsForecastAggregator::GetAllMethodNames() const
@@ -334,19 +322,6 @@ wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const
     return names;
 }
 
-vwxs asResultsForecastAggregator::GetFilePaths() const
-{
-    vwxs files;
-
-    for (int i = 0; (unsigned) i < m_forecasts.size(); i++) {
-        for (int j = 0; (unsigned) j < m_forecasts[i].size(); j++) {
-            files.push_back(m_forecasts[i][j]->GetFilePath());
-        }
-    }
-
-    return files;
-}
-
 wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow) const
 {
     if (forecastRow < 0) {
@@ -354,19 +329,6 @@ wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow
     }
 
     return m_forecasts[methodRow][forecastRow]->GetFilePath();
-}
-
-wxArrayString asResultsForecastAggregator::GetFilePathsWxArray() const
-{
-    wxArrayString files;
-
-    for (int i = 0; (unsigned) i < m_forecasts.size(); i++) {
-        for (int j = 0; (unsigned) j < m_forecasts[i].size(); j++) {
-            files.Add(m_forecasts[i][j]->GetFilePath());
-        }
-    }
-
-    return files;
 }
 
 a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const

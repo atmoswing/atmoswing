@@ -98,56 +98,6 @@ public:
 
     bool OpenForecast(const wxArrayString &names);
 
-    vrLayerManager *GetLayerManager() const
-    {
-        return m_layerManager;
-    }
-
-    void SetLayerManager(vrLayerManager *layerManager)
-    {
-        m_layerManager = layerManager;
-    }
-
-    vrViewerLayerManager *GetViewerLayerManager() const
-    {
-        return m_viewerLayerManager;
-    }
-
-    void SetViewerLayerManager(vrViewerLayerManager *viewerLayerManager)
-    {
-        m_viewerLayerManager = viewerLayerManager;
-    }
-
-    vrViewerDisplay *GetViewerDisplay() const
-    {
-        return m_displayCtrl;
-    }
-
-    void SetViewerDisplay(vrViewerDisplay *viewerDisplay)
-    {
-        m_displayCtrl = viewerDisplay;
-    }
-
-    asForecastManager *GetForecastManager() const
-    {
-        return m_forecastManager;
-    }
-
-    void SetForecastManager(asForecastManager *forecastManager)
-    {
-        m_forecastManager = forecastManager;
-    }
-
-    asForecastViewer *GetForecastViewer() const
-    {
-        return m_forecastViewer;
-    }
-
-    void SetForecastViewer(asForecastViewer *forecastViewer)
-    {
-        m_forecastViewer = forecastViewer;
-    }
-
     asWorkspace *GetWorkspace()
     {
         return &m_workspace;
@@ -245,8 +195,6 @@ private:
     void OnOpenForecast(wxCommandEvent &event);
 
     void OnMoveLayer(wxCommandEvent &event);
-
-    void OnToolDisplayValue(wxCommandEvent &event);
 
     void OnChangeLeadTime(wxCommandEvent &event);
 

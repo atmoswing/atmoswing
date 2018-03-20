@@ -1446,16 +1446,6 @@ bool asParameters::SetPredictandStationIds(wxString val)
     return true;
 }
 
-bool asParameters::SetPredictandDatasetId(const wxString &val)
-{
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictand dataset ID is null"));
-        return false;
-    }
-    m_predictandDatasetId = val;
-    return true;
-}
-
 bool asParameters::SetPredictandTimeHours(double val)
 {
     if (asTools::IsNaN(val)) {

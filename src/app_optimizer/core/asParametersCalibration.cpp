@@ -1122,28 +1122,12 @@ double asParametersCalibration::GetPredictorTimeHoursUpperLimit(int iStep, int i
     return val;
 }
 
-double asParametersCalibration::GetPredictorXminIteration(int iStep, int iPtor) const
-{
-    if (m_stepsVect[iStep].predictors[iPtor].xMin.size() < 2)
-        return 0;
-
-    return m_stepsVect[iStep].predictors[iPtor].xMin[1] - m_stepsVect[iStep].predictors[iPtor].xMin[0];
-}
-
 int asParametersCalibration::GetPredictorXptsnbIteration(int iStep, int iPtor) const
 {
     if (m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() < 2)
         return 0;
 
     return m_stepsVect[iStep].predictors[iPtor].xPtsNb[1] - m_stepsVect[iStep].predictors[iPtor].xPtsNb[0];
-}
-
-double asParametersCalibration::GetPredictorYminIteration(int iStep, int iPtor) const
-{
-    if (m_stepsVect[iStep].predictors[iPtor].yMin.size() < 2)
-        return 0;
-
-    return m_stepsVect[iStep].predictors[iPtor].yMin[1] - m_stepsVect[iStep].predictors[iPtor].yMin[0];
 }
 
 int asParametersCalibration::GetPredictorYptsnbIteration(int iStep, int iPtor) const
