@@ -64,8 +64,7 @@ cmake-build-debug/
 cmake-build-release/
 cmake-build-relwithdebinfo/
 external/
-*/vroomgis/
+**/vroomgis/
 **/eigen-prefix/
 **/googletest-prefix/
 *.resolve
-

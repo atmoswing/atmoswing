@@ -124,11 +124,6 @@ void asForecastViewer::SetForecast(int methodRow, int forecastRow)
     Redraw();
 }
 
-wxString asForecastViewer::GetStationName(int iStat) const
-{
-    return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, iStat);
-}
-
 float asForecastViewer::GetSelectedTargetDate()
 {
     a1f targetDates;

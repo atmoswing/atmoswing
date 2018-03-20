@@ -35,7 +35,7 @@ class asFileWorkspace
         : public asFileXml
 {
 public:
-    asFileWorkspace(const wxString &fileName, const ListFileMode &fileMode = asFile::Replace);
+    asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileWorkspace();
 
