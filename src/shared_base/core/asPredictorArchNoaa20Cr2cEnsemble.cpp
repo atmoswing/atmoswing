@@ -40,8 +40,6 @@ asPredictorArchNoaa20Cr2cEnsemble::asPredictorArchNoaa20Cr2cEnsemble(const wxStr
     m_datasetName = "Twentieth Century Reanalysis (v2c) Ensemble";
     m_fileType = asFile::Netcdf;
     m_isEnsemble = true;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
     m_xAxisShift = 0;

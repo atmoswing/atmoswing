@@ -40,8 +40,6 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = NaNd;
     m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;

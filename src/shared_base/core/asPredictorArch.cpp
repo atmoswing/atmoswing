@@ -40,7 +40,6 @@
 #include <asPredictorArchNoaaOisst2Subset.h>
 #include <asPredictorArchEcmwfEraInterim.h>
 #include <asPredictorArchEcmwfEra20C.h>
-#include <asPredictorArchEcmwfEra20C6h.h>
 #include <asPredictorArchEcmwfCera20C.h>
 #include <asPredictorArchNasaMerra2.h>
 #include <asPredictorArchNasaMerra2Subset.h>
@@ -80,11 +79,9 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchNcepCfsrSubset(dataId);
     } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
         predictor = new asPredictorArchEcmwfEraInterim(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_ERA_20C_3h", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
         predictor = new asPredictorArchEcmwfEra20C(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_ERA_20C_6h", false)) {
-        predictor = new asPredictorArchEcmwfEra20C6h(dataId);
-    } else if (datasetId.IsSameAs("ECMWF_CERA_20C_3h", false)) {
+    } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
         predictor = new asPredictorArchEcmwfCera20C(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asPredictorArchNasaMerra2(dataId);
@@ -145,7 +142,7 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
         }
         m_fileIndexes.cutEnd = 0;
         while (valFirstTime < timeArray[timeArrayIndexStart]) {
-            valFirstTime += m_timeStepHours / 24.0;
+            valFirstTime += m_fileStructure.axisTimeStep / 24.0;
             m_fileIndexes.timeStart++;
         }
         if (m_fileIndexes.timeStart + (m_fileIndexes.timeCount - 1) * m_fileIndexes.timeStep > m_fileStructure.axisTimeLength) {
@@ -505,17 +502,18 @@ bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const
     }
 
     // Check the time steps
-    if ((timeArray.GetTimeStepDays() > 0) && (m_timeStepHours / 24.0 > timeArray.GetTimeStepDays())) {
+    if ((timeArray.GetTimeStepDays() > 0) && (m_fileStructure.axisTimeStep / 24.0 > timeArray.GetTimeStepDays())) {
         wxLogError(_("The desired timestep is smaller than the data timestep."));
         return false;
     }
     double intpart, fractpart;
-    fractpart = modf(timeArray.GetTimeStepDays() / (m_timeStepHours / 24.0), &intpart);
+    fractpart = modf(timeArray.GetTimeStepDays() / (m_fileStructure.axisTimeStep / 24.0), &intpart);
     if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetStartingHour() - m_firstTimeStepHours) / m_timeStepHours, &intpart);
+    fractpart = modf((timeArray.GetStartingHour() - m_fileStructure.firstTimeStepHours) /
+                     m_fileStructure.axisTimeStep, &intpart);
     if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
                    timeArray.GetStartingHour(), fractpart);

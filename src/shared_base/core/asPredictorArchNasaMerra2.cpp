@@ -40,8 +40,6 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     m_originalProvider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(std::pow(10.f, 15.f));
     m_nanValues.push_back(std::pow(10.f, 15.f) - 1);

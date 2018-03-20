@@ -61,7 +61,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "inst6_3d_ana_Np";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 6;
         if (m_dataId.IsSameAs("h", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
@@ -105,7 +104,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "inst3_3d_asm_Np";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 3;
         if (m_dataId.IsSameAs("epv", false)) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Ertel's potential vorticity";
@@ -144,7 +142,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "inst1_2d_int_Nx";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 1;
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -172,7 +169,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "inst1_2d_asm_Nx";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 1;
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -205,8 +201,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "tavg1_2d_flx_Nx";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 1;
-        m_firstTimeStepHours = 0.5;
         if (m_dataId.IsSameAs("prectot", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total surface precipitation flux";
@@ -224,8 +218,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         m_subFolder = "tavg1_2d_lnd_Nx";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
-        m_timeStepHours = 1;
-        m_firstTimeStepHours = 0.5;
         if (m_dataId.IsSameAs("prectot", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation land; bias corrected";

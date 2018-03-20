@@ -41,8 +41,6 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));

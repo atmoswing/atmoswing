@@ -37,9 +37,6 @@ asPredictor::asPredictor(const wxString &dataId)
         : m_initialized(false),
           m_axesChecked(false),
           m_dataId(dataId),
-          m_timeZoneHours(0.0),
-          m_timeStepHours(0.0),
-          m_firstTimeStepHours(0.0),
           m_parameter(ParameterUndefined),
           m_unit(UnitUndefined),
           m_xAxisStep(0.0f),
@@ -57,8 +54,21 @@ asPredictor::asPredictor(const wxString &dataId)
 
     m_fileStructure.hasLevelDimension = true;
     m_fileStructure.singleLevel = false;
+    m_fileStructure.axisTimeStep = 0;
+    m_fileStructure.axisTimeFirstValue = 0;
+    m_fileStructure.axisTimeLastValue = 0;
+    m_fileStructure.axisTimeLength = 0;
     m_fileIndexes.memberStart = 0;
     m_fileIndexes.memberCount = 1;
+    m_fileIndexes.cutEnd = 0;
+    m_fileIndexes.cutStart = 0;
+    m_fileIndexes.latStep = 0;
+    m_fileIndexes.lonStep = 0;
+    m_fileIndexes.level = 0;
+    m_fileIndexes.timeArrayCount = 0;
+    m_fileIndexes.timeCount = 0;
+    m_fileIndexes.timeStart = 0;
+    m_fileIndexes.timeStep = 0;
 
     int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
     AssignGribCode(arr);
@@ -335,15 +345,25 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
     }
 
     try {
-        // Check the time array
-        if (!CheckTimeArray(timeArray)) {
-            wxLogError(_("The time array is not valid to load data."));
-            return false;
-        }
-
         // List files and check availability
         ListFiles(timeArray);
         if (!CheckFilesPresence()) {
+            return false;
+        }
+
+        // The desired level
+        if (desiredArea) {
+            m_level = desiredArea->GetComposite(0).GetLevel();
+        }
+
+        // Get file axes
+        if (!EnquireFileStructure()) {
+            return false;
+        }
+
+        // Check the time array
+        if (!CheckTimeArray(timeArray)) {
+            wxLogError(_("The time array is not valid to load data."));
             return false;
         }
 
@@ -352,12 +372,7 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
 
         // Store time array
         m_time = timeArray.GetTimeArray();
-        m_fileIndexes.timeStep = wxMax(timeArray.GetTimeStepHours() / m_timeStepHours, 1);
-
-        // The desired level
-        if (desiredArea) {
-            m_level = desiredArea->GetComposite(0).GetLevel();
-        }
+        m_fileIndexes.timeStep = wxMax(timeArray.GetTimeStepHours() / m_fileStructure.axisTimeStep, 1);
 
         // Number of composites
         int compositesNb = 1;
@@ -448,6 +463,31 @@ bool asPredictor::LoadFullArea(double date, float level)
     return Load(NULL, timeArray);
 }
 
+bool asPredictor::EnquireFileStructure()
+{
+    wxASSERT(m_files.size() > 0);
+
+    switch (m_fileType) {
+        case (asFile::Netcdf) : {
+            if (!EnquireNetcdfFileStructure()) {
+                return false;
+            }
+            break;
+        }
+        case (asFile::Grib2) : {
+            if (!EnquireGribFileStructure()) {
+                return false;
+            }
+            break;
+        }
+        default: {
+            wxLogError(_("Predictor file type not correctly defined."));
+        }
+    }
+
+    return true;
+}
+
 bool asPredictor::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     switch (m_fileType) {
@@ -471,6 +511,32 @@ bool asPredictor::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArra
             wxLogError(_("Predictor file type not correctly defined."));
         }
     }
+
+    return true;
+}
+
+bool asPredictor::EnquireNetcdfFileStructure()
+{
+    // Open the NetCDF file
+    ThreadsManager().CritSectionNetCDF().Enter();
+    asFileNetcdf ncFile(m_files[0], asFileNetcdf::ReadOnly);
+    if (!ncFile.Open()) {
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(ncFile)) {
+        ncFile.Close();
+        ThreadsManager().CritSectionNetCDF().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Close the nc file
+    ncFile.Close();
+    ThreadsManager().CritSectionNetCDF().Leave();
 
     return true;
 }
@@ -523,6 +589,58 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompo
     return true;
 }
 
+bool asPredictor::EnquireGribFileStructure()
+{
+    wxASSERT(m_files.size() > 1);
+
+    // Open 2 Grib files
+    ThreadsManager().CritSectionGrib().Enter();
+    asFileGrib2 gbFile0(m_files[0], asFileGrib2::ReadOnly);
+    if (!gbFile0.Open()) {
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+    asFileGrib2 gbFile1(m_files[1], asFileGrib2::ReadOnly);
+    if (!gbFile1.Open()) {
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Set index position
+    if (!gbFile0.SetIndexPosition(m_gribCode, m_level)) {
+        gbFile0.Close();
+        gbFile1.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+    if (!gbFile1.SetIndexPosition(m_gribCode, m_level)) {
+        gbFile0.Close();
+        gbFile1.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Parse file structure
+    if (!ParseFileStructure(&gbFile0, &gbFile1)) {
+        gbFile0.Close();
+        gbFile1.Close();
+        ThreadsManager().CritSectionGrib().Leave();
+        wxFAIL;
+        return false;
+    }
+
+    // Close the nc file
+    gbFile0.Close();
+    gbFile1.Close();
+    ThreadsManager().CritSectionGrib().Leave();
+
+    return true;
+}
+
 bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
                                       asTimeArray &timeArray, vvva2f &compositeData)
 {
@@ -544,7 +662,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaComposi
     }
 
     // Parse file structure
-    if (!ParseFileStructure(gbFile)) {
+    if (!ParseFileStructure(&gbFile)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -636,6 +754,10 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
 
     m_fileStructure.axisTimeFirstValue = ConvertToMjd(timeFirstVal, refValue);
     m_fileStructure.axisTimeLastValue = ConvertToMjd(timeLastVal, refValue);
+    m_fileStructure.axisTimeStep = asTools::Round(
+            24 * (m_fileStructure.axisTimeLastValue - m_fileStructure.axisTimeFirstValue) /
+                 (m_fileStructure.axisTimeLength - 1));
+    m_fileStructure.firstTimeStepHours = fmod(24 * m_fileStructure.axisTimeFirstValue, m_fileStructure.axisTimeStep);
 
     return true;
 }
@@ -708,11 +830,11 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asPredictor::ParseFileStructure(asFileGrib2 &gbFile)
+bool asPredictor::ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1)
 {
     // Get full axes from the file
-    gbFile.GetXaxis(m_fileStructure.axisLon);
-    gbFile.GetYaxis(m_fileStructure.axisLat);
+    gbFile0->GetXaxis(m_fileStructure.axisLon);
+    gbFile0->GetYaxis(m_fileStructure.axisLat);
 
     if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
         wxLogError(_("The level dimension is not yet implemented for Grib files."));
@@ -721,8 +843,14 @@ bool asPredictor::ParseFileStructure(asFileGrib2 &gbFile)
 
     // Yet handle a unique time value per file.
     m_fileStructure.axisTimeLength = 1;
-    m_fileStructure.axisTimeFirstValue = gbFile.GetTime();
-    m_fileStructure.axisTimeLastValue = gbFile.GetTime();
+    m_fileStructure.axisTimeFirstValue = gbFile0->GetTime();
+    m_fileStructure.axisTimeLastValue = gbFile0->GetTime();
+
+    if(gbFile1 != nullptr) {
+        double secondFileTime = gbFile1->GetTime();
+        m_fileStructure.axisTimeStep = asTools::Round(24 * (secondFileTime - m_fileStructure.axisTimeFirstValue));
+        m_fileStructure.firstTimeStepHours = fmod(24 * m_fileStructure.axisTimeFirstValue, m_fileStructure.axisTimeStep);
+    }
 
     return CheckFileStructure();
 }

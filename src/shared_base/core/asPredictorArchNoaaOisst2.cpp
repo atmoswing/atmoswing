@@ -40,8 +40,6 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
     m_originalProvider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 24;
-    m_firstTimeStepHours = 12;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));

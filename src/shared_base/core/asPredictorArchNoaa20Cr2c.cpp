@@ -39,8 +39,6 @@ asPredictorArchNoaa20Cr2c::asPredictorArchNoaa20Cr2c(const wxString &dataId)
     m_originalProvider = "NOAA";
     m_datasetName = "Twentieth Century Reanalysis (v2c)";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
     m_xAxisShift = 0;

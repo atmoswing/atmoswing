@@ -51,9 +51,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor != NULL);
@@ -133,9 +131,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -216,9 +212,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));
@@ -297,9 +291,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&geoarea, timearray));

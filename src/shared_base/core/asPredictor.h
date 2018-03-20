@@ -296,11 +296,6 @@ public:
         return m_yAxisShift;
     }
 
-    void SetTimeStepHours(double val)
-    {
-        m_timeStepHours = val;
-    }
-
     void SelectFirstMember()
     {
         if (!m_isEnsemble) {
@@ -354,6 +349,8 @@ protected:
         a1i axisMember;
         double axisTimeFirstValue;
         double axisTimeLastValue;
+        double axisTimeStep;
+        double firstTimeStepHours;
         size_t axisTimeLength;
     };
     struct FileIndexesArea
@@ -386,12 +383,9 @@ protected:
     wxString m_subFolder;
     wxString m_dataId;
     wxString m_datasetId;
+    wxString m_datasetName;
     wxString m_originalProvider;
     wxString m_transformedBy;
-    wxString m_datasetName;
-    double m_timeZoneHours;
-    double m_timeStepHours;
-    double m_firstTimeStepHours;
     vd m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
@@ -420,6 +414,8 @@ protected:
 
     virtual void ListFiles(asTimeArray &timeArray) = 0;
 
+    bool EnquireFileStructure();
+
     bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
@@ -442,15 +438,19 @@ protected:
 
     bool GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData);
 
+    bool EnquireNetcdfFileStructure();
+
     bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
+
+    bool EnquireGribFileStructure();
 
     bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib2 &gbFile);
+    bool ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1 = nullptr);
 
     bool CheckFileStructure();
 

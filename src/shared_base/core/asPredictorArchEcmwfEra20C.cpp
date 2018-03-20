@@ -39,8 +39,6 @@ asPredictorArchEcmwfEra20C::asPredictorArchEcmwfEra20C(const wxString &dataId)
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA 20th Century";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 3;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;

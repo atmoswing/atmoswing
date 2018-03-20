@@ -41,13 +41,11 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_transformedBy = wxEmptyString;
     m_datasetName = "Global Forecast System";
     m_fileType = asFile::Grib2;
-    m_timeZoneHours = 0;
     m_forecastLeadTimeStart = 0;
     m_forecastLeadTimeEnd = 240; // After 240h, available in another temporal resolution
     m_forecastLeadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = false;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);

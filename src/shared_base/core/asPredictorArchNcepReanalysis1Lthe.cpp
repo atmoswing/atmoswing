@@ -41,8 +41,6 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_fileType = asFile::Netcdf;
-    m_timeStepHours = 24;
-    m_firstTimeStepHours = 0;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
@@ -72,32 +70,24 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
         m_fileVariableName = "hgt";
         m_unit = m;
-        m_firstTimeStepHours = 12;
-        m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("prwtr", false)) {
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
         m_fileVariableName = "pwa";
         m_unit = mm;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 12;
     } else if (m_dataId.IsSameAs("rhum", false)) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
         m_fileVariableName = "rhum";
         m_unit = percent;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 12;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
                                           m_product));

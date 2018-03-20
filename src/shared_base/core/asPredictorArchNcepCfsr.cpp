@@ -39,8 +39,6 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
     m_originalProvider = "NCEP";
     m_datasetName = "CFSR";
     m_fileType = asFile::Grib2;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = NaNd;
     m_strideAllowed = false;
     m_xAxisShift = 0;
     m_yAxisShift = 0;

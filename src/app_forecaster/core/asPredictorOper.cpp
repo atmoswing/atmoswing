@@ -136,8 +136,6 @@ double asPredictorOper::UpdateRunDateInUse()
     m_fileNames.clear();
     m_urls.clear();
 
-    // TODO: Fix the use of m_timeZoneHours
-
     // Round time to the last available data
     double runHourStart = m_runHourStart;
     double runUpdate = m_runUpdate;
