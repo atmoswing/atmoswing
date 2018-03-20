@@ -1043,10 +1043,10 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     vi stations = params->GetPredictandStationIds();
     int stationsNb = (int) stations.size();
     va1f predictandDataNorm((unsigned long) stationsNb);
-    va1f predictandDataGross((unsigned long) stationsNb);
+    va1f predictandDataRaw((unsigned long) stationsNb);
     for (int iStat = 0; iStat < stationsNb; iStat++) {
         predictandDataNorm[iStat] = predictand.GetDataNormalizedStation(stations[iStat]);
-        predictandDataGross[iStat] = predictand.GetDataGrossStation(stations[iStat]);
+        predictandDataRaw[iStat] = predictand.GetDataRawStation(stations[iStat]);
     }
 
     int predictandTimeLength = predictand.GetTimeLength();
@@ -1131,11 +1131,11 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     wxASSERT(targTimeLength > 0);
     wxASSERT(analogsNb > 0);
     va2f finalAnalogValuesNorm(stationsNb, a2f(targTimeLength, analogsNb));
-    va2f finalAnalogValuesGross(stationsNb, a2f(targTimeLength, analogsNb));
+    va2f finalAnalogValuesRaw(stationsNb, a2f(targTimeLength, analogsNb));
     a2f finalAnalogCriteria(targTimeLength, analogsNb);
     a1f finalTargetDates(targTimeLength);
     va1f finalTargetValuesNorm(stationsNb, a1f(targTimeLength));
-    va1f finalTargetValuesGross(stationsNb, a1f(targTimeLength));
+    va1f finalTargetValuesRaw(stationsNb, a1f(targTimeLength));
 
     // Get predictand values
     for (int iTargetDate = indexTargDatesStart; iTargetDate <= indexTargDatesEnd; iTargetDate++) {
@@ -1150,12 +1150,12 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
         if (ignoreTargetValues | (predictandIndex == asOUT_OF_RANGE) | (predictandIndex == asNOT_FOUND)) {
             for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                 finalTargetValuesNorm[iStat](iTargetDatenew) = NaNf;
-                finalTargetValuesGross[iStat](iTargetDatenew) = NaNf;
+                finalTargetValuesRaw[iStat](iTargetDatenew) = NaNf;
             }
         } else {
             for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                 finalTargetValuesNorm[iStat](iTargetDatenew) = predictandDataNorm[iStat](predictandIndex);
-                finalTargetValuesGross[iStat](iTargetDatenew) = predictandDataGross[iStat](predictandIndex);
+                finalTargetValuesRaw[iStat](iTargetDatenew) = predictandDataRaw[iStat](predictandIndex);
             }
         }
 
@@ -1176,13 +1176,13 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
                                      currDate, startDate, endDate);
                         for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                             finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNf;
-                            finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNf;
+                            finalAnalogValuesRaw[iStat](iTargetDatenew, iAnalogDate) = NaNf;
                         }
                     } else {
                         for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                             finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = predictandDataNorm[iStat](
                                     predictandIndex);
-                            finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = predictandDataGross[iStat](
+                            finalAnalogValuesRaw[iStat](iTargetDatenew, iAnalogDate) = predictandDataRaw[iStat](
                                     predictandIndex);
                         }
                     }
@@ -1193,7 +1193,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
                                asTime::GetStringTime(timeEnd, "DD.MM.YYYY"));
                     for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                         finalAnalogValuesNorm[iStat](iTargetDatenew, iAnalogDate) = NaNf;
-                        finalAnalogValuesGross[iStat](iTargetDatenew, iAnalogDate) = NaNf;
+                        finalAnalogValuesRaw[iStat](iTargetDatenew, iAnalogDate) = NaNf;
                     }
                 }
                 finalAnalogCriteria(iTargetDatenew, iAnalogDate) = analogsCriteria(iTargetDate, iAnalogDate);
@@ -1214,11 +1214,11 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
 
     // Copy results to the resulting object
     results.SetAnalogsValuesNorm(finalAnalogValuesNorm);
-    results.SetAnalogsValuesGross(finalAnalogValuesGross);
+    results.SetAnalogsValuesRaw(finalAnalogValuesRaw);
     results.SetAnalogsCriteria(finalAnalogCriteria);
     results.SetTargetDates(finalTargetDates);
     results.SetTargetValuesNorm(finalTargetValuesNorm);
-    results.SetTargetValuesGross(finalTargetValuesGross);
+    results.SetTargetValuesRaw(finalTargetValuesRaw);
 
     return true;
 }

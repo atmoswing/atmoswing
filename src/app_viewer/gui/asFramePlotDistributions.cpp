@@ -310,7 +310,7 @@ bool asFramePlotDistributions::PlotPredictands()
 
     // Check that there is no NaNs
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
         wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
         return false;
@@ -564,7 +564,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
-    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
@@ -616,7 +616,7 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Get the total number of points
-    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
@@ -667,7 +667,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
-    a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     a1f ranks = a1f::LinSpaced(nbPoints, 0, nbPoints - 1);
@@ -722,7 +722,7 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
 
     // Extract best analogs
-    a1f analogsAll = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogsAll = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
@@ -783,7 +783,7 @@ void asFramePlotDistributions::PlotClassicQuantiles()
 
     // Get forecast
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    a1f analogs = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
 
     // Loop over the quantiles
     for (int iPc = 0; iPc < pc.size(); iPc++) {

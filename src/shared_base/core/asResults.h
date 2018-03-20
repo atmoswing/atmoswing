@@ -90,7 +90,7 @@ protected:
 
     bool DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefTargetValuesGrossAttributes(asFileNetcdf &ncFile) const;
+    bool DefTargetValuesRawAttributes(asFileNetcdf &ncFile) const;
 
     bool DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile) const;
 
@@ -98,7 +98,7 @@ protected:
 
     bool DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsValuesRawAttributes(asFileNetcdf &ncFile) const;
 
     bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const;
 

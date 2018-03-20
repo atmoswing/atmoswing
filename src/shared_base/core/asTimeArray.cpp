@@ -712,8 +712,8 @@ bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const
     a1f predictandData;
     if (serieName.IsSameAs("DataNormalized")) {
         predictandData = predictand.GetDataNormalizedStation(stationId);
-    } else if (serieName.IsSameAs("DataGross")) {
-        predictandData = predictand.GetDataGrossStation(stationId);
+    } else if (serieName.IsSameAs("DataRaw")) {
+        predictandData = predictand.GetDataRawStation(stationId);
     } else {
         wxLogError(_("The predictand serie is not correctly defined in the time array construction."));
         return false;

@@ -47,6 +47,8 @@ public:
 
     void ClearForecasts();
 
+    void AddForecast();
+
     wxString GetFilePath() const
     {
         return m_filePath;
@@ -55,6 +57,11 @@ public:
     void SetFilePath(const wxString &path)
     {
         m_filePath = path;
+    }
+
+    bool HasChanged() const
+    {
+        return m_hasChanged;
     }
 
     bool HasExports() const;
@@ -67,6 +74,11 @@ public:
     void SetExportSyntheticXml(bool val)
     {
         m_exportSyntheticXml = val;
+    }
+
+    void SetHasChanged(bool val)
+    {
+        m_hasChanged = val;
     }
 
     wxString GetForecastsOutputDirectory() const
@@ -133,6 +145,12 @@ public:
     {
         wxASSERT((int) m_forecastFileNames.size() > i);
         return m_forecastFileNames[i];
+    }
+
+    void SetForecastFileName(int i, const wxString &val)
+    {
+        wxASSERT((int) m_forecastFileNames.size() > i);
+        m_forecastFileNames[i] = val;
     }
 
 protected:

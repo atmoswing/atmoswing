@@ -351,8 +351,8 @@ bool asPredictand::InitBaseContainers()
     m_stationStarts.resize(m_stationsNb);
     m_stationEnds.resize(m_stationsNb);
     m_time.resize(m_timeLength);
-    m_dataGross.resize(m_timeLength, m_stationsNb);
-    m_dataGross.fill(NaNf);
+    m_dataRaw.resize(m_timeLength, m_stationsNb);
+    m_dataRaw.fill(NaNf);
     if (m_hasNormalizedData) {
         m_dataNormalized.resize(m_timeLength, m_stationsNb);
         m_dataNormalized.fill(NaNf);
@@ -425,12 +425,12 @@ bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
     // Get data
     size_t indexStart[2] = {0, 0};
     size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
-    m_dataGross.resize(m_timeLength, m_stationsNb);
+    m_dataRaw.resize(m_timeLength, m_stationsNb);
 
     if (asTools::IsNaN(version) || version <= 1.3) {
-        ncFile.GetVarArray("data_gross", indexStart, indexCount, &m_dataGross(0, 0));
+        ncFile.GetVarArray("data_gross", indexStart, indexCount, &m_dataRaw(0, 0));
     } else {
-        ncFile.GetVarArray("data", indexStart, indexCount, &m_dataGross(0, 0));
+        ncFile.GetVarArray("data", indexStart, indexCount, &m_dataRaw(0, 0));
     }
 
     return true;
@@ -536,7 +536,7 @@ bool asPredictand::SaveCommonData(asFileNetcdf &ncFile) const
     ncFile.PutVarArray("station_y_coords", startStations, countStations, &m_stationYCoords(0));
     ncFile.PutVarArray("station_starts", startStations, countStations, &m_stationStarts(0));
     ncFile.PutVarArray("station_ends", startStations, countStations, &m_stationEnds(0));
-    ncFile.PutVarArray("data", start2, count2, &m_dataGross(0, 0));
+    ncFile.PutVarArray("data", start2, count2, &m_dataRaw(0, 0));
 
     return true;
 }
@@ -691,7 +691,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                                                        filePattern.dataEnd - filePattern.dataBegin + 1);
 
                     // Put value in the matrix
-                    m_dataGross(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+                    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
 
                     timeIndex++;
                     break;
@@ -759,7 +759,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                     wxString dataStr = vColumns[filePattern.dataBegin - 1];
 
                     // Put value in the matrix
-                    m_dataGross(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
+                    m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
 
                     timeIndex++;
                     break;
@@ -808,10 +808,10 @@ float asPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData, wx
     }
 
     // Convert
-    double dataGross = 0;
-    dataStr.ToDouble(&dataGross);
+    double dataRaw = 0;
+    dataStr.ToDouble(&dataRaw);
 
-    return (float) dataGross;
+    return (float) dataRaw;
 }
 
 a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
@@ -887,8 +887,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
             // Get max
             if (!aggregate) {
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
-                    if (!asTools::IsNaN(m_dataGross(iRow, iStat))) {
-                        annualmax = wxMax(m_dataGross(iRow, iStat), annualmax);
+                    if (!asTools::IsNaN(m_dataRaw(iRow, iStat))) {
+                        annualmax = wxMax(m_dataRaw(iRow, iStat), annualmax);
                     } else {
                         nansNb++;
                     }
@@ -900,15 +900,15 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
                 // Correction for both extremes
                 rowstart = wxMax(rowstart - indexTimeSpanDown, 0);
                 rowstart += indexTimeSpanDown;
-                rowend = wxMin(rowend + indexTimeSpanUp, (int) m_dataGross.rows() - 1);
+                rowend = wxMin(rowend + indexTimeSpanUp, (int) m_dataRaw.rows() - 1);
                 rowend -= indexTimeSpanUp;
 
                 // Loop within the new limits
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
                     float timeStepSum = 0;
                     for (int iEl = iRow - indexTimeSpanDown; iEl <= iRow + indexTimeSpanUp; iEl++) {
-                        if (!asTools::IsNaN(m_dataGross(iEl, iStat))) {
-                            timeStepSum += m_dataGross(iEl, iStat);
+                        if (!asTools::IsNaN(m_dataRaw(iEl, iStat))) {
+                            timeStepSum += m_dataRaw(iEl, iStat);
                         } else {
                             timeStepSum = NaNf;
                             break;

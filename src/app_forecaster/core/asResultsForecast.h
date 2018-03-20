@@ -325,33 +325,33 @@ public:
         }
     }
 
-    a2f &GetAnalogsValuesGross(unsigned int iLead)
+    a2f &GetAnalogsValuesRaw(unsigned int iLead)
     {
-        wxASSERT(m_analogsValuesGross.size() > iLead);
-        return m_analogsValuesGross[iLead];
+        wxASSERT(m_analogsValuesRaw.size() > iLead);
+        return m_analogsValuesRaw[iLead];
     }
 
-    a1f GetAnalogsValuesGross(unsigned int iLead, int iStat) const
+    a1f GetAnalogsValuesRaw(unsigned int iLead, int iStat) const
     {
-        wxASSERT(m_analogsValuesGross.size() > iLead);
-        wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
-        a1f vals = m_analogsValuesGross[iLead].row(iStat);
+        wxASSERT(m_analogsValuesRaw.size() > iLead);
+        wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
+        a1f vals = m_analogsValuesRaw[iLead].row(iStat);
         return vals;
     }
 
-    void SetAnalogsValuesGross(unsigned int iLead, int iStat, const a1f &analogsValuesGross)
+    void SetAnalogsValuesRaw(unsigned int iLead, int iStat, const a1f &analogsValuesRaw)
     {
-        if (m_analogsValuesGross.size() >= iLead + 1) {
-            wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesGross[iLead].cols() == analogsValuesGross.size());
-            m_analogsValuesGross[iLead].row(iStat) = analogsValuesGross;
-        } else if (m_analogsValuesGross.size() == iLead) {
+        if (m_analogsValuesRaw.size() >= iLead + 1) {
+            wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
+            m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
+        } else if (m_analogsValuesRaw.size() == iLead) {
             a2f emptyBlock(m_stationIds.size(), m_analogsNb[iLead]);
-            m_analogsValuesGross.push_back(emptyBlock);
+            m_analogsValuesRaw.push_back(emptyBlock);
 
-            wxASSERT(m_analogsValuesGross[iLead].rows() > iStat);
-            wxASSERT(m_analogsValuesGross[iLead].cols() == analogsValuesGross.size());
-            m_analogsValuesGross[iLead].row(iStat) = analogsValuesGross;
+            wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
+            wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
+            m_analogsValuesRaw[iLead].row(iStat) = analogsValuesRaw;
         } else {
             asThrowException(_("The size of the values array does not fit with the required index."));
         }
@@ -415,7 +415,7 @@ private:
     a1f m_referenceAxis;
     a2f m_referenceValues;
     va1f m_analogsCriteria;
-    va2f m_analogsValuesGross;
+    va2f m_analogsValuesRaw;
     va1f m_analogsDates;
 };
 

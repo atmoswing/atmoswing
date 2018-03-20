@@ -63,9 +63,9 @@ public:
         m_targetValuesNorm = targetValuesNorm;
     }
 
-    void SetTargetValuesGross(va1f &targetValuesGross)
+    void SetTargetValuesRaw(va1f &targetValuesRaw)
     {
-        m_targetValuesGross = targetValuesGross;
+        m_targetValuesRaw = targetValuesRaw;
     }
 
     a2f &GetAnalogsCriteria()
@@ -89,14 +89,14 @@ public:
         m_analogsValuesNorm = analogsValuesNorm;
     }
 
-    va2f GetAnalogsValuesGross() const
+    va2f GetAnalogsValuesRaw() const
     {
-        return m_analogsValuesGross;
+        return m_analogsValuesRaw;
     }
 
-    void SetAnalogsValuesGross(va2f &analogsValuesGross)
+    void SetAnalogsValuesRaw(va2f &analogsValuesRaw)
     {
-        m_analogsValuesGross = analogsValuesGross;
+        m_analogsValuesRaw = analogsValuesRaw;
     }
 
     int GetTargetDatesLength() const
@@ -114,10 +114,10 @@ protected:
 private:
     a1f m_targetDates; // Dimensions: time
     va1f m_targetValuesNorm; // Dimensions: stations x time
-    va1f m_targetValuesGross; // Dimensions: stations x time
+    va1f m_targetValuesRaw; // Dimensions: stations x time
     a2f m_analogsCriteria; // Dimensions: time x analogs
     va2f m_analogsValuesNorm; // Dimensions: stations x time x analogs
-    va2f m_analogsValuesGross; // Dimensions: stations x time x analogs
+    va2f m_analogsValuesRaw; // Dimensions: stations x time x analogs
 };
 
 #endif // ASRESULTSVALUES_H

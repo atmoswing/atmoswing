@@ -1606,10 +1606,10 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
                 return false;
             }
 
-            va2f valuesGross = anaValues.GetAnalogsValuesGross();
-            wxASSERT(valuesGross[0].rows() == 1);
-            a1f rowValuesGross = valuesGross[0].row(0);
-            results.SetAnalogsValuesGross(iLead, iStat, rowValuesGross);
+            va2f valuesRaw = anaValues.GetAnalogsValuesRaw();
+            wxASSERT(valuesRaw[0].rows() == 1);
+            a1f rowValuesRaw = valuesRaw[0].row(0);
+            results.SetAnalogsValuesRaw(iLead, iStat, rowValuesRaw);
         }
     }
 

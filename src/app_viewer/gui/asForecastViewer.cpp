@@ -381,7 +381,7 @@ void asForecastViewer::Redraw()
 
             // Loop over the lead times
             for (int iLead = 0; iLead < leadTimeSize; iLead++) {
-                a1f values = forecast->GetAnalogsValuesGross(iLead, iStat);
+                a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
 
                 if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
                     data.Add(NaNd);
@@ -540,7 +540,7 @@ void asForecastViewer::Redraw()
                 m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 
-            a1f values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, iStat);
+            a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
 
             if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
                 data.Add(NaNd); // 1st real value

@@ -160,7 +160,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
 
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f dates = forecast->GetAnalogsDates(m_selectedDate);
-    a1f values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f values = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     a1f analogNb = a1f::LinSpaced(dates.size(), 1, dates.size());
 

@@ -32,8 +32,8 @@
 
 
 asResults::asResults()
-        : m_fileVersionMajor(1),
-          m_fileVersionMinor(8),
+        : m_fileVersionMajor(2),
+          m_fileVersionMinor(0),
           m_currentStep(0),
           m_dateProcessed(0),
           m_subFolder(wxEmptyString),
@@ -115,10 +115,10 @@ bool asResults::DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const
     return true;
 }
 
-bool asResults::DefTargetValuesGrossAttributes(asFileNetcdf &ncFile) const
+bool asResults::DefTargetValuesRawAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Target predictand gross values", "target_values_gross");
-    ncFile.PutAtt("var_desc", "Observed predictand values in the original form", "target_values_gross");
+    ncFile.PutAtt("long_name", "Target predictand raw values", "target_values_raw");
+    ncFile.PutAtt("var_desc", "Observed predictand values in the original form", "target_values_raw");
     return true;
 }
 
@@ -144,10 +144,10 @@ bool asResults::DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const
     return true;
 }
 
-bool asResults::DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile) const
+bool asResults::DefAnalogsValuesRawAttributes(asFileNetcdf &ncFile) const
 {
-    ncFile.PutAtt("long_name", "Analogs predictand gross values", "analog_values_gross");
-    ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values_gross");
+    ncFile.PutAtt("long_name", "Analogs predictand raw values", "analog_values_raw");
+    ncFile.PutAtt("var_desc", "Predictand values (original) from the analog method", "analog_values_raw");
     return true;
 }
 

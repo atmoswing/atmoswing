@@ -374,9 +374,9 @@ bool asPredictandPrecipitation::BuildDataNormalized()
 
         for (int iTime = 0; iTime < m_timeLength; iTime++) {
             if (m_isSqrt) {
-                m_dataNormalized(iTime, iStat) = sqrt(m_dataGross(iTime, iStat) / prt);
+                m_dataNormalized(iTime, iStat) = sqrt(m_dataRaw(iTime, iStat) / prt);
             } else {
-                m_dataNormalized(iTime, iStat) = m_dataGross(iTime, iStat) / prt;
+                m_dataNormalized(iTime, iStat) = m_dataRaw(iTime, iStat) / prt;
             }
         }
     }

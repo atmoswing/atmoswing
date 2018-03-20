@@ -608,7 +608,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
                 float thisVal = 0;
 
                 // Get values
-                a1f theseVals = forecast->GetAnalogsValuesGross(iLead, indexStation);
+                a1f theseVals = forecast->GetAnalogsValuesRaw(iLead, indexStation);
 
                 // Process quantiles
                 if (asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
@@ -747,7 +747,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             // Set 10 best analogs
             wxXmlNode *nodeBestAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "best_analogs");
             for (int j = 0; j < targetDates.size(); j++) {
-                a1f analogValues = forecast->GetAnalogsValuesGross(j, i);
+                a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
                 a1f analogDates = forecast->GetAnalogsDates(j);
                 a1f analogCriteria = forecast->GetAnalogsCriteria(j);
                 wxASSERT(analogValues.size() == analogDates.size());
@@ -772,7 +772,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             // Set quantiles
             wxXmlNode *nodeAnalogsQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "analogs_quantiles");
             for (int j = 0; j < targetDates.size(); j++) {
-                a1f analogValues = forecast->GetAnalogsValuesGross(j, i);
+                a1f analogValues = forecast->GetAnalogsValuesRaw(j, i);
 
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, quantiles.size()); k++) {

@@ -146,6 +146,12 @@ public:
         return m_spatialAggregation;
     }
 
+    void SetHasReferenceValues(bool val)
+    {
+        m_hasReferenceValues = val;
+        m_hasNormalizedData = val;
+    }
+
     int GetStationsNb() const
     {
         return m_stationsNb;
@@ -186,10 +192,10 @@ public:
         return m_stationYCoords;
     }
 
-    a1f GetDataGrossStation(int predictandStationId) const
+    a1f GetDataRawStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
-        return m_dataGross.col(indexStation);
+        return m_dataRaw.col(indexStation);
     }
 
     a1f GetDataNormalizedStation(int predictandStationId) const
@@ -198,7 +204,7 @@ public:
         if (m_hasNormalizedData) {
             return m_dataNormalized.col(indexStation);
         } else {
-            return m_dataGross.col(indexStation);
+            return m_dataRaw.col(indexStation);
         }
     }
 
@@ -225,7 +231,7 @@ protected:
     bool m_hasNormalizedData;
     bool m_hasReferenceValues;
     // Matrix data
-    a2f m_dataGross;
+    a2f m_dataRaw;
     a2f m_dataNormalized;
     // Vector (dim = time)
     a1d m_time;

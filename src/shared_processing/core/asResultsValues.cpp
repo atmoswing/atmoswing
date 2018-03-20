@@ -47,10 +47,10 @@ void asResultsValues::Init(asParameters *params)
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
     m_targetValuesNorm.resize(0);
-    m_targetValuesGross.resize(0);
+    m_targetValuesRaw.resize(0);
     m_analogsCriteria.resize(0, 0);
     m_analogsValuesNorm.resize(0);
-    m_analogsValuesGross.resize(0);
+    m_analogsValuesRaw.resize(0);
 }
 
 void asResultsValues::BuildFileName()
@@ -110,21 +110,21 @@ bool asResultsValues::Save()
     ncFile.DefVar("stations", NC_INT, 1, dimS);
     ncFile.DefVar("target_dates", NC_FLOAT, 1, dimT);
     ncFile.DefVar("target_values_norm", NC_FLOAT, 2, dimST);
-    ncFile.DefVar("target_values_gross", NC_FLOAT, 2, dimST);
+    ncFile.DefVar("target_values_raw", NC_FLOAT, 2, dimST);
     ncFile.DefVar("analog_criteria", NC_FLOAT, 2, dimTA);
     ncFile.DefVarDeflate("analog_criteria");
     ncFile.DefVar("analog_values_norm", NC_FLOAT, 3, dimSTA);
     ncFile.DefVarDeflate("analog_values_norm");
-    ncFile.DefVar("analog_values_gross", NC_FLOAT, 3, dimSTA);
-    ncFile.DefVarDeflate("analog_values_gross");
+    ncFile.DefVar("analog_values_raw", NC_FLOAT, 3, dimSTA);
+    ncFile.DefVarDeflate("analog_values_raw");
 
     // Put attributes
     DefTargetDatesAttributes(ncFile);
     DefTargetValuesNormAttributes(ncFile);
-    DefTargetValuesGrossAttributes(ncFile);
+    DefTargetValuesRawAttributes(ncFile);
     DefAnalogsCriteriaAttributes(ncFile);
     DefAnalogsValuesNormAttributes(ncFile);
-    DefAnalogsValuesGrossAttributes(ncFile);
+    DefAnalogsValuesRawAttributes(ncFile);
 
     // End definitions: leave define mode
     ncFile.EndDef();
@@ -145,10 +145,10 @@ bool asResultsValues::Save()
     ncFile.PutVarArray("stations", startS, countS, &m_targetDates(0));
     ncFile.PutVarArray("target_dates", startT, countT, &m_targetDates(0));
     ncFile.PutVarArray("target_values_norm", startST, countST, &m_targetValuesNorm[0](0));
-    ncFile.PutVarArray("target_values_gross", startST, countST, &m_targetValuesGross[0](0));
+    ncFile.PutVarArray("target_values_raw", startST, countST, &m_targetValuesRaw[0](0));
     ncFile.PutVarArray("analog_criteria", startTA, countTA, &m_analogsCriteria(0));
     ncFile.PutVarArray("analog_values_norm", startSTA, countSTA, &m_analogsValuesNorm[0](0));
-    ncFile.PutVarArray("analog_values_gross", startSTA, countSTA, &m_analogsValuesGross[0](0));
+    ncFile.PutVarArray("analog_values_raw", startSTA, countSTA, &m_analogsValuesRaw[0](0));
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -194,18 +194,18 @@ bool asResultsValues::Load()
     // Resize containers
     m_predictandStationIds.resize(nStations);
     m_targetValuesNorm.resize(nStations, a1f(nTime));
-    m_targetValuesGross.resize(nStations, a1f(nTime));
+    m_targetValuesRaw.resize(nStations, a1f(nTime));
     m_analogsCriteria.resize(nTime, nAnalogs);
     m_analogsValuesNorm.resize(nStations, a2f(nTime, nAnalogs));
-    m_analogsValuesGross.resize(nStations, a2f(nTime, nAnalogs));
+    m_analogsValuesRaw.resize(nStations, a2f(nTime, nAnalogs));
 
     // Get data
     ncFile.GetVar("stations", &m_predictandStationIds[0]);
     ncFile.GetVarArray("target_values_norm", startST, countST, &m_targetValuesNorm[0](0));
-    ncFile.GetVarArray("target_values_gross", startST, countST, &m_targetValuesGross[0](0));
+    ncFile.GetVarArray("target_values_raw", startST, countST, &m_targetValuesRaw[0](0));
     ncFile.GetVarArray("analog_criteria", startTA, countTA, &m_analogsCriteria(0));
     ncFile.GetVarArray("analog_values_norm", startSTA, countSTA, &m_analogsValuesNorm[0](0));
-    ncFile.GetVarArray("analog_values_gross", startSTA, countSTA, &m_analogsValuesGross[0](0));
+    ncFile.GetVarArray("analog_values_raw", startSTA, countSTA, &m_analogsValuesRaw[0](0));
 
     ThreadsManager().CritSectionNetCDF().Leave();
 
