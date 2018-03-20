@@ -42,8 +42,6 @@ asPredictorArchNoaa20Cr2cEnsemble::asPredictorArchNoaa20Cr2cEnsemble(const wxStr
     m_isEnsemble = true;
     m_strideAllowed = true;
     m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -64,8 +62,6 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
     if (m_product.IsSameAs("analysis", false)) {
 
         m_subFolder = "analysis";
-        m_xAxisStep = 2;
-        m_yAxisStep = 2;
         if (m_dataId.IsSameAs("prmsl", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
@@ -126,8 +122,6 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
     } else if (m_product.IsSameAs("first_guess", false)) {
 
         m_subFolder = "first_guess";
-        m_xAxisStep = 2;
-        m_yAxisStep = 2;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";

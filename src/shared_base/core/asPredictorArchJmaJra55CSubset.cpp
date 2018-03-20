@@ -56,8 +56,6 @@ bool asPredictorArchJmaJra55CSubset::Init()
         // JRA-55 6-Hourly 1.25 Degree Isobaric Analysis Fields
         m_fStr.hasLevelDim = true;
         m_subFolder = "anl_p125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".C.";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";
@@ -98,8 +96,6 @@ bool asPredictorArchJmaJra55CSubset::Init()
         // JRA-55 6-Hourly 1.25 Degree Surface Analysis Fields
         m_fStr.hasLevelDim = false;
         m_subFolder = "anl_surf125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".C.";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
@@ -121,8 +117,6 @@ bool asPredictorArchJmaJra55CSubset::Init()
         // JRA-55 6-Hourly 1.25 Degree Total Column Analysis Fields
         m_fStr.hasLevelDim = false;
         m_subFolder = "anl_column125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".C.";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
@@ -144,8 +138,6 @@ bool asPredictorArchJmaJra55CSubset::Init()
         // JRA-55 3-Hourly 1.25 Degree 2-Dimensional Average Diagnostic Fields
         m_fStr.hasLevelDim = false;
         m_subFolder = "fcst_phy2m125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
         m_fStr.dimTimeName = "initial_time0_hours";
@@ -174,8 +166,6 @@ bool asPredictorArchJmaJra55CSubset::Init()
         // JRA-55 6-Hourly 1.25 Degree Isentropic Analysis Fields
         m_fStr.hasLevelDim = true;
         m_subFolder = "anl_isentrop125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".C.";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";

@@ -43,15 +43,11 @@ asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId, const wxStrin
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
     m_subFolder = wxEmptyString;
-    m_xAxisStep = NaNf; // To be automatically defined
-    m_yAxisStep = NaNf;
 }
 
 asPredictorProjCMIP5::~asPredictorProjCMIP5()

@@ -43,8 +43,6 @@ asPredictorArchNcepReanalysis2::asPredictorArchNcepReanalysis2(const wxString &d
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -64,8 +62,6 @@ bool asPredictorArchNcepReanalysis2::Init()
     if (m_product.IsSameAs("pressure", false) || m_product.IsSameAs("press", false)) {
         m_fStr.hasLevelDim = true;
         m_subFolder = "pressure";
-        m_xAxisStep = 2.5;
-        m_yAxisStep = 2.5;
         if (m_dataId.IsSameAs("air", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature";
@@ -105,8 +101,6 @@ bool asPredictorArchNcepReanalysis2::Init()
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false)) {
         m_fStr.hasLevelDim = false;
         m_subFolder = "surface";
-        m_xAxisStep = 2.5;
-        m_yAxisStep = 2.5;
         if (m_dataId.IsSameAs("prwtr", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
@@ -134,8 +128,6 @@ bool asPredictorArchNcepReanalysis2::Init()
                m_product.IsSameAs("gauss", false) || m_product.IsSameAs("flux", false)) {
         m_fStr.hasLevelDim = false;
         m_subFolder = "gaussian_grid";
-        m_xAxisStep = NaNf;
-        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("air2m", false)) {
             m_fStr.hasLevelDim = true;
             m_fStr.singleLevel = true;

@@ -41,8 +41,6 @@ asPredictorArchEcmwfCera20C::asPredictorArchEcmwfCera20C(const wxString &dataId)
     m_fileType = asFile::Netcdf;
     m_isEnsemble = true;
     m_strideAllowed = true;
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_fStr.dimLatName = "latitude";
     m_fStr.dimLonName = "longitude";
     m_fStr.dimTimeName = "time";
@@ -67,8 +65,6 @@ bool asPredictorArchEcmwfCera20C::Init()
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
         m_fStr.hasLevelDim = true;
         m_subFolder = "pressure_level";
-        m_xAxisStep = 1;
-        m_yAxisStep = 1;
         if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
@@ -99,8 +95,6 @@ bool asPredictorArchEcmwfCera20C::Init()
                m_product.IsSameAs("sfc", false)) {
         m_fStr.hasLevelDim = false;
         m_subFolder = "surface";
-        m_xAxisStep = 1;
-        m_yAxisStep = 1;
         if (m_dataId.IsSameAs("tcw", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total column water";

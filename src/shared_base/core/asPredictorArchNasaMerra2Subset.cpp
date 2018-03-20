@@ -59,8 +59,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields V5.12.4 (M2I6NPANA.5.12.4)
         m_fStr.hasLevelDim = true;
         m_subFolder = "inst6_3d_ana_Np";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("h", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
@@ -102,8 +100,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields V5.12.4 (M2I3NPASM.5.12.4)
         m_fStr.hasLevelDim = true;
         m_subFolder = "inst3_3d_asm_Np";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("epv", false)) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Ertel's potential vorticity";
@@ -140,8 +136,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics V5.12.4 (M2I1NXINT.5.12.4)
         m_fStr.hasLevelDim = false;
         m_subFolder = "inst1_2d_int_Nx";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -167,8 +161,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // inst1_2d_asm_Nx: 2d,3-Hourly,Instantaneous,Single-Level,Assimilation,Single-Level Diagnostics V5.12.4 (M2I1NXASM)
         m_fStr.hasLevelDim = false;
         m_subFolder = "inst1_2d_asm_Nx";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -199,8 +191,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // tavg1_2d_flx_Nx:  2d,1-Hourly,Time-Averaged,Single-Level,Assimilation,Surface Flux Diagnostics V5.12.4 (M2T1NXFLX)
         m_fStr.hasLevelDim = false;
         m_subFolder = "tavg1_2d_flx_Nx";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("prectot", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total surface precipitation flux";
@@ -216,8 +206,6 @@ bool asPredictorArchNasaMerra2Subset::Init()
         // tavg1_2d_lnd_Nx:
         m_fStr.hasLevelDim = false;
         m_subFolder = "tavg1_2d_lnd_Nx";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("prectot", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation land; bias corrected";

@@ -41,8 +41,6 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -64,8 +62,6 @@ bool asPredictorArchNcepCfsrSubset::Init()
         m_product.IsSameAs("pgb", false) || m_product.IsSameAs("pgbhnl", false)) {
         m_fStr.hasLevelDim = true;
         m_subFolder = "pgbhnl";
-        m_xAxisStep = 0.5;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
@@ -120,8 +116,6 @@ bool asPredictorArchNcepCfsrSubset::Init()
                m_product.IsSameAs("flx", false)) {
         m_fStr.hasLevelDim = false;
         m_subFolder = "flxf06";
-        m_xAxisStep = NaNf;
-        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";

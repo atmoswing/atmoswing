@@ -49,10 +49,6 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_strideAllowed = false;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_xAxisStep = 0.5;
-    m_yAxisStep = 0.5;
     m_restrictTimeHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";

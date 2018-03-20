@@ -40,8 +40,6 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
     m_datasetName = "CFSR";
     m_fileType = asFile::Grib2;
     m_strideAllowed = false;
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
 }
 
 asPredictorArchNcepCfsr::~asPredictorArchNcepCfsr()
@@ -62,8 +60,6 @@ bool asPredictorArchNcepCfsr::Init()
         m_fStr.hasLevelDim = true;
         m_fStr.singleLevel = true;
         m_subFolder = "pgbh";
-        m_xAxisStep = 0.5;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("hgt@iso", false)) {
             m_parameter = GeopotentialHeight;
             int arr[] = {0, 3, 5, 100};

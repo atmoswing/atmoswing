@@ -39,11 +39,7 @@ asPredictor::asPredictor(const wxString &dataId)
           m_dataId(dataId),
           m_parameter(ParameterUndefined),
           m_unit(UnitUndefined),
-          m_xAxisStep(0.0f),
-          m_yAxisStep(0.0f),
           m_strideAllowed(false),
-          m_xAxisShift(0.0f),
-          m_yAxisShift(0.0f),
           m_level(0),
           m_latPtsnb(0),
           m_lonPtsnb(0),
@@ -697,27 +693,34 @@ bool asPredictor::CheckFileStructure()
 
 asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea)
 {
+    wxASSERT(m_fStr.lons.size() > 0);
+    wxASSERT(m_fStr.lats.size() > 0);
+
     if (desiredArea) {
         m_fInd.lonStep = 1;
         m_fInd.latStep = 1;
 
         double dataXmin, dataYmin, dataXstep, dataYstep;
         int dataXptsnb, dataYptsnb;
+        double xAxisStep = abs(m_fStr.lons[1]-m_fStr.lons[0]);
+        double yAxisStep = abs(m_fStr.lats[1]-m_fStr.lats[0]);
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false)) {
-            dataXmin = floor((desiredArea->GetAbsoluteXmin() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
-            dataYmin = floor((desiredArea->GetAbsoluteYmin() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
-            double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - m_xAxisShift) / m_xAxisStep) * m_xAxisStep + m_xAxisShift;
-            double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - m_yAxisShift) / m_yAxisStep) * m_yAxisStep + m_yAxisShift;
-            if (m_strideAllowed && fmod(desiredArea->GetXstep(), m_xAxisStep) == 0 && fmod(desiredArea->GetYstep(), m_yAxisStep) == 0 ) {
+            double xAxisShift = fmod(m_fStr.lons[0], xAxisStep);
+            double yAxisShift = fmod(m_fStr.lats[0], yAxisStep);
+            dataXmin = floor((desiredArea->GetAbsoluteXmin() - xAxisShift) / xAxisStep) * xAxisStep + xAxisShift;
+            dataYmin = floor((desiredArea->GetAbsoluteYmin() - yAxisShift) / yAxisStep) * yAxisStep + yAxisShift;
+            double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - xAxisShift) / xAxisStep) * xAxisStep + xAxisShift;
+            double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - yAxisShift) / yAxisStep) * yAxisStep + yAxisShift;
+            if (m_strideAllowed && fmod(desiredArea->GetXstep(), xAxisStep) == 0 && fmod(desiredArea->GetYstep(), yAxisStep) == 0 ) {
                 // If the desired step is a multiple of the data resolution
                 dataXstep = desiredArea->GetXstep();
                 dataYstep = desiredArea->GetYstep();
-                m_fInd.lonStep = wxRound(desiredArea->GetXstep() / m_xAxisStep);
-                m_fInd.latStep = wxRound(desiredArea->GetYstep() / m_yAxisStep);
+                m_fInd.lonStep = wxRound(desiredArea->GetXstep() / xAxisStep);
+                m_fInd.latStep = wxRound(desiredArea->GetYstep() / yAxisStep);
             } else {
-                dataXstep = m_xAxisStep;
-                dataYstep = m_yAxisStep;
+                dataXstep = xAxisStep;
+                dataYstep = yAxisStep;
             }
             dataXptsnb = wxRound((dataXmax - dataXmin) / dataXstep + 1);
             dataYptsnb = wxRound((dataYmax - dataYmin) / dataYstep + 1);
@@ -728,10 +731,9 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
             dataYstep = desiredArea->GetYstep();
             dataXptsnb = desiredArea->GetXaxisPtsnb();
             dataYptsnb = desiredArea->GetYaxisPtsnb();
-            if (!asTools::IsNaN(m_xAxisStep) && !asTools::IsNaN(m_yAxisStep) &&
-                (dataXstep != m_xAxisStep || dataYstep != m_yAxisStep)) {
+            if (abs(dataXstep - xAxisStep) > 0.1 * dataXstep || abs(dataYstep - yAxisStep) > 0.1 * dataYstep) {
                 wxLogError(_("Interpolation is not allowed on irregular grids."));
-                return NULL;
+                return nullptr;
             }
         }
 

@@ -218,16 +218,6 @@ public:
         m_preprocessMethod = val;
     }
 
-    void SetXaxisStep(const double val)
-    {
-        m_xAxisStep = (float) val;
-    }
-
-    void SetYaxisStep(const double val)
-    {
-        m_yAxisStep = (float) val;
-    }
-
     void SelectFirstMember()
     {
         if (!m_isEnsemble) {
@@ -325,11 +315,7 @@ protected:
     wxString m_product;
     wxString m_fileVarName;
     Unit m_unit;
-    float m_xAxisStep;
-    float m_yAxisStep;
     bool m_strideAllowed;
-    float m_xAxisShift;
-    float m_yAxisShift;
     float m_level;
     a1d m_time;
     vva2f m_data;

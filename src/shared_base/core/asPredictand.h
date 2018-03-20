@@ -99,13 +99,12 @@ public:
 
     static asPredictand *GetInstance(const wxString &filePath);
 
-    virtual bool Load(const wxString &filePath = wxEmptyString) = 0;
+    virtual bool Load(const wxString &filePath) = 0;
 
-    virtual bool Save(const wxString &filePath = wxEmptyString) const = 0;
+    virtual bool Save(const wxString &filePath) const = 0;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
-                                   const wxString &patternDir = wxEmptyString,
-                                   const wxString &destinationDir = wxEmptyString) = 0;
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+                                   const wxString &patternDir, const wxString &destinationDir) = 0;
 
     virtual a1f GetReferenceAxis() const
     {

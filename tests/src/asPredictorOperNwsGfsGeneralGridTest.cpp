@@ -59,10 +59,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -152,10 +148,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -247,10 +239,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -304,10 +292,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -363,10 +347,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -420,10 +400,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -479,10 +455,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -536,10 +508,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -595,10 +563,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -652,10 +616,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -712,10 +672,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -770,10 +726,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -830,10 +782,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -887,10 +835,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -943,10 +887,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -1004,10 +944,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -1064,10 +1000,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -1118,10 +1050,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
@@ -1174,10 +1102,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));
 
@@ -1226,10 +1150,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
 
     // Create file names
     predictor->SetFileNames(filepaths);
-
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
 
     // Load
     ASSERT_TRUE(predictor->Load(geoarea, dates));

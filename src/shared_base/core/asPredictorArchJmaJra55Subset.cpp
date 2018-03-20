@@ -44,8 +44,6 @@ asPredictorArchJmaJra55Subset::asPredictorArchJmaJra55Subset(const wxString &dat
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(std::pow(10.f, 20.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
     m_monthlyFiles = true;
 }
 
@@ -65,8 +63,6 @@ bool asPredictorArchJmaJra55Subset::Init()
         // JRA-55 6-Hourly 1.25 Degree Isobaric Analysis Fields
         m_fStr.hasLevelDim = true;
         m_subFolder = "anl_p125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";
@@ -107,8 +103,6 @@ bool asPredictorArchJmaJra55Subset::Init()
         // JRA-55 6-Hourly 1.25 Degree Surface Analysis Fields
         m_fStr.hasLevelDim = false;
         m_subFolder = "anl_surf125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
@@ -130,8 +124,6 @@ bool asPredictorArchJmaJra55Subset::Init()
         // JRA-55 6-Hourly 1.25 Degree Total Column Analysis Fields
         m_fStr.hasLevelDim = false;
         m_subFolder = "anl_column125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
@@ -152,8 +144,6 @@ bool asPredictorArchJmaJra55Subset::Init()
     } else if (m_product.IsSameAs("fcst_phy2m125", false)) {
         // JRA-55 3-Hourly 1.25 Degree 2-Dimensional Average Diagnostic Fields
         m_fStr.hasLevelDim = false;
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
         m_fStr.dimTimeName = "initial_time0_hours";
@@ -182,8 +172,6 @@ bool asPredictorArchJmaJra55Subset::Init()
         // JRA-55 6-Hourly 1.25 Degree Isentropic Analysis Fields
         m_fStr.hasLevelDim = true;
         m_subFolder = "anl_isentrop125";
-        m_xAxisStep = 1.250;
-        m_yAxisStep = 1.250;
         m_fileNamePattern = m_subFolder + ".";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";
