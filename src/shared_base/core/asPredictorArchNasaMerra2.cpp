@@ -37,7 +37,7 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
     m_datasetId = "NASA_MERRA_2";
-    m_originalProvider = "NASA";
+    m_provider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
@@ -45,10 +45,10 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     m_nanValues.push_back(std::pow(10.f, 15.f) - 1);
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "lev";
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "lev";
 }
 
 asPredictorArchNasaMerra2::~asPredictorArchNasaMerra2()
@@ -62,24 +62,24 @@ bool asPredictorArchNasaMerra2::Init()
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "inst6_3d_ana_Np";
         m_xAxisStep = 0.625;
         m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("h", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
-            m_fileVariableName = "H";
+            m_fileVarName = "H";
             m_unit = m;
         } else if (m_dataId.IsSameAs("t", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Air temperature";
-            m_fileVariableName = "T";
+            m_fileVarName = "T";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("slp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea-level pressure";
-            m_fileVariableName = "SLP";
+            m_fileVarName = "SLP";
             m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -92,7 +92,7 @@ bool asPredictorArchNasaMerra2::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;

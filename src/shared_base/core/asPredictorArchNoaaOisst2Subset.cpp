@@ -37,7 +37,7 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
 {
     // Set the basic properties.
     m_datasetId = "NOAA_OISST_v2_subset";
-    m_originalProvider = "NOAA";
+    m_provider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
     m_fileType = asFile::Netcdf;
@@ -49,10 +49,10 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
     m_xAxisStep = 1;
     m_yAxisStep = 1;
     m_subFolder = wxEmptyString;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.hasLevelDimension = false;
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.hasLevelDim = false;
 }
 
 asPredictorArchNoaaOisst2Subset::~asPredictorArchNoaaOisst2Subset()
@@ -67,13 +67,13 @@ bool asPredictorArchNoaaOisst2Subset::Init()
         m_parameter = SeaSurfaceTemperature;
         m_parameterName = "Sea Surface Temperature";
         m_fileNamePattern = "sst_1deg.nc";
-        m_fileVariableName = "sst";
+        m_fileVarName = "sst";
         m_unit = degC;
     } else if (m_dataId.IsSameAs("sst_anom", false)) {
         m_parameter = SeaSurfaceTemperatureAnomaly;
         m_parameterName = "Sea Surface Temperature Anomaly";
         m_fileNamePattern = "sst_anom_1deg.nc";
-        m_fileVariableName = "anom";
+        m_fileVarName = "anom";
         m_unit = degC;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
@@ -81,7 +81,7 @@ bool asPredictorArchNoaaOisst2Subset::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in dataset %s."), m_dataId,
                    m_datasetName);
         return false;

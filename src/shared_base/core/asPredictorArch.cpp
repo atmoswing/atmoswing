@@ -123,45 +123,45 @@ bool asPredictorArch::Init()
 
 bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
-    m_fileIndexes.areas.clear();
+    m_fInd.areas.clear();
 
     // Get the time length
-    if (m_fileStructure.axisTimeLength > 1) {
-        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fileStructure.axisTimeFirstValue);
-        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fileStructure.axisTimeLastValue);
-        m_fileIndexes.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
-        m_fileIndexes.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+    if (m_fStr.timeLength > 1) {
+        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.timeStart);
+        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.timeEnd);
+        m_fInd.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        m_fInd.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
 
         // Correct the time start and end
-        double valFirstTime = m_fileStructure.axisTimeFirstValue;
-        m_fileIndexes.timeStart = 0;
-        m_fileIndexes.cutStart = 0;
+        double valFirstTime = m_fStr.timeStart;
+        m_fInd.timeStart = 0;
+        m_fInd.cutStart = 0;
         bool firstFile = (compositeData[0].empty());
         if (firstFile) {
-            m_fileIndexes.cutStart = int(timeArrayIndexStart);
+            m_fInd.cutStart = int(timeArrayIndexStart);
         }
-        m_fileIndexes.cutEnd = 0;
+        m_fInd.cutEnd = 0;
         while (valFirstTime < timeArray[timeArrayIndexStart]) {
-            valFirstTime += m_fileStructure.axisTimeStep / 24.0;
-            m_fileIndexes.timeStart++;
+            valFirstTime += m_fStr.timeStep / 24.0;
+            m_fInd.timeStart++;
         }
-        if (m_fileIndexes.timeStart + (m_fileIndexes.timeCount - 1) * m_fileIndexes.timeStep > m_fileStructure.axisTimeLength) {
-            m_fileIndexes.timeCount--;
-            m_fileIndexes.cutEnd++;
+        if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.timeLength) {
+            m_fInd.timeCount--;
+            m_fInd.cutEnd++;
         }
     } else {
-        m_fileIndexes.timeArrayCount = 1;
-        m_fileIndexes.timeCount = 1;
-        m_fileIndexes.timeStart = 0;
-        m_fileIndexes.cutStart = 0;
-        m_fileIndexes.cutEnd = 0;
+        m_fInd.timeArrayCount = 1;
+        m_fInd.timeCount = 1;
+        m_fInd.timeStart = 0;
+        m_fInd.cutStart = 0;
+        m_fInd.cutEnd = 0;
     }
 
-    wxASSERT(m_fileIndexes.timeArrayCount > 0);
-    wxASSERT(m_fileIndexes.timeCount > 0);
+    wxASSERT(m_fInd.timeArrayCount > 0);
+    wxASSERT(m_fInd.timeCount > 0);
 
     // Go through every area
-    m_fileIndexes.areas.resize(compositeData.size());
+    m_fInd.areas.resize(compositeData.size());
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
 
         if (dataArea) {
@@ -171,68 +171,68 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
             float latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
-            m_fileIndexes.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
-            m_fileIndexes.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
+            m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
+            m_fInd.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
 
             // Get the spatial indices of the desired data
-            m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
-                                                                    &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+            m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
+                                                                    &m_fStr.lons[m_fStr.lons.size() - 1],
                                                                     lonMin, 0.01f, asHIDE_WARNINGS);
-            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
+            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
-                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
-                                                                        &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
+                                                                        &m_fStr.lons[m_fStr.lons.size() - 1],
                                                                         lonMin - 360, 0.01f, asHIDE_WARNINGS);
             }
-            if (m_fileIndexes.areas[iArea].lonStart == asOUT_OF_RANGE) {
+            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
-                m_fileIndexes.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fileStructure.axisLon[0],
-                                                                        &m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1],
+                m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
+                                                                        &m_fStr.lons[m_fStr.lons.size() - 1],
                                                                         lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
-            if (m_fileIndexes.areas[iArea].lonStart < 0) {
+            if (m_fInd.areas[iArea].lonStart < 0) {
                 wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
-                           m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
-                           m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1]);
+                           m_fStr.lons[0], (int) m_fStr.lons.size(),
+                           m_fStr.lons[m_fStr.lons.size() - 1]);
                 return false;
             }
-            wxASSERT_MSG(m_fileIndexes.areas[iArea].lonStart >= 0,
+            wxASSERT_MSG(m_fInd.areas[iArea].lonStart >= 0,
                          wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
-                                          m_fileStructure.axisLon[0], (int) m_fileStructure.axisLon.size(),
-                                          m_fileStructure.axisLon[m_fileStructure.axisLon.size() - 1], lonMin));
+                                          m_fStr.lons[0], (int) m_fStr.lons.size(),
+                                          m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
-            int indexStartLat1 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
-                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+            int indexStartLat1 = asTools::SortedArraySearch(&m_fStr.lats[0],
+                                                            &m_fStr.lats[m_fStr.lats.size() - 1],
                                                             latMinStart, 0.01f);
-            int indexStartLat2 = asTools::SortedArraySearch(&m_fileStructure.axisLat[0],
-                                                            &m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1],
+            int indexStartLat2 = asTools::SortedArraySearch(&m_fStr.lats[0],
+                                                            &m_fStr.lats[m_fStr.lats.size() - 1],
                                                             latMinEnd, 0.01f);
             wxASSERT_MSG(indexStartLat1 >= 0,
-                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fileStructure.axisLat[0],
-                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
+                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                          m_fStr.lats[m_fStr.lats.size() - 1]));
             wxASSERT_MSG(indexStartLat2 >= 0,
-                         wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fileStructure.axisLat[0],
-                                          m_fileStructure.axisLat[m_fileStructure.axisLat.size() - 1]));
-            m_fileIndexes.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
+                         wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                          m_fStr.lats[m_fStr.lats.size() - 1]));
+            m_fInd.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
         } else {
-            m_fileIndexes.areas[iArea].lonStart = 0;
-            m_fileIndexes.areas[iArea].latStart = 0;
-            m_fileIndexes.areas[iArea].lonCount = m_lonPtsnb;
-            m_fileIndexes.areas[iArea].latCount = m_latPtsnb;
+            m_fInd.areas[iArea].lonStart = 0;
+            m_fInd.areas[iArea].latStart = 0;
+            m_fInd.areas[iArea].lonCount = m_lonPtsnb;
+            m_fInd.areas[iArea].latCount = m_latPtsnb;
         }
 
-        if (m_fileStructure.hasLevelDimension && !m_fileStructure.singleLevel) {
-            m_fileIndexes.level = asTools::SortedArraySearch(&m_fileStructure.axisLevel[0], &m_fileStructure.axisLevel[
-                    m_fileStructure.axisLevel.size() - 1], m_level, 0.01f);
-            if (m_fileIndexes.level < 0) {
-                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName);
+        if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
+            m_fInd.level = asTools::SortedArraySearch(&m_fStr.levels[0], &m_fStr.levels[
+                    m_fStr.levels.size() - 1], m_level, 0.01f);
+            if (m_fInd.level < 0) {
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
                 return false;
             }
-        } else if (m_fileStructure.hasLevelDimension && m_fileStructure.singleLevel) {
-            m_fileIndexes.level = 0;
+        } else if (m_fStr.hasLevelDim && m_fStr.singleLevel) {
+            m_fInd.level = 0;
         } else {
             if (m_level > 0) {
-                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVariableName);
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
                 return false;
             }
         }
@@ -502,18 +502,18 @@ bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const
     }
 
     // Check the time steps
-    if ((timeArray.GetTimeStepDays() > 0) && (m_fileStructure.axisTimeStep / 24.0 > timeArray.GetTimeStepDays())) {
+    if ((timeArray.GetTimeStepDays() > 0) && (m_fStr.timeStep / 24.0 > timeArray.GetTimeStepDays())) {
         wxLogError(_("The desired timestep is smaller than the data timestep."));
         return false;
     }
     double intpart, fractpart;
-    fractpart = modf(timeArray.GetTimeStepDays() / (m_fileStructure.axisTimeStep / 24.0), &intpart);
+    fractpart = modf(timeArray.GetTimeStepDays() / (m_fStr.timeStep / 24.0), &intpart);
     if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetStartingHour() - m_fileStructure.firstTimeStepHours) /
-                     m_fileStructure.axisTimeStep, &intpart);
+    fractpart = modf((timeArray.GetStartingHour() - m_fStr.firstHour) /
+                     m_fStr.timeStep, &intpart);
     if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
                    timeArray.GetStartingHour(), fractpart);

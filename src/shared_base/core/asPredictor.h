@@ -302,8 +302,8 @@ public:
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
-        m_fileIndexes.memberStart = 0;
-        m_fileIndexes.memberCount = 1;
+        m_fInd.memberStart = 0;
+        m_fInd.memberCount = 1;
     }
 
     void SelectMember(int memberNum)
@@ -313,8 +313,8 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.memberStart = memberNum - 1;
-        m_fileIndexes.memberCount = 1;
+        m_fInd.memberStart = memberNum - 1;
+        m_fInd.memberCount = 1;
     }
 
     void SelectMembers(int memberNb)
@@ -324,13 +324,13 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.memberStart = 0;
-        m_fileIndexes.memberCount = memberNb;
+        m_fInd.memberStart = 0;
+        m_fInd.memberCount = memberNb;
     }
 
     int GetMembersNb()
     {
-        return wxMax(m_fileIndexes.memberCount, 1);
+        return wxMax(m_fInd.memberCount, 1);
     }
 
 protected:
@@ -341,17 +341,17 @@ protected:
         wxString dimTimeName;
         wxString dimLevelName;
         wxString dimMemberName;
-        bool hasLevelDimension;
+        bool hasLevelDim;
         bool singleLevel;
-        a1f axisLon;
-        a1f axisLat;
-        a1f axisLevel;
-        a1i axisMember;
-        double axisTimeFirstValue;
-        double axisTimeLastValue;
-        double axisTimeStep;
-        double firstTimeStepHours;
-        size_t axisTimeLength;
+        a1f lons;
+        a1f lats;
+        a1f levels;
+        a1i members;
+        double timeStart;
+        double timeEnd;
+        double timeStep;
+        double firstHour;
+        size_t timeLength;
     };
     struct FileIndexesArea
     {
@@ -375,8 +375,8 @@ protected:
         int memberStart;
         int memberCount;
     };
-    FileStructure m_fileStructure;
-    FileIndexes m_fileIndexes;
+    FileStructure m_fStr;
+    FileIndexes m_fInd;
     asFile::FileType m_fileType;
     bool m_initialized;
     bool m_axesChecked;
@@ -384,14 +384,14 @@ protected:
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_datasetName;
-    wxString m_originalProvider;
+    wxString m_provider;
     wxString m_transformedBy;
     vd m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
     vi m_gribCode;
     wxString m_product;
-    wxString m_fileVariableName;
+    wxString m_fileVarName;
     Unit m_unit;
     float m_xAxisStep;
     float m_yAxisStep;

@@ -37,7 +37,7 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
 {
     // Set the basic properties.
     m_datasetId = "NCEP_Reanalysis_v1_lthe";
-    m_originalProvider = "NCEP/NCAR";
+    m_provider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_fileType = asFile::Netcdf;
@@ -49,11 +49,11 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_xAxisStep = 2.5;
     m_yAxisStep = 2.5;
     m_subFolder = wxEmptyString;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-    m_fileStructure.hasLevelDimension = true;
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
+    m_fStr.hasLevelDim = true;
 }
 
 asPredictorArchNcepReanalysis1Lthe::~asPredictorArchNcepReanalysis1Lthe()
@@ -68,25 +68,25 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
-        m_fileVariableName = "hgt";
+        m_fileVarName = "hgt";
         m_unit = m;
     } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
-        m_fileVariableName = "hgt";
+        m_fileVarName = "hgt";
         m_unit = m;
     } else if (m_dataId.IsSameAs("prwtr", false)) {
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
-        m_fileVariableName = "pwa";
+        m_fileVarName = "pwa";
         m_unit = mm;
     } else if (m_dataId.IsSameAs("rhum", false)) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
-        m_fileVariableName = "rhum";
+        m_fileVarName = "rhum";
         m_unit = percent;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
@@ -94,7 +94,7 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;

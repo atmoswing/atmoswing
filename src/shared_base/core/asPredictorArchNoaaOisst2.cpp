@@ -37,7 +37,7 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
 {
     // Set the basic properties.
     m_datasetId = "NOAA_OISST_v2";
-    m_originalProvider = "NOAA";
+    m_provider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
@@ -49,9 +49,9 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
     m_yAxisStep = 0.25;
     m_subFolder = wxEmptyString;
     m_fileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.hasLevelDimension = false;
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.hasLevelDim = false;
 }
 
 asPredictorArchNoaaOisst2::~asPredictorArchNoaaOisst2()
@@ -65,12 +65,12 @@ bool asPredictorArchNoaaOisst2::Init()
     if (m_dataId.IsSameAs("sst", false)) {
         m_parameter = SeaSurfaceTemperature;
         m_parameterName = "Sea Surface Temperature";
-        m_fileVariableName = "sst";
+        m_fileVarName = "sst";
         m_unit = degC;
     } else if (m_dataId.IsSameAs("sst_anom", false)) {
         m_parameter = SeaSurfaceTemperatureAnomaly;
         m_parameterName = "Sea Surface Temperature Anomaly";
-        m_fileVariableName = "anom";
+        m_fileVarName = "anom";
         m_unit = degC;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -78,7 +78,7 @@ bool asPredictorArchNoaaOisst2::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName);
         return false;
     }

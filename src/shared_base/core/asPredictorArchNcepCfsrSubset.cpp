@@ -37,16 +37,16 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
     // Downloaded from http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
     // Set the basic properties.
     m_datasetId = "NCEP_CFSR_subset";
-    m_originalProvider = "NCEP";
+    m_provider = "NCEP";
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level0";
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level0";
 }
 
 asPredictorArchNcepCfsrSubset::~asPredictorArchNcepCfsrSubset()
@@ -62,53 +62,53 @@ bool asPredictorArchNcepCfsrSubset::Init()
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
         m_product.IsSameAs("pgb", false) || m_product.IsSameAs("pgbhnl", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "pgbhnl";
         m_xAxisStep = 0.5;
         m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
-            m_fileVariableName = "HGT_L100";
+            m_fileVarName = "HGT_L100";
             m_unit = gpm;
             m_subFolder.Append(DS + "hgt");
         } else if (m_dataId.IsSameAs("gpa", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height anomaly";
-            m_fileVariableName = "GP_A_L100";
+            m_fileVarName = "GP_A_L100";
             m_unit = gpm;
             m_subFolder.Append(DS + "hgt");
-            m_fileStructure.dimLevelName = "level1";
+            m_fStr.dimLevelName = "level1";
         } else if (m_dataId.IsSameAs("mslp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Mean sea level pressure";
-            m_fileVariableName = "PRES_L101";
+            m_fileVarName = "PRES_L101";
             m_unit = Pa;
             m_subFolder.Append(DS + "mslp");
-            m_fileStructure.hasLevelDimension = false;
+            m_fStr.hasLevelDim = false;
         } else if (m_dataId.IsSameAs("pwat", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
-            m_fileVariableName = "P_WAT_L200";
+            m_fileVarName = "P_WAT_L200";
             m_unit = kg_m2;
             m_subFolder.Append(DS + "pwat");
-            m_fileStructure.hasLevelDimension = false;
+            m_fStr.hasLevelDim = false;
         } else if (m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
-            m_fileVariableName = "R_H_L100";
+            m_fileVarName = "R_H_L100";
             m_unit = percent;
             m_subFolder.Append(DS + "rh");
         } else if (m_dataId.IsSameAs("temp", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
-            m_fileVariableName = "TMP_L100";
+            m_fileVarName = "TMP_L100";
             m_unit = degK;
             m_subFolder.Append(DS + "temp");
         } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical Velocity";
-            m_fileVariableName = "V_VEL_L100";
+            m_fileVarName = "V_VEL_L100";
             m_unit = Pa_s;
             m_subFolder.Append(DS + "vvel");
         } else {
@@ -118,14 +118,14 @@ bool asPredictorArchNcepCfsrSubset::Init()
 
     } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
                m_product.IsSameAs("flx", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_subFolder = "flxf06";
         m_xAxisStep = NaNf;
         m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
-            m_fileVariableName = "PRATE_L1_Avg_1";
+            m_fileVarName = "PRATE_L1_Avg_1";
             m_unit = kg_m2_s;
             m_subFolder.Append(DS + "prate");
         } else {
@@ -142,7 +142,7 @@ bool asPredictorArchNcepCfsrSubset::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;

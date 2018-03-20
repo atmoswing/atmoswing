@@ -36,18 +36,18 @@ asPredictorArchEcmwfCera20C::asPredictorArchEcmwfCera20C(const wxString &dataId)
 {
     // Set the basic properties.
     m_datasetId = "ECMWF_CERA_20C_3h";
-    m_originalProvider = "ECMWF";
+    m_provider = "ECMWF";
     m_datasetName = "Coupled ERA 20th Century";
     m_fileType = asFile::Netcdf;
     m_isEnsemble = true;
     m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "latitude";
-    m_fileStructure.dimLonName = "longitude";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-    m_fileStructure.dimMemberName = "number";
+    m_fStr.dimLatName = "latitude";
+    m_fStr.dimLonName = "longitude";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
+    m_fStr.dimMemberName = "number";
     m_subFolder = wxEmptyString;
 }
 
@@ -65,69 +65,69 @@ bool asPredictorArchEcmwfCera20C::Init()
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "pressure_level";
         m_xAxisStep = 1;
         m_yAxisStep = 1;
         if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
-            m_fileVariableName = "z";
+            m_fileVarName = "z";
             m_unit = m2_s2;
         } else if (m_dataId.IsSameAs("t", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
-            m_fileVariableName = "t";
+            m_fileVarName = "t";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("r", false) || m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
-            m_fileVariableName = "r";
+            m_fileVarName = "r";
             m_unit = percent;
         } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("w", false)) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
-            m_fileVariableName = "w";
+            m_fileVarName = "w";
             m_unit = Pa_s;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + ".%d.nc";
+        m_fileNamePattern = m_fileVarName + ".%d.nc";
 
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
                m_product.IsSameAs("sfc", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_subFolder = "surface";
         m_xAxisStep = 1;
         m_yAxisStep = 1;
         if (m_dataId.IsSameAs("tcw", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total column water";
-            m_fileVariableName = "tcw";
+            m_fileVarName = "tcw";
             m_unit = kg_m2;
         } else if (m_dataId.IsSameAs("tp", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
-            m_fileVariableName = "tp";
+            m_fileVarName = "tp";
             m_unit = m;
         } else if (m_dataId.IsSameAs("mslp", false) || m_dataId.IsSameAs("msl", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
-            m_fileVariableName = "msl";
+            m_fileVarName = "msl";
             m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
         }
-        m_fileNamePattern = m_fileVariableName + ".%d.nc";
+        m_fileNamePattern = m_fileVarName + ".%d.nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;

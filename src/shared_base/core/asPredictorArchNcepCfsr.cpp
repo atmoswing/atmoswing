@@ -36,7 +36,7 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
 {
     // Set the basic properties.
     m_datasetId = "NCEP_CFSR";
-    m_originalProvider = "NCEP";
+    m_provider = "NCEP";
     m_datasetName = "CFSR";
     m_fileType = asFile::Grib2;
     m_strideAllowed = false;
@@ -59,8 +59,8 @@ bool asPredictorArchNcepCfsr::Init()
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
         m_product.IsSameAs("pgb", false)) {
-        m_fileStructure.hasLevelDimension = true;
-        m_fileStructure.singleLevel = true;
+        m_fStr.hasLevelDim = true;
+        m_fStr.singleLevel = true;
         m_subFolder = "pgbh";
         m_xAxisStep = 0.5;
         m_yAxisStep = 0.5;

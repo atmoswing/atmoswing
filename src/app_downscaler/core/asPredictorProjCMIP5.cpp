@@ -39,16 +39,16 @@ asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId, const wxStrin
     // Downloaded from https://esgf-node.llnl.gov/search/cmip5/
     // Set the basic properties.
     m_datasetId = "CMIP5";
-    m_originalProvider = "various";
+    m_provider = "various";
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_xAxisShift = 0;
     m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "plev";
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "plev";
     m_subFolder = wxEmptyString;
     m_xAxisStep = NaNf; // To be automatically defined
     m_yAxisStep = NaNf;
@@ -65,88 +65,88 @@ bool asPredictorProjCMIP5::Init()
     if (m_dataId.IsSameAs("hgt", false) || m_dataId.IsSameAs("zg", false)) {
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
-        m_fileVariableName = "zg";
+        m_fileVarName = "zg";
         m_unit = m;
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
     } else if (m_dataId.IsSameAs("slp", false) || m_dataId.IsSameAs("psl", false)) {
         m_parameter = Pressure;
         m_parameterName = "Sea level pressure";
-        m_fileVariableName = "psl";
+        m_fileVarName = "psl";
         m_unit = Pa;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("rh", false) || m_dataId.IsSameAs("hur", false)) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative humidity";
-        m_fileVariableName = "hur";
+        m_fileVarName = "hur";
         m_unit = percent;
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
     } else if (m_dataId.IsSameAs("rhs", false)) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Near-Surface Relative Humidity";
-        m_fileVariableName = "rhs";
+        m_fileVarName = "rhs";
         m_unit = percent;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("sh", false) || m_dataId.IsSameAs("hus", false)) {
         m_parameter = SpecificHumidity;
         m_parameterName = "Specific humidity";
-        m_fileVariableName = "hus";
+        m_fileVarName = "hus";
         m_unit = g_kg;
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
     } else if (m_dataId.IsSameAs("huss", false)) {
         m_parameter = SpecificHumidity;
         m_parameterName = "Near-Surface Specific Humidity";
-        m_fileVariableName = "huss";
+        m_fileVarName = "huss";
         m_unit = g_kg;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("pr", false) || m_dataId.IsSameAs("precip", false)) {
         m_parameter = Precipitation;
         m_parameterName = "Precipitation";
-        m_fileVariableName = "pr";
+        m_fileVarName = "pr";
         m_unit = kg_m2_s;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("prc", false)) {
         m_parameter = Precipitation;
         m_parameterName = "Convective Precipitation";
-        m_fileVariableName = "prc";
+        m_fileVarName = "prc";
         m_unit = kg_m2_s;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("temp", false) || m_dataId.IsSameAs("ta", false)) {
         m_parameter = AirTemperature;
         m_parameterName = "Air Temperature";
-        m_fileVariableName = "ta";
+        m_fileVarName = "ta";
         m_unit = degK;
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
     } else if (m_dataId.IsSameAs("tas", false)) {
         m_parameter = AirTemperature;
         m_parameterName = "Near-Surface Air Temperature";
-        m_fileVariableName = "tas";
+        m_fileVarName = "tas";
         m_unit = degK;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("tasmax", false)) {
         m_parameter = AirTemperature;
         m_parameterName = "Daily Maximum Near-Surface Air Temperature";
-        m_fileVariableName = "tasmax";
+        m_fileVarName = "tasmax";
         m_unit = degK;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("tasmin", false)) {
         m_parameter = AirTemperature;
         m_parameterName = "Daily Minimum Near-Surface Air Temperature";
-        m_fileVariableName = "tasmin";
+        m_fileVarName = "tasmin";
         m_unit = degK;
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
     } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("wap", false)) {
         m_parameter = VerticalVelocity;
         m_parameterName = "Vertical Velocity";
-        m_fileVariableName = "wap";
+        m_fileVarName = "wap";
         m_unit = Pa_s;
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
     } else {
         asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
     }
-    m_fileNamePattern = m_fileVariableName + "*" + m_model + "*" + m_scenario + "*.nc";
+    m_fileNamePattern = m_fileVarName + "*" + m_model + "*" + m_scenario + "*.nc";
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;

@@ -65,32 +65,32 @@ public:
 
     double GetForecastLeadTimeStart() const
     {
-        return m_forecastLeadTimeStart;
+        return m_leadTimeStart;
     }
 
     void SetForecastLeadTimeStart(int val)
     {
-        m_forecastLeadTimeStart = val;
+        m_leadTimeStart = val;
     }
 
     double GetForecastLeadTimeEnd() const
     {
-        return m_forecastLeadTimeEnd;
+        return m_leadTimeEnd;
     }
 
     void SetForecastLeadTimeEnd(int val)
     {
-        m_forecastLeadTimeEnd = val;
+        m_leadTimeEnd = val;
     }
 
     double GetForecastLeadTimeStep() const
     {
-        return m_forecastLeadTimeStep;
+        return m_leadTimeStep;
     }
 
     void SetForecastLeadTimeStep(int val)
     {
-        m_forecastLeadTimeStep = val;
+        m_leadTimeStep = val;
     }
 
     double GetRunHourStart() const
@@ -201,19 +201,19 @@ public:
 
     wxString GetPredictorsRealtimeDirectory() const
     {
-        return m_predictorsRealtimeDirectory;
+        return m_predictorsRealtimeDir;
     }
 
     void SetPredictorsRealtimeDirectory(const wxString &dir)
     {
-        m_predictorsRealtimeDirectory = dir;
+        m_predictorsRealtimeDir = dir;
     }
 
 protected:
-    wxString m_predictorsRealtimeDirectory;
-    double m_forecastLeadTimeStart;
-    double m_forecastLeadTimeEnd;
-    double m_forecastLeadTimeStep;
+    wxString m_predictorsRealtimeDir;
+    double m_leadTimeStart;
+    double m_leadTimeEnd;
+    double m_leadTimeStep;
     double m_runHourStart;
     double m_runUpdate;
     double m_runDateInUse;
