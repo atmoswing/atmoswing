@@ -46,17 +46,17 @@ class AtmoswingAppForecaster
 #endif
 {
 public:
-    virtual bool OnInit();
+    bool OnInit() override;
 
-    virtual int OnRun();
+    int OnRun() override;
 
-    virtual int OnExit();
+    int OnExit() override;
 
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+    void OnInitCmdLine(wxCmdLineParser &parser) override;
 
     bool InitForCmdLineOnly(long logLevel);
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
 private:
     bool m_doConfig;

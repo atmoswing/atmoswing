@@ -36,15 +36,15 @@ class asPredictorOper
         : public asPredictor
 {
 public:
-    asPredictorOper(const wxString &dataId);
+    explicit asPredictorOper(const wxString &dataId);
 
-    virtual ~asPredictorOper();
+    ~asPredictorOper() override = default;
 
     static void SetDefaultPredictorsUrls();
 
     static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
 
-    virtual bool Init();
+    bool Init() override;
 
     int Download();
 
@@ -109,17 +109,13 @@ protected:
     vwxs m_urls;
     vd m_dataDates;
 
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    int *GetIndexesStartGrib(int iArea) const;
+    bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
 
-    int *GetIndexesCountGrib(int iArea) const;
+    double ConvertToMjd(double timeValue, double refValue) const override;
 
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
-
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
-
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+    bool CheckTimeArray(asTimeArray &timeArray) const override;
 
 };
 

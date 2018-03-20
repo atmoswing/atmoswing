@@ -14,13 +14,13 @@
 #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
 #endif
 
-extern void initialize_img_toolbar_s(void);
+extern void initialize_img_toolbar_s();
 
-extern void initialize_img_toolbar_m(void);
+extern void initialize_img_toolbar_m();
 
-extern void initialize_img_toolbar_l(void);
+extern void initialize_img_toolbar_l();
 
-void cleanup_img_toolbar(void);
+void cleanup_img_toolbar();
 
 extern wxBitmap *_img_frame_analogs;
 extern wxBitmap *_img_frame_distributions;

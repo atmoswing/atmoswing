@@ -37,11 +37,6 @@ asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode)
 
 }
 
-asFileDat::~asFileDat()
-{
-    //dtor
-}
-
 bool asFileDat::Close()
 {
     wxASSERT(m_opened);
@@ -134,20 +129,20 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeTime->GetName() == "year") {
-                        pattern.timeYearBegin = charStart;
-                        pattern.timeYearEnd = charEnd;
+                        pattern.timeYearBegin = (int)charStart;
+                        pattern.timeYearEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "month") {
-                        pattern.timeMonthBegin = charStart;
-                        pattern.timeMonthEnd = charEnd;
+                        pattern.timeMonthBegin = (int)charStart;
+                        pattern.timeMonthEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "day") {
-                        pattern.timeDayBegin = charStart;
-                        pattern.timeDayEnd = charEnd;
+                        pattern.timeDayBegin = (int)charStart;
+                        pattern.timeDayEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "hour") {
-                        pattern.timeHourBegin = charStart;
-                        pattern.timeHourEnd = charEnd;
+                        pattern.timeHourBegin = (int)charStart;
+                        pattern.timeHourEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "minute") {
-                        pattern.timeMinuteBegin = charStart;
-                        pattern.timeMinuteEnd = charEnd;
+                        pattern.timeMinuteBegin = (int)charStart;
+                        pattern.timeMinuteEnd = (int)charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeTime);
                     }
@@ -168,8 +163,8 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeData->GetName() == "value") {
-                        pattern.dataBegin = charStart;
-                        pattern.dataEnd = charEnd;
+                        pattern.dataBegin = (int)charStart;
+                        pattern.dataEnd = (int)charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeData);
                     }

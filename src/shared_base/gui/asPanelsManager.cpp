@@ -27,15 +27,6 @@
 
 #include "asPanelsManager.h"
 
-asPanelsManager::asPanelsManager()
-{
-    //ctor
-}
-
-asPanelsManager::~asPanelsManager()
-{
-
-}
 
 void asPanelsManager::LayoutFrame(wxWindow *element)
 {

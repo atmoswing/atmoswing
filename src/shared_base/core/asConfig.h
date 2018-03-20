@@ -36,9 +36,9 @@ class asConfig
         : public wxObject
 {
 public:
-    asConfig();
+    asConfig() = default;
 
-    virtual ~asConfig();
+    ~asConfig() override = default;
 
     static wxString GetLogDir();
 

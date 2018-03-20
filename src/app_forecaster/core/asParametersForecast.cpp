@@ -702,3 +702,8 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int
 
     return true;
 }
+
+void asParametersForecast::SetPredictandDatabase(const wxString &val)
+{
+    m_predictandDatabase = val;
+}

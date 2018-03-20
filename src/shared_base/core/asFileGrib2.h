@@ -46,13 +46,13 @@ class asFileGrib2
 public:
     asFileGrib2(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileGrib2();
+    ~asFileGrib2() override;
 
-    virtual bool Open();
+    bool Open() override;
 
-    virtual bool Close();
+    bool Close() override;
 
-    bool SetIndexPosition(const vi gribCode, const float level);
+    bool SetIndexPosition(const vi gribCode, float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 

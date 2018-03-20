@@ -39,7 +39,7 @@ class asResultsForecast
 public:
     asResultsForecast();
 
-    virtual ~asResultsForecast();
+    ~asResultsForecast() override = default;
 
     void Init(asParametersForecast &params, double leadTimeOrigin);
 
@@ -76,7 +76,7 @@ public:
         return m_predictandStationIds;
     }
 
-    void SetPredictandStationIds(const vi val)
+    void SetPredictandStationIds(const vi &val)
     {
         m_predictandStationIds = val;
     }
@@ -380,9 +380,9 @@ public:
         }
     }
 
-    bool Save();
+    bool Save() override;
 
-    bool Load();
+    bool Load() override;
 
     wxString GetPredictandStationIdsString() const;
 

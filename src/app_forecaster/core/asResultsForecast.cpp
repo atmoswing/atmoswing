@@ -49,10 +49,6 @@ asResultsForecast::asResultsForecast()
 {
 }
 
-asResultsForecast::~asResultsForecast()
-{
-}
-
 void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin)
 {
     // Resize to 0 to avoid keeping old results
@@ -605,8 +601,8 @@ bool asResultsForecast::Load()
 wxArrayString asResultsForecast::GetStationNamesWxArrayString() const
 {
     wxArrayString stationsNames;
-    for (unsigned int i = 0; i < m_stationNames.size(); i++) {
-        stationsNames.Add(m_stationNames[i]);
+    for (const auto &stationName : m_stationNames) {
+        stationsNames.Add(stationName);
     }
     return stationsNames;
 }

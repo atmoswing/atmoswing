@@ -50,11 +50,6 @@ asPredictorOper::asPredictorOper(const wxString &dataId)
 
 }
 
-asPredictorOper::~asPredictorOper()
-{
-
-}
-
 void asPredictorOper::SetDefaultPredictorsUrls()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -95,13 +90,13 @@ void asPredictorOper::SetDefaultPredictorsUrls()
 
 asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const wxString &dataId)
 {
-    asPredictorOper *predictor = NULL;
+    asPredictorOper *predictor = nullptr;
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
         predictor = new asPredictorOperGfsForecast(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
-        return NULL;
+        return nullptr;
     }
 
     if (!predictor->Init()) {
@@ -198,13 +193,13 @@ bool asPredictorOper::BuildFilenamesUrls()
             break;
         }
         posStart--;
-        size_t posStartSt = (size_t) posStart;
+        auto posStartSt = (size_t) posStart;
         thisCommand.Remove(posStartSt, 13); // Removes '[CURRENTDATE-'
         // Find end
         int posEnd = thisCommand.find("]", posStartSt);
 
         if (posEnd != wxNOT_FOUND && posEnd > posStartSt) {
-            size_t posEndSt = (size_t) posEnd;
+            auto posEndSt = (size_t) posEnd;
             thisCommand.Remove(posEndSt, 1); // Removes ']'
             wxString dateFormat = thisCommand.SubString(posStartSt, posEndSt);
             wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
@@ -290,16 +285,16 @@ bool asPredictorOper::BuildFilenamesUrls()
 
 void asPredictorOper::ListFiles(asTimeArray &timeArray)
 {
-    for (int iFile = 0; iFile < m_fileNames.size(); iFile++) {
+    for (const auto &currfileName : m_fileNames) {
         wxString filePath = wxEmptyString;
 
         // Check if the volume is present
-        wxFileName fileName(m_fileNames[iFile]);
+        wxFileName fileName(currfileName);
         if (!fileName.HasVolume() && !m_predictorsRealtimeDir.IsEmpty()) {
             filePath = m_predictorsRealtimeDir;
             filePath.Append(DS);
         }
-        filePath.Append(m_fileNames[iFile]);
+        filePath.Append(currfileName);
 
         m_files.push_back(filePath);
     }
@@ -319,9 +314,9 @@ bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
-            float latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
-            float latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
+            auto lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
+            auto latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
+            auto latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
             m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);

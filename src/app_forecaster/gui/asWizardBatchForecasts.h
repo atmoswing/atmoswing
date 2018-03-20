@@ -39,7 +39,7 @@ class asWizardBatchForecasts
 public:
     asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
 
-    ~asWizardBatchForecasts();
+    ~asWizardBatchForecasts() override = default;
 
     wxWizardPage *GetFirstPage() const
     {
@@ -52,9 +52,9 @@ public:
     }
 
 protected:
-    void OnWizardFinished(wxWizardEvent &event);
+    void OnWizardFinished(wxWizardEvent &event) override;
 
-    void OnLoadExistingBatchForecasts(wxCommandEvent &event);
+    void OnLoadExistingBatchForecasts(wxCommandEvent &event) override;
 
 private:
     asBatchForecasts *m_batchForecasts;

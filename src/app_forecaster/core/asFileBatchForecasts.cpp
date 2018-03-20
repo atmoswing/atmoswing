@@ -34,11 +34,6 @@ asFileBatchForecasts::asFileBatchForecasts(const wxString &fileName, const FileM
     // FindAndOpen() processed by asFileXml
 }
 
-asFileBatchForecasts::~asFileBatchForecasts()
-{
-    //dtor
-}
-
 bool asFileBatchForecasts::EditRootElement()
 {
     if (!GetRoot())

@@ -22,7 +22,7 @@ wxBitmap *_img_preferences;
 wxBitmap *_img_run;
 wxBitmap *_img_stop;
 
-void initialize_img_toolbar_s(void)
+void initialize_img_toolbar_s()
 {
     {
         wxMemoryInputStream sm(
@@ -90,10 +90,9 @@ void initialize_img_toolbar_s(void)
                 1067);
         _img_stop = new wxBitmap(wxImage(sm));
     }
-    return;
 }
 
-void cleanup_img_toolbar(void)
+void cleanup_img_toolbar()
 {
     wxDELETE(_img_frame_analogs);
     wxDELETE(_img_frame_distributions);

@@ -67,15 +67,15 @@ public:
 
     asParametersForecast();
 
-    virtual ~asParametersForecast();
+    ~asParametersForecast() override;
 
-    void AddStep();
+    void AddStep() override;
 
     void AddPredictorForecast(ParamsStepForecast &step);
 
-    bool LoadFromFile(const wxString &filePath);
+    bool LoadFromFile(const wxString &filePath) override;
 
-    bool InputsOK() const;
+    bool InputsOK() const override;
 
     void InitValues();
 
@@ -84,10 +84,7 @@ public:
         return m_predictandDatabase;
     }
 
-    void SetPredictandDatabase(wxString val)
-    {
-        m_predictandDatabase = val;
-    }
+    void SetPredictandDatabase(const wxString &val);
 
     int GetLeadTimeNb() const
     {
@@ -142,8 +139,7 @@ public:
 
     bool SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val);
 
-    int GetPreprocessSize(int iStep, int iPtor) const
-    {
+    int GetPreprocessSize(int iStep, int iPtor) const override {
         return (int) m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
     }
 

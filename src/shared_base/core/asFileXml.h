@@ -41,11 +41,11 @@ class asFileXml
 public:
     asFileXml(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileXml();
+    ~asFileXml() override;
 
-    virtual bool Open();
+    bool Open() override;
 
-    virtual bool Close();
+    bool Close() override;
 
     bool Save();
 
@@ -71,17 +71,17 @@ public:
 
     bool IsAnAtmoSwingFile() const;
 
-    bool FileVersionIsOrAbove(const float version) const;
+    bool FileVersionIsOrAbove(float version) const;
 
     void UnknownNode(wxXmlNode *node);
 
-    static bool GetBool(wxXmlNode *node, const bool defaultValue = false);
+    static bool GetBool(wxXmlNode *node, bool defaultValue = false);
 
-    static int GetInt(wxXmlNode *node, const int defaultValue = 0);
+    static int GetInt(wxXmlNode *node, int defaultValue = 0);
 
-    static float GetFloat(wxXmlNode *node, const float defaultValue = 0.0f);
+    static float GetFloat(wxXmlNode *node, float defaultValue = 0.0f);
 
-    static double GetDouble(wxXmlNode *node, const double defaultValue = 0.0);
+    static double GetDouble(wxXmlNode *node, double defaultValue = 0.0);
 
     static wxString GetString(wxXmlNode *node, const wxString &defaultValue = wxEmptyString);
 

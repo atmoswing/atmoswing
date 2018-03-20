@@ -40,9 +40,9 @@ public:
         Regular, GaussianT62, GaussianT382
     };
 
-    asGeo(GridType type = Regular);
+    explicit asGeo(GridType type = Regular);
 
-    virtual ~asGeo();
+    ~asGeo() override = default;
 
     bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
 

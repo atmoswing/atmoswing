@@ -10,7 +10,7 @@
 #include <wx/mstream.h>
 #include "img_treectrl.h"
 
-void initialize_img_treectrl_m(void)
+void initialize_img_treectrl_m()
 {
     {
         wxMemoryInputStream sm(
@@ -42,5 +42,4 @@ void initialize_img_treectrl_m(void)
                 593);
         _img_icon_wind = new wxBitmap(wxImage(sm));
     }
-    return;
 }

@@ -38,11 +38,6 @@ asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecast
 
 }
 
-asWizardBatchForecasts::~asWizardBatchForecasts()
-{
-
-}
-
 void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event)
 {
     wxString filePath = m_filePickerBatchFile->GetPath();
@@ -55,7 +50,7 @@ void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event)
     }
 
     // Open the preferences frame
-    asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(NULL, m_batchForecasts);
+    auto *frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
     frame->Fit();
     frame->Show();
 }

@@ -37,9 +37,9 @@ class asFrameDownscaler
         : public asFrameDownscalerVirtual
 {
 public:
-    asFrameDownscaler(wxWindow *parent);
+    explicit asFrameDownscaler(wxWindow *parent);
 
-    ~asFrameDownscaler();
+    ~asFrameDownscaler() override;
 
     void OnInit();
 
@@ -47,9 +47,9 @@ protected:
     asLogWindow *m_logWindow;
     asMethodDownscaler *m_methodDownscaler;
 
-    void Update();
+    void Update() override;
 
-    void OnSaveDefault(wxCommandEvent &event);
+    void OnSaveDefault(wxCommandEvent &event) override;
 
     void Launch(wxCommandEvent &event);
 
@@ -57,17 +57,17 @@ protected:
 
     void SaveOptions() const;
 
-    void OpenFramePreferences(wxCommandEvent &event);
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-    void OpenFrameAbout(wxCommandEvent &event);
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-    void OnShowLog(wxCommandEvent &event);
+    void OnShowLog(wxCommandEvent &event) override;
 
-    void OnLogLevel1(wxCommandEvent &event);
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-    void OnLogLevel2(wxCommandEvent &event);
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-    void OnLogLevel3(wxCommandEvent &event);
+    void OnLogLevel3(wxCommandEvent &event) override;
 
     void DisplayLogLevelMenu();
 

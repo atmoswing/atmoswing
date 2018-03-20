@@ -37,7 +37,7 @@ class asBatchForecasts
 public:
     asBatchForecasts();
 
-    virtual ~asBatchForecasts();
+    ~asBatchForecasts() override = default;
 
     bool Load(const wxString &filePath);
 

@@ -38,7 +38,7 @@ class asDialogProgressBar
 public:
     asDialogProgressBar(const wxString &dialogMessage, int valueMax);
 
-    virtual ~asDialogProgressBar();
+    ~asDialogProgressBar() override;
 
     void Destroy();
 

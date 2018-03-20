@@ -34,11 +34,6 @@ asThread::asThread(Type type)
 {
 }
 
-asThread::~asThread()
-{
-
-}
-
 wxThread::ExitCode asThread::Entry()
 {
     return 0;

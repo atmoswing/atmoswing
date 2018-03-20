@@ -38,7 +38,7 @@ class asPredictorProj
 public:
     asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
 
-    virtual ~asPredictorProj();
+    ~asPredictorProj() override = default;
 
     static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
                                         const wxString &dataId, const wxString &directory = wxEmptyString);

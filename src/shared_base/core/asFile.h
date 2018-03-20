@@ -52,9 +52,9 @@ public:
         Ascii
     };
 
-    asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
+    explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
 
-    virtual ~asFile();
+    ~asFile() override;
 
     static bool Exists(const wxString &filePath);
 

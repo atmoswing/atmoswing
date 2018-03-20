@@ -39,7 +39,7 @@ asLog::asLog()
 
 asLog::~asLog()
 {
-    delete wxLog::SetActiveTarget(NULL); // Instead of deleting m_logChain
+    delete wxLog::SetActiveTarget(nullptr); // Instead of deleting m_logChain
     if (m_logFile) {
         m_logFile->Close();
         m_logFile->Detach();
@@ -55,7 +55,7 @@ bool asLog::CreateFile(const wxString &fileName)
     logpath.Append(DS);
     logpath.Append(fileName);
     m_logFile = new wxFFile(logpath, "w");
-    wxLogStderr *pLogFile = new wxLogStderr(m_logFile->fp());
+    auto pLogFile = new wxLogStderr(m_logFile->fp());
     m_logChain = new wxLogChain(pLogFile);
 
     return true;
@@ -69,7 +69,7 @@ bool asLog::CreateFileOnly(const wxString &fileName)
     logpath.Append(DS);
     logpath.Append(fileName);
     m_logFile = new wxFFile(logpath, "w");
-    wxLogStderr *pLogFile = new wxLogStderr(m_logFile->fp());
+    auto pLogFile = new wxLogStderr(m_logFile->fp());
     wxLog::SetActiveTarget(pLogFile);
 
     return true;
@@ -80,7 +80,7 @@ bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
     // Create the log file
     wxDELETE(m_logFile);
     m_logFile = new wxFFile(fullPath, "w");
-    wxLogStderr *pLogFile = new wxLogStderr(m_logFile->fp());
+    auto pLogFile = new wxLogStderr(m_logFile->fp());
     wxLog::SetActiveTarget(pLogFile);
 
     return true;

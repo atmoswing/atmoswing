@@ -36,7 +36,7 @@ class asFrameAbout
         : public asFrameAboutVirtual
 {
 public:
-    asFrameAbout(wxWindow *parent);
+    explicit asFrameAbout(wxWindow *parent);
 
     static wxString GetLicense();
 

@@ -28,15 +28,6 @@
 
 #include "asTime.h"
 
-asTime::asTime()
-{
-    //ctor
-}
-
-asTime::~asTime()
-{
-    //dtor
-}
 
 void asTime::TimeStructInit(Time &date)
 {
@@ -701,7 +692,7 @@ wxDateTime asTime::GetWxDateTime(double mjd, int method)
 {
     Time datestruct = GetTimeStruct(mjd, method);
 
-    wxDateTime::Month month = (wxDateTime::Month) (datestruct.month - 1);
+    auto month = (wxDateTime::Month) (datestruct.month - 1);
     wxDateTime datewx(datestruct.day, month, datestruct.year, datestruct.hour, datestruct.min, datestruct.sec);
 
     return datewx;
@@ -740,19 +731,19 @@ Time asTime::GetTimeStruct(double mjd, int method)
 
     // Remaining seconds
     double rest = mjd - floor(mjd);
-    int sec = asTools::Round(rest * 86400);
-    date.hour = floor((float) (sec / 3600));
+    double sec = asTools::Round(rest * 86400);
+    date.hour = (int) floor((float) (sec / 3600));
     sec -= date.hour * 3600;
-    date.min = floor((float) (sec / 60));
+    date.min = (int) floor((float) (sec / 60));
     sec -= date.min * 60;
-    date.sec = sec;
+    date.sec = (int) sec;
 
     switch (method) {
         case (asUSE_NORMAL_METHOD):
 
             long a, b, c, d, e, z;
 
-            z = mjd;
+            z = (long) mjd;
             if (z < 2299161L)
                 a = z;
             else {

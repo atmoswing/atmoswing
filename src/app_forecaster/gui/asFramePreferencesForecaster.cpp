@@ -162,7 +162,7 @@ void asFramePreferencesForecaster::LoadPreferences()
     m_sliderThreadsPriority->SetValue((int) threadsPriority);
 
     // Processing
-    long defaultMethod = (long) asMULTITHREADS;
+    auto defaultMethod = (long) asMULTITHREADS;
     long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
@@ -209,7 +209,7 @@ void asFramePreferencesForecaster::SavePreferences()
      */
 
     // Log
-    long logLevelForecaster = (long) m_radioBoxLogLevel->GetSelection();
+    auto logLevelForecaster = (long) m_radioBoxLogLevel->GetSelection();
     pConfig->Write("/General/LogLevel", logLevelForecaster + 1); // = selection +1
     bool displayLogWindowForecaster = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowForecaster);
@@ -231,7 +231,7 @@ void asFramePreferencesForecaster::SavePreferences()
      */
 
     // GUI options
-    long guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long) m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -270,17 +270,17 @@ void asFramePreferencesForecaster::SavePreferences()
     if (!processingMaxThreadNb.IsNumber())
         processingMaxThreadNb = "2";
     pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
-    long processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    long processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
+    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
     if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
         processingMethod = (long) asSTANDARD;
     }
     pConfig->Write("/Processing/Method", processingMethod);
 
-    if (GetParent() != NULL) {
+    if (GetParent() != nullptr) {
         GetParent()->Update();
     }
 

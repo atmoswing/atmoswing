@@ -42,11 +42,11 @@ asFrameDownscaler::asFrameDownscaler(wxWindow *parent)
 {
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run downscaler"),
-                       _("Run downscaler now"), NULL);
+                       _("Run downscaler now"), nullptr);
     m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel downscaling"),
-                       _("Cancel current downscaling"), NULL);
+                       _("Cancel current downscaling"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), NULL);
+                       _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Connect events
@@ -84,14 +84,14 @@ void asFrameDownscaler::Update()
 
 void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)
 {
-    asFramePreferencesDownscaler *frame = new asFramePreferencesDownscaler(this);
+    auto *frame = new asFramePreferencesDownscaler(this);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
 {
-    asFrameAbout *frame = new asFrameAbout(this);
+    auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -99,7 +99,7 @@ void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
 void asFrameDownscaler::OnShowLog(wxCommandEvent &event)
 {
     wxASSERT(m_logWindow);
-    m_logWindow->DoShow();
+    m_logWindow->DoShow(true);
 }
 
 void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event)
@@ -208,7 +208,7 @@ void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event)
 void asFrameDownscaler::SaveOptions() const
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long methodSelection = (long) m_choiceMethod->GetSelection();
+    auto methodSelection = (long) m_choiceMethod->GetSelection();
     pConfig->Write("/Downscaler/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
     pConfig->Write("/Downscaler/ParametersFilePath", parametersFilePath);

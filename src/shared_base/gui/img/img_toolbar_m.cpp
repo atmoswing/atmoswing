@@ -10,7 +10,7 @@
 #include <wx/mstream.h>
 #include "img_toolbar.h"
 
-void initialize_img_toolbar_m(void)
+void initialize_img_toolbar_m()
 {
     {
         wxMemoryInputStream sm(
@@ -78,5 +78,4 @@ void initialize_img_toolbar_m(void)
                 1484);
         _img_stop = new wxBitmap(wxImage(sm));
     }
-    return;
 }

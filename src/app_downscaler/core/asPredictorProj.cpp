@@ -40,11 +40,6 @@ asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, 
 
 }
 
-asPredictorProj::~asPredictorProj()
-{
-
-}
-
 asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
                                               const wxString &dataId, const wxString &directory)
 {

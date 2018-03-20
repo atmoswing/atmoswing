@@ -100,6 +100,7 @@
 #include <algorithm>
 #include <vector>
 #include <exception>
+#include <cmath>
 
 
 //---------------------------------

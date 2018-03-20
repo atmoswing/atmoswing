@@ -45,11 +45,11 @@ public:
 
     asFileAscii(const wxString &fileName, const asFile::FileMode &fileMode);
 
-    virtual ~asFileAscii();
+    ~asFileAscii() override;
 
-    bool Open();
+    bool Open() override;
 
-    bool Close();
+    bool Close() override;
 
     void AddLineContent(const wxString &lineContent = wxEmptyString);
 

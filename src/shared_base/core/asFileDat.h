@@ -60,9 +60,9 @@ public:
 
     asFileDat(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileDat();
+    ~asFileDat() override = default;
 
-    bool Close();
+    bool Close() override;
 
     static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
 

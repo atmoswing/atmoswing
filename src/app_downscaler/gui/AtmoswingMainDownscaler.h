@@ -38,9 +38,9 @@ class AtmoswingFrameDownscaler
         : public asFrameDownscaler
 {
 public:
-    AtmoswingFrameDownscaler(wxFrame *frame);
+    explicit AtmoswingFrameDownscaler(wxFrame *frame);
 
-    ~AtmoswingFrameDownscaler();
+    ~AtmoswingFrameDownscaler() override;
 
 private:
     virtual void OnClose(wxCloseEvent &event);

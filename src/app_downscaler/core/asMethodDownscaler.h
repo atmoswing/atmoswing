@@ -29,7 +29,7 @@
 #define ASMETHODDOWNSCALER_H
 
 #include <asMethodStandard.h>
-
+#include <utility>
 
 class asResultsDates;
 class asParametersDownscaling;
@@ -44,7 +44,7 @@ class asMethodDownscaler
 public:
     asMethodDownscaler();
 
-    virtual ~asMethodDownscaler();
+    ~asMethodDownscaler() override;
 
     bool GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep, bool &containsNaNs);
 
@@ -55,7 +55,7 @@ public:
 
     void ClearAll();
 
-    bool Manager();
+    bool Manager() override;
 
     bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const
     {
@@ -101,11 +101,11 @@ protected:
 
     void Cleanup(std::vector<asPredictorProj *> predictors);
 
-    void Cleanup(std::vector<asPredictorArch *> predictors);
+    void Cleanup(std::vector<asPredictorArch *> predictors) override;
 
-    void Cleanup(std::vector<asPredictor *> predictors);
+    void Cleanup(std::vector<asPredictor *> predictors) override;
 
-    void Cleanup(std::vector<asCriteria *> criteria);
+    void Cleanup(std::vector<asCriteria *> criteria) override;
 
 private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
@@ -117,9 +117,9 @@ private:
 
     double GetTimeEndDownscaling(asParametersDownscaling *params) const;
 
-    double GetEffectiveArchiveDataStart(asParameters *params) const;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-    double GetEffectiveArchiveDataEnd(asParameters *params) const;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 };
 
 #endif // ASMETHODDOWNSCALER_H

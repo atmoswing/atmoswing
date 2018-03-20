@@ -20,7 +20,7 @@ wxBitmap *_img_plus;
 wxBitmap *_img_shown;
 wxBitmap *_img_update;
 
-void initialize_img_misc_s(void)
+void initialize_img_misc_s()
 {
     {
         wxMemoryInputStream sm(
@@ -76,10 +76,9 @@ void initialize_img_misc_s(void)
                 564);
         _img_update = new wxBitmap(wxImage(sm));
     }
-    return;
 }
 
-void cleanup_img_misc(void)
+void cleanup_img_misc()
 {
     wxDELETE(_img_bullet_green);
     wxDELETE(_img_bullet_red);

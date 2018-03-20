@@ -10,7 +10,7 @@
 #include <wx/mstream.h>
 #include "img_misc.h"
 
-void initialize_img_misc_l(void)
+void initialize_img_misc_l()
 {
     {
         wxMemoryInputStream sm(
@@ -66,5 +66,4 @@ void initialize_img_misc_l(void)
                 1145);
         _img_update = new wxBitmap(wxImage(sm));
     }
-    return;
 }

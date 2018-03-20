@@ -42,9 +42,9 @@ public:
     asGeoArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
               int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoArea(float level = asNONE, float height = asNONE);
+    explicit asGeoArea(float level = asNONE, float height = asNONE);
 
-    virtual ~asGeoArea();
+    ~asGeoArea() override;
 
     void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 

@@ -208,9 +208,9 @@ float asTools::StDev(const int *pArrStart, const int *pArrEnd, const int sample)
     }
 
     if (sample == asSAMPLE) {
-        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNf;
     }
@@ -228,9 +228,9 @@ float asTools::StDev(const float *pArrStart, const float *pArrEnd, const int sam
     }
 
     if (sample == asSAMPLE) {
-        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return (float) sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNf;
     }
@@ -792,7 +792,7 @@ a1i asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const
 
 a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
+    auto nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -832,7 +832,7 @@ a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, c
 
 a1d asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    unsigned int nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
+    auto nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -892,7 +892,7 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
-    T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
+    T *pFirst = nullptr, *pMid = nullptr, *pLast = nullptr;
     int vlength;
 
     // Initialize first and last variables.
@@ -1054,7 +1054,7 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
-    T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
+    T *pFirst = nullptr, *pMid = nullptr, *pLast = nullptr;
     int vlength;
 
     // Initialize first and last variables.
@@ -1176,7 +1176,7 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
-    T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
+    T *pFirst = nullptr, *pMid = nullptr, *pLast = nullptr;
     int vlength;
 
     // Initialize first and last variables.
@@ -1287,7 +1287,7 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
 
-    T *pFirst = NULL, *pMid = NULL, *pLast = NULL;
+    T *pFirst = nullptr, *pMid = nullptr, *pLast = nullptr;
     int vlength;
 
     // Initialize first and last variables.
@@ -1465,8 +1465,8 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     wxASSERT(pArrOtherEnd);
 
     // Check the other array length
-    int vlength = (int) (pArrRefEnd - pArrRefStart);
-    int ovlength = (int) (pArrOtherEnd - pArrOtherStart);
+    auto vlength = (int) (pArrRefEnd - pArrRefStart);
+    auto ovlength = (int) (pArrOtherEnd - pArrOtherStart);
 
     if (vlength != ovlength) {
         wxLogError(_("The dimension of the two arrays are not equal."));
@@ -1540,7 +1540,7 @@ bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
     wxASSERT(pArrRefEnd);
 
     // Check the array length
-    int vlength = (int) (pArrRefEnd - pArrRefStart);
+    auto vlength = (int) (pArrRefEnd - pArrRefStart);
 
     if (vlength > 0) {
         int low = 0, high = vlength;
@@ -1581,8 +1581,8 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
     wxASSERT(pArrOtherEnd);
 
     // Check the other array length
-    int vlength = (int) (pArrRefEnd - pArrRefStart);
-    int ovlength = (int) (pArrOtherEnd - pArrOtherStart);
+    auto vlength = (int) (pArrRefEnd - pArrRefStart);
+    auto ovlength = (int) (pArrOtherEnd - pArrOtherStart);
 
     if (vlength > 0 && vlength == ovlength) {
         int low = 0, high = vlength;

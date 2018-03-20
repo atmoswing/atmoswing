@@ -29,7 +29,7 @@
 #ifndef ASTIME_H
 #define ASTIME_H
 
-#include <time.h>
+#include <ctime>
 
 #include <asIncludes.h>
 
@@ -37,9 +37,9 @@ class asTime
         : public wxObject
 {
 public:
-    asTime();
+    asTime() = default;
 
-    virtual ~asTime();
+    ~asTime() override = default;
 
     static double NowMJD(int timezone = 0);
 

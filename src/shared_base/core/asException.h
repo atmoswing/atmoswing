@@ -61,7 +61,7 @@ public:
 
     asException(const char *message, const char *filename, unsigned int line, asException prevexception);
 
-    virtual ~asException() throw();
+    ~asException() throw() override;
 
     wxString GetMessage() const
     {
@@ -83,8 +83,7 @@ public:
         return !m_previous.empty();
     }
 
-    virtual const char *what() const throw()
-    {
+    const char *what() const throw() override {
         return m_message.char_str();
 
     }

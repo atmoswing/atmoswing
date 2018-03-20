@@ -106,7 +106,7 @@ void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 void asFrameOptimizer::OnShowLog(wxCommandEvent &event)
 {
     wxASSERT(m_logWindow);
-    m_logWindow->DoShow();
+    m_logWindow->DoShow(true);
 }
 
 void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event)

@@ -42,11 +42,6 @@ asBatchForecasts::asBatchForecasts()
     m_predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
 }
 
-asBatchForecasts::~asBatchForecasts()
-{
-    //dtor
-}
-
 bool asBatchForecasts::Load(const wxString &filePath)
 {
     ClearForecasts();
@@ -67,24 +62,24 @@ bool asBatchForecasts::Load(const wxString &filePath)
     wxXmlNode *node = fileBatch.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "forecasts_output_directory") {
-            m_forecastsOutputDirectory = fileBatch.GetString(node);
+            m_forecastsOutputDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "exports_output_directory") {
-            m_exportsOutputDirectory = fileBatch.GetString(node);
+            m_exportsOutputDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "parameters_files_directory") {
-            m_parametersFileDirectory = fileBatch.GetString(node);
+            m_parametersFileDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictors_archive_directory") {
-            m_predictorsArchiveDirectory = fileBatch.GetString(node);
+            m_predictorsArchiveDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictors_realtime_directory") {
-            m_predictorsRealtimeDirectory = fileBatch.GetString(node);
+            m_predictorsRealtimeDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "predictand_db_directory") {
-            m_predictandDBDirectory = fileBatch.GetString(node);
+            m_predictandDBDirectory = asFileBatchForecasts::GetString(node);
         } else if (node->GetName() == "export_synthetic_xml") {
-            m_exportSyntheticXml = fileBatch.GetBool(node);
+            m_exportSyntheticXml = asFileBatchForecasts::GetBool(node);
         } else if (node->GetName() == "forecasts") {
             wxXmlNode *nodeForecast = node->GetChildren();
             while (nodeForecast) {
                 if (nodeForecast->GetName() == "filename") {
-                    m_forecastFileNames.push_back(fileBatch.GetString(nodeForecast));
+                    m_forecastFileNames.push_back(asFileBatchForecasts::GetString(nodeForecast));
                 } else {
                     fileBatch.UnknownNode(nodeForecast);
                 }
@@ -135,7 +130,7 @@ bool asBatchForecasts::Save() const
 
 int asBatchForecasts::GetForecastsNb() const
 {
-    int forecastsNb = (int) m_forecastFileNames.size();
+    auto forecastsNb = (int) m_forecastFileNames.size();
     return forecastsNb;
 }
 

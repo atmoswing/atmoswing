@@ -48,16 +48,12 @@ void initialize_images(double ppiScaling)
     }
 
     initialize_img_logo();
-
-    return;
 }
 
-void cleanup_images(void)
+void cleanup_images()
 {
     cleanup_img_misc();
     cleanup_img_toolbar();
     cleanup_img_treectrl();
     cleanup_img_logo();
-
-    return;
 }

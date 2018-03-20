@@ -139,7 +139,7 @@ void AtmoswingFrameDownscaler::SetDefaultOptions()
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
     wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
     pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
-    long defaultMethod = (long) asMULTITHREADS;
+    auto defaultMethod = (long) asMULTITHREADS;
     long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
         processingMethod = (long) asSTANDARD;
@@ -153,7 +153,7 @@ AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if (pConfig == NULL)
+    if (pConfig == nullptr)
         return;
 
     // Save the frame position

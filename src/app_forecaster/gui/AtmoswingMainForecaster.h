@@ -38,9 +38,9 @@ class AtmoswingFrameForecaster
         : public asFrameMain
 {
 public:
-    AtmoswingFrameForecaster(wxFrame *frame);
+    explicit AtmoswingFrameForecaster(wxFrame *frame);
 
-    ~AtmoswingFrameForecaster();
+    ~AtmoswingFrameForecaster() override;
 
 private:
     virtual void OnClose(wxCloseEvent &event);

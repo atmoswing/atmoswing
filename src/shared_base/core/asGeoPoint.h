@@ -36,11 +36,11 @@ class asGeoPoint
         : public asGeo
 {
 public:
-    asGeoPoint(const Coo &point, float level = asNONE, float height = asNONE);
+    explicit asGeoPoint(const Coo &point, float level = asNONE, float height = asNONE);
 
     asGeoPoint(double x, double y, float level = asNONE, float height = asNONE);
 
-    virtual ~asGeoPoint();
+    ~asGeoPoint() override;
 
     void SetCoo(const Coo &val)
     {

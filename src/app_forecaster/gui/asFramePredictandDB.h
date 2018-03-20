@@ -35,18 +35,18 @@ class asFramePredictandDB
         : public asFramePredictandDBVirtual
 {
 public:
-    asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
+    explicit asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
 
 protected:
-    void OnSaveDefault(wxCommandEvent &event);
+    void OnSaveDefault(wxCommandEvent &event) override;
 
-    void CloseFrame(wxCommandEvent &event);
+    void CloseFrame(wxCommandEvent &event) override;
 
-    void OnDataSelection(wxCommandEvent &event);
+    void OnDataSelection(wxCommandEvent &event) override;
 
     void ToggleProcessing();
 
-    void BuildDatabase(wxCommandEvent &event);
+    void BuildDatabase(wxCommandEvent &event) override;
 
 };
 

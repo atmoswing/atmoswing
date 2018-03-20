@@ -31,16 +31,6 @@
 #include "wx/stdpaths.h"        // wxStandardPaths returns the standard locations in the file system
 
 
-asConfig::asConfig()
-{
-    //ctor
-}
-
-asConfig::~asConfig()
-{
-    //dtor
-}
-
 wxString asConfig::GetLogDir()
 {
     ThreadsManager().CritSectionConfig().Enter();

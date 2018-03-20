@@ -46,13 +46,13 @@ class asMethodForecasting
         : public asMethodStandard
 {
 public:
-    asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = NULL);
+    explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
 
-    virtual ~asMethodForecasting();
+    ~asMethodForecasting() override;
 
     void ClearForecasts();
 
-    virtual bool Manager();
+    bool Manager() override;
 
     bool Forecast(asParametersForecast &params);
 
@@ -86,9 +86,9 @@ protected:
 
     void DeletePreprocessData();
 
-    double GetEffectiveArchiveDataStart(asParameters *params) const;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-    double GetEffectiveArchiveDataEnd(asParameters *params) const;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
     void Cleanup();
 

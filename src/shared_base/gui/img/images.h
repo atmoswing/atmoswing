@@ -43,6 +43,6 @@
 
 extern void initialize_images(double ppiScaling);
 
-extern void cleanup_images(void);
+extern void cleanup_images();
 
 #endif /* _INIT_IMG_H_ */

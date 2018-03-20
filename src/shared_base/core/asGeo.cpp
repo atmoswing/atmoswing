@@ -38,11 +38,6 @@ asGeo::asGeo(GridType type)
     // We always consider WGS84 for the predictors
 }
 
-asGeo::~asGeo()
-{
-    //dtor
-}
-
 bool asGeo::CheckPoint(Coo &point, int changesAllowed)
 {
     // We always consider WGS84 for the predictors

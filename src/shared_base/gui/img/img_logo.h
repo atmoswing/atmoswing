@@ -14,9 +14,9 @@
 #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
 #endif
 
-extern void initialize_img_logo(void);
+extern void initialize_img_logo();
 
-void cleanup_img_logo(void);
+void cleanup_img_logo();
 
 extern wxBitmap *_img_logo;
 

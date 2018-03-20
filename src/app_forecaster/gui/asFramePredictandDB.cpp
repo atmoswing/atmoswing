@@ -71,13 +71,13 @@ void asFramePredictandDB::OnSaveDefault(wxCommandEvent &event)
 {
     // Save as defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long choiceDataParam = (long) m_choiceDataParam->GetSelection();
+    auto choiceDataParam = (long) m_choiceDataParam->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataParam", choiceDataParam);
     m_choiceDataParam->SetSelection((int) choiceDataParam);
-    long choiceDataTempResol = (long) m_choiceDataTempResol->GetSelection();
+    auto choiceDataTempResol = (long) m_choiceDataTempResol->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataTempResol", choiceDataTempResol);
     m_choiceDataTempResol->SetSelection((int) choiceDataTempResol);
-    long choiceDataSpatAggreg = (long) m_choiceDataSpatAggreg->GetSelection();
+    auto choiceDataSpatAggreg = (long) m_choiceDataSpatAggreg->GetSelection();
     pConfig->Write("/PredictandDBToolbox/ChoiceDataSpatAggreg", choiceDataSpatAggreg);
     m_choiceDataSpatAggreg->SetSelection((int) choiceDataSpatAggreg);
     wxString returnPeriodNorm = m_textCtrlReturnPeriod->GetValue();

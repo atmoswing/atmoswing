@@ -39,14 +39,14 @@ asDialogProgressBar::asDialogProgressBar(const wxString &dialogMessage, int valu
     if (!g_silentMode) {
         if (valueMax > 2 * m_steps) {
             m_delayUpdate = true;
-            m_vectorSteps.resize((unsigned long) (m_steps + 1));
+            m_vectorSteps.resize(m_steps + 1);
             for (int i = 0; i <= m_steps; i++) {
                 m_vectorSteps[i] = i * valueMax / m_steps;
             }
         }
 
         if (valueMax > 10) {
-            m_progressBar = new wxProgressDialog(_("Please wait"), dialogMessage, valueMax, NULL,
+            m_progressBar = new wxProgressDialog(_("Please wait"), dialogMessage, valueMax, nullptr,
                                                  wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME |
                                                  wxPD_ELAPSED_TIME | wxPD_SMOOTH); // wxPD_APP_MODAL |
             m_initiated = true;

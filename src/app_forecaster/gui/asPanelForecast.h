@@ -39,9 +39,9 @@ class asPanelForecast
         : public asPanelForecastVirtual
 {
 public:
-    asPanelForecast(wxWindow *parent);
+    explicit asPanelForecast(wxWindow *parent);
 
-    virtual bool Layout();
+    bool Layout() override;
 
     awxLed *GetLed() const
     {
@@ -67,7 +67,7 @@ protected:
     wxWindow *m_parentFrame;
     awxLed *m_led;
 
-    void ClosePanel(wxCommandEvent &event);
+    void ClosePanel(wxCommandEvent &event) override;
 
     void ChangeForecastName(wxCommandEvent &event);
 
