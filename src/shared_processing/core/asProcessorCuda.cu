@@ -154,47 +154,6 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
         }
 
         float criterion = 0;
-
-
-//https://devblogs.nvidia.com/efficient-matrix-transpose-cuda-cc/
-//https://devblogs.nvidia.com/how-access-global-memory-efficiently-cuda-c-kernels/
-//http://127.0.0.1:34923/help/index.jsp?topic=%2Fcom.nvidia.help.bpg%2Fcuda-c-best-practices-guide.html%23device-memory-spaces
-
-        float * dataCopy;
-        dataCopy = new float[2*dataProp.totPtsNb];
-
-        int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
-        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
-
-        for (int j = 0; j < 2*dataProp.totPtsNb; j += 2) {
-            dataCopy[j] = data[targIndexBase + j/2];
-        }
-        for (int j = 1; j < 2*dataProp.totPtsNb; j += 2) {
-            dataCopy[j] = data[archIndexBase + j/2];
-        }
-
-        //__syncthreads();
-
-
-
-        int currIndex = 0;
-
-        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-            float dividend = 0, divisor = 0;
-
-            for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
-                dividend += fabsf(dataCopy[currIndex] - dataCopy[currIndex+1]);
-                divisor += fmaxf(fabsf(dataCopy[currIndex]), fabsf(dataCopy[currIndex+1]));
-
-                currIndex++;
-            }
-
-            criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
-        }
-
-        delete[] dataCopy;
-
-/*
         int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
         int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
 
@@ -213,7 +172,7 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 
             criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
         }
-*/
+
         criteria[i_cand] = criterion;
     }
 
