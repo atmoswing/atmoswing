@@ -517,16 +517,6 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                     params->GetPredictorFlatAllowed(iStep, iPtor));
             wxASSERT(area);
 
-            // Check the starting dates coherence
-            if (predictor->GetOriginalProviderStart() > ptorStart) {
-                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadArchiveData)."),
-                           asTime::GetStringTime(ptorStart),
-                           asTime::GetStringTime(predictor->GetOriginalProviderStart()));
-                wxDELETE(area);
-                wxDELETE(predictor);
-                return false;
-            }
-
             // Data loading
             wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[i], (int) preloadLevels[iLevel],
                          preloadTimeHours[iHour]);
@@ -697,17 +687,6 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                         params->GetPredictorYstep(iStep, iPtor), level, asNONE,
                         params->GetPredictorFlatAllowed(iStep, iPtor));
                 wxASSERT(area);
-
-                // Check the starting dates coherence
-                if (predictorPreprocess->GetOriginalProviderStart() > ptorStart) {
-                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::PreloadArchiveData, preprocessing)."),
-                               asTime::GetStringTime(ptorStart),
-                               asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart()));
-                    wxDELETE(area);
-                    wxDELETE(predictorPreprocess);
-                    Cleanup(predictorsPreprocess);
-                    return false;
-                }
 
                 // Data loading
                 wxLogVerbose(_("Loading %s data for level %d, %gh."), params->GetPreprocessDataId(iStep, iPtor, iPre),
@@ -1013,15 +992,6 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
                                                                        params->GetPredictorFlatAllowed(iStep, iPtor));
     wxASSERT(area);
 
-    // Check the starting dates coherence
-    if (predictor->GetOriginalProviderStart() > ptorStart) {
-        wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, no preprocessing)."),
-                   asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart()));
-        wxDELETE(area);
-        wxDELETE(predictor);
-        return false;
-    }
-
     // Data loading
     if (!predictor->Load(area, timeArray)) {
         wxLogError(_("The data could not be loaded."));
@@ -1081,17 +1051,6 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
                                                                            params->GetPredictorFlatAllowed(iStep,
                                                                                                           iPtor));
         wxASSERT(area);
-
-        // Check the starting dates coherence
-        if (predictorPreprocess->GetOriginalProviderStart() > ptorStart) {
-            wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodCalibrator::GetAnalogsDates, preprocessing)."),
-                       asTime::GetStringTime(ptorStart),
-                       asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart()));
-            wxDELETE(area);
-            wxDELETE(predictorPreprocess);
-            Cleanup(predictorsPreprocess);
-            return false;
-        }
 
         // Data loading
         if (!predictorPreprocess->Load(area, timeArray)) {

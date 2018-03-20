@@ -42,8 +42,6 @@ asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId, const wxStrin
     m_originalProvider = "various";
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = NaNd;
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
     m_firstTimeStepHours = NaNd;
     m_strideAllowed = true;

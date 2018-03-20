@@ -41,8 +41,6 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 12;
     m_strideAllowed = true;

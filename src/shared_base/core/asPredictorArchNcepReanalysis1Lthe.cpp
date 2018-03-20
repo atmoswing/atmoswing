@@ -41,8 +41,6 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 24;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

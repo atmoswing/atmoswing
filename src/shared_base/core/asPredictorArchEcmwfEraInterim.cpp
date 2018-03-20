@@ -39,8 +39,6 @@ asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &d
     m_originalProvider = "ECMWF";
     m_datasetName = "ERA-interim";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

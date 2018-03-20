@@ -793,17 +793,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                     params.GetPredictorYstep(iStep, iPtor), params.GetPredictorLevel(iStep, iPtor), asNONE,
                     params.GetPredictorFlatAllowed(iStep, iPtor));
 
-            // Check the starting dates coherence
-            if (predictorArchive->GetOriginalProviderStart() > ptorStartArchive) {
-                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                           asTime::GetStringTime(ptorStartArchive),
-                           asTime::GetStringTime(predictorArchive->GetOriginalProviderStart()));
-                wxDELETE(area);
-                wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                return false;
-            }
-
             // Archive data loading
             wxLogVerbose(_("Loading archive data."));
             if (!predictorArchive->Load(area, timeArrayDataArchive)) {
@@ -926,17 +915,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
                         params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre), asNONE,
                         params.GetPredictorFlatAllowed(iStep, iPtor));
-
-                // Check the starting dates coherence
-                if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
-                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                               asTime::GetStringTime(ptorStartArchive),
-                               asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart()));
-                    wxDELETE(area);
-                    wxDELETE(predictorArchivePreprocess);
-                    wxDELETE(predictorRealtimePreprocess);
-                    return false;
-                }
 
                 // Archive data loading
                 wxLogVerbose(_("Loading archive data."));
@@ -1282,17 +1260,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                     params.GetPredictorYstep(iStep, iPtor), params.GetPredictorLevel(iStep, iPtor), asNONE,
                     params.GetPredictorFlatAllowed(iStep, iPtor));
 
-            // Check the starting dates coherence
-            if (predictorArchive->GetOriginalProviderStart() > ptorStartArchive) {
-                wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                           asTime::GetStringTime(ptorStartArchive),
-                           asTime::GetStringTime(predictorArchive->GetOriginalProviderStart()));
-                wxDELETE(area);
-                wxDELETE(predictorArchive);
-                wxDELETE(predictorRealtime);
-                return false;
-            }
-
             // Archive data loading
             if (!predictorArchive->Load(area, timeArrayDataArchive)) {
                 wxLogError(_("Archive data could not be loaded."));
@@ -1403,17 +1370,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
                         params.GetPredictorYstep(iStep, iPtor), params.GetPreprocessLevel(iStep, iPtor, iPre), asNONE,
                         params.GetPredictorFlatAllowed(iStep, iPtor));
-
-                // Check the starting dates coherence
-                if (predictorArchivePreprocess->GetOriginalProviderStart() > ptorStartArchive) {
-                    wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s)."),
-                               asTime::GetStringTime(ptorStartArchive),
-                               asTime::GetStringTime(predictorArchivePreprocess->GetOriginalProviderStart()));
-                    wxDELETE(area);
-                    wxDELETE(predictorArchivePreprocess);
-                    wxDELETE(predictorRealtimePreprocess);
-                    return false;
-                }
 
                 // Archive data loading
                 if (!predictorArchivePreprocess->Load(area, timeArrayDataArchive)) {

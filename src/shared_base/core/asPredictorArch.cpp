@@ -51,9 +51,7 @@
 
 
 asPredictorArch::asPredictorArch(const wxString &dataId)
-        : asPredictor(dataId),
-          m_originalProviderStart(0.0),
-          m_originalProviderEnd(0.0)
+        : asPredictor(dataId)
 {
 
 }
@@ -504,22 +502,6 @@ bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const
     if (!timeArray.IsSimpleMode()) {
         wxLogError(_("The data loading only accepts time arrays in simple mode."));
         return false;
-    }
-
-    // Check against original dataset
-    if (timeArray.GetFirst() < m_originalProviderStart) {
-        wxLogError(_("The requested date (%s) is anterior to the beginning of the original dataset (%s)."),
-                   asTime::GetStringTime(timeArray.GetFirst(), YYYYMMDD),
-                   asTime::GetStringTime(m_originalProviderStart, YYYYMMDD));
-        return false;
-    }
-    if (!asTools::IsNaN(m_originalProviderEnd)) {
-        if (timeArray.GetLast() > m_originalProviderEnd) {
-            wxLogError(_("The requested date (%s) is posterior to the end of the original dataset (%s)."),
-                       asTime::GetStringTime(timeArray.GetLast(), YYYYMMDD),
-                       asTime::GetStringTime(m_originalProviderEnd, YYYYMMDD));
-            return false;
-        }
     }
 
     // Check the time steps

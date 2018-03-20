@@ -40,8 +40,6 @@ asPredictorArchNcepReanalysis2::asPredictorArchNcepReanalysis2(const wxString &d
     m_originalProvider = "NCEP/DOE";
     m_datasetName = "Reanalysis 2";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;

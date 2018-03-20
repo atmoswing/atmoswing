@@ -49,19 +49,12 @@ public:
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
-    double GetOriginalProviderStart() const
-    {
-        return m_originalProviderStart;
-    }
-
     void SetFileNamePattern(const wxString &val)
     {
         m_fileNamePattern = val;
     }
 
 protected:
-    double m_originalProviderStart;
-    double m_originalProviderEnd;
     wxString m_fileNamePattern;
 
     virtual void ListFiles(asTimeArray &timeArray);

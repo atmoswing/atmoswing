@@ -433,15 +433,6 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
             params->GetPredictorFlatAllowed(iStep, iPtor));
     wxASSERT(area);
 
-    // Check the starting dates coherence
-    if (predictor->GetOriginalProviderStart() > ptorStart) {
-        wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodDownscaler::GetAnalogsDates, no preprocessing)."),
-                   asTime::GetStringTime(ptorStart), asTime::GetStringTime(predictor->GetOriginalProviderStart()));
-        wxDELETE(area);
-        wxDELETE(predictor);
-        return false;
-    }
-
     // Data loading
     if (!predictor->Load(area, timeArray)) {
         wxLogError(_("The data could not be loaded."));
@@ -506,17 +497,6 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
                 asNONE,
                 params->GetPredictorFlatAllowed(iStep, iPtor));
         wxASSERT(area);
-
-        // Check the starting dates coherence
-        if (predictorPreprocess->GetOriginalProviderStart() > ptorStart) {
-            wxLogError(_("The first year defined in the parameters (%s) is prior to the start date of the data (%s) (in asMethodDownscaler::GetAnalogsDates, preprocessing)."),
-                       asTime::GetStringTime(ptorStart),
-                       asTime::GetStringTime(predictorPreprocess->GetOriginalProviderStart()));
-            wxDELETE(area);
-            wxDELETE(predictorPreprocess);
-            Cleanup(predictorsPreprocess);
-            return false;
-        }
 
         // Data loading
         if (!predictorPreprocess->Load(area, timeArray)) {

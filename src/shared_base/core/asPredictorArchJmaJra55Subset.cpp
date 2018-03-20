@@ -41,8 +41,6 @@ asPredictorArchJmaJra55Subset::asPredictorArchJmaJra55Subset(const wxString &dat
     m_transformedBy = "NCAR/UCAR Data Subset";
     m_datasetName = "Japanese 55-year Reanalysis";
     m_fileType = asFile::Netcdf;
-    m_originalProviderStart = asTime::GetMJD(1958, 1, 1);
-    m_originalProviderEnd = NaNd;
     m_timeStepHours = 6;
     m_firstTimeStepHours = 0;
     m_strideAllowed = true;
