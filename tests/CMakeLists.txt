@@ -37,12 +37,25 @@ else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asParametersOptimizationTest.cpp")
 endif ()
+if (BUILD_DOWNSCALER)
+    file(GLOB_RECURSE src_downscaler_core_h ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.h)
+    file(GLOB_RECURSE src_downscaler_core_cpp ${CMAKE_SOURCE_DIR}/src/app_downscaler/core/*.cpp)
+    list(APPEND src_tests ${src_downscaler_core_h})
+    list(APPEND src_tests ${src_downscaler_core_cpp})
+else ()
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorProjCMIP5Test.cpp")
+endif ()
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/asGlobVarsViewer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/asGlobVarsDownscaler.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_viewer/core/AtmoswingAppViewer.cpp")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/AtmoswingAppOptimizer.cpp")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.h")
+list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.cpp")
+
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_tests)
@@ -54,6 +67,7 @@ list(APPEND inc_dirs
         "${CMAKE_SOURCE_DIR}/src/app_forecaster/core/"
         "${CMAKE_SOURCE_DIR}/src/app_viewer/core/"
         "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/"
+        "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/"
         "${PROJECT_SOURCE_DIR}/test/src/"
         )
 include_directories(${inc_dirs})
