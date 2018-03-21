@@ -50,11 +50,6 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
     m_fStr.hasLevelDim = false;
 }
 
-asPredictorArchNoaaOisst2::~asPredictorArchNoaaOisst2()
-{
-
-}
-
 bool asPredictorArchNoaaOisst2::Init()
 {
     // Identify data ID and set the corresponding properties.

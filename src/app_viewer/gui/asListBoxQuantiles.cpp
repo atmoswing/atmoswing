@@ -46,11 +46,6 @@ asListBoxQuantiles::asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wx
     //ctor
 }
 
-asListBoxQuantiles::~asListBoxQuantiles()
-{
-    //dtor
-}
-
 void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent &event)
 {
     wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED);

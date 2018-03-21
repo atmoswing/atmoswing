@@ -51,11 +51,11 @@ float asRandom(float min, float max, float step = 0);
  */
 double asRandom(double min, double max, double step = 0);
 
-int asRandomNormal(const int mean, const int stDev, const int step = 1);
+int asRandomNormal(int mean, int stDev, int step = 1);
 
-float asRandomNormal(const float mean, const float stDev, const float step = 0);
+float asRandomNormal(float mean, float stDev, float step = 0);
 
-double asRandomNormal(const double mean, const double stDev, const double step = 0);
+double asRandomNormal(double mean, double stDev, double step = 0);
 
 bool asIsRound(float value);
 
@@ -155,77 +155,64 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, float to
 a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
                                double tolerance = 0.000000001);
 
-int asFind(const int *pArrStart, const int *pArrEnd, const int targetValue,
-           const int tolerance = 0, const int showWarning = asSHOW_WARNINGS);
+int asFind(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFind(const float *pArrStart, const float *pArrEnd, const float targetValue,
-           const float tolerance = 0.0, const int showWarning = asSHOW_WARNINGS);
+int asFind(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0.0, int showWarning = asSHOW_WARNINGS);
 
-int asFind(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance = 0.0,
+int asFind(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0.0,
            int showWarning = asSHOW_WARNINGS);
 
 template<class T>
 int asFindT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0,
                               int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const int *pArrStart, const int *pArrEnd, const int targetValue,
-                  const int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const float *pArrStart, const float *pArrEnd, const float targetValue,
-                  const int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const double *pArrStart, const double *pArrEnd, const double targetValue,
-                  const int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
 template<class T>
-int asFindClosestT(const T *pArrStart, const T *pArrEnd, T targetValue, const int showWarning = asSHOW_WARNINGS);
+int asFindClosestT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance = 0,
-                const int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance = 0,
-                const int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance = 0,
-                const int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
 template<class T>
-int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0,
-                 const int showWarning = asSHOW_WARNINGS);
+int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance = 0,
-               const int showWarning = asSHOW_WARNINGS);
+int asFindCeil(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance = 0,
-               const int showWarning = asSHOW_WARNINGS);
+int asFindCeil(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-int asFindCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance = 0,
-               const int showWarning = asSHOW_WARNINGS);
+int asFindCeil(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
 template<class T>
-int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0,
-                const int showWarning = asSHOW_WARNINGS);
+int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
-bool asArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val);
+bool asArrayInsert(int *pArrStart, int *pArrEnd, Order order, int val);
 
-bool asArrayInsert(float *pArrStart, float *pArrEnd, const Order order, const float val);
+bool asArrayInsert(float *pArrStart, float *pArrEnd, Order order, float val);
 
-bool asArrayInsert(double *pArrStart, double *pArrEnd, const Order order, const double val);
-
-template<class T>
-bool asArrayInsertT(T *pArrStart, T *pArrEnd, const Order order, T val);
-
-bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order,
-                    const int valRef, const int valOther);
-
-bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
-                    const Order order, const float valRef, const float valOther);
-
-bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
-                    const Order order, const double valRef, const double valOther);
+bool asArrayInsert(double *pArrStart, double *pArrEnd, Order order, double val);
 
 template<class T>
-bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order, T valRef,
+bool asArrayInsertT(T *pArrStart, T *pArrEnd, Order order, T val);
+
+bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order, int valRef,
+                    int valOther);
+
+bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd, Order order,
+                    float valRef, float valOther);
+
+bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order,
+                    double valRef, double valOther);
+
+template<class T>
+bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order, T valRef,
                      T valOther);
 
 bool asSortArray(int *pArrRefStart, int *pArrRefEnd, Order order);

@@ -41,7 +41,7 @@ class asFileXml
 public:
     asFileXml(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileXml() override;
+    ~asFileXml() override = default;
 
     bool Open() override;
 

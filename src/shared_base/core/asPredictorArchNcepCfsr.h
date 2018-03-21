@@ -37,14 +37,14 @@ class asPredictorArchNcepCfsr
         : public asPredictorArch
 {
 public:
-    asPredictorArchNcepCfsr(const wxString &dataId);
+    explicit asPredictorArchNcepCfsr(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepCfsr();
+    ~asPredictorArchNcepCfsr() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
 private:
 

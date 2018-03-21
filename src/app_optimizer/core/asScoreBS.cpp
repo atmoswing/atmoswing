@@ -33,11 +33,6 @@ asScoreBS::asScoreBS()
 {
 }
 
-asScoreBS::~asScoreBS()
-{
-    //dtor
-}
-
 float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxASSERT(forcastVals.size() > 1);

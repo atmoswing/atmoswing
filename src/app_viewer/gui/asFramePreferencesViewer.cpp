@@ -211,7 +211,7 @@ void asFramePreferencesViewer::SavePreferences()
      */
 
     // Log
-    long logLevelViewer = (long) m_radioBoxLogLevel->GetSelection();
+    auto logLevelViewer = (long) m_radioBoxLogLevel->GetSelection();
     pConfig->Write("/General/LogLevel", logLevelViewer + 1); // = selection +1
     bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);

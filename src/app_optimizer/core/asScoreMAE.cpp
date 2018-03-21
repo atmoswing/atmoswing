@@ -34,11 +34,6 @@ asScoreMAE::asScoreMAE()
 
 }
 
-asScoreMAE::~asScoreMAE()
-{
-    //dtor
-}
-
 float asScoreMAE::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxASSERT(forcastVals.size() > 1);

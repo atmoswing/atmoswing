@@ -71,7 +71,7 @@ a1d asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double xMin, double x
 
     if (type.IsSameAs("Regular", false)) {
         wxASSERT(xStep > 0);
-        int ni = (int) asRound(360 / xStep);
+        auto ni = (int) asRound(360 / xStep);
         axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
     } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);

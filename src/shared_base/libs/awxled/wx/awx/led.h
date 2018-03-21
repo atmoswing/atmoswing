@@ -54,7 +54,7 @@ public:
             // red LED is default
            awxLedColour color = awxLED_RED, long style = 0, int timerInterval = 500);
 
-    ~awxLed();
+    ~awxLed() override;
 
     void Blink();
 

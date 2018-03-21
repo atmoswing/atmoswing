@@ -37,18 +37,18 @@ class asPredictorArchJmaJra55Subset
         : public asPredictorArch
 {
 public:
-    asPredictorArchJmaJra55Subset(const wxString &dataId);
+    explicit asPredictorArchJmaJra55Subset(const wxString &dataId);
 
-    virtual ~asPredictorArchJmaJra55Subset();
+    ~asPredictorArchJmaJra55Subset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
     bool m_monthlyFiles;
 
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

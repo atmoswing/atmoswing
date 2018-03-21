@@ -35,11 +35,6 @@ asScoreDF0::asScoreDF0()
 
 }
 
-asScoreDF0::~asScoreDF0()
-{
-    //dtor
-}
-
 float asScoreDF0::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxASSERT(forcastVals.size() > 1);

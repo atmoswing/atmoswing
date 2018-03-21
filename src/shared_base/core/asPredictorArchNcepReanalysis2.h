@@ -38,16 +38,16 @@ class asPredictorArchNcepReanalysis2
         : public asPredictorArch
 {
 public:
-    asPredictorArchNcepReanalysis2(const wxString &dataId);
+    explicit asPredictorArchNcepReanalysis2(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepReanalysis2();
+    ~asPredictorArchNcepReanalysis2() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

@@ -89,11 +89,6 @@ asGeoAreaComposite::asGeoAreaComposite(float level, float height)
 
 }
 
-asGeoAreaComposite::~asGeoAreaComposite()
-{
-    //dtor
-}
-
 void asGeoAreaComposite::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
 {
     m_cornerUL.x = xMin;

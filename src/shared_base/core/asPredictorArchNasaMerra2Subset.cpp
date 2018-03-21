@@ -42,11 +42,6 @@ asPredictorArchNasaMerra2Subset::asPredictorArchNasaMerra2Subset(const wxString 
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2, subset";
 }
 
-asPredictorArchNasaMerra2Subset::~asPredictorArchNasaMerra2Subset()
-{
-
-}
-
 bool asPredictorArchNasaMerra2Subset::Init()
 {
     CheckLevelTypeIsDefined();

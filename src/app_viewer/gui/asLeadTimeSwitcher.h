@@ -43,7 +43,7 @@ public:
                        wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                        const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asLeadTimeSwitcher();
+    ~asLeadTimeSwitcher() override;
 
     void Draw(a1f &dates);
 

@@ -51,11 +51,6 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
     m_fStr.dimLevelName = "level";
 }
 
-asPredictorArchNcepReanalysis1Subset::~asPredictorArchNcepReanalysis1Subset()
-{
-
-}
-
 bool asPredictorArchNcepReanalysis1Subset::Init()
 {
     // Identify data ID and set the corresponding properties.

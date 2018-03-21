@@ -48,7 +48,7 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow *parent, wxWindowI
     m_sizerContent->Add(m_listCtrl, 0, wxEXPAND, 0);
 
     m_listCtrl->Connect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
-                        wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), NULL, this);
+                        wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 
     Layout();
     m_sizerContent->Fit(this);
@@ -57,7 +57,7 @@ asPanelSidebarAnalogDates::asPanelSidebarAnalogDates(wxWindow *parent, wxWindowI
 asPanelSidebarAnalogDates::~asPanelSidebarAnalogDates()
 {
     m_listCtrl->Disconnect(wxEVT_COMMAND_LIST_ITEM_SELECTED,
-                           wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), NULL, this);
+                           wxListEventHandler(asPanelSidebarAnalogDates::OnDateSelection), nullptr, this);
 }
 
 void asPanelSidebarAnalogDates::OnDateSelection(wxListEvent &event)

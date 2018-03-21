@@ -38,9 +38,9 @@ const extern wxString g_version;
 class asVersion
 {
 public:
-    asVersion();
+    asVersion() = default;
 
-    virtual ~asVersion();
+    virtual ~asVersion() = default;
 
     static wxString GetFullString();
 

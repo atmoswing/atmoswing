@@ -52,7 +52,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(const vi gribCode, float level);
+    bool SetIndexPosition(vi gribCode, float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 

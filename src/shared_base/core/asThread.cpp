@@ -36,7 +36,7 @@ asThread::asThread(Type type)
 
 wxThread::ExitCode asThread::Entry()
 {
-    return 0;
+    return nullptr;
 }
 
 void asThread::OnExit()

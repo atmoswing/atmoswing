@@ -47,11 +47,6 @@ asPredictorArchNoaa20Cr2c::asPredictorArchNoaa20Cr2c(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-asPredictorArchNoaa20Cr2c::~asPredictorArchNoaa20Cr2c()
-{
-
-}
-
 bool asPredictorArchNoaa20Cr2c::Init()
 {
     CheckLevelTypeIsDefined();

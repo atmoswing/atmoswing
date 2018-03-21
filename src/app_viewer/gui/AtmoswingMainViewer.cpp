@@ -54,11 +54,6 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
     Log().CreateFile("AtmoSwingViewer.log");
 }
 
-AtmoswingFrameViewer::~AtmoswingFrameViewer()
-{
-    //wxDELETE(m_logWindow);
-}
-
 void AtmoswingFrameViewer::OnClose(wxCloseEvent &event)
 {
     Close(true);

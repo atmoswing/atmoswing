@@ -81,9 +81,9 @@ public:
         kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
     };
 
-    asPredictor(const wxString &dataId);
+    explicit asPredictor(const wxString &dataId);
 
-    virtual ~asPredictor();
+    ~asPredictor() override = default;
 
     virtual bool Init() = 0;
 

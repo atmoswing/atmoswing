@@ -27,7 +27,7 @@
 
 #include "asException.h"
 
-asException::asException()
+asException::asException() noexcept
         : std::exception(),
           m_message(wxEmptyString),
           m_fileName(wxEmptyString),
@@ -126,11 +126,6 @@ asException::asException(const char *message, const char *filename, unsigned int
 #ifndef UNIT_TESTING
     wxLogError(_("An exception occured: %s. File: %s (%d)"), m_message, m_fileName, m_lineNum);
 #endif
-}
-
-asException::~asException() throw()
-{
-    //dtor
 }
 
 wxString asException::GetFullMessage() const

@@ -51,11 +51,6 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
     m_fStr.hasLevelDim = false;
 }
 
-asPredictorArchNoaaOisst2Subset::~asPredictorArchNoaaOisst2Subset()
-{
-
-}
-
 bool asPredictorArchNoaaOisst2Subset::Init()
 {
     // Identify data ID and set the corresponding properties.

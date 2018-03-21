@@ -49,11 +49,6 @@ asGeoAreaRegularGrid::asGeoAreaRegularGrid(double xMin, double xWidth, double xS
         asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
-{
-    //dtor
-}
-
 int asGeoAreaRegularGrid::GetXaxisPtsnb() const
 {
     // Get axis size

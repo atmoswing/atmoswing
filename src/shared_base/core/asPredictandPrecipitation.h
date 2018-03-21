@@ -40,28 +40,25 @@ public:
     asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                               SpatialAggregation dataSpatialAggregation);
 
-    virtual ~asPredictandPrecipitation();
+    ~asPredictandPrecipitation() override = default;
 
-    virtual bool Load(const wxString &filePath);
+    bool Load(const wxString &filePath) override;
 
-    virtual bool Save(const wxString &destinationDir = wxEmptyString) const;
+    bool Save(const wxString &destinationDir = wxEmptyString) const override;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+    bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
                                    const wxString &patternDir = wxEmptyString,
-                                   const wxString &destinationDir = wxEmptyString);
+                                   const wxString &destinationDir = wxEmptyString) override;
 
-    virtual a1f GetReferenceAxis() const
-    {
+    a1f GetReferenceAxis() const override {
         return m_returnPeriods;
     }
 
-    virtual float GetReferenceValue(int iStat, double duration, float reference) const
-    {
+    float GetReferenceValue(int iStat, double duration, float reference) const override {
         return GetPrecipitationOfReturnPeriod(iStat, duration, reference);
     }
 
-    virtual a2f GetReferenceValuesArray() const
-    {
+    a2f GetReferenceValuesArray() const override {
         return m_dailyPrecipitationsForReturnPeriods;
     }
 

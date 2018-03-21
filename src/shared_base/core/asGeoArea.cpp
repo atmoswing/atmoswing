@@ -92,11 +92,6 @@ asGeoArea::asGeoArea(float level, float height)
     m_cornerLR.y = 0;
 }
 
-asGeoArea::~asGeoArea()
-{
-    //dtor
-}
-
 void asGeoArea::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {

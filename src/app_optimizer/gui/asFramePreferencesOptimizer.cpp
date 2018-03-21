@@ -119,7 +119,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_sliderThreadsPriority->SetValue((int) processingThreadsPriority);
 
     // Processing
-    long defaultMethod = (long) asMULTITHREADS;
+    auto defaultMethod = (long) asMULTITHREADS;
     long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
@@ -150,7 +150,7 @@ void asFramePreferencesOptimizer::SavePreferences() const
      */
 
     // Log    
-    long logLevel = (long) m_radioBoxLogLevel->GetSelection();
+    auto logLevel = (long) m_radioBoxLogLevel->GetSelection();
     pConfig->Write("/General/LogLevel", logLevel + 1); // = selection +1
     bool displayLogWindow = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
@@ -166,7 +166,7 @@ void asFramePreferencesOptimizer::SavePreferences() const
      */
 
     // GUI options
-    long guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long) m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -190,11 +190,11 @@ void asFramePreferencesOptimizer::SavePreferences() const
     if (!processingMaxThreadNb.IsNumber())
         processingMaxThreadNb = "2";
     pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
-    long processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    long processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
+    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
     if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
         processingMethod = (long) asSTANDARD;
     }

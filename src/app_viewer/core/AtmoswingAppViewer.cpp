@@ -81,7 +81,7 @@ bool AtmoswingAppViewer::OnInit()
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
-    m_singleInstanceChecker = NULL;
+    m_singleInstanceChecker = nullptr;
     bool multipleInstances;
     pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
@@ -109,7 +109,7 @@ bool AtmoswingAppViewer::OnInit()
         return false;
 
     // Create frame
-    AtmoswingFrameViewer *frame = new AtmoswingFrameViewer(0L);
+    auto *frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__
@@ -206,7 +206,7 @@ int AtmoswingAppViewer::OnExit()
     wxDELETE(m_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

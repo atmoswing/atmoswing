@@ -43,7 +43,7 @@ public:
     asGeoAreaRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
                          float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    virtual ~asGeoAreaRegularGrid();
+    ~asGeoAreaRegularGrid() override = default;
 
     int GetXaxisPtsnb() const;
 

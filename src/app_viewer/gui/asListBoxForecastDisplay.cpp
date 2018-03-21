@@ -45,11 +45,6 @@ asListBoxForecastDisplay::asListBoxForecastDisplay(wxWindow *parent, wxWindowID 
     //ctor
 }
 
-asListBoxForecastDisplay::~asListBoxForecastDisplay()
-{
-    //dtor
-}
-
 void asListBoxForecastDisplay::OnForecastDisplaySlctChange(wxCommandEvent &event)
 {
     wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED);

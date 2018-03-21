@@ -52,11 +52,6 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_fStr.hasLevelDim = true;
 }
 
-asPredictorArchNcepReanalysis1Lthe::~asPredictorArchNcepReanalysis1Lthe()
-{
-
-}
-
 bool asPredictorArchNcepReanalysis1Lthe::Init()
 {
     // Identify data ID and set the corresponding properties.

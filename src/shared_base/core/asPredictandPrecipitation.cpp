@@ -49,11 +49,6 @@ asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, Te
     }
 }
 
-asPredictandPrecipitation::~asPredictandPrecipitation()
-{
-    //dtor
-}
-
 bool asPredictandPrecipitation::InitContainers()
 {
     return InitBaseContainers();
@@ -287,7 +282,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment()
     asDialogProgressBar ProgressBar(_("Making Gumbel adjustments."), duration.size() - 1);
 #endif
 
-    for (float iDuration = 0; iDuration < duration.size(); iDuration++) {
+    for (int iDuration = 0; iDuration < duration.size(); iDuration++) {
         // Get the annual max
         a2f annualMax = GetAnnualMax(duration[iDuration]);
 

@@ -61,11 +61,11 @@ public:
 
     asTimeArray(double date, Mode slctmode);
 
-    asTimeArray(vd &timeArray);
+    explicit asTimeArray(vd &timeArray);
 
-    asTimeArray(a1d &timeArray);
+    explicit asTimeArray(a1d &timeArray);
 
-    virtual ~asTimeArray();
+    ~asTimeArray() override = default;
 
     bool Init();
 
@@ -104,7 +104,7 @@ public:
         return m_forbiddenYears;
     }
 
-    void SetForbiddenYears(const vi years)
+    void SetForbiddenYears(const vi &years)
     {
         m_forbiddenYears = years;
     }

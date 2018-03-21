@@ -47,11 +47,6 @@ asPredictorArchEcmwfEra20C::asPredictorArchEcmwfEra20C(const wxString &dataId)
     m_subFolder = wxEmptyString;
 }
 
-asPredictorArchEcmwfEra20C::~asPredictorArchEcmwfEra20C()
-{
-
-}
-
 bool asPredictorArchEcmwfEra20C::Init()
 {
     CheckLevelTypeIsDefined();

@@ -36,8 +36,8 @@ class asPanelSidebar
         : public asPanelSidebarVirtual
 {
 public:
-    asPanelSidebar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                   const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+    explicit asPanelSidebar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                            const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     void ReducePanel();
 
@@ -47,7 +47,7 @@ public:
     }
 
 protected:
-    void OnReducePanel(wxCommandEvent &event);
+    void OnReducePanel(wxCommandEvent &event) override;
 
     void OnPaint(wxCommandEvent &event);
 

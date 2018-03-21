@@ -49,11 +49,11 @@ asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
 {
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
-                       _("Run optimizer now"), NULL);
+                       _("Run optimizer now"), nullptr);
     m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel optimization"),
-                       _("Cancel current optimization"), NULL);
+                       _("Cancel current optimization"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), NULL);
+                       _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Connect events
@@ -91,14 +91,14 @@ void asFrameOptimizer::Update()
 
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
 {
-    asFramePreferencesOptimizer *frame = new asFramePreferencesOptimizer(this);
+    auto *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 {
-    asFrameAbout *frame = new asFrameAbout(this);
+    auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -333,7 +333,7 @@ void asFrameOptimizer::SaveOptions() const
 {
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long methodSelection = (long) m_choiceMethod->GetSelection();
+    auto methodSelection = (long) m_choiceMethod->GetSelection();
     pConfig->Write("/Optimizer/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
     pConfig->Write("/Optimizer/ParametersFilePath", parametersFilePath);

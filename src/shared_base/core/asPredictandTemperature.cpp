@@ -41,11 +41,6 @@ asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, Tempor
     m_hasReferenceValues = false;
 }
 
-asPredictandTemperature::~asPredictandTemperature()
-{
-    //dtor
-}
-
 bool asPredictandTemperature::InitContainers()
 {
     return InitBaseContainers();

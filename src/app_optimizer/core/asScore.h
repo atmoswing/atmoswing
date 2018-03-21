@@ -73,7 +73,7 @@ public:
     asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
             float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
 
-    virtual ~asScore();
+    ~asScore() override = default;
 
     static asScore *GetInstance(Score scoreEnums);
 

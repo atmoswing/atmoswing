@@ -38,14 +38,14 @@ class asPredictorArch
         : public asPredictor
 {
 public:
-    asPredictorArch(const wxString &dataId);
+    explicit asPredictorArch(const wxString &dataId);
 
-    virtual ~asPredictorArch();
+    ~asPredictorArch() override = default;
 
     static asPredictorArch *GetInstance(const wxString &datasetId, const wxString &dataId,
                                         const wxString &directory = wxEmptyString);
 
-    virtual bool Init();
+    bool Init() override;
 
     bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
 
@@ -53,13 +53,13 @@ public:
 protected:
     wxString m_fileNamePattern;
 
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+    bool CheckTimeArray(asTimeArray &timeArray) const override;
 
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
 
 private:
 

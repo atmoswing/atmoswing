@@ -34,11 +34,6 @@ asScoreRMSE::asScoreRMSE()
 
 }
 
-asScoreRMSE::~asScoreRMSE()
-{
-    //dtor
-}
-
 float asScoreRMSE::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxASSERT(forcastVals.size() > 1);

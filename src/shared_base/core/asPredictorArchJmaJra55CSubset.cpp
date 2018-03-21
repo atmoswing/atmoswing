@@ -40,11 +40,6 @@ asPredictorArchJmaJra55CSubset::asPredictorArchJmaJra55CSubset(const wxString &d
     m_fileType = asFile::Netcdf;
 }
 
-asPredictorArchJmaJra55CSubset::~asPredictorArchJmaJra55CSubset()
-{
-
-}
-
 bool asPredictorArchJmaJra55CSubset::Init()
 {
     CheckLevelTypeIsDefined();

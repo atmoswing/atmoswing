@@ -71,17 +71,12 @@ asListBoxForecasts::asListBoxForecasts(wxWindow *parent, asForecastManager *fore
         SetIndent(indent - 5);
 }
 
-asListBoxForecasts::~asListBoxForecasts()
-{
-    //dtor
-}
-
 void asListBoxForecasts::CreateImageList()
 {
     int size = 16 * g_ppiScaleDc;
 
     // Make an image list containing small icons
-    wxImageList *images = new wxImageList(size, size, true);
+    auto *images = new wxImageList(size, size, true);
 
     // Images must match the enum
     images->Add(*_img_icon_precip);
@@ -122,7 +117,7 @@ void asListBoxForecasts::Update()
                 image = asListBoxForecasts::TreeCtrlIcon_Other;
         }
 
-        asForecastTreeItemData *itemMethod = new asForecastTreeItemData(methodRow, -1);
+        auto *itemMethod = new asForecastTreeItemData(methodRow, -1);
 
         wxString label = wxString::Format("%d. %s (%s)", methodRow + 1, forecastFirst->GetMethodIdDisplay(),
                                           forecastFirst->GetMethodId());
@@ -133,7 +128,7 @@ void asListBoxForecasts::Update()
                 asResultsForecast *forecast = m_forecastManager->GetForecast(methodRow, forecastRow);
 
                 // Create the new forecast item
-                asForecastTreeItemData *itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
+                auto *itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
 
                 wxString name = forecast->GetSpecificTagDisplay();
                 if (name.IsEmpty())
@@ -151,7 +146,7 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent &event)
     wxTreeItemId itemId = event.GetItem();
 
     if (!m_skipSlctChangeEvent && itemId.IsOk()) {
-        asForecastTreeItemData *item = (asForecastTreeItemData *) GetItemData(itemId);
+        auto *item = (asForecastTreeItemData *) GetItemData(itemId);
 
         int methodRow = item->GetMethodRow();
         int forecastRow = item->GetForecastRow();
@@ -159,7 +154,7 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent &event)
         if (methodRow >= 0) {
             wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_SELECTION_CHANGED);
 
-            asMessageForecastChoice *message = new asMessageForecastChoice(methodRow, forecastRow);
+            auto *message = new asMessageForecastChoice(methodRow, forecastRow);
 
             eventSlct.SetClientData(message);
             GetParent()->ProcessWindowEvent(eventSlct);

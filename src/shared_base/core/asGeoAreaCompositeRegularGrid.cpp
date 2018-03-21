@@ -54,22 +54,22 @@ asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double xMin, double
         asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaCompositeRegularGrid::~asGeoAreaCompositeRegularGrid()
-{
-    //dtor
-}
-
 bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea) const
 {
     if (otherarea->GetGridType() != Regular)
         return false;
-    asGeoAreaCompositeRegularGrid *otherareaRegular(dynamic_cast<asGeoAreaCompositeRegularGrid *>(otherarea));
+
+    auto *otherareaRegular(dynamic_cast<asGeoAreaCompositeRegularGrid *>(otherarea));
+
     if (!otherareaRegular)
         return false;
+
     if (GetXstep() != otherareaRegular->GetXstep())
         return false;
+
     if (GetYstep() != otherareaRegular->GetYstep())
         return false;
+
     return true;
 }
 

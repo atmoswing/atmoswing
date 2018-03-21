@@ -41,8 +41,3 @@ asPanelSidebarGisLayers::asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id
     Layout();
     m_sizerContent->Fit(this);
 }
-
-asPanelSidebarGisLayers::~asPanelSidebarGisLayers()
-{
-
-}

@@ -79,11 +79,6 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMi
     Generate(xMin, xWidth, yMin, yWidth, flatAllowed);
 }
 
-asGeoAreaGaussianGrid::~asGeoAreaGaussianGrid()
-{
-    //dtor
-}
-
 void asGeoAreaGaussianGrid::BuildLonAxis(a1d &axis, const asGeo::GridType &type)
 {
     int ni = 0;

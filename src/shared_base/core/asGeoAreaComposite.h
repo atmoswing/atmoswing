@@ -42,9 +42,9 @@ public:
     asGeoAreaComposite(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
                        float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaComposite(float level = asNONE, float height = asNONE);
+    explicit asGeoAreaComposite(float level = asNONE, float height = asNONE);
 
-    virtual ~asGeoAreaComposite();
+    ~asGeoAreaComposite() override = default;
 
     void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 

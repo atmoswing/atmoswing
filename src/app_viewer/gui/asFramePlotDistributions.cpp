@@ -46,7 +46,7 @@ asFramePlotDistributions::asFramePlotDistributions(wxWindow *parent, int methodR
 {
     forecastRow = wxMax(forecastRow, 0);
 
-    int paneMinSize = (int) (m_splitterPredictands->GetMinimumPaneSize() * g_ppiScaleDc);
+    auto paneMinSize = (int) (m_splitterPredictands->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitterPredictands->SetMinimumPaneSize(paneMinSize);
 
     m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);
@@ -442,7 +442,7 @@ bool asFramePlotDistributions::PlotCriteria()
     PlotCriteriaCurve();
 
     // Get min/max of the criteria
-    float critMin = (float) 999999999.0, critMax = (float) 0.0;
+    auto critMin = (float) 999999999.0, critMax = (float) 0.0;
     for (int i = 0; i < forecast->GetTargetDatesLength(); i++) {
         a1f tmpCriteria = forecast->GetAnalogsCriteria(i);
         if (tmpCriteria[0] < critMin)
@@ -496,7 +496,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
             plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
         } else {
-            int roundedVal = (int) asRound(retPeriods[i]);
+            auto roundedVal = (int) asRound(retPeriods[i]);
             plotData.SetFilename(wxString::Format("P%d", roundedVal));
         }
         plotData.SetValue(0, val, -1);
@@ -591,7 +591,7 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
         // wxPlotPen_Type : wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
         plotData.SetPen(wxPLOTPEN_NORMAL, pen);
         // wxPlotSymbol_Type : wxPLOTSYMBOL_ELLIPSE, wxPLOTSYMBOL_RECTANGLE, wxPLOTSYMBOL_CROSS, wxPLOTSYMBOL_PLUS, wxPLOTSYMBOL_MAXTYPE
-        plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 5, 5, &pen, NULL);
+        plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 5, 5, &pen, nullptr);
 
         plotData.SetDrawSymbols(true);
         plotData.SetDrawLines(false);
@@ -692,7 +692,7 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
             // wxPlotPen_Type : wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
             plotData.SetPen(wxPLOTPEN_NORMAL, pen);
             // wxPlotSymbol_Type : wxPLOTSYMBOL_ELLIPSE, wxPLOTSYMBOL_RECTANGLE, wxPLOTSYMBOL_CROSS, wxPLOTSYMBOL_PLUS, wxPLOTSYMBOL_MAXTYPE
-            plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 9, 9, &pen, NULL);
+            plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 9, 9, &pen, nullptr);
 
             plotData.SetDrawSymbols(true);
             plotData.SetDrawLines(false);

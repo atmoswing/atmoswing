@@ -37,16 +37,16 @@ class asPredictorArchNcepCfsrSubset
         : public asPredictorArch
 {
 public:
-    asPredictorArchNcepCfsrSubset(const wxString &dataId);
+    explicit asPredictorArchNcepCfsrSubset(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepCfsrSubset();
+    ~asPredictorArchNcepCfsrSubset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue) const;
+    double ConvertToMjd(double timeValue, double refValue) const override;
 
 private:
 

@@ -32,11 +32,7 @@
 asScoreBSS::asScoreBSS()
         : asScore(asScore::BSS, _("BS Skill Score"), _("BS Skill Score"), Desc, 1, NaNf, true)
 {
-}
 
-asScoreBSS::~asScoreBSS()
-{
-    //dtor
 }
 
 float asScoreBSS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const

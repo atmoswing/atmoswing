@@ -62,9 +62,9 @@ private:
     asFrameForecast *m_loaderFrame;
 
 public:
-    vroomDropFiles(asFrameForecast *parent);
+    explicit vroomDropFiles(asFrameForecast *parent);
 
-    virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames);
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
 
@@ -78,9 +78,9 @@ private:
     asFrameForecast *m_loaderFrame;
 
 public:
-    forecastDropFiles(asFrameForecast *parent);
+    explicit forecastDropFiles(asFrameForecast *parent);
 
-    virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames);
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
 
@@ -88,9 +88,9 @@ class asFrameForecast
         : public asFrameForecastVirtual
 {
 public:
-    asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
+    explicit asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
 
-    virtual ~asFrameForecast();
+    ~asFrameForecast() override;
 
     void Init();
 
@@ -132,25 +132,25 @@ private:
 
     bool OpenRecentForecasts();
 
-    void OnLoadPreviousForecast(wxCommandEvent &event);
+    void OnLoadPreviousForecast(wxCommandEvent &event) override;
 
-    void OnLoadNextForecast(wxCommandEvent &event);
+    void OnLoadNextForecast(wxCommandEvent &event) override;
 
-    void OnLoadPreviousDay(wxCommandEvent &event);
+    void OnLoadPreviousDay(wxCommandEvent &event) override;
 
-    void OnLoadNextDay(wxCommandEvent &event);
+    void OnLoadNextDay(wxCommandEvent &event) override;
 
     void SwitchForecast(double increment);
 
-    void OnOpenWorkspace(wxCommandEvent &event);
+    void OnOpenWorkspace(wxCommandEvent &event) override;
 
-    void OnSaveWorkspace(wxCommandEvent &event);
+    void OnSaveWorkspace(wxCommandEvent &event) override;
 
-    void OnSaveWorkspaceAs(wxCommandEvent &event);
+    void OnSaveWorkspaceAs(wxCommandEvent &event) override;
 
     bool SaveWorkspace();
 
-    void OnNewWorkspace(wxCommandEvent &event);
+    void OnNewWorkspace(wxCommandEvent &event) override;
 
     bool OpenWorkspace(bool openRecentForecasts = true);
 
@@ -166,15 +166,15 @@ private:
 
     void OpenFrameGrid(wxCommandEvent &event);
 
-    void OpenFramePreferences(wxCommandEvent &event);
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-    void OpenFrameAbout(wxCommandEvent &event);
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-    void OnLogLevel1(wxCommandEvent &event);
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-    void OnLogLevel2(wxCommandEvent &event);
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-    void OnLogLevel3(wxCommandEvent &event);
+    void OnLogLevel3(wxCommandEvent &event) override;
 
     void DisplayLogLevelMenu();
 
@@ -188,13 +188,13 @@ private:
 
     void DrawPlotStation(int stationRow);
 
-    void OnOpenLayer(wxCommandEvent &event);
+    void OnOpenLayer(wxCommandEvent &event) override;
 
-    void OnCloseLayer(wxCommandEvent &event);
+    void OnCloseLayer(wxCommandEvent &event) override;
 
-    void OnOpenForecast(wxCommandEvent &event);
+    void OnOpenForecast(wxCommandEvent &event) override;
 
-    void OnMoveLayer(wxCommandEvent &event);
+    void OnMoveLayer(wxCommandEvent &event) override;
 
     void OnChangeLeadTime(wxCommandEvent &event);
 
@@ -224,7 +224,7 @@ private:
 
     void OnClose(wxCloseEvent &event);
 
-    void OnQuit(wxCommandEvent &event);
+    void OnQuit(wxCommandEvent &event) override;
 
     void OnForecastNewAdded(wxCommandEvent &event);
 

@@ -661,7 +661,8 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_buttonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ), NULL, this );
+	m_buttonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ),
+								  nullptr, this );
 	this->Connect( m_menuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePreferences ) );
 	this->Connect( m_menuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnShowLog ) );
 	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
@@ -673,7 +674,8 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 asFrameOptimizerVirtual::~asFrameOptimizerVirtual()
 {
 	// Disconnect Events
-	m_buttonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ), NULL, this );
+	m_buttonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ),
+									 nullptr, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePreferences ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnShowLog ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
@@ -942,18 +944,26 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	this->Centre( wxBOTH );
 	
 	// Connect Events
-	m_checkBoxAllowMultithreading->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::OnChangeMultithreadingCheckBox ), NULL, this );
-	m_buttonsConfirmationApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::ApplyChanges ), NULL, this );
-	m_buttonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::CloseFrame ), NULL, this );
-	m_buttonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::SaveAndClose ), NULL, this );
+	m_checkBoxAllowMultithreading->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::OnChangeMultithreadingCheckBox ),
+											nullptr, this );
+	m_buttonsConfirmationApply->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::ApplyChanges ),
+										 nullptr, this );
+	m_buttonsConfirmationCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::CloseFrame ),
+										  nullptr, this );
+	m_buttonsConfirmationOK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::SaveAndClose ),
+									  nullptr, this );
 }
 
 asFramePreferencesOptimizerVirtual::~asFramePreferencesOptimizerVirtual()
 {
 	// Disconnect Events
-	m_checkBoxAllowMultithreading->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::OnChangeMultithreadingCheckBox ), NULL, this );
-	m_buttonsConfirmationApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::ApplyChanges ), NULL, this );
-	m_buttonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::CloseFrame ), NULL, this );
-	m_buttonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::SaveAndClose ), NULL, this );
+	m_checkBoxAllowMultithreading->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::OnChangeMultithreadingCheckBox ),
+											   nullptr, this );
+	m_buttonsConfirmationApply->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::ApplyChanges ),
+											nullptr, this );
+	m_buttonsConfirmationCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::CloseFrame ),
+											 nullptr, this );
+	m_buttonsConfirmationOK->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFramePreferencesOptimizerVirtual::SaveAndClose ),
+										 nullptr, this );
 	
 }

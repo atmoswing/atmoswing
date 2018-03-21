@@ -30,16 +30,6 @@
 const wxString g_version = wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION,
                                             ATMOSWING_PATCH_VERSION);
 
-asVersion::asVersion()
-{
-    //ctor
-}
-
-asVersion::~asVersion()
-{
-    //dtor
-}
-
 wxString asVersion::GetFullString()
 {
     //ctor

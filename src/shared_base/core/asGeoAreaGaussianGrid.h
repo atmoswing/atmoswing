@@ -43,7 +43,7 @@ public:
     asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, asGeo::GridType type, float level = asNONE,
                           float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    virtual ~asGeoAreaGaussianGrid();
+    ~asGeoAreaGaussianGrid() override = default;
 
     static void BuildLonAxis(a1d &axis, const asGeo::GridType &type);
 

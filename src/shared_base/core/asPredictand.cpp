@@ -55,11 +55,6 @@ asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTempo
 
 }
 
-asPredictand::~asPredictand()
-{
-    //dtor
-}
-
 asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &parameterStr)
 {
     if (parameterStr.CmpNoCase("Precipitation") == 0) {
@@ -247,7 +242,7 @@ asPredictand *asPredictand::GetInstance(Parameter parameter, TemporalResolution 
         }
         default:
             wxLogError(_("The predictand parameter is not listed in the asPredictand instance factory."));
-            return NULL;
+            return nullptr;
     }
 }
 
@@ -258,7 +253,7 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) {
         wxLogError(_("Couldn't open file %s"), filePath);
-        return NULL;
+        return nullptr;
     } else {
         wxLogVerbose(_("File successfully opened"));
     }
@@ -267,7 +262,7 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
     float version = ncFile.GetAttFloat("version");
     if (asIsNaN(version) || version <= 1.0) {
         wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
-        return NULL;
+        return nullptr;
     }
 
     // Get basic information
@@ -453,11 +448,11 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
 
     // Put general attributes
     ncFile.PutAtt("version", &m_fileVersion);
-    int dataParameter = (int) m_parameter;
+    auto dataParameter = (int) m_parameter;
     ncFile.PutAtt("data_parameter", &dataParameter);
-    int dataTemporalResolution = (int) m_temporalResolution;
+    auto dataTemporalResolution = (int) m_temporalResolution;
     ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-    int dataSpatialAggregation = (int) m_spatialAggregation;
+    auto dataSpatialAggregation = (int) m_spatialAggregation;
     ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("dataset_id", m_datasetId);
 

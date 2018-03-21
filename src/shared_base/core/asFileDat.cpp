@@ -98,7 +98,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
         wxXmlNode *nodeParam = node->GetChildren();
         while (nodeParam) {
             if (nodeParam->GetName() == "structure_type") {
-                pattern.structType = StringToStructType(xmlFile.GetString(nodeParam));
+                pattern.structType = StringToStructType(asFileXml::GetString(nodeParam));
                 switch (pattern.structType) {
                     case (asFileDat::ConstantWidth):
                         attributeStart = "char_start";
@@ -112,9 +112,9 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
                         asThrowException(_("The file structure type in unknown"));
                 }
             } else if (nodeParam->GetName() == "header_lines") {
-                pattern.headerLines = xmlFile.GetInt(nodeParam);
+                pattern.headerLines = asFileXml::GetInt(nodeParam);
             } else if (nodeParam->GetName() == "parse_time") {
-                pattern.parseTime = xmlFile.GetBool(nodeParam);
+                pattern.parseTime = asFileXml::GetBool(nodeParam);
             } else if (nodeParam->GetName() == "time") {
                 if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
                     asThrowException(_("The file structure type in undefined"));

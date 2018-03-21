@@ -50,11 +50,6 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs 
     wxASSERT((unsigned) m_end < fileNames.size());
 }
 
-asThreadInternetDownload::~asThreadInternetDownload()
-{
-
-}
-
 wxThread::ExitCode asThreadInternetDownload::Entry()
 {
     // Initialize
@@ -65,7 +60,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        char *errorbuffer = new char[CURL_ERROR_SIZE];
+        auto *errorbuffer = new char[CURL_ERROR_SIZE];
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -94,7 +89,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
             if (!wxFileName::FileExists(filePath)) {
                 // Instantiate the file structure
                 struct asInternet::HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
-                                                    NULL};
+                                                    nullptr};
 
                 // Define the URL
                 curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));
@@ -141,5 +136,5 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
         wxDELETEA(errorbuffer);
     }
 
-    return (wxThread::ExitCode) 0;
+    return (wxThread::ExitCode) nullptr;
 }

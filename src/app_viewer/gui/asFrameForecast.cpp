@@ -126,26 +126,26 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
 
     // Toolbar
     m_toolBar->AddTool(asID_OPEN, wxT("Open"), *_img_open, *_img_open, wxITEM_NORMAL, _("Open forecast"),
-                       _("Open a forecast"), NULL);
+                       _("Open a forecast"), nullptr);
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run last forecast"),
-                       _("Run last forecast"), NULL);
+                       _("Run last forecast"), nullptr);
     m_toolBar->AddTool(asID_SELECT, wxT("Select"), *_img_map_select, *_img_map_select, wxITEM_NORMAL, _("Select"),
-                       _("Select data on the map"), NULL);
+                       _("Select data on the map"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
-                       _("Zoom in"), NULL);
+                       _("Zoom in"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_OUT, wxT("Zoom out"), *_img_map_zoom_out, *_img_map_zoom_out, wxITEM_NORMAL,
-                       _("Zoom out"), _("Zoom out"), NULL);
+                       _("Zoom out"), _("Zoom out"), nullptr);
     m_toolBar->AddTool(asID_PAN, wxT("Pan"), *_img_map_move, *_img_map_move, wxITEM_NORMAL, _("Pan the map"),
-                       _("Move the map by panning"), NULL);
+                       _("Move the map by panning"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_FIT, wxT("Fit"), *_img_map_fit, *_img_map_fit, wxITEM_NORMAL,
-                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), NULL);
+                       _("Zoom to visible layers"), _("Zoom view to the full extent of all visible layers"), nullptr);
     m_toolBar->AddTool(asID_FRAME_PLOTS, wxT("Open distributions plots"), *_img_frame_distributions,
                        *_img_frame_distributions, wxITEM_NORMAL, _("Open distributions plots"),
-                       _("Open distributions plots"), NULL);
+                       _("Open distributions plots"), nullptr);
     m_toolBar->AddTool(asID_FRAME_GRID, wxT("Open analogs list"), *_img_frame_analogs, *_img_frame_analogs,
-                       wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), NULL);
+                       wxITEM_NORMAL, _("Open analogs list"), _("Open analogs list"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), NULL);
+                       _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // VroomGIS controls
@@ -218,15 +218,15 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     Layout();
 
     // Lead time switcher
-    m_leadTimeSwitcher = NULL;
+    m_leadTimeSwitcher = nullptr;
 
     // Status bar
     SetStatusText(_("Welcome to AtmoSwing"));
 
     // Connect Events
-    m_displayCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameForecast::OnRightClick), NULL, this);
-    m_displayCtrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameForecast::OnKeyDown), NULL, this);
-    m_displayCtrl->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), NULL, this);
+    m_displayCtrl->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameForecast::OnRightClick), nullptr, this);
+    m_displayCtrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameForecast::OnKeyDown), nullptr, this);
+    m_displayCtrl->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), nullptr, this);
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameForecast::OpenFramePreferences));
     this->Connect(asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED,
@@ -239,7 +239,7 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OnOpenForecast));
 
     // Process
-    m_processForecast = NULL;
+    m_processForecast = nullptr;
     m_launchedPresentForecast = false;
 
     // Restore frame position and size
@@ -311,9 +311,9 @@ asFrameForecast::~asFrameForecast()
     }
 
     // Disconnect Events
-    m_displayCtrl->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameForecast::OnRightClick), NULL, this);
-    m_displayCtrl->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameForecast::OnKeyDown), NULL, this);
-    m_displayCtrl->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), NULL, this);
+    m_displayCtrl->Disconnect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(asFrameForecast::OnRightClick), nullptr, this);
+    m_displayCtrl->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(asFrameForecast::OnKeyDown), nullptr, this);
+    m_displayCtrl->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), nullptr, this);
     this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::OpenFramePreferences));
     this->Disconnect(asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED,
@@ -334,9 +334,9 @@ asFrameForecast::~asFrameForecast()
     wxDELETE(m_forecastViewer);
 
     // Kill the process if still running
-    if (m_processForecast != NULL) {
+    if (m_processForecast != nullptr) {
         wxLogVerbose(_("Killing the forecast running process."));
-        wxKillError killError = m_processForecast->Kill(m_processForecast->GetPid());
+        wxKillError killError = wxProcess::Kill(m_processForecast->GetPid());
         switch (killError) {
             case (wxKILL_OK): // no error
                 wxLogVerbose(_("The forecast process has been killed successfully."));
@@ -672,14 +672,14 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
 
                     vrLayer *layer = m_layerManager->GetLayer(wxFileName(path));
                     wxASSERT(layer);
-                    m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
+                    m_viewerLayerManager->Add(-1, layer, render, nullptr, visibility);
                 } else if (type.IsSameAs("vector")) {
                     int width = m_workspace.GetLayerLineWidth(iLayer);
                     wxColour lineColor = m_workspace.GetLayerLineColor(iLayer);
                     wxColour fillColor = m_workspace.GetLayerFillColor(iLayer);
                     wxBrushStyle brushStyle = m_workspace.GetLayerBrushStyle(iLayer);
 
-                    vrRenderVector *render = new vrRenderVector();
+                    auto *render = new vrRenderVector();
                     render->SetTransparency(transparency);
                     render->SetSize(width);
                     render->SetColorPen(lineColor);
@@ -688,14 +688,14 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
 
                     vrLayer *layer = m_layerManager->GetLayer(wxFileName(path));
                     wxASSERT(layer);
-                    m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
+                    m_viewerLayerManager->Add(-1, layer, render, nullptr, visibility);
                 } else if (type.IsSameAs("wms")) {
-                    vrRenderRaster *render = new vrRenderRaster();
+                    auto *render = new vrRenderRaster();
                     render->SetTransparency(transparency);
 
                     vrLayer *layer = m_layerManager->GetLayer(wxFileName(path));
                     wxASSERT(layer);
-                    m_viewerLayerManager->Add(-1, layer, render, NULL, visibility);
+                    m_viewerLayerManager->Add(-1, layer, render, nullptr, visibility);
                 } else {
                     wxLogError(_("The GIS layer type %s does not correspond to allowed values."), type);
                 }
@@ -791,7 +791,7 @@ void asFrameForecast::LaunchForecastingNow(wxCommandEvent &event)
     wxLogVerbose(_("Sending command: %s"), forecasterPath);
 
     // Create a process
-    if (m_processForecast != NULL) {
+    if (m_processForecast != nullptr) {
         wxLogError(_("There is already a running forecast process. Please wait."));
         return;
     }
@@ -834,7 +834,7 @@ void asFrameForecast::LaunchForecastingPast(wxCommandEvent &event)
     wxLogVerbose(_("Sending command: %s"), forecasterPath);
 
     // Create a process
-    if (m_processForecast != NULL) {
+    if (m_processForecast != nullptr) {
         wxLogError(_("There is already a running forecast process. Please wait."));
         return;
     }
@@ -904,7 +904,7 @@ void asFrameForecast::OpenFramePlots(wxCommandEvent &event)
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        asFramePlotDistributions *framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
+        auto *framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
                                                                            m_forecastViewer->GetForecastSelection(),
                                                                            m_forecastManager);
 
@@ -927,7 +927,7 @@ void asFrameForecast::OpenFrameGrid(wxCommandEvent &event)
     if (m_forecastManager->HasForecasts()) {
         wxBusyCursor wait;
 
-        asFrameGridAnalogsValues *frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
+        auto *frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
                                                                            m_forecastViewer->GetForecastSelection(),
                                                                            m_forecastManager);
 
@@ -948,7 +948,7 @@ void asFrameForecast::OpenFramePreferences(wxCommandEvent &event)
 {
     wxBusyCursor wait;
 
-    asFramePreferencesViewer *frame = new asFramePreferencesViewer(this, &m_workspace, asWINDOW_PREFERENCES);
+    auto *frame = new asFramePreferencesViewer(this, &m_workspace, asWINDOW_PREFERENCES);
     frame->Fit();
     frame->Show();
 }
@@ -957,7 +957,7 @@ void asFrameForecast::OpenFrameAbout(wxCommandEvent &event)
 {
     wxBusyCursor wait;
 
-    asFrameAbout *frame = new asFrameAbout(this);
+    auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
@@ -1044,7 +1044,7 @@ bool asFrameForecast::OpenLayers(const wxArrayString &names)
         wxASSERT(layer);
 
         // Add files to the viewer
-        m_viewerLayerManager->Add(1, layer, NULL);
+        m_viewerLayerManager->Add(1, layer, nullptr);
     }
     m_viewerLayerManager->FreezeEnd();
 #if defined (__WIN32__)
@@ -1257,8 +1257,8 @@ bool asFrameForecast::OpenRecentForecasts()
 
     // Store the most recent file names
     wxArrayString recentFiles;
-    for (int i = 0; i < (int) mostRecentRows.size(); i++) {
-        recentFiles.Add(files[mostRecentRows[i]]);
+    for (int row : mostRecentRows) {
+        recentFiles.Add(files[row]);
     }
 
     // Open the forecasts
@@ -1393,7 +1393,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
         continueClosing = false;
 
         wxWindow *framePlotsTimeseries = wxWindow::FindWindowById(asWINDOW_PLOTS_TIMESERIES);
-        if (framePlotsTimeseries != NULL) {
+        if (framePlotsTimeseries != nullptr) {
             wxASSERT(framePlotsTimeseries);
             framePlotsTimeseries->SetId(0);
             framePlotsTimeseries->Destroy();
@@ -1401,7 +1401,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
         }
 
         wxWindow *framePlotsDistributions = wxWindow::FindWindowById(asWINDOW_PLOTS_DISTRIBUTIONS);
-        if (framePlotsDistributions != NULL) {
+        if (framePlotsDistributions != nullptr) {
             wxASSERT(framePlotsDistributions);
             framePlotsDistributions->SetId(0);
             framePlotsDistributions->Destroy();
@@ -1409,7 +1409,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
         }
 
         wxWindow *frameGrid = wxWindow::FindWindowById(asWINDOW_GRID_ANALOGS);
-        if (frameGrid != NULL) {
+        if (frameGrid != nullptr) {
             wxASSERT(frameGrid);
             frameGrid->SetId(0);
             frameGrid->Destroy();
@@ -1473,7 +1473,7 @@ void asFrameForecast::OnKeyDown(wxKeyEvent &event)
     }
 
     const vrDisplayTool *tool = m_displayCtrl->GetTool();
-    if (tool == NULL) {
+    if (tool == nullptr) {
         event.Skip();
         return;
     }
@@ -1492,7 +1492,7 @@ void asFrameForecast::OnKeyUp(wxKeyEvent &event)
     }
 
     const vrDisplayTool *tool = m_displayCtrl->GetTool();
-    if (tool == NULL) {
+    if (tool == nullptr) {
         event.Skip();
         return;
     }
@@ -1539,7 +1539,7 @@ void asFrameForecast::FitExtentToForecasts()
 
     vrLayerVector *layer = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - specific.memory"));
 
-    if (layer != NULL) {
+    if (layer != nullptr) {
         wxASSERT(layer);
 
         // Get the forecast layer extent
@@ -1613,7 +1613,7 @@ void asFrameForecast::OnMoveLayer(wxCommandEvent &event)
 void asFrameForecast::OnToolAction(wxCommandEvent &event)
 {
     // Get event
-    vrDisplayToolMessage *msg = (vrDisplayToolMessage *) event.GetClientData();
+    auto *msg = (vrDisplayToolMessage *) event.GetClientData();
     wxASSERT(msg);
 
     if (msg->m_evtType == vrEVT_TOOL_ZOOM) {
@@ -1694,7 +1694,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
             // Get layer
             vrLayerVector *layer = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - specific.memory"));
 
-            if (layer != NULL) {
+            if (layer != nullptr) {
                 // Search features
                 wxArrayLong stationsClose;
                 layer->SearchFeatures(&polygon, stationsClose);
@@ -1705,7 +1705,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
                     station.Add(stationsClose.Item(0));
                     int stationItem = stationsClose.Item(0);
                     OGRFeature *feature = layer->GetFeature(stationItem);
-                    int stationRow = (int) feature->GetFieldAsDouble(0);
+                    auto stationRow = (int) feature->GetFieldAsDouble(0);
 
                     if (stationRow >= 0) {
                         m_panelSidebarStationsList->GetChoiceCtrl()->Select(stationRow);
@@ -1715,7 +1715,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
                     // Search on the other (not specific) forecast layer
                     vrLayerVector *layerOther = (vrLayerVector *) m_layerManager->GetLayer(
                             _("Forecast - other.memory"));
-                    if (layerOther != NULL) {
+                    if (layerOther != nullptr) {
                         // Search features
                         layerOther->SearchFeatures(&polygon, stationsClose);
 
@@ -1724,7 +1724,7 @@ void asFrameForecast::OnToolAction(wxCommandEvent &event)
                             station.Add(stationsClose.Item(0));
                             int stationItem = stationsClose.Item(0);
                             OGRFeature *feature = layerOther->GetFeature(stationItem);
-                            int stationRow = (int) feature->GetFieldAsDouble(0);
+                            auto stationRow = (int) feature->GetFieldAsDouble(0);
 
                             if (stationRow >= 0) {
                                 m_panelSidebarStationsList->GetChoiceCtrl()->Select(stationRow);
@@ -1781,7 +1781,7 @@ void asFrameForecast::OnStationSelection(wxCommandEvent &event)
     // Display on the map when only the specific layer exists
     vrLayerVector *layer = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - specific.memory"));
     vrLayerVector *layerOther = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - other.memory"));
-    if (layer != NULL && layerOther == NULL) {
+    if (layer != nullptr && layerOther == nullptr) {
         // Set selection
         wxArrayLong station;
         station.Add(choice);
@@ -1815,7 +1815,7 @@ void asFrameForecast::OnChangeLeadTime(wxCommandEvent &event)
 
 void asFrameForecast::OnForecastClear(wxCommandEvent &event)
 {
-    if (m_panelSidebarForecasts != NULL) {
+    if (m_panelSidebarForecasts != nullptr) {
         m_panelSidebarForecasts->ClearForecasts();
     }
 }
@@ -1835,7 +1835,7 @@ void asFrameForecast::OnForecastForecastSelectionChange(wxCommandEvent &event)
 
     Freeze();
 
-    asMessageForecastChoice *message = (asMessageForecastChoice *) event.GetClientData();
+    auto *message = (asMessageForecastChoice *) event.GetClientData();
 
     m_forecastViewer->SetForecast(message->GetMethodRow(), message->GetForecastRow());
 
@@ -1884,7 +1884,7 @@ void asFrameForecast::DrawPlotStation(int stationRow)
         forecastRow = m_forecastManager->GetForecastRowSpecificForStationRow(methodRow, stationRow);
     }
 
-    asFramePlotTimeSeries *framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow,
+    auto *framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow,
                                                                         m_forecastManager);
 
     if (g_ppiScaleDc > 1) {

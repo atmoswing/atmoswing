@@ -38,11 +38,11 @@ class asFileParameters
 public:
     asFileParameters(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileParameters();
+    ~asFileParameters() override = default;
 
     virtual bool EditRootElement();
 
-    virtual bool CheckRootElement() const;
+    bool CheckRootElement() const override;
 
     static vi BuildVectorInt(int min, int max, int step);
 

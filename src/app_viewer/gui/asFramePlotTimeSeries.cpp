@@ -44,7 +44,7 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow *parent, int selectedMetho
           m_selectedForecast(selectedForecast),
           m_maxVal(100)
 {
-    int paneMinSize = (int) (m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
+    auto paneMinSize = (int) (m_splitter->GetMinimumPaneSize() * g_ppiScaleDc);
     m_splitter->SetMinimumPaneSize(paneMinSize);
 
     m_panelPlot = new asPanelPlot(m_panelRight);
@@ -64,11 +64,6 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow *parent, int selectedMetho
 #endif
 
     Layout();
-}
-
-asFramePlotTimeSeries::~asFramePlotTimeSeries()
-{
-
 }
 
 void asFramePlotTimeSeries::OnClose(wxCloseEvent &evt)
@@ -251,8 +246,8 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
         // Set lead times
         file.AddLineContent("Quantiles:");
         wxString leadTimes = "\t";
-        for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
-            leadTimes.Append(wxString::Format("%s\t", asTime::GetStringTime(m_leadTimes[iLead], "DD.MM")));
+        for (double leadTime : m_leadTimes) {
+            leadTimes.Append(wxString::Format("%s\t", asTime::GetStringTime(leadTime, "DD.MM")));
         }
         file.AddLineContent(leadTimes);
 
@@ -532,7 +527,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
             plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
         } else {
-            int roundedVal = (int) asRound(retPeriods[i]);
+            auto roundedVal = (int) asRound(retPeriods[i]);
             plotData.SetFilename(wxString::Format("P%d", roundedVal));
         }
         plotData.SetValue(0, m_leadTimes[0] - 10, val);
@@ -631,7 +626,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs()
         // wxPlotPen_Type : wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
         plotData.SetPen(wxPLOTPEN_NORMAL, pen);
         // wxPlotSymbol_Type : wxPLOTSYMBOL_ELLIPSE, wxPLOTSYMBOL_RECTANGLE, wxPLOTSYMBOL_CROSS, wxPLOTSYMBOL_PLUS, wxPLOTSYMBOL_MAXTYPE
-        plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 5, 5, &pen, NULL);
+        plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 5, 5, &pen, nullptr);
 
         plotData.SetDrawSymbols(true);
         plotData.SetDrawLines(false);
@@ -690,7 +685,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
             // wxPlotPen_Type : wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
             plotData.SetPen(wxPLOTPEN_NORMAL, pen);
             // wxPlotSymbol_Type : wxPLOTSYMBOL_ELLIPSE, wxPLOTSYMBOL_RECTANGLE, wxPLOTSYMBOL_CROSS, wxPLOTSYMBOL_PLUS, wxPLOTSYMBOL_MAXTYPE
-            plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 9, 9, &pen, NULL);
+            plotData.SetSymbol(wxPLOTSYMBOL_CROSS, wxPLOTPEN_NORMAL, 9, 9, &pen, nullptr);
 
             plotData.SetDrawSymbols(true);
             plotData.SetDrawLines(false);
@@ -713,9 +708,9 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
     a1f pc(3);
     pc << 0.9f, 0.6f, 0.2f;
     std::vector<wxColour> colours;
-    colours.push_back(wxColour(0, 0, 175));
-    colours.push_back(wxColour(0, 83, 255));
-    colours.push_back(wxColour(0, 226, 255));
+    colours.emplace_back(0, 0, 175);
+    colours.emplace_back(0, 83, 255);
+    colours.emplace_back(0, 226, 255);
 
     // Get a pointer to the plotctrl
     wxPlotCtrl *plotctrl = m_panelPlot->GetPlotCtrl();
@@ -730,7 +725,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
         // Create plot data
         wxPlotData plotData;
         plotData.Create(m_leadTimes.size());
-        int quantileRounded = (int) (asRound(thisQuantile * 100.0));
+        auto quantileRounded = (int) (asRound(thisQuantile * 100.0));
         plotData.SetFilename(wxString::Format("Quantile %d", quantileRounded));
         int counter = 0;
         for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
@@ -781,9 +776,9 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
     a1f pc(3);
     pc << 0.9f, 0.6f, 0.2f;
     std::vector<wxColour> colours;
-    colours.push_back(wxColour(152, 152, 222));
-    colours.push_back(wxColour(152, 187, 255));
-    colours.push_back(wxColour(153, 243, 254));
+    colours.emplace_back(152, 152, 222);
+    colours.emplace_back(152, 187, 255);
+    colours.emplace_back(153, 243, 254);
 
     // Get a pointer to the plotctrl
     wxPlotCtrl *plotctrl = m_panelPlot->GetPlotCtrl();
@@ -844,11 +839,11 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
     pcDown << 0, 0.1f, 0.2f, 0.3f, 0.4f;
     float pcMid = 0.5f;
     std::vector<wxColour> colours;
-    colours.push_back(wxColour(252, 252, 252));
-    colours.push_back(wxColour(220, 220, 220));
-    colours.push_back(wxColour(200, 200, 200));
-    colours.push_back(wxColour(150, 150, 150));
-    colours.push_back(wxColour(100, 100, 100));
+    colours.emplace_back(252, 252, 252);
+    colours.emplace_back(220, 220, 220);
+    colours.emplace_back(200, 200, 200);
+    colours.emplace_back(150, 150, 150);
+    colours.emplace_back(100, 100, 100);
     wxColour colourMid = wxColour(50, 50, 50);
 
     // Get a pointer to the plotctrl

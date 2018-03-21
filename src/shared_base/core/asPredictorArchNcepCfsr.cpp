@@ -42,11 +42,6 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
     m_strideAllowed = false;
 }
 
-asPredictorArchNcepCfsr::~asPredictorArchNcepCfsr()
-{
-
-}
-
 bool asPredictorArchNcepCfsr::Init()
 {
     CheckLevelTypeIsDefined();

@@ -49,11 +49,6 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
     m_fStr.dimLevelName = "lev";
 }
 
-asPredictorArchNasaMerra2::~asPredictorArchNasaMerra2()
-{
-
-}
-
 bool asPredictorArchNasaMerra2::Init()
 {
     CheckLevelTypeIsDefined();

@@ -39,9 +39,9 @@ public:
     asThreadViewerLayerManagerZoomIn(vrViewerLayerManager *viewerLayerManager,
                                      wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
 
-    virtual ~asThreadViewerLayerManagerZoomIn();
+    ~asThreadViewerLayerManagerZoomIn() override = default;
 
-    virtual ExitCode Entry();
+    ExitCode Entry() override;
 
 protected:
 

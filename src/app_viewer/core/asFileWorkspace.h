@@ -35,13 +35,13 @@ class asFileWorkspace
         : public asFileXml
 {
 public:
-    asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+    explicit asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-    virtual ~asFileWorkspace();
+    ~asFileWorkspace() override = default;
 
     bool EditRootElement() const;
 
-    bool CheckRootElement() const;
+    bool CheckRootElement() const override;
 
 protected:
 

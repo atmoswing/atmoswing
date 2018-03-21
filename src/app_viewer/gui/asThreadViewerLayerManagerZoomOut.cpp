@@ -39,16 +39,11 @@ asThreadViewerLayerManagerZoomOut::asThreadViewerLayerManagerZoomOut(vrViewerLay
     wxASSERT(m_viewerLayerManager);
 }
 
-asThreadViewerLayerManagerZoomOut::~asThreadViewerLayerManagerZoomOut()
-{
-
-}
-
 wxThread::ExitCode asThreadViewerLayerManagerZoomOut::Entry()
 {
     m_critSectionViewerLayerManager->Enter();
     m_viewerLayerManager->ZoomOut(m_rect);
     m_critSectionViewerLayerManager->Leave();
 
-    return (wxThread::ExitCode) 0;
+    return (wxThread::ExitCode) nullptr;
 }

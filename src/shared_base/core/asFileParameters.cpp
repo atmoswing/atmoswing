@@ -34,11 +34,6 @@ asFileParameters::asFileParameters(const wxString &fileName, const FileMode &fil
     // FindAndOpen() processed by asFileXml
 }
 
-asFileParameters::~asFileParameters()
-{
-    //dtor
-}
-
 bool asFileParameters::EditRootElement()
 {
     if (!GetRoot())
@@ -86,13 +81,13 @@ vi asFileParameters::BuildVectorInt(wxString str)
         str = str.AfterFirst(separator);
         double val;
         strbefore.ToDouble(&val);
-        int valint = (int) val;
+        auto valint = (int) val;
         vect.push_back(valint);
     }
     if (!str.IsEmpty()) {
         double val;
         str.ToDouble(&val);
-        int valint = (int) val;
+        auto valint = (int) val;
         vect.push_back(valint);
     }
 
@@ -108,7 +103,7 @@ vf asFileParameters::BuildVectorFloat(float min, float max, float step)
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    int stepsnb = (int) (1 + (max - min) / step);
+    auto stepsnb = (int) (1 + (max - min) / step);
     vf vect((unsigned long) stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (float) i * step;
@@ -126,13 +121,13 @@ vf asFileParameters::BuildVectorFloat(wxString str)
         str = str.AfterFirst(separator);
         double val;
         strbefore.ToDouble(&val);
-        float valfloat = (float) val;
+        auto valfloat = (float) val;
         vect.push_back(valfloat);
     }
     if (!str.IsEmpty()) {
         double val;
         str.ToDouble(&val);
-        float valfloat = (float) val;
+        auto valfloat = (float) val;
         vect.push_back(valfloat);
     }
 
@@ -148,7 +143,7 @@ vd asFileParameters::BuildVectorDouble(double min, double max, double step)
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    int stepsnb = (int) (1 + (max - min) / step);
+    auto stepsnb = (int) (1 + (max - min) / step);
     vd vect(stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (double) i * step;
@@ -196,7 +191,7 @@ vwxs asFileParameters::BuildVectorString(wxString str)
 vi asFileParameters::GetVectorInt(wxXmlNode *node)
 {
     vi vect;
-    wxString nodeName = node->GetName();
+    const wxString &nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
         wxString valueStr = node->GetChildren()->GetContent();
@@ -218,19 +213,19 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node)
         if (!valueMinStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int min = (int) value;
+        auto min = (int) value;
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int max = (int) value;
+        auto max = (int) value;
 
         wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int step = (int) value;
+        auto step = (int) value;
 
         vect = BuildVectorInt(min, max, step);
     } else {
@@ -245,7 +240,7 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node)
 vf asFileParameters::GetVectorFloat(wxXmlNode *node)
 {
     vf vect;
-    wxString nodeName = node->GetName();
+    const auto &nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty()) {
         wxString valueStr = node->GetChildren()->GetContent();
@@ -273,13 +268,13 @@ vf asFileParameters::GetVectorFloat(wxXmlNode *node)
         if (!valueMaxStr.ToDouble(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        float max = (float) value;
+        auto max = (float) value;
 
         wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToDouble(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        float step = (float) value;
+        auto step = (float) value;
 
         vect = BuildVectorFloat(min, max, step);
     } else {
@@ -413,24 +408,24 @@ vvi asFileParameters::GetStationIdsVector(wxXmlNode *node)
         if (!valueMinStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int min = (int) value;
+        auto min = (int) value;
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int max = (int) value;
+        auto max = (int) value;
 
         wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        int step = (int) value;
+        auto step = (int) value;
 
         vi ids = BuildVectorInt(min, max, step);
-        for (int i = 0; i < (int) ids.size(); i++) {
+        for (int i : ids) {
             vi id;
-            id.push_back(ids[i]);
+            id.push_back(i);
             vect.push_back(id);
         }
     } else {

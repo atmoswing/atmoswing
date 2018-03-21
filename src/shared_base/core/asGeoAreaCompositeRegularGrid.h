@@ -43,39 +43,39 @@ public:
     asGeoAreaCompositeRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
                                   float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    virtual ~asGeoAreaCompositeRegularGrid();
+    ~asGeoAreaCompositeRegularGrid() override = default;
 
-    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const;
+    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const override;
 
-    double GetXstep() const
+    double GetXstep() const override
     {
         return m_xStep;
     }
 
-    double GetYstep() const
+    double GetYstep() const override
     {
         return m_yStep;
     }
 
-    a1d GetXaxisComposite(int compositeNb);
+    a1d GetXaxisComposite(int compositeNb) override;
 
-    a1d GetYaxisComposite(int compositeNb);
+    a1d GetYaxisComposite(int compositeNb) override;
 
-    int GetXaxisCompositePtsnb(int compositeNb);
+    int GetXaxisCompositePtsnb(int compositeNb) override;
 
-    int GetYaxisCompositePtsnb(int compositeNb);
+    int GetYaxisCompositePtsnb(int compositeNb) override;
 
-    double GetXaxisCompositeWidth(int compositeNb) const;
+    double GetXaxisCompositeWidth(int compositeNb) const override;
 
-    double GetYaxisCompositeWidth(int compositeNb) const;
+    double GetYaxisCompositeWidth(int compositeNb) const override;
 
-    double GetXaxisCompositeStart(int compositeNb) const;
+    double GetXaxisCompositeStart(int compositeNb) const override;
 
-    double GetYaxisCompositeStart(int compositeNb) const;
+    double GetYaxisCompositeStart(int compositeNb) const override;
 
-    double GetXaxisCompositeEnd(int compositeNb) const;
+    double GetXaxisCompositeEnd(int compositeNb) const override;
 
-    double GetYaxisCompositeEnd(int compositeNb) const;
+    double GetYaxisCompositeEnd(int compositeNb) const override;
 
 protected:
 

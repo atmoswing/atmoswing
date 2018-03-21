@@ -33,11 +33,6 @@ asFileWorkspace::asFileWorkspace(const wxString &fileName, const FileMode &fileM
     // FindAndOpen() processed by asFileXml
 }
 
-asFileWorkspace::~asFileWorkspace()
-{
-    //dtor
-}
-
 bool asFileWorkspace::EditRootElement() const
 {
     if (!GetRoot())

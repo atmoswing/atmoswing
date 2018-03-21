@@ -37,12 +37,12 @@ class asListBoxForecastDisplay
 {
 public:
     asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
-                             const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = NULL,
+                             const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
                              long style = 0);
 
-    virtual ~asListBoxForecastDisplay();
+    ~asListBoxForecastDisplay() override = default;
 
-    void SetStringArray(wxArrayString options)
+    void SetStringArray(const wxArrayString &options)
     {
         Set(options);
         SetSelection(3);

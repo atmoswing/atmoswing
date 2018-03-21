@@ -35,11 +35,6 @@ asFileXml::asFileXml(const wxString &fileName, const FileMode &fileMode)
 
 }
 
-asFileXml::~asFileXml()
-{
-
-}
-
 bool asFileXml::Open()
 {
     if (!Find())

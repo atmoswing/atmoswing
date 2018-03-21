@@ -38,11 +38,11 @@ class asScoreCRPSAR
 public:
     asScoreCRPSAR();
 
-    ~asScoreCRPSAR();
+    ~asScoreCRPSAR() override;
 
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const;
+    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
 protected:
 

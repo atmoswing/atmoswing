@@ -38,16 +38,16 @@ class asPredictorArchNoaaOisst2Subset
         : public asPredictorArch
 {
 public:
-    asPredictorArchNoaaOisst2Subset(const wxString &dataId);
+    explicit asPredictorArchNoaaOisst2Subset(const wxString &dataId);
 
-    virtual ~asPredictorArchNoaaOisst2Subset();
+    ~asPredictorArchNoaaOisst2Subset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

@@ -79,11 +79,6 @@ asPredictor::asPredictor(const wxString &dataId)
 
 }
 
-asPredictor::~asPredictor()
-{
-
-}
-
 bool asPredictor::SetData(vva2f &val)
 {
     wxASSERT(m_time.size()> 0);
@@ -749,7 +744,7 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
         return dataArea;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData)
@@ -758,7 +753,7 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
     wxASSERT(m_fStr.lats.size()> 0);
 
     if (!m_axesChecked) {
-        if (dataArea == NULL) {
+        if (dataArea == nullptr) {
             // Get axes length for preallocation
             m_lonPtsnb = int(m_fStr.lons.size());
             m_latPtsnb = int(m_fStr.lats.size());
@@ -919,7 +914,7 @@ size_t *asPredictor::GetIndexesStartNcdf(int iArea) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 size_t *asPredictor::GetIndexesCountNcdf(int iArea) const
@@ -962,7 +957,7 @@ size_t *asPredictor::GetIndexesCountNcdf(int iArea) const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const
@@ -1005,7 +1000,7 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 int *asPredictor::GetIndexesStartGrib(int iArea) const
@@ -1225,8 +1220,8 @@ bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
 
                     // Check if not NaN
                     bool notNan = true;
-                    for (size_t iNan = 0; iNan < m_nanValues.size(); iNan++) {
-                        if (data[ind] == m_nanValues[iNan] || latlonData(iLat, iLon) == m_nanValues[iNan]) {
+                    for (double nanValue : m_nanValues) {
+                        if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
                             notNan = false;
                         }
                     }
@@ -1249,10 +1244,10 @@ bool asPredictor::TransformData(vvva2f &compositeData)
 {
     // See http://www.ecmwf.int/en/faq/geopotential-defined-units-m2/s2-both-pressure-levels-and-surface-orography-how-can-height
     if (m_parameter == Geopotential) {
-        for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-            for (int iTime = 0; iTime < compositeData[iArea].size(); iTime++) {
-                for (int iMem = 0; iMem < compositeData[iArea][0].size(); iMem++) {
-                    compositeData[iArea][iTime][iMem] = compositeData[iArea][iTime][iMem] / 9.80665;
+        for (auto &area : compositeData) {
+            for (int iTime = 0; iTime < area.size(); iTime++) {
+                for (int iMem = 0; iMem < area[0].size(); iMem++) {
+                    area[iTime][iMem] = area[iTime][iMem] / 9.80665;
                 }
             }
         }
@@ -1273,10 +1268,10 @@ bool asPredictor::Inline()
 
     wxASSERT(!m_data.empty());
 
-    unsigned int timeSize = (unsigned int) m_data.size();
-    unsigned int membersNb = (unsigned int) m_data[0].size();
-    unsigned int cols = (unsigned int) m_data[0][0].cols();
-    unsigned int rows = (unsigned int) m_data[0][0].rows();
+    auto timeSize = (unsigned int) m_data.size();
+    auto membersNb = (unsigned int) m_data[0].size();
+    auto cols = (unsigned int) m_data[0][0].cols();
+    auto rows = (unsigned int) m_data[0][0].rows();
 
     a2f inlineData = a2f::Zero(1, cols * rows);
 
@@ -1587,9 +1582,9 @@ float asPredictor::GetMinValue() const
     float minValue = m_data[0][0](0, 0);
     float tmpValue;
 
-    for (int i = 0; i < m_data.size(); ++i) {
-        for (int j = 0; j < m_data[i].size(); ++j) {
-            tmpValue = m_data[i][j].minCoeff();
+    for (const auto &dat : m_data) {
+        for (const auto &v : dat) {
+            tmpValue = v.minCoeff();
             if (tmpValue < minValue) {
                 minValue = tmpValue;
             }
@@ -1604,9 +1599,9 @@ float asPredictor::GetMaxValue() const
     float maxValue = m_data[0][0](0, 0);
     float tmpValue;
 
-    for (int i = 0; i < m_data.size(); ++i) {
-        for (int j = 0; j < m_data[i].size(); ++j) {
-            tmpValue = m_data[i][j].maxCoeff();
+    for (const auto &dat : m_data) {
+        for (const auto &v : dat) {
+            tmpValue = v.maxCoeff();
             if (tmpValue > maxValue) {
                 maxValue = tmpValue;
             }

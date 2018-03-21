@@ -38,10 +38,10 @@ class asPanelSidebarCalendar
         : public asPanelSidebar
 {
 public:
-    asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+    explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                            const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCalendar();
+    ~asPanelSidebarCalendar() override;
 
     void OnSetPresentDate(wxCommandEvent &event);
 

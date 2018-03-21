@@ -48,11 +48,6 @@ asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &d
     m_subFolder = wxEmptyString;
 }
 
-asPredictorArchEcmwfEraInterim::~asPredictorArchEcmwfEraInterim()
-{
-
-}
-
 bool asPredictorArchEcmwfEraInterim::Init()
 {
     CheckLevelTypeIsDefined();

@@ -43,7 +43,7 @@ public:
     asGeoAreaCompositeGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
                            float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(float level = asNONE, float height = asNONE);
+    explicit asGeoAreaCompositeGrid(float level = asNONE, float height = asNONE);
 
     static asGeoAreaCompositeGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
                                                int yPtsNb, double yStep, float level = asNONE, float height = asNONE,

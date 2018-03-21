@@ -39,10 +39,7 @@ asResults::asResults()
           m_subFolder(wxEmptyString),
           m_filePath(wxEmptyString)
 {
-}
 
-asResults::~asResults()
-{
 }
 
 bool asResults::Load()

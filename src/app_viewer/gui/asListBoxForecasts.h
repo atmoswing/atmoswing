@@ -97,11 +97,11 @@ public:
     asListBoxForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
                        const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
 
-    virtual ~asListBoxForecasts();
+    ~asListBoxForecasts() override = default;
 
     void CreateImageList();
 
-    void Update();
+    void Update() override;
 
     void Clear();
 

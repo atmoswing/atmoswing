@@ -45,11 +45,11 @@ public:
                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                             long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarForecasts();
+    ~asPanelSidebarForecasts() override = default;
 
     void ClearForecasts();
 
-    void Update();
+    void Update() override;
 
     asListBoxForecasts *GetForecastsCtrl() const
     {

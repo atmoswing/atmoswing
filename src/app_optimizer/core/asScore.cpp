@@ -192,7 +192,7 @@ asScore *asScore::GetInstance(Score scoreEnum)
         }
         default: {
             wxLogError(_("The score was not correctly set (undefined)."));
-            return NULL;
+            return nullptr;
         }
     }
 }
@@ -294,11 +294,6 @@ asScore *asScore::GetInstance(const wxString &scoreString)
         asScore *score = new asScoreCRPSAR();
         return score;
     }
-}
-
-asScore::~asScore()
-{
-    //dtor
 }
 
 a1f asScore::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const

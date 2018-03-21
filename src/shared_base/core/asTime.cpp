@@ -747,7 +747,7 @@ Time asTime::GetTimeStruct(double mjd, int method)
             if (z < 2299161L)
                 a = z;
             else {
-                long alpha = (long) ((z - 1867216.25) / 36524.25);
+                auto alpha = (long) ((z - 1867216.25) / 36524.25);
                 a = z + 1 + alpha - alpha / 4;
             }
             b = a + 1524;

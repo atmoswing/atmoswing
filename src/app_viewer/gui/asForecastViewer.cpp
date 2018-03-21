@@ -278,8 +278,8 @@ void asForecastViewer::Redraw()
     // Display according to the chosen display type
     if (m_leadTimeIndex == m_forecastManager->GetLeadTimeLengthMax()) {
         // Create the layers
-        vrLayerVectorFcstRing *layerSpecific = new vrLayerVectorFcstRing();
-        vrLayerVectorFcstRing *layerOther = new vrLayerVectorFcstRing();
+        auto *layerSpecific = new vrLayerVectorFcstRing();
+        auto *layerOther = new vrLayerVectorFcstRing();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -334,15 +334,15 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = NULL;
+            asResultsForecast *forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (int i = 0; i < (int) forecasts.size(); i++) {
-                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
+                for (auto &fcst : forecasts) {
+                    accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
-                        forecast = forecasts[i];
+                        forecast = fcst;
                         break;
                     }
                 }
@@ -424,7 +424,7 @@ void asForecastViewer::Redraw()
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            vrRenderVector *renderOther = new vrRenderVector();
+            auto *renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -433,7 +433,7 @@ void asForecastViewer::Redraw()
         }
 
         m_layerManager->Add(layerSpecific);
-        vrRenderVector *renderSpecific = new vrRenderVector();
+        auto *renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
@@ -441,8 +441,8 @@ void asForecastViewer::Redraw()
 
     } else {
         // Create the layer
-        vrLayerVectorFcstDots *layerSpecific = new vrLayerVectorFcstDots();
-        vrLayerVectorFcstDots *layerOther = new vrLayerVectorFcstDots();
+        auto *layerSpecific = new vrLayerVectorFcstDots();
+        auto *layerOther = new vrLayerVectorFcstDots();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -490,15 +490,15 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = NULL;
+            asResultsForecast *forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (int i = 0; i < (int) forecasts.size(); i++) {
-                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
+                for (auto &fcst : forecasts) {
+                    accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
-                        forecast = forecasts[i];
+                        forecast = fcst;
                         break;
                     }
                 }
@@ -585,7 +585,7 @@ void asForecastViewer::Redraw()
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            vrRenderVector *renderOther = new vrRenderVector();
+            auto *renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -594,7 +594,7 @@ void asForecastViewer::Redraw()
         }
 
         m_layerManager->Add(layerSpecific);
-        vrRenderVector *renderSpecific = new vrRenderVector();
+        auto *renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);

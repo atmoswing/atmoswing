@@ -38,16 +38,16 @@ class asPredictorArchNcepReanalysis1Lthe
         : public asPredictorArchNcepReanalysis1Subset
 {
 public:
-    asPredictorArchNcepReanalysis1Lthe(const wxString &dataId);
+    explicit asPredictorArchNcepReanalysis1Lthe(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepReanalysis1Lthe();
+    ~asPredictorArchNcepReanalysis1Lthe() override = default;
 
-    virtual bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

@@ -41,11 +41,6 @@ asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, Temporal
     m_hasReferenceValues = false;
 }
 
-asPredictandLightnings::~asPredictandLightnings()
-{
-    //dtor
-}
-
 bool asPredictandLightnings::InitContainers()
 {
     return InitBaseContainers();

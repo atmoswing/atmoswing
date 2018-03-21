@@ -49,11 +49,6 @@ asPredictorArchNoaa20Cr2cEnsemble::asPredictorArchNoaa20Cr2cEnsemble(const wxStr
     m_fStr.hasLevelDim = false;
 }
 
-asPredictorArchNoaa20Cr2cEnsemble::~asPredictorArchNoaa20Cr2cEnsemble()
-{
-
-}
-
 bool asPredictorArchNoaa20Cr2cEnsemble::Init()
 {
     CheckLevelTypeIsDefined();

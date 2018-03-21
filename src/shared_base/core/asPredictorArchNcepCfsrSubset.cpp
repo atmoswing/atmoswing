@@ -47,11 +47,6 @@ asPredictorArchNcepCfsrSubset::asPredictorArchNcepCfsrSubset(const wxString &dat
     m_fStr.dimLevelName = "level0";
 }
 
-asPredictorArchNcepCfsrSubset::~asPredictorArchNcepCfsrSubset()
-{
-
-}
-
 bool asPredictorArchNcepCfsrSubset::Init()
 {
     CheckLevelTypeIsDefined();
@@ -157,7 +152,7 @@ bool asPredictorArchNcepCfsrSubset::Init()
 
 void asPredictorArchNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
 {
-    int firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
+    auto firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
 

@@ -47,11 +47,6 @@ asPredictorArchJmaJra55Subset::asPredictorArchJmaJra55Subset(const wxString &dat
     m_monthlyFiles = true;
 }
 
-asPredictorArchJmaJra55Subset::~asPredictorArchJmaJra55Subset()
-{
-
-}
-
 bool asPredictorArchJmaJra55Subset::Init()
 {
     CheckLevelTypeIsDefined();

@@ -41,7 +41,7 @@ class AtmoswingFrameOptimizer
 public:
     AtmoswingFrameOptimizer(wxFrame *frame);
 
-    ~AtmoswingFrameOptimizer();
+    ~AtmoswingFrameOptimizer() override;
 
 private:
     virtual void OnClose(wxCloseEvent &event);

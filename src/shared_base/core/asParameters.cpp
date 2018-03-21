@@ -56,11 +56,6 @@ asParameters::asParameters()
 
 }
 
-asParameters::~asParameters()
-{
-    //dtor
-}
-
 void asParameters::AddStep()
 {
     ParamsStep step;
@@ -204,15 +199,15 @@ bool asParameters::ParseDescription(asFileParameters &fileParams, const wxXmlNod
     wxXmlNode *nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "method_id") {
-            SetMethodId(fileParams.GetString(nodeParam));
+            SetMethodId(asFileParameters::GetString(nodeParam));
         } else if (nodeParam->GetName() == "method_id_display") {
-            SetMethodIdDisplay(fileParams.GetString(nodeParam));
+            SetMethodIdDisplay(asFileParameters::GetString(nodeParam));
         } else if (nodeParam->GetName() == "specific_tag") {
-            SetSpecificTag(fileParams.GetString(nodeParam));
+            SetSpecificTag(asFileParameters::GetString(nodeParam));
         } else if (nodeParam->GetName() == "specific_tag_display") {
-            SetSpecificTagDisplay(fileParams.GetString(nodeParam));
+            SetSpecificTagDisplay(asFileParameters::GetString(nodeParam));
         } else if (nodeParam->GetName() == "description") {
-            SetDescription(fileParams.GetString(nodeParam));
+            SetDescription(asFileParameters::GetString(nodeParam));
         } else {
             fileParams.UnknownNode(nodeParam);
         }
@@ -229,19 +224,19 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
-                    if (!SetArchiveYearStart(fileParams.GetInt(nodeParam)))
+                    if (!SetArchiveYearStart(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "end_year") {
-                    if (!SetArchiveYearEnd(fileParams.GetInt(nodeParam)))
+                    if (!SetArchiveYearEnd(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "start") {
-                    if (!SetArchiveStart(fileParams.GetString(nodeParam)))
+                    if (!SetArchiveStart(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "end") {
-                    if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
+                    if (!SetArchiveEnd(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetTimeArrayAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -249,24 +244,24 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTimeArrayTargetTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTimeArrayAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayTargetMode(fileParams.GetString(nodeParam)))
+                    if (!SetTimeArrayTargetMode(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "predictand_serie_name") {
-                    if (!SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam)))
+                    if (!SetTimeArrayTargetPredictandSerieName(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "predictand_min_threshold") {
-                    if (!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFloat(nodeParam)))
+                    if (!SetTimeArrayTargetPredictandMinThreshold(asFileParameters::GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "predictand_max_threshold") {
-                    if (!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFloat(nodeParam)))
+                    if (!SetTimeArrayTargetPredictandMaxThreshold(asFileParameters::GetFloat(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -277,13 +272,13 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam)))
+                    if (!SetTimeArrayAnalogsMode(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
+                    if (!SetTimeArrayAnalogsIntervalDays(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetTimeArrayAnalogsExcludeDays(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -304,7 +299,7 @@ bool asParameters::ParseAnalogDatesParams(asFileParameters &fileParams, int iSte
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
-            if (!SetAnalogsNumber(iStep, fileParams.GetInt(nodeParamBlock)))
+            if (!SetAnalogsNumber(iStep, asFileParameters::GetInt(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
@@ -327,49 +322,49 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
     wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
-            SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+            SetPreload(iStep, iPtor, asFileParameters::GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
                 return false;
         } else if (nodeParam->GetName() == "dataset_id") {
-            if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
+            if (!SetPredictorDatasetId(iStep, iPtor, asFileParameters::GetString(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "data_id") {
-            if (!SetPredictorDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
+            if (!SetPredictorDataId(iStep, iPtor, asFileParameters::GetString(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "level") {
-            if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
+            if (!SetPredictorLevel(iStep, iPtor, asFileParameters::GetFloat(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "time") {
-            if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+            if (!SetPredictorTimeHours(iStep, iPtor, asFileParameters::GetDouble(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "members") {
-            if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
+            if (!SetPredictorMembersNb(iStep, iPtor, asFileParameters::GetInt(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "spatial_window") {
             wxXmlNode *nodeWindow = nodeParam->GetChildren();
             while (nodeWindow) {
                 if (nodeWindow->GetName() == "grid_type") {
-                    if (!SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular")))
+                    if (!SetPredictorGridType(iStep, iPtor, asFileParameters::GetString(nodeWindow, "regular")))
                         return false;
                 } else if (nodeWindow->GetName() == "x_min") {
-                    if (!SetPredictorXmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                    if (!SetPredictorXmin(iStep, iPtor, asFileParameters::GetDouble(nodeWindow)))
                         return false;
                 } else if (nodeWindow->GetName() == "x_points_nb") {
-                    if (!SetPredictorXptsnb(iStep, iPtor, fileParams.GetInt(nodeWindow)))
+                    if (!SetPredictorXptsnb(iStep, iPtor, asFileParameters::GetInt(nodeWindow)))
                         return false;
                 } else if (nodeWindow->GetName() == "x_step") {
-                    if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                    if (!SetPredictorXstep(iStep, iPtor, asFileParameters::GetDouble(nodeWindow)))
                         return false;
                 } else if (nodeWindow->GetName() == "y_min") {
-                    if (!SetPredictorYmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                    if (!SetPredictorYmin(iStep, iPtor, asFileParameters::GetDouble(nodeWindow)))
                         return false;
                 } else if (nodeWindow->GetName() == "y_points_nb") {
-                    if (!SetPredictorYptsnb(iStep, iPtor, fileParams.GetInt(nodeWindow)))
+                    if (!SetPredictorYptsnb(iStep, iPtor, asFileParameters::GetInt(nodeWindow)))
                         return false;
                 } else if (nodeWindow->GetName() == "y_step") {
-                    if (!SetPredictorYstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                    if (!SetPredictorYstep(iStep, iPtor, asFileParameters::GetDouble(nodeWindow)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeWindow);
@@ -377,10 +372,10 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
                 nodeWindow = nodeWindow->GetNext();
             }
         } else if (nodeParam->GetName() == "criteria") {
-            if (!SetPredictorCriteria(iStep, iPtor, fileParams.GetString(nodeParam)))
+            if (!SetPredictorCriteria(iStep, iPtor, asFileParameters::GetString(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "weight") {
-            if (!SetPredictorWeight(iStep, iPtor, fileParams.GetFloat(nodeParam)))
+            if (!SetPredictorWeight(iStep, iPtor, asFileParameters::GetFloat(nodeParam)))
                 return false;
         } else {
             fileParams.UnknownNode(nodeParam);
@@ -398,25 +393,25 @@ bool asParameters::ParsePreprocessedPredictors(asFileParameters &fileParams, int
     wxXmlNode *nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
-            if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess)))
+            if (!SetPreprocessMethod(iStep, iPtor, asFileParameters::GetString(nodePreprocess)))
                 return false;
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
             wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
             while (nodeParamPreprocess) {
                 if (nodeParamPreprocess->GetName() == "dataset_id") {
-                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, asFileParameters::GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "data_id") {
-                    if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+                    if (!SetPreprocessDataId(iStep, iPtor, iPre, asFileParameters::GetString(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "level") {
-                    if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
+                    if (!SetPreprocessLevel(iStep, iPtor, iPre, asFileParameters::GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, asFileParameters::GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
-                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
+                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, asFileParameters::GetInt(nodeParamPreprocess)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParamPreprocess);
@@ -440,10 +435,10 @@ bool asParameters::ParseAnalogValuesParams(asFileParameters &fileParams, const w
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "station_id") {
-                    if (!SetPredictandStationIds(fileParams.GetStationIds(fileParams.GetString(nodeParam))))
+                    if (!SetPredictandStationIds(asFileParameters::GetStationIds(asFileParameters::GetString(nodeParam))))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetPredictandTimeHours(asFileParameters::GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -1423,8 +1418,8 @@ bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
 
 bool asParameters::SetPredictandStationIds(vi val)
 {
-    for (int i = 0; i < (int) val.size(); i++) {
-        if (asIsNaN(val[i])) {
+    for (int v : val) {
+        if (asIsNaN(v)) {
             wxLogError(_("The provided value for the predictand ID is null"));
             return false;
         }
@@ -1468,12 +1463,12 @@ bool asParameters::SetAnalogsNumber(int iStep, int val)
 
 bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val)
 {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided preload data IDs vector is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
-            if (val[i].IsEmpty()) {
+        for (auto &v : val) {
+            if (v.IsEmpty()) {
                 wxLogError(_("There are empty values in the provided preload data IDs vector."));
                 return false;
             }
@@ -1498,12 +1493,12 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val)
 
 bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
 {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided preload time (hours) vector is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
-            if (asIsNaN(val[i])) {
+        for (double v : val) {
+            if (asIsNaN(v)) {
                 wxLogError(_("There are NaN values in the provided preload time (hours) vector."));
                 return false;
             }
@@ -1527,12 +1522,12 @@ bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, double val)
 
 bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val)
 {
-    if (val.size() < 1) {
+    if (val.empty()) {
         wxLogError(_("The provided 'preload levels' vector is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
-            if (asIsNaN(val[i])) {
+        for (float v : val) {
+            if (asIsNaN(v)) {
                 wxLogError(_("There are NaN values in the provided 'preload levels' vector."));
                 return false;
             }

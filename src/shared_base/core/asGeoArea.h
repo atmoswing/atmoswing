@@ -44,7 +44,7 @@ public:
 
     explicit asGeoArea(float level = asNONE, float height = asNONE);
 
-    ~asGeoArea() override;
+    ~asGeoArea() override = default;
 
     void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 

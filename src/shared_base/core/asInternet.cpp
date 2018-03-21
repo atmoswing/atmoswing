@@ -30,15 +30,6 @@
 
 #include <asThreadInternetDownload.h>
 
-asInternet::asInternet()
-{
-    //ctor
-}
-
-asInternet::~asInternet()
-{
-    //dtor
-}
 
 void asInternet::Init()
 {
@@ -54,7 +45,7 @@ void asInternet::Cleanup()
 
 size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream)
 {
-    struct HttpFile *out = (struct HttpFile *) stream;
+    auto *out = (struct HttpFile *) stream;
     if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->fileName, "wb");
@@ -97,7 +88,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             wxASSERT_MSG((unsigned) end < fileNames.size(),
                          wxString::Format("Size of fileNames = %d, desired end = %d", (int) fileNames.size(), end));
 
-            asThreadInternetDownload *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy,
+            auto *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy,
                                                                             proxyAddress, proxyPort, proxyUser,
                                                                             proxyPasswd, start, end);
             threadType = thread->GetType();
@@ -116,7 +107,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #endif
 
         // Check the files
-        for (auto fileName : fileNames) {
+        for (const auto &fileName : fileNames) {
             wxString filePath = destinationDir + DS + fileName;
             if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
@@ -137,7 +128,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #endif
 
             // Set a buffer for the error messages
-            char *errorbuffer = new char[CURL_ERROR_SIZE];
+            auto *errorbuffer = new char[CURL_ERROR_SIZE];
             curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
             // Some servers don't like requests that are made without a user-agent field, so we provide one
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -180,7 +171,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 if (!wxFileName::FileExists(filePath)) {
                     // Instantiate the file structure
                     struct HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
-                                            NULL};
+                                            nullptr};
 
                     // Define the URL
                     curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));

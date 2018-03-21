@@ -55,15 +55,10 @@ asPredictorArch::asPredictorArch(const wxString &dataId)
 
 }
 
-asPredictorArch::~asPredictorArch()
-{
-
-}
-
 asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const wxString &dataId,
                                               const wxString &directory)
 {
-    asPredictorArch *predictor = NULL;
+    asPredictorArch *predictor = nullptr;
 
     if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
         predictor = new asPredictorArchNcepReanalysis1(dataId);
@@ -101,7 +96,7 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchNoaaOisst2Subset(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
-        return NULL;
+        return nullptr;
     }
 
     if (!directory.IsEmpty()) {
@@ -110,7 +105,7 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
 
     if (!predictor->Init()) {
         wxLogError(_("The predictor did not initialize correctly."));
-        return NULL;
+        return nullptr;
     }
 
     return predictor;
@@ -166,9 +161,9 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
 
         if (dataArea) {
             // Get the spatial extent
-            float lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
-            float latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
-            float latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
+            auto lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
+            auto latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
+            auto latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
 
             // The dimensions lengths
             m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);

@@ -41,5 +41,5 @@ void DeleteLog()
         wxLog::FlushActive();
     }
     wxDELETE(g_pLog);
-    delete wxLog::SetActiveTarget(NULL);
+    delete wxLog::SetActiveTarget(nullptr);
 }

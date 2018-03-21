@@ -62,13 +62,13 @@ asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, 
     m_sizerContent->Add(bSizer35, 0, wxALIGN_CENTER_HORIZONTAL, 5);
 
     m_bpButtonNow->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
-                           wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), NULL, this);
+                           wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
 asPanelSidebarCalendar::~asPanelSidebarCalendar()
 {
     m_bpButtonNow->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
-                              wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), NULL, this);
+                              wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
 void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent &event)

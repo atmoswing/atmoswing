@@ -39,11 +39,11 @@ class asPanelSidebarCaptionForecastRingDrawing
         : public wxPanel
 {
 public:
-    asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+    explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                              const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                              long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastRingDrawing();
+    ~asPanelSidebarCaptionForecastRingDrawing() override;
 
     void DrawDates(a1f &dates);
 
@@ -79,11 +79,11 @@ class asPanelSidebarCaptionForecastRing
         : public asPanelSidebar
 {
 public:
-    asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
+    explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                       const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                       long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastRing();
+    ~asPanelSidebarCaptionForecastRing() override;
 
     void SetDates(a1f &dates);
 

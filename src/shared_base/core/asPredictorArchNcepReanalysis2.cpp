@@ -49,11 +49,6 @@ asPredictorArchNcepReanalysis2::asPredictorArchNcepReanalysis2(const wxString &d
     m_fStr.dimLevelName = "level";
 }
 
-asPredictorArchNcepReanalysis2::~asPredictorArchNcepReanalysis2()
-{
-
-}
-
 bool asPredictorArchNcepReanalysis2::Init()
 {
     CheckLevelTypeIsDefined();

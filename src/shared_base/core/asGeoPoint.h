@@ -40,7 +40,7 @@ public:
 
     asGeoPoint(double x, double y, float level = asNONE, float height = asNONE);
 
-    ~asGeoPoint() override;
+    ~asGeoPoint() override = default;
 
     void SetCoo(const Coo &val)
     {

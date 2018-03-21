@@ -38,11 +38,11 @@ class asScoreSEEPS
 public:
     asScoreSEEPS();
 
-    ~asScoreSEEPS();
+    ~asScoreSEEPS() override;
 
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const;
+    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climData) override;
 
     void SetP1(float val)
     {

@@ -37,16 +37,16 @@ class asPredictorArchNoaa20Cr2c
         : public asPredictorArch
 {
 public:
-    asPredictorArchNoaa20Cr2c(const wxString &dataId);
+    explicit asPredictorArchNoaa20Cr2c(const wxString &dataId);
 
-    virtual ~asPredictorArchNoaa20Cr2c();
+    ~asPredictorArchNoaa20Cr2c() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

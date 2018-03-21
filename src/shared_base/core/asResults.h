@@ -41,7 +41,7 @@ class asResults
 public:
     asResults();
 
-    ~asResults() override;
+    ~asResults() override = default;
 
     wxString GetPredictandStationIdsList() const;
 

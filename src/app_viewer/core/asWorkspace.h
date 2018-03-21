@@ -44,7 +44,7 @@ class asWorkspace
 public:
     asWorkspace();
 
-    virtual ~asWorkspace();
+    ~asWorkspace() override = default;
 
     bool Load(const wxString &filePath);
 
@@ -71,7 +71,7 @@ public:
         return m_forecastsDirectory;
     }
 
-    void SetForecastsDirectory(wxString val)
+    void SetForecastsDirectory(const wxString &val)
     {
         m_forecastsDirectory = val;
     }

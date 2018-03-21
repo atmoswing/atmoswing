@@ -75,7 +75,7 @@ public:
     asPredictand(Parameter parameter, TemporalResolution temporalResolution,
                  SpatialAggregation spatialAggregation);
 
-    virtual ~asPredictand();
+    ~asPredictand() override = default;
 
     static Parameter StringToParameterEnum(const wxString &parameterStr);
 

@@ -51,9 +51,9 @@ public:
         float height;
     };
 
-    asCatalogPredictands(const wxString &filePath);
+    explicit asCatalogPredictands(const wxString &filePath);
 
-    virtual ~asCatalogPredictands();
+    ~asCatalogPredictands() override = default;
 
     bool Load();
 

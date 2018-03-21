@@ -45,7 +45,7 @@ public:
 
     asFileAscii(const wxString &fileName, const asFile::FileMode &fileMode);
 
-    ~asFileAscii() override;
+    ~asFileAscii() override = default;
 
     bool Open() override;
 

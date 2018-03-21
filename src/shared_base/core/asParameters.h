@@ -30,6 +30,7 @@
 #define ASPARAMETERS_H
 
 #include <wx/xml/xml.h>
+#include <utility>
 #include "asIncludes.h"
 #include "asPredictand.h"
 
@@ -89,7 +90,7 @@ public:
 
     asParameters();
 
-    virtual ~asParameters();
+    ~asParameters() override = default;
 
     virtual void AddStep();
 
@@ -140,7 +141,7 @@ public:
     void SetVectorParamsPredictors(int iStep, VectorParamsPredictors ptors)
     {
         wxASSERT(iStep < GetStepsNb());
-        m_steps[iStep].predictors = ptors;
+        m_steps[iStep].predictors = std::move(ptors);
     }
 
     wxString GetMethodId() const
@@ -220,7 +221,7 @@ public:
         return m_archiveStart;
     }
 
-    bool SetArchiveStart(wxString val)
+    bool SetArchiveStart(const wxString &val)
     {
         m_archiveStart = asTime::GetTimeFromString(val);
         return true;
@@ -231,7 +232,7 @@ public:
         return m_archiveEnd;
     }
 
-    bool SetArchiveEnd(wxString val)
+    bool SetArchiveEnd(const wxString &val)
     {
         m_archiveEnd = asTime::GetTimeFromString(val);
         return true;

@@ -143,11 +143,6 @@ asTimeArray::asTimeArray(a1d &timeArray)
     m_timeArray = timeArray;
 }
 
-asTimeArray::~asTimeArray()
-{
-    //dtor
-}
-
 bool asTimeArray::Init()
 {
     switch (m_mode) {
@@ -839,8 +834,7 @@ bool asTimeArray::RemoveYears(const vi &years)
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
 
-    for (unsigned int i = 0; i < yearsRemove.size(); i++) {
-        int year = yearsRemove[i];
+    for (int year : yearsRemove) {
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
@@ -890,8 +884,7 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
 
-    for (unsigned int i = 0; i < yearsKeep.size(); i++) {
-        int year = yearsKeep[i];
+    for (int year : yearsKeep) {
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
@@ -931,7 +924,7 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
 
 bool asTimeArray::HasForbiddenYears() const
 {
-    return m_forbiddenYears.size() != 0;
+    return !m_forbiddenYears.empty();
 
 }
 

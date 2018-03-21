@@ -36,10 +36,10 @@ class asPanelSidebarStationsList
         : public asPanelSidebar
 {
 public:
-    asPanelSidebarStationsList(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+    explicit asPanelSidebarStationsList(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                                const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarStationsList();
+    ~asPanelSidebarStationsList() override;
 
     void SetChoices(wxArrayString &arrayStation);
 

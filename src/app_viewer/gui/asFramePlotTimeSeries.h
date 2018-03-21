@@ -41,7 +41,7 @@ public:
     asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast, int selectedStation,
                           asForecastManager *forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
 
-    ~asFramePlotTimeSeries();
+    ~asFramePlotTimeSeries() override = default;
 
     void Init();
 
@@ -73,15 +73,15 @@ private:
 
     void OnClose(wxCloseEvent &evt);
 
-    void OnTocSelectionChange(wxCommandEvent &event);
+    void OnTocSelectionChange(wxCommandEvent &event) override;
 
-    void OnExportTXT(wxCommandEvent &event);
+    void OnExportTXT(wxCommandEvent &event) override;
 
     void OnExportSVG(wxCommandEvent &event);
 
-    void OnPreview(wxCommandEvent &event);
+    void OnPreview(wxCommandEvent &event) override;
 
-    void OnPrint(wxCommandEvent &event);
+    void OnPrint(wxCommandEvent &event) override;
 
     void InitCheckListBox();
 

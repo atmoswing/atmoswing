@@ -52,11 +52,6 @@ asGeoPoint::asGeoPoint(double x, double y, float level, float height)
     wxLogVerbose(_("The point was successfully created."));
 }
 
-asGeoPoint::~asGeoPoint()
-{
-    //dtor
-}
-
 void asGeoPoint::Init()
 {
     DoCheckPoints();

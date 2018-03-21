@@ -92,16 +92,11 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double xMin, int 
     Generate(xMin, xWidth, yMin, yWidth, flatAllowed);
 }
 
-asGeoAreaCompositeGaussianGrid::~asGeoAreaCompositeGaussianGrid()
-{
-    //dtor
-}
-
 bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea) const
 {
     if (otherarea->GetGridType() != GetGridType())
         return false;
-    asGeoAreaCompositeGaussianGrid *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
+    auto *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
     if (!otherareaGaussian)
         return false;
 

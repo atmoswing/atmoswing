@@ -222,10 +222,7 @@ bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
     }
 
     // Product Definition Template 4.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp4-0.shtml
-    if (gfld->ipdtmpl[7] != 1)
-        return false;
-
-    return true;
+    return gfld->ipdtmpl[7] == 1;
 }
 
 bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
@@ -259,8 +256,8 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
 void asFileGrib2::BuildAxes(const gribfield *gfld)
 {
     float scale = 0.000001;
-    int nX = (int) gfld->igdtmpl[7];
-    int nY = (int) gfld->igdtmpl[8];
+    auto nX = (int) gfld->igdtmpl[7];
+    auto nY = (int) gfld->igdtmpl[8];
     float latStart = float(gfld->igdtmpl[11]) * scale;
     float lonStart = float(gfld->igdtmpl[12]) * scale;
     float latEnd = float(gfld->igdtmpl[14]) * scale;
@@ -407,8 +404,8 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
     int iLatStart = IndexStart[1];
     int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
-    int nLons = (int) m_xAxes[m_index].size();
-    int nLats = (int) m_yAxes[m_index].size();
+    auto nLons = (int) m_xAxes[m_index].size();
+    auto nLats = (int) m_yAxes[m_index].size();
     int finalIndex = 0;
 
     if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {

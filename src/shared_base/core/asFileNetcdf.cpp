@@ -477,7 +477,7 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
 
     // From http://bytes.com/topic/c/answers/127614-best-way-copy-vector-string-char
     // Allocate memory for an array of character strings
-    char **cstr = new char *[totSize];
+    auto **cstr = new char *[totSize];
 
     // For each string, allocate memory in the character array and copy
     for (unsigned long i = 0; i < totSize; i++) {
@@ -933,7 +933,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
 
         // Allocate
         len = m_struct.atts[attId].length;
-        char *text = new char[len + 1]; /* + 1 for trailing null */
+        auto *text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.atts[attId].type;
@@ -968,7 +968,7 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
 
         // Allocate
         len = m_struct.vars[varId].atts[attId].length;
-        char *text = new char[len + 1]; /* + 1 for trailing null */
+        auto *text = new char[len + 1]; /* + 1 for trailing null */
 
         // Check the given type
         nc_type nctype = m_struct.vars[varId].atts[attId].type;
@@ -1546,110 +1546,110 @@ void asFileNetcdf::GetVarSample(const wxString &varName, const size_t indexStart
 
 void asFileNetcdf::ClearStruct()
 {
-    for (unsigned int iVar = 0; iVar < m_struct.vars.size(); iVar++) {
-        for (unsigned int iAtt = 0; iAtt < m_struct.vars[iVar].atts.size(); iAtt++) {
-            if (m_struct.vars[iVar].atts[iAtt].pValue != NULL) {
-                nc_type nctype = m_struct.vars[iVar].atts[iAtt].type;
+    for (auto &var : m_struct.vars) {
+        for (auto &att : var.atts) {
+            if (att.pValue != nullptr) {
+                nc_type nctype = att.type;
 
                 // Cleanup from http://stackoverflow.com/questions/206257/freeing-memory-allocated-to-an-array-of-void-pointers
                 switch (nctype) {
                     case NC_CHAR: // NC_CHAR - ISO/ASCII character
                     {
-                        delete static_cast<char *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<char *>( att.pValue);
                         break;
                     }
 
                     case NC_SHORT: // NC_SHORT - signed 2 byte integer
                     {
-                        delete static_cast<short *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<short *>( att.pValue);
                         break;
                     }
 
                     case NC_INT: // NC_INT - signed 4 byte integer
                     {
-                        delete static_cast<int32_t *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<int32_t *>( att.pValue);
                         break;
                     }
 
                     case NC_INT64: // NC_INT64 - signed 8 byte integer
                     {
-                        delete static_cast<int64_t *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<int64_t *>( att.pValue);
                         break;
                     }
 
                     case NC_FLOAT: // NC_FLOAT - single precision floating point number
                     {
-                        delete static_cast<float *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<float *>( att.pValue);
                         break;
                     }
 
                     case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                     {
-                        delete static_cast<double *>( m_struct.vars[iVar].atts[iAtt].pValue);
+                        delete static_cast<double *>( att.pValue);
                         break;
                     }
 
                     default:
                         asThrowException(wxString::Format(
                                 _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                                nctype, m_struct.vars[iVar].atts[iAtt].name));
+                                nctype, att.name));
                         break;
                 }
 
-                m_struct.vars[iVar].atts[iAtt].pValue = NULL;
+                att.pValue = nullptr;
             }
         }
     }
 
-    for (unsigned int iAtt = 0; iAtt < m_struct.atts.size(); iAtt++) {
-        if (m_struct.atts[iAtt].pValue != NULL) {
-            nc_type nctype = m_struct.atts[iAtt].type;
+    for (auto &att : m_struct.atts) {
+        if (att.pValue != nullptr) {
+            nc_type nctype = att.type;
 
             switch (nctype) {
                 case NC_CHAR: // NC_CHAR - ISO/ASCII character
                 {
-                    delete static_cast<char *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<char *>( att.pValue);
                     break;
                 }
 
                 case NC_SHORT: // NC_SHORT - signed 2 byte integer
                 {
-                    delete static_cast<short *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<short *>( att.pValue);
                     break;
                 }
 
                 case NC_INT: // NC_INT - signed 4 byte integer
                 {
-                    delete static_cast<int32_t *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<int32_t *>( att.pValue);
                     break;
                 }
 
                 case NC_INT64: // NC_INT64 - signed 8 byte integer
                 {
-                    delete static_cast<int64_t *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<int64_t *>( att.pValue);
                     break;
                 }
 
                 case NC_FLOAT: // NC_FLOAT - single precision floating point number
                 {
-                    delete static_cast<float *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<float *>( att.pValue);
                     break;
                 }
 
                 case NC_DOUBLE: // NC_DOUBLE - double precision floating point number
                 {
-                    delete static_cast<double *>( m_struct.atts[iAtt].pValue);
+                    delete static_cast<double *>( att.pValue);
                     break;
                 }
 
                 default:
                     asThrowException(wxString::Format(
                             _("NetCDF file: data type (%d) of attribute %s not taken into account in AtmoSwing."),
-                            nctype, m_struct.atts[iAtt].name));
+                            nctype, att.name));
                     break;
             }
 
-            m_struct.atts[iAtt].pValue = NULL;
+            att.pValue = nullptr;
         }
     }
 }
@@ -1707,7 +1707,7 @@ bool asFileNetcdf::ParseStruct()
     // FIXME (phorton#1#): Cannot get the Netcdf4 functions ??
     // Find all unlimited dimensions
     int unlimDimIds[NC_MAX_DIMS];
-    m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, NULL);
+    m_status = nc_inq_unlimdims(m_fileId, &m_struct.nUDims, nullptr);
     if (m_status)
         HandleErrorNetcdf();
     m_struct.uDimIds.resize(m_struct.nUDims);
@@ -1748,7 +1748,7 @@ bool asFileNetcdf::ParseStruct()
 
         // Only store simple attributes
         if (len > 1) {
-            m_struct.atts[attId].pValue = NULL;
+            m_struct.atts[attId].pValue = nullptr;
         } else {
             nc_type nctype = m_struct.atts[attId].type;
 
@@ -1825,9 +1825,9 @@ bool asFileNetcdf::ParseStruct()
         }
 
         // Find the corresponding dimension to get its length
-        for (int dimId = 0; dimId < m_struct.dims.size(); dimId++) {
-            if (m_struct.vars[varId].name.IsSameAs(m_struct.dims[dimId].name)) {
-                m_struct.vars[varId].length = m_struct.dims[dimId].length;
+        for (auto &dim : m_struct.dims) {
+            if (m_struct.vars[varId].name.IsSameAs(dim.name)) {
+                m_struct.vars[varId].length = dim.length;
             }
         }
 
@@ -1852,7 +1852,7 @@ bool asFileNetcdf::ParseStruct()
             size_t len = m_struct.vars[varId].atts[attId].length;
             // Only store simple attributes
             if (len > 1) {
-                m_struct.vars[varId].atts[attId].pValue = NULL;
+                m_struct.vars[varId].atts[attId].pValue = nullptr;
             } else {
                 nc_type nctype = m_struct.vars[varId].atts[attId].type;
 

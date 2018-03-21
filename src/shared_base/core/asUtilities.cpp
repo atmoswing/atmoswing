@@ -38,9 +38,9 @@ int asRandom(const int min, const int max, const int step)
     // Initialize random seed
     double norm = ((double) rand() / (double) (RAND_MAX));
 
-    double dmin = (double) min;
-    double dmax = (double) max;
-    double dstep = (double) step;
+    auto dmin = (double) min;
+    auto dmax = (double) max;
+    auto dstep = (double) step;
 
     double range = 0;
     if (step < 1) {
@@ -273,8 +273,8 @@ a1f asGetCumulativeFrequency(const int size)
     }
 
     float divisor = 1.0f / (size + nrep);
-    for (float i = 0; i < size; i++) {
-        F(i) = (i + 1.0f - irep) * divisor; // i+1 as i starts from 0
+    for (int i = 0; i < size; i++) {
+        F(i) = ((float)i + 1.0f - irep) * divisor; // i+1 as i starts from 0
     }
 
     return F;

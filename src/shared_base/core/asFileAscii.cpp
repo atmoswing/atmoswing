@@ -33,11 +33,6 @@ asFileAscii::asFileAscii(const wxString &fileName, const FileMode &fileMode)
 
 }
 
-asFileAscii::~asFileAscii()
-{
-    //dtor
-}
-
 bool asFileAscii::Open()
 {
     if (!Find())
@@ -92,8 +87,8 @@ void asFileAscii::AddLineContent(const wxString &lineContent)
 
     // Check the state flags
     if (m_file.fail())
-        asThrowException(
-                wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+        asThrowException(wxString::Format(_("An error occured while trying to write in file %s"),
+                                          m_fileName.GetFullPath()));
 }
 
 const wxString asFileAscii::GetLineContent()
@@ -107,8 +102,8 @@ const wxString asFileAscii::GetLineContent()
 
         // Check the state flags
         if ((!m_file.eof()) && (m_file.fail()))
-            asThrowException(
-                    wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
+            asThrowException(wxString::Format(_("An error occured while trying to write in file %s"),
+                                              m_fileName.GetFullPath()));
     } else {
         asThrowException(wxString::Format(_("You are trying to read a line after the end of the file %s"),
                                           m_fileName.GetFullPath()));
@@ -132,8 +127,8 @@ const wxString asFileAscii::GetFullContent()
 
         // Check the state flags
         if ((!m_file.eof()) && (m_file.fail()))
-            asThrowException(
-                    wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
+            asThrowException(wxString::Format(_("An error occured while trying to read in file %s"),
+                                              m_fileName.GetFullPath()));
     }
 
     return wxString(apptmpContent.c_str(), wxConvUTF8);
@@ -153,8 +148,8 @@ const wxString asFileAscii::GetFullContentWhithoutReturns()
 
     // Check the state flags
     if ((!m_file.eof()) && (m_file.fail()))
-        asThrowException(
-                wxString::Format(_("An error occured while trying to read in file %s"), m_fileName.GetFullPath()));
+        asThrowException(wxString::Format(_("An error occured while trying to read in file %s"),
+                                          m_fileName.GetFullPath()));
 
     return wxString(apptmpContent.c_str(), wxConvUTF8);
 }

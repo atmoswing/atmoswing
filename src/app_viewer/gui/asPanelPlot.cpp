@@ -218,5 +218,4 @@ void asPanelPlot::ExportSVG()
         }
     }
 
-    return;
 }
