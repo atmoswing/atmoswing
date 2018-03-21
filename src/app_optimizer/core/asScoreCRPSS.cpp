@@ -78,7 +78,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
     score->SetQuantile(GetQuantile());
 
     for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
-        if (!asTools::IsNaN(refVals(iReftime))) {
+        if (!asIsNaN(refVals(iReftime))) {
             scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
         } else {
             scoresClimatology(iReftime) = NaNf;
@@ -87,7 +87,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
 
     wxDELETE(score);
 
-    m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
+    m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
     wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
 

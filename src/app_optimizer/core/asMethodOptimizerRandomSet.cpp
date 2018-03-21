@@ -57,7 +57,7 @@ bool asMethodOptimizerRandomSet::Manager()
     ThreadsManager().CritSectionConfig().Leave();
 
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 
     // Load parameters
     asParametersOptimization params;
@@ -197,7 +197,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 // Check results
                 bool checkOK = true;
                 for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-                    if (asTools::IsNaN(m_scoresCalib[iCheck])) {
+                    if (asIsNaN(m_scoresCalib[iCheck])) {
                         wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
                         checkOK = false;

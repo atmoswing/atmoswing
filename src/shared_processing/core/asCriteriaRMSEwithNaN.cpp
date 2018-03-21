@@ -60,7 +60,7 @@ float asCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int
 
     for (int i = 0; i < rowsNb; i++) {
         for (int j = 0; j < colsNb; j++) {
-            if (!asTools::IsNaN(evalData(i, j)) && !asTools::IsNaN(refData(i, j))) {
+            if (!asIsNaN(evalData(i, j)) && !asIsNaN(refData(i, j))) {
                 mse += (evalData(i, j) - refData(i, j)) * (evalData(i, j) - refData(i, j));
             } else {
                 finalsize--;

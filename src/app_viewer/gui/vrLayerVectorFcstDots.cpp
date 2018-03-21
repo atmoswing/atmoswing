@@ -149,7 +149,7 @@ void vrLayerVectorFcstDots::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path,
 
     wxColour colour;
 
-    if (asTools::IsNaN(value)) // NaN -> gray
+    if (asIsNaN(value)) // NaN -> gray
     {
         colour.Set(150, 150, 150);
     } else if (value == 0) // No rain -> white

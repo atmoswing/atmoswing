@@ -97,7 +97,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysIteration(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -112,7 +112,7 @@ public:
 
     bool SetAnalogsNumberIteration(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -128,7 +128,7 @@ public:
 
     bool SetPreprocessTimeHoursIteration(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided iteration value for the preprocess time frame is null"));
             return false;
         }
@@ -149,7 +149,7 @@ public:
 
     bool SetPredictorTimeHoursIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -164,7 +164,7 @@ public:
 
     bool SetPredictorXminIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xMin is null"));
             return false;
         }
@@ -179,7 +179,7 @@ public:
 
     bool SetPredictorXptsnbIteration(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
@@ -194,7 +194,7 @@ public:
 
     bool SetPredictorYminIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yMin is null"));
             return false;
         }
@@ -209,7 +209,7 @@ public:
 
     bool SetPredictorYptsnbIteration(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
@@ -224,7 +224,7 @@ public:
 
     bool SetPredictorWeightIteration(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
@@ -239,7 +239,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysUpperLimit(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -254,7 +254,7 @@ public:
 
     bool SetAnalogsNumberUpperLimit(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -270,7 +270,7 @@ public:
 
     bool SetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided upper value value for the preprocess time frame is null"));
             return false;
         }
@@ -291,7 +291,7 @@ public:
 
     bool SetPredictorTimeHoursUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -306,7 +306,7 @@ public:
 
     bool SetPredictorXminUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xMin is null"));
             return false;
         }
@@ -321,7 +321,7 @@ public:
 
     bool SetPredictorXptsnbUpperLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
@@ -336,7 +336,7 @@ public:
 
     bool SetPredictorYminUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yMin is null"));
             return false;
         }
@@ -351,7 +351,7 @@ public:
 
     bool SetPredictorYptsnbUpperLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
@@ -366,7 +366,7 @@ public:
 
     bool SetPredictorWeightUpperLimit(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
@@ -381,7 +381,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysLowerLimit(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -396,7 +396,7 @@ public:
 
     bool SetAnalogsNumberLowerLimit(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -412,7 +412,7 @@ public:
 
     bool SetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided lower value value for the preprocess time frame is null"));
             return false;
         }
@@ -433,7 +433,7 @@ public:
 
     bool SetPredictorTimeHoursLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -448,7 +448,7 @@ public:
 
     bool SetPredictorXminLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xMin is null"));
             return false;
         }
@@ -463,7 +463,7 @@ public:
 
     bool SetPredictorXptsnbLowerLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
@@ -478,7 +478,7 @@ public:
 
     bool SetPredictorYminLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yMin is null"));
             return false;
         }
@@ -493,7 +493,7 @@ public:
 
     bool SetPredictorYptsnbLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
@@ -508,7 +508,7 @@ public:
 
     bool SetPredictorWeightLowerLimit(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }

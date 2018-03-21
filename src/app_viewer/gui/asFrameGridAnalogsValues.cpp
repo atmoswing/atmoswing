@@ -175,7 +175,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0],
+            asSortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0],
                                 &vIndices[analogNb.size() - 1], m_sortOrder);
 
             a1f copyDates = dates;
@@ -192,7 +192,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1],
+            asSortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1],
                                 m_sortOrder);
 
             a1f copyAnalogNb = analogNb;
@@ -209,7 +209,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
+            asSortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
                                 m_sortOrder);
 
             a1f copyAnalogNb = analogNb;
@@ -227,7 +227,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0],
+            asSortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0],
                                 &vIndices[criteria.size() - 1], m_sortOrder);
 
             a1f copyAnalogNb = analogNb;

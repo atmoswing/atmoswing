@@ -66,8 +66,8 @@ float asScoreBSS::Assess(float observedVal, const a1f &forcastVals, int nbElemen
 
 bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
+    wxASSERT(!asHasNaN(&refVals[0], &refVals[refVals.size() - 1]));
+    wxASSERT(!asHasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
 
     // Containers for final results
     a1f scoresClimatology(refVals.size());
@@ -78,7 +78,7 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatol
     score->SetQuantile(GetQuantile());
 
     for (int iRefTime = 0; iRefTime < refVals.size(); iRefTime++) {
-        if (!asTools::IsNaN(refVals(iRefTime))) {
+        if (!asIsNaN(refVals(iRefTime))) {
             scoresClimatology(iRefTime) = score->Assess(refVals(iRefTime), climatologyData, climatologyData.size());
         } else {
             scoresClimatology(iRefTime) = NaNf;
@@ -87,7 +87,7 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatol
 
     wxDELETE(score);
 
-    m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
+    m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
     wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
 

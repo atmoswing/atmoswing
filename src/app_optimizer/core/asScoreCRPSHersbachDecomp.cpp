@@ -56,13 +56,13 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float observedVal, const a1f &forca
     a1f x = forcastVals;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(observedVal)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(observedVal)) {
         wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return a2f();
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbElements - 1], Asc);
+    asSortArray(&x[0], &x[nbElements - 1], Asc);
 
     // Containers
     int binsNbs = nbElements + 1;

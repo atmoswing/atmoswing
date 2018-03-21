@@ -62,8 +62,8 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMi
         asThrowException(_("The given area does not match a gaussian grid."));
 
     // Get real size to generate parent member variables
-    int indexXmin = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
-    int indexYmin = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
+    int indexXmin = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int indexYmin = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
     wxASSERT(indexXmin >= 0);
     wxASSERT(indexYmin >= 0);
     if (m_fullAxisX.size() <= indexXmin + xPtsNb - 1)
@@ -183,9 +183,9 @@ void asGeoAreaGaussianGrid::BuildLatAxis(a1d &axis, const asGeo::GridType &type)
 int asGeoAreaGaussianGrid::GetXaxisPtsnb() const
 {
     double xMin = GetXmin();
-    int xMinIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
     double xMax = GetXmax();
-    int xMaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
+    int xMaxIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
 
     // Get axis size
     return std::abs(xMaxIndex - xMinIndex) + 1;
@@ -194,9 +194,9 @@ int asGeoAreaGaussianGrid::GetXaxisPtsnb() const
 int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
 {
     double yMin = GetYmin();
-    int yMinIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
+    int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
     double yMax = GetYmax();
-    int yMaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
+    int yMaxIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
 
     // Get axis size
     return std::abs(yMaxIndex - yMinIndex) + 1;
@@ -205,9 +205,9 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
 a1d asGeoAreaGaussianGrid::GetXaxis()
 {
     double xMin = GetXmin();
-    int xMinIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
+    int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
     double xMax = GetXmax();
-    int xMaxIndex = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
+    int xMaxIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
 
     return m_fullAxisX.segment(xMinIndex, xMaxIndex - xMinIndex + 1);
 }
@@ -215,9 +215,9 @@ a1d asGeoAreaGaussianGrid::GetXaxis()
 a1d asGeoAreaGaussianGrid::GetYaxis()
 {
     double yMin = GetYmin();
-    int yMinIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
+    int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
     double yMax = GetYmax();
-    int yMaxIndex = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
+    int yMaxIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
 
     return m_fullAxisY.segment(yMinIndex, yMaxIndex - yMinIndex + 1);
 }
@@ -227,11 +227,11 @@ bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point) const
     if (!IsRectangle())
         return false;
 
-    int foundU = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], point.x, 0.01);
+    int foundU = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], point.x, 0.01);
     if ((foundU == asNOT_FOUND) || (foundU == asOUT_OF_RANGE))
         return false;
 
-    int foundV = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], point.y, 0.01);
+    int foundV = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], point.y, 0.01);
     if ((foundV == asNOT_FOUND) || (foundV == asOUT_OF_RANGE))
         return false;
 
@@ -240,11 +240,11 @@ bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point) const
 
 bool asGeoAreaGaussianGrid::IsOnGrid(double xCoord, double yCoord) const
 {
-    int foundU = asTools::SortedArraySearch(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xCoord, 0.01);
+    int foundU = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xCoord, 0.01);
     if ((foundU == asNOT_FOUND) || (foundU == asOUT_OF_RANGE))
         return false;
 
-    int foundV = asTools::SortedArraySearch(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yCoord, 0.01);
+    int foundV = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yCoord, 0.01);
     if ((foundV == asNOT_FOUND) || (foundV == asOUT_OF_RANGE))
         return false;
 

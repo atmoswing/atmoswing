@@ -170,7 +170,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                             // Weight and add the score
                             thisScore += tmpScore * m_params->GetPredictorWeight(m_step, iPtor);
                         }
-                        if (asTools::IsNaN(thisScore)) {
+                        if (asIsNaN(thisScore)) {
                             *m_pContainsNaNs = true;
                         }
 

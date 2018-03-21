@@ -270,7 +270,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
 
     switch (m_parent->GetMode()) {
         case (1): {
-            if (asTools::IsNaN(value)) // NaN -> gray
+            if (asIsNaN(value)) // NaN -> gray
             {
                 colour.Set(150, 150, 150);
             } else if (value == 0) // No rain -> white

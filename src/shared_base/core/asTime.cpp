@@ -731,7 +731,7 @@ Time asTime::GetTimeStruct(double mjd, int method)
 
     // Remaining seconds
     double rest = mjd - floor(mjd);
-    double sec = asTools::Round(rest * 86400);
+    double sec = asRound(rest * 86400);
     date.hour = (int) floor((float) (sec / 3600));
     sec -= date.hour * 3600;
     date.min = (int) floor((float) (sec / 60));

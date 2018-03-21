@@ -802,7 +802,7 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
-    int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
+    int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
     ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int) xAxis.size() - 1);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
@@ -813,7 +813,7 @@ void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
-    int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
+    int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
     iy = wxMax(iy - multipleFactor * explo.yPtsNbIter, 0);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
@@ -824,7 +824,7 @@ void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
-    int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
+    int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
     ix = wxMax(ix - multipleFactor * explo.xPtsNbIter, 0);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
@@ -835,7 +835,7 @@ void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
-    int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
+    int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
     iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int) yAxis.size() - 2);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);

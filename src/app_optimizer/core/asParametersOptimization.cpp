@@ -894,14 +894,14 @@ bool asParametersOptimization::SetPreloadingProperties()
 void asParametersOptimization::InitRandomValues()
 {
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_timeArrayAnalogsIntervalDays = asTools::Random(m_timeArrayAnalogsIntervalDaysLowerLimit,
+        m_timeArrayAnalogsIntervalDays = asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit,
                                                          m_timeArrayAnalogsIntervalDaysUpperLimit,
                                                          m_timeArrayAnalogsIntervalDaysIteration);
     }
 
     for (int i = 0; i < GetStepsNb(); i++) {
         if (!m_stepsLocks[i].analogsNumber) {
-            SetAnalogsNumber(i, asTools::Random(m_stepsLowerLimit[i].analogsNumber, m_stepsUpperLimit[i].analogsNumber,
+            SetAnalogsNumber(i, asRandom(m_stepsLowerLimit[i].analogsNumber, m_stepsUpperLimit[i].analogsNumber,
                                                 m_stepsIteration[i].analogsNumber));
         }
 
@@ -910,7 +910,7 @@ void asParametersOptimization::InitRandomValues()
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         int length = m_stepsVect[i].predictors[j].preprocessDataId[k].size();
-                        int row = asTools::Random(0, length - 1);
+                        int row = asRandom(0, length - 1);
                         wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId[k].size() > (unsigned) row);
 
                         SetPreprocessDataId(i, j, k, m_stepsVect[i].predictors[j].preprocessDataId[k][row]);
@@ -918,14 +918,14 @@ void asParametersOptimization::InitRandomValues()
 
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         int length = m_stepsVect[i].predictors[j].preprocessLevels[k].size();
-                        int row = asTools::Random(0, length - 1);
+                        int row = asRandom(0, length - 1);
                         wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels[k].size() > (unsigned) row);
 
                         SetPreprocessLevel(i, j, k, m_stepsVect[i].predictors[j].preprocessLevels[k][row]);
                     }
 
                     if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
-                        SetPreprocessTimeHours(i, j, k, asTools::Random(
+                        SetPreprocessTimeHours(i, j, k, asRandom(
                                 m_stepsLowerLimit[i].predictors[j].preprocessTimeHours[k],
                                 m_stepsUpperLimit[i].predictors[j].preprocessTimeHours[k],
                                 m_stepsIteration[i].predictors[j].preprocessTimeHours[k]));
@@ -934,7 +934,7 @@ void asParametersOptimization::InitRandomValues()
             } else {
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     int length = m_stepsVect[i].predictors[j].dataId.size();
-                    int row = asTools::Random(0, length - 1);
+                    int row = asRandom(0, length - 1);
                     wxASSERT(m_stepsVect[i].predictors[j].dataId.size() > (unsigned) row);
 
                     SetPredictorDataId(i, j, m_stepsVect[i].predictors[j].dataId[row]);
@@ -942,14 +942,14 @@ void asParametersOptimization::InitRandomValues()
 
                 if (!m_stepsLocks[i].predictors[j].level) {
                     int length = m_stepsVect[i].predictors[j].level.size();
-                    int row = asTools::Random(0, length - 1);
+                    int row = asRandom(0, length - 1);
                     wxASSERT(m_stepsVect[i].predictors[j].level.size() > (unsigned) row);
 
                     SetPredictorLevel(i, j, m_stepsVect[i].predictors[j].level[row]);
                 }
 
                 if (!m_stepsLocks[i].predictors[j].timeHours) {
-                    SetPredictorTimeHours(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].timeHours,
+                    SetPredictorTimeHours(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].timeHours,
                                                                 m_stepsUpperLimit[i].predictors[j].timeHours,
                                                                 m_stepsIteration[i].predictors[j].timeHours));
                 }
@@ -957,38 +957,38 @@ void asParametersOptimization::InitRandomValues()
             }
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
-                SetPredictorXmin(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].xMin,
+                SetPredictorXmin(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].xMin,
                                                        m_stepsUpperLimit[i].predictors[j].xMin,
                                                        m_stepsIteration[i].predictors[j].xMin));
             }
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
-                SetPredictorXptsnb(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].xPtsNb,
+                SetPredictorXptsnb(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].xPtsNb,
                                                          m_stepsUpperLimit[i].predictors[j].xPtsNb,
                                                          m_stepsIteration[i].predictors[j].xPtsNb));
             }
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
-                SetPredictorYmin(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].yMin,
+                SetPredictorYmin(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].yMin,
                                                        m_stepsUpperLimit[i].predictors[j].yMin,
                                                        m_stepsIteration[i].predictors[j].yMin));
             }
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
-                SetPredictorYptsnb(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].yPtsNb,
+                SetPredictorYptsnb(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].yPtsNb,
                                                          m_stepsUpperLimit[i].predictors[j].yPtsNb,
                                                          m_stepsIteration[i].predictors[j].yPtsNb));
             }
 
             if (!m_stepsLocks[i].predictors[j].weight) {
-                SetPredictorWeight(i, j, asTools::Random(m_stepsLowerLimit[i].predictors[j].weight,
+                SetPredictorWeight(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].weight,
                                                          m_stepsUpperLimit[i].predictors[j].weight,
                                                          m_stepsIteration[i].predictors[j].weight));
             }
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 int length = m_stepsVect[i].predictors[j].criteria.size();
-                int row = asTools::Random(0, length - 1);
+                int row = asRandom(0, length - 1);
                 wxASSERT(m_stepsVect[i].predictors[j].criteria.size() > (unsigned) row);
 
                 SetPredictorCriteria(i, j, m_stepsVect[i].predictors[j].criteria[row]);
@@ -1236,7 +1236,7 @@ void asParametersOptimization::FixTimeHours()
                         if (m_stepsIteration[i].predictors[j].preprocessTimeHours[k] != 0) {
                             float ratio = (float) GetPreprocessTimeHours(i, j, k) /
                                           (float) m_stepsIteration[i].predictors[j].preprocessTimeHours[k];
-                            ratio = asTools::Round(ratio);
+                            ratio = asRound(ratio);
                             SetPreprocessTimeHours(i, j, k,
                                                    ratio * m_stepsIteration[i].predictors[j].preprocessTimeHours[k]);
                         }
@@ -1247,7 +1247,7 @@ void asParametersOptimization::FixTimeHours()
                     if (m_stepsIteration[i].predictors[j].timeHours != 0) {
                         float ratio = (float) GetPredictorTimeHours(i, j) /
                                       (float) m_stepsIteration[i].predictors[j].timeHours;
-                        ratio = asTools::Round(ratio);
+                        ratio = asRound(ratio);
                         SetPredictorTimeHours(i, j, ratio * m_stepsIteration[i].predictors[j].timeHours);
                     }
                 }
@@ -1283,7 +1283,7 @@ bool asParametersOptimization::FixWeights()
             if (!IsPredictorWeightLocked(i, j)) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
-                newWeight = precision * asTools::Round(newWeight * (1.0 / precision));
+                newWeight = precision * asRound(newWeight * (1.0 / precision));
                 newSum += newWeight;
 
                 SetPredictorWeight(i, j, newWeight);
@@ -1335,13 +1335,13 @@ void asParametersOptimization::Unlock(vi &indices)
     int counter = 0;
     int length = indices.size();
 
-    if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+    if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
         m_timeArrayAnalogsIntervalDaysLocks = false;
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-        if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+        if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
             m_stepsLocks[i].analogsNumber = false;
         }
         counter++;
@@ -1349,55 +1349,55 @@ void asParametersOptimization::Unlock(vi &indices)
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                    if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                         m_stepsLocks[i].predictors[j].preprocessDataId[k] = false;
                     }
                     counter++;
-                    if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                    if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                         m_stepsLocks[i].predictors[j].preprocessLevels[k] = false;
                     }
                     counter++;
-                    if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                    if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                         m_stepsLocks[i].predictors[j].preprocessTimeHours[k] = false;
                     }
                     counter++;
                 }
             } else {
-                if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                     m_stepsLocks[i].predictors[j].dataId = false;
                 }
                 counter++;
-                if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                     m_stepsLocks[i].predictors[j].level = false;
                 }
                 counter++;
-                if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+                if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                     m_stepsLocks[i].predictors[j].timeHours = false;
                 }
                 counter++;
             }
 
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].xMin = false;
             }
             counter++;
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].xPtsNb = false;
             }
             counter++;
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].yMin = false;
             }
             counter++;
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].yPtsNb = false;
             }
             counter++;
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].weight = false;
             }
             counter++;
-            if (asTools::SortedArraySearch(&indices[0], &indices[length - 1], counter) >= 0) {
+            if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
                 m_stepsLocks[i].predictors[j].criteria = false;
             }
             counter++;

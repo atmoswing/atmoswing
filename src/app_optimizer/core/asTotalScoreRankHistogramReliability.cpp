@@ -58,7 +58,7 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const
     switch (m_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
-                int rank = (int) asTools::Round(scores[i]);
+                int rank = (int) asRound(scores[i]);
                 wxASSERT(rank <= m_ranksNb);
                 histogram[rank - 1]++;
             }

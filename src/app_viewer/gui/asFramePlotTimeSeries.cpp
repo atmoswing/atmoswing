@@ -264,7 +264,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
 
             for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+                float pcVal = asGetValueForQuantile(analogs, thisQuantile);
 
                 quantilesStr.Append(wxString::Format("%f\t", pcVal));
             }
@@ -344,11 +344,10 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
 
                 for (int iLead = 0; iLead < pastForecast->GetTargetDatesLength(); iLead++) {
                     a1f analogs = pastForecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-                    float pcVal = asTools::GetValueForQuantile(analogs, pcAll[iPc]);
+                    float pcVal = asGetValueForQuantile(analogs, pcAll[iPc]);
 
                     if (iLead == 0) {
-                        int index = asTools::SortedArraySearch(&leadtimes[0], &leadtimes[leadtimes.size() - 1],
-                                                               dates[iLead]);
+                        int index = asFind(&leadtimes[0], &leadtimes[leadtimes.size() - 1], dates[iLead]);
 
                         if (index > 0) {
                             for (int i = 0; i < index; i++) {
@@ -392,7 +391,7 @@ bool asFramePlotTimeSeries::Plot()
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-        if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
+        if (asHasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
             wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
             return false;
         }
@@ -533,7 +532,7 @@ void asFramePlotTimeSeries::PlotAllReturnPeriods()
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
             plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
         } else {
-            int roundedVal = (int) asTools::Round(retPeriods[i]);
+            int roundedVal = (int) asRound(retPeriods[i]);
             plotData.SetFilename(wxString::Format("P%d", roundedVal));
         }
         plotData.SetValue(0, m_leadTimes[0] - 10, val);
@@ -569,7 +568,7 @@ void asFramePlotTimeSeries::PlotReturnPeriod(int returnPeriod)
     a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
     // Find the value 10
-    int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
+    int index = asFind(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
 
     if ((index != asNOT_FOUND) && (index != asOUT_OF_RANGE)) {
         // Get precipitation value
@@ -731,12 +730,12 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
         // Create plot data
         wxPlotData plotData;
         plotData.Create(m_leadTimes.size());
-        int quantileRounded = (int) (asTools::Round(thisQuantile * 100.0));
+        int quantileRounded = (int) (asRound(thisQuantile * 100.0));
         plotData.SetFilename(wxString::Format("Quantile %d", quantileRounded));
         int counter = 0;
         for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+            float pcVal = asGetValueForQuantile(analogs, thisQuantile);
             plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
             counter++;
 
@@ -801,11 +800,11 @@ void asFramePlotTimeSeries::PlotPastForecast(int i)
         // Create plot data
         wxPlotData plotData;
         plotData.Create(length);
-        //int quantileRounded = (int)(asTools::Round(thisQuantile*100.0));
+        //int quantileRounded = (int)(asRound(thisQuantile*100.0));
         int counter = 0;
         for (int iLead = 0; iLead < length; iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+            float pcVal = asGetValueForQuantile(analogs, thisQuantile);
             plotData.SetValue(counter, dates[iLead], pcVal);
             counter++;
 
@@ -871,7 +870,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
         // Left to right
         for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantileUp);
+            float pcVal = asGetValueForQuantile(analogs, thisQuantileUp);
             plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
             counter++;
             if (iLead == 0)
@@ -884,7 +883,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
         // Right to left
         for (int iLead = (int) m_leadTimes.size() - 1; iLead >= 0; iLead--) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-            float pcVal = asTools::GetValueForQuantile(analogs, thisQuantileDown);
+            float pcVal = asGetValueForQuantile(analogs, thisQuantileDown);
             plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
             counter++;
         }
@@ -925,7 +924,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
     int counter = 0;
     for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-        float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+        float pcVal = asGetValueForQuantile(analogs, thisQuantile);
         plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
         counter++;
     }
@@ -969,9 +968,9 @@ void asFramePlotTimeSeries::PlotInterpretation()
     for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         // Process quantiles
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
-        float pc30 = asTools::GetValueForQuantile(analogs, 0.3f);
-        float pc60 = asTools::GetValueForQuantile(analogs, 0.6f);
-        float pc90 = asTools::GetValueForQuantile(analogs, 0.9f);
+        float pc30 = asGetValueForQuantile(analogs, 0.3f);
+        float pc60 = asGetValueForQuantile(analogs, 0.6f);
+        float pc90 = asGetValueForQuantile(analogs, 0.9f);
 
         // Follow the rules
         float val = 0;

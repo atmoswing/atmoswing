@@ -347,7 +347,7 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const
         }
     }
 
-    int size = asTools::Round(lastDate - firstDate + 1);
+    int size = asRound(lastDate - firstDate + 1);
     a1f dates = a1f::LinSpaced(size, firstDate, lastDate);
 
     return dates;
@@ -374,7 +374,7 @@ a1f asResultsForecastAggregator::GetFullTargetDates() const
         }
     }
 
-    int size = asTools::Round(lastDate - firstDate + 1);
+    int size = asRound(lastDate - firstDate + 1);
     a1f dates = a1f::LinSpaced(size, firstDate, lastDate);
 
     return dates;
@@ -554,9 +554,8 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
         int indexReferenceAxis = asNOT_FOUND;
         if (forecast->HasReferenceValues()) {
             a1f forecastReferenceAxis = forecast->GetReferenceAxis();
-            indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0],
-                                                            &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
-                                                            returnPeriodRef);
+            indexReferenceAxis = asFind(&forecastReferenceAxis[0],
+                                        &forecastReferenceAxis[forecastReferenceAxis.size() - 1], returnPeriodRef);
             if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
                 wxLogError(_("The desired return period is not available in the forecast file."));
             }
@@ -601,7 +600,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
             }
 
             for (int iLead = leadtimeMin; iLead <= leadtimeMax; iLead++) {
-                if (asTools::IsNaN(maxValues[iLead])) {
+                if (asIsNaN(maxValues[iLead])) {
                     maxValues[iLead] = -999999;
                 }
 
@@ -611,10 +610,10 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
                 a1f theseVals = forecast->GetAnalogsValuesRaw(iLead, indexStation);
 
                 // Process quantiles
-                if (asTools::HasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
+                if (asHasNaN(&theseVals[0], &theseVals[theseVals.size() - 1])) {
                     thisVal = NaNf;
                 } else {
-                    float forecastVal = asTools::GetValueForQuantile(theseVals, quantileThreshold);
+                    float forecastVal = asGetValueForQuantile(theseVals, quantileThreshold);
                     forecastVal *= factor;
                     thisVal = forecastVal;
                 }
@@ -776,7 +775,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
 
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, quantiles.size()); k++) {
-                    float pcVal = asTools::GetValueForQuantile(analogValues, quantiles[k] / 100);
+                    float pcVal = asGetValueForQuantile(analogValues, quantiles[k] / 100);
                     nodeTargetDate->AddChild(
                             fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
                 }

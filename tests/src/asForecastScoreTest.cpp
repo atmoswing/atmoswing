@@ -982,11 +982,11 @@ void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
-        vecObs[iTime] = (float) asTools::Random(0.0, 0.4999999);
+        vecObs[iTime] = (float) asRandom(0.0, 0.4999999);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.4999999);
+            singleDay[iAnalog] = (float) asRandom(0.0, 0.4999999);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
+        asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1086,11 +1086,11 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
-        vecObs[iTime] = (float) asTools::Random(0.0, 0.5999999);
+        vecObs[iTime] = (float) asRandom(0.0, 0.5999999);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
+            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
+        asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1100,14 +1100,14 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
     11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701, 1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
     for (int i = 0; i < indicesA.size(); i++) {
         int iTime = indicesA[i];
-        vecObs[iTime] = (float) asTools::Random(0.6, 1.0);
+        vecObs[iTime] = (float) asRandom(0.6, 1.0);
         for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
-            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
+            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
         }
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
-            singleDay[iAnalog] = asTools::Random(0.6, 1.0);
+            singleDay[iAnalog] = asRandom(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
+        asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1117,14 +1117,14 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
     12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942, 952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132, 2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
     for (int i = 0; i < indicesB.size(); i++) {
         int iTime = indicesB[i];
-        vecObs[iTime] = (float) asTools::Random(0.0, 0.5999999);
+        vecObs[iTime] = (float) asRandom(0.0, 0.5999999);
         for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
-            singleDay[iAnalog] = (float) asTools::Random(0.0, 0.5999999);
+            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
         }
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
-            singleDay[iAnalog] = (float) asTools::Random(0.6, 1.0);
+            singleDay[iAnalog] = (float) asRandom(0.6, 1.0);
         }
-        asTools::SortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
+        asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
     }
 
@@ -1134,7 +1134,7 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
     13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213, 1223, 1233;
     for (int i = 0; i < indicesC.size(); i++) {
         int iTime = indicesC[i];
-        vecObs[iTime] = (float) asTools::Random(0.6, 1.0);
+        vecObs[iTime] = (float) asRandom(0.6, 1.0);
     }
 
 }
@@ -1157,7 +1157,7 @@ TEST(Score, ProcessPCwithConstantDistribution)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
@@ -1189,7 +1189,7 @@ TEST(Score, ProcessPC)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("PC", "Total");
@@ -1221,7 +1221,7 @@ TEST(Score, ProcessTS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("TS", "Total");
@@ -1253,7 +1253,7 @@ TEST(Score, ProcessBIAS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("BIAS", "Total");
@@ -1285,7 +1285,7 @@ TEST(Score, ProcessFARA)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("FARA", "Total");
@@ -1317,7 +1317,7 @@ TEST(Score, ProcessH)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("H", "Total");
@@ -1349,7 +1349,7 @@ TEST(Score, ProcessF)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("F", "Total");
@@ -1381,7 +1381,7 @@ TEST(Score, ProcessHSS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("HSS", "Total");
@@ -1413,7 +1413,7 @@ TEST(Score, ProcessPSS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("PSS", "Total");
@@ -1445,7 +1445,7 @@ TEST(Score, ProcessGSS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 50);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("GSS", "Total");
@@ -1504,7 +1504,7 @@ TEST(Score, ProcessMAE)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("MAE", "Total");
@@ -1563,7 +1563,7 @@ TEST(Score, ProcessRMSE)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("RMSE", "Total");
@@ -1623,7 +1623,7 @@ TEST(Score, ProcessBS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("BS", "Total");
@@ -1685,7 +1685,7 @@ TEST(Score, ProcessBSS)
     for (int iTime = 0; iTime < vecObs.size(); iTime++) {
         pseudoDates[iTime] = iTime;
         results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("BSS", "Total");
@@ -1763,7 +1763,7 @@ TEST(Score, ProcessRankHistogram)
         pseudoDates[iTime] = iTime;
         float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     // Values processed on Excel
@@ -1879,7 +1879,7 @@ TEST(Score, ProcessRankHistogramReliability)
         pseudoDates[iTime] = iTime;
         float res = score->Assess(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results[iTime] = res;
-        EXPECT_TRUE(!asTools::IsNaN(results[iTime]));
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("RankHistogramReliability", "Total");
@@ -1947,7 +1947,7 @@ TEST(Score, ProcessCRPSreliability)
         pseudoDates[iTime] = iTime;
         a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results.row(iTime) = res;
-        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
+        EXPECT_TRUE(!asHasNaN(&res[0], &res[res.size() - 1]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("CRPSreliability", "Total");
@@ -2014,7 +2014,7 @@ TEST(Score, ProcessCRPSpotential)
         pseudoDates[iTime] = iTime;
         a1f res = score->AssessOnArray(vecObs[iTime], vecForecast.row(iTime), nAnalogs);
         results.row(iTime) = res;
-        EXPECT_TRUE(!asTools::HasNaN(&res[0], &res[res.size() - 1]));
+        EXPECT_TRUE(!asHasNaN(&res[0], &res[res.size() - 1]));
     }
 
     asTotalScore *finalScore = asTotalScore::GetInstance("CRPSpotential", "Total");

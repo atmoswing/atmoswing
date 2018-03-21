@@ -137,7 +137,7 @@ int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
 
     if (rest < 0.0000001 || rest > 0.999999) //Precision issue
     {
-        return size + asTools::Round(rest);
+        return size + asRound(rest);
     } else {
         return size;
     }
@@ -152,7 +152,7 @@ int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
 
     if (rest < 0.0000001 || rest > 0.999999) //Precision issue
     {
-        return size + asTools::Round(rest);
+        return size + asRound(rest);
     } else {
         asThrowException(_("The latitude split is not implemented yet."));
     }

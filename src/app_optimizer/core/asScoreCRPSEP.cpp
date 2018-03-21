@@ -66,12 +66,12 @@ float asScoreCRPSEP::Assess(float observedVal, const a1f &forcastVals, int nbEle
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     float crps = 0;
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
     float df, dVal;
 
@@ -92,7 +92,7 @@ float asScoreCRPSEP::Assess(float observedVal, const a1f &forcastVals, int nbEle
         crps += xObs - x[indLeftEnd];
     } else // If xObs inside the distribution
     {
-        indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbPredict - 1], xObs);
+        indLeftEnd = asFindFloor(&x[0], &x[nbPredict - 1], xObs);
         if ((indLeftEnd != nbPredict - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
             indRightStart = indLeftEnd + 1;
             float FxObs;

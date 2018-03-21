@@ -334,14 +334,14 @@ bool asResultsForecast::Load()
     // Get global attributes
     int versionMajor = ncFile.GetAttInt("version_major");
     int versionMinor = ncFile.GetAttInt("version_minor");
-    if (asTools::IsNaN(versionMajor)) {
+    if (asIsNaN(versionMajor)) {
         float version = ncFile.GetAttFloat("version");
-        if (asTools::IsNaN(version)) {
+        if (asIsNaN(version)) {
             versionMajor = 1;
             versionMinor = 0;
         } else {
             versionMajor = std::floor(version);
-            versionMinor = asTools::Round(10 * (version - versionMajor));
+            versionMinor = asRound(10 * (version - versionMajor));
         }
     }
 
@@ -612,7 +612,7 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const
     wxArrayString stationsNames;
     for (unsigned int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
-        if (!asTools::IsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
+        if (!asIsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
             label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
         } else {
             label = wxString::Format("%s", m_stationNames[i]);
@@ -625,7 +625,7 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const
 wxString asResultsForecast::GetStationNameAndHeight(int iStat) const
 {
     wxString stationName;
-    if (!asTools::IsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
+    if (!asIsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
         stationName = wxString::Format("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
     } else {
         stationName = wxString::Format("%s", m_stationNames[iStat]);

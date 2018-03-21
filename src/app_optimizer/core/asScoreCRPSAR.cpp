@@ -70,12 +70,12 @@ float asScoreCRPSAR::Assess(float observedVal, const a1f &forcastVals, int nbEle
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[n - 1], Asc);
+    asSortArray(&x[0], &x[n - 1], Asc);
 
     float crps = 0;
 
     // Cumulative frequency
-    a1f Fx = asTools::GetCumulativeFrequency(n);
+    a1f Fx = asGetCumulativeFrequency(n);
 
     // Add rectangle on right side if observed value is on the right of the distribution
     if (x0 > x[n - 1]) {

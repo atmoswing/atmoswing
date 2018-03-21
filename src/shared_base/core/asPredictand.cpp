@@ -265,7 +265,7 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
 
     // Check version
     float version = ncFile.GetAttFloat("version");
-    if (asTools::IsNaN(version) || version <= 1.0) {
+    if (asIsNaN(version) || version <= 1.0) {
         wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return NULL;
     }
@@ -365,7 +365,7 @@ bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
 {
     // Check version
     float version = ncFile.GetAttFloat("version");
-    if (asTools::IsNaN(version) || version <= 1.1) {
+    if (asIsNaN(version) || version <= 1.1) {
         wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
         return false;
     }
@@ -427,7 +427,7 @@ bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
     size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
     m_dataRaw.resize(m_timeLength, m_stationsNb);
 
-    if (asTools::IsNaN(version) || version <= 1.3) {
+    if (asIsNaN(version) || version <= 1.3) {
         ncFile.GetVarArray("data_gross", indexStart, indexCount, &m_dataRaw(0, 0));
     } else {
         ncFile.GetVarArray("data", indexStart, indexCount, &m_dataRaw(0, 0));
@@ -618,8 +618,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
     datFile.SkipLines(filePattern.headerLines);
 
     // Get first index on the tima axis
-    int startIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size() - 1],
-                                                currentData.GetStationStart(stationIndex));
+    int startIndex = asFind(&m_time[0], &m_time[m_time.size() - 1], currentData.GetStationStart(stationIndex));
     if (startIndex == asOUT_OF_RANGE || startIndex == asNOT_FOUND) {
         wxLogError(_("The given start date for \"%s\" is out of the catalog range."),
                    currentData.GetStationName(stationIndex));
@@ -775,8 +774,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
     datFile.Close();
 
     // Get end index
-    int endIndex = asTools::SortedArraySearch(&m_time[0], &m_time[m_time.size() - 1],
-                                              currentData.GetStationEnd(stationIndex));
+    int endIndex = asFind(&m_time[0], &m_time[m_time.size() - 1], currentData.GetStationEnd(stationIndex));
     if (endIndex == asOUT_OF_RANGE || endIndex == asNOT_FOUND) {
         wxLogError(_("The given end date for \"%s\" is out of the catalog range."),
                    currentData.GetStationName(stationIndex));
@@ -871,10 +869,10 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
             int nansNb = 0;
 
             // Find begining and end of the year
-            int rowstart = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                           asTime::GetMJD(iYear, 1, 1), 0, asHIDE_WARNINGS);
-            int rowend = asTools::SortedArraySearchFloor(&m_time[0], &m_time[m_timeLength - 1],
-                                                         asTime::GetMJD(iYear, 12, 31, 59, 59), 0, asHIDE_WARNINGS);
+            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1), 0,
+                                       asHIDE_WARNINGS);
+            int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59), 0,
+                                     asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
                 if (iYear == yearEnd) {
                     rowend = m_timeLength - 1;
@@ -887,7 +885,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
             // Get max
             if (!aggregate) {
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
-                    if (!asTools::IsNaN(m_dataRaw(iRow, iStat))) {
+                    if (!asIsNaN(m_dataRaw(iRow, iStat))) {
                         annualmax = wxMax(m_dataRaw(iRow, iStat), annualmax);
                     } else {
                         nansNb++;
@@ -907,7 +905,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
                 for (int iRow = rowstart; iRow <= rowend; iRow++) {
                     float timeStepSum = 0;
                     for (int iEl = iRow - indexTimeSpanDown; iEl <= iRow + indexTimeSpanUp; iEl++) {
-                        if (!asTools::IsNaN(m_dataRaw(iEl, iStat))) {
+                        if (!asIsNaN(m_dataRaw(iEl, iStat))) {
                             timeStepSum += m_dataRaw(iEl, iStat);
                         } else {
                             timeStepSum = NaNf;
@@ -915,7 +913,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
                         }
                     }
 
-                    if (!asTools::IsNaN(timeStepSum)) {
+                    if (!asIsNaN(timeStepSum)) {
                         annualmax = wxMax(timeStepSum, annualmax);
                     } else {
                         nansNb++;
@@ -935,5 +933,5 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
 
 int asPredictand::GetStationIndex(int stationId) const
 {
-    return asTools::SortedArraySearch(&m_stationIds[0], &m_stationIds[m_stationsNb - 1], stationId);
+    return asFind(&m_stationIds[0], &m_stationIds[m_stationsNb - 1], stationId);
 }

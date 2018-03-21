@@ -42,7 +42,7 @@ float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElement
 {
     wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asTools::IsNaN(m_threshold));
+    wxASSERT(!asIsNaN(m_threshold));
 
     // Check inputs
     if (!CheckObservedValue(observedVal)) {
@@ -67,10 +67,10 @@ float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElement
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
     // Search probability
     float probaOccurrence;
@@ -79,7 +79,7 @@ float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElement
     } else if (m_threshold > x[nbPredict - 1]) {
         probaOccurrence = 0;
     } else {
-        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbPredict - 1], m_threshold);
+        int ind = asFindFloor(&x[0], &x[nbPredict - 1], m_threshold);
         if (ind < 0) {
             wxLogError(_("Error processing BS score."));
             return NaNf;

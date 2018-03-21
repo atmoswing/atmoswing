@@ -95,9 +95,9 @@ bool asResultsScoresMap::Add(asParametersScoring &params, float score)
 bool asResultsScoresMap::MakeMap()
 {
 
-    a1f levels(asTools::ExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
-    a1f lons(asTools::ExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
-    a1f lats(asTools::ExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
+    a1f levels(asExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
+    a1f lons(asExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
+    a1f lats(asExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
 
     m_mapLevel = levels;
     m_mapLon = lons;
@@ -110,10 +110,9 @@ bool asResultsScoresMap::MakeMap()
     }
 
     for (unsigned int i = 0; i < m_scores.size(); i++) {
-        int indexLon = asTools::SortedArraySearch(&m_mapLon[0], &m_mapLon[m_mapLon.size() - 1], m_lon[i], 0.0001f);
-        int indexLat = asTools::SortedArraySearch(&m_mapLat[0], &m_mapLat[m_mapLat.size() - 1], m_lat[i], 0.0001f);
-        int indexLevel = asTools::SortedArraySearch(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size() - 1], m_level[i],
-                                                    0.0001f);
+        int indexLon = asFind(&m_mapLon[0], &m_mapLon[m_mapLon.size() - 1], m_lon[i], 0.0001f);
+        int indexLat = asFind(&m_mapLat[0], &m_mapLat[m_mapLat.size() - 1], m_lat[i], 0.0001f);
+        int indexLevel = asFind(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size() - 1], m_level[i], 0.0001f);
 
         if (indexLon > 0 && indexLat > 0 && indexLevel > 0) {
             m_mapScores[indexLevel](indexLat, indexLon) = m_scores[i];

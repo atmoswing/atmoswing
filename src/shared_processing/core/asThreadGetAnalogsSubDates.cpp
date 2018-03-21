@@ -104,8 +104,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end); iDateTarg++)
     for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
-        int iTimeTarg = asTools::SortedArraySearch(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
-                                                   (double) m_pTimeTargetSelection->coeff(iDateTarg), 0.01);
+        int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
+                               (double) m_pTimeTargetSelection->coeff(iDateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(iDateTarg) > 0);
         wxASSERT(iTimeTarg >= 0);
         if (iTimeTarg < 0) {
@@ -130,9 +130,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
             // Loop through the previous analogs for candidate data
             for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
                 // Find row in the predictor time array
-                int iTimeArch = asTools::SortedArraySearch(&timeArchiveData[0],
-                                                           &timeArchiveData[timeArchiveDataSize - 1],
-                                                           currentAnalogsDates[iPrevAnalog], 0.01);
+                int iTimeArch = asFind(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize - 1],
+                                       currentAnalogsDates[iPrevAnalog], 0.01);
                 wxASSERT(iTimeArch >= 0);
                 if (iTimeArch < 0) {
                     wxLogError(_("An unexpected error occurred."));
@@ -155,7 +154,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                         // Weight and add the score
                         thisscore += tmpscore * m_params->GetPredictorWeight(m_step, iPtor);
                     }
-                    if (asTools::IsNaN(thisscore)) {
+                    if (asIsNaN(thisscore)) {
                         *m_pContainsNaNs = true;
                     }
 
@@ -163,15 +162,15 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                     if (counter > analogsNb - 1) {
                         if (isasc) {
                             if (thisscore < scoreArrayOneDay[analogsNb - 1]) {
-                                asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
-                                                            &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc,
-                                                            thisscore, (float) timeArchiveData[iTimeArch]);
+                                asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                               &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc, thisscore,
+                                               (float) timeArchiveData[iTimeArch]);
                             }
                         } else {
                             if (thisscore > scoreArrayOneDay[analogsNb - 1]) {
-                                asTools::SortedArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
-                                                            &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc,
-                                                            thisscore, (float) timeArchiveData[iTimeArch]);
+                                asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                                               &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc, thisscore,
+                                               (float) timeArchiveData[iTimeArch]);
                             }
                         }
                     } else if (counter < analogsNb - 1) {
@@ -185,10 +184,10 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
 
                         // Sort both scores and dates arrays
                         if (isasc) {
-                            asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                 &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc);
                         } else {
-                            asTools::SortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
+                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                 &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc);
                         }
                     }

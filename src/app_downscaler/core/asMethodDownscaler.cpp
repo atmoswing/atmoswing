@@ -46,7 +46,7 @@ asMethodDownscaler::asMethodDownscaler()
         : asMethodStandard()
 {
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 }
 
 asMethodDownscaler::~asMethodDownscaler()
@@ -60,7 +60,7 @@ bool asMethodDownscaler::Manager()
     g_responsive = false;
 
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 
     // Load parameters
     asParametersDownscaling params;

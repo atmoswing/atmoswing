@@ -37,7 +37,7 @@ asMethodOptimizer::asMethodOptimizer()
           m_iterator(0)
 {
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 }
 
 asMethodOptimizer::~asMethodOptimizer()

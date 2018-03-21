@@ -126,7 +126,7 @@ bool asPreprocessor::PreprocessGradients(std::vector<asPredictor *> predictors, 
                     predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
 
-            if (asTools::HasNaN(tmpgrad)) {
+            if (asHasNaN(tmpgrad)) {
                 // std::cout << tmpgrad << std::endl;
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;

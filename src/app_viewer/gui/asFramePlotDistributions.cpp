@@ -311,7 +311,7 @@ bool asFramePlotDistributions::PlotPredictands()
     // Check that there is no NaNs
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
-    if (asTools::HasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
+    if (asHasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
         wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
         return false;
     }
@@ -421,7 +421,7 @@ bool asFramePlotDistributions::PlotCriteria()
     // Check that there is no NaNs
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
-    if (asTools::HasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
+    if (asHasNaN(&criteria[0], &criteria[criteria.size() - 1])) {
         wxLogError(_("The forecast criteria contains NaNs. Plotting has been canceled."));
         return false;
     }
@@ -496,7 +496,7 @@ void asFramePlotDistributions::PlotAllReturnPeriods()
         if (std::abs(retPeriods[i] - 2.33) < 0.1) {
             plotData.SetFilename(wxString::Format("P%3.2f", retPeriods[i]));
         } else {
-            int roundedVal = (int) asTools::Round(retPeriods[i]);
+            int roundedVal = (int) asRound(retPeriods[i]);
             plotData.SetFilename(wxString::Format("P%d", roundedVal));
         }
         plotData.SetValue(0, val, -1);
@@ -532,7 +532,7 @@ void asFramePlotDistributions::PlotReturnPeriod(int returnPeriod)
     a1f retPeriods = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast)->GetReferenceAxis();
 
     // Find the value 10
-    int index = asTools::SortedArraySearch(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
+    int index = asFind(&retPeriods[0], &retPeriods[retPeriods.size() - 1], returnPeriod);
 
     if ((index != asNOT_FOUND) && (index != asOUT_OF_RANGE)) {
         // Get precipitation value
@@ -565,11 +565,11 @@ void asFramePlotDistributions::PlotAllAnalogsPoints()
 
     // Get the total number of points
     a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
-    asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
+    asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asGetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -617,11 +617,11 @@ void asFramePlotDistributions::PlotAllAnalogsCurve()
 
     // Get the total number of points
     a1f analogs = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
-    asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
+    asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
     int nbPoints = analogs.size();
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asGetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -671,10 +671,10 @@ void asFramePlotDistributions::PlotBestAnalogsPoints(int analogsNb)
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
     a1f ranks = a1f::LinSpaced(nbPoints, 0, nbPoints - 1);
-    asTools::SortArrays(&analogs[0], &analogs[analogs.size() - 1], &ranks[0], &ranks[ranks.size() - 1], Asc);
+    asSortArrays(&analogs[0], &analogs[analogs.size() - 1], &ranks[0], &ranks[ranks.size() - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asGetCumulativeFrequency(nbPoints);
 
     // Create plot data
     for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
@@ -725,10 +725,10 @@ void asFramePlotDistributions::PlotBestAnalogsCurve(int analogsNb)
     a1f analogsAll = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     int nbPoints = wxMin((int) analogsAll.size(), analogsNb);
     a1f analogs = analogsAll.head(nbPoints);
-    asTools::SortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
+    asSortArray(&analogs[0], &analogs[analogs.size() - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPoints);
+    a1f F = asGetCumulativeFrequency(nbPoints);
 
     // Create plot data
     wxPlotData plotData;
@@ -792,7 +792,7 @@ void asFramePlotDistributions::PlotClassicQuantiles()
         // Create plot data
         wxPlotData plotData;
         plotData.Create(1);
-        float pcVal = asTools::GetValueForQuantile(analogs, thisQuantile);
+        float pcVal = asGetValueForQuantile(analogs, thisQuantile);
         plotData.SetValue(0, pcVal, thisQuantile);
 
         // Store max val

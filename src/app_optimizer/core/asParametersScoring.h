@@ -182,7 +182,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided validation years vector."));
                     return false;
                 }
@@ -271,7 +271,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided analogs number vector."));
                     return false;
                 }
@@ -288,7 +288,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
                     return false;
                 }
@@ -317,7 +317,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided xMin vector."));
                     return false;
                 }
@@ -339,7 +339,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided xPtsNb vector."));
                     return false;
                 }
@@ -361,7 +361,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided yMin vector."));
                     return false;
                 }
@@ -383,7 +383,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided yPtsNb vector."));
                     return false;
                 }
@@ -405,7 +405,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided predictor time (hours) vector."));
                     return false;
                 }
@@ -427,7 +427,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < (int) val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided predictor weights vector."));
                     return false;
                 }
@@ -490,7 +490,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided preprocess levels vector."));
                     return false;
                 }
@@ -559,7 +559,7 @@ public:
             return false;
         } else {
             for (int i = 0; i < val.size(); i++) {
-                if (asTools::IsNaN(val[i])) {
+                if (asIsNaN(val[i])) {
                     wxLogError(_("There are NaN values in the provided predictor levels vector."));
                     return false;
                 }

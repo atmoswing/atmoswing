@@ -57,13 +57,13 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
     a1f x = forcastVals;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(observedVal)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(observedVal)) {
         wxLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
         return NaNf;
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbElements - 1], Asc);
+    asSortArray(&x[0], &x[nbElements - 1], Asc);
 
     // Get rank
     if (observedVal < x[0]) {
@@ -72,7 +72,7 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
         return nbElements + 1;
     } else {
         // Check if exact value can be found
-        int indExact = asTools::SortedArraySearch(&x[0], &x[nbElements - 1], observedVal, 0.0, asHIDE_WARNINGS);
+        int indExact = asFind(&x[0], &x[nbElements - 1], observedVal, 0.0, asHIDE_WARNINGS);
 
         if (indExact != asOUT_OF_RANGE && indExact != asNOT_FOUND) {
             // If the exact value was found in the analogs
@@ -94,10 +94,10 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
             }
 
             // Generate uniform random deviates
-            float verif = asTools::Random(0.0, 1.0);
+            float verif = asRandom(0.0, 1.0);
             a1f rand(m);
             for (int i = 0; i < m; i++) {
-                rand[i] = asTools::Random(0.0, 1.0);
+                rand[i] = asRandom(0.0, 1.0);
             }
 
             // Assign rank
@@ -108,7 +108,7 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
                     return indFirst + 2;
                 }
             } else {
-                asTools::SortArray(&rand[0], &rand[m - 1], Asc);
+                asSortArray(&rand[0], &rand[m - 1], Asc);
                 int subIndex;
 
                 if (verif < rand[0]) {
@@ -116,7 +116,7 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
                 } else if (verif > rand[m - 1]) {
                     subIndex = m;
                 } else {
-                    subIndex = 1 + asTools::SortedArraySearchFloor(&rand[0], &rand[m - 1], verif);
+                    subIndex = 1 + asFindFloor(&rand[0], &rand[m - 1], verif);
                 }
 
                 return indFirst + 1 + subIndex;
@@ -124,7 +124,7 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
 
         } else {
             // Indices for the left
-            int indLeft = asTools::SortedArraySearchFloor(&x[0], &x[nbElements - 1], observedVal);
+            int indLeft = asFindFloor(&x[0], &x[nbElements - 1], observedVal);
             wxASSERT(indLeft >= 0);
 
             return indLeft + 2; // as the indices are 0-based + element on the left side

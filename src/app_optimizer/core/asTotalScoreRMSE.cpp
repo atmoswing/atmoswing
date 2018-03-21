@@ -58,7 +58,7 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
             float score = 0, divisor = 0;
 
             for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asTools::IsNaN(scores(iTime))) {
+                if (!asIsNaN(scores(iTime))) {
                     score += scores(iTime);
                     divisor++;
                 }
@@ -76,8 +76,8 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
             double firstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
             double lastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
             a1d dateTime = timeArray.GetTimeArray();
-            int indexStart = asTools::SortedArraySearchClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
-            int indexEnd = asTools::SortedArraySearchClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);
+            int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
+            int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);
 
             // Loop through the timeArray
             float score = 0, divisor = 0;
@@ -87,11 +87,9 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
                     wxLogError(_("Error processing the final RMSE score."));
                     return NaNf;
                 }
-                int indexCurrent = asTools::SortedArraySearchClosest(&targetDates(0),
-                                                                     &targetDates(targetDatesLength - 1),
-                                                                     dateTime(iTime));
+                int indexCurrent = asFindClosest(&targetDates(0), &targetDates(targetDatesLength - 1), dateTime(iTime));
                 if ((indexCurrent != asNOT_FOUND) & (indexCurrent != asOUT_OF_RANGE)) {
-                    if (!asTools::IsNaN(scores(indexCurrent))) {
+                    if (!asIsNaN(scores(indexCurrent))) {
                         score += scores(indexCurrent);
                         divisor++;
                     }

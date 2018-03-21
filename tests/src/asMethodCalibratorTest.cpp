@@ -100,14 +100,14 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     }
 
     // Extract data
-    a1f resultsTargetDates(anaDates.GetTargetDates());
-    a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsCriteria(anaDates.GetAnalogsCriteria());
-    a2f resultsDates(anaDates.GetAnalogsDates());
-    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
-    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
-    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
+    a1f resTargetDates(anaDates.GetTargetDates());
+    a1f resTargetValues(anaValues.GetTargetValues()[0]);
+    a2f resCriteria(anaDates.GetAnalogsCriteria());
+    a2f resDates(anaDates.GetAnalogsDates());
+    a2f resValues(anaValues.GetAnalogsValues()[0]);
+    a1f resScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
     float scoreFinal = anaScoreFinal.GetScore();
 
     // Open a result file from Grenoble
@@ -174,33 +174,31 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resTargetDates[0], &resTargetDates[resTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
-        EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
+        EXPECT_FLOAT_EQ(fileTargetValue, resTargetValues(rowTargetDate));
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
 
         // The CRPS tolerence is huge, as it is not processed with the same P10 !
         if (!shortVersion) {
-            EXPECT_NEAR(fileScoreCRPS, resultsScoreCRPS(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileScoreCRPSaccuracy, resultsScoreCRPSaccuracy(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileScoreCRPSsharpness, resultsScoreCRPSsharpness(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPS, resScoreCRPS(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSaccuracy, resScoreCRPSaccuracy(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSsharpness, resScoreCRPSsharpness(rowTargetDate), 0.1);
         }
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
-                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asMean(&resScoreCRPS[0], &resScoreCRPS[resScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -465,9 +463,8 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -495,7 +492,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
+        EXPECT_FLOAT_EQ(asMean(&resultsScoreCRPS[0],
                                       &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
@@ -785,9 +782,8 @@ void Ref1Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1150,9 +1146,8 @@ void Ref2Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1336,9 +1331,8 @@ void Ref2SavingIntermediateResults()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1497,9 +1491,8 @@ void Ref2MergeByHalfAndMultiply()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));

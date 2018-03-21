@@ -40,7 +40,7 @@ asMethodCalibrator::asMethodCalibrator()
           m_validationMode(false)
 {
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 }
 
 asMethodCalibrator::~asMethodCalibrator()
@@ -57,7 +57,7 @@ bool asMethodCalibrator::Manager()
     m_scoreClimatology.clear();
 
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 
     // Load parameters
     asParametersCalibration params;
@@ -137,7 +137,7 @@ void asMethodCalibrator::RemoveNaNsInTemp()
     vf copyScoresCalibTemp;
 
     for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
-        if (!asTools::IsNaN(m_scoresCalibTemp[i])) {
+        if (!asIsNaN(m_scoresCalibTemp[i])) {
             copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
             copyParametersTemp.push_back(m_parametersTemp[i]);
         }
@@ -186,7 +186,7 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
-    asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
+    asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 
     // Sort the parameters sets as the scores
@@ -371,11 +371,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
     }
 
     // Check if data are effectively available for this period
-    int indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],
-                                                                  &predictandTime[predictandTime.size() - 1],
-                                                                  timeStart);
-    int indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
-                                                                 &predictandTime[predictandTime.size() - 1], timeEnd);
+    int indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeStart);
+    int indexPredictandTimeEnd = asFindFloor(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeEnd);
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
@@ -385,10 +382,10 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
     for (int iStat = 0; iStat < (int) stationIds.size(); iStat++) {
         a1f predictandDataNorm = m_predictandDB->GetDataNormalizedStation(stationIds[iStat]);
 
-        while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeStart))) {
+        while (asIsNaN(predictandDataNorm(indexPredictandTimeStart))) {
             indexPredictandTimeStart++;
         }
-        while (asTools::IsNaN(predictandDataNorm(indexPredictandTimeEnd))) {
+        while (asIsNaN(predictandDataNorm(indexPredictandTimeEnd))) {
             indexPredictandTimeEnd--;
             if (indexPredictandTimeEnd < 0) {
                 wxLogError(_("An unexpected error occurred."));
@@ -406,10 +403,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
     timeStart = floor(timeStart) + predictandTimeDays;
     timeEnd = predictandTime[indexPredictandTimeEnd];
     timeEnd = floor(timeEnd) + predictandTimeDays;
-    indexPredictandTimeStart = asTools::SortedArraySearchCeil(&predictandTime[0],
-                                                              &predictandTime[predictandTime.size() - 1], timeStart);
-    indexPredictandTimeEnd = asTools::SortedArraySearchFloor(&predictandTime[0],
-                                                             &predictandTime[predictandTime.size() - 1], timeEnd);
+    indexPredictandTimeStart = asFindCeil(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeStart);
+    indexPredictandTimeEnd = asFindFloor(&predictandTime[0], &predictandTime[predictandTime.size() - 1], timeEnd);
 
     if (indexPredictandTimeStart < 0 || indexPredictandTimeEnd < 0) {
         wxLogError(_("An unexpected error occurred."));
@@ -762,8 +757,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     if (iStep > 0) {
         int prevAnalogsNb = params.GetAnalogsNumber(iStep - 1);
         if (prevAnalogsNb < analogsNbVect[analogsNbVect.size() - 1]) {
-            rowEnd = asTools::SortedArraySearchFloor(&analogsNbVect[0], &analogsNbVect[analogsNbVect.size() - 1],
-                                                     prevAnalogsNb);
+            rowEnd = asFindFloor(&analogsNbVect[0], &analogsNbVect[analogsNbVect.size() - 1], prevAnalogsNb);
         }
     }
 

@@ -76,7 +76,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
             }
 
             for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-                if (!asTools::IsNaN(targetValues[iStat](iTargetTime))) {
+                if (!asIsNaN(targetValues[iStat](iTargetTime))) {
                     if (params->ScoreNeedsPostprocessing()) {
                         //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
                         //totalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params->GetScoreAnalogsNumber());
@@ -118,7 +118,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
         a2f scores(timeTargetSelectionLength, 3 * (params->GetScoreAnalogsNumber() + 1));
 
         for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-            if (!asTools::IsNaN(targetValues[0](iTargetTime))) {
+            if (!asIsNaN(targetValues[0](iTargetTime))) {
                 if (params->ScoreNeedsPostprocessing()) {
                     //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
                     //finalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params->GetScoreAnalogsNumber());

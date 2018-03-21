@@ -141,12 +141,12 @@ void asParametersOptimizationGAs::BuildChromosomes()
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRate()
 {
-    m_individualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
+    m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
 }
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRadius()
 {
-    m_individualSelfAdaptationMutationRadius = asTools::Random(0.0, 1.0);
+    m_individualSelfAdaptationMutationRadius = asRandom(0.0, 1.0);
 }
 
 void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
@@ -155,7 +155,7 @@ void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
     m_chromosomeSelfAdaptationMutationRate.resize(length);
 
     for (int i = 0; i < length; i++) {
-        m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
+        m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
     }
 
     m_hasChromosomeSelfAdaptationMutationRate = true;
@@ -167,7 +167,7 @@ void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
     m_chromosomeSelfAdaptationMutationRadius.resize(length);
 
     for (int i = 0; i < length; i++) {
-        m_chromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0, 1.0);
+        m_chromosomeSelfAdaptationMutationRadius[i] = asRandom(0.0, 1.0);
     }
 
     m_hasChromosomeSelfAdaptationMutationRadius = true;
@@ -968,7 +968,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            int val = asTools::Round(newVal);
+            int val = asRound(newVal);
             if (!SetTimeArrayAnalogsIntervalDays(val)) {
                 asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
             }
@@ -980,7 +980,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
     for (int i = 0; i < GetStepsNb(); i++) {
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
-                int val = asTools::Round(newVal);
+                int val = asRound(newVal);
                 if (!SetAnalogsNumber(i, val)) {
                     asThrowException(_("Error in SetAnalogsNumber from GAs."));
                 }
@@ -994,7 +994,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         if (counter == index) {
-                            int val = asTools::Round(newVal);
+                            int val = asRound(newVal);
 
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             if (val < 0)
@@ -1012,7 +1012,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         if (counter == index) {
-                            int val = asTools::Round(newVal);
+                            int val = asRound(newVal);
 
                             vf vect = GetPreprocessLevelVector(i, j, k);
                             if (val < 0)
@@ -1030,7 +1030,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
                     if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
                         if (counter == index) {
-                            int val = asTools::Round(newVal);
+                            int val = asRound(newVal);
                             if (!SetPreprocessTimeHours(i, j, k, val)) {
                                 asThrowException(_("Error in SetPreprocessTimeHours from GAs."));
                             }
@@ -1042,7 +1042,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
             } else {
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     if (counter == index) {
-                        int val = asTools::Round(newVal);
+                        int val = asRound(newVal);
 
                         vwxs vect = GetPredictorDataIdVector(i, j);
                         if (val < 0)
@@ -1060,7 +1060,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
                 if (!m_stepsLocks[i].predictors[j].level) {
                     if (counter == index) {
-                        int val = asTools::Round(newVal);
+                        int val = asRound(newVal);
 
                         vf vect = GetPredictorLevelVector(i, j);
                         if (val < 0)
@@ -1078,7 +1078,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
                 if (!m_stepsLocks[i].predictors[j].timeHours) {
                     if (counter == index) {
-                        int val = asTools::Round(newVal);
+                        int val = asRound(newVal);
                         if (!SetPredictorTimeHours(i, j, val)) {
                             asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
                         }
@@ -1100,7 +1100,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
-                    int val = asTools::Round(newVal);
+                    int val = asRound(newVal);
                     if (!SetPredictorXptsnb(i, j, val)) {
                         asThrowException(_("Error in SetPredictorXptsnb from GAs."));
                     }
@@ -1121,7 +1121,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
-                    int val = asTools::Round(newVal);
+                    int val = asRound(newVal);
                     if (!SetPredictorYptsnb(i, j, val)) {
                         asThrowException(_("Error in SetPredictorYptsnb from GAs."));
                     }
@@ -1143,7 +1143,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
-                    int val = asTools::Round(newVal);
+                    int val = asRound(newVal);
 
                     vwxs vect = GetPredictorCriteriaVector(i, j);
                     if (val < 0)
@@ -1174,7 +1174,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
-    asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
+    asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
     unsigned int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
@@ -1230,14 +1230,14 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
-    asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
+    asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
     unsigned int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
-    double beta = asTools::Random(betaMin, betaMax);
+    double beta = asRandom(betaMin, betaMax);
 
     do {
         if (!IsParamLocked(counter)) {
@@ -1253,7 +1253,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
 
             if (doCrossing) {
                 if (!shareBeta) {
-                    beta = asTools::Random(betaMin, betaMax);
+                    beta = asRandom(betaMin, betaMax);
                 }
 
                 double val1 = GetParameterValue(counter);
@@ -1293,14 +1293,14 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
-    asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
+    asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
     unsigned int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
-    double beta = asTools::Random(betaMin, betaMax);
+    double beta = asRandom(betaMin, betaMax);
 
     do {
         if (!IsParamLocked(counter)) {
@@ -1316,7 +1316,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
 
             if (doCrossing) {
                 if (!shareBeta) {
-                    beta = asTools::Random(betaMin, betaMax);
+                    beta = asRandom(betaMin, betaMax);
                 }
 
                 double val1 = GetParameterValue(counter);
@@ -1357,20 +1357,20 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
-    asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
+    asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
     unsigned int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
     bool doCrossing = false;
-    double beta = asTools::Random(betaMin, betaMax);
+    double beta = asRandom(betaMin, betaMax);
 
     do {
         if (!IsParamLocked(counter)) {
             if (counter == nextpoint) {
                 if (!shareBeta) {
-                    beta = asTools::Random(betaMin, betaMax);
+                    beta = asRandom(betaMin, betaMax);
                 }
 
                 double val1 = GetParameterValue(counter);
@@ -1444,7 +1444,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
-    asTools::SortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
+    asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
     unsigned int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
@@ -1505,14 +1505,14 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
 
 void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta)
 {
-    double beta = asTools::Random(0.0, 1.0);
+    double beta = asRandom(0.0, 1.0);
     int counterSelfAdapt = 0;
     int counter = 0;
 
     do {
         if (!IsParamLocked(counter)) {
             if (!shareBeta) {
-                beta = asTools::Random(0.0, 1.0);
+                beta = asRandom(0.0, 1.0);
             }
 
             double val1 = GetParameterValue(counter);
@@ -1551,8 +1551,8 @@ void asParametersOptimizationGAs::MutateUniformDistribution(double probability, 
 
     do {
         if (!IsParamLocked(counter)) {
-            if (asTools::Random(0.0, 1.0) < probability) {
-                double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+            if (asRandom(0.0, 1.0) < probability) {
+                double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                 GetParameterIteration(counter));
                 SetParameterValue(counter, newVal);
 
@@ -1570,17 +1570,17 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
 
     do {
         if (!IsParamLocked(counter)) {
-            if (asTools::Random(0.0, 1.0) < probability) {
+            if (asRandom(0.0, 1.0) < probability) {
                 if (GetParamType(counter) < 3) {
                     double mean = GetParameterValue(counter);
                     double stdDev =
                             stdDevRatioRange * (GetParameterUpperLimit(counter) - GetParameterLowerLimit(counter));
                     double step = GetParameterIteration(counter);
-                    double newVal = asTools::RandomNormalDistribution(mean, stdDev, step);
+                    double newVal = asRandomNormal(mean, stdDev, step);
                     SetParameterValue(counter, newVal);
                 } else {
                     // Uniform distribution in the case of parameters as a list
-                    double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                    double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                     GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
@@ -1603,10 +1603,10 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
 
     do {
         if (!IsParamLocked(counter)) {
-            if (asTools::Random(0.0, 1.0) < probability) {
+            if (asRandom(0.0, 1.0) < probability) {
                 if (GetParamType(counter) < 3) {
-                    double r1 = asTools::Random(0.0, 1.0);
-                    double r2 = asTools::Random(0.0, 1.0);
+                    double r1 = asRandom(0.0, 1.0);
+                    double r2 = asRandom(0.0, 1.0);
                     double actVal = GetParameterValue(counter);
                     double lowerLimit = GetParameterLowerLimit(counter);
                     double upperLimit = GetParameterUpperLimit(counter);
@@ -1621,7 +1621,7 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
                     SetParameterValue(counter, newVal);
                 } else {
                     // Uniform distribution in the case of parameters as a list
-                    double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                    double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                     GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
@@ -1636,8 +1636,8 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
 void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asTools::Random(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
-        m_individualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
+        m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
     }
 
     // Mutate data
@@ -1648,23 +1648,23 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
 void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asTools::Random(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
-        m_individualSelfAdaptationMutationRate = asTools::Random(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
+        m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    if (asTools::Random(0.0, 1.0) < m_individualSelfAdaptationMutationRadius) {
-        m_individualSelfAdaptationMutationRadius = asTools::Random(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRadius) {
+        m_individualSelfAdaptationMutationRadius = asRandom(0.0, 1.0);
     }
 
     // Mutate data
     int counter = 0;
     do {
         if (!IsParamLocked(counter)) {
-            if (asTools::Random(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
+            if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
                 if (GetParamType(counter) < 3) {
-                    double r1 = asTools::Random(0.0, 1.0);
-                    double r2 = asTools::Random(0.0, 1.0);
+                    double r1 = asRandom(0.0, 1.0);
+                    double r2 = asRandom(0.0, 1.0);
                     double actVal = GetParameterValue(counter);
                     double lowerLimit = GetParameterLowerLimit(counter);
                     double upperLimit = GetParameterUpperLimit(counter);
@@ -1679,7 +1679,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
                     SetParameterValue(counter, newVal);
                 } else {
                     // Uniform distribution in the case of parameters as a list
-                    double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                    double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                     GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
@@ -1698,8 +1698,8 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
 
     // Mutate mutation probability
     for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
-        if (asTools::Random(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
-            m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
+        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
+            m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
         }
 
     }
@@ -1711,9 +1711,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
         if (!IsParamLocked(counter)) {
             wxASSERT(counterSelfAdapt < m_chromosomeSelfAdaptationMutationRate.size());
 
-            if (asTools::Random(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
+            if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
                 // Uniform distribution in the case of parameters as a list
-                double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                 GetParameterIteration(counter));
                 SetParameterValue(counter, newVal);
 
@@ -1734,16 +1734,16 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
 
     // Mutate mutation probability
     for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
-        if (asTools::Random(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
-            m_chromosomeSelfAdaptationMutationRate[i] = asTools::Random(0.0, 1.0);
+        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
+            m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
         }
 
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
     for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRadius.size(); i++) {
-        if (asTools::Random(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRadius[i]) {
-            m_chromosomeSelfAdaptationMutationRadius[i] = asTools::Random(0.0, 1.0);
+        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRadius[i]) {
+            m_chromosomeSelfAdaptationMutationRadius[i] = asRandom(0.0, 1.0);
         }
 
     }
@@ -1755,10 +1755,10 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
         if (!IsParamLocked(counter)) {
             wxASSERT(counterSelfAdapt < m_chromosomeSelfAdaptationMutationRate.size());
 
-            if (asTools::Random(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
+            if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
                 if (GetParamType(counter) < 3) {
-                    double r1 = asTools::Random(0.0, 1.0);
-                    double r2 = asTools::Random(0.0, 1.0);
+                    double r1 = asRandom(0.0, 1.0);
+                    double r2 = asRandom(0.0, 1.0);
                     double actVal = GetParameterValue(counter);
                     double lowerLimit = GetParameterLowerLimit(counter);
                     double upperLimit = GetParameterUpperLimit(counter);
@@ -1775,7 +1775,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
                     SetParameterValue(counter, newVal);
                 } else {
                     // Uniform distribution in the case of parameters as a list
-                    double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                    double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                     GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
@@ -1791,7 +1791,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
 void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &hasMutated)
 {
     // Choose the radius
-    double radiusChoice = asTools::Random(0.0, 1.0);
+    double radiusChoice = asRandom(0.0, 1.0);
     double radius = 0;
 
     if (radiusChoice < 0.25) {
@@ -1808,10 +1808,10 @@ void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &has
     int counter = 0;
     do {
         if (!IsParamLocked(counter)) {
-            if (asTools::Random(0.0, 1.0) < probability) {
+            if (asRandom(0.0, 1.0) < probability) {
                 if (GetParamType(counter) < 3) {
-                    double r1 = asTools::Random(0.0, 1.0);
-                    double r2 = asTools::Random(0.0, 1.0);
+                    double r1 = asRandom(0.0, 1.0);
+                    double r2 = asRandom(0.0, 1.0);
                     double actVal = GetParameterValue(counter);
                     double lowerLimit = GetParameterLowerLimit(counter);
                     double upperLimit = GetParameterUpperLimit(counter);
@@ -1826,7 +1826,7 @@ void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &has
                     SetParameterValue(counter, newVal);
                 } else {
                     // Uniform distribution in the case of parameters as a list
-                    double newVal = asTools::Random(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
+                    double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                                     GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }

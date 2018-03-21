@@ -590,7 +590,7 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val)
 
         for (auto &i : val) {
             for (int j : i) {
-                if (asTools::IsNaN(j)) {
+                if (asIsNaN(j)) {
                     wxLogError(_("There are NaN values in the provided predictand ID vector."));
                     return false;
                 }

@@ -156,7 +156,7 @@ void asForecastViewer::SetLeadTimeDate(float date)
             targetDates = m_forecastManager->GetTargetDates(m_methodSelection);
         }
 
-        int index = asTools::SortedArraySearchClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
+        int index = asFindClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
         if (index >= 0) {
             m_leadTimeIndex = index;
         }
@@ -261,9 +261,8 @@ void asForecastViewer::Redraw()
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
         a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
-        indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0],
-                                                        &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
-                                                        returnPeriod);
+        indexReferenceAxis = asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
+                                    returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();
@@ -383,20 +382,20 @@ void asForecastViewer::Redraw()
             for (int iLead = 0; iLead < leadTimeSize; iLead++) {
                 a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
 
-                if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
+                if (asHasNaN(&values[0], &values[values.size() - 1])) {
                     data.Add(NaNd);
                 } else {
                     if (quantile >= 0) {
-                        double forecastVal = asTools::GetValueForQuantile(values, quantile);
+                        double forecastVal = asGetValueForQuantile(values, quantile);
                         wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
                         forecastVal *= factor;
                         data.Add(forecastVal);
                     } else {
                         // Interpretatio
                         double forecastVal = 0;
-                        double forecastVal30 = asTools::GetValueForQuantile(values, 0.2f);
-                        double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
-                        double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
+                        double forecastVal30 = asGetValueForQuantile(values, 0.2f);
+                        double forecastVal60 = asGetValueForQuantile(values, 0.6f);
+                        double forecastVal90 = asGetValueForQuantile(values, 0.9f);
 
                         if (forecastVal60 == 0) {
                             forecastVal = 0;
@@ -542,12 +541,12 @@ void asForecastViewer::Redraw()
 
             a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
 
-            if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
+            if (asHasNaN(&values[0], &values[values.size() - 1])) {
                 data.Add(NaNd); // 1st real value
                 data.Add(NaNd); // 2nd normalized
             } else {
                 if (quantile >= 0) {
-                    double forecastVal = asTools::GetValueForQuantile(values, quantile);
+                    double forecastVal = asGetValueForQuantile(values, quantile);
                     wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
                     data.Add(forecastVal); // 1st real value
                     forecastVal *= factor;
@@ -555,9 +554,9 @@ void asForecastViewer::Redraw()
                 } else {
                     // Interpretatio
                     double forecastVal = 0;
-                    double forecastVal30 = asTools::GetValueForQuantile(values, 0.3f);
-                    double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
-                    double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
+                    double forecastVal30 = asGetValueForQuantile(values, 0.3f);
+                    double forecastVal60 = asGetValueForQuantile(values, 0.6f);
+                    double forecastVal90 = asGetValueForQuantile(values, 0.9f);
 
                     if (forecastVal60 == 0) {
                         forecastVal = 0;

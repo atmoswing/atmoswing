@@ -568,7 +568,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
 
     m_fStr.timeStart = ConvertToMjd(timeFirstVal, refValue);
     m_fStr.timeEnd = ConvertToMjd(timeLastVal, refValue);
-    m_fStr.timeStep = asTools::Round(24 * (m_fStr.timeEnd - m_fStr.timeStart) / (m_fStr.timeLength - 1));
+    m_fStr.timeStep = asRound(24 * (m_fStr.timeEnd - m_fStr.timeStart) / (m_fStr.timeLength - 1));
     m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
 
     return true;
@@ -660,7 +660,7 @@ bool asPredictor::ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1)
 
     if(gbFile1 != nullptr) {
         double secondFileTime = gbFile1->GetTime();
-        m_fStr.timeStep = asTools::Round(24 * (secondFileTime - m_fStr.timeStart));
+        m_fStr.timeStep = asRound(24 * (secondFileTime - m_fStr.timeStart));
         m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
     }
 
@@ -1470,12 +1470,11 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
                         indexYceil = indexLastLat + 2;
                     } else {
                         // Search for floor and ceil
-                        indexYfloor = indexLastLat + asTools::SortedArraySearchFloor(&axisDataLat[indexLastLat],
-                                                                                     &axisDataLat[axisDataLatEnd],
-                                                                                     axisFinalLat[iLat]);
-                        indexYceil = indexLastLat + asTools::SortedArraySearchCeil(&axisDataLat[indexLastLat],
-                                                                                   &axisDataLat[axisDataLatEnd],
-                                                                                   axisFinalLat[iLat]);
+                        indexYfloor = indexLastLat + asFindFloor(&axisDataLat[indexLastLat],
+                                                                 &axisDataLat[axisDataLatEnd],
+                                                                 axisFinalLat[iLat]);
+                        indexYceil = indexLastLat +
+                                asFindCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[iLat]);
                     }
 
                     if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND ||
@@ -1506,12 +1505,12 @@ bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaC
                             indexXceil = indexLastLon + 2;
                         } else {
                             // Search for floor and ceil
-                            indexXfloor = indexLastLon + asTools::SortedArraySearchFloor(&axisDataLon[indexLastLon],
-                                                                                         &axisDataLon[axisDataLonEnd],
-                                                                                         axisFinalLon[iLon]);
-                            indexXceil = indexLastLon + asTools::SortedArraySearchCeil(&axisDataLon[indexLastLon],
-                                                                                       &axisDataLon[axisDataLonEnd],
-                                                                                       axisFinalLon[iLon]);
+                            indexXfloor = indexLastLon + asFindFloor(&axisDataLon[indexLastLon],
+                                                                     &axisDataLon[axisDataLonEnd],
+                                                                     axisFinalLon[iLon]);
+                            indexXceil = indexLastLon +
+                                    asFindCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd],
+                                               axisFinalLon[iLon]);
                         }
 
                         if (indexXfloor == asOUT_OF_RANGE || indexXfloor == asNOT_FOUND ||

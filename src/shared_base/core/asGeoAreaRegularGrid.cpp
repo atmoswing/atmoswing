@@ -57,13 +57,13 @@ asGeoAreaRegularGrid::~asGeoAreaRegularGrid()
 int asGeoAreaRegularGrid::GetXaxisPtsnb() const
 {
     // Get axis size
-    return asTools::Round(std::abs((GetXmax() - GetXmin()) / m_xStep) + 1.0);
+    return asRound(std::abs((GetXmax() - GetXmin()) / m_xStep) + 1.0);
 }
 
 int asGeoAreaRegularGrid::GetYaxisPtsnb() const
 {
     // Get axis size
-    return asTools::Round(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
+    return asRound(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
 }
 
 a1d asGeoAreaRegularGrid::GetXaxis() const

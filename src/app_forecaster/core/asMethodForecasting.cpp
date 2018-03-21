@@ -71,7 +71,7 @@ bool asMethodForecasting::Manager()
 #endif
     m_cancel = false;
 
-    if (asTools::IsNaN(m_forecastDate)) {
+    if (asIsNaN(m_forecastDate)) {
         wxLogError(_("The date of the forecast has not been defined."));
         return false;
     }

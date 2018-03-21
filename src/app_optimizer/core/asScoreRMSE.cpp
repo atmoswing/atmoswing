@@ -43,7 +43,7 @@ float asScoreRMSE::Assess(float observedVal, const a1f &forcastVals, int nbEleme
 {
     wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(!asIsNaN(m_quantile));
     wxASSERT(m_quantile > 0);
     wxASSERT(m_quantile < 1);
 
@@ -72,7 +72,7 @@ float asScoreRMSE::Assess(float observedVal, const a1f &forcastVals, int nbEleme
     a1f cleanValues = x.head(nbPredict);
 
     // Get value for quantile
-    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
+    float xQuantile = asGetValueForQuantile(cleanValues, m_quantile);
 
     float score = (observedVal - xQuantile) * (observedVal - xQuantile);
 

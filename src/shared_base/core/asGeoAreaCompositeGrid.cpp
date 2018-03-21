@@ -71,7 +71,7 @@ a1d asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double xMin, double x
 
     if (type.IsSameAs("Regular", false)) {
         wxASSERT(xStep > 0);
-        int ni = (int) asTools::Round(360 / xStep);
+        int ni = (int) asRound(360 / xStep);
         axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
     } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLonAxis(axis, asGeo::GaussianT62);
@@ -84,8 +84,8 @@ a1d asGeoAreaCompositeGrid::GetXaxis(const wxString &type, double xMin, double x
 
     wxASSERT(axis.size() > 0);
 
-    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], xMin);
-    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], xMax);
+    int start = asFindClosest(&axis[0], &axis[axis.size() - 1], xMin);
+    int end = asFindClosest(&axis[0], &axis[axis.size() - 1], xMax);
 
     wxASSERT(start >= 0);
     wxASSERT(end >= 0);
@@ -101,7 +101,7 @@ a1d asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double yMin, double y
 
     if (type.IsSameAs("Regular", false)) {
         wxASSERT(yStep > 0);
-        int ni = (int) asTools::Round(180 / yStep);
+        int ni = (int) asRound(180 / yStep);
         axis = a1d::LinSpaced(ni + 1, -90, 90);
     } else if (type.IsSameAs("GaussianT62", false)) {
         asGeoAreaGaussianGrid::BuildLatAxis(axis, asGeo::GaussianT62);
@@ -114,8 +114,8 @@ a1d asGeoAreaCompositeGrid::GetYaxis(const wxString &type, double yMin, double y
 
     wxASSERT(axis.size() > 0);
 
-    int start = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], yMin);
-    int end = asTools::SortedArraySearchClosest(&axis[0], &axis[axis.size() - 1], yMax);
+    int start = asFindClosest(&axis[0], &axis[axis.size() - 1], yMin);
+    int end = asFindClosest(&axis[0], &axis[axis.size() - 1], yMax);
 
     wxASSERT(start >= 0);
     wxASSERT(end >= 0);

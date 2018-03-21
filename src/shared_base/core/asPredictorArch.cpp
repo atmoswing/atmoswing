@@ -175,20 +175,17 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
             m_fInd.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
 
             // Get the spatial indices of the desired data
-            m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
-                                                                    &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                                    lonMin, 0.01f, asHIDE_WARNINGS);
+            m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f,
+                                                  asHIDE_WARNINGS);
             if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with negative angles
-                m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
-                                                                        &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                                        lonMin - 360, 0.01f, asHIDE_WARNINGS);
+                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                      lonMin - 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
                 // If not found, try with angles above 360 degrees
-                m_fInd.areas[iArea].lonStart = asTools::SortedArraySearch(&m_fStr.lons[0],
-                                                                        &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                                        lonMin + 360, 0.01f, asHIDE_WARNINGS);
+                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                      lonMin + 360, 0.01f, asHIDE_WARNINGS);
             }
             if (m_fInd.areas[iArea].lonStart < 0) {
                 wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
@@ -201,12 +198,8 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
                                           m_fStr.lons[0], (int) m_fStr.lons.size(),
                                           m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
 
-            int indexStartLat1 = asTools::SortedArraySearch(&m_fStr.lats[0],
-                                                            &m_fStr.lats[m_fStr.lats.size() - 1],
-                                                            latMinStart, 0.01f);
-            int indexStartLat2 = asTools::SortedArraySearch(&m_fStr.lats[0],
-                                                            &m_fStr.lats[m_fStr.lats.size() - 1],
-                                                            latMinEnd, 0.01f);
+            int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
+            int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
             wxASSERT_MSG(indexStartLat1 >= 0,
                          wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
                                           m_fStr.lats[m_fStr.lats.size() - 1]));
@@ -222,8 +215,7 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
         }
 
         if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
-            m_fInd.level = asTools::SortedArraySearch(&m_fStr.levels[0], &m_fStr.levels[
-                    m_fStr.levels.size() - 1], m_level, 0.01f);
+            m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
             if (m_fInd.level < 0) {
                 wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
                 return false;
@@ -250,15 +242,11 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
     }
-    int xStartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon,
-                                                 asHIDE_WARNINGS);
-    int xEndIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon,
-                                               asHIDE_WARNINGS);
+    int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
+    int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
-                                                 xMin + desiredArea->GetAxisXmax());
-        xEndIndex = asTools::SortedArraySearch(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1],
-                                               xMax + desiredArea->GetAxisXmax());
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + desiredArea->GetAxisXmax());
+        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + desiredArea->GetAxisXmax());
         if (xStartIndex < 0 || xEndIndex < 0) {
             wxLogError(_("An error occured while trying to clip data to another area (extended axis)."));
             wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin + desiredArea->GetAxisXmax(),
@@ -281,10 +269,8 @@ bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }
-    int yStartIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMin, toleranceLat,
-                                                 asHIDE_WARNINGS);
-    int yEndIndex = asTools::SortedArraySearch(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMax, toleranceLat,
-                                               asHIDE_WARNINGS);
+    int yStartIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMin, toleranceLat, asHIDE_WARNINGS);
+    int yEndIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMax, toleranceLat, asHIDE_WARNINGS);
     if (yStartIndex < 0 || yEndIndex < 0) {
         wxLogError(_("An error occured while trying to clip data to another area."));
         wxLogError(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), yMin, yMax, m_axisLat[0],

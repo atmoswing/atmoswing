@@ -532,7 +532,7 @@ bool asParametersForecast::SetLeadTimeDaysVector(vi val)
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
-            if (asTools::IsNaN(val[i])) {
+            if (asIsNaN(val[i])) {
                 wxLogError(_("There are NaN values in the provided 'lead time (days)' vector."));
                 return false;
             }
@@ -549,7 +549,7 @@ bool asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val)
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
-            if (asTools::IsNaN(val[i])) {
+            if (asIsNaN(val[i])) {
                 wxLogError(_("There are NaN values in the provided analogs numbers vector (fct of the lead time)."));
                 return false;
             }

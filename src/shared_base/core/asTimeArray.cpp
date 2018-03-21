@@ -724,8 +724,8 @@ bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const
     int countOut = 0;
     for (int i = 0; i < predictandTimeArray.size(); i++) {
         // Search corresponding date in the time array.
-        int rowTimeArray = asTools::SortedArraySearchFloor(&fullTimeArray[0], &fullTimeArray[fullTimeArray.size() - 1],
-                                                           predictandTimeArray[i]);
+        int rowTimeArray = asFindFloor(&fullTimeArray[0], &fullTimeArray[fullTimeArray.size() - 1],
+                                       predictandTimeArray[i]);
 
         if (rowTimeArray != asOUT_OF_RANGE && rowTimeArray != asNOT_FOUND) {
             // Check that there is not more than a few hours of difference.
@@ -781,7 +781,7 @@ int asTimeArray::GetClosestIndex(double date) const
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asFindClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -800,7 +800,7 @@ int asTimeArray::GetIndexFirstAfter(double date) const
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -819,7 +819,7 @@ int asTimeArray::GetIndexFirstBefore(double date) const
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return GetSize() - 1;
@@ -834,7 +834,7 @@ bool asTimeArray::RemoveYears(const vi &years)
 
     vi yearsRemove = years;
 
-    asTools::SortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size() - 1], Asc);
+    asSortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
@@ -844,10 +844,8 @@ bool asTimeArray::RemoveYears(const vi &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
-                                                        asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
-                                                       asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
@@ -887,7 +885,7 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
 
     vi yearsKeep = years;
 
-    asTools::SortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size() - 1], Asc);
+    asSortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
@@ -897,10 +895,8 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
-                                                        asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
-                                                       asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
@@ -944,8 +940,7 @@ bool asTimeArray::IsYearForbidden(int year) const
     if (m_forbiddenYears.empty())
         return false;
 
-    int index = asTools::SortedArraySearch(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size() - 1], year,
-                                           0, asHIDE_WARNINGS);
+    int index = asFind(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size() - 1], year, 0, asHIDE_WARNINGS);
 
     return index != asOUT_OF_RANGE && index != asNOT_FOUND;
 

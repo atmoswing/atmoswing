@@ -497,7 +497,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                           params->GetPredictorYstep(iStep, iPtor) * (double) (params->GetPreloadYptsnb(iStep, iPtor) - 1);
             if (yMax > geo.GetAxisYmax()) {
                 double diff = yMax - geo.GetAxisYmax();
-                int removePts = (int) asTools::Round(diff / params->GetPredictorYstep(iStep, iPtor));
+                int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                 params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                 wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), yMax,
                              yMax - diff);
@@ -673,7 +673,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                                                                     double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
                 if (yMax > geo.GetAxisYmax()) {
                     double diff = yMax - geo.GetAxisYmax();
-                    int removePts = (int) asTools::Round(diff / params->GetPredictorYstep(iStep, iPtor));
+                    int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                     params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                     wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), yMax,
                                  yMax - diff);
@@ -824,8 +824,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         time = params->GetPredictorTimeHours(iStep, iPtor);
 
         // Get level and hour indices
-        iLevel = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
-        iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
+        iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
+        iHour = asFind(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
 
         // Force gradients preprocessing anyway.
         if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
@@ -865,11 +865,10 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
         // Get level and hour indices
         if (!preloadLevels.empty()) {
-            iLevel = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
+            iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
         }
         if (!preloadTimeHours.empty()) {
-            iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1],
-                                               time);
+            iHour = asFind(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
         }
     }
 
@@ -897,8 +896,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
         level = params->GetPredictorLevel(iStep, iPtor);
         time = params->GetPredictorTimeHours(iStep, iPtor);
-        iLevel = asTools::SortedArraySearch(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
-        iHour = asTools::SortedArraySearch(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
+        iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
+        iHour = asFind(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
     }
     if (iLevel < 0 || iHour < 0) {
         wxLogError(_("An unexpected error occurred."));
@@ -1156,7 +1155,7 @@ bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int i
     wxASSERT(!hours.empty());
     wxASSERT(levels.size() == hours.size());
 
-    int randomIndex = asTools::Random(0, levels.size() - 1, 1);
+    int randomIndex = asRandom(0, levels.size() - 1, 1);
     float newLevel = params->GetPreloadLevels(iStep, iPtor)[levels[randomIndex]];
     double newHour = params->GetPreloadTimeHours(iStep, iPtor)[hours[randomIndex]];
 

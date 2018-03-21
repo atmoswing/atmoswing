@@ -311,7 +311,7 @@ a1f asScore::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElem
 bool asScore::CheckObservedValue(float observedVal) const
 {
     // Check that the observed value is not a NaN
-    if (asTools::IsNaN(observedVal)) {
+    if (asIsNaN(observedVal)) {
         wxLogVerbose(_("The observed value is a NaN for the score calculation."));
         return false;
     }
@@ -349,7 +349,7 @@ int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbEle
             }
         }
 
-        if (!asTools::IsNaN(forcastVals[iVal])) {
+        if (!asIsNaN(forcastVals[iVal])) {
             forcastValsSorted(nbPredict) = forcastVals[iVal];
             nbPredict++;
         } else {

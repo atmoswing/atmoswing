@@ -43,8 +43,8 @@ float asScoreContingencyTable::Assess(float observedVal, const a1f &forcastVals,
 {
     wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asTools::IsNaN(m_threshold));
-    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(!asIsNaN(m_threshold));
+    wxASSERT(!asIsNaN(m_quantile));
     wxASSERT(m_quantile > 0);
     wxASSERT(m_quantile < 1);
 
@@ -74,7 +74,7 @@ float asScoreContingencyTable::Assess(float observedVal, const a1f &forcastVals,
     float score = NaNf;
 
     // Get value for quantile
-    float xQuantile = asTools::GetValueForQuantile(cleanValues, m_quantile);
+    float xQuantile = asGetValueForQuantile(cleanValues, m_quantile);
 
     // Predicted and observed
     if (xQuantile >= m_threshold && observedVal >= m_threshold) {

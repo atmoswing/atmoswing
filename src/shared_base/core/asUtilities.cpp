@@ -26,14 +26,14 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asTools.h"
+#include "asUtilities.h"
 
-void asTools::InitRandom()
+void asInitRandom()
 {
     srand(time(NULL));
 }
 
-int asTools::Random(const int min, const int max, const int step)
+int asRandom(const int min, const int max, const int step)
 {
     // Initialize random seed
     double norm = ((double) rand() / (double) (RAND_MAX));
@@ -52,7 +52,7 @@ int asTools::Random(const int min, const int max, const int step)
     range = floor(range / dstep) * dstep;
 
     double val = range + dmin;
-    int intval = asTools::Round(val);
+    int intval = asRound(val);
 
     if (intval > max)
         intval -= step;
@@ -62,12 +62,12 @@ int asTools::Random(const int min, const int max, const int step)
     return intval;
 }
 
-float asTools::Random(const float min, const float max, const float step)
+float asRandom(const float min, const float max, const float step)
 {
-    return (float) asTools::Random((double) min, (double) max, (double) step);
+    return (float) asRandom((double) min, (double) max, (double) step);
 }
 
-double asTools::Random(const double min, const double max, const double step)
+double asRandom(const double min, const double max, const double step)
 {
     // Initialize random seed
     double norm = ((double) rand() / (double) (RAND_MAX));
@@ -91,17 +91,17 @@ double asTools::Random(const double min, const double max, const double step)
     return val;
 }
 
-int asTools::RandomNormalDistribution(const int mean, const int stDev, const int step)
+int asRandomNormal(const int mean, const int stDev, const int step)
 {
-    return (int) asTools::RandomNormalDistribution((double) mean, (double) stDev, (double) step);
+    return (int) asRandomNormal((double) mean, (double) stDev, (double) step);
 }
 
-float asTools::RandomNormalDistribution(const float mean, const float stDev, const float step)
+float asRandomNormal(const float mean, const float stDev, const float step)
 {
-    return (float) asTools::RandomNormalDistribution((double) mean, (double) stDev, (double) step);
+    return (float) asRandomNormal((double) mean, (double) stDev, (double) step);
 }
 
-double asTools::RandomNormalDistribution(const double mean, const double stDev, const double step)
+double asRandomNormal(const double mean, const double stDev, const double step)
 {
     // Initialize random seed
     double u1 = ((double) rand() / (double) (RAND_MAX));
@@ -122,7 +122,7 @@ double asTools::RandomNormalDistribution(const double mean, const double stDev, 
     z0 *= stDev;
 
     if (step != 0) {
-        z0 = step * asTools::Round(z0 / step);
+        z0 = step * asRound(z0 / step);
     }
 
     z0 += mean;
@@ -130,21 +130,21 @@ double asTools::RandomNormalDistribution(const double mean, const double stDev, 
     return z0;
 }
 
-bool asTools::IsRound(const float value)
+bool asIsRound(const float value)
 {
-    float valueround = Round(value);
+    float valueround = asRound(value);
 
     return std::abs(value - valueround) < 0.000001;
 }
 
-bool asTools::IsRound(const double value)
+bool asIsRound(const double value)
 {
-    double valueround = Round(value);
+    double valueround = asRound(value);
 
     return std::abs(value - valueround) < 0.000000000001;
 }
 
-float asTools::Round(const float value)
+float asRound(const float value)
 {
     if (value > 0) {
         return (float) floor(value + 0.5);
@@ -153,7 +153,7 @@ float asTools::Round(const float value)
     }
 }
 
-double asTools::Round(const double value)
+double asRound(const double value)
 {
     if (value > 0) {
         return floor(value + 0.5);
@@ -162,7 +162,7 @@ double asTools::Round(const double value)
     }
 }
 
-float asTools::Mean(const int *pArrStart, const int *pArrEnd)
+float asMean(const int *pArrStart, const int *pArrEnd)
 {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -173,11 +173,11 @@ float asTools::Mean(const int *pArrStart, const int *pArrEnd)
     return sum / nb;
 }
 
-float asTools::Mean(const float *pArrStart, const float *pArrEnd)
+float asMean(const float *pArrStart, const float *pArrEnd)
 {
     float sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             nb++;
         }
@@ -185,11 +185,11 @@ float asTools::Mean(const float *pArrStart, const float *pArrEnd)
     return sum / nb;
 }
 
-double asTools::Mean(const double *pArrStart, const double *pArrEnd)
+double asMean(const double *pArrStart, const double *pArrEnd)
 {
     double sum = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             nb++;
         }
@@ -197,7 +197,7 @@ double asTools::Mean(const double *pArrStart, const double *pArrEnd)
     return sum / nb;
 }
 
-float asTools::StDev(const int *pArrStart, const int *pArrEnd, const int sample)
+float asStDev(const int *pArrStart, const int *pArrEnd, const int sample)
 {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
@@ -216,11 +216,11 @@ float asTools::StDev(const int *pArrStart, const int *pArrEnd, const int sample)
     }
 }
 
-float asTools::StDev(const float *pArrStart, const float *pArrEnd, const int sample)
+float asStDev(const float *pArrStart, const float *pArrEnd, const int sample)
 {
     float sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             sumsquares += (*(pArrStart + i)) * (*(pArrStart + i));
             nb++;
@@ -236,11 +236,11 @@ float asTools::StDev(const float *pArrStart, const float *pArrEnd, const int sam
     }
 }
 
-double asTools::StDev(const double *pArrStart, const double *pArrEnd, const int sample)
+double asStDev(const double *pArrStart, const double *pArrEnd, const int sample)
 {
     double sum = 0, sumsquares = 0, nb = 0;
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             sum += *(pArrStart + i);
             sumsquares += (*(pArrStart + i)) * (*(pArrStart + i));
             nb++;
@@ -256,7 +256,7 @@ double asTools::StDev(const double *pArrStart, const double *pArrEnd, const int 
     }
 }
 
-a1f asTools::GetCumulativeFrequency(const int size)
+a1f asGetCumulativeFrequency(const int size)
 {
     a1f F(size);
 
@@ -280,7 +280,7 @@ a1f asTools::GetCumulativeFrequency(const int size)
     return F;
 }
 
-float asTools::GetValueForQuantile(const a1f &values, const float quantile)
+float asGetValueForQuantile(const a1f &values, const float quantile)
 {
     float value = NaNf;
     int size = values.size();
@@ -288,10 +288,10 @@ float asTools::GetValueForQuantile(const a1f &values, const float quantile)
     a1f valuesCopy = values;
 
     // Sort the forcast array
-    asTools::SortArray(&valuesCopy[0], &valuesCopy[size - 1], Asc);
+    asSortArray(&valuesCopy[0], &valuesCopy[size - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(size);
+    a1f F = asGetCumulativeFrequency(size);
 
     // Check limits
     if (quantile <= F[0])
@@ -300,8 +300,8 @@ float asTools::GetValueForQuantile(const a1f &values, const float quantile)
         return valuesCopy[size - 1];
 
     // Indices for the left and right part (according to xObs)
-    int indLeft = asTools::SortedArraySearchFloor(&F[0], &F[size - 1], quantile);
-    int indRight = asTools::SortedArraySearchCeil(&F[0], &F[size - 1], quantile);
+    int indLeft = asFindFloor(&F[0], &F[size - 1], quantile);
+    int indRight = asFindCeil(&F[0], &F[size - 1], quantile);
     wxASSERT(indLeft >= 0);
     wxASSERT(indRight >= 0);
     wxASSERT(indLeft <= indRight);
@@ -321,42 +321,42 @@ float asTools::GetValueForQuantile(const a1f &values, const float quantile)
     return value;
 }
 
-bool asTools::IsNaN(const int value)
+bool asIsNaN(const int value)
 {
     return value == NaNi;
 }
 
-bool asTools::IsNaN(const float value)
+bool asIsNaN(const float value)
 {
     return value != value;
 }
 
-bool asTools::IsNaN(const double value)
+bool asIsNaN(const double value)
 {
     return value != value;
 }
 
-bool asTools::IsInf(const float value)
+bool asIsInf(const float value)
 {
     return value == Inff;
 }
 
-bool asTools::IsInf(const double value)
+bool asIsInf(const double value)
 {
     return value == Infd;
 }
 
-bool asTools::IsInf(const long double value)
+bool asIsInf(const long double value)
 {
     return value == Infld;
 }
 
-int asTools::CountNotNaN(const float *pArrStart, const float *pArrEnd)
+int asCountNotNaN(const float *pArrStart, const float *pArrEnd)
 {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             counter++;
         }
     }
@@ -364,12 +364,12 @@ int asTools::CountNotNaN(const float *pArrStart, const float *pArrEnd)
     return counter;
 }
 
-int asTools::CountNotNaN(const double *pArrStart, const double *pArrEnd)
+int asCountNotNaN(const double *pArrStart, const double *pArrEnd)
 {
     int counter = 0;
 
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             counter++;
         }
     }
@@ -377,15 +377,15 @@ int asTools::CountNotNaN(const double *pArrStart, const double *pArrEnd)
     return counter;
 }
 
-bool asTools::HasNaN(const a2f &data)
+bool asHasNaN(const a2f &data)
 {
     return !((data == data)).all();
 }
 
-bool asTools::HasNaN(const float *pArrStart, const float *pArrEnd)
+bool asHasNaN(const float *pArrStart, const float *pArrEnd)
 {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (asTools::IsNaN(*(pArrStart + i))) {
+        if (asIsNaN(*(pArrStart + i))) {
             return true;
         }
     }
@@ -393,10 +393,10 @@ bool asTools::HasNaN(const float *pArrStart, const float *pArrEnd)
     return false;
 }
 
-bool asTools::HasNaN(const double *pArrStart, const double *pArrEnd)
+bool asHasNaN(const double *pArrStart, const double *pArrEnd)
 {
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (asTools::IsNaN(*(pArrStart + i))) {
+        if (asIsNaN(*(pArrStart + i))) {
             return true;
         }
     }
@@ -404,7 +404,7 @@ bool asTools::HasNaN(const double *pArrStart, const double *pArrEnd)
     return false;
 }
 
-int asTools::MinArray(const int *pArrStart, const int *pArrEnd)
+int asMinArray(const int *pArrStart, const int *pArrEnd)
 {
     int min;
 
@@ -419,19 +419,19 @@ int asTools::MinArray(const int *pArrStart, const int *pArrEnd)
     return min;
 }
 
-float asTools::MinArray(const float *pArrStart, const float *pArrEnd)
+float asMinArray(const float *pArrStart, const float *pArrEnd)
 {
     float min;
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asTools::IsNaN(*(pArrStart + i))) {
+    while (asIsNaN(*(pArrStart + i))) {
         i++;
     }
     min = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
             }
@@ -441,19 +441,19 @@ float asTools::MinArray(const float *pArrStart, const float *pArrEnd)
     return min;
 }
 
-double asTools::MinArray(const double *pArrStart, const double *pArrEnd)
+double asMinArray(const double *pArrStart, const double *pArrEnd)
 {
     double min;
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asTools::IsNaN(*(pArrStart + i))) {
+    while (asIsNaN(*(pArrStart + i))) {
         i++;
     }
     min = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) < min) {
                 min = *(pArrStart + i);
             }
@@ -463,7 +463,7 @@ double asTools::MinArray(const double *pArrStart, const double *pArrEnd)
     return min;
 }
 
-int asTools::MinArrayIndex(const int *pArrStart, const int *pArrEnd)
+int asMinArrayIndex(const int *pArrStart, const int *pArrEnd)
 {
     int min;
     int index;
@@ -482,7 +482,7 @@ int asTools::MinArrayIndex(const int *pArrStart, const int *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayIndex(const float *pArrStart, const float *pArrEnd)
+int asMinArrayIndex(const float *pArrStart, const float *pArrEnd)
 {
     float min;
     int index;
@@ -501,7 +501,7 @@ int asTools::MinArrayIndex(const float *pArrStart, const float *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayIndex(const double *pArrStart, const double *pArrEnd)
+int asMinArrayIndex(const double *pArrStart, const double *pArrEnd)
 {
     double min;
     int index;
@@ -520,7 +520,7 @@ int asTools::MinArrayIndex(const double *pArrStart, const double *pArrEnd)
     return index;
 }
 
-int asTools::MaxArray(const int *pArrStart, const int *pArrEnd)
+int asMaxArray(const int *pArrStart, const int *pArrEnd)
 {
     int max;
     int i = 0;
@@ -536,19 +536,19 @@ int asTools::MaxArray(const int *pArrStart, const int *pArrEnd)
     return max;
 }
 
-float asTools::MaxArray(const float *pArrStart, const float *pArrEnd)
+float asMaxArray(const float *pArrStart, const float *pArrEnd)
 {
     float max;
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asTools::IsNaN(*(pArrStart + i))) {
+    while (asIsNaN(*(pArrStart + i))) {
         i++;
     }
     max = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
             }
@@ -558,19 +558,19 @@ float asTools::MaxArray(const float *pArrStart, const float *pArrEnd)
     return max;
 }
 
-double asTools::MaxArray(const double *pArrStart, const double *pArrEnd)
+double asMaxArray(const double *pArrStart, const double *pArrEnd)
 {
     double max;
     int i = 0;
 
     // Manage the case where the first elements are NaNs
-    while (asTools::IsNaN(*(pArrStart + i))) {
+    while (asIsNaN(*(pArrStart + i))) {
         i++;
     }
     max = *(pArrStart + i);
 
     for (; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             if (*(pArrStart + i) > max) {
                 max = *(pArrStart + i);
             }
@@ -580,7 +580,7 @@ double asTools::MaxArray(const double *pArrStart, const double *pArrEnd)
     return max;
 }
 
-int asTools::MaxArrayIndex(const int *pArrStart, const int *pArrEnd)
+int asMaxArrayIndex(const int *pArrStart, const int *pArrEnd)
 {
     int max;
     int index;
@@ -599,7 +599,7 @@ int asTools::MaxArrayIndex(const int *pArrStart, const int *pArrEnd)
     return index;
 }
 
-int asTools::MaxArrayIndex(const float *pArrStart, const float *pArrEnd)
+int asMaxArrayIndex(const float *pArrStart, const float *pArrEnd)
 {
     float max;
     int index;
@@ -618,7 +618,7 @@ int asTools::MaxArrayIndex(const float *pArrStart, const float *pArrEnd)
     return index;
 }
 
-int asTools::MaxArrayIndex(const double *pArrStart, const double *pArrEnd)
+int asMaxArrayIndex(const double *pArrStart, const double *pArrEnd)
 {
     double max;
     int index;
@@ -637,7 +637,7 @@ int asTools::MaxArrayIndex(const double *pArrStart, const double *pArrEnd)
     return index;
 }
 
-int asTools::MinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance)
+int asMinArrayStep(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     // Copy data to not alter original array
     a1i copyData(pArrEnd - pArrStart + 1);
@@ -647,7 +647,7 @@ int asTools::MinArrayStep(const int *pArrStart, const int *pArrEnd, const int to
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Find min step
     int i = 1;
@@ -671,9 +671,9 @@ int asTools::MinArrayStep(const int *pArrStart, const int *pArrEnd, const int to
     return minstep;
 }
 
-float asTools::MinArrayStep(const float *pArrStart, const float *pArrEnd, const float tolerance)
+float asMinArrayStep(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -681,14 +681,14 @@ float asTools::MinArrayStep(const float *pArrStart, const float *pArrEnd, const 
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Find min step
     int i = 1;
@@ -712,9 +712,9 @@ float asTools::MinArrayStep(const float *pArrStart, const float *pArrEnd, const 
     return minstep;
 }
 
-double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, const double tolerance)
+double asMinArrayStep(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    int nbNotNans = asTools::CountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -722,14 +722,14 @@ double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, con
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Find min step
     int i = 1;
@@ -753,7 +753,7 @@ double asTools::MinArrayStep(const double *pArrStart, const double *pArrEnd, con
     return minstep;
 }
 
-a1i asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance)
+a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int tolerance)
 {
     int j = 0;
 
@@ -767,7 +767,7 @@ a1i asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
     vi copyDataUniques;
@@ -790,9 +790,9 @@ a1i asTools::ExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const
     return resultArray;
 }
 
-a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
+a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    auto nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
+    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -800,14 +800,14 @@ a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, c
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
     vf copyDataUniques;
@@ -830,9 +830,9 @@ a1f asTools::ExtractUniqueValues(const float *pArrStart, const float *pArrEnd, c
     return resultArray;
 }
 
-a1d asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
+a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    auto nbNotNans = (unsigned int) asTools::CountNotNaN(pArrStart, pArrEnd);
+    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -840,14 +840,14 @@ a1d asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
 
     // Remove Nans
     for (int i = 0; i <= pArrEnd - pArrStart; i++) {
-        if (!asTools::IsNaN(*(pArrStart + i))) {
+        if (!asIsNaN(*(pArrStart + i))) {
             copyData[j] = *(pArrStart + i);
             j++;
         }
     }
 
     // Sort the array
-    asTools::SortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
+    asSortArray(&copyData[0], &copyData[copyData.size() - 1], Asc);
 
     // Extract unique values
     vd copyDataUniques;
@@ -870,24 +870,25 @@ a1d asTools::ExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
     return resultArray;
 }
 
-int asTools::SortedArraySearch(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance, const int showWarning)
+int asFind(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance, const int showWarning)
 {
-    return SortedArraySearchT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance, const int showWarning)
+int asFind(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
+           const int showWarning)
 {
-    return SortedArraySearchT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearch(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
-                               int showWarning)
+int asFind(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
+           int showWarning)
 {
-    return SortedArraySearchT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
+int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1033,23 +1034,23 @@ int asTools::SortedArraySearchT(const T *pArrStart, const T *pArrEnd, const T ta
     }
 }
 
-int asTools::SortedArraySearchClosest(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
+int asFindClosest(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<int>(pArrStart, pArrEnd, targetValue, showWarning);
+    return asFindClosestT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
+int asFindClosest(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<float>(pArrStart, pArrEnd, targetValue, showWarning);
+    return asFindClosestT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asTools::SortedArraySearchClosest(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
+int asFindClosest(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return SortedArraySearchClosestT<double>(pArrStart, pArrEnd, targetValue, showWarning);
+    return asFindClosestT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
+int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1155,23 +1156,26 @@ int asTools::SortedArraySearchClosestT(const T *pArrStart, const T *pArrEnd, con
     }
 }
 
-int asTools::SortedArraySearchFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance, const int showWarning)
+int asFindFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance,
+                const int showWarning)
 {
-    return SortedArraySearchFloorT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance, const int showWarning)
+int asFindFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
+                const int showWarning)
 {
-    return SortedArraySearchFloorT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearchFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance, const int showWarning)
+int asFindFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
+                const int showWarning)
 {
-    return SortedArraySearchFloorT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
+int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1266,23 +1270,26 @@ int asTools::SortedArraySearchFloorT(const T *pArrStart, const T *pArrEnd, const
 }
 
 
-int asTools::SortedArraySearchCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance, const int showWarning)
+int asFindCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance,
+               const int showWarning)
 {
-    return SortedArraySearchCeilT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance, const int showWarning)
+int asFindCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
+               const int showWarning)
 {
-    return SortedArraySearchCeilT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
-int asTools::SortedArraySearchCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance, const int showWarning)
+int asFindCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
+               const int showWarning)
 {
-    return SortedArraySearchCeilT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
 }
 
 template<class T>
-int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
+int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1376,23 +1383,23 @@ int asTools::SortedArraySearchCeilT(const T *pArrStart, const T *pArrEnd, const 
     }
 }
 
-bool asTools::SortedArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val)
+bool asArrayInsert(int *pArrStart, int *pArrEnd, const Order order, const int val)
 {
-    return SortedArrayInsert<int>(pArrStart, pArrEnd, order, val);
+    return asArrayInsertT<int>(pArrStart, pArrEnd, order, val);
 }
 
-bool asTools::SortedArrayInsert(float *pArrStart, float *pArrEnd, const Order order, const float val)
+bool asArrayInsert(float *pArrStart, float *pArrEnd, const Order order, const float val)
 {
-    return SortedArrayInsert<float>(pArrStart, pArrEnd, order, val);
+    return asArrayInsertT<float>(pArrStart, pArrEnd, order, val);
 }
 
-bool asTools::SortedArrayInsert(double *pArrStart, double *pArrEnd, const Order order, const double val)
+bool asArrayInsert(double *pArrStart, double *pArrEnd, const Order order, const double val)
 {
-    return SortedArrayInsert<double>(pArrStart, pArrEnd, order, val);
+    return asArrayInsertT<double>(pArrStart, pArrEnd, order, val);
 }
 
 template<class T>
-bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, const T val)
+bool asArrayInsertT(T *pArrStart, T *pArrEnd, const Order order, const T val)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1406,14 +1413,14 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
     // Check order
     switch (order) {
         case (Asc): {
-            iNext = asTools::SortedArraySearchCeil(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            iNext = asFindCeil(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
             break;
         }
         case (Desc): {
-            iNext = asTools::SortedArraySearchFloor(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            iNext = asFindFloor(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
@@ -1437,27 +1444,27 @@ bool asTools::SortedArrayInsert(T *pArrStart, T *pArrEnd, const Order order, con
     return true;
 }
 
-bool asTools::SortedArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd,
-                                 const Order order, const int valRef, const int valOther)
+bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order,
+                    const int valRef, const int valOther)
 {
-    return SortedArraysInsert<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
+    return asArraysInsertT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
-bool asTools::SortedArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
-                                 const Order order, const float valRef, const float valOther)
+bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
+                    const Order order, const float valRef, const float valOther)
 {
-    return SortedArraysInsert<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
+    return asArraysInsertT<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
-bool asTools::SortedArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
-                                 const Order order, const double valRef, const double valOther)
+bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
+                    const Order order, const double valRef, const double valOther)
 {
-    return SortedArraysInsert<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
+    return asArraysInsertT<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order, valRef, valOther);
 }
 
 template<class T>
-bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order,
-                                 const T valRef, const T valOther)
+bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order,
+                     const T valRef, const T valOther)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1485,14 +1492,14 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     // Check order
     switch (order) {
         case (Asc): {
-            iNext = asTools::SortedArraySearchCeil(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            iNext = asFindCeil(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
             break;
         }
         case (Desc): {
-            iNext = asTools::SortedArraySearchFloor(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            iNext = asFindFloor(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
@@ -1518,23 +1525,23 @@ bool asTools::SortedArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherSta
     return true;
 }
 
-bool asTools::SortArray(int *pArrRefStart, int *pArrRefEnd, const Order order)
+bool asSortArray(int *pArrRefStart, int *pArrRefEnd, const Order order)
 {
-    return SortArrayT<int>(pArrRefStart, pArrRefEnd, order);
+    return asSortArrayT<int>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asTools::SortArray(float *pArrRefStart, float *pArrRefEnd, const Order order)
+bool asSortArray(float *pArrRefStart, float *pArrRefEnd, const Order order)
 {
-    return SortArrayT<float>(pArrRefStart, pArrRefEnd, order);
+    return asSortArrayT<float>(pArrRefStart, pArrRefEnd, order);
 }
 
-bool asTools::SortArray(double *pArrRefStart, double *pArrRefEnd, const Order order)
+bool asSortArray(double *pArrRefStart, double *pArrRefEnd, const Order order)
 {
-    return SortArrayT<double>(pArrRefStart, pArrRefEnd, order);
+    return asSortArrayT<double>(pArrRefStart, pArrRefEnd, order);
 }
 
 template<class T>
-bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
+bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1544,7 +1551,7 @@ bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
 
     if (vlength > 0) {
         int low = 0, high = vlength;
-        asTools::QuickSort<T>(pArrRefStart, low, high, order);
+        asQuickSort<T>(pArrRefStart, low, high, order);
     } else if (vlength == 0) {
         wxLogVerbose(_("The array has an unique value."));
         return true;
@@ -1555,25 +1562,25 @@ bool asTools::SortArrayT(T *pArrRefStart, T *pArrRefEnd, const Order order)
     return true;
 }
 
-bool asTools::SortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order)
+bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, const Order order)
 {
-    return SortArraysT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
+    return asSortArraysT<int>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
-bool asTools::SortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
+bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
                          Order order)
 {
-    return SortArraysT<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
+    return asSortArraysT<float>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
-bool asTools::SortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
+bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
                          Order order)
 {
-    return SortArraysT<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
+    return asSortArraysT<double>(pArrRefStart, pArrRefEnd, pArrOtherStart, pArrOtherEnd, order);
 }
 
 template<class T>
-bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order)
+bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, const Order order)
 {
     wxASSERT(pArrRefStart);
     wxASSERT(pArrRefEnd);
@@ -1586,7 +1593,7 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
 
     if (vlength > 0 && vlength == ovlength) {
         int low = 0, high = vlength;
-        asTools::QuickSortMulti<T>(pArrRefStart, pArrOtherStart, low, high, order);
+        asQuickSortMulti<T>(pArrRefStart, pArrOtherStart, low, high, order);
     } else if (vlength != ovlength) {
         wxLogError(_("The dimension of the two arrays are not equal."));
         return false;
@@ -1601,7 +1608,7 @@ bool asTools::SortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *
 }
 
 template<class T>
-void asTools::QuickSort(T *pArr, const int low, const int high, const Order order)
+void asQuickSort(T *pArr, const int low, const int high, const Order order)
 {
     int L, R;
     T pivot, tmp;
@@ -1647,14 +1654,14 @@ void asTools::QuickSort(T *pArr, const int low, const int high, const Order orde
     } while (L <= R);
 
     if (low < R)
-        asTools::QuickSort<T>(pArr, low, R, order);
+        asQuickSort<T>(pArr, low, R, order);
     if (L < high)
-        asTools::QuickSort<T>(pArr, L, high, order);
+        asQuickSort<T>(pArr, L, high, order);
 
 }
 
 template<class T>
-void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, const Order order)
+void asQuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, const Order order)
 {
     int L, R;
     T pivot, tmp;
@@ -1705,9 +1712,8 @@ void asTools::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int 
     } while (L <= R);
 
     if (low < R)
-        asTools::QuickSortMulti<T>(pArrRef, pArrOther, low, R, order);
+        asQuickSortMulti<T>(pArrRef, pArrOther, low, R, order);
     if (L < high)
-        asTools::QuickSortMulti<T>(pArrRef, pArrOther, L, high, order);
+        asQuickSortMulti<T>(pArrRef, pArrOther, L, high, order);
 
 }
-

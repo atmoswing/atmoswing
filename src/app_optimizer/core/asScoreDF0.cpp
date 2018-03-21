@@ -69,10 +69,10 @@ float asScoreDF0::Assess(float observedVal, const a1f &forcastVals, int nbElemen
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
     // Identify the last 0
     int indexLastZero = -1;

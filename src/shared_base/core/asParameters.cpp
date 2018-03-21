@@ -952,7 +952,7 @@ bool asParameters::FixCoordinates()
                                        m_steps[i].predictors[j].xStep)) > 0) {
                     double factor = (m_steps[i].predictors[j].xMin - m_steps[i].predictors[j].xShift) /
                                     m_steps[i].predictors[j].xStep;
-                    factor = asTools::Round(factor);
+                    factor = asRound(factor);
                     m_steps[i].predictors[j].xMin =
                             factor * m_steps[i].predictors[j].xStep + m_steps[i].predictors[j].xShift;
                 }
@@ -961,7 +961,7 @@ bool asParameters::FixCoordinates()
                                        m_steps[i].predictors[j].yStep)) > 0) {
                     double factor = (m_steps[i].predictors[j].yMin - m_steps[i].predictors[j].yShift) /
                                     m_steps[i].predictors[j].yStep;
-                    factor = asTools::Round(factor);
+                    factor = asRound(factor);
                     m_steps[i].predictors[j].yMin =
                             factor * m_steps[i].predictors[j].yStep + m_steps[i].predictors[j].yShift;
                 }
@@ -1333,7 +1333,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
 
 bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the target time step is null"));
         return false;
     }
@@ -1343,7 +1343,7 @@ bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
 
 bool asParameters::SetTimeArrayAnalogsTimeStepHours(double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the analogs time step is null"));
         return false;
     }
@@ -1373,7 +1373,7 @@ bool asParameters::SetTimeArrayTargetPredictandSerieName(const wxString &val)
 
 bool asParameters::SetTimeArrayTargetPredictandMinThreshold(float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictand min threshold is null"));
         return false;
     }
@@ -1383,7 +1383,7 @@ bool asParameters::SetTimeArrayTargetPredictandMinThreshold(float val)
 
 bool asParameters::SetTimeArrayTargetPredictandMaxThreshold(float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictand max threshold is null"));
         return false;
     }
@@ -1403,7 +1403,7 @@ bool asParameters::SetTimeArrayAnalogsMode(const wxString &val)
 
 bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the 'exclude days' is null"));
         return false;
     }
@@ -1413,7 +1413,7 @@ bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
 
 bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the analogs interval days is null"));
         return false;
     }
@@ -1424,7 +1424,7 @@ bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
 bool asParameters::SetPredictandStationIds(vi val)
 {
     for (int i = 0; i < (int) val.size(); i++) {
-        if (asTools::IsNaN(val[i])) {
+        if (asIsNaN(val[i])) {
             wxLogError(_("The provided value for the predictand ID is null"));
             return false;
         }
@@ -1448,7 +1448,7 @@ bool asParameters::SetPredictandStationIds(wxString val)
 
 bool asParameters::SetPredictandTimeHours(double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictand time (hours) is null"));
         return false;
     }
@@ -1458,7 +1458,7 @@ bool asParameters::SetPredictandTimeHours(double val)
 
 bool asParameters::SetAnalogsNumber(int iStep, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the analogs number is null"));
         return false;
     }
@@ -1503,7 +1503,7 @@ bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
-            if (asTools::IsNaN(val[i])) {
+            if (asIsNaN(val[i])) {
                 wxLogError(_("There are NaN values in the provided preload time (hours) vector."));
                 return false;
             }
@@ -1515,7 +1515,7 @@ bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
 
 bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided preload time parameter is a NaN."));
         return false;
     }
@@ -1532,7 +1532,7 @@ bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val)
         return false;
     } else {
         for (int i = 0; i < (int) val.size(); i++) {
-            if (asTools::IsNaN(val[i])) {
+            if (asIsNaN(val[i])) {
                 wxLogError(_("There are NaN values in the provided 'preload levels' vector."));
                 return false;
             }
@@ -1544,7 +1544,7 @@ bool asParameters::SetPreloadLevels(int iStep, int iPtor, vf val)
 
 bool asParameters::SetPreloadLevels(int iStep, int iPtor, float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided preload level parameter is a NaN."));
         return false;
     }
@@ -1556,7 +1556,7 @@ bool asParameters::SetPreloadLevels(int iStep, int iPtor, float val)
 
 bool asParameters::SetPreloadXmin(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preload xMin is null"));
         return false;
     }
@@ -1566,7 +1566,7 @@ bool asParameters::SetPreloadXmin(int iStep, int iPtor, double val)
 
 bool asParameters::SetPreloadXptsnb(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preload points number on X is null"));
         return false;
     }
@@ -1576,7 +1576,7 @@ bool asParameters::SetPreloadXptsnb(int iStep, int iPtor, int val)
 
 bool asParameters::SetPreloadYmin(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preload yMin is null"));
         return false;
     }
@@ -1586,7 +1586,7 @@ bool asParameters::SetPreloadYmin(int iStep, int iPtor, double val)
 
 bool asParameters::SetPreloadYptsnb(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preload points number on Y is null"));
         return false;
     }
@@ -1670,7 +1670,7 @@ float asParameters::GetPreprocessLevel(int iStep, int iPtor, int iPre) const
 
 bool asParameters::SetPreprocessLevel(int iStep, int iPtor, int iPre, float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preprocess level is null"));
         return false;
     }
@@ -1697,7 +1697,7 @@ double asParameters::GetPreprocessTimeHours(int iStep, int iPtor, int iPre) cons
 
 bool asParameters::SetPreprocessTimeHours(int iStep, int iPtor, int iPre, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preprocess time (hours) is null"));
         return false;
     }
@@ -1724,7 +1724,7 @@ int asParameters::GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const
 
 bool asParameters::SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preprocess members is null"));
         return false;
     }
@@ -1761,7 +1761,7 @@ bool asParameters::SetPredictorDataId(int iStep, int iPtor, wxString val)
 
 bool asParameters::SetPredictorLevel(int iStep, int iPtor, float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor level is null"));
         return false;
     }
@@ -1781,7 +1781,7 @@ bool asParameters::SetPredictorGridType(int iStep, int iPtor, wxString val)
 
 bool asParameters::SetPredictorXmin(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor xMin is null"));
         return false;
     }
@@ -1791,7 +1791,7 @@ bool asParameters::SetPredictorXmin(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorXptsnb(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor points number on X is null"));
         return false;
     }
@@ -1801,7 +1801,7 @@ bool asParameters::SetPredictorXptsnb(int iStep, int iPtor, int val)
 
 bool asParameters::SetPredictorXstep(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor X step is null"));
         return false;
     }
@@ -1811,7 +1811,7 @@ bool asParameters::SetPredictorXstep(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorXshift(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor X shift is null"));
         return false;
     }
@@ -1821,7 +1821,7 @@ bool asParameters::SetPredictorXshift(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorYmin(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor yMin is null"));
         return false;
     }
@@ -1831,7 +1831,7 @@ bool asParameters::SetPredictorYmin(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorYptsnb(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor points number on Y is null"));
         return false;
     }
@@ -1841,7 +1841,7 @@ bool asParameters::SetPredictorYptsnb(int iStep, int iPtor, int val)
 
 bool asParameters::SetPredictorYstep(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor Y step is null"));
         return false;
     }
@@ -1851,7 +1851,7 @@ bool asParameters::SetPredictorYstep(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorYshift(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor Y shift is null"));
         return false;
     }
@@ -1861,7 +1861,7 @@ bool asParameters::SetPredictorYshift(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the 'flat allowed' property is null"));
         return false;
     }
@@ -1871,7 +1871,7 @@ bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
 
 bool asParameters::SetPredictorTimeHours(int iStep, int iPtor, double val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor time (hours) is null"));
         return false;
     }
@@ -1883,7 +1883,7 @@ bool asParameters::SetPredictorTimeHours(int iStep, int iPtor, double val)
 
 bool asParameters::SetPredictorMembersNb(int iStep, int iPtor, int val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor members is null"));
         return false;
     }
@@ -1905,7 +1905,7 @@ bool asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString &va
 
 bool asParameters::SetPredictorWeight(int iStep, int iPtor, float val)
 {
-    if (asTools::IsNaN(val)) {
+    if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor weight is null"));
         return false;
     }

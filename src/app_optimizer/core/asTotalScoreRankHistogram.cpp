@@ -65,7 +65,7 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &
             for (int i = 0; i < scores.size(); i++) {
                 countTot++;
 
-                int rank = (int) asTools::Round(scores[i]);
+                int rank = (int) asRound(scores[i]);
                 wxASSERT(rank <= m_ranksNb);
                 histogram[rank - 1]++;
             }
