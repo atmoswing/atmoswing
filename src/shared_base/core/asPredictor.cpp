@@ -697,10 +697,10 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
         double dataXmin, dataYmin, dataXstep, dataYstep;
         int dataXptsnb, dataYptsnb;
-        double xAxisStep = abs(m_fStr.lons[1]-m_fStr.lons[0]);
-        double yAxisStep = abs(m_fStr.lats[1]-m_fStr.lats[0]);
         wxString gridType = desiredArea->GetGridTypeString();
         if (gridType.IsSameAs("Regular", false)) {
+            double xAxisStep = abs(m_fStr.lons[1]-m_fStr.lons[0]);
+            double yAxisStep = abs(m_fStr.lats[1]-m_fStr.lats[0]);
             double xAxisShift = fmod(m_fStr.lons[0], xAxisStep);
             double yAxisShift = fmod(m_fStr.lats[0], yAxisStep);
             dataXmin = floor((desiredArea->GetAbsoluteXmin() - xAxisShift) / xAxisStep) * xAxisStep + xAxisShift;
@@ -727,10 +727,6 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             dataYstep = desiredArea->GetYstep();
             dataXptsnb = desiredArea->GetXaxisPtsnb();
             dataYptsnb = desiredArea->GetYaxisPtsnb();
-            if (abs(dataXstep - xAxisStep) > 0.1 * dataXstep || abs(dataYstep - yAxisStep) > 0.1 * dataYstep) {
-                wxLogError(_("Interpolation is not allowed on irregular grids."));
-                return nullptr;
-            }
         }
 
         asAreaCompGrid *dataArea = asAreaCompGrid::GetInstance(gridType, dataXmin, dataXptsnb, dataXstep, dataYmin,
@@ -1468,8 +1464,9 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
                         indexYfloor = indexLastLat + asFindFloor(&axisDataLat[indexLastLat],
                                                                  &axisDataLat[axisDataLatEnd],
                                                                  axisFinalLat[iLat]);
-                        indexYceil = indexLastLat +
-                                asFindCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd], axisFinalLat[iLat]);
+                        indexYceil = indexLastLat + asFindCeil(&axisDataLat[indexLastLat],
+                                                               &axisDataLat[axisDataLatEnd],
+                                                               axisFinalLat[iLat]);
                     }
 
                     if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND ||
