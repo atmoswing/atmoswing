@@ -41,8 +41,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -53,8 +52,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(area, timearray));
@@ -126,8 +124,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadComposite)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -138,8 +135,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -195,8 +191,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeft)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -207,8 +202,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -260,8 +254,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeftOn720)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -272,8 +265,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -325,8 +317,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderRight)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -337,8 +328,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 

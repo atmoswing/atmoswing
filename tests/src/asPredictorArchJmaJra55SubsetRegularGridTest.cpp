@@ -52,8 +52,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&area, timearray));
@@ -118,8 +117,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&area, timearray));

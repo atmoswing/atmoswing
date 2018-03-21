@@ -42,8 +42,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadEasy)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -54,8 +53,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -131,8 +129,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadComposite)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -143,8 +140,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -212,8 +208,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderLeft)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -224,8 +219,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -281,8 +275,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderLeftOn720)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -293,8 +286,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -350,8 +342,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderRight)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -362,8 +353,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 
@@ -426,8 +416,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, SetData)
     double steplat = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
-                                                                          steplat, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 5, 00, 00);
@@ -438,8 +427,7 @@ TEST(PredictorArchNcepR1v2014Gaussian, SetData)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray));
 

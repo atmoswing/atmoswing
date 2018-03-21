@@ -51,8 +51,7 @@ TEST(PredictorArchNcepR2Regular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -137,8 +136,7 @@ TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -167,8 +165,7 @@ TEST(PredictorArchNcepR2Regular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -261,8 +258,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -327,8 +323,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -393,8 +388,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -466,8 +460,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -540,8 +533,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -595,8 +587,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 
@@ -659,8 +650,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLatTime)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 

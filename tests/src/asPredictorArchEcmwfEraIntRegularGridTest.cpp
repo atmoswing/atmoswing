@@ -51,8 +51,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
@@ -132,8 +131,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray));
@@ -216,8 +214,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray));
@@ -294,8 +291,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray));
@@ -372,8 +368,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-interim/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray));

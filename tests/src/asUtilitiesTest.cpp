@@ -269,8 +269,7 @@ TEST(Utilities, FindMaxInt)
 
 TEST(Utilities, FindMaxFloat)
 {
-    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f,
-                     NaNf};
+    float array[] = {NaNf, NaNf, 0.3465f, 1.345f, 2.76f, 3.69f, 5.58f, NaNf, 8.34f, 9.75f, 10.12f, NaNf};
     float result = asMaxArray(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(10.12f, result);
 }
@@ -291,16 +290,14 @@ TEST(Utilities, FindMinStepInt)
 
 TEST(Utilities, FindMinStepFloat)
 {
-    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
-                     NaNf};
+    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
     float result = asMinArrayStep(&array[0], &array[11], 0.0001f);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
 
 TEST(Utilities, FindMinStepDouble)
 {
-    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
-                      NaNd};
+    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
     double result = asMinArrayStep(&array[0], &array[11]);
     EXPECT_FLOAT_EQ(0.37f, result);
 }
@@ -321,8 +318,7 @@ TEST(Utilities, ExtractUniqueValuesInt)
 
 TEST(Utilities, ExtractUniqueValuesFloat)
 {
-    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f,
-                     NaNf};
+    float array[] = {NaNf, 10.12f, NaNf, 1.345f, 1.345f, 3.69f, 5.58f, NaNf, 8.34f, 2.76f, 9.75f, 0.3465f, NaNf};
     a1f result(asExtractUniqueValues(&array[0], &array[11], 0.0001f));
     EXPECT_FLOAT_EQ(0.3465f, result[0]);
     EXPECT_FLOAT_EQ(1.345f, result[1]);
@@ -336,8 +332,7 @@ TEST(Utilities, ExtractUniqueValuesFloat)
 
 TEST(Utilities, ExtractUniqueValuesDouble)
 {
-    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465,
-                      NaNd};
+    double array[] = {NaNd, 10.12, NaNd, 1.345, 1.345, 3.69, 5.58, NaNd, 8.34, 2.76, 9.75, 0.3465, NaNd};
     a1d result(asExtractUniqueValues(&array[0], &array[11]));
     EXPECT_DOUBLE_EQ(0.3465, result[0]);
     EXPECT_DOUBLE_EQ(1.345, result[1]);
@@ -993,8 +988,8 @@ TEST(Utilities, SortedArraySearchRoleOfToleranceInSearch)
 {
     a1d values;
     values.resize(94);
-    values <<
-    -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762, 06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
+    values
+            << -88.542, -86.653, -84.753, -82.851, -80.947, -79.043, -77.139, -75.235, -73.331, -71.426, -69.522, -67.617, -65.713, -63.808, -61.903, -59.999, -58.094, -56.189, -54.285, -52.380, -50.475, -48.571, -46.666, -44.761, -42.856, -40.952, -39.047, -37.142, -35.238, -33.333, -31.428, -29.523, -27.619, -25.714, -23.809, -21.904, -20.000, -18.095, -16.190, -14.286, -12.381, -10.476, -08.571, -06.667, -04.762, -02.857, -00.952, 00.952, 02.857, 04.762, 06.667, 08.571, 10.476, 12.381, 14.286, 16.190, 18.095, 20.000, 21.904, 23.809, 25.714, 27.619, 29.523, 31.428, 33.333, 35.238, 37.142, 39.047, 40.952, 42.856, 44.761, 46.666, 48.571, 50.475, 52.380, 54.285, 56.189, 58.094, 59.999, 61.903, 63.808, 65.713, 67.617, 69.522, 71.426, 73.331, 75.235, 77.139, 79.043, 80.947, 82.851, 84.753, 86.653, 88.542;
     double *pVectStart = &values[0];
     double *pVectEnd = &values[93];
     double targetvalue = 29.523;
@@ -1539,8 +1534,8 @@ TEST(Utilities, SortedArraysInsertIntAscFirst)
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 1;
     int newvalueOther = 11;
-    EXPECT_TRUE(
-            asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef, newvalueOther));
+    EXPECT_TRUE(asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
+                               newvalueOther));
     int arrayResultsRef[] = {1, 2, 3, 4, 6, 9, 17, 18, 20, 40};
     int arrayResultsOther[] = {11, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (int i = 0; i < 10; ++i) {
@@ -1555,8 +1550,8 @@ TEST(Utilities, SortedArraysInsertIntAscMid)
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 11;
     int newvalueOther = 11;
-    EXPECT_TRUE(
-            asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef, newvalueOther));
+    EXPECT_TRUE(asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
+                               newvalueOther));
     int arrayResultsRef[] = {2, 3, 4, 6, 9, 11, 17, 18, 20, 40};
     int arrayResultsOther[] = {1, 2, 3, 4, 5, 11, 6, 7, 8, 9};
     for (int i = 0; i < 10; ++i) {
@@ -1571,8 +1566,8 @@ TEST(Utilities, SortedArraysInsertIntAscLast)
     int arrayOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int newvalueRef = 99;
     int newvalueOther = 11;
-    EXPECT_TRUE(
-            asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef, newvalueOther));
+    EXPECT_TRUE(asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
+                               newvalueOther));
     int arrayResultsRef[] = {2, 3, 4, 6, 9, 17, 18, 20, 40, 99};
     int arrayResultsOther[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 11};
     for (int i = 0; i < 10; ++i) {
@@ -1587,8 +1582,8 @@ TEST(Utilities, SortedArraysInsertFloatAscMid)
     float arrayOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f, 10.715f};
     float newvalueRef = 11.175f;
     float newvalueOther = 11.1346f;
-    EXPECT_TRUE(
-            asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef, newvalueOther));
+    EXPECT_TRUE(asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
+                               newvalueOther));
     float arrayResultsRef[] = {2.254f, 3.345f, 4.625f, 6.47f, 9.7f, 11.175f, 17.245f, 18.0f, 20.67f, 40.25f};
     float arrayResultsOther[] = {1.7f, 2.4f, 3.346f, 4.7f, 5.1346f, 11.1346f, 6.715f, 7.1346f, 8.1357f, 9.1346f};
     for (int i = 0; i < 10; ++i) {
@@ -1603,8 +1598,8 @@ TEST(Utilities, SortedArraysInsertDoubleAscMid)
     double arrayOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 6.715, 7.1346, 8.1357, 9.1346, 10.715};
     double newvalueRef = 11.175;
     double newvalueOther = 11.1346;
-    EXPECT_TRUE(
-            asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef, newvalueOther));
+    EXPECT_TRUE(asArraysInsert(&arrayRef[0], &arrayRef[9], &arrayOther[0], &arrayOther[9], Asc, newvalueRef,
+                               newvalueOther));
     double arrayResultsRef[] = {2.254, 3.345, 4.625, 6.47, 9.7, 11.175, 17.245, 18, 20.67, 40.25};
     double arrayResultsOther[] = {1.7, 2.4, 3.346, 4.7, 5.1346, 11.1346, 6.715, 7.1346, 8.1357, 9.1346};
     for (int i = 0; i < 10; ++i) {

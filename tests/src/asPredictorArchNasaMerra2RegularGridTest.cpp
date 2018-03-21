@@ -52,8 +52,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&area, timearray));
@@ -118,8 +117,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-nasa-merra2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray));
 

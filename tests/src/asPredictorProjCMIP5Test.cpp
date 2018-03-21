@@ -41,8 +41,7 @@ TEST(PredictorProjCMIP5, LoadEasy)
     int yPtsNb = 2;
     double yStep = 1.12145;
     wxString gridType = "Other";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
-                                                                          yStep);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     double start = asTime::GetMJD(2006, 1, 1, 00, 00);
     double end = asTime::GetMJD(2006, 1, 2, 00, 00);

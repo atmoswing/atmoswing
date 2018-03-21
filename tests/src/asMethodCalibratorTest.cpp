@@ -42,7 +42,8 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -321,7 +322,8 @@ TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 void Ref2(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -492,8 +494,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asMean(&resultsScoreCRPS[0],
-                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asMean(&resultsScoreCRPS[0], &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -661,7 +662,8 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 void Ref1Preloading()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -817,7 +819,8 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 void Ref1PreloadingSubset()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -974,7 +977,8 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, &paramsNoPreprocNoPreload, step, containsNaNs));
+        ASSERT_TRUE(
+                calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, &paramsNoPreprocNoPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, &paramsNoPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
@@ -1025,7 +1029,8 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 void Ref2Preloading()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1187,7 +1192,8 @@ TEST(MethodCalibrator, Ref2PreloadingStandard)
 void Ref2SavingIntermediateResults()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1235,7 +1241,7 @@ void Ref2SavingIntermediateResults()
         // Reload
         anaDates2.Init(&params);
         ASSERT_TRUE(anaDates2.Load());
-        ASSERT_TRUE(anaDates2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaDates2.GetTargetDatesLength() > 0);
         step++;
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates1, &params, anaDates2, step, containsNaNs));
@@ -1246,7 +1252,7 @@ void Ref2SavingIntermediateResults()
         anaSubDates2.Init(&params);
         anaSubDates2.SetCurrentStep(1);
         ASSERT_TRUE(anaSubDates2.Load());
-        ASSERT_TRUE(anaSubDates2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaSubDates2.GetTargetDatesLength() > 0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues1, &params, anaSubDates2, step));
         anaValues1.Save();
@@ -1255,7 +1261,7 @@ void Ref2SavingIntermediateResults()
         anaValues2.Init(&params);
         anaValues2.SetCurrentStep(1);
         ASSERT_TRUE(anaValues2.Load());
-        ASSERT_TRUE(anaValues2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaValues2.GetTargetDatesLength() > 0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS1, &params, anaValues2, step));
         anaScoresCRPS1.Save();
@@ -1264,7 +1270,7 @@ void Ref2SavingIntermediateResults()
         anaScoresCRPS2.Init(&params);
         anaScoresCRPS2.SetCurrentStep(1);
         ASSERT_TRUE(anaScoresCRPS2.Load());
-        ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size()>0);
+        ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size() > 0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS2, step));
     } catch (asException &e) {
@@ -1370,7 +1376,8 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 void Ref2MergeByHalfAndMultiply()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");

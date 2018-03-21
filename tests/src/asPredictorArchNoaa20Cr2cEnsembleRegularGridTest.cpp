@@ -50,8 +50,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c-ensemble/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -109,8 +108,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c-ensemble/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
@@ -168,8 +166,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c-ensemble/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -231,8 +228,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c-ensemble/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
@@ -286,8 +282,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c-ensemble/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 

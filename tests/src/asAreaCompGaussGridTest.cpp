@@ -38,8 +38,7 @@ TEST(AreaCompGaussGrid, GaussianT62OneArea)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(1, area->GetNbComposites());
     EXPECT_DOUBLE_EQ(16.875, area->GetXmax());
@@ -55,8 +54,7 @@ TEST(AreaCompGaussGrid, GaussianT382OneArea)
     int yPtsNb = 20;
     double step = 0;
     wxString gridType = "GaussianT382";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(1, area->GetNbComposites());
     EXPECT_NEAR(15.312, area->GetXmax(), 0.001);
@@ -72,8 +70,7 @@ TEST(AreaCompGaussGrid, ConstructorAlternativeTwoAreas)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(2, area->GetNbComposites());
     wxDELETE(area);
@@ -87,8 +84,7 @@ TEST(AreaCompGaussGrid, CheckConsistency)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(350.625, area->GetCornerUL().x);
     EXPECT_DOUBLE_EQ(350.625, area->GetCornerLL().x);
@@ -105,8 +101,7 @@ TEST(AreaCompGaussGrid, GetBoundsSplitted)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(0, area->GetXmin());
     EXPECT_DOUBLE_EQ(29.523, area->GetYmin());
@@ -123,8 +118,7 @@ TEST(AreaCompGaussGrid, GetUYaxisCompositeSize)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(2, area->GetNbComposites());
     EXPECT_EQ(12, area->GetXaxisCompositePtsnb(0));
@@ -142,8 +136,7 @@ TEST(AreaCompGaussGrid, GetUYaxisCompositeSizeAllWest)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(1, area->GetNbComposites());
     EXPECT_EQ(4, area->GetXaxisCompositePtsnb(0));
@@ -161,8 +154,7 @@ TEST(AreaCompGaussGrid, GetUYaxisCompositeSizeEdge)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(1, area->GetNbComposites());
     EXPECT_EQ(9, area->GetXaxisCompositePtsnb(0));
@@ -180,8 +172,7 @@ TEST(AreaCompGaussGrid, GetUYaxisCompositeWidth)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(20.625, area->GetXaxisCompositeWidth(0));
     EXPECT_DOUBLE_EQ(15, area->GetXaxisCompositeWidth(1));
@@ -198,8 +189,7 @@ TEST(AreaCompGaussGrid, GetUYaxisPtsnb)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_EQ(20, area->GetXaxisPtsnb());
     EXPECT_EQ(5, area->GetYaxisPtsnb());
@@ -214,8 +204,7 @@ TEST(AreaCompGaussGrid, GetUYaxisWidth)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(35.625, area->GetXaxisWidth());
     EXPECT_DOUBLE_EQ(37.142 - 29.523, area->GetYaxisWidth());
@@ -230,8 +219,7 @@ TEST(AreaCompGaussGrid, GetUYaxisCompositeLimits)
     int yPtsNb = 5;
     double step = 0;
     wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
-                                                                          step);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     EXPECT_DOUBLE_EQ(0, area->GetXaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(345, area->GetXaxisCompositeStart(1));
