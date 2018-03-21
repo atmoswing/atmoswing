@@ -28,7 +28,7 @@
 #include "asPredictorArchEcmwfCera20C.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchEcmwfCera20C::asPredictorArchEcmwfCera20C(const wxString &dataId)

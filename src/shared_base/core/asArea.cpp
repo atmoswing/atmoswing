@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoArea.h"
+#include "asArea.h"
 
-asGeoArea::asGeoArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
-                     float height, int flatAllowed)
-        : asGeo(),
+asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
+               float height, int flatAllowed)
+        : m_gridType(Undefined),
           m_cornerUL(cornerUL),
           m_cornerUR(cornerUR),
           m_cornerLL(cornerLL),
@@ -45,8 +45,8 @@ asGeoArea::asGeoArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &corner
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(double xMin, double xWidth, double yMin, double yWidth, float level, float height, int flatAllowed)
-        : asGeo(),
+asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float level, float height, int flatAllowed)
+        : m_gridType(Undefined),
           m_level(level),
           m_height(height),
           m_flatAllowed(flatAllowed)
@@ -60,14 +60,10 @@ asGeoArea::asGeoArea(double xMin, double xWidth, double yMin, double yWidth, flo
     }
 
     // Set the members
-    m_cornerUL.x = xMin;
-    m_cornerUL.y = yMin + yWidth;
-    m_cornerUR.x = xMin + xWidth;
-    m_cornerUR.y = yMin + yWidth;
-    m_cornerLL.x = xMin;
-    m_cornerLL.y = yMin;
-    m_cornerLR.x = xMin + xWidth;
-    m_cornerLR.y = yMin;
+    m_cornerUL = {xMin, yMin + yWidth};
+    m_cornerUR = {xMin + xWidth, yMin + yWidth};
+    m_cornerLL = {xMin, yMin};
+    m_cornerLR = {xMin + xWidth, yMin};
 
     // Initialization and check points
     Init();
@@ -75,24 +71,20 @@ asGeoArea::asGeoArea(double xMin, double xWidth, double yMin, double yWidth, flo
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asGeoArea::asGeoArea(float level, float height)
-        : asGeo(),
+asArea::asArea(float level, float height)
+        : m_gridType(Undefined),
+          m_cornerUL({0, 0}),
+          m_cornerUR({0, 0}),
+          m_cornerLL({0, 0}),
+          m_cornerLR({0, 0}),
           m_level(level),
           m_height(height),
           m_flatAllowed(asFLAT_ALLOWED)
 {
-    // Set the members
-    m_cornerUL.x = 0;
-    m_cornerUL.y = 0;
-    m_cornerUR.x = 0;
-    m_cornerUR.y = 0;
-    m_cornerLL.x = 0;
-    m_cornerLL.y = 0;
-    m_cornerLR.x = 0;
-    m_cornerLR.y = 0;
+
 }
 
-void asGeoArea::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
+void asArea::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
         yWidth = wxMax(yWidth, 0.0);
@@ -103,14 +95,10 @@ void asGeoArea::Generate(double xMin, double xWidth, double yMin, double yWidth,
     }
 
     // Set the members
-    m_cornerUL.x = xMin;
-    m_cornerUL.y = yMin + yWidth;
-    m_cornerUR.x = xMin + xWidth;
-    m_cornerUR.y = yMin + yWidth;
-    m_cornerLL.x = xMin;
-    m_cornerLL.y = yMin;
-    m_cornerLR.x = xMin + xWidth;
-    m_cornerLR.y = yMin;
+    m_cornerUL = {xMin, yMin + yWidth};
+    m_cornerUR = {xMin + xWidth, yMin + yWidth};
+    m_cornerLL = {xMin, yMin};
+    m_cornerLR = {xMin + xWidth, yMin};
     m_flatAllowed = flatAllowed;
 
     // Initialization and check points
@@ -119,21 +107,71 @@ void asGeoArea::Generate(double xMin, double xWidth, double yMin, double yWidth,
     wxLogVerbose(_("The area was successfully created."));
 }
 
-void asGeoArea::Init()
+void asArea::Init()
 {
     if (!DoCheckPoints())
-        asThrowException(_("Use asGeoAreaComposite in this case."));
+        asThrowException(_("Use asAreaComp in this case."));
     if (!CheckConsistency())
         asThrowException(_("Unable to build a consistent area with the given coordinates."));
 }
 
-bool asGeoArea::DoCheckPoints()
+bool asArea::DoCheckPoints()
 {
     return !(!CheckPoint(m_cornerUL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerUR, asEDIT_FORBIDDEN) ||
              !CheckPoint(m_cornerLL, asEDIT_FORBIDDEN) || !CheckPoint(m_cornerLR, asEDIT_FORBIDDEN));
 }
 
-bool asGeoArea::CheckConsistency()
+
+bool asArea::CheckPoint(Coo &point, int changesAllowed)
+{
+    // We always consider WGS84 for the predictors
+    if (point.y < GetAxisYmin()) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.y = GetAxisYmin() + (GetAxisYmin() - point.y);
+            point.x = point.x + 180;
+        }
+        return false;
+    }
+    if (point.y > GetAxisYmax()) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.y = GetAxisYmax() + (GetAxisYmax() - point.y);
+            point.x = point.x + 180;
+        }
+        return false;
+    }
+    if (point.x < GetAxisXmin()) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.x += GetAxisXmax();
+        }
+        return false;
+    }
+    if (point.x > GetAxisXmax()) {
+        if (changesAllowed == asEDIT_ALLOWED) {
+            point.x -= GetAxisXmax();
+        }
+        return false;
+    }
+
+    return true;
+}
+
+wxString asArea::GetGridTypeString() const
+{
+    switch (m_gridType) {
+        case (Regular):
+            return "Regular";
+        case (GaussianT62):
+            return "GaussianT62";
+        case (GaussianT382):
+            return "GaussianT382";
+        case (Undefined):
+            return "Undefined";
+        default:
+            return "Not found";
+    }
+}
+
+bool asArea::CheckConsistency()
 {
     Coo cootmp;
 
@@ -171,37 +209,37 @@ bool asGeoArea::CheckConsistency()
     return true;
 }
 
-double asGeoArea::GetXmin() const
+double asArea::GetXmin() const
 {
     return wxMin(wxMin(m_cornerUL.x, m_cornerLL.x), wxMin(m_cornerUR.x, m_cornerLR.x));
 }
 
-double asGeoArea::GetXmax() const
+double asArea::GetXmax() const
 {
     return wxMax(wxMax(m_cornerUL.x, m_cornerLL.x), wxMax(m_cornerUR.x, m_cornerLR.x));
 }
 
-double asGeoArea::GetXwidth() const
+double asArea::GetXwidth() const
 {
     return std::abs(m_cornerUR.x - m_cornerUL.x);
 }
 
-double asGeoArea::GetYmin() const
+double asArea::GetYmin() const
 {
     return wxMin(wxMin(m_cornerUL.y, m_cornerLL.y), wxMin(m_cornerUR.y, m_cornerLR.y));
 }
 
-double asGeoArea::GetYmax() const
+double asArea::GetYmax() const
 {
     return wxMax(wxMax(m_cornerUL.y, m_cornerLL.y), wxMax(m_cornerUR.y, m_cornerLR.y));
 }
 
-double asGeoArea::GetYwidth() const
+double asArea::GetYwidth() const
 {
     return std::abs(m_cornerUR.y - m_cornerLR.y);
 }
 
-Coo asGeoArea::GetCenter() const
+Coo asArea::GetCenter() const
 {
     Coo center;
     center.x = GetXmin() + (GetXmax() - GetXmin()) / 2;
@@ -209,7 +247,7 @@ Coo asGeoArea::GetCenter() const
     return center;
 }
 
-bool asGeoArea::IsRectangle() const
+bool asArea::IsRectangle() const
 {
     // Check that the area is a square
     return !((m_cornerUL.x != m_cornerLL.x) | (m_cornerUL.y != m_cornerUR.y) | (m_cornerUR.x != m_cornerLR.x) |

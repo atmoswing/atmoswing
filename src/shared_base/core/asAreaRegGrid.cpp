@@ -26,12 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoAreaRegularGrid.h"
+#include "asAreaRegGrid.h"
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
-                                           const Coo &cornerLR, double xStep, double yStep, float level, float height,
-                                           int flatAllowed)
-        : asGeoArea(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+asAreaRegGrid::asAreaRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                             double xStep, double yStep, float level, float height, int flatAllowed)
+        : asArea(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {
@@ -39,9 +38,9 @@ asGeoAreaRegularGrid::asGeoAreaRegularGrid(const Coo &cornerUL, const Coo &corne
         asThrowException(_("The given area does not match a grid."));
 }
 
-asGeoAreaRegularGrid::asGeoAreaRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth,
-                                           double yStep, float level, float height, int flatAllowed)
-        : asGeoArea(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+asAreaRegGrid::asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                             float level, float height, int flatAllowed)
+        : asArea(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {
@@ -49,19 +48,19 @@ asGeoAreaRegularGrid::asGeoAreaRegularGrid(double xMin, double xWidth, double xS
         asThrowException(_("The given area does not match a grid."));
 }
 
-int asGeoAreaRegularGrid::GetXaxisPtsnb() const
+int asAreaRegGrid::GetXaxisPtsnb() const
 {
     // Get axis size
     return asRound(std::abs((GetXmax() - GetXmin()) / m_xStep) + 1.0);
 }
 
-int asGeoAreaRegularGrid::GetYaxisPtsnb() const
+int asAreaRegGrid::GetYaxisPtsnb() const
 {
     // Get axis size
     return asRound(std::abs((GetYmax() - GetYmin()) / m_xStep) + 1.0);
 }
 
-a1d asGeoAreaRegularGrid::GetXaxis() const
+a1d asAreaRegGrid::GetXaxis() const
 {
     // Get axis size
     int ptsnb = GetXaxisPtsnb();
@@ -77,7 +76,7 @@ a1d asGeoAreaRegularGrid::GetXaxis() const
     return xAxis;
 }
 
-a1d asGeoAreaRegularGrid::GetYaxis() const
+a1d asAreaRegGrid::GetYaxis() const
 {
     // Get axis size
     int ptsnb = GetYaxisPtsnb();
@@ -93,7 +92,7 @@ a1d asGeoAreaRegularGrid::GetYaxis() const
     return yAxis;
 }
 
-bool asGeoAreaRegularGrid::IsOnGrid(double step) const
+bool asAreaRegGrid::IsOnGrid(double step) const
 {
     if (!IsRectangle())
         return false;
@@ -106,7 +105,7 @@ bool asGeoAreaRegularGrid::IsOnGrid(double step) const
     return true;
 }
 
-bool asGeoAreaRegularGrid::IsOnGrid(double stepX, double stepY) const
+bool asAreaRegGrid::IsOnGrid(double stepX, double stepY) const
 {
     if (!IsRectangle())
         return false;

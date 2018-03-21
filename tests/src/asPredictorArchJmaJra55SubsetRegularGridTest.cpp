@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -41,7 +41,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
     double yWidth = 5;
     double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -56,7 +56,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -107,7 +107,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
     double yWidth = 5;
     double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -122,7 +122,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

@@ -26,40 +26,44 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(const Coo &cornerUL, const Coo &cornerUR,
-                                                             const Coo &cornerLL, const Coo &cornerLR, double xStep,
-                                                             double yStep, float level, float height, int flatAllowed)
-        : asGeoAreaCompositeGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                                     double xStep, double yStep, float level, float height, int flatAllowed)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {
     m_gridType = Regular;
 
-    if (!IsOnGrid(xStep, yStep))
-        asThrowException(_("The given area does not match a grid."));
+    if (!asIsNaN(xStep) && !asIsNaN(yStep) && xStep > 0 && yStep > 0) {
+        if (!IsOnGrid(xStep, yStep))
+            asThrowException(_("The given area does not match a grid."));
+        m_axesInitialized = true;
+    }
 }
 
-asGeoAreaCompositeRegularGrid::asGeoAreaCompositeRegularGrid(double xMin, double xWidth, double xStep, double yMin,
-                                                             double yWidth, double yStep, float level, float height,
-                                                             int flatAllowed)
-        : asGeoAreaCompositeGrid(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                                     float level, float height, int flatAllowed)
+        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {
     m_gridType = Regular;
 
-    if (!IsOnGrid(xStep, yStep))
-        asThrowException(_("The given area does not match a grid."));
+    if (!asIsNaN(xStep) && !asIsNaN(yStep) && xStep > 0 && yStep > 0) {
+        if (!IsOnGrid(xStep, yStep))
+            asThrowException(_("The given area does not match a grid."));
+        m_axesInitialized = true;
+    }
 }
 
-bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea) const
+bool asAreaCompRegGrid::GridsOverlay(asAreaCompGrid *otherarea) const
 {
     if (otherarea->GetGridType() != Regular)
         return false;
 
-    auto *otherareaRegular(dynamic_cast<asGeoAreaCompositeRegularGrid *>(otherarea));
+    auto *otherareaRegular(dynamic_cast<asAreaCompRegGrid *>(otherarea));
 
     if (!otherareaRegular)
         return false;
@@ -73,7 +77,7 @@ bool asGeoAreaCompositeRegularGrid::GridsOverlay(asGeoAreaCompositeGrid *otherar
     return true;
 }
 
-a1d asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
+a1d asAreaCompRegGrid::GetXaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetXaxisCompositePtsnb(compositeNb);
@@ -95,7 +99,7 @@ a1d asGeoAreaCompositeRegularGrid::GetXaxisComposite(int compositeNb)
     return xAxis;
 }
 
-a1d asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
+a1d asAreaCompRegGrid::GetYaxisComposite(int compositeNb)
 {
     // Get axis size
     int size = GetYaxisCompositePtsnb(compositeNb);
@@ -119,7 +123,7 @@ a1d asGeoAreaCompositeRegularGrid::GetYaxisComposite(int compositeNb)
     return yAxis;
 }
 
-int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
+int asAreaCompRegGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
     double diff = std::abs((GetComposite(compositeNb).GetXmax() - GetComposite(compositeNb).GetXmin())) / m_xStep;
     double size;
@@ -143,7 +147,7 @@ int asGeoAreaCompositeRegularGrid::GetXaxisCompositePtsnb(int compositeNb)
     }
 }
 
-int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
+int asAreaCompRegGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
     double diff = std::abs((GetComposite(compositeNb).GetYmax() - GetComposite(compositeNb).GetYmin())) / m_yStep;
     double size;
@@ -158,17 +162,17 @@ int asGeoAreaCompositeRegularGrid::GetYaxisCompositePtsnb(int compositeNb)
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetXaxisCompositeWidth(int compositeNb) const
+double asAreaCompRegGrid::GetXaxisCompositeWidth(int compositeNb) const
 {
     return std::abs(GetComposite(compositeNb).GetXmax() - GetComposite(compositeNb).GetXmin());
 }
 
-double asGeoAreaCompositeRegularGrid::GetYaxisCompositeWidth(int compositeNb) const
+double asAreaCompRegGrid::GetYaxisCompositeWidth(int compositeNb) const
 {
     return std::abs(GetComposite(compositeNb).GetYmax() - GetComposite(compositeNb).GetYmin());
 }
 
-double asGeoAreaCompositeRegularGrid::GetXaxisCompositeStart(int compositeNb) const
+double asAreaCompRegGrid::GetXaxisCompositeStart(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -195,7 +199,7 @@ double asGeoAreaCompositeRegularGrid::GetXaxisCompositeStart(int compositeNb) co
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetYaxisCompositeStart(int compositeNb) const
+double asAreaCompRegGrid::GetYaxisCompositeStart(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -214,7 +218,7 @@ double asGeoAreaCompositeRegularGrid::GetYaxisCompositeStart(int compositeNb) co
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetXaxisCompositeEnd(int compositeNb) const
+double asAreaCompRegGrid::GetXaxisCompositeEnd(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -240,7 +244,7 @@ double asGeoAreaCompositeRegularGrid::GetXaxisCompositeEnd(int compositeNb) cons
     }
 }
 
-double asGeoAreaCompositeRegularGrid::GetYaxisCompositeEnd(int compositeNb) const
+double asAreaCompRegGrid::GetYaxisCompositeEnd(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -259,7 +263,7 @@ double asGeoAreaCompositeRegularGrid::GetYaxisCompositeEnd(int compositeNb) cons
     }
 }
 
-bool asGeoAreaCompositeRegularGrid::IsOnGrid(double step) const
+bool asAreaCompRegGrid::IsOnGrid(double step) const
 {
     if (!IsRectangle())
         return false;
@@ -272,7 +276,7 @@ bool asGeoAreaCompositeRegularGrid::IsOnGrid(double step) const
     return true;
 }
 
-bool asGeoAreaCompositeRegularGrid::IsOnGrid(double stepX, double stepY) const
+bool asAreaCompRegGrid::IsOnGrid(double stepX, double stepY) const
 {
     if (!IsRectangle())
         return false;

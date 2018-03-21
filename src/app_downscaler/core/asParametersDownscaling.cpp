@@ -28,7 +28,7 @@
 #include "asParametersDownscaling.h"
 
 #include "asFileParametersDownscaling.h"
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 asParametersDownscaling::asParametersDownscaling()
         : asParameters()

@@ -28,7 +28,7 @@
 #include "asPredictorArchJmaJra55CSubset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchJmaJra55CSubset::asPredictorArchJmaJra55CSubset(const wxString &dataId)

@@ -32,7 +32,7 @@
 #include <asIncludes.h>
 #include <asPredictorArchNcepReanalysis1Subset.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNcepReanalysis1Lthe
         : public asPredictorArchNcepReanalysis1Subset

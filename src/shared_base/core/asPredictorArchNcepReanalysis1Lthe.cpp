@@ -29,7 +29,7 @@
 #include "asPredictorArchNcepReanalysis1Lthe.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxString &dataId)

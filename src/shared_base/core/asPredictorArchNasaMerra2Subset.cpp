@@ -28,7 +28,7 @@
 #include "asPredictorArchNasaMerra2Subset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNasaMerra2Subset::asPredictorArchNasaMerra2Subset(const wxString &dataId)

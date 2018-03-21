@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -41,7 +41,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadEasy)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
@@ -56,7 +56,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadEasy)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -117,7 +117,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadEasy)
     EXPECT_FLOAT_EQ(282.53f, air[20][0](2, 0));
     EXPECT_FLOAT_EQ(278.18f, air[20][0](2, 4));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -130,7 +130,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadComposite)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
@@ -145,7 +145,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -198,7 +198,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadComposite)
     EXPECT_FLOAT_EQ(283.65f, air[11][0](2, 0));
     EXPECT_FLOAT_EQ(282.25f, air[11][0](2, 6));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -211,7 +211,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeft)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
@@ -226,7 +226,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -267,7 +267,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeft)
     EXPECT_FLOAT_EQ(281.65f, air[11][0](2, 0));
     EXPECT_FLOAT_EQ(282.25f, air[11][0](2, 2));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -280,7 +280,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeftOn720)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
@@ -295,7 +295,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeftOn720)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -336,7 +336,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeftOn720)
     EXPECT_FLOAT_EQ(281.65f, air[11][0](2, 0));
     EXPECT_FLOAT_EQ(282.25f, air[11][0](2, 2));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -349,7 +349,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderRight)
     double step = 0;
     float level = 0;
     wxString gridType = "GaussianT62";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
@@ -364,7 +364,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -411,6 +411,6 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderRight)
     EXPECT_FLOAT_EQ(283.65f, air[11][0](2, 0));
     EXPECT_FLOAT_EQ(281.65f, air[11][0](2, 4));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }

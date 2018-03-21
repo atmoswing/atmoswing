@@ -29,7 +29,7 @@
 #include "asPredictorArchNoaaOisst2Subset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString &dataId)

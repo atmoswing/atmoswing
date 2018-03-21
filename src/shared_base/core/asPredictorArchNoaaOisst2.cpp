@@ -29,7 +29,7 @@
 #include "asPredictorArchNoaaOisst2.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)

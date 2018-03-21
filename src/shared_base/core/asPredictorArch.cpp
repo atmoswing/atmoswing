@@ -29,7 +29,7 @@
 #include "asPredictorArch.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <asPredictorArchNcepReanalysis1.h>
 #include <asPredictorArchNcepReanalysis1Subset.h>
 #include <asPredictorArchNcepReanalysis1Lthe.h>
@@ -116,7 +116,7 @@ bool asPredictorArch::Init()
     return false;
 }
 
-bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
+bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fInd.areas.clear();
 
@@ -228,7 +228,7 @@ bool asPredictorArch::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeAr
     return true;
 }
 
-bool asPredictorArch::ClipToArea(asGeoAreaCompositeGrid *desiredArea)
+bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
 {
     double xMin = desiredArea->GetAbsoluteXmin();
     double xMax = desiredArea->GetAbsoluteXmax();

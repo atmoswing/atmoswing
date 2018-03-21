@@ -26,57 +26,27 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGEOAREACOMPOSITE_H
-#define ASGEOAREACOMPOSITE_H
+#ifndef ASAREACOMPOSITE_H
+#define ASAREACOMPOSITE_H
 
 #include <asIncludes.h>
-#include <asGeoArea.h>
+#include <asArea.h>
 
-class asGeoAreaComposite
-        : public asGeo
+class asAreaComp
+        : public asArea
 {
 public:
-    asGeoAreaComposite(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                       float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
+               float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaComposite(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
-                       float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
+               int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asGeoAreaComposite(float level = asNONE, float height = asNONE);
+    explicit asAreaComp(float level = asNONE, float height = asNONE);
 
-    ~asGeoAreaComposite() override = default;
+    ~asAreaComp() override = default;
 
-    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
-
-    Coo GetCornerUL() const
-    {
-        return m_cornerUL;
-    }
-
-    Coo GetCornerUR() const
-    {
-        return m_cornerUR;
-    }
-
-    Coo GetCornerLL() const
-    {
-        return m_cornerLL;
-    }
-
-    Coo GetCornerLR() const
-    {
-        return m_cornerLR;
-    }
-
-    double GetLevel() const
-    {
-        return m_level;
-    }
-
-    void SetLevel(float val)
-    {
-        m_level = val;
-    }
+    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN) override;
 
     double GetAbsoluteXmin() const
     {
@@ -98,34 +68,34 @@ public:
         return m_absoluteYmax;
     }
 
-    double GetXmin() const;
+    double GetXmin() const override;
 
-    double GetXmax() const;
+    double GetXmax() const override;
 
-    double GetYmin() const;
+    double GetYmin() const override;
 
-    double GetYmax() const;
+    double GetYmax() const override;
 
-    Coo GetCenter() const;
+    Coo GetCenter() const override;
 
     int GetNbComposites() const
     {
         return (int) m_composites.size();
     }
 
-    asGeoArea GetComposite(int id) const
+    asArea GetComposite(int id) const
     {
         if (id >= m_composites.size())
             asThrowException(_("The composite area doesn't exist."));
         return m_composites[id];
     }
 
-    bool IsRectangle() const;
+    bool IsRectangle() const override;
 
 protected:
-    std::vector<asGeoArea> m_composites;
-    float m_level;
-    float m_height;
+    std::vector<asArea> m_composites;
+
+    void Init() override;
 
     void CreateComposites();
 
@@ -134,17 +104,10 @@ protected:
     bool CheckConsistency();
 
 private:
-    Coo m_cornerUL;
-    Coo m_cornerUR;
-    Coo m_cornerLL;
-    Coo m_cornerLR;
-    int m_flatAllowed;
     double m_absoluteXmin;
     double m_absoluteXmax;
     double m_absoluteYmin;
     double m_absoluteYmax;
-
-    void Init();
 };
 
 #endif

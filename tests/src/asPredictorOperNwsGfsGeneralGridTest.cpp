@@ -28,7 +28,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorOper.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -50,7 +50,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -60,7 +60,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -119,7 +119,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
     EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -140,7 +140,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -150,7 +150,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -209,7 +209,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
     EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -230,7 +230,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -240,7 +240,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -263,7 +263,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -284,7 +284,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -294,7 +294,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -317,7 +317,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -338,7 +338,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -348,7 +348,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -371,7 +371,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -392,7 +392,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -402,7 +402,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -425,7 +425,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -446,7 +446,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -456,7 +456,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -479,7 +479,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -500,7 +500,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -510,7 +510,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -533,7 +533,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -554,7 +554,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -564,7 +564,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -587,7 +587,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -608,7 +608,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -618,7 +618,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -641,7 +641,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -663,7 +663,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -673,7 +673,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -696,7 +696,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -718,7 +718,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -728,7 +728,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -751,7 +751,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -773,7 +773,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -783,7 +783,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -804,7 +804,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -826,7 +826,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -836,7 +836,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -857,7 +857,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -879,7 +879,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -889,7 +889,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -913,7 +913,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -935,7 +935,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -945,7 +945,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -969,7 +969,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -991,7 +991,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -1001,7 +1001,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1020,7 +1020,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
     EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -1042,7 +1042,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -1052,7 +1052,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1071,7 +1071,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
     EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -1093,7 +1093,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -1103,7 +1103,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1120,7 +1120,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -1142,7 +1142,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb,
                                                                           yStep, level);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
@@ -1152,7 +1152,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1169,6 +1169,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }

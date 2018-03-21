@@ -37,7 +37,7 @@ class asTimeArray;
 
 class asGeo;
 
-class asGeoAreaCompositeGrid;
+class asAreaCompGrid;
 
 
 class asPredictor
@@ -91,13 +91,13 @@ public:
 
     bool CheckFilesPresence();
 
-    bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray);
 
-    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray);
 
-    bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
+    bool Load(asAreaCompGrid &desiredArea, double date);
 
-    bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
+    bool Load(asAreaCompGrid *desiredArea, double date);
 
     bool TransformData(vvva2f &compositeData);
 
@@ -334,13 +334,13 @@ protected:
 
     bool EnquireFileStructure();
 
-    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
+    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 
@@ -358,12 +358,12 @@ protected:
 
     bool EnquireNetcdfFileStructure();
 
-    bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
 
     bool EnquireGribFileStructure();
 
-    bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    bool ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
@@ -372,13 +372,13 @@ protected:
 
     bool CheckFileStructure();
 
-    bool MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid *area);
+    bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
-    bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
+    bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
 
-    asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
+    asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 
-    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData);
+    asAreaCompGrid *AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compositeData);
 
     void AssignGribCode(const int arr[]);
 

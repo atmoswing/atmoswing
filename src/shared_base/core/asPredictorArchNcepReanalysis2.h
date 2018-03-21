@@ -32,7 +32,7 @@
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNcepReanalysis2
         : public asPredictorArch

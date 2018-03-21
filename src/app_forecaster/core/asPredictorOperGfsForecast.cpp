@@ -29,7 +29,7 @@
 #include "asPredictorOperGfsForecast.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)

@@ -26,18 +26,17 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoAreaCompositeGaussianGrid.h"
+#include "asAreaCompGaussGrid.h"
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &cornerUL, const Coo &cornerUR,
-                                                               const Coo &cornerLL, const Coo &cornerLR,
-                                                               asGeo::GridType type, float level, float height,
-                                                               int flatAllowed)
-        : asGeoAreaCompositeGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
+asAreaCompGaussGrid::asAreaCompGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
+                                         const Coo &cornerLR, GridType type, float level, float height,
+                                         int flatAllowed)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
 {
     m_gridType = type;
 
-    asGeoAreaGaussianGrid::BuildLonAxis(m_fullAxisX, type);
-    asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
+    asAreaGaussGrid::BuildLonAxis(m_fullAxisX, type);
+    asAreaGaussGrid::BuildLatAxis(m_fullAxisY, type);
 
     if (!IsOnGrid(cornerUL))
         asThrowException(_("The given area does not match a gaussian grid."));
@@ -47,17 +46,18 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(const Coo &corner
         asThrowException(_("The given area does not match a gaussian grid."));
     if (!IsOnGrid(cornerLR))
         asThrowException(_("The given area does not match a gaussian grid."));
+
+    m_axesInitialized = true;
 }
 
-asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb,
-                                                               asGeo::GridType type, float level, float height,
-                                                               int flatAllowed)
-        : asGeoAreaCompositeGrid(level, height)
+asAreaCompGaussGrid::asAreaCompGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type, float level,
+                                         float height, int flatAllowed)
+        : asAreaCompGrid(level, height)
 {
     m_gridType = type;
 
-    asGeoAreaGaussianGrid::BuildLonAxis(m_fullAxisX, type);
-    asGeoAreaGaussianGrid::BuildLatAxis(m_fullAxisY, type);
+    asAreaGaussGrid::BuildLonAxis(m_fullAxisX, type);
+    asAreaGaussGrid::BuildLatAxis(m_fullAxisY, type);
 
     // Check input
     if (!IsOnGrid(xMin, yMin))
@@ -90,20 +90,22 @@ asGeoAreaCompositeGaussianGrid::asGeoAreaCompositeGaussianGrid(double xMin, int 
 
     // Regenerate with correct sizes
     Generate(xMin, xWidth, yMin, yWidth, flatAllowed);
+
+    m_axesInitialized = true;
 }
 
-bool asGeoAreaCompositeGaussianGrid::GridsOverlay(asGeoAreaCompositeGrid *otherarea) const
+bool asAreaCompGaussGrid::GridsOverlay(asAreaCompGrid *otherarea) const
 {
     if (otherarea->GetGridType() != GetGridType())
         return false;
-    auto *otherareaGaussian(dynamic_cast<asGeoAreaCompositeGaussianGrid *>(otherarea));
+    auto *otherareaGaussian(dynamic_cast<asAreaCompGaussGrid *>(otherarea));
     if (!otherareaGaussian)
         return false;
 
     return otherareaGaussian->GetGridType() == GetGridType();
 }
 
-a1d asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
+a1d asAreaCompGaussGrid::GetXaxisComposite(int compositeNb)
 {
     double xMin = GetComposite(compositeNb).GetXmin();
     double xMax = GetComposite(compositeNb).GetXmax();
@@ -118,7 +120,7 @@ a1d asGeoAreaCompositeGaussianGrid::GetXaxisComposite(int compositeNb)
     return m_fullAxisX.segment(xMinIndex, xMaxIndex - xMinIndex + 1);
 }
 
-a1d asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
+a1d asAreaCompGaussGrid::GetYaxisComposite(int compositeNb)
 {
     double yMin = GetComposite(compositeNb).GetYmin();
     double yMax = GetComposite(compositeNb).GetYmax();
@@ -133,7 +135,7 @@ a1d asGeoAreaCompositeGaussianGrid::GetYaxisComposite(int compositeNb)
     return m_fullAxisY.segment(yMinIndex, yMaxIndex - yMinIndex + 1);
 }
 
-int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
+int asAreaCompGaussGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
     double xMin = GetComposite(compositeNb).GetXmin();
     double xMax = GetComposite(compositeNb).GetXmax();
@@ -159,7 +161,7 @@ int asGeoAreaCompositeGaussianGrid::GetXaxisCompositePtsnb(int compositeNb)
     return ptsnb;
 }
 
-int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
+int asAreaCompGaussGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
     double yMin = GetComposite(compositeNb).GetYmin();
     double yMax = GetComposite(compositeNb).GetYmax();
@@ -176,17 +178,17 @@ int asGeoAreaCompositeGaussianGrid::GetYaxisCompositePtsnb(int compositeNb)
     return ptsnb;
 }
 
-double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeWidth(int compositeNb) const
+double asAreaCompGaussGrid::GetXaxisCompositeWidth(int compositeNb) const
 {
     return std::abs(GetComposite(compositeNb).GetXmax() - GetComposite(compositeNb).GetXmin());
 }
 
-double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeWidth(int compositeNb) const
+double asAreaCompGaussGrid::GetYaxisCompositeWidth(int compositeNb) const
 {
     return std::abs(GetComposite(compositeNb).GetYmax() - GetComposite(compositeNb).GetYmin());
 }
 
-double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeStart(int compositeNb) const
+double asAreaCompGaussGrid::GetXaxisCompositeStart(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -205,7 +207,7 @@ double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeStart(int compositeNb) c
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeStart(int compositeNb) const
+double asAreaCompGaussGrid::GetYaxisCompositeStart(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -224,7 +226,7 @@ double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeStart(int compositeNb) c
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeEnd(int compositeNb) const
+double asAreaCompGaussGrid::GetXaxisCompositeEnd(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -243,7 +245,7 @@ double asGeoAreaCompositeGaussianGrid::GetXaxisCompositeEnd(int compositeNb) con
     }
 }
 
-double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeEnd(int compositeNb) const
+double asAreaCompGaussGrid::GetYaxisCompositeEnd(int compositeNb) const
 {
     // If only one composite
     if (GetNbComposites() == 1) {
@@ -262,7 +264,7 @@ double asGeoAreaCompositeGaussianGrid::GetYaxisCompositeEnd(int compositeNb) con
     }
 }
 
-bool asGeoAreaCompositeGaussianGrid::IsOnGrid(const Coo &point) const
+bool asAreaCompGaussGrid::IsOnGrid(const Coo &point) const
 {
     if (!IsRectangle())
         return false;
@@ -278,7 +280,7 @@ bool asGeoAreaCompositeGaussianGrid::IsOnGrid(const Coo &point) const
     return true;
 }
 
-bool asGeoAreaCompositeGaussianGrid::IsOnGrid(double xCoord, double yCoord) const
+bool asAreaCompGaussGrid::IsOnGrid(double xCoord, double yCoord) const
 {
     int foundX = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xCoord, 0.01);
     if ((foundX == asNOT_FOUND) || (foundX == asOUT_OF_RANGE))

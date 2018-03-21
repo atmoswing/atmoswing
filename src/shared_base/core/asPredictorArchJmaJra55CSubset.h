@@ -31,7 +31,7 @@
 #include <asIncludes.h>
 #include <asPredictorArchJmaJra55Subset.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchJmaJra55CSubset
         : public asPredictorArchJmaJra55Subset

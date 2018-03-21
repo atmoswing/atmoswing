@@ -26,34 +26,34 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asGeoAreaCompositeGrid_H
-#define asGeoAreaCompositeGrid_H
+#ifndef asAreaCompositeGrid_H
+#define asAreaCompositeGrid_H
 
 #include <asIncludes.h>
-#include <asGeoAreaComposite.h>
+#include <asAreaComp.h>
 
-class asGeoAreaCompositeGrid
-        : public asGeoAreaComposite // Abstract class
+class asAreaCompGrid
+        : public asAreaComp // Abstract class
 {
 public:
 
-    asGeoAreaCompositeGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                           float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                   float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
-                           float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
+                   int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asGeoAreaCompositeGrid(float level = asNONE, float height = asNONE);
+    explicit asAreaCompGrid(float level = asNONE, float height = asNONE);
 
-    static asGeoAreaCompositeGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                               int yPtsNb, double yStep, float level = asNONE, float height = asNONE,
-                                               int flatAllowed = asFLAT_FORBIDDEN);
+    static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                        int yPtsNb, double yStep, float level = asNONE, float height = asNONE,
+                                        int flatAllowed = asFLAT_FORBIDDEN);
 
     static a1d GetXaxis(const wxString &type, double xMin, double xMax, double xStep = 0);
 
     static a1d GetYaxis(const wxString &type, double yMin, double yMax, double yStep = 0);
 
-    virtual bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const = 0;
+    virtual bool GridsOverlay(asAreaCompGrid *otherarea) const = 0;
 
     void SetLastRowAsNewComposite();
 
@@ -95,10 +95,16 @@ public:
 
     a1d GetYaxis();
 
+    bool AxesInitialized()
+    {
+        return m_axesInitialized;
+    }
+
 protected:
+    bool m_axesInitialized;
 
 private:
 
 };
 
-#endif // asGeoAreaCompositeGrid_H
+#endif // asAreaCompositeGrid_H

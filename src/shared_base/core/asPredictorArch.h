@@ -47,7 +47,7 @@ public:
 
     bool Init() override;
 
-    bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
+    bool ClipToArea(asAreaCompGrid *desiredArea);
 
 
 protected:
@@ -59,7 +59,7 @@ protected:
 
     bool CheckTimeArray(asTimeArray &timeArray) const override;
 
-    bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
+    bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
 
 private:
 

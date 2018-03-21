@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -40,7 +40,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadEasy)
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -54,7 +54,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadEasy)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -98,7 +98,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadComposite)
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -112,7 +112,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -160,7 +160,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderLeft)
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -174,7 +174,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -214,7 +214,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderRight)
     double yWidth = 4;
     double step = 2;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 2, 00, 00);
@@ -228,7 +228,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

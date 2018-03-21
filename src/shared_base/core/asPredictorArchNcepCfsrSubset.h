@@ -31,7 +31,7 @@
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNcepCfsrSubset
         : public asPredictorArch

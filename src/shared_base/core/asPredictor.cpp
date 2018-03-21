@@ -29,7 +29,7 @@
 #include "asPredictor.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <wx/dir.h>
 
 
@@ -154,7 +154,7 @@ bool asPredictor::CheckFilesPresence()
     return true;
 }
 
-bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray)
+bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray)
 {
     if (!m_initialized) {
         if (!Init()) {
@@ -187,7 +187,7 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
         }
 
         // Create a new area matching the dataset
-        asGeoAreaCompositeGrid *dataArea = CreateMatchingArea(desiredArea);
+        asAreaCompGrid *dataArea = CreateMatchingArea(desiredArea);
 
         // Store time array
         m_time = timeArray.GetTimeArray();
@@ -222,7 +222,7 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
         }
 
         // Interpolate the loaded data on the desired grid
-        if (desiredArea && !InterpolateOnGrid(dataArea, desiredArea)) {
+        if (desiredArea && desiredArea->AxesInitialized() && !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
             return false;
@@ -252,12 +252,12 @@ bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArr
     return true;
 }
 
-bool asPredictor::Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray)
+bool asPredictor::Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray)
 {
     return Load(&desiredArea, timeArray);
 }
 
-bool asPredictor::Load(asGeoAreaCompositeGrid &desiredArea, double date)
+bool asPredictor::Load(asAreaCompGrid &desiredArea, double date)
 {
     asTimeArray timeArray(date, asTimeArray::SingleDay);
     timeArray.Init();
@@ -265,7 +265,7 @@ bool asPredictor::Load(asGeoAreaCompositeGrid &desiredArea, double date)
     return Load(&desiredArea, timeArray);
 }
 
-bool asPredictor::Load(asGeoAreaCompositeGrid *desiredArea, double date)
+bool asPredictor::Load(asAreaCompGrid *desiredArea, double date)
 {
     asTimeArray timeArray(date, asTimeArray::SingleDay);
     timeArray.Init();
@@ -298,7 +298,7 @@ bool asPredictor::EnquireFileStructure()
     return true;
 }
 
-bool asPredictor::ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
+bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     switch (m_fileType) {
         case (asFile::Netcdf) : {
@@ -351,7 +351,7 @@ bool asPredictor::EnquireNetcdfFileStructure()
     return true;
 }
 
-bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea,
                                         asTimeArray &timeArray, vvva2f &compositeData)
 {
     // Open the NetCDF file
@@ -451,7 +451,7 @@ bool asPredictor::EnquireGribFileStructure()
     return true;
 }
 
-bool asPredictor::ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
+bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea,
                                       asTimeArray &timeArray, vvva2f &compositeData)
 {
     // Open the Grib file
@@ -686,7 +686,7 @@ bool asPredictor::CheckFileStructure()
     return true;
 }
 
-asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea)
+asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 {
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
@@ -707,7 +707,8 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
             dataYmin = floor((desiredArea->GetAbsoluteYmin() - yAxisShift) / yAxisStep) * yAxisStep + yAxisShift;
             double dataXmax = ceil((desiredArea->GetAbsoluteXmax() - xAxisShift) / xAxisStep) * xAxisStep + xAxisShift;
             double dataYmax = ceil((desiredArea->GetAbsoluteYmax() - yAxisShift) / yAxisStep) * yAxisStep + yAxisShift;
-            if (m_strideAllowed && fmod(desiredArea->GetXstep(), xAxisStep) == 0 && fmod(desiredArea->GetYstep(), yAxisStep) == 0 ) {
+            if (m_strideAllowed && desiredArea->AxesInitialized() && fmod(desiredArea->GetXstep(), xAxisStep) == 0 &&
+                fmod(desiredArea->GetYstep(), yAxisStep) == 0) {
                 // If the desired step is a multiple of the data resolution
                 dataXstep = desiredArea->GetXstep();
                 dataYstep = desiredArea->GetYstep();
@@ -732,10 +733,9 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
             }
         }
 
-        asGeoAreaCompositeGrid *dataArea = asGeoAreaCompositeGrid::GetInstance(gridType, dataXmin, dataXptsnb,
-                                                                               dataXstep, dataYmin, dataYptsnb,
-                                                                               dataYstep, desiredArea->GetLevel(),
-                                                                               asNONE, asFLAT_ALLOWED);
+        asAreaCompGrid *dataArea = asAreaCompGrid::GetInstance(gridType, dataXmin, dataXptsnb, dataXstep, dataYmin,
+                                                               dataYptsnb, dataYstep, desiredArea->GetLevel(), asNONE,
+                                                               asFLAT_ALLOWED);
 
         // Get axes length for preallocation
         m_lonPtsnb = dataArea->GetXaxisPtsnb();
@@ -747,7 +747,7 @@ asGeoAreaCompositeGrid *asPredictor::CreateMatchingArea(asGeoAreaCompositeGrid *
     return nullptr;
 }
 
-asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData)
+asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compositeData)
 {
     wxASSERT(m_fStr.lons.size()> 0);
     wxASSERT(m_fStr.lats.size()> 0);
@@ -782,7 +782,7 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                         wxASSERT(xWidth >= 0);
                         int xPtsNb = 1 + xWidth / dataArea->GetXstep();
                         wxLogDebug(_("xPtsNb = %d."), xPtsNb);
-                        asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
+                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), xPtsNb,
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
                                 dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
@@ -817,7 +817,7 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                         wxASSERT(yWidth >= 0);
                         int yPtsNb = 1 + yWidth / dataArea->GetYstep();
                         wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                        asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
+                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
                                 dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
@@ -836,7 +836,7 @@ asGeoAreaCompositeGrid *asPredictor::AdjustAxes(asGeoAreaCompositeGrid *dataArea
                         wxASSERT(yWidth >= 0);
                         int yPtsNb = 1 + yWidth / dataArea->GetYstep();
                         wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                        asGeoAreaCompositeGrid *newdataArea = asGeoAreaCompositeGrid::GetInstance(
+                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
                                 dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
                                 dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
                                 dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
@@ -1300,7 +1300,7 @@ bool asPredictor::Inline()
     return true;
 }
 
-bool asPredictor::MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid *area)
+bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area)
 {
     if (area) {
         // Get a container with the final size
@@ -1368,7 +1368,7 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid 
     return true;
 }
 
-bool asPredictor::InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea)
+bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea)
 {
     wxASSERT(dataArea);
     wxASSERT(dataArea->GetNbComposites() > 0);

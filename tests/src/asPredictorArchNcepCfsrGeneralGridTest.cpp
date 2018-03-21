@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -41,7 +41,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
@@ -57,7 +57,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -113,7 +113,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
     EXPECT_NEAR(141.9, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(156.3, hgt[7][0](4, 10), 0.1);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -126,7 +126,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadComposite)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
@@ -141,7 +141,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -182,7 +182,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadComposite)
     EXPECT_NEAR(149.7, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(145.9, hgt[7][0](4, 10), 0.1);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -195,7 +195,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeft)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
@@ -210,7 +210,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -247,7 +247,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeft)
     EXPECT_NEAR(150.8, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(145.9, hgt[7][0](4, 4), 0.1);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -260,7 +260,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeftOn720)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
@@ -275,7 +275,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeftOn720)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -312,7 +312,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderLeftOn720)
     EXPECT_NEAR(150.8, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(145.9, hgt[7][0](4, 4), 0.1);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -325,7 +325,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderRight)
     double step = 0.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
@@ -340,7 +340,7 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -379,6 +379,6 @@ TEST(PredictorArchNcepCfsrGeneral, LoadBorderRight)
     EXPECT_NEAR(149.7, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(150.8, hgt[7][0](4, 6), 0.1);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }

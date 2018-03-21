@@ -26,37 +26,34 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asGeoAreaCompositeGaussianGrid_H
-#define asGeoAreaCompositeGaussianGrid_H
+#ifndef asAreaCompositeRegularGrid_H
+#define asAreaCompositeRegularGrid_H
 
 #include <asIncludes.h>
-#include <asGeoAreaCompositeGrid.h>
-#include <asGeoAreaGaussianGrid.h>
+#include <asAreaCompGrid.h>
 
-class asGeoAreaCompositeGaussianGrid
-        : public asGeoAreaCompositeGrid
+class asAreaCompRegGrid
+        : public asAreaCompGrid
 {
 public:
-    asGeoAreaCompositeGaussianGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                   asGeo::GridType type = GaussianT62, float level = asNONE, float height = asNONE,
-                                   int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
+                      double yStep, float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asGeoAreaCompositeGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb,
-                                   asGeo::GridType type = GaussianT382, float level = asNONE, float height = asNONE,
-                                   int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                      float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    ~asGeoAreaCompositeGaussianGrid() override = default;
+    ~asAreaCompRegGrid() override = default;
 
-    bool GridsOverlay(asGeoAreaCompositeGrid *otherarea) const override;
+    bool GridsOverlay(asAreaCompGrid *otherarea) const override;
 
     double GetXstep() const override
     {
-        return 0.0;
+        return m_xStep;
     }
 
     double GetYstep() const override
     {
-        return 0.0;
+        return m_yStep;
     }
 
     a1d GetXaxisComposite(int compositeNb) override;
@@ -82,12 +79,12 @@ public:
 protected:
 
 private:
-    a1d m_fullAxisX;
-    a1d m_fullAxisY;
+    double m_xStep;
+    double m_yStep;
 
-    bool IsOnGrid(const Coo &point) const;
+    bool IsOnGrid(double step) const;
 
-    bool IsOnGrid(double xCoord, double yCoord) const;
+    bool IsOnGrid(double stepX, double stepY) const;
 };
 
-#endif // asGeoAreaCompositeGaussianGrid_H
+#endif // asAreaCompositeRegularGrid_H

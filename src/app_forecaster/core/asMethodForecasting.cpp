@@ -31,7 +31,7 @@
 #include "asResultsDates.h"
 #include "asResultsValues.h"
 #include "asTimeArray.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asProcessor.h"
 #include "asPreprocessor.h"
 
@@ -786,7 +786,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Area object instantiation
-            asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                     params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                     params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                     params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
@@ -909,7 +909,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+                asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                         params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                         params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
@@ -1253,7 +1253,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Area object instantiation
-            asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                     params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                     params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                     params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),
@@ -1364,7 +1364,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+                asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                         params.GetPredictorGridType(iStep, iPtor), params.GetPredictorXmin(iStep, iPtor),
                         params.GetPredictorXptsnb(iStep, iPtor), params.GetPredictorXstep(iStep, iPtor),
                         params.GetPredictorYmin(iStep, iPtor), params.GetPredictorYptsnb(iStep, iPtor),

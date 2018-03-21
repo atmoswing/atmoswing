@@ -28,7 +28,7 @@
 #include "asPredictorArchNoaa20Cr2cEnsemble.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaa20Cr2cEnsemble::asPredictorArchNoaa20Cr2cEnsemble(const wxString &dataId)

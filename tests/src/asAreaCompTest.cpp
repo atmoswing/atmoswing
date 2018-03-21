@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoAreaComposite.h"
+#include "asAreaComp.h"
 #include "gtest/gtest.h"
 
 
-TEST(GeoAreaCompositeGrid, ConstructorOneArea)
+TEST(AreaCompGrid, ConstructorOneArea)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -41,12 +41,12 @@ TEST(GeoAreaCompositeGrid, ConstructorOneArea)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_EQ(1, geoArea.GetNbComposites());
+    EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(GeoAreaCompositeGrid, ConstructorTwoAreas)
+TEST(AreaCompGrid, ConstructorTwoAreas)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -10;
@@ -57,48 +57,48 @@ TEST(GeoAreaCompositeGrid, ConstructorTwoAreas)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_EQ(2, geoArea.GetNbComposites());
+    EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(GeoAreaCompositeGrid, ConstructorAlternativeOneArea)
+TEST(AreaCompGrid, ConstructorAlternativeOneArea)
 {
     double xMin = 10;
     double xWidth = 20;
     double yMin = 30;
     double yWidth = 40;
-    asGeoAreaComposite geoArea(xMin, xWidth, yMin, yWidth);
+    asAreaComp area(xMin, xWidth, yMin, yWidth);
 
-    EXPECT_EQ(1, geoArea.GetNbComposites());
+    EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(GeoAreaCompositeGrid, ConstructorAlternativeTwoAreas)
+TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
 {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
     double yWidth = 40;
-    asGeoAreaComposite geoArea(xMin, xWidth, yMin, yWidth);
+    asAreaComp area(xMin, xWidth, yMin, yWidth);
 
-    EXPECT_EQ(2, geoArea.GetNbComposites());
+    EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(GeoAreaCompositeGrid, CheckConsistency)
+TEST(AreaCompGrid, CheckConsistency)
 {
     double xMin = -5;
     double xWidth = 20;
     double yMin = 30;
     double yWidth = 40;
-    asGeoAreaComposite geoArea(xMin, xWidth, yMin, yWidth);
+    asAreaComp area(xMin, xWidth, yMin, yWidth);
 
-    EXPECT_DOUBLE_EQ(355, geoArea.GetCornerUL().x);
-    EXPECT_DOUBLE_EQ(355, geoArea.GetCornerLL().x);
-    EXPECT_DOUBLE_EQ(15, geoArea.GetCornerUR().x);
-    EXPECT_DOUBLE_EQ(15, geoArea.GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(355, area.GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(355, area.GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(15, area.GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(15, area.GetCornerLR().x);
 }
 
-TEST(GeoAreaCompositeGrid, IsSquareTrue)
+TEST(AreaCompGrid, IsSquareTrue)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -109,12 +109,12 @@ TEST(GeoAreaCompositeGrid, IsSquareTrue)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_TRUE(geoArea.IsRectangle());
+    EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(GeoAreaCompositeGrid, IsSquareFalse)
+TEST(AreaCompGrid, IsSquareFalse)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -125,12 +125,12 @@ TEST(GeoAreaCompositeGrid, IsSquareFalse)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_FALSE(geoArea.IsRectangle());
+    EXPECT_FALSE(area.IsRectangle());
 }
 
-TEST(GeoAreaCompositeGrid, GetBounds)
+TEST(AreaCompGrid, GetBounds)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -141,29 +141,29 @@ TEST(GeoAreaCompositeGrid, GetBounds)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
-    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
-    EXPECT_DOUBLE_EQ(20, geoArea.GetXmax());
-    EXPECT_DOUBLE_EQ(40, geoArea.GetYmax());
+    EXPECT_DOUBLE_EQ(10, area.GetXmin());
+    EXPECT_DOUBLE_EQ(30, area.GetYmin());
+    EXPECT_DOUBLE_EQ(20, area.GetXmax());
+    EXPECT_DOUBLE_EQ(40, area.GetYmax());
 }
 
-TEST(GeoAreaCompositeGrid, GetBoundsSplitted)
+TEST(AreaCompGrid, GetBoundsSplitted)
 {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
     double yWidth = 40;
-    asGeoAreaComposite geoArea(xMin, xWidth, yMin, yWidth);
+    asAreaComp area(xMin, xWidth, yMin, yWidth);
 
-    EXPECT_DOUBLE_EQ(0, geoArea.GetXmin());
-    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
-    EXPECT_DOUBLE_EQ(360, geoArea.GetXmax());
-    EXPECT_DOUBLE_EQ(70, geoArea.GetYmax());
+    EXPECT_DOUBLE_EQ(0, area.GetXmin());
+    EXPECT_DOUBLE_EQ(30, area.GetYmin());
+    EXPECT_DOUBLE_EQ(360, area.GetXmax());
+    EXPECT_DOUBLE_EQ(70, area.GetYmax());
 }
 
-TEST(GeoAreaCompositeGrid, GetCenter)
+TEST(AreaCompGrid, GetCenter)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -174,14 +174,14 @@ TEST(GeoAreaCompositeGrid, GetCenter)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    Coo center = geoArea.GetCenter();
+    Coo center = area.GetCenter();
     EXPECT_DOUBLE_EQ(15, center.x);
     EXPECT_DOUBLE_EQ(35, center.y);
 }
 
-TEST(GeoAreaCompositeGrid, GetCenterSplitted)
+TEST(AreaCompGrid, GetCenterSplitted)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
@@ -192,14 +192,14 @@ TEST(GeoAreaCompositeGrid, GetCenterSplitted)
     cornerLL.y = 30;
     cornerLR.x = 10;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    Coo center = geoArea.GetCenter();
+    Coo center = area.GetCenter();
     EXPECT_DOUBLE_EQ(345, center.x);
     EXPECT_DOUBLE_EQ(35, center.y);
 }
 
-TEST(GeoAreaCompositeGrid, GetCenterSplittedEdge)
+TEST(AreaCompGrid, GetCenterSplittedEdge)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -10;
@@ -210,14 +210,14 @@ TEST(GeoAreaCompositeGrid, GetCenterSplittedEdge)
     cornerLL.y = 30;
     cornerLR.x = 10;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    Coo center = geoArea.GetCenter();
+    Coo center = area.GetCenter();
     EXPECT_DOUBLE_EQ(360, center.x);
     EXPECT_DOUBLE_EQ(35, center.y);
 }
 
-TEST(GeoAreaCompositeGrid, GetCornersSplitted)
+TEST(AreaCompGrid, GetCornersSplitted)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
@@ -228,23 +228,23 @@ TEST(GeoAreaCompositeGrid, GetCornersSplitted)
     cornerLL.y = 30;
     cornerLR.x = 10;
     cornerLR.y = 30;
-    asGeoAreaComposite geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_DOUBLE_EQ(0, geoArea.GetComposite(0).GetCornerUL().x);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(0).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(10, geoArea.GetComposite(0).GetCornerUR().x);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(0).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(0, geoArea.GetComposite(0).GetCornerLL().x);
-    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(0).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(10, geoArea.GetComposite(0).GetCornerLR().x);
-    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(0).GetCornerLR().y);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUR().y);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLR().y);
 
-    EXPECT_DOUBLE_EQ(320, geoArea.GetComposite(1).GetCornerUL().x);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(1).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(360, geoArea.GetComposite(1).GetCornerUR().x);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetComposite(1).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(320, geoArea.GetComposite(1).GetCornerLL().x);
-    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(1).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(360, geoArea.GetComposite(1).GetCornerLR().x);
-    EXPECT_DOUBLE_EQ(30, geoArea.GetComposite(1).GetCornerLR().y);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUL().y);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUR().y);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLL().y);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLR().y);
 }

@@ -26,62 +26,45 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGEO_H
-#define ASGEO_H
+#ifndef asAreaGaussianGrid_H
+#define asAreaGaussianGrid_H
 
 #include <asIncludes.h>
+#include <asArea.h>
 
-class asGeo
-        : public wxObject
+class asAreaGaussGrid
+        : public asArea
 {
 public:
-    enum GridType
-    {
-        Regular, GaussianT62, GaussianT382
-    };
+    asAreaGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, GridType type,
+                    float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    explicit asGeo(GridType type = Regular);
+    asAreaGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type, float level = asNONE,
+                    float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    ~asGeo() override = default;
+    ~asAreaGaussGrid() override = default;
 
-    bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
+    static void BuildLonAxis(a1d &axis, const GridType &type);
 
-    GridType GetGridType() const
-    {
-        return m_gridType;
-    }
+    static void BuildLatAxis(a1d &axis, const GridType &type);
 
-    wxString GetGridTypeString() const;
+    int GetXaxisPtsnb() const;
 
-    double GetAxisXmin() const
-    {
-        return m_axisXmin;
-    }
+    int GetYaxisPtsnb() const;
 
-    double GetAxisXmax() const
-    {
-        return m_axisXmax;
-    }
+    a1d GetXaxis();
 
-    double GetAxisYmin() const
-    {
-        return m_axisYmin;
-    }
-
-    double GetAxisYmax() const
-    {
-        return m_axisYmax;
-    }
+    a1d GetYaxis();
 
 protected:
-    GridType m_gridType;
-    double m_axisXmin;
-    double m_axisXmax;
-    double m_axisYmin;
-    double m_axisYmax;
 
 private:
+    a1d m_fullAxisX;
+    a1d m_fullAxisY;
 
+    bool IsOnGrid(const Coo &point) const;
+
+    bool IsOnGrid(double xCoord, double yCoord) const;
 };
 
-#endif
+#endif // asAreaGaussianGrid_H

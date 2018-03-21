@@ -32,7 +32,7 @@
 #include "asParameters.h"
 #include "asThreadPreloadArchiveData.h"
 #include "asTimeArray.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asCriteria.h"
 #include "asPredictorArch.h"
 
@@ -492,16 +492,15 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
             timeArray.Init();
 
-            asGeo geo;
             double yMax = params->GetPreloadYmin(iStep, iPtor) +
                           params->GetPredictorYstep(iStep, iPtor) * (double) (params->GetPreloadYptsnb(iStep, iPtor) - 1);
-            if (yMax > geo.GetAxisYmax()) {
-                double diff = yMax - geo.GetAxisYmax();
+            if (yMax > asArea::GetAxisYmax()) {
+                double diff = yMax - asArea::GetAxisYmax();
                 int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                 params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                 wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), yMax,
                              yMax - diff);
-                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, yMax, geo.GetAxisYmax(),
+                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, yMax, asArea::GetAxisYmax(),
                              params->GetPredictorYstep(iStep, iPtor));
             }
 
@@ -509,7 +508,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             wxASSERT(params->GetPreloadYptsnb(iStep, iPtor) > 0);
 
             // Area object instantiation
-            asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                     params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
                     params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
                     params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
@@ -668,11 +667,10 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                     predictorPreprocess->SelectMembers(params->GetPreprocessMembersNb(iStep, iPtor, iPre));
                 }
 
-                asGeo geo;
                 double yMax = params->GetPreloadYmin(iStep, iPtor) + params->GetPredictorYstep(iStep, iPtor) *
                                                                     double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
-                if (yMax > geo.GetAxisYmax()) {
-                    double diff = yMax - geo.GetAxisYmax();
+                if (yMax > asArea::GetAxisYmax()) {
+                    double diff = yMax - asArea::GetAxisYmax();
                     int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                     params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                     wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), yMax,
@@ -680,7 +678,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 // Area object instantiation
-                asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+                asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                         params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
                         params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
                         params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
@@ -909,7 +907,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     auto *desiredPredictor = new asPredictorArch(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Area object instantiation
-    asGeoAreaCompositeGrid *desiredArea = asGeoAreaCompositeGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
+    asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
                                                                               params->GetPredictorXmin(iStep, iPtor),
                                                                               params->GetPredictorXptsnb(iStep, iPtor),
                                                                               params->GetPredictorXstep(iStep, iPtor),
@@ -980,7 +978,7 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     }
 
     // Area object instantiation
-    asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
                                                                        params->GetPredictorXmin(iStep, iPtor),
                                                                        params->GetPredictorXptsnb(iStep, iPtor),
                                                                        params->GetPredictorXstep(iStep, iPtor),
@@ -1038,7 +1036,7 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
         }
 
         // Area object instantiation
-        asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
+        asAreaCompGrid *area = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
                                                                            params->GetPredictorXmin(iStep, iPtor),
                                                                            params->GetPredictorXptsnb(iStep, iPtor),
                                                                            params->GetPredictorXstep(iStep, iPtor),

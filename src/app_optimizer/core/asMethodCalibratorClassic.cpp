@@ -319,9 +319,9 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
                                                const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
                                                a1d &yAxis) const
 {
-    xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
+    xAxis = asAreaCompGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
                                              params.GetPredictorXstep(iStep, 0));
-    yAxis = asGeoAreaCompositeGrid::GetYaxis(params.GetPredictorGridType(iStep, 0), explo.yMinStart, explo.yMinEnd,
+    yAxis = asAreaCompGrid::GetYaxis(params.GetPredictorGridType(iStep, 0), explo.yMinStart, explo.yMinEnd,
                                              params.GetPredictorYstep(iStep, 0));
 }
 

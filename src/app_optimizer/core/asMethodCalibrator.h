@@ -43,7 +43,7 @@
 #include <asParametersCalibration.h>
 #include <asParametersOptimization.h>
 #include <asCriteria.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <asTimeArray.h>
 #include <asProcessor.h>
 #include <asProcessorScore.h>

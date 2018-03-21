@@ -28,7 +28,7 @@
 #include "asPredictorProj.h"
 
 #include "asTimeArray.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asPredictorProjCMIP5.h"
 
 

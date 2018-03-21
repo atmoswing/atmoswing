@@ -26,24 +26,23 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asGeoAreaRegularGrid_H
-#define asGeoAreaRegularGrid_H
+#ifndef asAreaRegularGrid_H
+#define asAreaRegularGrid_H
 
 #include <asIncludes.h>
-#include <asGeoArea.h>
+#include <asArea.h>
 
-class asGeoAreaRegularGrid
-        : public asGeoArea
+class asAreaRegGrid
+        : public asArea
 {
 public:
-    asGeoAreaRegularGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                         double xStep, double yStep, float level = asNONE, float height = asNONE,
-                         int flatAllowed = asFLAT_ALLOWED);
+    asAreaRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
+                  double yStep, float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    asGeoAreaRegularGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                         float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+    asAreaRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                  float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
-    ~asGeoAreaRegularGrid() override = default;
+    ~asAreaRegGrid() override = default;
 
     int GetXaxisPtsnb() const;
 
@@ -64,4 +63,4 @@ private:
     bool IsOnGrid(double stepX, double stepY) const;
 };
 
-#endif // asGeoAreaRegularGrid_H
+#endif // asAreaRegularGrid_H

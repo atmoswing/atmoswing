@@ -28,7 +28,7 @@
 #include "asPredictorProjCMIP5.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 

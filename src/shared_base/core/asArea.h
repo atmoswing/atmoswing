@@ -26,27 +26,60 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGEOAREA_H
-#define ASGEOAREA_H
+#ifndef ASAREA_H
+#define ASAREA_H
 
 #include <asIncludes.h>
-#include <asGeo.h>
 
-class asGeoArea
-        : public asGeo
+class asArea
+        : public wxObject
 {
 public:
-    asGeoArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
-              float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    enum GridType
+    {
+        Regular, GaussianT62, GaussianT382, Undefined
+    };
 
-    asGeoArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
-              int flatAllowed = asFLAT_FORBIDDEN);
+    asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
+           float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asGeoArea(float level = asNONE, float height = asNONE);
+    asArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
+           int flatAllowed = asFLAT_FORBIDDEN);
 
-    ~asGeoArea() override = default;
+    explicit asArea(float level = asNONE, float height = asNONE);
 
-    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+    ~asArea() override = default;
+
+    virtual void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+
+    bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
+
+    GridType GetGridType() const
+    {
+        return m_gridType;
+    }
+
+    wxString GetGridTypeString() const;
+
+    static double GetAxisXmin()
+    {
+        return 0;
+    }
+
+    static double GetAxisXmax()
+    {
+        return 360;
+    }
+
+    static double GetAxisYmin()
+    {
+        return -90;
+    }
+
+    static double GetAxisYmax()
+    {
+        return 90;
+    }
 
     Coo GetCornerUL() const
     {
@@ -102,23 +135,24 @@ public:
         m_level = val;
     }
 
-    double GetXmin() const;
+    virtual double GetXmin() const;
 
-    double GetXmax() const;
+    virtual double GetXmax() const;
 
     double GetXwidth() const;
 
-    double GetYmin() const;
+    virtual double GetYmin() const;
 
-    double GetYmax() const;
+    virtual double GetYmax() const;
 
     double GetYwidth() const;
 
-    Coo GetCenter() const;
+    virtual Coo GetCenter() const;
 
-    bool IsRectangle() const;
+    virtual bool IsRectangle() const;
 
 protected:
+    GridType m_gridType;
     Coo m_cornerUL;
     Coo m_cornerUR;
     Coo m_cornerLL;
@@ -127,9 +161,9 @@ protected:
     float m_height;
     int m_flatAllowed;
 
-private:
-    void Init();
+    virtual void Init();
 
+private:
     bool DoCheckPoints();
 
     bool CheckConsistency();

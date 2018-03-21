@@ -31,7 +31,7 @@
 #include <asIncludes.h>
 #include <asPredictorArchNasaMerra2.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNasaMerra2Subset
         : public asPredictorArchNasaMerra2

@@ -26,12 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoAreaGaussianGrid.h"
+#include "asAreaGaussGrid.h"
 
-asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
-                                             const Coo &cornerLR, asGeo::GridType type, float level, float height,
-                                             int flatAllowed)
-        : asGeoArea(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
+asAreaGaussGrid::asAreaGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                                 GridType type, float level, float height, int flatAllowed)
+        : asArea(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
 {
     m_gridType = type;
 
@@ -48,9 +47,9 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(const Coo &cornerUL, const Coo &cor
         asThrowException(_("The given area does not match a gaussian grid."));
 }
 
-asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, asGeo::GridType type,
-                                             float level, float height, int flatAllowed)
-        : asGeoArea(level, height)
+asAreaGaussGrid::asAreaGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type, float level,
+                                 float height, int flatAllowed)
+        : asArea(level, height)
 {
     m_gridType = type;
 
@@ -79,7 +78,7 @@ asGeoAreaGaussianGrid::asGeoAreaGaussianGrid(double xMin, int xPtsNb, double yMi
     Generate(xMin, xWidth, yMin, yWidth, flatAllowed);
 }
 
-void asGeoAreaGaussianGrid::BuildLonAxis(a1d &axis, const asGeo::GridType &type)
+void asAreaGaussGrid::BuildLonAxis(a1d &axis, const GridType &type)
 {
     int ni = 0;
     switch (type) {
@@ -99,7 +98,7 @@ void asGeoAreaGaussianGrid::BuildLonAxis(a1d &axis, const asGeo::GridType &type)
     axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
 }
 
-void asGeoAreaGaussianGrid::BuildLatAxis(a1d &axis, const asGeo::GridType &type)
+void asAreaGaussGrid::BuildLatAxis(a1d &axis, const GridType &type)
 {
     switch (type) {
         case (GaussianT62): {
@@ -175,7 +174,7 @@ void asGeoAreaGaussianGrid::BuildLatAxis(a1d &axis, const asGeo::GridType &type)
     }
 }
 
-int asGeoAreaGaussianGrid::GetXaxisPtsnb() const
+int asAreaGaussGrid::GetXaxisPtsnb() const
 {
     double xMin = GetXmin();
     int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
@@ -186,7 +185,7 @@ int asGeoAreaGaussianGrid::GetXaxisPtsnb() const
     return std::abs(xMaxIndex - xMinIndex) + 1;
 }
 
-int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
+int asAreaGaussGrid::GetYaxisPtsnb() const
 {
     double yMin = GetYmin();
     int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
@@ -197,7 +196,7 @@ int asGeoAreaGaussianGrid::GetYaxisPtsnb() const
     return std::abs(yMaxIndex - yMinIndex) + 1;
 }
 
-a1d asGeoAreaGaussianGrid::GetXaxis()
+a1d asAreaGaussGrid::GetXaxis()
 {
     double xMin = GetXmin();
     int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
@@ -207,7 +206,7 @@ a1d asGeoAreaGaussianGrid::GetXaxis()
     return m_fullAxisX.segment(xMinIndex, xMaxIndex - xMinIndex + 1);
 }
 
-a1d asGeoAreaGaussianGrid::GetYaxis()
+a1d asAreaGaussGrid::GetYaxis()
 {
     double yMin = GetYmin();
     int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
@@ -217,7 +216,7 @@ a1d asGeoAreaGaussianGrid::GetYaxis()
     return m_fullAxisY.segment(yMinIndex, yMaxIndex - yMinIndex + 1);
 }
 
-bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point) const
+bool asAreaGaussGrid::IsOnGrid(const Coo &point) const
 {
     if (!IsRectangle())
         return false;
@@ -233,7 +232,7 @@ bool asGeoAreaGaussianGrid::IsOnGrid(const Coo &point) const
     return true;
 }
 
-bool asGeoAreaGaussianGrid::IsOnGrid(double xCoord, double yCoord) const
+bool asAreaGaussGrid::IsOnGrid(double xCoord, double yCoord) const
 {
     int foundU = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xCoord, 0.01);
     if ((foundU == asNOT_FOUND) || (foundU == asOUT_OF_RANGE))

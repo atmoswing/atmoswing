@@ -28,7 +28,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -42,7 +42,7 @@ TEST(PredictorArchNcepR1v2003General, LoadEasy)
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -57,7 +57,7 @@ TEST(PredictorArchNcepR1v2003General, LoadEasy)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -118,7 +118,7 @@ TEST(PredictorArchNcepR1v2003General, LoadEasy)
     EXPECT_FLOAT_EQ(6, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(65, hgt[40][0](2, 4));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -131,7 +131,7 @@ TEST(PredictorArchNcepR1v2003General, LoadComposite)
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -146,7 +146,7 @@ TEST(PredictorArchNcepR1v2003General, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -215,7 +215,7 @@ TEST(PredictorArchNcepR1v2003General, LoadComposite)
     EXPECT_FLOAT_EQ(53, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(-2, hgt[40][0](2, 6));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -228,7 +228,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeft)
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -243,7 +243,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -284,7 +284,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeft)
     EXPECT_FLOAT_EQ(7, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(-2, hgt[40][0](2, 2));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -297,7 +297,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeftOn720)
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -312,7 +312,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeftOn720)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -353,7 +353,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderLeftOn720)
     EXPECT_FLOAT_EQ(7, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(-2, hgt[40][0](2, 2));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -366,7 +366,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderRight)
     double step = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb,
                                                                           step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -381,7 +381,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -428,7 +428,7 @@ TEST(PredictorArchNcepR1v2003General, LoadBorderRight)
     EXPECT_FLOAT_EQ(53, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(7, hgt[40][0](2, 4));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -442,7 +442,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLon)
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -457,7 +457,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLon)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -501,7 +501,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLon)
     EXPECT_FLOAT_EQ(53, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(-2, hgt[40][0](2, 3));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -515,7 +515,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonMoved)
     double steplat = 2.5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -530,7 +530,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonMoved)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -559,7 +559,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonMoved)
     EXPECT_FLOAT_EQ(37, hgt[40][0](2, 0));
     EXPECT_FLOAT_EQ(1, hgt[40][0](2, 2));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -573,7 +573,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLat)
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -588,7 +588,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLat)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -626,7 +626,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLat)
     EXPECT_FLOAT_EQ(53, hgt[40][0](1, 0));
     EXPECT_FLOAT_EQ(-2, hgt[40][0](1, 3));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -640,7 +640,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLatTime)
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -655,7 +655,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLatTime)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -682,7 +682,7 @@ TEST(PredictorArchNcepR1v2003General, LoadCompositeStepLonLatTime)
     EXPECT_FLOAT_EQ(53, hgt[10][0](1, 0));
     EXPECT_FLOAT_EQ(-2, hgt[10][0](1, 3));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
@@ -696,7 +696,7 @@ TEST(PredictorArchNcepR1v2003General, SetData)
     double steplat = 5;
     float level = 1000;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb,
                                                                           steplat, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
@@ -712,7 +712,7 @@ TEST(PredictorArchNcepR1v2003General, SetData)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f newdata(5, va2f(1, a2f::Zero(1, 4)));
 
@@ -733,6 +733,6 @@ TEST(PredictorArchNcepR1v2003General, SetData)
     EXPECT_FLOAT_EQ(41, predictor->GetData()[4][0](0, 0));
     EXPECT_FLOAT_EQ(44, predictor->GetData()[4][0](0, 3));
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }

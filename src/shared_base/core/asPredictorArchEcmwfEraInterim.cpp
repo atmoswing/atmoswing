@@ -28,7 +28,7 @@
 #include "asPredictorArchEcmwfEraInterim.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &dataId)

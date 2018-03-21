@@ -28,7 +28,7 @@
 #include "asPredictorArchJmaJra55Subset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <wx/dir.h>
 
 

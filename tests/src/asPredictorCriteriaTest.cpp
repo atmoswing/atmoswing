@@ -28,7 +28,7 @@
 
 #include "wx/filename.h"
 #include <asCriteria.h>
-#include <asGeoAreaCompositeRegularGrid.h>
+#include <asAreaCompRegGrid.h>
 #include <asPredictorArch.h>
 #include <asPreprocessor.h>
 #include <asFileAscii.h>
@@ -308,7 +308,7 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -322,7 +322,7 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
@@ -387,7 +387,7 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoArea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
@@ -401,7 +401,7 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoArea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();

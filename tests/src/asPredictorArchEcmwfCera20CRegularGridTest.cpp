@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -40,7 +40,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -56,7 +56,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
     predictor->SelectFirstMember();
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -106,7 +106,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -122,7 +122,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
     predictor->SelectMember(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -172,7 +172,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -188,7 +188,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
     predictor->SelectMembers(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     ASSERT_EQ(4, predictor->GetData().size());
     ASSERT_EQ(3, predictor->GetData()[0].size());
@@ -279,7 +279,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -294,7 +294,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -346,7 +346,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -361,7 +361,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -411,7 +411,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderRight)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -426,7 +426,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)

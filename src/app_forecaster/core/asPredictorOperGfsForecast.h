@@ -32,7 +32,7 @@
 #include <asIncludes.h>
 #include "asPredictorOper.h"
 
-class asGeoArea;
+class asArea;
 
 class asPredictorOperGfsForecast
         : public asPredictorOper

@@ -111,7 +111,7 @@ protected:
 
     void ListFiles(asTimeArray &timeArray) override;
 
-    bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
+    bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
 
     double ConvertToMjd(double timeValue, double refValue) const override;
 

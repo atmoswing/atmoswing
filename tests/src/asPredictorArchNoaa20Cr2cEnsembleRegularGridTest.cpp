@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -39,7 +39,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -55,7 +55,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -98,7 +98,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -114,7 +114,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -157,7 +157,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -173,7 +173,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -220,7 +220,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -236,7 +236,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -275,7 +275,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderRight)
     double yMin = 70;
     double yWidth = 4;
     double step = 2;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -291,7 +291,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

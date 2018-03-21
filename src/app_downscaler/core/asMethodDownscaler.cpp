@@ -33,7 +33,7 @@
 #include <asResultsDates.h>
 #include <asResultsValues.h>
 #include <asCriteria.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <asTimeArray.h>
 #include <asProcessor.h>
 #include <asPreprocessor.h>
@@ -421,7 +421,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     }
 
     // Area object instantiation
-    asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(
             params->GetPredictorGridType(iStep, iPtor),
             params->GetPredictorXmin(iStep, iPtor),
             params->GetPredictorXptsnb(iStep, iPtor),
@@ -485,7 +485,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         }
 
         // Area object instantiation
-        asGeoAreaCompositeGrid *area = asGeoAreaCompositeGrid::GetInstance(
+        asAreaCompGrid *area = asAreaCompGrid::GetInstance(
                 params->GetPredictorGridType(iStep, iPtor),
                 params->GetPredictorXmin(iStep, iPtor),
                 params->GetPredictorXptsnb(iStep, iPtor),

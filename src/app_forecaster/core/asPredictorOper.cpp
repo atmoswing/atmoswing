@@ -29,7 +29,7 @@
 #include "asPredictorOper.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include "asPredictorOperGfsForecast.h"
 #include <asInternet.h>
 
@@ -300,7 +300,7 @@ void asPredictorOper::ListFiles(asTimeArray &timeArray)
     }
 }
 
-bool asPredictorOper::GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
+bool asPredictorOper::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fInd.areas.clear();
 

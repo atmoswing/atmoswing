@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -40,7 +40,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -55,7 +55,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
                                                                             predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -122,7 +122,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -136,7 +136,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -188,7 +188,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -202,7 +202,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -250,7 +250,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -264,7 +264,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -312,7 +312,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderRight)
     double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -326,7 +326,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
                                                                             predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

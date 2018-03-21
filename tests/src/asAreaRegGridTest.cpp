@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asGeoArea.h"
+#include "asAreaRegGrid.h"
 #include "gtest/gtest.h"
 
 
-TEST(GeoArea, ConstructorLimitsException)
+TEST(AreaRegGrid, ConstructorLimitsException)
 {
     wxLogNull logNo;
 
@@ -43,11 +43,12 @@ TEST(GeoArea, ConstructorLimitsException)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
+    double step = 2.5;
 
-    ASSERT_THROW(asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR), asException);
+    ASSERT_THROW(asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
 }
 
-TEST(GeoArea, ConstructorAlternativeLimitsException)
+TEST(AreaRegGrid, ConstructorAlternativeLimitsException)
 {
     wxLogNull logNo;
 
@@ -55,24 +56,25 @@ TEST(GeoArea, ConstructorAlternativeLimitsException)
     double xWidth = 30;
     double yMin = 30;
     double yWidth = 10;
-    ASSERT_THROW(asGeoArea geoArea(xMin, xWidth, yMin, yWidth), asException);
+    double step = 2.5;
+
+    ASSERT_THROW(asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step), asException);
 }
 
-TEST(GeoArea, CheckConsistency)
+TEST(AreaRegGrid, ConstructorStepException)
 {
-    double xMin = 10;
-    double xWidth = 10;
+    wxLogNull logNo;
+
+    double xMin = -10;
+    double xWidth = 30;
     double yMin = 30;
     double yWidth = 10;
-    asGeoArea geoArea(xMin, xWidth, yMin, yWidth);
+    double step = 2.7;
 
-    EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(30, geoArea.GetCornerLR().y);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(40, geoArea.GetCornerUR().y);
+    ASSERT_THROW(asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step), asException);
 }
 
-TEST(GeoArea, IsRectangleTrue)
+TEST(AreaRegGrid, IsRectangleTrue)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -83,13 +85,16 @@ TEST(GeoArea, IsRectangleTrue)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    double step = 2.5;
+    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    EXPECT_TRUE(geoArea.IsRectangle());
+    EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(GeoArea, IsRectangleFalse)
+TEST(AreaRegGrid, IsRectangleFalse)
 {
+    wxLogNull logNo;
+
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -99,12 +104,12 @@ TEST(GeoArea, IsRectangleFalse)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    double step = 2.5;
 
-    EXPECT_FALSE(geoArea.IsRectangle());
+    ASSERT_THROW(asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
 }
 
-TEST(GeoArea, GetBounds)
+TEST(AreaRegGrid, GetBounds)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -115,15 +120,16 @@ TEST(GeoArea, GetBounds)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    double step = 2.5;
+    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
-    EXPECT_DOUBLE_EQ(30, geoArea.GetYmin());
-    EXPECT_DOUBLE_EQ(10, geoArea.GetXwidth());
-    EXPECT_DOUBLE_EQ(10, geoArea.GetYwidth());
+    EXPECT_DOUBLE_EQ(10, area.GetXmin());
+    EXPECT_DOUBLE_EQ(30, area.GetYmin());
+    EXPECT_DOUBLE_EQ(20, area.GetXmax());
+    EXPECT_DOUBLE_EQ(40, area.GetYmax());
 }
 
-TEST(GeoArea, GetCenter)
+TEST(AreaRegGrid, GetCenter)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -134,24 +140,35 @@ TEST(GeoArea, GetCenter)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asGeoArea geoArea(cornerUL, cornerUR, cornerLL, cornerLR);
+    double step = 2.5;
+    asAreaRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    Coo center = geoArea.GetCenter();
+    Coo center = area.GetCenter();
     EXPECT_DOUBLE_EQ(15, center.x);
     EXPECT_DOUBLE_EQ(35, center.y);
 }
 
-TEST(GeoArea, NegativeSize)
+TEST(AreaRegGrid, GetAxes)
 {
-    double xMin = 10;
-    double xWidth = -7;
-    double yMin = 46;
-    double yWidth = -2;
+    double xMin = 5;
+    double xWidth = 20;
+    double yMin = 45;
+    double yWidth = 2.5;
+    double step = 2.5;
+    asAreaRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
-    asGeoArea geoArea(xMin, xWidth, yMin, yWidth, asNONE, asNONE, asFLAT_ALLOWED);
+    a1d uaxis;
+    uaxis.resize(area.GetXaxisPtsnb());
+    uaxis = area.GetXaxis();
 
-    EXPECT_DOUBLE_EQ(10, geoArea.GetXmin());
-    EXPECT_DOUBLE_EQ(46, geoArea.GetYmin());
-    EXPECT_DOUBLE_EQ(0, geoArea.GetXwidth());
-    EXPECT_DOUBLE_EQ(0, geoArea.GetYwidth());
+    a1d vaxis;
+    vaxis.resize(area.GetYaxisPtsnb());
+    vaxis = area.GetYaxis();
+
+    EXPECT_DOUBLE_EQ(5, uaxis[0]);
+    EXPECT_DOUBLE_EQ(7.5, uaxis[1]);
+    EXPECT_DOUBLE_EQ(10, uaxis[2]);
+    EXPECT_DOUBLE_EQ(15, uaxis[4]);
+    EXPECT_DOUBLE_EQ(45, vaxis[0]);
+    EXPECT_DOUBLE_EQ(47.5, vaxis[1]);
 }

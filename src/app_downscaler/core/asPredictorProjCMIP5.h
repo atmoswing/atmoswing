@@ -31,7 +31,7 @@
 #include <asIncludes.h>
 #include <asPredictorProj.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorProjCMIP5
         : public asPredictorProj
