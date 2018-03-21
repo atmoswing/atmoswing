@@ -27,7 +27,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorProj.h"
-#include "asAreaCompRegGrid.h"
+#include "asAreaCompGenGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -35,13 +35,11 @@
 TEST(PredictorProjCMIP5, LoadEasy)
 {
     double xMin = 3.375;
-    int xPtsNb = 3;
-    double xStep = 1.125;
+    double xWidth = 3;
     double yMin = 75.7;
-    int yPtsNb = 2;
-    double yStep = 1.12145;
-    wxString gridType = "Other";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+    double yWidth = 2;
+    float level = 1000;
+    asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, level);
 
     double start = asTime::GetMJD(2006, 1, 1, 00, 00);
     double end = asTime::GetMJD(2006, 1, 2, 00, 00);
@@ -112,7 +110,6 @@ TEST(PredictorProjCMIP5, LoadEasy)
     EXPECT_NEAR(92.37, hgt[3][0](4, 8), 0.01);
 */
     wxDELETE(predictor);
-    wxDELETE(area);
 }
 /*
 TEST(PredictorArchEcmwfEraIntRegular, LoadComposite)

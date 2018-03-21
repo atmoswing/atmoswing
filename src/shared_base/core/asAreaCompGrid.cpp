@@ -30,6 +30,7 @@
 #include "asAreaCompRegGrid.h"
 #include "asAreaGaussGrid.h"
 #include "asAreaCompGaussGrid.h"
+#include "asAreaCompGenGrid.h"
 
 asAreaCompGrid * asAreaCompGrid::GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
                                              int yPtsNb, double yStep, float level, float height, int flatAllowed)
@@ -55,6 +56,9 @@ asAreaCompGrid * asAreaCompGrid::GetInstance(const wxString &type, double xMin, 
     } else if (type.IsSameAs("GaussianT382", false)) {
         asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT382, level, height,
                                                        flatAllowed);
+        return area;
+    } else if (type.IsSameAs("Generic", false)) {
+        asAreaCompGrid *area = new asAreaCompGenGrid(xMin, xPtsNb, yMin, yPtsNb, level, height, flatAllowed);
         return area;
     } else {
         wxLogError(_("Given grid type: %s"), type);
@@ -122,15 +126,15 @@ a1d asAreaCompGrid::GetYaxis(const wxString &type, double yMin, double yMax, dou
     return axis.segment(start, end - start + 1);
 }
 
-asAreaCompGrid::asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
-                                               const Coo &cornerLR, float level, float height, int flatAllowed)
+asAreaCompGrid::asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                               float level, float height, int flatAllowed)
         : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
           m_axesInitialized(false)
 {
 }
 
-asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level,
-                                               float height, int flatAllowed)
+asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level, float height,
+                               int flatAllowed)
         : asAreaComp(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
           m_axesInitialized(false)
 {
