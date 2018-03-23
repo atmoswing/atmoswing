@@ -37,10 +37,10 @@ class asAreaGaussGrid
 {
 public:
     asAreaGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, GridType type,
-                    float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+                    float level = asNONE, int flatAllowed = asFLAT_ALLOWED);
 
     asAreaGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type, float level = asNONE,
-                    float height = asNONE, int flatAllowed = asFLAT_ALLOWED);
+                    int flatAllowed = asFLAT_ALLOWED);
 
     ~asAreaGaussGrid() override = default;
 

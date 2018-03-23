@@ -29,8 +29,8 @@
 #include "asAreaCompRegGrid.h"
 
 asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                     double xStep, double yStep, float level, float height, int flatAllowed)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+                                     double xStep, double yStep, float level, int flatAllowed)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {
@@ -44,8 +44,8 @@ asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, c
 }
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                                     float level, float height, int flatAllowed)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+                                     float level, int flatAllowed)
+        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, level, flatAllowed),
           m_xStep(xStep),
           m_yStep(yStep)
 {

@@ -29,9 +29,8 @@
 #include "asAreaCompGaussGrid.h"
 
 asAreaCompGaussGrid::asAreaCompGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL,
-                                         const Coo &cornerLR, GridType type, float level, float height,
-                                         int flatAllowed)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed)
+                                         const Coo &cornerLR, GridType type, float level, int flatAllowed)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, flatAllowed)
 {
     m_gridType = type;
 
@@ -51,8 +50,8 @@ asAreaCompGaussGrid::asAreaCompGaussGrid(const Coo &cornerUL, const Coo &cornerU
 }
 
 asAreaCompGaussGrid::asAreaCompGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type, float level,
-                                         float height, int flatAllowed)
-        : asAreaCompGrid(level, height)
+                                         int flatAllowed)
+        : asAreaCompGrid(level)
 {
     m_gridType = type;
 

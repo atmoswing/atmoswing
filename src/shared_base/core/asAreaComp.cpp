@@ -29,8 +29,8 @@
 #include "asAreaComp.h"
 
 asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
-                       float height, int flatAllowed)
-        : asArea(level, height),
+                       int flatAllowed)
+        : asArea(level),
           m_absoluteXmin(cornerUL.x),
           m_absoluteXmax(cornerUR.x),
           m_absoluteYmin(cornerLL.y),
@@ -50,9 +50,8 @@ asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &corn
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level, float height,
-                       int flatAllowed)
-        : asArea(level, height)
+asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
+        : asArea(level)
 {
     // Set the members
     m_cornerUL = {xMin, yMin + yWidth};
@@ -72,8 +71,8 @@ asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, f
     wxLogVerbose(_("The composite area was successfully created."));
 }
 
-asAreaComp::asAreaComp(float level, float height)
-        : asArea(level, height),
+asAreaComp::asAreaComp(float level)
+        : asArea(level),
           m_absoluteXmin(0),
           m_absoluteXmax(0),
           m_absoluteYmin(0),
@@ -222,13 +221,13 @@ void asAreaComp::CreateComposites()
 
     if ((m_cornerUL.x <= m_cornerUR.x) & (m_cornerLL.x <= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
         (m_cornerLR.y <= m_cornerUR.y)) {
-        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
+        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_flatAllowed);
         m_composites.push_back(area);
     } else if ((m_cornerUL.x >= m_cornerUR.x) & (m_cornerLL.x >= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
                (m_cornerLR.y <= m_cornerUR.y) & (m_cornerLR.x == GetAxisXmin()) & (m_cornerUR.x == GetAxisXmin())) {
         m_cornerLR.x = GetAxisXmax();
         m_cornerUR.x = GetAxisXmax();
-        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_height, m_flatAllowed);
+        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_level, m_flatAllowed);
         m_composites.push_back(area);
     } else if ((m_cornerUL.x >= m_cornerUR.x) & (m_cornerLL.x >= m_cornerLR.x) & (m_cornerLL.y <= m_cornerUL.y) &
                (m_cornerLR.y <= m_cornerUR.y) & (m_cornerLR.x != GetAxisXmin()) & (m_cornerUR.x != GetAxisXmin())) {
@@ -238,8 +237,8 @@ void asAreaComp::CreateComposites()
         a1LL.x = GetAxisXmin();
         a2UR.x = GetAxisXmax();
         a2LR.x = GetAxisXmax();
-        asArea area1(a1UL, a1UR, a1LL, a1LR, m_level, m_height, m_flatAllowed);
-        asArea area2(a2UL, a2UR, a2LL, a2LR, m_level, m_height, m_flatAllowed);
+        asArea area1(a1UL, a1UR, a1LL, a1LR, m_level, m_flatAllowed);
+        asArea area2(a2UL, a2UR, a2LL, a2LR, m_level, m_flatAllowed);
         m_composites.push_back(area1);
         m_composites.push_back(area2);
     } else {

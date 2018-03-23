@@ -33,32 +33,28 @@
 #include "asAreaCompGenGrid.h"
 
 asAreaCompGrid * asAreaCompGrid::GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                             int yPtsNb, double yStep, float level, float height, int flatAllowed)
+                                             int yPtsNb, double yStep, float level, int flatAllowed)
 {
     // If empty, set Regular.
     if (type.IsEmpty()) {
         wxLogVerbose(_("The given grid type is empty. A regular grid has been considered."));
         double xWidth = (double) (xPtsNb - 1) * xStep;
         double yWidth = (double) (yPtsNb - 1) * yStep;
-        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, height,
-                                                     flatAllowed);
+        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, flatAllowed);
         return area;
     } else if (type.IsSameAs("Regular", false)) {
         double xWidth = (double) (xPtsNb - 1) * xStep;
         double yWidth = (double) (yPtsNb - 1) * yStep;
-        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, height,
-                                                     flatAllowed);
+        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT62", false)) {
-        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT62, level, height,
-                                                       flatAllowed);
+        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT62, level, flatAllowed);
         return area;
     } else if (type.IsSameAs("GaussianT382", false)) {
-        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT382, level, height,
-                                                       flatAllowed);
+        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT382, level, flatAllowed);
         return area;
     } else if (type.IsSameAs("Generic", false)) {
-        asAreaCompGrid *area = new asAreaCompGenGrid(xMin, xPtsNb, yMin, yPtsNb, level, height, flatAllowed);
+        asAreaCompGrid *area = new asAreaCompGenGrid(xMin, xPtsNb, yMin, yPtsNb, level, flatAllowed);
         return area;
     } else {
         wxLogError(_("Given grid type: %s"), type);
@@ -127,21 +123,20 @@ a1d asAreaCompGrid::GetYaxis(const wxString &type, double yMin, double yMax, dou
 }
 
 asAreaCompGrid::asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                               float level, float height, int flatAllowed)
-        : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+                               float level, int flatAllowed)
+        : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, level, flatAllowed),
           m_axesInitialized(false)
 {
 }
 
-asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level, float height,
-                               int flatAllowed)
-        : asAreaComp(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
+        : asAreaComp(xMin, xWidth, yMin, yWidth, level, flatAllowed),
           m_axesInitialized(false)
 {
 }
 
-asAreaCompGrid::asAreaCompGrid(float level, float height)
-        : asAreaComp(level, height),
+asAreaCompGrid::asAreaCompGrid(float level)
+        : asAreaComp(level),
           m_axesInitialized(false)
 {
 }
@@ -151,16 +146,20 @@ int asAreaCompGrid::GetXaxisPtsnb()
     int ptsLon = 0;
 
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        int areaPtsNb = GetXaxisCompositePtsnb(iArea);
+
+        if (areaPtsNb < 0) return -1;
+
         if (iArea == 0) {
-            ptsLon += GetXaxisCompositePtsnb(iArea);
+            ptsLon += areaPtsNb;
         } else if (iArea == 4) {
             // Do nothing here
         } else {
             if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
                 if (GetXaxisCompositeEnd(iArea) == GetAxisXmax()) {
-                    ptsLon += GetXaxisCompositePtsnb(iArea) - 1;
+                    ptsLon += areaPtsNb - 1;
                 } else {
-                    ptsLon += GetXaxisCompositePtsnb(iArea);
+                    ptsLon += areaPtsNb;
                 }
             }
         }
@@ -174,16 +173,20 @@ int asAreaCompGrid::GetYaxisPtsnb()
     int ptsLat = 0;
 
     for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
+        int areaPtsNb = GetYaxisCompositePtsnb(iArea);
+
+        if (areaPtsNb < 0) return -1;
+
         if (iArea == 0) {
-            ptsLat += GetYaxisCompositePtsnb(iArea);
+            ptsLat += areaPtsNb;
         } else if (iArea == 4) {
             // Do nothing here
         } else {
             if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
                 if (GetYaxisCompositeEnd(iArea) == GetAxisYmax()) {
-                    ptsLat += GetYaxisCompositePtsnb(iArea) - 1;
+                    ptsLat += areaPtsNb - 1;
                 } else {
-                    ptsLat += GetYaxisCompositePtsnb(iArea);
+                    ptsLat += areaPtsNb;
                 }
             }
         }
@@ -329,7 +332,7 @@ void asAreaCompGrid::SetLastRowAsNewComposite()
     cornerLL2.x = 0;
     cornerUL2.x = 0;
 
-    asArea area2(cornerUL2, cornerUR2, cornerLL2, cornerLR2, m_level, m_height, asFLAT_ALLOWED);
+    asArea area2(cornerUL2, cornerUR2, cornerLL2, cornerLR2, m_level, asFLAT_ALLOWED);
 
     // Add the composite in this specific order to be consistent with the other implementations.
     m_composites.clear();

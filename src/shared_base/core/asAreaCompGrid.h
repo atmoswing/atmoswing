@@ -38,16 +38,15 @@ class asAreaCompGrid
 public:
 
     asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                   float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                   float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
-    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
+    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
                    int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asAreaCompGrid(float level = asNONE, float height = asNONE);
+    explicit asAreaCompGrid(float level = asNONE);
 
     static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                        int yPtsNb, double yStep, float level = asNONE, float height = asNONE,
-                                        int flatAllowed = asFLAT_FORBIDDEN);
+                                        int yPtsNb, double yStep, float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     static a1d GetXaxis(const wxString &type, double xMin, double xMax, double xStep = 0);
 

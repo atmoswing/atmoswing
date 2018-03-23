@@ -37,12 +37,12 @@ class asAreaComp
 {
 public:
     asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
-               float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
-
-    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
                int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asAreaComp(float level = asNONE, float height = asNONE);
+    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
+               int flatAllowed = asFLAT_FORBIDDEN);
+
+    explicit asAreaComp(float level = asNONE);
 
     ~asAreaComp() override = default;
 

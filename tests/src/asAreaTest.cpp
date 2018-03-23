@@ -255,7 +255,7 @@ TEST(Area, NegativeSize)
     double yMin = 46;
     double yWidth = -2;
 
-    asArea area(xMin, xWidth, yMin, yWidth, asNONE, asNONE, asFLAT_ALLOWED);
+    asArea area(xMin, xWidth, yMin, yWidth, asNONE, asFLAT_ALLOWED);
 
     EXPECT_DOUBLE_EQ(10, area.GetXmin());
     EXPECT_DOUBLE_EQ(46, area.GetYmin());

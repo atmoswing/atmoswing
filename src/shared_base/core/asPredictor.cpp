@@ -30,6 +30,7 @@
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asAreaCompGenGrid.h>
 #include <wx/dir.h>
 
 
@@ -222,7 +223,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray)
         }
 
         // Interpolate the loaded data on the desired grid
-        if (desiredArea && desiredArea->AxesInitialized() && !InterpolateOnGrid(dataArea, desiredArea)) {
+        if (desiredArea && desiredArea->IsRegular() && desiredArea->AxesInitialized() &&
+            !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
             return false;
@@ -697,8 +699,9 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
         double dataXmin, dataYmin, dataXstep, dataYstep;
         int dataXptsnb, dataYptsnb;
-        wxString gridType = desiredArea->GetGridTypeString();
-        if (gridType.IsSameAs("Regular", false)) {
+
+        if (desiredArea->GetGridType() == asArea::Regular) {
+
             double xAxisStep = abs(m_fStr.lons[1]-m_fStr.lons[0]);
             double yAxisStep = abs(m_fStr.lats[1]-m_fStr.lats[0]);
             double xAxisShift = fmod(m_fStr.lons[0], xAxisStep);
@@ -720,18 +723,58 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             }
             dataXptsnb = wxRound((dataXmax - dataXmin) / dataXstep + 1);
             dataYptsnb = wxRound((dataYmax - dataYmin) / dataYstep + 1);
+
         } else {
-            dataXmin = desiredArea->GetAbsoluteXmin();
-            dataYmin = desiredArea->GetAbsoluteYmin();
+
+            // Get step. Might be 0
             dataXstep = desiredArea->GetXstep();
             dataYstep = desiredArea->GetYstep();
+
+            // Check min coordinates with actual grid
+            int dataXminIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                              (float) desiredArea->GetAbsoluteXmin());
+            int dataYminIndex = asFindClosest(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1],
+                                              (float) desiredArea->GetAbsoluteYmin());
+            dataXmin = m_fStr.lons[dataXminIndex];
+            dataYmin = m_fStr.lats[dataYminIndex];
+
+            // Get points number
             dataXptsnb = desiredArea->GetXaxisPtsnb();
             dataYptsnb = desiredArea->GetYaxisPtsnb();
+            if (dataXptsnb < 0 || dataYptsnb < 0) {
+                double dataXmax = desiredArea->GetXmax();
+                double dataYmax = desiredArea->GetYmax();
+                if (dataXmax == 0 && dataYmax == 0) {
+                    asThrowException(_("Neither the number of points nor the max extent are defined for the area."));
+                }
+                int dataXmaxIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                  (float) dataXmax);
+                int dataYmaxIndex = asFindClosest(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1],
+                                                  (float) dataYmax);
+                dataXptsnb = dataXmaxIndex - dataXminIndex + 1;
+                dataYptsnb = dataYmaxIndex - dataYminIndex + 1;
+            }
+
+            // If generic, rebuild the axes
+            if (desiredArea->GetGridType() == asArea::Generic) {
+                auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *> (desiredArea);
+                desiredAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
+                desiredAreaGen->SetYaxis(m_fStr.lats.segment(dataYminIndex, dataYptsnb));
+            }
         }
 
-        asAreaCompGrid *dataArea = asAreaCompGrid::GetInstance(gridType, dataXmin, dataXptsnb, dataXstep, dataYmin,
-                                                               dataYptsnb, dataYstep, desiredArea->GetLevel(), asNONE,
-                                                               asFLAT_ALLOWED);
+        asAreaCompGrid *dataArea = nullptr;
+
+        if (desiredArea->GetGridType() == asArea::Generic) {
+            dataArea = new asAreaCompGenGrid(dataXmin, dataXptsnb, dataYmin, dataYptsnb, desiredArea->GetLevel(),
+                                             asFLAT_ALLOWED);
+        } else {
+            dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,
+                                                   dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(),
+                                                   asFLAT_ALLOWED);
+        }
+
+
 
         // Get axes length for preallocation
         m_lonPtsnb = dataArea->GetXaxisPtsnb();
@@ -748,116 +791,123 @@ asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compos
     wxASSERT(m_fStr.lons.size()> 0);
     wxASSERT(m_fStr.lats.size()> 0);
 
-    if (!m_axesChecked) {
-        if (dataArea == nullptr) {
-            // Get axes length for preallocation
-            m_lonPtsnb = int(m_fStr.lons.size());
-            m_latPtsnb = int(m_fStr.lats.size());
-            m_axisLon = m_fStr.lons;
-            m_axisLat = m_fStr.lats;
-        } else {
-            // Check that requested data do not overtake the file
-            for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
-                a1d axisLonComp = dataArea->GetXaxisComposite(iComp);
+    if (m_axesChecked) {
+        return dataArea;
+    }
 
-                wxASSERT(m_fStr.lons[m_fStr.lons.size() - 1] > m_fStr.lons[0]);
-                wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
+    if (dataArea->GetGridType() == asArea::Generic) {
+        m_axesChecked = true;
+        return dataArea;
+    }
 
-                // Condition for change: The composite must not be fully outside (considered as handled).
-                if (axisLonComp[axisLonComp.size() - 1] > m_fStr.lons[m_fStr.lons.size() - 1] &&
-                    axisLonComp[0] <= m_fStr.lons[m_fStr.lons.size() - 1]) {
-                    // If the last value corresponds to the maximum value of the reference system, create a new composite
-                    if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
-                        dataArea->SetLastRowAsNewComposite();
-                        compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
-					} else if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() > 1) {
-                        dataArea->RemoveLastRowOnComposite(iComp);
-                    } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
-                        wxLogVerbose(_("Correcting the longitude extent according to the file limits."));
-                        double xWidth = m_fStr.lons[m_fStr.lons.size() - 1] - dataArea->GetAbsoluteXmin();
-                        wxASSERT(xWidth >= 0);
-                        int xPtsNb = 1 + xWidth / dataArea->GetXstep();
-                        wxLogDebug(_("xPtsNb = %d."), xPtsNb);
-                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), xPtsNb,
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
-                                dataArea->GetYstep(), dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
+    if (dataArea == nullptr) {
+        // Get axes length for preallocation
+        m_lonPtsnb = int(m_fStr.lons.size());
+        m_latPtsnb = int(m_fStr.lats.size());
+        m_axisLon = m_fStr.lons;
+        m_axisLat = m_fStr.lats;
+    } else {
+        // Check that requested data do not overtake the file
+        for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
+            a1d axisLonComp = dataArea->GetXaxisComposite(iComp);
 
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
+            wxASSERT(m_fStr.lons[m_fStr.lons.size() - 1] > m_fStr.lons[0]);
+            wxASSERT(axisLonComp[axisLonComp.size() - 1] >= axisLonComp[0]);
+
+            // Condition for change: The composite must not be fully outside (considered as handled).
+            if (axisLonComp[axisLonComp.size() - 1] > m_fStr.lons[m_fStr.lons.size() - 1] &&
+                axisLonComp[0] <= m_fStr.lons[m_fStr.lons.size() - 1]) {
+                // If the last value corresponds to the maximum value of the reference system, create a new composite
+                if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() == 1) {
+                    dataArea->SetLastRowAsNewComposite();
+                    compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
+                } else if (axisLonComp[axisLonComp.size() - 1] == dataArea->GetAxisXmax() && dataArea->GetNbComposites() > 1) {
+                    dataArea->RemoveLastRowOnComposite(iComp);
+                } else if (axisLonComp[axisLonComp.size() - 1] != dataArea->GetAxisXmax()) {
+                    wxLogVerbose(_("Correcting the longitude extent according to the file limits."));
+                    double xWidth = m_fStr.lons[m_fStr.lons.size() - 1] - dataArea->GetAbsoluteXmin();
+                    wxASSERT(xWidth >= 0);
+                    int xPtsNb = 1 + xWidth / dataArea->GetXstep();
+                    wxLogDebug(_("xPtsNb = %d."), xPtsNb);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
+                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), xPtsNb,
+                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
+                            dataArea->GetYstep(), dataArea->GetLevel(), asFLAT_ALLOWED);
+
+                    wxDELETE(dataArea);
+                    dataArea = newdataArea;
                 }
             }
-
-            a1d axisLon = dataArea->GetXaxis();
-            m_axisLon.resize(axisLon.size());
-            for (int i = 0; i < axisLon.size(); i++) {
-                m_axisLon[i] = (float) axisLon[i];
-            }
-            m_lonPtsnb = dataArea->GetXaxisPtsnb();
-            wxASSERT_MSG(m_axisLon.size() == m_lonPtsnb,
-                         wxString::Format("m_axisLon.size()=%d, m_lonPtsnb=%d", (int) m_axisLon.size(), m_lonPtsnb));
-
-            // Check that requested data do not overtake the file
-            for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
-                a1d axisLatComp = dataArea->GetYaxisComposite(iComp);
-
-                if (m_fStr.lats[m_fStr.lats.size() - 1] > m_fStr.lats[0]) {
-                    wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size() - 1] > m_fStr.lats[m_fStr.lats.size() - 1] &&
-                        axisLatComp[0] < m_fStr.lats[m_fStr.lats.size() - 1]) {
-                        wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
-                        double yWidth = m_fStr.lats[m_fStr.lats.size() - 1] - dataArea->GetAbsoluteYmin();
-                        wxASSERT(yWidth >= 0);
-                        int yPtsNb = 1 + yWidth / dataArea->GetYstep();
-                        wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
-                                dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-
-                } else {
-                    wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
-
-                    // Condition for change: The composite must not be fully outside (considered as handled).
-                    if (axisLatComp[axisLatComp.size() - 1] > m_fStr.lats[0] && axisLatComp[0] < m_fStr.lats[0]) {
-                        wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
-                        double yWidth = m_fStr.lats[0] - dataArea->GetAbsoluteYmin();
-                        wxASSERT(yWidth >= 0);
-                        int yPtsNb = 1 + yWidth / dataArea->GetYstep();
-                        wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                        asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                                dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                                dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
-                                dataArea->GetLevel(), asNONE, asFLAT_ALLOWED);
-
-                        wxDELETE(dataArea);
-                        dataArea = newdataArea;
-                    }
-                }
-            }
-
-            a1d axisLat = dataArea->GetYaxis();
-            m_axisLat.resize(axisLat.size());
-            for (int i = 0; i < axisLat.size(); i++) {
-                // Latitude axis in reverse order
-                m_axisLat[i] = (float) axisLat[axisLat.size() - 1 - i];
-            }
-            m_latPtsnb = dataArea->GetYaxisPtsnb();
-            wxASSERT_MSG(m_axisLat.size() == m_latPtsnb,
-                         wxString::Format("m_axisLat.size()=%d, m_latPtsnb=%d", (int) m_axisLat.size(), m_latPtsnb));
-
-            compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
         }
 
-        m_axesChecked = true;
+        a1d axisLon = dataArea->GetXaxis();
+        m_axisLon.resize(axisLon.size());
+        for (int i = 0; i < axisLon.size(); i++) {
+            m_axisLon[i] = (float) axisLon[i];
+        }
+        m_lonPtsnb = dataArea->GetXaxisPtsnb();
+        wxASSERT_MSG(m_axisLon.size() == m_lonPtsnb,
+                     wxString::Format("m_axisLon.size()=%d, m_lonPtsnb=%d", (int) m_axisLon.size(), m_lonPtsnb));
+
+        // Check that requested data do not overtake the file
+        for (int iComp = 0; iComp < dataArea->GetNbComposites(); iComp++) {
+            a1d axisLatComp = dataArea->GetYaxisComposite(iComp);
+
+            if (m_fStr.lats[m_fStr.lats.size() - 1] > m_fStr.lats[0]) {
+                wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
+
+                // Condition for change: The composite must not be fully outside (considered as handled).
+                if (axisLatComp[axisLatComp.size() - 1] > m_fStr.lats[m_fStr.lats.size() - 1] &&
+                    axisLatComp[0] < m_fStr.lats[m_fStr.lats.size() - 1]) {
+                    wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
+                    double yWidth = m_fStr.lats[m_fStr.lats.size() - 1] - dataArea->GetAbsoluteYmin();
+                    wxASSERT(yWidth >= 0);
+                    int yPtsNb = 1 + yWidth / dataArea->GetYstep();
+                    wxLogDebug(_("yPtsNb = %d."), yPtsNb);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
+                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
+                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
+                            dataArea->GetLevel(), asFLAT_ALLOWED);
+
+                    wxDELETE(dataArea);
+                    dataArea = newdataArea;
+                }
+
+            } else {
+                wxASSERT(axisLatComp[axisLatComp.size() - 1] >= axisLatComp[0]);
+
+                // Condition for change: The composite must not be fully outside (considered as handled).
+                if (axisLatComp[axisLatComp.size() - 1] > m_fStr.lats[0] && axisLatComp[0] < m_fStr.lats[0]) {
+                    wxLogVerbose(_("Correcting the latitude extent according to the file limits."));
+                    double yWidth = m_fStr.lats[0] - dataArea->GetAbsoluteYmin();
+                    wxASSERT(yWidth >= 0);
+                    int yPtsNb = 1 + yWidth / dataArea->GetYstep();
+                    wxLogDebug(_("yPtsNb = %d."), yPtsNb);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
+                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
+                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
+                            dataArea->GetLevel(), asFLAT_ALLOWED);
+
+                    wxDELETE(dataArea);
+                    dataArea = newdataArea;
+                }
+            }
+        }
+
+        a1d axisLat = dataArea->GetYaxis();
+        m_axisLat.resize(axisLat.size());
+        for (int i = 0; i < axisLat.size(); i++) {
+            // Latitude axis in reverse order
+            m_axisLat[i] = (float) axisLat[axisLat.size() - 1 - i];
+        }
+        m_latPtsnb = dataArea->GetYaxisPtsnb();
+        wxASSERT_MSG(m_axisLat.size() == m_latPtsnb,
+                     wxString::Format("m_axisLat.size()=%d, m_latPtsnb=%d", (int) m_axisLat.size(), m_latPtsnb));
+
+        compositeData = vvva2f((unsigned long) dataArea->GetNbComposites());
     }
+
+    m_axesChecked = true;
 
     return dataArea;
 }

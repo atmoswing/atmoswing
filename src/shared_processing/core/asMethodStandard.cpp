@@ -512,7 +512,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                     params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
                     params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
                     params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
-                    params->GetPredictorYstep(iStep, iPtor), preloadLevels[iLevel], asNONE,
+                    params->GetPredictorYstep(iStep, iPtor), preloadLevels[iLevel],
                     params->GetPredictorFlatAllowed(iStep, iPtor));
             wxASSERT(area);
 
@@ -682,7 +682,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                         params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
                         params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
                         params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
-                        params->GetPredictorYstep(iStep, iPtor), level, asNONE,
+                        params->GetPredictorYstep(iStep, iPtor), level,
                         params->GetPredictorFlatAllowed(iStep, iPtor));
                 wxASSERT(area);
 
@@ -908,16 +908,14 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
     // Area object instantiation
     asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
-                                                                              params->GetPredictorXmin(iStep, iPtor),
-                                                                              params->GetPredictorXptsnb(iStep, iPtor),
-                                                                              params->GetPredictorXstep(iStep, iPtor),
-                                                                              params->GetPredictorYmin(iStep, iPtor),
-                                                                              params->GetPredictorYptsnb(iStep, iPtor),
-                                                                              params->GetPredictorYstep(iStep, iPtor),
-                                                                              params->GetPredictorLevel(iStep, iPtor),
-                                                                              asNONE,
-                                                                              params->GetPredictorFlatAllowed(iStep,
-                                                                                                             iPtor));
+                                                              params->GetPredictorXmin(iStep, iPtor),
+                                                              params->GetPredictorXptsnb(iStep, iPtor),
+                                                              params->GetPredictorXstep(iStep, iPtor),
+                                                              params->GetPredictorYmin(iStep, iPtor),
+                                                              params->GetPredictorYptsnb(iStep, iPtor),
+                                                              params->GetPredictorYstep(iStep, iPtor),
+                                                              params->GetPredictorLevel(iStep, iPtor),
+                                                              params->GetPredictorFlatAllowed(iStep, iPtor));
 
     wxASSERT(desiredArea);
 
@@ -985,7 +983,7 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
                                                                        params->GetPredictorYmin(iStep, iPtor),
                                                                        params->GetPredictorYptsnb(iStep, iPtor),
                                                                        params->GetPredictorYstep(iStep, iPtor),
-                                                                       params->GetPredictorLevel(iStep, iPtor), asNONE,
+                                                                       params->GetPredictorLevel(iStep, iPtor),
                                                                        params->GetPredictorFlatAllowed(iStep, iPtor));
     wxASSERT(area);
 
@@ -1037,16 +1035,14 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
 
         // Area object instantiation
         asAreaCompGrid *area = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
-                                                                           params->GetPredictorXmin(iStep, iPtor),
-                                                                           params->GetPredictorXptsnb(iStep, iPtor),
-                                                                           params->GetPredictorXstep(iStep, iPtor),
-                                                                           params->GetPredictorYmin(iStep, iPtor),
-                                                                           params->GetPredictorYptsnb(iStep, iPtor),
-                                                                           params->GetPredictorYstep(iStep, iPtor),
-                                                                           params->GetPreprocessLevel(iStep, iPtor,
-                                                                                                     iPre), asNONE,
-                                                                           params->GetPredictorFlatAllowed(iStep,
-                                                                                                          iPtor));
+                                                           params->GetPredictorXmin(iStep, iPtor),
+                                                           params->GetPredictorXptsnb(iStep, iPtor),
+                                                           params->GetPredictorXstep(iStep, iPtor),
+                                                           params->GetPredictorYmin(iStep, iPtor),
+                                                           params->GetPredictorYptsnb(iStep, iPtor),
+                                                           params->GetPredictorYstep(iStep, iPtor),
+                                                           params->GetPreprocessLevel(iStep, iPtor, iPre),
+                                                           params->GetPredictorFlatAllowed(iStep, iPtor));
         wxASSERT(area);
 
         // Data loading

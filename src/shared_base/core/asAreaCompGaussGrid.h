@@ -38,11 +38,10 @@ class asAreaCompGaussGrid
 {
 public:
     asAreaCompGaussGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                        GridType type = GaussianT62, float level = asNONE, float height = asNONE,
-                        int flatAllowed = asFLAT_FORBIDDEN);
+                        GridType type = GaussianT62, float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     asAreaCompGaussGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, GridType type = GaussianT382,
-                        float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                        float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     ~asAreaCompGaussGrid() override = default;
 

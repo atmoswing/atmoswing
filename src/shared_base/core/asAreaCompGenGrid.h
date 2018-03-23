@@ -36,12 +36,12 @@ class asAreaCompGenGrid
 {
 public:
     asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                      float level = asNONE, float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                      float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
 
     asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
-                      float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                      int flatAllowed = asFLAT_FORBIDDEN);
 
-    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, float level = asNONE, float height = asNONE,
+    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, float level = asNONE,
                       int flatAllowed = asFLAT_FORBIDDEN);
 
     ~asAreaCompGenGrid() override = default;
@@ -57,6 +57,10 @@ public:
     {
         return 0.0;
     }
+
+    void SetXaxis(a1f axis);
+
+    void SetYaxis(a1f axis);
 
     a1d GetXaxisComposite(int compositeNb) override;
 

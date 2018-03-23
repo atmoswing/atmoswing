@@ -28,8 +28,8 @@
 #include "asAreaCompGenGrid.h"
 
 asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                     float level, float height, int flatAllowed)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, height, flatAllowed),
+                                     float level, int flatAllowed)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, level, flatAllowed),
           m_xPtsNb(0),
           m_yPtsNb(0)
 {
@@ -37,9 +37,8 @@ asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, c
     m_axesInitialized = false;
 }
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, float level, float height,
-                                     int flatAllowed)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, level, height, flatAllowed),
+asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
+        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, level, flatAllowed),
           m_xPtsNb(0),
           m_yPtsNb(0)
 {
@@ -47,9 +46,8 @@ asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, do
     m_axesInitialized = false;
 }
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, float level, float height,
-                                     int flatAllowed)
-        : asAreaCompGrid(xMin, 0, yMin, 0, level, height, flatAllowed),
+asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, float level, int flatAllowed)
+        : asAreaCompGrid(xMin, 0, yMin, 0, level, flatAllowed),
           m_xPtsNb(xPtsNb),
           m_yPtsNb(yPtsNb)
 {
@@ -60,6 +58,22 @@ asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int y
 bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherarea) const
 {
     return false;
+}
+
+void asAreaCompGenGrid::SetXaxis(a1f axis)
+{
+    m_fullAxisX.resize(axis.size());
+    for (int i = 0; i < axis.size(); ++i) {
+        m_fullAxisX[i] = (float) axis[i];
+    }
+}
+
+void asAreaCompGenGrid::SetYaxis(a1f axis)
+{
+    m_fullAxisY.resize(axis.size());
+    for (int i = 0; i < axis.size(); ++i) {
+        m_fullAxisY[i] = (float) axis[i];
+    }
 }
 
 a1d asAreaCompGenGrid::GetXaxisComposite(int compositeNb)
@@ -94,6 +108,10 @@ a1d asAreaCompGenGrid::GetYaxisComposite(int compositeNb)
 
 int asAreaCompGenGrid::GetXaxisCompositePtsnb(int compositeNb)
 {
+    if (m_fullAxisX.size() == 0) {
+        return -1;
+    }
+
     double xMin = GetComposite(compositeNb).GetXmin();
     double xMax = GetComposite(compositeNb).GetXmax();
 
@@ -120,6 +138,10 @@ int asAreaCompGenGrid::GetXaxisCompositePtsnb(int compositeNb)
 
 int asAreaCompGenGrid::GetYaxisCompositePtsnb(int compositeNb)
 {
+    if (m_fullAxisY.size() == 0) {
+        return -1;
+    }
+
     double yMin = GetComposite(compositeNb).GetYmin();
     double yMax = GetComposite(compositeNb).GetYmax();
 

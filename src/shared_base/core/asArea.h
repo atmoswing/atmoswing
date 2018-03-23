@@ -41,18 +41,23 @@ public:
     };
 
     asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
-           float height = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
-
-    asArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE, float height = asNONE,
            int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asArea(float level = asNONE, float height = asNONE);
+    asArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
+           int flatAllowed = asFLAT_FORBIDDEN);
+
+    explicit asArea(float level = asNONE);
 
     ~asArea() override = default;
 
     virtual void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
     bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
+
+    bool IsRegular() const
+    {
+        return m_gridType == Regular;
+    }
 
     GridType GetGridType() const
     {
@@ -158,7 +163,6 @@ protected:
     Coo m_cornerLL;
     Coo m_cornerLR;
     float m_level;
-    float m_height;
     int m_flatAllowed;
 
     virtual void Init();

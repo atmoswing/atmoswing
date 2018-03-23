@@ -29,14 +29,13 @@
 #include "asArea.h"
 
 asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
-               float height, int flatAllowed)
+               int flatAllowed)
         : m_gridType(Undefined),
           m_cornerUL(cornerUL),
           m_cornerUR(cornerUR),
           m_cornerLL(cornerLL),
           m_cornerLR(cornerLR),
           m_level(level),
-          m_height(height),
           m_flatAllowed(flatAllowed)
 {
     // Initialization and check points
@@ -45,10 +44,9 @@ asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, co
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float level, float height, int flatAllowed)
+asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
         : m_gridType(Undefined),
           m_level(level),
-          m_height(height),
           m_flatAllowed(flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
@@ -71,14 +69,13 @@ asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float lev
     wxLogVerbose(_("The area was successfully created."));
 }
 
-asArea::asArea(float level, float height)
+asArea::asArea(float level)
         : m_gridType(Undefined),
           m_cornerUL({0, 0}),
           m_cornerUR({0, 0}),
           m_cornerLL({0, 0}),
           m_cornerLR({0, 0}),
           m_level(level),
-          m_height(height),
           m_flatAllowed(asFLAT_ALLOWED)
 {
 
@@ -164,6 +161,8 @@ wxString asArea::GetGridTypeString() const
             return "GaussianT62";
         case (GaussianT382):
             return "GaussianT382";
+        case (Generic):
+            return "Generic";
         case (Undefined):
             return "Undefined";
         default:
