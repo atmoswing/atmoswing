@@ -46,7 +46,8 @@ asPredictor::asPredictor(const wxString &dataId)
           m_lonPtsnb(0),
           m_isPreprocessed(false),
           m_isEnsemble(false),
-          m_canBeClipped(true)
+          m_canBeClipped(true),
+          m_parseTimeReference(false)
 {
 
     m_fStr.hasLevelDim = true;
@@ -545,9 +546,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
     }
 
     double refValue = NaNd;
-    if (m_datasetId.IsSameAs("NASA_MERRA_2", false) || m_datasetId.IsSameAs("NASA_MERRA_2_subset", false) ||
-        m_datasetId.IsSameAs("NCEP_CFSR_subset", false) || m_datasetId.IsSameAs("CMIP5", false)) {
-
+    if (m_parseTimeReference) {
         wxString refValueStr = ncFile.GetAttString("units", "time");
         int start = refValueStr.Find("since");
         if (start != wxNOT_FOUND) {
@@ -693,6 +692,8 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
     wxASSERT(m_fStr.lons.size() > 0);
     wxASSERT(m_fStr.lats.size() > 0);
 
+    asAreaCompGrid *dataArea = nullptr;
+
     if (desiredArea) {
         m_fInd.lonStep = 1;
         m_fInd.latStep = 1;
@@ -723,6 +724,10 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             }
             dataXptsnb = wxRound((dataXmax - dataXmin) / dataXstep + 1);
             dataYptsnb = wxRound((dataYmax - dataYmin) / dataYstep + 1);
+
+            dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,
+                                                   dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(),
+                                                   asFLAT_ALLOWED);
 
         } else {
 
@@ -758,23 +763,16 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             // If generic, rebuild the axes
             if (desiredArea->GetGridType() == asArea::Generic) {
                 auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *> (desiredArea);
-                desiredAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
-                desiredAreaGen->SetYaxis(m_fStr.lats.segment(dataYminIndex, dataYptsnb));
+                auto dataAreaGen = new asAreaCompGenGrid(*desiredAreaGen);
+                dataAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
+                dataAreaGen->SetYaxis(m_fStr.lats.segment(dataYminIndex, dataYptsnb));
+                dataArea = dataAreaGen;
+            } else {
+                dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,
+                                                       dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(),
+                                                       asFLAT_ALLOWED);
             }
         }
-
-        asAreaCompGrid *dataArea = nullptr;
-
-        if (desiredArea->GetGridType() == asArea::Generic) {
-            dataArea = new asAreaCompGenGrid(dataXmin, dataXptsnb, dataYmin, dataYptsnb, desiredArea->GetLevel(),
-                                             asFLAT_ALLOWED);
-        } else {
-            dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,
-                                                   dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(),
-                                                   asFLAT_ALLOWED);
-        }
-
-
 
         // Get axes length for preallocation
         m_lonPtsnb = dataArea->GetXaxisPtsnb();

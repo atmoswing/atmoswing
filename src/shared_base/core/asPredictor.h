@@ -326,6 +326,7 @@ protected:
     bool m_isPreprocessed;
     bool m_isEnsemble;
     bool m_canBeClipped;
+    bool m_parseTimeReference;
     wxString m_fileExtension;
     wxString m_preprocessMethod;
     vwxs m_files;
