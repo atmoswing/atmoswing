@@ -94,6 +94,10 @@ public:
 
 protected:
     std::vector<asArea> m_composites;
+    double m_absoluteXmin;
+    double m_absoluteXmax;
+    double m_absoluteYmin;
+    double m_absoluteYmax;
 
     void Init() override;
 
@@ -104,10 +108,6 @@ protected:
     bool CheckConsistency();
 
 private:
-    double m_absoluteXmin;
-    double m_absoluteXmax;
-    double m_absoluteYmin;
-    double m_absoluteYmax;
 };
 
 #endif

@@ -83,7 +83,7 @@ asPredictor::asPredictor(const wxString &dataId)
 
 bool asPredictor::SetData(vva2f &val)
 {
-    wxASSERT(m_time.size()> 0);
+    wxASSERT(m_time.size() > 0);
     wxASSERT((int) m_time.size() == (int) val.size());
 
     m_latPtsnb = (int) val[0][0].rows();
@@ -233,7 +233,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray)
 
         // Check the data container length
         if ((unsigned) m_time.size() > m_data.size()) {
-            wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."), (int)m_time.size(), (int)m_data.size());
+            wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
+                       (int) m_time.size(), (int) m_data.size());
             wxDELETE(dataArea);
             return false;
         }
@@ -354,8 +355,8 @@ bool asPredictor::EnquireNetcdfFileStructure()
     return true;
 }
 
-bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea,
-                                        asTimeArray &timeArray, vvva2f &compositeData)
+bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+                                        vvva2f &compositeData)
 {
     // Open the NetCDF file
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -454,8 +455,8 @@ bool asPredictor::EnquireGribFileStructure()
     return true;
 }
 
-bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea,
-                                      asTimeArray &timeArray, vvva2f &compositeData)
+bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
+                                      vvva2f &compositeData)
 {
     // Open the Grib file
     ThreadsManager().CritSectionGrib().Enter();
@@ -654,7 +655,7 @@ bool asPredictor::ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1)
     m_fStr.timeStart = gbFile0->GetTime();
     m_fStr.timeEnd = gbFile0->GetTime();
 
-    if(gbFile1 != nullptr) {
+    if (gbFile1 != nullptr) {
         double secondFileTime = gbFile1->GetTime();
         m_fStr.timeStep = asRound(24 * (secondFileTime - m_fStr.timeStart));
         m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
@@ -703,8 +704,8 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
         if (desiredArea->GetGridType() == asArea::Regular) {
 
-            double xAxisStep = abs(m_fStr.lons[1]-m_fStr.lons[0]);
-            double yAxisStep = abs(m_fStr.lats[1]-m_fStr.lats[0]);
+            double xAxisStep = abs(m_fStr.lons[1] - m_fStr.lons[0]);
+            double yAxisStep = abs(m_fStr.lats[1] - m_fStr.lats[0]);
             double xAxisShift = fmod(m_fStr.lons[0], xAxisStep);
             double yAxisShift = fmod(m_fStr.lats[0], yAxisStep);
             dataXmin = floor((desiredArea->GetAbsoluteXmin() - xAxisShift) / xAxisStep) * xAxisStep + xAxisShift;
@@ -737,41 +738,59 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
             // Check min coordinates with actual grid
             int dataXminIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                              (float) desiredArea->GetAbsoluteXmin());
+                                              (float) desiredArea->GetAbsoluteXmin(), asHIDE_WARNINGS);
             int dataYminIndex = asFindClosest(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1],
                                               (float) desiredArea->GetAbsoluteYmin());
+            if (dataXminIndex == asOUT_OF_RANGE) {
+                dataXminIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                              (float) desiredArea->GetAbsoluteXmin() + 360);
+            }
             dataXmin = m_fStr.lons[dataXminIndex];
             dataYmin = m_fStr.lats[dataYminIndex];
 
             // Get points number
             dataXptsnb = desiredArea->GetXaxisPtsnb();
             dataYptsnb = desiredArea->GetYaxisPtsnb();
+            int dataXmaxIndex = 0;
+            int dataYmaxIndex = 0;
             if (dataXptsnb < 0 || dataYptsnb < 0) {
-                double dataXmax = desiredArea->GetXmax();
-                double dataYmax = desiredArea->GetYmax();
+                double dataXmax = desiredArea->GetAbsoluteXmax();
+                double dataYmax = desiredArea->GetAbsoluteYmax();
                 if (dataXmax == 0 && dataYmax == 0) {
                     asThrowException(_("Neither the number of points nor the max extent are defined for the area."));
                 }
-                int dataXmaxIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                  (float) dataXmax);
-                int dataYmaxIndex = asFindClosest(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1],
-                                                  (float) dataYmax);
-                dataXptsnb = dataXmaxIndex - dataXminIndex + 1;
+                dataXmaxIndex = asFindClosest(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], (float) dataXmax, asHIDE_WARNINGS);
+                dataYmaxIndex = asFindClosest(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], (float) dataYmax);
+                if (dataXmaxIndex >= dataXminIndex) {
+                    dataXptsnb = dataXmaxIndex - dataXminIndex + 1;
+                } else {
+                    dataXptsnb = (int) m_fStr.lons.size() - dataXminIndex + dataXmaxIndex + 1;
+                }
                 dataYptsnb = dataYmaxIndex - dataYminIndex + 1;
+                wxASSERT(dataXptsnb > 0);
+                wxASSERT(dataYptsnb > 0);
             }
 
             // If generic, rebuild the axes
             if (desiredArea->GetGridType() == asArea::Generic) {
                 auto dataAreaGen = new asAreaCompGenGrid(dataXmin, dataXptsnb, dataYmin, dataYptsnb,
                                                          desiredArea->GetLevel(), asFLAT_ALLOWED);
-                dataAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
+                if (dataXmaxIndex >= dataXminIndex) {
+                    dataAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
+                } else {
+                    a1f leftPart = m_fStr.lons.tail((int) m_fStr.lons.size() - dataXminIndex);
+                    a1f rightPart = m_fStr.lons.head(dataXmaxIndex + 1) + 360;
+                    a1f finalAxis(leftPart.rows() + rightPart.rows());
+                    finalAxis << leftPart, rightPart;
+                    dataAreaGen->SetXaxis(finalAxis);
+                }
                 dataAreaGen->SetYaxis(m_fStr.lats.segment(dataYminIndex, dataYptsnb));
                 dataAreaGen->RebuildComposites();
                 dataArea = dataAreaGen;
             } else {
-                dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,
-                                                       dataYmin, dataYptsnb, dataYstep, desiredArea->GetLevel(),
-                                                       asFLAT_ALLOWED);
+                dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb,
+                                                       dataXstep, dataYmin, dataYptsnb, dataYstep,
+                                                       desiredArea->GetLevel(), asFLAT_ALLOWED);
             }
         }
 
@@ -787,8 +806,8 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
 asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compositeData)
 {
-    wxASSERT(m_fStr.lons.size()> 0);
-    wxASSERT(m_fStr.lats.size()> 0);
+    wxASSERT(m_fStr.lons.size() > 0);
+    wxASSERT(m_fStr.lats.size() > 0);
 
     if (m_axesChecked) {
         return dataArea;
@@ -828,10 +847,13 @@ asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compos
                     wxASSERT(xWidth >= 0);
                     int xPtsNb = 1 + xWidth / dataArea->GetXstep();
                     wxLogDebug(_("xPtsNb = %d."), xPtsNb);
-                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), xPtsNb,
-                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), dataArea->GetYaxisPtsnb(),
-                            dataArea->GetYstep(), dataArea->GetLevel(), asFLAT_ALLOWED);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(dataArea->GetGridTypeString(),
+                                                                              dataArea->GetAbsoluteXmin(), xPtsNb,
+                                                                              dataArea->GetXstep(),
+                                                                              dataArea->GetAbsoluteYmin(),
+                                                                              dataArea->GetYaxisPtsnb(),
+                                                                              dataArea->GetYstep(),
+                                                                              dataArea->GetLevel(), asFLAT_ALLOWED);
 
                     wxDELETE(dataArea);
                     dataArea = newdataArea;
@@ -863,10 +885,13 @@ asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compos
                     wxASSERT(yWidth >= 0);
                     int yPtsNb = 1 + yWidth / dataArea->GetYstep();
                     wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
-                            dataArea->GetLevel(), asFLAT_ALLOWED);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(dataArea->GetGridTypeString(),
+                                                                              dataArea->GetAbsoluteXmin(),
+                                                                              dataArea->GetXaxisPtsnb(),
+                                                                              dataArea->GetXstep(),
+                                                                              dataArea->GetAbsoluteYmin(), yPtsNb,
+                                                                              dataArea->GetYstep(),
+                                                                              dataArea->GetLevel(), asFLAT_ALLOWED);
 
                     wxDELETE(dataArea);
                     dataArea = newdataArea;
@@ -882,10 +907,13 @@ asAreaCompGrid *asPredictor::AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compos
                     wxASSERT(yWidth >= 0);
                     int yPtsNb = 1 + yWidth / dataArea->GetYstep();
                     wxLogDebug(_("yPtsNb = %d."), yPtsNb);
-                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(
-                            dataArea->GetGridTypeString(), dataArea->GetAbsoluteXmin(), dataArea->GetXaxisPtsnb(),
-                            dataArea->GetXstep(), dataArea->GetAbsoluteYmin(), yPtsNb, dataArea->GetYstep(),
-                            dataArea->GetLevel(), asFLAT_ALLOWED);
+                    asAreaCompGrid *newdataArea = asAreaCompGrid::GetInstance(dataArea->GetGridTypeString(),
+                                                                              dataArea->GetAbsoluteXmin(),
+                                                                              dataArea->GetXaxisPtsnb(),
+                                                                              dataArea->GetXstep(),
+                                                                              dataArea->GetAbsoluteYmin(), yPtsNb,
+                                                                              dataArea->GetYstep(),
+                                                                              dataArea->GetLevel(), asFLAT_ALLOWED);
 
                     wxDELETE(dataArea);
                     dataArea = newdataArea;
@@ -1107,8 +1135,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Fill empty beginning with NaNs
         int indexBegining = 0;
         if (m_fInd.cutStart > 0) {
-            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
-                               m_fInd.areas[iArea].lonCount;
+            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fInd.cutStart; iEmpty++) {
                 for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
                     dataF[indexBegining] = NaNf;
@@ -1510,16 +1537,14 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
                         indexYceil = indexLastLat + 2;
                     } else {
                         // Search for floor and ceil
-                        indexYfloor = indexLastLat + asFindFloor(&axisDataLat[indexLastLat],
-                                                                 &axisDataLat[axisDataLatEnd],
+                        indexYfloor = indexLastLat + asFindFloor(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd],
                                                                  axisFinalLat[iLat]);
-                        indexYceil = indexLastLat + asFindCeil(&axisDataLat[indexLastLat],
-                                                               &axisDataLat[axisDataLatEnd],
+                        indexYceil = indexLastLat + asFindCeil(&axisDataLat[indexLastLat], &axisDataLat[axisDataLatEnd],
                                                                axisFinalLat[iLat]);
                     }
 
-                    if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND ||
-                        indexYceil == asOUT_OF_RANGE || indexYceil == asNOT_FOUND) {
+                    if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND || indexYceil == asOUT_OF_RANGE ||
+                        indexYceil == asNOT_FOUND) {
                         wxLogError(_("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
                                    axisFinalLat[iLat], axisDataLat[indexLastLat], indexLastLat,
                                    axisDataLat[axisDataLatEnd], axisDataLatEnd, (int) axisDataLat.size());
@@ -1546,12 +1571,12 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
                             indexXceil = indexLastLon + 2;
                         } else {
                             // Search for floor and ceil
-                            indexXfloor = indexLastLon + asFindFloor(&axisDataLon[indexLastLon],
-                                                                     &axisDataLon[axisDataLonEnd],
-                                                                     axisFinalLon[iLon]);
+                            indexXfloor = indexLastLon +
+                                          asFindFloor(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd],
+                                                      axisFinalLon[iLon]);
                             indexXceil = indexLastLon +
-                                    asFindCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd],
-                                               axisFinalLon[iLon]);
+                                         asFindCeil(&axisDataLon[indexLastLon], &axisDataLon[axisDataLonEnd],
+                                                    axisFinalLon[iLon]);
                         }
 
                         if (indexXfloor == asOUT_OF_RANGE || indexXfloor == asNOT_FOUND ||

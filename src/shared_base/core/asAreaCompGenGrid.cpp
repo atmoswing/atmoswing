@@ -26,6 +26,7 @@
  */
 
 #include "asAreaCompGenGrid.h"
+#include "asTypeDefs.h"
 
 asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                                      float level, int flatAllowed)
@@ -71,6 +72,12 @@ void asAreaCompGenGrid::RebuildComposites()
     Init();
     CreateComposites();
 
+    m_absoluteXmax = m_cornerUR.x;
+    if (m_absoluteXmax < m_absoluteXmin) {
+        m_absoluteXmax += GetAxisXmax();
+    }
+    m_absoluteYmax = m_cornerUL.y;
+
     m_axesInitialized = true;
 }
 
@@ -95,8 +102,8 @@ a1d asAreaCompGenGrid::GetXaxisComposite(int compositeNb)
     double xMin = GetComposite(compositeNb).GetXmin();
     double xMax = GetComposite(compositeNb).GetXmax();
 
-    int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
-    int xMaxIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
+    int xMinIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin);
+    int xMaxIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax);
 
     wxASSERT(xMinIndex >= 0);
     wxASSERT(xMaxIndex >= 0);
@@ -110,8 +117,8 @@ a1d asAreaCompGenGrid::GetYaxisComposite(int compositeNb)
     double yMin = GetComposite(compositeNb).GetYmin();
     double yMax = GetComposite(compositeNb).GetYmax();
 
-    int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
-    int yMaxIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
+    int yMinIndex = asFindClosest(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin);
+    int yMaxIndex = asFindClosest(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax);
 
     wxASSERT(yMinIndex >= 0);
     wxASSERT(yMaxIndex >= 0);
@@ -129,20 +136,25 @@ int asAreaCompGenGrid::GetXaxisCompositePtsnb(int compositeNb)
     double xMin = GetComposite(compositeNb).GetXmin();
     double xMax = GetComposite(compositeNb).GetXmax();
 
-    int xMinIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, 0.01);
-    int xMaxIndex = asFind(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, 0.01);
+    int xMinIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin, asHIDE_WARNINGS);
+    int xMaxIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax, asHIDE_WARNINGS);
+
+    if (xMinIndex == asOUT_OF_RANGE) {
+        xMinIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMin + GetAxisXmax());
+    }
+    if (xMaxIndex == asOUT_OF_RANGE) {
+        xMaxIndex = asFindClosest(&m_fullAxisX[0], &m_fullAxisX[m_fullAxisX.size() - 1], xMax + GetAxisXmax());
+    }
 
     wxASSERT(xMinIndex >= 0);
     wxASSERT(xMaxIndex >= 0);
 
     int ptsnb = xMaxIndex - xMinIndex;
 
-    if (compositeNb == 0) // from 0
-    {
+    if (compositeNb == 0) { // from 0
         ptsnb += 1;
-    } else if (compositeNb == 1) // to 360
-    {
-        ptsnb += 1;
+    } else if (compositeNb == 1) { // to 360
+        //ptsnb += 1;
     } else {
         asThrowException(_("The latitude split is not implemented yet."));
     }
@@ -159,8 +171,8 @@ int asAreaCompGenGrid::GetYaxisCompositePtsnb(int compositeNb)
     double yMin = GetComposite(compositeNb).GetYmin();
     double yMax = GetComposite(compositeNb).GetYmax();
 
-    int yMinIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin, 0.01);
-    int yMaxIndex = asFind(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax, 0.01);
+    int yMinIndex = asFindClosest(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMin);
+    int yMaxIndex = asFindClosest(&m_fullAxisY[0], &m_fullAxisY[m_fullAxisY.size() - 1], yMax);
 
     wxASSERT(yMinIndex >= 0);
     wxASSERT(yMaxIndex >= 0);
