@@ -43,6 +43,7 @@ asPredictorProjCMIP5::asPredictorProjCMIP5(const wxString &dataId, const wxStrin
     m_datasetName = "CFSR Subset";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
+    m_parseTimeReference = true;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -179,10 +180,9 @@ void asPredictorProjCMIP5::ListFiles(asTimeArray &timeArray)
 
     for (int i = 0; i < listFiles.Count(); ++i) {
 
-        wxRegEx reDates("\\d{8}-\\d{8}");
+        wxRegEx reDates("\\d{8}-\\d{8}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
-            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file : %s."), listFiles.Item(i)));
-
+            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file name : %s."), listFiles.Item(i)));
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
@@ -201,7 +201,6 @@ void asPredictorProjCMIP5::ListFiles(asTimeArray &timeArray)
 
 double asPredictorProjCMIP5::ConvertToMjd(double timeValue, double refValue) const
 {
-    wxASSERT(refValue > 30000);
     wxASSERT(refValue < 70000);
 
     return refValue + timeValue;

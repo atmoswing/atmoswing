@@ -30,7 +30,7 @@
 
 asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
                int flatAllowed)
-        : m_gridType(Undefined),
+        : m_gridType(Generic),
           m_cornerUL(cornerUL),
           m_cornerUR(cornerUR),
           m_cornerLL(cornerLL),
@@ -45,7 +45,7 @@ asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, co
 }
 
 asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
-        : m_gridType(Undefined),
+        : m_gridType(Generic),
           m_level(level),
           m_flatAllowed(flatAllowed)
 {
@@ -70,7 +70,7 @@ asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float lev
 }
 
 asArea::asArea(float level)
-        : m_gridType(Undefined),
+        : m_gridType(Generic),
           m_cornerUL({0, 0}),
           m_cornerUR({0, 0}),
           m_cornerLL({0, 0}),
@@ -163,8 +163,6 @@ wxString asArea::GetGridTypeString() const
             return "GaussianT382";
         case (Generic):
             return "Generic";
-        case (Undefined):
-            return "Undefined";
         default:
             return "Not found";
     }

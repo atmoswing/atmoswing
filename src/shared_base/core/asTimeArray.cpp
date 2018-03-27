@@ -41,7 +41,7 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, Mode sl
           m_intervalDays(0),
           m_exclusionDays(0)
 {
-    wxASSERT(m_end > m_start);
+    wxASSERT(m_end >= m_start);
     wxASSERT(m_timeStepDays > 0);
 }
 

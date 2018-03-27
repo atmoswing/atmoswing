@@ -60,6 +60,20 @@ bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherarea) const
     return false;
 }
 
+void asAreaCompGenGrid::RebuildComposites()
+{
+    // Set the members
+    m_cornerUL = {m_fullAxisX.head(1)(0), m_fullAxisY.tail(1)(0)};
+    m_cornerUR = {m_fullAxisX.tail(1)(0), m_fullAxisY.tail(1)(0)};
+    m_cornerLR = {m_fullAxisX.tail(1)(0), m_fullAxisY.head(1)(0)};
+
+    // Initialization and check points
+    Init();
+    CreateComposites();
+
+    m_axesInitialized = true;
+}
+
 void asAreaCompGenGrid::SetXaxis(a1f axis)
 {
     m_fullAxisX.resize(axis.size());

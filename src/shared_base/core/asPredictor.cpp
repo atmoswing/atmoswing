@@ -762,10 +762,11 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
             // If generic, rebuild the axes
             if (desiredArea->GetGridType() == asArea::Generic) {
-                auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *> (desiredArea);
-                auto dataAreaGen = new asAreaCompGenGrid(*desiredAreaGen);
+                auto dataAreaGen = new asAreaCompGenGrid(dataXmin, dataXptsnb, dataYmin, dataYptsnb,
+                                                         desiredArea->GetLevel(), asFLAT_ALLOWED);
                 dataAreaGen->SetXaxis(m_fStr.lons.segment(dataXminIndex, dataXptsnb));
                 dataAreaGen->SetYaxis(m_fStr.lats.segment(dataYminIndex, dataYptsnb));
+                dataAreaGen->RebuildComposites();
                 dataArea = dataAreaGen;
             } else {
                 dataArea = asAreaCompGrid::GetInstance(desiredArea->GetGridTypeString(), dataXmin, dataXptsnb, dataXstep,

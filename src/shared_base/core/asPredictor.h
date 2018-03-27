@@ -116,8 +116,6 @@ public:
         wxASSERT(m_data[0].size() >= 1);
         wxASSERT(m_data[0][0].cols() > 0);
         wxASSERT(m_data[0][0].rows() > 0);
-        wxASSERT(m_data[1][0].cols() > 0);
-        wxASSERT(m_data[1][0].rows() > 0);
 
         return m_data;
     }

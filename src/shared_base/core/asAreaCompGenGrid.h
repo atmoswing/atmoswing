@@ -48,15 +48,7 @@ public:
 
     bool GridsOverlay(asAreaCompGrid *otherarea) const;
 
-    double GetXstep() const override
-    {
-        return 0.0;
-    }
-
-    double GetYstep() const override
-    {
-        return 0.0;
-    }
+    void RebuildComposites();
 
     void SetXaxis(a1f axis);
 
@@ -81,6 +73,26 @@ public:
     double GetXaxisCompositeEnd(int compositeNb) const override;
 
     double GetYaxisCompositeEnd(int compositeNb) const override;
+
+    double GetXstep() const override
+    {
+        return 0.0;
+    }
+
+    double GetYstep() const override
+    {
+        return 0.0;
+    }
+
+    void SetXptsNb(int val)
+    {
+        m_xPtsNb = val;
+    }
+
+    void SetYptsNb(int val)
+    {
+        m_yPtsNb = val;
+    }
 
 protected:
 

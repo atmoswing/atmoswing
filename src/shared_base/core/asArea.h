@@ -37,7 +37,7 @@ class asArea
 public:
     enum GridType
     {
-        Regular, GaussianT62, GaussianT382, Generic, Undefined
+        Regular, GaussianT62, GaussianT382, Generic
     };
 
     asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,

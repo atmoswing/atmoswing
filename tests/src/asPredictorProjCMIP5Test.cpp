@@ -38,11 +38,10 @@ TEST(PredictorProjCMIP5, LoadEasy)
     double xWidth = 3;
     double yMin = 75.7;
     double yWidth = 2;
-    float level = 1000;
-    asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, level);
+    asAreaCompGenGrid area(xMin, xWidth, yMin, yWidth, 0);
 
     double start = asTime::GetMJD(2006, 1, 1, 00, 00);
-    double end = asTime::GetMJD(2006, 1, 2, 00, 00);
+    double end = asTime::GetMJD(2006, 1, 1, 00, 00);
     double timeStepHours = 24;
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
@@ -57,58 +56,22 @@ TEST(PredictorProjCMIP5, LoadEasy)
     ASSERT_TRUE(predictor->Load(area, timearray));
 
     vva2f pr = predictor->GetData();
-    // hgt[time][mem](lat,lon)
+    // pr[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
-    1029.3	1019.7	1010.2	1001.6	992.0	982.4	971.9	961.4	950.8
-    943.2	934.6	927.9	920.2	913.5	906.8	898.2	890.5	881.9
-    834.0	827.3	822.6	816.8	812.0	808.2	803.4	799.6	795.8
-    705.8	704.8	704.8	704.8	704.8	704.8	704.8	704.8	704.8
-    574.6	580.4	587.1	593.8	600.5	606.2	612.9	619.6	624.4
-
-    Transformed (geopotential height):
-    104.96	103.98	103.01	102.13	101.16	100.18	99.11	98.04	96.95
-    96.18	95.30	94.62	93.83	93.15	92.47	91.59	90.81	89.93
-    85.04	84.36	83.88	83.29	82.80	82.41	81.92	81.54	81.15
-    71.97	71.87	71.87	71.87	71.87	71.87	71.87	71.87	71.87
-    58.59	59.18	59.87	60.55	61.23	61.82	62.50	63.18	63.67
+    3.7753E-07	7.6832E-07	7.8179E-07	2.9757E-07
+    1.1153E-06	5.6990E-06	2.2500E-05	3.9894E-05
+    1.7723E-05	2.5831E-05	3.3057E-05	3.7672E-05
     */
-    /*
-    EXPECT_NEAR(104.96, hgt[0][0](0, 0), 0.01);
-    EXPECT_NEAR(103.98, hgt[0][0](0, 1), 0.01);
-    EXPECT_NEAR(103.01, hgt[0][0](0, 2), 0.01);
-    EXPECT_NEAR(102.13, hgt[0][0](0, 3), 0.01);
-    EXPECT_NEAR(96.95, hgt[0][0](0, 8), 0.01);
-    EXPECT_NEAR(96.18, hgt[0][0](1, 0), 0.01);
-    EXPECT_NEAR(85.04, hgt[0][0](2, 0), 0.01);
-    EXPECT_NEAR(58.59, hgt[0][0](4, 0), 0.01);
-    EXPECT_NEAR(63.67, hgt[0][0](4, 8), 0.01);
 
-    /* Values time step 3 (horizontal=Lon, vertical=Lat)
-    1228.4	1211.2	1193.0	1174.8	1156.6	1137.5	1117.4	1097.3	1077.2
-    1183.4	1168.1	1153.8	1139.4	1124.1	1108.8	1092.5	1076.2	1059.9
-    1122.2	1110.7	1099.2	1087.7	1076.2	1064.7	1052.3	1039.8	1028.4
-    1039.8	1032.2	1025.5	1017.8	1010.2	1001.6	993.9	986.2	977.6
-    939.3	937.4	933.6	929.8	925.0	920.2	916.4	910.6	905.8
+    EXPECT_NEAR(3.7753E-07, pr[0][0](0, 0), 1E-11);
+    EXPECT_NEAR(7.6832E-07, pr[0][0](0, 1), 1E-11);
+    EXPECT_NEAR(7.8179E-07, pr[0][0](0, 2), 1E-11);
+    EXPECT_NEAR(2.9757E-07, pr[0][0](0, 3), 1E-11);
+    EXPECT_NEAR(1.1153E-06, pr[0][0](1, 0), 1E-10);
+    EXPECT_NEAR(1.7723E-05, pr[0][0](2, 0), 1E-9);
+    EXPECT_NEAR(3.7672E-05, pr[0][0](2, 3), 1E-9);
 
-    Transformed (geopotential height):
-    125.26	123.51	121.65	119.80	117.94	115.99	113.94	111.89	109.84
-    120.67	119.11	117.65	116.19	114.63	113.07	111.40	109.74	108.08
-    114.43	113.26	112.09	110.91	109.74	108.57	107.30	106.03	104.87
-    106.03	105.26	104.57	103.79	103.01	102.13	101.35	100.56	99.69
-    95.78	95.59	95.20	94.81	94.32	93.83	93.45	92.86	92.37
-    */
-    /*
-    EXPECT_NEAR(125.26, hgt[3][0](0, 0), 0.01);
-    EXPECT_NEAR(123.51, hgt[3][0](0, 1), 0.01);
-    EXPECT_NEAR(121.65, hgt[3][0](0, 2), 0.01);
-    EXPECT_NEAR(119.80, hgt[3][0](0, 3), 0.01);
-    EXPECT_NEAR(109.84, hgt[3][0](0, 8), 0.01);
-    EXPECT_NEAR(120.67, hgt[3][0](1, 0), 0.01);
-    EXPECT_NEAR(114.43, hgt[3][0](2, 0), 0.01);
-    EXPECT_NEAR(95.78, hgt[3][0](4, 0), 0.01);
-    EXPECT_NEAR(92.37, hgt[3][0](4, 8), 0.01);
-*/
     wxDELETE(predictor);
 }
 /*
