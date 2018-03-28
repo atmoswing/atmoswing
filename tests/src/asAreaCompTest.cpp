@@ -30,7 +30,7 @@
 #include "gtest/gtest.h"
 
 
-TEST(AreaCompGrid, ConstructorOneArea)
+TEST(AreaComp, ConstructorOneArea)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -46,7 +46,7 @@ TEST(AreaCompGrid, ConstructorOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaCompGrid, ConstructorTwoAreas)
+TEST(AreaComp, ConstructorTwoAreas)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -10;
@@ -62,7 +62,7 @@ TEST(AreaCompGrid, ConstructorTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaCompGrid, ConstructorAlternativeOneArea)
+TEST(AreaComp, ConstructorAlternativeOneArea)
 {
     double xMin = 10;
     double xWidth = 20;
@@ -73,7 +73,7 @@ TEST(AreaCompGrid, ConstructorAlternativeOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
+TEST(AreaComp, ConstructorAlternativeTwoAreas)
 {
     double xMin = -10;
     double xWidth = 20;
@@ -84,7 +84,7 @@ TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaCompGrid, CheckConsistency)
+TEST(AreaComp, CheckConsistency)
 {
     double xMin = -5;
     double xWidth = 20;
@@ -98,7 +98,7 @@ TEST(AreaCompGrid, CheckConsistency)
     EXPECT_DOUBLE_EQ(15, area.GetCornerLR().x);
 }
 
-TEST(AreaCompGrid, IsSquareTrue)
+TEST(AreaComp, IsSquareTrue)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -114,7 +114,7 @@ TEST(AreaCompGrid, IsSquareTrue)
     EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(AreaCompGrid, IsSquareFalse)
+TEST(AreaComp, IsSquareFalse)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -125,12 +125,11 @@ TEST(AreaCompGrid, IsSquareFalse)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_FALSE(area.IsRectangle());
+    EXPECT_THROW(asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
 }
 
-TEST(AreaCompGrid, GetBounds)
+TEST(AreaComp, GetBounds)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
@@ -143,13 +142,13 @@ TEST(AreaCompGrid, GetBounds)
     cornerLR.y = 30;
     asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    EXPECT_DOUBLE_EQ(10, area.GetXmin());
-    EXPECT_DOUBLE_EQ(30, area.GetYmin());
-    EXPECT_DOUBLE_EQ(20, area.GetXmax());
-    EXPECT_DOUBLE_EQ(40, area.GetYmax());
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetXmin());
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetYmin());
+    EXPECT_DOUBLE_EQ(20, area.GetComposite(0).GetXmax());
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaCompGrid, GetBoundsSplitted)
+TEST(AreaComp, GetBoundsSplitted)
 {
     double xMin = -10;
     double xWidth = 20;
@@ -157,31 +156,15 @@ TEST(AreaCompGrid, GetBoundsSplitted)
     double yWidth = 40;
     asAreaComp area(xMin, xWidth, yMin, yWidth);
 
-    EXPECT_DOUBLE_EQ(0, area.GetXmin());
-    EXPECT_DOUBLE_EQ(30, area.GetYmin());
-    EXPECT_DOUBLE_EQ(360, area.GetXmax());
-    EXPECT_DOUBLE_EQ(70, area.GetYmax());
+    EXPECT_DOUBLE_EQ(350, area.GetComposite(0).GetXmin());
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetXmax());
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetXmin());
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(1).GetXmax());
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetYmin());
+    EXPECT_DOUBLE_EQ(70, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaCompGrid, GetCenter)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = 10;
-    cornerUL.y = 40;
-    cornerUR.x = 20;
-    cornerUR.y = 40;
-    cornerLL.x = 10;
-    cornerLL.y = 30;
-    cornerLR.x = 20;
-    cornerLR.y = 30;
-    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(15, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
-TEST(AreaCompGrid, GetCenterSplitted)
+TEST(AreaComp, GetCornersSplitted)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
@@ -194,57 +177,21 @@ TEST(AreaCompGrid, GetCenterSplitted)
     cornerLR.y = 30;
     asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
 
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(345, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
-TEST(AreaCompGrid, GetCenterSplittedEdge)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -10;
-    cornerUL.y = 40;
-    cornerUR.x = 10;
-    cornerUR.y = 40;
-    cornerLL.x = -10;
-    cornerLL.y = 30;
-    cornerLR.x = 10;
-    cornerLR.y = 30;
-    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(360, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
-TEST(AreaCompGrid, GetCornersSplitted)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -40;
-    cornerUL.y = 40;
-    cornerUR.x = 10;
-    cornerUR.y = 40;
-    cornerLL.x = -40;
-    cornerLL.y = 30;
-    cornerLR.x = 10;
-    cornerLR.y = 30;
-    asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR);
-
-    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(0).GetCornerUL().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetCornerUR().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(0).GetCornerLL().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetCornerLR().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLR().y);
 
-    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetCornerUL().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(1).GetCornerUR().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetCornerLL().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(1).GetCornerLR().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLR().y);
 }

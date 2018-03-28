@@ -40,7 +40,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadEasy)
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -55,7 +55,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadEasy)
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -120,7 +120,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadComposite)
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -134,7 +134,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadComposite)
     asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -203,7 +203,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeft)
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -217,7 +217,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeft)
     asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -280,7 +280,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeftOn720)
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -294,7 +294,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderLeftOn720)
     asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -357,7 +357,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderRight)
     double yWidth = 3;
     double step = 0.75;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -371,7 +371,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadBorderRight)
     asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();

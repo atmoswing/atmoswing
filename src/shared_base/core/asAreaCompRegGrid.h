@@ -37,14 +37,18 @@ class asAreaCompRegGrid
 {
 public:
     asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
-                      double yStep, float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                      double yStep, int flatAllowed = asFLAT_FORBIDDEN);
 
     asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                      float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+                      int flatAllowed = asFLAT_FORBIDDEN);
+
+    asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN);
 
     ~asAreaCompRegGrid() override = default;
 
-    bool GridsOverlay(asAreaCompGrid *otherarea) const override;
+    bool GridsOverlay(asAreaCompGrid *otherArea) const override;
+
+    bool InitializeAxes(const a1d &lons, const a1d &lats) override;
 
     double GetXstep() const override
     {
@@ -56,35 +60,27 @@ public:
         return m_yStep;
     }
 
-    a1d GetXaxisComposite(int compositeNb) override;
+    int GetXstepStride() const
+    {
+        wxASSERT(m_xStep > 0);
+        wxASSERT(fmod(m_xStep, m_xStepData) == 0);
+        return int(m_xStep / m_xStepData);
+    }
 
-    a1d GetYaxisComposite(int compositeNb) override;
-
-    int GetXaxisCompositePtsnb(int compositeNb) override;
-
-    int GetYaxisCompositePtsnb(int compositeNb) override;
-
-    double GetXaxisCompositeWidth(int compositeNb) const override;
-
-    double GetYaxisCompositeWidth(int compositeNb) const override;
-
-    double GetXaxisCompositeStart(int compositeNb) const override;
-
-    double GetYaxisCompositeStart(int compositeNb) const override;
-
-    double GetXaxisCompositeEnd(int compositeNb) const override;
-
-    double GetYaxisCompositeEnd(int compositeNb) const override;
+    int GetYstepStride() const
+    {
+        wxASSERT(m_yStep > 0);
+        wxASSERT(fmod(m_yStep, m_yStepData) == 0);
+        return int(m_yStep / m_yStepData);
+    }
 
 protected:
 
 private:
     double m_xStep;
     double m_yStep;
-
-    bool IsOnGrid(double step) const;
-
-    bool IsOnGrid(double stepX, double stepY) const;
+    double m_xStepData;
+    double m_yStepData;
 };
 
 #endif // asAreaCompositeRegularGrid_H

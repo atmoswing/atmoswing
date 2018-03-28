@@ -54,7 +54,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load1stMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, 0));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -112,7 +112,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, Load3rdMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, 0));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -170,7 +170,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadComposite)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, 0));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -232,7 +232,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, 0));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -286,7 +286,7 @@ TEST(PredictorArchNoaa20Cr2cEnsembleRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, 0));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

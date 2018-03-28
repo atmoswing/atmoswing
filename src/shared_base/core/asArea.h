@@ -35,56 +35,16 @@ class asArea
         : public wxObject
 {
 public:
-    enum GridType
-    {
-        Regular, GaussianT62, GaussianT382, Generic
-    };
-
-    asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
+    asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
            int flatAllowed = asFLAT_FORBIDDEN);
 
-    asArea(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
-           int flatAllowed = asFLAT_FORBIDDEN);
+    asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asArea(float level = asNONE);
+    asArea();
 
     ~asArea() override = default;
 
-    virtual void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
-
     bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
-
-    bool IsRegular() const
-    {
-        return m_gridType == Regular;
-    }
-
-    GridType GetGridType() const
-    {
-        return m_gridType;
-    }
-
-    wxString GetGridTypeString() const;
-
-    static double GetAxisXmin()
-    {
-        return 0;
-    }
-
-    static double GetAxisXmax()
-    {
-        return 360;
-    }
-
-    static double GetAxisYmin()
-    {
-        return -90;
-    }
-
-    static double GetAxisYmax()
-    {
-        return 90;
-    }
 
     Coo GetCornerUL() const
     {
@@ -130,16 +90,6 @@ public:
         Init();
     }
 
-    double GetLevel() const
-    {
-        return m_level;
-    }
-
-    void SetLevel(float val)
-    {
-        m_level = val;
-    }
-
     virtual double GetXmin() const;
 
     virtual double GetXmax() const;
@@ -152,17 +102,13 @@ public:
 
     double GetYwidth() const;
 
-    virtual Coo GetCenter() const;
-
     virtual bool IsRectangle() const;
 
 protected:
-    GridType m_gridType;
     Coo m_cornerUL;
     Coo m_cornerUR;
     Coo m_cornerLL;
     Coo m_cornerLR;
-    float m_level;
     int m_flatAllowed;
 
     virtual void Init();

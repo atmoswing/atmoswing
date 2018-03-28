@@ -36,47 +36,22 @@ class asAreaComp
         : public asArea
 {
 public:
-    asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level = asNONE,
+    asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                int flatAllowed = asFLAT_FORBIDDEN);
 
-    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
-               int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asAreaComp(float level = asNONE);
+    asAreaComp();
 
     ~asAreaComp() override = default;
 
-    void Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN) override;
+    double GetXmin() const;
 
-    double GetAbsoluteXmin() const
-    {
-        return m_absoluteXmin;
-    }
+    double GetXmax() const;
 
-    double GetAbsoluteXmax() const
-    {
-        return m_absoluteXmax;
-    }
+    double GetYmin() const;
 
-    double GetAbsoluteYmin() const
-    {
-        return m_absoluteYmin;
-    }
-
-    double GetAbsoluteYmax() const
-    {
-        return m_absoluteYmax;
-    }
-
-    double GetXmin() const override;
-
-    double GetXmax() const override;
-
-    double GetYmin() const override;
-
-    double GetYmax() const override;
-
-    Coo GetCenter() const override;
+    double GetYmax() const;
 
     int GetNbComposites() const
     {
@@ -85,19 +60,13 @@ public:
 
     asArea GetComposite(int id) const
     {
-        if (id >= m_composites.size())
-            asThrowException(_("The composite area doesn't exist."));
+        wxASSERT(m_composites.size() > id);
+
         return m_composites[id];
     }
 
-    bool IsRectangle() const override;
-
 protected:
     std::vector<asArea> m_composites;
-    double m_absoluteXmin;
-    double m_absoluteXmax;
-    double m_absoluteYmin;
-    double m_absoluteYmax;
 
     void Init() override;
 

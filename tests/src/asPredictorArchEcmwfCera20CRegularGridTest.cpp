@@ -40,7 +40,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -56,7 +56,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
     predictor->SelectFirstMember();
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -106,7 +106,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -122,7 +122,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
     predictor->SelectMember(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -172,7 +172,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -188,7 +188,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
     predictor->SelectMembers(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     ASSERT_EQ(4, predictor->GetData().size());
     ASSERT_EQ(3, predictor->GetData()[0].size());
@@ -279,7 +279,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -294,7 +294,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -311,6 +311,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     EXPECT_NEAR(97.6, rh[0][0](0, 2), 0.1);
     EXPECT_NEAR(98.5, rh[0][0](0, 3), 0.1);
     EXPECT_NEAR(99.1, rh[0][0](0, 4), 0.1);
+    EXPECT_NEAR(99.3, rh[0][0](0, 5), 0.1);
     EXPECT_NEAR(96.6, rh[0][0](0, 8), 0.1);
     EXPECT_NEAR(97.8, rh[0][0](1, 0), 0.1);
     EXPECT_NEAR(99.7, rh[0][0](2, 0), 0.1);
@@ -346,7 +347,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -361,7 +362,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -411,7 +412,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderRight)
     double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -426,7 +427,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderRight)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)

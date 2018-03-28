@@ -40,7 +40,7 @@ TEST(PredictorArchNcepR2Regular, LoadEasy)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -53,7 +53,7 @@ TEST(PredictorArchNcepR2Regular, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -125,7 +125,7 @@ TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -138,7 +138,7 @@ TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     EXPECT_FLOAT_EQ(-7, predictor->GetMinValue());
     EXPECT_FLOAT_EQ(286, predictor->GetMaxValue());
@@ -154,7 +154,7 @@ TEST(PredictorArchNcepR2Regular, LoadComposite)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -167,7 +167,7 @@ TEST(PredictorArchNcepR2Regular, LoadComposite)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -247,7 +247,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -260,7 +260,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -312,7 +312,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -325,7 +325,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -377,7 +377,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderRight)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -390,7 +390,7 @@ TEST(PredictorArchNcepR2Regular, LoadBorderRight)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -449,7 +449,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -462,7 +462,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -522,7 +522,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -535,7 +535,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -576,7 +576,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -589,7 +589,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -639,7 +639,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLatTime)
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
@@ -652,7 +652,7 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLatTime)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

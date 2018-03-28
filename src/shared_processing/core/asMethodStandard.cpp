@@ -479,14 +479,6 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             // The array has the same length than timeArrayArchive, and the predictor dates are aligned with the
             // target dates, but the dates are not the same.
             double ptorStart = timeStartData - double(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
-
-            wxLogDebug("%f - %f + %f = %f", timeStartData, double(params->GetTimeShiftDays()),
-                       preloadTimeHours[iHour] / 24.0, ptorStart);
-            wxLogDebug("ptorStart = %s", asTime::GetStringTime(ptorStart));
-            wxLogDebug("timeStartData = %s", asTime::GetStringTime(timeStartData));
-            wxLogDebug("params->GetTimeShiftDays() = %f", double(params->GetTimeShiftDays()));
-            wxLogDebug("preloadTimeHours[iHour]/24.0 = %f", preloadTimeHours[iHour] / 24.0);
-
             double ptorEnd = timeEndData - double(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
 
             asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
@@ -494,13 +486,13 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
 
             double yMax = params->GetPreloadYmin(iStep, iPtor) +
                           params->GetPredictorYstep(iStep, iPtor) * (double) (params->GetPreloadYptsnb(iStep, iPtor) - 1);
-            if (yMax > asArea::GetAxisYmax()) {
-                double diff = yMax - asArea::GetAxisYmax();
-                int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
+            if (yMax > 90) {
+                double diff = yMax - 90;
+                auto removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                 params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                 wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.3f to %.3f)."), yMax,
                              yMax - diff);
-                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, yMax, asArea::GetAxisYmax(),
+                wxLogVerbose(_("Remove %d points (%.3f-%.3f)/%.3f."), removePts, yMax, 90,
                              params->GetPredictorYstep(iStep, iPtor));
             }
 
@@ -508,19 +500,14 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             wxASSERT(params->GetPreloadYptsnb(iStep, iPtor) > 0);
 
             // Area object instantiation
-            asAreaCompGrid *area = asAreaCompGrid::GetInstance(
-                    params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
-                    params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
-                    params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
-                    params->GetPredictorYstep(iStep, iPtor), preloadLevels[iLevel],
-                    params->GetPredictorFlatAllowed(iStep, iPtor));
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
             wxASSERT(area);
 
             // Data loading
             wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[i], (int) preloadLevels[iLevel],
                          preloadTimeHours[iHour]);
             try {
-                if (!predictor->Load(area, timeArray)) {
+                if (!predictor->Load(area, timeArray, preloadLevels[iLevel])) {
                     wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[i],
                                  (int) preloadLevels[iLevel], preloadTimeHours[iHour]);
                     wxDELETE(area);
@@ -669,8 +656,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
 
                 double yMax = params->GetPreloadYmin(iStep, iPtor) + params->GetPredictorYstep(iStep, iPtor) *
                                                                     double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
-                if (yMax > asArea::GetAxisYmax()) {
-                    double diff = yMax - asArea::GetAxisYmax();
+                if (yMax > 90) {
+                    double diff = yMax - 90;
                     int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                     params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
                     wxLogVerbose(_("Adapt Y axis extent according to the maximum allowed (from %.2f to %.2f)."), yMax,
@@ -678,18 +665,13 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 // Area object instantiation
-                asAreaCompGrid *area = asAreaCompGrid::GetInstance(
-                        params->GetPredictorGridType(iStep, iPtor), params->GetPreloadXmin(iStep, iPtor),
-                        params->GetPreloadXptsnb(iStep, iPtor), params->GetPredictorXstep(iStep, iPtor),
-                        params->GetPreloadYmin(iStep, iPtor), params->GetPreloadYptsnb(iStep, iPtor),
-                        params->GetPredictorYstep(iStep, iPtor), level,
-                        params->GetPredictorFlatAllowed(iStep, iPtor));
+                asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
                 wxASSERT(area);
 
                 // Data loading
                 wxLogVerbose(_("Loading %s data for level %d, %gh."), params->GetPreprocessDataId(iStep, iPtor, iPre),
                              (int) level, timeHours);
-                if (!predictorPreprocess->Load(area, timeArray)) {
+                if (!predictorPreprocess->Load(area, timeArray, level)) {
                     wxLogError(_("The data could not be loaded."));
                     wxDELETE(area);
                     wxDELETE(predictorPreprocess);
@@ -907,15 +889,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     auto *desiredPredictor = new asPredictorArch(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
     // Area object instantiation
-    asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
-                                                              params->GetPredictorXmin(iStep, iPtor),
-                                                              params->GetPredictorXptsnb(iStep, iPtor),
-                                                              params->GetPredictorXstep(iStep, iPtor),
-                                                              params->GetPredictorYmin(iStep, iPtor),
-                                                              params->GetPredictorYptsnb(iStep, iPtor),
-                                                              params->GetPredictorYstep(iStep, iPtor),
-                                                              params->GetPredictorLevel(iStep, iPtor),
-                                                              params->GetPredictorFlatAllowed(iStep, iPtor));
+    asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
 
     wxASSERT(desiredArea);
 
@@ -976,19 +950,11 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     }
 
     // Area object instantiation
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
-                                                                       params->GetPredictorXmin(iStep, iPtor),
-                                                                       params->GetPredictorXptsnb(iStep, iPtor),
-                                                                       params->GetPredictorXstep(iStep, iPtor),
-                                                                       params->GetPredictorYmin(iStep, iPtor),
-                                                                       params->GetPredictorYptsnb(iStep, iPtor),
-                                                                       params->GetPredictorYstep(iStep, iPtor),
-                                                                       params->GetPredictorLevel(iStep, iPtor),
-                                                                       params->GetPredictorFlatAllowed(iStep, iPtor));
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
     // Data loading
-    if (!predictor->Load(area, timeArray)) {
+    if (!predictor->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
         wxLogError(_("The data could not be loaded."));
         wxDELETE(area);
         wxDELETE(predictor);
@@ -1034,19 +1000,11 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
         }
 
         // Area object instantiation
-        asAreaCompGrid *area = asAreaCompGrid::GetInstance(params->GetPredictorGridType(iStep, iPtor),
-                                                           params->GetPredictorXmin(iStep, iPtor),
-                                                           params->GetPredictorXptsnb(iStep, iPtor),
-                                                           params->GetPredictorXstep(iStep, iPtor),
-                                                           params->GetPredictorYmin(iStep, iPtor),
-                                                           params->GetPredictorYptsnb(iStep, iPtor),
-                                                           params->GetPredictorYstep(iStep, iPtor),
-                                                           params->GetPreprocessLevel(iStep, iPtor, iPre),
-                                                           params->GetPredictorFlatAllowed(iStep, iPtor));
+        asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
         wxASSERT(area);
 
         // Data loading
-        if (!predictorPreprocess->Load(area, timeArray)) {
+        if (!predictorPreprocess->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
             wxLogError(_("The data could not be loaded."));
             wxDELETE(area);
             wxDELETE(predictorPreprocess);

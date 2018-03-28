@@ -28,331 +28,220 @@
 
 #include "asAreaCompGrid.h"
 #include "asAreaCompRegGrid.h"
-#include "asAreaGaussGrid.h"
-#include "asAreaCompGaussGrid.h"
 #include "asAreaCompGenGrid.h"
+#include "asParameters.h"
 
-asAreaCompGrid * asAreaCompGrid::GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                             int yPtsNb, double yStep, float level, int flatAllowed)
+
+asAreaCompGrid * asAreaCompGrid::GetInstance(const asParameters *params, int iStep, int iPtor)
 {
-    // If empty, set Regular.
-    if (type.IsEmpty()) {
-        wxLogVerbose(_("The given grid type is empty. A regular grid has been considered."));
-        double xWidth = (double) (xPtsNb - 1) * xStep;
-        double yWidth = (double) (yPtsNb - 1) * yStep;
-        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, flatAllowed);
-        return area;
-    } else if (type.IsSameAs("Regular", false)) {
-        double xWidth = (double) (xPtsNb - 1) * xStep;
-        double yWidth = (double) (yPtsNb - 1) * yStep;
-        asAreaCompGrid *area = new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, level, flatAllowed);
-        return area;
-    } else if (type.IsSameAs("GaussianT62", false)) {
-        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT62, level, flatAllowed);
-        return area;
-    } else if (type.IsSameAs("GaussianT382", false)) {
-        asAreaCompGrid *area = new asAreaCompGaussGrid(xMin, xPtsNb, yMin, yPtsNb, GaussianT382, level, flatAllowed);
-        return area;
-    } else if (type.IsSameAs("Generic", false)) {
-        asAreaCompGrid *area = new asAreaCompGenGrid(xMin, xPtsNb, yMin, yPtsNb, level, flatAllowed);
-        return area;
+    wxString gridType = params->GetPredictorGridType(iStep, iPtor);
+    double xMin = params->GetPredictorXmin(iStep, iPtor);
+    int xPtsNb = params->GetPredictorXptsnb(iStep, iPtor);
+    double xStep = params->GetPredictorXstep(iStep, iPtor);
+    double yMin = params->GetPredictorYmin(iStep, iPtor);
+    int yPtsNb = params->GetPredictorYptsnb(iStep, iPtor);
+    double yStep = params->GetPredictorYstep(iStep, iPtor);
+    int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
+
+    return GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed);
+}
+
+asAreaCompGrid *asAreaCompGrid::GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                            int yPtsNb, double yStep, int flatAllowed)
+{
+    if (type.IsSameAs("Regular", false)) {
+        if (xStep > 0 && yStep > 0) {
+            double xWidth = (double) (xPtsNb - 1) * xStep;
+            double yWidth = (double) (yPtsNb - 1) * yStep;
+            return new asAreaCompRegGrid(xMin, xWidth, xStep, yMin, yWidth, yStep, flatAllowed);
+        } else {
+            return new asAreaCompRegGrid(xMin, xPtsNb, yMin, yPtsNb, flatAllowed);
+        }
+    } else if (type.IsEmpty() || type.IsSameAs("Generic", false)) {
+        return new asAreaCompGenGrid(xMin, xPtsNb, yMin, yPtsNb, flatAllowed);
     } else {
         wxLogError(_("Given grid type: %s"), type);
         asThrowException("The given grid type doesn't correspond to any existing option.");
     }
 }
 
-a1d asAreaCompGrid::GetXaxis(const wxString &type, double xMin, double xMax, double xStep)
+asAreaCompGrid *asAreaCompGrid::GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb,
+                                            double yStep, int flatAllowed)
 {
-    a1d axis;
-
-    if (type.IsSameAs("Regular", false)) {
-        wxASSERT(xStep > 0);
-        auto ni = (int) asRound(360 / xStep);
-        axis = a1d::LinSpaced(ni * 3 + 1, -360, 720);
-    } else if (type.IsSameAs("GaussianT62", false)) {
-        asAreaGaussGrid::BuildLonAxis(axis, GaussianT62);
-    } else if (type.IsSameAs("GaussianT382", false)) {
-        asAreaGaussGrid::BuildLonAxis(axis, GaussianT382);
-    } else {
-        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
-        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
-    }
-
-    wxASSERT(axis.size() > 0);
-
-    int start = asFindClosest(&axis[0], &axis[axis.size() - 1], xMin);
-    int end = asFindClosest(&axis[0], &axis[axis.size() - 1], xMax);
-
-    wxASSERT(start >= 0);
-    wxASSERT(end >= 0);
-    wxASSERT(end >= start);
-    wxASSERT(axis.size() > end - start + 1);
-
-    return axis.segment(start, end - start + 1);
-}
-
-a1d asAreaCompGrid::GetYaxis(const wxString &type, double yMin, double yMax, double yStep)
-{
-    a1d axis;
-
-    if (type.IsSameAs("Regular", false)) {
-        wxASSERT(yStep > 0);
-        int ni = (int) asRound(180 / yStep);
-        axis = a1d::LinSpaced(ni + 1, -90, 90);
-    } else if (type.IsSameAs("GaussianT62", false)) {
-        asAreaGaussGrid::BuildLatAxis(axis, GaussianT62);
-    } else if (type.IsSameAs("GaussianT382", false)) {
-        asAreaGaussGrid::BuildLatAxis(axis, GaussianT382);
-    } else {
-        wxLogError(_("Cannot build axis for the given grid type (%s)."), type);
-        asThrowException(wxString::Format(_("Cannot build axis for the given grid type (%s)."), type));
-    }
-
-    wxASSERT(axis.size() > 0);
-
-    int start = asFindClosest(&axis[0], &axis[axis.size() - 1], yMin);
-    int end = asFindClosest(&axis[0], &axis[axis.size() - 1], yMax);
-
-    wxASSERT(start >= 0);
-    wxASSERT(end >= 0);
-    wxASSERT(end >= start);
-    wxASSERT(axis.size() > end - start + 1);
-
-    return axis.segment(start, end - start + 1);
+    return GetInstance("Generic", xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed);
 }
 
 asAreaCompGrid::asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                               float level, int flatAllowed)
-        : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, level, flatAllowed),
-          m_axesInitialized(false)
+                               int flatAllowed)
+        : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed),
+          m_isRegular(false),
+          m_isInitialized(false),
+          m_xPtsNb(0),
+          m_yPtsNb(0)
 {
 }
 
-asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
-        : asAreaComp(xMin, xWidth, yMin, yWidth, level, flatAllowed),
-          m_axesInitialized(false)
+asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
+        : asAreaComp(xMin, xWidth, yMin, yWidth, flatAllowed),
+          m_isRegular(false),
+          m_isInitialized(false),
+          m_xPtsNb(0),
+          m_yPtsNb(0)
 {
 }
 
-asAreaCompGrid::asAreaCompGrid(float level)
-        : asAreaComp(level),
-          m_axesInitialized(false)
+asAreaCompGrid::asAreaCompGrid()
+        : asAreaComp(),
+          m_isRegular(false),
+          m_isInitialized(false),
+          m_xPtsNb(0),
+          m_yPtsNb(0)
 {
 }
 
-int asAreaCompGrid::GetXaxisPtsnb()
+wxString asAreaCompGrid::GetGridTypeString() const
 {
-    int ptsLon = 0;
-
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        int areaPtsNb = GetXaxisCompositePtsnb(iArea);
-
-        if (areaPtsNb < 0) return -1;
-
-        if (iArea == 0) {
-            ptsLon += areaPtsNb;
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
-                if (GetXaxisCompositeEnd(iArea) == GetAxisXmax()) {
-                    ptsLon += areaPtsNb - 1;
-                } else {
-                    ptsLon += areaPtsNb;
-                }
-            }
-        }
+    if (m_isRegular) {
+        return "Regular";
     }
 
-    return ptsLon;
+    return "Generic";
 }
 
-int asAreaCompGrid::GetYaxisPtsnb()
+bool asAreaCompGrid::InitializeAxes(const a1d &lons, const a1d &lats)
 {
-    int ptsLat = 0;
+    int compositeNb = GetNbComposites();
+    m_compositeXaxes.resize((size_t) compositeNb);
+    m_compositeYaxes.resize((size_t) compositeNb);
 
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        int areaPtsNb = GetYaxisCompositePtsnb(iArea);
+    for (int i = 0; i < compositeNb; ++i) {
 
-        if (areaPtsNb < 0) return -1;
+        int indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin(), asHIDE_WARNINGS);
+        if (indexXmin == asOUT_OF_RANGE) {
+            indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() + 360.0, asHIDE_WARNINGS);
+        }
+        if (indexXmin == asOUT_OF_RANGE) {
+            indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() - 360.0, asHIDE_WARNINGS);
+        }
 
-        if (iArea == 0) {
-            ptsLat += areaPtsNb;
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
-                if (GetYaxisCompositeEnd(iArea) == GetAxisYmax()) {
-                    ptsLat += areaPtsNb - 1;
-                } else {
-                    ptsLat += areaPtsNb;
-                }
+        int indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax(), asHIDE_WARNINGS);
+        if (indexXmax == asOUT_OF_RANGE) {
+            indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() + 360.0, asHIDE_WARNINGS);
+        }
+        if (indexXmax == asOUT_OF_RANGE) {
+            indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
+        }
+        if (indexXmax == asOUT_OF_RANGE) {
+            wxASSERT(lons.size() > 1);
+            double dataStep = lons[1] - lons[0];
+            indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
+            if (indexXmax == asOUT_OF_RANGE) {
+                std::cout << lons;
+                wxLogError(_("Cannot find the corresponding value (%d) on the longitude axis."), m_composites[i].GetXmax());
+                return false;
             }
         }
-    }
 
-    return ptsLat;
-}
+        wxASSERT(indexXmin >= 0);
+        wxASSERT(indexXmax >= 0);
+        wxASSERT(indexXmin <= indexXmax);
 
-double asAreaCompGrid::GetXaxisWidth() const
-{
-    double widthLon = 0;
-
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        if (iArea == 0) {
-            widthLon += GetXaxisCompositeWidth(iArea);
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
-                widthLon += GetXaxisCompositeWidth(iArea);
-            }
+        int indexYmin = asFindClosest(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmin());
+        int indexYmax = asFindClosest(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmax());
+        if (indexYmin > indexYmax) {
+            int tmp = indexYmax;
+            indexYmax = indexYmin;
+            indexYmin = tmp;
         }
+        wxASSERT(indexYmin >= 0);
+        wxASSERT(indexYmax >= 0);
+        wxASSERT(indexYmin <= indexYmax);
+
+        m_compositeXaxes[i] = lons.segment(indexXmin, indexXmax - indexXmin + 1);
+        m_compositeYaxes[i] = lats.segment(indexYmin, indexYmax - indexYmin + 1);
     }
 
-    return widthLon;
+    m_isInitialized = true;
+
+    return true;
 }
 
-double asAreaCompGrid::GetYaxisWidth() const
+a1d asAreaCompGrid::GetXaxisComposite(int compositeNb)
 {
-    double widthLat = 0;
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeXaxes.empty());
 
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        if (iArea == 0) {
-            widthLat += GetYaxisCompositeWidth(iArea);
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
-                widthLat += GetYaxisCompositeWidth(iArea);
-            }
-        }
+    return m_compositeXaxes[compositeNb];
+}
+
+a1d asAreaCompGrid::GetYaxisComposite(int compositeNb)
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeYaxes.empty());
+
+    return m_compositeYaxes[compositeNb];
+}
+
+int asAreaCompGrid::GetXaxisCompositePtsnb(int compositeNb)
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeXaxes.empty());
+
+    return (int)m_compositeXaxes[compositeNb].size();
+}
+
+int asAreaCompGrid::GetYaxisCompositePtsnb(int compositeNb)
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeYaxes.empty());
+
+    return (int) m_compositeYaxes[compositeNb].size();
+}
+
+
+double asAreaCompGrid::GetXaxisCompositeStart(int compositeNb) const
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeXaxes.empty());
+
+    return m_compositeXaxes[compositeNb][0];
+}
+
+double asAreaCompGrid::GetYaxisCompositeStart(int compositeNb) const
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeYaxes.empty());
+
+    return m_compositeYaxes[compositeNb][0];
+}
+
+double asAreaCompGrid::GetXaxisCompositeEnd(int compositeNb) const
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeXaxes.empty());
+
+    return m_compositeXaxes[compositeNb][m_compositeXaxes[compositeNb].size() - 1];
+}
+
+double asAreaCompGrid::GetYaxisCompositeEnd(int compositeNb) const
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeYaxes.empty());
+
+    return m_compositeYaxes[compositeNb][m_compositeYaxes[compositeNb].size() - 1];
+}
+
+int asAreaCompGrid::GetXptsNb()
+{
+    if (GetNbComposites() == 1) {
+        return GetXaxisCompositePtsnb(0);
+
+    } else {
+        return GetXaxisCompositePtsnb(0) + GetXaxisCompositePtsnb(1);
     }
-
-    return widthLat;
 }
 
-a1d asAreaCompGrid::GetXaxis()
+int asAreaCompGrid::GetYptsNb()
 {
-    a1d xAxis;
-
-    wxASSERT(GetNbComposites() > 0);
-
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        if (iArea == 0) {
-            xAxis = GetXaxisComposite(iArea);
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetYmin() == GetComposite(iArea - 1).GetYmin()) {
-                a1d xAxisBis = GetXaxisComposite(iArea);
-
-                if (GetXaxisCompositeEnd(iArea) == GetAxisXmax()) {
-                    a1d xAxisFinal(xAxisBis.size() + xAxis.size() - 1);
-                    xAxisFinal.head(xAxisBis.size()) = xAxisBis;
-                    for (int i = 1; i < xAxis.size(); i++) {
-                        xAxisFinal[xAxisBis.size() - 1 + i] = xAxis[i] + GetAxisXmax();
-                    }
-                    return xAxisFinal;
-                } else {
-                    a1d xAxisFinal(xAxisBis.size() + xAxis.size());
-                    xAxisFinal.head(xAxisBis.size()) = xAxisBis;
-                    for (int i = 0; i < xAxis.size(); i++) {
-                        xAxisFinal[xAxisBis.size() + i] = xAxis[i] + GetAxisXmax();
-                    }
-                    return xAxisFinal;
-                }
-            }
-        }
-    }
-
-    return xAxis;
-}
-
-a1d asAreaCompGrid::GetYaxis()
-{
-    a1d yAxis;
-
-    wxASSERT(GetNbComposites() > 0);
-
-    for (int iArea = 0; iArea < GetNbComposites(); iArea++) {
-        if (iArea == 0) {
-            yAxis = GetYaxisComposite(iArea);
-        } else if (iArea == 4) {
-            // Do nothing here
-        } else {
-            if (GetComposite(iArea).GetXmin() == GetComposite(iArea - 1).GetXmin()) {
-                wxLogError(_("This function has not been tested"));
-
-                a1d yAxisBis = GetYaxisComposite(iArea);
-
-                if (GetXaxisCompositeEnd(iArea) == GetAxisXmax()) {
-                    a1d yAxisFinal(yAxisBis.size() + yAxis.size() - 1);
-                    yAxisFinal.head(yAxisBis.size()) = yAxisBis;
-                    for (int i = 1; i < yAxis.size(); i++) {
-                        yAxisFinal[yAxisBis.size() - 1 + i] = yAxis[i] + GetAxisYmax();
-                    }
-                    return yAxisFinal;
-                } else {
-                    a1d yAxisFinal(yAxisBis.size() + yAxis.size());
-                    yAxisFinal.head(yAxisBis.size()) = yAxisBis;
-                    for (int i = 0; i < yAxis.size(); i++) {
-                        yAxisFinal[yAxisBis.size() + i] = yAxis[i] + GetAxisYmax();
-                    }
-                    return yAxisFinal;
-                }
-            }
-        }
-    }
-
-    return yAxis;
-}
-
-void asAreaCompGrid::SetLastRowAsNewComposite()
-{
-    wxASSERT(GetNbComposites() == 1);
-    asArea area1 = GetComposite(0);
-    Coo cornerLR1 = area1.GetCornerLR();
-    Coo cornerUR1 = area1.GetCornerUR();
-
-    a1d xAxis = GetXaxisComposite(0);
-    cornerLR1.x = xAxis[xAxis.size() - 2];
-    cornerUR1.x = xAxis[xAxis.size() - 2];
-
-    area1.SetCornerLR(cornerLR1);
-    area1.SetCornerUR(cornerUR1);
-
-    Coo cornerLR2 = area1.GetCornerLR();
-    Coo cornerUR2 = area1.GetCornerUR();
-    Coo cornerLL2 = area1.GetCornerLL();
-    Coo cornerUL2 = area1.GetCornerUL();
-    cornerLR2.x = 0;
-    cornerUR2.x = 0;
-    cornerLL2.x = 0;
-    cornerUL2.x = 0;
-
-    asArea area2(cornerUL2, cornerUR2, cornerLL2, cornerLR2, m_level, asFLAT_ALLOWED);
-
-    // Add the composite in this specific order to be consistent with the other implementations.
-    m_composites.clear();
-    m_composites.push_back(area2);
-    m_composites.push_back(area1);
-}
-
-void asAreaCompGrid::RemoveLastRowOnComposite(int i)
-{
-    wxASSERT(GetNbComposites() > 1);
-    asArea area = GetComposite(i);
-    Coo cornerLR = area.GetCornerLR();
-    Coo cornerUR = area.GetCornerUR();
-
-    a1d xAxis = GetXaxisComposite(i);
-    cornerLR.x = xAxis[xAxis.size() - 2];
-    cornerUR.x = xAxis[xAxis.size() - 2];
-
-    area.SetCornerLR(cornerLR);
-    area.SetCornerUR(cornerUR);
-
-    m_composites[i] = area;
+    return GetYaxisCompositePtsnb(0);
 }

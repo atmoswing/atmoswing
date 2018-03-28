@@ -53,7 +53,7 @@ TEST(PredictorProjCMIP5, LoadEasy)
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f pr = predictor->GetData();
     // pr[time][mem](lat,lon)
@@ -96,7 +96,7 @@ TEST(PredictorProjCMIP5, LoadComposite)
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f pr = predictor->GetData();
     // hgt[time][mem](lat,lon)

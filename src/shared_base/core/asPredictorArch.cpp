@@ -230,6 +230,9 @@ bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &tim
 
 bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
 {
+    return false;
+
+    /*
     double xMin = desiredArea->GetAbsoluteXmin();
     double xMax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 1);
@@ -240,12 +243,12 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
     int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + desiredArea->GetAxisXmax());
-        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + desiredArea->GetAxisXmax());
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360);
+        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360);
         if (xStartIndex < 0 || xEndIndex < 0) {
             wxLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin + desiredArea->GetAxisXmax(),
-                       xMax + desiredArea->GetAxisXmax(), m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
+            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin + 360,
+                       xMax + 360, m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
             return false;
         }
     }
@@ -321,7 +324,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                                (int) m_axisLat.size());
                     return false;
                 }
-
+*/
                 /*
                 Illustration of the data arrangement
                     x = data
@@ -336,7 +339,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                     xxxxxxxxxxo
                     xxxxxxxxxxo
                 */
-
+/*
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength - 1, xLength);
@@ -472,7 +475,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
     m_latPtsnb = m_axisLat.size();
     m_lonPtsnb = m_axisLon.size();
 
-    return true;
+    return true;*/
 }
 
 bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const

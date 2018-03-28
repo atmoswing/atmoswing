@@ -41,7 +41,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
     double yWidth = 5;
     double yStep = 1.250;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -55,7 +55,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
     asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -106,7 +106,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
     double yWidth = 5;
     double yStep = 1.250;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
@@ -120,7 +120,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
     asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

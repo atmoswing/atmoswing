@@ -36,43 +36,15 @@ class asAreaCompGenGrid
 {
 public:
     asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                      float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
-
-    asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
                       int flatAllowed = asFLAT_FORBIDDEN);
 
-    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, float level = asNONE,
-                      int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+
+    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN);
 
     ~asAreaCompGenGrid() override = default;
 
-    bool GridsOverlay(asAreaCompGrid *otherarea) const;
-
-    void RebuildComposites();
-
-    void SetXaxis(a1f axis);
-
-    void SetYaxis(a1f axis);
-
-    a1d GetXaxisComposite(int compositeNb) override;
-
-    a1d GetYaxisComposite(int compositeNb) override;
-
-    int GetXaxisCompositePtsnb(int compositeNb) override;
-
-    int GetYaxisCompositePtsnb(int compositeNb) override;
-
-    double GetXaxisCompositeWidth(int compositeNb) const override;
-
-    double GetYaxisCompositeWidth(int compositeNb) const override;
-
-    double GetXaxisCompositeStart(int compositeNb) const override;
-
-    double GetYaxisCompositeStart(int compositeNb) const override;
-
-    double GetXaxisCompositeEnd(int compositeNb) const override;
-
-    double GetYaxisCompositeEnd(int compositeNb) const override;
+    bool GridsOverlay(asAreaCompGrid *otherArea) const override;
 
     double GetXstep() const override
     {
@@ -84,27 +56,10 @@ public:
         return 0.0;
     }
 
-    void SetXptsNb(int val)
-    {
-        m_xPtsNb = val;
-    }
-
-    void SetYptsNb(int val)
-    {
-        m_yPtsNb = val;
-    }
-
 protected:
 
 private:
-    a1d m_fullAxisX;
-    a1d m_fullAxisY;
-    int m_xPtsNb;
-    int m_yPtsNb;
 
-    bool IsOnGrid(const Coo &point) const;
-
-    bool IsOnGrid(double xCoord, double yCoord) const;
 };
 
 #endif // asAreaCompositeGenGrid_H

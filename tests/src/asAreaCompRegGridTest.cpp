@@ -30,23 +30,6 @@
 #include "gtest/gtest.h"
 
 
-TEST(AreaCompRegGrid, ConstructorStepException)
-{
-    wxLogNull logNo;
-
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -10;
-    cornerUL.y = 40;
-    cornerUR.x = 20;
-    cornerUR.y = 40;
-    cornerLL.x = -10;
-    cornerLL.y = 30;
-    cornerLR.x = 20;
-    cornerLR.y = 30;
-    double step = 2.6;
-    ASSERT_THROW(asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
-}
-
 TEST(AreaCompRegGrid, ConstructorOneArea)
 {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -179,10 +162,10 @@ TEST(AreaCompRegGrid, GetBounds)
     double step = 2.5;
     asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    EXPECT_DOUBLE_EQ(10, area.GetXmin());
-    EXPECT_DOUBLE_EQ(30, area.GetYmin());
-    EXPECT_DOUBLE_EQ(20, area.GetXmax());
-    EXPECT_DOUBLE_EQ(40, area.GetYmax());
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetXmin());
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetYmin());
+    EXPECT_DOUBLE_EQ(20, area.GetComposite(0).GetXmax());
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
 TEST(AreaCompRegGrid, GetBoundsSplitted)
@@ -194,67 +177,12 @@ TEST(AreaCompRegGrid, GetBoundsSplitted)
     double step = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
-    EXPECT_DOUBLE_EQ(0, area.GetXmin());
-    EXPECT_DOUBLE_EQ(30, area.GetYmin());
-    EXPECT_DOUBLE_EQ(360, area.GetXmax());
-    EXPECT_DOUBLE_EQ(40, area.GetYmax());
-}
-
-TEST(AreaCompRegGrid, GetCenter)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = 10;
-    cornerUL.y = 40;
-    cornerUR.x = 20;
-    cornerUR.y = 40;
-    cornerLL.x = 10;
-    cornerLL.y = 30;
-    cornerLR.x = 20;
-    cornerLR.y = 30;
-    double step = 2.5;
-    asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(15, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
-TEST(AreaCompRegGrid, GetCenterSplitted)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -40;
-    cornerUL.y = 40;
-    cornerUR.x = 10;
-    cornerUR.y = 40;
-    cornerLL.x = -40;
-    cornerLL.y = 30;
-    cornerLR.x = 10;
-    cornerLR.y = 30;
-    double step = 2.5;
-    asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(345, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
-TEST(AreaCompRegGrid, GetCenterSplittedEdge)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = -10;
-    cornerUL.y = 40;
-    cornerUR.x = 10;
-    cornerUR.y = 40;
-    cornerLL.x = -10;
-    cornerLL.y = 30;
-    cornerLR.x = 10;
-    cornerLR.y = 30;
-    double step = 2.5;
-    asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(360, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
+    EXPECT_DOUBLE_EQ(350, area.GetComposite(0).GetXmin());
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetXmax());
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetXmin());
+    EXPECT_DOUBLE_EQ(20, area.GetComposite(1).GetXmax());
+    EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetYmin());
+    EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
 TEST(AreaCompRegGrid, GetCornersSplitted)
@@ -271,22 +199,22 @@ TEST(AreaCompRegGrid, GetCornersSplitted)
     double step = 2.5;
     asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
-    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(0).GetCornerUL().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetCornerUR().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(0, area.GetComposite(0).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(320, area.GetComposite(0).GetCornerLL().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(10, area.GetComposite(0).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(360, area.GetComposite(0).GetCornerLR().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(0).GetCornerLR().y);
 
-    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerUL().x);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetCornerUL().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUL().y);
-    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerUR().x);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(1).GetCornerUR().x);
     EXPECT_DOUBLE_EQ(40, area.GetComposite(1).GetCornerUR().y);
-    EXPECT_DOUBLE_EQ(320, area.GetComposite(1).GetCornerLL().x);
+    EXPECT_DOUBLE_EQ(0, area.GetComposite(1).GetCornerLL().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLL().y);
-    EXPECT_DOUBLE_EQ(360, area.GetComposite(1).GetCornerLR().x);
+    EXPECT_DOUBLE_EQ(10, area.GetComposite(1).GetCornerLR().x);
     EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLR().y);
 }
 
@@ -304,6 +232,10 @@ TEST(AreaCompRegGrid, GetAxes)
     double step = 2.5;
     asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step);
 
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
     a1d uaxis0, vaxis0;
     uaxis0.resize(area.GetXaxisCompositePtsnb(0));
     vaxis0.resize(area.GetYaxisCompositePtsnb(0));
@@ -311,11 +243,10 @@ TEST(AreaCompRegGrid, GetAxes)
     uaxis0 = area.GetXaxisComposite(0);
     vaxis0 = area.GetYaxisComposite(0);
 
-    EXPECT_DOUBLE_EQ(0, uaxis0(0));
-    EXPECT_DOUBLE_EQ(2.5, uaxis0(1));
-    EXPECT_DOUBLE_EQ(5, uaxis0(2));
-    EXPECT_DOUBLE_EQ(7.5, uaxis0(3));
-    EXPECT_DOUBLE_EQ(10, uaxis0(4));
+    EXPECT_DOUBLE_EQ(320, uaxis0(0));
+    EXPECT_DOUBLE_EQ(322.5, uaxis0(1));
+    EXPECT_DOUBLE_EQ(325, uaxis0(2));
+    EXPECT_DOUBLE_EQ(360, uaxis0(area.GetXaxisCompositePtsnb(0) - 1));
     EXPECT_DOUBLE_EQ(30, vaxis0(0));
     EXPECT_DOUBLE_EQ(32.5, vaxis0(1));
     EXPECT_DOUBLE_EQ(40, vaxis0(4));
@@ -327,10 +258,11 @@ TEST(AreaCompRegGrid, GetAxes)
     uaxis1 = area.GetXaxisComposite(1);
     vaxis1 = area.GetYaxisComposite(1);
 
-    EXPECT_DOUBLE_EQ(320, uaxis1(0));
-    EXPECT_DOUBLE_EQ(322.5, uaxis1(1));
-    EXPECT_DOUBLE_EQ(325, uaxis1(2));
-    EXPECT_DOUBLE_EQ(360, uaxis1(area.GetXaxisCompositePtsnb(1) - 1));
+    EXPECT_DOUBLE_EQ(0, uaxis1(0));
+    EXPECT_DOUBLE_EQ(2.5, uaxis1(1));
+    EXPECT_DOUBLE_EQ(5, uaxis1(2));
+    EXPECT_DOUBLE_EQ(7.5, uaxis1(3));
+    EXPECT_DOUBLE_EQ(10, uaxis1(4));
     EXPECT_DOUBLE_EQ(30, vaxis1(0));
     EXPECT_DOUBLE_EQ(32.5, vaxis1(1));
     EXPECT_DOUBLE_EQ(40, vaxis1(4));
@@ -345,8 +277,12 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSize)
     double step = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
-    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(17, area.GetXaxisCompositePtsnb(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
+    EXPECT_EQ(17, area.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(1));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
 }
@@ -361,8 +297,12 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLon)
     double yStep = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    EXPECT_EQ(3, area.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(9, area.GetXaxisCompositePtsnb(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
+    EXPECT_EQ(9, area.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(2, area.GetXaxisCompositePtsnb(1));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
 }
@@ -377,54 +317,14 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLonMoved)
     double yStep = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
     EXPECT_EQ(2, area.GetXaxisCompositePtsnb(0));
     EXPECT_EQ(2, area.GetXaxisCompositePtsnb(1));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
-}
-
-TEST(AreaCompRegGrid, GetUYaxisCompositeWidthStepLonMoved)
-{
-    double xMin = -7.5;
-    double xWidth = 15;
-    double yMin = 30;
-    double yWidth = 10;
-    double xStep = 5;
-    double yStep = 2.5;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    EXPECT_DOUBLE_EQ(7.5, area.GetXaxisCompositeWidth(0));
-    EXPECT_DOUBLE_EQ(7.5, area.GetXaxisCompositeWidth(1));
-    EXPECT_DOUBLE_EQ(10, area.GetYaxisCompositeWidth(0));
-    EXPECT_DOUBLE_EQ(10, area.GetYaxisCompositeWidth(1));
-}
-
-TEST(AreaCompRegGrid, GetUYaxisPtsnbStepLonMoved)
-{
-    double xMin = -7.5;
-    double xWidth = 15;
-    double yMin = 30;
-    double yWidth = 10;
-    double xStep = 5;
-    double yStep = 2.5;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    EXPECT_EQ(4, area.GetXaxisPtsnb());
-    EXPECT_EQ(5, area.GetYaxisPtsnb());
-}
-
-TEST(AreaCompRegGrid, GetUYaxisWidthStepLonMoved)
-{
-    double xMin = -7.5;
-    double xWidth = 15;
-    double yMin = 30;
-    double yWidth = 10;
-    double xStep = 5;
-    double yStep = 2.5;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
-
-    EXPECT_DOUBLE_EQ(15, area.GetXaxisWidth());
-    EXPECT_DOUBLE_EQ(10, area.GetYaxisWidth());
 }
 
 TEST(AreaCompRegGrid, GetUYaxisCompositeLimits)
@@ -437,12 +337,16 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeLimits)
     double yStep = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    EXPECT_DOUBLE_EQ(0, area.GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(350, area.GetXaxisCompositeStart(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
+    EXPECT_DOUBLE_EQ(350, area.GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(5, area.GetXaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(30, area.GetYaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(30, area.GetYaxisCompositeStart(1));
-    EXPECT_DOUBLE_EQ(10, area.GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(360, area.GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(360, area.GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(10, area.GetXaxisCompositeEnd(1));
     EXPECT_DOUBLE_EQ(40, area.GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, area.GetYaxisCompositeEnd(1));
 }
@@ -457,32 +361,16 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeLimitsMoved)
     double yStep = 2.5;
     asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
-    EXPECT_DOUBLE_EQ(2.5, area.GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(360 - 7.5, area.GetXaxisCompositeStart(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area.InitializeAxes(lons, lats);
+
+    EXPECT_DOUBLE_EQ(360 - 7.5, area.GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(2.5, area.GetXaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(30, area.GetYaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(30, area.GetYaxisCompositeStart(1));
-    EXPECT_DOUBLE_EQ(7.5, area.GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(360 - 2.5, area.GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(360 - 2.5, area.GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(7.5, area.GetXaxisCompositeEnd(1));
     EXPECT_DOUBLE_EQ(40, area.GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, area.GetYaxisCompositeEnd(1));
-}
-
-TEST(AreaCompRegGrid, SetLastRowAsNewComposite)
-{
-    double xMin = 340;
-    double xWidth = 20;
-    double yMin = 30;
-    double yWidth = 10;
-    double step = 2.5;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
-
-    EXPECT_EQ(1, area.GetNbComposites());
-
-    area.SetLastRowAsNewComposite();
-
-    EXPECT_EQ(2, area.GetNbComposites());
-    EXPECT_DOUBLE_EQ(0, area.GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(0, area.GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(340, area.GetXaxisCompositeStart(1));
-    EXPECT_DOUBLE_EQ(357.5, area.GetXaxisCompositeEnd(1));
 }

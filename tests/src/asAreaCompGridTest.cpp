@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asAreaCompGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "gtest/gtest.h"
 
 
-TEST(AreaCompGenGrid, ConstructorAlternativeOneArea)
+TEST(AreaCompGrid, ConstructorAlternativeOneArea)
 {
     double xMin = 10;
     int xPtsNb = 5;
@@ -44,7 +44,7 @@ TEST(AreaCompGenGrid, ConstructorAlternativeOneArea)
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, ConstructorAlternativeTwoAreas)
+TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
 {
     double xMin = -10;
     int xPtsNb = 13;
@@ -58,7 +58,7 @@ TEST(AreaCompGenGrid, ConstructorAlternativeTwoAreas)
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, CheckConsistency)
+TEST(AreaCompGrid, CheckConsistency)
 {
     double xMin = -5;
     int xPtsNb = 11;
@@ -75,7 +75,7 @@ TEST(AreaCompGenGrid, CheckConsistency)
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, CheckConsistencyException)
+TEST(AreaCompGrid, CheckConsistencyException)
 {
     wxLogNull logNo;
 
@@ -90,7 +90,7 @@ TEST(AreaCompGenGrid, CheckConsistencyException)
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetBoundsSplitted)
+TEST(AreaCompGrid, GetBoundsSplitted)
 {
     double xMin = -10;
     int xPtsNb = 13;
@@ -100,14 +100,26 @@ TEST(AreaCompGenGrid, GetBoundsSplitted)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    EXPECT_DOUBLE_EQ(0, area->GetXmin());
-    EXPECT_DOUBLE_EQ(30, area->GetYmin());
-    EXPECT_DOUBLE_EQ(360, area->GetXmax());
-    EXPECT_DOUBLE_EQ(40, area->GetYmax());
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
+
+    wxLogNull logNull;
+    ASSERT_THROW(area->GetXmin(), asException);
+    ASSERT_THROW(area->GetYmin(), asException);
+    ASSERT_THROW(area->GetXmax(), asException);
+    ASSERT_THROW(area->GetYmax(), asException);
+
+    EXPECT_DOUBLE_EQ(350, area->GetComposite(0).GetXmin());
+    EXPECT_DOUBLE_EQ(0, area->GetComposite(1).GetXmin());
+    EXPECT_DOUBLE_EQ(360, area->GetComposite(0).GetXmax());
+    EXPECT_DOUBLE_EQ(20, area->GetComposite(1).GetXmax());
+    EXPECT_DOUBLE_EQ(30, area->GetComposite(0).GetYmin());
+    EXPECT_DOUBLE_EQ(40, area->GetComposite(0).GetYmax());
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetUYaxisCompositeSize)
+TEST(AreaCompGrid, GetUYaxisCompositeSize)
 {
     double xMin = -40;
     int xPtsNb = 21;
@@ -117,14 +129,18 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeSize)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(17, area->GetXaxisCompositePtsnb(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
+
+    EXPECT_EQ(17, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(1));
     EXPECT_EQ(5, area->GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, area->GetYaxisCompositePtsnb(1));
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetUYaxisCompositeSizeStepLon)
+TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLon)
 {
     double xMin = -40;
     int xPtsNb = 11;
@@ -135,14 +151,18 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeSizeStepLon)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    EXPECT_EQ(3, area->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(9, area->GetXaxisCompositePtsnb(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
+
+    EXPECT_EQ(9, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(2, area->GetXaxisCompositePtsnb(1));
     EXPECT_EQ(5, area->GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, area->GetYaxisCompositePtsnb(1));
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetUYaxisCompositeSizeStepLonMoved)
+TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLonMoved)
 {
     double xMin = -7.5;
     int xPtsNb = 4;
@@ -152,6 +172,10 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeSizeStepLonMoved)
     double yStep = 2.5;
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
 
     EXPECT_EQ(2, area->GetXaxisCompositePtsnb(0));
     EXPECT_EQ(2, area->GetXaxisCompositePtsnb(1));
@@ -160,57 +184,7 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeSizeStepLonMoved)
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetUYaxisCompositeWidthStepLonMoved)
-{
-    double xMin = -7.5;
-    int xPtsNb = 4;
-    double yMin = 30;
-    int yPtsNb = 5;
-    double xStep = 5;
-    double yStep = 2.5;
-    wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
-
-    EXPECT_DOUBLE_EQ(7.5, area->GetXaxisCompositeWidth(0));
-    EXPECT_DOUBLE_EQ(7.5, area->GetXaxisCompositeWidth(1));
-    EXPECT_DOUBLE_EQ(10, area->GetYaxisCompositeWidth(0));
-    EXPECT_DOUBLE_EQ(10, area->GetYaxisCompositeWidth(1));
-    wxDELETE(area);
-}
-
-TEST(AreaCompGenGrid, GetUYaxisPtsnbStepLonMoved)
-{
-    double xMin = -7.5;
-    int xPtsNb = 4;
-    double yMin = 30;
-    int yPtsNb = 5;
-    double xStep = 5;
-    double yStep = 2.5;
-    wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
-
-    EXPECT_EQ(4, area->GetXaxisPtsnb());
-    EXPECT_EQ(5, area->GetYaxisPtsnb());
-    wxDELETE(area);
-}
-
-TEST(AreaCompGenGrid, GetUYaxisWidthStepLonMoved)
-{
-    double xMin = -7.5;
-    int xPtsNb = 4;
-    double yMin = 30;
-    int yPtsNb = 5;
-    double xStep = 5;
-    double yStep = 2.5;
-    wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
-
-    EXPECT_DOUBLE_EQ(15, area->GetXaxisWidth());
-    EXPECT_DOUBLE_EQ(10, area->GetYaxisWidth());
-    wxDELETE(area);
-}
-
-TEST(AreaCompGenGrid, GetUYaxisCompositeLimits)
+TEST(AreaCompGrid, GetUYaxisCompositeLimits)
 {
     double xMin = -10;
     int xPtsNb = 5;
@@ -221,18 +195,22 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeLimits)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    EXPECT_DOUBLE_EQ(0, area->GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(350, area->GetXaxisCompositeStart(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
+
+    EXPECT_DOUBLE_EQ(350, area->GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(5, area->GetXaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(30, area->GetYaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(30, area->GetYaxisCompositeStart(1));
-    EXPECT_DOUBLE_EQ(10, area->GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(360, area->GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(360, area->GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(10, area->GetXaxisCompositeEnd(1));
     EXPECT_DOUBLE_EQ(40, area->GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, area->GetYaxisCompositeEnd(1));
     wxDELETE(area);
 }
 
-TEST(AreaCompGenGrid, GetUYaxisCompositeLimitsMoved)
+TEST(AreaCompGrid, GetUYaxisCompositeLimitsMoved)
 {
     double xMin = -7.5;
     int xPtsNb = 4;
@@ -243,12 +221,16 @@ TEST(AreaCompGenGrid, GetUYaxisCompositeLimitsMoved)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
-    EXPECT_DOUBLE_EQ(2.5, area->GetXaxisCompositeStart(0));
-    EXPECT_DOUBLE_EQ(360 - 7.5, area->GetXaxisCompositeStart(1));
+    a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
+    a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
+    area->InitializeAxes(lons, lats);
+
+    EXPECT_DOUBLE_EQ(360 - 7.5, area->GetXaxisCompositeStart(0));
+    EXPECT_DOUBLE_EQ(2.5, area->GetXaxisCompositeStart(1));
     EXPECT_DOUBLE_EQ(30, area->GetYaxisCompositeStart(0));
     EXPECT_DOUBLE_EQ(30, area->GetYaxisCompositeStart(1));
-    EXPECT_DOUBLE_EQ(7.5, area->GetXaxisCompositeEnd(0));
-    EXPECT_DOUBLE_EQ(360 - 2.5, area->GetXaxisCompositeEnd(1));
+    EXPECT_DOUBLE_EQ(360 - 2.5, area->GetXaxisCompositeEnd(0));
+    EXPECT_DOUBLE_EQ(7.5, area->GetXaxisCompositeEnd(1));
     EXPECT_DOUBLE_EQ(40, area->GetYaxisCompositeEnd(0));
     EXPECT_DOUBLE_EQ(40, area->GetYaxisCompositeEnd(1));
     wxDELETE(area);

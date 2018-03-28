@@ -50,7 +50,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -59,7 +59,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -139,7 +139,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -148,7 +148,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -228,7 +228,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -237,7 +237,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -281,7 +281,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -290,7 +290,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -334,7 +334,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -343,7 +343,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -387,7 +387,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -396,7 +396,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -440,7 +440,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -449,7 +449,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -493,7 +493,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -502,7 +502,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -546,7 +546,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -555,7 +555,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -599,7 +599,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -608,7 +608,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -653,7 +653,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -662,7 +662,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -707,7 +707,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -716,7 +716,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -761,7 +761,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -770,7 +770,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -813,7 +813,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -822,7 +822,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -865,7 +865,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -874,7 +874,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -920,7 +920,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -929,7 +929,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -975,7 +975,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -984,7 +984,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1025,7 +1025,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1034,7 +1034,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1075,7 +1075,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1084,7 +1084,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1123,7 +1123,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1132,7 +1132,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     predictor->SetFileNames(filepaths);
 
     // Load
-    ASSERT_TRUE(predictor->Load(area, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

@@ -91,13 +91,13 @@ public:
 
     bool CheckFilesPresence();
 
-    bool Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asAreaCompGrid &desiredArea, double date);
+    bool Load(asAreaCompGrid &desiredArea, double date, float level);
 
-    bool Load(asAreaCompGrid *desiredArea, double date);
+    bool Load(asAreaCompGrid *desiredArea, double date, float level);
 
     bool TransformData(vvva2f &compositeData);
 
@@ -263,9 +263,9 @@ protected:
         wxString dimMemberName;
         bool hasLevelDim;
         bool singleLevel;
-        a1f lons;
-        a1f lats;
-        a1f levels;
+        a1d lons;
+        a1d lats;
+        a1d levels;
         a1i members;
         double timeStart;
         double timeEnd;
@@ -376,8 +376,6 @@ protected:
     bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
 
     asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
-
-    asAreaCompGrid *AdjustAxes(asAreaCompGrid *dataArea, vvva2f &compositeData);
 
     void AssignGribCode(const int arr[]);
 

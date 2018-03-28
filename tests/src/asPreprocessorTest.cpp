@@ -45,7 +45,7 @@ TEST(Preprocessor, Gradients)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     EXPECT_DOUBLE_EQ(10, area.GetXmin());
     EXPECT_DOUBLE_EQ(20, area.GetXmax());
@@ -67,7 +67,7 @@ TEST(Preprocessor, Gradients)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
@@ -211,7 +211,7 @@ TEST(Preprocessor, GradientsMultithreading)
     double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     EXPECT_DOUBLE_EQ(10, area.GetXmin());
     EXPECT_DOUBLE_EQ(20, area.GetXmax());
@@ -233,7 +233,7 @@ TEST(Preprocessor, GradientsMultithreading)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
@@ -350,7 +350,7 @@ TEST(Preprocessor, Addition)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     EXPECT_FLOAT_EQ(0, area->GetXmin());
     EXPECT_FLOAT_EQ(7.5, area->GetXmax());
@@ -373,9 +373,9 @@ TEST(Preprocessor, Addition)
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(area, timearray1));
-    ASSERT_TRUE(predictor2->Load(area, timearray2));
-    ASSERT_TRUE(predictor3->Load(area, timearray3));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
+    ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
@@ -465,7 +465,7 @@ TEST(Preprocessor, Average)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     EXPECT_FLOAT_EQ(0, area->GetXmin());
     EXPECT_FLOAT_EQ(7.5, area->GetXmax());
@@ -488,9 +488,9 @@ TEST(Preprocessor, Average)
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(area, timearray1));
-    ASSERT_TRUE(predictor2->Load(area, timearray2));
-    ASSERT_TRUE(predictor3->Load(area, timearray3));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
+    ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
@@ -580,7 +580,7 @@ TEST(Preprocessor, Difference)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     EXPECT_FLOAT_EQ(0, area->GetXmin());
     EXPECT_FLOAT_EQ(7.5, area->GetXmax());
@@ -600,8 +600,8 @@ TEST(Preprocessor, Difference)
     asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(area, timearray1));
-    ASSERT_TRUE(predictor2->Load(area, timearray2));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
@@ -699,8 +699,8 @@ TEST(Preprocessor, Multiplication)
     asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(area, timearray1));
-    ASSERT_TRUE(predictor2->Load(area, timearray2));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());

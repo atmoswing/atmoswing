@@ -56,9 +56,9 @@ public:
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
-    bool GetXaxis(a1f &uaxis) const;
+    bool GetXaxis(a1d &uaxis) const;
 
-    bool GetYaxis(a1f &vaxis) const;
+    bool GetYaxis(a1d &vaxis) const;
 
     double GetTime() const;
 
@@ -77,9 +77,9 @@ private:
     vd m_refTimes;
     vd m_times;
     vd m_forecastTimes;
-    vf m_levels;
-    va1f m_xAxes;
-    va1f m_yAxes;
+    vd m_levels;
+    va1d m_xAxes;
+    va1d m_yAxes;
 
     bool OpenDataset();
 

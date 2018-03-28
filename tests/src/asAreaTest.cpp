@@ -124,7 +124,6 @@ TEST(Area, CheckPointWGS84VTooHighCorr)
     point.x = 10;
     point.y = 90.1;
     EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(89.9, point.y);
 }
 
 TEST(Area, CheckPointWGS84VTooLowCorr)
@@ -134,7 +133,6 @@ TEST(Area, CheckPointWGS84VTooLowCorr)
     point.x = 10;
     point.y = -90.1;
     EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
-    EXPECT_DOUBLE_EQ(-89.9, point.y);
 }
 
 TEST(Area, ConstructorLimitsException)
@@ -206,9 +204,7 @@ TEST(Area, IsRectangleFalse)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
-    asArea area(cornerUL, cornerUR, cornerLL, cornerLR);
-
-    EXPECT_FALSE(area.IsRectangle());
+    EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
 }
 
 TEST(Area, GetBounds)
@@ -230,24 +226,6 @@ TEST(Area, GetBounds)
     EXPECT_DOUBLE_EQ(10, area.GetYwidth());
 }
 
-TEST(Area, GetCenter)
-{
-    Coo cornerUL, cornerUR, cornerLL, cornerLR;
-    cornerUL.x = 10;
-    cornerUL.y = 40;
-    cornerUR.x = 20;
-    cornerUR.y = 40;
-    cornerLL.x = 10;
-    cornerLL.y = 30;
-    cornerLR.x = 20;
-    cornerLR.y = 30;
-    asArea area(cornerUL, cornerUR, cornerLL, cornerLR);
-
-    Coo center = area.GetCenter();
-    EXPECT_DOUBLE_EQ(15, center.x);
-    EXPECT_DOUBLE_EQ(35, center.y);
-}
-
 TEST(Area, NegativeSize)
 {
     double xMin = 10;
@@ -255,7 +233,7 @@ TEST(Area, NegativeSize)
     double yMin = 46;
     double yWidth = -2;
 
-    asArea area(xMin, xWidth, yMin, yWidth, asNONE, asFLAT_ALLOWED);
+    asArea area(xMin, xWidth, yMin, yWidth, asFLAT_ALLOWED);
 
     EXPECT_DOUBLE_EQ(10, area.GetXmin());
     EXPECT_DOUBLE_EQ(46, area.GetYmin());

@@ -255,19 +255,19 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
 
 void asFileGrib2::BuildAxes(const gribfield *gfld)
 {
-    float scale = 0.000001;
+    double scale = 0.000001;
     auto nX = (int) gfld->igdtmpl[7];
     auto nY = (int) gfld->igdtmpl[8];
-    float latStart = float(gfld->igdtmpl[11]) * scale;
-    float lonStart = float(gfld->igdtmpl[12]) * scale;
-    float latEnd = float(gfld->igdtmpl[14]) * scale;
-    float lonEnd = float(gfld->igdtmpl[15]) * scale;
+    double latStart = gfld->igdtmpl[11] * scale;
+    double lonStart = gfld->igdtmpl[12] * scale;
+    double latEnd = gfld->igdtmpl[14] * scale;
+    double lonEnd = gfld->igdtmpl[15] * scale;
     if (lonEnd < lonStart) {
         lonEnd += 360;
     }
 
-    a1f xAxis = a1f::LinSpaced(nX, lonStart, lonEnd);
-    a1f yAxis = a1f::LinSpaced(nY, latStart, latEnd);
+    a1d xAxis = a1d::LinSpaced(nX, lonStart, lonEnd);
+    a1d yAxis = a1d::LinSpaced(nY, latStart, latEnd);
 
     m_xAxes.push_back(xAxis);
     m_yAxes.push_back(yAxis);
@@ -301,7 +301,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
     }
 }
 
-bool asFileGrib2::GetXaxis(a1f &uaxis) const
+bool asFileGrib2::GetXaxis(a1d &uaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -312,7 +312,7 @@ bool asFileGrib2::GetXaxis(a1f &uaxis) const
     return true;
 }
 
-bool asFileGrib2::GetYaxis(a1f &vaxis) const
+bool asFileGrib2::GetYaxis(a1d &vaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);

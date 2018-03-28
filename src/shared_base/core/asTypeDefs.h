@@ -84,6 +84,7 @@ typedef Eigen::Array<float, Eigen::Dynamic, 1> a1f;
 typedef Eigen::Array<double, Eigen::Dynamic, 1> a1d;
 typedef Eigen::Array<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> a2f;
 typedef std::vector<a1f> va1f;
+typedef std::vector<a1d> va1d;
 typedef std::vector<a2f> va2f;
 typedef std::vector<a2f *> vpa2f;
 typedef std::vector<std::vector<a2f> > vva2f;

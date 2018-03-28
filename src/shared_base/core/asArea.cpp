@@ -28,26 +28,18 @@
 
 #include "asArea.h"
 
-asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, float level,
-               int flatAllowed)
-        : m_gridType(Generic),
-          m_cornerUL(cornerUL),
+asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, int flatAllowed)
+        : m_cornerUL(cornerUL),
           m_cornerUR(cornerUR),
           m_cornerLL(cornerLL),
           m_cornerLR(cornerLR),
-          m_level(level),
           m_flatAllowed(flatAllowed)
 {
-    // Initialization and check points
     Init();
-
-    wxLogVerbose(_("The area was successfully created."));
 }
 
-asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float level, int flatAllowed)
-        : m_gridType(Generic),
-          m_level(level),
-          m_flatAllowed(flatAllowed)
+asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
+        : m_flatAllowed(flatAllowed)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
         yWidth = wxMax(yWidth, 0.0);
@@ -57,51 +49,22 @@ asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, float lev
         wxASSERT(xWidth > 0);
     }
 
-    // Set the members
     m_cornerUL = {xMin, yMin + yWidth};
     m_cornerUR = {xMin + xWidth, yMin + yWidth};
     m_cornerLL = {xMin, yMin};
     m_cornerLR = {xMin + xWidth, yMin};
 
-    // Initialization and check points
     Init();
-
-    wxLogVerbose(_("The area was successfully created."));
 }
 
-asArea::asArea(float level)
-        : m_gridType(Generic),
-          m_cornerUL({0, 0}),
+asArea::asArea()
+        : m_cornerUL({0, 0}),
           m_cornerUR({0, 0}),
           m_cornerLL({0, 0}),
           m_cornerLR({0, 0}),
-          m_level(level),
           m_flatAllowed(asFLAT_ALLOWED)
 {
 
-}
-
-void asArea::Generate(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
-{
-    if (flatAllowed == asFLAT_ALLOWED) {
-        yWidth = wxMax(yWidth, 0.0);
-        xWidth = wxMax(xWidth, 0.0);
-    } else {
-        wxASSERT(yWidth > 0);
-        wxASSERT(xWidth > 0);
-    }
-
-    // Set the members
-    m_cornerUL = {xMin, yMin + yWidth};
-    m_cornerUR = {xMin + xWidth, yMin + yWidth};
-    m_cornerLL = {xMin, yMin};
-    m_cornerLR = {xMin + xWidth, yMin};
-    m_flatAllowed = flatAllowed;
-
-    // Initialization and check points
-    Init();
-
-    wxLogVerbose(_("The area was successfully created."));
 }
 
 void asArea::Init()
@@ -110,6 +73,8 @@ void asArea::Init()
         asThrowException(_("Use asAreaComp in this case."));
     if (!CheckConsistency())
         asThrowException(_("Unable to build a consistent area with the given coordinates."));
+    if (!IsRectangle())
+        asThrowException(_("The provided area is not rectangle."));
 }
 
 bool asArea::DoCheckPoints()
@@ -122,50 +87,26 @@ bool asArea::DoCheckPoints()
 bool asArea::CheckPoint(Coo &point, int changesAllowed)
 {
     // We always consider WGS84 for the predictors
-    if (point.y < GetAxisYmin()) {
+    if (point.y < -90) {
+        return false;
+    }
+    if (point.y > 90) {
+        return false;
+    }
+    if (point.x < 0) {
         if (changesAllowed == asEDIT_ALLOWED) {
-            point.y = GetAxisYmin() + (GetAxisYmin() - point.y);
-            point.x = point.x + 180;
+            point.x += 360;
         }
         return false;
     }
-    if (point.y > GetAxisYmax()) {
+    if (point.x > 360) {
         if (changesAllowed == asEDIT_ALLOWED) {
-            point.y = GetAxisYmax() + (GetAxisYmax() - point.y);
-            point.x = point.x + 180;
-        }
-        return false;
-    }
-    if (point.x < GetAxisXmin()) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x += GetAxisXmax();
-        }
-        return false;
-    }
-    if (point.x > GetAxisXmax()) {
-        if (changesAllowed == asEDIT_ALLOWED) {
-            point.x -= GetAxisXmax();
+            point.x -= 360;
         }
         return false;
     }
 
     return true;
-}
-
-wxString asArea::GetGridTypeString() const
-{
-    switch (m_gridType) {
-        case (Regular):
-            return "Regular";
-        case (GaussianT62):
-            return "GaussianT62";
-        case (GaussianT382):
-            return "GaussianT382";
-        case (Generic):
-            return "Generic";
-        default:
-            return "Not found";
-    }
 }
 
 bool asArea::CheckConsistency()
@@ -234,14 +175,6 @@ double asArea::GetYmax() const
 double asArea::GetYwidth() const
 {
     return std::abs(m_cornerUR.y - m_cornerLR.y);
-}
-
-Coo asArea::GetCenter() const
-{
-    Coo center;
-    center.x = GetXmin() + (GetXmax() - GetXmin()) / 2;
-    center.y = GetYmin() + (GetYmax() - GetYmin()) / 2;
-    return center;
 }
 
 bool asArea::IsRectangle() const

@@ -41,7 +41,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -55,7 +55,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
     asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -106,7 +106,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadComposite)
     double yWidth = 2;
     double yStep = 0.5;
     float level = 1000;
-    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
@@ -119,7 +119,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadComposite)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&area, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

@@ -32,75 +32,61 @@
 #include <asIncludes.h>
 #include <asAreaComp.h>
 
+class asParameters;
+
 class asAreaCompGrid
-        : public asAreaComp // Abstract class
+        : public asAreaComp
 {
 public:
 
-    asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                   float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    static asAreaCompGrid * GetInstance(const asParameters *params, int iStep, int iPtor);
 
-    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, float level = asNONE,
+    asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                    int flatAllowed = asFLAT_FORBIDDEN);
 
-    explicit asAreaCompGrid(float level = asNONE);
+    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
 
-    static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                        int yPtsNb, double yStep, float level = asNONE, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGrid();
 
-    static a1d GetXaxis(const wxString &type, double xMin, double xMax, double xStep = 0);
+    wxString GetGridTypeString() const;
 
-    static a1d GetYaxis(const wxString &type, double yMin, double yMax, double yStep = 0);
+    bool InitializeAxes(const a1f &lons, const a1f &lats);
 
-    virtual bool GridsOverlay(asAreaCompGrid *otherarea) const = 0;
+    virtual bool GridsOverlay(asAreaCompGrid *otherArea) const = 0;
 
-    void SetLastRowAsNewComposite();
+    virtual a1d GetXaxisComposite(int compositeNb);
 
-    void RemoveLastRowOnComposite(int i);
+    virtual a1d GetYaxisComposite(int compositeNb);
+
+    virtual int GetXaxisCompositePtsnb(int compositeNb);
+
+    virtual int GetYaxisCompositePtsnb(int compositeNb);
+
+    double GetXaxisCompositeStart(int compositeNb) const;
+
+    double GetYaxisCompositeStart(int compositeNb) const;
+
+    double GetXaxisCompositeEnd(int compositeNb) const;
+
+    double GetYaxisCompositeEnd(int compositeNb) const;
 
     virtual double GetXstep() const = 0;
 
     virtual double GetYstep() const = 0;
 
-    virtual a1d GetXaxisComposite(int compositeNb) = 0;
-
-    virtual a1d GetYaxisComposite(int compositeNb) = 0;
-
-    virtual int GetXaxisCompositePtsnb(int compositeNb) = 0;
-
-    virtual int GetYaxisCompositePtsnb(int compositeNb) = 0;
-
-    virtual double GetXaxisCompositeWidth(int compositeNb) const = 0;
-
-    virtual double GetYaxisCompositeWidth(int compositeNb) const = 0;
-
-    virtual double GetXaxisCompositeStart(int compositeNb) const = 0;
-
-    virtual double GetYaxisCompositeStart(int compositeNb) const = 0;
-
-    virtual double GetXaxisCompositeEnd(int compositeNb) const = 0;
-
-    virtual double GetYaxisCompositeEnd(int compositeNb) const = 0;
-
-    int GetXaxisPtsnb();
-
-    int GetYaxisPtsnb();
-
-    double GetXaxisWidth() const;
-
-    double GetYaxisWidth() const;
-
-    a1d GetXaxis();
-
-    a1d GetYaxis();
-
-    bool AxesInitialized()
+    bool IsRegular() const
     {
-        return m_axesInitialized;
+        return m_isRegular;
     }
 
+
 protected:
-    bool m_axesInitialized;
+    bool m_isRegular;
+    bool m_isInitialized;
+    std::vector<a1d> m_compositeXaxes;
+    std::vector<a1d> m_compositeYaxes;
+    int m_xPtsNb;
+    int m_yPtsNb;
 
 private:
 

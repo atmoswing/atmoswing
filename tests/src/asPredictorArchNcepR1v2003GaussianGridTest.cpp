@@ -40,9 +40,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadEasy)
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    float level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -55,7 +53,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -127,9 +125,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadComposite)
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    float level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -142,7 +138,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadComposite)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -206,9 +202,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeft)
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    float level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -221,7 +215,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeft)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -273,9 +267,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeftOn720)
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    float level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -288,7 +280,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeftOn720)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -340,9 +332,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderRight)
     double yMin = 29.523;
     int yPtsNb = 3;
     double step = 0;
-    float level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 6, 00, 00);
@@ -355,7 +345,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderRight)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f air = predictor->GetData();
     // air[time](lat,lon)
@@ -414,9 +404,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, SetData)
     int yPtsNb = 2;
     double steplon = 0;
     double steplat = 0;
-    double level = 0;
-    wxString gridType = "GaussianT62";
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, steplon, yMin, yPtsNb, steplat, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(xMin, xPtsNb, steplon, yMin, yPtsNb, steplat);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 5, 00, 00);
@@ -429,7 +417,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, SetData)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(area, timearray));
+    ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
     vva2f newdata(5, va2f(1, a2f::Zero(1, 4)));
 
