@@ -634,7 +634,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     wxDELETE(area);
     wxDELETE(predictor);
 }
-
+/*
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 {
     vwxs filepaths;
@@ -666,7 +666,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9422	9373	9300	9295	9308	9312
@@ -674,6 +674,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
+/*
     EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -720,7 +721,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9422	9373	9300	9295	9308	9312
@@ -728,6 +729,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
+/*
     EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -774,13 +776,14 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9400	9368	9332	9314	9312	9312
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
+/*
     EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -826,13 +829,14 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9400	9368	9332	9314	9312	9312
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
+/*
     EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -885,6 +889,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     9457	7536.6	9351	7444.4	9316
     9485	9455.5	9423	9390	9373
     */
+/*
     EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -933,13 +938,14 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9431	9397.5	9332	9300	9304
     9457	9420.75	9351	9305.5	9316
     9485	9455.5	9423	9390	9373
     */
+/*
     EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -988,12 +994,13 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
+/*
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1038,12 +1045,13 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
+/*
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1088,12 +1096,13 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
+/*
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1136,12 +1145,13 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
-
+*/
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
+/*
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1152,3 +1162,4 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     wxDELETE(area);
     wxDELETE(predictor);
 }
+*/

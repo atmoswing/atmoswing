@@ -51,10 +51,11 @@ public:
         return m_cornerUL;
     }
 
-    void SetCornerUL(const Coo &val)
+    void SetCornerUL(const Coo &val, bool noInit = false)
     {
         m_cornerUL = val;
-        Init();
+        if(!noInit)
+            Init();
     }
 
     Coo GetCornerUR() const
@@ -62,10 +63,11 @@ public:
         return m_cornerUR;
     }
 
-    void SetCornerUR(const Coo &val)
+    void SetCornerUR(const Coo &val, bool noInit = false)
     {
         m_cornerUR = val;
-        Init();
+        if(!noInit)
+            Init();
     }
 
     Coo GetCornerLL() const
@@ -73,10 +75,11 @@ public:
         return m_cornerLL;
     }
 
-    void SetCornerLL(const Coo &val)
+    void SetCornerLL(const Coo &val, bool noInit = false)
     {
         m_cornerLL = val;
-        Init();
+        if(!noInit)
+            Init();
     }
 
     Coo GetCornerLR() const
@@ -84,10 +87,11 @@ public:
         return m_cornerLR;
     }
 
-    void SetCornerLR(const Coo &val)
+    void SetCornerLR(const Coo &val, bool noInit = false)
     {
         m_cornerLR = val;
-        Init();
+        if(!noInit)
+            Init();
     }
 
     virtual double GetXmin() const;

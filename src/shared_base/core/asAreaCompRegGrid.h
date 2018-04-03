@@ -48,7 +48,7 @@ public:
 
     bool GridsOverlay(asAreaCompGrid *otherArea) const override;
 
-    bool InitializeAxes(const a1d &lons, const a1d &lats) override;
+    bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true) override;
 
     double GetXstep() const override
     {
@@ -72,6 +72,12 @@ public:
         wxASSERT(m_yStep > 0);
         wxASSERT(fmod(m_yStep, m_yStepData) == 0);
         return int(m_yStep / m_yStepData);
+    }
+
+    void SetSameStepAsData()
+    {
+        m_xStep = m_xStepData;
+        m_yStep = m_yStepData;
     }
 
 protected:

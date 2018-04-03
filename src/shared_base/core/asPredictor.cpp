@@ -681,26 +681,39 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
     if (desiredArea) {
 
-        asAreaCompGrid *dataArea = nullptr;
-        desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats);
+        bool strideAllowed = m_fileType == asFile::Netcdf;
+
+        desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed);
 
         if (desiredArea->IsRegular()) {
             auto desiredAreaReg = dynamic_cast<asAreaCompRegGrid *> (desiredArea);
             m_fInd.lonStep = desiredAreaReg->GetXstepStride();
             m_fInd.latStep = desiredAreaReg->GetYstepStride();
-            dataArea = new asAreaCompRegGrid(*desiredAreaReg);
+            auto dataArea = new asAreaCompRegGrid(*desiredAreaReg);
+            if (!strideAllowed) {
+                m_fInd.lonStep = 1;
+                m_fInd.latStep = 1;
+                dataArea->SetSameStepAsData();
+            }
+
+            m_lonPtsnb = dataArea->GetXptsNb();
+            m_latPtsnb = dataArea->GetYptsNb();
+
+            return dataArea;
+
         } else {
             auto desiredAreaGen = dynamic_cast<asAreaCompGenGrid *> (desiredArea);
             m_fInd.lonStep = 1;
             m_fInd.latStep = 1;
-            dataArea = new asAreaCompGenGrid(*desiredAreaGen);
+            auto dataArea = new asAreaCompGenGrid(*desiredAreaGen);
+
+            m_lonPtsnb = dataArea->GetXptsNb();
+            m_latPtsnb = dataArea->GetYptsNb();
+
+            return dataArea;
         }
 
-        // Get axes length for preallocation
-        m_lonPtsnb = dataArea->GetXptsNb();
-        m_latPtsnb = dataArea->GetYptsNb();
 
-        return dataArea;
     }
 
     return nullptr;
@@ -1204,6 +1217,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
             return false;
         }
 
+        wxFAIL;
         return false;
 
         /*

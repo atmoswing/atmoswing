@@ -41,6 +41,12 @@ public:
 
     static asAreaCompGrid * GetInstance(const asParameters *params, int iStep, int iPtor);
 
+    static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                        int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN);
+
+    static asAreaCompGrid * GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
+                                        int flatAllowed = asFLAT_FORBIDDEN);
+
     asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                    int flatAllowed = asFLAT_FORBIDDEN);
 
@@ -48,9 +54,7 @@ public:
 
     asAreaCompGrid();
 
-    wxString GetGridTypeString() const;
-
-    bool InitializeAxes(const a1f &lons, const a1f &lats);
+    virtual bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true);
 
     virtual bool GridsOverlay(asAreaCompGrid *otherArea) const = 0;
 
@@ -69,6 +73,10 @@ public:
     double GetXaxisCompositeEnd(int compositeNb) const;
 
     double GetYaxisCompositeEnd(int compositeNb) const;
+
+    int GetXptsNb();
+
+    int GetYptsNb();
 
     virtual double GetXstep() const = 0;
 
@@ -90,6 +98,21 @@ protected:
 
 private:
 
+    bool CreateCompositeAxes(const a1d &lons, const a1d &lats);
+
+    bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
+
+    bool HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
+
+    void HandleNegativeLongitudes(const a1d &lons);
+
+    void HandleLongitudesAbove360(const a1d &lons);
+
+    void HandleLongitudesSplitAt180(const a1d &lons);
+
+    void HandleMissing360(const a1d &lons);
+
+    void HandleMissing180(const a1d &lons);
 };
 
 #endif // asAreaCompositeGrid_H

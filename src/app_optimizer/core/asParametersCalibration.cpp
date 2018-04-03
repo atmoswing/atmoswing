@@ -591,10 +591,8 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 
 vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
 {
-    wxFAIL;
-
     vd vect;
-    /*
+
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
@@ -626,16 +624,14 @@ vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParam
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }
-*/
+
     return vect;
 }
 
 vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
 {
-    wxFAIL;
-
     vd vect;
-    /*
+
     wxString nodeName = node->GetName();
     wxString method = node->GetAttribute("method");
     if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
@@ -667,7 +663,7 @@ vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParam
         wxString valueStr = node->GetChildren()->GetContent();
         vect = asFileParameters::BuildVectorDouble(valueStr);
     }
-*/
+
     return vect;
 }
 
