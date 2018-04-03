@@ -30,6 +30,7 @@
 #include "asAreaCompRegGrid.h"
 #include "asAreaCompGenGrid.h"
 #include "asParameters.h"
+#include <iostream>
 
 
 asAreaCompGrid * asAreaCompGrid::GetInstance(const asParameters *params, int iStep, int iPtor)

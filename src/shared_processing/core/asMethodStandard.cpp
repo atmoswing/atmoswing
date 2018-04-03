@@ -1004,7 +1004,7 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
         wxASSERT(area);
 
         // Data loading
-        if (!predictorPreprocess->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
+        if (!predictorPreprocess->Load(area, timeArray, params->GetPreprocessLevel(iStep, iPtor, iPre))) {
             wxLogError(_("The data could not be loaded."));
             wxDELETE(area);
             wxDELETE(predictorPreprocess);

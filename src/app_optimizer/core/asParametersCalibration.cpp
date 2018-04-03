@@ -613,9 +613,10 @@ vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParam
                 wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
-            a1d xAxis = asAreaCompGrid::GetXaxis(GetPredictorGridType(iStep, iPtor), min, max);
-            for (int i = 0; i < xAxis.size(); ++i) {
-                vect.push_back(xAxis[i]);
+            double i = min;
+            while (i<=max) {
+                vect.push_back(i);
+                i += 1;
             }
         }
 
@@ -652,9 +653,10 @@ vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParam
                 wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
             }
 
-            a1d yAxis = asAreaCompGrid::GetYaxis(GetPredictorGridType(iStep, iPtor), min, max);
-            for (int i = 0; i < yAxis.size(); ++i) {
-                vect.push_back(yAxis[i]);
+            double i = min;
+            while (i<=max) {
+                vect.push_back(i);
+                i += 1;
             }
         }
 

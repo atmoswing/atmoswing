@@ -679,7 +679,7 @@ TEST(Preprocessor, Multiplication)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asAreaCompGrid *area = asAreaCompGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     EXPECT_FLOAT_EQ(0, area->GetXmin());
     EXPECT_FLOAT_EQ(7.5, area->GetXmax());
