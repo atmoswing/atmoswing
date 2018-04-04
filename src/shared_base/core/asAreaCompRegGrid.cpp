@@ -100,7 +100,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
 
     if (m_xStep != m_xStepData) {
         if (std::fmod(m_xStep, m_xStepData) != 0) {
-            wxLogError(_("Provided step (%d) is not compatible with the data resolution (%d)."), m_xStep, m_xStepData);
+            wxLogError(_("Provided step (%g) is not compatible with the data resolution (%g)."), m_xStep, m_xStepData);
             return false;
         }
         auto xFactor = (int) (m_xStep / m_xStepData);
@@ -139,7 +139,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
 
     if (m_yStep != m_yStepData) {
         if (std::fmod(m_yStep, m_yStepData) != 0) {
-            wxLogError(_("Provided step (%d) is not compatible with the data resolution (%d)."), m_yStep, m_yStepData);
+            wxLogError(_("Provided step (%g) is not compatible with the data resolution (%g)."), m_yStep, m_yStepData);
             return false;
         }
         auto yFactor = (int) (m_yStep / m_yStepData);

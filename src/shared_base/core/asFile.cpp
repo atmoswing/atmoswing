@@ -27,18 +27,6 @@
 
 #include "asFile.h"
 
-bool asRemoveDir(const wxString &path)
-{
-    wxString f = wxFindFirstFile(path + DS + "*.*");
-    while (!f.empty()) {
-        if (!wxRemoveFile(f))
-            return false;
-        f = wxFindNextFile();
-    }
-
-    return wxRmdir(path);
-
-}
 
 asFile::asFile(const wxString &fileName, const FileMode &fileMode)
         : m_fileName(wxFileName(fileName)),

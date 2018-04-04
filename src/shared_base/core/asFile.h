@@ -30,8 +30,6 @@
 
 #include "asIncludes.h"
 
-bool asRemoveDir(const wxString &path);
-
 class asFile
         : public wxObject
 {

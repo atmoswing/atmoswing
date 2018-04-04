@@ -26,13 +26,15 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTOOLS_H
-#define ASTOOLS_H
+#ifndef ASUTILITIES_H
+#define ASUTILITIES_H
 
 #include <ctime>
 #include <random>
 
 #include <asIncludes.h>
+
+bool asRemoveDir(const wxString &path);
 
 void asInitRandom();
 

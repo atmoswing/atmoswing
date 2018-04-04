@@ -28,6 +28,17 @@
 
 #include "asUtilities.h"
 
+bool asRemoveDir(const wxString &path)
+{
+    wxString f = wxFindFirstFile(path + DS + "*.*");
+    while (!f.empty()) {
+        wxRemoveFile(f);
+        f = wxFindNextFile();
+    }
+
+    return wxRmdir(path);
+}
+
 void asInitRandom()
 {
     srand(time(NULL));

@@ -145,7 +145,7 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats)
         }
         if (indexXmax == asOUT_OF_RANGE) {
             std::cout << lons;
-            wxLogError(_("Cannot find the corresponding value (%d) on the longitude axis."), m_composites[i].GetXmax());
+            wxLogError(_("Cannot find the corresponding value (%g) on the longitude axis."), m_composites[i].GetXmax());
             return false;
         }
 
