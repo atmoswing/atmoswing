@@ -19,6 +19,7 @@ This repository contains 3 separate tools:
 * The Forecaster: automatically processes the forecast
 * The Viewer: displays the resulting files in a GIS environment
 * The Optimizer: optimizes the method for a given precipitation timeseries
+* The Downscaler: downscaling for climate impact studies
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
