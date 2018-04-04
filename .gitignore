@@ -68,3 +68,4 @@ external/
 **/eigen-prefix/
 **/googletest-prefix/
 *.resolve
+*.base
