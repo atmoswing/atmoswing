@@ -116,7 +116,7 @@ bool AtmoswingAppDownscaler::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    g_ppiScaleDc = static_cast<double>(ppiDC.x) / 96.0;
 
     m_singleInstanceChecker = NULL;
     if (g_guiMode) {
@@ -321,13 +321,13 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log().SetLevel((int) logLevel);
+            Log().SetLevel(static_cast<int>(logLevel));
         } else {
             Log().SetLevel(2);
         }
     } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log().SetLevel((int) logLevel);
+        Log().SetLevel(static_cast<int>(logLevel));
     }
 
     // Check for a downscaling params file

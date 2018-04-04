@@ -174,7 +174,7 @@ public:
 
     int GetStationsNb() const
     {
-        return int(m_stations.size());
+        return static_cast<int>(m_stations.size());
     }
 
 protected:

@@ -85,7 +85,7 @@ bool asMethodDownscaler::Manager()
     // Downscale
     if (Downscale(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Downscaling over."));
 #endif
@@ -210,7 +210,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 #endif // _DEBUG
 
     // Inline the data when possible
-    for (int iPtor = 0; iPtor < (int) predictorsArch.size(); iPtor++) {
+    for (int iPtor = 0; iPtor < predictorsArch.size(); iPtor++) {
         if (criteria[iPtor]->CanUseInline()) {
             predictorsArch[iPtor]->Inline();
         }
@@ -275,7 +275,7 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     }
 
     // Inline the data when possible
-    for (int iPtor = 0; iPtor < (int) predictors.size(); iPtor++) {
+    for (int iPtor = 0; iPtor < predictors.size(); iPtor++) {
         if (criteria[iPtor]->CanUseInline()) {
             predictors[iPtor]->Inline();
         }
@@ -451,9 +451,9 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
         // and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - double(params->GetTimeShiftDays()) +
+        double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) +
                            params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        double ptorEnd = timeEndData - double(params->GetTimeShiftDays()) +
+        double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
                          params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
         timeArray.Init();

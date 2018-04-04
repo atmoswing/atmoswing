@@ -202,7 +202,7 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node)
         if (!valueStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        vect.push_back(int(value));
+        vect.push_back(static_cast<int>(value));
     } else if (method.IsSameAs("array")) {
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorInt(valueStr);
@@ -213,19 +213,19 @@ vi asFileParameters::GetVectorInt(wxXmlNode *node)
         if (!valueMinStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        auto min = (int) value;
+        auto min = static_cast<int>(value);
 
         wxString valueMaxStr = node->GetAttribute("max");
         if (!valueMaxStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        auto max = (int) value;
+        auto max = static_cast<int>(value);
 
         wxString valueStepStr = node->GetAttribute("step", "1");
         if (!valueStepStr.ToLong(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        auto step = (int) value;
+        auto step = static_cast<int>(value);
 
         vect = BuildVectorInt(min, max, step);
     } else {
@@ -251,7 +251,7 @@ vf asFileParameters::GetVectorFloat(wxXmlNode *node)
         if (!valueStr.ToDouble(&value)) {
             wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
         }
-        vect.push_back(float(value));
+        vect.push_back(static_cast<float>(value));
     } else if (method.IsSameAs("array")) {
         wxString valueStr = node->GetChildren()->GetContent();
         vect = BuildVectorFloat(valueStr);

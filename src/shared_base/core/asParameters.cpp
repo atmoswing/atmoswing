@@ -1079,7 +1079,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
         wxLogError(errMsg);
         return false;
     }
-    if (!SetTimeArrayAnalogsIntervalDays(int(lVal))) {
+    if (!SetTimeArrayAnalogsIntervalDays(static_cast<int>(lVal))) {
         wxLogError(errMsg);
         return false;
     }
@@ -1097,7 +1097,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
             wxLogError(errMsg);
             return false;
         }
-        if (!SetAnalogsNumber(iStep, int(lVal))) {
+        if (!SetAnalogsNumber(iStep, static_cast<int>(lVal))) {
             wxLogError(errMsg);
             return false;
         }
@@ -1117,7 +1117,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    if (!SetPreprocessLevel(iStep, iPtor, iPre, float(dVal))) {
+                    if (!SetPreprocessLevel(iStep, iPtor, iPre, static_cast<float>(dVal))) {
                         wxLogError(errMsg);
                         return false;
                     }
@@ -1134,7 +1134,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, float(dVal))) {
+                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, static_cast<float>(dVal))) {
                         wxLogError(errMsg);
                         return false;
                     }
@@ -1152,7 +1152,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                if (!SetPredictorLevel(iStep, iPtor, float(dVal))) {
+                if (!SetPredictorLevel(iStep, iPtor, static_cast<float>(dVal))) {
                     wxLogError(errMsg);
                     return false;
                 }
@@ -1169,7 +1169,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                if (!SetPredictorTimeHours(iStep, iPtor, float(dVal))) {
+                if (!SetPredictorTimeHours(iStep, iPtor, static_cast<float>(dVal))) {
                     wxLogError(errMsg);
                     return false;
                 }
@@ -1212,7 +1212,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            if (!SetPredictorXptsnb(iStep, iPtor, int(lVal))) {
+            if (!SetPredictorXptsnb(iStep, iPtor, static_cast<int>(lVal))) {
                 wxLogError(errMsg);
                 return false;
             }
@@ -1275,7 +1275,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 wxLogError(errMsg);
                 return false;
             }
-            if (!SetPredictorYptsnb(iStep, iPtor, int(lVal))) {
+            if (!SetPredictorYptsnb(iStep, iPtor, static_cast<int>(lVal))) {
                 wxLogError(errMsg);
                 return false;
             }
@@ -1435,7 +1435,7 @@ bool asParameters::SetPredictandStationIds(wxString val)
         wxString token = tokenizer.GetNextToken();
         long stationId;
         if (token.ToLong(&stationId)) {
-            m_predictandStationIds.push_back(int(stationId));
+            m_predictandStationIds.push_back(static_cast<int>(stationId));
         }
     }
     return true;

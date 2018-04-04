@@ -106,7 +106,7 @@ bool AtmoswingAppForecaster::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    g_ppiScaleDc = static_cast<double>(ppiDC.x) / 96.0;
 
     // Check that it is the unique instance
     bool multipleInstances;

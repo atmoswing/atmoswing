@@ -1387,7 +1387,7 @@ double wxPlotData::GetAverage(int start_index, int count) const
     for (int i = start_index; i <= end_index; i++)
         ave += *y_data++;
 
-    ave /= double(count);
+    ave /= static_cast<double>(count);
     return ave;
 }
 
@@ -1451,8 +1451,8 @@ int wxPlotData::GetMinMaxAve(const wxRangeIntSelection &rangeSel, wxPoint2DDoubl
         }
     }
 
-    ave_x /= double(sel_point_count);
-    ave_y /= double(sel_point_count);
+    ave_x /= static_cast<double>(sel_point_count);
+    ave_y /= static_cast<double>(sel_point_count);
 
     if (ave_)
         *ave_ = wxPoint2DDouble(ave_x, ave_y);
@@ -1971,7 +1971,7 @@ wxPlotData wxPlotData::RunAverage(int points, int start_index, int count) const
         for (i = half_width-1; i >= 0; i--)
         {
             init_runsum += src[i];
-            dest[i] = init_runsum / double(half_width - i + 1);
+            dest[i] = init_runsum / static_cast<double>(half_width - i + 1);
         }
 
         // middle "good" runaveraged points
@@ -1988,7 +1988,7 @@ wxPlotData wxPlotData::RunAverage(int points, int start_index, int count) const
         for (i = runend; i < M_PLOTDATA->m_count; i++)
         {
             runsum += src[i];
-            dest[i] = runsum / double(half_width - (M_PLOTDATA->m_count - i) + 2);
+            dest[i] = runsum / static_cast<double>(half_width - (M_PLOTDATA->m_count - i) + 2);
         }
 
         memcpy(dst.GetXData(), M_PLOTDATA->m_xdata, M_PLOTDATA->m_count*sizeof(double));
@@ -2223,7 +2223,7 @@ double wxPlotData::Deviation(const wxPlotData &data, int min, int max) const
     dev = sqrt(dev);
 
     if (points > 0)
-        return dev / double(points);
+        return dev / static_cast<double>(points);
 
     return -1;
 }

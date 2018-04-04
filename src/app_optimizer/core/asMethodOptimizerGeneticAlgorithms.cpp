@@ -529,7 +529,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
@@ -698,7 +698,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     wxString strScore = fileLine.SubString(indexScoreCalib + 6, indexScoreValid - 2);
                     double scoreVal;
                     strScore.ToDouble(&scoreVal);
-                    float prevScoresCalib = float(scoreVal);
+                    float prevScoresCalib = static_cast<float>(scoreVal);
 
                     // Add to the new array
                     results_generations.Add(prevParams, prevScoresCalib);
@@ -745,7 +745,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         mean += vectScores[iNext];
                     }
 
-                    m_meanScores[iGen] = mean / float(m_popSize);
+                    m_meanScores[iGen] = mean / static_cast<float>(m_popSize);
                 }
 
                 m_optimizerStage = asREASSESSMENT;

@@ -86,7 +86,7 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &
     }
 
     for (int i = 0; i < m_ranksNb; i++) {
-        histogramPercent[i] = float(100 * histogram[i]) / float(countTot);
+        histogramPercent[i] = static_cast<float>(100 * histogram[i]) / static_cast<float>(countTot);
     }
 
     return histogramPercent;

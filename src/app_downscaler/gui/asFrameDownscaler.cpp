@@ -148,7 +148,7 @@ void asFrameDownscaler::DisplayLogLevelMenu()
 {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
-    int logLevel = (int) wxFileConfig::Get()->Read("/General/LogLevel", 2l);
+    int logLevel = static_cast<int>(wxFileConfig::Get()->Read("/General/LogLevel", 2l));
     ThreadsManager().CritSectionConfig().Leave();
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -183,7 +183,7 @@ void asFrameDownscaler::LoadOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     long methodSelection = pConfig->Read("/Downscaler/MethodSelection", 0l);
-    m_choiceMethod->SetSelection((int) methodSelection);
+    m_choiceMethod->SetSelection(static_cast<int>(methodSelection));
     wxString parametersFilePath = pConfig->Read("/Downscaler/ParametersFilePath", wxEmptyString);
     m_filePickerParameters->SetPath(parametersFilePath);
     wxString predictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);

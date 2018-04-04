@@ -70,7 +70,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
     // Log
     long defaultLogLevel = 1; // = selection +1
     long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
-    m_radioBoxLogLevel->SetSelection((int) logLevel - 1);
+    m_radioBoxLogLevel->SetSelection(static_cast<int>(logLevel - 1));
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
@@ -90,7 +90,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
 
     // GUI options
     long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
-    m_radioBoxGui->SetSelection((int) guiOptions);
+    m_radioBoxGui->SetSelection(static_cast<int>(guiOptions));
     if (guiOptions == 0) {
         g_silentMode = true;
     } else {

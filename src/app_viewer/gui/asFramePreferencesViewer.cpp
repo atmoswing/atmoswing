@@ -166,7 +166,7 @@ void asFramePreferencesViewer::SavePreferences()
     wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
     long pastDaysNbLong;
     if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
-        m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+        m_workspace->SetTimeSeriesPlotPastDaysNb(static_cast<int>(pastDaysNbLong));
     } else {
         m_workspace->SetTimeSeriesPlotPastDaysNb(5);
     }

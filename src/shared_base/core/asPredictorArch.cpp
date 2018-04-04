@@ -124,8 +124,8 @@ bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &tim
     if (m_fStr.timeLength > 1) {
         double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.timeStart);
         double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.timeEnd);
-        m_fInd.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
-        m_fInd.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        m_fInd.timeArrayCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        m_fInd.timeCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
 
         // Correct the time start and end
         double valFirstTime = m_fStr.timeStart;
@@ -133,7 +133,7 @@ bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &tim
         m_fInd.cutStart = 0;
         bool firstFile = (compositeData[0].empty());
         if (firstFile) {
-            m_fInd.cutStart = int(timeArrayIndexStart);
+            m_fInd.cutStart = static_cast<int>(timeArrayIndexStart);
         }
         m_fInd.cutEnd = 0;
         while (valFirstTime < timeArray[timeArrayIndexStart]) {

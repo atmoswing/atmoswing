@@ -430,7 +430,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the relevance map: %.3f min."), static_cast<float>(swMap.Time()) / 60000.0f);
 
     return true;
 }
@@ -561,7 +561,8 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
     }
 
-    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."),
+                 static_cast<float>(swEnlarge.Time()) / 60000.0f);
 
     return true;
 }
@@ -795,7 +796,8 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
         }
     }
 
-    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"),
+                 static_cast<float>(swResize.Time()) / 60000.0f);
 
     return true;
 }

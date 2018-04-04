@@ -142,9 +142,11 @@ bool asMethodForecasting::Manager()
 #endif
             } else {
                 // Display processing time
-                wxPrintf(_("done in %.1f sec.\n"), float(sw.Time()) / 1000.0f);
+                wxPrintf(_("done in %.1f sec.\n"), static_cast<float>(sw.Time()) / 1000.0f);
                 wxLogMessage(_("Processing of the forecast \"%s\" - \"%s\" took %.1f sec to execute"),
-                             params.GetMethodIdDisplay(), params.GetSpecificTagDisplay(), float(sw.Time()) / 1000.0f);
+                             params.GetMethodIdDisplay(),
+                             params.GetSpecificTagDisplay(),
+                             static_cast<float>(sw.Time()) / 1000.0f);
                 fflush(stdout);
 
 #if wxUSE_GUI
