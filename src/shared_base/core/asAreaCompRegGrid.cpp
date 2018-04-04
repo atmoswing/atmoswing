@@ -119,13 +119,14 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
 
             a1d lonsC1 = m_compositeXaxes[1];
 
-            int indexXmin = asFindClosest(&lonsC1[0], &lonsC1[lonsC1.size() - 1], nextXval);
+            int indexXmin = asFindClosest(&lonsC1[0], &lonsC1[lonsC1.size() - 1], nextXval, asHIDE_WARNINGS);
             if (indexXmin == asOUT_OF_RANGE) {
-                indexXmin = asFindClosest(&lonsC1[0], &lonsC1[lonsC1.size() - 1], nextXval - 360);
+                indexXmin = asFindClosest(&lonsC1[0], &lonsC1[lonsC1.size() - 1], nextXval - 360, asHIDE_WARNINGS);
                 if (indexXmin == asOUT_OF_RANGE) {
                     indexXmin = asFindClosest(&lonsC1[0], &lonsC1[lonsC1.size() - 1], nextXval + 360);
                 }
             }
+            wxASSERT(indexXmin >= 0);
 
             auto sizeC1new = (int) ((lonsC1.rows() - indexXmin + 1) / xFactor);
             m_compositeXaxes[1].resize(sizeC1new);

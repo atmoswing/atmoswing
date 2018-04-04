@@ -116,6 +116,8 @@ TEST(AreaComp, IsSquareTrue)
 
 TEST(AreaComp, IsSquareFalse)
 {
+    wxLogNull noLog;
+
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;

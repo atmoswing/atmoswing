@@ -195,6 +195,8 @@ TEST(Area, IsRectangleTrue)
 
 TEST(Area, IsRectangleFalse)
 {
+    wxLogNull logNo;
+
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -204,6 +206,7 @@ TEST(Area, IsRectangleFalse)
     cornerLL.y = 30;
     cornerLR.x = 20;
     cornerLR.y = 30;
+
     EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
 }
 
