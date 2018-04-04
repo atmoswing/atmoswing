@@ -319,8 +319,8 @@ protected:
     vva2f m_data;
     int m_latPtsnb;
     int m_lonPtsnb;
-    a1f m_axisLat;
-    a1f m_axisLon;
+    a1d m_axisLat;
+    a1d m_axisLon;
     bool m_isPreprocessed;
     bool m_isEnsemble;
     bool m_canBeClipped;

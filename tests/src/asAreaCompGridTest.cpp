@@ -104,12 +104,6 @@ TEST(AreaCompGrid, GetBoundsSplitted)
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
     area->InitializeAxes(lons, lats);
 
-    wxLogNull logNull;
-    ASSERT_THROW(area->GetXmin(), asException);
-    ASSERT_THROW(area->GetYmin(), asException);
-    ASSERT_THROW(area->GetXmax(), asException);
-    ASSERT_THROW(area->GetYmax(), asException);
-
     EXPECT_DOUBLE_EQ(350, area->GetComposite(0).GetXmin());
     EXPECT_DOUBLE_EQ(0, area->GetComposite(1).GetXmin());
     EXPECT_DOUBLE_EQ(360, area->GetComposite(0).GetXmax());

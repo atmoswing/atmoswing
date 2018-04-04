@@ -58,13 +58,17 @@ public:
 
     virtual bool GridsOverlay(asAreaCompGrid *otherArea) const = 0;
 
-    virtual a1d GetXaxisComposite(int compositeNb);
+    a1d GetXaxis();
 
-    virtual a1d GetYaxisComposite(int compositeNb);
+    a1d GetYaxis();
 
-    virtual int GetXaxisCompositePtsnb(int compositeNb);
+    a1d GetXaxisComposite(int compositeNb);
 
-    virtual int GetYaxisCompositePtsnb(int compositeNb);
+    a1d GetYaxisComposite(int compositeNb);
+
+    int GetXaxisCompositePtsnb(int compositeNb);
+
+    int GetYaxisCompositePtsnb(int compositeNb);
 
     double GetXaxisCompositeStart(int compositeNb) const;
 
@@ -77,6 +81,14 @@ public:
     int GetXptsNb();
 
     int GetYptsNb();
+
+    double GetXmin() const;
+
+    double GetXmax() const;
+
+    double GetYmin() const;
+
+    double GetYmax() const;
 
     virtual double GetXstep() const = 0;
 

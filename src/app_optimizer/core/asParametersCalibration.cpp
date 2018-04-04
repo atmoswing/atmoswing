@@ -300,8 +300,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular")))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_min") {
-                            if (!SetPredictorXminVector(iStep, iPtor,
-                                                        GetVectorXmin(fileParams, nodeWindow, iStep, iPtor)))
+                            if (!SetPredictorXminVector(iStep, iPtor, fileParams.GetVectorDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_points_nb") {
                             if (!SetPredictorXptsnbVector(iStep, iPtor, fileParams.GetVectorInt(nodeWindow)))
@@ -310,8 +309,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_min") {
-                            if (!SetPredictorYminVector(iStep, iPtor,
-                                                        GetVectorYmin(fileParams, nodeWindow, iStep, iPtor)))
+                            if (!SetPredictorYminVector(iStep, iPtor, fileParams.GetVectorDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_points_nb") {
                             if (!SetPredictorYptsnbVector(iStep, iPtor, fileParams.GetVectorInt(nodeWindow)))
@@ -354,34 +352,33 @@ bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibr
             if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess)))
                 return false;
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
-            wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
-            while (nodeParamPreprocess) {
-                if (nodeParamPreprocess->GetName() == "dataset_id") {
-                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
+            wxXmlNode *nodeParamPre = nodePreprocess->GetChildren();
+            while (nodeParamPre) {
+                if (nodeParamPre->GetName() == "dataset_id") {
+                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPre)))
                         return false;
-                } else if (nodeParamPreprocess->GetName() == "data_id") {
-                    if (!SetPreprocessDataIdVector(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPreprocess)))
+                } else if (nodeParamPre->GetName() == "data_id") {
+                    if (!SetPreprocessDataIdVector(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPre)))
                         return false;
-                    if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPreprocess)[0]))
+                    if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPre)[0]))
                         return false;
-                } else if (nodeParamPreprocess->GetName() == "level") {
-                    if (!SetPreprocessLevelVector(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPreprocess)))
+                } else if (nodeParamPre->GetName() == "level") {
+                    if (!SetPreprocessLevelVector(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPre)))
                         return false;
-                    if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPreprocess)[0]))
+                    if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetVectorFloat(nodeParamPre)[0]))
                         return false;
-                } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHoursVector(iStep, iPtor, iPre,
-                                                      fileParams.GetVectorDouble(nodeParamPreprocess)))
+                } else if (nodeParamPre->GetName() == "time") {
+                    if (!SetPreprocessTimeHoursVector(iStep, iPtor, iPre, fileParams.GetVectorDouble(nodeParamPre)))
                         return false;
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetVectorDouble(nodeParamPreprocess)[0]))
+                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetVectorDouble(nodeParamPre)[0]))
                         return false;
-                } else if (nodeParamPreprocess->GetName() == "members") {
-                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
+                } else if (nodeParamPre->GetName() == "members") {
+                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPre)))
                         return false;
                 } else {
-                    fileParams.UnknownNode(nodeParamPreprocess);
+                    fileParams.UnknownNode(nodeParamPre);
                 }
-                nodeParamPreprocess = nodeParamPreprocess->GetNext();
+                nodeParamPre = nodeParamPre->GetNext();
             }
             iPre++;
         } else {
@@ -587,86 +584,6 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
             }
         }
     }
-}
-
-vd asParametersCalibration::GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
-{
-    vd vect;
-
-    wxString nodeName = node->GetName();
-    wxString method = node->GetAttribute("method");
-    if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
-        vect = fileParams.GetVectorDouble(node);
-    } else if (method.IsSameAs("minmax")) {
-        if (GetPredictorGridType(iStep, iPtor).IsSameAs("Regular", false)) {
-            vect = fileParams.GetVectorDouble(node);
-        } else {
-            double min, max;
-
-            wxString valueMinStr = node->GetAttribute("min");
-            if (!valueMinStr.ToDouble(&min)) {
-                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
-            }
-
-            wxString valueMaxStr = node->GetAttribute("max");
-            if (!valueMaxStr.ToDouble(&max)) {
-                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
-            }
-
-            double i = min;
-            while (i<=max) {
-                vect.push_back(i);
-                i += 1;
-            }
-        }
-
-    } else {
-        wxLogVerbose(_("The method is not correctly defined for xMin in the calibration parameters file."));
-        wxString valueStr = node->GetChildren()->GetContent();
-        vect = asFileParameters::BuildVectorDouble(valueStr);
-    }
-
-    return vect;
-}
-
-vd asParametersCalibration::GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor)
-{
-    vd vect;
-
-    wxString nodeName = node->GetName();
-    wxString method = node->GetAttribute("method");
-    if (method.IsEmpty() || method.IsSameAs("fixed") || method.IsSameAs("array")) {
-        vect = fileParams.GetVectorDouble(node);
-    } else if (method.IsSameAs("minmax")) {
-        if (GetPredictorGridType(iStep, iPtor).IsSameAs("Regular", false)) {
-            vect = fileParams.GetVectorDouble(node);
-        } else {
-            double min, max;
-
-            wxString valueMinStr = node->GetAttribute("min");
-            if (!valueMinStr.ToDouble(&min)) {
-                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
-            }
-
-            wxString valueMaxStr = node->GetAttribute("max");
-            if (!valueMaxStr.ToDouble(&max)) {
-                wxLogError(_("Failed at converting the value of the element %s (XML file)."), nodeName);
-            }
-
-            double i = min;
-            while (i<=max) {
-                vect.push_back(i);
-                i += 1;
-            }
-        }
-
-    } else {
-        wxLogVerbose(_("The method is not correctly defined for xMin in the calibration parameters file."));
-        wxString valueStr = node->GetChildren()->GetContent();
-        vect = asFileParameters::BuildVectorDouble(valueStr);
-    }
-
-    return vect;
 }
 
 bool asParametersCalibration::InputsOK() const

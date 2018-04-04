@@ -230,13 +230,14 @@ bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &tim
 
 bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
 {
-    return false;
+    double xMin = desiredArea->GetXmin();
+    double xMax = desiredArea->GetXmax();
+    if (xMin > xMax) {
+        xMin -= 360;
+    }
 
-    /*
-    double xMin = desiredArea->GetAbsoluteXmin();
-    double xMax = desiredArea->GetAbsoluteXmax();
     wxASSERT(m_axisLon.size() > 1);
-    float toleranceLon = 0.1f;
+    double toleranceLon = 0.1;
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
     }
@@ -246,32 +247,32 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
         xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360);
         xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360);
         if (xStartIndex < 0 || xEndIndex < 0) {
-            wxLogError(_("An error occured while trying to clip data to another area (extended axis)."));
-            wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin + 360,
+            wxLogError(_("An error occurred while trying to clip data to another area (extended axis)."));
+            wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin + 360,
                        xMax + 360, m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
             return false;
         }
     }
     if (xStartIndex < 0 || xEndIndex < 0) {
-        wxLogError(_("An error occured while trying to clip data to another area."));
-        wxLogError(_("Looking for lon %.2f and %.2f inbetween %.2f to %.2f."), xMin, xMax, m_axisLon[0],
+        wxLogError(_("An error occurred while trying to clip data to another area."));
+        wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin, xMax, m_axisLon[0],
                    m_axisLon[m_axisLon.size() - 1]);
         return false;
     }
     int xLength = xEndIndex - xStartIndex + 1;
 
-    double yMin = desiredArea->GetAbsoluteYmin();
-    double yMax = desiredArea->GetAbsoluteYmax();
+    double yMin = desiredArea->GetYmin();
+    double yMax = desiredArea->GetYmax();
     wxASSERT(m_axisLat.size() > 1);
-    float toleranceLat = 0.1f;
+    double toleranceLat = 0.1;
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
     }
     int yStartIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMin, toleranceLat, asHIDE_WARNINGS);
     int yEndIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMax, toleranceLat, asHIDE_WARNINGS);
     if (yStartIndex < 0 || yEndIndex < 0) {
-        wxLogError(_("An error occured while trying to clip data to another area."));
-        wxLogError(_("Looking for lat %.2f and %.2f inbetween %.2f to %.2f."), yMin, yMax, m_axisLat[0],
+        wxLogError(_("An error occurred while trying to clip data to another area."));
+        wxLogError(_("Looking for lat %.2f and %.2f in between %.2f to %.2f."), yMin, yMax, m_axisLat[0],
                    m_axisLat[m_axisLat.size() - 1]);
         return false;
     }
@@ -287,15 +288,15 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                 return true;
             } else {
                 // Clear axes
-                a1f newAxisLon(xLength);
+                a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNf;
+                    newAxisLon[i] = NaNd;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * yLength);
+                a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNf;
+                    newAxisLat[i] = NaNd;
                 }
                 m_axisLat = newAxisLat;
 
@@ -324,7 +325,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                                (int) m_axisLat.size());
                     return false;
                 }
-*/
+
                 /*
                 Illustration of the data arrangement
                     x = data
@@ -339,7 +340,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                     xxxxxxxxxxo
                     xxxxxxxxxxo
                 */
-/*
+
                 for (unsigned int i = 0; i < originalData.size(); i++) {
                     for (unsigned int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength - 1, xLength);
@@ -353,15 +354,15 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                     }
                 }
 
-                a1f newAxisLon(xLength);
+                a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNf;
+                    newAxisLon[i] = NaNd;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * yLength);
+                a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNf;
+                    newAxisLat[i] = NaNd;
                 }
                 m_axisLat = newAxisLat;
 
@@ -393,15 +394,15 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                     }
                 }
 
-                a1f newAxisLon(xLength);
+                a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNf;
+                    newAxisLon[i] = NaNd;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * yLength);
+                a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNf;
+                    newAxisLat[i] = NaNd;
                 }
                 m_axisLat = newAxisLat;
 
@@ -429,15 +430,15 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
                     }
                 }
 
-                a1f newAxisLon(xLength);
+                a1d newAxisLon(xLength);
                 for (int i = 0; i < xLength; i++) {
-                    newAxisLon[i] = NaNf;
+                    newAxisLon[i] = NaNd;
                 }
                 m_axisLon = newAxisLon;
 
-                a1f newAxisLat(2 * yLength);
+                a1d newAxisLat(2 * yLength);
                 for (int i = 0; i < 2 * yLength; i++) {
-                    newAxisLat[i] = NaNf;
+                    newAxisLat[i] = NaNd;
                 }
                 m_axisLat = newAxisLat;
 
@@ -460,13 +461,13 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
         }
     }
 
-    a1f newAxisLon(xLength);
+    a1d newAxisLon(xLength);
     for (int i = 0; i < xLength; i++) {
         newAxisLon[i] = m_axisLon[xStartIndex + i];
     }
     m_axisLon = newAxisLon;
 
-    a1f newAxisLat(yLength);
+    a1d newAxisLat(yLength);
     for (int i = 0; i < yLength; i++) {
         newAxisLat[i] = m_axisLat[yStartIndexReal + i];
     }
@@ -475,7 +476,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
     m_latPtsnb = m_axisLat.size();
     m_lonPtsnb = m_axisLon.size();
 
-    return true;*/
+    return true;
 }
 
 bool asPredictorArch::CheckTimeArray(asTimeArray &timeArray) const

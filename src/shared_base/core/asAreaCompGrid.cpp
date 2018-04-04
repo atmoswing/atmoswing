@@ -252,8 +252,8 @@ bool asAreaCompGrid::HandleAreaDefinedByPointsNb(const a1d &lons, const a1d &lat
     m_compositeYaxes[0] = latsAxis;
 
     m_cornerUL = {m_cornerUL.x, lats[indexYmax]};
-    m_cornerUR = {lons[indexXmin + m_xPtsNb], lats[indexYmax]};
-    m_cornerLR = {lons[indexXmin + m_xPtsNb], m_cornerLR.y};
+    m_cornerUR = {lons[indexXmin + m_xPtsNb - 1], lats[indexYmax]};
+    m_cornerLR = {lons[indexXmin + m_xPtsNb - 1], m_cornerLR.y};
 
     m_composites[0].SetCornerUL(m_cornerUL, true);
     m_composites[0].SetCornerUR(m_cornerUR, true);
@@ -349,6 +349,30 @@ void asAreaCompGrid::HandleMissing180(const a1d &lons)
     }
 }
 
+a1d asAreaCompGrid::GetXaxis()
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeXaxes.empty());
+
+    if (GetNbComposites() == 1) {
+        return m_compositeXaxes[0];
+    }
+
+    a1d newAxis(GetXaxisCompositePtsnb(0) + GetXaxisCompositePtsnb(1));
+    //newAxis.head(GetXaxisCompositePtsnb(0)) = m_compositeXaxes[0];
+    //newAxis.tail(GetXaxisCompositePtsnb(1)) = m_compositeXaxes[1];
+
+    return newAxis;
+}
+
+a1d asAreaCompGrid::GetYaxis()
+{
+    wxASSERT(m_isInitialized);
+    wxASSERT(!m_compositeYaxes.empty());
+
+    return m_compositeYaxes[0];
+}
+
 a1d asAreaCompGrid::GetXaxisComposite(int compositeNb)
 {
     wxASSERT(m_isInitialized);
@@ -427,4 +451,28 @@ int asAreaCompGrid::GetXptsNb()
 int asAreaCompGrid::GetYptsNb()
 {
     return GetYaxisCompositePtsnb(0);
+}
+
+double asAreaCompGrid::GetXmin() const
+{
+    return m_composites[0].GetXmin();
+}
+
+double asAreaCompGrid::GetXmax() const
+{
+    if (GetNbComposites() == 1) {
+        return m_composites[0].GetXmax();
+    }
+
+    return m_composites[1].GetXmax();
+}
+
+double asAreaCompGrid::GetYmin() const
+{
+    return m_composites[0].GetYmin();
+}
+
+double asAreaCompGrid::GetYmax() const
+{
+    return m_composites[0].GetYmax();
 }

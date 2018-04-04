@@ -113,8 +113,8 @@ TEST(PredictorProjCMIP5, LoadComposite)
     EXPECT_NEAR(2.0217E-07, pr[0][0](0, 3), 1E-11);
     EXPECT_NEAR(3.0069E-07, pr[0][0](0, 4), 1E-11);
     EXPECT_NEAR(1.7317E-07, pr[0][0](1, 0), 1E-11);
-    EXPECT_NEAR(6.2179E-06, pr[0][0](2, 0), 1E-11);
-    EXPECT_NEAR(1.1299E-05, pr[0][0](2, 4), 1E-11);
+    EXPECT_NEAR(6.2179E-06, pr[0][0](2, 0), 1E-10);
+    EXPECT_NEAR(1.1299E-05, pr[0][0](2, 4), 1E-9);
 
     wxDELETE(predictor);
 }

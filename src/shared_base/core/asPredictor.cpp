@@ -698,6 +698,8 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
             m_lonPtsnb = dataArea->GetXptsNb();
             m_latPtsnb = dataArea->GetYptsNb();
+            m_axisLon = desiredArea->GetXaxis();
+            m_axisLat = desiredArea->GetYaxis();
 
             return dataArea;
 
@@ -709,11 +711,11 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
             m_lonPtsnb = dataArea->GetXptsNb();
             m_latPtsnb = dataArea->GetYptsNb();
+            m_axisLon = desiredArea->GetXaxis();
+            m_axisLat = desiredArea->GetYaxis();
 
             return dataArea;
         }
-
-
     }
 
     return nullptr;
@@ -990,8 +992,8 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
                         // Check if not NaN
                         bool notNan = true;
-                        for (size_t iNan = 0; iNan < m_nanValues.size(); iNan++) {
-                            if (data[ind] == m_nanValues[iNan] || latlonData(iLat, iLon) == m_nanValues[iNan]) {
+                        for (double nanValue : m_nanValues) {
+                            if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
                                 notNan = false;
                             }
                         }
@@ -1144,8 +1146,8 @@ bool asPredictor::Inline()
 
     m_latPtsnb = (int) m_data[0][0].rows();
     m_lonPtsnb = (int) m_data[0][0].cols();
-    a1f emptyAxis(1);
-    emptyAxis[0] = NaNf;
+    a1d emptyAxis(1);
+    emptyAxis[0] = NaNd;
     m_axisLat = emptyAxis;
     m_axisLon = emptyAxis;
 
@@ -1161,8 +1163,8 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area)
         unsigned long membersNb = compositeData[0][0].size();
         m_data = vva2f(sizeTime, va2f(membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
 
-        int comp0cols = (int)compositeData[0][0][0].cols();
-        int comp1cols = (int)compositeData[1][0][0].cols();
+        auto comp0cols = (int)compositeData[0][0][0].cols();
+        auto comp1cols = (int)compositeData[1][0][0].cols();
 
         // Merge the composite data together
         for (unsigned int iTime = 0; iTime < sizeTime; iTime++) {
