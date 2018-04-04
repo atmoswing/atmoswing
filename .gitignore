@@ -69,3 +69,4 @@ external/
 **/googletest-prefix/
 *.resolve
 *.base
+*.info
