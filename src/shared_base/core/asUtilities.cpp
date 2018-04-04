@@ -1265,14 +1265,14 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
         return static_cast<int>(pFirst - pArrStart);
     } else {
         if (pLast - pFirst == 0) {
-            if (abs(*pFirst - targetValue) <= tolerance) {
+            if (std::abs(*pFirst - targetValue) <= tolerance) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (abs(*pFirst - targetValue) <= tolerance) {
+        if (std::abs(*pFirst - targetValue) <= tolerance) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;
@@ -1379,14 +1379,14 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
         return static_cast<int>(pFirst - pArrStart - 1);
     } else {
         if (pLast - pFirst == 0) {
-            if (abs(*pFirst - targetValue) <= tolerance) {
+            if (std::abs(*pFirst - targetValue) <= tolerance) {
                 return 0; // Value corresponds
             } else {
                 return asOUT_OF_RANGE;
             }
         }
 
-        if (abs(*pFirst - targetValue) <= tolerance) {
+        if (std::abs(*pFirst - targetValue) <= tolerance) {
             return 0; // Value corresponds
         } else {
             return asOUT_OF_RANGE;

@@ -27,6 +27,7 @@
  */
 
 #include "asAreaCompRegGrid.h"
+#include <cmath>
 
 asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                                      double xStep, double yStep, int flatAllowed)
@@ -80,8 +81,8 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
     wxASSERT(lons.size() > 1);
     wxASSERT(lats.size() > 1);
 
-    m_xStepData = abs(lons[1] - lons[0]);
-    m_yStepData = abs(lats[1] - lats[0]);
+    m_xStepData = std::abs(lons[1] - lons[0]);
+    m_yStepData = std::abs(lats[1] - lats[0]);
 
     if (m_xStep == 0) {
         m_xStep = m_xStepData;

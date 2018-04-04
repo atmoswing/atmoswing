@@ -102,12 +102,6 @@ TEST(AreaCompGrid, GetBoundsSplitted)
 
     a1d lons = a1d::LinSpaced(145, 0.0, 360.0);
     a1d lats = a1d::LinSpaced(73, -90.0, 90.0);
-
-    std::cout << '\n\nLONS: \n';
-    std::cout << lons;
-    std::cout << '\n\nLATS: \n';
-    std::cout << lats;
-
     area->InitializeAxes(lons, lats);
 
     EXPECT_DOUBLE_EQ(350, area->GetComposite(0).GetXmin());

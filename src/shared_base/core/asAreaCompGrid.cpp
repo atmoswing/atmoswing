@@ -315,7 +315,7 @@ void asAreaCompGrid::HandleMissing360(const a1d &lons)
     if (GetNbComposites() == 1 && m_composites[0].GetXmax() == 360 && lons[lons.size() - 1] < 360 && lons[0] >= 0) {
         wxASSERT(lons.size() > 1);
         double dataStep = lons[1] - lons[0];
-        if (abs(360 - lons[lons.size() - 1] - dataStep) > 0.01) {
+        if (std::abs(360 - lons[lons.size() - 1] - dataStep) > 0.01) {
             asThrowException("Cannot find the desired value on the longitude axis.");
         }
 
@@ -335,7 +335,7 @@ void asAreaCompGrid::HandleMissing180(const a1d &lons)
     if (GetNbComposites() == 1 && m_composites[0].GetXmax() == 180 && lons[lons.size() - 1] < 180 && lons[0] >= -180) {
         wxASSERT(lons.size() > 1);
         double dataStep = lons[1] - lons[0];
-        if (abs(180 - lons[lons.size() - 1] - dataStep) > 0.01) {
+        if (std::abs(180 - lons[lons.size() - 1] - dataStep) > 0.01) {
             asThrowException("Cannot find the desired value on the longitude axis.");
         }
 
