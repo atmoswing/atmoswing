@@ -108,9 +108,10 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
             m_fileVarName = "z1000";
             m_unit = m;
         } else {
-            asThrowException(
-                    wxString::Format(_("No '%s' parameter identified for the provided data type (%s)."), m_dataId,
-                                     m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "_%d.nc";
 
@@ -123,8 +124,10 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
             m_fileVarName = "prate";
             m_unit = kg_m2_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided data type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "_%d.nc";
 

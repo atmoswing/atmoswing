@@ -91,8 +91,10 @@ bool asPredictorArchNoaa20Cr2c::Init()
             m_fileVarName = "vwnd";
             m_unit = m_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + ".%d.nc";
 

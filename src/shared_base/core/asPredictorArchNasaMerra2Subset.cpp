@@ -86,8 +86,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "V";
             m_unit = m_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
@@ -122,8 +124,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "T";
             m_unit = degK;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst3_3d_asm_Np.%4d%02d%02d.SUB.nc";
 
@@ -147,8 +151,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "TQV";
             m_unit = kg_m2;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_int_Nx.%4d%02d%02d.SUB.nc";
 
@@ -177,8 +183,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "T10M";
             m_unit = degK;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_asm_Nx.%4d%02d%02d.SUB.nc4";
 
@@ -192,8 +200,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "PRECTOT";
             m_unit = kg_m2_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.tavg1_2d_flx_Nx.%4d%02d%02d.SUB.nc4";
 
@@ -207,8 +217,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_fileVarName = "PRECTOTLAND";
             m_unit = kg_m2_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.tavg1_2d_lnd_Nx.%4d%02d%02d.SUB.nc4";
 

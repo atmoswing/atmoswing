@@ -64,8 +64,10 @@ bool asPredictorArchNoaaOisst2::Init()
         m_fileVarName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        m_parameter = ParameterUndefined;
+        m_parameterName = "Undefined";
+        m_fileVarName = m_dataId;
+        m_unit = UnitUndefined;
     }
 
     // Check data ID

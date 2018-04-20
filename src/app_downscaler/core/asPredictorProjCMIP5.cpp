@@ -138,7 +138,11 @@ bool asPredictorProjCMIP5::Init()
         m_unit = Pa_s;
         m_fStr.hasLevelDim = true;
     } else {
-        asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+        m_parameter = ParameterUndefined;
+        m_parameterName = "Undefined";
+        m_fileVarName = m_dataId;
+        m_unit = UnitUndefined;
+        m_fStr.hasLevelDim = true;
     }
     m_fileNamePattern = m_fileVarName + "*" + m_model + "*" + m_scenario + "*.nc";
 
