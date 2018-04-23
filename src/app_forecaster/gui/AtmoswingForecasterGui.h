@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -25,7 +25,6 @@
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
-#include <wx/statbox.h>
 #include <wx/gauge.h>
 #include <wx/scrolwin.h>
 #include <wx/panel.h>
@@ -35,6 +34,7 @@
 #include <wx/frame.h>
 #include <wx/choice.h>
 #include <wx/checkbox.h>
+#include <wx/statbox.h>
 #include <wx/filepicker.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>

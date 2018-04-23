@@ -58,11 +58,8 @@ void awxLed::DrawOnBitmap()
     wxMemoryDC dc;
     dc.SelectObject(*m_bitmap);
 
-    wxBrush brush(this->GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
+    wxBrush brush(m_parent->GetBackgroundColour(), wxBRUSHSTYLE_SOLID);
     dc.SetBackground(brush);
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(wxColour(242, 241, 240)));
-#endif
     dc.Clear();
 
     if (m_state == awxLED_BLINK)

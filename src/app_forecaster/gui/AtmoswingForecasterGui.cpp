@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -27,26 +27,28 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxVERTICAL );
 	
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxStaticBoxSizer* sbSizer13;
-	sbSizer13 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("Day of the forecast") ), wxVERTICAL );
+	wxBoxSizer* bSizer36;
+	bSizer36 = new wxBoxSizer( wxVERTICAL );
 	
-	m_calendarForecastDate = new wxCalendarCtrl( sbSizer13->GetStaticBox(), wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxCAL_MONDAY_FIRST|wxCAL_SHOW_HOLIDAYS|wxCAL_SHOW_SURROUNDING_WEEKS );
-	sbSizer13->Add( m_calendarForecastDate, 0, wxALL, 5 );
+	m_calendarForecastDate = new wxCalendarCtrl( m_panelMain, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxCAL_MONDAY_FIRST|wxCAL_SHOW_HOLIDAYS|wxCAL_SHOW_SURROUNDING_WEEKS );
+	bSizer36->Add( m_calendarForecastDate, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer35;
 	bSizer35 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticTextForecastHour = new wxStaticText( sbSizer13->GetStaticBox(), wxID_ANY, _("Hour (UTM)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecastHour = new wxStaticText( m_panelMain, wxID_ANY, _("Hour (UTM)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecastHour->Wrap( -1 );
-	bSizer35->Add( m_staticTextForecastHour, 0, wxTOP|wxBOTTOM|wxLEFT, 5 );
+	bSizer35->Add( m_staticTextForecastHour, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
-	m_textCtrlForecastHour = new wxTextCtrl( sbSizer13->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
+	m_textCtrlForecastHour = new wxTextCtrl( m_panelMain, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 40,-1 ), 0 );
 	#ifdef __WXGTK__
 	if ( !m_textCtrlForecastHour->HasFlag( wxTE_MULTILINE ) )
 	{
@@ -57,78 +59,69 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	#endif
 	bSizer35->Add( m_textCtrlForecastHour, 0, wxALL, 5 );
 	
-	m_bpButtonNow = new wxBitmapButton( sbSizer13->GetStaticBox(), wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
+	m_bpButtonNow = new wxBitmapButton( m_panelMain, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_bpButtonNow->SetToolTip( _("Set current date.") );
 	
 	bSizer35->Add( m_bpButtonNow, 0, wxTOP|wxBOTTOM, 5 );
 	
 	
-	sbSizer13->Add( bSizer35, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
+	bSizer36->Add( bSizer35, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	
-	bSizer19->Add( sbSizer13, 0, wxEXPAND|wxALL, 5 );
+	bSizer19->Add( bSizer36, 0, wxRIGHT, 5 );
 	
 	wxBoxSizer* bSizer341;
 	bSizer341 = new wxBoxSizer( wxVERTICAL );
 	
-	wxStaticBoxSizer* sbSizer131;
-	sbSizer131 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("Overall progress") ), wxVERTICAL );
-	
-	m_gauge = new wxGauge( sbSizer131->GetStaticBox(), wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
+	m_gauge = new wxGauge( m_panelMain, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
 	m_gauge->SetValue( 0 ); 
-	sbSizer131->Add( m_gauge, 0, wxALL|wxEXPAND, 5 );
+	bSizer341->Add( m_gauge, 0, wxALL|wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer351;
 	bSizer351 = new wxBoxSizer( wxHORIZONTAL );
 	
-	m_staticTextProgressActual = new wxStaticText( sbSizer131->GetStaticBox(), wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextProgressActual = new wxStaticText( m_panelMain, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProgressActual->Wrap( -1 );
 	bSizer351->Add( m_staticTextProgressActual, 0, wxTOP|wxBOTTOM, 5 );
 	
-	m_staticText38 = new wxStaticText( sbSizer131->GetStaticBox(), wxID_ANY, _("/"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText38 = new wxStaticText( m_panelMain, wxID_ANY, _("/"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText38->Wrap( -1 );
 	bSizer351->Add( m_staticText38, 0, wxALL, 5 );
 	
-	m_staticTextProgressTot = new wxStaticText( sbSizer131->GetStaticBox(), wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextProgressTot = new wxStaticText( m_panelMain, wxID_ANY, _("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProgressTot->Wrap( -1 );
 	bSizer351->Add( m_staticTextProgressTot, 0, wxTOP|wxBOTTOM, 5 );
 	
 	
-	sbSizer131->Add( bSizer351, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
-	
-	
-	bSizer341->Add( sbSizer131, 0, wxEXPAND|wxALL, 5 );
-	
-	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("Current forecast state") ), wxVERTICAL );
+	bSizer341->Add( bSizer351, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
 	
 	m_sizerLeds = new wxFlexGridSizer( 4, 2, 0, 0 );
 	m_sizerLeds->SetFlexibleDirection( wxBOTH );
 	m_sizerLeds->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 	
 	
-	sbSizer5->Add( m_sizerLeds, 0, wxEXPAND, 5 );
+	bSizer341->Add( m_sizerLeds, 1, wxEXPAND, 5 );
+	
+	wxBoxSizer* bSizer38;
+	bSizer38 = new wxBoxSizer( wxVERTICAL );
+	
+	m_button2 = new wxButton( m_panelMain, wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer38->Add( m_button2, 0, wxRIGHT|wxLEFT|wxALIGN_RIGHT, 5 );
 	
 	
-	bSizer341->Add( sbSizer5, 1, wxALL|wxEXPAND, 5 );
+	bSizer341->Add( bSizer38, 0, wxEXPAND, 5 );
 	
 	
-	bSizer19->Add( bSizer341, 1, wxEXPAND, 5 );
+	bSizer19->Add( bSizer341, 1, wxLEFT|wxEXPAND, 5 );
 	
 	
-	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
-	
-	wxStaticBoxSizer* sbSizer6;
-	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, _("List of the forecasts") ), wxVERTICAL );
+	bSizer18->Add( bSizer19, 0, wxEXPAND|wxALL, 5 );
 	
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
 	
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
-	m_button2 = new wxButton( sbSizer6->GetStaticBox(), wxID_ANY, _("Configure directories"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer22->Add( m_button2, 0, wxRIGHT|wxLEFT, 5 );
-	
-	m_scrolledWindowForecasts = new wxScrolledWindow( sbSizer6->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
+	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
 	m_scrolledWindowForecasts->SetScrollRate( 5, 5 );
 	m_scrolledWindowForecasts->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
 	m_scrolledWindowForecasts->SetMinSize( wxSize( -1,200 ) );
@@ -157,13 +150,10 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_scrolledWindowForecasts->SetSizer( bSizer32 );
 	m_scrolledWindowForecasts->Layout();
 	bSizer32->Fit( m_scrolledWindowForecasts );
-	bSizer22->Add( m_scrolledWindowForecasts, 1, wxEXPAND | wxALL, 5 );
+	bSizer22->Add( m_scrolledWindowForecasts, 1, wxEXPAND|wxTOP|wxBOTTOM, 5 );
 	
 	
-	sbSizer6->Add( bSizer22, 1, wxEXPAND, 5 );
-	
-	
-	bSizer18->Add( sbSizer6, 1, wxALL|wxEXPAND, 5 );
+	bSizer18->Add( bSizer22, 1, wxEXPAND, 5 );
 	
 	
 	m_panelMain->SetSizer( bSizer18 );
@@ -909,9 +899,9 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	m_staticText37->Wrap( -1 );
 	m_staticText37->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	
-	bSizer48->Add( m_staticText37, 0, wxALL, 5 );
+	bSizer48->Add( m_staticText37, 0, wxALL|wxEXPAND, 5 );
 	
-	m_staticText35 = new wxStaticText( m_wizPage1, wxID_ANY, _("Press the button below to load an existing file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText35 = new wxStaticText( m_wizPage1, wxID_ANY, _("Provide the path to an existing file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText35->Wrap( -1 );
 	bSizer48->Add( m_staticText35, 0, wxALL|wxEXPAND, 5 );
 	
@@ -936,11 +926,11 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 	m_staticText36->Wrap( -1 );
 	m_staticText36->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	
-	bSizer49->Add( m_staticText36, 0, wxALL, 5 );
+	bSizer49->Add( m_staticText36, 0, wxALL|wxEXPAND, 5 );
 	
 	m_staticText43 = new wxStaticText( m_wizPage2, wxID_ANY, _("Path to save the new batch file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText43->Wrap( -1 );
-	bSizer49->Add( m_staticText43, 0, wxALL, 5 );
+	bSizer49->Add( m_staticText43, 0, wxALL|wxEXPAND, 5 );
 	
 	m_filePickerBatchFile = new wxFilePickerCtrl( m_wizPage2, wxID_ANY, wxEmptyString, _("Select a file"), wxT("*.xml"), wxDefaultPosition, wxDefaultSize, wxFLP_SAVE|wxFLP_USE_TEXTCTRL );
 	bSizer49->Add( m_filePickerBatchFile, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
