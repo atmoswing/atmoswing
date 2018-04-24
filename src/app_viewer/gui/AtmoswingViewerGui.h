@@ -29,20 +29,20 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
+#include <wx/filepicker.h>
+#include <wx/choice.h>
+#include <wx/wizard.h>
+#include <wx/dynarray.h>
+WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 #include <wx/statbmp.h>
 #include <wx/checklst.h>
-#include <wx/choice.h>
 #include <wx/notebook.h>
 #include <wx/grid.h>
 #include <wx/bmpbuttn.h>
-#include <wx/filepicker.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
 #include <wx/radiobut.h>
 #include <wx/checkbox.h>
-#include <wx/wizard.h>
-#include <wx/dynarray.h>
-WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -116,6 +116,43 @@ class asFrameForecastVirtual : public wxFrame
 			m_splitterGIS->SetSashPosition( 270 );
 			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
 		}
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class asWizardWorkspaceVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asWizardWorkspaceVirtual : public wxWizard 
+{
+	private:
+	
+	protected:
+		wxStaticText* m_staticText37;
+		wxStaticText* m_staticText35;
+		wxButton* m_button4;
+		wxStaticText* m_staticText46;
+		wxStaticText* m_staticText36;
+		wxStaticText* m_staticText43;
+		wxFilePickerCtrl* m_filePickerWorkspaceFile;
+		wxStaticText* m_staticText44;
+		wxStaticText* m_staticTextForecastResultsDir;
+		wxDirPickerCtrl* m_dirPickerForecastResults;
+		wxStaticText* m_staticText42;
+		wxStaticText* m_staticText45;
+		wxStaticText* m_staticText40;
+		wxChoice* m_choiceBaseMap;
+		wxStaticText* m_staticText41;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
+		virtual void OnLoadExistingWorkspace( wxCommandEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Workspace creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		WizardPages m_pages;
+		~asWizardWorkspaceVirtual();
 	
 };
 
@@ -389,43 +426,6 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFramePreferencesViewerVirtual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class asWizardWorkspaceVirtual
-///////////////////////////////////////////////////////////////////////////////
-class asWizardWorkspaceVirtual : public wxWizard 
-{
-	private:
-	
-	protected:
-		wxStaticText* m_staticText37;
-		wxStaticText* m_staticText35;
-		wxButton* m_button4;
-		wxStaticText* m_staticText46;
-		wxStaticText* m_staticText36;
-		wxStaticText* m_staticText43;
-		wxFilePickerCtrl* m_filePickerWorkspaceFile;
-		wxStaticText* m_staticText44;
-		wxStaticText* m_staticTextForecastResultsDir;
-		wxDirPickerCtrl* m_dirPickerForecastResults;
-		wxStaticText* m_staticText42;
-		wxStaticText* m_staticText45;
-		wxStaticText* m_staticText40;
-		wxChoice* m_choiceBaseMap;
-		wxStaticText* m_staticText41;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
-		virtual void OnLoadExistingWorkspace( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Workspace creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
-		WizardPages m_pages;
-		~asWizardWorkspaceVirtual();
 	
 };
 

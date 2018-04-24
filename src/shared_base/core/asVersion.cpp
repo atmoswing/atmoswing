@@ -35,11 +35,11 @@ wxString asVersion::GetFullString()
     //ctor
     wxString versionNb = "Version " + g_version;
 #if defined(__WXMSW__)
-    versionNb << " -Windows";
+    versionNb << " - Windows";
 #elif defined(__WXMAC__)
-    versionNb << " -Mac";
+    versionNb << " - Mac";
 #elif defined(__UNIX__)
-    versionNb << " -Linux";
+    versionNb << " - Linux";
 #endif
 
     return versionNb;
