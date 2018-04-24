@@ -35,4 +35,8 @@ extern bool g_local;
 extern int g_runNb;
 extern bool g_resumePreviousRun;
 
+#if wxUSE_GUI
+    extern wxColour g_bgColour;
+#endif
+
 #endif // ASGLOBVARSOPTIMIZER_H_INCLUDED

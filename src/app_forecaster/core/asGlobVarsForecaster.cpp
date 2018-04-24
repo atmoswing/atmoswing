@@ -29,3 +29,15 @@
 #include "asGlobVarsForecaster.h"
 
 wxString g_cmdFilename = wxEmptyString;
+
+#if wxUSE_GUI
+    #if defined (__WIN32__)
+        wxColour g_bgColour = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #elif defined (linux)
+        wxColour g_bgColour = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #elif defined (__APPLE__)
+        wxColour g_bgColour = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #else
+        wxColour g_bgColour = wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #endif
+#endif

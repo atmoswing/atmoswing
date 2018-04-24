@@ -58,6 +58,9 @@ asFrameMain::asFrameMain(wxWindow *parent)
     m_forecaster = nullptr;
     m_logWindow = nullptr;
 
+    // Fix colors
+    m_panelMain->SetBackgroundColour(g_bgColour);
+
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"),
                        _("Run forecast now"), nullptr);
