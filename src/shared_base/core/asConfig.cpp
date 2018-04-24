@@ -123,3 +123,18 @@ wxString asConfig::GetDefaultUserWorkingDir()
     wxString dirData = GetUserDataDir() + DS + "Data" + DS;
     return dirData;
 }
+
+#if wxUSE_GUI
+wxColour asConfig::GetFrameBgColour()
+{
+    #if defined (__WIN32__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #elif defined (__UNIX__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND );
+    #elif defined (__APPLE__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #else
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #endif
+}
+#endif

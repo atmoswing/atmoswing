@@ -27,8 +27,6 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND ) );
-	
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxVERTICAL );
 	
@@ -36,7 +34,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_staticText41->Wrap( -1 );
 	m_staticText41->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	
-	bSizer18->Add( m_staticText41, 0, wxALL|wxEXPAND, 5 );
+	bSizer18->Add( m_staticText41, 0, wxALL|wxEXPAND, 10 );
 	
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
@@ -121,7 +119,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer19->Add( bSizer341, 1, wxLEFT|wxEXPAND, 5 );
 	
 	
-	bSizer18->Add( bSizer19, 0, wxEXPAND|wxALL, 5 );
+	bSizer18->Add( bSizer19, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
@@ -129,7 +127,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
 	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL );
 	m_scrolledWindowForecasts->SetScrollRate( 5, 5 );
-	m_scrolledWindowForecasts->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
+	m_scrolledWindowForecasts->SetBackgroundColour( wxColour( 144, 144, 144 ) );
 	m_scrolledWindowForecasts->SetMinSize( wxSize( -1,200 ) );
 	
 	wxBoxSizer* bSizer32;
@@ -147,7 +145,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_bpButtonAdd->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
 	m_bpButtonAdd->SetToolTip( _("Add a parameters file.") );
 	
-	bSizer34->Add( m_bpButtonAdd, 0, wxALL, 5 );
+	bSizer34->Add( m_bpButtonAdd, 0, wxALL, 8 );
 	
 	
 	bSizer32->Add( bSizer34, 0, wxLEFT, 5 );
@@ -327,8 +325,6 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer5 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panel2 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panel2->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
@@ -497,17 +493,11 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelBase = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebookBase = new wxNotebook( m_panelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_notebookBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	m_panelPathsCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelPathsCommon->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	m_sizerPanelPaths = new wxBoxSizer( wxVERTICAL );
 	
 	m_staticTextParametersDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -559,10 +549,8 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );
 	m_panelPathsCommon->Layout();
 	m_sizerPanelPaths->Fit( m_panelPathsCommon );
-	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), false );
+	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), true );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelGeneralCommon->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 	
@@ -664,14 +652,10 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer16->Fit( m_panelGeneralCommon );
 	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), false );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelAdvanced->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebookAdvanced = new wxNotebook( m_panelAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_notebookAdvanced->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	m_panelGeneral = new wxPanel( m_notebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer271;
 	bSizer271 = new wxBoxSizer( wxVERTICAL );
@@ -851,7 +835,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelAdvanced->SetSizer( bSizer26 );
 	m_panelAdvanced->Layout();
 	bSizer26->Fit( m_panelAdvanced );
-	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced options"), true );
+	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced options"), false );
 	
 	bSizer15->Add( m_notebookBase, 1, wxEXPAND | wxALL, 5 );
 	

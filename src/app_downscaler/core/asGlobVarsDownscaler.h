@@ -33,8 +33,4 @@
 extern bool g_local;
 extern int g_runNb;
 
-#if wxUSE_GUI
-    extern wxColour g_bgColour;
-#endif
-
 #endif // ASGLOBVARSDOWNSCALER_H_INCLUDED

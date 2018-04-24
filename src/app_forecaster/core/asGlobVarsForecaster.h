@@ -33,8 +33,4 @@
 
 extern wxString g_cmdFilename;
 
-#if wxUSE_GUI
-    extern wxColour g_bgColour;
-#endif
-
 #endif // ASGLOBVARSFORECASTER_H_INCLUDED

@@ -59,7 +59,7 @@ asFrameMain::asFrameMain(wxWindow *parent)
     m_logWindow = nullptr;
 
     // Fix colors
-    m_panelMain->SetBackgroundColour(g_bgColour);
+    //m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
 
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"),

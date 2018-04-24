@@ -56,6 +56,10 @@ public:
 
     static wxString GetDefaultUserWorkingDir();
 
+#if wxUSE_GUI
+    static wxColour GetFrameBgColour();
+#endif
+
 protected:
 
 private:

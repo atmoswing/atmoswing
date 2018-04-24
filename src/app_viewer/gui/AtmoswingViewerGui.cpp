@@ -36,7 +36,7 @@ asFrameForecastVirtual::asFrameForecastVirtual( wxWindow* parent, wxWindowID id,
 	
 	m_scrolledWindowOptions = new wxScrolledWindow( m_splitterGIS, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	m_scrolledWindowOptions->SetScrollRate( 5, 5 );
-	m_scrolledWindowOptions->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	m_scrolledWindowOptions->SetBackgroundColour( wxColour( 255, 255, 255 ) );
 	
 	m_sizerScrolledWindow = new wxBoxSizer( wxVERTICAL );
 	
@@ -591,8 +591,6 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	bSizer13 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelOptions = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelOptions->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer29;
 	bSizer29 = new wxBoxSizer( wxVERTICAL );
 	
@@ -639,8 +637,6 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	
 	m_notebook = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_panelPredictands = new wxPanel( m_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelPredictands->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer22;
 	bSizer22 = new wxBoxSizer( wxHORIZONTAL );
 	
@@ -654,8 +650,6 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_splitter4->Connect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitter4OnIdle ), NULL, this );
 	
 	m_panelPredictandsLeft = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelPredictandsLeft->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer55;
 	bSizer55 = new wxBoxSizer( wxVERTICAL );
 	
@@ -668,8 +662,6 @@ asFramePlotDistributionsVirutal::asFramePlotDistributionsVirutal( wxWindow* pare
 	m_panelPredictandsLeft->Layout();
 	bSizer55->Fit( m_panelPredictandsLeft );
 	m_panelPredictandsRight = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelPredictandsRight->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	m_sizerPlotPredictands = new wxBoxSizer( wxVERTICAL );
 	
 	

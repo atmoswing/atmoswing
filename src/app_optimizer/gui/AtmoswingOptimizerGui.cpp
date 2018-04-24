@@ -27,8 +27,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer29;
 	bSizer29 = new wxBoxSizer( wxVERTICAL );
 	
@@ -678,15 +676,11 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelBase = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebookBase = new wxNotebook( m_panelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelGeneralCommon->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 	
@@ -759,8 +753,6 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	bSizer16->Fit( m_panelGeneralCommon );
 	m_notebookBase->AddPage( m_panelGeneralCommon, _("General"), true );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelAdvanced->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-	
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
 	

@@ -100,10 +100,14 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
 
     if (gc && values.size() > 0) {
         gc->SetPen(*wxBLACK);
-        wxFont datesFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        int fontSize = 10;
+        #ifdef __LINUX__
+            fontSize = 8;
+        #endif
+        wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         gc->SetFont(datesFont, *wxBLACK);
 
-        wxPoint startText(margin, m_cellWidth / 2 - 10);
+        wxPoint startText(margin, m_cellWidth / 2 - fontSize);
 
         // For every lead time
         for (int iLead = 0; iLead < dates.size(); iLead++) {

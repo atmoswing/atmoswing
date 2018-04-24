@@ -27,8 +27,6 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
-	
 	wxBoxSizer* bSizer29;
 	bSizer29 = new wxBoxSizer( wxVERTICAL );
 	
