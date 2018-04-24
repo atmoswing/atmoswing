@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -30,8 +30,9 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
-#include <wx/radiobox.h>
+#include <wx/radiobut.h>
 #include <wx/statbox.h>
+#include <wx/radiobox.h>
 #include <wx/textctrl.h>
 #include <wx/slider.h>
 #include <wx/notebook.h>
@@ -102,7 +103,9 @@ class asFramePreferencesDownscalerVirtual : public wxFrame
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
 		wxPanel* m_panelGeneralCommon;
-		wxRadioBox* m_radioBoxLogLevel;
+		wxRadioButton* m_radioBtnLogLevel1;
+		wxRadioButton* m_radioBtnLogLevel2;
+		wxRadioButton* m_radioBtnLogLevel3;
 		wxCheckBox* m_checkBoxDisplayLogWindow;
 		wxCheckBox* m_checkBoxSaveLogFile;
 		wxStaticText* m_staticTextArchivePredictorsDir;

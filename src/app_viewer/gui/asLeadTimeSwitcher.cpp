@@ -93,9 +93,6 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
     // Create device context
     wxMemoryDC dc(*bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(g_linuxBgColour));
-#endif
     dc.Clear();
 
     // Create graphics context

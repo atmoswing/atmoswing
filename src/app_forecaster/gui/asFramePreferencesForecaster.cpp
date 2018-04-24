@@ -91,7 +91,15 @@ void asFramePreferencesForecaster::LoadPreferences()
     // Log
     long defaultLogLevelForecaster = 1; // = selection +1
     long logLevelForecaster = pConfig->Read("/General/LogLevel", defaultLogLevelForecaster);
-    m_radioBoxLogLevel->SetSelection((int) logLevelForecaster - 1);
+    if (logLevelForecaster == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevelForecaster == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevelForecaster == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
     bool displayLogWindowForecaster;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindowForecaster, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindowForecaster);
@@ -209,8 +217,15 @@ void asFramePreferencesForecaster::SavePreferences()
      */
 
     // Log
-    auto logLevelForecaster = (long) m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevelForecaster + 1); // = selection +1
+    long logLevelForecaster = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevelForecaster = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevelForecaster = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevelForecaster = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevelForecaster);
     bool displayLogWindowForecaster = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowForecaster);
 

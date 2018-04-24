@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -27,6 +27,8 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
+	
 	wxBoxSizer* bSizer29;
 	bSizer29 = new wxBoxSizer( wxVERTICAL );
 	
@@ -114,7 +116,7 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_buttonSaveDefault = new wxButton( m_panelMain, wxID_ANY, _("Save as default"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer15->Add( m_buttonSaveDefault, 0, wxALIGN_RIGHT, 5 );
+	bSizer15->Add( m_buttonSaveDefault, 0, 0, 5 );
 	
 	
 	bSizer29->Add( bSizer15, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxRIGHT, 5 );
@@ -221,33 +223,36 @@ asFramePreferencesDownscalerVirtual::asFramePreferencesDownscalerVirtual( wxWind
 	wxBoxSizer* bSizer20;
 	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxString m_radioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
-	int m_radioBoxLogLevelNChoices = sizeof( m_radioBoxLogLevelChoices ) / sizeof( wxString );
-	m_radioBoxLogLevel = new wxRadioBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLogLevelNChoices, m_radioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLogLevel->SetSelection( 0 );
-	bSizer20->Add( m_radioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
+	wxBoxSizer* bSizer17;
+	bSizer17 = new wxBoxSizer( wxVERTICAL );
 	
-	wxStaticBoxSizer* sbSizer8;
-	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Outputs") ), wxVERTICAL );
+	m_radioBtnLogLevel1 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors only (recommanded)"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer17->Add( m_radioBtnLogLevel1, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel2 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors and warnings"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer17->Add( m_radioBtnLogLevel2, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel3 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("RadioBtn"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer17->Add( m_radioBtnLogLevel3, 0, wxALL, 5 );
+	
+	
+	bSizer20->Add( bSizer17, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxDisplayLogWindow->SetValue(true); 
 	bSizer21->Add( m_checkBoxDisplayLogWindow, 0, wxALL, 5 );
 	
-	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxSaveLogFile->SetValue(true); 
 	m_checkBoxSaveLogFile->Enable( false );
 	
 	bSizer21->Add( m_checkBoxSaveLogFile, 0, wxALL, 5 );
 	
 	
-	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
-	
-	
-	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
+	bSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
 	
 	
 	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
@@ -302,15 +307,9 @@ asFramePreferencesDownscalerVirtual::asFramePreferencesDownscalerVirtual( wxWind
 	m_radioBoxGui->SetSelection( 1 );
 	bSizer271->Add( m_radioBoxGui, 0, wxALL|wxEXPAND, 5 );
 	
-	wxStaticBoxSizer* sbSizer151;
-	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneral, wxID_ANY, _("Advanced options") ), wxVERTICAL );
-	
-	m_checkBoxResponsiveness = new wxCheckBox( sbSizer151->GetStaticBox(), wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxResponsiveness = new wxCheckBox( m_panelGeneral, wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxResponsiveness->SetValue(true); 
-	sbSizer151->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
-	
-	
-	bSizer271->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	bSizer271->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
 	
 	
 	m_panelGeneral->SetSizer( bSizer271 );
@@ -339,7 +338,7 @@ asFramePreferencesDownscalerVirtual::asFramePreferencesDownscalerVirtual( wxWind
 	bSizer221->Add( m_textCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	sbSizer15->Add( bSizer221, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	sbSizer15->Add( bSizer221, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer241;
 	bSizer241 = new wxBoxSizer( wxHORIZONTAL );
@@ -352,7 +351,7 @@ asFramePreferencesDownscalerVirtual::asFramePreferencesDownscalerVirtual( wxWind
 	bSizer241->Add( m_sliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
 	
 	
-	sbSizer15->Add( bSizer241, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	sbSizer15->Add( bSizer241, 0, wxEXPAND, 5 );
 	
 	
 	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );
@@ -450,7 +449,7 @@ asFramePreferencesDownscalerVirtual::asFramePreferencesDownscalerVirtual( wxWind
 	m_buttonsConfirmation->AddButton( m_buttonsConfirmationCancel );
 	m_buttonsConfirmation->Realize();
 	
-	bSizer15->Add( m_buttonsConfirmation, 0, wxEXPAND|wxALL, 5 );
+	bSizer15->Add( m_buttonsConfirmation, 0, wxALL|wxEXPAND, 5 );
 	
 	
 	m_panelBase->SetSizer( bSizer15 );

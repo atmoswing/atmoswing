@@ -27,10 +27,16 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	m_panelMain->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
 	
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxVERTICAL );
+	
+	m_staticText41 = new wxStaticText( m_panelMain, wxID_ANY, _("Start the forecast for a given date"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText41->Wrap( -1 );
+	m_staticText41->SetFont( wxFont( 13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	
+	bSizer18->Add( m_staticText41, 0, wxALL, 5 );
 	
 	wxBoxSizer* bSizer19;
 	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
@@ -57,12 +63,12 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	#else
 	m_textCtrlForecastHour->SetMaxLength( 2 );
 	#endif
-	bSizer35->Add( m_textCtrlForecastHour, 0, wxALL, 5 );
+	bSizer35->Add( m_textCtrlForecastHour, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_bpButtonNow = new wxBitmapButton( m_panelMain, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
 	m_bpButtonNow->SetToolTip( _("Set current date.") );
 	
-	bSizer35->Add( m_bpButtonNow, 0, wxTOP|wxBOTTOM, 5 );
+	bSizer35->Add( m_bpButtonNow, 0, wxTOP|wxBOTTOM|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	bSizer36->Add( bSizer35, 1, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -121,7 +127,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	bSizer22 = new wxBoxSizer( wxVERTICAL );
 	
 	bSizer22->SetMinSize( wxSize( -1,200 ) ); 
-	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxVSCROLL );
+	m_scrolledWindowForecasts = new wxScrolledWindow( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL );
 	m_scrolledWindowForecasts->SetScrollRate( 5, 5 );
 	m_scrolledWindowForecasts->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVEBORDER ) );
 	m_scrolledWindowForecasts->SetMinSize( wxSize( -1,200 ) );
@@ -132,7 +138,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_sizerForecasts = new wxBoxSizer( wxVERTICAL );
 	
 	
-	bSizer32->Add( m_sizerForecasts, 0, wxEXPAND, 5 );
+	bSizer32->Add( m_sizerForecasts, 0, wxEXPAND|wxTOP, 5 );
 	
 	wxBoxSizer* bSizer34;
 	bSizer34 = new wxBoxSizer( wxHORIZONTAL );
@@ -150,7 +156,7 @@ asFrameMainVirtual::asFrameMainVirtual( wxWindow* parent, wxWindowID id, const w
 	m_scrolledWindowForecasts->SetSizer( bSizer32 );
 	m_scrolledWindowForecasts->Layout();
 	bSizer32->Fit( m_scrolledWindowForecasts );
-	bSizer22->Add( m_scrolledWindowForecasts, 1, wxEXPAND|wxTOP|wxBOTTOM, 5 );
+	bSizer22->Add( m_scrolledWindowForecasts, 1, wxEXPAND|wxTOP, 5 );
 	
 	
 	bSizer18->Add( bSizer22, 1, wxEXPAND, 5 );
@@ -275,6 +281,44 @@ asFrameMainVirtual::~asFrameMainVirtual()
 	
 }
 
+asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
+{
+	m_sizerPanel = new wxBoxSizer( wxVERTICAL );
+	
+	m_sizerHeader = new wxBoxSizer( wxHORIZONTAL );
+	
+	m_sizerFilename = new wxBoxSizer( wxVERTICAL );
+	
+	m_textCtrlParametersFileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrlParametersFileName->SetToolTip( _("Enter the parameters file name...") );
+	
+	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxTOP|wxRIGHT|wxLEFT, 2 );
+	
+	
+	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND, 5 );
+	
+	m_bpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( -1,-1 ), wxBU_AUTODRAW|wxNO_BORDER );
+	m_sizerHeader->Add( m_bpButtonClose, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT|wxLEFT, 5 );
+	
+	
+	m_sizerPanel->Add( m_sizerHeader, 0, wxEXPAND, 5 );
+	
+	
+	this->SetSizer( m_sizerPanel );
+	this->Layout();
+	m_sizerPanel->Fit( this );
+	
+	// Connect Events
+	m_bpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
+}
+
+asPanelForecastVirtual::~asPanelForecastVirtual()
+{
+	// Disconnect Events
+	m_bpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
+	
+}
+
 asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 400,400 ), wxDefaultSize );
@@ -283,6 +327,8 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer5 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panel2 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panel2->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
+	
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 	
@@ -399,7 +445,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_buttonSaveDefault = new wxButton( m_panel2, wxID_ANY, _("Save as default"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer15->Add( m_buttonSaveDefault, 0, wxALIGN_RIGHT, 5 );
+	bSizer15->Add( m_buttonSaveDefault, 0, 0, 5 );
 	
 	m_buttonsConfirmation = new wxStdDialogButtonSizer();
 	m_buttonsConfirmationOK = new wxButton( m_panel2, wxID_OK );
@@ -411,7 +457,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	bSizer15->Add( m_buttonsConfirmation, 0, 0, 5 );
 	
 	
-	bSizer6->Add( bSizer15, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	bSizer6->Add( bSizer15, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxTOP, 5 );
 	
 	
 	m_panel2->SetSizer( bSizer6 );
@@ -443,44 +489,6 @@ asFramePredictandDBVirtual::~asFramePredictandDBVirtual()
 	
 }
 
-asPanelForecastVirtual::asPanelForecastVirtual( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style ) : wxPanel( parent, id, pos, size, style )
-{
-	m_sizerPanel = new wxBoxSizer( wxVERTICAL );
-	
-	m_sizerHeader = new wxBoxSizer( wxHORIZONTAL );
-	
-	m_sizerFilename = new wxBoxSizer( wxVERTICAL );
-	
-	m_textCtrlParametersFileName = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_textCtrlParametersFileName->SetToolTip( _("Enter the parameters file name...") );
-	
-	m_sizerFilename->Add( m_textCtrlParametersFileName, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
-	
-	
-	m_sizerHeader->Add( m_sizerFilename, 1, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
-	
-	m_bpButtonClose = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), wxBU_AUTODRAW|wxNO_BORDER );
-	m_sizerHeader->Add( m_bpButtonClose, 0, wxALIGN_CENTER_VERTICAL, 5 );
-	
-	
-	m_sizerPanel->Add( m_sizerHeader, 0, wxEXPAND, 5 );
-	
-	
-	this->SetSizer( m_sizerPanel );
-	this->Layout();
-	m_sizerPanel->Fit( this );
-	
-	// Connect Events
-	m_bpButtonClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
-}
-
-asPanelForecastVirtual::~asPanelForecastVirtual()
-{
-	// Disconnect Events
-	m_bpButtonClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asPanelForecastVirtual::ClosePanel ), NULL, this );
-	
-}
-
 asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 400,400 ), wxDefaultSize );
@@ -489,70 +497,72 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 	
 	m_panelBase = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
+	
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebookBase = new wxNotebook( m_panelBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_notebookBase->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_MENU ) );
+	
 	m_panelPathsCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelPathsCommon->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
 	m_sizerPanelPaths = new wxBoxSizer( wxVERTICAL );
 	
-	wxStaticBoxSizer* sbSizer18;
-	sbSizer18 = new wxStaticBoxSizer( new wxStaticBox( m_panelPathsCommon, wxID_ANY, _("Directories for real-time forecasting") ), wxVERTICAL );
-	
-	m_staticTextParametersDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextParametersDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory containing the parameters files"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextParametersDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextParametersDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerParameters = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	m_dirPickerParameters = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerParameters, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
-	m_staticTextPredictandDBDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory containing the predictand DB"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextPredictandDBDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory containing the predictand DB"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextPredictandDBDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextPredictandDBDir, 0, wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextPredictandDBDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerPredictandDB = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_dirPickerPredictandDB = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerPredictandDB, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextArchivePredictorsDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextArchivePredictorsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory containing archive predictors"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextArchivePredictorsDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextArchivePredictorsDir, 0, wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextArchivePredictorsDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerArchivePredictors = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	m_dirPickerArchivePredictors = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerArchivePredictors, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
-	m_staticTextRealtimePredictorSavingDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory to save downloaded real-time predictors (GCM forecasts)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextRealtimePredictorSavingDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save downloaded real-time predictors (GCM forecasts)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextRealtimePredictorSavingDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextRealtimePredictorSavingDir, 0, wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextRealtimePredictorSavingDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerRealtimePredictorSaving = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerRealtimePredictorSaving, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_dirPickerRealtimePredictorSaving = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerRealtimePredictorSaving, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextForecastResultsDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory to save forecast outputs (netCDF)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecastResultsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save forecast outputs (netCDF)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecastResultsDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextForecastResultsDir, 0, wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextForecastResultsDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerForecastResults = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_dirPickerForecastResults = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerForecastResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_staticTextForecastResultsExportsDir = new wxStaticText( sbSizer18->GetStaticBox(), wxID_ANY, _("Directory to save forecast exports (xml)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextForecastResultsExportsDir = new wxStaticText( m_panelPathsCommon, wxID_ANY, _("Directory to save forecast exports (xml)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextForecastResultsExportsDir->Wrap( -1 );
-	sbSizer18->Add( m_staticTextForecastResultsExportsDir, 0, wxRIGHT|wxLEFT, 5 );
+	m_sizerPanelPaths->Add( m_staticTextForecastResultsExportsDir, 0, wxTOP|wxRIGHT|wxLEFT, 5 );
 	
-	m_dirPickerForecastResultsExports = new wxDirPickerCtrl( sbSizer18->GetStaticBox(), wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
-	sbSizer18->Add( m_dirPickerForecastResultsExports, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	m_dirPickerForecastResultsExports = new wxDirPickerCtrl( m_panelPathsCommon, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_USE_TEXTCTRL );
+	m_sizerPanelPaths->Add( m_dirPickerForecastResultsExports, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 	
-	m_checkBoxExportSyntheticXml = new wxCheckBox( sbSizer18->GetStaticBox(), wxID_ANY, _("Export forecasts as synthetic xml"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer18->Add( m_checkBoxExportSyntheticXml, 0, wxALL, 5 );
-	
-	
-	m_sizerPanelPaths->Add( sbSizer18, 0, wxEXPAND|wxALL, 5 );
+	m_checkBoxExportSyntheticXml = new wxCheckBox( m_panelPathsCommon, wxID_ANY, _("Export forecasts as synthetic xml"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_sizerPanelPaths->Add( m_checkBoxExportSyntheticXml, 0, wxALL, 5 );
 	
 	
 	m_panelPathsCommon->SetSizer( m_sizerPanelPaths );
 	m_panelPathsCommon->Layout();
 	m_sizerPanelPaths->Fit( m_panelPathsCommon );
-	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), true );
+	m_notebookBase->AddPage( m_panelPathsCommon, _("Batch file properties"), false );
 	m_panelGeneralCommon = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelGeneralCommon->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
 	wxBoxSizer* bSizer16;
 	bSizer16 = new wxBoxSizer( wxVERTICAL );
 	
@@ -562,33 +572,36 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	wxBoxSizer* bSizer20;
 	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxString m_radioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
-	int m_radioBoxLogLevelNChoices = sizeof( m_radioBoxLogLevelChoices ) / sizeof( wxString );
-	m_radioBoxLogLevel = new wxRadioBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLogLevelNChoices, m_radioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLogLevel->SetSelection( 0 );
-	bSizer20->Add( m_radioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
+	wxBoxSizer* bSizer38;
+	bSizer38 = new wxBoxSizer( wxVERTICAL );
 	
-	wxStaticBoxSizer* sbSizer8;
-	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Outputs") ), wxVERTICAL );
+	m_radioBtnLogLevel1 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors only (recommanded)"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+	bSizer38->Add( m_radioBtnLogLevel1, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel2 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors and warnings"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer38->Add( m_radioBtnLogLevel2, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel3 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Verbose"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer38->Add( m_radioBtnLogLevel3, 0, wxALL, 5 );
+	
+	
+	bSizer20->Add( bSizer38, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxDisplayLogWindow->SetValue(true); 
 	bSizer21->Add( m_checkBoxDisplayLogWindow, 0, wxALL, 5 );
 	
-	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxSaveLogFile->SetValue(true); 
 	m_checkBoxSaveLogFile->Enable( false );
 	
 	bSizer21->Add( m_checkBoxSaveLogFile, 0, wxALL, 5 );
 	
 	
-	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
-	
-	
-	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
+	bSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
 	
 	
 	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
@@ -607,17 +620,17 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	
 	m_staticTextProxyAddress = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Proxy address"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProxyAddress->Wrap( -1 );
-	bSizer34->Add( m_staticTextProxyAddress, 0, wxALL, 5 );
+	bSizer34->Add( m_staticTextProxyAddress, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlProxyAddress = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 180,-1 ), 0 );
-	bSizer34->Add( m_textCtrlProxyAddress, 1, wxALL, 5 );
+	bSizer34->Add( m_textCtrlProxyAddress, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticTextProxyPort = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Port"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProxyPort->Wrap( -1 );
-	bSizer34->Add( m_staticTextProxyPort, 0, wxALL, 5 );
+	bSizer34->Add( m_staticTextProxyPort, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlProxyPort = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer34->Add( m_textCtrlProxyPort, 0, wxALL, 5 );
+	bSizer34->Add( m_textCtrlProxyPort, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	sbSizer14->Add( bSizer34, 1, wxEXPAND, 5 );
@@ -627,17 +640,17 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	
 	m_staticTextProxyUser = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Username"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProxyUser->Wrap( -1 );
-	bSizer35->Add( m_staticTextProxyUser, 0, wxALL, 5 );
+	bSizer35->Add( m_staticTextProxyUser, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlProxyUser = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( -1,-1 ), 0 );
-	bSizer35->Add( m_textCtrlProxyUser, 1, wxALL, 5 );
+	bSizer35->Add( m_textCtrlProxyUser, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticTextProxyPasswd = new wxStaticText( sbSizer14->GetStaticBox(), wxID_ANY, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextProxyPasswd->Wrap( -1 );
-	bSizer35->Add( m_staticTextProxyPasswd, 0, wxALL, 5 );
+	bSizer35->Add( m_staticTextProxyPasswd, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlProxyPasswd = new wxTextCtrl( sbSizer14->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-	bSizer35->Add( m_textCtrlProxyPasswd, 1, wxALL, 5 );
+	bSizer35->Add( m_textCtrlProxyPasswd, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
 	sbSizer14->Add( bSizer35, 1, wxEXPAND, 5 );
@@ -651,10 +664,14 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer16->Fit( m_panelGeneralCommon );
 	m_notebookBase->AddPage( m_panelGeneralCommon, _("General options"), false );
 	m_panelAdvanced = new wxPanel( m_notebookBase, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelAdvanced->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
 	wxBoxSizer* bSizer26;
 	bSizer26 = new wxBoxSizer( wxVERTICAL );
 	
 	m_notebookAdvanced = new wxNotebook( m_panelAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_notebookAdvanced->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+	
 	m_panelGeneral = new wxPanel( m_notebookAdvanced, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer271;
 	bSizer271 = new wxBoxSizer( wxVERTICAL );
@@ -715,18 +732,12 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	
 	bSizer271->Add( sbSizer11, 0, wxALL|wxEXPAND, 5 );
 	
-	wxStaticBoxSizer* sbSizer151;
-	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneral, wxID_ANY, _("Advanced options") ), wxVERTICAL );
-	
-	m_checkBoxResponsiveness = new wxCheckBox( sbSizer151->GetStaticBox(), wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxResponsiveness = new wxCheckBox( m_panelGeneral, wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxResponsiveness->SetValue(true); 
-	sbSizer151->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
+	bSizer271->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
 	
-	m_checkBoxMultiInstancesForecaster = new wxCheckBox( sbSizer151->GetStaticBox(), wxID_ANY, _("Allow multiple instances of the forecaster"), wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer151->Add( m_checkBoxMultiInstancesForecaster, 0, wxALL, 5 );
-	
-	
-	bSizer271->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	m_checkBoxMultiInstancesForecaster = new wxCheckBox( m_panelGeneral, wxID_ANY, _("Allow multiple instances of the forecaster"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer271->Add( m_checkBoxMultiInstancesForecaster, 0, wxALL, 5 );
 	
 	
 	m_panelGeneral->SetSizer( bSizer271 );
@@ -755,7 +766,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer221->Add( m_textCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	sbSizer15->Add( bSizer221, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	sbSizer15->Add( bSizer221, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer241;
 	bSizer241 = new wxBoxSizer( wxHORIZONTAL );
@@ -765,10 +776,10 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	bSizer241->Add( m_staticTextThreadsPriority, 0, wxALL, 5 );
 	
 	m_sliderThreadsPriority = new wxSlider( sbSizer15->GetStaticBox(), wxID_ANY, 95, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_LABELS );
-	bSizer241->Add( m_sliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
+	bSizer241->Add( m_sliderThreadsPriority, 1, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	sbSizer15->Add( bSizer241, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	sbSizer15->Add( bSizer241, 0, wxEXPAND, 5 );
 	
 	
 	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );
@@ -840,7 +851,7 @@ asFramePreferencesForecasterVirtual::asFramePreferencesForecasterVirtual( wxWind
 	m_panelAdvanced->SetSizer( bSizer26 );
 	m_panelAdvanced->Layout();
 	bSizer26->Fit( m_panelAdvanced );
-	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced options"), false );
+	m_notebookBase->AddPage( m_panelAdvanced, _("Advanced options"), true );
 	
 	bSizer15->Add( m_notebookBase, 1, wxEXPAND | wxALL, 5 );
 	

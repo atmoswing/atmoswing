@@ -48,12 +48,13 @@ asFramePlotTimeSeries::asFramePlotTimeSeries(wxWindow *parent, int selectedMetho
     m_splitter->SetMinimumPaneSize(paneMinSize);
 
     m_panelPlot = new asPanelPlot(m_panelRight);
+    m_panelPlot->GetPlotCtrl()->HideScrollBars();
     m_panelPlot->Layout();
     m_sizerPlot->Add(m_panelPlot, 1, wxALL | wxEXPAND, 0);
     m_sizerPlot->Fit(m_panelRight);
 
-    m_staticTextStationName->SetLabel(
-            forecastManager->GetStationNameWithHeight(m_selectedMethod, m_selectedForecast, m_selectedStation));
+    m_staticTextStationName->SetLabel(forecastManager->GetStationNameWithHeight(m_selectedMethod, m_selectedForecast,
+                                                                                m_selectedStation));
     wxFont titleFont = m_staticTextStationName->GetFont();
     titleFont.SetPointSize(titleFont.GetPointSize() + 2);
     m_staticTextStationName->SetFont(titleFont);
@@ -424,7 +425,7 @@ bool asFramePlotTimeSeries::Plot()
     bool DoPlotPreviousForecasts = false;
     bool DoPlotInterpretation = false;
 
-    for (int curve = 0; curve < 9; curve++) {
+    for (int curve = 0; curve < 8; curve++) {
         if (m_checkListToc->IsChecked(curve)) {
             switch (curve) {
                 case (AllQuantiles):
@@ -451,9 +452,6 @@ bool asFramePlotTimeSeries::Plot()
                 case (PreviousForecasts):
                     DoPlotPreviousForecasts = true;
                     break;
-                case (Interpretation):
-                    DoPlotInterpretation = true;
-                    break;
                 default:
                     wxLogError(_("The option was not found."));
 
@@ -461,6 +459,7 @@ bool asFramePlotTimeSeries::Plot()
         }
     }
 
+	// Plot order matters.
     if (DoPlotAllQuantiles)
         PlotAllQuantiles();
     if (DoPlotAllAnalogs)

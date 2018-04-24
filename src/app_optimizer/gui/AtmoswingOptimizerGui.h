@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -33,6 +33,7 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
+#include <wx/radiobut.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
 
@@ -75,8 +76,6 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxCheckBox* m_checkBoxProceedSequentially;
 		wxStaticText* m_staticTextSpacer;
 		wxCheckBox* m_checkBoxClassicPlusResize;
-		wxStaticText* m_staticText66;
-		wxStaticText* m_staticText67;
 		wxStaticText* m_staticTextMonteCarloRandomNb;
 		wxTextCtrl* m_textCtrlMonteCarloRandomNb;
 		wxStaticText* m_staticTextVarExploStepToExplore;
@@ -175,10 +174,10 @@ class asFrameOptimizerVirtual : public wxFrame
 		
 	
 	public:
-
-	explicit asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFrameOptimizerVirtual() override;
+		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFrameOptimizerVirtual();
 	
 };
 
@@ -193,7 +192,9 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
 		wxPanel* m_panelGeneralCommon;
-		wxRadioBox* m_radioBoxLogLevel;
+		wxRadioButton* m_radioBtnLogLevel1;
+		wxRadioButton* m_radioBtnLogLevel2;
+		wxRadioButton* m_radioBtnLogLevel3;
 		wxCheckBox* m_checkBoxDisplayLogWindow;
 		wxCheckBox* m_checkBoxSaveLogFile;
 		wxStaticText* m_staticTextArchivePredictorsDir;
@@ -234,10 +235,10 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		
 	
 	public:
-
-	explicit asFramePreferencesOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
-		~asFramePreferencesOptimizerVirtual() override;
+		asFramePreferencesOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		
+		~asFramePreferencesOptimizerVirtual();
 	
 };
 

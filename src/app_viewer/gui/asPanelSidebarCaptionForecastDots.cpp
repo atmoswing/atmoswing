@@ -98,10 +98,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax)
 
     // Create device context
     wxMemoryDC dc(*bmp);
-    dc.SetBackground(wxBrush(GetBackgroundColour()));
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(g_linuxBgColour));
-#endif
+    dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
     // Create graphics context

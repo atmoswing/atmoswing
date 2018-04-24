@@ -51,10 +51,11 @@ void awxLed::Blink()
 
 void awxLed::DrawOnBitmap()
 {
+	/*
     wxSize s = GetClientSize();
     if ((m_bitmap->GetWidth() != s.GetWidth()) || (m_bitmap->GetHeight() != s.GetHeight())) {
         m_bitmap->Create(s.x, s.y);
-    }
+    }*/
     wxMemoryDC dc;
     dc.SelectObject(*m_bitmap);
 

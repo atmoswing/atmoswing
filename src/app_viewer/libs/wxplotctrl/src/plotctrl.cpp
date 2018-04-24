@@ -3771,6 +3771,14 @@ void wxPlotCtrl::AdjustScrollBars()
     m_yAxisScrollbar->SetScrollbar(int(position), int(thumbsize), int(range), int(pagesize));
 }
 
+void wxPlotCtrl::HideScrollBars()
+{
+    m_xAxisScrollbar->SetSize(0, 0);
+    m_xAxisScrollbar->Hide();
+    m_yAxisScrollbar->SetSize(0, 0);
+    m_yAxisScrollbar->Hide();
+}
+
 void wxPlotCtrl::OnScroll(wxScrollEvent &event)
 {
     if (m_scroll_on_thumb_release && (event.GetEventType() == wxEVT_SCROLL_THUMBTRACK))

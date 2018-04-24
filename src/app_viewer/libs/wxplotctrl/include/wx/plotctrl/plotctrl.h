@@ -1143,6 +1143,8 @@ public:
 
     void OnChar(wxKeyEvent &event);
 
+    void HideScrollBars();
+
     void OnScroll(wxScrollEvent &event);
 
     void OnPaint(wxPaintEvent &event);

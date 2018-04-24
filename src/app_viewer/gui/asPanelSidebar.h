@@ -47,7 +47,7 @@ public:
     }
 
 protected:
-    void OnReducePanel(wxCommandEvent &event) override;
+    void OnReducePanel(wxMouseEvent &event) override;
 
     void OnPaint(wxCommandEvent &event);
 

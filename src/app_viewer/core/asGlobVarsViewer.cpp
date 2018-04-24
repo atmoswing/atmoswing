@@ -27,6 +27,5 @@
 
 #include "asGlobVarsViewer.h"
 
-wxColour g_linuxBgColour = wxColour(242, 241, 240);
 wxString g_cmdFilename = wxEmptyString;
 

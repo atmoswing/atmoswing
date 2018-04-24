@@ -155,9 +155,9 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
 
     // Gis panel
     m_panelSidebarGisLayers = new asPanelSidebarGisLayers(m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                          wxDefaultSize, wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                          wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarGisLayers->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarGisLayers, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarGisLayers, 0, wxEXPAND, 0);
     m_panelSidebarGisLayers->SetDropTarget(new vroomDropFiles(this));
 
     // VroomGIS
@@ -175,43 +175,43 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     // Forecasts
     m_panelSidebarForecasts = new asPanelSidebarForecasts(m_scrolledWindowOptions, m_forecastManager, wxID_ANY,
                                                           wxDefaultPosition, wxDefaultSize,
-                                                          wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                          wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarForecasts->Layout();
-    m_sizerScrolledWindow->Insert(0, m_panelSidebarForecasts, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Insert(0, m_panelSidebarForecasts, 0, wxEXPAND, 0);
     m_panelSidebarForecasts->SetDropTarget(new forecastDropFiles(this));
 
     // Alarms
     m_panelSidebarAlarms = new asPanelSidebarAlarms(m_scrolledWindowOptions, &m_workspace, m_forecastManager, wxID_ANY,
                                                     wxDefaultPosition, wxDefaultSize,
-                                                    wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                    wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarAlarms->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarAlarms, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarAlarms, 0, wxEXPAND, 0);
 
     // Stations list
     m_panelSidebarStationsList = new asPanelSidebarStationsList(m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                                wxDefaultSize, wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                                wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarStationsList->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarStationsList, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarStationsList, 0, wxEXPAND, 0);
 
     // Analog dates sidebar
     m_panelSidebarAnalogDates = new asPanelSidebarAnalogDates(m_scrolledWindowOptions, wxID_ANY, wxDefaultPosition,
-                                                              wxDefaultSize, wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                              wxDefaultSize, wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarAnalogDates->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarAnalogDates, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarAnalogDates, 0, wxEXPAND, 0);
 
     // Caption panel
     m_panelSidebarCaptionForecastDots = new asPanelSidebarCaptionForecastDots(m_scrolledWindowOptions, wxID_ANY,
                                                                               wxDefaultPosition, wxDefaultSize,
-                                                                              wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                                              wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarCaptionForecastDots->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarCaptionForecastDots, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarCaptionForecastDots, 0, wxEXPAND, 0);
 
     // Caption panel
     m_panelSidebarCaptionForecastRing = new asPanelSidebarCaptionForecastRing(m_scrolledWindowOptions, wxID_ANY,
                                                                               wxDefaultPosition, wxDefaultSize,
-                                                                              wxSIMPLE_BORDER | wxTAB_TRAVERSAL);
+                                                                              wxNO_BORDER | wxTAB_TRAVERSAL);
     m_panelSidebarCaptionForecastRing->Layout();
-    m_sizerScrolledWindow->Add(m_panelSidebarCaptionForecastRing, 0, wxEXPAND | wxTOP | wxBOTTOM, 2);
+    m_sizerScrolledWindow->Add(m_panelSidebarCaptionForecastRing, 0, wxEXPAND, 0);
 
     m_scrolledWindowOptions->Layout();
     m_sizerScrolledWindow->Fit(m_scrolledWindowOptions);
@@ -762,7 +762,7 @@ void asFrameForecast::UpdateLeadTimeSwitch()
     a1f dates = m_forecastManager->GetFullTargetDates();
     m_leadTimeSwitcher->Draw(dates);
 
-    m_sizerLeadTimeSwitch->Add(m_leadTimeSwitcher, 0, wxALL | wxALIGN_RIGHT, 5);
+    m_sizerLeadTimeSwitch->Add(m_leadTimeSwitcher, 0, wxALL, 5);
     m_sizerLeadTimeSwitch->Layout();
 
     m_panelTop->Layout();
@@ -864,7 +864,7 @@ void asFrameForecast::OnForecastProcessTerminate(wxProcessEvent &event)
     if (m_launchedPresentForecast) {
         if (m_forecastManager->GetMethodsNb() > 0) {
             wxMessageDialog dlg(this, "The forecast processing is over. Do you want to load the results? "
-                                        "This may close all files currently opened.", "Open new forecast?",
+                                      "This may close all files currently opened.", "Open new forecast?",
                                 wxCENTER | wxNO_DEFAULT | wxYES_NO | wxCANCEL | wxICON_INFORMATION);
 
             if (dlg.ShowModal() == wxID_YES) {
@@ -905,8 +905,8 @@ void asFrameForecast::OpenFramePlots(wxCommandEvent &event)
         wxBusyCursor wait;
 
         auto *framePlot = new asFramePlotDistributions(this, m_forecastViewer->GetMethodSelection(),
-                                                                           m_forecastViewer->GetForecastSelection(),
-                                                                           m_forecastManager);
+                                                       m_forecastViewer->GetForecastSelection(),
+                                                       m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = framePlot->GetSize();
@@ -928,8 +928,8 @@ void asFrameForecast::OpenFrameGrid(wxCommandEvent &event)
         wxBusyCursor wait;
 
         auto *frameGrid = new asFrameGridAnalogsValues(this, m_forecastViewer->GetMethodSelection(),
-                                                                           m_forecastViewer->GetForecastSelection(),
-                                                                           m_forecastManager);
+                                                       m_forecastViewer->GetForecastSelection(),
+                                                       m_forecastManager);
 
         if (g_ppiScaleDc > 1) {
             wxSize frameSize = frameGrid->GetSize();

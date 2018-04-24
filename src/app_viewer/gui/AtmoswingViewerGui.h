@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Nov  6 2017)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -29,15 +29,16 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
+#include <wx/statbmp.h>
 #include <wx/checklst.h>
 #include <wx/choice.h>
 #include <wx/notebook.h>
 #include <wx/grid.h>
 #include <wx/bmpbuttn.h>
 #include <wx/filepicker.h>
-#include <wx/statbox.h>
 #include <wx/textctrl.h>
-#include <wx/radiobox.h>
+#include <wx/statbox.h>
+#include <wx/radiobut.h>
 #include <wx/checkbox.h>
 #include <wx/wizard.h>
 #include <wx/dynarray.h>
@@ -119,6 +120,32 @@ class asFrameForecastVirtual : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// Class asPanelSidebarVirtual
+///////////////////////////////////////////////////////////////////////////////
+class asPanelSidebarVirtual : public wxPanel 
+{
+	private:
+	
+	protected:
+		wxBoxSizer* m_sizerMain;
+		wxPanel* m_panel28;
+		wxPanel* m_panelHeader;
+		wxStaticText* m_header;
+		wxStaticBitmap* m_bitmapCaret;
+		wxBoxSizer* m_sizerContent;
+		
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnReducePanel( wxMouseEvent& event ) { event.Skip(); }
+		
+	
+	public:
+		
+		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+		~asPanelSidebarVirtual();
+	
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePlotTimeSeriesVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePlotTimeSeriesVirtual : public wxFrame 
@@ -176,7 +203,7 @@ class asFramePlotDistributionsVirutal : public wxFrame
 		wxChoice* m_choiceDate;
 		wxNotebook* m_notebook;
 		wxPanel* m_panelPredictands;
-		wxSplitterWindow* m_splitterPredictands;
+		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panelPredictandsLeft;
 		wxCheckListBox* m_checkListTocPredictands;
 		wxPanel* m_panelPredictandsRight;
@@ -193,14 +220,14 @@ class asFramePlotDistributionsVirutal : public wxFrame
 	
 	public:
 		
-		asFramePlotDistributionsVirutal( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Distribution plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFramePlotDistributionsVirutal( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Distribution plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFramePlotDistributionsVirutal();
 		
-		void m_splitterPredictandsOnIdle( wxIdleEvent& )
+		void m_splitter4OnIdle( wxIdleEvent& )
 		{
-			m_splitterPredictands->SetSashPosition( 170 );
-			m_splitterPredictands->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitterPredictandsOnIdle ), NULL, this );
+			m_splitter4->SetSashPosition( 178 );
+			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitter4OnIdle ), NULL, this );
 		}
 	
 };
@@ -231,7 +258,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 	
 	public:
 		
-		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 473,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameGridAnalogsValuesVirtual();
 	
@@ -300,31 +327,6 @@ class asFramePredictorsVirtual : public wxFrame
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class asPanelSidebarVirtual
-///////////////////////////////////////////////////////////////////////////////
-class asPanelSidebarVirtual : public wxPanel 
-{
-	private:
-	
-	protected:
-		wxBoxSizer* m_sizerMain;
-		wxPanel* m_panelHeader;
-		wxStaticText* m_header;
-		wxBitmapButton* m_bpButtonReduce;
-		wxBoxSizer* m_sizerContent;
-		
-		// Virtual event handlers, overide them in your derived class
-		virtual void OnReducePanel( wxCommandEvent& event ) { event.Skip(); }
-		
-	
-	public:
-		
-		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxSIMPLE_BORDER|wxTAB_TRAVERSAL ); 
-		~asPanelSidebarVirtual();
-	
-};
-
-///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePreferencesViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePreferencesViewerVirtual : public wxFrame 
@@ -349,7 +351,9 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxTextCtrl* m_textCtrlAlarmsQuantile;
 		wxStaticText* m_staticTextAlarmsQuantileRange;
 		wxPanel* m_panelGeneralCommon;
-		wxRadioBox* m_radioBoxLogLevel;
+		wxRadioButton* m_radioBtnLogLevel1;
+		wxRadioButton* m_radioBtnLogLevel2;
+		wxRadioButton* m_radioBtnLogLevel3;
 		wxCheckBox* m_checkBoxDisplayLogWindow;
 		wxCheckBox* m_checkBoxSaveLogFile;
 		wxCheckBox* m_checkBoxProxy;

@@ -32,7 +32,3 @@ bool g_local = false;
 int g_runNb = 0;
 bool g_resumePreviousRun = false;
 
-#if wxUSE_GUI
-wxColour g_linuxBgColour = wxColour(242, 241, 240);
-#endif
-

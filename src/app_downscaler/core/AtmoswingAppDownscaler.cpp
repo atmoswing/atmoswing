@@ -69,7 +69,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                 {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
                 {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors",  "The archive predictors directory"},
                 {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
-                {wxCMD_LINE_OPTION, NULL, "donwscaling-method",      "Choice of the downscaling method"
+                {wxCMD_LINE_OPTION, NULL, "downscaling-method",      "Choice of the downscaling method"
                                           "\n                            classic: classic downscaling"},
                 {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
                                           "\n                            1: errors"
@@ -360,17 +360,29 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
     }
 
-    // Check for a predictors directory
-    if (parser.Found("dir-predictors", &m_predictorsArchiveDir)) {
+    // Check for archive predictors directory
+    if (parser.Found("dir-archive-predictors", &m_predictorsArchiveDir)) {
         if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsArchiveDir)) {
             m_predictorsArchiveDir = wxFileName::GetCwd() + DS + m_predictorsArchiveDir;
         }
 
         if (!wxFileName::DirExists(m_predictorsArchiveDir)) {
-            wxLogError(_("The given predictors directory (%s) couldn't be found."), m_predictorsArchiveDir);
+            wxLogError(_("The given archive predictors directory (%s) couldn't be found."), m_predictorsArchiveDir);
             return false;
         }
     }
+
+	// Check for scenario predictors directory
+	if (parser.Found("dir-scenario-predictors", &m_predictorsScenarioDir)) {
+		if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsScenarioDir)) {
+			m_predictorsScenarioDir = wxFileName::GetCwd() + DS + m_predictorsScenarioDir;
+		}
+
+		if (!wxFileName::DirExists(m_predictorsScenarioDir)) {
+			wxLogError(_("The given scenario predictors directory (%s) couldn't be found."), m_predictorsScenarioDir);
+			return false;
+		}
+	}
 
     // Station ID
     wxString stationIdStr = wxEmptyString;

@@ -107,9 +107,17 @@ void asFramePreferencesViewer::LoadPreferences()
      */
 
     // Log
-    long defaultLogLevelViewer = 1; // = selection +1
-    long logLevelViewer = pConfig->Read("/General/LogLevel", defaultLogLevelViewer);
-    m_radioBoxLogLevel->SetSelection((int) logLevelViewer - 1);
+    long defaultlogLevel = 1;
+    long logLevel = pConfig->Read("/General/LogLevel", defaultlogLevel);
+    if (logLevel == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevel == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevel == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
     bool displayLogWindowViewer;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
@@ -211,8 +219,15 @@ void asFramePreferencesViewer::SavePreferences()
      */
 
     // Log
-    auto logLevelViewer = (long) m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevelViewer + 1); // = selection +1
+    long logLevel = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevel = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevel = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevel = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevel);
     bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 

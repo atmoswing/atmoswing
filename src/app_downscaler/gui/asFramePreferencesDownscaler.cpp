@@ -68,9 +68,17 @@ void asFramePreferencesDownscaler::LoadPreferences()
      */
 
     // Log
-    long defaultLogLevel = 1; // = selection +1
+    long defaultLogLevel = 1;
     long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
-    m_radioBoxLogLevel->SetSelection(static_cast<int>(logLevel - 1));
+    if (logLevel == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevel == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevel == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
@@ -151,9 +159,16 @@ void asFramePreferencesDownscaler::SavePreferences() const
      * General
      */
 
-    // Log    
-    auto logLevel = (long) m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevel + 1); // = selection +1
+    // Log
+    long logLevel = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevel = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevel = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevel = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevel);
     bool displayLogWindow = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 

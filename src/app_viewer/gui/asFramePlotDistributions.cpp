@@ -45,16 +45,15 @@ asFramePlotDistributions::asFramePlotDistributions(wxWindow *parent, int methodR
           m_xmaxPredictands(0)
 {
     forecastRow = wxMax(forecastRow, 0);
-
-    auto paneMinSize = (int) (m_splitterPredictands->GetMinimumPaneSize() * g_ppiScaleDc);
-    m_splitterPredictands->SetMinimumPaneSize(paneMinSize);
-
+    
     m_panelPlotPredictands = new asPanelPlot(m_panelPredictandsRight);
+    m_panelPlotPredictands->GetPlotCtrl()->HideScrollBars();
     m_panelPlotPredictands->Layout();
     m_sizerPlotPredictands->Add(m_panelPlotPredictands, 1, wxALL | wxEXPAND, 0);
     m_sizerPlotPredictands->Fit(m_panelPredictandsRight);
 
     m_panelPlotCriteria = new asPanelPlot(m_panelCriteria);
+    m_panelPlotCriteria->GetPlotCtrl()->HideScrollBars();
     m_panelPlotCriteria->Layout();
     m_sizerPlotCriteria->Add(m_panelPlotCriteria, 1, wxALL | wxEXPAND, 0);
     m_sizerPlotCriteria->Fit(m_panelCriteria);
@@ -100,6 +99,10 @@ void asFramePlotDistributions::OnClose(wxCloseEvent &evt)
 
 void asFramePlotDistributions::Init()
 {
+	if (m_selectedForecast < 0) {
+		m_selectedForecast = 0;
+	}
+
     // Forecast list
     RebuildChoiceForecast();
 
