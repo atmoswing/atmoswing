@@ -19,11 +19,12 @@ cache:
   - C:\projects\libs -> ci/appveyor/cache-version.txt
 
 install:
+  - ps: $stopwatch = [system.diagnostics.stopwatch]::StartNew()
   - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:apptype.ps1"
   
 build_script:
   - cd C:\projects\atmoswing
-  - ps: Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1"
+  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1" }
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
