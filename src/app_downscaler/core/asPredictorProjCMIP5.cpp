@@ -65,6 +65,18 @@ bool asPredictorProjCMIP5::Init()
         m_fileVarName = "zg";
         m_unit = m;
         m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("ua", false) || m_dataId.IsSameAs("uwnd", false)) {
+        m_parameter = Uwind;
+        m_parameterName = "Eastward Wind";
+        m_fileVarName = "ua";
+        m_unit = m_s;
+        m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("va", false) || m_dataId.IsSameAs("vwnd", false)) {
+        m_parameter = Vwind;
+        m_parameterName = "Northward Wind";
+        m_fileVarName = "va";
+        m_unit = m_s;
+        m_fStr.hasLevelDim = true;
     } else if (m_dataId.IsSameAs("slp", false) || m_dataId.IsSameAs("psl", false)) {
         m_parameter = Pressure;
         m_parameterName = "Sea level pressure";

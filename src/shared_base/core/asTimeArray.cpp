@@ -29,6 +29,7 @@
 #include "asTimeArray.h"
 
 #include <asPredictand.h>
+#include <math.h>
 
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, Mode slctmode)
@@ -790,6 +791,13 @@ int asTimeArray::GetIndexFirstAfter(double date) const
 
     double tolerance = 0.00001;
 
+    if (m_timeStepDays >= 1.0) {
+        // At a daily time step, might be defined at 00h or 12h
+        double intPart;
+        std::modf(date, &intPart);
+        date = intPart;
+    }
+
     if (date - tolerance > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNi;
@@ -808,6 +816,13 @@ int asTimeArray::GetIndexFirstBefore(double date) const
     wxASSERT(m_initialized);
 
     double tolerance = 0.00001;
+
+    if (m_timeStepDays >= 1.0) {
+        // At a daily time step, might be defined at 00h or 12h
+        double intPart;
+        std::modf(date, &intPart);
+        date = intPart;
+    }
 
     if (date + tolerance < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));

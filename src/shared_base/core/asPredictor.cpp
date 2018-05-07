@@ -532,7 +532,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
 
     double refValue = NaNd;
     if (m_parseTimeReference) {
-        wxString refValueStr = ncFile.GetAttString("units", "time");
+        wxString refValueStr = ncFile.GetAttString("units", m_fStr.dimTimeName);
         int start = refValueStr.Find("since");
         if (start != wxNOT_FOUND) {
             refValueStr = refValueStr.Remove(0, (size_t) start + 6);
@@ -586,6 +586,21 @@ bool asPredictor::ExtractLevelAxis(asFileNetcdf &ncFile)
                 wxLogError(_("Variable type not supported yet for the level dimension."));
                 return false;
         }
+
+        // Check unit
+        wxString unit = ncFile.GetAttString("units", m_fStr.dimLevelName);
+        if (unit.IsSameAs("millibars", false) || unit.IsSameAs("millibar", false) || unit.IsSameAs("hPa", false) ||
+                unit.IsSameAs("mbar", false) || unit.IsSameAs("m", false) || unit.IsEmpty()) {
+            // Nothing to do.
+        } else if (unit.IsSameAs("Pa", false)) {
+            for (int i = 0; i < m_fStr.levels.size(); ++i) {
+                m_fStr.levels[i] /= 100;
+            }
+        } else {
+            wxLogError(_("Unknown unit for the level dimension: %s."), unit);
+            return false;
+        }
+
     }
 
     return true;
