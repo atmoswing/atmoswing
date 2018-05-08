@@ -30,8 +30,8 @@
 #include <cmath>
 
 asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                     double xStep, double yStep, int flatAllowed)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed),
+                                     double xStep, double yStep, int flatAllowed, bool isLatLon)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
           m_xStep(xStep),
           m_yStep(yStep)
 {
@@ -39,16 +39,16 @@ asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, c
 }
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                                     int flatAllowed)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed),
+                                     int flatAllowed, bool isLatLon)
+        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
           m_xStep(xStep),
           m_yStep(yStep)
 {
     m_isRegular = true;
 }
 
-asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed)
-        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed),
+asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
+        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon),
           m_xStep(0),
           m_yStep(0)
 {

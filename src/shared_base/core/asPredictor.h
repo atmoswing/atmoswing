@@ -181,6 +181,13 @@ public:
         return m_lonPtsnb;
     }
 
+    static bool IsLatLon(const wxString &datasetId);
+
+    bool IsLatLon() const
+    {
+        return m_isLatLon;
+    }
+
     bool IsPreprocessed() const
     {
         return m_isPreprocessed;
@@ -321,6 +328,7 @@ protected:
     int m_lonPtsnb;
     a1d m_axisLat;
     a1d m_axisLon;
+    bool m_isLatLon;
     bool m_isPreprocessed;
     bool m_isEnsemble;
     bool m_canBeClipped;

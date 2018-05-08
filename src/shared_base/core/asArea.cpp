@@ -28,18 +28,21 @@
 
 #include "asArea.h"
 
-asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, int flatAllowed)
+asArea::asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, int flatAllowed,
+               bool isLatLon)
         : m_cornerUL(cornerUL),
           m_cornerUR(cornerUR),
           m_cornerLL(cornerLL),
           m_cornerLR(cornerLR),
-          m_flatAllowed(flatAllowed)
+          m_flatAllowed(flatAllowed),
+          m_isLatLon(isLatLon)
 {
     Init();
 }
 
-asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
-        : m_flatAllowed(flatAllowed)
+asArea::asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
+        : m_flatAllowed(flatAllowed),
+          m_isLatLon(isLatLon)
 {
     if (flatAllowed == asFLAT_ALLOWED) {
         yWidth = wxMax(yWidth, 0.0);
@@ -62,14 +65,15 @@ asArea::asArea()
           m_cornerUR({0, 0}),
           m_cornerLL({0, 0}),
           m_cornerLR({0, 0}),
-          m_flatAllowed(asFLAT_ALLOWED)
+          m_flatAllowed(asFLAT_ALLOWED),
+          m_isLatLon(true)
 {
 
 }
 
 void asArea::Init()
 {
-    if (!DoCheckPoints())
+    if (m_isLatLon && !DoCheckPoints())
         asThrowException(_("Use asAreaComp in this case."));
     if (!CheckConsistency())
         asThrowException(_("Unable to build a consistent area with the given coordinates."));

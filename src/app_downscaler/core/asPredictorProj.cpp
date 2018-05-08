@@ -29,7 +29,8 @@
 
 #include "asTimeArray.h"
 #include "asAreaCompGrid.h"
-#include "asPredictorProjCMIP5.h"
+#include "asPredictorProjCmip5.h"
+#include "asPredictorProjCordex.h"
 
 
 asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario)
@@ -46,9 +47,9 @@ asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const w
     asPredictorProj *predictor = nullptr;
 
     if (datasetId.IsSameAs("CMIP5", false)) {
-        predictor = new asPredictorProjCMIP5(dataId, model, scenario);
+        predictor = new asPredictorProjCmip5(dataId, model, scenario);
     } else if (datasetId.IsSameAs("CORDEX", false)) {
-        //predictor = new asPredictorScenarioCORDEX(dataId);
+        predictor = new asPredictorProjCordex(dataId, model, scenario);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

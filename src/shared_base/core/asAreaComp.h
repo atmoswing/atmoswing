@@ -37,9 +37,10 @@ class asAreaComp
 {
 public:
     asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-               int flatAllowed = asFLAT_FORBIDDEN);
+               int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+               bool isLatLon = true);
 
     asAreaComp();
 

@@ -29,7 +29,7 @@
 #include "asAreaComp.h"
 
 asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                       int flatAllowed)
+                       int flatAllowed, bool isLatLon)
         : asArea()
 {
     // Set the members
@@ -38,13 +38,14 @@ asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &corn
     m_cornerLL = cornerLL;
     m_cornerLR = cornerLR;
     m_flatAllowed = flatAllowed;
+    m_isLatLon = isLatLon;
 
     // Initialization and check points
     Init();
     CreateComposites();
 }
 
-asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
+asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
         : asArea()
 {
     // Set the members
@@ -53,6 +54,7 @@ asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, i
     m_cornerLL = {xMin, yMin};
     m_cornerLR = {xMin + xWidth, yMin};
     m_flatAllowed = flatAllowed;
+    m_isLatLon = isLatLon;
 
     // Initialization and check points
     Init();
@@ -116,13 +118,13 @@ void asAreaComp::CreateComposites()
 
     if ((m_cornerUL.x <= m_cornerUR.x) && (m_cornerLL.x <= m_cornerLR.x) && (m_cornerLL.y <= m_cornerUL.y) &&
         (m_cornerLR.y <= m_cornerUR.y)) {
-        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_flatAllowed);
+        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_flatAllowed, m_isLatLon);
         m_composites.push_back(area);
     } else if ((m_cornerUL.x >= m_cornerUR.x) && (m_cornerLL.x >= m_cornerLR.x) && (m_cornerLL.y <= m_cornerUL.y) &&
                (m_cornerLR.y <= m_cornerUR.y) && (m_cornerLR.x == 0) && (m_cornerUR.x == 0)) {
         m_cornerLR.x = 360;
         m_cornerUR.x = 360;
-        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_flatAllowed);
+        asArea area(m_cornerUL, m_cornerUR, m_cornerLL, m_cornerLR, m_flatAllowed, m_isLatLon);
         m_composites.push_back(area);
     } else if ((m_cornerUL.x >= m_cornerUR.x) && (m_cornerLL.x >= m_cornerLR.x) && (m_cornerLL.y <= m_cornerUL.y) &&
                (m_cornerLR.y <= m_cornerUR.y) && (m_cornerLR.x != 0) && (m_cornerUR.x != 0)) {
@@ -132,8 +134,8 @@ void asAreaComp::CreateComposites()
         a1LR.x = 360;
         a2UL.x = 0;
         a2LL.x = 0;
-        asArea area1(a1UL, a1UR, a1LL, a1LR, m_flatAllowed);
-        asArea area2(a2UL, a2UR, a2LL, a2LR, m_flatAllowed);
+        asArea area1(a1UL, a1UR, a1LL, a1LR, m_flatAllowed, m_isLatLon);
+        asArea area2(a2UL, a2UR, a2LL, a2LR, m_flatAllowed, m_isLatLon);
         m_composites.push_back(area1);
         m_composites.push_back(area2);
     } else {

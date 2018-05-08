@@ -36,11 +36,13 @@ class asAreaCompGenGrid
 {
 public:
     asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                      int flatAllowed = asFLAT_FORBIDDEN);
+                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+                      bool isLatLon = true);
 
-    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                      bool isLatLon = true);
 
     ~asAreaCompGenGrid() override = default;
 

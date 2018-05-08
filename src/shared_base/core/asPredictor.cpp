@@ -44,6 +44,7 @@ asPredictor::asPredictor(const wxString &dataId)
           m_level(0),
           m_latPtsnb(0),
           m_lonPtsnb(0),
+          m_isLatLon(true),
           m_isPreprocessed(false),
           m_isEnsemble(false),
           m_canBeClipped(true),
@@ -608,6 +609,24 @@ bool asPredictor::ExtractLevelAxis(asFileNetcdf &ncFile)
 
 bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
 {
+    if (!ncFile.HasVariable(m_fStr.dimLonName)) {
+        if (ncFile.HasVariable("x")) {
+            m_fStr.dimLonName = "x";
+        } else {
+            wxLogError(_("X axis not found."));
+            return false;
+        }
+    }
+
+    if (!ncFile.HasVariable(m_fStr.dimLatName)) {
+        if (ncFile.HasVariable("y")) {
+            m_fStr.dimLatName = "y";
+        } else {
+            wxLogError(_("Y axis not found."));
+            return false;
+        }
+    }
+
     m_fStr.lons = a1d(ncFile.GetVarLength(m_fStr.dimLonName));
     m_fStr.lats = a1d(ncFile.GetVarLength(m_fStr.dimLatName));
 
@@ -698,7 +717,9 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
         bool strideAllowed = m_fileType == asFile::Netcdf;
 
-        desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed);
+        if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+            asThrowException(_("Failed at initializing the axes."));
+        }
 
         if (desiredArea->IsRegular()) {
             auto desiredAreaReg = dynamic_cast<asAreaCompRegGrid *> (desiredArea);
@@ -1453,6 +1474,15 @@ float asPredictor::GetMaxValue() const
     }
 
     return maxValue;
+}
+
+bool asPredictor::IsLatLon(const wxString &datasetId)
+{
+    if (datasetId.IsSameAs("CORDEX", false)) {
+        return false;
+    }
+
+    return true;
 }
 
 void asPredictor::CheckLevelTypeIsDefined()

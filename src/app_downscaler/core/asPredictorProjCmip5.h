@@ -33,13 +33,13 @@
 
 class asArea;
 
-class asPredictorProjCMIP5
+class asPredictorProjCmip5
         : public asPredictorProj
 {
 public:
-    asPredictorProjCMIP5(const wxString &dataId, const wxString &model, const wxString &scenario);
+    asPredictorProjCmip5(const wxString &dataId, const wxString &model, const wxString &scenario);
 
-    virtual ~asPredictorProjCMIP5();
+    virtual ~asPredictorProjCmip5();
 
     bool Init();
 

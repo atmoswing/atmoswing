@@ -37,12 +37,13 @@ class asAreaCompRegGrid
 {
 public:
     asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
-                      double yStep, int flatAllowed = asFLAT_FORBIDDEN);
+                      double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                      int flatAllowed = asFLAT_FORBIDDEN);
+                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                      bool isLatLon = true);
 
     ~asAreaCompRegGrid() override = default;
 

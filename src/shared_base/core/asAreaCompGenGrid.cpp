@@ -29,18 +29,19 @@
 #include "asTypeDefs.h"
 
 asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                                     int flatAllowed)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed)
+                                     int flatAllowed, bool isLatLon)
+        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon)
 {
 }
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed)
+asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed,
+                                     bool isLatLon)
+        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon)
 {
 }
 
-asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed)
-        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed)
+asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
+        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon)
 {
     m_xPtsNb = xPtsNb;
     m_yPtsNb = yPtsNb;

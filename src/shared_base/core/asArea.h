@@ -36,9 +36,10 @@ class asArea
 {
 public:
     asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-           int flatAllowed = asFLAT_FORBIDDEN);
+           int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+    asArea(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+           bool isLatLon = true);
 
     asArea();
 
@@ -114,6 +115,7 @@ protected:
     Coo m_cornerLL;
     Coo m_cornerLR;
     int m_flatAllowed;
+    bool m_isLatLon;
 
     virtual void Init();
 

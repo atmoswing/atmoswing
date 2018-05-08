@@ -662,8 +662,9 @@ int asFileNetcdf::GetAttId(const wxString &attName, const wxString &varName)
         }
     }
 
-    if (id == asNOT_FOUND)
+    if (id == asNOT_FOUND) {
         wxLogVerbose(_("The desired attribute doesn't exist: %s"), attName);
+    }
 
     return id;
 }

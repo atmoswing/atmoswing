@@ -42,15 +42,17 @@ public:
     static asAreaCompGrid * GetInstance(const asParameters *params, int iStep, int iPtor);
 
     static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                        int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN);
+                                        int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
+                                        bool isLatLon = true);
 
     static asAreaCompGrid * GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
-                                        int flatAllowed = asFLAT_FORBIDDEN);
+                                        int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                   int flatAllowed = asFLAT_FORBIDDEN);
+                   int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN);
+    asAreaCompGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+                   bool isLatLon = true);
 
     asAreaCompGrid();
 

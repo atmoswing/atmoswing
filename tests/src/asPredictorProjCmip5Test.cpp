@@ -32,7 +32,7 @@
 #include "gtest/gtest.h"
 
 
-TEST(PredictorProjCMIP5, LoadEasy)
+TEST(PredictorProjCmip5, LoadEasy)
 {
     double xMin = 3.375;
     double xWidth = 3;
@@ -75,7 +75,7 @@ TEST(PredictorProjCMIP5, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadComposite)
+TEST(PredictorProjCmip5, LoadComposite)
 {
     double xMin = -2;
     double xWidth = 4;
@@ -119,7 +119,7 @@ TEST(PredictorProjCMIP5, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadBorderLeft)
+TEST(PredictorProjCmip5, LoadBorderLeft)
 {
     double xMin = 0;
     double xWidth = 2;
@@ -161,7 +161,7 @@ TEST(PredictorProjCMIP5, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadBorderLeftOn720)
+TEST(PredictorProjCmip5, LoadBorderLeftOn720)
 {
     double xMin = 360;
     double xWidth = 2;
@@ -203,7 +203,7 @@ TEST(PredictorProjCMIP5, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadBorderRight)
+TEST(PredictorProjCmip5, LoadBorderRight)
 {
     double xMin = -2;
     double xWidth = 3;
@@ -245,7 +245,7 @@ TEST(PredictorProjCMIP5, LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadWithPressureLevels)
+TEST(PredictorProjCmip5, LoadWithPressureLevels)
 {
     double xMin = 0;
     double xWidth = 2;
@@ -297,7 +297,7 @@ TEST(PredictorProjCMIP5, LoadWithPressureLevels)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadOver2Years)
+TEST(PredictorProjCmip5, LoadOver2Years)
 {
     double xMin = 0;
     double xWidth = 2;
@@ -371,7 +371,7 @@ TEST(PredictorProjCMIP5, LoadOver2Years)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCMIP5, LoadAnotherModel)
+TEST(PredictorProjCmip5, LoadAnotherModel)
 {
     double xMin = 0.01;
     double xWidth = 2.8;
