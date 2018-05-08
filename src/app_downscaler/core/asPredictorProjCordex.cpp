@@ -214,7 +214,7 @@ void asPredictorProjCordex::ListFiles(asTimeArray &timeArray)
         double fileStartYear = 0;
         double fileEndYear = 0;
         datesSrt.Mid(0, 4).ToDouble(&fileStartYear);
-        datesSrt.Mid(9, 4).ToDouble(&fileEndYear);
+        datesSrt.After('-').Mid(0, 4).ToDouble(&fileEndYear);
 
         if (fileEndYear < firstYear || fileStartYear > lastYear) {
             continue;
