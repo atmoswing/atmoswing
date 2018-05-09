@@ -803,7 +803,7 @@ int asTimeArray::GetIndexFirstAfter(double date) const
         return NaNi;
     }
 
-    int index = asFindCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -815,8 +815,6 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 {
     wxASSERT(m_initialized);
 
-    double tolerance = 0.00001;
-
     if (m_timeStepDays >= 1.0) {
         // At a daily time step, might be defined at 00h or 12h
         double intPart;
@@ -824,12 +822,12 @@ int asTimeArray::GetIndexFirstBefore(double date) const
         date = intPart;
     }
 
-    if (date + tolerance < m_start) { // Add a second for precision issues
+    if (date + 0.00001 < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNi;
     }
 
-    int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return GetSize() - 1;
@@ -853,8 +851,8 @@ bool asTimeArray::RemoveYears(const vi &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0, asHIDE_WARNINGS);
-        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0, asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
@@ -903,8 +901,8 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0, asHIDE_WARNINGS);
-        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0, asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {

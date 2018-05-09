@@ -717,18 +717,29 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
 
         bool strideAllowed = m_fileType == asFile::Netcdf;
 
-        if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+        if (!desiredArea->InitializeAxes(m_fStr.lons, m_fStr.lats, true)) {
             asThrowException(_("Failed at initializing the axes."));
         }
 
         if (desiredArea->IsRegular()) {
             auto desiredAreaReg = dynamic_cast<asAreaCompRegGrid *> (desiredArea);
-            m_fInd.lonStep = desiredAreaReg->GetXstepStride();
-            m_fInd.latStep = desiredAreaReg->GetYstepStride();
-            auto dataArea = new asAreaCompRegGrid(*desiredAreaReg);
+
             if (!strideAllowed) {
                 m_fInd.lonStep = 1;
                 m_fInd.latStep = 1;
+            } else {
+                m_fInd.lonStep = desiredAreaReg->GetXstepStride();
+                m_fInd.latStep = desiredAreaReg->GetYstepStride();
+            }
+
+            auto dataArea = new asAreaCompRegGrid(*desiredAreaReg);
+            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+                asThrowException(_("Failed at initializing the axes."));
+            }
+
+            dataArea->CorrectCornersWithAxes();
+
+            if (!strideAllowed) {
                 dataArea->SetSameStepAsData();
             }
 
@@ -744,6 +755,9 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             m_fInd.lonStep = 1;
             m_fInd.latStep = 1;
             auto dataArea = new asAreaCompGenGrid(*desiredAreaGen);
+            if (!dataArea->InitializeAxes(m_fStr.lons, m_fStr.lats, strideAllowed)) {
+                asThrowException(_("Failed at initializing the axes."));
+            }
 
             m_lonPtsnb = dataArea->GetXptsNb();
             m_latPtsnb = dataArea->GetYptsNb();
@@ -1255,51 +1269,54 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
             return false;
         }
 
-        wxFAIL;
-        return false;
-
-        /*
         // Containers for results
-        int finalLengthLon = desiredArea->GetXaxisPtsnb();
-        int finalLengthLat = desiredArea->GetYaxisPtsnb();
+        int finalLengthLon = desiredArea->GetXptsNb();
+        int finalLengthLat = desiredArea->GetYptsNb();
         vva2f latlonTimeData(m_data.size(), va2f(m_data[0].size(), a2f(finalLengthLat, finalLengthLon)));
 
         // Creation of the axes
         a1f axisDataLon;
-        if (dataArea->GetXaxisPtsnb() > 1) {
-            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXaxisPtsnb(), dataArea->GetAbsoluteXmin(),
-                                         dataArea->GetAbsoluteXmax());
+        if (dataArea->GetXptsNb() > 1) {
+            auto xMin = (float) dataArea->GetXmin();
+            auto xMax = (float) dataArea->GetXmax();
+            if (dataArea->IsLatLon() && xMax < xMin) {
+                xMax += 360;
+            }
+            axisDataLon = a1f::LinSpaced(Eigen::Sequential, dataArea->GetXptsNb(), xMin, xMax);
         } else {
             axisDataLon.resize(1);
-            axisDataLon << dataArea->GetAbsoluteXmin();
+            axisDataLon << dataArea->GetXmin();
         }
 
         a1f axisDataLat;
-        if (dataArea->GetYaxisPtsnb() > 1) {
-            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYaxisPtsnb(), dataArea->GetAbsoluteYmax(),
-                                         dataArea->GetAbsoluteYmin()); // From top to bottom
+        if (dataArea->GetYptsNb() > 1) {
+            axisDataLat = a1f::LinSpaced(Eigen::Sequential, dataArea->GetYptsNb(), dataArea->GetYmax(),
+                                         dataArea->GetYmin()); // From top to bottom
         } else {
             axisDataLat.resize(1);
-            axisDataLat << dataArea->GetAbsoluteYmax();
+            axisDataLat << dataArea->GetYmax();
         }
 
         a1f axisFinalLon;
-        if (desiredArea->GetXaxisPtsnb() > 1) {
-            axisFinalLon = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetXaxisPtsnb(),
-                                          desiredArea->GetAbsoluteXmin(), desiredArea->GetAbsoluteXmax());
+        if (desiredArea->GetXptsNb() > 1) {
+            auto xMin = (float) desiredArea->GetXmin();
+            auto xMax = (float) desiredArea->GetXmax();
+            if (desiredArea->IsLatLon() && xMax < xMin) {
+                xMax += 360;
+            }
+            axisFinalLon = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetXptsNb(), xMin, xMax);
         } else {
             axisFinalLon.resize(1);
-            axisFinalLon << desiredArea->GetAbsoluteXmin();
+            axisFinalLon << desiredArea->GetXmin();
         }
 
         a1f axisFinalLat;
-        if (desiredArea->GetYaxisPtsnb() > 1) {
-            axisFinalLat = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetYaxisPtsnb(),
-                                          desiredArea->GetAbsoluteYmax(),
-                                          desiredArea->GetAbsoluteYmin()); // From top to bottom
+        if (desiredArea->GetYptsNb() > 1) {
+            axisFinalLat = a1f::LinSpaced(Eigen::Sequential, desiredArea->GetYptsNb(), desiredArea->GetYmax(),
+                                          desiredArea->GetYmin()); // From top to bottom
         } else {
             axisFinalLat.resize(1);
-            axisFinalLat << desiredArea->GetAbsoluteYmax();
+            axisFinalLat << desiredArea->GetYmax();
         }
 
         // Indices
@@ -1338,7 +1355,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
 
                     if (indexYfloor == asOUT_OF_RANGE || indexYfloor == asNOT_FOUND || indexYceil == asOUT_OF_RANGE ||
                         indexYceil == asNOT_FOUND) {
-                        wxLogError(_("The desired point is not available in the data for interpolation. Latitude %f was not found inbetween %f (index %d) to %f (index %d) (size = %d)."),
+                        wxLogError(_("The desired point is not available in the data for interpolation. Latitude %f was not found in between %f (index %d) to %f (index %d) (size = %d)."),
                                    axisFinalLat[iLat], axisDataLat[indexLastLat], indexLastLat,
                                    axisDataLat[axisDataLatEnd], axisDataLatEnd, (int) axisDataLat.size());
                         return false;
@@ -1374,7 +1391,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
 
                         if (indexXfloor == asOUT_OF_RANGE || indexXfloor == asNOT_FOUND ||
                             indexXceil == asOUT_OF_RANGE || indexXceil == asNOT_FOUND) {
-                            wxLogError(_("The desired point is not available in the data for interpolation. Longitude %f was not found inbetween %f to %f."),
+                            wxLogError(_("The desired point is not available in the data for interpolation. Longitude %f was not found in between %f to %f."),
                                        axisFinalLon[iLon], axisDataLon[indexLastLon], axisDataLon[axisDataLonEnd]);
                             return false;
                         }
@@ -1436,7 +1453,6 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
         m_data = latlonTimeData;
         m_latPtsnb = finalLengthLat;
         m_lonPtsnb = finalLengthLon;
-         */
     }
 
     return true;

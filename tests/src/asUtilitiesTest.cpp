@@ -1163,7 +1163,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleAscOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1213,7 +1213,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleDescOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1233,7 +1233,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleUniqueValOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1253,7 +1253,7 @@ TEST(Utilities, SortedArraySearchFloorDoubleArraySameValOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindFloor(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1303,7 +1303,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleAscOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[9];
     double targetvalue = 1000;
-    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1353,7 +1353,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleDescOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[9];
     double targetvalue = -1.23;
-    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1373,7 +1373,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleUniqueValOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[0];
     double targetvalue = 11;
-    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 
@@ -1393,7 +1393,7 @@ TEST(Utilities, SortedArraySearchCeilDoubleArraySameValOutofRange)
     double *pVectStart = &array[0];
     double *pVectEnd = &array[3];
     double targetvalue = 11;
-    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, 0, asHIDE_WARNINGS);
+    int result = asFindCeil(pVectStart, pVectEnd, targetvalue, asHIDE_WARNINGS);
     EXPECT_EQ(asOUT_OF_RANGE, result);
 }
 

@@ -47,6 +47,11 @@ public:
 
     bool CheckPoint(Coo &point, int changesAllowed = asEDIT_FORBIDDEN);
 
+    bool IsLatLon() const
+    {
+        return m_isLatLon;
+    }
+
     Coo GetCornerUL() const
     {
         return m_cornerUL;

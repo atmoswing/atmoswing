@@ -56,9 +56,11 @@ public:
 
     asAreaCompGrid();
 
-    virtual bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true);
+    virtual bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false);
 
     virtual bool GridsOverlay(asAreaCompGrid *otherArea) const = 0;
+
+    void CorrectCornersWithAxes();
 
     a1d GetXaxis();
 
@@ -112,7 +114,7 @@ protected:
 
 private:
 
-    bool CreateCompositeAxes(const a1d &lons, const a1d &lats);
+    bool CreateCompositeAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
 
     bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);
 

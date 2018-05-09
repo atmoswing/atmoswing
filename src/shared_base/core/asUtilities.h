@@ -177,23 +177,23 @@ int asFindClosest(const double *pArrStart, const double *pArrEnd, double targetV
 template<class T>
 int asFindClosestT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindFloor(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0, int showWarning = asSHOW_WARNINGS);
-
-template<class T>
-int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0, int showWarning = asSHOW_WARNINGS);
-
-int asFindCeil(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFindFloor(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
 template<class T>
-int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
+
+int asFindCeil(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
+
+int asFindCeil(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
+
+int asFindCeil(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
+
+template<class T>
+int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
 bool asArrayInsert(int *pArrStart, int *pArrEnd, Order order, int val);
 

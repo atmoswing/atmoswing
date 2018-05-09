@@ -1167,26 +1167,23 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
     }
 }
 
-int asFindFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance,
-                const int showWarning)
+int asFindFloor(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return asFindFloorT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
-                const int showWarning)
+int asFindFloor(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return asFindFloorT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
-                const int showWarning)
+int asFindFloor(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return asFindFloorT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindFloorT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
+int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1197,6 +1194,12 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
     // Initialize first and last variables.
     pFirst = (T *) pArrStart;
     pLast = (T *) pArrEnd;
+
+    double tolerance = 0;
+    /*
+    if (*pFirst != *pLast) {
+        tolerance = (double) std::abs(*pFirst - *(pFirst + 1)) / 100.0;
+    }*/
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1281,26 +1284,23 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
 }
 
 
-int asFindCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int tolerance,
-               const int showWarning)
+int asFindCeil(const int *pArrStart, const int *pArrEnd, const int targetValue, const int showWarning)
 {
-    return asFindCeilT<int>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<int>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const float tolerance,
-               const int showWarning)
+int asFindCeil(const float *pArrStart, const float *pArrEnd, const float targetValue, const int showWarning)
 {
-    return asFindCeilT<float>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<float>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
-int asFindCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const double tolerance,
-               const int showWarning)
+int asFindCeil(const double *pArrStart, const double *pArrEnd, const double targetValue, const int showWarning)
 {
-    return asFindCeilT<double>(pArrStart, pArrEnd, targetValue, tolerance, showWarning);
+    return asFindCeilT<double>(pArrStart, pArrEnd, targetValue, showWarning);
 }
 
 template<class T>
-int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T tolerance, const int showWarning)
+int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const int showWarning)
 {
     wxASSERT(pArrStart);
     wxASSERT(pArrEnd);
@@ -1311,6 +1311,12 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
     // Initialize first and last variables.
     pFirst = (T *) pArrStart;
     pLast = (T *) pArrEnd;
+
+    double tolerance = 0;
+    /*
+    if (*pFirst != *pLast) {
+        tolerance = (double) std::abs(*pFirst - *(pFirst + 1)) / 100.0;
+    }*/
 
     // Check array order
     if (*pLast > *pFirst) {
@@ -1424,14 +1430,14 @@ bool asArrayInsertT(T *pArrStart, T *pArrEnd, const Order order, const T val)
     // Check order
     switch (order) {
         case (Asc): {
-            iNext = asFindCeil(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            iNext = asFindCeil(pArrStart, pArrEnd, val, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
             break;
         }
         case (Desc): {
-            iNext = asFindFloor(pArrStart, pArrEnd, val, 0, asHIDE_WARNINGS);
+            iNext = asFindFloor(pArrStart, pArrEnd, val, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
@@ -1503,14 +1509,14 @@ bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrO
     // Check order
     switch (order) {
         case (Asc): {
-            iNext = asFindCeil(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            iNext = asFindCeil(pArrRefStart, pArrRefEnd, valRef, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }
             break;
         }
         case (Desc): {
-            iNext = asFindFloor(pArrRefStart, pArrRefEnd, valRef, 0, asHIDE_WARNINGS);
+            iNext = asFindFloor(pArrRefStart, pArrRefEnd, valRef, asHIDE_WARNINGS);
             if (iNext == asOUT_OF_RANGE) {
                 iNext = 0;
             }

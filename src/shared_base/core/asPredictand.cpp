@@ -864,9 +864,9 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
             int nansNb = 0;
 
             // Find begining and end of the year
-            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1), 0,
+            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1),
                                        asHIDE_WARNINGS);
-            int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59), 0,
+            int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59),
                                      asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
                 if (iYear == yearEnd) {

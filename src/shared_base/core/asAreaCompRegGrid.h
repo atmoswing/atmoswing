@@ -49,7 +49,7 @@ public:
 
     bool GridsOverlay(asAreaCompGrid *otherArea) const override;
 
-    bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true) override;
+    bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false) override;
 
     double GetXstep() const override
     {
