@@ -124,21 +124,25 @@ bool asAreaCompGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool strid
 void asAreaCompGrid::CorrectCornersWithAxes()
 {
     if (m_composites[0].GetXmin() != m_compositeXaxes[0][0]) {
-        Coo cornerLL = m_composites[0].GetCornerLL();
-        cornerLL.x = m_compositeXaxes[0][0];
-        m_composites[0].SetCornerLL(cornerLL, true);
-        Coo cornerUL = m_composites[0].GetCornerUL();
-        cornerUL.x = m_compositeXaxes[0][0];
-        m_composites[0].SetCornerUL(cornerUL, true);
+        if (!m_isLatLon || m_composites[0].GetXmin() != m_compositeXaxes[0][0] + 360) {
+            Coo cornerLL = m_composites[0].GetCornerLL();
+            cornerLL.x = m_compositeXaxes[0][0];
+            m_composites[0].SetCornerLL(cornerLL, true);
+            Coo cornerUL = m_composites[0].GetCornerUL();
+            cornerUL.x = m_compositeXaxes[0][0];
+            m_composites[0].SetCornerUL(cornerUL, true);
+        }
     }
 
     if (m_composites[0].GetXmax() != m_compositeXaxes[0].tail(1)[0]) {
-        Coo cornerLR = m_composites[0].GetCornerLR();
-        cornerLR.x = m_compositeXaxes[0].tail(1)[0];
-        m_composites[0].SetCornerLR(cornerLR, true);
-        Coo cornerUR = m_composites[0].GetCornerUR();
-        cornerUR.x = m_compositeXaxes[0].tail(1)[0];
-        m_composites[0].SetCornerUR(cornerUR, true);
+        if (!m_isLatLon || m_composites[0].GetXmax() != m_compositeXaxes[0].tail(1)[0] + 360) {
+            Coo cornerLR = m_composites[0].GetCornerLR();
+            cornerLR.x = m_compositeXaxes[0].tail(1)[0];
+            m_composites[0].SetCornerLR(cornerLR, true);
+            Coo cornerUR = m_composites[0].GetCornerUR();
+            cornerUR.x = m_compositeXaxes[0].tail(1)[0];
+            m_composites[0].SetCornerUR(cornerUR, true);
+        }
     }
 
     if (m_composites[0].GetYmin() != m_compositeYaxes[0][0]) {
@@ -161,21 +165,25 @@ void asAreaCompGrid::CorrectCornersWithAxes()
 
     if (GetNbComposites() > 1) {
         if (m_composites[1].GetXmin() != m_compositeXaxes[1][0]) {
-            Coo cornerLL = m_composites[1].GetCornerLL();
-            cornerLL.x = m_compositeXaxes[1][0];
-            m_composites[1].SetCornerLL(cornerLL, true);
-            Coo cornerUL = m_composites[1].GetCornerUL();
-            cornerUL.x = m_compositeXaxes[1][0];
-            m_composites[1].SetCornerUL(cornerUL, true);
+            if (!m_isLatLon || m_composites[1].GetXmin() != m_compositeXaxes[1][0] + 360) {
+                Coo cornerLL = m_composites[1].GetCornerLL();
+                cornerLL.x = m_compositeXaxes[1][0];
+                m_composites[1].SetCornerLL(cornerLL, true);
+                Coo cornerUL = m_composites[1].GetCornerUL();
+                cornerUL.x = m_compositeXaxes[1][0];
+                m_composites[1].SetCornerUL(cornerUL, true);
+            }
         }
 
         if (m_composites[1].GetXmax() != m_compositeXaxes[1].tail(1)[0]) {
-            Coo cornerLR = m_composites[1].GetCornerLR();
-            cornerLR.x = m_compositeXaxes[1].tail(1)[0];
-            m_composites[1].SetCornerLR(cornerLR, true);
-            Coo cornerUR = m_composites[1].GetCornerUR();
-            cornerUR.x = m_compositeXaxes[1].tail(1)[0];
-            m_composites[1].SetCornerUR(cornerUR, true);
+            if (!m_isLatLon || m_composites[1].GetXmax() != m_compositeXaxes[1].tail(1)[0] + 360) {
+                Coo cornerLR = m_composites[1].GetCornerLR();
+                cornerLR.x = m_compositeXaxes[1].tail(1)[0];
+                m_composites[1].SetCornerLR(cornerLR, true);
+                Coo cornerUR = m_composites[1].GetCornerUR();
+                cornerUR.x = m_compositeXaxes[1].tail(1)[0];
+                m_composites[1].SetCornerUR(cornerUR, true);
+            }
         }
 
         if (m_composites[1].GetYmin() != m_compositeYaxes[1][0]) {
