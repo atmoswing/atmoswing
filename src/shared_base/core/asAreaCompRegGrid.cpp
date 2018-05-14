@@ -36,6 +36,8 @@ asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, c
           m_yStep(yStep)
 {
     m_isRegular = true;
+    m_xStepData = 0;
+    m_yStepData = 0;
 }
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
@@ -45,6 +47,8 @@ asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, d
           m_yStep(yStep)
 {
     m_isRegular = true;
+    m_xStepData = 0;
+    m_yStepData = 0;
 }
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
@@ -55,6 +59,8 @@ asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int y
     m_isRegular = true;
     m_xPtsNb = xPtsNb;
     m_yPtsNb = yPtsNb;
+    m_xStepData = 0;
+    m_yStepData = 0;
 }
 
 bool asAreaCompRegGrid::GridsOverlay(asAreaCompGrid *otherArea) const
@@ -113,7 +119,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
             auto xFactor = (int) (m_xStep / m_xStepData);
 
             a1d lonsC0 = m_compositeXaxes[0];
-            auto sizeC0new = (int) ((lonsC0.rows() + 1) / xFactor);
+            auto sizeC0new = (int) ((lonsC0.rows() - 1) / xFactor) + 1;
             m_compositeXaxes[0].resize(sizeC0new);
 
             for (int i = 0; i < sizeC0new; ++i) {
@@ -193,7 +199,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
             auto yFactor = (int) (m_yStep / m_yStepData);
 
             a1d latsC0 = m_compositeYaxes[0];
-            auto sizeC0new = (int) ((latsC0.rows() + 1) / yFactor);
+            auto sizeC0new = (int) ((latsC0.rows() - 1) / yFactor) + 1;
             m_compositeYaxes[0].resize(sizeC0new);
 
             for (int i = 0; i < sizeC0new; ++i) {

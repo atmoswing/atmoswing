@@ -1241,10 +1241,16 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
 
     // Check beginning on longitudes
     if (dataArea->GetComposite(0).GetXmin() != desiredArea->GetComposite(0).GetXmin()) {
-        changeXstart = true;
+        if (dataArea->GetComposite(0).GetXmin() + 360 != desiredArea->GetComposite(0).GetXmin() &&
+            dataArea->GetComposite(0).GetXmin() - 360 != desiredArea->GetComposite(0).GetXmin()) {
+            changeXstart = true;
+        }
     }
     if (dataArea->GetNbComposites() > 1 && dataArea->GetComposite(1).GetXmin() != desiredArea->GetComposite(1).GetXmin()) {
-        changeXstart = true;
+        if (dataArea->GetComposite(1).GetXmin() + 360 != desiredArea->GetComposite(1).GetXmin() &&
+            dataArea->GetComposite(1).GetXmin() - 360 != desiredArea->GetComposite(1).GetXmin()) {
+            changeXstart = true;
+        }
     }
 
     // Check beginning on latitudes
