@@ -72,6 +72,8 @@ asFrameDownscaler::~asFrameDownscaler()
 
 void asFrameDownscaler::OnInit()
 {
+    wxBusyCursor wait;
+
     // Set the defaults
     LoadOptions();
     DisplayLogLevelMenu();
@@ -84,6 +86,8 @@ void asFrameDownscaler::Update()
 
 void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFramePreferencesDownscaler(this);
     frame->Fit();
     frame->Show();
@@ -91,6 +95,8 @@ void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)
 
 void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
@@ -98,12 +104,16 @@ void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
 
 void asFrameDownscaler::OnShowLog(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
 void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -118,6 +128,8 @@ void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event)
 
 void asFrameDownscaler::OnLogLevel2(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
@@ -132,6 +144,8 @@ void asFrameDownscaler::OnLogLevel2(wxCommandEvent &event)
 
 void asFrameDownscaler::OnLogLevel3(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -207,6 +221,8 @@ void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event)
 
 void asFrameDownscaler::SaveOptions() const
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig = wxFileConfig::Get();
     auto methodSelection = (long) m_choiceMethod->GetSelection();
     pConfig->Write("/Downscaler/MethodSelection", methodSelection);
@@ -235,6 +251,8 @@ void asFrameDownscaler::OnIdle( wxCommandEvent& event )
 */
 void asFrameDownscaler::Launch(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     SaveOptions();
 
     try {

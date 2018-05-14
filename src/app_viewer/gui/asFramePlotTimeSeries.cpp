@@ -217,6 +217,8 @@ void asFramePlotTimeSeries::OnTocSelectionChange(wxCommandEvent &event)
 
 void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     wxString stationName = m_forecastManager->GetStationName(m_selectedMethod, m_selectedForecast, m_selectedStation);
     wxString forecastName = m_forecastManager->GetForecastName(m_selectedMethod, m_selectedForecast);
     wxString date = asTime::GetStringTime(m_forecastManager->GetLeadTimeOrigin(), "YYYY.MM.DD hh");
@@ -380,6 +382,8 @@ void asFramePlotTimeSeries::OnPrint(wxCommandEvent &event)
 
 bool asFramePlotTimeSeries::Plot()
 {
+    wxBusyCursor wait;
+
     // Get a pointer to the plotctrl
     wxPlotCtrl *plotctrl = m_panelPlot->GetPlotCtrl();
 

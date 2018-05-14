@@ -79,6 +79,8 @@ asFrameOptimizer::~asFrameOptimizer()
 
 void asFrameOptimizer::OnInit()
 {
+    wxBusyCursor wait;
+
     // Set the defaults
     LoadOptions();
     DisplayLogLevelMenu();
@@ -91,6 +93,8 @@ void asFrameOptimizer::Update()
 
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFramePreferencesOptimizer(this);
     frame->Fit();
     frame->Show();
@@ -98,6 +102,8 @@ void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
 
 void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
@@ -105,6 +111,8 @@ void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
 
 void asFrameOptimizer::OnShowLog(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
@@ -188,6 +196,8 @@ void asFrameOptimizer::Cancel(wxCommandEvent &event)
 
 void asFrameOptimizer::LoadOptions()
 {
+    wxBusyCursor wait;
+
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
     long methodSelection = pConfig->Read("/Optimizer/MethodSelection", 0l);
@@ -331,6 +341,8 @@ void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
 
 void asFrameOptimizer::SaveOptions() const
 {
+    wxBusyCursor wait;
+
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
     auto methodSelection = (long) m_choiceMethod->GetSelection();
@@ -461,6 +473,8 @@ void asFrameOptimizer::OnIdle( wxCommandEvent& event )
 */
 void asFrameOptimizer::Launch(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     SaveOptions();
 
     try {

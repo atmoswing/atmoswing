@@ -305,6 +305,8 @@ bool asFramePlotDistributions::Plot()
 
 bool asFramePlotDistributions::PlotPredictands()
 {
+    wxBusyCursor wait;
+
     if (m_forecastManager->GetMethodsNb() < 1)
         return false;
 
@@ -415,6 +417,8 @@ bool asFramePlotDistributions::PlotPredictands()
 
 bool asFramePlotDistributions::PlotCriteria()
 {
+    wxBusyCursor wait;
+
     if (m_forecastManager->GetMethodsNb() < 1)
         return false;
 

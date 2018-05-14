@@ -69,6 +69,8 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
 
 void asFramePredictandDB::OnSaveDefault(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     // Save as defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
     auto choiceDataParam = (long) m_choiceDataParam->GetSelection();
@@ -134,6 +136,8 @@ void asFramePredictandDB::ToggleProcessing()
 
 void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     try {
         // Get paths
         wxString catalogFilePath = m_filePickerCatalogPath->GetPath();

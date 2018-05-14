@@ -66,6 +66,8 @@ void asLeadTimeSwitcher::SetParent(wxWindow *parent)
 
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event)
 {
+    wxBusyCursor wait;
+
     wxPoint position = event.GetPosition();
     int val = floor(position.x / m_cellWidth);
     wxCommandEvent eventSlct(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);

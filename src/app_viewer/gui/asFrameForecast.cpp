@@ -639,6 +639,8 @@ bool asFrameForecast::OpenWorkspace(bool openRecentForecasts)
     m_critSectionViewerLayerManager.Enter();
 #endif
 
+    wxBusyCursor wait;
+
     m_viewerLayerManager->FreezeBegin();
 
     m_forecastViewer->ResetForecastSelection();
@@ -1026,6 +1028,8 @@ void asFrameForecast::DisplayLogLevelMenu()
 
 bool asFrameForecast::OpenLayers(const wxArrayString &names)
 {
+    wxBusyCursor wait;
+
     // Open files
     for (unsigned int i = 0; i < names.GetCount(); i++) {
         if (!m_layerManager->Open(wxFileName(names.Item(i)))) {
@@ -1382,6 +1386,8 @@ void asFrameForecast::SwitchForecast(double increment)
 
 bool asFrameForecast::OpenForecast(const wxArrayString &names)
 {
+    wxBusyCursor wait;
+
     if (names.GetCount() == 0)
         return false;
 

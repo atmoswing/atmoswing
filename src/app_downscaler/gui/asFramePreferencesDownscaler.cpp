@@ -51,6 +51,8 @@ void asFramePreferencesDownscaler::Update()
 
 void asFramePreferencesDownscaler::LoadPreferences()
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -152,6 +154,8 @@ void asFramePreferencesDownscaler::LoadPreferences()
 
 void asFramePreferencesDownscaler::SavePreferences() const
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 

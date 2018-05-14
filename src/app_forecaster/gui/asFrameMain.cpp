@@ -307,6 +307,8 @@ void asFrameMain::Update()
 
 void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
@@ -314,6 +316,8 @@ void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event)
 
 void asFrameMain::OnConfigureDirectories(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
@@ -321,6 +325,8 @@ void asFrameMain::OnConfigureDirectories(wxCommandEvent &event)
 
 void asFrameMain::OpenFramePreferences(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
@@ -328,6 +334,8 @@ void asFrameMain::OpenFramePreferences(wxCommandEvent &event)
 
 void asFrameMain::OpenFrameAbout(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
@@ -335,12 +343,16 @@ void asFrameMain::OpenFrameAbout(wxCommandEvent &event)
 
 void asFrameMain::OnShowLog(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
 void asFrameMain::OnLogLevel1(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -353,6 +365,8 @@ void asFrameMain::OnLogLevel1(wxCommandEvent &event)
 
 void asFrameMain::OnLogLevel2(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
@@ -365,6 +379,8 @@ void asFrameMain::OnLogLevel2(wxCommandEvent &event)
 
 void asFrameMain::OnLogLevel3(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);

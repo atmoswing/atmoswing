@@ -194,6 +194,8 @@ void asFramePreferencesForecaster::LoadPreferences()
 
 void asFramePreferencesForecaster::SavePreferences()
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 

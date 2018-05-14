@@ -150,6 +150,8 @@ void asFramePreferencesOptimizer::LoadPreferences()
 
 void asFramePreferencesOptimizer::SavePreferences() const
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 

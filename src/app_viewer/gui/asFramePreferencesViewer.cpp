@@ -155,6 +155,8 @@ void asFramePreferencesViewer::LoadPreferences()
 
 void asFramePreferencesViewer::SavePreferences()
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 

@@ -155,6 +155,8 @@ void asFrameGridAnalogsValues::SortGrid(wxGridEvent &event)
 
 bool asFrameGridAnalogsValues::UpdateGrid()
 {
+    wxBusyCursor wait;
+
     if (m_forecastManager->GetMethodsNb() < 1)
         return false;
 
