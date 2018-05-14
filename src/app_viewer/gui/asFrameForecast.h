@@ -166,6 +166,8 @@ private:
 
     void OpenFrameGrid(wxCommandEvent &event);
 
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
+
     void OpenFramePreferences(wxCommandEvent &event) override;
 
     void OpenFrameAbout(wxCommandEvent &event) override;

@@ -29,6 +29,7 @@
 #include "asFrameForecast.h"
 
 #include "AtmoswingAppViewer.h"
+#include "asFramePredictandDB.h"
 
 #if defined (__WIN32__)
 #include "asThreadsManager.h"
@@ -237,6 +238,8 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     this->Connect(asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameForecast::LaunchForecastingPast));
     this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OnOpenForecast));
+    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                  wxCommandEventHandler(asFrameForecast::OpenFramePredictandDB));
 
     // Process
     m_processForecast = nullptr;
@@ -327,6 +330,8 @@ asFrameForecast::~asFrameForecast()
     this->Disconnect(asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::LaunchForecastingPast));
     this->Disconnect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OnOpenForecast));
+    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFrameForecast::OpenFramePredictandDB));
 
     // Don't delete m_viewerLayerManager, will be deleted by the manager
     wxDELETE(m_layerManager);
@@ -944,6 +949,15 @@ void asFrameForecast::OpenFrameGrid(wxCommandEvent &event)
         frameGrid->Init();
         frameGrid->Show();
     }
+}
+
+void asFrameForecast::OpenFramePredictandDB(wxCommandEvent &event)
+{
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePredictandDB(this);
+    frame->Fit();
+    frame->Show();
 }
 
 void asFrameForecast::OpenFramePreferences(wxCommandEvent &event)

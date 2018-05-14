@@ -25,10 +25,10 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __asFramePredictandDB__
-#define __asFramePredictandDB__
+#ifndef __ASFRAMEPREDICTANDDB__
+#define __ASFRAMEPREDICTANDDB__
 
-#include "AtmoswingForecasterGui.h"
+#include "AtmoswingSharedGui.h"
 #include <asIncludes.h>
 
 class asFramePredictandDB
@@ -50,4 +50,4 @@ protected:
 
 };
 
-#endif // __asFramePredictandDB__
+#endif // __ASFRAMEPREDICTANDDB__

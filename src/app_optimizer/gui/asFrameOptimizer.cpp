@@ -40,6 +40,7 @@
 #include "images.h"
 #include "asFramePreferencesOptimizer.h"
 #include "asFrameAbout.h"
+#include "asFramePredictandDB.h"
 
 
 asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
@@ -61,6 +62,8 @@ asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
     this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
+    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                  wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
 
     // Icon
 #ifdef __WXMSW__
@@ -75,6 +78,8 @@ asFrameOptimizer::~asFrameOptimizer()
     this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
     this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameOptimizer::OpenFramePreferences));
+    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
 }
 
 void asFrameOptimizer::OnInit()
@@ -89,6 +94,15 @@ void asFrameOptimizer::OnInit()
 void asFrameOptimizer::Update()
 {
     DisplayLogLevelMenu();
+}
+
+void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent &event)
+{
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePredictandDB(this);
+    frame->Fit();
+    frame->Show();
 }
 
 void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)

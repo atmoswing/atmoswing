@@ -50,6 +50,8 @@ protected:
 
     void Update() override;
 
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
+
     void OnSaveDefault(wxCommandEvent &event) override;
 
     void Launch(wxCommandEvent &event);

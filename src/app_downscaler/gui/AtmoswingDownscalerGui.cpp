@@ -136,6 +136,13 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	
 	m_menuBar->Append( m_menuOptions, _("Options") ); 
 	
+	m_menuTools = new wxMenu();
+	wxMenuItem* menuItemBuildPredictandDB;
+	menuItemBuildPredictandDB = new wxMenuItem( m_menuTools, wxID_ANY, wxString( _("Build predictand DB") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuTools->Append( menuItemBuildPredictandDB );
+	
+	m_menuBar->Append( m_menuTools, _("Tools") ); 
+	
 	m_menuLog = new wxMenu();
 	wxMenuItem* m_menuItemShowLog;
 	m_menuItemShowLog = new wxMenuItem( m_menuLog, wxID_ANY, wxString( _("Show Log Window") ) , wxEmptyString, wxITEM_NORMAL );
@@ -179,6 +186,7 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	// Connect Events
 	m_buttonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameDownscalerVirtual::OnSaveDefault ), NULL, this );
 	this->Connect( m_menuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OpenFramePreferences ) );
+	this->Connect( menuItemBuildPredictandDB->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OpenFramePredictandDB ) );
 	this->Connect( m_menuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnShowLog ) );
 	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnLogLevel1 ) );
 	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnLogLevel2 ) );
@@ -191,6 +199,7 @@ asFrameDownscalerVirtual::~asFrameDownscalerVirtual()
 	// Disconnect Events
 	m_buttonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameDownscalerVirtual::OnSaveDefault ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OpenFramePreferences ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OpenFramePredictandDB ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnShowLog ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnLogLevel1 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameDownscalerVirtual::OnLogLevel2 ) );

@@ -33,6 +33,7 @@
 #include "images.h"
 #include "asFramePreferencesDownscaler.h"
 #include "asFrameAbout.h"
+#include "asFramePredictandDB.h"
 
 
 asFrameDownscaler::asFrameDownscaler(wxWindow *parent)
@@ -54,6 +55,8 @@ asFrameDownscaler::asFrameDownscaler(wxWindow *parent)
     this->Connect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
+    this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                  wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
 
     // Icon
 #ifdef __WXMSW__
@@ -68,6 +71,8 @@ asFrameDownscaler::~asFrameDownscaler()
     this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
     this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameDownscaler::OpenFramePreferences));
+    this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
+                     wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
 }
 
 void asFrameDownscaler::OnInit()
@@ -82,6 +87,15 @@ void asFrameDownscaler::OnInit()
 void asFrameDownscaler::Update()
 {
     DisplayLogLevelMenu();
+}
+
+void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent &event)
+{
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePredictandDB(this);
+    frame->Fit();
+    frame->Show();
 }
 
 void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)

@@ -68,6 +68,7 @@ class asFrameDownscalerVirtual : public wxFrame
 		wxButton* m_buttonSaveDefault;
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuOptions;
+		wxMenu* m_menuTools;
 		wxMenu* m_menuLog;
 		wxMenu* m_menuLogLevel;
 		wxMenu* m_menuHelp;
@@ -77,6 +78,7 @@ class asFrameDownscalerVirtual : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSaveDefault( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OpenFramePredictandDB( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel1( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }

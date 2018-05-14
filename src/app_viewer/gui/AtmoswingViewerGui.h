@@ -77,6 +77,7 @@ class asFrameForecastVirtual : public wxFrame
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuFile;
 		wxMenu* m_menuOptions;
+		wxMenu* m_menuTools;
 		wxMenu* m_menuLog;
 		wxMenu* m_menuLogLevel;
 		wxMenu* m_menuHelp;
@@ -98,6 +99,7 @@ class asFrameForecastVirtual : public wxFrame
 		virtual void OnMoveLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnQuit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OpenFramePredictandDB( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel1( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }

@@ -28,11 +28,11 @@
 
 #include "asFrameMain.h"
 
-#include "asFramePredictandDB.h"
-#include "asFramePreferencesForecaster.h"
-#include "asFrameAbout.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
+#include "asFramePreferencesForecaster.h"
+#include "asFrameAbout.h"
+#include "asFramePredictandDB.h"
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
