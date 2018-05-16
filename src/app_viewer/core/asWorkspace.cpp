@@ -30,9 +30,9 @@
 asWorkspace::asWorkspace()
         : wxObject(),
           m_hasChanged(false),
-          m_filePath(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw"),
+          m_filePath(asConfig::GetDocumentsDir() + "AtmoSwing" + wxFileName::GetPathSeparator() + "Workspace.asvw"),
           m_coordinateSys("EPSG:3857"),
-          m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
+          m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + wxFileName::GetPathSeparator() + "Forecasts"),
           m_colorbarMaxValue(50.0),
           m_timeSeriesPlotPastDaysNb(3),
           m_alarmsPanelReturnPeriod(10),

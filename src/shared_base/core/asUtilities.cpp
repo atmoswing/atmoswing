@@ -30,7 +30,7 @@
 
 bool asRemoveDir(const wxString &path)
 {
-    wxString f = wxFindFirstFile(path + DS + "*.*");
+    wxString f = wxFindFirstFile(path + wxFileName::GetPathSeparator() + "*.*");
     while (!f.empty()) {
         wxRemoveFile(f);
         f = wxFindNextFile();

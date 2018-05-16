@@ -52,7 +52,7 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
     int baseMapSlct = m_choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = wxStandardPaths::Get().GetDataDir();
-    wmsDir = wmsDir + wxFileName::GetPathSeparator() + "data" + DS + "wms" + DS + "basemaps" + DS;
+    wmsDir = wmsDir + wxFileName::GetPathSeparator() + "data" + wxFileName::GetPathSeparator() + "wms" + wxFileName::GetPathSeparator() + "basemaps" + wxFileName::GetPathSeparator();
     switch (baseMapSlct) {
         case 0: // Custom layers
 
