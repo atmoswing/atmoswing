@@ -6,52 +6,52 @@ project(g2clib)
 ##### SOURCE FILES
 
 # Grib2c library
-file(GLOB_RECURSE src_lib_g2clib_h libs/g2clib/*.h)
+file(GLOB_RECURSE src_lib_g2clib_h g2clib/*.h)
 set(src_lib_g2clib_c
-        libs/g2clib/gridtemplates.c
-        libs/g2clib/drstemplates.c
-        libs/g2clib/pdstemplates.c
-        libs/g2clib/gbits.c
-        libs/g2clib/g2_unpack1.c
-        libs/g2clib/g2_unpack2.c
-        libs/g2clib/g2_unpack3.c
-        libs/g2clib/g2_unpack4.c
-        libs/g2clib/g2_unpack5.c
-        libs/g2clib/g2_unpack6.c
-        libs/g2clib/g2_unpack7.c
-        libs/g2clib/g2_free.c
-        libs/g2clib/g2_info.c
-        libs/g2clib/g2_getfld.c
-        libs/g2clib/simunpack.c
-        libs/g2clib/comunpack.c
-        libs/g2clib/pack_gp.c
-        libs/g2clib/reduce.c
-        libs/g2clib/specpack.c
-        libs/g2clib/specunpack.c
-        libs/g2clib/rdieee.c
-        libs/g2clib/mkieee.c
-        libs/g2clib/int_power.c
-        libs/g2clib/simpack.c
-        libs/g2clib/compack.c
-        libs/g2clib/cmplxpack.c
-        libs/g2clib/misspack.c
-        libs/g2clib/jpcpack.c
-        libs/g2clib/jpcunpack.c
-        libs/g2clib/pngpack.c
-        libs/g2clib/pngunpack.c
-        libs/g2clib/dec_jpeg2000.c
-        libs/g2clib/enc_jpeg2000.c
-        libs/g2clib/dec_png.c
-        libs/g2clib/enc_png.c
-        libs/g2clib/g2_create.c
-        libs/g2clib/g2_addlocal.c
-        libs/g2clib/g2_addgrid.c
-        libs/g2clib/g2_addfield.c
-        libs/g2clib/g2_gribend.c
-        libs/g2clib/getdim.c
-        libs/g2clib/g2_miss.c
-        libs/g2clib/getpoly.c
-        libs/g2clib/seekgb.c
+        g2clib/gridtemplates.c
+        g2clib/drstemplates.c
+        g2clib/pdstemplates.c
+        g2clib/gbits.c
+        g2clib/g2_unpack1.c
+        g2clib/g2_unpack2.c
+        g2clib/g2_unpack3.c
+        g2clib/g2_unpack4.c
+        g2clib/g2_unpack5.c
+        g2clib/g2_unpack6.c
+        g2clib/g2_unpack7.c
+        g2clib/g2_free.c
+        g2clib/g2_info.c
+        g2clib/g2_getfld.c
+        g2clib/simunpack.c
+        g2clib/comunpack.c
+        g2clib/pack_gp.c
+        g2clib/reduce.c
+        g2clib/specpack.c
+        g2clib/specunpack.c
+        g2clib/rdieee.c
+        g2clib/mkieee.c
+        g2clib/int_power.c
+        g2clib/simpack.c
+        g2clib/compack.c
+        g2clib/cmplxpack.c
+        g2clib/misspack.c
+        g2clib/jpcpack.c
+        g2clib/jpcunpack.c
+        g2clib/pngpack.c
+        g2clib/pngunpack.c
+        g2clib/dec_jpeg2000.c
+        g2clib/enc_jpeg2000.c
+        g2clib/dec_png.c
+        g2clib/enc_png.c
+        g2clib/g2_create.c
+        g2clib/g2_addlocal.c
+        g2clib/g2_addgrid.c
+        g2clib/g2_addfield.c
+        g2clib/g2_gribend.c
+        g2clib/getdim.c
+        g2clib/g2_miss.c
+        g2clib/getpoly.c
+        g2clib/seekgb.c
         )
 list(APPEND src_lib_g2clib ${src_lib_g2clib_h} ${src_lib_g2clib_c})
 
