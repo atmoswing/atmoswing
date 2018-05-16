@@ -256,7 +256,7 @@ bool asPredictorOper::BuildFilenamesUrls()
         thisCommandLeadTime.Replace("[LEADTIME-hhhh]", timeStr);
 
         // Filename
-        wxString dirstructure = "YYYY/MM/DD");
+        wxString dirstructure = "YYYY/MM/DD";
         wxString directory = asTime::GetStringTime(runDateInUse, dirstructure);
         wxString nowstr = asTime::GetStringTime(runDateInUse, "YYYYMMDDhh");
         wxString leadtimestr = timeStrFileName;

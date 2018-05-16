@@ -101,7 +101,7 @@ void asResultsForecast::BuildFileName()
     }
 
     // Directory
-    wxString dirstructure = "YYYY/MM/DD");
+    wxString dirstructure = "YYYY/MM/DD";
     wxString directory = asTime::GetStringTime(m_leadTimeOrigin, dirstructure);
     m_filePath.Append(directory) + "/";
 

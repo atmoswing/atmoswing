@@ -653,7 +653,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
     for (int methodRow = 0; methodRow < (int) m_forecasts.size(); methodRow++) {
         // Filename
         wxString filePath = dirPath + "/";
-        wxString dirstructure = "YYYY/MM/DD");
+        wxString dirstructure = "YYYY/MM/DD";
         wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
         filePath.Append(directory + "/");
         wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
