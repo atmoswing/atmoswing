@@ -96,21 +96,21 @@ void asResultsForecast::BuildFileName()
 
     // Base directory
     m_filePath = m_forecastsDir;
-    m_filePath.Append(DS);
+    m_filePath.Append(wxFileName::GetPathSeparator());
     if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
+        m_filePath.Append(wxFileName::GetPathSeparator());
         m_filePath.Append(m_subFolder);
     }
 
     // Directory
     wxString dirstructure = "YYYY";
-    dirstructure.Append(DS);
+    dirstructure.Append(wxFileName::GetPathSeparator());
     dirstructure.Append("MM");
-    dirstructure.Append(DS);
+    dirstructure.Append(wxFileName::GetPathSeparator());
     dirstructure.Append("DD");
     wxString directory = asTime::GetStringTime(m_leadTimeOrigin, dirstructure);
     m_filePath.Append(directory);
-    m_filePath.Append(DS);
+    m_filePath.Append(wxFileName::GetPathSeparator());
 
     // Filename
     wxString forecastname = m_methodId + '.' + m_specificTag;

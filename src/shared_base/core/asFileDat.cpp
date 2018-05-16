@@ -71,12 +71,12 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     // Load xml file
     wxString filePath;
     if (!directory.IsEmpty()) {
-        filePath = directory + DS + fileName + ".xml";
+        filePath = directory + wxFileName::GetPathSeparator() + fileName + ".xml";
     } else {
         ThreadsManager().CritSectionConfig().Enter();
         wxString patternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
         ThreadsManager().CritSectionConfig().Leave();
-        filePath = patternsDir + DS + fileName + ".xml";
+        filePath = patternsDir + wxFileName::GetPathSeparator() + fileName + ".xml";
     }
 
     asFileXml xmlFile(filePath, asFile::ReadOnly);

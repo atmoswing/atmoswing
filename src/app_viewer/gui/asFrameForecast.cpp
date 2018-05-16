@@ -1447,7 +1447,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
     for (unsigned int i = 0; i < names.GetCount(); i++) {
         if (i == 0) {
             wxString dir = names.Item(i);
-            wxUniChar dirSep = DS.GetChar(0);
+            wxUniChar dirSep = wxFileName::GetPathSeparator().GetChar(0);
             dir = dir.BeforeLast(dirSep);
             if (dir.Length() > 10) {
                 dir = dir.Left(dir.Length() - 10);
