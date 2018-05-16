@@ -225,15 +225,10 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
     int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
 
     // Get path
-    wxString defPath = m_workspace->GetForecastsDirectory();
-    defPath.Append(wxFileName::GetPathSeparator());
+    wxString defPath = m_workspace->GetForecastsDirectory() + "/";
 
     // Directory
-    wxString dirstructure = "YYYY";
-    dirstructure.Append(wxFileName::GetPathSeparator());
-    dirstructure.Append("MM");
-    dirstructure.Append(wxFileName::GetPathSeparator());
-    dirstructure.Append("DD");
+    wxString dirstructure = "YYYY/MM/DD");
 
     for (int bkwd = 0; bkwd <= nbPastDays; bkwd++) {
         double currentTime = m_leadTimeOrigin - bkwd;
@@ -243,8 +238,7 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
         for (int hr = 23; hr >= 0; hr--) {
             // Load from default directory
             wxString currentDirPath = defPath;
-            currentDirPath.Append(directory);
-            currentDirPath.Append(wxFileName::GetPathSeparator());
+            currentDirPath.Append(directory + "/");
 
             double currentTimeHour = floor(currentTime) + (double)hr / 24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
@@ -263,8 +257,7 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
                 // Load from temporarly stored directories
                 for (unsigned int iDir = 0; iDir < m_directoriesPastForecasts.Count(); iDir++) {
                     currentDirPath = m_directoriesPastForecasts.Item(iDir);
-                    currentDirPath.Append(directory);
-                    currentDirPath.Append(wxFileName::GetPathSeparator());
+                    currentDirPath.Append(directory + "/");
                     fullPath = currentDirPath + filename;
                     fullPathOld = currentDirPath + filenameOld;
 

@@ -1221,7 +1221,7 @@ bool asFrameForecast::OpenRecentForecasts()
     double now = asTime::NowMJD();
 
     // Check if today directory exists
-    wxString basePath = forecastsDirectory + wxFileName::GetPathSeparator();
+    wxString basePath = forecastsDirectory + "/";
     wxFileName fullPath(basePath);
     fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(now)));
     fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(now)));
@@ -1342,7 +1342,7 @@ void asFrameForecast::SwitchForecast(double increment)
     double date = m_forecastManager->GetLeadTimeOrigin();
 
     // Look for former files
-    wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
+    wxString basePath = forecastsBaseDirectory + "/";
     wxFileName fullPath(basePath);
     wxFileName fullPathOld;
     for (int i = 0; i < 100; i++) {
@@ -1447,7 +1447,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
     for (unsigned int i = 0; i < names.GetCount(); i++) {
         if (i == 0) {
             wxString dir = names.Item(i);
-            wxUniChar dirSep = wxFileName::GetPathSeparator().GetChar(0);
+            wxUniChar dirSep = '/';
             dir = dir.BeforeLast(dirSep);
             if (dir.Length() > 10) {
                 dir = dir.Left(dir.Length() - 10);

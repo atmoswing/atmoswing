@@ -32,14 +32,14 @@ asBatchForecasts::asBatchForecasts()
           m_hasChanged(false),
           m_exportSyntheticXml(false)
 {
-    wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing" + wxFileName::GetPathSeparator();
-    m_filePath = baseDir + "Parameters" + wxFileName::GetPathSeparator() + "BatchForecasts.asfb";
+    wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing/";
+    m_filePath = baseDir + "Parameters/BatchForecasts.asfb";
     m_forecastsOutputDirectory = baseDir + "Forecasts";
     m_exportsOutputDirectory = baseDir + "Exports";
     m_parametersFileDirectory = baseDir + "Parameters";
-    m_predictorsArchiveDirectory = baseDir + "Data" + wxFileName::GetPathSeparator() + "Archive predictors";
-    m_predictorsRealtimeDirectory = baseDir + "Data" + wxFileName::GetPathSeparator() + "Forecasted predictors";
-    m_predictandDBDirectory = baseDir + "Data" + wxFileName::GetPathSeparator() + "Predictands";
+    m_predictorsArchiveDirectory = baseDir + "Data/Archive predictors";
+    m_predictorsRealtimeDirectory = baseDir + "Data/Forecasted predictors";
+    m_predictandDBDirectory = baseDir + "Data/Predictands";
 }
 
 bool asBatchForecasts::Load(const wxString &filePath)

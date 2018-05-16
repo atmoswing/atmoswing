@@ -221,7 +221,7 @@ void asFrameDownscaler::LoadOptions()
     wxString predictorScenarioDir = pConfig->Read("/Paths/ScenarioPredictorsDir", wxEmptyString);
     m_dirPickerScenarioPredictor->SetPath(predictorScenarioDir);
     wxString downscalerResultsDir = pConfig->Read("/Paths/DownscalerResultsDir",
-                                                 asConfig::GetDocumentsDir() + "AtmoSwing" + wxFileName::GetPathSeparator() + "Downscaler");
+                                                 asConfig::GetDocumentsDir() + "AtmoSwing/Downscaler");
     m_dirPickerDownscalingResults->SetPath(downscalerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Downscaler/ParallelEvaluations", &parallelEvaluations, false);

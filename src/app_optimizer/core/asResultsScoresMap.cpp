@@ -67,14 +67,9 @@ void asResultsScoresMap::BuildFileName()
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(wxFileName::GetPathSeparator());
-        m_filePath.Append(m_subFolder);
+        m_filePath.Append("/" + m_subFolder);
     }
-    m_filePath.Append(wxFileName::GetPathSeparator());
-    m_filePath.Append("RelevanceMap");
-    m_filePath.Append(wxFileName::GetPathSeparator());
-    m_filePath.Append(wxString::Format("%s", GetPredictandStationIdsList()));
-    m_filePath.Append(".nc");
+    m_filePath.Append(wxString::Format("/RelevanceMap/%s.nc", GetPredictandStationIdsList()));
 }
 
 bool asResultsScoresMap::Add(asParametersScoring &params, float score)

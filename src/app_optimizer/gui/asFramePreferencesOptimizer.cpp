@@ -84,7 +84,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
 
     // Paths
-    wxString dirData = asConfig::GetDataDir() + "data" + wxFileName::GetPathSeparator();
+    wxString dirData = asConfig::GetDataDir() + "data/";
     wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     m_dirPickerPredictandDB->SetPath(predictandDBDir);
     wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");

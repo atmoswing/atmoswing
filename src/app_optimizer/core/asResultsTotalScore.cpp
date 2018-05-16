@@ -56,12 +56,9 @@ void asResultsTotalScore::BuildFileName()
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(wxFileName::GetPathSeparator());
-        m_filePath.Append(m_subFolder);
+        m_filePath.Append("/" + m_subFolder);
     }
-    m_filePath.Append(wxFileName::GetPathSeparator());
-    m_filePath.Append(wxString::Format("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
-    m_filePath.Append(".nc");
+    m_filePath.Append(wxString::Format("/TotalScore_id_%s_step_%d.nc", GetPredictandStationIdsList(), m_currentStep));
 }
 
 bool asResultsTotalScore::Save()

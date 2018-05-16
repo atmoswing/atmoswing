@@ -63,46 +63,46 @@ bool asPredictorArchNcepCfsrSubset::Init()
             m_parameterName = "Geopotential height";
             m_fileVarName = "HGT_L100";
             m_unit = gpm;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "hgt");
+            m_subFolder.Append("/hgt");
         } else if (m_dataId.IsSameAs("gpa", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height anomaly";
             m_fileVarName = "GP_A_L100";
             m_unit = gpm;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "hgt");
+            m_subFolder.Append("/hgt");
             m_fStr.dimLevelName = "level1";
         } else if (m_dataId.IsSameAs("mslp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Mean sea level pressure";
             m_fileVarName = "PRES_L101";
             m_unit = Pa;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "mslp");
+            m_subFolder.Append("/mslp");
             m_fStr.hasLevelDim = false;
         } else if (m_dataId.IsSameAs("pwat", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileVarName = "P_WAT_L200";
             m_unit = kg_m2;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "pwat");
+            m_subFolder.Append("/pwat");
             m_fStr.hasLevelDim = false;
         } else if (m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVarName = "R_H_L100";
             m_unit = percent;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "rh");
+            m_subFolder.Append("/rh");
         } else if (m_dataId.IsSameAs("temp", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
             m_fileVarName = "TMP_L100";
             m_unit = degK;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "temp");
+            m_subFolder.Append("/temp");
         } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical Velocity";
             m_fileVarName = "V_VEL_L100";
             m_unit = Pa_s;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "vvel");
+            m_subFolder.Append("/vvel");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
@@ -117,7 +117,7 @@ bool asPredictorArchNcepCfsrSubset::Init()
             m_parameterName = "Precipitation rate";
             m_fileVarName = "PRATE_L1_Avg_1";
             m_unit = kg_m2_s;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "prate");
+            m_subFolder.Append("/prate");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }

@@ -223,7 +223,7 @@ void asFrameOptimizer::LoadOptions()
     wxString predictorDir = pConfig->Read("/Paths/PredictorDir", wxEmptyString);
     m_dirPickerPredictor->SetPath(predictorDir);
     wxString optimizerResultsDir = pConfig->Read("/Paths/ResultsDir",
-                                                 asConfig::GetDocumentsDir() + "AtmoSwing" + wxFileName::GetPathSeparator() + "Optimizer");
+                                                 asConfig::GetDocumentsDir() + "AtmoSwing/Optimizer");
     m_dirPickerCalibrationResults->SetPath(optimizerResultsDir);
     bool parallelEvaluations;
     pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, false);

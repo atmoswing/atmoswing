@@ -158,12 +158,9 @@ bool AtmoswingAppDownscaler::OnInit()
 wxString AtmoswingAppDownscaler::GetLocalPath()
 {
     // Prepare local path
-    wxString localPath = wxFileName::GetCwd() + wxFileName::GetPathSeparator();
+    wxString localPath = wxFileName::GetCwd() + "/";
     if (g_runNb > 0) {
-        localPath.Append("runs");
-        localPath.Append(wxFileName::GetPathSeparator());
-        localPath.Append(wxString::Format("%d", g_runNb));
-        localPath.Append(wxFileName::GetPathSeparator());
+        localPath.Append(wxString::Format("runs/%d/", g_runNb));
     }
 
     return localPath;
@@ -192,7 +189,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
     g_responsive = false;
 
     if (g_local) {
-        wxString dirData = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + "data" + wxFileName::GetPathSeparator();
+        wxString dirData = wxFileName::GetCwd() + "/data/";
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
@@ -268,12 +265,9 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Local mode
     if (parser.Found("local")) {
         g_local = true;
-        wxString localPath = wxFileName::GetCwd() + wxFileName::GetPathSeparator();
+        wxString localPath = wxFileName::GetCwd() + "/";
         if (g_runNb > 0) {
-            localPath.Append("runs");
-            localPath.Append(wxFileName::GetPathSeparator());
-            localPath.Append(wxString::Format("%d", g_runNb));
-            localPath.Append(wxFileName::GetPathSeparator());
+            localPath.Append(wxString::Format("runs/%d/", g_runNb));
 
             // Check if path already exists
             if (wxFileName::Exists(localPath)) {
@@ -339,7 +333,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a downscaling params file
     if (parser.Found("file-parameters", &m_downscalingParamsFile)) {
         if (g_local) {
-            m_downscalingParamsFile = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_downscalingParamsFile;
+            m_downscalingParamsFile = wxFileName::GetCwd() + "/" + m_downscalingParamsFile;
         }
 
         if (!wxFileName::FileExists(m_downscalingParamsFile)) {
@@ -351,7 +345,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a downscaling predictand DB
     if (parser.Found("predictand-db", &m_predictandDB)) {
         if (g_local) {
-            m_predictandDB = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_predictandDB;
+            m_predictandDB = wxFileName::GetCwd() + "/" + m_predictandDB;
         }
 
         if (!wxFileName::FileExists(m_predictandDB)) {
@@ -362,8 +356,8 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for archive predictors directory
     if (parser.Found("dir-archive-predictors", &m_predictorsArchiveDir)) {
-        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_predictorsArchiveDir)) {
-            m_predictorsArchiveDir = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_predictorsArchiveDir;
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + "/" + m_predictorsArchiveDir)) {
+            m_predictorsArchiveDir = wxFileName::GetCwd() + "/" + m_predictorsArchiveDir;
         }
 
         if (!wxFileName::DirExists(m_predictorsArchiveDir)) {
@@ -374,8 +368,8 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
 	// Check for scenario predictors directory
 	if (parser.Found("dir-scenario-predictors", &m_predictorsScenarioDir)) {
-		if (g_local && wxFileName::Exists(wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_predictorsScenarioDir)) {
-			m_predictorsScenarioDir = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + m_predictorsScenarioDir;
+		if (g_local && wxFileName::Exists(wxFileName::GetCwd() + "/" + m_predictorsScenarioDir)) {
+			m_predictorsScenarioDir = wxFileName::GetCwd() + "/" + m_predictorsScenarioDir;
 		}
 
 		if (!wxFileName::DirExists(m_predictorsScenarioDir)) {

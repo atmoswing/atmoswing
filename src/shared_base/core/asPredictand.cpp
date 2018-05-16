@@ -285,7 +285,7 @@ wxString asPredictand::GetDBFilePathSaving(const wxString &destinationDir) const
     wxString dataSpatialAggregationStr = asPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
     wxString fileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
 
-    wxString predictandDBFilePath = destinationDir + wxFileName::GetPathSeparator() + fileName + ".nc";
+    wxString predictandDBFilePath = destinationDir + "/" + fileName + ".nc";
 
     return predictandDBFilePath;
 }
@@ -596,7 +596,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
     // Load file
     wxString fileFullPath;
     if (!directory.IsEmpty()) {
-        fileFullPath = directory + wxFileName::GetPathSeparator() + currentData.GetStationFilename(stationIndex);
+        fileFullPath = directory + "/" + currentData.GetStationFilename(stationIndex);
     } else {
         fileFullPath = currentData.GetDataPath() + currentData.GetStationFilename(stationIndex);
     }

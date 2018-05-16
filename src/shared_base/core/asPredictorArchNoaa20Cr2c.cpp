@@ -129,7 +129,7 @@ bool asPredictorArchNoaa20Cr2c::Init()
             m_fileNamePattern = "prate.%d.nc";
             m_fileVarName = "prate";
             m_unit = kg_m2_s;
-            m_subFolder.Append(wxFileName::GetPathSeparator() + "monolevel");
+            m_subFolder.Append("/monolevel");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));

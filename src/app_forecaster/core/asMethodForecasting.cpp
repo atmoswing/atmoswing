@@ -112,13 +112,13 @@ bool asMethodForecasting::Manager()
             fflush(stdout);
 
             // Load parameters
-            m_paramsFilePath = forecastParametersDir + wxFileName::GetPathSeparator() + m_batchForecasts->GetForecastFileName(i);
+            m_paramsFilePath = forecastParametersDir + "/" + m_batchForecasts->GetForecastFileName(i);
             asParametersForecast params;
             if (!params.LoadFromFile(m_paramsFilePath))
                 return false;
             params.InitValues();
 
-            m_predictandDBFilePath = predictandDBDir + wxFileName::GetPathSeparator() + params.GetPredictandDatabase();
+            m_predictandDBFilePath = predictandDBDir + "/" + params.GetPredictandDatabase();
 
 #if wxUSE_GUI
             if (g_responsive)

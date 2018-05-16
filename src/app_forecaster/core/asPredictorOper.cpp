@@ -256,18 +256,14 @@ bool asPredictorOper::BuildFilenamesUrls()
         thisCommandLeadTime.Replace("[LEADTIME-hhhh]", timeStr);
 
         // Filename
-        wxString dirstructure = "YYYY";
-        dirstructure.Append(wxFileName::GetPathSeparator());
-        dirstructure.Append("MM");
-        dirstructure.Append(wxFileName::GetPathSeparator());
-        dirstructure.Append("DD");
+        wxString dirstructure = "YYYY/MM/DD");
         wxString directory = asTime::GetStringTime(runDateInUse, dirstructure);
         wxString nowstr = asTime::GetStringTime(runDateInUse, "YYYYMMDDhh");
         wxString leadtimestr = timeStrFileName;
         wxString ext = m_fileExtension;
 
         wxString filename = wxString::Format("%s.%s.%s.%s.%s", nowstr, m_datasetId, m_dataId, leadtimestr, ext);
-        wxString filenameres = directory + wxFileName::GetPathSeparator() + filename;
+        wxString filenameres = directory + "/" + filename;
 
         double dataDate = runDateInUse + currentLeadtime / 24.0;
 
@@ -291,8 +287,7 @@ void asPredictorOper::ListFiles(asTimeArray &timeArray)
         // Check if the volume is present
         wxFileName fileName(currfileName);
         if (!fileName.HasVolume() && !m_predictorsRealtimeDir.IsEmpty()) {
-            filePath = m_predictorsRealtimeDir;
-            filePath.Append(wxFileName::GetPathSeparator());
+            filePath = m_predictorsRealtimeDir + "/";
         }
         filePath.Append(currfileName);
 
