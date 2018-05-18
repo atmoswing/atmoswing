@@ -35,7 +35,7 @@ asPredictorArchEcmwfCera20C::asPredictorArchEcmwfCera20C(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "ECMWF_CERA_20C_3h";
+    m_datasetId = "ECMWF_CERA_20C";
     m_provider = "ECMWF";
     m_datasetName = "Coupled ERA 20th Century";
     m_fileType = asFile::Netcdf;
