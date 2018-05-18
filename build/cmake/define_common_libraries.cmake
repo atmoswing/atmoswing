@@ -16,11 +16,22 @@ include("${wxWidgets_USE_FILE}")
 include_directories(${wxWidgets_INCLUDE_DIRS})
 link_libraries(${wxWidgets_LIBRARIES})
 
-# PNG
-set(PNG_FIND_QUIETLY OFF)
-find_package(PNG REQUIRED)
-include_directories(${PNG_INCLUDE_DIRS})
-link_libraries(${PNG_LIBRARIES})
+if (USE_GUI)
+    # PNG
+    set(PNG_FIND_QUIETLY OFF)
+    find_package(PNG REQUIRED)
+    include_directories(${PNG_INCLUDE_DIRS})
+    link_libraries(${PNG_LIBRARIES})
+
+    # Jasper
+    find_package(Jasper REQUIRED)
+    include_directories(${JASPER_INCLUDE_DIR})
+    link_libraries(${JASPER_LIBRARIES})
+
+    # Jpeg
+    include_directories(${JPEG_INCLUDE_DIR})
+    link_libraries(${JPEG_LIBRARY})
+endif (USE_GUI)
 
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
@@ -28,15 +39,6 @@ mark_as_advanced(CLEAR NETCDF_LIBRARY)
 find_package(NetCDF 4 MODULE REQUIRED)
 include_directories(${NETCDF_INCLUDE_DIRS})
 link_libraries(${NETCDF_LIBRARIES})
-
-# Jasper
-find_package(Jasper REQUIRED)
-include_directories(${JASPER_INCLUDE_DIR})
-link_libraries(${JASPER_LIBRARIES})
-
-# Jpeg
-include_directories(${JPEG_INCLUDE_DIR})
-link_libraries(${JPEG_LIBRARY})
 
 # g2clib
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib")
