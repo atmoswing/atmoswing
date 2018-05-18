@@ -23,15 +23,15 @@ if (USE_GUI)
     include_directories(${PNG_INCLUDE_DIRS})
     link_libraries(${PNG_LIBRARIES})
 
-    # Jasper
-    find_package(Jasper REQUIRED)
-    include_directories(${JASPER_INCLUDE_DIR})
-    link_libraries(${JASPER_LIBRARIES})
-
     # Jpeg
     include_directories(${JPEG_INCLUDE_DIR})
     link_libraries(${JPEG_LIBRARY})
 endif (USE_GUI)
+
+# Jasper
+find_package(Jasper REQUIRED)
+include_directories(${JASPER_INCLUDE_DIR})
+link_libraries(${JASPER_LIBRARIES})
 
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
