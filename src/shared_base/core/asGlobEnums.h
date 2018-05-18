@@ -157,6 +157,8 @@ enum Season
 enum TimeFormat
 {
     classic,
+    ISOdate,
+    ISOdatetime,
     DDMMYYYY,
     YYYYMMDD,
     full,

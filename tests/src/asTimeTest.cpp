@@ -436,6 +436,22 @@ TEST(Time, GetStringTimeTimeStruct)
     EXPECT_EQ(0, result);
 }
 
+TEST(Time, GetTimeFromStringFormatISOdate)
+{
+    double conversion = asTime::GetTimeFromString("2007-11-23", ISOdate);
+    double mjd = asTime::GetMJD(2007, 11, 23);
+
+    EXPECT_DOUBLE_EQ(mjd, conversion);
+}
+
+TEST(Time, GetTimeFromStringFormatISOdatetime)
+{
+    double conversion = asTime::GetTimeFromString("2007-11-23 13:05:01", ISOdatetime);
+    double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
+
+    EXPECT_DOUBLE_EQ(mjd, conversion);
+}
+
 TEST(Time, GetTimeFromStringFormatDDMMYYYY)
 {
     double conversion = asTime::GetTimeFromString("23.11.2007", DDMMYYYY);
