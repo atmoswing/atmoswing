@@ -39,4 +39,5 @@ const double g_cst_Euler = 0.57721566490153286060651209008240243104215933593992;
 const double g_cst_Pi = 3.14159265358979323846264338327950288419716939937510; // http://fr.wikipedia.org/wiki/Pi
 
 // Useful variables
+const wxString DS = wxFileName::GetPathSeparator();
 double g_ppiScaleDc = 1.0;

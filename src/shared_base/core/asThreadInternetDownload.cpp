@@ -71,7 +71,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
 
         for (int iFile = m_start; iFile <= m_end; iFile++) {
             wxString fileName = m_fileNames[iFile];
-            wxString filePath = m_destinationDir + "/" + fileName;
+            wxString filePath = m_destinationDir + DS + fileName;
             wxString url = m_urls[iFile];
             wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 

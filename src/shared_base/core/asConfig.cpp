@@ -36,7 +36,7 @@ wxString asConfig::GetLogDir()
     ThreadsManager().CritSectionConfig().Enter();
     wxString tempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
-    tempDir.Append("/");
+    tempDir.Append(DS);
     return tempDir;
 }
 
@@ -45,7 +45,7 @@ wxString asConfig::GetTempDir()
     ThreadsManager().CritSectionConfig().Enter();
     wxString tempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
-    tempDir.Append("/");
+    tempDir.Append(DS);
     return tempDir;
 }
 
@@ -73,7 +73,7 @@ wxString asConfig::GetDataDir()
     ThreadsManager().CritSectionConfig().Enter();
     wxString dirData = wxStandardPaths::Get().GetDataDir();
     ThreadsManager().CritSectionConfig().Leave();
-    dirData.Append("/");
+    dirData.Append(DS);
     return dirData;
 }
 
@@ -84,7 +84,7 @@ wxString asConfig::GetSoftDir()
     ThreadsManager().CritSectionConfig().Leave();
     wxFileName fileName(appPath);
     wxString appDir = fileName.GetPath();
-    appDir.Append("/");
+    appDir.Append(DS);
     return appDir;
 }
 
@@ -97,15 +97,15 @@ wxString asConfig::GetUserDataDir()
     ThreadsManager().CritSectionConfig().Leave();
 
 #if defined(__WXMSW__)
-    userDataDir.Append("/AtmoSwing");
+    userDataDir.Append(DS+"AtmoSwing");
 #elif defined(__WXMAC__)
-    userDataDir.Append("/atmoswing");
+    userDataDir.Append(DS+"atmoswing");
 #elif defined(__UNIX__)
     userDataDir.Append("atmoswing");
 #endif
 
     stdPth.UseAppInfo(1);
-    userDataDir.Append("/");
+    userDataDir.Append(DS);
     return userDataDir;
 }
 
@@ -114,13 +114,13 @@ wxString asConfig::GetDocumentsDir()
     ThreadsManager().CritSectionConfig().Enter();
     wxString dirDocs = wxStandardPaths::Get().GetDocumentsDir();
     ThreadsManager().CritSectionConfig().Leave();
-    dirDocs.Append("/");
+    dirDocs.Append(DS);
     return dirDocs;
 }
 
 wxString asConfig::GetDefaultUserWorkingDir()
 {
-    wxString dirData = GetUserDataDir() + "/Data/";
+    wxString dirData = GetUserDataDir() + DS + "Data" + DS;
     return dirData;
 }
 

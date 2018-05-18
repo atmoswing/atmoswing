@@ -118,11 +118,11 @@ void AtmoswingFrameDownscaler::SetDefaultOptions()
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 
     // Paths
-    wxString dirData = asConfig::GetDataDir() + "data/";
+    wxString dirData = asConfig::GetDataDir() + "data" + DS;
     wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
     pConfig->Write("/Paths/DataPredictandDBDir", predictandDBDir);
     wxString downscalerResultsDir = pConfig->Read("/Paths/DownscalerResultsDir",
-                                                 asConfig::GetDocumentsDir() + "AtmoSwing/Downscaler");
+                                                 asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler");
     pConfig->Write("/Paths/DownscalerResultsDir", downscalerResultsDir);
     wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
     pConfig->Write("/Paths/ArchivePredictorsDir", archivePredictorsDir);

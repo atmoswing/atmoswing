@@ -204,9 +204,12 @@ bool AtmoswingAppOptimizer::OnInit()
 wxString AtmoswingAppOptimizer::GetLocalPath()
 {
     // Prepare local path
-    wxString localPath = wxFileName::GetCwd() + "/";
+    wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
-        localPath.Append(wxString::Format("runs/%d/", g_runNb));
+        localPath.Append("runs");
+        localPath.Append(DS);
+        localPath.Append(wxString::Format("%d", g_runNb));
+        localPath.Append(DS);
     }
 
     return localPath;
@@ -249,7 +252,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     }
 
     if (g_local) {
-        wxString dirData = wxFileName::GetCwd() + "/data/";
+        wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
         wxConfigBase *pConfig = wxFileConfig::Get();
 
@@ -378,9 +381,12 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Local mode
     if (parser.Found("local")) {
         g_local = true;
-        wxString localPath = wxFileName::GetCwd() + "/";
+        wxString localPath = wxFileName::GetCwd() + DS;
         if (g_runNb > 0) {
-            localPath.Append(wxString::Format("runs/%d/", g_runNb));
+            localPath.Append("runs");
+            localPath.Append(DS);
+            localPath.Append(wxString::Format("%d", g_runNb));
+            localPath.Append(DS);
 
             // Check if path already exists
             if (wxFileName::Exists(localPath)) {
@@ -452,7 +458,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a calibration params file
     if (parser.Found("file-parameters", &m_calibParamsFile)) {
         if (g_local) {
-            m_calibParamsFile = wxFileName::GetCwd() + "/" + m_calibParamsFile;
+            m_calibParamsFile = wxFileName::GetCwd() + DS + m_calibParamsFile;
         }
 
         if (!wxFileName::FileExists(m_calibParamsFile)) {
@@ -464,7 +470,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a calibration predictand DB
     if (parser.Found("predictand-db", &m_predictandDB)) {
         if (g_local) {
-            m_predictandDB = wxFileName::GetCwd() + "/" + m_predictandDB;
+            m_predictandDB = wxFileName::GetCwd() + DS + m_predictandDB;
         }
 
         if (!wxFileName::FileExists(m_predictandDB)) {
@@ -475,8 +481,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a predictors directory
     if (parser.Found("dir-predictors", &m_predictorsDir)) {
-        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + "/" + m_predictorsDir)) {
-            m_predictorsDir = wxFileName::GetCwd() + "/" + m_predictorsDir;
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsDir)) {
+            m_predictorsDir = wxFileName::GetCwd() + DS + m_predictorsDir;
         }
 
         if (!wxFileName::DirExists(m_predictorsDir)) {

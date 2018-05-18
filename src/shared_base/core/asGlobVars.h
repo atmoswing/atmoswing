@@ -42,6 +42,7 @@ extern const double g_cst_Euler;
 extern const double g_cst_Pi;
 
 // Useful variables
+extern const wxString DS;
 extern double g_ppiScaleDc;
 
 #endif // ASGLOBVARS_H_INCLUDED

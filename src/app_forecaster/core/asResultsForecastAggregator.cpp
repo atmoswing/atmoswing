@@ -652,10 +652,12 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
     // Create 1 file per method
     for (int methodRow = 0; methodRow < (int) m_forecasts.size(); methodRow++) {
         // Filename
-        wxString filePath = dirPath + "/";
-        wxString dirstructure = "YYYY/MM/DD";
+        wxString filePath = dirPath;
+        filePath.Append(DS);
+        wxString dirstructure = "YYYY";
+        dirstructure.Append(DS).Append("MM").Append(DS).Append("DD");
         wxString directory = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), dirstructure);
-        filePath.Append(directory + "/");
+        filePath.Append(directory).Append(DS);
         wxString forecastname = m_forecasts[methodRow][0]->GetMethodId();
         wxString nowstr = asTime::GetStringTime(m_forecasts[methodRow][0]->GetLeadTimeOrigin(), "YYYYMMDDhh");
         wxString ext = "xml";

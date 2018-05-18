@@ -108,7 +108,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
         // Check the files
         for (const auto &fileName : fileNames) {
-            wxString filePath = destinationDir + "/" + fileName;
+            wxString filePath = destinationDir + DS + fileName;
             if (!wxFileName::FileExists(filePath)) {
                 return asFAILED;
             }
@@ -141,7 +141,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
             for (unsigned int iFile = 0; iFile < urls.size(); iFile++) {
                 wxString fileName = fileNames[iFile];
-                wxString filePath = destinationDir + "/" + fileName;
+                wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[iFile];
                 wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
 

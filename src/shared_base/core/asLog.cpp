@@ -51,7 +51,9 @@ bool asLog::CreateFile(const wxString &fileName)
 {
     // Create the log file
     wxDELETE(m_logFile);
-    wxString logpath = asConfig::GetLogDir() + "/" + fileName;
+    wxString logpath = asConfig::GetLogDir();
+    logpath.Append(DS);
+    logpath.Append(fileName);
     m_logFile = new wxFFile(logpath, "w");
     auto pLogFile = new wxLogStderr(m_logFile->fp());
     m_logChain = new wxLogChain(pLogFile);
@@ -63,7 +65,9 @@ bool asLog::CreateFileOnly(const wxString &fileName)
 {
     // Create the log file
     wxDELETE(m_logFile);
-    wxString logpath = asConfig::GetLogDir() + "/" + fileName;
+    wxString logpath = asConfig::GetLogDir();
+    logpath.Append(DS);
+    logpath.Append(fileName);
     m_logFile = new wxFFile(logpath, "w");
     auto pLogFile = new wxLogStderr(m_logFile->fp());
     wxLog::SetActiveTarget(pLogFile);
