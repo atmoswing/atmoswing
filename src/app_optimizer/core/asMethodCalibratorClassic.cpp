@@ -56,6 +56,16 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     if (!DoPreloadData(params))
         return false;
 
+    // Preloading data is necessary
+    for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
+        for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+            if (!params.NeedsPreloading(iStep, iPtor)) {
+                wxLogError(_("You need to preload the data for the classic calibration."));
+                return false;
+            }
+        }
+    }
+
     // Copy of the original parameters set.
     m_originalParams = params;
 
@@ -66,9 +76,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
-        vi stationId = stationsId[iStat];
-
+    for (auto stationId : stationsId) {
         wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
 
         // Reset the score of the climatology
@@ -319,13 +327,10 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
                                                const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
                                                a1d &yAxis) const
 {
-    wxFAIL;
-    /*
-    xAxis = asAreaCompGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
-                                             params.GetPredictorXstep(iStep, 0));
-    yAxis = asAreaCompGrid::GetYaxis(params.GetPredictorGridType(iStep, 0), explo.yMinStart, explo.yMinEnd,
-                                             params.GetPredictorYstep(iStep, 0));
-                                             */
+    wxASSERT(m_preloadedArchive[iStep][0][0][0][0]);
+
+    xAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
+    yAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLatAxis();
 }
 
 void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep,
@@ -337,8 +342,10 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
-    for (int iX = 0; iX < xAxis.size(); iX += m_stepsLonPertinenceMap) {
-        for (int iY = 0; iY < yAxis.size(); iY += m_stepsLatPertinenceMap) {
+    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
+
+    for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
+        for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
             for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
                 params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
                 params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
@@ -374,25 +381,25 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
     wxStopWatch swMap;
 
-    for (unsigned int iParam = 0; iParam < m_parametersTemp.size(); iParam++) {
+    for (auto &param : m_parametersTemp) {
         if (m_proceedSequentially) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &m_parametersTemp[iParam], iStep, containsNaNs))
+                if (!GetAnalogsDates(anaDates, &param, iStep, containsNaNs))
                     return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, &m_parametersTemp[iParam], anaDatesPrevious, iStep, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, &param, anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
                 m_scoresCalibTemp.push_back(NaNf);
                 continue;
             }
-            if (!GetAnalogsValues(anaValues, &m_parametersTemp[iParam], anaDates, iStep))
+            if (!GetAnalogsValues(anaValues, &param, anaDates, iStep))
                 return false;
-            if (!GetAnalogsScores(anaScores, &m_parametersTemp[iParam], anaValues, iStep))
+            if (!GetAnalogsScores(anaScores, &param, anaValues, iStep))
                 return false;
-            if (!GetAnalogsTotalScore(anaScoreFinal, &m_parametersTemp[iParam], anaScores, iStep))
+            if (!GetAnalogsTotalScore(anaScoreFinal, &param, anaScores, iStep))
                 return false;
         } else {
             bool continueLoop = true;
@@ -401,10 +408,10 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 wxLogVerbose(_("Process sub-level %d"), sub_step);
                 bool containsNaNs = false;
                 if (sub_step == 0) {
-                    if (!GetAnalogsDates(anaDates, &m_parametersTemp[iParam], sub_step, containsNaNs))
+                    if (!GetAnalogsDates(anaDates, &param, sub_step, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, &m_parametersTemp[iParam], anaDatesPreviousSubRuns, sub_step,
+                    if (!GetAnalogsSubDates(anaDates, &param, anaDatesPreviousSubRuns, sub_step,
                                             containsNaNs))
                         return false;
                 }
@@ -416,18 +423,18 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 anaDatesPreviousSubRuns = anaDates;
             }
             if (continueLoop) {
-                if (!GetAnalogsValues(anaValues, &m_parametersTemp[iParam], anaDates, params.GetStepsNb() - 1))
+                if (!GetAnalogsValues(anaValues, &param, anaDates, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, &m_parametersTemp[iParam], anaValues, params.GetStepsNb() - 1))
+                if (!GetAnalogsScores(anaScores, &param, anaValues, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, &m_parametersTemp[iParam], anaScores, params.GetStepsNb() - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &param, anaScores, params.GetStepsNb() - 1))
                     return false;
             }
         }
 
         // Store the result
         m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
-        resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetScore());
+        resultsTested.Add(param, anaScoreFinal.GetScore());
     }
 
     wxLogMessage(_("Time to process the relevance map: %.3f min."), static_cast<float>(swMap.Time()) / 60000.0f);

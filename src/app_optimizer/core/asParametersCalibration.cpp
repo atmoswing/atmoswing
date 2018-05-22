@@ -487,10 +487,10 @@ bool asParametersCalibration::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadYmin(iStep, iPtor, GetPredictorYminVector(iStep, iPtor)[0]))
                     return false;
-                if (!SetPreloadXptsnb(iStep, iPtor, (int) GetPredictorXminVector(iStep, iPtor).size() +
+                if (!SetPreloadXptsnb(iStep, iPtor, (int) GetPredictorXminVector(iStep, iPtor).size() - 1 +
                         GetPredictorXptsnbVector(iStep, iPtor)[GetPredictorXptsnbVector(iStep, iPtor).size() - 1]))
                     return false;
-                if (!SetPreloadYptsnb(iStep, iPtor, (int) GetPredictorYminVector(iStep, iPtor).size() +
+                if (!SetPreloadYptsnb(iStep, iPtor, (int) GetPredictorYminVector(iStep, iPtor).size() - 1 +
                         GetPredictorYptsnbVector(iStep, iPtor)[GetPredictorYptsnbVector(iStep, iPtor).size() - 1]))
                     return false;
             }

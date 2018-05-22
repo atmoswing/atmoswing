@@ -103,10 +103,16 @@ public:
         return m_isRegular;
     }
 
+    void AllowResizeFromData()
+    {
+        m_allowResizeFromData = true;
+    }
+
 
 protected:
     bool m_isRegular;
     bool m_isInitialized;
+    bool m_allowResizeFromData;
     std::vector<a1d> m_compositeXaxes;
     std::vector<a1d> m_compositeYaxes;
     int m_xPtsNb;

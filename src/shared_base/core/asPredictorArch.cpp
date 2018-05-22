@@ -244,13 +244,17 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
     int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
     int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
     if (xStartIndex < 0) {
-        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360);
-        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360);
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
+        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
         if (xStartIndex < 0 || xEndIndex < 0) {
-            wxLogError(_("An error occurred while trying to clip data to another area (extended axis)."));
-            wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin + 360,
-                       xMax + 360, m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
-            return false;
+            xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin - 360, toleranceLon);
+            xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax - 360, toleranceLon);
+            if (xStartIndex < 0 || xEndIndex < 0) {
+                wxLogError(_("An error occurred while trying to clip data to another area (extended axis)."));
+                wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin,
+                           xMax, m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
+                return false;
+            }
         }
     }
     if (xStartIndex < 0 || xEndIndex < 0) {

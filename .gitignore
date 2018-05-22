@@ -2,9 +2,9 @@ syntax: glob
 */CMakeFiles/*
 */_CPack_Packages/*
 */ipch/*
-*/Debug/*
-*/Release/*
-*/RelWithDebInfo/*
+**/Debug/*
+**/Release/*
+**/RelWithDebInfo/*
 */Win32/*
 */ALL_BUILD.*
 */ZERO_CHECK.*

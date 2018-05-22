@@ -80,6 +80,7 @@ asAreaCompGrid::asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const C
         : asAreaComp(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
           m_isRegular(false),
           m_isInitialized(false),
+          m_allowResizeFromData(false),
           m_xPtsNb(0),
           m_yPtsNb(0)
 {
@@ -89,6 +90,7 @@ asAreaCompGrid::asAreaCompGrid(double xMin, double xWidth, double yMin, double y
         : asAreaComp(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
           m_isRegular(false),
           m_isInitialized(false),
+          m_allowResizeFromData(false),
           m_xPtsNb(0),
           m_yPtsNb(0)
 {
@@ -98,6 +100,7 @@ asAreaCompGrid::asAreaCompGrid()
         : asAreaComp(),
           m_isRegular(false),
           m_isInitialized(false),
+          m_allowResizeFromData(false),
           m_xPtsNb(0),
           m_yPtsNb(0)
 {
@@ -220,53 +223,59 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
     for (int i = 0; i < GetNbComposites(); ++i) {
 
         int indexXmin, indexXmax;
+        auto nlons = static_cast<int>(lons.size() - 1);
 
         if (getLarger) { // Get larger when interpolation is needed interpolation
 
-            indexXmin = asFindFloor(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin(), asHIDE_WARNINGS);
+            indexXmin = asFindFloor(&lons[0], &lons[nlons], m_composites[i].GetXmin(), asHIDE_WARNINGS);
             if (indexXmin == asOUT_OF_RANGE) {
-                indexXmin = asFindFloor(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() + 360.0, asHIDE_WARNINGS);
+                indexXmin = asFindFloor(&lons[0], &lons[nlons], m_composites[i].GetXmin() + 360.0, asHIDE_WARNINGS);
             }
             if (indexXmin == asOUT_OF_RANGE) {
-                indexXmin = asFindFloor(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() - 360.0, asHIDE_WARNINGS);
+                indexXmin = asFindFloor(&lons[0], &lons[nlons], m_composites[i].GetXmin() - 360.0, asHIDE_WARNINGS);
             }
 
-            indexXmax = asFindCeil(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax(), asHIDE_WARNINGS);
+            indexXmax = asFindCeil(&lons[0], &lons[nlons], m_composites[i].GetXmax(), asHIDE_WARNINGS);
             if (indexXmax == asOUT_OF_RANGE) {
-                indexXmax = asFindCeil(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() + 360.0, asHIDE_WARNINGS);
+                indexXmax = asFindCeil(&lons[0], &lons[nlons], m_composites[i].GetXmax() + 360.0, asHIDE_WARNINGS);
             }
             if (indexXmax == asOUT_OF_RANGE) {
                 wxASSERT(lons.size() > 1);
                 double dataStep = lons[1] - lons[0];
-                indexXmax = asFindCeil(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
+                indexXmax = asFindCeil(&lons[0], &lons[nlons], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
             }
             if (indexXmax == asOUT_OF_RANGE) {
-                indexXmax = asFindCeil(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
+                indexXmax = asFindCeil(&lons[0], &lons[nlons], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
             }
 
         } else {
 
-            indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin(), asHIDE_WARNINGS);
+            indexXmin = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmin(), asHIDE_WARNINGS);
             if (indexXmin == asOUT_OF_RANGE) {
-                indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() + 360.0, asHIDE_WARNINGS);
+                indexXmin = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmin() + 360.0, asHIDE_WARNINGS);
             }
             if (indexXmin == asOUT_OF_RANGE) {
-                indexXmin = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmin() - 360.0, asHIDE_WARNINGS);
+                indexXmin = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmin() - 360.0, asHIDE_WARNINGS);
             }
 
-            indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax(), asHIDE_WARNINGS);
+            indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax(), asHIDE_WARNINGS);
             if (indexXmax == asOUT_OF_RANGE) {
-                indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() + 360.0, asHIDE_WARNINGS);
+                indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() + 360.0, asHIDE_WARNINGS);
             }
             if (indexXmax == asOUT_OF_RANGE) {
                 wxASSERT(lons.size() > 1);
                 double dataStep = lons[1] - lons[0];
-                indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
+                indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() - dataStep, asHIDE_WARNINGS);
             }
             if (indexXmax == asOUT_OF_RANGE) {
-                indexXmax = asFindClosest(&lons[0], &lons[lons.size()-1], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
+                indexXmax = asFindClosest(&lons[0], &lons[nlons], m_composites[i].GetXmax() - 360.0, asHIDE_WARNINGS);
             }
+        }
 
+        if (m_allowResizeFromData) {
+            if (indexXmin != asOUT_OF_RANGE && indexXmax == asOUT_OF_RANGE) {
+                indexXmax = nlons;
+            }
         }
 
         if (indexXmax == asOUT_OF_RANGE) {
@@ -280,21 +289,43 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
         wxASSERT(indexXmin <= indexXmax);
 
         int indexYmin, indexYmax;
+        int nlats = static_cast<int>(lats.size() - 1);
 
         if (getLarger) {
 
-            indexYmin = asFindFloor(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmin());
-            indexYmax = asFindCeil(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmax());
+            indexYmin = asFindFloor(&lats[0], &lats[nlats], m_composites[i].GetYmin(), asHIDE_WARNINGS);
+            indexYmax = asFindCeil(&lats[0], &lats[nlats], m_composites[i].GetYmax(), asHIDE_WARNINGS);
+
+            if (m_allowResizeFromData) {
+                if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
+                    indexYmax = nlats;
+                }
+            }
 
             if (indexYmin > indexYmax) {
-                indexYmin = asFindCeil(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmax());
-                indexYmax = asFindFloor(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmin());
+                indexYmin = asFindCeil(&lats[0], &lats[nlats], m_composites[i].GetYmax(), asHIDE_WARNINGS);
+                indexYmax = asFindFloor(&lats[0], &lats[nlats], m_composites[i].GetYmin(), asHIDE_WARNINGS);
+
+                if (m_allowResizeFromData) {
+                    if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
+                        indexYmin = nlats;
+                    }
+                }
             }
 
         } else {
 
-            indexYmin = asFindClosest(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmin());
-            indexYmax = asFindClosest(&lats[0], &lats[lats.size()-1], m_composites[i].GetYmax());
+            indexYmin = asFindClosest(&lats[0], &lats[nlats], m_composites[i].GetYmin(), asHIDE_WARNINGS);
+            indexYmax = asFindClosest(&lats[0], &lats[nlats], m_composites[i].GetYmax(), asHIDE_WARNINGS);
+
+            if (m_allowResizeFromData) {
+                if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
+                    indexYmax = nlats;
+                }
+                if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
+                    indexYmin = nlats;
+                }
+            }
 
             if (indexYmin > indexYmax) {
                 int tmp = indexYmax;

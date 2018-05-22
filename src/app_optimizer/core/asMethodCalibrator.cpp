@@ -158,6 +158,8 @@ void asMethodCalibrator::KeepBestTemp()
 
 void asMethodCalibrator::PushBackFirstTemp()
 {
+    wxASSERT(!m_parametersTemp.empty());
+    wxASSERT(!m_scoresCalibTemp.empty());
     m_parameters.push_back(m_parametersTemp[0]);
     m_scoresCalib.push_back(m_scoresCalibTemp[0]);
 }
@@ -456,11 +458,10 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     asTimeArray timeArrayTarget(GetTimeStartCalibration(params), GetTimeEndCalibration(params),
                                 params->GetTimeArrayTargetTimeStepHours(), params->GetTimeArrayTargetMode());
 
-    if (!m_validationMode) {
-        if (params->HasValidationPeriod()) // remove validation years
-        {
-            timeArrayTarget.SetForbiddenYears(params->GetValidationYearsVector());
-        }
+    // Remove validation years
+    if (!m_validationMode && params->HasValidationPeriod())
+    {
+        timeArrayTarget.SetForbiddenYears(params->GetValidationYearsVector());
     }
 
     if (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||

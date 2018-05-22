@@ -791,13 +791,6 @@ int asTimeArray::GetIndexFirstAfter(double date) const
 
     double tolerance = 0.00001;
 
-    if (m_timeStepDays >= 1.0) {
-        // At a daily time step, might be defined at 00h or 12h
-        double intPart;
-        std::modf(date, &intPart);
-        date = intPart;
-    }
-
     if (date - tolerance > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNi;
@@ -814,13 +807,6 @@ int asTimeArray::GetIndexFirstAfter(double date) const
 int asTimeArray::GetIndexFirstBefore(double date) const
 {
     wxASSERT(m_initialized);
-
-    if (m_timeStepDays >= 1.0) {
-        // At a daily time step, might be defined at 00h or 12h
-        double intPart;
-        std::modf(date, &intPart);
-        date = intPart;
-    }
 
     if (date + 0.00001 < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));

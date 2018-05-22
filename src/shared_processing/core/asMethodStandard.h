@@ -65,7 +65,7 @@ public:
 
     bool PointersArchiveDataShared(asParameters *params, int iStep, int iPtor, int iPre);
 
-    bool PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int i);
+    bool PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int iDat);
 
     bool PreloadArchiveDataWithPreprocessing(asParameters *params, int iStep, int iPtor);
 

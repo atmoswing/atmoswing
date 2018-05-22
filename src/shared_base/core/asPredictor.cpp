@@ -232,6 +232,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if ((unsigned) m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int) m_time.size(), (int) m_data.size());
+            wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdatetime),
+                       asTime::GetStringTime(m_time[m_time.size() - 1], ISOdatetime));
             wxDELETE(dataArea);
             return false;
         }

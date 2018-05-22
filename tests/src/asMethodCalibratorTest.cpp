@@ -977,8 +977,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(
-                calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, &paramsNoPreprocNoPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, &paramsNoPreprocNoPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, &paramsNoPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);

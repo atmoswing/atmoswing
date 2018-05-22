@@ -446,7 +446,7 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
     return false;
 }
 
-bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int i)
+bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int iDat)
 {
     wxLogVerbose(_("Preloading data for predictor %d of step %d."), iPtor, iStep);
 
@@ -456,7 +456,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     vwxs preloadDataIds = params->GetPreloadDataIds(iStep, iPtor);
     vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
     vd preloadTimeHours = params->GetPreloadTimeHours(iStep, iPtor);
-    wxASSERT(preloadDataIds.size() > i);
+    wxASSERT(preloadDataIds.size() > iDat);
     wxASSERT(!preloadLevels.empty());
     wxASSERT(!preloadTimeHours.empty());
 
@@ -465,7 +465,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
         for (unsigned int iHour = 0; iHour < preloadTimeHours.size(); iHour++) {
             // Loading the dataset information
             asPredictorArch *predictor = asPredictorArch::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
-                                                                      preloadDataIds[i], m_predictorDataDir);
+                                                                      preloadDataIds[iDat], m_predictorDataDir);
             if (!predictor) {
                 return false;
             }
@@ -500,15 +500,26 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             wxASSERT(params->GetPreloadYptsnb(iStep, iPtor) > 0);
 
             // Area object instantiation
-            asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+            wxString gridType = params->GetPredictorGridType(iStep, iPtor);
+            double xMin = params->GetPreloadXmin(iStep, iPtor);
+            int xPtsNb = params->GetPreloadXptsnb(iStep, iPtor);
+            double xStep = params->GetPredictorXstep(iStep, iPtor);
+            double yMin = params->GetPreloadYmin(iStep, iPtor);
+            int yPtsNb = params->GetPreloadYptsnb(iStep, iPtor);
+            double yStep = params->GetPredictorYstep(iStep, iPtor);
+            int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
+            bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
+            asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
+                                                               flatAllowed, isLatLon);
             wxASSERT(area);
+            area->AllowResizeFromData();
 
             // Data loading
-            wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[i], (int) preloadLevels[iLevel],
+            wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[iDat], (int) preloadLevels[iLevel],
                          preloadTimeHours[iHour]);
             try {
                 if (!predictor->Load(area, timeArray, preloadLevels[iLevel])) {
-                    wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[i],
+                    wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[iDat],
                                  (int) preloadLevels[iLevel], preloadTimeHours[iHour]);
                     wxDELETE(area);
                     wxDELETE(predictor);
@@ -530,7 +541,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             wxLogVerbose(_("Data loaded."));
             wxDELETE(area);
 
-            m_preloadedArchive[iStep][iPtor][i][iLevel][iHour] = predictor;
+            m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
         }
     }
 
@@ -656,7 +667,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
 
                 double yMax = params->GetPreloadYmin(iStep, iPtor) + params->GetPredictorYstep(iStep, iPtor) *
                                                                     static_cast<double>(params->GetPreloadYptsnb(iStep, iPtor) - 1);
-                if (yMax > 90) {
+
+                if (predictorPreprocess->IsLatLon() && yMax > 90) {
                     double diff = yMax - 90;
                     int removePts = (int) asRound(diff / params->GetPredictorYstep(iStep, iPtor));
                     params->SetPreloadYptsnb(iStep, iPtor, params->GetPreloadYptsnb(iStep, iPtor) - removePts);
@@ -665,8 +677,19 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 // Area object instantiation
-                asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+                wxString gridType = params->GetPredictorGridType(iStep, iPtor);
+                double xMin = params->GetPreloadXmin(iStep, iPtor);
+                int xPtsNb = params->GetPreloadXptsnb(iStep, iPtor);
+                double xStep = params->GetPredictorXstep(iStep, iPtor);
+                double yMin = params->GetPreloadYmin(iStep, iPtor);
+                int yPtsNb = params->GetPreloadYptsnb(iStep, iPtor);
+                double yStep = params->GetPredictorYstep(iStep, iPtor);
+                int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
+                bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
+                asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
+                                                                   flatAllowed, isLatLon);
                 wxASSERT(area);
+                area->AllowResizeFromData();
 
                 // Data loading
                 wxLogVerbose(_("Loading %s data for level %d, %gh."), params->GetPreprocessDataId(iStep, iPtor, iPre),

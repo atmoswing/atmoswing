@@ -260,6 +260,17 @@ public:
         return wxMax(m_fInd.memberCount, 1);
     }
 
+    a1d GetLatAxis() const
+    {
+        return m_axisLat;
+    }
+
+    a1d GetLonAxis() const
+    {
+        return m_axisLon;
+    }
+
+
 protected:
     struct FileStructure
     {
