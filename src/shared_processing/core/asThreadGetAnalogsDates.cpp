@@ -32,7 +32,7 @@
 #include <asCriteria.h>
 #include <asTimeArray.h>
 #include <asProcessor.h>
-
+#include <utility>
 
 asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                  std::vector<asPredictor *> predictorsTarget,
@@ -43,15 +43,15 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> pred
                                                  std::vector<asCriteria *> criteria, asParameters *params, int step,
                                                  vpa2f &vTargData, vpa2f &vArchData, a1i &vRowsNb, a1i &vColsNb,
                                                  int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-                                                 bool *containsNaNs, bool allowDuplicateDates)
+                                                 bool *containsNaNs, bool allowDuplicateDates, bool *success)
         : asThread(asThread::ProcessorGetAnalogsDates),
-          m_pPredictorsArchive(predictorsArchive),
-          m_pPredictorsTarget(predictorsTarget),
+          m_pPredictorsArchive(std::move(predictorsArchive)),
+          m_pPredictorsTarget(std::move(predictorsTarget)),
           m_pTimeArrayArchiveData(timeArrayArchiveData),
           m_pTimeArrayArchiveSelection(timeArrayArchiveSelection),
           m_pTimeArrayTargetData(timeArrayTargetData),
           m_pTimeArrayTargetSelection(timeArrayTargetSelection),
-          m_criteria(criteria),
+          m_criteria(std::move(criteria)),
           m_params(params),
           m_vTargData(vTargData),
           m_vArchData(vArchData),
@@ -59,7 +59,8 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> pred
           m_vColsNb(vColsNb),
           m_pFinalAnalogsCriteria(finalAnalogsCriteria),
           m_pFinalAnalogsDates(finalAnalogsDates),
-          m_allowDuplicateDates(allowDuplicateDates)
+          m_allowDuplicateDates(allowDuplicateDates),
+          m_success(success)
 {
     m_step = step;
     m_start = start;
@@ -127,8 +128,6 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             // DateArray object initialization.
             dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetTimeArrayAnalogsIntervalDays(),
                                            m_params->GetTimeArrayAnalogsExcludeDays());
-            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetTimeArrayAnalogsIntervalDays(),
-                                           m_params->GetTimeArrayAnalogsExcludeDays());
 
             // Counter representing the current index
             int counter = 0;
@@ -179,7 +178,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                             if (counter <= analogsNb - 1) {
                                 wxFAIL;
                                 wxLogError(_("It should not happen that the array of analogue dates is not full when adding members."));
-                                return (wxThread::ExitCode) 1;
+                                *m_success = false;
+                                return (wxThread::ExitCode) -1;
                             }
                             asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float) timeArchiveData[iTimeArch],
                                                                    thisScore, scoreArrayOneDay, dateArrayOneDay);
@@ -193,7 +193,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                         wxLogError(_("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
                         wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
                                    timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
-                        return (wxThread::ExitCode) 1;
+                        *m_success = false;
+                        return (wxThread::ExitCode) -1;
                     }
                 }
             }
@@ -208,13 +209,13 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                 wxLogError(_("   Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
                            analogsNb, counter, dateArrayArchiveSelection.GetSize(),
                            m_params->GetTimeArrayAnalogsIntervalDays());
-                wxLogError(_("   Date array start (%.0f), date array end (%.0f), timestep (%.0f), dateTarg (%.0f)."),
-                           timeArchiveData[0], timeArchiveData[timeArchiveData.size() - 1],
-                           m_params->GetTimeArrayAnalogsTimeStepHours(), timeTargetSelection[iTimeTarg]);
-                return (wxThread::ExitCode) 1;
+                *m_success = false;
+                return (wxThread::ExitCode) -1;
             }
         }
     }
+
+    *m_success = true;
 
     return (wxThread::ExitCode) 0;
 }

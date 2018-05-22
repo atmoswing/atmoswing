@@ -45,5 +45,5 @@ wxThread::ExitCode asThreadViewerLayerManagerZoomIn::Entry()
     m_viewerLayerManager->Zoom(m_rect);
     m_critSectionViewerLayerManager->Leave();
 
-    return (wxThread::ExitCode) nullptr;
+    return (wxThread::ExitCode) 0;
 }

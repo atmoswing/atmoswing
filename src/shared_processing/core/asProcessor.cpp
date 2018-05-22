@@ -416,10 +416,14 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             int end = -1;
             int threadType = -1;
             std::vector<bool *> vContainsNaNs;
+            std::vector<bool *> vSuccess;
             for (int iThread = 0; iThread < threadsNb; iThread++) {
                 bool *flag = new bool;
                 *flag = false;
                 vContainsNaNs.push_back(flag);
+                bool *success = new bool;
+                *success = false;
+                vSuccess.push_back(success);
                 int start = end + 1;
                 end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
                 wxASSERT_MSG(end >= start,
@@ -434,7 +438,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                                               params, step, vTargData, vArchData,
                                                                               vRowsNb, vColsNb, start, end,
                                                                               &finalAnalogsCriteria, &finalAnalogsDates,
-                                                                              flag, allowDuplicateDates);
+                                                                              flag, allowDuplicateDates, success);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -447,14 +451,26 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             if (!parallelEvaluations)
                 wxLog::FlushActive();
 
-            for (auto &vContainsNaN : vContainsNaNs) {
-                if (*vContainsNaN) {
+            for (auto &containsNaN : vContainsNaNs) {
+                if (*containsNaN) {
                     containsNaNs = true;
                 }
-                wxDELETE(vContainsNaN);
+                wxDELETE(containsNaN);
             }
             if (containsNaNs) {
                 wxLogWarning(_("NaNs were found in the criteria values."));
+            }
+
+            bool failed = false;
+            for (auto &success : vSuccess) {
+                if (!*success) {
+                    failed = true;
+                }
+                wxDELETE(success);
+            }
+            if (failed) {
+                wxLogError(_("Errors were found during extraction of the analog dates."));
+                return false;
             }
 
             break;
@@ -587,7 +603,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.transpose();
                         finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.transpose();
                     } else {
-                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
+                        wxLogError(_("There is not enough available data to satisfy the number of analogs."));
+                        return false;
                     }
                 }
             }
@@ -827,10 +844,14 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             int end = -1;
             int threadType = -1;
             std::vector<bool *> vContainsNaNs;
+            std::vector<bool *> vSuccess;
             for (int iThread = 0; iThread < threadsNb; iThread++) {
                 bool *flag = new bool;
                 *flag = false;
                 vContainsNaNs.push_back(flag);
+                bool *success = new bool;
+                *success = false;
+                vSuccess.push_back(success);
                 int start = end + 1;
                 end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
                 wxASSERT_MSG(end >= start,
@@ -845,7 +866,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                                                                                     vRowsNb, vColsNb, start, end,
                                                                                     &finalAnalogsCriteria,
                                                                                     &finalAnalogsDates, &analogsDates,
-                                                                                    flag);
+                                                                                    flag, success);
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -858,14 +879,26 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             if (!parallelEvaluations)
                 wxLog::FlushActive();
 
-            for (unsigned int i = 0; i < vContainsNaNs.size(); i++) {
-                if (*vContainsNaNs[i]) {
+            for (auto &containsNaN : vContainsNaNs) {
+                if (*containsNaN) {
                     containsNaNs = true;
                 }
-                wxDELETE(vContainsNaNs[i]);
+                wxDELETE(containsNaN);
             }
             if (containsNaNs) {
                 wxLogWarning(_("NaNs were found in the criteria values."));
+            }
+
+            bool failed = false;
+            for (auto &success : vSuccess) {
+                if (!*success) {
+                    failed = true;
+                }
+                wxDELETE(success);
+            }
+            if (failed) {
+                wxFAIL;
+                wxLogError(_("Errors were found during extraction of the analog dates."));
             }
 
             wxASSERT(finalAnalogsDates(0, 0) > 0);
@@ -1195,7 +1228,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
 #ifndef UNIT_TESTING
 #ifdef _DEBUG
         wxASSERT(!asHasNaN(&finalAnalogCriteria(iTargetDatenew, 0),
-                                  &finalAnalogCriteria(iTargetDatenew, analogsNb - 1)));
+                           &finalAnalogCriteria(iTargetDatenew, analogsNb - 1)));
 #endif
 #endif
     }

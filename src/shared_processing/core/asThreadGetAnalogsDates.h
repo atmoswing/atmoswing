@@ -49,7 +49,7 @@ public:
                             asTimeArray *timeArrayTargetData, asTimeArray *timeArrayTargetSelection,
                             std::vector<asCriteria *> criteria, asParameters *params, int step, vpa2f &vRefData,
                             vpa2f &vEvalData, a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria,
-                            a2f *finalAnalogsDates, bool *containsNaNs, bool allowDuplicateDates);
+                            a2f *finalAnalogsDates, bool *containsNaNs, bool allowDuplicateDates, bool *success);
 
     virtual ~asThreadGetAnalogsDates();
 
@@ -77,6 +77,7 @@ private:
     a2f *m_pFinalAnalogsDates;
     bool *m_pContainsNaNs;
     bool m_allowDuplicateDates;
+    bool *m_success;
 
 };
 
