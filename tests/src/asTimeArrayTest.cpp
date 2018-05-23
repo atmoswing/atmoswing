@@ -490,7 +490,7 @@ TEST(TimeArray, GetIndexFirstAfter)
     asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 19, 30)));
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 19, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstAfterEqual)
@@ -501,7 +501,7 @@ TEST(TimeArray, GetIndexFirstAfterEqual)
     asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 18, 30)));
+    EXPECT_DOUBLE_EQ(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 18, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstBefore)
@@ -512,7 +512,7 @@ TEST(TimeArray, GetIndexFirstBefore)
     asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 05, 30)));
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 05, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstBeforeEqual)
@@ -523,5 +523,5 @@ TEST(TimeArray, GetIndexFirstBeforeEqual)
     asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30)));
+    EXPECT_DOUBLE_EQ(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30), 6));
 }

@@ -211,9 +211,9 @@ public:
 
     int GetClosestIndex(double date) const;
 
-    int GetIndexFirstAfter(double date) const;
+    int GetIndexFirstAfter(double date, double dataTimeStep) const;
 
-    int GetIndexFirstBefore(double date) const;
+    int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
 protected:
 
