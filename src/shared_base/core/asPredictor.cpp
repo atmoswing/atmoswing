@@ -930,12 +930,6 @@ int *asPredictor::GetIndexesCountGrib(int iArea) const
 
 bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 {
-    bool isShort = (ncFile.GetVarType(m_fileVarName) == NC_SHORT);
-    bool isFloat = (ncFile.GetVarType(m_fileVarName) == NC_FLOAT);
-
-    if (!isShort && !isFloat) {
-        wxLogError(_("Loading data other than short or float is not implemented yet."));
-    }
 
     // Check if scaling is needed
     bool scalingNeeded = true;
@@ -955,16 +949,12 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
         // Create the arrays to receive the data
         vf dataF;
-        vs dataS;
 
         // Resize the arrays to store the new data
         unsigned int totLength = (unsigned int) m_fInd.memberCount * m_fInd.timeArrayCount *
                                  m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
-        if (isShort) {
-            dataS.resize(totLength);
-        }
 
         // Fill empty beginning with NaNs
         int indexBegining = 0;
@@ -993,14 +983,8 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         }
 
         // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
-        if (isFloat) {
-            ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
-                                GetIndexesStrideNcdf(), &dataF[indexBegining]);
-        } else if (isShort) {
-            ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
-                                GetIndexesStrideNcdf(), &dataS[indexBegining]);
-            dataF = vf(dataS.begin(), dataS.end());
-        }
+        ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
+                            GetIndexesStrideNcdf(), &dataF[indexBegining]);
 
         // Keep data for later treatment
         vectData.push_back(dataF);
