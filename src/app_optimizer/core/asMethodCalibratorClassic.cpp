@@ -346,16 +346,23 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
 
     for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
         for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
-            for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-                params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
-                params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
 
-                // Fixes and checks
-                params.FixWeights();
-                params.FixCoordinates();
+            if (xAxis[iX] >= params.GetPredictorXminLowerLimit(iStep, 0) &&
+                xAxis[iX] <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+                yAxis[iY] >= params.GetPredictorYminLowerLimit(iStep, 0) &&
+                yAxis[iY] <= params.GetPredictorYminUpperLimit(iStep, 0)) {
+
+                for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+                    params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
+                    params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
+
+                    // Fixes and checks
+                    params.FixWeights();
+                    params.FixCoordinates();
+                }
+
+                m_parametersTemp.push_back(params);
             }
-
-            m_parametersTemp.push_back(params);
         }
     }
 }
