@@ -66,7 +66,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     bool parallelEvaluations;
     pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, true);
     bool allowDuplicateDates;
-    pConfig->Read("/Processing/AllowDuplicateDates", &allowDuplicateDates, false);
+    pConfig->Read("/Processing/AllowDuplicateDates", &allowDuplicateDates, true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
