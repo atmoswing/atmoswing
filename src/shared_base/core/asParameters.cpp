@@ -1712,8 +1712,8 @@ int asParameters::GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const
     if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= (unsigned) (iPre + 1)) {
         return m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre];
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessMembersNb (std) in the parameters object."));
-        return NaNi;
+        wxLogWarning(_("Trying to access to an element outside of preprocessMembersNb (std) in the parameters object."));
+        return 1;
     }
 }
 
