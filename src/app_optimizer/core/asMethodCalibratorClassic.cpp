@@ -462,6 +462,8 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
+    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
+
     bool isover = false;
     while (!isover) {
         isover = true;
@@ -596,6 +598,8 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     a1d xAxis;
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
+
+    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 
     // Try other moves. No while loop but reinitialize the for loops
     for (int multipleFactor = 1; multipleFactor <= m_resizingIterations; multipleFactor++) {
