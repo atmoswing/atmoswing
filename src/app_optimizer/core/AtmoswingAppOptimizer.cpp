@@ -72,6 +72,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                 {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
                 {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
                 {wxCMD_LINE_OPTION, NULL, "skip-valid",              "Skip the validation calculation"},
+                {wxCMD_LINE_OPTION, NULL, "no-duplicate-dates",      "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
                 {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
                                                                              "\n \t\t\t\t single: single assessment"
                                                                              "\n \t\t\t\t classic: classic calibration"
@@ -491,6 +492,24 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
     }
 
+    // Skip validation option
+    wxString optionValid = wxEmptyString;
+    if (parser.Found("skip-valid", &optionValid)) {
+        wxFileConfig::Get()->Write("/Optimizer/SkipValidation", optionValid);
+    }
+
+    // Station ID
+    wxString stationIdStr = wxEmptyString;
+    if (parser.Found("station-id", &stationIdStr)) {
+        m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
+    }
+
+    // Flag to disable the duplicate dates
+    if (parser.Found("no-duplicate-dates")) {
+        wxFileConfig::Get()->Write("/Processing/AllowDuplicateDates", false);
+    }
+
+
     /*
      * Methods options
      */
@@ -655,17 +674,6 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     if (parser.Found("ga-mut-multi-scale-p", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", option);
-    }
-
-    // Skip validation option
-    if (parser.Found("skip-valid", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/SkipValidation", option);
-    }
-
-    // Station ID
-    wxString stationIdStr = wxEmptyString;
-    if (parser.Found("station-id", &stationIdStr)) {
-        m_predictandStationIds = asParameters::GetFileStationIds(stationIdStr);
     }
 
     /*
