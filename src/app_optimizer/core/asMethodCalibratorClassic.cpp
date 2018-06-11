@@ -138,7 +138,9 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                 // Keep the best parameter set
                 wxASSERT(!m_parametersTemp.empty());
                 RemoveNaNsInTemp();
-                PushBackBestTemp();
+                if (!PushBackBestTemp())
+                    return false;
+
                 wxASSERT(m_parameters.size() == 1);
                 ClearTemp();
 
@@ -344,11 +346,19 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
 
     asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 
+    // Check longitude range
+    double corrRange = 0;
+    if (xAxis[0] >= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[0] - 360 <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[xAxis.size() - 1] - 360 >= params.GetPredictorXminLowerLimit(iStep, 0)) {
+        corrRange = -360;
+    }
+
     for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
         for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
 
-            if (xAxis[iX] >= params.GetPredictorXminLowerLimit(iStep, 0) &&
-                xAxis[iX] <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+            if (xAxis[iX] + corrRange >= params.GetPredictorXminLowerLimit(iStep, 0) &&
+                xAxis[iX] + corrRange <= params.GetPredictorXminUpperLimit(iStep, 0) &&
                 yAxis[iY] >= params.GetPredictorYminLowerLimit(iStep, 0) &&
                 yAxis[iY] <= params.GetPredictorYminUpperLimit(iStep, 0)) {
 

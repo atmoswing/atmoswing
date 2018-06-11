@@ -236,7 +236,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
         xMin -= 360;
     }
 
-    wxASSERT(m_axisLon.size() > 1);
+    wxASSERT(m_axisLon.size() > 0);
     double toleranceLon = 0.1;
     if (m_axisLon.size() > 1) {
         toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
@@ -267,7 +267,7 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
 
     double yMin = desiredArea->GetYmin();
     double yMax = desiredArea->GetYmax();
-    wxASSERT(m_axisLat.size() > 1);
+    wxASSERT(m_axisLat.size() > 0);
     double toleranceLat = 0.1;
     if (m_axisLat.size() > 1) {
         toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;

@@ -123,10 +123,15 @@ void asMethodCalibrator::ClearTemp()
     m_scoresCalibTemp.clear();
 }
 
-void asMethodCalibrator::PushBackBestTemp()
+bool asMethodCalibrator::PushBackBestTemp()
 {
-    SortScoresAndParametersTemp();
+    if (!SortScoresAndParametersTemp()) {
+        return false;
+    }
+
     PushBackFirstTemp();
+
+    return true;
 }
 
 void asMethodCalibrator::RemoveNaNsInTemp()
@@ -177,19 +182,21 @@ void asMethodCalibrator::KeepFirstTemp()
     }
 }
 
-void asMethodCalibrator::SortScoresAndParametersTemp()
+bool asMethodCalibrator::SortScoresAndParametersTemp()
 {
     wxASSERT(m_scoresCalibTemp.size() == m_parametersTemp.size());
     wxASSERT(!m_scoresCalibTemp.empty());
     wxASSERT(!m_parametersTemp.empty());
 
     if (m_parametersTemp.size() == 1)
-        return;
+        return true;
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
-    asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
-                        &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
+    if (!asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
+                      &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder)) {
+        return false;
+    }
 
     // Sort the parameters sets as the scores
     std::vector<asParametersCalibration> copyParameters;
@@ -200,6 +207,8 @@ void asMethodCalibrator::SortScoresAndParametersTemp()
         int index = (int) vIndices(i);
         m_parametersTemp[i] = copyParameters[index];
     }
+
+    return true;
 }
 
 bool asMethodCalibrator::PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal)

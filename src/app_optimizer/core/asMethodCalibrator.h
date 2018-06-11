@@ -77,7 +77,7 @@ public:
 
     void ClearTemp();
 
-    void PushBackBestTemp();
+    bool PushBackBestTemp();
 
     void RemoveNaNsInTemp();
 
@@ -87,7 +87,7 @@ public:
 
     void KeepFirstTemp();
 
-    void SortScoresAndParametersTemp();
+    bool SortScoresAndParametersTemp();
 
     bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
