@@ -163,6 +163,62 @@ TEST(PredictorArchNasaMerra2Regular, LoadComposite)
     wxDELETE(predictor);
 }
 
+TEST(PredictorArchNasaMerra2Regular, LoadCompositeStep)
+{
+    double xMin = 177.5;
+    double xWidth = 5;
+    double xStep = 1.25;
+    double yMin = 75;
+    double yWidth = 2;
+    double yStep = 1;
+    float level = 1000;
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+
+    double start = asTime::GetMJD(1987, 9, 9, 00, 00);
+    double end = asTime::GetMJD(1987, 9, 10, 18, 00);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
+    timearray.Init();
+
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/data-nasa-merra2/");
+
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
+
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
+
+    vva2f hgt = predictor->GetData();
+    // hgt[time][mem](lat,lon)
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    18.7	14.8	|  10.8	    6.8	    2.7
+    30.5	26.8	|  23.3		19.6	15.8
+    45.7	41.9	|  38.1		34.2	30.3
+    */
+    EXPECT_NEAR(18.7, hgt[0][0](0, 0), 0.1);
+    EXPECT_NEAR(14.8, hgt[0][0](0, 1), 0.1);
+    EXPECT_NEAR(10.8, hgt[0][0](0, 2), 0.1);
+    EXPECT_NEAR(2.7, hgt[0][0](0, 4), 0.1);
+    EXPECT_NEAR(30.5, hgt[0][0](1, 0), 0.1);
+    EXPECT_NEAR(45.7, hgt[0][0](2, 0), 0.1);
+    EXPECT_NEAR(30.3, hgt[0][0](2, 4), 0.1);
+
+    /* Values time step 7 (horizontal=Lon, vertical=Lat)
+    -68.0	-65.7	|   -63.3	-61.0	-58.8
+    -57.5	-55.9	|   -54.2	-52.9	-51.5
+    -43.8	-43.0	|   -42.4	-41.9	-42.4
+    */
+    EXPECT_NEAR(-68.0, hgt[7][0](0, 0), 0.1);
+    EXPECT_NEAR(-65.7, hgt[7][0](0, 1), 0.1);
+    EXPECT_NEAR(-63.3, hgt[7][0](0, 2), 0.1);
+    EXPECT_NEAR(-58.8, hgt[7][0](0, 4), 0.1);
+    EXPECT_NEAR(-57.5, hgt[7][0](1, 0), 0.1);
+    EXPECT_NEAR(-43.8, hgt[7][0](2, 0), 0.1);
+    EXPECT_NEAR(-42.4, hgt[7][0](2, 4), 0.1);
+
+    wxDELETE(predictor);
+}
+
 TEST(PredictorArchNasaMerra2Regular, LoadBorderLeft)
 {
     double xMin = 180;
