@@ -94,6 +94,12 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
     EXPECT_NEAR(65.9, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(57.1, hgt[7][0](4, 8), 0.1);
 
+    // Check lat axis
+    a1d lats = predictor->GetLatAxis();
+    EXPECT_NEAR(77, lats[0], 0.1);
+    EXPECT_NEAR(76.5, lats[1], 0.1);
+    EXPECT_NEAR(75, lats[4], 0.1);
+
     wxDELETE(predictor);
 }
 

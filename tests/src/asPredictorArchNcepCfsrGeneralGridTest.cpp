@@ -111,6 +111,12 @@ TEST(PredictorArchNcepCfsrGeneral, LoadEasy)
     EXPECT_NEAR(141.9, hgt[7][0](4, 0), 0.1);
     EXPECT_NEAR(156.3, hgt[7][0](4, 10), 0.1);
 
+    // Check lat axis
+    a1d lats = predictor->GetLatAxis();
+    EXPECT_NEAR(37, lats[0], 0.1);
+    EXPECT_NEAR(36.5, lats[1], 0.1);
+    EXPECT_NEAR(35, lats[4], 0.1);
+
     wxDELETE(area);
     wxDELETE(predictor);
 }

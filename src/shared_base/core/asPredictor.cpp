@@ -750,6 +750,9 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             m_axisLon = desiredArea->GetXaxis();
             m_axisLat = desiredArea->GetYaxis();
 
+            // Order latitude axis (as data will also be ordered)
+            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Desc);
+
             return dataArea;
 
         } else {
@@ -766,8 +769,12 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
             m_axisLon = desiredArea->GetXaxis();
             m_axisLat = desiredArea->GetYaxis();
 
+            // Order latitude axis (as data will also be ordered)
+            asSortArray(&m_axisLat[0], &m_axisLat[m_axisLat.size()-1], Desc);
+
             return dataArea;
         }
+
     }
 
     return nullptr;
