@@ -332,7 +332,18 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
     wxASSERT(m_preloadedArchive[iStep][0][0][0][0]);
 
     xAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
+
+    // Check longitude range
+    if (xAxis[0] >= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[0] - 360 <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[xAxis.size() - 1] - 360 >= params.GetPredictorXminLowerLimit(iStep, 0)) {
+        for (int i = 0; i < xAxis.size(); i++) {
+            xAxis[i] -= 360;
+        }
+    }
+
     yAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLatAxis();
+    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 }
 
 void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep,
@@ -344,21 +355,11 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
-    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
-
-    // Check longitude range
-    double corrRange = 0;
-    if (xAxis[0] >= params.GetPredictorXminUpperLimit(iStep, 0) &&
-        xAxis[0] - 360 <= params.GetPredictorXminUpperLimit(iStep, 0) &&
-        xAxis[xAxis.size() - 1] - 360 >= params.GetPredictorXminLowerLimit(iStep, 0)) {
-        corrRange = -360;
-    }
-
     for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
         for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
 
-            if (xAxis[iX] + corrRange >= params.GetPredictorXminLowerLimit(iStep, 0) &&
-                xAxis[iX] + corrRange <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+            if (xAxis[iX] >= params.GetPredictorXminLowerLimit(iStep, 0) &&
+                xAxis[iX] <= params.GetPredictorXminUpperLimit(iStep, 0) &&
                 yAxis[iY] >= params.GetPredictorYminLowerLimit(iStep, 0) &&
                 yAxis[iY] <= params.GetPredictorYminUpperLimit(iStep, 0)) {
 
@@ -471,8 +472,6 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     a1d xAxis;
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
-
-    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 
     bool isover = false;
     while (!isover) {
@@ -608,8 +607,6 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     a1d xAxis;
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
-
-    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 
     // Try other moves. No while loop but reinitialize the for loops
     for (int multipleFactor = 1; multipleFactor <= m_resizingIterations; multipleFactor++) {
