@@ -238,14 +238,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
-    results_final_population.Init(
-            wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
+    results_final_population.Init(wxString::Format(_("station_%s_final_population"),
+                                                   GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best_individual;
-    results_best_individual.Init(
-            wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
+    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"),
+                                                  GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_generations;
-    results_generations.Init(
-            wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
+    results_generations.Init(wxString::Format(_("station_%s_generations"),
+                                              GetPredictandStationIdsList(stationId).c_str()));
     wxString resultsXmlFilePath = pConfig->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(),
                                                GetPredictandStationIdsList(stationId).c_str()));

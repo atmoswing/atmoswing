@@ -74,13 +74,12 @@ bool asMethodOptimizerRandomSet::Manager()
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init(
-            wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    results_all.Init(wxString::Format(_("station_%s_tested_parameters"),
+                                      GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(
-            wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
-                                                            asConfig::GetDefaultUserWorkingDir());
+    results_best.Init(wxString::Format(_("station_%s_best_parameters"),
+                                       GetPredictandStationIdsList(stationId).c_str()));
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(),
                                                GetPredictandStationIdsList(stationId).c_str()));
 
@@ -272,10 +271,10 @@ bool asMethodOptimizerRandomSet::Manager()
 #endif
 
     // Print parameters in a text file
+    if (!results_all.Print())
+        return false;
     SetBestParameters(results_best);
     if (!results_best.Print())
-        return false;
-    if (!results_all.Print())
         return false;
 
     // Generate xml file with the best parameters set
@@ -321,6 +320,44 @@ asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
     }
 
     return params;
+}
+
+bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &results)
+{
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_scoresCalib.empty());
+
+    // Extract selected parameters & best parameters
+    float bestscore = m_scoresCalib[0];
+    int bestscorerow = 0;
+
+    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+        if (m_scoreOrder == Asc) {
+            if (m_scoresCalib[i] < bestscore) {
+                bestscore = m_scoresCalib[i];
+                bestscorerow = i;
+            }
+        } else {
+            if (m_scoresCalib[i] > bestscore) {
+                bestscore = m_scoresCalib[i];
+                bestscorerow = i;
+            }
+        }
+    }
+
+    if (bestscorerow != 0) {
+        // Re-validate
+        SaveDetails(m_parameters[bestscorerow]);
+        Validate(m_parameters[bestscorerow]);
+    }
+
+    // Sort according to the level and the observation time
+    asParametersScoring sortedParams = m_parameters[bestscorerow];
+    sortedParams.SortLevelsAndTime();
+
+    results.Add(sortedParams, m_scoresCalib[bestscorerow], m_scoreValid);
+
+    return true;
 }
 
 bool asMethodOptimizerRandomSet::Optimize(asParametersOptimization &params)

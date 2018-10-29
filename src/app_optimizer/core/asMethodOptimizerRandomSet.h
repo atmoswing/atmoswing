@@ -47,6 +47,8 @@ protected:
 
     virtual asParametersOptimization *GetNextParameters();
 
+    bool SetBestParameters(asResultsParametersArray &results);
+
     virtual bool Optimize(asParametersOptimization &params);
 
 private:
