@@ -78,6 +78,8 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                                                                              "\n \t\t\t\t classic: classic calibration"
                                                                              "\n \t\t\t\t classicp: classic+ calibration"
                                                                              "\n \t\t\t\t varexplocp: variables exploration classic+"
+                                                                             "\n \t\t\t\t montecarlo: Monte Carlo"
+                                                                             "\n \t\t\t\t ga: genetic algorithms"
                                                                              "\n \t\t\t\t evalscores: evaluate all scores"},
                 {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration",   "Classic plus: resizing iteration"},
                 {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
