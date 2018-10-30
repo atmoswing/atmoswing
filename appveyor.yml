@@ -34,23 +34,24 @@ after_test:
   - cd C:\projects\atmoswing\bin
   - cpack -C release -G ZIP
   - cpack -C release -G NSIS
+  - cpack -C release -G WIX
   - cd C:\projects\atmoswing
   - copy bin\*win64.exe .\
   - copy bin\*win64.zip .\
-  #- for %%f in (*win64.exe) do (copy /b bin\Release\AtmoSwing.pdb %%f.pdb)
+  - copy bin\*win64.msi .\
 
 on_failure:
   - appveyor PushArtifact CMakeFiles/CMakeOutput.log
 
 artifacts:
   - path: '*win64.exe'
-    name: AtmoSwingInstaller64
+    name: AtmoSwingInstallerEXE
+    type: file
+
+  - path: '*win64.msi'
+    name: AtmoSwingInstallerMSI
     type: file
 
   - path: '*win64.zip'
-    name: AtmoSwingZip64
+    name: AtmoSwingZIP
     type: zip
-
-  #- path: '*win64.exe.pdb'
-  #  name: AtmoSwingPdb
-  #  type: file

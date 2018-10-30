@@ -1,13 +1,15 @@
 # Options
-$MSC_VER=1911
+$MSC_VER=1915
 if ($env:APPVEYOR) {
   $TMP_DIR="C:\projects\tmp"
   $LIB_DIR="C:\projects\libs"
   $CMAKE_DIR="C:\projects\cmake"
+  $WIX_DIR="C:\projects\wix"
 } else {
   $TMP_DIR="C:\Users\$env:UserName\Downloads\tmp"
   $LIB_DIR="C:\Users\$env:UserName\AtmoSwing-libs"
   $CMAKE_DIR="C:\Program Files\CMake\bin"
+  $WIX_DIR="C:\Program Files\WiX"
 }
 
 # Force rebuilding some libraries

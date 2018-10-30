@@ -1268,25 +1268,35 @@ bool asParametersOptimization::FixWeights()
                 totWeightLocked += GetPredictorWeight(i, j);
             }
         }
+        float totWeightManageable = totWeight - totWeightLocked;
 
         // Check total of the locked weights
         if (totWeightLocked > 1) {
-            wxLogError(_("The sum of the locked weights of the analogy level number %d is higher than 1 (%f)."), i + 1,
-                       totWeightLocked);
-            return false;
+            wxLogWarning(_("The sum of the locked weights of the analogy level number %d is higher than 1 (%f). They were forced as unlocked."),
+                         i + 1, totWeightLocked);
+            totWeightManageable = totWeight;
+            totWeightLocked = 0;
         }
-        float totWeightManageable = totWeight - totWeightLocked;
 
         // For every weights but the last
         float newSum = 0;
         for (int j = 0; j < GetPredictorsNb(i) - 1; j++) {
-            if (!IsPredictorWeightLocked(i, j)) {
+            if (totWeightLocked > 1) {
                 float precision = GetPredictorWeightIteration(i, j);
                 float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
                 newWeight = precision * asRound(newWeight * (1.0 / precision));
                 newSum += newWeight;
 
                 SetPredictorWeight(i, j, newWeight);
+            } else {
+                if (!IsPredictorWeightLocked(i, j)) {
+                    float precision = GetPredictorWeightIteration(i, j);
+                    float newWeight = GetPredictorWeight(i, j) / totWeightManageable;
+                    newWeight = precision * asRound(newWeight * (1.0 / precision));
+                    newSum += newWeight;
+
+                    SetPredictorWeight(i, j, newWeight);
+                }
             }
         }
 
