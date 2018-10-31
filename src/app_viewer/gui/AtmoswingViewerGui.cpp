@@ -444,14 +444,15 @@ asPanelSidebarVirtual::asPanelSidebarVirtual( wxWindow* parent, wxWindowID id, c
 	m_sizerMain->Add( m_panel28, 0, wxEXPAND, 5 );
 	
 	m_panelHeader = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_panelHeader->SetBackgroundColour( wxColour( 180, 180, 180 ) );
+	m_panelHeader->SetBackgroundColour( wxColour( 150, 150, 150 ) );
 	
 	wxBoxSizer* m_sizerHeader;
 	m_sizerHeader = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_header = new wxStaticText( m_panelHeader, wxID_ANY, _("..."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_header->Wrap( -1 );
-	m_header->SetFont( wxFont( 11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	m_header->SetFont( wxFont( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	m_header->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	
 	m_sizerHeader->Add( m_header, 1, wxALL|wxEXPAND, 5 );
 	
