@@ -194,17 +194,18 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().Wait(threadType);
 
                 // Check results
-                bool checkOK = true;
                 for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
                     if (asIsNaN(m_scoresCalib[iCheck])) {
                         wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
-                        checkOK = false;
+                        return false;
                     }
                 }
 
-                if (!checkOK)
-                    return false;
+                wxASSERT(m_parameters.size() == m_scoresCalib.size());
+                for (int iRes = 0; iRes < m_scoresCalib.size(); ++iRes) {
+                    results_all.Add(m_parameters[iRes], m_scoresCalib[iRes]);
+                }
 
             } else {
 #ifndef UNIT_TESTING
