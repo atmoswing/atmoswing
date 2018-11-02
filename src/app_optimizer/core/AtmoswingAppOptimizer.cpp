@@ -85,41 +85,42 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                 {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
                 {wxCMD_LINE_OPTION, NULL, "cp-lon-step",             "Classic plus: steps in longitudes for the relevance map"},
                 {wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
-                {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step"},
-                {wxCMD_LINE_OPTION, NULL, "mc-runs-nb",              "Monte Carlo: options MonteCarloRandomNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel",          "GAs: options NaturalSelectionOperator"},
-                {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel",         "GAs: options CouplesSelectionOperator"},
-                {wxCMD_LINE_OPTION, NULL, "ga-ope-cross",            "GAs: options CrossoverOperator"},
-                {wxCMD_LINE_OPTION, NULL, "ga-ope-mut",              "GAs: options MutationOperator"},
-                {wxCMD_LINE_OPTION, NULL, "ga-pop-size",             "GAs: options GAsPopulationSize"},
-                {wxCMD_LINE_OPTION, NULL, "ga-conv-steps",           "GAs: options GAsConvergenceStepsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-interm-gen",           "GAs: options GAsRatioIntermediateGeneration"},
-                {wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p",       "GAs: options GAsNaturalSelectionTournamentProbability"},
-                {wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb",     "GAs: options GAsCouplesSelectionTournamentNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb",     "GAs: options GAsCrossoverMultiplePointsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb",     "GAs: options GAsCrossoverBlendingPointsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b",   "GAs: options GAsCrossoverBlendingShareBeta"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb",      "GAs: options GAsCrossoverLinearPointsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb",     "GAs: options GAsCrossoverHeuristicPointsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b",   "GAs: options GAsCrossoverHeuristicShareBeta"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb",      "GAs: options GAsCrossoverBinaryLikePointsNb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b",    "GAs: options GAsCrossoverBinaryLikeShareBeta"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p",       "GAs: options GAsMutationsUniformConstantProbability"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p",       "GAs: options GAsMutationsNormalConstantProbability"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev",     "GAs: options GAsMutationsNormalConstantStdDevRatioRange"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens",    "GAs: options GAsMutationsUniformVariableMaxGensNbVar"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt",  "GAs: options GAsMutationsUniformVariableProbabilityStart"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end",   "GAs: options GAsMutationsUniformVariableProbabilityEnd"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",  "GAs: options GAsMutationsNormalVariableMaxGensNbVarProb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",  "GAs: options GAsMutationsNormalVariableMaxGensNbVarStdDev"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt",  "GAs: options GAsMutationsNormalVariableProbabilityStart"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end",   "GAs: options GAsMutationsNormalVariableProbabilityEnd"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt",  "GAs: options GAsMutationsNormalVariableStdDevStart"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end",   "GAs: options GAsMutationsNormalVariableStdDevEnd"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p",        "GAs: options GAsMutationsNonUniformProb"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens",     "GAs: options GAsMutationsNonUniformMaxGensNbVar"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r",    "GAs: options GAsMutationsNonUniformMinRate"},
-                {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p",    "GAs: options GAsMutationsMultiScaleProb"},
+                {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step to process"},
+                {wxCMD_LINE_OPTION, NULL, "mc-runs-nb",              "Monte Carlo: number of runs"},
+                {wxCMD_LINE_OPTION, NULL, "ga-config",               "GAs: predefined configuration of options (1-5)"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel",          "GAs: operator choice for natural selection"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel",         "GAs: operator choice for couples selection"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-cross",            "GAs: operator choice for chromosome crossover"},
+                {wxCMD_LINE_OPTION, NULL, "ga-ope-mut",              "GAs: operator choice for mutation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-pop-size",             "GAs: size of the population"},
+                {wxCMD_LINE_OPTION, NULL, "ga-conv-steps",           "GAs: number of generations for convergence"},
+                {wxCMD_LINE_OPTION, NULL, "ga-interm-gen",           "GAs: ratio of the intermediate generation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p",       "GAs: natural selection - tournament probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb",     "GAs: couples selection - tournament candidates (2-3)"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb",     "GAs: standard crossover - number of points"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb",     "GAs: blending crossover - number of points"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b",   "GAs: blending crossover - beta shared (1/0)"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb",      "GAs: linear crossover - number of points"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb",     "GAs: heuristic crossover - number of points"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b",   "GAs: heuristic crossover - beta shared (1/0)"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb",      "GAs: binary-like crossover - number of points"},
+                {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b",    "GAs: binary-like crossover - beta shared (1/0)"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p",       "GAs: uniform mutation - probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p",       "GAs: normal mutation - probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev",     "GAs: normal mutation - standard deviation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens",    "GAs: variable uniform mutation - generations nb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt",  "GAs: variable uniform mutation - starting probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end",   "GAs: variable uniform mutation - end probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",  "GAs: variable normal mutation - generations nb for probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",  "GAs: variable normal mutation - generations nb for std deviation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt",  "GAs: variable normal mutation - starting probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end",   "GAs: variable normal mutation - end probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt",  "GAs: variable normal mutation - starting std deviation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end",   "GAs: variable normal mutation - end std deviation"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p",        "GAs: non uniform mutation - probability"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens",     "GAs: non uniform mutation - generations nb"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r",    "GAs: non uniform mutation - minimum rate"},
+                {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p",    "GAs: multi-scale mutation - probability"},
 
                 {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
                                                                              "\n \t\t\t\t 1: errors"
@@ -561,6 +562,51 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     // Genetic algorithms
+    if (parser.Found("ga-config", &option)) {
+        long gaConfig = -1;
+        if (!option.ToLong(&gaConfig)) {
+            wxPrintf(_("The value provided for 'ga-config' could not be interpreted.\n"));
+            return false;
+        }
+
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", 30);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", 500);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", 0.5);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 0);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 2);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", 7);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", 2);
+        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", 1);
+
+        switch (option) {
+            case 1:
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 8);
+                break;
+            case 2:
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 9);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", 0.1);
+                break;
+            case 3:
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.1);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 50);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                break;
+            case 4:
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.1);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 100);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                break;
+            case 5:
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.2);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 100);
+                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                break;
+        }
+    }
+
     if (parser.Found("ga-ope-nat-sel", &option)) {
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", option);
     }
