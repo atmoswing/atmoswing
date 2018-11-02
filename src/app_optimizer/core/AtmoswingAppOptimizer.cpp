@@ -563,8 +563,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Genetic algorithms
     if (parser.Found("ga-config", &option)) {
-        int gaConfig = -1;
-        if (!option.ToInt(&gaConfig)) {
+        long gaConfig = -1;
+        if (!option.ToLong(&gaConfig)) {
             wxPrintf(_("The value provided for 'ga-config' could not be interpreted.\n"));
             return false;
         }
