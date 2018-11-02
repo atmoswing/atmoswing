@@ -563,8 +563,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Genetic algorithms
     if (parser.Found("ga-config", &option)) {
-        long gaConfig = -1;
-        if (!option.ToLong(&gaConfig)) {
+        int gaConfig = -1;
+        if (!option.ToInt(&gaConfig)) {
             wxPrintf(_("The value provided for 'ga-config' could not be interpreted.\n"));
             return false;
         }
@@ -578,7 +578,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", 2);
         wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", 1);
 
-        switch (option) {
+        switch (gaConfig) {
             case 1:
                 wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 8);
                 break;
