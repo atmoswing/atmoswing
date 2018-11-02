@@ -457,7 +457,7 @@ asPanelSidebarVirtual::asPanelSidebarVirtual( wxWindow* parent, wxWindowID id, c
 	m_sizerHeader->Add( m_header, 1, wxALL|wxEXPAND, 5 );
 	
 	m_bitmapCaret = new wxStaticBitmap( m_panelHeader, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize( 22,22 ), 0 );
-	m_bitmapCaret->SetBackgroundColour( wxColour( 180, 180, 180 ) );
+	m_bitmapCaret->SetBackgroundColour( wxColour( 150, 150, 150 ) );
 	
 	m_sizerHeader->Add( m_bitmapCaret, 0, 0, 2 );
 	
