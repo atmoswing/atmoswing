@@ -18,10 +18,10 @@ set(VERSION_PATCH "0")
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
 # Choice of the targets
-option(BUILD_FORECASTER "Do you want to build AtmoSwing Forecaster ?" OFF)
-option(BUILD_VIEWER "Do you want to build AtmoSwing Viewer ?" OFF)
-option(BUILD_OPTIMIZER "Do you want to build AtmoSwing Optimizer ?" OFF)
-option(BUILD_DOWNSCALER "Do you want to build AtmoSwing Downscaler ?" OFF)
+option(BUILD_FORECASTER "Do you want to build AtmoSwing Forecaster ?" ON)
+option(BUILD_VIEWER "Do you want to build AtmoSwing Viewer ?" ON)
+option(BUILD_OPTIMIZER "Do you want to build AtmoSwing Optimizer ?" ON)
+option(BUILD_DOWNSCALER "Do you want to build AtmoSwing Downscaler ?" ON)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
     set(BUILD_TESTS ON CACHE BOOL "Do you want to build the tests (recommended) ?" )
     mark_as_advanced(CLEAR BUILD_TESTS)
@@ -72,11 +72,11 @@ else (CMAKE_COMPILER_IS_GNUCXX)
 endif ()
 
 # Enable GUIs
-if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER AND NOT BUILD_VIEWER)
-    option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
-else (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER AND NOT BUILD_VIEWER)
-    set(USE_GUI ON)
-endif (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER AND NOT BUILD_VIEWER)
+if (BUILD_VIEWER)
+    option(USE_GUI "Sould we build AtmoSwing with a GUI ?" ON)
+else (BUILD_VIEWER)
+    set(USE_GUI OFF)
+endif (BUILD_VIEWER)
 
 # External projects
 include(ExternalProject)

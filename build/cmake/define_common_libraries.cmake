@@ -41,18 +41,13 @@ link_libraries(${NETCDF_LIBRARIES})
 # g2clib
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
 
-# wxhgversion
-if (USE_GUI)
-    set(USE_WXHGVERSION 0)
+# lsversion
+include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/lsversion/src")
+include_directories("${CMAKE_BINARY_DIR}")
 
-    #    set(USE_WXHGVERSION 1)
-    #    ExternalProject_Add(wxhgversion
-    #            URL "https://bitbucket.org/terranum/wxhgversion/get/tip.tar.gz"
-    #            PATCH_COMMAND cp build/use_wxhgversion.cmake CMakeLists.txt
-    #            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR}
-    #            )
-    #    include_directories(${EXTERNAL_DIR}/include)
-    #    link_directories(${EXTERNAL_DIR}/lib)
+# lsversion
+if (USE_GUI)
+    set(USE_VERSION 1)
 else (USE_GUI)
-    set(USE_WXHGVERSION 0)
+    set(USE_VERSION 0)
 endif (USE_GUI)

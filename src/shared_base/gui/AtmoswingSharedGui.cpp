@@ -280,23 +280,23 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	wxBoxSizer* bSizer28;
 	bSizer28 = new wxBoxSizer( wxVERTICAL );
 	
-	m_staticTextDevelopers = new wxStaticText( m_panelCredits, wxID_ANY, _("Developed by:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextDevelopers = new wxStaticText( m_panelCredits, wxID_ANY, _("Main developer:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextDevelopers->Wrap( -1 );
 	m_staticTextDevelopers->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
 	
 	bSizer28->Add( m_staticTextDevelopers, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 20 );
 	
-	m_staticTextDevelopersList = new wxStaticText( m_panelCredits, wxID_ANY, _("Pascal Horton (University of Lausanne, Terranum)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextDevelopersList = new wxStaticText( m_panelCredits, wxID_ANY, _("Pascal Horton"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextDevelopersList->Wrap( -1 );
 	bSizer28->Add( m_staticTextDevelopersList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
-	m_staticTextSupervision = new wxStaticText( m_panelCredits, wxID_ANY, _("Under the supervision of:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextSupervision = new wxStaticText( m_panelCredits, wxID_ANY, _("Developed at:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextSupervision->Wrap( -1 );
 	m_staticTextSupervision->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
 	
 	bSizer28->Add( m_staticTextSupervision, 0, wxALIGN_CENTER_HORIZONTAL|wxTOP|wxRIGHT|wxLEFT, 10 );
 	
-	m_staticTextSupervisionList = new wxStaticText( m_panelCredits, wxID_ANY, _("Michel Jaboyedoff (University of Lausanne) \nCharles Obled (INPG)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextSupervisionList = new wxStaticText( m_panelCredits, wxID_ANY, _("University of Lausanne\nTerranum\nUniversity of Bern"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextSupervisionList->Wrap( -1 );
 	bSizer28->Add( m_staticTextSupervisionList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
@@ -306,7 +306,7 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	
 	bSizer28->Add( m_staticTextThanks, 0, wxTOP|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 10 );
 	
-	m_staticTextThanksList = new wxStaticText( m_panelCredits, wxID_ANY, _("Lucien Schreiber\nRichard Metzger (Terranum)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	m_staticTextThanksList = new wxStaticText( m_panelCredits, wxID_ANY, _("Charles Obled\nMichel Jaboyedoff\nLucien Schreiber\nRenaud Marty\nRichard Metzger"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	m_staticTextThanksList->Wrap( -1 );
 	bSizer28->Add( m_staticTextThanksList, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 	
@@ -344,7 +344,7 @@ asFrameAboutVirtual::asFrameAboutVirtual( wxWindow* parent, wxWindowID id, const
 	bSizer31->Fit( m_panelLibraries );
 	m_notebook->AddPage( m_panelLibraries, _("Libraries"), false );
 	
-	bSizer27->Add( m_notebook, 1, wxEXPAND | wxALL, 5 );
+	bSizer27->Add( m_notebook, 1, wxEXPAND, 5 );
 	
 	
 	m_Panel->SetSizer( bSizer27 );

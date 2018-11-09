@@ -89,6 +89,10 @@ if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
+if (USE_VERSION)
+    target_link_libraries(asbase lsVersion)
+endif (USE_VERSION)
+
 
 #### INSTALLER
 

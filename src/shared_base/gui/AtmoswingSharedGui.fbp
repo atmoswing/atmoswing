@@ -2928,7 +2928,7 @@
                             </object>
                             <object class="sizeritem" expanded="1">
                                 <property name="border">5</property>
-                                <property name="flag">wxEXPAND | wxALL</property>
+                                <property name="flag">wxEXPAND</property>
                                 <property name="proportion">1</property>
                                 <object class="wxNotebook" expanded="1">
                                     <property name="BottomDockable">1</property>
@@ -3123,7 +3123,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Developed by:</property>
+                                                        <property name="label">Main developer:</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
                                                         <property name="maximum_size"></property>
@@ -3206,7 +3206,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Pascal Horton (University of Lausanne, Terranum)</property>
+                                                        <property name="label">Pascal Horton</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
                                                         <property name="maximum_size"></property>
@@ -3289,7 +3289,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Under the supervision of:</property>
+                                                        <property name="label">Developed at:</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
                                                         <property name="maximum_size"></property>
@@ -3372,7 +3372,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Michel Jaboyedoff (University of Lausanne) &#x0A;Charles Obled (INPG)</property>
+                                                        <property name="label">University of Lausanne&#x0A;Terranum&#x0A;University of Bern</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
                                                         <property name="maximum_size"></property>
@@ -3538,7 +3538,7 @@
                                                         <property name="gripper">0</property>
                                                         <property name="hidden">0</property>
                                                         <property name="id">wxID_ANY</property>
-                                                        <property name="label">Lucien Schreiber&#x0A;Richard Metzger (Terranum)</property>
+                                                        <property name="label">Charles Obled&#x0A;Michel Jaboyedoff&#x0A;Lucien Schreiber&#x0A;Renaud Marty&#x0A;Richard Metzger</property>
                                                         <property name="max_size"></property>
                                                         <property name="maximize_button">0</property>
                                                         <property name="maximum_size"></property>
