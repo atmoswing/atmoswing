@@ -39,7 +39,7 @@ include_directories(${NETCDF_INCLUDE_DIRS})
 link_libraries(${NETCDF_LIBRARIES})
 
 # g2clib
-include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib")
+include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
 
 # wxhgversion
 if (USE_GUI)

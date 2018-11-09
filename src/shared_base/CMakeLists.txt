@@ -58,7 +58,8 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 add_library(asbase STATIC ${src_shared_base})
 
 # g2clib
-add_subdirectory(libs)
+add_subdirectory(libs/g2clib)
+add_subdirectory(libs/lsversion)
 
 
 ##### DECLARE EXECUTABLE
