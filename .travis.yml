@@ -109,6 +109,7 @@ script:
   - travis_wait 40 ci/travis/run-${TARGET}.sh
   - if [ "$RUN_TESTS" = true ] ; then cd tests && ctest -V ; fi # run the tests out of the script so it can fail.
 after_success:
+  - cd ..
   - cpack -C release -G DEB
   - ls -lha
   - if [[ "$TRAVIS_BRANCH" != "nightly" ]] && [[ "$TRAVIS_BRANCH" != "release" ]]; then exit 0; fi
