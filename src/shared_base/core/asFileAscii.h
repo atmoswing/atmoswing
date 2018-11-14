@@ -43,15 +43,15 @@ public:
         ConstantWidth, TabsDelimited
     };
 
-    asFileAscii(const wxString &FileName, const asFile::ListFileMode &FileMode);
+    asFileAscii(const wxString &fileName, const asFile::FileMode &fileMode);
 
-    virtual ~asFileAscii();
+    ~asFileAscii() override = default;
 
-    bool Open();
+    bool Open() override;
 
-    bool Close();
+    bool Close() override;
 
-    void AddLineContent(const wxString &LineContent = wxEmptyString);
+    void AddLineContent(const wxString &lineContent = wxEmptyString);
 
     const wxString GetLineContent();
 

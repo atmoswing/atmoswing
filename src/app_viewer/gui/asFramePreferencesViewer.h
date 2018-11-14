@@ -40,17 +40,17 @@ public:
     asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id = asWINDOW_PREFERENCES);
 
 protected:
-    void CloseFrame(wxCommandEvent &event);
+    void CloseFrame(wxCommandEvent &event) override;
 
-    void Update();
+    void Update() override;
 
     void LoadPreferences();
 
     void SavePreferences();
 
-    void SaveAndClose(wxCommandEvent &event);
+    void SaveAndClose(wxCommandEvent &event) override;
 
-    void ApplyChanges(wxCommandEvent &event);
+    void ApplyChanges(wxCommandEvent &event) override;
 
 private:
     asWorkspace *m_workspace;

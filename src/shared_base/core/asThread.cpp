@@ -28,20 +28,15 @@
 #include "asThread.h"
 
 
-asThread::asThread()
-        : wxThread(wxTHREAD_DETACHED)
+asThread::asThread(Type type)
+        : wxThread(wxTHREAD_DETACHED),
+          m_type(type)
 {
-    m_type = Undefined;
-}
-
-asThread::~asThread()
-{
-
 }
 
 wxThread::ExitCode asThread::Entry()
 {
-    return 0;
+    return nullptr;
 }
 
 void asThread::OnExit()

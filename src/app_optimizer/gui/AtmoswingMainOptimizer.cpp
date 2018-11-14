@@ -119,13 +119,13 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
 
     // Paths
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
-    pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString OptimizerResultsDir = pConfig->Read("/Paths/OptimizerResultsDir",
+    wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
+    pConfig->Write("/Paths/DataPredictandDBDir", predictandDBDir);
+    wxString optimizerResultsDir = pConfig->Read("/Paths/ResultsDir",
                                                  asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer");
-    pConfig->Write("/Paths/OptimizerResultsDir", OptimizerResultsDir);
-    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
-    pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
+    pConfig->Write("/Paths/ResultsDir", optimizerResultsDir);
+    wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
+    pConfig->Write("/Paths/ArchivePredictorsDir", archivePredictorsDir);
 
     // Processing
     bool allowMultithreading;
@@ -135,14 +135,14 @@ void AtmoswingFrameOptimizer::SetDefaultOptions()
     if (maxThreads == -1)
         maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long defaultMethod = (long) asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    auto defaultMethod = (long) asMULTITHREADS;
+    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
-        ProcessingMethod = (long) asSTANDARD;
+        processingMethod = (long) asSTANDARD;
     }
-    pConfig->Write("/Processing/Method", ProcessingMethod);
+    pConfig->Write("/Processing/Method", processingMethod);
 
     pConfig->Flush();
 }
@@ -151,7 +151,7 @@ AtmoswingFrameOptimizer::~AtmoswingFrameOptimizer()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if (pConfig == NULL)
+    if (pConfig == nullptr)
         return;
 
     // Save the frame position

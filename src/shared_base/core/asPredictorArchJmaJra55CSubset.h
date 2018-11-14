@@ -31,17 +31,17 @@
 #include <asIncludes.h>
 #include <asPredictorArchJmaJra55Subset.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchJmaJra55CSubset
         : public asPredictorArchJmaJra55Subset
 {
 public:
-    asPredictorArchJmaJra55CSubset(const wxString &dataId);
+    explicit asPredictorArchJmaJra55CSubset(const wxString &dataId);
 
-    virtual ~asPredictorArchJmaJra55CSubset();
+    ~asPredictorArchJmaJra55CSubset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
 

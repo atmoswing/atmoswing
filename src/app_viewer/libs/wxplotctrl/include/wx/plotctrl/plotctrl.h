@@ -359,7 +359,7 @@ public:
 
     bool CurveIndexOk(int curve_index) const
     {
-        return (curve_index >= 0) && (curve_index < int(m_curves.GetCount()));
+        return (curve_index >= 0) && (curve_index < static_cast<int>(m_curves.GetCount()));
     }
 
     // Get the curve at this index
@@ -1142,6 +1142,8 @@ public:
     virtual void ProcessAxisEVT_PAINT(wxPaintEvent &event, wxPaintDC &paintDC, wxPlotCtrlAxis *axisWin);
 
     void OnChar(wxKeyEvent &event);
+
+    void HideScrollBars();
 
     void OnScroll(wxScrollEvent &event);
 

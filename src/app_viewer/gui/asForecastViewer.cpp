@@ -124,11 +124,6 @@ void asForecastViewer::SetForecast(int methodRow, int forecastRow)
     Redraw();
 }
 
-wxString asForecastViewer::GetStationName(int iStat) const
-{
-    return m_forecastManager->GetStationName(m_methodSelection, m_forecastSelection, iStat);
-}
-
 float asForecastViewer::GetSelectedTargetDate()
 {
     a1f targetDates;
@@ -161,7 +156,7 @@ void asForecastViewer::SetLeadTimeDate(float date)
             targetDates = m_forecastManager->GetTargetDates(m_methodSelection);
         }
 
-        int index = asTools::SortedArraySearchClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
+        int index = asFindClosest(&targetDates[0], &targetDates[targetDates.size() - 1], date);
         if (index >= 0) {
             m_leadTimeIndex = index;
         }
@@ -236,7 +231,7 @@ void asForecastViewer::Redraw()
 
     // Check if memory layer already added
     m_viewerLayerManager->FreezeBegin();
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameSpecific) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -246,7 +241,7 @@ void asForecastViewer::Redraw()
             m_layerManager->Close(layer);
         }
     }
-    for (unsigned int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
+    for (int i = 0; i < m_viewerLayerManager->GetCount(); i++) {
         if (m_viewerLayerManager->GetRenderer(i)->GetLayer()->GetFileName() == memoryLayerNameOther) {
             vrRenderer *renderer = m_viewerLayerManager->GetRenderer(i);
             vrLayer *layer = renderer->GetLayer();
@@ -266,9 +261,8 @@ void asForecastViewer::Redraw()
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
         a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
-        indexReferenceAxis = asTools::SortedArraySearch(&forecastReferenceAxis[0],
-                                                        &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
-                                                        returnPeriod);
+        indexReferenceAxis = asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
+                                    returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();
@@ -284,8 +278,8 @@ void asForecastViewer::Redraw()
     // Display according to the chosen display type
     if (m_leadTimeIndex == m_forecastManager->GetLeadTimeLengthMax()) {
         // Create the layers
-        vrLayerVectorFcstRing *layerSpecific = new vrLayerVectorFcstRing();
-        vrLayerVectorFcstRing *layerOther = new vrLayerVectorFcstRing();
+        auto *layerSpecific = new vrLayerVectorFcstRing();
+        auto *layerOther = new vrLayerVectorFcstRing();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -340,15 +334,15 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = NULL;
+            asResultsForecast *forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (int i = 0; i < (int) forecasts.size(); i++) {
-                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
+                for (auto &fcst : forecasts) {
+                    accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
-                        forecast = forecasts[i];
+                        forecast = fcst;
                         break;
                     }
                 }
@@ -385,23 +379,23 @@ void asForecastViewer::Redraw()
             }
 
             // Loop over the lead times
-            for (unsigned int iLead = 0; iLead < leadTimeSize; iLead++) {
-                a1f values = forecast->GetAnalogsValuesGross(iLead, iStat);
+            for (int iLead = 0; iLead < leadTimeSize; iLead++) {
+                a1f values = forecast->GetAnalogsValuesRaw(iLead, iStat);
 
-                if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
+                if (asHasNaN(&values[0], &values[values.size() - 1])) {
                     data.Add(NaNd);
                 } else {
                     if (quantile >= 0) {
-                        double forecastVal = asTools::GetValueForQuantile(values, quantile);
+                        double forecastVal = asGetValueForQuantile(values, quantile);
                         wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
                         forecastVal *= factor;
                         data.Add(forecastVal);
                     } else {
                         // Interpretatio
                         double forecastVal = 0;
-                        double forecastVal30 = asTools::GetValueForQuantile(values, 0.2f);
-                        double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
-                        double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
+                        double forecastVal30 = asGetValueForQuantile(values, 0.2f);
+                        double forecastVal60 = asGetValueForQuantile(values, 0.6f);
+                        double forecastVal90 = asGetValueForQuantile(values, 0.9f);
 
                         if (forecastVal60 == 0) {
                             forecastVal = 0;
@@ -430,7 +424,7 @@ void asForecastViewer::Redraw()
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            vrRenderVector *renderOther = new vrRenderVector();
+            auto *renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -439,7 +433,7 @@ void asForecastViewer::Redraw()
         }
 
         m_layerManager->Add(layerSpecific);
-        vrRenderVector *renderSpecific = new vrRenderVector();
+        auto *renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);
@@ -447,8 +441,8 @@ void asForecastViewer::Redraw()
 
     } else {
         // Create the layer
-        vrLayerVectorFcstDots *layerSpecific = new vrLayerVectorFcstDots();
-        vrLayerVectorFcstDots *layerOther = new vrLayerVectorFcstDots();
+        auto *layerSpecific = new vrLayerVectorFcstDots();
+        auto *layerOther = new vrLayerVectorFcstDots();
         if (!layerSpecific->Create(memoryLayerNameSpecific, wkbPoint)) {
             wxFAIL;
             m_viewerLayerManager->FreezeEnd();
@@ -496,15 +490,15 @@ void asForecastViewer::Redraw()
 
             // Select the accurate forecast
             bool accurateForecast = false;
-            asResultsForecast *forecast = NULL;
+            asResultsForecast *forecast = nullptr;
             if (m_forecastSelection >= 0) {
                 forecast = forecasts[0];
                 accurateForecast = forecast->IsSpecificForStationId(currentId);
             } else {
-                for (int i = 0; i < (int) forecasts.size(); i++) {
-                    accurateForecast = forecasts[i]->IsSpecificForStationId(currentId);
+                for (auto &fcst : forecasts) {
+                    accurateForecast = fcst->IsSpecificForStationId(currentId);
                     if (accurateForecast) {
-                        forecast = forecasts[i];
+                        forecast = fcst;
                         break;
                     }
                 }
@@ -545,14 +539,14 @@ void asForecastViewer::Redraw()
                 m_leadTimeIndex = forecast->GetTargetDatesLength() - 1;
             }
 
-            a1f values = forecast->GetAnalogsValuesGross(m_leadTimeIndex, iStat);
+            a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
 
-            if (asTools::HasNaN(&values[0], &values[values.size() - 1])) {
+            if (asHasNaN(&values[0], &values[values.size() - 1])) {
                 data.Add(NaNd); // 1st real value
                 data.Add(NaNd); // 2nd normalized
             } else {
                 if (quantile >= 0) {
-                    double forecastVal = asTools::GetValueForQuantile(values, quantile);
+                    double forecastVal = asGetValueForQuantile(values, quantile);
                     wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
                     data.Add(forecastVal); // 1st real value
                     forecastVal *= factor;
@@ -560,9 +554,9 @@ void asForecastViewer::Redraw()
                 } else {
                     // Interpretatio
                     double forecastVal = 0;
-                    double forecastVal30 = asTools::GetValueForQuantile(values, 0.3f);
-                    double forecastVal60 = asTools::GetValueForQuantile(values, 0.6f);
-                    double forecastVal90 = asTools::GetValueForQuantile(values, 0.9f);
+                    double forecastVal30 = asGetValueForQuantile(values, 0.3f);
+                    double forecastVal60 = asGetValueForQuantile(values, 0.6f);
+                    double forecastVal90 = asGetValueForQuantile(values, 0.9f);
 
                     if (forecastVal60 == 0) {
                         forecastVal = 0;
@@ -591,7 +585,7 @@ void asForecastViewer::Redraw()
 
         if (layerOther->GetFeatureCount() > 0) {
             m_layerManager->Add(layerOther);
-            vrRenderVector *renderOther = new vrRenderVector();
+            auto *renderOther = new vrRenderVector();
             renderOther->SetSize(1);
             renderOther->SetColorPen(wxColor(150, 150, 150));
             m_viewerLayerManager->Add(-1, layerOther, renderOther);
@@ -600,7 +594,7 @@ void asForecastViewer::Redraw()
         }
 
         m_layerManager->Add(layerSpecific);
-        vrRenderVector *renderSpecific = new vrRenderVector();
+        auto *renderSpecific = new vrRenderVector();
         renderSpecific->SetSize(1);
         renderSpecific->SetColorPen(*wxBLACK);
         m_viewerLayerManager->Add(-1, layerSpecific, renderSpecific);

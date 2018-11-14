@@ -40,7 +40,7 @@ public:
     asPanelSidebarAnalogDates(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarAnalogDates();
+    ~asPanelSidebarAnalogDates() override;
 
     void SetChoices(a1f &arrayDate, a1f &arrayCriteria);
 

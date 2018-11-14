@@ -40,20 +40,11 @@ public:
 
     virtual ~asResultsValues();
 
-    void Init(asParameters &params);
+    void Init(asParameters *arams);
 
     a1f &GetTargetDates()
     {
         return m_targetDates;
-    }
-
-    void SetTargetDates(a1d &refDates)
-    {
-        m_targetDates.resize(refDates.rows());
-        for (int i = 0; i < refDates.size(); i++) {
-            m_targetDates[i] = (float) refDates[i];
-            wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
-        }
     }
 
     void SetTargetDates(a1f &refDates)
@@ -67,29 +58,14 @@ public:
         return m_targetValuesNorm;
     }
 
-    void SetTargetValues(va1f &targetValues)
-    {
-        m_targetValuesNorm = targetValues;
-    }
-
-    va1f &GetTargetValuesNorm()
-    {
-        return m_targetValuesNorm;
-    }
-
     void SetTargetValuesNorm(va1f &targetValuesNorm)
     {
         m_targetValuesNorm = targetValuesNorm;
     }
 
-    va1f &GetTargetValuesGross()
+    void SetTargetValuesRaw(va1f &targetValuesRaw)
     {
-        return m_targetValuesGross;
-    }
-
-    void SetTargetValuesGross(va1f &targetValuesGross)
-    {
-        m_targetValuesGross = targetValuesGross;
+        m_targetValuesRaw = targetValuesRaw;
     }
 
     a2f &GetAnalogsCriteria()
@@ -108,29 +84,19 @@ public:
         return m_analogsValuesNorm;
     }
 
-    void SetAnalogsValues(va2f &analogsValues)
-    {
-        m_analogsValuesNorm = analogsValues;
-    }
-
-    va2f GetAnalogsValuesNorm() const
-    {
-        return m_analogsValuesNorm;
-    }
-
     void SetAnalogsValuesNorm(va2f &analogsValuesNorm)
     {
         m_analogsValuesNorm = analogsValuesNorm;
     }
 
-    va2f GetAnalogsValuesGross() const
+    va2f GetAnalogsValuesRaw() const
     {
-        return m_analogsValuesGross;
+        return m_analogsValuesRaw;
     }
 
-    void SetAnalogsValuesGross(va2f &analogsValuesGross)
+    void SetAnalogsValuesRaw(va2f &analogsValuesRaw)
     {
-        m_analogsValuesGross = analogsValuesGross;
+        m_analogsValuesRaw = analogsValuesRaw;
     }
 
     int GetTargetDatesLength() const
@@ -148,10 +114,10 @@ protected:
 private:
     a1f m_targetDates; // Dimensions: time
     va1f m_targetValuesNorm; // Dimensions: stations x time
-    va1f m_targetValuesGross; // Dimensions: stations x time
+    va1f m_targetValuesRaw; // Dimensions: stations x time
     a2f m_analogsCriteria; // Dimensions: time x analogs
     va2f m_analogsValuesNorm; // Dimensions: stations x time x analogs
-    va2f m_analogsValuesGross; // Dimensions: stations x time x analogs
+    va2f m_analogsValuesRaw; // Dimensions: stations x time x analogs
 };
 
 #endif // ASRESULTSVALUES_H

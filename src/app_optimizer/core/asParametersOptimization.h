@@ -97,7 +97,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysIteration(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -112,7 +112,7 @@ public:
 
     bool SetAnalogsNumberIteration(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -128,7 +128,7 @@ public:
 
     bool SetPreprocessTimeHoursIteration(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided iteration value for the preprocess time frame is null"));
             return false;
         }
@@ -149,7 +149,7 @@ public:
 
     bool SetPredictorTimeHoursIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -164,8 +164,8 @@ public:
 
     bool SetPredictorXminIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].xMin = val;
@@ -179,8 +179,8 @@ public:
 
     bool SetPredictorXptsnbIteration(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].xPtsNb = val;
@@ -194,8 +194,8 @@ public:
 
     bool SetPredictorYminIteration(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].yMin = val;
@@ -209,8 +209,8 @@ public:
 
     bool SetPredictorYptsnbIteration(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].yPtsNb = val;
@@ -224,7 +224,7 @@ public:
 
     bool SetPredictorWeightIteration(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
@@ -239,7 +239,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysUpperLimit(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -254,7 +254,7 @@ public:
 
     bool SetAnalogsNumberUpperLimit(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -270,7 +270,7 @@ public:
 
     bool SetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided upper value value for the preprocess time frame is null"));
             return false;
         }
@@ -291,7 +291,7 @@ public:
 
     bool SetPredictorTimeHoursUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -306,8 +306,8 @@ public:
 
     bool SetPredictorXminUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].xMin = val;
@@ -321,8 +321,8 @@ public:
 
     bool SetPredictorXptsnbUpperLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].xPtsNb = val;
@@ -336,8 +336,8 @@ public:
 
     bool SetPredictorYminUpperLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].yMin = val;
@@ -351,8 +351,8 @@ public:
 
     bool SetPredictorYptsnbUpperLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].yPtsNb = val;
@@ -366,7 +366,7 @@ public:
 
     bool SetPredictorWeightUpperLimit(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
@@ -381,7 +381,7 @@ public:
 
     bool SetTimeArrayAnalogsIntervalDaysLowerLimit(int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the 'days interval' is null"));
             return false;
         }
@@ -396,7 +396,7 @@ public:
 
     bool SetAnalogsNumberLowerLimit(int iStep, int val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the analogs number is null"));
             return false;
         }
@@ -412,7 +412,7 @@ public:
 
     bool SetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided lower value value for the preprocess time frame is null"));
             return false;
         }
@@ -433,7 +433,7 @@ public:
 
     bool SetPredictorTimeHoursLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
@@ -448,8 +448,8 @@ public:
 
     bool SetPredictorXminLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xmin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xMin is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].xMin = val;
@@ -463,8 +463,8 @@ public:
 
     bool SetPredictorXptsnbLowerLimit(int iStep, int iPtor, int val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Xptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for xPtsNb is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].xPtsNb = val;
@@ -478,8 +478,8 @@ public:
 
     bool SetPredictorYminLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Ymin is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yMin is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].yMin = val;
@@ -493,8 +493,8 @@ public:
 
     bool SetPredictorYptsnbLowerLimit(int iStep, int iPtor, double val)
     {
-        if (asTools::IsNaN(val)) {
-            wxLogError(_("The provided value for Yptsnb is null"));
+        if (asIsNaN(val)) {
+            wxLogError(_("The provided value for yPtsNb is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].yPtsNb = (int) val;
@@ -508,7 +508,7 @@ public:
 
     bool SetPredictorWeightLowerLimit(int iStep, int iPtor, float val)
     {
-        if (asTools::IsNaN(val)) {
+        if (asIsNaN(val)) {
             wxLogError(_("The provided value for the predictor weight is null"));
             return false;
         }
@@ -674,191 +674,6 @@ public:
         m_stepsLocks[iStep].predictors[iPtor].criteria = val;
     }
 
-    bool IncrementAnalogsNumber(int iStep)
-    {
-        if (GetAnalogsNumber(iStep) + m_stepsIteration[iStep].analogsNumber <= m_stepsUpperLimit[iStep].analogsNumber) {
-            SetAnalogsNumber(iStep, GetAnalogsNumber(iStep) + m_stepsIteration[iStep].analogsNumber);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementTimeArrayAnalogsIntervalDays()
-    {
-        if (m_timeArrayAnalogsIntervalDays + m_timeArrayAnalogsIntervalDaysIteration <=
-            m_timeArrayAnalogsIntervalDaysUpperLimit) {
-            m_timeArrayAnalogsIntervalDays += m_timeArrayAnalogsIntervalDaysIteration;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorXmin(int iStep, int iPtor)
-    {
-        if (GetPredictorXmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xMin <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].xMin) {
-            SetPredictorXmin(iStep, iPtor,
-                             GetPredictorXmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xMin);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorXptsnb(int iStep, int iPtor)
-    {
-        if (GetPredictorXptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xPtsNb <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].xPtsNb) {
-            SetPredictorXptsnb(iStep, iPtor,
-                               GetPredictorXptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorYmin(int iStep, int iPtor)
-    {
-        if (GetPredictorYmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yMin <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].yMin) {
-            SetPredictorYmin(iStep, iPtor,
-                             GetPredictorYmin(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yMin);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorYptsnb(int iStep, int iPtor)
-    {
-        if (GetPredictorYptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yPtsNb <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].yPtsNb) {
-            SetPredictorYptsnb(iStep, iPtor,
-                               GetPredictorYptsnb(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorTimeHours(int iStep, int iPtor)
-    {
-        if (GetPredictorTimeHours(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].timeHours <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].timeHours) {
-            SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor) +
-                                                m_stepsIteration[iStep].predictors[iPtor].timeHours);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool IncrementPredictorWeight(int iStep, int iPtor)
-    {
-        if (GetPredictorWeight(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].weight <=
-            m_stepsUpperLimit[iStep].predictors[iPtor].weight) {
-            SetPredictorWeight(iStep, iPtor,
-                               GetPredictorWeight(iStep, iPtor) + m_stepsIteration[iStep].predictors[iPtor].weight);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementAnalogsNumber(int iStep)
-    {
-        if (GetAnalogsNumber(iStep) - m_stepsIteration[iStep].analogsNumber >= m_stepsLowerLimit[iStep].analogsNumber) {
-            SetAnalogsNumber(iStep, GetAnalogsNumber(iStep) - m_stepsIteration[iStep].analogsNumber);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementTimeArrayAnalogsIntervalDays(int iStep)
-    {
-        if (m_timeArrayAnalogsIntervalDays - m_timeArrayAnalogsIntervalDaysIteration >=
-            m_timeArrayAnalogsIntervalDaysLowerLimit) {
-            m_timeArrayAnalogsIntervalDays -= m_timeArrayAnalogsIntervalDaysIteration;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorXmin(int iStep, int iPtor)
-    {
-        if (GetPredictorXmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xMin >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].xMin) {
-            SetPredictorXmin(iStep, iPtor,
-                             GetPredictorXmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xMin);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorXptsnb(int iStep, int iPtor)
-    {
-        if (GetPredictorXptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xPtsNb >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].xPtsNb) {
-            SetPredictorXptsnb(iStep, iPtor,
-                               GetPredictorXptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].xPtsNb);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorYmin(int iStep, int iPtor)
-    {
-        if (GetPredictorYmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yMin >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].yMin) {
-            SetPredictorYmin(iStep, iPtor,
-                             GetPredictorYmin(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yMin);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorYptsnb(int iStep, int iPtor)
-    {
-        if (GetPredictorYptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yPtsNb >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].yPtsNb) {
-            SetPredictorYptsnb(iStep, iPtor,
-                               GetPredictorYptsnb(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].yPtsNb);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorTimeHours(int iStep, int iPtor)
-    {
-        if (GetPredictorTimeHours(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].timeHours >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].timeHours) {
-            SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor) -
-                                                m_stepsIteration[iStep].predictors[iPtor].timeHours);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    bool DecrementPredictorWeight(int iStep, int iPtor)
-    {
-        if (GetPredictorWeight(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].weight >=
-            m_stepsLowerLimit[iStep].predictors[iPtor].weight) {
-            SetPredictorWeight(iStep, iPtor,
-                               GetPredictorWeight(iStep, iPtor) - m_stepsIteration[iStep].predictors[iPtor].weight);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 protected:
     int m_variableParamsNb;
@@ -870,9 +685,6 @@ protected:
     VectorParamsStep m_stepsUpperLimit;
     VectorParamsStep m_stepsLowerLimit;
     VectorParamsStepBool m_stepsLocks;
-    ParamsScore m_scoreIteration;
-    ParamsScore m_scoreUpperLimit;
-    ParamsScore m_scoreLowerLimit;
 
 private:
 

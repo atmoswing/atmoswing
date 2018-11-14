@@ -42,7 +42,7 @@
 
 #endif
 
-bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *score, asParametersScoring &params,
+bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *score, asParametersScoring *params,
                                         asResultsScores &results, vf &scoresClimatology)
 {
     // Extract Data
@@ -51,7 +51,7 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
     a2f analogsCriteria = anaValues.GetAnalogsCriteria();
     va2f analogsValues = anaValues.GetAnalogsValues();
     wxASSERT(timeTargetSelection.size() > 0);
-    wxASSERT(analogsValues.size() > 0);
+    wxASSERT(!analogsValues.empty());
     int timeTargetSelectionLength = anaValues.GetTargetDatesLength();
     int analogsNbDates = analogsValues[0].cols();
     int stationsNb = targetValues.size();
@@ -60,10 +60,10 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
     results.SetTargetDates(timeTargetSelection);
 
     // Check analogs number coherence
-    if (params.GetScoreAnalogsNumber() > analogsNbDates)
+    if (params->GetScoreAnalogsNumber() > analogsNbDates)
         asThrowException(wxString::Format(
                 _("The given analogs number for the score (%d) processing is superior to the analogs dates number (%d)."),
-                params.GetScoreAnalogsNumber(), analogsNbDates));
+                params->GetScoreAnalogsNumber(), analogsNbDates));
 
     if (score->SingleValue()) {
         // Containers for final results
@@ -76,14 +76,14 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
             }
 
             for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-                if (!asTools::IsNaN(targetValues[iStat](iTargetTime))) {
-                    if (params.ScoreNeedsPostprocessing()) {
+                if (!asIsNaN(targetValues[iStat](iTargetTime))) {
+                    if (params->ScoreNeedsPostprocessing()) {
                         //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
-                        //totalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetScoreAnalogsNumber());
+                        //totalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params->GetScoreAnalogsNumber());
                     } else {
                         vectScores[iStat](iTargetTime) = score->Assess(targetValues[iStat](iTargetTime),
                                                                        analogsValues[iStat].row(iTargetTime),
-                                                                       params.GetScoreAnalogsNumber());
+                                                                       params->GetScoreAnalogsNumber());
                     }
                 } else {
                     vectScores[iStat](iTargetTime) = NaNf;
@@ -115,20 +115,20 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
         }
 
         // Containers for final results
-        a2f scores(timeTargetSelectionLength, 3 * (params.GetScoreAnalogsNumber() + 1));
+        a2f scores(timeTargetSelectionLength, 3 * (params->GetScoreAnalogsNumber() + 1));
 
         for (int iTargetTime = 0; iTargetTime < timeTargetSelectionLength; iTargetTime++) {
-            if (!asTools::IsNaN(targetValues[0](iTargetTime))) {
-                if (params.ScoreNeedsPostprocessing()) {
+            if (!asIsNaN(targetValues[0](iTargetTime))) {
+                if (params->ScoreNeedsPostprocessing()) {
                     //a2f analogsValuesNew(asPostprocessor::Postprocess(analogsValues.row(iTargetTime), analogsCriteria.row(iTargetTime), params));
-                    //finalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params.GetScoreAnalogsNumber());
+                    //finalScores(iTargetTime) = score->Assess(targetValues(iTargetTime), analogsValuesNew.row(iTargetTime), params->GetScoreAnalogsNumber());
                 } else {
                     scores.row(iTargetTime) = score->AssessOnArray(targetValues[0](iTargetTime),
                                                                    analogsValues[0].row(iTargetTime),
-                                                                   params.GetScoreAnalogsNumber());
+                                                                   params->GetScoreAnalogsNumber());
                 }
             } else {
-                scores.row(iTargetTime) = a1f::Ones(3 * (params.GetScoreAnalogsNumber() + 1)) * NaNf;
+                scores.row(iTargetTime) = a1f::Ones(3 * (params->GetScoreAnalogsNumber() + 1)) * NaNf;
             }
         }
 
@@ -140,13 +140,13 @@ bool asProcessorScore::GetAnalogsScores(asResultsValues &anaValues, asScore *sco
 }
 
 bool asProcessorScore::GetAnalogsTotalScore(asResultsScores &anaScores, asTimeArray &timeArray,
-                                            asParametersScoring &params, asResultsTotalScore &results)
+                                            asParametersScoring *params, asResultsTotalScore &results)
 {
-    // TODO (phorton#1#): Specify the period in the parameter
-    asTotalScore *finalScore = asTotalScore::GetInstance(params.GetScoreName(), "Total");
+    // TODO: Specify the period in the parameter
+    asTotalScore *finalScore = asTotalScore::GetInstance(params->GetScoreName(), "Total");
 
     // Ranks number set for all, but only used for the rank histogram
-    finalScore->SetRanksNb(params.GetScoreAnalogsNumber() + 1);
+    finalScore->SetRanksNb(params->GetScoreAnalogsNumber() + 1);
 
     if (finalScore->Has2DArrayArgument()) {
         float result = finalScore->Assess(anaScores.GetTargetDates(), anaScores.GetScores2DArray(), timeArray);

@@ -45,7 +45,7 @@ public:
     asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                                 const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarAlarmsDrawing();
+    ~asPanelSidebarAlarmsDrawing() override;
 
     void DrawAlarms(a1f &dates, const vwxs &forecasts, a2f &values);
 
@@ -78,11 +78,11 @@ public:
                          wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                          const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarAlarms();
+    ~asPanelSidebarAlarms() override;
 
     void SetData(a1f &dates, a2f &values);
 
-    void Update();
+    void Update() override;
 
     int GetMode()
     {

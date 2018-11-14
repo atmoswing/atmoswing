@@ -28,36 +28,24 @@
 #include "asPredictorArchEcmwfEraInterim.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "ECMWF_ERA_interim";
-    m_originalProvider = "ECMWF";
+    m_provider = "ECMWF";
     m_datasetName = "ERA-interim";
-    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(-32767);
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "latitude";
-    m_fileStructure.dimLonName = "longitude";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
+    m_fStr.dimLatName = "latitude";
+    m_fStr.dimLonName = "longitude";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
     m_subFolder = wxEmptyString;
-}
-
-asPredictorArchEcmwfEraInterim::~asPredictorArchEcmwfEraInterim()
-{
-
 }
 
 bool asPredictorArchEcmwfEraInterim::Init()
@@ -69,69 +57,69 @@ bool asPredictorArchEcmwfEraInterim::Init()
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "pressure_level";
-        m_xAxisStep = 0.75;
-        m_yAxisStep = 0.75;
         if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
-            m_fileVariableName = "z";
+            m_fileVarName = "z";
             m_unit = m2_s2;
         } else if (m_dataId.IsSameAs("t", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
-            m_fileVariableName = "t";
+            m_fileVarName = "t";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("r", false) || m_dataId.IsSameAs("rh", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
-            m_fileVariableName = "r";
+            m_fileVarName = "r";
             m_unit = percent;
         } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("w", false)) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
-            m_fileVariableName = "w";
+            m_fileVarName = "w";
             m_unit = Pa_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVariableName + ".nc";
+        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
                m_product.IsSameAs("sfc", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_subFolder = "surface";
-        m_xAxisStep = 0.75;
-        m_yAxisStep = 0.75;
         if (m_dataId.IsSameAs("tcw", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total column water";
-            m_fileVariableName = "tcw";
+            m_fileVarName = "tcw";
             m_unit = kg_m2;
         } else if (m_dataId.IsSameAs("tp", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
-            m_fileVariableName = "tp";
+            m_fileVarName = "tp";
             m_unit = m;
         } else if (m_dataId.IsSameAs("mslp", false) || m_dataId.IsSameAs("msl", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
-            m_fileVariableName = "msl";
+            m_fileVarName = "msl";
             m_unit = Pa;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVariableName + ".nc";
+        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
@@ -150,19 +138,9 @@ bool asPredictorArchEcmwfEraInterim::Init()
     return true;
 }
 
-vwxs asPredictorArchEcmwfEraInterim::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchEcmwfEraInterim::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
-}
-
-bool asPredictorArchEcmwfEraInterim::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                     asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 double asPredictorArchEcmwfEraInterim::ConvertToMjd(double timeValue, double refValue) const

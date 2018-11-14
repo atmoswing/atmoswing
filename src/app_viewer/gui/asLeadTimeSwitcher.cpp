@@ -32,30 +32,29 @@ wxDEFINE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 
 asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                                        wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : wxPanel(parent, id, pos, size, style)
+        : wxPanel(parent, id, pos, size, style),
+          m_parent(nullptr),
+          m_workspace(workspace),
+          m_forecastManager(forecastManager),
+          m_bmp(nullptr),
+          m_gdc(nullptr),
+          m_cellWidth(static_cast<int>(40 * g_ppiScaleDc)),
+          m_leadTime(0)
 {
-    m_workspace = workspace;
-    m_forecastManager = forecastManager;
-    m_bmp = NULL;
-    m_gdc = NULL;
-    m_cellWidth = 40 * g_ppiScaleDc;
-    m_parent = NULL;
-    m_leadTime = 0;
-
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), NULL, this);
-    Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
-    Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
-    Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
+    Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+    Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+    Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
 
     Layout();
 }
 
 asLeadTimeSwitcher::~asLeadTimeSwitcher()
 {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), NULL, this);
-    Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
-    Disconnect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
-    Disconnect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), NULL, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
+    Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+    Disconnect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+    Disconnect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
 
     wxDELETE(m_bmp);
 }
@@ -67,6 +66,8 @@ void asLeadTimeSwitcher::SetParent(wxWindow *parent)
 
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event)
 {
+    wxBusyCursor wait;
+
     wxPoint position = event.GetPosition();
     int val = floor(position.x / m_cellWidth);
     wxCommandEvent eventSlct(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);
@@ -88,15 +89,12 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
     wxASSERT(values.size() == dates.size());
 
     // Create bitmap
-    wxBitmap *bmp = new wxBitmap(width, height);
+    auto *bmp = new wxBitmap(width, height);
     wxASSERT(bmp);
 
     // Create device context
     wxMemoryDC dc(*bmp);
     dc.SetBackground(wxBrush(GetBackgroundColour()));
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(g_linuxBgColour));
-#endif
     dc.Clear();
 
     // Create graphics context
@@ -104,14 +102,18 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
 
     if (gc && values.size() > 0) {
         gc->SetPen(*wxBLACK);
-        wxFont datesFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+        int fontSize = 10;
+        #ifdef __LINUX__
+            fontSize = 8;
+        #endif
+        wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
         gc->SetFont(datesFont, *wxBLACK);
 
-        wxPoint startText(margin, m_cellWidth / 2 - 10);
+        wxPoint startText(margin, m_cellWidth / 2 - fontSize);
 
         // For every lead time
         for (int iLead = 0; iLead < dates.size(); iLead++) {
-            gc->SetPen(wxPen(GetBackgroundColour(), 3, wxSOLID));
+            gc->SetPen(wxPen(GetBackgroundColour(), 3, wxPENSTYLE_SOLID));
 
             wxGraphicsPath path = gc->CreatePath();
             CreatePath(path, iLead);
@@ -123,7 +125,7 @@ void asLeadTimeSwitcher::Draw(a1f &dates)
         }
 
         // For the global view option
-        gc->SetPen(wxPen(*wxWHITE, 1, wxSOLID));
+        gc->SetPen(wxPen(*wxWHITE, 1, wxPENSTYLE_SOLID));
         wxGraphicsPath path = gc->CreatePath();
 
         int segmentsTot = 7;
@@ -176,8 +178,8 @@ void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime)
         // Set Lead time marker
         wxGraphicsPath markerPath = gc->CreatePath();
         CreatePathMarker(markerPath, leadTime);
-        gc->SetBrush(wxBrush(*wxWHITE, wxSOLID));
-        gc->SetPen(wxPen(*wxBLACK, 1, wxSOLID));
+        gc->SetBrush(wxBrush(*wxWHITE, wxBRUSHSTYLE_SOLID));
+        gc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
         gc->DrawPath(markerPath);
 
         wxDELETE(gc);
@@ -189,27 +191,16 @@ void asLeadTimeSwitcher::SetBitmap(wxBitmap *bmp)
     wxDELETE(m_bmp);
     wxASSERT(!m_bmp);
 
-    if (bmp != NULL) {
+    if (bmp != nullptr) {
         wxASSERT(bmp);
         m_bmp = new wxBitmap(*bmp);
         wxASSERT(m_bmp);
     }
 }
 
-wxBitmap *asLeadTimeSwitcher::GetBitmap()
-{
-    wxASSERT(m_bmp);
-
-    if (m_bmp != NULL) {
-        return m_bmp;
-    }
-
-    return NULL;
-}
-
 void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event)
 {
-    if (m_bmp != NULL) {
+    if (m_bmp != nullptr) {
         wxPaintDC dc(this);
         dc.DrawBitmap(*m_bmp, 0, 0, true);
     }
@@ -227,7 +218,7 @@ void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int iCol)
 
     double startPointX = (double) start.x + iCol * m_cellWidth;
 
-    double startPointY = (double) start.y;
+    auto startPointY = (double) start.y;
 
     path.MoveToPoint(startPointX, startPointY);
 
@@ -247,8 +238,8 @@ void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath &path, const wxPoint &cen
 
     wxDouble segmentStart = -0.5 * M_PI + ((double) segmentNb / (double) segmentsTotNb) * (1.5 * M_PI);
     wxDouble segmentEnd = -0.5 * M_PI + ((double) (segmentNb + 1) / (double) segmentsTotNb) * (1.5 * M_PI);
-    wxDouble centerX = (wxDouble) center.x;
-    wxDouble centerY = (wxDouble) center.y;
+    auto centerX = (wxDouble) center.x;
+    auto centerY = (wxDouble) center.y;
 
     // Get starting point
     double dX = cos(segmentStart) * radiusOut;
@@ -276,7 +267,7 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
 {
     wxColour colour;
 
-    if (asTools::IsNaN(value)) // NaN -> gray
+    if (asIsNaN(value)) // NaN -> gray
     {
         colour.Set(150, 150, 150);
     } else if (value == 0) // No rain -> white
@@ -300,7 +291,7 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
         colour.Set(255, (255 - valColour), 0);
     }
 
-    wxBrush brush(colour, wxSOLID);
+    wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush);
     gc->DrawPath(path);
 }
@@ -308,7 +299,7 @@ void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, f
 void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int iCol, const wxString &label)
 {
     double pointX = (double) start.x + iCol * m_cellWidth;
-    double pointY = (double) start.y;
+    auto pointY = (double) start.y;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);
@@ -321,7 +312,7 @@ void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath &path, int iCol)
     wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);
 
     double startPointX = (double) start.x + iCol * m_cellWidth;
-    double startPointY = (double) start.y;
+    auto startPointY = (double) start.y;
 
     path.MoveToPoint(startPointX, startPointY);
 

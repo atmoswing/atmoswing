@@ -31,14 +31,10 @@
 #include "asScoreCRPSsharpEP.h"
 
 asScoreCRPSaccurEP::asScoreCRPSaccurEP()
-        : asScore()
+        : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
+                  _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSaccuracyEP;
-    m_name = _("CRPS Accuracy Exact Primitive");
-    m_fullName = _("Continuous Ranked Probability Score Accuracy exact solution");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSaccurEP::~asScoreCRPSaccurEP()
@@ -46,15 +42,24 @@ asScoreCRPSaccurEP::~asScoreCRPSaccurEP()
     //dtor
 }
 
-float asScoreCRPSaccurEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSaccurEP::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
-    float CRPS = scoreCRPSEP.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPS = scoreCRPSEP.Assess(observedVal, forcastVals, nbElements);
     asScoreCRPSsharpEP scoreCRPSsharpnessEP = asScoreCRPSsharpEP();
-    float CRPSsharpness = scoreCRPSsharpnessEP.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPSsharpness = scoreCRPSsharpnessEP.Assess(observedVal, forcastVals, nbElements);
 
     return CRPS - CRPSsharpness;
 }

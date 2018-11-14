@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #ifndef __ATMOSWINGOPTIMIZERGUI_H__
@@ -33,6 +33,7 @@
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
+#include <wx/radiobut.h>
 #include <wx/radiobox.h>
 #include <wx/slider.h>
 
@@ -75,8 +76,6 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxCheckBox* m_checkBoxProceedSequentially;
 		wxStaticText* m_staticTextSpacer;
 		wxCheckBox* m_checkBoxClassicPlusResize;
-		wxStaticText* m_staticText66;
-		wxStaticText* m_staticText67;
 		wxStaticText* m_staticTextMonteCarloRandomNb;
 		wxTextCtrl* m_textCtrlMonteCarloRandomNb;
 		wxStaticText* m_staticTextVarExploStepToExplore;
@@ -158,6 +157,7 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxButton* m_buttonSaveDefault;
 		wxMenuBar* m_menuBar;
 		wxMenu* m_menuOptions;
+		wxMenu* m_menuTools;
 		wxMenu* m_menuLog;
 		wxMenu* m_menuLogLevel;
 		wxMenu* m_menuHelp;
@@ -167,6 +167,7 @@ class asFrameOptimizerVirtual : public wxFrame
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSaveDefault( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OpenFramePredictandDB( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnShowLog( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel1( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }
@@ -176,7 +177,7 @@ class asFrameOptimizerVirtual : public wxFrame
 	
 	public:
 		
-		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		
 		~asFrameOptimizerVirtual();
 	
@@ -193,7 +194,9 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
 		wxPanel* m_panelGeneralCommon;
-		wxRadioBox* m_radioBoxLogLevel;
+		wxRadioButton* m_radioBtnLogLevel1;
+		wxRadioButton* m_radioBtnLogLevel2;
+		wxRadioButton* m_radioBtnLogLevel3;
 		wxCheckBox* m_checkBoxDisplayLogWindow;
 		wxCheckBox* m_checkBoxSaveLogFile;
 		wxStaticText* m_staticTextArchivePredictorsDir;

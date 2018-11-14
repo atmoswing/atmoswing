@@ -29,15 +29,11 @@
 #include "asScoreCRPSHersbachDecomp.h"
 
 asScoreCRPSHersbachDecomp::asScoreCRPSHersbachDecomp()
-        : asScore()
+        : asScore(asScore::CRPSHersbachDecomp, _("CRPS Hersbach decomposition"),
+                  _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)"), Asc, 0, NaNf,
+                  false, false)
 {
-    m_score = asScore::CRPSHersbachDecomp;
-    m_name = _("CRPS Hersbach decomposition");
-    m_fullName = _("Hersbach decomposition of the Continuous Ranked Probability Score (Hersbach, 2000)");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
-    m_singleValue = false;
+
 }
 
 asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp()
@@ -45,34 +41,28 @@ asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp()
     //dtor
 }
 
-float asScoreCRPSHersbachDecomp::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSHersbachDecomp::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
     return NaNf;
 }
 
-a1f asScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+a1f asScoreCRPSHersbachDecomp::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the CRPS Hersbach decomposition function"));
-        return a2f();
-    }
-
     // Create the container to sort the data
-    a1f x = ForcastVals;
+    a1f x = forcastVals;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asTools::HasNaN(&x[0], &x[nbElements - 1]) || asTools::IsNaN(ObservedVal)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(observedVal)) {
         wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return a2f();
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbElements - 1], Asc);
+    asSortArray(&x[0], &x[nbElements - 1], Asc);
 
     // Containers
     int binsNbs = nbElements + 1;
@@ -87,23 +77,23 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &Forca
     z.segment(1, nbElements) = x;
     z[binsNbsExtra - 1] = x[nbElements - 1];
 
-    if (ObservedVal < z[0]) {
-        z[0] = ObservedVal;
+    if (observedVal < z[0]) {
+        z[0] = observedVal;
     }
 
-    if (ObservedVal > z[binsNbsExtra - 1]) {
-        z[binsNbsExtra - 1] = ObservedVal;
+    if (observedVal > z[binsNbsExtra - 1]) {
+        z[binsNbsExtra - 1] = observedVal;
     }
 
     // Loop on bins (Hersbach, Eq 26)
     for (int k = 0; k < binsNbs; k++) {
         g[k] = z[k + 1] - z[k];
-        if (ObservedVal > z(k + 1)) {
+        if (observedVal > z(k + 1)) {
             alpha[k] = g[k];
             beta[k] = 0;
-        } else if ((ObservedVal <= z[k + 1]) && (ObservedVal >= z[k])) {
-            alpha[k] = ObservedVal - z[k];
-            beta[k] = z[k + 1] - ObservedVal;
+        } else if ((observedVal <= z[k + 1]) && (observedVal >= z[k])) {
+            alpha[k] = observedVal - z[k];
+            beta[k] = z[k + 1] - observedVal;
         } else {
             alpha[k] = 0;
             beta[k] = g[k];
@@ -111,11 +101,11 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float ObservedVal, const a1f &Forca
     }
 
     // Outliers cases (Hersbach, Eq 27)
-    if (ObservedVal == z[0]) {
+    if (observedVal == z[0]) {
         alpha = a1f::Zero(binsNbs);
-        beta[0] = z[1] - ObservedVal;
-    } else if (ObservedVal == z[binsNbsExtra - 1]) {
-        alpha[binsNbs - 1] = ObservedVal - z[binsNbs - 1];
+        beta[0] = z[1] - observedVal;
+    } else if (observedVal == z[binsNbsExtra - 1]) {
+        alpha[binsNbs - 1] = observedVal - z[binsNbs - 1];
         beta = a1f::Zero(binsNbs);
     }
 

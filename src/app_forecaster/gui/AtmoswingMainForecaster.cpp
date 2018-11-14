@@ -121,12 +121,12 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     // Internet
     int maxPrevStepsNb = 5;
     wxString maxPrevStepsNbStr = wxString::Format("%d", maxPrevStepsNb);
-    wxString InternetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
-    pConfig->Write("/Internet/MaxPreviousStepsNb", InternetMaxPrevStepsNb);
+    wxString internetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
+    pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
     int maxParallelRequests = 5;
     wxString maxParallelRequestsStr = wxString::Format("%d", maxParallelRequests);
-    wxString InternetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
-    pConfig->Write("/Internet/ParallelRequestsNb", InternetParallelRequestsNb);
+    wxString internetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
+    pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
     bool restrictDownloads;
     pConfig->Read("/Internet/RestrictDownloads", &restrictDownloads, true);
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
@@ -142,14 +142,14 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     if (maxThreads == -1)
         maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long defaultMethod = (long) asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    auto defaultMethod = (long) asMULTITHREADS;
+    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
-        ProcessingMethod = (long) asMULTITHREADS;
+        processingMethod = (long) asMULTITHREADS;
     }
-    pConfig->Write("/Processing/Method", ProcessingMethod);
+    pConfig->Write("/Processing/Method", processingMethod);
 
     pConfig->Flush();
 }
@@ -158,7 +158,7 @@ AtmoswingFrameForecaster::~AtmoswingFrameForecaster()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if (pConfig == NULL)
+    if (pConfig == nullptr)
         return;
 
     // Save the frame position

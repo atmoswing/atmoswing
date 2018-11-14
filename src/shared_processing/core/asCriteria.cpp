@@ -43,11 +43,11 @@
 #include "asPredictor.h"
 
 
-asCriteria::asCriteria()
-        : m_criteria(CriteriaUndefined),
-          m_name(wxEmptyString),
-          m_fullName(wxEmptyString),
-          m_order(Asc),
+asCriteria::asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order)
+        : m_criteria(criteria),
+          m_name(name),
+          m_fullName(fullname),
+          m_order(order),
           m_needsDataRange(false),
           m_dataMin(NaNf),
           m_dataMax(NaNf),

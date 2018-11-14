@@ -130,18 +130,12 @@ public:
 
     double GetPredictorTimeHoursUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorXminIteration(int iStep, int iPtor) const;
-
     int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
-
-    double GetPredictorYminIteration(int iStep, int iPtor) const;
 
     int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
 protected:
-    vd GetVectorXmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
-    vd GetVectorYmin(asFileParametersCalibration &fileParams, wxXmlNode *node, int iStep, int iPtor);
 
 private:
     vvi m_predictandStationIdsVect;

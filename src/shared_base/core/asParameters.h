@@ -30,9 +30,12 @@
 #define ASPARAMETERS_H
 
 #include <wx/xml/xml.h>
+#include <utility>
 #include "asIncludes.h"
 #include "asPredictand.h"
-#include "asFileParametersStandard.h"
+
+
+class asFileParameters;
 
 
 class asParameters
@@ -87,7 +90,7 @@ public:
 
     asParameters();
 
-    virtual ~asParameters();
+    ~asParameters() override = default;
 
     virtual void AddStep();
 
@@ -108,6 +111,8 @@ public:
     virtual bool SetPreloadingProperties();
 
     virtual bool InputsOK() const;
+
+    bool PreprocessingPropertiesOk() const;
 
     static vi GetFileStationIds(wxString stationIdsString);
 
@@ -136,7 +141,7 @@ public:
     void SetVectorParamsPredictors(int iStep, VectorParamsPredictors ptors)
     {
         wxASSERT(iStep < GetStepsNb());
-        m_steps[iStep].predictors = ptors;
+        m_steps[iStep].predictors = std::move(ptors);
     }
 
     wxString GetMethodId() const
@@ -216,7 +221,7 @@ public:
         return m_archiveStart;
     }
 
-    bool SetArchiveStart(wxString val)
+    bool SetArchiveStart(const wxString &val)
     {
         m_archiveStart = asTime::GetTimeFromString(val);
         return true;
@@ -227,20 +232,10 @@ public:
         return m_archiveEnd;
     }
 
-    bool SetArchiveEnd(wxString val)
+    bool SetArchiveEnd(const wxString &val)
     {
         m_archiveEnd = asTime::GetTimeFromString(val);
         return true;
-    }
-
-    double GetTimeMinHours() const
-    {
-        return m_timeMinHours;
-    }
-
-    double GetTimeMaxHours() const
-    {
-        return m_timeMaxHours;
     }
 
     int GetTimeShiftDays() const
@@ -333,43 +328,6 @@ public:
     }
 
     bool SetPredictandStationIds(vi val);
-
-    wxString GePredictandtDatasetId() const
-    {
-        return m_predictandDatasetId;
-    }
-
-    bool SetPredictandDatasetId(const wxString &val);
-
-    asPredictand::Parameter GetPredictandParameter() const
-    {
-        return m_predictandParameter;
-    }
-
-    void SetPredictandParameter(asPredictand::Parameter val)
-    {
-        m_predictandParameter = val;
-    }
-
-    asPredictand::TemporalResolution GetPredictandTemporalResolution() const
-    {
-        return m_predictandTemporalResolution;
-    }
-
-    void SetPredictandTemporalResolution(asPredictand::TemporalResolution val)
-    {
-        m_predictandTemporalResolution = val;
-    }
-
-    asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
-    {
-        return m_predictandSpatialAggregation;
-    }
-
-    void SetPredictandSpatialAggregation(asPredictand::SpatialAggregation val)
-    {
-        m_predictandSpatialAggregation = val;
-    }
 
     double GetPredictandTimeHours() const
     {
@@ -622,6 +580,11 @@ public:
         return (int) m_steps[iStep].predictors.size();
     }
 
+    virtual int GetPredictorDataIdNb(int iStep, int iPtor) const
+    {
+        return 1;
+    }
+
 protected:
     wxString m_methodId;
     wxString m_methodIdDisplay;
@@ -652,18 +615,18 @@ private:
     wxString m_predictandDatasetId;
     double m_predictandTimeHours;
 
-    bool ParseDescription(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseDescription(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseTimeProperties(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersStandard &fileParams, int iStep, const wxXmlNode *nodeProcess);
+    bool ParseAnalogDatesParams(asFileParameters &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    bool ParsePredictors(asFileParametersStandard &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
+    bool ParsePredictors(asFileParameters &fileParams, int iStep, int iPtor, const wxXmlNode *nodeParamBlock);
 
-    bool ParsePreprocessedPredictors(asFileParametersStandard &fileParams, int iStep, int iPtor,
+    bool ParsePreprocessedPredictors(asFileParameters &fileParams, int iStep, int iPtor,
                                      const wxXmlNode *nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersStandard &fileParams, const wxXmlNode *nodeProcess);
+    bool ParseAnalogValuesParams(asFileParameters &fileParams, const wxXmlNode *nodeProcess);
 
 };
 

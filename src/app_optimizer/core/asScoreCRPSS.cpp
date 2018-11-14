@@ -30,16 +30,11 @@
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSS::asScoreCRPSS()
-        : asScore()
+        : asScore(asScore::CRPSS, _("CRPS Skill Score"),
+                  _("Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method"),
+                  Desc, 1, NaNf, true)
 {
-    m_score = asScore::CRPSS;
-    m_name = _("CRPS Skill Score");
-    m_fullName = _(
-            "Continuous Ranked Probability Score Skill Score based on the approximation with the rectangle method");
-    m_order = Desc;
-    m_scaleBest = 1;
-    m_scaleWorst = NaNf;
-    m_usesClimatology = true;
+
 }
 
 asScoreCRPSS::~asScoreCRPSS()
@@ -47,18 +42,26 @@ asScoreCRPSS::~asScoreCRPSS()
     //dtor
 }
 
-float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-
     wxASSERT(m_scoreClimatology != 0);
+
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
     // First process the CRPS and then the skill score
     asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
     scoreCRPS.SetThreshold(GetThreshold());
     scoreCRPS.SetQuantile(GetQuantile());
-    float score = scoreCRPS.Assess(ObservedVal, ForcastVals, nbElements);
+    float score = scoreCRPS.Assess(observedVal, forcastVals, nbElements);
     float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
     return skillScore;
@@ -66,9 +69,6 @@ float asScoreCRPSS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
 
 bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
-
     // Containers for final results
     a1f scoresClimatology(refVals.size());
 
@@ -78,7 +78,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
     score->SetQuantile(GetQuantile());
 
     for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
-        if (!asTools::IsNaN(refVals(iReftime))) {
+        if (!asIsNaN(refVals(iReftime))) {
             scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
         } else {
             scoresClimatology(iReftime) = NaNf;
@@ -87,7 +87,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
 
     wxDELETE(score);
 
-    m_scoreClimatology = asTools::Mean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
+    m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
     wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
 

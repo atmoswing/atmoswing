@@ -36,9 +36,9 @@ class asConfig
         : public wxObject
 {
 public:
-    asConfig();
+    asConfig() = default;
 
-    virtual ~asConfig();
+    ~asConfig() override = default;
 
     static wxString GetLogDir();
 
@@ -56,7 +56,9 @@ public:
 
     static wxString GetDefaultUserWorkingDir();
 
-    static wxString GetDefaultUserConfigDir();
+#if wxUSE_GUI
+    static wxColour GetFrameBgColour();
+#endif
 
 protected:
 

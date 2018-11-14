@@ -41,19 +41,19 @@ public:
                                  wxWindowID id = asWINDOW_PREFERENCES);
 
 protected:
-    void CloseFrame(wxCommandEvent &event);
+    void CloseFrame(wxCommandEvent &event) override;
 
-    void Update();
+    void Update() override;
 
     void LoadPreferences();
 
     void SavePreferences();
 
-    void SaveAndClose(wxCommandEvent &event);
+    void SaveAndClose(wxCommandEvent &event) override;
 
-    void ApplyChanges(wxCommandEvent &event);
+    void ApplyChanges(wxCommandEvent &event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event);
+    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 
 private:
     asBatchForecasts *m_batchForecasts;

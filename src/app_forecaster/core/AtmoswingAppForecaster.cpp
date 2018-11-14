@@ -57,21 +57,21 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
         {{wxCMD_LINE_SWITCH, "h",  "help",          "This help text"},
-        {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
-        {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
-        {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
-        {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
-        {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
-        {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
-        {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
-                                                          "\n \t\t\t\t 0: minimum"
-                                                          "\n \t\t\t\t 1: errors"
-                                                          "\n \t\t\t\t 2: warnings (default)"
-                                                          "\n \t\t\t\t 3: verbose"},
-        {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
-        {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
-        {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-        {wxCMD_LINE_NONE}};
+         {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
+         {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
+         {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
+         {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
+         {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
+         {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
+         {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
+                                                            "\n \t\t\t\t 0: minimum"
+                                                            "\n \t\t\t\t 1: errors"
+                                                            "\n \t\t\t\t 2: warnings (default)"
+                                                            "\n \t\t\t\t 3: verbose"},
+         {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
+         {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
+         {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+         {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppForecaster::OnInit()
 {
@@ -106,7 +106,7 @@ bool AtmoswingAppForecaster::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
 
     // Check that it is the unique instance
     bool multipleInstances;
@@ -196,7 +196,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s", g_version, (const wxChar *) date);
+        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
 
         return false;
     }
@@ -224,7 +224,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
                 Log().SetLevel(3);
             } else {
                 Log().SetLevel(2);
-                wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3)."), logLevelStr);
+                wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr);
             }
         } else {
             Log().SetLevel(2);
@@ -296,7 +296,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-past", &numberOfDaysStr)) {
         long numberOfDays;
         if (!numberOfDaysStr.ToLong(&numberOfDays)) {
-            wxPrintf(_("The value provided for 'forecast-past' could not be interpreted."));
+            wxPrintf(_("The value provided for 'forecast-past' could not be interpreted.\n"));
             return false;
         }
 
@@ -333,7 +333,7 @@ int AtmoswingAppForecaster::OnRun()
         if (m_doConfig) {
 
 #if wxUSE_GUI
-            wxPrintf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead."));
+            wxPrintf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead.\n"));
             return 1;
 #else
 
@@ -491,7 +491,7 @@ int AtmoswingAppForecaster::OnRun()
             // Log message
             wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
             wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-            wxPrintf("Forecast started for the %s UTC", forecastDateStr);
+            wxPrintf("Forecast started for the %s UTC\n", forecastDateStr);
 
             // Open last batch file
             wxConfigBase *pConfig = wxFileConfig::Get();
@@ -503,12 +503,12 @@ int AtmoswingAppForecaster::OnRun()
             if (!batchFilePath.IsEmpty()) {
                 if (!batchForecasts.Load(batchFilePath)) {
                     wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    wxPrintf(_("Failed to open the batch file %s"), batchFilePath);
+                    wxPrintf(_("Failed to open the batch file %s\n"), batchFilePath);
                     return 1;
                 }
             } else {
                 wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
                 return 1;
             }
 
@@ -517,7 +517,7 @@ int AtmoswingAppForecaster::OnRun()
             forecaster.SetForecastDate(m_forecastDate);
             if (!forecaster.Manager()) {
                 wxLogError(_("Failed processing the forecast."));
-                wxPrintf(_("Failed processing the forecast."));
+                wxPrintf(_("Failed processing the forecast.\n"));
                 return 1;
             }
             double realForecastDate = forecaster.GetForecastDate();
@@ -525,7 +525,7 @@ int AtmoswingAppForecaster::OnRun()
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
             wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-            wxPrintf("Forecast processed for the date %s UTC", realForecastDateStr);
+            wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
 
             // Write the resulting files path into a temp file.
             wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
@@ -541,7 +541,7 @@ int AtmoswingAppForecaster::OnRun()
         }
 
         if (m_doForecastPast) {
-            wxPrintf("Forecast started for the last %d days", m_forecastPastDays);
+            wxPrintf("Forecast started for the last %d days\n", m_forecastPastDays);
 
             // Open last batch file
             wxConfigBase *pConfig = wxFileConfig::Get();
@@ -553,12 +553,12 @@ int AtmoswingAppForecaster::OnRun()
             if (!batchFilePath.IsEmpty()) {
                 if (!batchForecasts.Load(batchFilePath)) {
                     wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    wxPrintf(_("Failed to open the batch file %s"), batchFilePath);
+                    wxPrintf(_("Failed to open the batch file %s\n"), batchFilePath);
                     return 1;
                 }
             } else {
                 wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
                 return 1;
             }
 
@@ -574,14 +574,14 @@ int AtmoswingAppForecaster::OnRun()
                 // Log message
                 wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
                 wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-                wxPrintf("Forecast started for the %s UTC", forecastDateStr);
+                wxPrintf("Forecast started for the %s UTC\n", forecastDateStr);
 
                 // Launch forecasting
                 asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
                 forecaster.SetForecastDate(date);
                 if (!forecaster.Manager()) {
                     wxLogError(_("Failed processing the forecast."));
-                    wxPrintf(_("Failed processing the forecast."));
+                    wxPrintf(_("Failed processing the forecast.\n"));
                     return 1;
                 }
                 double realForecastDate = forecaster.GetForecastDate();
@@ -589,7 +589,7 @@ int AtmoswingAppForecaster::OnRun()
                 // Log message
                 wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
                 wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-                wxPrintf("Forecast processed for the date %s UTC", realForecastDateStr);
+                wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
 
                 // Apply real forecast date to increment
                 date = realForecastDate;

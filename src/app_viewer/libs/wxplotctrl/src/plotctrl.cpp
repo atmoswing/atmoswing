@@ -559,7 +559,7 @@ void wxPlotCtrl::SetPlotWinMouseCursor(int cursorid)
     if (cursorid == m_mouse_cursorid)
         return;
     m_mouse_cursorid = cursorid;
-    SetCursor(wxCursor(cursorid));
+    SetCursor(wxCursor((wxStockCursor) cursorid));
 }
 
 void wxPlotCtrl::OnMouse(wxMouseEvent &event)
@@ -1827,8 +1827,8 @@ bool wxPlotCtrl::SetZoom(const wxRect &window, bool send_event)
 
     double origin_x = GetPlotCoordFromClientX(window.GetX());
     double origin_y = GetPlotCoordFromClientY(window.GetY() + window.GetHeight());
-    double zoom_x = m_zoom.m_x * double(m_areaClientRect.width) / (window.GetWidth());
-    double zoom_y = m_zoom.m_y * double(m_areaClientRect.height) / (window.GetHeight());
+    double zoom_x = m_zoom.m_x * static_cast<double>(m_areaClientRect.width) / (window.GetWidth());
+    double zoom_y = m_zoom.m_y * static_cast<double>(m_areaClientRect.height) / (window.GetHeight());
 
     bool ok = SetZoom(zoom_x, zoom_y, origin_x, origin_y, send_event);
     if (ok)
@@ -1840,11 +1840,11 @@ bool wxPlotCtrl::SetZoom(double zoom_x, double zoom_y, double origin_x, double o
 {
     // fit to window if zoom <= 0
     if (zoom_x <= 0) {
-        zoom_x = double(m_areaClientRect.width) / (m_curveBoundingRect.m_width);
+        zoom_x = static_cast<double>(m_areaClientRect.width) / (m_curveBoundingRect.m_width);
         origin_x = m_curveBoundingRect.m_x;
     }
     if (zoom_y <= 0) {
-        zoom_y = double(m_areaClientRect.height) / (m_curveBoundingRect.m_height);
+        zoom_y = static_cast<double>(m_areaClientRect.height) / (m_curveBoundingRect.m_height);
         origin_y = m_curveBoundingRect.m_y;
     }
 
@@ -2071,7 +2071,7 @@ void wxPlotCtrl::SetAreaMouseCursor(int cursorid)
     else if (cursorid == wxPLOTCTRL_CURSOR_GRAB)
         m_area->SetCursor(s_grabCursor);
     else
-        m_area->SetCursor(wxCursor(cursorid));
+        m_area->SetCursor(wxCursor((wxStockCursor) cursorid));
 }
 
 void wxPlotCtrl::OnSize(wxSizeEvent &)
@@ -2713,8 +2713,8 @@ void wxPlotCtrl::DrawWholePlot(wxDC *dc, const wxRect &boundingRect, double dpi)
     //AutoCalcTicks();  // don't reset ticks since it might not be WYSIWYG
 
     //reload the original zoom and view rect in case it was changed by any of the font changes
-    m_zoom = wxPoint2DDouble(old_zoom.m_x * double(m_areaClientRect.width) / old_areaClientRect.width,
-                             old_zoom.m_y * double(m_areaClientRect.height) / old_areaClientRect.height);
+    m_zoom = wxPoint2DDouble(old_zoom.m_x * static_cast<double>(m_areaClientRect.width) / old_areaClientRect.width,
+                             old_zoom.m_y * static_cast<double>(m_areaClientRect.height) / old_areaClientRect.height);
 
     //wxPrintf(wxT("DPI %g, font %g pen%g\n"), dpi, fontScale, penScale);
     //PRINT_WXRECT(wxT("Whole plot"), boundingRect);
@@ -2851,7 +2851,7 @@ void wxPlotCtrl::DoAutoCalcTicks(bool x_axis)
 
             if (x_axis) {
                 digits = 1 + places + (sigFigs > 0 ? 1 + sigFigs : 0) + (exponential ? 4 : 0);
-                *tick_count = int(double(window) / double((digits + 3) * m_axisFontSize.x) + 0.5);
+                *tick_count = int(static_cast<double>(window) / static_cast<double>((digits + 3) * m_axisFontSize.x) + 0.5);
             }
 
             if ((range / (*tick_step)) <= (*tick_count))
@@ -3769,6 +3769,14 @@ void wxPlotCtrl::AdjustScrollBars()
     pagesize = thumbsize;
 
     m_yAxisScrollbar->SetScrollbar(int(position), int(thumbsize), int(range), int(pagesize));
+}
+
+void wxPlotCtrl::HideScrollBars()
+{
+    m_xAxisScrollbar->SetSize(0, 0);
+    m_xAxisScrollbar->Hide();
+    m_yAxisScrollbar->SetSize(0, 0);
+    m_yAxisScrollbar->Hide();
 }
 
 void wxPlotCtrl::OnScroll(wxScrollEvent &event)

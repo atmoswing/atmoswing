@@ -47,7 +47,7 @@ public:
         int lineNum;
     } PrevExceptions;
 
-    asException();
+    asException() noexcept;
 
     asException(const wxString &message, const char *filename, unsigned int line);
 
@@ -61,7 +61,7 @@ public:
 
     asException(const char *message, const char *filename, unsigned int line, asException prevexception);
 
-    virtual ~asException() throw();
+    ~asException() noexcept override = default;
 
     wxString GetMessage() const
     {
@@ -80,11 +80,10 @@ public:
 
     bool HasChild() const
     {
-        return m_previous.size() > 0;
+        return !m_previous.empty();
     }
 
-    virtual const char *what() const throw()
-    {
+    const char *what() const noexcept override {
         return m_message.char_str();
 
     }

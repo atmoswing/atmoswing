@@ -37,13 +37,13 @@ class asFileBatchForecasts
         : public asFileXml
 {
 public:
-    asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode);
+    asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileBatchForecasts();
+    ~asFileBatchForecasts() override = default;
 
-    virtual bool EditRootElement();
+    bool EditRootElement();
 
-    virtual bool CheckRootElement() const;
+    bool CheckRootElement() const override;
 
 protected:
 

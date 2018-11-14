@@ -42,7 +42,7 @@ public:
 
     virtual ~asResultsScores();
 
-    void Init(asParametersScoring &params);
+    void Init(asParametersScoring *params);
 
     a1f &GetTargetDates()
     {

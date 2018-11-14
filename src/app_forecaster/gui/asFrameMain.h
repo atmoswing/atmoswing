@@ -37,16 +37,14 @@
 #include "asBatchForecasts.h"
 #include <wx/awx/led.h>
 
-class asPanelsManagerForecasts;
-
 class asFrameMain
         : public asFrameMainVirtual
 {
 
 public:
-    asFrameMain(wxWindow *parent);
+    explicit asFrameMain(wxWindow *parent);
 
-    ~asFrameMain();
+    ~asFrameMain() override;
 
     void OnInit();
 
@@ -63,41 +61,41 @@ protected:
     awxLed *m_ledSaving;
     asBatchForecasts m_batchForecasts;
 
-    void OnOpenBatchForecasts(wxCommandEvent &event);
+    void OnOpenBatchForecasts(wxCommandEvent &event) override;
 
-    void OnSaveBatchForecasts(wxCommandEvent &event);
+    void OnSaveBatchForecasts(wxCommandEvent &event) override;
 
-    void OnSaveBatchForecastsAs(wxCommandEvent &event);
+    void OnSaveBatchForecastsAs(wxCommandEvent &event) override;
 
     bool SaveBatchForecasts();
 
     bool UpdateBatchForecasts();
 
-    void OnNewBatchForecasts(wxCommandEvent &event);
+    void OnNewBatchForecasts(wxCommandEvent &event) override;
 
     bool OpenBatchForecasts();
 
-    void Update();
+    void Update() override;
 
-    void OpenFramePredictandDB(wxCommandEvent &event);
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-    void OnConfigureDirectories(wxCommandEvent &event);
+    void OnConfigureDirectories(wxCommandEvent &event) override;
 
-    void OpenFramePreferences(wxCommandEvent &event);
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-    void OpenFrameAbout(wxCommandEvent &event);
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-    void OnShowLog(wxCommandEvent &event);
+    void OnShowLog(wxCommandEvent &event) override;
 
-    void OnLogLevel1(wxCommandEvent &event);
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-    void OnLogLevel2(wxCommandEvent &event);
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-    void OnLogLevel3(wxCommandEvent &event);
+    void OnLogLevel3(wxCommandEvent &event) override;
 
     void OnStatusMethodUpdate(wxCommandEvent &event);
 
-    void OnSetPresentDate(wxCommandEvent &event);
+    void OnSetPresentDate(wxCommandEvent &event) override;
 
     void DisplayLogLevelMenu();
 
@@ -105,7 +103,7 @@ protected:
 
     void CancelForecasting(wxCommandEvent &event);
 
-    void AddForecast(wxCommandEvent &event);
+    void AddForecast(wxCommandEvent &event) override;
 
     void SetPresentDate();
 

@@ -46,13 +46,13 @@ class asMethodForecasting
         : public asMethodStandard
 {
 public:
-    asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = NULL);
+    explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
 
-    virtual ~asMethodForecasting();
+    ~asMethodForecasting() override;
 
     void ClearForecasts();
 
-    virtual bool Manager();
+    bool Manager() override;
 
     bool Forecast(asParametersForecast &params);
 
@@ -74,6 +74,9 @@ public:
 protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
+    bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
+                                      asPredictor *result);
+
     bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
 
     bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params, asResultsForecast &resultsPrev,
@@ -82,6 +85,10 @@ protected:
     bool GetAnalogsValues(asResultsForecast &results, asParametersForecast &params, int iStep);
 
     void DeletePreprocessData();
+
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
+
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
     void Cleanup();
 

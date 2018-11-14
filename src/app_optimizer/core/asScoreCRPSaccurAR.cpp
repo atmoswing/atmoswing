@@ -31,14 +31,11 @@
 #include "asScoreCRPSsharpAR.h"
 
 asScoreCRPSaccurAR::asScoreCRPSaccurAR()
-        : asScore()
+        : asScore(asScore::CRPSaccuracyAR, _("CRPS Accuracy Approx Rectangle"),
+                  _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0,
+                  NaNf)
 {
-    m_score = asScore::CRPSaccuracyAR;
-    m_name = _("CRPS Accuracy Approx Rectangle");
-    m_fullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSaccurAR::~asScoreCRPSaccurAR()
@@ -46,15 +43,24 @@ asScoreCRPSaccurAR::~asScoreCRPSaccurAR()
     //dtor
 }
 
-float asScoreCRPSaccurAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSaccurAR::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
+
     asScoreCRPSAR scoreCRPSAR = asScoreCRPSAR();
-    float CRPS = scoreCRPSAR.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPS = scoreCRPSAR.Assess(observedVal, forcastVals, nbElements);
     asScoreCRPSsharpAR scoreCRPSsharpnessAR = asScoreCRPSsharpAR();
-    float CRPSsharpness = scoreCRPSsharpnessAR.Assess(ObservedVal, ForcastVals, nbElements);
+    float CRPSsharpness = scoreCRPSsharpnessAR.Assess(observedVal, forcastVals, nbElements);
 
     return CRPS - CRPSsharpness;
 }

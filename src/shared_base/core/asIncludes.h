@@ -100,6 +100,7 @@
 #include <algorithm>
 #include <vector>
 #include <exception>
+#include <cmath>
 
 
 //---------------------------------
@@ -143,30 +144,31 @@
 #include "asGlobVars.h"
 #include "asTypeDefs.h"
 #include "asException.h"
-#include "asTools.h"
+#include "asUtilities.h"
 #include "asTime.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asThreadsManager.h"
 
 #if wxUSE_GUI
-
-#   include "asDialogFilePicker.h"
-#   include "asDialogFileSaver.h"
-#   include "asDialogProgressBar.h"
-
+    #include "asDialogFilePicker.h"
+    #include "asDialogFileSaver.h"
+    #include "asDialogProgressBar.h"
 #endif
 
 #ifdef APP_FORECASTER
-#   include "asGlobVarsForecaster.h"
+    #include "asGlobVarsForecaster.h"
 #endif
 #ifdef APP_VIEWER
-#   include "asGlobVarsViewer.h"
+    #include "asGlobVarsViewer.h"
 #endif
 #ifdef APP_OPTIMIZER
-#   include "asGlobVarsOptimizer.h"
+    #include "asGlobVarsOptimizer.h"
+#endif
+#ifdef APP_DOWNSCALER
+    #include "asGlobVarsDownscaler.h"
 #endif
 #ifdef UNIT_TESTING
-#   include "asGlobVarsOptimizer.h"
+    #include "asGlobVarsOptimizer.h"
 #endif
 
 #endif // ATMOSWINGINC_H_INCLUDED

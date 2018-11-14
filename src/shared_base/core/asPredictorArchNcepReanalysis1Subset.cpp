@@ -29,100 +29,86 @@
 #include "asPredictorArchNcepReanalysis1Subset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_Reanalysis_v1_subset";
-    m_originalProvider = "NCEP/NCAR";
+    m_provider = "NCEP/NCAR";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";
-    m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_xAxisStep = 2.5;
-    m_yAxisStep = 2.5;
     m_subFolder = wxEmptyString;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-}
-
-asPredictorArchNcepReanalysis1Subset::~asPredictorArchNcepReanalysis1Subset()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
 }
 
 bool asPredictorArchNcepReanalysis1Subset::Init()
 {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "hgt.nc";
-        m_fileVariableName = "hgt";
+        m_fileVarName = "hgt";
         m_unit = m;
     } else if (m_dataId.IsSameAs("air", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = AirTemperature;
         m_parameterName = "Air Temperature";
         m_fileNamePattern = "air.nc";
-        m_fileVariableName = "air";
+        m_fileVarName = "air";
         m_unit = degK;
     } else if (m_dataId.IsSameAs("omega", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = VerticalVelocity;
         m_parameterName = "Vertical velocity";
         m_fileNamePattern = "omega.nc";
-        m_fileVariableName = "omega";
+        m_fileVarName = "omega";
         m_unit = Pa_s;
     } else if (m_dataId.IsSameAs("rhum", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "rhum.nc";
-        m_fileVariableName = "rhum";
+        m_fileVarName = "rhum";
         m_unit = percent;
     } else if (m_dataId.IsSameAs("shum", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = SpecificHumidity;
         m_parameterName = "Specific Humidity";
         m_fileNamePattern = "shum.nc";
-        m_fileVariableName = "shum";
+        m_fileVarName = "shum";
         m_unit = kg_kg;
     } else if (m_dataId.IsSameAs("uwnd", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = Uwind;
         m_parameterName = "U-Wind";
         m_fileNamePattern = "uwnd.nc";
-        m_fileVariableName = "uwnd";
+        m_fileVarName = "uwnd";
         m_unit = m_s;
     } else if (m_dataId.IsSameAs("vwnd", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_parameter = Vwind;
         m_parameterName = "V-Wind";
         m_fileNamePattern = "vwnd.nc";
-        m_fileVariableName = "vwnd";
+        m_fileVarName = "vwnd";
         m_unit = m_s;
     } else if (m_dataId.IsSameAs("prwtr", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";
         m_fileNamePattern = "pr_wtr.nc";
-        m_fileVariableName = "pr_wtr";
+        m_fileVarName = "pr_wtr";
         m_unit = mm;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
@@ -130,7 +116,7 @@ bool asPredictorArchNcepReanalysis1Subset::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
@@ -149,19 +135,9 @@ bool asPredictorArchNcepReanalysis1Subset::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepReanalysis1Subset::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepReanalysis1Subset::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
-}
-
-bool asPredictorArchNcepReanalysis1Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                           asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 double asPredictorArchNcepReanalysis1Subset::ConvertToMjd(double timeValue, double refValue) const

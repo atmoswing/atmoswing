@@ -27,37 +27,35 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
 
 TEST(PredictorArchEcmwfEra20CRegular, LoadEasy)
 {
-    double Xmin = 3;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 3;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -116,29 +114,27 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadEasy)
 
 TEST(PredictorArchEcmwfEra20CRegular, LoadComposite)
 {
-    double Xmin = -4;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = -4;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -199,29 +195,27 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadComposite)
 
 TEST(PredictorArchEcmwfEra20CRegular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 4;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 0;
+    double xWidth = 4;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();
@@ -280,29 +274,27 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadBorderLeft)
 
 TEST(PredictorArchEcmwfEra20CRegular, LoadBorderRight)
 {
-    double Xmin = -4;
-    double Xwidth = 4;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = -4;
+    double xWidth = 4;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C_6h", "press/z",
-                                                                            predictorDataDir);
-    predictor->SetTimeStepHours(3);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
 
     vva2f hgt = predictor->GetData();

@@ -31,23 +31,20 @@
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNcepCfsr
         : public asPredictorArch
 {
 public:
-    asPredictorArchNcepCfsr(const wxString &dataId);
+    explicit asPredictorArchNcepCfsr(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepCfsr();
+    ~asPredictorArchNcepCfsr() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
-
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData);
+    void ListFiles(asTimeArray &timeArray) override;
 
 private:
 

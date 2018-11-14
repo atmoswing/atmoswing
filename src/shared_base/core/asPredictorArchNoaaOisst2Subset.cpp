@@ -29,40 +29,26 @@
 #include "asPredictorArchNoaaOisst2Subset.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NOAA_OISST_v2_subset";
-    m_originalProvider = "NOAA";
+    m_provider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
-    m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 24;
-    m_firstTimeStepHours = 12;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_xAxisShift = 0.125;
-    m_yAxisShift = 0.125;
-    m_xAxisStep = 1;
-    m_yAxisStep = 1;
     m_subFolder = wxEmptyString;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.hasLevelDimension = false;
-}
-
-asPredictorArchNoaaOisst2Subset::~asPredictorArchNoaaOisst2Subset()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.hasLevelDim = false;
 }
 
 bool asPredictorArchNoaaOisst2Subset::Init()
@@ -72,30 +58,30 @@ bool asPredictorArchNoaaOisst2Subset::Init()
         m_parameter = SeaSurfaceTemperature;
         m_parameterName = "Sea Surface Temperature";
         m_fileNamePattern = "sst_1deg.nc";
-        m_fileVariableName = "sst";
+        m_fileVarName = "sst";
         m_unit = degC;
     } else if (m_dataId.IsSameAs("sst_anom", false)) {
         m_parameter = SeaSurfaceTemperatureAnomaly;
         m_parameterName = "Sea Surface Temperature Anomaly";
         m_fileNamePattern = "sst_anom_1deg.nc";
-        m_fileVariableName = "anom";
+        m_fileVarName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
-                                          m_product));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                          m_dataId, m_product));
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in dataset %s."), m_dataId,
-                   m_datasetName);
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
@@ -105,19 +91,9 @@ bool asPredictorArchNoaaOisst2Subset::Init()
     return true;
 }
 
-vwxs asPredictorArchNoaaOisst2Subset::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNoaaOisst2Subset::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
-}
-
-bool asPredictorArchNoaaOisst2Subset::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                      asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 double asPredictorArchNoaaOisst2Subset::ConvertToMjd(double timeValue, double refValue) const

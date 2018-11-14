@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jun 17 2015)
+// C++ code generated with wxFormBuilder (version Jan 23 2018)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
 #include "wx/wxprec.h"
@@ -21,7 +21,7 @@
 
 asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 600,500 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 650,500 ), wxDefaultSize );
 	
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
@@ -105,13 +105,11 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	
 	m_notebookOptions = new wxNotebook( m_panelOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE );
 	m_panelSingle = new wxPanel( m_notebookOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxFlexGridSizer* fgSizer3;
-	fgSizer3 = new wxFlexGridSizer( 2, 2, 0, 0 );
-	fgSizer3->SetFlexibleDirection( wxBOTH );
-	fgSizer3->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+	wxBoxSizer* bSizer24;
+	bSizer24 = new wxBoxSizer( wxVERTICAL );
 	
 	wxStaticBoxSizer* sbSizer10;
-	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Classic+ calibration") ), wxVERTICAL );
+	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Classic calibration") ), wxVERTICAL );
 	
 	wxFlexGridSizer* fgSizer21;
 	fgSizer21 = new wxFlexGridSizer( 5, 2, 0, 0 );
@@ -123,7 +121,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusStepsLonPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLonPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusStepsLonPertinenceMap->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLonPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_staticTextClassicPlusStepsLatPertinenceMap = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Multiple of the steps in lat for pertinence map"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -131,7 +128,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusStepsLatPertinenceMap, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusStepsLatPertinenceMap = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusStepsLatPertinenceMap->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusStepsLatPertinenceMap, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_staticTextClassicPlusResizingIterations = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, _("Iterations in final resizing attempts"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -139,7 +135,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	fgSizer21->Add( m_staticTextClassicPlusResizingIterations, 0, wxALL, 5 );
 	
 	m_textCtrlClassicPlusResizingIterations = new wxTextCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlClassicPlusResizingIterations->SetMaxLength( 0 ); 
 	fgSizer21->Add( m_textCtrlClassicPlusResizingIterations, 0, wxRIGHT|wxLEFT, 5 );
 	
 	m_checkBoxProceedSequentially = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, _("Proceed sequentially (standard)"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -158,55 +153,39 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	sbSizer10->Add( fgSizer21, 1, wxEXPAND, 5 );
 	
 	
-	fgSizer3->Add( sbSizer10, 1, wxEXPAND|wxALL, 5 );
-	
-	wxStaticBoxSizer* sbSizer9;
-	sbSizer9 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("No option for") ), wxVERTICAL );
-	
-	m_staticText66 = new wxStaticText( sbSizer9->GetStaticBox(), wxID_ANY, _("Single assessment"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText66->Wrap( -1 );
-	sbSizer9->Add( m_staticText66, 0, wxALL, 5 );
-	
-	m_staticText67 = new wxStaticText( sbSizer9->GetStaticBox(), wxID_ANY, _("Classic calibration"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_staticText67->Wrap( -1 );
-	sbSizer9->Add( m_staticText67, 0, wxALL, 5 );
-	
-	
-	fgSizer3->Add( sbSizer9, 1, wxEXPAND|wxALL, 5 );
+	bSizer24->Add( sbSizer10, 0, wxEXPAND|wxALL, 5 );
 	
 	wxStaticBoxSizer* sbSizer12;
-	sbSizer12 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Monte-Carlo") ), wxVERTICAL );
+	sbSizer12 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Monte-Carlo") ), wxHORIZONTAL );
 	
 	m_staticTextMonteCarloRandomNb = new wxStaticText( sbSizer12->GetStaticBox(), wxID_ANY, _("Number of random param. sets"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextMonteCarloRandomNb->Wrap( -1 );
 	sbSizer12->Add( m_staticTextMonteCarloRandomNb, 0, wxALL, 5 );
 	
 	m_textCtrlMonteCarloRandomNb = new wxTextCtrl( sbSizer12->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlMonteCarloRandomNb->SetMaxLength( 0 ); 
-	sbSizer12->Add( m_textCtrlMonteCarloRandomNb, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxALIGN_CENTER_HORIZONTAL, 5 );
+	sbSizer12->Add( m_textCtrlMonteCarloRandomNb, 0, wxBOTTOM|wxLEFT|wxRIGHT, 5 );
 	
 	
-	fgSizer3->Add( sbSizer12, 1, wxEXPAND|wxALL, 5 );
+	bSizer24->Add( sbSizer12, 0, wxALL|wxEXPAND, 5 );
 	
 	wxStaticBoxSizer* sbSizer91;
-	sbSizer91 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Variables exploration") ), wxVERTICAL );
+	sbSizer91 = new wxStaticBoxSizer( new wxStaticBox( m_panelSingle, wxID_ANY, _("Variables exploration") ), wxHORIZONTAL );
 	
 	m_staticTextVarExploStepToExplore = new wxStaticText( sbSizer91->GetStaticBox(), wxID_ANY, _("Step to explore (0-based)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextVarExploStepToExplore->Wrap( -1 );
 	sbSizer91->Add( m_staticTextVarExploStepToExplore, 0, wxALL, 5 );
 	
 	m_textCtrlVarExploStepToExplore = new wxTextCtrl( sbSizer91->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 50,-1 ), 0 );
-	m_textCtrlVarExploStepToExplore->SetMaxLength( 0 ); 
-	sbSizer91->Add( m_textCtrlVarExploStepToExplore, 0, wxALIGN_CENTER_HORIZONTAL|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
+	sbSizer91->Add( m_textCtrlVarExploStepToExplore, 0, wxBOTTOM|wxLEFT|wxRIGHT, 5 );
 	
 	
-	fgSizer3->Add( sbSizer91, 1, wxEXPAND|wxALL, 5 );
+	bSizer24->Add( sbSizer91, 0, wxEXPAND|wxALL, 5 );
 	
 	
-	m_panelSingle->SetSizer( fgSizer3 );
+	m_panelSingle->SetSizer( bSizer24 );
 	m_panelSingle->Layout();
-	fgSizer3->Fit( m_panelSingle );
-	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), false );
+	bSizer24->Fit( m_panelSingle );
+	m_notebookOptions->AddPage( m_panelSingle, _("Calibration"), true );
 	m_panelGeneticAlgoritms = new wxPanel( m_notebookOptions, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer111;
 	bSizer111 = new wxBoxSizer( wxVERTICAL );
@@ -603,10 +582,10 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
 	
 	m_buttonSaveDefault = new wxButton( m_panelMain, wxID_ANY, _("Save as default"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer15->Add( m_buttonSaveDefault, 0, wxALIGN_RIGHT, 5 );
+	bSizer15->Add( m_buttonSaveDefault, 0, 0, 5 );
 	
 	
-	bSizer29->Add( bSizer15, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM|wxRIGHT, 5 );
+	bSizer29->Add( bSizer15, 0, wxALIGN_RIGHT|wxBOTTOM|wxRIGHT|wxTOP, 5 );
 	
 	
 	m_panelMain->SetSizer( bSizer29 );
@@ -617,6 +596,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	
 	this->SetSizer( bSizer4 );
 	this->Layout();
+	bSizer4->Fit( this );
 	m_menuBar = new wxMenuBar( 0 );
 	m_menuOptions = new wxMenu();
 	wxMenuItem* m_menuItemPreferences;
@@ -624,6 +604,13 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_menuOptions->Append( m_menuItemPreferences );
 	
 	m_menuBar->Append( m_menuOptions, _("Options") ); 
+	
+	m_menuTools = new wxMenu();
+	wxMenuItem* m_menuItemBuildPredictandDB;
+	m_menuItemBuildPredictandDB = new wxMenuItem( m_menuTools, wxID_ANY, wxString( _("Build predictand DB") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuTools->Append( m_menuItemBuildPredictandDB );
+	
+	m_menuBar->Append( m_menuTools, _("Tools") ); 
 	
 	m_menuLog = new wxMenu();
 	wxMenuItem* m_menuItemShowLog;
@@ -668,6 +655,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	// Connect Events
 	m_buttonSaveDefault->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ), NULL, this );
 	this->Connect( m_menuItemPreferences->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePreferences ) );
+	this->Connect( m_menuItemBuildPredictandDB->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePredictandDB ) );
 	this->Connect( m_menuItemShowLog->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnShowLog ) );
 	this->Connect( m_MenuItemLogLevel1->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
 	this->Connect( m_MenuItemLogLevel2->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel2 ) );
@@ -680,6 +668,7 @@ asFrameOptimizerVirtual::~asFrameOptimizerVirtual()
 	// Disconnect Events
 	m_buttonSaveDefault->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( asFrameOptimizerVirtual::OnSaveDefault ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePreferences ) );
+	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OpenFramePredictandDB ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnShowLog ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel1 ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( asFrameOptimizerVirtual::OnLogLevel2 ) );
@@ -710,33 +699,36 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	wxBoxSizer* bSizer20;
 	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
 	
-	wxString m_radioBoxLogLevelChoices[] = { _("Errors only (recommanded)"), _("Errors and warnings"), _("Verbose") };
-	int m_radioBoxLogLevelNChoices = sizeof( m_radioBoxLogLevelChoices ) / sizeof( wxString );
-	m_radioBoxLogLevel = new wxRadioBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Level"), wxDefaultPosition, wxDefaultSize, m_radioBoxLogLevelNChoices, m_radioBoxLogLevelChoices, 1, wxRA_SPECIFY_COLS );
-	m_radioBoxLogLevel->SetSelection( 0 );
-	bSizer20->Add( m_radioBoxLogLevel, 1, wxALL|wxEXPAND, 5 );
+	wxBoxSizer* bSizer25;
+	bSizer25 = new wxBoxSizer( wxVERTICAL );
 	
-	wxStaticBoxSizer* sbSizer8;
-	sbSizer8 = new wxStaticBoxSizer( new wxStaticBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Outputs") ), wxVERTICAL );
+	m_radioBtnLogLevel1 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors only (recommanded)"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( m_radioBtnLogLevel1, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel2 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Errors and warnings"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( m_radioBtnLogLevel2, 0, wxALL, 5 );
+	
+	m_radioBtnLogLevel3 = new wxRadioButton( sbSizer7->GetStaticBox(), wxID_ANY, _("Verbose"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( m_radioBtnLogLevel3, 0, wxALL, 5 );
+	
+	
+	bSizer20->Add( bSizer25, 1, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 	
-	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxDisplayLogWindow = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Display window"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxDisplayLogWindow->SetValue(true); 
 	bSizer21->Add( m_checkBoxDisplayLogWindow, 0, wxALL, 5 );
 	
-	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer8->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxSaveLogFile = new wxCheckBox( sbSizer7->GetStaticBox(), wxID_ANY, _("Save to a file"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxSaveLogFile->SetValue(true); 
 	m_checkBoxSaveLogFile->Enable( false );
 	
 	bSizer21->Add( m_checkBoxSaveLogFile, 0, wxALL, 5 );
 	
 	
-	sbSizer8->Add( bSizer21, 1, wxEXPAND, 5 );
-	
-	
-	bSizer20->Add( sbSizer8, 1, wxALL|wxEXPAND, 5 );
+	bSizer20->Add( bSizer21, 1, wxEXPAND, 5 );
 	
 	
 	sbSizer7->Add( bSizer20, 1, wxEXPAND, 5 );
@@ -784,15 +776,9 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	m_radioBoxGui->SetSelection( 1 );
 	bSizer271->Add( m_radioBoxGui, 0, wxALL|wxEXPAND, 5 );
 	
-	wxStaticBoxSizer* sbSizer151;
-	sbSizer151 = new wxStaticBoxSizer( new wxStaticBox( m_panelGeneral, wxID_ANY, _("Advanced options") ), wxVERTICAL );
-	
-	m_checkBoxResponsiveness = new wxCheckBox( sbSizer151->GetStaticBox(), wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxResponsiveness = new wxCheckBox( m_panelGeneral, wxID_ANY, _("Let the software be responsive while processing (recommended)."), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxResponsiveness->SetValue(true); 
-	sbSizer151->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
-	
-	
-	bSizer271->Add( sbSizer151, 0, wxEXPAND|wxALL, 5 );
+	bSizer271->Add( m_checkBoxResponsiveness, 0, wxALL, 5 );
 	
 	
 	m_panelGeneral->SetSizer( bSizer271 );
@@ -818,11 +804,10 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	bSizer221->Add( m_staticTextThreadsNb, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_textCtrlThreadsNb = new wxTextCtrl( sbSizer15->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,-1 ), 0 );
-	m_textCtrlThreadsNb->SetMaxLength( 0 ); 
 	bSizer221->Add( m_textCtrlThreadsNb, 0, wxRIGHT|wxLEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	
-	sbSizer15->Add( bSizer221, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
+	sbSizer15->Add( bSizer221, 0, wxEXPAND, 5 );
 	
 	wxBoxSizer* bSizer241;
 	bSizer241 = new wxBoxSizer( wxHORIZONTAL );
@@ -835,7 +820,7 @@ asFramePreferencesOptimizerVirtual::asFramePreferencesOptimizerVirtual( wxWindow
 	bSizer241->Add( m_sliderThreadsPriority, 1, wxRIGHT|wxLEFT, 5 );
 	
 	
-	sbSizer15->Add( bSizer241, 0, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	sbSizer15->Add( bSizer241, 0, wxEXPAND, 5 );
 	
 	
 	bSizer1611->Add( sbSizer15, 0, wxALL|wxEXPAND, 5 );

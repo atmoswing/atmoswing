@@ -29,9 +29,9 @@
 #include "asFramePreferencesViewer.h"
 
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
-        : asFramePreferencesViewerVirtual(parent, id)
+        : asFramePreferencesViewerVirtual(parent, id),
+          m_workspace(workspace)
 {
-    m_workspace = workspace;
     LoadPreferences();
     Fit();
 
@@ -107,9 +107,17 @@ void asFramePreferencesViewer::LoadPreferences()
      */
 
     // Log
-    long defaultLogLevelViewer = 1; // = selection +1
-    long logLevelViewer = pConfig->Read("/General/LogLevel", defaultLogLevelViewer);
-    m_radioBoxLogLevel->SetSelection((int) logLevelViewer - 1);
+    long defaultlogLevel = 1;
+    long logLevel = pConfig->Read("/General/LogLevel", defaultlogLevel);
+    if (logLevel == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevel == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevel == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
     bool displayLogWindowViewer;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
@@ -118,14 +126,14 @@ void asFramePreferencesViewer::LoadPreferences()
     bool checkBoxProxy;
     pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
     m_checkBoxProxy->SetValue(checkBoxProxy);
-    wxString ProxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_textCtrlProxyAddress->SetValue(ProxyAddress);
-    wxString ProxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_textCtrlProxyPort->SetValue(ProxyPort);
-    wxString ProxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_textCtrlProxyUser->SetValue(ProxyUser);
-    wxString ProxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_textCtrlProxyPasswd->SetValue(ProxyPasswd);
+    wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
+    m_textCtrlProxyAddress->SetValue(proxyAddress);
+    wxString proxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
+    m_textCtrlProxyPort->SetValue(proxyPort);
+    wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
+    m_textCtrlProxyUser->SetValue(proxyUser);
+    wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
+    m_textCtrlProxyPasswd->SetValue(proxyPasswd);
 
     /*
      * Advanced
@@ -147,6 +155,8 @@ void asFramePreferencesViewer::LoadPreferences()
 
 void asFramePreferencesViewer::SavePreferences()
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -166,7 +176,7 @@ void asFramePreferencesViewer::SavePreferences()
     wxString pastDaysNb = m_textCtrlPastDaysNb->GetValue();
     long pastDaysNbLong;
     if (!pastDaysNb.ToLong(&pastDaysNbLong)) {
-        m_workspace->SetTimeSeriesPlotPastDaysNb(int(pastDaysNbLong));
+        m_workspace->SetTimeSeriesPlotPastDaysNb(static_cast<int>(pastDaysNbLong));
     } else {
         m_workspace->SetTimeSeriesPlotPastDaysNb(5);
     }
@@ -211,22 +221,29 @@ void asFramePreferencesViewer::SavePreferences()
      */
 
     // Log
-    long logLevelViewer = (long) m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevelViewer + 1); // = selection +1
+    long logLevel = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevel = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevel = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevel = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevel);
     bool displayLogWindowViewer = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindowViewer);
 
     // Proxy
     bool checkBoxProxy = m_checkBoxProxy->GetValue();
     pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
-    wxString ProxyAddress = m_textCtrlProxyAddress->GetValue();
-    pConfig->Write("/Internet/ProxyAddress", ProxyAddress);
-    wxString ProxyPort = m_textCtrlProxyPort->GetValue();
-    pConfig->Write("/Internet/ProxyPort", ProxyPort);
-    wxString ProxyUser = m_textCtrlProxyUser->GetValue();
-    pConfig->Write("/Internet/ProxyUser", ProxyUser);
-    wxString ProxyPasswd = m_textCtrlProxyPasswd->GetValue();
-    pConfig->Write("/Internet/ProxyPasswd", ProxyPasswd);
+    wxString proxyAddress = m_textCtrlProxyAddress->GetValue();
+    pConfig->Write("/Internet/ProxyAddress", proxyAddress);
+    wxString proxyPort = m_textCtrlProxyPort->GetValue();
+    pConfig->Write("/Internet/ProxyPort", proxyPort);
+    wxString proxyUser = m_textCtrlProxyUser->GetValue();
+    pConfig->Write("/Internet/ProxyUser", proxyUser);
+    wxString proxyPasswd = m_textCtrlProxyPasswd->GetValue();
+    pConfig->Write("/Internet/ProxyPasswd", proxyPasswd);
 
     /*
      * Advanced

@@ -127,29 +127,14 @@ public:
         return m_aggregator->GetAllMethodNames();
     }
 
-    vwxs GetAllForecastNames() const
-    {
-        return m_aggregator->GetAllForecastNames();
-    }
-
     wxArrayString GetAllForecastNamesWxArray() const
     {
         return m_aggregator->GetAllForecastNamesWxArray();
     }
 
-    vwxs GetFilePaths() const
-    {
-        return m_aggregator->GetFilePaths();
-    }
-
     wxString GetFilePath(int methodRow, int forecastRow) const
     {
         return m_aggregator->GetFilePath(methodRow, forecastRow);
-    }
-
-    wxArrayString GetFilePathsWxArray() const
-    {
-        return m_aggregator->GetFilePathsWxArray();
     }
 
     a1f GetTargetDates(int methodRow) const
@@ -195,11 +180,6 @@ public:
     wxString GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const
     {
         return m_aggregator->GetStationNameWithHeight(methodRow, forecastRow, stationRow);
-    }
-
-    int GetLeadTimeLength(int methodRow, int forecastRow) const
-    {
-        return m_aggregator->GetLeadTimeLength(methodRow, forecastRow);
     }
 
     int GetLeadTimeLengthMax() const

@@ -31,27 +31,24 @@
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchJmaJra55Subset
         : public asPredictorArch
 {
 public:
-    asPredictorArchJmaJra55Subset(const wxString &dataId);
+    explicit asPredictorArchJmaJra55Subset(const wxString &dataId);
 
-    virtual ~asPredictorArchJmaJra55Subset();
+    ~asPredictorArchJmaJra55Subset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
     bool m_monthlyFiles;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData);
-
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

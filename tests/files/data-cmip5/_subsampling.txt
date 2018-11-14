@@ -1,0 +1,5 @@
+ncea -d lat,0.561,2.804 -d lon,0.00,2.250 zg_day_MRI-CGCM3_rcp85_r1i1p1_20970101-20971231.nc zg_day_MRI-CGCM3_rcp85_r1i1p1_20970101-20971231_smaller.nc
+ncea -d lat,0.561,2.804 -d lon,0.00,2.250 zg_day_MRI-CGCM3_rcp85_r1i1p1_20980101-20981231.nc zg_day_MRI-CGCM3_rcp85_r1i1p1_20980101-20981231_smaller.nc
+ncea -F -d time,1,1 pr_day_MRI-CGCM3_rcp85_r1i1p1_20060101-20151231.nc pr_day_MRI-CGCM3_rcp85_r1i1p1_20060101-20151231_shorter.nc
+ncea -d lat,0.700,3.502 -d lon,0.00,2.813 ua_6hrPlev_CNRM-CM5_rcp85_r1i1p1_209601010600-209701010000.nc ua_6hrPlev_CNRM-CM5_rcp85_r1i1p1_209601010600-209701010000_smaller.nc
+ncea -d lat,0.700,3.502 -d lon,0.00,2.813 ua_6hrPlev_CNRM-CM5_rcp85_r1i1p1_209701010600-209801010000.nc ua_6hrPlev_CNRM-CM5_rcp85_r1i1p1_209701010600-209801010000_smaller.nc

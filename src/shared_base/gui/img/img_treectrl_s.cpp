@@ -16,7 +16,7 @@ wxBitmap *_img_icon_precip;
 wxBitmap *_img_icon_temp;
 wxBitmap *_img_icon_wind;
 
-void initialize_img_treectrl_s(void)
+void initialize_img_treectrl_s()
 {
     {
         wxMemoryInputStream sm(
@@ -48,10 +48,9 @@ void initialize_img_treectrl_s(void)
                 389);
         _img_icon_wind = new wxBitmap(wxImage(sm));
     }
-    return;
 }
 
-void cleanup_img_treectrl(void)
+void cleanup_img_treectrl()
 {
     wxDELETE(_img_icon_lightning);
     wxDELETE(_img_icon_other);

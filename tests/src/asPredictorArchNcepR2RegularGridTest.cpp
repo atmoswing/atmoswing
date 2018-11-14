@@ -27,34 +27,33 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
 
 TEST(PredictorArchNcepR2Regular, LoadEasy)
 {
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -120,27 +119,26 @@ TEST(PredictorArchNcepR2Regular, LoadEasy)
 
 TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
 {
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     EXPECT_FLOAT_EQ(-7, predictor->GetMinValue());
     EXPECT_FLOAT_EQ(286, predictor->GetMaxValue());
@@ -150,27 +148,26 @@ TEST(PredictorArchNcepR2Regular, GetMinMaxValues)
 
 TEST(PredictorArchNcepR2Regular, LoadComposite)
 {
-    double Xmin = -10;
-    double Xwidth = 15;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = -10;
+    double xWidth = 15;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -244,27 +241,26 @@ TEST(PredictorArchNcepR2Regular, LoadComposite)
 
 TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 0;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -310,27 +306,26 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeft)
 
 TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
 {
-    double Xmin = 360;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 360;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -376,27 +371,26 @@ TEST(PredictorArchNcepR2Regular, LoadBorderLeftOn720)
 
 TEST(PredictorArchNcepR2Regular, LoadBorderRight)
 {
-    double Xmin = 350;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 350;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -448,28 +442,27 @@ TEST(PredictorArchNcepR2Regular, LoadBorderRight)
 
 TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
 {
-    double Xmin = -10;
-    double Xwidth = 15;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = -10;
+    double xWidth = 15;
+    double yMin = 35;
+    double yWidth = 5;
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -522,28 +515,27 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLon)
 
 TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
 {
-    double Xmin = -7.5;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = -7.5;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double steplon = 5;
     double steplat = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -577,28 +569,27 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonMoved)
 
 TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
 {
-    double Xmin = -10;
-    double Xwidth = 15;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = -10;
+    double xWidth = 15;
+    double yMin = 35;
+    double yWidth = 5;
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -641,28 +632,27 @@ TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLat)
 
 TEST(PredictorArchNcepR2Regular, LoadCompositeStepLonLatTime)
 {
-    double Xmin = -10;
-    double Xwidth = 15;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = -10;
+    double xWidth = 15;
+    double yMin = 35;
+    double yWidth = 5;
     double steplon = 5;
     double steplat = 5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, steplon, Ymin, Ywidth, steplat, level);
+    asAreaCompRegGrid area(xMin, xWidth, steplon, yMin, yWidth, steplat);
 
     double start = asTime::GetMJD(1979, 1, 1, 00, 00);
     double end = asTime::GetMJD(1979, 1, 11, 00, 00);
-    double timestephours = 24;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 24;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

@@ -55,11 +55,6 @@ asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
     }
 }
 
-asCatalogPredictands::~asCatalogPredictands()
-{
-    //dtor
-}
-
 bool asCatalogPredictands::Load()
 {
     // Load xml file
@@ -78,33 +73,33 @@ bool asCatalogPredictands::Load()
             wxXmlNode *nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
                 if (nodeProp->GetName() == "id") {
-                    m_setId = xmlFile.GetString(nodeProp);
+                    m_setId = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "name") {
-                    m_name = xmlFile.GetString(nodeProp);
+                    m_name = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "description") {
-                    m_description = xmlFile.GetString(nodeProp);
+                    m_description = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "parameter") {
-                    m_parameter = asPredictand::StringToParameterEnum(xmlFile.GetString(nodeProp));
+                    m_parameter = asPredictand::StringToParameterEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "unit") {
-                    m_unit = asPredictand::StringToUnitEnum(xmlFile.GetString(nodeProp));
+                    m_unit = asPredictand::StringToUnitEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "temporal_resolution") {
-                    m_temporalResolution = asPredictand::StringToTemporalResolutionEnum(xmlFile.GetString(nodeProp));
+                    m_temporalResolution = asPredictand::StringToTemporalResolutionEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "spatial_aggregation") {
-                    m_spatialAggregation = asPredictand::StringToSpatialAggregationEnum(xmlFile.GetString(nodeProp));
+                    m_spatialAggregation = asPredictand::StringToSpatialAggregationEnum(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "time_zone") {
-                    m_timeZoneHours = xmlFile.GetFloat(nodeProp);
+                    m_timeZoneHours = asFileXml::GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "start") {
-                    m_start = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                    m_start = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "end") {
-                    m_end = asTime::GetTimeFromString(xmlFile.GetString(nodeProp), guess);
+                    m_end = asTime::GetTimeFromString(asFileXml::GetString(nodeProp), guess);
                 } else if (nodeProp->GetName() == "first_time_step") {
-                    m_firstTimeStepHour = xmlFile.GetFloat(nodeProp);
+                    m_firstTimeStepHour = asFileXml::GetFloat(nodeProp);
                 } else if (nodeProp->GetName() == "path") {
-                    m_dataPath = xmlFile.GetString(nodeProp);
+                    m_dataPath = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "nan") {
-                    m_nan.push_back(xmlFile.GetString(nodeProp));
+                    m_nan.push_back(asFileXml::GetString(nodeProp));
                 } else if (nodeProp->GetName() == "coordinate_system") {
-                    m_coordSys = xmlFile.GetString(nodeProp);
+                    m_coordSys = asFileXml::GetString(nodeProp);
                 } else if (nodeProp->GetName() == "stations") {
                     wxXmlNode *nodeData = nodeProp->GetChildren();
                     while (nodeData) {
@@ -114,37 +109,37 @@ bool asCatalogPredictands::Load()
                             wxXmlNode *nodeDetail = nodeData->GetChildren();
                             while (nodeDetail) {
                                 if (nodeDetail->GetName() == "official_id") {
-                                    station.officialId = xmlFile.GetString(nodeDetail);
+                                    station.officialId = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "id") {
-                                    wxString idStr = xmlFile.GetString(nodeDetail);
+                                    wxString idStr = asFileXml::GetString(nodeDetail);
                                     long id;
                                     idStr.ToLong(&id);
-                                    station.id = id;
+                                    station.id = (int) id;
                                 } else if (nodeDetail->GetName() == "name") {
-                                    station.name = xmlFile.GetString(nodeDetail);
+                                    station.name = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "x_coordinate") {
-                                    wxString coordXStr = xmlFile.GetString(nodeDetail);
+                                    wxString coordXStr = asFileXml::GetString(nodeDetail);
                                     double x;
                                     coordXStr.ToDouble(&x);
                                     station.coord.x = x;
                                 } else if (nodeDetail->GetName() == "y_coordinate") {
-                                    wxString coordYStr = xmlFile.GetString(nodeDetail);
+                                    wxString coordYStr = asFileXml::GetString(nodeDetail);
                                     double y;
                                     coordYStr.ToDouble(&y);
                                     station.coord.y = y;
                                 } else if (nodeDetail->GetName() == "height") {
-                                    wxString heightStr = xmlFile.GetString(nodeDetail);
+                                    wxString heightStr = asFileXml::GetString(nodeDetail);
                                     double height;
                                     heightStr.ToDouble(&height);
                                     station.height = (float) height;
                                 } else if (nodeDetail->GetName() == "file_name") {
-                                    station.fileName = xmlFile.GetString(nodeDetail);
+                                    station.fileName = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
-                                    station.filePattern = xmlFile.GetString(nodeDetail);
+                                    station.filePattern = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.startDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.startDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.endDate = asTime::GetTimeFromString(xmlFile.GetString(nodeDetail), guess);
+                                    station.endDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }

@@ -41,7 +41,7 @@ public:
     asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
                              wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
 
-    ~asFramePlotDistributions();
+    ~asFramePlotDistributions() override;
 
     void Init();
 
@@ -100,13 +100,13 @@ private:
 
     void PlotCriteriaCurve();
 
-    void OnChoiceForecastChange(wxCommandEvent &event);
+    void OnChoiceForecastChange(wxCommandEvent &event) override;
 
-    void OnChoiceStationChange(wxCommandEvent &event);
+    void OnChoiceStationChange(wxCommandEvent &event) override;
 
-    void OnChoiceDateChange(wxCommandEvent &event);
+    void OnChoiceDateChange(wxCommandEvent &event) override;
 
-    void OnTocSelectionChange(wxCommandEvent &event);
+    void OnTocSelectionChange(wxCommandEvent &event) override;
 
     void OnClose(wxCloseEvent &evt);
 

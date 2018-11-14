@@ -54,15 +54,15 @@ public:
                                 std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                 asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData,
                                 asTimeArray &timeArrayTargetSelection, std::vector<asCriteria *> criteria,
-                                asParameters &params, int step, asResultsDates &results, bool &containsNaNs);
+                                asParameters *params, int step, asResultsDates &results, bool &containsNaNs);
 
     static bool GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
                                    std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                    asTimeArray &timeArrayTargetData, asResultsDates &anaDates,
-                                   std::vector<asCriteria *> criteria, asParameters &params, int step,
+                                   std::vector<asCriteria *> criteria, asParameters *params, int step,
                                    asResultsDates &results, bool &containsNaNs);
 
-    static bool GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters &params,
+    static bool GetAnalogsValues(asPredictand &predictand, asResultsDates &anaDates, asParameters *params,
                                  asResultsValues &results);
 
     static void InsertInArrays(bool isAsc, int analogsNb, float analogDate, float score, int counter,

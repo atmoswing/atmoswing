@@ -44,15 +44,15 @@ IMPLEMENT_APP(AtmoswingAppViewer);
 #include "images.h"
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-    {{wxCMD_LINE_SWITCH, "h", "help",      "This help text"},
-    {wxCMD_LINE_SWITCH, "v", "version",   "Show version number and quit"},
-    {wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
-                             "\n \t\t\t\t 0: minimum"
-                             "\n \t\t\t\t 1: errors"
-                             "\n \t\t\t\t 2: warnings"
-                             "\n \t\t\t\t 3: verbose"},
-    {wxCMD_LINE_PARAM, NULL, NULL,        "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-    {wxCMD_LINE_NONE}};
+        {{wxCMD_LINE_SWITCH, "h", "help",      "This help text"},
+         {wxCMD_LINE_SWITCH, "v", "version",   "Show version number and quit"},
+         {wxCMD_LINE_OPTION, "l", "log-level", "set a log level"
+                                                       "\n \t\t\t\t 0: minimum"
+                                                       "\n \t\t\t\t 1: errors"
+                                                       "\n \t\t\t\t 2: warnings"
+                                                       "\n \t\t\t\t 3: verbose"},
+         {wxCMD_LINE_PARAM, NULL, NULL,        "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+         {wxCMD_LINE_NONE}};
 
 bool AtmoswingAppViewer::OnInit()
 {
@@ -65,7 +65,7 @@ bool AtmoswingAppViewer::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = double(ppiDC.x) / 96.0;
+    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
 
     // Set application name and create user directory
     wxString appName = "AtmoSwing viewer";
@@ -81,7 +81,7 @@ bool AtmoswingAppViewer::OnInit()
     wxFileConfig::Set(pConfig);
 
     // Check that it is the unique instance
-    m_singleInstanceChecker = NULL;
+    m_singleInstanceChecker = nullptr;
     bool multipleInstances;
     pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
@@ -109,7 +109,7 @@ bool AtmoswingAppViewer::OnInit()
         return false;
 
     // Create frame
-    AtmoswingFrameViewer *frame = new AtmoswingFrameViewer(0L);
+    auto *frame = new AtmoswingFrameViewer(0L);
     frame->Init();
 
 #ifdef __WXMSW__
@@ -157,7 +157,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("v")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing, (c) University of Lausanne, 2011. Version %s, %s", g_version, (const wxChar *) date);
+        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
 
         return false;
     }
@@ -206,7 +206,7 @@ int AtmoswingAppViewer::OnExit()
     wxDELETE(m_singleInstanceChecker);
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

@@ -36,7 +36,7 @@ class asFileParametersOptimization
         : public asFileParameters
 {
 public:
-    asFileParametersOptimization(const wxString &FileName, const ListFileMode &FileMode = asFile::Replace);
+    asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersOptimization();
 

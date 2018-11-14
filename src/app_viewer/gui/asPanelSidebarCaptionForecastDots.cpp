@@ -43,7 +43,7 @@ asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow *p
                                                                   wxTAB_TRAVERSAL);
     m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), NULL, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), nullptr, this);
 
     Layout();
     m_sizerMain->Fit(this);
@@ -52,7 +52,7 @@ asPanelSidebarCaptionForecastDots::asPanelSidebarCaptionForecastDots(wxWindow *p
 
 asPanelSidebarCaptionForecastDots::~asPanelSidebarCaptionForecastDots()
 {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), NULL, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDots::OnPaint), nullptr, this);
 }
 
 void asPanelSidebarCaptionForecastDots::OnPaint(wxPaintEvent &event)
@@ -75,10 +75,10 @@ asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawi
                                                                                    const wxSize &size, long style)
         : wxPanel(parent, id, pos, size, style)
 {
-    m_bmpColorbar = NULL;
-    m_gdc = NULL;
+    m_bmpColorbar = nullptr;
+    m_gdc = nullptr;
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), NULL, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), nullptr, this);
 
     DrawColorbar(1);
 
@@ -87,21 +87,18 @@ asPanelSidebarCaptionForecastDotsDrawing::asPanelSidebarCaptionForecastDotsDrawi
 
 asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDrawing()
 {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), NULL, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastDotsDrawing::OnPaint), nullptr, this);
     wxDELETE(m_bmpColorbar);
 }
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax)
 {
-    wxBitmap *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
+    auto *bmp = new wxBitmap(static_cast<int>(240 * g_ppiScaleDc), static_cast<int>(50 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context
     wxMemoryDC dc(*bmp);
-    dc.SetBackground(wxBrush(GetBackgroundColour()));
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(g_linuxBgColour));
-#endif
+    dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
     // Create graphics context
@@ -135,7 +132,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::SetBitmapColorbar(wxBitmap *bmp)
     wxDELETE(m_bmpColorbar);
     wxASSERT(!m_bmpColorbar);
 
-    if (bmp != NULL) {
+    if (bmp != nullptr) {
         wxASSERT(bmp);
         m_bmpColorbar = new wxBitmap(*bmp);
         wxASSERT(m_bmpColorbar);
@@ -146,7 +143,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::OnPaint(wxPaintEvent &event)
 {
     wxPaintDC dc(this);
 
-    if (m_bmpColorbar != NULL) {
+    if (m_bmpColorbar != nullptr) {
         dc.DrawBitmap(*m_bmpColorbar, 0, 0, true);
     }
 
@@ -249,7 +246,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGrap
 
     wxColour colour = wxColour();
     colour.Set(255, 255, 255);
-    wxBrush brush1(colour, wxSOLID);
+    wxBrush brush1(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush1);
     gc->DrawPath(pathBox1);
 
@@ -262,7 +259,7 @@ void asPanelSidebarCaptionForecastDotsDrawing::CreateColorbarOtherClasses(wxGrap
     pathBox2.CloseSubpath();
 
     colour.Set(150, 150, 150);
-    wxBrush brush2(colour, wxSOLID);
+    wxBrush brush2(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush2);
     gc->DrawPath(pathBox2);
 

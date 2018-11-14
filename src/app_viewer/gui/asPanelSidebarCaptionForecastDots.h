@@ -38,11 +38,11 @@ class asPanelSidebarCaptionForecastDotsDrawing
         : public wxPanel
 {
 public:
-    asPanelSidebarCaptionForecastDotsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+    explicit asPanelSidebarCaptionForecastDotsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                              const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                              long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastDotsDrawing();
+    ~asPanelSidebarCaptionForecastDotsDrawing() override;
 
     void DrawColorbar(double maxval);
 
@@ -68,11 +68,11 @@ class asPanelSidebarCaptionForecastDots
         : public asPanelSidebar
 {
 public:
-    asPanelSidebarCaptionForecastDots(wxWindow *parent, wxWindowID id = wxID_ANY,
+    explicit asPanelSidebarCaptionForecastDots(wxWindow *parent, wxWindowID id = wxID_ANY,
                                       const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                       long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastDots();
+    ~asPanelSidebarCaptionForecastDots() override;
 
     void SetColorbarMax(double maxval);
 

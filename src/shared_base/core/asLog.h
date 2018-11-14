@@ -46,7 +46,7 @@ public:
 
     asLog();
 
-    virtual ~asLog();
+    ~asLog() override;
 
     bool CreateFile(const wxString &fileName);
 

@@ -34,26 +34,20 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs 
                                                    const wxString &proxyAddress, const long proxyPort,
                                                    const wxString &proxyUser, const wxString &proxyPasswd, int start,
                                                    int end)
-        : asThread()
+        : asThread(),
+          m_urls(urls),
+          m_fileNames(fileNames),
+          m_destinationDir(destinationDir),
+          m_usesProxy(usesProxy),
+          m_proxyAddress(proxyAddress),
+          m_proxyPort(proxyPort),
+          m_proxyUser(proxyUser),
+          m_proxyPasswd(proxyPasswd),
+          m_start(start),
+          m_end(wxMin(end, (int) fileNames.size() - 1))
 {
-    m_urls = urls;
-    m_fileNames = fileNames;
-    m_destinationDir = destinationDir;
-    m_usesProxy = usesProxy;
-    m_proxyAddress = proxyAddress;
-    m_proxyPort = proxyPort;
-    m_proxyUser = proxyUser;
-    m_proxyPasswd = proxyPasswd;
-    m_start = start;
-    m_end = wxMin(end, (int) m_fileNames.size() - 1);
-
     wxASSERT((unsigned) m_end < urls.size());
     wxASSERT((unsigned) m_end < fileNames.size());
-}
-
-asThreadInternetDownload::~asThreadInternetDownload()
-{
-
 }
 
 wxThread::ExitCode asThreadInternetDownload::Entry()
@@ -66,7 +60,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
     // Do the job
     if (curl) {
         // Set a buffer for the error messages
-        char *errorbuffer = new char[CURL_ERROR_SIZE];
+        auto *errorbuffer = new char[CURL_ERROR_SIZE];
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
         // Some servers don't like requests that are made without a user-agent field, so we provide one
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
@@ -87,7 +81,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                     wxLogError(_("The directory to save real-time predictors data cannot be created."));
                     wxDELETEA(errorbuffer);
-                    return (wxThread::ExitCode) 1;
+                    return (wxThread::ExitCode) -1;
                 }
             }
 
@@ -95,11 +89,10 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
             if (!wxFileName::FileExists(filePath)) {
                 // Instantiate the file structure
                 struct asInternet::HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
-                                                    NULL};
+                                                    nullptr};
 
                 // Define the URL
-                wxCharBuffer buffer = url.ToUTF8();
-                curl_easy_setopt(curl, CURLOPT_URL, buffer.data());
+                curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));
                 // Define our callback to get called when there's data to be written
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, asInternet::WriteFile);
                 // Set a pointer to our struct to pass to the callback
@@ -108,16 +101,14 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                 // If a proxy is used
                 if (m_usesProxy) {
                     if (!m_proxyAddress.IsEmpty()) {
-                        wxCharBuffer proxyAddressBuffer = m_proxyAddress.ToUTF8();
-                        curl_easy_setopt(curl, CURLOPT_PROXY, proxyAddressBuffer.data());
+                        curl_easy_setopt(curl, CURLOPT_PROXY, (const char *) m_proxyAddress.mb_str(wxConvUTF8));
                     }
                     if (m_proxyPort > 0) {
                         curl_easy_setopt(curl, CURLOPT_PROXYPORT, m_proxyPort);
                     }
                     if (!m_proxyUser.IsEmpty()) {
                         wxString proxyLogin = m_proxyUser + ":" + m_proxyPasswd;
-                        wxCharBuffer proxyLoginBuffer = proxyLogin.ToUTF8();
-                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, proxyLoginBuffer.data());
+                        curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *) proxyLogin.mb_str(wxConvUTF8));
                     }
                 }
 
@@ -133,7 +124,7 @@ wxThread::ExitCode asThreadInternetDownload::Entry()
                     wxLogError(_("Failed downloading file."));
                     wxLogError(_("Curl error message: %s"), errorbuffer);
                     wxDELETEA(errorbuffer);
-                    return (wxThread::ExitCode) 1;
+                    return (wxThread::ExitCode) -1;
                 } else {
                     wxLogVerbose(_("File %s downloaded successfully."), fileName);
                 }

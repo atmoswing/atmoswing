@@ -33,14 +33,14 @@ TEST(TimeArray, BuildArraySimple)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_DOUBLE_EQ(start, timearray.GetStart());
     EXPECT_DOUBLE_EQ(end, timearray.GetEnd());
-    EXPECT_DOUBLE_EQ(timestephours, timearray.GetTimeStepHours());
-    EXPECT_DOUBLE_EQ(timestephours / 24, timearray.GetTimeStepDays());
+    EXPECT_DOUBLE_EQ(timeStep, timearray.GetTimeStepHours());
+    EXPECT_DOUBLE_EQ(timeStep / 24, timearray.GetTimeStepDays());
 
     EXPECT_DOUBLE_EQ(start, timearray[0]);
     EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, timearray[1]);
@@ -73,15 +73,15 @@ TEST(TimeArray, BuildArraySimpleGeneric)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
-    double timestephours = 6;
+    double timeStep = 6;
     wxString slctModeString = "Simple";
-    asTimeArray timearray(start, end, timestephours, slctModeString);
+    asTimeArray timearray(start, end, timeStep, slctModeString);
     timearray.Init();
 
     EXPECT_DOUBLE_EQ(start, timearray.GetStart());
     EXPECT_DOUBLE_EQ(end, timearray.GetEnd());
-    EXPECT_DOUBLE_EQ(timestephours, timearray.GetTimeStepHours());
-    EXPECT_DOUBLE_EQ(timestephours / 24, timearray.GetTimeStepDays());
+    EXPECT_DOUBLE_EQ(timeStep, timearray.GetTimeStepHours());
+    EXPECT_DOUBLE_EQ(timeStep / 24, timearray.GetTimeStepDays());
 
     EXPECT_DOUBLE_EQ(start, timearray[0]);
     EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, timearray[1]);
@@ -114,12 +114,12 @@ TEST(TimeArray, BuildArrayDaysIntervalNormal)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 06, 01);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(intervaldays * 24, timearray.GetIntervalHours());
@@ -139,13 +139,13 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 06, 01);
     double intervaldays = 60;
     double exclusiondays = 100;
     wxString slctModeString = "DaysInterval";
 
-    asTimeArray timearray(start, end, timestephours, slctModeString);
+    asTimeArray timearray(start, end, timeStep, slctModeString);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(intervaldays * 24, timearray.GetIntervalHours());
@@ -165,12 +165,12 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalMidday)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 06, 01, 12, 00);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 12, 0), timearray.GetFirst());
@@ -188,12 +188,12 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 06, 01, 10, 31);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(0, 24 * 60 * asTime::GetMJD(1950, 4, 2, 10, 31) - 24 * 60 * timearray.GetFirst());
@@ -213,12 +213,12 @@ TEST(TimeArray, BuildArrayDaysIntervalStartSplitted)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 02, 01, 12, 00);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timearray.GetFirst());
@@ -239,12 +239,12 @@ TEST(TimeArray, BuildArrayDaysIntervalEndSplitted)
 {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 12, 01, 12, 00);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 10, 2, 12, 0), timearray.GetFirst());
@@ -262,12 +262,12 @@ TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2001, 06, 01);
     double intervaldays = 60;
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::DaysInterval);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::DaysInterval);
     timearray.Init(forecastdate, intervaldays, exclusiondays);
     a1d datetimearray = timearray.GetTimeArray();
 
@@ -288,11 +288,11 @@ TEST(TimeArray, BuildArraySeason)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 07, 01, 12, 00);
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 0, 0), timearray.GetFirst());
@@ -310,12 +310,12 @@ TEST(TimeArray, BuildArraySeasonGeneric)
 {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 07, 01, 12, 00);
     double exclusiondays = 100;
     wxString slctModeString = "SameSeason";
 
-    asTimeArray timearray(start, end, timestephours, slctModeString);
+    asTimeArray timearray(start, end, timeStep, slctModeString);
     timearray.Init(forecastdate, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 0, 0), timearray.GetFirst());
@@ -333,11 +333,11 @@ TEST(TimeArray, BuildArraySeasonNotRound)
 {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 07, 01, 14, 32);
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 2, 32), timearray.GetFirst());
@@ -355,11 +355,11 @@ TEST(TimeArray, BuildArraySeasonDec)
 {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 12, 01, 12, 00);
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timearray.GetFirst());
@@ -374,11 +374,11 @@ TEST(TimeArray, BuildArraySeasonJan)
 {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
-    double timestephours = 6;
+    double timeStep = 6;
     double forecastdate = asTime::GetMJD(2010, 01, 01, 12, 00);
     double exclusiondays = 100;
 
-    asTimeArray timearray(start, end, timestephours, asTimeArray::SameSeason);
+    asTimeArray timearray(start, end, timeStep, asTimeArray::SameSeason);
     timearray.Init(forecastdate, exclusiondays);
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timearray.GetFirst());
@@ -393,8 +393,8 @@ TEST(TimeArray, GetFirstDayHour)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_FLOAT_EQ(12.5, timearray.GetStartingHour());
@@ -404,8 +404,8 @@ TEST(TimeArray, GetLastDayHour)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_FLOAT_EQ(18.5, timearray.GetEndingHour());
@@ -415,8 +415,8 @@ TEST(TimeArray, GetFirstDayYear)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_EQ(1950, timearray.GetStartingYear());
@@ -426,8 +426,8 @@ TEST(TimeArray, GetLastDayYear)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_EQ(2008, timearray.GetEndingYear());
@@ -437,8 +437,8 @@ TEST(TimeArray, GetSize)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_EQ(6, timearray.GetSize());
@@ -448,8 +448,8 @@ TEST(TimeArray, OperatorOverloading)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 12, 30), timearray[0]);
@@ -464,8 +464,8 @@ TEST(TimeArray, GetFirst)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 12, 30), timearray.GetFirst());
@@ -475,8 +475,8 @@ TEST(TimeArray, GetLast)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 18, 30), timearray.GetLast());
@@ -486,42 +486,42 @@ TEST(TimeArray, GetIndexFirstAfter)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 19, 30)));
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 19, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstAfterEqual)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 18, 30)));
+    EXPECT_DOUBLE_EQ(1, timearray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 18, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstBefore)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 05, 30)));
+    EXPECT_DOUBLE_EQ(2, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 05, 30), 6));
 }
 
 TEST(TimeArray, GetIndexFirstBeforeEqual)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
-    EXPECT_DOUBLE_EQ(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30)));
+    EXPECT_DOUBLE_EQ(3, timearray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30), 6));
 }

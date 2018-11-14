@@ -31,7 +31,6 @@
 #include <wx/colour.h>
 #include "asIncludes.h"
 
-extern wxColour g_linuxBgColour;
 extern wxString g_cmdFilename;
 
 #endif // ASGLOBVARSVIEWER_H_INCLUDED

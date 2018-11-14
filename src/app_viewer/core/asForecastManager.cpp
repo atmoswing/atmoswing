@@ -32,11 +32,12 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
 asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
+        : m_parent(parent),
+          m_workspace(workspace),
+          m_aggregator(new asResultsForecastAggregator()),
+          m_leadTimeOrigin(0)
 {
-    m_leadTimeOrigin = 0;
-    m_parent = parent;
-    m_workspace = workspace;
-    m_aggregator = new asResultsForecastAggregator();
+
 }
 
 asForecastManager::~asForecastManager()
@@ -113,8 +114,8 @@ void asForecastManager::ClearForecasts()
     m_directoriesPastForecasts.Clear();
 
 #if wxUSE_GUI
-    wxCommandEvent eventClear (asEVT_ACTION_FORECAST_CLEAR);
-    if (m_parent != NULL) {
+    wxCommandEvent eventClear(asEVT_ACTION_FORECAST_CLEAR);
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventClear);
     }
 #endif
@@ -137,7 +138,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     }
 
     // Create and load the forecast
-    asResultsForecast *forecast = new asResultsForecast;
+    auto *forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -156,9 +157,8 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
 #if wxUSE_GUI
         // Send event
         wxCommandEvent eventNew(asEVT_ACTION_FORECAST_NEW_ADDED);
-        if (m_parent != NULL) {
-            if (doRefresh)
-            {
+        if (m_parent != nullptr) {
+            if (doRefresh) {
                 eventNew.SetString("last");
             }
             m_parent->ProcessWindowEvent(eventNew);
@@ -192,7 +192,7 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     }
 
     // Create and load the forecast
-    asResultsForecast *forecast = new asResultsForecast;
+    auto *forecast = new asResultsForecast;
 
     forecast->SetFilePath(filePath);
     if (!forecast->Load()) {
@@ -240,13 +240,13 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
         wxString directory = asTime::GetStringTime(currentTime, dirstructure);
 
         // Test for every hour
-        for (double hr = 23; hr >= 0; hr--) {
+        for (int hr = 23; hr >= 0; hr--) {
             // Load from default directory
             wxString currentDirPath = defPath;
             currentDirPath.Append(directory);
             currentDirPath.Append(DS);
 
-            double currentTimeHour = floor(currentTime) + hr / 24.0;
+            double currentTimeHour = floor(currentTime) + (double)hr / 24.0;
             wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
                                     m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();

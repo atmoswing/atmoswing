@@ -32,12 +32,8 @@
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
 
 asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id)
-        : asWizardBatchForecastsVirtual(parent, id)
-{
-    m_batchForecasts = batchForecasts;
-}
-
-asWizardBatchForecasts::~asWizardBatchForecasts()
+        : asWizardBatchForecastsVirtual(parent, id),
+          m_batchForecasts(batchForecasts)
 {
 
 }
@@ -54,7 +50,7 @@ void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event)
     }
 
     // Open the preferences frame
-    asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(NULL, m_batchForecasts);
+    auto *frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
     frame->Fit();
     frame->Show();
 }

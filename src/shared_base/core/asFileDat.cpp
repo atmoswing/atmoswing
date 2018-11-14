@@ -31,15 +31,10 @@
 #include <asFileXml.h>
 
 
-asFileDat::asFileDat(const wxString &FileName, const ListFileMode &FileMode)
-        : asFileAscii(FileName, FileMode)
+asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode)
+        : asFileAscii(fileName, fileMode)
 {
 
-}
-
-asFileDat::~asFileDat()
-{
-    //dtor
 }
 
 bool asFileDat::Close()
@@ -67,24 +62,24 @@ void asFileDat::InitPattern(asFileDat::Pattern &pattern)
     pattern.dataEnd = 0;
 }
 
-asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const wxString &AlternatePatternDir)
+asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxString &directory)
 {
     asFileDat::Pattern pattern;
 
     InitPattern(pattern);
 
     // Load xml file
-    wxString FileName;
-    if (!AlternatePatternDir.IsEmpty()) {
-        FileName = AlternatePatternDir + DS + FilePatternName + ".xml";
+    wxString filePath;
+    if (!directory.IsEmpty()) {
+        filePath = directory + DS + fileName + ".xml";
     } else {
         ThreadsManager().CritSectionConfig().Enter();
-        wxString PatternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
+        wxString patternsDir = wxFileConfig::Get()->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
         ThreadsManager().CritSectionConfig().Leave();
-        FileName = PatternsDir + DS + FilePatternName + ".xml";
+        filePath = patternsDir + DS + fileName + ".xml";
     }
 
-    asFileXml xmlFile(FileName, asFile::ReadOnly);
+    asFileXml xmlFile(filePath, asFile::ReadOnly);
     if (!xmlFile.Open()) {
         asThrowException(_("Cannot open the pattern file."));
     }
@@ -103,7 +98,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
         wxXmlNode *nodeParam = node->GetChildren();
         while (nodeParam) {
             if (nodeParam->GetName() == "structure_type") {
-                pattern.structType = StringToStructType(xmlFile.GetString(nodeParam));
+                pattern.structType = StringToStructType(asFileXml::GetString(nodeParam));
                 switch (pattern.structType) {
                     case (asFileDat::ConstantWidth):
                         attributeStart = "char_start";
@@ -117,9 +112,9 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                         asThrowException(_("The file structure type in unknown"));
                 }
             } else if (nodeParam->GetName() == "header_lines") {
-                pattern.headerLines = xmlFile.GetInt(nodeParam);
+                pattern.headerLines = asFileXml::GetInt(nodeParam);
             } else if (nodeParam->GetName() == "parse_time") {
-                pattern.parseTime = xmlFile.GetBool(nodeParam);
+                pattern.parseTime = asFileXml::GetBool(nodeParam);
             } else if (nodeParam->GetName() == "time") {
                 if (attributeStart.IsEmpty() || attributeEnd.IsEmpty()) {
                     asThrowException(_("The file structure type in undefined"));
@@ -134,20 +129,20 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeTime->GetName() == "year") {
-                        pattern.timeYearBegin = charStart;
-                        pattern.timeYearEnd = charEnd;
+                        pattern.timeYearBegin = (int)charStart;
+                        pattern.timeYearEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "month") {
-                        pattern.timeMonthBegin = charStart;
-                        pattern.timeMonthEnd = charEnd;
+                        pattern.timeMonthBegin = (int)charStart;
+                        pattern.timeMonthEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "day") {
-                        pattern.timeDayBegin = charStart;
-                        pattern.timeDayEnd = charEnd;
+                        pattern.timeDayBegin = (int)charStart;
+                        pattern.timeDayEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "hour") {
-                        pattern.timeHourBegin = charStart;
-                        pattern.timeHourEnd = charEnd;
+                        pattern.timeHourBegin = (int)charStart;
+                        pattern.timeHourEnd = (int)charEnd;
                     } else if (nodeTime->GetName() == "minute") {
-                        pattern.timeMinuteBegin = charStart;
-                        pattern.timeMinuteEnd = charEnd;
+                        pattern.timeMinuteBegin = (int)charStart;
+                        pattern.timeMinuteEnd = (int)charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeTime);
                     }
@@ -168,8 +163,8 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
                     charEndStr.ToLong(&charEnd);
 
                     if (nodeData->GetName() == "value") {
-                        pattern.dataBegin = charStart;
-                        pattern.dataEnd = charEnd;
+                        pattern.dataBegin = (int)charStart;
+                        pattern.dataEnd = (int)charEnd;
                     } else {
                         xmlFile.UnknownNode(nodeData);
                     }
@@ -190,27 +185,27 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &FilePatternName, const 
     return pattern;
 }
 
-asFileDat::FileStructType asFileDat::StringToStructType(const wxString &StructTypeStr)
+asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTypeStr)
 {
-    if (StructTypeStr.CmpNoCase("tabs_delimited") == 0) {
+    if (structTypeStr.CmpNoCase("tabs_delimited") == 0) {
         return asFileDat::TabsDelimited;
-    } else if (StructTypeStr.CmpNoCase("constant_width") == 0) {
+    } else if (structTypeStr.CmpNoCase("constant_width") == 0) {
         return asFileDat::ConstantWidth;
     } else {
         asThrowException(_("The file structure type in unknown"));
     }
 }
 
-int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &Pattern)
+int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &pattern)
 {
     int maxwidth = 0;
 
-    maxwidth = wxMax(maxwidth, Pattern.timeYearEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeMonthEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeDayEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeHourEnd);
-    maxwidth = wxMax(maxwidth, Pattern.timeMinuteEnd);
-    maxwidth = wxMax(maxwidth, Pattern.dataEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeYearEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeMonthEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeDayEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeHourEnd);
+    maxwidth = wxMax(maxwidth, pattern.timeMinuteEnd);
+    maxwidth = wxMax(maxwidth, pattern.dataEnd);
 
     return maxwidth;
 }

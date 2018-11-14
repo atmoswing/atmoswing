@@ -29,13 +29,8 @@
 #include "asFileXml.h"
 
 
-asFileXml::asFileXml(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode)
-{
-
-}
-
-asFileXml::~asFileXml()
+asFileXml::asFileXml(const wxString &fileName, const FileMode &fileMode)
+        : asFile(fileName, fileMode)
 {
 
 }
@@ -129,8 +124,8 @@ wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const double &co
 
 wxXmlNode *asFileXml::CreateNodeWithValue(const wxString &name, const wxString &content)
 {
-    wxXmlNode *node = new wxXmlNode(wxXML_ELEMENT_NODE, name);
-    wxXmlNode *nodeValue = new wxXmlNode(wxXML_TEXT_NODE, name, content);
+    auto node = new wxXmlNode(wxXML_ELEMENT_NODE, name);
+    auto nodeValue = new wxXmlNode(wxXML_TEXT_NODE, name, content);
     node->AddChild(nodeValue);
 
     return node;

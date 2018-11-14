@@ -42,7 +42,7 @@ public:
 
     virtual ~asResultsTotalScore();
 
-    void Init(asParametersScoring &params);
+    void Init();
 
     float GetScore() const
     {
@@ -60,12 +60,6 @@ public:
     }
 
     void SetScore(a1f val)
-    {
-        m_scoreArray = val;
-        m_hasSingleValue = false;
-    }
-
-    void SetScoreArray(a1f val)
     {
         m_scoreArray = val;
         m_hasSingleValue = false;

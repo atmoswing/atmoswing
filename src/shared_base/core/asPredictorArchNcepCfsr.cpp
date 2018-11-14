@@ -28,30 +28,18 @@
 #include "asPredictorArchNcepCfsr.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_CFSR";
-    m_originalProvider = "NCEP";
+    m_provider = "NCEP";
     m_datasetName = "CFSR";
-    m_originalProviderStart = asTime::GetMJD(1979, 1, 1);
-    m_originalProviderEnd = asTime::GetMJD(2011, 3, 1);
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = NaNd;
+    m_fileType = asFile::Grib2;
     m_strideAllowed = false;
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-}
-
-asPredictorArchNcepCfsr::~asPredictorArchNcepCfsr()
-{
-
 }
 
 bool asPredictorArchNcepCfsr::Init()
@@ -64,11 +52,9 @@ bool asPredictorArchNcepCfsr::Init()
     if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
         m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
         m_product.IsSameAs("pgb", false)) {
-        m_fileStructure.hasLevelDimension = true;
-        m_fileStructure.singleLevel = true;
+        m_fStr.hasLevelDim = true;
+        m_fStr.singleLevel = true;
         m_subFolder = "pgbh";
-        m_xAxisStep = 0.5;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("hgt@iso", false)) {
             m_parameter = GeopotentialHeight;
             int arr[] = {0, 3, 5, 100};
@@ -138,22 +124,13 @@ bool asPredictorArchNcepCfsr::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepCfsr::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepCfsr::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
     a1d tArray = timeArray.GetTimeArray();
 
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
-                                                                  t.month, t.day, t.year, t.month, t.day, t.hour));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.year, t.month, t.year,
+                                                                    t.month, t.day, t.year, t.month, t.day, t.hour));
     }
-
-    return files;
-}
-
-bool asPredictorArchNcepCfsr::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                              asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
 }

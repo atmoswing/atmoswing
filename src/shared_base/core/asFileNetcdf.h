@@ -51,13 +51,13 @@ public:
         Netcdf4Classic = NC_FORMAT_NETCDF4_CLASSIC
     };
 
-    asFileNetcdf(const wxString &fileName, const ListFileMode &fileMode);
+    asFileNetcdf(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileNetcdf();
+    ~asFileNetcdf() override;
 
-    virtual bool Open();
+    bool Open() override;
 
-    virtual bool Close();
+    bool Close() override;
 
     void DefDim(const wxString &dimName, const size_t &dimSize = 0);
 
@@ -90,7 +90,7 @@ public:
     void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const void *pData);
 
     void PutVarArray(const wxString &varName, const size_t *arrStart, const size_t *arrCount, const wxString *pData,
-                     const size_t totSize);
+                     size_t totSize);
 
     void StartDef();
 
@@ -126,7 +126,7 @@ public:
 
     void GetVar(const wxString &varName, double *pValue);
 
-    void GetVar(const wxString &varName, wxString *pValue, const size_t totSize);
+    void GetVar(const wxString &varName, wxString *pValue, size_t totSize);
 
     short GetVarOneShort(const wxString &varName, size_t arrIndex = 0);
 
@@ -161,11 +161,6 @@ public:
     size_t GetVarLength(const wxString &varName);
 
     nc_type GetVarType(const wxString &varName);
-
-    int GetFileId() const
-    {
-        return m_fileId;
-    }
 
     size_t GetVarsNb() const
     {
@@ -223,6 +218,7 @@ private:
 
     struct NcStruct
     {
+        int nUDims;
         vi uDimIds;
         asFileNetcdf::Format format;
         std::vector<NcDimStruct> dims;
@@ -230,10 +226,10 @@ private:
         std::vector<NcAttStruct> atts;
     };
 
+    NcStruct m_struct;
     int m_fileId;
     int m_status;
     bool m_defineMode;
-    NcStruct m_struct;
 
     void HandleErrorNetcdf();
 

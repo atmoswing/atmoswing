@@ -37,18 +37,18 @@ class AtmoswingFrameViewer
         : public asFrameForecast
 {
 public:
-    AtmoswingFrameViewer(wxFrame *frame);
+    explicit AtmoswingFrameViewer(wxFrame *frame);
 
-    ~AtmoswingFrameViewer();
+    ~AtmoswingFrameViewer() override = default;
 
 private:
     asLogWindow *m_logWindow;
 
     virtual void OnClose(wxCloseEvent &event);
 
-    virtual void OnQuit(wxCommandEvent &event);
+    void OnQuit(wxCommandEvent &event) override;
 
-    void OnShowLog(wxCommandEvent &event);
+    void OnShowLog(wxCommandEvent &event) override;
 };
 
 #endif // ATMOSWINGMAINVIEWER_H

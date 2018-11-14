@@ -50,12 +50,21 @@ public:
 
     enum Unit
     {
-        nb, mm, m, percent, degC, degK
+        nb, mm, m, in, percent, degC, degK
     };
 
     enum TemporalResolution
     {
-        Daily, SixHourly, Hourly, OneHourlyMTW, ThreeHourlyMTW, SixHourlyMTW, TwelveHourlyMTW, TwoDays, ThreeDays, Weekly
+        Daily,
+        SixHourly,
+        Hourly,
+        OneHourlyMTW,
+        ThreeHourlyMTW,
+        SixHourlyMTW,
+        TwelveHourlyMTW,
+        TwoDays,
+        ThreeDays,
+        Weekly
     };
 
     enum SpatialAggregation
@@ -64,9 +73,9 @@ public:
     };
 
     asPredictand(Parameter parameter, TemporalResolution temporalResolution,
-                     SpatialAggregation spatialAggregation);
+                 SpatialAggregation spatialAggregation);
 
-    virtual ~asPredictand();
+    ~asPredictand() override = default;
 
     static Parameter StringToParameterEnum(const wxString &parameterStr);
 
@@ -86,17 +95,16 @@ public:
                                      const wxString &spatialAggregationStr);
 
     static asPredictand *GetInstance(Parameter parameter, TemporalResolution temporalResolution,
-                                         SpatialAggregation spatialAggregation);
+                                     SpatialAggregation spatialAggregation);
 
     static asPredictand *GetInstance(const wxString &filePath);
 
-    virtual bool Load(const wxString &AlternateFilePath = wxEmptyString) = 0;
+    virtual bool Load(const wxString &filePath) = 0;
 
-    virtual bool Save(const wxString &AlternateFilePath = wxEmptyString) const = 0;
+    virtual bool Save(const wxString &filePath) const = 0;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                                   const wxString &AlternatePatternDir = wxEmptyString,
-                                   const wxString &AlternateDestinationDir = wxEmptyString) = 0;
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+                                   const wxString &patternDir, const wxString &destinationDir) = 0;
 
     virtual a1f GetReferenceAxis() const
     {
@@ -127,19 +135,9 @@ public:
         return m_parameter;
     }
 
-    void SetDataParameter(Parameter val)
-    {
-        m_parameter = val;
-    }
-
     TemporalResolution GetDataTemporalResolution() const
     {
         return m_temporalResolution;
-    }
-
-    void SetDataTemporalResolution(TemporalResolution val)
-    {
-        m_temporalResolution = val;
     }
 
     SpatialAggregation GetDataSpatialAggregation() const
@@ -147,35 +145,10 @@ public:
         return m_spatialAggregation;
     }
 
-    void SetDataSpatialAggregation(SpatialAggregation val)
-    {
-        m_spatialAggregation = val;
-    }
-
-    bool HasNormalizedData() const
-    {
-        return m_hasNormalizedData;
-    }
-
     void SetHasReferenceValues(bool val)
     {
         m_hasReferenceValues = val;
         m_hasNormalizedData = val;
-    }
-
-    bool HasReferenceValues() const
-    {
-        return m_hasReferenceValues;
-    }
-
-    double GetTimeStepDays() const
-    {
-        return m_timeStepDays;
-    }
-
-    double GetTimeStepHours() const
-    {
-        return m_timeStepDays * 24;
     }
 
     int GetStationsNb() const
@@ -218,24 +191,10 @@ public:
         return m_stationYCoords;
     }
 
-    a2f &GetDataGross()
-    {
-        return m_dataGross;
-    }
-
-    a1f GetDataGrossStation(int predictandStationId) const
+    a1f GetDataRawStation(int predictandStationId) const
     {
         int indexStation = GetStationIndex(predictandStationId);
-        return m_dataGross.col(indexStation);
-    }
-
-    a2f &GetDataNormalized()
-    {
-        if (m_hasNormalizedData) {
-            return m_dataNormalized;
-        } else {
-            return m_dataGross;
-        }
+        return m_dataRaw.col(indexStation);
     }
 
     a1f GetDataNormalizedStation(int predictandStationId) const
@@ -244,7 +203,7 @@ public:
         if (m_hasNormalizedData) {
             return m_dataNormalized.col(indexStation);
         } else {
-            return m_dataGross.col(indexStation);
+            return m_dataRaw.col(indexStation);
         }
     }
 
@@ -271,7 +230,7 @@ protected:
     bool m_hasNormalizedData;
     bool m_hasReferenceValues;
     // Matrix data
-    a2f m_dataGross;
+    a2f m_dataRaw;
     a2f m_dataNormalized;
     // Vector (dim = time)
     a1d m_time;
@@ -297,16 +256,16 @@ protected:
 
     bool SaveCommonData(asFileNetcdf &ncFile) const;
 
-    bool ParseData(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                   const wxString &AlternatePatternDir = wxEmptyString);
+    bool ParseData(const wxString &catalogFile, const wxString &directory = wxEmptyString,
+                   const wxString &patternDir = wxEmptyString);
 
     a2f GetAnnualMax(double timeStepDays = 1, int nansNbMax = 10) const;
 
     bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
 
     bool GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                        const wxString &AlternateDataDir = wxEmptyString,
-                        const wxString &AlternatePatternDir = wxEmptyString);
+                        const wxString &directory = wxEmptyString,
+                        const wxString &patternDir = wxEmptyString);
 
 private:
 

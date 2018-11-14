@@ -14,13 +14,13 @@
 #pragma warning( disable : 4125 ) // C4125: decimal digit terminates octal escape sequence
 #endif
 
-extern void initialize_img_treectrl_s(void);
+extern void initialize_img_treectrl_s();
 
-extern void initialize_img_treectrl_m(void);
+extern void initialize_img_treectrl_m();
 
-extern void initialize_img_treectrl_l(void);
+extern void initialize_img_treectrl_l();
 
-void cleanup_img_treectrl(void);
+void cleanup_img_treectrl();
 
 extern wxBitmap *_img_icon_lightning;
 extern wxBitmap *_img_icon_other;

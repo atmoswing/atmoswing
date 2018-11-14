@@ -28,15 +28,6 @@
 
 #include "asTime.h"
 
-asTime::asTime()
-{
-    //ctor
-}
-
-asTime::~asTime()
-{
-    //dtor
-}
 
 void asTime::TimeStructInit(Time &date)
 {
@@ -214,6 +205,13 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format)
     wxString datestr = wxEmptyString;
 
     switch (format) {
+        case (ISOdate):
+            datestr = wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
+            break;
+        case (ISOdatetime):
+            datestr = wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
+                                       date.min, date.sec);
+            break;
         case (classic):
         case (DDMMYYYY):
             datestr = wxString::Format("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
@@ -266,6 +264,40 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
     long sec = 0;
 
     switch (format) {
+        case (ISOdate):
+
+            if (datestr.Len() == 10) {
+                if (!datestr.Mid(0, 4).ToLong(&year))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                return GetMJD(year, month, day);
+            }
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
+
+        case (ISOdatetime):
+
+            if (datestr.Len() == 19) {
+                if (!datestr.Mid(0, 4).ToLong(&year))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(5, 2).ToLong(&month))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(8, 2).ToLong(&day))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(11, 2).ToLong(&hour))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(14, 2).ToLong(&min))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                if (!datestr.Mid(17, 2).ToLong(&sec))
+                    asThrowException(wxString::Format(errormsgconversion, datestr));
+                return GetMJD(year, month, day, hour, min, sec);
+            }
+
+            asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
+
         case (classic):
         case (DDMMYYYY):
 
@@ -617,6 +649,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             asThrowException(_("The date format is not correctly set"));
     }
 
+    return 0;
 }
 
 bool asTime::IsLeapYear(int year)
@@ -700,7 +733,7 @@ wxDateTime asTime::GetWxDateTime(double mjd, int method)
 {
     Time datestruct = GetTimeStruct(mjd, method);
 
-    wxDateTime::Month month = (wxDateTime::Month) (datestruct.month - 1);
+    auto month = (wxDateTime::Month) (datestruct.month - 1);
     wxDateTime datewx(datestruct.day, month, datestruct.year, datestruct.hour, datestruct.min, datestruct.sec);
 
     return datewx;
@@ -739,23 +772,23 @@ Time asTime::GetTimeStruct(double mjd, int method)
 
     // Remaining seconds
     double rest = mjd - floor(mjd);
-    int sec = asTools::Round(rest * 86400);
-    date.hour = floor((float) (sec / 3600));
+    double sec = asRound(rest * 86400);
+    date.hour = (int) floor((float) (sec / 3600));
     sec -= date.hour * 3600;
-    date.min = floor((float) (sec / 60));
+    date.min = (int) floor((float) (sec / 60));
     sec -= date.min * 60;
-    date.sec = sec;
+    date.sec = (int) sec;
 
     switch (method) {
         case (asUSE_NORMAL_METHOD):
 
             long a, b, c, d, e, z;
 
-            z = mjd;
+            z = (long) mjd;
             if (z < 2299161L)
                 a = z;
             else {
-                long alpha = (long) ((z - 1867216.25) / 36524.25);
+                auto alpha = (long) ((z - 1867216.25) / 36524.25);
                 a = z + 1 + alpha - alpha / 4;
             }
             b = a + 1524;

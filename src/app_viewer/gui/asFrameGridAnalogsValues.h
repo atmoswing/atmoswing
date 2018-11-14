@@ -44,13 +44,13 @@ public:
     void Init();
 
 protected:
-    void OnChoiceForecastChange(wxCommandEvent &event);
+    void OnChoiceForecastChange(wxCommandEvent &event) override;
 
-    void OnChoiceStationChange(wxCommandEvent &event);
+    void OnChoiceStationChange(wxCommandEvent &event) override;
 
-    void OnChoiceDateChange(wxCommandEvent &event);
+    void OnChoiceDateChange(wxCommandEvent &event) override;
 
-    virtual void SortGrid(wxGridEvent &event);
+    void SortGrid(wxGridEvent &event) override;
 
 private:
     asForecastManager *m_forecastManager;

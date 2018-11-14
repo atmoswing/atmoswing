@@ -66,7 +66,7 @@ a1f asPostprocessor::PostprocessDuplicationOnCriteria(const a1f &analogsValues, 
     {
         analogsWeight[iDay] *= (float)1000/sum;
         analogsWeight[iDay] = wxMax(analogsWeight[iDay], (float)1); // Set the min to 1 to avoid a division by 0
-        nbtot += asTools::Round(analogsWeight[iDay]);
+        nbtot += asRound(analogsWeight[iDay]);
     }
 
     // Duplicate analogs based on the weights
@@ -74,7 +74,7 @@ a1f asPostprocessor::PostprocessDuplicationOnCriteria(const a1f &analogsValues, 
     a1f analogsValuesModified(nbtot);
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        int number = asTools::Round(analogsWeight[iDay]);
+        int number = asRound(analogsWeight[iDay]);
 
         for (int iNb=0; iNb<number; iNb++)
         {
@@ -113,7 +113,7 @@ a1f asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const a1f &analogs
     {
         analogsWeight[iDay] *= (float)1000/sum2;
         analogsWeight[iDay] = wxMax(analogsWeight[iDay], (float)1); // Set the min to 1 to avoid a division by 0
-        nbtot += asTools::Round(analogsWeight[iDay]);
+        nbtot += asRound(analogsWeight[iDay]);
     }
 
     // Duplicate analogs based on the weights
@@ -121,7 +121,7 @@ a1f asPostprocessor::PostprocessDuplicationOnCriteriaExponent(const a1f &analogs
     a1f analogsValuesModified(nbtot);
     for (int iDay=0; iDay<analogsValues.rows(); iDay++)
     {
-        int number = asTools::Round(analogsWeight[iDay]);
+        int number = asRound(analogsWeight[iDay]);
 
         for (int iNb=0; iNb<number; iNb++)
         {

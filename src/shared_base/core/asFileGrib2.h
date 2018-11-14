@@ -44,21 +44,21 @@ class asFileGrib2
         : public asFile
 {
 public:
-    asFileGrib2(const wxString &FileName, const ListFileMode &FileMode);
+    asFileGrib2(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileGrib2();
+    ~asFileGrib2() override;
 
-    virtual bool Open();
+    bool Open() override;
 
-    virtual bool Close();
+    bool Close() override;
 
-    bool SetIndexPosition(const vi gribCode, const float level);
+    bool SetIndexPosition(vi gribCode, float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
-    bool GetXaxis(a1f &uaxis) const;
+    bool GetXaxis(a1d &uaxis) const;
 
-    bool GetYaxis(a1f &vaxis) const;
+    bool GetYaxis(a1d &vaxis) const;
 
     double GetTime() const;
 
@@ -77,9 +77,9 @@ private:
     vd m_refTimes;
     vd m_times;
     vd m_forecastTimes;
-    vf m_levels;
-    va1f m_xAxes;
-    va1f m_yAxes;
+    vd m_levels;
+    va1d m_xAxes;
+    va1d m_yAxes;
 
     bool OpenDataset();
 

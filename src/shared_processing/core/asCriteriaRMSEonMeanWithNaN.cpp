@@ -29,12 +29,8 @@
 #include "asCriteriaRMSEonMeanWithNaN.h"
 
 asCriteriaRMSEonMeanWithNaN::asCriteriaRMSEonMeanWithNaN()
-        : asCriteria()
+        : asCriteria(asCriteria::RMSEwithNaN, "RMSEonMeanWithNaN", _("Root Mean Square Error on the mean value of the grid, with NaNs management"), Asc)
 {
-    m_criteria = asCriteria::RMSEwithNaN;
-    m_name = "RMSEonMeanWithNaN";
-    m_fullName = _("Root Mean Square Error on the mean value of the grid, with NaNs management");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;
@@ -64,7 +60,7 @@ float asCriteriaRMSEonMeanWithNaN::Assess(const a2f &refData, const a2f &evalDat
 
     for (int i = 0; i < rowsNb; i++) {
         for (int j = 0; j < colsNb; j++) {
-            if (!asTools::IsNaN(evalData(i, j)) && !asTools::IsNaN(refData(i, j))) {
+            if (!asIsNaN(evalData(i, j)) && !asIsNaN(refData(i, j))) {
                 evalMean += evalData(i, j);
                 refMean += refData(i, j);
             } else {

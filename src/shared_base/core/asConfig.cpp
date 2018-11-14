@@ -31,32 +31,22 @@
 #include "wx/stdpaths.h"        // wxStandardPaths returns the standard locations in the file system
 
 
-asConfig::asConfig()
-{
-    //ctor
-}
-
-asConfig::~asConfig()
-{
-    //dtor
-}
-
 wxString asConfig::GetLogDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxString TempDir = wxStandardPaths::Get().GetTempDir();
+    wxString tempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
-    TempDir.Append(DS);
-    return TempDir;
+    tempDir.Append(DS);
+    return tempDir;
 }
 
 wxString asConfig::GetTempDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxString TempDir = wxStandardPaths::Get().GetTempDir();
+    wxString tempDir = wxStandardPaths::Get().GetTempDir();
     ThreadsManager().CritSectionConfig().Leave();
-    TempDir.Append(DS);
-    return TempDir;
+    tempDir.Append(DS);
+    return tempDir;
 }
 
 wxString asConfig::CreateTempFileName(const wxString &prefix)
@@ -81,10 +71,10 @@ wxString asConfig::CreateTempFileName(const wxString &prefix)
 wxString asConfig::GetDataDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxString DirData = wxStandardPaths::Get().GetDataDir();
+    wxString dirData = wxStandardPaths::Get().GetDataDir();
     ThreadsManager().CritSectionConfig().Leave();
-    DirData.Append(DS);
-    return DirData;
+    dirData.Append(DS);
+    return dirData;
 }
 
 wxString asConfig::GetSoftDir()
@@ -122,20 +112,29 @@ wxString asConfig::GetUserDataDir()
 wxString asConfig::GetDocumentsDir()
 {
     ThreadsManager().CritSectionConfig().Enter();
-    wxString DirDocs = wxStandardPaths::Get().GetDocumentsDir();
+    wxString dirDocs = wxStandardPaths::Get().GetDocumentsDir();
     ThreadsManager().CritSectionConfig().Leave();
-    DirDocs.Append(DS);
-    return DirDocs;
+    dirDocs.Append(DS);
+    return dirDocs;
 }
 
 wxString asConfig::GetDefaultUserWorkingDir()
 {
-    wxString DirData = GetUserDataDir() + DS + "Data" + DS;
-    return DirData;
+    wxString dirData = GetUserDataDir() + DS + "Data" + DS;
+    return dirData;
 }
 
-wxString asConfig::GetDefaultUserConfigDir()
+#if wxUSE_GUI
+wxColour asConfig::GetFrameBgColour()
 {
-    wxString DirConfig = GetUserDataDir() + DS + "Config" + DS;
-    return DirConfig;
+    #if defined (__WIN32__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #elif defined (__UNIX__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BACKGROUND );
+    #elif defined (__APPLE__)
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #else
+        return wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE );
+    #endif
 }
+#endif

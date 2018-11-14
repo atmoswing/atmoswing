@@ -30,14 +30,10 @@
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSAR::asScoreCRPSAR()
-        : asScore()
+        : asScore(asScore::CRPSAR, _("CRPS Approx Rectangle"),
+                  _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSAR;
-    m_name = _("CRPS Approx Rectangle");
-    m_fullName = _("Continuous Ranked Probability Score approximation with the rectangle method");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSAR::~asScoreCRPSAR()
@@ -45,23 +41,26 @@ asScoreCRPSAR::~asScoreCRPSAR()
     //dtor
 }
 
-float asScoreCRPSAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSAR::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
     a1f x(nbElements);
-    float x0 = ObservedVal;
+    float x0 = observedVal;
 
     // Remove the NaNs and copy content
-    int n = CleanNans(ForcastVals, x, nbElements);
+    int n = CleanNans(forcastVals, x, nbElements);
     if (n == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNf;
@@ -71,21 +70,21 @@ float asScoreCRPSAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbEle
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[n - 1], Asc);
+    asSortArray(&x[0], &x[n - 1], Asc);
 
-    float CRPS = 0;
+    float crps = 0;
 
     // Cumulative frequency
-    a1f Fx = asTools::GetCumulativeFrequency(n);
+    a1f Fx = asGetCumulativeFrequency(n);
 
     // Add rectangle on right side if observed value is on the right of the distribution
     if (x0 > x[n - 1]) {
-        CRPS += x0 - x[n - 1];
+        crps += x0 - x[n - 1];
     }
 
     // Add rectangle on the left side if observed value is on the left of the distribution
     if (x0 < x[0]) {
-        CRPS += x[0] - x0;
+        crps += x[0] - x0;
     }
 
     // Integrate the distribution
@@ -95,21 +94,21 @@ float asScoreCRPSAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbEle
                 // Left of the observed value
                 if (x[i + 1] <= x0) {
                     // Next value also left side of observed value
-                    CRPS += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
+                    crps += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
                 } else {
                     // Observation in between 2 values
                     float F0 = (Fx[i + 1] - Fx[i]) * (x0 - x[i]) / (x[i + 1] - x[i]) + Fx[i];
-                    CRPS += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
-                    CRPS += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
+                    crps += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
+                    crps += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
                 }
             } else {
                 // Right of the observed value
-                CRPS += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
+                crps += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
             }
         }
     }
 
-    return CRPS;
+    return crps;
 }
 
 bool asScoreCRPSAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)

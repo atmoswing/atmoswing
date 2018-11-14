@@ -29,12 +29,8 @@
 #include "asCriteriaS1.h"
 
 asCriteriaS1::asCriteriaS1()
-        : asCriteria()
+        : asCriteria(asCriteria::S1, "S1", _("Teweles-Wobus score"), Asc)
 {
-    m_criteria = asCriteria::S1;
-    m_name = "S1";
-    m_fullName = _("Teweles-Wobus");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = 200;
     m_canUseInline = false;

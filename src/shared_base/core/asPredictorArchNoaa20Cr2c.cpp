@@ -28,35 +28,23 @@
 #include "asPredictorArchNoaa20Cr2c.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaa20Cr2c::asPredictorArchNoaa20Cr2c(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NOAA_20CR_v2c";
-    m_originalProvider = "NOAA";
+    m_provider = "NOAA";
     m_datasetName = "Twentieth Century Reanalysis (v2c)";
-    m_originalProviderStart = asTime::GetMJD(1850, 1, 1);
-    m_originalProviderEnd = asTime::GetMJD(2014, 12, 31, 18);
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-}
-
-asPredictorArchNoaa20Cr2c::~asPredictorArchNoaa20Cr2c()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
 }
 
 bool asPredictorArchNoaa20Cr2c::Init()
@@ -65,68 +53,66 @@ bool asPredictorArchNoaa20Cr2c::Init()
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("pressure", false) || m_product.IsSameAs("press", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "pressure";
-        m_xAxisStep = 2;
-        m_yAxisStep = 2;
         if (m_dataId.IsSameAs("air", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature";
-            m_fileVariableName = "air";
+            m_fileVarName = "air";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("hgt", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
-            m_fileVariableName = "hgt";
+            m_fileVarName = "hgt";
             m_unit = m;
         } else if (m_dataId.IsSameAs("omega", false)) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
-            m_fileVariableName = "omega";
+            m_fileVarName = "omega";
             m_unit = Pa_s;
         } else if (m_dataId.IsSameAs("rhum", false)) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative Humidity";
-            m_fileVariableName = "rhum";
+            m_fileVarName = "rhum";
             m_unit = percent;
         } else if (m_dataId.IsSameAs("shum", false)) {
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific Humidity";
-            m_fileVariableName = "shum";
+            m_fileVarName = "shum";
             m_unit = kg_kg;
         } else if (m_dataId.IsSameAs("uwnd", false)) {
             m_parameter = Uwind;
             m_parameterName = "U-Wind";
-            m_fileVariableName = "uwnd";
+            m_fileVarName = "uwnd";
             m_unit = m_s;
         } else if (m_dataId.IsSameAs("vwnd", false)) {
             m_parameter = Vwind;
             m_parameterName = "V-Wind";
-            m_fileVariableName = "vwnd";
+            m_fileVarName = "vwnd";
             m_unit = m_s;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVariableName + ".%d.nc";
+        m_fileNamePattern = m_fileVarName + ".%d.nc";
 
     } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
                m_product.IsSameAs("monolevel", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_subFolder = "monolevel";
-        m_xAxisStep = 2;
-        m_yAxisStep = 2;
         if (m_dataId.IsSameAs("prwtr", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileNamePattern = "pr_wtr.eatm.%d.nc";
-            m_fileVariableName = "pr_wtr";
+            m_fileVarName = "pr_wtr";
             m_unit = mm;
         } else if (m_dataId.IsSameAs("mslp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileNamePattern = "prmsl.%d.nc";
-            m_fileVariableName = "prmsl";
+            m_fileVarName = "prmsl";
             m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -135,15 +121,13 @@ bool asPredictorArchNoaa20Cr2c::Init()
 
     } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
                m_product.IsSameAs("gaussian", false) || m_product.IsSameAs("flux", false)) {
-        m_fileStructure.hasLevelDimension = false;
+        m_fStr.hasLevelDim = false;
         m_subFolder = "gaussian";
-        m_xAxisStep = NaNf;
-        m_yAxisStep = NaNf;
         if (m_dataId.IsSameAs("prate", false)) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
             m_fileNamePattern = "prate.%d.nc";
-            m_fileVariableName = "prate";
+            m_fileVarName = "prate";
             m_unit = kg_m2_s;
             m_subFolder.Append(DS + "monolevel");
         } else {
@@ -156,7 +140,7 @@ bool asPredictorArchNoaa20Cr2c::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
@@ -175,21 +159,11 @@ bool asPredictorArchNoaa20Cr2c::Init()
     return true;
 }
 
-vwxs asPredictorArchNoaa20Cr2c::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNoaa20Cr2c::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
-
-    return files;
-}
-
-bool asPredictorArchNoaa20Cr2c::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNoaa20Cr2c::ConvertToMjd(double timeValue, double refValue) const

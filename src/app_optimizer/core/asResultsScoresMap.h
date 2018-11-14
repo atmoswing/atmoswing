@@ -45,7 +45,7 @@ public:
 
     virtual ~asResultsScoresMap();
 
-    void Init(asParametersScoring &params);
+    void Init();
 
     bool Add(asParametersScoring &params, float score);
 

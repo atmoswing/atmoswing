@@ -29,39 +29,25 @@
 #include "asPredictorArchNoaaOisst2.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NOAA_OISST_v2";
-    m_originalProvider = "NOAA";
+    m_provider = "NOAA";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2";
-    m_originalProviderStart = asTime::GetMJD(1982, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 24;
-    m_firstTimeStepHours = 12;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_xAxisShift = 0.125;
-    m_yAxisShift = 0.125;
-    m_xAxisStep = 0.25;
-    m_yAxisStep = 0.25;
     m_subFolder = wxEmptyString;
     m_fileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.hasLevelDimension = false;
-}
-
-asPredictorArchNoaaOisst2::~asPredictorArchNoaaOisst2()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.hasLevelDim = false;
 }
 
 bool asPredictorArchNoaaOisst2::Init()
@@ -70,20 +56,22 @@ bool asPredictorArchNoaaOisst2::Init()
     if (m_dataId.IsSameAs("sst", false)) {
         m_parameter = SeaSurfaceTemperature;
         m_parameterName = "Sea Surface Temperature";
-        m_fileVariableName = "sst";
+        m_fileVarName = "sst";
         m_unit = degC;
     } else if (m_dataId.IsSameAs("sst_anom", false)) {
         m_parameter = SeaSurfaceTemperatureAnomaly;
         m_parameterName = "Sea Surface Temperature Anomaly";
-        m_fileVariableName = "anom";
+        m_fileVarName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        m_parameter = ParameterUndefined;
+        m_parameterName = "Undefined";
+        m_fileVarName = m_dataId;
+        m_unit = UnitUndefined;
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName);
         return false;
     }
@@ -100,24 +88,14 @@ bool asPredictorArchNoaaOisst2::Init()
     return true;
 }
 
-vwxs asPredictorArchNoaaOisst2::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNoaaOisst2::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
-        files.push_back(GetFullDirectoryPath() +
-                        wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
-                                         asTime::GetMonth(date), asTime::GetDay(date)));
+        m_files.push_back(GetFullDirectoryPath() +
+                          wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
+                                           asTime::GetMonth(date), asTime::GetDay(date)));
     }
-
-    return files;
-}
-
-bool asPredictorArchNoaaOisst2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const

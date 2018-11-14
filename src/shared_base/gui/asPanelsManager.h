@@ -34,9 +34,9 @@ class asPanelsManager
         : public wxObject
 {
 public:
-    asPanelsManager();
+    asPanelsManager() = default;
 
-    virtual ~asPanelsManager();
+    ~asPanelsManager() override = default;
 
     void LayoutFrame(wxWindow *element);
 

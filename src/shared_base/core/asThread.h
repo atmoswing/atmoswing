@@ -47,13 +47,13 @@ public:
         MethodOptimizerGeneticAlgorithms
     };
 
-    asThread();
+    explicit asThread(Type type = Undefined);
 
-    virtual ~asThread();
+    ~asThread() override = default;
 
-    virtual ExitCode Entry();
+    ExitCode Entry() override;
 
-    virtual void OnExit();
+    void OnExit() override;
 
     asThread::Type GetType() const
     {

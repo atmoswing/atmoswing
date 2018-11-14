@@ -27,15 +27,10 @@
 
 #include "asFileWorkspace.h"
 
-asFileWorkspace::asFileWorkspace(const wxString &FileName, const ListFileMode &FileMode)
-        : asFileXml(FileName, FileMode)
+asFileWorkspace::asFileWorkspace(const wxString &fileName, const FileMode &fileMode)
+        : asFileXml(fileName, fileMode)
 {
     // FindAndOpen() processed by asFileXml
-}
-
-asFileWorkspace::~asFileWorkspace()
-{
-    //dtor
 }
 
 bool asFileWorkspace::EditRootElement() const

@@ -27,36 +27,35 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
 
 TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
 {
-    double Xmin = 360;
-    double Xwidth = 10;
-    double Xstep = 1.250;
-    double Ymin = 75;
-    double Ywidth = 5;
-    double Ystep = 1.250;
+    double xMin = 360;
+    double xWidth = 10;
+    double xStep = 1.250;
+    double yMin = 75;
+    double yWidth = 5;
+    double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -100,29 +99,28 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
 
 TEST(PredictorArchJmaJra55SubsetRegular, Around360)
 {
-    double Xmin = 355;
-    double Xwidth = 10;
-    double Xstep = 1.250;
-    double Ymin = 75;
-    double Ywidth = 5;
-    double Ystep = 1.250;
+    double xMin = 355;
+    double xWidth = 10;
+    double xStep = 1.250;
+    double yMin = 75;
+    double yWidth = 5;
+    double yStep = 1.250;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, Xstep, Ymin, Ywidth, Ystep, level);
+    asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-jma-jra55-ncar-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

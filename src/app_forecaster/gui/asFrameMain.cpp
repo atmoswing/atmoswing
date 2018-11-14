@@ -28,11 +28,11 @@
 
 #include "asFrameMain.h"
 
-#include "asFramePredictandDB.h"
-#include "asFramePreferencesForecaster.h"
-#include "asFrameAbout.h"
 #include "asPanelForecast.h"
 #include "asWizardBatchForecasts.h"
+#include "asFramePreferencesForecaster.h"
+#include "asFrameAbout.h"
+#include "asFramePredictandDB.h"
 
 
 BEGIN_EVENT_TABLE(asFrameMain, wxFrame)
@@ -55,16 +55,19 @@ END_EVENT_TABLE()
 asFrameMain::asFrameMain(wxWindow *parent)
         : asFrameMainVirtual(parent)
 {
-    m_forecaster = NULL;
-    m_logWindow = NULL;
+    m_forecaster = nullptr;
+    m_logWindow = nullptr;
+
+    // Fix colors
+    //m_panelMain->SetBackgroundColour(asConfig::GetFrameBgColour());
 
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run forecast"),
-                       _("Run forecast now"), NULL);
+                       _("Run forecast now"), nullptr);
     m_toolBar->AddTool(asID_CANCEL, wxT("Cancel"), *_img_stop, *_img_stop, wxITEM_NORMAL, _("Cancel forecast"),
-                       _("Cancel current forecast"), NULL);
+                       _("Cancel current forecast"), nullptr);
     m_toolBar->AddTool(asID_PREFERENCES, wxT("Preferences"), *_img_preferences, *_img_preferences, wxITEM_NORMAL,
-                       _("Preferences"), _("Preferences"), NULL);
+                       _("Preferences"), _("Preferences"), nullptr);
     m_toolBar->Realize();
 
     // Leds
@@ -281,7 +284,7 @@ bool asFrameMain::OpenBatchForecasts()
 
     // Create the panels
     for (int i = 0; i < m_batchForecasts.GetForecastsNb(); i++) {
-        asPanelForecast *panel = new asPanelForecast(m_scrolledWindowForecasts);
+        auto *panel = new asPanelForecast(m_scrolledWindowForecasts);
         panel->SetParametersFileName(m_batchForecasts.GetForecastFileName(i));
         panel->Layout();
         m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
@@ -304,40 +307,52 @@ void asFrameMain::Update()
 
 void asFrameMain::OpenFramePredictandDB(wxCommandEvent &event)
 {
-    asFramePredictandDB *frame = new asFramePredictandDB(this);
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePredictandDB(this);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameMain::OnConfigureDirectories(wxCommandEvent &event)
 {
-    asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameMain::OpenFramePreferences(wxCommandEvent &event)
 {
-    asFramePreferencesForecaster *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
+    wxBusyCursor wait;
+
+    auto *frame = new asFramePreferencesForecaster(this, &m_batchForecasts);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameMain::OpenFrameAbout(wxCommandEvent &event)
 {
-    asFrameAbout *frame = new asFrameAbout(this);
+    wxBusyCursor wait;
+
+    auto *frame = new asFrameAbout(this);
     frame->Fit();
     frame->Show();
 }
 
 void asFrameMain::OnShowLog(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     wxASSERT(m_logWindow);
-    m_logWindow->DoShow();
+    m_logWindow->DoShow(true);
 }
 
 void asFrameMain::OnLogLevel1(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -350,6 +365,8 @@ void asFrameMain::OnLogLevel1(wxCommandEvent &event)
 
 void asFrameMain::OnLogLevel2(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
@@ -362,6 +379,8 @@ void asFrameMain::OnLogLevel2(wxCommandEvent &event)
 
 void asFrameMain::OnLogLevel3(wxCommandEvent &event)
 {
+    wxBusyCursor wait;
+
     Log().SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -502,7 +521,7 @@ void asFrameMain::CancelForecasting(wxCommandEvent &event)
 void asFrameMain::AddForecast(wxCommandEvent &event)
 {
     Freeze();
-    asPanelForecast *panel = new asPanelForecast(m_scrolledWindowForecasts);
+    auto *panel = new asPanelForecast(m_scrolledWindowForecasts);
     panel->Layout();
     m_sizerForecasts->Add(panel, 0, wxALL | wxEXPAND, 5);
     Layout(); // For the scrollbar

@@ -29,32 +29,30 @@
 #include "asScoreBS.h"
 
 asScoreBS::asScoreBS()
-        : asScore()
+        : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf)
 {
-    m_score = asScore::BS;
-    m_name = _("Brier score");
-    m_fullName = _("Brier score");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
 }
 
-asScoreBS::~asScoreBS()
+float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    //dtor
-}
-
-float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
-{
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asTools::IsNaN(m_threshold));
+    wxASSERT(!asIsNaN(m_threshold));
+
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
     // Create the container to sort the data
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNf;
@@ -64,10 +62,10 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
     // Search probability
     float probaOccurrence;
@@ -76,7 +74,7 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     } else if (m_threshold > x[nbPredict - 1]) {
         probaOccurrence = 0;
     } else {
-        int ind = asTools::SortedArraySearchFloor(&x[0], &x[nbPredict - 1], m_threshold);
+        int ind = asFindFloor(&x[0], &x[nbPredict - 1], m_threshold);
         if (ind < 0) {
             wxLogError(_("Error processing BS score."));
             return NaNf;
@@ -93,7 +91,7 @@ float asScoreBS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElement
     }
 
     float probaObservedVal = 0;
-    if (ObservedVal >= m_threshold) {
+    if (observedVal >= m_threshold) {
         probaObservedVal = 1;
     }
 

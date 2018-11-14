@@ -33,8 +33,6 @@
 
 TEST(CatalogPredictand, LoadCatalogProp)
 {
-    wxPrintf("Testing predictand catalogs...\n");
-
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 

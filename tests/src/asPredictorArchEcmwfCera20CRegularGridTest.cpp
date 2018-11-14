@@ -27,37 +27,36 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
 
 TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
 {
-    double Xmin = 3;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 3;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -101,30 +100,29 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
 
 TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
 {
-    double Xmin = 3;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 3;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -168,30 +166,29 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
 
 TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
 {
-    double Xmin = 3;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 3;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMembers(3);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     ASSERT_EQ(4, predictor->GetData().size());
     ASSERT_EQ(3, predictor->GetData()[0].size());
@@ -276,29 +273,28 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
 
 TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
 {
-    double Xmin = -4;
-    double Xwidth = 8;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = -4;
+    double xWidth = 8;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -315,6 +311,7 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
     EXPECT_NEAR(97.6, rh[0][0](0, 2), 0.1);
     EXPECT_NEAR(98.5, rh[0][0](0, 3), 0.1);
     EXPECT_NEAR(99.1, rh[0][0](0, 4), 0.1);
+    EXPECT_NEAR(99.3, rh[0][0](0, 5), 0.1);
     EXPECT_NEAR(96.6, rh[0][0](0, 8), 0.1);
     EXPECT_NEAR(97.8, rh[0][0](1, 0), 0.1);
     EXPECT_NEAR(99.7, rh[0][0](2, 0), 0.1);
@@ -344,29 +341,28 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadComposite)
 
 TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 4;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = 0;
+    double xWidth = 4;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)
@@ -410,29 +406,28 @@ TEST(PredictorArchEcmwfCera20CRegular, LoadBorderLeft)
 
 TEST(PredictorArchEcmwfCera20CRegular, LoadBorderRight)
 {
-    double Xmin = -4;
-    double Xwidth = 4;
-    double Ymin = 75;
-    double Ywidth = 4;
+    double xMin = -4;
+    double xWidth = 4;
+    double yMin = 75;
+    double yWidth = 4;
     double step = 1;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 9, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-cera-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C_3h", "press/r",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_CERA_20C", "press/r", predictorDataDir);
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
     // rh[time][mem](lat,lon)

@@ -39,16 +39,17 @@
 #endif
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
-        : asMethodOptimizer()
+        : asMethodOptimizer(),
+          m_generationNb(0),
+          m_assessmentCounter(0),
+          m_popSize(0),
+          m_naturalSelectionType(0),
+          m_couplesSelectionType(0),
+          m_crossoverType(0),
+          m_mutationsModeType(0),
+          m_allowElitismForTheBest(true)
 {
-    m_generationNb = 0;
-    m_assessmentCounter = 0;
-    m_popSize = 0;
-    m_naturalSelectionType = 0;
-    m_couplesSelectionType = 0;
-    m_crossoverType = 0;
-    m_mutationsModeType = 0;
-    m_allowElitismForTheBest = true;
+
 }
 
 asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms()
@@ -84,7 +85,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParameters()
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_paramsNb, 0, m_paramsNb - 1);
-    asTools::SortArrays(&m_scoresCalib[0], &m_scoresCalib[m_paramsNb - 1], &vIndices[0], &vIndices[m_paramsNb - 1],
+    asSortArrays(&m_scoresCalib[0], &m_scoresCalib[m_paramsNb - 1], &vIndices[0], &vIndices[m_paramsNb - 1],
                         m_scoreOrder);
 
     // Sort the parameters sets as the scores
@@ -109,7 +110,7 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
-    asTools::SortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
+    asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
                         &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 
     // Sort the parameters sets as the scores
@@ -125,8 +126,8 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
 
 bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results)
 {
-    wxASSERT(m_parameters.size() > 0);
-    wxASSERT(m_scoresCalib.size() > 0);
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_scoresCalib.empty());
 
     // Extract selected parameters & best parameters
     float bestscore = m_scoresCalib[0];
@@ -181,23 +182,23 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
         m_isOver = false;
         ClearAll();
         if (!ManageOneRun()) {
-            DeletePreloadedData();
+            DeletePreloadedArchiveData();
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in GAs: %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception in the GAs: %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     }
 
     // Delete preloaded data
-    DeletePreloadedData();
+    DeletePreloadedArchiveData();
 
     return true;
 }
@@ -208,7 +209,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool parallelEvaluations;
-    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, true);
+    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, true);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Parameter to print the results every x generation
@@ -223,13 +224,13 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     m_generationNb = 1;
 
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 
     // Load parameters
     asParametersOptimizationGAs params;
     if (!params.LoadFromFile(m_paramsFilePath))
         return false;
-    if (m_predictandStationIds.size() > 0) {
+    if (!m_predictandStationIds.empty()) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
 
@@ -237,16 +238,16 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_final_population;
-    results_final_population.Init(
-            wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
+    results_final_population.Init(wxString::Format(_("station_%s_final_population"),
+                                                   GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best_individual;
-    results_best_individual.Init(
-            wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
+    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"),
+                                                  GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_generations;
-    results_generations.Init(
-            wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = pConfig->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(),
+    results_generations.Init(wxString::Format(_("station_%s_generations"),
+                                              GetPredictandStationIdsList(stationId).c_str()));
+    wxString resultsXmlFilePath = pConfig->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("%s_station_%s_best_parameters.xml", time.c_str(),
                                                GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
@@ -255,19 +256,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Preload data
     try {
-        if (!PreloadData(params)) {
+        if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception in the data preloading (in GAs): %s"), msg.c_str());
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     }
 
@@ -326,7 +327,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.size() == 0) {
+                if (scoreClim.empty()) {
                     ThreadsManager().Wait(threadType);
 
 #ifndef UNIT_TESTING
@@ -414,7 +415,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 // Check results
                 bool checkOK = true;
                 for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-                    if (asTools::IsNaN(m_scoresCalib[iCheck])) {
+                    if (asIsNaN(m_scoresCalib[iCheck])) {
                         wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
                         wxString paramsContent = m_parameters[iCheck].Print();
@@ -447,11 +448,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
                     if (iStep == 0) {
-                        if (!GetAnalogsDates(anaDates, *newParams, iStep, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, newParams, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, *newParams, anaDatesPrevious, iStep, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, newParams, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -460,11 +461,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                         return false;
                     }
                 }
-                if (!GetAnalogsValues(anaValues, *newParams, anaDates, stepsNb - 1))
+                if (!GetAnalogsValues(anaValues, newParams, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, *newParams, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, newParams, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, *newParams, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, newParams, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
@@ -497,15 +498,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 counterPrint++;
 
                 // Display stats
-                float meanScore = asTools::Mean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
                 float bestScore = 0;
                 switch (m_scoreOrder) {
                     case (Asc): {
-                        bestScore = asTools::MinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                        bestScore = asMinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
                         break;
                     }
                     case (Desc): {
-                        bestScore = asTools::MaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                        bestScore = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
                         break;
                     }
                     default: {
@@ -528,7 +529,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
@@ -554,10 +555,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
     // Print stats
     ThreadsManager().CritSectionConfig().Enter();
-    wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
+    wxString statsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
                                                        asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    statsFilePath.Append(wxString::Format("/Optimizer/%s_stats.txt", time.c_str()));
+    statsFilePath.Append(wxString::Format("%s_stats.txt", time.c_str()));
     asFileAscii stats(statsFilePath, asFile::New);
 
     return true;
@@ -567,8 +568,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                                                            asResultsParametersArray &results_generations)
 {
     if (g_resumePreviousRun) {
-        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
-                                                        asConfig::GetDefaultUserWorkingDir());
+        wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
 
         wxDir dir(resultsDir);
         if (!dir.IsOpened()) {
@@ -698,7 +698,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     wxString strScore = fileLine.SubString(indexScoreCalib + 6, indexScoreValid - 2);
                     double scoreVal;
                     strScore.ToDouble(&scoreVal);
-                    float prevScoresCalib = float(scoreVal);
+                    float prevScoresCalib = static_cast<float>(scoreVal);
 
                     // Add to the new array
                     results_generations.Add(prevParams, prevScoresCalib);
@@ -745,7 +745,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                         mean += vectScores[iNext];
                     }
 
-                    m_meanScores[iGen] = mean / float(m_popSize);
+                    m_meanScores[iGen] = mean / static_cast<float>(m_popSize);
                 }
 
                 m_optimizerStage = asREASSESSMENT;
@@ -813,11 +813,11 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
     m_skipNext = false;
 
     if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {
-        if (asTools::IsNaN(m_scoresCalib[m_iterator])) {
+        if (asIsNaN(m_scoresCalib[m_iterator])) {
             params = &m_parameters[m_iterator];
             m_assessmentCounter++;
         } else {
-            while (!asTools::IsNaN(m_scoresCalib[m_iterator])) {
+            while (!asIsNaN(m_scoresCalib[m_iterator])) {
                 m_iterator++;
                 if (m_iterator == m_paramsNb) {
                     m_optimizerStage = asCHECK_CONVERGENCE;
@@ -916,16 +916,16 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
     SortScoresAndParameters();
 
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the previous best.
-    if (m_allowElitismForTheBest && m_parametersTemp.size() > 0) {
+    if (m_allowElitismForTheBest && !m_parametersTemp.empty()) {
         switch (m_scoreOrder) {
             case (Asc): {
                 float actualBest = m_scoresCalib[0];
-                int prevBestIndex = asTools::MinArrayIndex(&m_scoresCalibTemp[0],
+                int prevBestIndex = asMinArrayIndex(&m_scoresCalibTemp[0],
                                                            &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] < actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
-                    int randomRow = asTools::Random(0, m_scoresCalib.size() - 1, 1);
+                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
                     m_parameters[randomRow] = m_parametersTemp[prevBestIndex];
                     m_scoresCalib[randomRow] = m_scoresCalibTemp[prevBestIndex];
                     SortScoresAndParameters();
@@ -934,12 +934,12 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
             }
             case (Desc): {
                 float actualBest = m_scoresCalib[0];
-                int prevBestIndex = asTools::MaxArrayIndex(&m_scoresCalibTemp[0],
+                int prevBestIndex = asMaxArrayIndex(&m_scoresCalibTemp[0],
                                                            &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (m_scoresCalibTemp[prevBestIndex] > actualBest) {
                     wxLogMessage(_("Application of elitism after mutation."));
                     // Randomly select a row to replace
-                    int randomRow = asTools::Random(0, m_scoresCalib.size() - 1, 1);
+                    int randomRow = asRandom(0, m_scoresCalib.size() - 1, 1);
                     m_parameters[randomRow] = m_parametersTemp[prevBestIndex];
                     m_scoresCalib[randomRow] = m_scoresCalibTemp[prevBestIndex];
                     SortScoresAndParameters();
@@ -965,12 +965,12 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection()
         switch (m_scoreOrder) {
             case (Asc): {
                 float prevBest = m_scoresCalib[0];
-                float actualBest = asTools::MinArray(&m_scoresCalibTemp[0],
+                float actualBest = asMinArray(&m_scoresCalibTemp[0],
                                                      &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (prevBest < actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
-                    int randomRow = asTools::Random(0, m_scoresCalibTemp.size() - 1, 1);
+                    int randomRow = asRandom(0, m_scoresCalibTemp.size() - 1, 1);
                     m_parametersTemp[randomRow] = m_parameters[0];
                     m_scoresCalibTemp[randomRow] = m_scoresCalib[0];
                 }
@@ -978,12 +978,12 @@ bool asMethodOptimizerGeneticAlgorithms::ElitismAfterSelection()
             }
             case (Desc): {
                 float prevBest = m_scoresCalib[0];
-                float actualBest = asTools::MaxArray(&m_scoresCalibTemp[0],
+                float actualBest = asMaxArray(&m_scoresCalibTemp[0],
                                                      &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1]);
                 if (prevBest > actualBest) {
                     wxLogMessage(_("Application of elitism in the natural selection."));
                     // Randomly select a row to replace
-                    int randomRow = asTools::Random(0, m_scoresCalibTemp.size() - 1, 1);
+                    int randomRow = asRandom(0, m_scoresCalibTemp.size() - 1, 1);
                     m_parametersTemp[randomRow] = m_parameters[0];
                     m_scoresCalibTemp[randomRow] = m_scoresCalib[0];
                 }
@@ -1037,16 +1037,16 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
             for (int i = 0; i < intermediateGenerationSize; i++) {
                 // Choose candidates
                 int candidateFinal = 0;
-                int candidate1 = asTools::Random(0, m_parameters.size() - 1, 1);
-                int candidate2 = asTools::Random(0, m_parameters.size() - 1, 1);
+                int candidate1 = asRandom(0, m_parameters.size() - 1, 1);
+                int candidate2 = asRandom(0, m_parameters.size() - 1, 1);
 
                 // Check they are not the same
                 while (candidate1 == candidate2) {
-                    candidate2 = asTools::Random(0, m_parameters.size() - 1, 1);
+                    candidate2 = asRandom(0, m_parameters.size() - 1, 1);
                 }
 
                 // Check probability of selection of the best
-                bool keepBest = (asTools::Random(0.0, 1.0) <= tournamentSelectionProbability);
+                bool keepBest = (asRandom(0.0, 1.0) <= tournamentSelectionProbability);
 
                 // Use indexes as scores are already sorted (smaller is better)
                 if (keepBest) {
@@ -1065,7 +1065,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
 
                 // If both scores are equal, select randomly and overwrite previous selection
                 if (m_scoresCalib[candidate1] == m_scoresCalib[candidate2]) {
-                    double randomIndex = asTools::Random(0.0, 1.0);
+                    double randomIndex = asRandom(0.0, 1.0);
                     if (randomIndex <= 0.5) {
                         candidateFinal = candidate1;
                     } else {
@@ -1127,8 +1127,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 // Check that we don't overflow from the array
                 if (partner2 >= sizeParents) {
-                    partner1 = asTools::Random(0, sizeParents - 1, 1);
-                    partner2 = asTools::Random(0, sizeParents - 1, 1);
+                    partner1 = asRandom(0, sizeParents - 1, 1);
+                    partner2 = asRandom(0, sizeParents - 1, 1);
                 }
                 break;
             }
@@ -1136,8 +1136,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
             case (Random): {
                 wxLogVerbose(_("Couples selection: random"));
 
-                partner1 = asTools::Random(0, sizeParents - 1, 1);
-                partner2 = asTools::Random(0, sizeParents - 1, 1);
+                partner1 = asRandom(0, sizeParents - 1, 1);
+                partner2 = asRandom(0, sizeParents - 1, 1);
                 break;
             }
 
@@ -1165,12 +1165,10 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 }
 
                 // Select mates
-                double partner1prob = asTools::Random(0.0, 1.0);
-                partner1 = asTools::SortedArraySearchFloor(&probabilities[0], &probabilities[probabilities.size() - 1],
-                                                           partner1prob);
-                double partner2prob = asTools::Random(0.0, 1.0);
-                partner2 = asTools::SortedArraySearchFloor(&probabilities[0], &probabilities[probabilities.size() - 1],
-                                                           partner2prob);
+                double partner1prob = asRandom(0.0, 1.0);
+                partner1 = asFindFloor(&probabilities[0], &probabilities[probabilities.size() - 1], partner1prob);
+                double partner2prob = asRandom(0.0, 1.0);
+                partner2 = asFindFloor(&probabilities[0], &probabilities[probabilities.size() - 1], partner2prob);
 
                 break;
             }
@@ -1207,12 +1205,10 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 wxASSERT(probabilities.size() > 2);
 
                 // Select mates
-                double partner1prob = asTools::Random(0.0, 1.0);
-                partner1 = asTools::SortedArraySearchFloor(&probabilities[0], &probabilities[probabilities.size() - 1],
-                                                           partner1prob);
-                double partner2prob = asTools::Random(0.0, 1.0);
-                partner2 = asTools::SortedArraySearchFloor(&probabilities[0], &probabilities[probabilities.size() - 1],
-                                                           partner2prob);
+                double partner1prob = asRandom(0.0, 1.0);
+                partner1 = asFindFloor(&probabilities[0], &probabilities[probabilities.size() - 1], partner1prob);
+                double partner2prob = asRandom(0.0, 1.0);
+                partner2 = asFindFloor(&probabilities[0], &probabilities[probabilities.size() - 1], partner2prob);
 
                 if (partner1 < 0) {
                     wxLogError(_("Could not find a value in the probability distribution."));
@@ -1253,7 +1249,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Select partner 1
                 partner1 = sizeParents;
                 for (int i = 0; i < couplesSelectionTournamentNb; i++) {
-                    int candidate = asTools::Random(0, sizeParents - 1);
+                    int candidate = asRandom(0, sizeParents - 1);
                     if (candidate < partner1) // Smaller rank reflects better score
                     {
                         partner1 = candidate;
@@ -1263,7 +1259,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Select partner 2
                 partner2 = sizeParents;
                 for (int i = 0; i < couplesSelectionTournamentNb; i++) {
-                    int candidate = asTools::Random(0, sizeParents - 1);
+                    int candidate = asRandom(0, sizeParents - 1);
                     if (candidate < partner2) // Smaller rank reflects better score
                     {
                         partner2 = candidate;
@@ -1315,7 +1311,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
                     crossingPoints.push_back(crossingPoint);
                 }
 
@@ -1354,8 +1350,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1415,8 +1411,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1467,7 +1463,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 bool previouslyCrossed = false; // flag
 
                 for (int iGene = 0; iGene < chromosomeLength; iGene++) {
-                    double doCross = asTools::Random(0.0, 1.0);
+                    double doCross = asRandom(0.0, 1.0);
 
                     if (doCross >= 0.5) // Yes
                     {
@@ -1493,7 +1489,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 param1 = m_parametersTemp[partner1];
                 asParametersOptimizationGAs param2;
                 param2 = m_parametersTemp[partner2];
-                if (crossingPoints.size() > 0) {
+                if (!crossingPoints.empty()) {
                     param1.SimpleCrossover(param2, crossingPoints);
                 }
 
@@ -1529,8 +1525,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1585,8 +1581,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1661,8 +1657,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {
@@ -1721,8 +1717,8 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
 
                 vi crossingPoints;
                 for (int iCross = 0; iCross < crossoverNbPoints; iCross++) {
-                    int crossingPoint = asTools::Random(0, chromosomeLength - 1, 1);
-                    if (crossingPoints.size() > 0) {
+                    int crossingPoint = asRandom(0, chromosomeLength - 1, 1);
+                    if (!crossingPoints.empty()) {
                         // Check that is not already stored
                         if (chromosomeLength > crossoverNbPoints) {
                             for (unsigned int iPts = 0; iPts < crossingPoints.size(); iPts++) {

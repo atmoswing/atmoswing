@@ -39,8 +39,8 @@ asPanelsManagerForecasts::asPanelsManagerForecasts()
 asPanelsManagerForecasts::~asPanelsManagerForecasts()
 {
     // Destroy panels
-    for (unsigned int i = 0; i < m_arrayPanels.size(); i++) {
-        m_arrayPanels[i]->Destroy();
+    for (auto &panel : m_arrayPanels) {
+        panel->Destroy();
     }
 }
 
@@ -65,10 +65,10 @@ void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel)
     tmpArrayPanels = m_arrayPanels;
     m_arrayPanels.clear();
 
-    for (unsigned int i = 0; i < tmpArrayPanels.size(); i++) {
-        if (tmpArrayPanels[i]->GetId() != id) {
-            tmpArrayPanels[i]->SetId(m_arrayPanels.size());
-            m_arrayPanels.push_back(tmpArrayPanels[i]);
+    for (auto &tmpPanel : tmpArrayPanels) {
+        if (tmpPanel->GetId() != id) {
+            tmpPanel->SetId(m_arrayPanels.size());
+            m_arrayPanels.push_back(tmpPanel);
         }
     }
 
@@ -81,9 +81,9 @@ void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel)
 void asPanelsManagerForecasts::Clear()
 {
     // Destroy panels
-    for (unsigned int i = 0; i < m_arrayPanels.size(); i++) {
-        wxASSERT(m_arrayPanels[i]);
-        m_arrayPanels[i]->Destroy();
+    for (auto &arrayPanel : m_arrayPanels) {
+        wxASSERT(arrayPanel);
+        arrayPanel->Destroy();
     }
     m_arrayPanels.clear();
 }
@@ -96,7 +96,7 @@ asPanelForecast *asPanelsManagerForecasts::GetPanel(int i) const
 
 int asPanelsManagerForecasts::GetPanelsNb() const
 {
-    int nb = (int) m_arrayPanels.size();
+    auto nb = (int) m_arrayPanels.size();
     return nb;
 }
 
@@ -157,8 +157,8 @@ void asPanelsManagerForecasts::SetForecastLedOff(int num)
 
 void asPanelsManagerForecasts::SetForecastsAllLedsOff()
 {
-    for (unsigned int i = 0; i < m_arrayPanels.size(); i++) {
-        awxLed *led = m_arrayPanels[i]->GetLed();
+    for (auto &panel : m_arrayPanels) {
+        awxLed *led = panel->GetLed();
         if (!led)
             return;
 

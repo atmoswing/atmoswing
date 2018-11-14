@@ -30,13 +30,11 @@
 
 #include "asIncludes.h"
 
-bool asRemoveDir(const wxString &Path);
-
 class asFile
         : public wxObject
 {
 public:
-    enum ListFileMode
+    enum FileMode
     {
         ReadOnly, // file exists, open read-only
         Write,    // file exists, open for writing
@@ -45,11 +43,18 @@ public:
         Append    // add content to an already existing file
     };
 
-    asFile(const wxString &FileName, const ListFileMode &FileMode = asFile::ReadOnly);
+    enum FileType
+    {
+        Netcdf,
+        Grib2,
+        Ascii
+    };
 
-    virtual ~asFile();
+    explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);
 
-    static bool Exists(const wxString &FilePath);
+    ~asFile() override;
+
+    static bool Exists(const wxString &filePath);
 
     bool Find();
 
@@ -65,8 +70,8 @@ public:
     }
 
 protected:
-    ListFileMode m_fileMode;
     wxFileName m_fileName;
+    FileMode m_fileMode;
     bool m_exists;
     bool m_opened;
 

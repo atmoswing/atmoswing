@@ -27,35 +27,34 @@
 
 #include <wx/filename.h>
 #include "asPredictorArch.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
 {
-    double Xmin = 10;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 10;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -116,27 +115,26 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
 {
-    double Xmin = -3;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = -3;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -182,27 +180,26 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
 {
-    double Xmin = 0;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 0;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -244,27 +241,26 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
 {
-    double Xmin = 360;
-    double Xwidth = 5;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = 360;
+    double xWidth = 5;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -306,27 +302,26 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
 
 TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderRight)
 {
-    double Xmin = -3;
-    double Xwidth = 3;
-    double Ymin = 35;
-    double Ywidth = 2;
+    double xMin = -3;
+    double xWidth = 3;
+    double yMin = 35;
+    double yWidth = 2;
     double step = 0.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1987, 9, 9, 00, 00);
     double end = asTime::GetMJD(1987, 9, 10, 18, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)

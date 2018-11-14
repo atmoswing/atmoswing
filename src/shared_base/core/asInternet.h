@@ -34,11 +34,12 @@
 
 
 class asInternet
+        : public wxObject
 {
 public:
-    asInternet();
+    asInternet() = default;
 
-    virtual ~asInternet();
+    virtual ~asInternet() = default;
 
     static void Init();
 

@@ -32,25 +32,22 @@
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNcepReanalysis1Subset
         : public asPredictorArch
 {
 public:
-    asPredictorArchNcepReanalysis1Subset(const wxString &dataId);
+    explicit asPredictorArchNcepReanalysis1Subset(const wxString &dataId);
 
-    virtual ~asPredictorArchNcepReanalysis1Subset();
+    ~asPredictorArchNcepReanalysis1Subset() override = default;
 
-    virtual bool Init();
+    bool Init() override;
 
 protected:
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData);
-
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 

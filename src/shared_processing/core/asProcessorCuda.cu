@@ -40,16 +40,19 @@
 #include <device_launch_parameters.h>
 
 
-__global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
-                                            const int *indicesArch, const int *indexStart,
-                                            const cudaPredictorsDataPropStruct dataProp, const int n_targ,
-                                            const int n_cand, const int offset)
+__global__
+void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
+                                 const int *indicesArch, const int *indexStart,
+                                 const cudaPredictorsDataPropStruct dataProp, const int n_targ,
+                                 const int n_cand, const int offset)
 {
+
+#if USE_STREAMS
     int i_cand = offset + threadIdx.x + blockIdx.x * blockDim.x;
     if (i_cand < n_cand) {
         // Find the target index
-        float meanNbCand = float(n_cand) / float(n_targ);
-        int i_targ = floor(float(i_cand) / meanNbCand);
+        float meanNbCand = static_cast<float>(n_cand) / static_cast<float>(n_targ);
+        int i_targ = floorf(static_cast<float>(i_cand) / meanNbCand);
 
         if (i_targ < 0) {
             i_targ = 0;
@@ -71,9 +74,9 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
                 }
             }
         }
-        if (i_cand > indexStart[i_targ + 1]) // safe
+        if (i_cand >= indexStart[i_targ + 1]) // safe
         {
-            while (i_cand > indexStart[i_targ + 1]) {
+            while (i_cand >= indexStart[i_targ + 1]) {
                 i_targ++;
 
                 if (i_targ >= n_targ) {
@@ -95,8 +98,8 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
             int archIndex = archIndexBase + dataProp.indexStart[iPtor];
 
             for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
-                dividend += abs(data[targIndex] - data[archIndex]);
-                divisor += max(abs(data[targIndex]), abs(data[archIndex]));
+                dividend += fabsf(data[targIndex] - data[archIndex]);
+                divisor += fmaxf(fabsf(data[targIndex]), fabsf(data[archIndex]));
 
                 targIndex++;
                 archIndex++;
@@ -107,17 +110,262 @@ __global__ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, 
 
         criteria[i_cand] = criterion;
     }
+
+#else
+
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+
+    for (int i_cand = index; i_cand < n_cand; i_cand += stride) {
+
+        // Find the target index
+        float meanNbCand = static_cast<float>(n_cand) / static_cast<float>(n_targ);
+        int i_targ = (int)floorf(static_cast<float>(i_cand) / meanNbCand);
+
+        if (i_targ < 0) {
+            i_targ = 0;
+        }
+
+        if (i_targ >= n_targ) {
+            i_targ = n_targ - 1;
+        }
+
+        // Check and correct
+        if (i_cand < indexStart[i_targ]) {
+            while (i_cand < indexStart[i_targ]) {
+                i_targ--;
+                if (i_targ < 0) {
+                    printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
+                    criteria[i_cand] = 9999;
+                    return;
+                }
+            }
+        }
+        if (i_cand >= indexStart[i_targ + 1]) // safe
+        {
+            while (i_cand >= indexStart[i_targ + 1]) {
+                i_targ++;
+                if (i_targ >= n_targ) {
+                    printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
+                    criteria[i_cand] = 9999;
+                    return;
+                }
+            }
+        }
+
+        float criterion = 0;
+        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
+        int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
+
+        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
+            float dividend = 0, divisor = 0;
+            int targIndex = targIndexBase + dataProp.indexStart[iPtor];
+            int archIndex = archIndexBase + dataProp.indexStart[iPtor];
+
+            for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
+                dividend += fabsf(data[targIndex] - data[archIndex]);
+                divisor += fmaxf(fabsf(data[targIndex]), fabsf(data[archIndex]));
+
+                targIndex++;
+                archIndex++;
+            }
+
+            criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
+        }
+
+        criteria[i_cand] = criterion;
+    }
+
+#endif
 }
 
 
-bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *> > &data, std::vector<int> &indicesTarg,
-                                      std::vector<std::vector<int> > &indicesArch,
-                                      std::vector<std::vector<float> > &resultingCriteria, std::vector<int> &lengths,
-                                      std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights)
+bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
+                                      std::vector<int> &indicesTarg,
+                                      std::vector <std::vector<int>> &indicesArch,
+                                      std::vector <std::vector<float>> &resultingCriteria,
+                                      std::vector<int> &nbArchCandidates,
+                                      std::vector<int> &colsNb, std::vector<int> &rowsNb,
+                                      std::vector<float> &weights)
 {
     // Error var
     cudaError_t cudaStatus;
     bool hasError = false;
+
+    if (!SelectBestDevice()) {
+        return false;
+    }
+
+    // Get the data structure
+    cudaPredictorsDataPropStruct struc;
+    struc.ptorsNb = (int) weights.size();
+    if (struc.ptorsNb > STRUCT_MAX_SIZE) {
+        printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
+               STRUCT_MAX_SIZE);
+        return false;
+    }
+
+    struc.totPtsNb = 0;
+
+    for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
+        struc.rowsNb[iPtor] = rowsNb[iPtor];
+        struc.colsNb[iPtor] = colsNb[iPtor];
+        struc.weights[iPtor] = weights[iPtor];
+        struc.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
+        struc.indexStart[iPtor] = struc.totPtsNb;
+        struc.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
+    }
+
+    // Sizes
+    int nbArchCandidatesSum = 0;
+    std::vector<int> indexStart(nbArchCandidates.size() + 1);
+    for (int i = 0; i < nbArchCandidates.size(); i++) {
+        indexStart[i] = nbArchCandidatesSum;
+        nbArchCandidatesSum += nbArchCandidates[i];
+    }
+    indexStart[nbArchCandidates.size()] = nbArchCandidatesSum;
+
+    // Blocks of threads
+    int n_targ = nbArchCandidates.size();
+    int n_cand = nbArchCandidatesSum;
+    // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
+    const int threadsPerBlock = 512; // no need to change
+    int blocksNb = (n_cand + threadsPerBlock - 1) / threadsPerBlock;
+
+
+#if USE_STREAMS
+    // Create streams
+    const int nStreams = 4; // no need to change
+    // rowsNbPerStream must be dividable by nStreams and threadsPerBlock
+    int rowsNbPerStream = ceil(static_cast<float>(nbArchCandidatesSum) / static_cast<float>(nStreams * threadsPerBlock)) * threadsPerBlock;
+    // Streams
+    cudaStream_t stream[nStreams];
+    for (int i = 0; i < nStreams; i++) {
+        cudaStreamCreate(&stream[i]);
+    }
+#endif
+
+    // Data pointers
+    float *arrData, *arrCriteria;
+    int *arrIndicesTarg, *arrIndicesArch, *arrIndexStart;
+
+    // Alloc space for data
+    cudaStatus = cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMallocManaged failed for the data!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+    cudaStatus = cudaMallocManaged(&arrCriteria, nbArchCandidatesSum * sizeof(float));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMallocManaged failed for arrCriteria!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+    cudaStatus = cudaMallocManaged(&arrIndicesTarg, nbArchCandidates.size() * sizeof(int));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMallocManaged failed for arrIndicesTarg!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+    cudaStatus = cudaMallocManaged(&arrIndicesArch, nbArchCandidatesSum * sizeof(int));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMallocManaged failed for arrIndicesArch!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+    cudaStatus = cudaMallocManaged(&arrIndexStart, (nbArchCandidates.size() + 1) * sizeof(int));
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "cudaMallocManaged failed for arrIndexStart!\n");
+        hasError = true;
+        goto cleanup;
+    }
+
+    // Copy data in the new arrays
+    for (int iDay = 0; iDay < data.size(); iDay++) {
+        for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
+            for (int iPt = 0; iPt < struc.ptsNb[iPtor]; iPt++) {
+                arrData[iDay * struc.totPtsNb + struc.indexStart[iPtor] + iPt] = data[iDay][iPtor][iPt];
+            }
+        }
+    }
+
+    for (int i = 0; i < nbArchCandidates.size(); i++) {
+        for (int j = 0; j < nbArchCandidates[i]; j++) {
+            arrIndicesArch[indexStart[i] + j] = indicesArch[i][j];
+        }
+    }
+
+    for (int i = 0; i < indicesTarg.size(); i++) {
+        arrIndicesTarg[i] = indicesTarg[i];
+    }
+
+    for (int i = 0; i < indexStart.size(); i++) {
+        arrIndexStart[i] = indexStart[i];
+    }
+
+    // Launch kernel on GPU
+#if USE_STREAMS
+    for (int i = 0; i < nStreams; i++) {
+        int offset = i * rowsNbPerStream;
+        blocksNb = rowsNbPerStream / threadsPerBlock;
+        gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, offset);
+    }
+#else
+    gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, 0);
+#endif
+
+    // Check for any errors launching the kernel
+    cudaStatus = cudaGetLastError();
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "Kernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
+        hasError = true;
+        goto cleanup;
+    }
+
+    cudaStatus = cudaDeviceSynchronize();
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "Device synchronization failed: %s\n", cudaGetErrorString(cudaStatus));
+        hasError = true;
+        goto cleanup;
+    }
+
+    // Set the criteria values in the vector container
+    for (int i = 0; i < nbArchCandidates.size(); i++) {
+        std::vector<float> tmpCrit(nbArchCandidates[i]);
+
+        for (int j = 0; j < nbArchCandidates[i]; j++) {
+            tmpCrit[j] = arrCriteria[indexStart[i] + j];
+        }
+        resultingCriteria[i] = tmpCrit;
+    }
+
+    // Cleanup
+    cleanup:
+
+#if USE_STREAMS
+    for (int i = 0; i< nStreams; i++) {
+        cudaStreamDestroy(stream[i]);
+    }
+#endif
+
+    cudaFree(arrData);
+    cudaFree(arrCriteria);
+    cudaFree(arrIndicesTarg);
+    cudaFree(arrIndicesArch);
+    cudaFree(arrIndexStart);
+
+    return !hasError;
+}
+
+
+bool asProcessorCuda::SelectBestDevice()
+{
+    cudaError_t cudaStatus;
 
     // Count the devices
     int devicesCount = 0;
@@ -159,277 +407,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *> > &data, 
         fprintf(stderr, "cudaSetDevice failed!\n");
         return false;
     }
-
-    // Get the data structure
-    cudaPredictorsDataPropStruct dataProp;
-    dataProp.ptorsNb = (int) weights.size();
-    if (dataProp.ptorsNb > STRUCT_MAX_SIZE) {
-        printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
-               STRUCT_MAX_SIZE);
-        return false;
-    }
-
-    dataProp.totPtsNb = 0;
-
-    for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-        dataProp.rowsNb[iPtor] = rowsNb[iPtor];
-        dataProp.colsNb[iPtor] = colsNb[iPtor];
-        dataProp.weights[iPtor] = weights[iPtor];
-        dataProp.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
-        dataProp.indexStart[iPtor] = dataProp.totPtsNb;
-        dataProp.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
-    }
-
-    // Sizes
-    int lengthsSum = 0;
-    std::vector<int> indexStart(lengths.size() + 1);
-    for (int i_len = 0; i_len < lengths.size(); i_len++) {
-        indexStart[i_len] = lengthsSum;
-        lengthsSum += lengths[i_len];
-    }
-    indexStart[lengths.size()] = lengthsSum;
-    int sizeData = dataProp.totPtsNb * data.size() * sizeof(float);
-    int sizeCriteria = lengthsSum * sizeof(float);
-    int sizeIndicesTarg = lengths.size() * sizeof(int);
-    int sizeIndicesArch = lengthsSum * sizeof(int);
-    int sizeIndexStart = (lengths.size() + 1) * sizeof(int); // + 1 relative to lengths
-
-    // Create streams
-    const int nStreams = 4; // no need to change
-    //The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
-    const int threadsPerBlock = 1024; // no need to change
-    // rowsNbPerStream must be dividable by nStreams and threadsPerBlock
-    int rowsNbPerStream = ceil(float(lengthsSum) / float(nStreams * threadsPerBlock)) * threadsPerBlock;
-    // Streams
-    cudaStream_t stream[nStreams];
-    for (int i = 0; i < nStreams; i++) {
-        cudaStreamCreate(&stream[i]);
-    }
-
-    // Host and device pointers
-    float *arrCriteria, *arrData;
-    int *arrIndicesTarg = &indicesTarg[0];
-    int *arrIndicesArch;
-    int *arrIndexStart = &indexStart[0];
-    float *devData, *devCriteria;
-    int *devIndicesTarg, *devIndicesArch, *devIndexStart;
-
-    // Alloc space for host copies of data
-
-#if USE_PINNED_MEM
-
-    // See http://devblogs.nvidia.com/parallelforall/how-optimize-data-transfers-cuda-cc/
-
-    cudaStatus = cudaHostAlloc((void **) &arrData, data.size() * dataProp.totPtsNb * sizeof(float),
-                               cudaHostAllocDefault);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocHost failed for the data!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaHostAlloc((void **) &arrIndicesArch, lengthsSum * sizeof(int), cudaHostAllocDefault);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocHost failed for arrIndicesArch!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaHostAlloc((void **) &arrCriteria, lengthsSum * sizeof(float), cudaHostAllocDefault);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocHost failed for arrCriteria!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-#else // USE_PINNED_MEM
-
-    arrData = new float[data.size() * dataProp.totPtsNb];
-    arrIndicesArch = new int[lengthsSum];
-    arrCriteria = new float[lengthsSum];
-
-#endif // USE_PINNED_MEM
-
-    // Copy data in the new arrays
-    for (int i_day = 0; i_day < data.size(); i_day++) {
-        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-            for (int i_pt = 0; i_pt < dataProp.ptsNb[iPtor]; i_pt++) {
-                arrData[i_day * dataProp.totPtsNb + dataProp.indexStart[iPtor] + i_pt] = data[i_day][iPtor][i_pt];
-            }
-            //std::copy(vvpArchData[i_day][iPtor], vvpArchData[i_day][iPtor] + dataProp.indexEnd[iPtor], arrArchData + i_day*dataProp.totPtsNb + dataProp.indexStart[iPtor]); -> fails
-        }
-    }
-
-    for (int i_len = 0; i_len < lengths.size(); i_len++) {
-        for (int j_len = 0; j_len < lengths[i_len]; j_len++) {
-            arrIndicesArch[indexStart[i_len] + j_len] = indicesArch[i_len][j_len];
-        }
-    }
-
-    // Alloc space for device copies of data
-    cudaStatus = cudaMalloc(&devData, sizeData);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed for the data!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMalloc(&devCriteria, sizeCriteria);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed for the criteria!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMalloc(&devIndicesTarg, sizeIndicesTarg);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed for the target indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMalloc(&devIndicesArch, sizeIndicesArch);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed for the archive indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMalloc(&devIndexStart, sizeIndexStart);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMalloc failed for the archive indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    /*
-     * Asynchronous memcpy and processing. See:
-     * https://github.com/parallel-forall/code-samples/blob/master/series/cuda-cpp/overlap-data-transfers/async.cu
-     * http://devblogs.nvidia.com/parallelforall/how-overlap-data-transfers-cuda-cc/
-     */
-
-    // For the data, create its own stream
-    cudaStatus = cudaMemcpy(devData, arrData, sizeData, cudaMemcpyHostToDevice);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed for the data!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    // No async for the indices as they don't use pinned memory
-    cudaStatus = cudaMemcpy(devIndicesTarg, arrIndicesTarg, sizeIndicesTarg, cudaMemcpyHostToDevice);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed for the target indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMemcpy(devIndexStart, arrIndexStart, sizeIndexStart, cudaMemcpyHostToDevice);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMemcpy failed for the start indices!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    // Make sure the data are copied
-    //	cudaDeviceSynchronize();
-
-    // Copy archive indices to device
-    for (int i = 0; i < nStreams; i++) {
-        int offset = i * rowsNbPerStream;
-        int length = 0;
-        if (i < nStreams - 1) {
-            length = rowsNbPerStream;
-        } else {
-            length = lengthsSum - offset; // Last slice
-        }
-        int streamBytes = length * sizeof(int);
-
-        cudaStatus = cudaMemcpyAsync(&devIndicesArch[offset], &arrIndicesArch[offset], streamBytes,
-                                     cudaMemcpyHostToDevice, stream[i]);
-        if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaMemcpyAsync failed for the archive data (stream %d/%d)!\n", i, nStreams);
-            hasError = true;
-            goto cleanup;
-        }
-    }
-
-    // Launch kernel on GPU
-    for (int i = 0; i < nStreams; i++) {
-        int offset = i * rowsNbPerStream;
-        int blocksNb = rowsNbPerStream / threadsPerBlock;
-        int n_targ = lengths.size();
-        int n_cand = lengthsSum;
-        gpuPredictorCriteriaS1grads << < blocksNb, threadsPerBlock, 0, stream[i] >> >
-                                                                       (devCriteria, devData, devIndicesTarg, devIndicesArch, devIndexStart, dataProp, n_targ, n_cand, offset);
-    }
-
-    // Check for any errors launching the kernel
-    cudaStatus = cudaGetLastError();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "Kernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-        hasError = true;
-        goto cleanup;
-    }
-
-    // Copy results back to host
-    for (int i = 0; i < nStreams; i++) {
-        int offset = i * rowsNbPerStream;
-        int length = 0;
-        if (i < nStreams - 1) {
-            length = rowsNbPerStream;
-        } else {
-            length = lengthsSum - offset; // Last slice
-        }
-        int streamBytes = length * sizeof(float);
-
-        cudaStatus = cudaMemcpyAsync(&arrCriteria[offset], &devCriteria[offset], streamBytes, cudaMemcpyDeviceToHost,
-                                     stream[i]);
-        if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaMemcpyAsync failed for the results (stream %d/%d)!\n", i, nStreams);
-            fprintf(stderr, "CUDA error: %s\n", cudaGetErrorString(cudaStatus));
-            hasError = true;
-            goto cleanup;
-        }
-    }
-
-    cudaDeviceSynchronize();
-
-    // Set the criteria values in the vector container
-    for (int i_len = 0; i_len < lengths.size(); i_len++) {
-        std::vector<float> tmpCrit(lengths[i_len]);
-
-        for (int j_len = 0; j_len < lengths[i_len]; j_len++) {
-            tmpCrit[j_len] = arrCriteria[indexStart[i_len] + j_len];
-        }
-        resultingCriteria[i_len] = tmpCrit;
-    }
-
-    // Cleanup
-    cleanup:
-
-    for (int i = 0; i < nStreams; i++) {
-        cudaStreamDestroy(stream[i]);
-    }
-
-    cudaFree(devData);
-    cudaFree(devCriteria);
-    cudaFree(devIndicesTarg);
-    cudaFree(devIndicesArch);
-    cudaFree(devIndexStart);
-
-#if USE_PINNED_MEM
-    cudaFreeHost(arrData);
-    cudaFreeHost(arrIndicesArch);
-    cudaFreeHost(arrCriteria);
-#else
-    delete[] arrData;
-    delete[] arrIndicesArch;
-    delete[] arrCriteria;
-#endif // USE_PINNED_MEM
-
-    if (hasError)
-        return false;
 
     return true;
 }

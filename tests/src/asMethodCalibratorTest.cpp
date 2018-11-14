@@ -42,7 +42,8 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -83,31 +84,31 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
     }
 
     // Extract data
-    a1f resultsTargetDates(anaDates.GetTargetDates());
-    a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
-    a2f resultsCriteria(anaDates.GetAnalogsCriteria());
-    a2f resultsDates(anaDates.GetAnalogsDates());
-    a2f resultsValues(anaValues.GetAnalogsValues()[0]);
-    a1f resultsScoreCRPS(anaScoresCRPS.GetScores());
-    a1f resultsScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
-    a1f resultsScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
+    a1f resTargetDates(anaDates.GetTargetDates());
+    a1f resTargetValues(anaValues.GetTargetValues()[0]);
+    a2f resCriteria(anaDates.GetAnalogsCriteria());
+    a2f resDates(anaDates.GetAnalogsDates());
+    a2f resValues(anaValues.GetAnalogsValues()[0]);
+    a1f resScoreCRPS(anaScoresCRPS.GetScores());
+    a1f resScoreCRPSsharpness(anaScoresCRPSsharpness.GetScores());
+    a1f resScoreCRPSaccuracy(anaScoresCRPSaccuracy.GetScores());
     float scoreFinal = anaScoreFinal.GetScore();
 
     // Open a result file from Grenoble
@@ -174,33 +175,31 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resTargetDates[0], &resTargetDates[resTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
-        EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
+        EXPECT_FLOAT_EQ(fileTargetValue, resTargetValues(rowTargetDate));
 
         for (int iAnalog = 0; iAnalog < nanalogs; iAnalog++) {
             if (fileAnalogsDates[iAnalog] > 0) // If we have the data
             {
-                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resultsDates(rowTargetDate, iAnalog));
-                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resultsValues(rowTargetDate, iAnalog));
-                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resultsCriteria(rowTargetDate, iAnalog), 0.1);
+                EXPECT_FLOAT_EQ(fileAnalogsDates[iAnalog], resDates(rowTargetDate, iAnalog));
+                EXPECT_FLOAT_EQ(fileAnalogsValues[iAnalog], resValues(rowTargetDate, iAnalog));
+                EXPECT_NEAR(fileAnalogsCriteria[iAnalog], resCriteria(rowTargetDate, iAnalog), 0.1);
             }
         }
 
         // The CRPS tolerence is huge, as it is not processed with the same P10 !
         if (!shortVersion) {
-            EXPECT_NEAR(fileScoreCRPS, resultsScoreCRPS(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileScoreCRPSaccuracy, resultsScoreCRPSaccuracy(rowTargetDate), 0.1);
-            EXPECT_NEAR(fileScoreCRPSsharpness, resultsScoreCRPSsharpness(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPS, resScoreCRPS(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSaccuracy, resScoreCRPSaccuracy(rowTargetDate), 0.1);
+            EXPECT_NEAR(fileScoreCRPSsharpness, resScoreCRPSsharpness(rowTargetDate), 0.1);
         }
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
-                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asMean(&resScoreCRPS[0], &resScoreCRPS[resScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -210,13 +209,70 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
 }
 
 #ifdef USE_CUDA
-TEST(Ref1ProcessingMethodCuda)
+TEST(MethodCalibrator, Ref1Cuda)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int)asCUDA);
 
-    Ref1("parameters_calibration_R1_full.xml", false);
+    wxString paramsFile = "parameters_calibration_R1_shorter.xml";
+
+    // Get parameters
+    wxString paramsFilePath = wxFileName::GetCwd();
+    paramsFilePath.Append("/files/");
+    paramsFilePath.Append(paramsFile);
+    asParametersCalibration params;
+    ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibratorCPU, calibratorGPU;
+    asResultsDates anaDatesCPU, anaDatesGPU;
+
+    try {
+        int step = 0;
+        bool containsNaNs = false;
+        wxString predictorFilePath = wxFileName::GetCwd();
+        predictorFilePath.Append("/files/data-ncep-r1/others/");
+        calibratorCPU.SetPredictorDataDir(predictorFilePath);
+        calibratorGPU.SetPredictorDataDir(predictorFilePath);
+
+        // CPU
+        wxStopWatch sw1;
+        pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+        ASSERT_TRUE(calibratorCPU.GetAnalogsDates(anaDatesCPU, &params, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        printf(_("        ---> CPU (multithreaded) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
+
+        // GPU
+        wxStopWatch sw2;
+        pConfig->Write("/Processing/Method", (int) asCUDA);
+        ASSERT_TRUE(calibratorGPU.GetAnalogsDates(anaDatesGPU, &params, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        printf(_("        ---> GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
+
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
+        return;
+    }
+
+    // Extract data
+    a1f resultsTargetDatesCPU(anaDatesCPU.GetTargetDates());
+    a2f resultsCriteriaCPU(anaDatesCPU.GetAnalogsCriteria());
+    a2f resultsAnalogDatesCPU(anaDatesCPU.GetAnalogsDates());
+    a1f resultsTargetDatesGPU(anaDatesGPU.GetTargetDates());
+    a2f resultsCriteriaGPU(anaDatesGPU.GetAnalogsCriteria());
+    a2f resultsAnalogDatesGPU(anaDatesGPU.GetAnalogsDates());
+
+    // Check results
+    for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
+        EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
+        for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
+            EXPECT_FLOAT_EQ(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j));
+            if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.00001) {
+                EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
+            }
+        }
+    }
+
 }
 #endif
 
@@ -266,7 +322,8 @@ TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 void Ref2(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -309,20 +366,20 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         int step = 0;
         bool containsNaNs = false;
 
-        EXPECT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        EXPECT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         step++;
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaSubDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -408,9 +465,8 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         }
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -438,8 +494,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     }
 
     if (!shortVersion) {
-        EXPECT_FLOAT_EQ(asTools::Mean(&resultsScoreCRPS[0],
-                                      &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
+        EXPECT_FLOAT_EQ(asMean(&resultsScoreCRPS[0], &resultsScoreCRPS[resultsScoreCRPS.size() - 1]), scoreFinal);
     }
 
     file.Close();
@@ -515,9 +570,9 @@ TEST(MethodCalibrator, PreloadingSimple)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -570,9 +625,9 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, paramsPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -607,7 +662,8 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 void Ref1Preloading()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -651,17 +707,17 @@ void Ref1Preloading()
         calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -728,9 +784,8 @@ void Ref1Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -764,7 +819,8 @@ TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
 void Ref1PreloadingSubset()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -807,17 +863,17 @@ void Ref1PreloadingSubset()
         calibrator.SetPredictorDataDir(predictorFilePath);
         wxASSERT(predictand);
         calibrator.SetPredictandDB(predictand);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -921,13 +977,13 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, paramsNoPreprocNoPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesNoPreprocNoPreload, &paramsNoPreprocNoPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, paramsNoPreprocPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNoPreprocPreload, &paramsNoPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator3.GetAnalogsDates(anaDatesPreprocNoPreload, paramsPreprocNoPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator3.GetAnalogsDates(anaDatesPreprocNoPreload, &paramsPreprocNoPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator4.GetAnalogsDates(anaDatesPreprocPreload, paramsPreprocPreload, step, containsNaNs));
+        ASSERT_TRUE(calibrator4.GetAnalogsDates(anaDatesPreprocPreload, &paramsPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -972,7 +1028,8 @@ TEST(MethodCalibrator, SmallerSpatialArea)
 void Ref2Preloading()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1013,20 +1070,20 @@ void Ref2Preloading()
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         step++;
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaSubDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -1093,9 +1150,8 @@ void Ref2Preloading()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1135,7 +1191,8 @@ TEST(MethodCalibrator, Ref2PreloadingStandard)
 void Ref2SavingIntermediateResults()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1176,45 +1233,45 @@ void Ref2SavingIntermediateResults()
         bool containsNaNs = false;
 
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates1, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates1, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         anaDates1.Save();
         ASSERT_TRUE(asFile::Exists(anaDates1.GetFilePath()));
         // Reload
-        anaDates2.Init(params);
+        anaDates2.Init(&params);
         ASSERT_TRUE(anaDates2.Load());
-        ASSERT_TRUE(anaDates2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaDates2.GetTargetDatesLength() > 0);
         step++;
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates1, params, anaDates2, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates1, &params, anaDates2, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         anaSubDates1.Save();
         ASSERT_TRUE(asFile::Exists(anaSubDates1.GetFilePath()));
         // Reload
-        anaSubDates2.Init(params);
+        anaSubDates2.Init(&params);
         anaSubDates2.SetCurrentStep(1);
         ASSERT_TRUE(anaSubDates2.Load());
-        ASSERT_TRUE(anaSubDates2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaSubDates2.GetTargetDatesLength() > 0);
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues1, params, anaSubDates2, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues1, &params, anaSubDates2, step));
         anaValues1.Save();
         ASSERT_TRUE(asFile::Exists(anaValues1.GetFilePath()));
         // Reload
-        anaValues2.Init(params);
+        anaValues2.Init(&params);
         anaValues2.SetCurrentStep(1);
         ASSERT_TRUE(anaValues2.Load());
-        ASSERT_TRUE(anaValues2.GetTargetDatesLength()>0);
+        ASSERT_TRUE(anaValues2.GetTargetDatesLength() > 0);
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS1, params, anaValues2, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS1, &params, anaValues2, step));
         anaScoresCRPS1.Save();
         ASSERT_TRUE(asFile::Exists(anaScoresCRPS1.GetFilePath()));
         // Reload
-        anaScoresCRPS2.Init(params);
+        anaScoresCRPS2.Init(&params);
         anaScoresCRPS2.SetCurrentStep(1);
         ASSERT_TRUE(anaScoresCRPS2.Load());
-        ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size()>0);
+        ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size() > 0);
         // Create
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS2, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS2, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
@@ -1279,9 +1336,8 @@ void Ref2SavingIntermediateResults()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1319,7 +1375,8 @@ TEST(MethodCalibrator, Ref2SavingIntermediateResults)
 void Ref2MergeByHalfAndMultiply()
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);
+    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
+                                                                          asPredictand::Daily, asPredictand::Station);
 
     wxString catalogPredictandFilePath = wxFileName::GetCwd();
     catalogPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -1360,26 +1417,26 @@ void Ref2MergeByHalfAndMultiply()
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         step++;
-        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, params, anaSubDates, step));
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, params, anaValues, step));
-        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, params, anaScoresCRPS, step));
+        ASSERT_TRUE(calibrator.GetAnalogsValues(anaValues, &params, anaSubDates, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPS, &params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS, step));
 
         // Sharpness and Accuracy
         params.SetScoreName("CRPSsharpnessEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
-        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, params, anaValues, step));
+        ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
         return;
     }
 
-    // Extract data
+    // Extract data&
     a1f resultsTargetDates(anaSubDates.GetTargetDates());
     a1f resultsTargetValues(anaValues.GetTargetValues()[0]);
     a2f resultsCriteria(anaSubDates.GetAnalogsCriteria());
@@ -1440,9 +1497,8 @@ void Ref2MergeByHalfAndMultiply()
         file.SkipLines(3);
 
         // Find target date in the array
-        int rowTargetDate = asTools::SortedArraySearchClosest(&resultsTargetDates[0],
-                                                              &resultsTargetDates[resultsTargetDates.rows() - 1],
-                                                              fileTargetDate);
+        int rowTargetDate = asFindClosest(&resultsTargetDates[0], &resultsTargetDates[resultsTargetDates.rows() - 1],
+                                          fileTargetDate);
 
         // Compare the file and the processing
         EXPECT_FLOAT_EQ(fileTargetValue, resultsTargetValues(rowTargetDate));
@@ -1504,11 +1560,11 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     try {
         int step = 0;
         bool containsNaNs = false;
-        EXPECT_TRUE(calibrator.GetAnalogsDates(anaDates, params, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
         EXPECT_TRUE(anaDates.GetAnalogsDatesLength() > 0);
         EXPECT_FALSE(containsNaNs);
         step++;
-        EXPECT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, params, anaDates, step, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -1522,23 +1578,23 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     EXPECT_TRUE(params.GetPredictorTimeHours(0, 1) > 6);
 
     // Check pointer sharing
-    EXPECT_FALSE(calibrator.IsPointerCopy(0, 0, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 1, 0));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 1, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 0));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 2));
-    EXPECT_TRUE(calibrator.IsPointerCopy(0, 2, 3));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 0));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 2));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 0, 3));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 1, 0));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 1, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 0));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 1));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 2));
-    EXPECT_TRUE(calibrator.IsPointerCopy(1, 2, 3));
+    EXPECT_FALSE(calibrator.IsArchiveDataPointerCopy(0, 0, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 1, 0));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 1, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 2, 0));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 2, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 2, 2));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(0, 2, 3));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 0, 0));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 0, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 0, 2));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 0, 3));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 1, 0));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 1, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 0));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 1));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 2));
+    EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 3));
 
 }
 
@@ -1570,9 +1626,9 @@ TEST(MethodCalibrator, NormalizedS1Criteria)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, paramsNorm, step, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, &paramsNorm, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());
@@ -1632,9 +1688,9 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
     try {
         int step = 0;
         bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, paramsStd, step, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, paramsNorm, step, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, &paramsNorm, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());

@@ -29,7 +29,7 @@
 #include "wx/filename.h"
 #include "asPredictorArch.h"
 #include "asPreprocessor.h"
-#include "asGeoAreaCompositeRegularGrid.h"
+#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -39,43 +39,37 @@ TEST(Preprocessor, Gradients)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
-
-    EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
-    EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
-    EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
-    EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
-    EXPECT_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
-    EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
-    EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
+    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area.GetYaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(2.5, area.GetXstep());
+    EXPECT_DOUBLE_EQ(2.5, area.GetYstep());
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -206,43 +200,37 @@ TEST(Preprocessor, GradientsMultithreading)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
-    double Xmin = 10;
-    double Xwidth = 10;
-    double Ymin = 35;
-    double Ywidth = 5;
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
     double step = 2.5;
     float level = 1000;
-    asGeoAreaCompositeRegularGrid geoarea(Xmin, Xwidth, step, Ymin, Ywidth, step, level);
-
-    EXPECT_DOUBLE_EQ(10, geoarea.GetXmin());
-    EXPECT_DOUBLE_EQ(20, geoarea.GetXmax());
-    EXPECT_DOUBLE_EQ(35, geoarea.GetYmin());
-    EXPECT_DOUBLE_EQ(40, geoarea.GetYmax());
-    EXPECT_EQ(5, geoarea.GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea.GetYaxisCompositePtsnb(0));
-    EXPECT_DOUBLE_EQ(2.5, geoarea.GetXstep());
-    EXPECT_DOUBLE_EQ(2.5, geoarea.GetYstep());
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
 
     double start = asTime::GetMJD(1960, 1, 1, 00, 00);
     double end = asTime::GetMJD(1960, 1, 11, 00, 00);
-    double timestephours = 6;
-    asTimeArray timearray(start, end, timestephours, asTimeArray::Simple);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt",
-                                                                            predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor->Load(&geoarea, timearray));
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
+    EXPECT_EQ(5, area.GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area.GetYaxisCompositePtsnb(0));
+    EXPECT_DOUBLE_EQ(2.5, area.GetXstep());
+    EXPECT_DOUBLE_EQ(2.5, area.GetYstep());
     EXPECT_EQ(5, predictor->GetLonPtsnb());
     EXPECT_EQ(3, predictor->GetLatPtsnb());
     vva2f arrayData = predictor->GetData();
     EXPECT_FLOAT_EQ(176.0, arrayData[0][0](0, 0));
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
     wxString method = "Gradients";
@@ -352,14 +340,7 @@ TEST(Preprocessor, Addition)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
-
-    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
-    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
-    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
-    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
-    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -375,14 +356,20 @@ TEST(Preprocessor, Addition)
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
-    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
-    ASSERT_TRUE(predictor3->Load(geoarea, timearray3));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
+    ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
 
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
@@ -455,7 +442,7 @@ TEST(Preprocessor, Addition)
     EXPECT_NEAR(820.7, adds[4][0](2, 4), 0.05);
 
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(addition);
     wxDELETE(predictor1);
     wxDELETE(predictor2);
@@ -467,14 +454,7 @@ TEST(Preprocessor, Average)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
-
-    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
-    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
-    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
-    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
-    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -490,14 +470,16 @@ TEST(Preprocessor, Average)
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
-    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
-    ASSERT_TRUE(predictor3->Load(geoarea, timearray3));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
+    ASSERT_TRUE(predictor3->Load(area, timearray3, 0));
 
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
     vdata.push_back(predictor3);
@@ -570,7 +552,7 @@ TEST(Preprocessor, Average)
     EXPECT_NEAR(273.6, avg[4][0](2, 4), 0.05);
 
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(average);
     wxDELETE(predictor1);
     wxDELETE(predictor2);
@@ -582,14 +564,7 @@ TEST(Preprocessor, Difference)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
-
-    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
-    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
-    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
-    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
-    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -602,13 +577,15 @@ TEST(Preprocessor, Difference)
     asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
-    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 
@@ -670,7 +647,7 @@ TEST(Preprocessor, Difference)
     EXPECT_NEAR(0.2, diffs[4][0](2, 4), 0.05);
 
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(difference);
     wxDELETE(predictor1);
     wxDELETE(predictor2);
@@ -681,14 +658,7 @@ TEST(Preprocessor, Multiplication)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance("GaussianT62", 0, 5, 0, 60, 3, 0);
-
-    EXPECT_FLOAT_EQ(0, geoarea->GetXmin());
-    EXPECT_FLOAT_EQ(7.5, geoarea->GetXmax());
-    EXPECT_FLOAT_EQ(60, geoarea->GetYmin());
-    EXPECT_NEAR(63.808, geoarea->GetYmax(), 0.001);
-    EXPECT_EQ(5, geoarea->GetXaxisCompositePtsnb(0));
-    EXPECT_EQ(3, geoarea->GetYaxisCompositePtsnb(0));
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(0, 5, 0, 60, 3, 0);
 
     asTimeArray timearray1(asTime::GetMJD(1960, 1, 1, 00), asTime::GetMJD(1960, 1, 5, 00), 24, asTimeArray::Simple);
     timearray1.Init();
@@ -701,13 +671,15 @@ TEST(Preprocessor, Multiplication)
     asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
     asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
 
-    ASSERT_TRUE(predictor1->Load(geoarea, timearray1));
-    ASSERT_TRUE(predictor2->Load(geoarea, timearray2));
+    ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
+    ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
 
+    EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
+    EXPECT_EQ(3, area->GetYaxisCompositePtsnb(0));
     EXPECT_EQ(5, predictor1->GetLonPtsnb());
     EXPECT_EQ(3, predictor1->GetLatPtsnb());
 
-    std::vector<asPredictorArch *> vdata;
+    std::vector<asPredictor *> vdata;
     vdata.push_back(predictor1);
     vdata.push_back(predictor2);
 
@@ -769,7 +741,7 @@ TEST(Preprocessor, Multiplication)
     EXPECT_NEAR(74966.43, multi[4][0](2, 4), 0.05);
 
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(multiplication);
     wxDELETE(predictor1);
     wxDELETE(predictor2);

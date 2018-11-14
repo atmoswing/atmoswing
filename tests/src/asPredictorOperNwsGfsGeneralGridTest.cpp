@@ -28,7 +28,7 @@
 
 #include <wx/filename.h>
 #include "asPredictorOper.h"
-#include "asGeoAreaCompositeGrid.h"
+#include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
@@ -36,22 +36,21 @@
 TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 10;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 10;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -59,12 +58,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -123,29 +118,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasySmallFile)
     EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
     EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 10;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 10;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -153,12 +147,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -217,29 +207,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadEasyLargeFile)
     EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
     EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -247,12 +236,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -275,29 +260,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -305,12 +289,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -333,29 +313,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 0;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 0;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -363,12 +342,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -391,29 +366,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftSmallFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 0;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 0;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -421,12 +395,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -449,29 +419,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftLargeFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 360;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 360;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -479,12 +448,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -507,29 +472,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720SmallFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 360;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 360;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -537,12 +501,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -565,29 +525,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderLeftOn720LargeFile)
     EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 355;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 355;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -595,12 +554,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -623,29 +578,28 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightSmallFile)
     EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = 355;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
+    double xMin = 355;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
     double step = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, step, Ymin, Yptsnb,
-                                                                          step, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -653,12 +607,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -681,30 +631,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadBorderRightLargeFile)
     EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
-    double Xstep = 2;
-    double Ystep = 1;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
+    double xStep = 2;
+    double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -712,12 +661,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -729,6 +674,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
+
     EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -740,30 +686,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 4;
-    double Xstep = 2;
-    double Ystep = 1;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 4;
+    double xStep = 2;
+    double yStep = 1;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -771,12 +716,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -788,6 +729,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     9451	9421	9379	9354	9350	9342
     9462	9437	9410	9385	9373	9360
     */
+
     EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -799,30 +741,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 3;
-    double Xstep = 2;
-    double Ystep = 3;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 3;
+    double xStep = 2;
+    double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -830,12 +771,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -846,6 +783,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
+
     EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -856,30 +794,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatSmallFile)
     EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -3;
-    int Xptsnb = 6;
-    double Ymin = 35;
-    int Yptsnb = 3;
-    double Xstep = 2;
-    double Ystep = 3;
+    double xMin = -3;
+    int xPtsNb = 6;
+    double yMin = 35;
+    int yPtsNb = 3;
+    double xStep = 2;
+    double yStep = 3;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -887,12 +824,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -903,6 +836,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     9422	9373	9300	9295	9308	9312
     9462	9437	9410	9385	9373	9360
     */
+
     EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -913,30 +847,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStepLonLatLargeFile)
     EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
     EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -5;
-    int Xptsnb = 5;
-    double Ymin = 35;
-    int Yptsnb = 3;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -5;
+    int xPtsNb = 5;
+    double yMin = 35;
+    int yPtsNb = 3;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -944,12 +877,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -960,6 +889,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     9457	7536.6	9351	7444.4	9316
     9485	9455.5	9423	9390	9373
     */
+
     EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -973,30 +903,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartSmallFile)
     EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -5;
-    int Xptsnb = 5;
-    double Ymin = 35;
-    int Yptsnb = 3;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -5;
+    int xPtsNb = 5;
+    double yMin = 35;
+    int yPtsNb = 3;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1004,12 +933,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1020,6 +945,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     9457	9420.75	9351	9305.5	9316
     9485	9455.5	9423	9390	9373
     */
+
     EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
@@ -1033,30 +959,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatRoundStartLargeFile)
     EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
     EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -2.5;
-    int Xptsnb = 4;
-    double Ymin = 37.5;
-    int Yptsnb = 2;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -2.5;
+    int xPtsNb = 4;
+    double yMin = 37.5;
+    int yPtsNb = 2;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1064,54 +989,50 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartSmallFil
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
 
     /* Values time step 0 (horizontal=Lon, vertical=Lat)
     Extracted from Degrib:
-    9397.5	9332	9300	9304
-    9420.75	9351	9305.5	9316
+    9397.5   9331.51  9300.15  9303.79
+    9420.71	 9350.67  9305.54  9315.97
     */
-    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(9304, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
-    EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
-    EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
-    wxDELETE(geoarea);
+    EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.01);
+    EXPECT_NEAR(9331.51, hgt[0][0](0, 1), 0.01);
+    EXPECT_NEAR(9300.15, hgt[0][0](0, 2), 0.01);
+    EXPECT_NEAR(9303.79, hgt[0][0](0, 3), 0.01);
+    EXPECT_NEAR(9420.71, hgt[0][0](1, 0), 0.01);
+    EXPECT_NEAR(9350.67, hgt[0][0](1, 1), 0.01);
+    EXPECT_NEAR(9305.54, hgt[0][0](1, 2), 0.01);
+    EXPECT_NEAR(9315.97, hgt[0][0](1, 3), 0.01);
+
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -2.5;
-    int Xptsnb = 4;
-    double Ymin = 37.5;
-    int Yptsnb = 2;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -2.5;
+    int xPtsNb = 4;
+    double yMin = 37.5;
+    int yPtsNb = 2;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1119,12 +1040,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1134,6 +1051,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     9397.5	9332	9300	9304
     9420.75	9351	9305.5	9316
     */
+
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1143,30 +1061,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartLargeFil
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
     EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -2.5;
-    int Xptsnb = 3;
-    double Ymin = 37.5;
-    int Yptsnb = 2;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -2.5;
+    int xPtsNb = 3;
+    double yMin = 37.5;
+    int yPtsNb = 2;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1174,12 +1091,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1189,6 +1102,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
+
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1196,30 +1110,29 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndSm
     EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }
 
 TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
 {
     vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.12h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.18h.grib2");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/gfs.hgt.L.24h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+    filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
     asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
     dates.Init();
 
-    double Xmin = -2.5;
-    int Xptsnb = 3;
-    double Ymin = 37.5;
-    int Yptsnb = 2;
-    double Xstep = 2.5;
-    double Ystep = 2.5;
+    double xMin = -2.5;
+    int xPtsNb = 3;
+    double yMin = 37.5;
+    int yPtsNb = 2;
+    double xStep = 2.5;
+    double yStep = 2.5;
     float level = 300;
     wxString gridType = "Regular";
-    asGeoAreaCompositeGrid *geoarea = asGeoAreaCompositeGrid::GetInstance(gridType, Xmin, Xptsnb, Xstep, Ymin, Yptsnb,
-                                                                          Ystep, level);
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
     asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
     wxASSERT(predictor);
@@ -1227,12 +1140,8 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     // Create file names
     predictor->SetFileNames(filepaths);
 
-    // Correct the step according to former GFS files.
-    predictor->SetXaxisStep(1);
-    predictor->SetYaxisStep(1);
-
     // Load
-    ASSERT_TRUE(predictor->Load(geoarea, dates));
+    ASSERT_TRUE(predictor->Load(area, dates, level));
 
     vva2f hgt = predictor->GetData();
     // hgt[time][mem](lat,lon)
@@ -1242,6 +1151,7 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     9397.5	9332	9300
     9420.75	9351	9305.5
     */
+
     EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
     EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
     EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
@@ -1249,6 +1159,6 @@ TEST(PredictorOperNwsGfsGeneral, LoadCompositeStep25LonLatIrregularStartAndEndLa
     EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
     EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
-    wxDELETE(geoarea);
+    wxDELETE(area);
     wxDELETE(predictor);
 }

@@ -39,7 +39,7 @@ class asThreadsManager
 public:
     asThreadsManager();
 
-    virtual ~asThreadsManager();
+    ~asThreadsManager() override;
 
     void Init();
 

@@ -28,12 +28,12 @@
 
 #include "asFileGrib2.h"
 
-asFileGrib2::asFileGrib2(const wxString &FileName, const ListFileMode &FileMode)
-        : asFile(FileName, FileMode),
-          m_filtPtr(NULL),
+asFileGrib2::asFileGrib2(const wxString &fileName, const FileMode &fileMode)
+        : asFile(fileName, fileMode),
+          m_filtPtr(nullptr),
           m_index(asNOT_FOUND)
 {
-    switch (FileMode) {
+    switch (fileMode) {
         case (ReadOnly):
             // OK
             break;
@@ -67,8 +67,9 @@ bool asFileGrib2::Open()
 
 bool asFileGrib2::Close()
 {
-    if (m_filtPtr != NULL) {
-        m_filtPtr = NULL;
+    if (m_filtPtr != nullptr) {
+        fclose(m_filtPtr);
+        m_filtPtr = nullptr;
     }
     return true;
 }
@@ -81,7 +82,7 @@ bool asFileGrib2::OpenDataset()
     // Open file
     m_filtPtr = fopen(filePath.mb_str(), "r");
 
-    if (m_filtPtr == NULL) // Failed
+    if (m_filtPtr == nullptr) // Failed
     {
         wxLogError(_("The opening of the grib file failed."));
         wxFAIL;
@@ -115,7 +116,7 @@ bool asFileGrib2::ParseStructure()
         }
 
         // Read block of data from stream
-        unsigned char *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
+        auto *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
         size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
         if (nbBytesRead == 0) {
             free(cgrib);
@@ -144,7 +145,7 @@ bool asFileGrib2::ParseStructure()
                                                 (int) listSec1[8], (int) listSec1[9]));
 
             // Get all the metadata for a given data field
-            gribfield *gfld = NULL;
+            gribfield *gfld = nullptr;
             int unpack = 0;
             g2int expand = 0;
             ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
@@ -179,9 +180,9 @@ bool asFileGrib2::ParseStructure()
             }
 
             m_parameterDisciplines.push_back(0);
-            m_parameterCategories.push_back(int(gfld->ipdtmpl[0])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
-            m_parameterNums.push_back(int(gfld->ipdtmpl[1])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
-            m_forecastTimes.push_back(double(gfld->ipdtmpl[8]));
+            m_parameterCategories.push_back(static_cast<int>(gfld->ipdtmpl[0])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
+            m_parameterNums.push_back(static_cast<int>(gfld->ipdtmpl[1])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
+            m_forecastTimes.push_back(static_cast<double>(gfld->ipdtmpl[8]));
             GetLevel(gfld);
 
             g2_free(gfld);
@@ -190,8 +191,8 @@ bool asFileGrib2::ParseStructure()
     }
 
     // Check unique time value
-    for (int i = 0; i < m_times.size(); ++i) {
-        if (m_times[i] != m_times[0]) {
+    for (double time : m_times) {
+        if (time != m_times[0]) {
             wxLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
             return false;
         }
@@ -209,7 +210,7 @@ void asFileGrib2::GetLevel(const gribfield *gfld)
         surfVal /= 100; // Pa to hPa
     }
 
-    m_levelTypes.push_back(int(gfld->ipdtmpl[9]));
+    m_levelTypes.push_back(static_cast<int>(gfld->ipdtmpl[9]));
     m_levels.push_back(surfVal);
 }
 
@@ -221,10 +222,7 @@ bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
     }
 
     // Product Definition Template 4.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp4-0.shtml
-    if (gfld->ipdtmpl[7] != 1)
-        return false;
-
-    return true;
+    return gfld->ipdtmpl[7] == 1;
 }
 
 bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
@@ -251,27 +249,25 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
         return false;
     if (gfld->igdtmpl[9] != 0)
         return false;
-    if (gfld->igdtmpl[10] != 0)
-        return false;
 
     return true;
 }
 
 void asFileGrib2::BuildAxes(const gribfield *gfld)
 {
-    float scale = 0.000001;
-    int nX = (int) gfld->igdtmpl[7];
-    int nY = (int) gfld->igdtmpl[8];
-    float latStart = float(gfld->igdtmpl[11]) * scale;
-    float lonStart = float(gfld->igdtmpl[12]) * scale;
-    float latEnd = float(gfld->igdtmpl[14]) * scale;
-    float lonEnd = float(gfld->igdtmpl[15]) * scale;
+    double scale = 0.000001;
+    auto nX = (int) gfld->igdtmpl[7];
+    auto nY = (int) gfld->igdtmpl[8];
+    double latStart = gfld->igdtmpl[11] * scale;
+    double lonStart = gfld->igdtmpl[12] * scale;
+    double latEnd = gfld->igdtmpl[14] * scale;
+    double lonEnd = gfld->igdtmpl[15] * scale;
     if (lonEnd < lonStart) {
         lonEnd += 360;
     }
 
-    a1f xAxis = a1f::LinSpaced(nX, lonStart, lonEnd);
-    a1f yAxis = a1f::LinSpaced(nY, latStart, latEnd);
+    a1d xAxis = a1d::LinSpaced(nX, lonStart, lonEnd);
+    a1d yAxis = a1d::LinSpaced(nY, latStart, latEnd);
 
     m_xAxes.push_back(xAxis);
     m_yAxes.push_back(yAxis);
@@ -305,7 +301,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
     }
 }
 
-bool asFileGrib2::GetXaxis(a1f &uaxis) const
+bool asFileGrib2::GetXaxis(a1d &uaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -316,7 +312,7 @@ bool asFileGrib2::GetXaxis(a1f &uaxis) const
     return true;
 }
 
-bool asFileGrib2::GetYaxis(a1f &vaxis) const
+bool asFileGrib2::GetYaxis(a1d &vaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -375,7 +371,7 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     }
 
     // Read block of data from stream
-    unsigned char *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
+    auto *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
     size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
     if (nbBytesRead == 0) {
         free(cgrib);
@@ -408,8 +404,8 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
     int iLatStart = IndexStart[1];
     int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
-    int nLons = (int) m_xAxes[m_index].size();
-    int nLats = (int) m_yAxes[m_index].size();
+    auto nLons = (int) m_xAxes[m_index].size();
+    auto nLats = (int) m_yAxes[m_index].size();
     int finalIndex = 0;
 
     if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {

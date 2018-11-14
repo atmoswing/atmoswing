@@ -34,21 +34,16 @@
 
 asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                                            wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebar(parent, id, pos, size, style)
+        : asPanelSidebar(parent, id, pos, size, style),
+          m_workspace(workspace),
+          m_forecastManager(forecastManager),
+          m_panelDrawing(nullptr),
+          m_mode(1)
 {
-    m_workspace = workspace;
-    m_forecastManager = forecastManager;
-
     m_header->SetLabelText(_("Alarms"));
-
-    m_mode = 1; // 1: values
-    // 2: thresholds -> not available yet
-
-    m_panelDrawing = NULL;
-
     m_sizerContent->Fit(this);
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), NULL, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), nullptr, this);
 
     Layout();
     m_sizerMain->Fit(this);
@@ -56,7 +51,7 @@ asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow *parent, asWorkspace *worksp
 
 asPanelSidebarAlarms::~asPanelSidebarAlarms()
 {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), NULL, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), nullptr, this);
 }
 
 void asPanelSidebarAlarms::OnPaint(wxPaintEvent &event)
@@ -138,18 +133,18 @@ asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWin
                                                          const wxSize &size, long style)
         : wxPanel(parent, id, pos, size, style)
 {
-    m_bmpAlarms = NULL;
-    m_gdc = NULL;
-    m_parent = NULL;
+    m_bmpAlarms = nullptr;
+    m_gdc = nullptr;
+    m_parent = nullptr;
 
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), NULL, this);
+    Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
 
     Layout();
 }
 
 asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing()
 {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), NULL, this);
+    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
     wxDELETE(m_bmpAlarms);
 }
 
@@ -172,15 +167,12 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f 
 
     // Create bitmap
     int totHeight = cellHeight * rows + cellHeight;
-    wxBitmap *bmp = new wxBitmap(width, totHeight);
+    auto *bmp = new wxBitmap(width, totHeight);
     wxASSERT(bmp);
 
     // Create device context
     wxMemoryDC dc(*bmp);
-    dc.SetBackground(wxBrush(GetBackgroundColour()));
-#if defined(__UNIX__)
-    dc.SetBackground(wxBrush(g_linuxBgColour));
-#endif
+    dc.SetBackground(*wxWHITE_BRUSH);
     dc.Clear();
 
     // Create graphics context
@@ -233,7 +225,7 @@ void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap *bmp)
     wxDELETE(m_bmpAlarms);
     wxASSERT(!m_bmpAlarms);
 
-    if (bmp != NULL) {
+    if (bmp != nullptr) {
         wxASSERT(bmp);
         m_bmpAlarms = new wxBitmap(*bmp);
         wxASSERT(m_bmpAlarms);
@@ -242,7 +234,7 @@ void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap *bmp)
 
 void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event)
 {
-    if (m_bmpAlarms != NULL) {
+    if (m_bmpAlarms != nullptr) {
         wxPaintDC dc(this);
         dc.DrawBitmap(*m_bmpAlarms, 0, 0, true);
     }
@@ -275,7 +267,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
 
     switch (m_parent->GetMode()) {
         case (1): {
-            if (asTools::IsNaN(value)) // NaN -> gray
+            if (asIsNaN(value)) // NaN -> gray
             {
                 colour.Set(150, 150, 150);
             } else if (value == 0) // No rain -> white
@@ -320,7 +312,7 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
         }
     }
 
-    wxBrush brush(colour, wxSOLID);
+    wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
     gc->SetBrush(brush);
     gc->DrawPath(path);
 }
@@ -329,7 +321,7 @@ void asPanelSidebarAlarmsDrawing::CreateDatesText(wxGraphicsContext *gc, const w
                                                   const wxString &label)
 {
     double pointX = (double) start.x + iCol * cellWitdh;
-    double pointY = (double) start.y;
+    auto pointY = (double) start.y;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);
@@ -338,7 +330,7 @@ void asPanelSidebarAlarmsDrawing::CreateDatesText(wxGraphicsContext *gc, const w
 void asPanelSidebarAlarmsDrawing::CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int iRow,
                                                const wxString &label)
 {
-    double pointX = (double) start.x;
+    auto pointX = (double) start.x;
     double pointY = (double) start.y + iRow * cellHeight;
 
     // Draw text

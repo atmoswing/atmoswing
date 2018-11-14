@@ -39,9 +39,9 @@ public:
     asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
                                      wxCriticalSection *critSectionViewerLayerManager);
 
-    virtual ~asThreadViewerLayerManagerReload();
+    ~asThreadViewerLayerManagerReload() override = default;
 
-    virtual ExitCode Entry();
+    ExitCode Entry() override;
 
 protected:
 

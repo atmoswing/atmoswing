@@ -43,7 +43,7 @@ public:
                        wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                        const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asLeadTimeSwitcher();
+    ~asLeadTimeSwitcher() override;
 
     void Draw(a1f &dates);
 
@@ -52,22 +52,20 @@ public:
     void SetParent(wxWindow *parent);
 
 private:
+    wxWindow *m_parent;
+    asWorkspace *m_workspace;
+    asForecastManager *m_forecastManager;
+    wxBitmap *m_bmp;
+    wxGraphicsContext *m_gdc;
+    wxOverlay m_overlay;
     int m_cellWidth;
     int m_leadTime;
-    asForecastManager *m_forecastManager;
-    asWorkspace *m_workspace;
-    wxBitmap *m_bmp;
-    wxOverlay m_overlay;
-    wxGraphicsContext *m_gdc;
-    wxWindow *m_parent;
 
     void OnLeadTimeSlctChange(wxMouseEvent &event);
 
     void SetBitmap(wxBitmap *bmp);
 
     void SetLeadTimeMarker(int leadTime);
-
-    wxBitmap *GetBitmap();
 
     void CreatePath(wxGraphicsPath &path, int iCol);
 

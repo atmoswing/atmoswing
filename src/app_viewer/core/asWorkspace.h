@@ -32,8 +32,10 @@
 #include <asFileWorkspace.h>
 
 #if wxUSE_GUI
+
 #include <wx/colour.h>
 #include <wx/brush.h>
+
 #endif
 
 class asWorkspace
@@ -42,7 +44,7 @@ class asWorkspace
 public:
     asWorkspace();
 
-    virtual ~asWorkspace();
+    ~asWorkspace() override = default;
 
     bool Load(const wxString &filePath);
 
@@ -64,17 +66,12 @@ public:
         m_filePath = path;
     }
 
-    wxString GetCoordinateSys() const
-    {
-        return m_coordinateSys;
-    }
-
     wxString GetForecastsDirectory() const
     {
         return m_forecastsDirectory;
     }
 
-    void SetForecastsDirectory(wxString val)
+    void SetForecastsDirectory(const wxString &val)
     {
         m_forecastsDirectory = val;
     }
@@ -143,37 +140,37 @@ public:
 
     wxColour GetLayerLineColor(int i) const
     {
-        wxASSERT((int)m_layerLineColors.size()>i);
+        wxASSERT((int) m_layerLineColors.size() > i);
         return m_layerLineColors[i];
     }
 
     void SetLayerLineColor(int i, wxColour &val)
     {
-        wxASSERT((int)m_layerLineColors.size()>i);
+        wxASSERT((int) m_layerLineColors.size() > i);
         m_layerLineColors[i] = val;
     }
 
     wxColour GetLayerFillColor(int i) const
     {
-        wxASSERT((int)m_layerFillColors.size()>i);
+        wxASSERT((int) m_layerFillColors.size() > i);
         return m_layerFillColors[i];
     }
 
     void SetLayerFillColor(int i, wxColour &val)
     {
-        wxASSERT((int)m_layerFillColors.size()>i);
+        wxASSERT((int) m_layerFillColors.size() > i);
         m_layerFillColors[i] = val;
     }
-    
+
     wxBrushStyle GetLayerBrushStyle(int i) const
     {
-        wxASSERT((int)m_layerBrushStyles.size()>i);
+        wxASSERT((int) m_layerBrushStyles.size() > i);
         return m_layerBrushStyles[i];
     }
-    
+
     void SetLayerBrushStyle(int i, wxBrushStyle &val)
     {
-        wxASSERT((int)m_layerBrushStyles.size()>i);
+        wxASSERT((int) m_layerBrushStyles.size() > i);
         m_layerBrushStyles[i] = val;
     }
 
@@ -242,9 +239,9 @@ private:
     vb m_layerVisibilities;
     vi m_layerLineWidths;
 #if wxUSE_GUI
-    std::vector < wxColour > m_layerLineColors;
-    std::vector < wxColour > m_layerFillColors;
-    std::vector < wxBrushStyle > m_layerBrushStyles;
+    std::vector<wxColour> m_layerLineColors;
+    std::vector<wxColour> m_layerFillColors;
+    std::vector<wxBrushStyle> m_layerBrushStyles;
 #endif
     double m_colorbarMaxValue;
     int m_timeSeriesPlotPastDaysNb;

@@ -28,7 +28,7 @@
 #include "asPredictorArchNasaMerra2.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
@@ -36,29 +36,18 @@ asPredictorArchNasaMerra2::asPredictorArchNasaMerra2(const wxString &dataId)
 {
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NASA_MERRA_2";
-    m_originalProvider = "NASA";
+    m_provider = "NASA";
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2";
-    m_originalProviderStart = asTime::GetMJD(1980, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 6;
-    m_firstTimeStepHours = 0;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
+    m_parseTimeReference = true;
     m_nanValues.push_back(std::pow(10.f, 15.f));
     m_nanValues.push_back(std::pow(10.f, 15.f) - 1);
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "lev";
-}
-
-asPredictorArchNasaMerra2::~asPredictorArchNasaMerra2()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "lev";
 }
 
 bool asPredictorArchNasaMerra2::Init()
@@ -67,28 +56,28 @@ bool asPredictorArchNasaMerra2::Init()
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
-        m_fileStructure.hasLevelDimension = true;
+        m_fStr.hasLevelDim = true;
         m_subFolder = "inst6_3d_ana_Np";
-        m_xAxisStep = 0.625;
-        m_yAxisStep = 0.5;
         if (m_dataId.IsSameAs("h", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
-            m_fileVariableName = "H";
+            m_fileVarName = "H";
             m_unit = m;
         } else if (m_dataId.IsSameAs("t", false)) {
             m_parameter = AirTemperature;
             m_parameterName = "Air temperature";
-            m_fileVariableName = "T";
+            m_fileVarName = "T";
             m_unit = degK;
         } else if (m_dataId.IsSameAs("slp", false)) {
             m_parameter = Pressure;
             m_parameterName = "Sea-level pressure";
-            m_fileVariableName = "SLP";
+            m_fileVarName = "SLP";
             m_unit = Pa;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            m_parameter = ParameterUndefined;
+            m_parameterName = "Undefined";
+            m_fileVarName = m_dataId;
+            m_unit = UnitUndefined;
         }
         m_fileNamePattern = "%4d/%02d/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.nc4";
 
@@ -97,7 +86,7 @@ bool asPredictorArchNasaMerra2::Init()
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
                    m_datasetName);
         return false;
@@ -116,9 +105,8 @@ bool asPredictorArchNasaMerra2::Init()
     return true;
 }
 
-vwxs asPredictorArchNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNasaMerra2::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -139,18 +127,10 @@ vwxs asPredictorArchNasaMerra2::GetListOfFiles(asTimeArray &timeArray) const
                 path.Replace("MERRA2_*00", "MERRA2_400");
             }
 
-            files.push_back(path);
+            m_files.push_back(path);
             tLast = t;
         }
     }
-
-    return files;
-}
-
-bool asPredictorArchNasaMerra2::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
 }
 
 double asPredictorArchNasaMerra2::ConvertToMjd(double timeValue, double refValue) const

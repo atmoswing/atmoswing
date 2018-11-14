@@ -162,7 +162,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         return false;
     }
 
-    // TODO: set this as an option
+    // TODO: Set this as an option
     bool processContingencyScores = false;
     bool processContinuousScores = true;
     bool processRankHistogramScores = true;
@@ -204,11 +204,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                     return false;
             } else {
                 anaDatesPrevious = anaDates;
-                if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
@@ -219,7 +219,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         m_parameters.push_back(params);
         wxASSERT(m_parameters.size() == 1);
 
-        if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+        if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
             return false;
 
         /* 
@@ -241,11 +241,11 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             for (int iStep = 0; iStep < stepsNb; iStep++) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
-                    if (!GetAnalogsDates(anaDatesValid, params, iStep, containsNaNs))
+                    if (!GetAnalogsDates(anaDatesValid, &params, iStep, containsNaNs))
                         return false;
                 } else {
                     anaDatesPreviousValid = anaDatesValid;
-                    if (!GetAnalogsSubDates(anaDatesValid, params, anaDatesPreviousValid, iStep, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDatesValid, &params, anaDatesPreviousValid, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
@@ -254,7 +254,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 }
             }
 
-            if (!GetAnalogsValues(anaValuesValid, params, anaDatesValid, stepsNb - 1))
+            if (!GetAnalogsValues(anaValuesValid, &params, anaDatesValid, stepsNb - 1))
                 return false;
 
             m_validationMode = false;
@@ -293,13 +293,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                         params.SetScoreName(scoresContingency[iScore]);
                         params.SetScoreQuantile(quantiles[iPc]);
                         params.SetScoreThreshold(thresholds[iThres]);
-                        if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                        if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                        if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                        if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
                             return false;
-                        if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                        if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                             return false;
                         results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                         m_scoreClimatology.clear();
@@ -317,13 +317,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
                     params.SetScoreName(scoresQuantile[iScore]);
                     params.SetScoreQuantile(quantiles[iPc]);
-                    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                         return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
@@ -339,13 +339,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
                     params.SetScoreName(scoresThreshold[iScore]);
                     params.SetScoreThreshold(thresholds[iThres]);
-                    if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                         return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
@@ -373,13 +373,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             for (unsigned int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresContinuous[iScore]);
                 params.SetScoreName(scoresContinuous[iScore]);
-                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                     return false;
                 results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                 m_scoreClimatology.clear();
@@ -401,13 +401,13 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             std::vector<a1f> histoValid;
 
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
-                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScoresValid, params, anaValuesValid, stepsNb - 1))
+                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinalValid, params, anaScoresValid, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                     return false;
 
                 // Store every assessment

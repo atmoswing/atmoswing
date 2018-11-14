@@ -39,7 +39,6 @@ class asCriteria
 public:
     enum Criteria
     {
-        CriteriaUndefined,
         S1, // Teweles-Wobus
         NS1, // Normalized Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients
@@ -56,7 +55,7 @@ public:
         RSE // Root square error (According to Bontron. Should not be used !)
     };
 
-    asCriteria();
+    asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order);
 
     static asCriteria *GetInstance(Criteria criteriaEnum);
 

@@ -29,6 +29,7 @@
 #include "asTotalScore.h"
 
 #include "asTotalScoreMean.h"
+#include "asTotalScoreMeanWithClim.h"
 #include "asTotalScorePC.h"
 #include "asTotalScoreTS.h"
 #include "asTotalScoreB.h"
@@ -45,19 +46,19 @@
 #include "asTotalScoreCRPSpotential.h"
 
 asTotalScore::asTotalScore(Period period)
+        : m_period(period),
+          m_singleValue(true),
+          m_has2DArrayArgument(false),
+          m_ranksNb(0)
 {
-    m_period = period;
-    m_singleValue = true;
-    m_has2DArrayArgument = false;
-    m_ranksNb = 0;
+
 }
 
 asTotalScore::asTotalScore(const wxString &periodString)
+        : m_singleValue(true),
+          m_has2DArrayArgument(false),
+          m_ranksNb(0)
 {
-    m_singleValue = true;
-    m_has2DArrayArgument = false;
-    m_ranksNb = 0;
-
     if (periodString.CmpNoCase("Total") == 0) {
         m_period = asTotalScore::Total;
     } else if (periodString.CmpNoCase("SpecificPeriod") == 0) {
@@ -82,7 +83,7 @@ asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxStr
         asTotalScore *score = new asTotalScoreMean(periodString);
         return score;
     } else if (scoreString.CmpNoCase("CRPSS") == 0) {
-        asTotalScore *score = new asTotalScoreMean(periodString);
+        asTotalScore *score = new asTotalScoreMeanWithClim(periodString);
         return score;
     } else if (scoreString.CmpNoCase("CRPS") == 0) {
         asTotalScore *score = new asTotalScoreMean(periodString);
@@ -157,7 +158,7 @@ asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxStr
         asTotalScore *score = new asTotalScoreMean(periodString);
         return score;
     } else if (scoreString.CmpNoCase("BSS") == 0) {
-        asTotalScore *score = new asTotalScoreMean(periodString);
+        asTotalScore *score = new asTotalScoreMeanWithClim(periodString);
         return score;
     } else if (scoreString.CmpNoCase("SEEPS") == 0) {
         asTotalScore *score = new asTotalScoreMean(periodString);

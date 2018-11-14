@@ -43,7 +43,7 @@
 #include <asParametersCalibration.h>
 #include <asParametersOptimization.h>
 #include <asCriteria.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 #include <asTimeArray.h>
 #include <asProcessor.h>
 #include <asProcessorScore.h>
@@ -59,37 +59,25 @@ public:
 
     virtual ~asMethodCalibrator();
 
-    bool GetAnalogsDates(asResultsDates &results, asParametersScoring &params, int iStep, bool &containsNaNs);
+    bool GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep, bool &containsNaNs);
 
-    bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring &params, asResultsDates &anaDates, int iStep,
+    bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring *params, asResultsDates &anaDates, int iStep,
                             bool &containsNaNs);
 
-    bool GetAnalogsValues(asResultsValues &results, asParametersScoring &params, asResultsDates &anaDates, int iStep);
+    bool GetAnalogsValues(asResultsValues &results, asParametersScoring *params, asResultsDates &anaDates, int iStep);
 
-    bool GetAnalogsScores(asResultsScores &results, asParametersScoring &params, asResultsValues &anaValues, int iStep);
+    bool GetAnalogsScores(asResultsScores &results, asParametersScoring *params, asResultsValues &anaValues, int iStep);
 
-    bool GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring &params, asResultsScores &anaScores,
+    bool GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring *params, asResultsScores &anaScores,
                               int iStep);
 
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep = 0);
-
-    bool PreloadDataWithoutPreprocessing(asParametersScoring &params, int iStep, int iPtor, int iPre);
-
-    bool PreloadDataWithPreprocessing(asParametersScoring &params, int iStep, int iPtor);
-
-    void Cleanup(std::vector<asPredictorArch *> predictorsPreprocess);
-
-    void Cleanup(std::vector<asPredictor *> predictors);
-
-    void Cleanup(std::vector<asCriteria *> criteria);
-
-    void DeletePreloadedData();
 
     void ClearAll();
 
     void ClearTemp();
 
-    void PushBackBestTemp();
+    bool PushBackBestTemp();
 
     void RemoveNaNsInTemp();
 
@@ -99,7 +87,7 @@ public:
 
     void KeepFirstTemp();
 
-    void SortScoresAndParametersTemp();
+    bool SortScoresAndParametersTemp();
 
     bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
@@ -113,14 +101,9 @@ public:
 
     bool Manager();
 
-    bool SaveDetails(asParametersCalibration &params);
+    bool SaveDetails(asParametersCalibration *params);
 
-    virtual bool Validate(asParametersCalibration &params);
-
-    void SetScore(float valCalib)
-    {
-        m_scoresCalibTemp.push_back(valCalib);
-    }
+    virtual bool Validate(asParametersCalibration *params);
 
     void SetScoreOrder(Order val)
     {
@@ -135,11 +118,6 @@ public:
     void SetScoreClimatology(vf val)
     {
         m_scoreClimatology = val;
-    }
-
-    bool IsPointerCopy(int iStep, int iPtor, int iPre) const
-    {
-        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
     void SetPredictandStationIds(vi val)
@@ -170,54 +148,23 @@ protected:
     std::vector<asParametersCalibration> m_parameters;
     std::vector<asParametersCalibration> m_parametersTemp;
     asParametersCalibration m_originalParams;
-    bool m_preloaded;
     bool m_validationMode;
 
     virtual bool Calibrate(asParametersCalibration &params) = 0;
 
-    bool PreloadData(asParametersScoring &params);
+    va1f GetClimatologyData(asParametersScoring *params);
 
-    bool LoadData(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep, double timeStartData,
-                  double timeEndData);
+    double GetEffectiveArchiveDataStart(asParameters *params) const;
 
-    va1f GetClimatologyData(asParametersScoring &params);
+    double GetEffectiveArchiveDataEnd(asParameters *params) const;
 
 private:
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
-    std::vector<vvb> m_preloadedArchivePointerCopy;
 
-    bool PointersShared(asParametersScoring &params, int iStep, int iPtor, int iPre);
+    double GetTimeStartCalibration(asParametersScoring *params) const;
 
-    double GetTimeStartCalibration(asParametersScoring &params) const;
-
-    double GetTimeStartArchive(asParametersScoring &params) const;
-
-    double GetTimeEndCalibration(asParametersScoring &params) const;
-
-    double GetTimeEndArchive(asParametersScoring &params) const;
-
-    void InitializePreloadedDataContainer(asParametersScoring &params);
+    double GetTimeEndCalibration(asParametersScoring *params) const;
 
     void LoadScoreOrder(asParametersCalibration &params);
-
-    bool ExtractPreloadedData(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
-                              int iPtor);
-
-    bool ExtractDataWithoutPreprocessing(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
-                                         int iPtor, double timeStartData, double timeEndData);
-
-    bool ExtractDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParametersScoring &params, int iStep,
-                                      int iPtor, double timeStartData, double timeEndData);
-
-    bool HasPreloadedData(int iStep, int iPtor) const;
-
-    bool HasPreloadedData(int iStep, int iPtor, int iPre) const;
-
-    bool GetRandomValidData(asParametersScoring &params, int iStep, int iPtor, int iPre);
-
-    bool CheckDataIsPreloaded(const asParametersScoring &params) const;
-
-    bool ProceedToDataPreloading(asParametersScoring &params);
 };
 
 #endif // ASMETHODCALIBRATOR_H

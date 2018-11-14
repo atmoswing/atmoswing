@@ -31,10 +31,10 @@
 #include <asFileParametersCalibration.h>
 
 asParametersScoring::asParametersScoring()
-        : asParameters()
+        : asParameters(),
+          m_calibrationStart(0),
+          m_calibrationEnd(0)
 {
-    m_calibrationStart = 0;
-    m_calibrationEnd = 0;
     m_score.name = wxEmptyString;
     m_score.timeArrayMode = wxEmptyString;
     m_score.timeArrayDate = 0;
@@ -42,8 +42,8 @@ asParametersScoring::asParametersScoring()
     m_score.postprocess = false;
     m_score.postprocessDupliExp = 0;
     m_score.postprocessMethod = wxEmptyString;
-    m_score.threshold = NaNf; // initialization required
-    m_score.quantile = NaNf; // initialization required
+    m_score.threshold = NaNf;
+    m_score.quantile = NaNf;
 }
 
 asParametersScoring::~asParametersScoring()
@@ -231,12 +231,12 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("score", GetScoreName()));
 
     float fsThreshold = GetScoreThreshold();
-    if (!asTools::IsNaN(fsThreshold)) {
+    if (!asIsNaN(fsThreshold)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("threshold", fsThreshold));
     }
 
     float fsQuantile = GetScoreQuantile();
-    if (!asTools::IsNaN(fsQuantile)) {
+    if (!asIsNaN(fsQuantile)) {
         nodeAnalogScore->AddChild(fileParams.CreateNodeWithValue("quantile", fsQuantile));
     }
 
@@ -255,13 +255,12 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     return true;
 }
 
-bool asParametersScoring::PreprocessingPropertiesOk()
+bool asParametersScoring::PreprocessingDataIdsOk()
 {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
-                wxString method = GetPreprocessMethod(iStep, iPtor);
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Check that the data ID is unique
@@ -270,35 +269,6 @@ bool asParametersScoring::PreprocessingPropertiesOk()
                         wxLogError(_("The preprocess dataId must be unique with the preload option."));
                         return false;
                     }
-                }
-
-                // Different actions depending on the preprocessing method.
-                wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
-                if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
-                    method.IsSameAs("Average")) {
-                    // No constraints
-                } else if (method.IsSameAs("Gradients")) {
-                    if (preprocSize != 1) {
-                        wxLogError(msg, preprocSize, 1, "Gradient");
-                        return false;
-                    }
-                } else if (method.IsSameAs("HumidityFlux")) {
-                    if (preprocSize != 4) {
-                        wxLogError(msg, preprocSize, 4, "HumidityFlux");
-                        return false;
-                    }
-                } else if (method.IsSameAs("HumidityIndex")) {
-                    if (preprocSize != 2) {
-                        wxLogError(msg, preprocSize, 2, "HumidityIndex");
-                        return false;
-                    }
-                } else if (method.IsSameAs("FormerHumidityIndex")) {
-                    if (preprocSize != 4) {
-                        wxLogError(msg, preprocSize, 4, "FormerHumidityIndex");
-                        return false;
-                    }
-                } else {
-                    wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
             }
         }
@@ -309,33 +279,33 @@ bool asParametersScoring::PreprocessingPropertiesOk()
 
 wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const
 {
-    wxString Ids;
+    wxString ids;
 
     for (int i = 0; i < (int) predictandStationIdsVect.size(); i++) {
         vi predictandStationIds = predictandStationIdsVect[i];
 
         if (predictandStationIds.size() == 1) {
-            Ids << predictandStationIds[0];
+            ids << predictandStationIds[0];
         } else {
-            Ids.Append("(");
+            ids.Append("(");
 
             for (int j = 0; j < (int) predictandStationIds.size(); j++) {
-                Ids << predictandStationIds[j];
+                ids << predictandStationIds[j];
 
                 if (j < (int) predictandStationIds.size() - 1) {
-                    Ids.Append(",");
+                    ids.Append(",");
                 }
             }
 
-            Ids.Append(")");
+            ids.Append(")");
         }
 
         if (i < (int) predictandStationIdsVect.size() - 1) {
-            Ids.Append(",");
+            ids.Append(",");
         }
     }
 
-    return Ids;
+    return ids;
 }
 
 wxString asParametersScoring::Print() const
@@ -344,10 +314,10 @@ wxString asParametersScoring::Print() const
     wxString content = asParameters::Print();
 
     content.Append(wxString::Format("|||| Score \t%s\t", GetScoreName()));
-    if (!asTools::IsNaN(GetScoreQuantile())) {
+    if (!asIsNaN(GetScoreQuantile())) {
         content.Append(wxString::Format("quantile \t%f\t", GetScoreQuantile()));
     }
-    if (!asTools::IsNaN(GetScoreThreshold())) {
+    if (!asIsNaN(GetScoreThreshold())) {
         content.Append(wxString::Format("threshold \t%f\t", GetScoreThreshold()));
     }
     content.Append(wxString::Format("TimeArray\t%s\t", GetScoreTimeArrayMode()));

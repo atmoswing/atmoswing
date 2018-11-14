@@ -29,14 +29,10 @@
 #include "asScoreCRPSEP.h"
 
 asScoreCRPSEP::asScoreCRPSEP()
-        : asScore()
+        : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"),
+                  Asc, 0, NaNf)
 {
-    m_score = asScore::CRPSEP;
-    m_name = _("CRPS Exact Primitive");
-    m_fullName = _("Continuous Ranked Probability Score exact solution");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSEP::~asScoreCRPSEP()
@@ -44,37 +40,40 @@ asScoreCRPSEP::~asScoreCRPSEP()
     //dtor
 }
 
-float asScoreCRPSEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSEP::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
     a1f x(nbElements);
-    float xObs = ObservedVal;
+    float xObs = observedVal;
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function"));
         return NaNf;
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
-    float CRPS = 0;
+    float crps = 0;
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
-    float DF, DVal;
+    float df, dVal;
 
     // Indices for the left and right part (according to xObs) of the distribution
     int indLeftStart = 0;
@@ -86,14 +85,14 @@ float asScoreCRPSEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbEle
     if (xObs <= x[0]) // If xObs before the distribution
     {
         indRightStart = 0;
-        CRPS += x[indRightStart] - xObs;
+        crps += x[indRightStart] - xObs;
     } else if (xObs > x[nbPredict - 1]) // If xObs after the distribution
     {
         indLeftEnd = nbPredict - 1;
-        CRPS += xObs - x[indLeftEnd];
+        crps += xObs - x[indLeftEnd];
     } else // If xObs inside the distribution
     {
-        indLeftEnd = asTools::SortedArraySearchFloor(&x[0], &x[nbPredict - 1], xObs);
+        indLeftEnd = asFindFloor(&x[0], &x[nbPredict - 1], xObs);
         if ((indLeftEnd != nbPredict - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
             indRightStart = indLeftEnd + 1;
             float FxObs;
@@ -106,23 +105,23 @@ float asScoreCRPSEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbEle
 
             // Integrate the CRPS around FxObs
             // First part - from x(indLeftEnd) to xobs
-            DF = FxObs - F(indLeftEnd);
-            DVal = xObs - x(indLeftEnd);
-            if (DVal != 0) {
-                float a = DF / DVal;
+            df = FxObs - F(indLeftEnd);
+            dVal = xObs - x(indLeftEnd);
+            if (dVal != 0) {
+                float a = df / dVal;
                 float b = -x(indLeftEnd) * a + F(indLeftEnd);
-                CRPS += (a * a / 3) * (xObs * xObs * xObs - x(indLeftEnd) * x(indLeftEnd) * x(indLeftEnd)) +
+                crps += (a * a / 3) * (xObs * xObs * xObs - x(indLeftEnd) * x(indLeftEnd) * x(indLeftEnd)) +
                         (a * b) * (xObs * xObs - x(indLeftEnd) * x(indLeftEnd)) + (b * b) * (xObs - x(indLeftEnd));
             }
 
             // Second part - from xobs to x(indRightStart)
-            DF = F(indRightStart) - FxObs;
-            DVal = x(indRightStart) - xObs;
-            if (DVal != 0) {
-                float a = -DF / DVal;
+            df = F(indRightStart) - FxObs;
+            dVal = x(indRightStart) - xObs;
+            if (dVal != 0) {
+                float a = -df / dVal;
                 float b = -xObs * (-a) + FxObs;
                 b = 1 - b;
-                CRPS += (a * a / 3) * (x(indRightStart) * x(indRightStart) * x(indRightStart) - xObs * xObs * xObs) +
+                crps += (a * a / 3) * (x(indRightStart) * x(indRightStart) * x(indRightStart) - xObs * xObs * xObs) +
                         (a * b) * (x(indRightStart) * x(indRightStart) - xObs * xObs) +
                         (b * b) * (x(indRightStart) - xObs);
             }
@@ -131,36 +130,36 @@ float asScoreCRPSEP::Assess(float ObservedVal, const a1f &ForcastVals, int nbEle
 
     // Integrate on the left part
     for (int i = indLeftStart; i < indLeftEnd; i++) {
-        DF = F(i + 1) - F(i);
-        DVal = x(i + 1) - x(i);
-        if (DVal != 0) {
+        df = F(i + 1) - F(i);
+        dVal = x(i + 1) - x(i);
+        if (dVal != 0) {
             // Build a line y=ax+b
-            float a = DF / DVal;
+            float a = df / dVal;
             float b = -x(i) * a + F(i);
 
             // CRPS after integration with H=0
-            CRPS += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
+            crps += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
                     (a * b) * (x(i + 1) * x(i + 1) - x(i) * x(i)) + (b * b) * (x(i + 1) - x(i));
         }
     }
 
     // Integrate on the right part
     for (int i = indRightStart; i < indRightEnd; i++) {
-        DF = F(i + 1) - F(i);
-        DVal = x(i + 1) - x(i);
-        if (DVal != 0) {
+        df = F(i + 1) - F(i);
+        dVal = x(i + 1) - x(i);
+        if (dVal != 0) {
             // Build a line y=ax+b and switch it (a -> -a & b -> 1-b) to easily integrate
-            float a = -DF / DVal;
+            float a = -df / dVal;
             float b = -x(i) * (-a) + F(i);
             b = 1 - b;
 
             // CRPS after integration with H=0 as we switched the axis
-            CRPS += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
+            crps += (a * a / 3) * (x(i + 1) * x(i + 1) * x(i + 1) - x(i) * x(i) * x(i)) +
                     (a * b) * (x(i + 1) * x(i + 1) - x(i) * x(i)) + (b * b) * (x(i + 1) - x(i));
         }
     }
 
-    return CRPS;
+    return crps;
 }
 
 bool asScoreCRPSEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)

@@ -41,28 +41,13 @@ class asResults
 public:
     asResults();
 
-    virtual ~asResults();
+    ~asResults() override = default;
 
     wxString GetPredictandStationIdsList() const;
-
-    int GetCurrentStep() const
-    {
-        return m_currentStep;
-    }
 
     void SetCurrentStep(int val)
     {
         m_currentStep = val;
-    }
-
-    double GetDateProcessed() const
-    {
-        return m_dateProcessed;
-    }
-
-    void SetDateProcessed(double val)
-    {
-        m_dateProcessed = val;
     }
 
     wxString GetFilePath() const
@@ -105,7 +90,7 @@ protected:
 
     bool DefTargetValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefTargetValuesGrossAttributes(asFileNetcdf &ncFile) const;
+    bool DefTargetValuesRawAttributes(asFileNetcdf &ncFile) const;
 
     bool DefAnalogsCriteriaAttributes(asFileNetcdf &ncFile) const;
 
@@ -113,7 +98,7 @@ protected:
 
     bool DefAnalogsValuesNormAttributes(asFileNetcdf &ncFile) const;
 
-    bool DefAnalogsValuesGrossAttributes(asFileNetcdf &ncFile) const;
+    bool DefAnalogsValuesRawAttributes(asFileNetcdf &ncFile) const;
 
     bool DefAnalogsValuesAttributes(asFileNetcdf &ncFile) const;
 

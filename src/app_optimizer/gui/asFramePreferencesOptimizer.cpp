@@ -70,17 +70,25 @@ void asFramePreferencesOptimizer::LoadPreferences()
     // Log
     long defaultLogLevel = 1; // = selection +1
     long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
-    m_radioBoxLogLevel->SetSelection((int) logLevel - 1);
+    if (logLevel == 1) {
+        m_radioBtnLogLevel1->SetValue(true);
+    } else if (logLevel == 2) {
+        m_radioBtnLogLevel2->SetValue(true);
+    } else if (logLevel == 3) {
+        m_radioBtnLogLevel3->SetValue(true);
+    } else {
+        m_radioBtnLogLevel1->SetValue(true);
+    }
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
     m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
 
     // Paths
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    wxString PredictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
-    m_dirPickerPredictandDB->SetPath(PredictandDBDir);
-    wxString ArchivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
-    m_dirPickerArchivePredictors->SetPath(ArchivePredictorsDir);
+    wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
+    m_dirPickerPredictandDB->SetPath(predictandDBDir);
+    wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
+    m_dirPickerArchivePredictors->SetPath(archivePredictorsDir);
 
     /*
      * Advanced
@@ -113,23 +121,23 @@ void asFramePreferencesOptimizer::LoadPreferences()
     if (maxThreads == -1)
         maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString ProcessingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    m_textCtrlThreadsNb->SetValue(ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
-    m_sliderThreadsPriority->SetValue((int) ProcessingThreadsPriority);
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    m_textCtrlThreadsNb->SetValue(processingMaxThreadNb);
+    long processingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
+    m_sliderThreadsPriority->SetValue((int) processingThreadsPriority);
 
     // Processing
-    long defaultMethod = (long) asMULTITHREADS;
-    long ProcessingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    auto defaultMethod = (long) asMULTITHREADS;
+    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
-        if (ProcessingMethod == (long) asMULTITHREADS) {
-            ProcessingMethod = (long) asSTANDARD;
+        if (processingMethod == (long) asMULTITHREADS) {
+            processingMethod = (long) asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int) ProcessingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int) processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -142,6 +150,8 @@ void asFramePreferencesOptimizer::LoadPreferences()
 
 void asFramePreferencesOptimizer::SavePreferences() const
 {
+    wxBusyCursor wait;
+
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -149,24 +159,31 @@ void asFramePreferencesOptimizer::SavePreferences() const
      * General
      */
 
-    // Log    
-    long logLevel = (long) m_radioBoxLogLevel->GetSelection();
-    pConfig->Write("/General/LogLevel", logLevel + 1); // = selection +1
+    // Log
+    long logLevel = 1;
+    if (m_radioBtnLogLevel1->GetValue()) {
+        logLevel = 1;
+    } else if (m_radioBtnLogLevel2->GetValue()) {
+        logLevel = 2;
+    } else if (m_radioBtnLogLevel3->GetValue()) {
+        logLevel = 3;
+    }
+    pConfig->Write("/General/LogLevel", logLevel);
     bool displayLogWindow = m_checkBoxDisplayLogWindow->GetValue();
     pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
 
     // Paths
-    wxString PredictandDBDir = m_dirPickerPredictandDB->GetPath();
-    pConfig->Write("/Paths/DataPredictandDBDir", PredictandDBDir);
-    wxString ArchivePredictorsDir = m_dirPickerArchivePredictors->GetPath();
-    pConfig->Write("/Paths/ArchivePredictorsDir", ArchivePredictorsDir);
+    wxString predictandDBDir = m_dirPickerPredictandDB->GetPath();
+    pConfig->Write("/Paths/DataPredictandDBDir", predictandDBDir);
+    wxString archivePredictorsDir = m_dirPickerArchivePredictors->GetPath();
+    pConfig->Write("/Paths/ArchivePredictorsDir", archivePredictorsDir);
 
     /*
      * Advanced
      */
 
     // GUI options
-    long guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long) m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -186,19 +203,19 @@ void asFramePreferencesOptimizer::SavePreferences() const
     // Multithreading
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
-    wxString ProcessingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
-    if (!ProcessingMaxThreadNb.IsNumber())
-        ProcessingMaxThreadNb = "2";
-    pConfig->Write("/Processing/MaxThreadNb", ProcessingMaxThreadNb);
-    long ProcessingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
-    pConfig->Write("/Processing/ThreadsPriority", ProcessingThreadsPriority);
+    wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
+    if (!processingMaxThreadNb.IsNumber())
+        processingMaxThreadNb = "2";
+    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    long ProcessingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
-    if (!allowMultithreading && ProcessingMethod == (long) asMULTITHREADS) {
-        ProcessingMethod = (long) asSTANDARD;
+    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
+    if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
+        processingMethod = (long) asSTANDARD;
     }
-    pConfig->Write("/Processing/Method", ProcessingMethod);
+    pConfig->Write("/Processing/Method", processingMethod);
 
 
     GetParent()->Update();

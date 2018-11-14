@@ -38,44 +38,28 @@ class asPredictorArch
         : public asPredictor
 {
 public:
-    asPredictorArch(const wxString &dataId);
+    explicit asPredictorArch(const wxString &dataId);
 
-    virtual ~asPredictorArch();
+    ~asPredictorArch() override = default;
 
     static asPredictorArch *GetInstance(const wxString &datasetId, const wxString &dataId,
-                                               const wxString &directory = wxEmptyString);
+                                        const wxString &directory = wxEmptyString);
 
-    virtual bool Init();
+    bool Init() override;
 
-    bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool ClipToArea(asAreaCompGrid *desiredArea);
 
-    bool ClipToArea(asGeoAreaCompositeGrid *desiredArea);
-
-    double GetOriginalProviderStart() const
-    {
-        return m_originalProviderStart;
-    }
-
-    void SetFileNamePattern(const wxString &val)
-    {
-        m_fileNamePattern = val;
-    }
 
 protected:
-    double m_originalProviderStart;
-    double m_originalProviderEnd;
     wxString m_fileNamePattern;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    void ListFiles(asTimeArray &timeArray) override;
 
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData);
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
+    bool CheckTimeArray(asTimeArray &timeArray) const override;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
-
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
+    bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
 
 private:
 

@@ -37,7 +37,7 @@ class asTimeArray;
 
 class asGeo;
 
-class asGeoAreaCompositeGrid;
+class asAreaCompGrid;
 
 
 class asPredictor
@@ -77,35 +77,27 @@ public:
 
     enum Unit
     {
-        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, kg_kg, m_s, W_m2, kg_m2,
-        kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
+        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, g_kg, kg_kg, m_s, W_m2,
+        kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
     };
 
-    asPredictor(const wxString &dataId);
+    explicit asPredictor(const wxString &dataId);
 
-    virtual ~asPredictor();
-
-    static Parameter StringToParameterEnum(const wxString &parameterStr);
-
-    static wxString ParameterEnumToString(Parameter parameter);
-
-    static Unit StringToUnitEnum(const wxString &unitStr);
+    ~asPredictor() override = default;
 
     virtual bool Init() = 0;
 
     void CheckLevelTypeIsDefined();
 
-    bool CheckFilesPresence(vwxs &filesList);
+    bool CheckFilesPresence();
 
-    bool Load(asGeoAreaCompositeGrid *desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asGeoAreaCompositeGrid &desiredArea, asTimeArray &timeArray);
+    bool Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, float level);
 
-    bool Load(asGeoAreaCompositeGrid &desiredArea, double date);
+    bool Load(asAreaCompGrid &desiredArea, double date, float level);
 
-    bool Load(asGeoAreaCompositeGrid *desiredArea, double date);
-
-    bool LoadFullArea(double date, float level);
+    bool Load(asAreaCompGrid *desiredArea, double date, float level);
 
     bool TransformData(vvva2f &compositeData);
 
@@ -119,30 +111,13 @@ public:
 
     vva2f &GetData()
     {
-        wxASSERT((int) m_data.size() == (int) m_time.size());
+        wxASSERT((int) m_data.size() >= (int) m_time.size());
         wxASSERT(m_data.size() >= 1);
         wxASSERT(m_data[0].size() >= 1);
         wxASSERT(m_data[0][0].cols() > 0);
         wxASSERT(m_data[0][0].rows() > 0);
-        wxASSERT(m_data[1][0].cols() > 0);
-        wxASSERT(m_data[1][0].rows() > 0);
 
         return m_data;
-    }
-
-    a1d &GetTime()
-    {
-        return m_time;
-    }
-
-    a1f GetAxisLon() const
-    {
-        return m_axisLon;
-    }
-
-    a1f GetAxisLat() const
-    {
-        return m_axisLat;
     }
 
     Parameter GetParameter() const
@@ -191,7 +166,7 @@ public:
 
     int GetMembersNb() const
     {
-        wxASSERT(m_data.size() > 0);
+        wxASSERT(!m_data.empty());
 
         return (int) m_data[0].size();
     }
@@ -206,22 +181,14 @@ public:
         return m_lonPtsnb;
     }
 
-    double GetTimeStart() const
-    {
-        return m_time[0];
-    }
+    static bool IsLatLon(const wxString &datasetId);
 
-    double GetTimeEnd() const
+    bool IsLatLon() const
     {
-        return m_time[m_time.size() - 1];
+        return m_isLatLon;
     }
 
     bool IsPreprocessed() const
-    {
-        return m_isPreprocessed;
-    }
-
-    bool GetIsPreprocessed() const
     {
         return m_isPreprocessed;
     }
@@ -251,54 +218,9 @@ public:
         return m_preprocessMethod;
     }
 
-    void SetPreprocessMethod(wxString val)
+    void SetPreprocessMethod(const wxString &val)
     {
         m_preprocessMethod = val;
-    }
-
-    wxString GetDataId() const
-    {
-        return m_dataId;
-    }
-
-    wxString GetDatasetName() const
-    {
-        return m_datasetName;
-    }
-
-    double GetXaxisStep() const
-    {
-        return m_xAxisStep;
-    }
-
-    void SetXaxisStep(const double val)
-    {
-        m_xAxisStep = (float) val;
-    }
-
-    double GetXaxisShift() const
-    {
-        return m_xAxisShift;
-    }
-
-    double GetYaxisStep() const
-    {
-        return m_yAxisStep;
-    }
-
-    void SetYaxisStep(const double val)
-    {
-        m_yAxisStep = (float) val;
-    }
-
-    double GetYaxisShift() const
-    {
-        return m_yAxisShift;
-    }
-
-    void SetTimeStepHours(double val)
-    {
-        m_timeStepHours = val;
     }
 
     void SelectFirstMember()
@@ -307,8 +229,8 @@ public:
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
 
-        m_fileIndexes.memberStart = 0;
-        m_fileIndexes.memberCount = 1;
+        m_fInd.memberStart = 0;
+        m_fInd.memberCount = 1;
     }
 
     void SelectMember(int memberNum)
@@ -318,8 +240,8 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.memberStart = memberNum - 1;
-        m_fileIndexes.memberCount = 1;
+        m_fInd.memberStart = memberNum - 1;
+        m_fInd.memberCount = 1;
     }
 
     void SelectMembers(int memberNb)
@@ -329,14 +251,25 @@ public:
         }
 
         // memberNum is 1-based, netcdf index is 0-based
-        m_fileIndexes.memberStart = 0;
-        m_fileIndexes.memberCount = memberNb;
+        m_fInd.memberStart = 0;
+        m_fInd.memberCount = memberNb;
     }
 
     int GetMembersNb()
     {
-        return wxMax(m_fileIndexes.memberCount, 1);
+        return wxMax(m_fInd.memberCount, 1);
     }
+
+    a1d GetLatAxis() const
+    {
+        return m_axisLat;
+    }
+
+    a1d GetLonAxis() const
+    {
+        return m_axisLon;
+    }
+
 
 protected:
     struct FileStructure
@@ -346,15 +279,17 @@ protected:
         wxString dimTimeName;
         wxString dimLevelName;
         wxString dimMemberName;
-        bool hasLevelDimension;
+        bool hasLevelDim;
         bool singleLevel;
-        a1f axisLon;
-        a1f axisLat;
-        a1f axisLevel;
-        a1i axisMember;
-        double axisTimeFirstValue;
-        double axisTimeLastValue;
-        size_t axisTimeLength;
+        a1d lons;
+        a1d lats;
+        a1d levels;
+        a1i members;
+        double timeStart;
+        double timeEnd;
+        double timeStep;
+        double firstHour;
+        size_t timeLength;
     };
     struct FileIndexesArea
     {
@@ -378,56 +313,52 @@ protected:
         int memberStart;
         int memberCount;
     };
-    FileStructure m_fileStructure;
-    FileIndexes m_fileIndexes;
+    FileStructure m_fStr;
+    FileIndexes m_fInd;
+    asFile::FileType m_fileType;
     bool m_initialized;
     bool m_axesChecked;
     wxString m_subFolder;
     wxString m_dataId;
     wxString m_datasetId;
-    wxString m_originalProvider;
-    wxString m_transformedBy;
     wxString m_datasetName;
-    double m_timeZoneHours;
-    double m_timeStepHours;
-    double m_firstTimeStepHours;
+    wxString m_provider;
+    wxString m_transformedBy;
     vd m_nanValues;
     Parameter m_parameter;
     wxString m_parameterName;
     vi m_gribCode;
     wxString m_product;
-    wxString m_fileVariableName;
+    wxString m_fileVarName;
     Unit m_unit;
-    float m_xAxisStep;
-    float m_yAxisStep;
     bool m_strideAllowed;
-    float m_xAxisShift;
-    float m_yAxisShift;
     float m_level;
     a1d m_time;
     vva2f m_data;
     int m_latPtsnb;
     int m_lonPtsnb;
-    a1f m_axisLat;
-    a1f m_axisLon;
+    a1d m_axisLat;
+    a1d m_axisLon;
+    bool m_isLatLon;
     bool m_isPreprocessed;
     bool m_isEnsemble;
     bool m_canBeClipped;
+    bool m_parseTimeReference;
     wxString m_fileExtension;
     wxString m_preprocessMethod;
+    vwxs m_files;
 
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const = 0;
+    virtual void ListFiles(asTimeArray &timeArray) = 0;
 
-    virtual bool ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
-                                 vvva2f &compositeData) = 0;
+    bool EnquireFileStructure();
+
+    bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
 
     virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
 
-    virtual bool ExtractFromFiles(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
-
-    virtual bool GetAxesIndexes(asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
+    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 
@@ -443,30 +374,38 @@ protected:
 
     bool GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData);
 
-    bool ExtractFromNetcdfFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    bool EnquireNetcdfFileStructure();
+
+    bool ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
 
-    bool ExtractFromGribFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea, asTimeArray &timeArray,
+    bool EnquireGribFileStructure();
+
+    bool ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib2 &gbFile);
+    bool ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1 = nullptr);
 
     bool CheckFileStructure();
 
-    bool MergeComposites(vvva2f &compositeData, asGeoAreaCompositeGrid *area);
+    bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
-    bool InterpolateOnGrid(asGeoAreaCompositeGrid *dataArea, asGeoAreaCompositeGrid *desiredArea);
+    bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
 
-    asGeoAreaCompositeGrid *CreateMatchingArea(asGeoAreaCompositeGrid *desiredArea);
-
-    asGeoAreaCompositeGrid *AdjustAxes(asGeoAreaCompositeGrid *dataArea, vvva2f &compositeData);
+    asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 
     void AssignGribCode(const int arr[]);
 
 private:
     wxString m_directoryPath;
+
+    bool ExtractSpatialAxes(asFileNetcdf &ncFile);
+
+    bool ExtractLevelAxis(asFileNetcdf &ncFile);
+
+    bool ExtractTimeAxis(asFileNetcdf &ncFile);
 };
 
 #endif // ASPREDICTOR_H

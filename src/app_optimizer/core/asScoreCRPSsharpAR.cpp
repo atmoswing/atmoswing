@@ -30,14 +30,11 @@
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSsharpAR::asScoreCRPSsharpAR()
-        : asScore()
+        : asScore(asScore::CRPSsharpnessAR, _("CRPS Accuracy Approx Rectangle"),
+                  _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0,
+                  NaNf)
 {
-    m_score = asScore::CRPSsharpnessAR;
-    m_name = _("CRPS Accuracy Approx Rectangle");
-    m_fullName = _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
 asScoreCRPSsharpAR::~asScoreCRPSsharpAR()
@@ -45,14 +42,17 @@ asScoreCRPSsharpAR::~asScoreCRPSsharpAR()
     //dtor
 }
 
-float asScoreCRPSsharpAR::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreCRPSsharpAR::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(0, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the CRPS processing function"));
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
@@ -63,10 +63,10 @@ float asScoreCRPSsharpAR::Assess(float ObservedVal, const a1f &ForcastVals, int 
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Indices for the left and right part (according to the median) of the distribution
     float mid = ((float) nbPredict - 1) / (float) 2;

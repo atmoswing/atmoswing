@@ -43,29 +43,14 @@ class asForecastTreeItemData
 public:
     asForecastTreeItemData(int methodRow, int forecastRow);
 
-    bool IsAggregator() const
-    {
-        return (m_forecastRow < 0);
-    }
-
     int GetMethodRow() const
     {
         return m_methodRow;
     }
 
-    void SetMethodRow(int methodRow)
-    {
-        m_methodRow = methodRow;
-    }
-
     int GetForecastRow() const
     {
         return m_forecastRow;
-    }
-
-    void SetForecastRow(int forecastRow)
-    {
-        m_forecastRow = forecastRow;
     }
 
 private:
@@ -80,29 +65,14 @@ class asMessageForecastChoice
 public:
     asMessageForecastChoice(int methodRow, int forecastRow);
 
-    bool IsAggregator() const
-    {
-        return (m_forecastRow < 0);
-    }
-
     int GetMethodRow() const
     {
         return m_methodRow;
     }
 
-    void SetMethodRow(int methodRow)
-    {
-        m_methodRow = methodRow;
-    }
-
     int GetForecastRow() const
     {
         return m_forecastRow;
-    }
-
-    void SetForecastRow(int forecastRow)
-    {
-        m_forecastRow = forecastRow;
     }
 
 private:
@@ -127,11 +97,11 @@ public:
     asListBoxForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
                        const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
 
-    virtual ~asListBoxForecasts();
+    ~asListBoxForecasts() override = default;
 
     void CreateImageList();
 
-    void Update();
+    void Update() override;
 
     void Clear();
 
@@ -142,8 +112,8 @@ public:
 protected:
 
 private:
-    bool m_skipSlctChangeEvent;
     asForecastManager *m_forecastManager;
+    bool m_skipSlctChangeEvent;
 
     void OnForecastSlctChange(wxTreeEvent &event);
 

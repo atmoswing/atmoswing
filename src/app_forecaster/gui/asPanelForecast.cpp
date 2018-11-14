@@ -31,11 +31,10 @@
 #include "asPanelsManagerForecasts.h"
 
 asPanelForecast::asPanelForecast(wxWindow *parent)
-        : asPanelForecastVirtual(parent)
+        : asPanelForecastVirtual(parent),
+          m_parentFrame(nullptr),
+          m_panelsManager(nullptr)
 {
-    m_parentFrame = NULL;
-    m_panelsManager = NULL;
-
     // Led
     m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
     m_led->SetState(awxLED_OFF);

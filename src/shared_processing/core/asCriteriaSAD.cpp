@@ -29,12 +29,8 @@
 #include "asCriteriaSAD.h"
 
 asCriteriaSAD::asCriteriaSAD()
-        : asCriteria()
+        : asCriteria(asCriteria::SAD, "SAD", _("Sum of Absolute Differences"), Asc)
 {
-    m_criteria = asCriteria::SAD;
-    m_name = "SAD";
-    m_fullName = _("Sum of Absolute Differences");
-    m_order = Asc;
     m_scaleBest = 0;
     m_scaleWorst = NaNf;
     m_canUseInline = true;

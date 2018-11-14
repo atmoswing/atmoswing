@@ -38,7 +38,7 @@ asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow *parent, asForecastMan
 
     // Forecasts controls
     wxSize forecastsSize = wxSize();
-    forecastsSize.SetHeight(120 * g_ppiScaleDc);
+    forecastsSize.SetHeight(160 * g_ppiScaleDc);
     m_forecastsCtrl = new asListBoxForecasts(this, forecastManager, wxID_ANY, wxDefaultPosition, forecastsSize);
     m_sizerContent->Add(m_forecastsCtrl, 1, wxEXPAND, 5);
 
@@ -51,23 +51,18 @@ asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow *parent, asForecastMan
     subSizer = new wxBoxSizer(wxHORIZONTAL);
 
     wxSize displaySize = wxSize();
-    displaySize.SetHeight(100 * g_ppiScaleDc);
-    m_forecastDisplayCtrl = new asListBoxForecastDisplay(this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL,
+    displaySize.SetHeight(130 * g_ppiScaleDc);
+    m_forecastDisplayCtrl = new asListBoxForecastDisplay(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr,
                                                          wxNO_BORDER);
     subSizer->Add(m_forecastDisplayCtrl, 1, wxEXPAND, 5);
 
-    m_quantilesCtrl = new asListBoxQuantiles(this, wxID_ANY, wxDefaultPosition, displaySize, 0, NULL, wxNO_BORDER);
+    m_quantilesCtrl = new asListBoxQuantiles(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr, wxNO_BORDER);
     subSizer->Add(m_quantilesCtrl, 1, wxEXPAND, 5);
     subSizer->Fit(this);
     m_sizerContent->Add(subSizer, 0, wxEXPAND, 5);
 
     Layout();
     m_sizerContent->Fit(this);
-}
-
-asPanelSidebarForecasts::~asPanelSidebarForecasts()
-{
-
 }
 
 void asPanelSidebarForecasts::ClearForecasts()

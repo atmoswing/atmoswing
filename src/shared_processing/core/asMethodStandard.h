@@ -33,6 +33,12 @@
 #include <asPredictand.h>
 
 
+class asPredictorArch;
+class asPredictor;
+class asParameters;
+class asCriteria;
+
+
 class asMethodStandard
         : public wxObject
 {
@@ -46,6 +52,35 @@ public:
     bool LoadPredictandDB(const wxString &predictandDBFilePath);
 
     void Cancel();
+
+    bool PreloadArchiveData(asParameters *params);
+
+    bool ProceedToArchiveDataPreloading(asParameters *params);
+
+    bool CheckArchiveDataIsPreloaded(const asParameters *params) const;
+
+    bool HasPreloadedArchiveData(int iStep, int iPtor) const;
+
+    bool HasPreloadedArchiveData(int iStep, int iPtor, int iPre) const;
+
+    bool PointersArchiveDataShared(asParameters *params, int iStep, int iPtor, int iPre);
+
+    bool PreloadArchiveDataWithoutPreprocessing(asParameters *params, int iStep, int iPtor, int iDat);
+
+    bool PreloadArchiveDataWithPreprocessing(asParameters *params, int iStep, int iPtor);
+
+    bool LoadArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, double timeStartData,
+                         double timeEndData);
+
+    bool ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor);
+
+    bool ExtractArchiveDataWithoutPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+                                                int iPtor, double timeStartData, double timeEndData);
+
+    bool ExtractArchiveDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+                                             int iPtor, double timeStartData, double timeEndData);
+
+    bool GetRandomValidData(asParameters *params, int iStep, int iPtor, int iPre);
 
     void SetParamsFilePath(const wxString &val)
     {
@@ -67,12 +102,41 @@ public:
         m_predictorDataDir = val;
     }
 
+    bool IsArchiveDataPointerCopy(int iStep, int iPtor, int iPre) const
+    {
+        return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
+    }
+
 protected:
     bool m_cancel;
+    bool m_preloaded;
     wxString m_paramsFilePath;
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
     asPredictand *m_predictandDB;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
+    std::vector<vvb> m_preloadedArchivePointerCopy;
+
+    bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result);
+
+    double GetTimeStartArchive(asParameters *params) const;
+
+    double GetTimeEndArchive(asParameters *params) const;
+
+    virtual void InitializePreloadedArchiveDataContainers(asParameters *params);
+
+    virtual void Cleanup(std::vector<asPredictorArch *> predictors);
+
+    virtual void Cleanup(std::vector<asPredictor *> predictors);
+
+    virtual void Cleanup(std::vector<asCriteria *> criteria);
+
+    void DeletePreloadedArchiveData();
+
+    virtual double GetEffectiveArchiveDataStart(asParameters *params) const = 0;
+
+    virtual double GetEffectiveArchiveDataEnd(asParameters *params) const = 0;
+
 
 private:
 };

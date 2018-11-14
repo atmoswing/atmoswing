@@ -58,7 +58,7 @@ float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const 
             float score = 0, divisor = 0;
 
             for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asTools::IsNaN(scores(iTime))) {
+                if (!asIsNaN(scores(iTime))) {
                     score += scores(iTime);
                     divisor++;
                 }
@@ -72,25 +72,23 @@ float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const 
             int timeArrayLength = timeArray.GetSize();
 
             // Get first and last common days
-            double FirstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
-            double LastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
-            a1d DateTime = timeArray.GetTimeArray();
-            int IndexStart = asTools::SortedArraySearchClosest(&DateTime(0), &DateTime(timeArrayLength - 1), FirstDay);
-            int IndexEnd = asTools::SortedArraySearchClosest(&DateTime(0), &DateTime(timeArrayLength - 1), LastDay);
+            double firstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
+            double lastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
+            a1d dateTime = timeArray.GetTimeArray();
+            int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
+            int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);
 
             // Loop through the timeArray
             float score = 0, divisor = 0;
 
-            for (int iTime = IndexStart; iTime <= IndexEnd; iTime++) {
+            for (int iTime = indexStart; iTime <= indexEnd; iTime++) {
                 if (iTime < 0) {
                     wxLogError(_("Error processing the final mean score."));
                     return NaNf;
                 }
-                int indexCurrent = asTools::SortedArraySearchClosest(&targetDates(0),
-                                                                     &targetDates(targetDatesLength - 1),
-                                                                     DateTime(iTime));
+                int indexCurrent = asFindClosest(&targetDates(0), &targetDates(targetDatesLength - 1), dateTime(iTime));
                 if ((indexCurrent != asNOT_FOUND) & (indexCurrent != asOUT_OF_RANGE)) {
-                    if (!asTools::IsNaN(scores(indexCurrent))) {
+                    if (!asIsNaN(scores(indexCurrent))) {
                         score += scores(indexCurrent);
                         divisor++;
                     }

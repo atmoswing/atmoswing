@@ -37,14 +37,8 @@ asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, Tempor
                                                  SpatialAggregation dataSpatialAggregation)
         : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
 {
-    //ctor
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
-}
-
-asPredictandTemperature::~asPredictandTemperature()
-{
-    //dtor
 }
 
 bool asPredictandTemperature::InitContainers()
@@ -73,13 +67,13 @@ bool asPredictandTemperature::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandTemperature::Save(const wxString &AlternateDestinationDir) const
+bool asPredictandTemperature::Save(const wxString &destinationDir) const
 {
     // Get the file path
-    wxString PredictandDBFilePath = GetDBFilePathSaving(AlternateDestinationDir);
+    wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(PredictandDBFilePath, asFileNetcdf::Replace);
+    asFileNetcdf ncFile(predictandDBFilePath, asFileNetcdf::Replace);
     if (!ncFile.Open())
         return false;
 
@@ -98,9 +92,8 @@ bool asPredictandTemperature::Save(const wxString &AlternateDestinationDir) cons
     return true;
 }
 
-bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir,
-                                                const wxString &AlternatePatternDir,
-                                                const wxString &AlternateDestinationDir)
+bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
+                                                const wxString &patternDir, const wxString &destinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -115,10 +108,10 @@ bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath,
         return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, AlternateDataDir, AlternatePatternDir))
+    if (!ParseData(catalogFilePath, dataDir, patternDir))
         return false;
 
-    Save(AlternateDestinationDir);
+    Save(destinationDir);
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));

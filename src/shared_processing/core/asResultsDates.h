@@ -40,7 +40,7 @@ public:
 
     virtual ~asResultsDates();
 
-    void Init(asParameters &params);
+    void Init(asParameters *params);
 
     a1f &GetTargetDates()
     {

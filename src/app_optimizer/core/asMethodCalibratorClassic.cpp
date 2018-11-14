@@ -56,6 +56,16 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     if (!DoPreloadData(params))
         return false;
 
+    // Preloading data is necessary
+    for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
+        for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+            if (!params.NeedsPreloading(iStep, iPtor)) {
+                wxLogError(_("You need to preload the data for the classic calibration."));
+                return false;
+            }
+        }
+    }
+
     // Copy of the original parameters set.
     m_originalParams = params;
 
@@ -66,9 +76,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     // Create a analogsdate object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
-    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
-        vi stationId = stationsId[iStat];
-
+    for (auto stationId : stationsId) {
         wxLogVerbose(_("Calibrating station %s."), GetPredictandStationIdsList(stationId));
 
         // Reset the score of the climatology
@@ -82,7 +90,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         resultsTested.Init(wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
         asResultsParametersArray resultsBest;
         resultsBest.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId)));
-        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
+        wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
                                                                 asConfig::GetDefaultUserWorkingDir());
         wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
         resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time,
@@ -128,9 +136,11 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
                     return false;
 
                 // Keep the best parameter set
-                wxASSERT(m_parametersTemp.size() > 0);
+                wxASSERT(!m_parametersTemp.empty());
                 RemoveNaNsInTemp();
-                PushBackBestTemp();
+                if (!PushBackBestTemp())
+                    return false;
+
                 wxASSERT(m_parameters.size() == 1);
                 ClearTemp();
 
@@ -176,15 +186,15 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         resultsTested.Print();
 
         // Keep the best parameter set
-        wxASSERT(m_parameters.size() > 0);
-        wxASSERT(m_parametersTemp.size() > 0);
-        wxASSERT(m_scoresCalibTemp.size() > 0);
+        wxASSERT(!m_parameters.empty());
+        wxASSERT(!m_parametersTemp.empty());
+        wxASSERT(!m_scoresCalibTemp.empty());
         KeepBestTemp();
         ClearTemp();
 
         // Validate
-        SaveDetails(m_parameters[0]);
-        Validate(m_parameters[0]);
+        SaveDetails(&m_parameters[0]);
+        Validate(&m_parameters[0]);
 
         // Keep the best parameters set
         SetBestParameters(resultsBest);
@@ -223,19 +233,19 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
 {
     try {
         wxLogMessage("Preloading data (if required).");
-        if (!PreloadData(params)) {
+        if (!PreloadArchiveData(&params)) {
             wxLogError(_("Could not preload the data."));
             return false;
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught in the data preloading: %s"), msg);
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
         wxLogError(_("Exception in the data preloading: %s"), msg);
-        DeletePreloadedData();
+        DeletePreloadedArchiveData();
         return false;
     }
     wxLogMessage("Data preloading is over.");
@@ -319,10 +329,21 @@ void asMethodCalibratorClassic::GetSpatialAxes(const asParametersCalibration &pa
                                                const asMethodCalibrator::ParamExploration &explo, a1d &xAxis,
                                                a1d &yAxis) const
 {
-    xAxis = asGeoAreaCompositeGrid::GetXaxis(params.GetPredictorGridType(iStep, 0), explo.xMinStart, explo.xMinEnd,
-                                             params.GetPredictorXstep(iStep, 0));
-    yAxis = asGeoAreaCompositeGrid::GetYaxis(params.GetPredictorGridType(iStep, 0), explo.yMinStart, explo.yMinEnd,
-                                             params.GetPredictorYstep(iStep, 0));
+    wxASSERT(m_preloadedArchive[iStep][0][0][0][0]);
+
+    xAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLonAxis();
+
+    // Check longitude range
+    if (xAxis[0] >= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[0] - 360 <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+        xAxis[xAxis.size() - 1] - 360 >= params.GetPredictorXminLowerLimit(iStep, 0)) {
+        for (int i = 0; i < xAxis.size(); i++) {
+            xAxis[i] -= 360;
+        }
+    }
+
+    yAxis = m_preloadedArchive[iStep][0][0][0][0]->GetLatAxis();
+    asSortArray(&yAxis[0], &yAxis[yAxis.size()-1], Asc);
 }
 
 void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalibration &params, int iStep,
@@ -334,18 +355,25 @@ void asMethodCalibratorClassic::GenerateRelevanceMapParameters(asParametersCalib
     a1d yAxis;
     GetSpatialAxes(params, iStep, explo, xAxis, yAxis);
 
-    for (int iX = 0; iX < xAxis.size(); iX += m_stepsLonPertinenceMap) {
-        for (int iY = 0; iY < yAxis.size(); iY += m_stepsLatPertinenceMap) {
-            for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-                params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
-                params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
+    for (int iX = 0; iX < xAxis.size() - m_stepsLonPertinenceMap; iX += m_stepsLonPertinenceMap) {
+        for (int iY = 0; iY < yAxis.size() - m_stepsLatPertinenceMap; iY += m_stepsLatPertinenceMap) {
 
-                // Fixes and checks
-                params.FixWeights();
-                params.FixCoordinates();
+            if (xAxis[iX] >= params.GetPredictorXminLowerLimit(iStep, 0) &&
+                xAxis[iX] <= params.GetPredictorXminUpperLimit(iStep, 0) &&
+                yAxis[iY] >= params.GetPredictorYminLowerLimit(iStep, 0) &&
+                yAxis[iY] <= params.GetPredictorYminUpperLimit(iStep, 0)) {
+
+                for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+                    params.SetPredictorXmin(iStep, iPtor, xAxis[iX]);
+                    params.SetPredictorYmin(iStep, iPtor, yAxis[iY]);
+
+                    // Fixes and checks
+                    params.FixWeights();
+                    params.FixCoordinates();
+                }
+
+                m_parametersTemp.push_back(params);
             }
-
-            m_parametersTemp.push_back(params);
         }
     }
 }
@@ -371,25 +399,25 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
 
     wxStopWatch swMap;
 
-    for (unsigned int iParam = 0; iParam < m_parametersTemp.size(); iParam++) {
+    for (auto &param : m_parametersTemp) {
         if (m_proceedSequentially) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, m_parametersTemp[iParam], iStep, containsNaNs))
+                if (!GetAnalogsDates(anaDates, &param, iStep, containsNaNs))
                     return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, m_parametersTemp[iParam], anaDatesPrevious, iStep, containsNaNs))
+                if (!GetAnalogsSubDates(anaDates, &param, anaDatesPrevious, iStep, containsNaNs))
                     return false;
             }
             if (containsNaNs) {
                 m_scoresCalibTemp.push_back(NaNf);
                 continue;
             }
-            if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, iStep))
+            if (!GetAnalogsValues(anaValues, &param, anaDates, iStep))
                 return false;
-            if (!GetAnalogsScores(anaScores, m_parametersTemp[iParam], anaValues, iStep))
+            if (!GetAnalogsScores(anaScores, &param, anaValues, iStep))
                 return false;
-            if (!GetAnalogsTotalScore(anaScoreFinal, m_parametersTemp[iParam], anaScores, iStep))
+            if (!GetAnalogsTotalScore(anaScoreFinal, &param, anaScores, iStep))
                 return false;
         } else {
             bool continueLoop = true;
@@ -398,10 +426,10 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 wxLogVerbose(_("Process sub-level %d"), sub_step);
                 bool containsNaNs = false;
                 if (sub_step == 0) {
-                    if (!GetAnalogsDates(anaDates, m_parametersTemp[iParam], sub_step, containsNaNs))
+                    if (!GetAnalogsDates(anaDates, &param, sub_step, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, m_parametersTemp[iParam], anaDatesPreviousSubRuns, sub_step,
+                    if (!GetAnalogsSubDates(anaDates, &param, anaDatesPreviousSubRuns, sub_step,
                                             containsNaNs))
                         return false;
                 }
@@ -413,21 +441,21 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
                 anaDatesPreviousSubRuns = anaDates;
             }
             if (continueLoop) {
-                if (!GetAnalogsValues(anaValues, m_parametersTemp[iParam], anaDates, params.GetStepsNb() - 1))
+                if (!GetAnalogsValues(anaValues, &param, anaDates, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, m_parametersTemp[iParam], anaValues, params.GetStepsNb() - 1))
+                if (!GetAnalogsScores(anaScores, &param, anaValues, params.GetStepsNb() - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, m_parametersTemp[iParam], anaScores, params.GetStepsNb() - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &param, anaScores, params.GetStepsNb() - 1))
                     return false;
             }
         }
 
         // Store the result
         m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
-        resultsTested.Add(m_parametersTemp[iParam], anaScoreFinal.GetScore());
+        resultsTested.Add(param, anaScoreFinal.GetScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the relevance map: %.3f min."), static_cast<float>(swMap.Time()) / 60000.0f);
 
     return true;
 }
@@ -498,21 +526,21 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
-                    if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                    if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
                     isover = false;
                     continue;
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
+                if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
@@ -521,10 +549,10 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
-                        if (!GetAnalogsDates(anaDates, params, sub_step, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, &params, sub_step, containsNaNs))
                             return false;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
                             return false;
                     }
                     if (containsNaNs) {
@@ -535,11 +563,11 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                     anaDatesPreviousSubRuns = anaDates;
                 }
                 if (continueLoop) {
-                    if (!GetAnalogsValues(anaValues, params, anaDates, params.GetStepsNb() - 1))
+                    if (!GetAnalogsValues(anaValues, &params, anaDates, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, params.GetStepsNb() - 1))
                         return false;
                 }
             }
@@ -553,12 +581,13 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
         }
 
         // Apply the resizing that provides the best improvement
-        if (m_parametersTemp.size() > 0) {
+        if (!m_parametersTemp.empty()) {
             KeepBestTemp();
         }
     }
 
-    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."), float(swEnlarge.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the first resizing procedure: %.3f min."),
+                 static_cast<float>(swEnlarge.Time()) / 60000.0f);
 
     return true;
 }
@@ -736,20 +765,20 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
             if (m_proceedSequentially) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
-                    if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                    if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                         return false;
                 } else {
-                    if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                    if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                         return false;
                 }
                 if (containsNaNs) {
                     continue;
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, iStep))
+                if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
                     return false;
-                if (!GetAnalogsScores(anaScores, params, anaValues, iStep))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, iStep))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, iStep))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, iStep))
                     return false;
             } else {
                 bool continueLoop = true;
@@ -758,10 +787,10 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
                     if (sub_step == 0) {
-                        if (!GetAnalogsDates(anaDates, params, sub_step, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, &params, sub_step, containsNaNs))
                             return false;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
                             return false;
                     }
                     if (containsNaNs) {
@@ -771,11 +800,11 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
                     anaDatesPreviousSubRuns = anaDates;
                 }
                 if (continueLoop) {
-                    if (!GetAnalogsValues(anaValues, params, anaDates, params.GetStepsNb() - 1))
+                    if (!GetAnalogsValues(anaValues, &params, anaDates, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsScores(anaScores, params, anaValues, params.GetStepsNb() - 1))
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, params.GetStepsNb() - 1))
                         return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, params.GetStepsNb() - 1))
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, params.GetStepsNb() - 1))
                         return false;
                 }
             }
@@ -792,7 +821,8 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
         }
     }
 
-    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"), float(swResize.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the second resizing procedure: %.3f min"),
+                 static_cast<float>(swResize.Time()) / 60000.0f);
 
     return true;
 }
@@ -802,7 +832,7 @@ void asMethodCalibratorClassic::MoveEast(asParametersCalibration &params,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
-    int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
+    int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
     ix = wxMin(ix + multipleFactor * explo.xPtsNbIter, (int) xAxis.size() - 1);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
@@ -813,7 +843,7 @@ void asMethodCalibratorClassic::MoveSouth(asParametersCalibration &params,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
-    int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
+    int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
     iy = wxMax(iy - multipleFactor * explo.yPtsNbIter, 0);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
@@ -824,7 +854,7 @@ void asMethodCalibratorClassic::MoveWest(asParametersCalibration &params,
                                          int iStep, int iPtor, int multipleFactor) const
 {
     double xtmp = params.GetPredictorXmin(iStep, iPtor);
-    int ix = asTools::SortedArraySearch(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
+    int ix = asFind(&xAxis[0], &xAxis[xAxis.size() - 1], xtmp);
     ix = wxMax(ix - multipleFactor * explo.xPtsNbIter, 0);
     xtmp = wxMax(wxMin(xAxis[ix], explo.xMinEnd), explo.xMinStart);
     params.SetPredictorXmin(iStep, iPtor, xtmp);
@@ -835,7 +865,7 @@ void asMethodCalibratorClassic::MoveNorth(asParametersCalibration &params,
                                           int iStep, int iPtor, int multipleFactor) const
 {
     double ytmp = params.GetPredictorYmin(iStep, iPtor);
-    int iy = asTools::SortedArraySearch(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
+    int iy = asFind(&yAxis[0], &yAxis[yAxis.size() - 1], ytmp);
     iy = wxMin(iy + multipleFactor * explo.yPtsNbIter, (int) yAxis.size() - 2);
     ytmp = wxMax(wxMin(yAxis[iy], explo.yMinEnd), explo.yMinStart);
     params.SetPredictorYmin(iStep, iPtor, ytmp);
@@ -882,11 +912,11 @@ bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration
 {
     bool containsNaNs = false;
     if (iStep == 0) {
-        if (!GetAnalogsDates(anaDatesPrevious, params, iStep, containsNaNs))
+        if (!GetAnalogsDates(anaDatesPrevious, &params, iStep, containsNaNs))
             return false;
     } else if (iStep < params.GetStepsNb()) {
         asResultsDates anaDatesPreviousNew;
-        if (!GetAnalogsSubDates(anaDatesPreviousNew, params, anaDatesPrevious, iStep, containsNaNs))
+        if (!GetAnalogsSubDates(anaDatesPreviousNew, &params, anaDatesPrevious, iStep, containsNaNs))
             return false;
         anaDatesPrevious = anaDatesPreviousNew;
     }
@@ -897,7 +927,7 @@ bool asMethodCalibratorClassic::GetDatesOfBestParameters(asParametersCalibration
         double tmpXmin = m_parameters[m_parameters.size() - 1].GetPredictorXmin(iStep, 0);
         int tmpYptsnb = m_parameters[m_parameters.size() - 1].GetPredictorYptsnb(iStep, 0);
         int tmpXptsnb = m_parameters[m_parameters.size() - 1].GetPredictorXptsnb(iStep, 0);
-        wxLogMessage(_("Area: Ymin = %.2f, Yptsnb = %d, Xmin = %.2f, Xptsnb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
+        wxLogMessage(_("Area: yMin = %.2f, yPtsNb = %d, xMin = %.2f, xPtsNb = %d"), tmpYmin, tmpYptsnb, tmpXmin,
                      tmpXptsnb);
 
         return false;

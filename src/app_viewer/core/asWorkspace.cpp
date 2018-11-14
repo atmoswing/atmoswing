@@ -28,21 +28,17 @@
 #include "asWorkspace.h"
 
 asWorkspace::asWorkspace()
-        : wxObject()
+        : wxObject(),
+          m_hasChanged(false),
+          m_filePath(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw"),
+          m_coordinateSys("EPSG:3857"),
+          m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
+          m_colorbarMaxValue(50.0),
+          m_timeSeriesPlotPastDaysNb(3),
+          m_alarmsPanelReturnPeriod(10),
+          m_alarmsPanelQuantile(0.9f)
 {
-    m_hasChanged = false;
-    m_filePath = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw";
-    m_coordinateSys = "EPSG:3857";
-    m_forecastsDirectory = asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts";
-    m_colorbarMaxValue = 50.0;
-    m_timeSeriesPlotPastDaysNb = 3;
-    m_alarmsPanelReturnPeriod = 10;
-    m_alarmsPanelQuantile = 0.9f;
-}
 
-asWorkspace::~asWorkspace()
-{
-    //dtor
 }
 
 bool asWorkspace::Load(const wxString &filePath)
@@ -65,17 +61,17 @@ bool asWorkspace::Load(const wxString &filePath)
     wxXmlNode *node = fileWorkspace.GetRoot()->GetChildren();
     while (node) {
         if (node->GetName() == "coordinate_system") {
-            m_coordinateSys = fileWorkspace.GetString(node);
+            m_coordinateSys = asFileWorkspace::GetString(node);
         } else if (node->GetName() == "forecast_directory") {
-            m_forecastsDirectory = fileWorkspace.GetString(node);
+            m_forecastsDirectory = asFileWorkspace::GetString(node);
         } else if (node->GetName() == "colorbar_max_value") {
-            m_colorbarMaxValue = fileWorkspace.GetDouble(node);
+            m_colorbarMaxValue = asFileWorkspace::GetDouble(node);
         } else if (node->GetName() == "plot_time_series_past_days_nb") {
-            m_timeSeriesPlotPastDaysNb = fileWorkspace.GetInt(node);
+            m_timeSeriesPlotPastDaysNb = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_return_period") {
-            m_alarmsPanelReturnPeriod = fileWorkspace.GetInt(node);
+            m_alarmsPanelReturnPeriod = asFileWorkspace::GetInt(node);
         } else if (node->GetName() == "panel_alarms_quantile") {
-            m_alarmsPanelQuantile = fileWorkspace.GetFloat(node);
+            m_alarmsPanelQuantile = asFileWorkspace::GetFloat(node);
         } else if (node->GetName() == "layers") {
             wxXmlNode *nodeLayer = node->GetChildren();
             while (nodeLayer) {
@@ -83,32 +79,32 @@ bool asWorkspace::Load(const wxString &filePath)
                     wxXmlNode *nodeLayerData = nodeLayer->GetChildren();
                     while (nodeLayerData) {
                         if (nodeLayerData->GetName() == "path") {
-                            wxString path = fileWorkspace.GetString(nodeLayerData);
+                            wxString path = asFileWorkspace::GetString(nodeLayerData);
                             wxFileName absolutePath(path);
                             absolutePath.Normalize();
                             m_layerPaths.push_back(absolutePath.GetFullPath());
                         } else if (nodeLayerData->GetName() == "type") {
-                            m_layerTypes.push_back(fileWorkspace.GetString(nodeLayerData));
+                            m_layerTypes.push_back(asFileWorkspace::GetString(nodeLayerData));
                         } else if (nodeLayerData->GetName() == "transparency") {
-                            m_layerTransparencies.push_back(fileWorkspace.GetInt(nodeLayerData));
+                            m_layerTransparencies.push_back(asFileWorkspace::GetInt(nodeLayerData));
                         } else if (nodeLayerData->GetName() == "visibility") {
-                            m_layerVisibilities.push_back(fileWorkspace.GetBool(nodeLayerData));
+                            m_layerVisibilities.push_back(asFileWorkspace::GetBool(nodeLayerData));
                         } else if (nodeLayerData->GetName() == "line_width") {
-                            m_layerLineWidths.push_back(fileWorkspace.GetInt(nodeLayerData));
+                            m_layerLineWidths.push_back(asFileWorkspace::GetInt(nodeLayerData));
 #if wxUSE_GUI
-                            } else if (nodeLayerData->GetName() == "line_color") {
-                                wxString lineColorStr = fileWorkspace.GetString(nodeLayerData);
-                                wxColour lineColor;
-                                wxFromString(lineColorStr, &lineColor);
-                                m_layerLineColors.push_back(lineColor);
-                            } else if (nodeLayerData->GetName() == "fill_color") {
-                                wxString fillColorStr = fileWorkspace.GetString(nodeLayerData);
-                                wxColour fillColor;
-                                wxFromString(fillColorStr, &fillColor);
-                                m_layerFillColors.push_back(fillColor);
-                            } else if (nodeLayerData->GetName() == "brush_style") {
-                                wxBrushStyle brushStyle = (wxBrushStyle)fileWorkspace.GetInt(nodeLayerData);
-                                m_layerBrushStyles.push_back(brushStyle);
+                        } else if (nodeLayerData->GetName() == "line_color") {
+                            wxString lineColorStr = asFileWorkspace::GetString(nodeLayerData);
+                            wxColour lineColor;
+                            wxFromString(lineColorStr, &lineColor);
+                            m_layerLineColors.push_back(lineColor);
+                        } else if (nodeLayerData->GetName() == "fill_color") {
+                            wxString fillColorStr = asFileWorkspace::GetString(nodeLayerData);
+                            wxColour fillColor;
+                            wxFromString(fillColorStr, &fillColor);
+                            m_layerFillColors.push_back(fillColor);
+                        } else if (nodeLayerData->GetName() == "brush_style") {
+                            auto brushStyle = (wxBrushStyle) asFileWorkspace::GetInt(nodeLayerData);
+                            m_layerBrushStyles.push_back(brushStyle);
 #endif
                         } else {
                             fileWorkspace.UnknownNode(nodeLayerData);
@@ -125,10 +121,10 @@ bool asWorkspace::Load(const wxString &filePath)
 
             if (m_layerPaths.size() != m_layerTypes.size() || m_layerPaths.size() != m_layerTransparencies.size() ||
                 m_layerPaths.size() != m_layerVisibilities.size() || m_layerPaths.size() != m_layerLineWidths.size()
-#if wxUSE_GUI
-                || m_layerPaths.size()!=m_layerLineColors.size()
-                || m_layerPaths.size()!=m_layerFillColors.size()
-                || m_layerPaths.size()!=m_layerBrushStyles.size()
+                #if wxUSE_GUI
+                || m_layerPaths.size() != m_layerLineColors.size()
+                || m_layerPaths.size() != m_layerFillColors.size()
+                || m_layerPaths.size() != m_layerBrushStyles.size()
 #endif
                     ) {
                 wxLogError(_("The number of elements in the layers is not consistent in the workspace file."));
@@ -193,7 +189,7 @@ bool asWorkspace::Save() const
 
 int asWorkspace::GetLayersNb() const
 {
-    int layersNb = (int) m_layerPaths.size();
+    auto layersNb = (int) m_layerPaths.size();
     return layersNb;
 }
 

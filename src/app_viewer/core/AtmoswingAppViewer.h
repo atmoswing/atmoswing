@@ -41,15 +41,15 @@ class AtmoswingAppViewer
         : public wxApp
 {
 public:
-    virtual bool OnInit();
+    bool OnInit() override;
 
-    virtual int OnExit();
+    int OnExit() override;
 
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+    void OnInitCmdLine(wxCmdLineParser &parser) override;
 
     bool InitForCmdLineOnly(long logLevel);
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
 private:
     wxSingleInstanceChecker *m_singleInstanceChecker;

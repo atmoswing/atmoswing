@@ -41,7 +41,7 @@ class asPanelsManagerForecasts
 public:
     asPanelsManagerForecasts();
 
-    virtual ~asPanelsManagerForecasts();
+    ~asPanelsManagerForecasts() override;
 
     void AddPanel(asPanelForecast *panel);
 

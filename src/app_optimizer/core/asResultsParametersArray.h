@@ -54,31 +54,9 @@ public:
 
     bool Print() const;
 
-    void CreateFile() const;
-
-    bool AppendContent() const;
-
     int GetCount() const
     {
-        return int(m_parameters.size());
-    }
-
-    asParametersScoring GetParameter(int i) const
-    {
-        wxASSERT(i < (int) m_parameters.size());
-        return m_parameters[i];
-    }
-
-    float GetScoreCalib(int i) const
-    {
-        wxASSERT(i < (int) m_scoresCalib.size());
-        return m_scoresCalib[i];
-    }
-
-    float GetScoreValid(int i) const
-    {
-        wxASSERT(i < (int) m_scoresValid.size());
-        return m_scoresValid[i];
+        return static_cast<int>(m_parameters.size());
     }
 
 protected:

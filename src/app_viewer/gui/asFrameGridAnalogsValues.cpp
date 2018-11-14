@@ -33,18 +33,15 @@
 
 asFrameGridAnalogsValues::asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow,
                                                    asForecastManager *forecastManager, wxWindowID id)
-        : asFrameGridAnalogsValuesVirtual(parent)
+        : asFrameGridAnalogsValuesVirtual(parent),
+          m_forecastManager(forecastManager),
+          m_selectedMethod(methodRow),
+          m_selectedForecast(wxMax(forecastRow, 0)),
+          m_selectedStation(0),
+          m_selectedDate(0),
+          m_sortAfterCol(0),
+          m_sortOrder(Asc)
 {
-    forecastRow = wxMax(forecastRow, 0);
-
-    m_forecastManager = forecastManager;
-    m_selectedMethod = methodRow;
-    m_selectedForecast = forecastRow;
-    m_selectedStation = 0;
-    m_selectedDate = 0;
-    m_sortAfterCol = 0;
-    m_sortOrder = Asc;
-
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
@@ -158,19 +155,21 @@ void asFrameGridAnalogsValues::SortGrid(wxGridEvent &event)
 
 bool asFrameGridAnalogsValues::UpdateGrid()
 {
+    wxBusyCursor wait;
+
     if (m_forecastManager->GetMethodsNb() < 1)
         return false;
 
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     a1f dates = forecast->GetAnalogsDates(m_selectedDate);
-    a1f values = forecast->GetAnalogsValuesGross(m_selectedDate, m_selectedStation);
+    a1f values = forecast->GetAnalogsValuesRaw(m_selectedDate, m_selectedStation);
     a1f criteria = forecast->GetAnalogsCriteria(m_selectedDate);
     a1f analogNb = a1f::LinSpaced(dates.size(), 1, dates.size());
 
     m_grid->Hide();
 
     //m_grid->ClearGrid();
-    m_grid->DeleteRows(0, m_grid->GetRows());
+    m_grid->DeleteRows(0, m_grid->GetNumberRows());
     m_grid->InsertRows(0, dates.size());
 
     if (m_sortAfterCol > 0 || m_sortOrder == Desc) {
@@ -178,7 +177,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0],
+            asSortArrays(&analogNb[0], &analogNb[analogNb.size() - 1], &vIndices[0],
                                 &vIndices[analogNb.size() - 1], m_sortOrder);
 
             a1f copyDates = dates;
@@ -195,7 +194,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1],
+            asSortArrays(&dates[0], &dates[dates.size() - 1], &vIndices[0], &vIndices[dates.size() - 1],
                                 m_sortOrder);
 
             a1f copyAnalogNb = analogNb;
@@ -212,7 +211,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
+            asSortArrays(&values[0], &values[values.size() - 1], &vIndices[0], &vIndices[values.size() - 1],
                                 m_sortOrder);
 
             a1f copyAnalogNb = analogNb;
@@ -230,7 +229,7 @@ bool asFrameGridAnalogsValues::UpdateGrid()
         {
             a1f vIndices = a1f::LinSpaced(Eigen::Sequential, dates.size(), 0, dates.size() - 1);
 
-            asTools::SortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0],
+            asSortArrays(&criteria[0], &criteria[criteria.size() - 1], &vIndices[0],
                                 &vIndices[criteria.size() - 1], m_sortOrder);
 
             a1f copyAnalogNb = analogNb;

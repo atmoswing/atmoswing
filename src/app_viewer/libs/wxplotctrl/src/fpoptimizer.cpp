@@ -705,8 +705,9 @@ namespace
             // And this: mul(x) = x, min(x) = x, max(x) = x, add(x) = x
 
             if (GetArgCount() == 1) {
-                if (GetOp() == cMul || GetOp() == cAdd || GetOp() == cMin || GetOp() == cMax) if (!getp0().getsign())
-                    ReplaceWith(*getp0());
+                if (GetOp() == cMul || GetOp() == cAdd || GetOp() == cMin || GetOp() == cMax)
+                    if (!getp0().getsign())
+                        ReplaceWith(*getp0());
             }
 
             OptimizeDoubleNegations();

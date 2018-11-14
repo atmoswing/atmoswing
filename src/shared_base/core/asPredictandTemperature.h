@@ -40,15 +40,15 @@ public:
     asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                             SpatialAggregation dataSpatialAggregation);
 
-    virtual ~asPredictandTemperature();
+    ~asPredictandTemperature() override = default;
 
-    virtual bool Load(const wxString &filePath);
+    bool Load(const wxString &filePath) override;
 
-    virtual bool Save(const wxString &AlternateDestinationDir = wxEmptyString) const;
+    bool Save(const wxString &destinationDir = wxEmptyString) const override;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &AlternateDataDir = wxEmptyString,
-                                   const wxString &AlternatePatternDir = wxEmptyString,
-                                   const wxString &AlternateDestinationDir = wxEmptyString);
+    bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+                                   const wxString &patternDir = wxEmptyString,
+                                   const wxString &destinationDir = wxEmptyString) override;
 
 protected:
 

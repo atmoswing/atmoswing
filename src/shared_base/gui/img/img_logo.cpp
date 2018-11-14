@@ -12,7 +12,7 @@
 
 wxBitmap *_img_logo;
 
-void initialize_img_logo(void)
+void initialize_img_logo()
 {
     {
         wxMemoryInputStream sm(
@@ -20,10 +20,9 @@ void initialize_img_logo(void)
                 13385);
         _img_logo = new wxBitmap(wxImage(sm));
     }
-    return;
 }
 
-void cleanup_img_logo(void)
+void cleanup_img_logo()
 {
     wxDELETE(_img_logo);
 }

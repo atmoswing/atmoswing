@@ -38,32 +38,14 @@ class asPanelSidebarCalendar
         : public asPanelSidebar
 {
 public:
-    asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+    explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                            const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCalendar();
+    ~asPanelSidebarCalendar() override;
 
     void OnSetPresentDate(wxCommandEvent &event);
 
     void SetPresentDate();
-
-    wxCalendarCtrl *GetCalendar() const
-    {
-        return m_calendarForecastDate;
-    }
-
-    wxDateTime GetDate() const
-    {
-        return m_calendarForecastDate->GetDate();
-    }
-
-    double GetHour() const
-    {
-        wxString forecastHourStr = m_textCtrlForecastHour->GetValue();
-        double forecastHour = 0;
-        forecastHourStr.ToDouble(&forecastHour);
-        return forecastHour;
-    }
 
 private:
     wxCalendarCtrl *m_calendarForecastDate;

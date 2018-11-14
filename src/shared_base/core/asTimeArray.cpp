@@ -29,31 +29,34 @@
 #include "asTimeArray.h"
 
 #include <asPredictand.h>
+#include <math.h>
 
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, Mode slctmode)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(slctmode),
+          m_start(start),
+          m_end(end),
+          m_timeStepDays(timestephours / 24),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
-    wxASSERT(end > start);
-    wxASSERT(timestephours > 0);
-
-    // Get values
-    m_initialized = false;
-    m_mode = slctmode;
-    m_timeStepDays = timestephours / 24;
-    m_start = start;
-    m_end = end;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
-
+    wxASSERT(m_end >= m_start);
+    wxASSERT(m_timeStepDays > 0);
 }
 
 asTimeArray::asTimeArray(double start, double end, double timestephours, const wxString &slctModeString)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_start(start),
+          m_end(end),
+          m_timeStepDays(timestephours / 24),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
-    wxASSERT(end > start);
-    wxASSERT(timestephours > 0);
+    wxASSERT(m_end > m_start);
+    wxASSERT(m_timeStepDays > 0);
 
     if (slctModeString.CmpNoCase("simple") == 0) {
         m_mode = Simple;
@@ -76,60 +79,48 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
         wxLogError(_("Time array mode not correctly defined (%s)!"), slctModeString);
         m_mode = Custom;
     }
-
-    // Get values
-    m_initialized = false;
-    m_timeStepDays = timestephours / 24;
-    m_start = start;
-    m_end = end;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
 }
 
 asTimeArray::asTimeArray()
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_start(0),
+          m_end(0),
+          m_timeStepDays(0),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     // Should not be used for processing, only to get en empty object !
-    m_initialized = false;
-    m_mode = Custom;
-    m_timeStepDays = 0;
-    m_start = 0;
-    m_end = 0;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
 }
 
 asTimeArray::asTimeArray(double date, Mode slctmode)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(slctmode),
+          m_start(date),
+          m_end(date),
+          m_timeStepDays(0),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(slctmode == SingleDay);
-
-    // Get values
-    m_initialized = false;
-    m_mode = slctmode;
-    m_timeStepDays = 0;
-    m_start = date;
-    m_end = date;
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
-
 }
 
 asTimeArray::asTimeArray(vd &timeArray)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(timeArray.size() > 1);
     wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
 
     // Get values
-    m_initialized = false;
-    m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
     m_end = timeArray[timeArray.size() - 1];
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
     m_timeArray.resize(timeArray.size());
 
     for (unsigned int i = 0; i < timeArray.size(); i++) {
@@ -138,24 +129,19 @@ asTimeArray::asTimeArray(vd &timeArray)
 }
 
 asTimeArray::asTimeArray(a1d &timeArray)
-        : asTime()
+        : asTime(),
+          m_initialized(false),
+          m_mode(Custom),
+          m_intervalDays(0),
+          m_exclusionDays(0)
 {
     wxASSERT(timeArray.size() > 0);
 
     // Get values
-    m_initialized = false;
-    m_mode = Custom;
     m_timeStepDays = timeArray[1] - timeArray[0];
     m_start = timeArray[0];
     m_end = timeArray[timeArray.size() - 1];
-    m_intervalDays = 0;
-    m_exclusionDays = 0;
     m_timeArray = timeArray;
-}
-
-asTimeArray::~asTimeArray()
-{
-    //dtor
 }
 
 bool asTimeArray::Init()
@@ -722,8 +708,8 @@ bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const
     a1f predictandData;
     if (serieName.IsSameAs("DataNormalized")) {
         predictandData = predictand.GetDataNormalizedStation(stationId);
-    } else if (serieName.IsSameAs("DataGross")) {
-        predictandData = predictand.GetDataGrossStation(stationId);
+    } else if (serieName.IsSameAs("DataRaw")) {
+        predictandData = predictand.GetDataRawStation(stationId);
     } else {
         wxLogError(_("The predictand serie is not correctly defined in the time array construction."));
         return false;
@@ -734,8 +720,8 @@ bool asTimeArray::BuildArrayPredictandThresholds(asPredictand &predictand, const
     int countOut = 0;
     for (int i = 0; i < predictandTimeArray.size(); i++) {
         // Search corresponding date in the time array.
-        int rowTimeArray = asTools::SortedArraySearchFloor(&fullTimeArray[0], &fullTimeArray[fullTimeArray.size() - 1],
-                                                           predictandTimeArray[i]);
+        int rowTimeArray = asFindFloor(&fullTimeArray[0], &fullTimeArray[fullTimeArray.size() - 1],
+                                       predictandTimeArray[i]);
 
         if (rowTimeArray != asOUT_OF_RANGE && rowTimeArray != asNOT_FOUND) {
             // Check that there is not more than a few hours of difference.
@@ -791,7 +777,7 @@ int asTimeArray::GetClosestIndex(double date) const
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
+    int index = asFindClosest(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -799,18 +785,23 @@ int asTimeArray::GetClosestIndex(double date) const
     return index;
 }
 
-int asTimeArray::GetIndexFirstAfter(double date) const
+int asTimeArray::GetIndexFirstAfter(double date, double dataTimeStep) const
 {
     wxASSERT(m_initialized);
 
-    double tolerance = 0.00001;
+    if (dataTimeStep >= 24.0) {
+        // At a daily time step, might be defined at 00h or 12h
+        double intPart;
+        std::modf(date, &intPart);
+        date = intPart;
+    }
 
-    if (date - tolerance > m_end) { // Add a second for precision issues
+    if (date - 0.00001 > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return 0;
@@ -818,18 +809,23 @@ int asTimeArray::GetIndexFirstAfter(double date) const
     return index;
 }
 
-int asTimeArray::GetIndexFirstBefore(double date) const
+int asTimeArray::GetIndexFirstBefore(double date, double dataTimeStep) const
 {
     wxASSERT(m_initialized);
 
-    double tolerance = 0.00001;
+    if (dataTimeStep >= 24.0) {
+        // At a daily time step, might be defined at 00h or 12h
+        double intPart;
+        std::modf(date, &intPart);
+        date = intPart;
+    }
 
-    if (date + tolerance < m_start) { // Add a second for precision issues
+    if (date + 0.00001 < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
         return NaNi;
     }
 
-    int index = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, tolerance, asHIDE_WARNINGS);
+    int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
     if (index == asOUT_OF_RANGE)
         return GetSize() - 1;
@@ -840,24 +836,21 @@ int asTimeArray::GetIndexFirstBefore(double date) const
 bool asTimeArray::RemoveYears(const vi &years)
 {
     wxASSERT(m_timeArray.size() > 0);
-    wxASSERT(years.size() > 0);
+    wxASSERT(!years.empty());
 
     vi yearsRemove = years;
 
-    asTools::SortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size() - 1], Asc);
+    asSortArray(&yearsRemove[0], &yearsRemove[yearsRemove.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
 
-    for (unsigned int i = 0; i < yearsRemove.size(); i++) {
-        int year = yearsRemove[i];
+    for (int year : yearsRemove) {
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
-                                                        asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
-                                                       asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
@@ -893,24 +886,21 @@ bool asTimeArray::RemoveYears(const vi &years)
 bool asTimeArray::KeepOnlyYears(const vi &years)
 {
     wxASSERT(m_timeArray.size() > 0);
-    wxASSERT(years.size() > 0);
+    wxASSERT(!years.empty());
 
     vi yearsKeep = years;
 
-    asTools::SortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size() - 1], Asc);
+    asSortArray(&yearsKeep[0], &yearsKeep[yearsKeep.size() - 1], Asc);
 
     int arraySize = m_timeArray.size();
     a1i flags = a1i::Zero(arraySize);
 
-    for (unsigned int i = 0; i < yearsKeep.size(); i++) {
-        int year = yearsKeep[i];
+    for (int year : yearsKeep) {
         double mjdStart = GetMJD(year, 1, 1);
         double mjdEnd = GetMJD(year, 12, 31);
 
-        int indexStart = asTools::SortedArraySearchCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, 0,
-                                                        asHIDE_WARNINGS);
-        int indexEnd = asTools::SortedArraySearchFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, 0,
-                                                       asHIDE_WARNINGS);
+        int indexStart = asFindCeil(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdStart, asHIDE_WARNINGS);
+        int indexEnd = asFindFloor(&m_timeArray[0], &m_timeArray[arraySize - 1], mjdEnd, asHIDE_WARNINGS);
 
         if (indexStart != asOUT_OF_RANGE && indexStart != asNOT_FOUND) {
             if (indexEnd != asOUT_OF_RANGE && indexEnd != asNOT_FOUND) {
@@ -945,17 +935,16 @@ bool asTimeArray::KeepOnlyYears(const vi &years)
 
 bool asTimeArray::HasForbiddenYears() const
 {
-    return m_forbiddenYears.size() != 0;
+    return !m_forbiddenYears.empty();
 
 }
 
 bool asTimeArray::IsYearForbidden(int year) const
 {
-    if (m_forbiddenYears.size() == 0)
+    if (m_forbiddenYears.empty())
         return false;
 
-    int index = asTools::SortedArraySearch(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size() - 1], year,
-                                           0, asHIDE_WARNINGS);
+    int index = asFind(&m_forbiddenYears[0], &m_forbiddenYears[m_forbiddenYears.size() - 1], year, 0, asHIDE_WARNINGS);
 
     return index != asOUT_OF_RANGE && index != asNOT_FOUND;
 

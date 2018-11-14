@@ -61,11 +61,11 @@ public:
 
     asTimeArray(double date, Mode slctmode);
 
-    asTimeArray(vd &timeArray);
+    explicit asTimeArray(vd &timeArray);
 
-    asTimeArray(a1d &timeArray);
+    explicit asTimeArray(a1d &timeArray);
 
-    virtual ~asTimeArray();
+    ~asTimeArray() override = default;
 
     bool Init();
 
@@ -104,7 +104,7 @@ public:
         return m_forbiddenYears;
     }
 
-    void SetForbiddenYears(const vi years)
+    void SetForbiddenYears(const vi &years)
     {
         m_forbiddenYears = years;
     }
@@ -112,11 +112,6 @@ public:
     bool RemoveYears(const vi &years);
 
     bool KeepOnlyYears(const vi &years);
-
-    Mode GetMode() const
-    {
-        return m_mode;
-    }
 
     bool IsSimpleMode() const
     {
@@ -165,11 +160,6 @@ public:
         return GetMonth(m_end);
     }
 
-    int GetEndingDay() const
-    {
-        return GetDay(m_end);
-    }
-
     double GetEndingHour() const
     {
         double fractpart, intpart;
@@ -197,16 +187,6 @@ public:
         return m_intervalDays;
     }
 
-    double GetExclusionHours() const
-    {
-        return m_exclusionDays * 24;
-    }
-
-    double GetExclusionDays() const
-    {
-        return m_exclusionDays;
-    }
-
     a1d GetTimeArray() const
     {
         return m_timeArray;
@@ -231,9 +211,9 @@ public:
 
     int GetClosestIndex(double date) const;
 
-    int GetIndexFirstAfter(double date) const;
+    int GetIndexFirstAfter(double date, double dataTimeStep) const;
 
-    int GetIndexFirstBefore(double date) const;
+    int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
 protected:
 

@@ -70,7 +70,10 @@ public:
 
     asScore();
 
-    virtual ~asScore();
+    asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest = NaNf,
+            float scaleWorst = NaNf, bool usesClimatology = false, bool singleValue = true);
+
+    ~asScore() override = default;
 
     static asScore *GetInstance(Score scoreEnums);
 
@@ -78,13 +81,15 @@ public:
 
     virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
 
-    virtual float Assess(float ObservedVal, const a1f &ForcastVals, int NbElements) const = 0;
+    virtual float Assess(float observedVal, const a1f &forcastVals, int nbElements) const = 0;
 
-    virtual a1f AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const;
+    virtual a1f AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const;
 
-    bool CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const;
+    bool CheckObservedValue(float observedVal) const;
 
-    int CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const;
+    bool CheckVectorLength(const a1f &forcastVals, int nbElements) const;
+
+    int CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbElements) const;
 
     wxString GetName() const
     {
@@ -148,9 +153,9 @@ protected:
     Order m_order;
     float m_scaleBest;
     float m_scaleWorst;
-    float m_scoreClimatology;
     bool m_usesClimatology;
     bool m_singleValue;
+    float m_scoreClimatology;
     float m_threshold;
     float m_quantile;
 

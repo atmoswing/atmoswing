@@ -29,38 +29,32 @@
 #include "asScoreDF0.h"
 
 asScoreDF0::asScoreDF0()
-        : asScore()
+        : asScore(asScore::DF0, _("Difference of F(0)"),
+                  _("Absolute difference of the frequency of null precipitations."), Asc, 0, NaNf)
 {
-    m_score = asScore::DF0;
-    m_name = _("Difference of F(0)");
-    m_fullName = _("Absolute difference of the frequency of null precipitations.");
-    m_order = Asc;
-    m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+
 }
 
-asScoreDF0::~asScoreDF0()
+float asScoreDF0::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    //dtor
-}
-
-float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
-{
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
 
-    // Check the element numbers vs vector length and the observed value
-    if (!CheckInputs(ObservedVal, ForcastVals, nbElements)) {
-        wxLogWarning(_("The inputs are not conform in the DF0 processing function"));
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
     a1f x(nbElements);
-    float xObs = ObservedVal;
+    float xObs = observedVal;
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the DF0 processing function."));
         return NaNf;
@@ -70,10 +64,10 @@ float asScoreDF0::Assess(float ObservedVal, const a1f &ForcastVals, int nbElemen
     }
 
     // Sort the forcast array
-    asTools::SortArray(&x[0], &x[nbPredict - 1], Asc);
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Cumulative frequency
-    a1f F = asTools::GetCumulativeFrequency(nbPredict);
+    a1f F = asGetCumulativeFrequency(nbPredict);
 
     // Identify the last 0
     int indexLastZero = -1;

@@ -53,17 +53,17 @@ bool asMethodOptimizerRandomSet::Manager()
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool parallelEvaluations;
-    pConfig->Read("/Optimizer/ParallelEvaluations", &parallelEvaluations, false);
+    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, false);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Seeds the random generator
-    asTools::InitRandom();
+    asInitRandom();
 
     // Load parameters
     asParametersOptimization params;
     if (!params.LoadFromFile(m_paramsFilePath))
         return false;
-    if (m_predictandStationIds.size() > 0) {
+    if (!m_predictandStationIds.empty()) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
 
@@ -74,18 +74,17 @@ bool asMethodOptimizerRandomSet::Manager()
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     asResultsParametersArray results_all;
-    results_all.Init(
-            wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
+    results_all.Init(wxString::Format(_("station_%s_tested_parameters"),
+                                      GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(
-            wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir",
-                                                            asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/Optimizer/%s_station_%s_best_parameters.xml", time.c_str(),
+    results_best.Init(wxString::Format(_("station_%s_best_parameters"),
+                                       GetPredictandStationIdsList(stationId).c_str()));
+    wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                                GetPredictandStationIdsList(stationId).c_str()));
 
     // Preload data
-    if (!PreloadData(params)) {
+    if (!PreloadArchiveData(&params)) {
         wxLogError(_("Could not preload the data."));
         return false;
     }
@@ -132,7 +131,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().AddThread(firstThread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.size() == 0) {
+                if (scoreClim.empty()) {
                     ThreadsManager().Wait(threadType);
 
 #ifndef UNIT_TESTING
@@ -195,17 +194,18 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().Wait(threadType);
 
                 // Check results
-                bool checkOK = true;
                 for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-                    if (asTools::IsNaN(m_scoresCalib[iCheck])) {
+                    if (asIsNaN(m_scoresCalib[iCheck])) {
                         wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
-                        checkOK = false;
+                        return false;
                     }
                 }
 
-                if (!checkOK)
-                    return false;
+                wxASSERT(m_parameters.size() == m_scoresCalib.size());
+                for (int iRes = 0; iRes < m_scoresCalib.size(); ++iRes) {
+                    results_all.Add(m_parameters[iRes], m_scoresCalib[iRes]);
+                }
 
             } else {
 #ifndef UNIT_TESTING
@@ -227,11 +227,11 @@ bool asMethodOptimizerRandomSet::Manager()
                 for (int iStep = 0; iStep < stepsNb; iStep++) {
                     bool containsNaNs = false;
                     if (iStep == 0) {
-                        if (!GetAnalogsDates(anaDates, params, iStep, containsNaNs))
+                        if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, params, anaDatesPrevious, iStep, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                             return false;
                         anaDatesPrevious = anaDates;
                     }
@@ -240,11 +240,11 @@ bool asMethodOptimizerRandomSet::Manager()
                         return false;
                     }
                 }
-                if (!GetAnalogsValues(anaValues, params, anaDates, stepsNb - 1))
+                if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
                     return false;
-                if (!GetAnalogsScores(anaScores, params, anaValues, stepsNb - 1))
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
                     return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, params, anaScores, stepsNb - 1))
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
                     return false;
 
                 // Store the result
@@ -266,16 +266,16 @@ bool asMethodOptimizerRandomSet::Manager()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
 
     // Print parameters in a text file
+    if (!results_all.Print())
+        return false;
     SetBestParameters(results_best);
     if (!results_best.Print())
-        return false;
-    if (!results_all.Print())
         return false;
 
     // Generate xml file with the best parameters set
@@ -283,7 +283,7 @@ bool asMethodOptimizerRandomSet::Manager()
         return false;
 
     // Delete preloaded data
-    DeletePreloadedData();
+    DeletePreloadedArchiveData();
 
     return true;
 }
@@ -321,6 +321,44 @@ asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
     }
 
     return params;
+}
+
+bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &results)
+{
+    wxASSERT(!m_parameters.empty());
+    wxASSERT(!m_scoresCalib.empty());
+
+    // Extract selected parameters & best parameters
+    float bestscore = m_scoresCalib[0];
+    int bestscorerow = 0;
+
+    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+        if (m_scoreOrder == Asc) {
+            if (m_scoresCalib[i] < bestscore) {
+                bestscore = m_scoresCalib[i];
+                bestscorerow = i;
+            }
+        } else {
+            if (m_scoresCalib[i] > bestscore) {
+                bestscore = m_scoresCalib[i];
+                bestscorerow = i;
+            }
+        }
+    }
+
+    if (bestscorerow != 0) {
+        // Re-validate
+        SaveDetails(m_parameters[bestscorerow]);
+        Validate(m_parameters[bestscorerow]);
+    }
+
+    // Sort according to the level and the observation time
+    asParametersScoring sortedParams = m_parameters[bestscorerow];
+    sortedParams.SortLevelsAndTime();
+
+    results.Add(sortedParams, m_scoresCalib[bestscorerow], m_scoreValid);
+
+    return true;
 }
 
 bool asMethodOptimizerRandomSet::Optimize(asParametersOptimization &params)

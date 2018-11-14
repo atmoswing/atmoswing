@@ -1,0 +1,57 @@
+version: 1.6.{build}
+
+image: Visual Studio 2017
+
+environment:
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  WXWIN: C:\projects\libs\wxwidgets
+  CFLAGS: /MP
+  CXXFLAGS: /MP
+
+  matrix:
+    - apptype: server
+    - apptype: desktop
+
+platform:
+  - x64
+
+cache:
+  - C:\projects\libs -> ci/appveyor/cache-version.txt
+
+install:
+  - ps: $stopwatch = [system.diagnostics.stopwatch]::StartNew()
+  - ps: Invoke-Expression -Command "ci/appveyor/install-libs-$env:apptype.ps1"
+  
+build_script:
+  - cd C:\projects\atmoswing
+  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1" }
+
+test_script:
+  - cd C:\projects\atmoswing\bin\tests
+  - ctest -V
+
+after_test:
+  - cd C:\projects\atmoswing\bin
+  - cpack -C release -G ZIP
+  - cpack -C release -G NSIS
+  - cpack -C release -G WIX
+  - cd C:\projects\atmoswing
+  - copy bin\*win64.exe .\
+  - copy bin\*win64.zip .\
+  - copy bin\*win64.msi .\
+
+on_failure:
+  - appveyor PushArtifact CMakeFiles/CMakeOutput.log
+
+artifacts:
+  - path: '*win64.exe'
+    name: AtmoSwingInstallerEXE
+    type: file
+
+  - path: '*win64.msi'
+    name: AtmoSwingInstallerMSI
+    type: file
+
+  - path: '*win64.zip'
+    name: AtmoSwingZIP
+    type: zip

@@ -31,20 +31,20 @@
 #include <asIncludes.h>
 #include <asPredictorArchNasaMerra2.h>
 
-class asGeoArea;
+class asArea;
 
 class asPredictorArchNasaMerra2Subset
         : public asPredictorArchNasaMerra2
 {
 public:
-    asPredictorArchNasaMerra2Subset(const wxString &dataId);
+    explicit asPredictorArchNasaMerra2Subset(const wxString &dataId);
 
-    virtual ~asPredictorArchNasaMerra2Subset();
+    ~asPredictorArchNasaMerra2Subset() override = default;
 
-    bool Init();
+    bool Init() override;
 
 protected:
-    virtual vwxs GetListOfFiles(asTimeArray &timeArray) const;
+    void ListFiles(asTimeArray &timeArray) override;
 
 private:
 

@@ -55,7 +55,7 @@ void asResultsParametersArray::Init(const wxString &fileTag)
 void asResultsParametersArray::BuildFileName(const wxString &fileTag)
 {
     ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/OptimizerResultsDir", asConfig::GetDefaultUserWorkingDir());
+    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
     m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
@@ -122,44 +122,6 @@ bool asResultsParametersArray::Print() const
         for (unsigned int iRow = 0; iRow < m_scoresValidForScoreOnArray[iParam].size(); iRow++) {
             content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[iParam][iRow]));
         }
-        content.Append("\n");
-    }
-
-    fileRes.AddLineContent(content);
-
-    fileRes.Close();
-
-    return true;
-}
-
-void asResultsParametersArray::CreateFile() const
-{
-    // Create a file
-    asFileAscii fileRes(m_filePath, asFileAscii::Replace);
-    fileRes.Open();
-
-    wxString header;
-    header = _("Optimization processed ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
-    fileRes.AddLineContent(header);
-
-    fileRes.Close();
-}
-
-bool asResultsParametersArray::AppendContent() const
-{
-    // Create a file
-    asFileAscii fileRes(m_filePath, asFileAscii::Append);
-    if (!fileRes.Open())
-        return false;
-
-    wxString content = wxEmptyString;
-
-    // Write every parameter one after the other
-    for (unsigned int iParam = 0; iParam < m_parameters.size(); iParam++) {
-        content.Append(wxString::Format("Param(%d)\t", iParam));
-        content.Append(m_parameters[iParam].Print());
-        content.Append(wxString::Format("Score calib\t%e\t", m_scoresCalib[iParam]));
-        content.Append(wxString::Format("valid\t%e", m_scoresValid[iParam]));
         content.Append("\n");
     }
 

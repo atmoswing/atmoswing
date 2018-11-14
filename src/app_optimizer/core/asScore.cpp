@@ -45,16 +45,34 @@
 #include "asScoreRankHistogram.h"
 
 asScore::asScore()
+        : m_score(Undefined),
+          m_order(Asc),
+          m_scaleBest(NaNf),
+          m_scaleWorst(NaNf),
+          m_usesClimatology(false),
+          m_singleValue(true),
+          m_scoreClimatology(0),
+          m_threshold(NaNf),
+          m_quantile(NaNf)
 {
-    m_score = Undefined;
-    m_scoreClimatology = 0;
-    m_threshold = NaNf;
-    m_quantile = NaNf;
-    m_usesClimatology = false;
-    m_singleValue = true;
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
-    m_order = Asc;
+
+}
+
+asScore::asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest,
+                 float scaleWorst, bool usesClimatology, bool singleValue)
+        : m_score(score),
+          m_name(name),
+          m_fullName(fullname),
+          m_order(order),
+          m_scaleBest(scaleBest),
+          m_scaleWorst(scaleWorst),
+          m_usesClimatology(usesClimatology),
+          m_singleValue(singleValue),
+          m_scoreClimatology(0),
+          m_threshold(NaNf),
+          m_quantile(NaNf)
+{
+
 }
 
 asScore *asScore::GetInstance(Score scoreEnum)
@@ -174,7 +192,7 @@ asScore *asScore::GetInstance(Score scoreEnum)
         }
         default: {
             wxLogError(_("The score was not correctly set (undefined)."));
-            return NULL;
+            return nullptr;
         }
     }
 }
@@ -278,39 +296,39 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     }
 }
 
-asScore::~asScore()
-{
-    //dtor
-}
-
-a1f asScore::AssessOnArray(float ObservedVal, const a1f &ForcastVals, int NbElements) const
+a1f asScore::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const
 {
     wxLogError(_("This asScore class has no AssessOnArrays method implemented !"));
 
     return a1f();
 }
 
-bool asScore::CheckInputs(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+bool asScore::CheckObservedValue(float observedVal) const
 {
-    // Check the element numbers vs vector length
-    wxASSERT_MSG(ForcastVals.rows() >= nbElements,
-                 _("The required elements number is above the vector length in the score calculation."));
-    wxASSERT(nbElements > 1);
-    if (ForcastVals.rows() < nbElements) {
-        wxLogError(_("The required elements number is above the vector length in the score calculation."));
-        return false;
-    }
-
     // Check that the observed value is not a NaN
-    if (asTools::IsNaN(ObservedVal)) {
-        wxLogWarning(_("The observed value is a NaN for the CRPS score calculation."));
+    if (asIsNaN(observedVal)) {
+        wxLogVerbose(_("The observed value is a NaN for the score calculation."));
         return false;
     }
 
     return true;
 }
 
-int asScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbElements) const
+bool asScore::CheckVectorLength(const a1f &forcastVals, int nbElements) const
+{
+    // Check the element numbers vs vector length
+    wxASSERT_MSG(forcastVals.rows() >= nbElements,
+                 _("The required elements number is above the vector length in the score calculation."));
+    wxASSERT(nbElements > 1);
+    if (forcastVals.rows() < nbElements) {
+        wxLogError(_("The required elements number is above the vector length in the score calculation."));
+        return false;
+    }
+
+    return true;
+}
+
+int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbElements) const
 {
     // Remove the NaNs and copy content
     int nbPredict = 0, nbNans = 0;
@@ -318,7 +336,7 @@ int asScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbEle
     while (nbPredict < nbElements) {
         // Add a check to not overflow the array
         if (iVal >= nbElements) {
-            if (iVal == ForcastVals.rows()) {
+            if (iVal == forcastVals.rows()) {
                 wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
                 wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbPredict,
                              nbNans);
@@ -326,8 +344,8 @@ int asScore::CleanNans(const a1f &ForcastVals, a1f &ForcastValsSorted, int nbEle
             }
         }
 
-        if (!asTools::IsNaN(ForcastVals[iVal])) {
-            ForcastValsSorted(nbPredict) = ForcastVals[iVal];
+        if (!asIsNaN(forcastVals[iVal])) {
+            forcastValsSorted(nbPredict) = forcastVals[iVal];
             nbPredict++;
         } else {
             nbNans++;

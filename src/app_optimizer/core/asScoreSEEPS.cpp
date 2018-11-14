@@ -29,18 +29,14 @@
 #include "asScoreSEEPS.h"
 
 asScoreSEEPS::asScoreSEEPS()
-        : asScore()
+        : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
+                  _("Stable equitable error in probability space"), Asc, NaNf, NaNf, true),
+          m_p1(NaNf),
+          m_p3(NaNf),
+          m_thresNull(0.2f),
+          m_thresHigh(NaNf)
 {
-    m_score = asScore::SEEPS;
-    m_name = _("Stable equitable error in probability space");
-    m_fullName = _("Stable equitable error in probability space");
-    m_scaleBest = NaNf;
-    m_scaleWorst = NaNf;
-    m_p1 = NaNf;
-    m_p3 = NaNf;
-    m_thresNull = 0.2f;
-    m_thresHigh = NaNf;
-    m_usesClimatology = true;
+
 }
 
 asScoreSEEPS::~asScoreSEEPS()
@@ -48,22 +44,31 @@ asScoreSEEPS::~asScoreSEEPS()
     //dtor
 }
 
-float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElements) const
+float asScoreSEEPS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
 {
-    wxASSERT(ForcastVals.size() > 1);
+    wxASSERT(forcastVals.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asTools::IsNaN(m_p1));
-    wxASSERT(!asTools::IsNaN(m_p3));
-    wxASSERT(!asTools::IsNaN(m_thresHigh));
-    wxASSERT(!asTools::IsNaN(m_quantile));
+    wxASSERT(!asIsNaN(m_p1));
+    wxASSERT(!asIsNaN(m_p3));
+    wxASSERT(!asIsNaN(m_thresHigh));
+    wxASSERT(!asIsNaN(m_quantile));
     wxASSERT(m_quantile > 0);
     wxASSERT(m_quantile < 1);
+
+    // Check inputs
+    if (!CheckObservedValue(observedVal)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(forcastVals, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
     // Create the container to sort the data
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(ForcastVals, x, nbElements);
+    int nbPredict = CleanNans(forcastVals, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNf;
@@ -75,8 +80,8 @@ float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
     a1f cleanValues = x.head(nbPredict);
 
     // Get value for quantile
-    float fcstV = asTools::GetValueForQuantile(cleanValues, m_quantile);
-    float obsV = ObservedVal;
+    float fcstV = asGetValueForQuantile(cleanValues, m_quantile);
+    float obsV = observedVal;
 
     float score = 0;
 
@@ -120,34 +125,32 @@ float asScoreSEEPS::Assess(float ObservedVal, const a1f &ForcastVals, int nbElem
     return score;
 }
 
-bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
+bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climData)
 {
-    wxASSERT(!asTools::HasNaN(&refVals[0], &refVals[refVals.size() - 1]));
-    wxASSERT(!asTools::HasNaN(&climatologyData[0], &climatologyData[climatologyData.size() - 1]));
+    wxASSERT(!asHasNaN(&refVals[0], &refVals[refVals.size() - 1]));
+    wxASSERT(!asHasNaN(&climData[0], &climData[climData.size() - 1]));
 
-    a1f climatologyDataSorted = climatologyData;
-    asTools::SortArray(&climatologyDataSorted[0], &climatologyDataSorted[climatologyDataSorted.size() - 1], Asc);
+    a1f climDataSorted = climData;
+    asSortArray(&climDataSorted[0], &climDataSorted[climDataSorted.size() - 1], Asc);
 
     // Find first value above the lower threshold
-    int rowAboveThreshold1 = asTools::SortedArraySearchFloor(&climatologyDataSorted[0],
-                                                             &climatologyDataSorted[climatologyDataSorted.size() - 1],
-                                                             m_threshold);
+    int rowAboveThreshold1 = asFindFloor(&climDataSorted[0], &climDataSorted[climDataSorted.size() - 1], m_threshold);
     if (rowAboveThreshold1 < 0) {
         wxLogError(_("Error processing the SEEPS climatology score."));
         return false;
     }
 
-    while (climatologyDataSorted[rowAboveThreshold1] <= m_threshold) {
+    while (climDataSorted[rowAboveThreshold1] <= m_threshold) {
         rowAboveThreshold1++;
     }
 
     // Process probability (without processing the empirical frequencies...). Do not substract 1 because it is in 0 basis.
-    m_p1 = (float) rowAboveThreshold1 / (float) climatologyDataSorted.size();
+    m_p1 = (float) rowAboveThreshold1 / (float) climDataSorted.size();
 
     m_p3 = (1 - m_p1) / 3.0f;
 
-    int indexThreshold2 = climatologyDataSorted.size() * (m_p1 + 2 * m_p3);
-    m_thresHigh = climatologyDataSorted[indexThreshold2];
+    int indexThreshold2 = climDataSorted.size() * (m_p1 + 2 * m_p3);
+    m_thresHigh = climDataSorted[indexThreshold2];
 
     return true;
 }

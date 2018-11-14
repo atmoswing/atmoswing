@@ -36,17 +36,17 @@ class asLogWindow
         : public wxLogWindow
 {
 public:
-    asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
+    explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
                 bool passToOld = false);
 
-    virtual ~asLogWindow();
+    ~asLogWindow() override = default;
 
-    virtual void DoShow(bool bShow = true);
+    virtual void DoShow(bool bShow);
 
 protected:
 
 private:
-    virtual bool OnFrameClose(wxFrame *frame = NULL);
+    bool OnFrameClose(wxFrame *frame) override;
 
 };
 

@@ -28,15 +28,10 @@
 
 #include "asFileBatchForecasts.h"
 
-asFileBatchForecasts::asFileBatchForecasts(const wxString &FileName, const ListFileMode &FileMode)
-        : asFileXml(FileName, FileMode)
+asFileBatchForecasts::asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode)
+        : asFileXml(fileName, fileMode)
 {
     // FindAndOpen() processed by asFileXml
-}
-
-asFileBatchForecasts::~asFileBatchForecasts()
-{
-    //dtor
 }
 
 bool asFileBatchForecasts::EditRootElement()

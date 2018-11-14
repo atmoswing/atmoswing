@@ -30,26 +30,16 @@
 const wxString g_version = wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION,
                                             ATMOSWING_PATCH_VERSION);
 
-asVersion::asVersion()
-{
-    //ctor
-}
-
-asVersion::~asVersion()
-{
-    //dtor
-}
-
 wxString asVersion::GetFullString()
 {
     //ctor
     wxString versionNb = "Version " + g_version;
 #if defined(__WXMSW__)
-    versionNb << " -Windows";
+    versionNb << " - Windows";
 #elif defined(__WXMAC__)
-    versionNb << " -Mac";
+    versionNb << " - Mac";
 #elif defined(__UNIX__)
-    versionNb << " -Linux";
+    versionNb << " - Linux";
 #endif
 
     return versionNb;

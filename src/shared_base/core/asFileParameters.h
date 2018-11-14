@@ -36,13 +36,13 @@ class asFileParameters
         : public asFileXml
 {
 public:
-    asFileParameters(const wxString &FileName, const ListFileMode &FileMode);
+    asFileParameters(const wxString &fileName, const FileMode &fileMode);
 
-    virtual ~asFileParameters();
+    ~asFileParameters() override = default;
 
-    virtual bool EditRootElement() = 0;
+    virtual bool EditRootElement();
 
-    virtual bool CheckRootElement() const = 0;
+    bool CheckRootElement() const override;
 
     static vi BuildVectorInt(int min, int max, int step);
 

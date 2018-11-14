@@ -29,41 +29,27 @@
 #include "asPredictorArchNcepReanalysis1Lthe.h"
 
 #include <asTimeArray.h>
-#include <asGeoAreaCompositeGrid.h>
+#include <asAreaCompGrid.h>
 
 
 asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxString &dataId)
         : asPredictorArchNcepReanalysis1Subset(dataId)
 {
     // Set the basic properties.
-    m_initialized = false;
     m_datasetId = "NCEP_Reanalysis_v1_lthe";
-    m_originalProvider = "NCEP/NCAR";
+    m_provider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
-    m_originalProviderStart = asTime::GetMJD(1948, 1, 1);
-    m_originalProviderEnd = NaNd;
-    m_timeZoneHours = 0;
-    m_timeStepHours = 24;
-    m_firstTimeStepHours = 0;
+    m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_xAxisShift = 0;
-    m_yAxisShift = 0;
-    m_xAxisStep = 2.5;
-    m_yAxisStep = 2.5;
     m_subFolder = wxEmptyString;
-    m_fileStructure.dimLatName = "lat";
-    m_fileStructure.dimLonName = "lon";
-    m_fileStructure.dimTimeName = "time";
-    m_fileStructure.dimLevelName = "level";
-    m_fileStructure.hasLevelDimension = true;
-}
-
-asPredictorArchNcepReanalysis1Lthe::~asPredictorArchNcepReanalysis1Lthe()
-{
-
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
+    m_fStr.hasLevelDim = true;
 }
 
 bool asPredictorArchNcepReanalysis1Lthe::Init()
@@ -73,50 +59,42 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
-        m_fileVariableName = "hgt";
+        m_fileVarName = "hgt";
         m_unit = m;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
-        m_fileVariableName = "hgt";
+        m_fileVarName = "hgt";
         m_unit = m;
-        m_firstTimeStepHours = 12;
-        m_timeStepHours = 24;
     } else if (m_dataId.IsSameAs("prwtr", false)) {
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
-        m_fileVariableName = "pwa";
+        m_fileVarName = "pwa";
         m_unit = mm;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 12;
     } else if (m_dataId.IsSameAs("rhum", false)) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
-        m_fileVariableName = "rhum";
+        m_fileVarName = "rhum";
         m_unit = percent;
-        m_firstTimeStepHours = 0;
-        m_timeStepHours = 12;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId,
-                                          m_product));
+        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
+                                          m_dataId, m_product));
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVariableName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
@@ -126,19 +104,9 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
     return true;
 }
 
-vwxs asPredictorArchNcepReanalysis1Lthe::GetListOfFiles(asTimeArray &timeArray) const
+void asPredictorArchNcepReanalysis1Lthe::ListFiles(asTimeArray &timeArray)
 {
-    vwxs files;
-
-    files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
-
-    return files;
-}
-
-bool asPredictorArchNcepReanalysis1Lthe::ExtractFromFile(const wxString &fileName, asGeoAreaCompositeGrid *&dataArea,
-                                                         asTimeArray &timeArray, vvva2f &compositeData)
-{
-    return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
 double asPredictorArchNcepReanalysis1Lthe::ConvertToMjd(double timeValue, double refValue) const

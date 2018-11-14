@@ -39,11 +39,6 @@ asLogWindow::asLogWindow(wxFrame *parent, const wxString &title, bool show, bool
 
 }
 
-asLogWindow::~asLogWindow()
-{
-    //wxDELETE(m_logWindow);
-}
-
 void asLogWindow::DoShow(bool bShow)
 {
     Show(bShow);
