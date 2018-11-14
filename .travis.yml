@@ -1,9 +1,13 @@
 language: cpp
 compiler: gcc
 sudo: required
+git:
+  depth: 9999999
 matrix:
   include:
-    - env: TARGET=linux-server
+    - env:
+      - TARGET=linux-server
+      - RUN_TESTS=true
       os: linux
       dist: trusty
       addons:
@@ -18,10 +22,14 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
-    - env: TARGET=osx-server
+    - env:
+      - TARGET=osx-server
+      - RUN_TESTS=true
       os: osx
       osx_image: xcode7.3
-    - env: TARGET=linux-desktop
+    - env:
+      - TARGET=linux-desktop
+      - RUN_TESTS=true
       os: linux
       dist: trusty
       addons:
@@ -36,10 +44,14 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
-    - env: TARGET=osx-desktop
+    - env:
+      - TARGET=osx-desktop
+      - RUN_TESTS=true
       os: osx
       osx_image: xcode7.3
-    - env: TARGET=coverage-scan
+    - env:
+      - TARGET=coverage-scan
+      - RUN_TESTS=false
       os: linux
       dist: trusty
       addons:
@@ -57,13 +69,14 @@ matrix:
             - lcov
     - env:
       - TARGET=coverity-scan
+      - RUN_TESTS=false
       - secure: "bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc="
       os: linux
       dist: trusty
       branches:
-        only: coverity-scan
+        only: nightly
       before_install:
-        - if [[ "$TRAVIS_BRANCH" != "coverity-scan" ]]; then exit 0; fi
+        - if [[ "$TRAVIS_BRANCH" != "nightly" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       addons:
         apt:
@@ -94,6 +107,16 @@ install:
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
-  - if [[ "$TARGET" != "linux-server" ]]; then exit 0; fi
-  - cd tests
-  - ctest -V
+  - if [ "$RUN_TESTS" = true ] ; then cd bin/test && ctest -V ; fi # run the tests out of the script so it can fail.
+after_success:
+  - cd $HOME/build/atmoswing/atmoswing/bin
+  - cpack
+  - ls
+  - if [[ "$TRAVIS_BRANCH" != "nightly" ]] && [[ "$TRAVIS_BRANCH" != "release" ]]; then exit 0; fi
+addons:
+  artifacts: true
+    s3_region: "eu-central-1"
+    paths:
+      - $(ls *.deb | tr "\n" ":")
+      - $(ls *.dmg | tr "\n" ":")
+      - $(ls *linux64.AppImage | tr "\n" ":")
