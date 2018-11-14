@@ -47,7 +47,7 @@ asFrameAbout::asFrameAbout(wxWindow *parent)
     m_staticTextVersion->SetLabel(asVersion::GetFullString());
 
     // Set changeset number
-    wxString changesetLabel = wxString::Format("Revision %s", lsVersion::GetSoftGITRevision());
+    wxString changesetLabel = wxString::Format("Revision %s (%s)", lsVersion::GetSoftGITRevisionNb(), lsVersion::GetSoftGITRevisionHash());
     m_staticTextChangeset->SetLabel(changesetLabel);
 
     // Set libraries versions

@@ -56,14 +56,6 @@ include_directories(${inc_dirs})
 
 include(define_common_libraries)
 
-# GDAL
-if (GDAL_ROOT)
-    message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
-    set(ENV{GDAL_ROOT} ${GDAL_ROOT})
-endif ()
-find_package(GDAL 2 REQUIRED)
-include_directories(${GDAL_INCLUDE_DIRS})
-
 # vroomgis
 set(CMAKE_INSTALL_PREFIX:STRING ${EXTERNAL_DIR})
 set(SEARCH_VROOMGIS_LIBS:BOOL ON)

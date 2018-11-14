@@ -37,11 +37,11 @@ public:
 
     static wxString GetSoftGITBranch();
 
-    static wxString GetSoftGITRevision();
+    static wxString GetSoftGITRevisionHash();
+
+    static wxString GetSoftGITRevisionNb();
 
     static wxString GetwxWidgetsNumber();
-
-    static wxString GetwxWidgetsGIT();
 
     static wxString GetGDALNumber();
 

@@ -44,11 +44,20 @@ wxString lsVersion::GetSoftGITBranch()
     return myGITtxt;
 }
 
-wxString lsVersion::GetSoftGITRevision()
+wxString lsVersion::GetSoftGITRevisionHash()
 {
     wxString myGITtxt = wxEmptyString;
 #ifdef lsVERSION_SOFT_VERSION_REVISION
     myGITtxt = lsVERSION_SOFT_VERSION_REVISION;
+#endif
+    return myGITtxt;
+}
+
+wxString lsVersion::GetSoftGITRevisionNb()
+{
+    wxString myGITtxt = wxEmptyString;
+#ifdef lsVERSION_SOFT_VERSION
+    myGITtxt = lsVERSION_SOFT_VERSION;
 #endif
     return myGITtxt;
 }
@@ -64,15 +73,6 @@ wxString lsVersion::GetwxWidgetsNumber()
     }
 
     return mywxVersion;
-}
-
-wxString lsVersion::GetwxWidgetsGIT()
-{
-    wxString myGITVersion = wxEmptyString;
-#ifdef lsVERSION_WXWIDGETS_GIT
-    myGITVersion = lsVERSION_WXWIDGETS_GIT;
-#endif
-    return myGITVersion;
 }
 
 wxString lsVersion::GetGDALNumber()
@@ -136,12 +136,7 @@ wxString lsVersion::GetVroomGISNumber()
 
 wxString lsVersion::GetAllModules()
 {
-    wxString myModules = _T("wxWidgets: ") + GetwxWidgetsNumber();
-
-    if (GetwxWidgetsGIT().IsEmpty() == false) {
-        myModules.Append(wxString::Format(" (%s)", GetwxWidgetsGIT()));
-    }
-    myModules.Append(_T("\n"));
+    wxString myModules = _T("wxWidgets: ") + GetwxWidgetsNumber() + _T("\n");
 
     if (GetVroomGISNumber().IsEmpty() == false) {
         myModules.Append(_T("vroomGIS: ") + GetVroomGISNumber() + _T("\n"));
@@ -165,14 +160,6 @@ wxString lsVersion::GetAllModules()
 
     if (GetCurlNumber().IsEmpty() == false) {
         myModules.Append(_T("libCURL: ") + GetCurlNumber() + _T("\n"));
-    }
-
-    if (GetSoftGITRevision().IsEmpty() == false) {
-        myModules.Append(wxString::Format(_T("%s revision: %s \n"), GetSoftName(), GetSoftGITRevision()));
-    }
-
-    if (GetSoftGITBranch().IsEmpty() == false) {
-        myModules.Append(wxString::Format(_T("%s branch: %s \n"), GetSoftName(), GetSoftGITBranch()));
     }
 
     myModules.Append(wxGetOsDescription());

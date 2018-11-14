@@ -38,6 +38,16 @@ find_package(NetCDF 4 MODULE REQUIRED)
 include_directories(${NETCDF_INCLUDE_DIRS})
 link_libraries(${NETCDF_LIBRARIES})
 
+# GDAL
+if (BUILD_VIEWER)
+    if (GDAL_ROOT)
+        message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
+        set(ENV{GDAL_ROOT} ${GDAL_ROOT})
+    endif ()
+    find_package(GDAL 2 REQUIRED)
+    include_directories(${GDAL_INCLUDE_DIRS})
+endif()
+
 # g2clib
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
 
