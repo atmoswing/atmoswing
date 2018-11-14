@@ -37,41 +37,57 @@ email                : lucien.schreiber at crealp dot vs dot ch
 #cmakedefine lsVERSION_SOFT_VERSION_REVISION "@lsVERSION_SOFT_VERSION_REVISION@"
 #cmakedefine lsVERSION_SOFT_VERSION_BRANCH "@lsVERSION_SOFT_VERSION_BRANCH@"
 
-// WXWIDGETS version
-#cmakedefine lsVERSION_WXWIDGETS_GIT "@lsVERSION_WXWIDGETS_GIT@"
-
-// USING GDAL
-#cmakedefine lsVERSION_HAS_GDAL
-#ifdef lsVERSION_HAS_GDAL
-  #include "gdal_priv.h"		
+// GDAL
+#cmakedefine GDAL_INCLUDE_DIR
+#ifdef GDAL_INCLUDE_DIR
+    #include <gdal_priv.h>
 #endif
 
-// USING GEOS
-#cmakedefine lsVERSION_HAS_GEOS
-#ifdef lsVERSION_HAS_GEOS
-  #include "geos_c.h"
+// GEOS
+#cmakedefine GEOS_INCLUDE_DIR
+#ifdef GEOS_INCLUDE_DIR
+    #include <geos_c.h>
 #endif
 
-// USING CURL
-#cmakedefine lsVERSION_HAS_CURL
-#ifdef lsVERSION_HAS_CURL
-  #include <curl/curl.h>
+// CURL
+#cmakedefine CURL_INCLUDE_DIR
+#ifdef CURL_INCLUDE_DIR
+    #include <curl/curl.h>
 #endif
 
-// USING SQLITE
-#cmakedefine lsVERSION_HAS_SQLITE
-#ifdef lsVERSION_HAS_SQLITE
- #include <sqlite3.h>
+// SQLITE 3
+#cmakedefine SQLITE_LIBRARIES
+#ifdef SQLITE_LIBRARIES
+    #include <sqlite3.h>
 #endif
 
-// USING MYSQL
-#cmakedefine lsVERSION_HAS_MYSQL
-#ifdef lsVERSION_HAS_MYSQL
-	#include "mysql.h"
+// MYSQL
+#cmakedefine MYSQL_INCLUDE_DIR
+#ifdef MYSQL_INCLUDE_DIR
+    #include <mysql.h>
 #endif
 
-// USING VROOMGIS
-#cmakedefine lsVERSION_VROOMGIS_SVN "@lsVERSION_VROOMGIS_SVN@"
+// NETCDF
+#cmakedefine NETCDF_INCLUDE_DIRS
+#ifdef NETCDF_INCLUDE_DIRS
+    #include <netcdf.h>
+#endif
+
+// PROJ
+#cmakedefine PROJ_LIBRARY
+#ifdef PROJ_LIBRARY
+    #include <proj_api.h>
+#endif
+#cmakedefine PROJ4_INCLUDE_DIR
+#ifdef PROJ4_INCLUDE_DIR
+    #include <proj_api.h>
+#endif
+
+// EIGEN
+#cmakedefine EIGEN_VERSION
+#ifdef EIGEN_VERSION
+    #include <Eigen/Core>
+#endif
 
 
 #endif

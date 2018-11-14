@@ -26,6 +26,7 @@ wxString lsVersion::GetSoftName()
     return myName;
 }
 
+
 wxString lsVersion::GetSoftGIT()
 {
     wxString myGITVersion = wxEmptyString;
@@ -34,6 +35,7 @@ wxString lsVersion::GetSoftGIT()
 #endif
     return myGITVersion;
 }
+
 
 wxString lsVersion::GetSoftGITBranch()
 {
@@ -44,6 +46,7 @@ wxString lsVersion::GetSoftGITBranch()
     return myGITtxt;
 }
 
+
 wxString lsVersion::GetSoftGITRevisionHash()
 {
     wxString myGITtxt = wxEmptyString;
@@ -52,6 +55,7 @@ wxString lsVersion::GetSoftGITRevisionHash()
 #endif
     return myGITtxt;
 }
+
 
 wxString lsVersion::GetSoftGITRevisionNb()
 {
@@ -62,32 +66,31 @@ wxString lsVersion::GetSoftGITRevisionNb()
     return myGITtxt;
 }
 
+
 wxString lsVersion::GetwxWidgetsNumber()
 {
-    wxString mywxVersion = wxString::Format("%d.%d.%d",
-                                            wxMAJOR_VERSION,
-                                            wxMINOR_VERSION,
-                                            wxRELEASE_NUMBER);
+    wxString mywxVersion = wxString::Format("%d.%d.%d", wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER);
     if (wxSUBRELEASE_NUMBER != 0) {
         mywxVersion.Append(wxString::Format(".%d", wxSUBRELEASE_NUMBER));
     }
-
     return mywxVersion;
 }
+
 
 wxString lsVersion::GetGDALNumber()
 {
     wxString myGDAL = wxEmptyString;
-#ifdef lsVERSION_HAS_GDAL
+#ifdef GDAL_INCLUDE_DIR
     myGDAL = GDAL_RELEASE_NAME;
 #endif
     return myGDAL;
 }
 
+
 wxString lsVersion::GetGEOSNumber()
 {
     wxString myGEOS = wxEmptyString;
-#ifdef lsVERSION_HAS_GEOS
+#ifdef GEOS_INCLUDE_DIR
     myGEOS = GEOS_VERSION;
 #endif
     return myGEOS;
@@ -96,18 +99,18 @@ wxString lsVersion::GetGEOSNumber()
 
 wxString lsVersion::GetCurlNumber()
 {
-    wxString myCurl = wxEmptyString;
-#ifdef lsVERSION_HAS_CURL
-    myCurl = wxString(LIBCURL_VERSION);
+    wxString myTxt = wxEmptyString;
+#ifdef CURL_INCLUDE_DIR
+    myTxt = wxString(LIBCURL_VERSION);
 #endif
-    return myCurl;
+    return myTxt;
 }
 
 
 wxString lsVersion::GetSQLiteNumber()
 {
     wxString mySQlite = wxEmptyString;
-#ifdef lsVERSION_HAS_SQLITE
+#ifdef SQLITE_LIBRARIES
     mySQlite  = wxString(sqlite3_libversion());
 #endif
     return mySQlite;
@@ -117,52 +120,98 @@ wxString lsVersion::GetSQLiteNumber()
 wxString lsVersion::GetMySQLNumber()
 {
     wxString myMySQL = wxEmptyString;
-#ifdef lsVERSION_HAS_MYSQL
+#ifdef MYSQL_INCLUDE_DIR
     myMySQL = wxString(mysql_get_client_info(), wxConvUTF8);
 #endif
     return myMySQL;
 }
 
 
-wxString lsVersion::GetVroomGISNumber()
+wxString lsVersion::GetNetCDFNumber()
 {
-    wxString myVroomGIS = wxEmptyString;
-#ifdef lsVERSION_VROOMGIS_SVN
-    myVroomGIS = lsVERSION_VROOMGIS_SVN;
+    wxString ncVers = wxEmptyString;
+#ifdef NETCDF_INCLUDE_DIRS
+    ncVers = wxString(nc_inq_libvers());
 #endif
-    return myVroomGIS;
+    return ncVers;
+}
+
+
+wxString lsVersion::GetProjNumber()
+{
+    wxString myProj = wxEmptyString;
+#ifdef PROJ_LIBRARY
+    myProj = wxString::Format("%d", PJ_VERSION);
+#elif defined PROJ4_INCLUDE_DIR
+    myProj = wxString::Format("%d", PJ_VERSION);
+#endif
+    // Adding points
+    if (!myProj.IsEmpty()) {
+        wxString myProjDots = wxEmptyString;
+        for (unsigned int i = 0; i < myProj.Length(); i++) {
+            if (i != myProj.Length() - 1) {
+                myProjDots.Append(myProj.Mid(i, 1) + ".");
+            } else {
+                myProjDots.Append(myProj.Mid(i, 1));
+            }
+        }
+        myProj = myProjDots;
+    }
+
+    return myProj;
+}
+
+
+wxString lsVersion::GetEigenNumber()
+{
+    wxString myTxt = wxEmptyString;
+#ifdef EIGEN_VERSION
+    myTxt = wxString::Format("%d.%d.%d", EIGEN_WORLD_VERSION, EIGEN_MAJOR_VERSION, EIGEN_MINOR_VERSION);
+#endif
+    return myTxt;
 }
 
 
 wxString lsVersion::GetAllModules()
 {
-    wxString myModules = _T("wxWidgets: ") + GetwxWidgetsNumber() + _T("\n");
+    wxString myModules = wxEmptyString;
 
-    if (GetVroomGISNumber().IsEmpty() == false) {
-        myModules.Append(_T("vroomGIS: ") + GetVroomGISNumber() + _T("\n"));
-    }
-
-    if (GetMySQLNumber().IsEmpty() == false) {
-        myModules.Append(_T("MySQL: ") + GetMySQLNumber() + _T("\n"));
-    }
-
-    if (GetSQLiteNumber().IsEmpty() == false) {
-        myModules.Append(_T("SQLite: ") + GetSQLiteNumber() + _T("\n"));
-    }
-
-    if (GetGDALNumber().IsEmpty() == false) {
+    if (GetGDALNumber() != wxEmptyString) {
         myModules.Append(_T("GDAL: ") + GetGDALNumber() + _T("\n"));
     }
 
-    if (GetGEOSNumber().IsEmpty() == false) {
+    if (GetGEOSNumber() != wxEmptyString) {
         myModules.Append(_T("GEOS: ") + GetGEOSNumber() + _T("\n"));
     }
 
-    if (GetCurlNumber().IsEmpty() == false) {
-        myModules.Append(_T("libCURL: ") + GetCurlNumber() + _T("\n"));
+    if (GetCurlNumber() != wxEmptyString) {
+        myModules.Append(_T("libCurl: ") + GetCurlNumber() + _T("\n"));
     }
 
+    if (GetSQLiteNumber() != wxEmptyString) {
+        myModules.Append(_T("SQLite: ") + GetSQLiteNumber() + _T("\n"));
+    }
+
+    if (GetMySQLNumber() != wxEmptyString) {
+        myModules.Append(_T("MySQL: ") + GetMySQLNumber() + _T("\n"));
+    }
+
+    if (GetNetCDFNumber() != wxEmptyString) {
+        myModules.Append(_T("NetCDF: ") + GetNetCDFNumber().BeforeFirst(' ') + _T("\n"));
+    }
+
+    if (GetProjNumber() != wxEmptyString) {
+        myModules.Append(_T("Proj4: ") + GetProjNumber() + _T("\n"));
+    }
+
+    if (GetEigenNumber() != wxEmptyString) {
+        myModules.Append(_T("Eigen: ") + GetEigenNumber() + _T("\n"));
+    }
+
+    myModules.Append(_T("wxWidgets: ") + GetwxWidgetsNumber() + _T("\n"));
+
     myModules.Append(wxGetOsDescription());
+
     return myModules;
 }
 

@@ -53,7 +53,11 @@ public:
 
     static wxString GetMySQLNumber();
 
-    static wxString GetVroomGISNumber();
+    static wxString GetNetCDFNumber();
+
+    static wxString GetProjNumber();
+
+    static wxString GetEigenNumber();
 
     static wxString GetAllModules();
 };
