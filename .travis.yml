@@ -116,3 +116,8 @@ after_success:
 addons:
   artifacts:
     s3_region: "eu-central-1"
+    debug: true
+    paths:
+      - $(ls *.deb | tr "\n" ":")
+      - $(ls *.dmg | tr "\n" ":")
+      - $(ls *linux64.AppImage | tr "\n" ":")
