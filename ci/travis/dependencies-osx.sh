@@ -5,6 +5,8 @@ brew install jasper
 brew install netcdf
 brew install openssl
 
+whereis openssl
+
 # Build libraries
 chmod +x ci/travis/build-wxwidgets-osx.sh
 ci/travis/build-wxwidgets-osx.sh
