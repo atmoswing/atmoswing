@@ -3,10 +3,7 @@
 REBUILD_WX=false
 
 # Build wxWidgets
-if [ ! "$(ls -A ${HOME}/.wxwidgets)" ] || [ "$REBUILD_WX" = true ]; then
-  if [ "$REBUILD_WX" = true ]; then
-    rm -rf ${HOME}/.wxwidgets
-  fi
+if [ ! "$(ls -A ${HOME}/.libs/include/wx)" ] || [ "$REBUILD_WX" = true ]; then
   wget -q -O wxwidgets.tar.bz2 "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.tar.bz2" > /dev/null
   tar -xjf wxwidgets.tar.bz2
   cd wxWidgets-3.1.0
@@ -17,5 +14,5 @@ if [ ! "$(ls -A ${HOME}/.wxwidgets)" ] || [ "$REBUILD_WX" = true ]; then
   make install > /dev/null
   cd ..
 else 
-  printf 'wxWidgets will not be built (%s/.wxwidgets not empty).\n' "$HOME"
+  printf 'wxWidgets will not be built (%s/.libs/include/wx found).\n' "$HOME"
 fi
