@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-# Nothing to do
+# Build libraries
+chmod +x ci/travis/build-gdal-osx.sh
+ci/travis/build-gdal-osx.sh
