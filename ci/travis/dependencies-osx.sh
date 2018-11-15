@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 export HOMEBREW_NO_AUTO_UPDATE=1
+brew tap homebrew/science
 brew install proj
 brew install jasper
 brew install netcdf
