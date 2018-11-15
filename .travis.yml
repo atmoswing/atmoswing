@@ -12,6 +12,7 @@ matrix:
       dist: trusty
       addons:
         apt:
+          update: true
           packages:
             - build-essential
             - gnome-devel
@@ -22,11 +23,22 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
+        artifacts:
+          s3_region: "eu-central-1"
+          debug: true
+          paths:
+            - $(ls *.deb | tr "\n" ":")
     - env:
       - TARGET=osx-server
       - RUN_TESTS=true
       os: osx
       osx_image: xcode7.3
+      addons:
+        artifacts:
+          s3_region: "eu-central-1"
+          debug: true
+          paths:
+            - $(ls *.dmg | tr "\n" ":")
     - env:
       - TARGET=linux-desktop
       - RUN_TESTS=true
@@ -34,6 +46,7 @@ matrix:
       dist: trusty
       addons:
         apt:
+          update: true
           packages:
             - build-essential
             - gnome-devel
@@ -44,11 +57,22 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+        artifacts:
+          s3_region: "eu-central-1"
+          debug: true
+          paths:
+            - $(ls *.deb | tr "\n" ":")
     - env:
       - TARGET=osx-desktop
       - RUN_TESTS=true
       os: osx
       osx_image: xcode7.3
+      addons:
+        artifacts:
+          s3_region: "eu-central-1"
+          debug: true
+          paths:
+            - $(ls *.dmg | tr "\n" ":")
     - env:
       - TARGET=coverage-scan
       - RUN_TESTS=false
@@ -56,6 +80,7 @@ matrix:
       dist: trusty
       addons:
         apt:
+          update: true
           packages:
             - build-essential
             - gnome-devel
@@ -74,12 +99,13 @@ matrix:
       os: linux
       dist: trusty
       branches:
-        only: nightly
+        only: [nightly]
       before_install:
         - if [[ "$TRAVIS_BRANCH" != "nightly" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
       addons:
         apt:
+          update: true
           packages:
             - build-essential
             - gnome-devel
@@ -95,15 +121,15 @@ matrix:
             name: "atmoswing/atmoswing"
             description: "Build submitted via Travis CI"
           notification_email: pascal.horton@giub.unibe.ch
-          build_command_prepend: "cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_VIEWER=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGDAL_ROOT=$HOME/.libs/gdal"
+          build_command_prepend: "cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGDAL_ROOT=$HOME/.libs"
           build_command: "make -j $(nproc)"
           branch_pattern: coverity-scan
 cache:
   directories:
     - $HOME/.libs
 install:
-  - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}
-  - travis_wait 30 ci/travis/dependencies-${TRAVIS_OS_NAME}
+  - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
+  - travis_wait 30 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
@@ -112,14 +138,4 @@ after_success:
   - cd ..
   - cpack -C release -G DEB
   - ls -lha
-  - "$TRAVIS_BRANCH"
-  - $TRAVIS_BRANCH
   - if [[ "$TRAVIS_BRANCH" != "nightly" ]] && [[ "$TRAVIS_BRANCH" != "release" ]]; then exit 0; fi
-addons:
-  artifacts:
-    s3_region: "eu-central-1"
-    debug: true
-    paths:
-      - $(ls *.deb | tr "\n" ":")
-      - $(ls *.dmg | tr "\n" ":")
-      - $(ls *linux64.AppImage | tr "\n" ":")
