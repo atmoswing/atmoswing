@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-brew tap homebrew/science
 brew install proj
 brew install netcdf
 

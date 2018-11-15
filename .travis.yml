@@ -8,6 +8,7 @@ matrix:
   - env:
     - TARGET=linux-server
     - RUN_TESTS=true
+    - DEPLOY=true
     os: linux
     dist: trusty
     addons:
@@ -23,25 +24,16 @@ matrix:
         - libjasper-dev
         - libcurl3
         - libwxbase3.0-dev
-      artifacts:
-        s3_region: eu-central-1
-        debug: true
-        paths:
-        - $(ls *.deb | tr "\n" ":")
   - env:
     - TARGET=osx-server
     - RUN_TESTS=true
+    - DEPLOY=true
     os: osx
     osx_image: xcode7.3
-    addons:
-      artifacts:
-        s3_region: eu-central-1
-        debug: true
-        paths:
-        - $(ls *.dmg | tr "\n" ":")
   - env:
     - TARGET=linux-desktop
     - RUN_TESTS=true
+    - DEPLOY=true
     os: linux
     dist: trusty
     addons:
@@ -57,25 +49,16 @@ matrix:
         - libjasper-dev
         - libcurl3
         - libwxgtk3.0-dev
-      artifacts:
-        s3_region: eu-central-1
-        debug: true
-        paths:
-        - $(ls *.deb | tr "\n" ":")
   - env:
     - TARGET=osx-desktop
     - RUN_TESTS=true
+    - DEPLOY=true
     os: osx
     osx_image: xcode7.3
-    addons:
-      artifacts:
-        s3_region: eu-central-1
-        debug: true
-        paths:
-        - $(ls *.dmg | tr "\n" ":")
   - env:
     - TARGET=coverage-scan
     - RUN_TESTS=false
+    - DEPLOY=false
     os: linux
     dist: trusty
     addons:
@@ -95,6 +78,7 @@ matrix:
   - env:
     - TARGET=coverity-scan
     - RUN_TESTS=false
+    - DEPLOY=false
     - secure: bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc=
     os: linux
     dist: trusty
@@ -141,18 +125,15 @@ after_success:
 - cd ..
 - cpack -C release -G DEB
 - ls -lha
-- if [[ "$TRAVIS_BRANCH" != "nightly" ]] && [[ "$TRAVIS_BRANCH" != "release" ]]; then
-  exit 0; fi
-before_deploy:
-- git config --local user.name "Pascal Horton"
-- git config --local user.email "horton.pascal@gmail.com"
-- git tag "$TRAVIS_BRANCH-$(date +'%Y-%m-%d')-$(git log --format=%h -1)"
 deploy:
-  provider: releases
+  provider: gcs
+  access_key_id: GOOG2DVQVS5OULIG7WIU4B7F
+  secret_access_key:
+    secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
+  bucket: atmoswing-deploy
   skip_cleanup: true
-  api_key:
-    secure: ZJcSZq3z8loWs0djYPfCYGTCaDJ7f9FWFHEeTuVtrRtDyDc9e5RRYje5RhFSdVWiXc6pocgM5/+wynomZGv2TZ6sX2GylyXXc36arEW+TLuxdp0uLZ2lmyiLqO9GUQr6rXqYIe6/EGuMmZ9eS4mzJeYoo8FxlFXe2TE0H3nBtWc4zfWjFs5wzR6uI8efkJuNEaeoxgmEq7+p8E0Ip3zdoYiE9/HYGmu8S87mDpmgHGnvPJzmgScHr709apCf//xHE5QvBNTKfOQrt9H1VDRJN4TF+Ga0a0VthX1W+Be0iQMlMr6M8UzWBzyWUiGOm/O+3LiSLItp3kAWvf+tyKTsK2RqbJzx0XnmRam26IbUoW3ZL9DSbt+C+2qfLnv8lSl8T0Rg/RbA6tzqUpJB+1ffK6xRwWui55JJBn1hEbTpHPOTZxa/XwvXXPyiq92TMeDrEKrQ/CHZ7Vuu65QkRC132fInT3EVJoePWTvPHHbDQbH0cL5iERtwnXM2/GbXjPZGx7BLsQLHBKbpmwuV6spR7+aJZLYVrnePHijp9VBp8UudLlSM3hwAGUE/nFL0X/WHvP+If5AsqM7tpq9b7BjjHGCiSNI6P/SJhDeU+4V/b5uTZv8Tmb+myTcdFcjMfhIuxUdVK566Lskc4rrz9hoOUPdZuVCKdltkp4gHUt4U81I=
-  file: "*.deb"
+  acl: public-read
   on:
     repo: atmoswing/atmoswing
     branch: nightly
+    condition: $DEPLOY = true
