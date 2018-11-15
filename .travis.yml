@@ -146,7 +146,7 @@ after_success:
 before_deploy:
 - git config --local user.name "Pascal Horton"
 - git config --local user.email "horton.pascal@gmail.com"
-- git tag "$(date +'%Y-%m-%d_%H:%M:%S')-$(git log --format=%h -1)"
+- git tag "$TRAVIS_BRANCH-$(date +'%Y-%m-%d')-$(git log --format=%h -1)"
 deploy:
   provider: releases
   skip_cleanup: true
