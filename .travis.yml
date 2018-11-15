@@ -126,8 +126,8 @@ after_success:
   - cpack -C release -G DEB
   - ls -lha
 before_deploy:
-  - export RELEASE_PKG_FILE=$(ls *.deb)
-  - echo "Deploying $RELEASE_PKG_FILE to Google Cloud Storage"
+  - export LINUX_PKG_FILE=$(ls *.deb)
+  - echo "Deploying $LINUX_PKG_FILE to Google Cloud Storage"
 deploy:
   provider: gcs
   access_key_id: GOOG2DVQVS5OULIG7WIU4B7F
@@ -136,7 +136,7 @@ deploy:
   bucket: atmoswing-deploy
   skip_cleanup: true
   acl: public-read
-  file: "$RELEASE_PKG_FILE"
+  file: "${LINUX_PKG_FILE}"
   on:
     repo: atmoswing/atmoswing
     branch: nightly

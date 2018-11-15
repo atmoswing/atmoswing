@@ -2,6 +2,7 @@
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 brew install proj
+brew install jasper
 brew install netcdf
 
 # Build libraries
