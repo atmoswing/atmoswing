@@ -112,6 +112,8 @@ after_success:
   - cd ..
   - cpack -C release -G DEB
   - ls -lha
+  - "$TRAVIS_BRANCH"
+  - $TRAVIS_BRANCH
   - if [[ "$TRAVIS_BRANCH" != "nightly" ]] && [[ "$TRAVIS_BRANCH" != "release" ]]; then exit 0; fi
 addons:
   artifacts:
