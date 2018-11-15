@@ -133,6 +133,8 @@ deploy:
   bucket: atmoswing-deploy
   skip_cleanup: true
   acl: public-read
+  file_glob: true
+  file: "*.deb"
   on:
     repo: atmoswing/atmoswing
     branch: nightly
