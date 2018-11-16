@@ -120,6 +120,21 @@ install:
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
+  - echo "-------------------"
+  - ls -lha
+  - echo "-------------------"
+  - ls -lha Release
+  - echo "-------------------"
+  - ls -lha tests
+  - echo "-------------------"
+  - ls -lha tests/Release
+  - echo "-------------------"
+  - ls -lha tests/Release
+  - echo "-------------------"
+  - whereis atmoswing-tests
+  - echo "-------------------"
+  - which atmoswing-tests
+  - echo "-------------------"
   - if [ "$RUN_TESTS" = true ] ; then cd tests && ctest -V ; fi
 after_success:
   - cd ..

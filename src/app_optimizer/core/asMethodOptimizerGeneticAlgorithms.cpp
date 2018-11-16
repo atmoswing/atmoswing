@@ -1157,7 +1157,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                         double probCumul = prob + probabilities[probabilities.size() - 1];
                         probabilities.push_back(probCumul);
                     }
-                    if (abs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
+                    if (fabs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
                         double diff = probabilities[probabilities.size() - 1] - 1.0;
                         wxLogWarning(_("probabilities[last]-1.0=%f"), diff);
                     }
@@ -1195,7 +1195,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                             return false;
                         }
                     }
-                    if (abs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
+                    if (fabs(probabilities[probabilities.size() - 1] - 1.0) > 0.00001) {
                         double diff = probabilities[probabilities.size() - 1] - 1.0;
                         wxLogWarning(_("probabilities[last]-1.0=%f"), diff);
                     }
