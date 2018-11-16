@@ -23,6 +23,15 @@ This repository contains 3 separate tools:
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
+## Download AtmoSwing ##
+
+You can download the releases under: https://github.com/atmoswing/atmoswing/releases
+
+Nightly (experimental) automatic builds are available for:
+
+* Linux (Ubuntu) & osx: https://ci.appveyor.com/project/pascalhorton/atmoswing
+* Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
+
 ## How to build AtmoSwing ##
 
 The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
