@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 
-export HOMEBREW_PREFIX="$HOME/.libs"
-export HOMEBREW_CELLAR="$HOME/.libs"
-export PATH=${HOMEBREW_PREFIX}:$PATH
-
 brew install proj
 brew install jasper
 brew install netcdf
