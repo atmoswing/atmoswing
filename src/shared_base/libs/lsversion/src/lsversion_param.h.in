@@ -40,7 +40,7 @@ email                : lucien.schreiber at crealp dot vs dot ch
 // GDAL
 #cmakedefine GDAL_INCLUDE_DIR
 #ifdef GDAL_INCLUDE_DIR
-    #include <gdal_priv.h>
+    #include <gdal_version.h>
 #endif
 
 // GEOS
