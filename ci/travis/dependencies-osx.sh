@@ -3,8 +3,9 @@
 brew install proj
 brew install jasper
 brew install netcdf
-brew install openssl
+brew upgrade openssl
 
+brew link openssl --force
 whereis openssl
 
 # Build libraries
