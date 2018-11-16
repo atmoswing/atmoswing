@@ -14,5 +14,5 @@ if [ ! "$(ls -A ${HOME}/.libs/include/wx-3.1)" ] || [ "$REBUILD_WX" = true ]; th
   make install > /dev/null
   cd ..
 else 
-  printf 'wxWidgets will not be built (%s/.libs/include/wx found).\n' "$HOME"
+  printf 'wxWidgets will not be built (%s/.libs/include/wx-3.1 found).\n' "$HOME"
 fi
