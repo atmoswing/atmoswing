@@ -115,9 +115,7 @@ script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
 after_success:
-  - echo pwd
-  - echo "$HOME"
-  - cd "$HOME"
+  - cd "$HOME/atmoswing"
   - cpack -C release -G DEB
   - ls -lha
 before_deploy:
