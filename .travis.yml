@@ -115,7 +115,9 @@ script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
 after_success:
-  - cd $HOME
+  - echo pwd
+  - echo "$HOME"
+  - cd "$HOME"
   - cpack -C release -G DEB
   - ls -lha
 before_deploy:
