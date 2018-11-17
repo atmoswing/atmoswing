@@ -7,7 +7,6 @@ matrix:
   include:
     - env:
         - TARGET=linux-server
-        - RUN_TESTS=true
         - DEPLOY=true
       os: linux
       dist: trusty
@@ -26,13 +25,11 @@ matrix:
             - libwxbase3.0-dev
     - env:
         - TARGET=osx-server
-        - RUN_TESTS=true
         - DEPLOY=true
       os: osx
       osx_image: xcode7.3
     - env:
         - TARGET=linux-desktop
-        - RUN_TESTS=true
         - DEPLOY=true
       os: linux
       dist: trusty
@@ -51,13 +48,11 @@ matrix:
             - libwxgtk3.0-dev
     - env:
         - TARGET=osx-desktop
-        - RUN_TESTS=true
         - DEPLOY=true
       os: osx
       osx_image: xcode7.3
     - env:
         - TARGET=coverage-scan
-        - RUN_TESTS=false
         - DEPLOY=false
       os: linux
       dist: trusty
@@ -77,7 +72,6 @@ matrix:
             - lcov
     - env:
         - TARGET=coverity-scan
-        - RUN_TESTS=false
         - DEPLOY=false
         - secure: bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc=
       os: linux
@@ -120,9 +114,6 @@ install:
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
-  - cd tests
-  - ls -lha
-  - if [ "$RUN_TESTS" = true ] ; then ./atmoswing-tests ; fi
 after_success:
   - cd ..
   - cpack -C release -G DEB
