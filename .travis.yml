@@ -8,7 +8,7 @@ matrix:
     - env:
         - TARGET=linux-server
         - DEPLOY=true
-        - LINUX_VERSION=ubuntu64-trusty
+        - DISTRO="ubuntu64-trusty"
       os: linux
       dist: trusty
       addons:
@@ -32,7 +32,7 @@ matrix:
     - env:
         - TARGET=linux-desktop
         - DEPLOY=true
-        - LINUX_VERSION=ubuntu64-trusty
+        - DISTRO="ubuntu64-trusty"
       os: linux
       dist: trusty
       addons:
@@ -122,7 +122,7 @@ after_success:
   - cpack -C release -G DEB
   - ls -lha
 before_deploy:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then rename 's/linux64/${LINUX_VERSION}/' *linux64.deb ; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then rename 's/linux64/${DISTRO}/' *linux64.deb ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then export PKG_FILE=$(ls *.deb) ; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then export PKG_FILE=$(ls *.dmg) ; fi
   - mkdir deploy
