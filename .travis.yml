@@ -109,6 +109,7 @@ cache:
   directories:
     - "$HOME/.libs"
 install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then brew install coreutils && sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
   - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
   - timeout 2400 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
 script:
