@@ -111,10 +111,10 @@ cache:
 install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then brew upgrade && brew install coreutils && sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
   - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
-  - timeout 2400 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
+  - travis_wait 40 (timeout 2200 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true)
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
-  - timeout 2400 ci/travis/run-${TARGET}.sh || true
+  - travis_wait 40 (timeout 2200 ci/travis/run-${TARGET}.sh || true)
 after_success:
   - cd "$HOME/atmoswing"
   - cpack -C release -G DEB
