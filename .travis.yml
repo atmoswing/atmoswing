@@ -110,7 +110,7 @@ cache:
     - "$HOME/.libs"
 install:
   - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
-  - travis_wait 50 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
+  - travis_wait 40 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 ci/travis/run-${TARGET}.sh
