@@ -23,11 +23,11 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
-    - env:
-        - TARGET=osx-server
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode7.3
+#    - env:
+#        - TARGET=osx-server
+#        - DEPLOY=true
+#      os: osx
+#      osx_image: xcode7.3
     - env:
         - TARGET=linux-desktop
         - DEPLOY=true
@@ -46,11 +46,11 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
-    - env:
-        - TARGET=osx-desktop
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode7.3
+#    - env:
+#        - TARGET=osx-desktop
+#        - DEPLOY=true
+#      os: osx
+#      osx_image: xcode7.3
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
