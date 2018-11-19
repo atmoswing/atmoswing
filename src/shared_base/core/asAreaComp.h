@@ -46,13 +46,13 @@ public:
 
     ~asAreaComp() override = default;
 
-    double GetXmin() const;
+    double GetXmin() const override;
 
-    double GetXmax() const;
+    double GetXmax() const override;
 
-    double GetYmin() const;
+    double GetYmin() const override;
 
-    double GetYmax() const;
+    double GetYmax() const override;
 
     int GetNbComposites() const
     {

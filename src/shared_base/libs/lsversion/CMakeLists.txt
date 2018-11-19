@@ -82,6 +82,8 @@ if (USE_VERSION)
     include_directories("${LSVERSION_PATH}")
     add_library("lsVersion" STATIC ${LSVERSION_SRC_FILES} ${LSVERSION_HEAD_FILES})
 
+    add_dependencies(lsVersion eigen)
+
 
 ELSE (USE_VERSION)
     message(AUTHOR_WARNING "Not using lsVersion Component")
