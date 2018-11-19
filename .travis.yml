@@ -47,7 +47,7 @@ matrix:
         - TARGET=osx-server
         - DEPLOY=true
       os: osx
-      osx_image: xcode9.4
+      osx_image: xcode10
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
@@ -90,7 +90,7 @@ matrix:
         - TARGET=osx-desktop
         - DEPLOY=true
       os: osx
-      osx_image: xcode9.4
+      osx_image: xcode10
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
