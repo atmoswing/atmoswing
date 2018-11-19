@@ -29,7 +29,7 @@ You can download the releases under: https://github.com/atmoswing/atmoswing/rele
 
 Nightly (experimental) automatic builds are available for:
 
-* Linux (Ubuntu) & osx: https://ci.appveyor.com/project/pascalhorton/atmoswing
+* Linux (Ubuntu) & osx: https://console.cloud.google.com/storage/browser/atmoswing-deploy
 * Windows: https://ci.appveyor.com/project/pascalhorton/atmoswing
 
 ## How to build AtmoSwing ##
