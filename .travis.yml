@@ -156,16 +156,8 @@ script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 timeout 2200 ci/travis/run-${TARGET}.sh || true
 after_success:
-  - cd "$HOME/atmoswing"
-  - cpack -C release -G DEB
-  - ls -lha
-before_deploy:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then rename "s/linux64/${DISTRO}/" *linux64.deb ; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] ; then export PKG_FILE=$(ls *.deb) ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then export PKG_FILE=$(ls *.dmg) ; fi
-  - mkdir deploy
-  - mv $PKG_FILE deploy/
-  - echo "Deploying $PKG_FILE to Google Cloud Storage"
+  - chmod +x ci/travis/after-success-${TRAVIS_OS_NAME}.sh
+  - ci/travis/after-success-${TRAVIS_OS_NAME}.sh
 deploy:
   - provider: gcs
     access_key_id: GOOG2DVQVS5OULIG7WIU4B7F
