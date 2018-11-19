@@ -9,8 +9,9 @@ if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; 
   cd gdal-2.1.3
   ./configure --prefix=${HOME}/.libs --with-static-proj4=/usr --with-sqlite3=no --with-python=no --with-pg=no --with-grass=no --with-jasper=/usr --with-curl=/usr --with-jpeg=internal --with-png=internal --disable-shared --enable-static --silent
   make -j6 > /dev/null
-  make install > /dev/null
+  make install
   cd ..
+  printf 'GDAL has been built.\n'
 else 
   printf 'GDAL will not be built (%s/.libs/include/gdal.h found).\n' "$HOME"
 fi

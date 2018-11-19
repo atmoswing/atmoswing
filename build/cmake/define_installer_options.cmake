@@ -85,6 +85,7 @@ if (WIN32)
         set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES")
     endif ()
 
+    # WIX related parameters
     set(CPACK_GENERATOR "WIX")
     set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_LIST_DIR}/../../art/logo/atmoswing.png")
     set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_bg.jpg")
