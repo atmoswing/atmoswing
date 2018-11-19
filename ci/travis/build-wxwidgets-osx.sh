@@ -9,7 +9,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/wx-3.1)" ] || [ "$REBUILD_WX" = true ]; th
   cd wxWidgets-3.1.1
   export LDFLAGS="-stdlib=libc++"
   export OBJCXXFLAGS="-stdlib=libc++ -std=c++11"
-  ./configure --prefix=${HOME}/.libs --enable-unicode --disable-shared --enable-mediactrl=no --enable-webview --enable-webview-webkit --silent --with-macosx-version-min=10.10
+  ./configure --prefix=${HOME}/.libs --enable-unicode --disable-shared --enable-mediactrl=no --silent --with-macosx-version-min=10.10
   make -j4 > /dev/null
   make install > /dev/null
   cd ..
