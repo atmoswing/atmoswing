@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-REBUILD_GDAL=false
+REBUILD_GDAL=true
 
 # Build GDAL2
 if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; then
