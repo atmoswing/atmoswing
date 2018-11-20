@@ -46,6 +46,7 @@ if (BUILD_VIEWER)
     endif ()
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
+    link_libraries(${GDAL_LIBRARIES})
 
 endif ()
 
