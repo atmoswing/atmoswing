@@ -104,8 +104,5 @@ mark_as_advanced(
         GDAL_LIBRARY
 )
 
-message(STATUS "GDAL lib is ${GDAL_LIBRARY}")
-message(STATUS "GDAL include is ${GDAL_INCLUDE_DIR}")
-
 set(GDAL_LIBRARIES ${GDAL_LIBRARY})
 set(GDAL_INCLUDE_DIRS ${GDAL_INCLUDE_DIR})
