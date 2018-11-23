@@ -48,7 +48,7 @@ if (BUILD_VIEWER)
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
 
-endif()
+endif ()
 
 # g2clib
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
