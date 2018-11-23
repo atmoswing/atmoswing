@@ -117,7 +117,7 @@ public:
 
     asParametersScoring();
 
-    virtual ~asParametersScoring();
+    ~asParametersScoring() override;
 
     void AddPredictorVect(ParamsStepVect &step);
 
@@ -127,14 +127,14 @@ public:
 
     wxString GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const;
 
-    wxString Print() const;
+    wxString Print() const override;
 
     virtual int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
     {
         return 1;
     }
 
-    bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.
+    bool GetValuesFromString(wxString stringVals) override; // We copy the string as we'll modify it.
 
     bool SetCalibrationYearStart(int val)
     {
@@ -153,7 +153,7 @@ public:
         return m_calibrationStart;
     }
 
-    bool SetCalibrationStart(wxString val)
+    bool SetCalibrationStart(const wxString &val)
     {
         m_calibrationStart = asTime::GetTimeFromString(val);
         return true;
@@ -164,7 +164,7 @@ public:
         return m_calibrationEnd;
     }
 
-    bool SetCalibrationEnd(wxString val)
+    bool SetCalibrationEnd(const wxString &val)
     {
         m_calibrationEnd = asTime::GetTimeFromString(val);
         return true;
@@ -177,12 +177,12 @@ public:
 
     bool SetValidationYearsVector(vi val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided validation years vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (int y : val) {
+                if (asIsNaN(y)) {
                     wxLogError(_("There are NaN values in the provided validation years vector."));
                     return false;
                 }
@@ -266,12 +266,12 @@ public:
 
     bool SetAnalogsNumberVector(int iStep, vi val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided analogs number vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (int n : val) {
+                if (asIsNaN(n)) {
                     wxLogError(_("There are NaN values in the provided analogs number vector."));
                     return false;
                 }
@@ -283,12 +283,12 @@ public:
 
     bool SetPreprocessTimeHoursVector(int iStep, int iPtor, int iPre, vd val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided preprocess time (hours) vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (double v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
                     return false;
                 }
@@ -312,12 +312,12 @@ public:
 
     bool SetPredictorXminVector(int iStep, int iPtor, vd val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided xMin vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (double v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided xMin vector."));
                     return false;
                 }
@@ -334,12 +334,12 @@ public:
 
     bool SetPredictorXptsnbVector(int iStep, int iPtor, vi val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided xPtsNb vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (int v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided xPtsNb vector."));
                     return false;
                 }
@@ -356,12 +356,12 @@ public:
 
     bool SetPredictorYminVector(int iStep, int iPtor, vd val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided yMin vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (double v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided yMin vector."));
                     return false;
                 }
@@ -378,12 +378,12 @@ public:
 
     bool SetPredictorYptsnbVector(int iStep, int iPtor, vi val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided yPtsNb vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (int v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided yPtsNb vector."));
                     return false;
                 }
@@ -400,12 +400,12 @@ public:
 
     bool SetPredictorTimeHoursVector(int iStep, int iPtor, vd val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided predictor time (hours) vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (double v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided predictor time (hours) vector."));
                     return false;
                 }
@@ -422,12 +422,12 @@ public:
 
     bool SetPredictorWeightVector(int iStep, int iPtor, vf val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided predictor weights vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < (int) val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (float v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided predictor weights vector."));
                     return false;
                 }
@@ -450,12 +450,12 @@ public:
 
     bool SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided preprocess data ID vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < val.size(); i++) {
-                if (val[i].IsEmpty()) {
+            for (auto &v : val) {
+                if (v.IsEmpty()) {
                     wxLogError(_("There are NaN values in the provided preprocess data ID vector."));
                     return false;
                 }
@@ -485,12 +485,12 @@ public:
 
     bool SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided preprocess levels vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (float v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided preprocess levels vector."));
                     return false;
                 }
@@ -525,19 +525,19 @@ public:
         return m_stepsVect[iStep].predictors[iPtor].dataId;
     }
 
-    int GetPredictorDataIdNb(int iStep, int iPtor) const
+    int GetPredictorDataIdNb(int iStep, int iPtor) const override
     {
         return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
     bool SetPredictorDataIdVector(int iStep, int iPtor, vwxs val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided data ID vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < val.size(); i++) {
-                if (val[i].IsEmpty()) {
+            for (auto &v : val) {
+                if (v.IsEmpty()) {
                     wxLogError(_("There are NaN values in the provided data ID vector."));
                     return false;
                 }
@@ -554,12 +554,12 @@ public:
 
     bool SetPredictorLevelVector(int iStep, int iPtor, vf val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided predictor levels vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < val.size(); i++) {
-                if (asIsNaN(val[i])) {
+            for (float v : val) {
+                if (asIsNaN(v)) {
                     wxLogError(_("There are NaN values in the provided predictor levels vector."));
                     return false;
                 }
@@ -576,12 +576,12 @@ public:
 
     bool SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val)
     {
-        if (val.size() < 1) {
+        if (val.empty()) {
             wxLogError(_("The provided predictor criteria vector is empty."));
             return false;
         } else {
-            for (int i = 0; i < val.size(); i++) {
-                if (val[i].IsEmpty()) {
+            for (auto &v : val) {
+                if (v.IsEmpty()) {
                     wxLogError(_("There are NaN values in the provided predictor criteria vector."));
                     return false;
                 }
