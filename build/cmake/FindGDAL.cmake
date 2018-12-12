@@ -1,11 +1,5 @@
-# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
-# file Copyright.txt or https://cmake.org/licensing for details.
-
-#.rst:
 # FindGDAL
 # --------
-#
-#
 #
 # Locate gdal
 #
@@ -25,85 +19,90 @@
 #     GDAL_LIBRARY - A variable pointing to the GDAL library
 #     GDAL_INCLUDE_DIR - Where to find the headers
 
-#
-# $GDALDIR is an environment variable that would
-# correspond to the ./configure --prefix=$GDAL_DIR
-# used in building gdal.
-#
-# Created by Eric Wing. I'm not a gdal user, but OpenSceneGraph uses it
-# for osgTerrain so I whipped this module together for completeness.
-# I actually don't know the conventions or where files are typically
-# placed in distros.
-# Any real gdal users are encouraged to correct this (but please don't
-# break the OS X framework stuff when doing so which is what usually seems
-# to happen).
-
-# This makes the presumption that you are include gdal.h like
-#
-#include "gdal.h"
+if (NOT GDAL_DIR AND GDAL_ROOT)
+    SET(GDAL_DIR ${GDAL_ROOT})
+elseif (NOT GDAL_DIR AND ENV{GDAL_ROOT})
+    SET(GDAL_DIR ENV{GDAL_ROOT})
+endif ()
 
 find_path(GDAL_INCLUDE_DIR gdal.h
         HINTS
+        ${GDAL_DIR}
         ENV GDAL_DIR
         ENV GDAL_ROOT
         PATH_SUFFIXES
         include/gdal
         include/GDAL
         include
-        PATHS
-        ~/Library/Frameworks/gdal.framework/Headers
-        /Library/Frameworks/gdal.framework/Headers
-        /sw # Fink
-        /opt/local # DarwinPorts
-        /opt/csw # Blastwave
-        /opt
+        NO_DEFAULT_PATH
         )
 
-if (UNIX)
-    # Use gdal-config to obtain the library version (this should hopefully
-    # allow us to -lgdal1.x.y where x.y are correct version)
-    # For some reason, libgdal development packages do not contain
-    # libgdal.so...
-    find_program(GDAL_CONFIG gdal-config
-            HINTS
-            ENV GDAL_DIR
-            ENV GDAL_ROOT
-            PATH_SUFFIXES bin
-            PATHS
-            /sw # Fink
-            /opt/local # DarwinPorts
-            /opt/csw # Blastwave
-            /opt
-            )
+if (WIN32)
+
+    find_library(GDAL_LIBRARY
+            gdal_i
+            HINTS ${GDAL_DIR}/lib
+            ${GDAL_DIR}
+            NO_DEFAULT_PATH)
+
+elseif (APPLE)
+
+    # If mac, use the dynamic library
+    if (GDAL_DIR)
+        find_library(GDAL_LIBRARY
+                gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                PATHS
+                ${GDAL_DIR}/lib
+                ${GDAL_DIR}
+                NO_DEFAULT_PATH)
+
+    else ()
+        message(STATUS "Searching GDAL on standard PATHS")
+        find_path(GDAL_INCLUDE_DIR gdal.h
+                PATH_SUFFIXES gdal)
+
+        find_library(GDAL_LIBRARY
+                gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
+    endif ()
+
+else ()
+
+    # If linux, use the static library
+    if (GDAL_DIR)
+        find_library(GDAL_LIBRARY
+                NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                PATHS
+                ${GDAL_DIR}/lib
+                ${GDAL_DIR}
+                NO_DEFAULT_PATH)
+
+        find_program(GDAL_CONFIG gdal-config
+                ${GDAL_DIR}/bin/
+                NO_DEFAULT_PATH)
+
+    else ()
+        message(STATUS "Searching GDAL on standard PATHS")
+        find_path(GDAL_INCLUDE_DIR gdal.h
+                PATH_SUFFIXES gdal)
+
+        find_library(GDAL_LIBRARY
+                NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
+
+        find_program(GDAL_CONFIG gdal-config)
+
+    endif ()
 
     if (GDAL_CONFIG)
-        exec_program(${GDAL_CONFIG} ARGS --libs OUTPUT_VARIABLE GDAL_CONFIG_LIBS)
-        if (GDAL_CONFIG_LIBS)
-            string(REGEX MATCHALL "-l[^ ]+" _gdal_dashl ${GDAL_CONFIG_LIBS})
-            string(REPLACE "-l" "" _gdal_lib "${_gdal_dashl}")
-            string(REGEX MATCHALL "-L[^ ]+" _gdal_dashL ${GDAL_CONFIG_LIBS})
-            string(REPLACE "-L" "" _gdal_libpath "${_gdal_dashL}")
-        endif ()
-    endif ()
-endif ()
+        exec_program(${GDAL_CONFIG} ARGS --dep-libs OUTPUT_VARIABLE GDAL_DEP_LIBS)
+        list(APPEND GDAL_LIBRARY ${GDAL_DEP_LIBS})
+    endif (GDAL_CONFIG)
 
-find_library(GDAL_LIBRARY
-        NAMES libgdal.a ${_gdal_lib} gdal gdal_i gdal1.5.0 gdal1.4.0 gdal1.3.2 GDAL
-        HINTS
-        ENV GDAL_DIR
-        ENV GDAL_ROOT
-        ${_gdal_libpath}
-        PATH_SUFFIXES lib
-        PATHS
-        /sw
-        /opt/local
-        /opt/csw
-        /opt
-        /usr/freeware
-        )
+endif (WIN32)
 
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(GDAL DEFAULT_MSG GDAL_LIBRARY GDAL_INCLUDE_DIR)
+mark_as_advanced(
+        GDAL_INCLUDE_DIR
+        GDAL_LIBRARY
+)
 
 set(GDAL_LIBRARIES ${GDAL_LIBRARY})
 set(GDAL_INCLUDE_DIRS ${GDAL_INCLUDE_DIR})

@@ -42,11 +42,11 @@ if (BUILD_VIEWER)
 
     # GDAL
     if (GDAL_ROOT)
-        message(STATUS "GDAL_ROOT: ${GDAL_ROOT}")
         set(ENV{GDAL_ROOT} ${GDAL_ROOT})
     endif ()
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
+    link_libraries(${GDAL_LIBRARIES})
 
 endif ()
 

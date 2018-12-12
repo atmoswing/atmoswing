@@ -56,6 +56,9 @@ include_directories(${inc_dirs})
 
 include(define_common_libraries)
 
+message(STATUS "GDAL libraries: ${GDAL_LIBRARIES}")
+message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
+
 # vroomgis
 set(CMAKE_INSTALL_PREFIX:STRING ${EXTERNAL_DIR})
 set(SEARCH_VROOMGIS_LIBS:BOOL ON)
