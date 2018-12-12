@@ -156,6 +156,7 @@ script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 40 timeout 2200 ci/travis/run-${TARGET}.sh || true
 after_success:
+  - if [[ "$DEPLOY" != true ]]; then exit 0; fi
   - chmod +x ci/travis/after-success-${TRAVIS_OS_NAME}.sh
   - ci/travis/after-success-${TRAVIS_OS_NAME}.sh
 deploy:

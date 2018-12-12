@@ -197,14 +197,24 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             }
         } else if (nodeParamBlock->GetName() == "validation_period") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
                     if (!SetValidationYearsVector(fileParams.GetVectorInt(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "start_year") {
+                    yStart = fileParams.GetInt(nodeParam);
+                } else if (nodeParam->GetName() == "end_year") {
+                    yEnd = fileParams.GetInt(nodeParam);
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
                 nodeParam = nodeParam->GetNext();
+            }
+            if (yStart > 0 && yEnd > 0) {
+                vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
+                if (!SetValidationYearsVector(vect))
+                    return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
             if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))

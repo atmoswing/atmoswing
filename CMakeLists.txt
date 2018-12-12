@@ -13,7 +13,7 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "0")
-set(VERSION_PATCH "0")
+set(VERSION_PATCH "1")
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
@@ -22,6 +22,7 @@ option(BUILD_FORECASTER "Do you want to build AtmoSwing Forecaster ?" ON)
 option(BUILD_VIEWER "Do you want to build AtmoSwing Viewer ?" ON)
 option(BUILD_OPTIMIZER "Do you want to build AtmoSwing Optimizer ?" ON)
 option(BUILD_DOWNSCALER "Do you want to build AtmoSwing Downscaler ?" ON)
+option(CREATE_INSTALLER "Do you want to generate installer packages ?" ON)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
     set(BUILD_TESTS ON CACHE BOOL "Do you want to build the tests (recommended) ?" )
     mark_as_advanced(CLEAR BUILD_TESTS)
@@ -172,4 +173,6 @@ message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = ${CMAKE_CXX_FLAGS_RELWITHDEBINF
 
 #### INSTALLER
 
-include(define_installer_options)
+if (CREATE_INSTALLER)
+    include(define_installer_options)
+endif ()
