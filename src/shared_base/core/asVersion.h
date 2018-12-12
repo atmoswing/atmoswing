@@ -32,7 +32,7 @@
 
 const int ATMOSWING_MAJOR_VERSION = 2;
 const int ATMOSWING_MINOR_VERSION = 0;
-const int ATMOSWING_PATCH_VERSION = 0;
+const int ATMOSWING_PATCH_VERSION = 1;
 const extern wxString g_version;
 
 class asVersion
