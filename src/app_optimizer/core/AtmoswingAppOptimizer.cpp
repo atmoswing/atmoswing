@@ -131,19 +131,24 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
                 {wxCMD_LINE_NONE}};
 
 static const wxString cmdLineLogo = wxT("\n"\
-" ___________________________________________________\n"\
+"_________________________________________\n"\
+"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
+"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
+"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
+"_________________________________________\n"\
+"\n");
+
+/*
+// Alternative:
+static const wxString cmdLineLogo = wxT("\n"\
+"___________________________________________________\n"\
 "  __  ____  __  __  __   ___  _    _  __  _  _  __ \n"\
 " (  )(_  _)(  \\/  )/  \\ / __)( \\/\\/ )(  )( \\( )/ _)\n"\
 " /__\\  )(   )    (( () )\\__ \\ \\    /  )(  )  (( (/\\\n"\
 "(_)(_)(__) (_/\\/\\_)\\__/ (___/  \\/\\/  (__)(_)\\_)\\__/\n"\
-" ___________________________________________________\n"\
+"___________________________________________________\n"\
 "\n");
-
-// Alternative:
-//____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ 
-//|__|  |  |\/| |  | [__  | | | | |\ | | __ 
-//|  |  |  |  | |__| ___] |_|_| | | \| |__] 
-                                         
+*/
 
 bool AtmoswingAppOptimizer::OnInit()
 {
@@ -358,8 +363,9 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
 {
     wxAppConsole::OnInitCmdLine(parser);
 
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
     parser.SetDesc(g_cmdLineDesc);
+    parser.SetLogo(cmdLineLogo);
+
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }

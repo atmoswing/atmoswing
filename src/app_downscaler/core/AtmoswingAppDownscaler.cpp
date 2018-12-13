@@ -79,6 +79,14 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
 
                 {wxCMD_LINE_NONE}};
 
+static const wxString cmdLineLogo = wxT("\n"\
+"_________________________________________\n"\
+"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
+"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
+"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
+"_________________________________________\n"\
+"\n");
+
 bool AtmoswingAppDownscaler::OnInit()
 {
 #if _DEBUG
@@ -226,8 +234,9 @@ void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser)
 {
     wxAppConsole::OnInitCmdLine(parser);
 
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
     parser.SetDesc(g_cmdLineDesc);
+    parser.SetLogo(cmdLineLogo);
+
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }
