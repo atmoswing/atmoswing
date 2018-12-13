@@ -13,6 +13,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install Jpeg
 if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
   Init-Build "jpeg"
@@ -26,6 +28,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install PNG
 if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
@@ -41,6 +45,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install Jasper
 if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
   Init-Build "jasper"
@@ -55,6 +61,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install curl
 if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
   Init-Build "curl"
@@ -68,6 +76,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
   Copy-Item "$TMP_DIR\curl\builds\libcurl-vc14-${TARGET_CPU}-release-dll-ipv6-sspi-winssl\lib\*" "$LIB_DIR\lib" -force
 }
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install Proj
 if(!(Test-Path -Path "$LIB_DIR\include\proj_api.h") -Or $REBUILD_PROJ) {
   Init-Build "proj"
@@ -78,6 +88,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj_api.h") -Or $REBUILD_PROJ) {
   nmake -f makefile.vc INSTDIR="$LIB_DIR" > $null
   nmake -f makefile.vc INSTDIR="$LIB_DIR" install-all > $null
 }
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install HDF5
 if(!(Test-Path -Path "$LIB_DIR\include\hdf5.h") -Or $REBUILD_HDF5) {
@@ -94,6 +106,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\hdf5.h") -Or $REBUILD_HDF5) {
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
 }
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install NetCDF
 if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
