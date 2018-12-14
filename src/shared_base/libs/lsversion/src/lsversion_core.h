@@ -25,8 +25,9 @@
 #include <wx/wx.h>
 #endif
 
-
-#include "lsversion_param.h"
+#ifdef lsVERSION_ENABLED
+    #include "lsversion_param.h"
+#endif
 
 class lsVersion
 {

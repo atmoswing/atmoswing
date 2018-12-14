@@ -84,12 +84,9 @@ if (USE_VERSION)
 
     add_dependencies(lsVersion eigen)
 
+    configure_file("${LSVERSION_PATH}/lsversion_param.h.in" "${CMAKE_BINARY_DIR}/lsversion_param.h")
+    include_directories(${CMAKE_BINARY_DIR})
 
 else (USE_VERSION)
     message(STATUS "Not using lsVersion Component")
 endif (USE_VERSION)
-
-configure_file("${LSVERSION_PATH}/lsversion_param.h.in" "${CMAKE_BINARY_DIR}/lsversion_param.h")
-include_directories(${CMAKE_BINARY_DIR})
-
-
