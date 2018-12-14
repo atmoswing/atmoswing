@@ -43,21 +43,10 @@ asCriteriaS1::~asCriteriaS1()
 
 float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
-    wxASSERT_MSG(refData.rows() == evalData.rows(),
-                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
-                                  (int) evalData.rows()));
-    wxASSERT_MSG(refData.cols() == evalData.cols(),
-                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
-                                  (int) evalData.cols()));
-    wxASSERT_MSG(refData.rows() > 0, wxString::Format("refData.rows()=%d", (int) refData.rows()));
-    wxASSERT_MSG(refData.cols() > 0, wxString::Format("refData.cols()=%d", (int) refData.cols()));
-
-#ifdef _DEBUG
-    if (refData.rows() < 1)
-        asThrowException(_("The number of rows of the data is null in the S1 criteria processing."));
-    if (refData.cols() < 1)
-        asThrowException(_("The number of cols of the data is null in the S1 criteria processing."));
-#endif
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() > 0);
+    wxASSERT(refData.cols() > 0);
 
     float dividend = 0, divisor = 0;
 
