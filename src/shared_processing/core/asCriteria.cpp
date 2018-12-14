@@ -39,7 +39,13 @@
 #include "asCriteriaNS1.h"
 #include "asCriteriaS1grads.h"
 #include "asCriteriaNS1grads.h"
+#include "asCriteriaS2.h"
+#include "asCriteriaNS2.h"
 #include "asCriteriaSAD.h"
+#include "asCriteriaDSD.h"
+#include "asCriteriaNDSD.h"
+#include "asCriteriaDMV.h"
+#include "asCriteriaNDMV.h"
 #include "asPredictor.h"
 
 
@@ -82,6 +88,14 @@ asCriteria *asCriteria::GetInstance(Criteria criteriaEnum)
             asCriteria *criteria = new asCriteriaNS1grads();
             return criteria;
         }
+        case (S2): {
+            asCriteria *criteria = new asCriteriaS2();
+            return criteria;
+        }
+        case (NS2): {
+            asCriteria *criteria = new asCriteriaNS2();
+            return criteria;
+        }
         case (SAD): {
             asCriteria *criteria = new asCriteriaSAD();
             return criteria;
@@ -122,6 +136,22 @@ asCriteria *asCriteria::GetInstance(Criteria criteriaEnum)
             asCriteria *criteria = new asCriteriaRSE();
             return criteria;
         }
+        case (DMV): {
+            asCriteria *criteria = new asCriteriaDMV();
+            return criteria;
+        }
+        case (NDMV): {
+            asCriteria *criteria = new asCriteriaNDMV();
+            return criteria;
+        }
+        case (DSD): {
+            asCriteria *criteria = new asCriteriaDSD();
+            return criteria;
+        }
+        case (NDSD): {
+            asCriteria *criteria = new asCriteriaNDSD();
+            return criteria;
+        }
         default: {
             wxLogError(_("The predictor criteria was not correctly defined."));
             asCriteria *criteria = new asCriteriaSAD();
@@ -143,6 +173,12 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         return criteria;
     } else if (criteriaString.CmpNoCase("NS1grads") == 0) {
         asCriteria *criteria = new asCriteriaNS1grads();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("S2") == 0) {
+        asCriteria *criteria = new asCriteriaS2();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NS2") == 0) {
+        asCriteria *criteria = new asCriteriaNS2();
         return criteria;
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
         asCriteria *criteria = new asCriteriaSAD();
@@ -173,6 +209,18 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         return criteria;
     } else if (criteriaString.CmpNoCase("RSE") == 0) {
         asCriteria *criteria = new asCriteriaRSE();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("DMV") == 0) {
+        asCriteria *criteria = new asCriteriaDMV();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NDMV") == 0) {
+        asCriteria *criteria = new asCriteriaNDMV();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("DSD") == 0) {
+        asCriteria *criteria = new asCriteriaDSD();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NDSD") == 0) {
+        asCriteria *criteria = new asCriteriaNDSD();
         return criteria;
     } else {
         wxLogError(_("The predictor criteria was not correctly defined."));

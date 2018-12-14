@@ -38,9 +38,9 @@ class asCriteriaRMSEonMeanWithNaN
 public:
     asCriteriaRMSEonMeanWithNaN();
 
-    ~asCriteriaRMSEonMeanWithNaN();
+    ~asCriteriaRMSEonMeanWithNaN() override;
 
-    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
 protected:
 

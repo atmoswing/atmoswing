@@ -22,30 +22,26 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORCRITERIASAD_H
-#define ASPREDICTORCRITERIASAD_H
+#include "asCriteriaNDSD.h"
 
-#include <asIncludes.h>
-#include <asCriteria.h>
-
-class asCriteriaSAD
-        : public asCriteria
+asCriteriaNDSD::asCriteriaNDSD()
+        : asCriteriaDSD()
 {
-public:
-    asCriteriaSAD();
+    m_criteria = asCriteria::NDSD;
+    m_name = "NDSD";
+    m_fullName = _("Normalized difference in standard deviation (nonspatial)");
+    m_needsDataRange = true;
+}
 
-    ~asCriteriaSAD() override;
+asCriteriaNDSD::~asCriteriaNDSD()
+{
+    //dtor
+}
 
-    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
-
-protected:
-
-private:
-
-};
-
-#endif
+float asCriteriaNDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
+{
+    return asCriteriaDSD::Assess(refData, evalData, rowsNb, colsNb) / (m_dataMax - m_dataMin);
+}

@@ -37,9 +37,9 @@ class asCriteriaS2
 public:
     asCriteriaS2();
 
-    ~asCriteriaS2();
+    ~asCriteriaS2() override;
 
-    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
 protected:
 

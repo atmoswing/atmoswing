@@ -38,9 +38,9 @@ class asCriteriaS1grads
 public:
     asCriteriaS1grads();
 
-    ~asCriteriaS1grads();
+    ~asCriteriaS1grads() override;
 
-    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const;
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
 protected:
 

@@ -43,6 +43,8 @@ public:
         NS1, // Normalized Teweles-Wobus
         S1grads, // Teweles-Wobus on gradients
         NS1grads, // Normalized Teweles-Wobus on gradients
+        S2, // Derivative of Teweles-Wobus
+        NS2, // Normalized derivative of Teweles-Wobus
         SAD, // Sum of absolute differences
         MD, // Mean absolute difference
         NMD, // Normalized Mean difference
@@ -52,7 +54,11 @@ public:
         NRMSE, // Normalized Root mean square error (min-max approach)
         RMSEwithNaN, // Root mean square error with NaNs management
         RMSEonMeanWithNaN, // Root Mean Square Error on the mean value of the grid, with NaNs management
-        RSE // Root square error (According to Bontron. Should not be used !)
+        RSE, // Root square error (According to Bontron. Should not be used !)
+        DSD, // Difference in standard deviation (nonspatial)
+        NDSD, // Normalized difference in standard deviation (nonspatial)
+        DMV, // Difference in mean value (nonspatial)
+        NDMV // Normalized difference in mean value (nonspatial)
     };
 
     asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order);

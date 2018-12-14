@@ -22,23 +22,22 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORCRITERIASAD_H
-#define ASPREDICTORCRITERIASAD_H
+#ifndef ASPREDICTORCRITERIANDMV_H
+#define ASPREDICTORCRITERIANDMV_H
 
 #include <asIncludes.h>
-#include <asCriteria.h>
+#include <asCriteriaDMV.h>
 
-class asCriteriaSAD
-        : public asCriteria
+class asCriteriaNDMV
+        : public asCriteriaDMV
 {
 public:
-    asCriteriaSAD();
+    asCriteriaNDMV();
 
-    ~asCriteriaSAD() override;
+    ~asCriteriaNDMV() override;
 
     float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
