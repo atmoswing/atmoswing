@@ -34,8 +34,8 @@
 
 
 asParameters::asParameters()
-        : m_archiveStart(0),
-          m_archiveEnd(0),
+        : m_archiveStart(NaNd),
+          m_archiveEnd(NaNd),
           m_timeArrayAnalogsIntervalDays(0),
           m_predictandStationIds(),
           m_timeMinHours(0),
@@ -580,12 +580,12 @@ bool asParameters::SetPreloadingProperties()
 bool asParameters::InputsOK() const
 {
     // Time properties
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }

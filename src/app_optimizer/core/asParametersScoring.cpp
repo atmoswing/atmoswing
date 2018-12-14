@@ -32,8 +32,8 @@
 
 asParametersScoring::asParametersScoring()
         : asParameters(),
-          m_calibrationStart(0),
-          m_calibrationEnd(0)
+          m_calibrationStart(NaNd),
+          m_calibrationEnd(NaNd)
 {
     m_score.name = wxEmptyString;
     m_score.timeArrayMode = wxEmptyString;

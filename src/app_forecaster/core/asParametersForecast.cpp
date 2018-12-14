@@ -396,12 +396,12 @@ bool asParametersForecast::InputsOK() const
         return false;
     }
 
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }

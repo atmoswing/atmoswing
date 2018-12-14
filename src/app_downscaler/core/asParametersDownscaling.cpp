@@ -31,7 +31,9 @@
 #include <asAreaCompGrid.h>
 
 asParametersDownscaling::asParametersDownscaling()
-        : asParameters()
+        : asParameters(),
+          m_downscalingStart(NaNd),
+          m_downscalingEnd(NaNd)
 {
     //ctor
 }
@@ -416,22 +418,22 @@ bool asParametersDownscaling::ParseAnalogValuesParams(asFileParametersDownscalin
 bool asParametersDownscaling::InputsOK() const
 {
     // Time properties
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetDownscalingStart() <= 0) {
+    if (asIsNaN(GetDownscalingStart())) {
         wxLogError(_("The beginning of the downscaling period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetDownscalingEnd() <= 0) {
+    if (asIsNaN(GetDownscalingEnd())) {
         wxLogError(_("The end of the downscaling period was not provided in the parameters file."));
         return false;
     }

@@ -599,22 +599,22 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 bool asParametersCalibration::InputsOK() const
 {
     // Time properties
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetCalibrationStart() <= 0) {
+    if (asIsNaN(GetCalibrationStart())) {
         wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetCalibrationEnd() <= 0) {
+    if (asIsNaN(GetCalibrationEnd())) {
         wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }
