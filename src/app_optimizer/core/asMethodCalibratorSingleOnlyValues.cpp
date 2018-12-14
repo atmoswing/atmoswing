@@ -183,6 +183,9 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
         }
+
+        anaDates.Save();
+        anaValues.Save();
     }
 
     return true;

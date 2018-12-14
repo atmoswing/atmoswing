@@ -221,7 +221,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
+            scoreArrayOneDay.fill(NaNf);
             a1f dateArrayOneDay(analogsNb);
+            dateArrayOneDay.fill(NaNf);
 
             // Containers for the indices
             vi nbArchCandidates(timeTargetSelectionSize);
@@ -331,6 +333,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int vectCriteriaSize = vectCriteria.size();
                     int resCounter = 0;
 
+                    scoreArrayOneDay.fill(NaNf);
+                    dateArrayOneDay.fill(NaNf);
+
                     for (int iDateArch = 0; iDateArch < vectCriteriaSize; iDateArch++) {
 #ifdef _DEBUG
                         if (asIsNaN(vectCriteria[iDateArch]))
@@ -378,17 +383,15 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         resCounter++;
                     }
 
-                    // Check that the number of occurences are larger than the desired analogs number. If not, set a warning
-                    if (resCounter >= analogsNb) {
-                        // Copy results
-                        finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
-                        finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
-                    } else {
-                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+                    if (resCounter <= analogsNb) {
+                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
                         wxLogWarning(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."),
                                      analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(),
                                      params->GetTimeArrayAnalogsIntervalDays());
                     }
+
+                    finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
+                    finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
                 }
 
                 // cudaDeviceReset must be called before exiting in order for profiling and
@@ -491,7 +494,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
+            scoreArrayOneDay.fill(NaNf);
             a1f dateArrayOneDay(analogsNb);
+            dateArrayOneDay.fill(NaNf);
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
@@ -523,6 +528,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                     // Counter representing the current index
                     int counter = 0;
+
+                    scoreArrayOneDay.fill(NaNf);
+                    dateArrayOneDay.fill(NaNf);
 
                     // Loop over the members
                     for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
@@ -597,15 +605,13 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         }
                     }
 
-                    // Check that the number of occurences are larger than the desired analogs number. If not, set a warning
-                    if (counter > analogsNb) {
-                        // Copy results
-                        finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.transpose();
-                        finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.transpose();
-                    } else {
-                        wxLogError(_("There is not enough available data to satisfy the number of analogs."));
-                        return false;
+                    if (counter <= analogsNb) {
+                        wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
                     }
+
+                    // Copy results
+                    finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.transpose();
+                    finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.transpose();
                 }
             }
 
@@ -910,7 +916,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
         case (asSTANDARD): {
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
+            scoreArrayOneDay.fill(NaNf);
             a1f dateArrayOneDay(analogsNb);
+            dateArrayOneDay.fill(NaNf);
 
             // Loop through every timestep as target data
             for (unsigned int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
@@ -935,6 +943,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
                 // Counter representing the current index
                 int counter = 0;
+
+                scoreArrayOneDay.fill(NaNf);
+                dateArrayOneDay.fill(NaNf);
 
                 // Loop over the members
                 for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
@@ -1024,15 +1035,14 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     }
                 }
 
-                // Check that the number of occurences are larger than the desired analogs number. If not, set a warning
-                if (counter >= analogsNb) {
-                    // Copy results
-                    finalAnalogsCriteria.row(iAnalogDate) = scoreArrayOneDay.head(analogsNb).transpose();
-                    finalAnalogsDates.row(iAnalogDate) = dateArrayOneDay.head(analogsNb).transpose();
-                } else {
-                    wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+                if (counter <= analogsNb) {
+                    wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
                     wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
                 }
+
+                // Copy results
+                finalAnalogsCriteria.row(iAnalogDate) = scoreArrayOneDay.transpose();
+                finalAnalogsDates.row(iAnalogDate) = dateArrayOneDay.transpose();
             }
 
             break;

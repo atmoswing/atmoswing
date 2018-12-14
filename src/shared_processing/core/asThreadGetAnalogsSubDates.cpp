@@ -100,7 +100,9 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     // Containers for daily results
     a1f currentAnalogsDates(analogsNbPrevious);
     a1f scoreArrayOneDay(analogsNb);
+    scoreArrayOneDay.fill(NaNf);
     a1f dateArrayOneDay(analogsNb);
+    dateArrayOneDay.fill(NaNf);
 
     // Loop through every timestep as target data
     // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end); iDateTarg++)
@@ -120,6 +122,9 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
 
         // Counter representing the current index
         int counter = 0;
+
+        scoreArrayOneDay.fill(NaNf);
+        dateArrayOneDay.fill(NaNf);
 
         // Loop over the members
         for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
@@ -204,17 +209,14 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
             }
         }
 
-        // Check that the number of occurrences are larger than the desired analogs number. If not, set a warning
-        if (counter >= analogsNb) {
-            // Copy results
-            m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
-            m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
-        } else {
-            wxLogWarning(_("There is not enough available data to satisfy the number of analogs"));
+        if (counter <= analogsNb) {
+            wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
             wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
-            *m_success = false;
-            return (wxThread::ExitCode) -1;
         }
+
+        // Copy results
+        m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
+        m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
     }
 
     *m_success = true;

@@ -168,5 +168,7 @@ bool asMethodCalibratorSingleOnlyDates::Calibrate(asParametersCalibration &param
         anaDatesPrevious = anaDates;
     }
 
+    anaDates.Save();
+
     return true;
 }
