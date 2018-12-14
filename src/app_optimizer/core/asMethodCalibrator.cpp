@@ -321,6 +321,10 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 
     if (stationIds.size() == 1) {
         id << stationIds[0];
+    } else if (stationIds.size() > 10) {
+        id << stationIds[0];
+        id << '-';
+        id << stationIds[stationIds.size() - 1];
     } else {
         for (int i = 0; i < (int) stationIds.size(); i++) {
             id << stationIds[i];
