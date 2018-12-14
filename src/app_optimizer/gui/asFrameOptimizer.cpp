@@ -37,6 +37,7 @@
 #include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
 #include "asMethodCalibratorSingleOnlyValues.h"
+#include "asMethodCalibratorSingleOnlyDates.h"
 #include "images.h"
 #include "asFramePreferencesOptimizer.h"
 #include "asFrameAbout.h"
@@ -499,25 +500,21 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
             }
             case 0: // Single
             {
-                wxLogVerbose(_("Proceeding to single assessment."));
                 m_methodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
             case 1: // Classic
             {
-                wxLogVerbose(_("Proceeding to classic calibration."));
                 m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 2: // Classic+
             {
-                wxLogVerbose(_("Proceeding to classic+ calibration."));
                 m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
             case 3: // Variables exploration with classic+
             {
-                wxLogVerbose(_("Proceeding to variables exploration."));
                 m_methodCalibrator = new asMethodCalibratorClassicVarExplo();
                 break;
             }
@@ -533,14 +530,17 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
             }
             case 6: // Scores evaluation
             {
-                wxLogVerbose(_("Proceeding to all scores evaluation."));
                 m_methodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
             case 7: // Only predictand values
             {
-                wxLogVerbose(_("Proceeding to predictand values saving."));
                 m_methodCalibrator = new asMethodCalibratorSingleOnlyValues();
+                break;
+            }
+            case 8: // Only analog dates
+            {
+                m_methodCalibrator = new asMethodCalibratorSingleOnlyDates();
                 break;
             }
             default:

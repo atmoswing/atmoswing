@@ -22,24 +22,23 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#include "asMethodCalibratorSingleOnlyValues.h"
+#include "asMethodCalibratorSingleOnlyDates.h"
 
-asMethodCalibratorSingleOnlyValues::asMethodCalibratorSingleOnlyValues()
+asMethodCalibratorSingleOnlyDates::asMethodCalibratorSingleOnlyDates()
         : asMethodCalibrator()
 {
 
 }
 
-asMethodCalibratorSingleOnlyValues::~asMethodCalibratorSingleOnlyValues()
+asMethodCalibratorSingleOnlyDates::~asMethodCalibratorSingleOnlyDates()
 {
 
 }
 
-bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &params)
+bool asMethodCalibratorSingleOnlyDates::Calibrate(asParametersCalibration &params)
 {
     // Check that we really handle a single case
     bool checkSizes = true;
@@ -134,55 +133,39 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
 
     if (!checkSizes) {
         errorField = errorField.Remove(errorField.Length() - 3, 2); // Removes the last coma
-        wxString errorMessage =
-                _("The following parameters are not compatible with the single assessment: ") + errorField;
+        wxString errorMessage = _("The following parameters are not compatible with the single assessment: ") + errorField;
         wxLogError(errorMessage);
         return false;
     }
 
-    // Extract the stations IDs
-    vvi stationsId = params.GetPredictandStationIdsVector();
-
-    // Create result object to save the final parameters sets
-    asResultsParametersArray results_all;
-    results_all.Init(_("all_station_parameters"));
-
-    // Create a analogsdate object to save previous analogs dates selection.
+    // Create an analog dates object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
     wxLogMessage(_("Do not process a score. Use to save intermediate values."));
 
-    for (const auto &stationId : stationsId) {
-        ClearAll();
+    ClearAll();
 
-        // Create results objects
-        asResultsDates anaDates;
-        asResultsValues anaValues;
+    // Create results objects
+    asResultsDates anaDates;
 
-        // Set the next station ID
-        params.SetPredictandStationIds(stationId);
-
-        // Process every step one after the other
-        int stepsNb = params.GetStepsNb();
-        for (int iStep = 0; iStep < stepsNb; iStep++) {
-            bool containsNaNs = false;
-            if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                    return false;
-            } else {
-                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                    return false;
-            }
-            if (containsNaNs) {
-                wxLogError(_("The dates selection contains NaNs"));
+    // Process every step one after the other
+    int stepsNb = params.GetStepsNb();
+    for (int iStep = 0; iStep < stepsNb; iStep++) {
+        bool containsNaNs = false;
+        if (iStep == 0) {
+            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
                 return false;
-            }
-            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
+        } else {
+            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
                 return false;
-
-            // Keep the analogs dates of the best parameters set
-            anaDatesPrevious = anaDates;
         }
+        if (containsNaNs) {
+            wxLogError(_("The dates selection contains NaNs"));
+            return false;
+        }
+
+        // Keep the analogs dates of the best parameters set
+        anaDatesPrevious = anaDates;
     }
 
     return true;

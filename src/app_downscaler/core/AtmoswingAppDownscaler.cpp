@@ -58,26 +58,26 @@ IMPLEMENT_APP(AtmoswingAppDownscaler)
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-        {
-                {wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
-                {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
-                {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
-                {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
-                {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
-                {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the downscaling parameters"},
-                {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
-                {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
-                {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors",  "The archive predictors directory"},
-                {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
-                {wxCMD_LINE_OPTION, NULL, "downscaling-method",      "Choice of the downscaling method"
-                                          "\n                            classic: classic downscaling"},
-                {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
-                                          "\n                            1: errors"
-                                          "\n                            2: warnings"
-                                          "\n                            3: verbose"
-                                          "\n                            4: debug"},
+{
+    {wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
+    {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
+    {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
+    {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
+    {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
+    {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the downscaling parameters"},
+    {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
+    {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
+    {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors",  "The archive predictors directory"},
+    {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
+    {wxCMD_LINE_OPTION, NULL, "downscaling-method",      "Choice of the downscaling method"
+                                                         "\n \t\t\t\t\t - classic: classic downscaling"},
+    {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
+                                                         "\n \t\t\t\t\t - 1: errors"
+                                                         "\n \t\t\t\t\t - 2: warnings"
+                                                         "\n \t\t\t\t\t - 3: verbose"
+                                                         "\n \t\t\t\t\t - 4: debug"},
 
-                {wxCMD_LINE_NONE}};
+    {wxCMD_LINE_NONE}};
 
 static const wxString cmdLineLogo = wxT("\n"\
 "_________________________________________\n"\

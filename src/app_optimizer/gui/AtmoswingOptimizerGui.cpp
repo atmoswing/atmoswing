@@ -39,7 +39,7 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_staticTextMethod->Wrap( -1 );
 	bSizer5->Add( m_staticTextMethod, 0, wxALL, 5 );
 	
-	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Genetic algorithms"), _("Evaluate all scores"), _("Only predictand values") };
+	wxString m_choiceMethodChoices[] = { _("Single assessment"), _("Classic calibration"), _("Classic+ calibration"), _("Variables exploration Classic+"), _("Monte-Carlo"), _("Genetic algorithms"), _("Evaluate all scores"), _("Only predictand values"), _("Only analog dates (and criteria)") };
 	int m_choiceMethodNChoices = sizeof( m_choiceMethodChoices ) / sizeof( wxString );
 	m_choiceMethod = new wxChoice( m_panelControls, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceMethodNChoices, m_choiceMethodChoices, 0 );
 	m_choiceMethod->SetSelection( 0 );
