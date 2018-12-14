@@ -46,6 +46,6 @@ float asCriteriaRSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 
-    return sqrt((evalData - refData).pow(2).sum()); // Can be NaN
+    return std::sqrt((evalData - refData).pow(2).sum()); // Can be NaN
 
 }

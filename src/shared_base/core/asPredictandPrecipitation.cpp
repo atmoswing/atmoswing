@@ -270,7 +270,7 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment()
     }
 
     // Preprocess cste
-    float b_cst = sqrt(6.0) / g_cst_Pi;
+    float b_cst = std::sqrt(6.0) / g_cst_Pi;
 
     // Resize containers
     m_gumbelDuration.resize(m_stationsNb, duration.size());
@@ -368,7 +368,7 @@ bool asPredictandPrecipitation::BuildDataNormalized()
 
         for (int iTime = 0; iTime < m_timeLength; iTime++) {
             if (m_isSqrt) {
-                m_dataNormalized(iTime, iStat) = sqrt(m_dataRaw(iTime, iStat) / prt);
+                m_dataNormalized(iTime, iStat) = std::sqrt(m_dataRaw(iTime, iStat) / prt);
             } else {
                 m_dataNormalized(iTime, iStat) = m_dataRaw(iTime, iStat) / prt;
             }

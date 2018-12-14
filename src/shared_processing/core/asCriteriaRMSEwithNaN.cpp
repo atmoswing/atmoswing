@@ -73,5 +73,5 @@ float asCriteriaRMSEwithNaN::Assess(const a2f &refData, const a2f &evalData, int
 
     mse /= finalsize;
 
-    return sqrt(mse); // Can be NaN
+    return std::sqrt(mse); // Can be NaN
 }

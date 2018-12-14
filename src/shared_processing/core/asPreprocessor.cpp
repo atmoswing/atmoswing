@@ -532,10 +532,10 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictor
         for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
             for (unsigned int iRow = 0; iRow < rowsNb; iRow++) {
                 for (unsigned int iCol = 0; iCol < colsNb; iCol++) {
-                    wind = (float) sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
-                                        predictors[0]->GetData()[iTime][iMem](iRow, iCol) +
-                                        predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
-                                        predictors[1]->GetData()[iTime][iMem](iRow, iCol));
+                    wind = (float) std::sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
+                                             predictors[0]->GetData()[iTime][iMem](iRow, iCol) +
+                                             predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
+                                             predictors[1]->GetData()[iTime][iMem](iRow, iCol));
                     multi[iTime][iMem](iRow, iCol) = wind * predictors[2]->GetData()[iTime][iMem](iRow, iCol) *
                                                      predictors[3]->GetData()[iTime][iMem](iRow, iCol);
                 }
@@ -583,10 +583,10 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asPredictor *> predictors, 
             for (unsigned int iRow = 0; iRow < rowsNb; iRow++) {
                 for (unsigned int iCol = 0; iCol < colsNb; iCol++) {
                     // Get wind value
-                    wind = (float) sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
-                                        predictors[0]->GetData()[iTime][iMem](iRow, iCol) +
-                                        predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
-                                        predictors[1]->GetData()[iTime][iMem](iRow, iCol));
+                    wind = (float) std::sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
+                                             predictors[0]->GetData()[iTime][iMem](iRow, iCol) +
+                                             predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
+                                             predictors[1]->GetData()[iTime][iMem](iRow, iCol));
                     multi[iTime][iMem](iRow, iCol) = wind;
                 }
             }

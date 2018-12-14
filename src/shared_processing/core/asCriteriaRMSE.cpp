@@ -52,5 +52,5 @@ float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb
 
     float mse = (evalData - refData).pow(2).sum() / (float) refData.size(); // Can be NaN
 
-    return (float) sqrt(mse);
+    return std::sqrt(mse);
 }

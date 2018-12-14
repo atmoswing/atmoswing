@@ -77,5 +77,5 @@ float asCriteriaRMSEonMeanWithNaN::Assess(const a2f &refData, const a2f &evalDat
 
     mse += (evalMean - refMean) * (evalMean - refMean);
 
-    return sqrt(mse); // Can be NaN
+    return std::sqrt(mse); // Can be NaN
 }
