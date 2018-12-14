@@ -63,6 +63,10 @@ wxString asResults::GetPredictandStationIdsList() const
 
     if (m_predictandStationIds.size() == 1) {
         id << m_predictandStationIds[0];
+    } else if (m_predictandStationIds.size() > 10) {
+        id << m_predictandStationIds[0];
+        id << '-';
+        id << m_predictandStationIds[m_predictandStationIds.size() - 1];
     } else {
         for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
             id << m_predictandStationIds[i];
