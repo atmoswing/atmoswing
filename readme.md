@@ -6,11 +6,17 @@
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
 
-AtmoSwing stands for Analog Technique Model for Statistical weather forecastING. The software allows for real-time precipitation forecasting based on a downscaling method, the analogue technique. It identifies analogue days, in terms of atmospheric circulation and humidity variables, in a long archive of past situations and then uses the corresponding measured precipitation to establish an empirical conditional distribution considered as the probabilistic forecast for the target day. This method is used in different institutions for hydro-meteorological forecasting in the framework of real-time flood management or electricity production.
+Analog methods (AMs) allow predicting local meteorological variables of interest (predictand), such as the daily precipitation, based on synoptic variables (predictors). They rely on the hypothesis that similar atmospheric conditions are likely to result in similar local effects. The statistical relationship is first defined (e.g. which predictors, and how many subsampling steps) and calibrated (e.g. which spatial domain, and how many analogues) before being applied to the target period, may it be for operational forecasting or for climate impact studies. A benefit of AMs is that they are lightweight and can provide valuable results for a negligible cost.
 
-The model is standalone and automatically handles the download of the GFS global numerical weather prediction forecasts on which the analogy is processed. The development aimed at creating a very modular object-oriented tool that can be used to parameterize any known version of the analogue method. There is no limitation on the number of analogy steps, neither on the number of atmospheric variables used as input.
+AtmoSwing is an open source (CDDL-1.0) software that implements different AM variants in a very flexible way, so that they can be easily configured by means of XML files. It is written in C++, is object-oriented and multi-platform. AtmoSwing provides four tools: the Optimizer to establish the relationship between the predictand and predictors, the Downscaler to apply the method for climate impact studies, the Forecaster to perform operational forecasts, and the Viewer to display the results. 
 
-The software is written in C++, is cross-platform and open source (under the Common Development and Distribution License Version 1.0 (CDDL-1.0), which can be found in the accompanying license.txt file).
+The Optimizer provides a semi-automatic sequential approach, as well as Monte-Carlo analyses, and a global optimization technique by means of Genetic Algorithms. It calibrates the statistical relationship that can be later applied in a forecasting or climatic context.
+
+The Downscaler takes as input the outputs of climate models, either GCMs or RCMs in order to provide a downscaled time series of the predictand of interest at a local scale.
+
+The Forecaster automatically downloads and reads operational NWP outputs to provide operational forecasting of the predictand of interest. The processing of a forecast is extremely lightweight in terms of computing resources; it can indeed run on almost any computer.
+
+The Viewer displays the forecasts in an interactive GIS environment. It contains several layers of syntheses and details in order to provide a quick overview of the potential critical situations in the coming days, as well as the possibility for the user to go into the details of the forecasted predictand distribution.
 
 ## What's in there ##
 
