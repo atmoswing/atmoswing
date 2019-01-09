@@ -1524,6 +1524,8 @@ bool asPredictor::IsIsentropicLevel() const
 {
     return m_product.IsSameAs("isentropic_level", false) ||
            m_product.IsSameAs("isentropic", false) ||
+           m_product.IsSameAs("potential_temperature", false) ||
+           m_product.IsSameAs("pt", false) ||
            m_product.IsSameAs("ipvh", false) ||
            m_product.IsSameAs("ipv", false);
 }
@@ -1532,7 +1534,9 @@ bool asPredictor::IsSurfaceLevel() const
 {
     return m_product.IsSameAs("surface", false) ||
            m_product.IsSameAs("surf", false) ||
-           m_product.IsSameAs("sfc", false);
+           m_product.IsSameAs("ground", false) ||
+           m_product.IsSameAs("sfc", false) ||
+           m_product.IsSameAs("sf", false);
 }
 
 bool asPredictor::IsSurfaceFluxesLevel() const
@@ -1548,7 +1552,24 @@ bool asPredictor::IsTotalColumnLevel() const
 {
     return m_product.IsSameAs("total_column", false) ||
            m_product.IsSameAs("column", false) ||
-           m_product.IsSameAs("tc", false);
+           m_product.IsSameAs("tc", false) ||
+           m_product.IsSameAs("entire_atmosphere", false) ||
+           m_product.IsSameAs("ea", false);
+}
+
+bool asPredictor::IsPVLevel() const
+{
+    return m_product.IsSameAs("potential_vorticity", false) ||
+           m_product.IsSameAs("pv", false) ||
+           m_product.IsSameAs("pv_surface", false) ||
+           m_product.IsSameAs("epv", false);
+}
+
+bool asPredictor::IsGeopotential() const
+{
+    return m_dataId.IsSameAs("z", false) ||
+           m_dataId.IsSameAs("h", false) ||
+           m_dataId.IsSameAs("zg", false);
 }
 
 bool asPredictor::IsGeopotentialHeight() const
@@ -1581,6 +1602,7 @@ bool asPredictor::IsSpecificHumidity() const
     return m_dataId.IsSameAs("sh", false) ||
            m_dataId.IsSameAs("shum", false) ||
            m_dataId.IsSameAs("hus", false) ||
+           m_dataId.IsSameAs("q", false) ||
            m_dataId.IsSameAs("qv", false);
 }
 
@@ -1595,9 +1617,17 @@ bool asPredictor::IsVerticalVelocity() const
 bool asPredictor::IsPrecipitableWater() const
 {
     return m_dataId.IsSameAs("pwat", false) ||
+           m_dataId.IsSameAs("p_wat", false) ||
            m_dataId.IsSameAs("tcw", false) ||
            m_dataId.IsSameAs("pr_wtr", false) ||
            m_dataId.IsSameAs("prwtr", false);
+}
+
+bool asPredictor::IsPressure() const
+{
+    return m_dataId.IsSameAs("pressure", false) ||
+           m_dataId.IsSameAs("press", false) ||
+           m_dataId.IsSameAs("pres", false);
 }
 
 bool asPredictor::IsSeaLevelPressure() const
@@ -1614,6 +1644,7 @@ bool asPredictor::IsUwindComponent() const
     return m_dataId.IsSameAs("u", false) ||
            m_dataId.IsSameAs("ua", false) ||
            m_dataId.IsSameAs("ugrd", false) ||
+           m_dataId.IsSameAs("u_grd", false) ||
            m_dataId.IsSameAs("uwnd", false);
 }
 
@@ -1622,12 +1653,14 @@ bool asPredictor::IsVwindComponent() const
     return m_dataId.IsSameAs("v", false) ||
            m_dataId.IsSameAs("va", false) ||
            m_dataId.IsSameAs("vgrd", false) ||
+           m_dataId.IsSameAs("v_grd", false) ||
            m_dataId.IsSameAs("vwnd", false);
 }
 
 bool asPredictor::IsPotentialVorticity() const
 {
     return m_dataId.IsSameAs("pv", false) ||
+           m_dataId.IsSameAs("pvort", false) ||
            m_dataId.IsSameAs("epv", false);
 }
 

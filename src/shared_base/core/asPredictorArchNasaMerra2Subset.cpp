@@ -86,6 +86,12 @@ bool asPredictorArchNasaMerra2Subset::Init()
             m_parameterName = "Northward wind component";
             m_fileVarName = "V";
             m_unit = m_s;
+        } else if (m_dataId.IsSameAs("ps", false)) {
+            m_parameter = Pressure;
+            m_parameterName = "Surface pressure";
+            m_fileVarName = "PS";
+            m_unit = Pa;
+            m_fStr.hasLevelDim = false;
         } else {
             m_parameter = ParameterUndefined;
             m_parameterName = "Undefined";

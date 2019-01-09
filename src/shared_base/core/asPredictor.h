@@ -49,8 +49,9 @@ public:
         ParameterUndefined,
         AirTemperature,
         PotentialTemperature,
-        GeopotentialHeight,
         Geopotential,
+        GeopotentialHeight,
+        GeopotentialHeightAnomaly,
         PrecipitableWater,
         Precipitation,
         PrecipitationRate,
@@ -68,17 +69,31 @@ public:
         SoilTemperature,
         SnowWaterEquivalent,
         CloudCover,
+        CloudWater,
         Radiation,
         MomentumFlux,
         GravityWaveStress,
         SeaSurfaceTemperature,
-        SeaSurfaceTemperatureAnomaly
+        SeaSurfaceTemperatureAnomaly,
+        CAPE,
+        CIN,
+        LapseRate,
+        StreamFunction,
+        AbsoluteVorticity,
+        VelocityPotential,
+        WindShear,
+        Divergence,
+        MontgomeryPotential,
+        Vorticity,
+        DewpointTemperature,
+        WaterVapour,
+        MoistureFlux
     };
 
     enum Unit
     {
         UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, g_kg, kg_kg, m_s, W_m2,
-        kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
+        kg_m2, kg_m2_s, N_m2, m2_s2, m2_s, degKm2_kg_s, mm_d, J_kg, degK_m, per_s, J_m2
     };
 
     explicit asPredictor(const wxString &dataId);
@@ -407,6 +422,10 @@ protected:
 
     bool IsTotalColumnLevel() const;
 
+    bool IsPVLevel() const;
+
+    bool IsGeopotential() const;
+
     bool IsGeopotentialHeight() const;
 
     bool IsAirTemperature() const;
@@ -418,6 +437,8 @@ protected:
     bool IsVerticalVelocity() const;
 
     bool IsPrecipitableWater() const;
+
+    bool IsPressure() const;
 
     bool IsSeaLevelPressure() const;
 

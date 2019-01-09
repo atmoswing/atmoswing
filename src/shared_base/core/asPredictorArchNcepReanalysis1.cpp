@@ -137,7 +137,7 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "pr_wtr.eatm.%d.nc";
             m_fileVarName = "pr_wtr";
             m_unit = mm;
-        } else if (m_dataId.IsSameAs("pres", false)) {
+        } else if (IsPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Pressure";
             m_fileNamePattern = "pres.sfc.%d.nc";

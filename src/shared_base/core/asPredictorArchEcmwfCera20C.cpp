@@ -57,7 +57,7 @@ bool asPredictorArchEcmwfCera20C::Init()
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-        if (IsGeopotentialHeight()) {
+        if (IsGeopotential()) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
             m_fileVarName = "z";
