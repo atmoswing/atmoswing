@@ -67,43 +67,43 @@ bool asPredictorOperGfsForecast::Init()
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
 
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt", false)) {
+    if (IsGeopotentialHeight()) {
         m_parameter = GeopotentialHeight;
         m_gribCode = {0, 3, 5, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/hgt", m_commandDownload);
         m_fileVarName = "HGT";
         m_unit = m;
-    } else if (m_dataId.IsSameAs("air", false) || m_dataId.IsSameAs("temp", false)) {
+    } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
         m_gribCode = {0, 0, 0, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/temp", m_commandDownload);
         m_fileVarName = "TEMP";
         m_unit = degK;
-    } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
+    } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
         m_gribCode = {0, 2, 8, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vvel", m_commandDownload);
         m_fileVarName = "VVEL";
         m_unit = Pa_s;
-    } else if (m_dataId.IsSameAs("rhum", false) || m_dataId.IsSameAs("rh", false)) {
+    } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_gribCode = {0, 1, 1, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/rh", m_commandDownload);
         m_fileVarName = "RH";
         m_unit = percent;
-    } else if (m_dataId.IsSameAs("uwnd", false) || m_dataId.IsSameAs("ugrd", false)) {
+    } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_gribCode = {0, 2, 2, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/uwnd", m_commandDownload);
         m_fileVarName = "UGRD";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("vwnd", false) || m_dataId.IsSameAs("vgrd", false)) {
+    } else if (IsVwindComponent()) {
         m_parameter = Vwind;
         m_gribCode = {0, 2, 3, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vwnd", m_commandDownload);
         m_fileVarName = "VGRD";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("prwtr", false) || m_dataId.IsSameAs("pwat", false)) {
+    } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater;
         m_gribCode = {0, 1, 3, 200};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/pwat", m_commandDownload);

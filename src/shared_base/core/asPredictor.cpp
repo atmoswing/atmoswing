@@ -1555,6 +1555,7 @@ bool asPredictor::IsGeopotentialHeight() const
 {
     return m_dataId.IsSameAs("z", false) ||
            m_dataId.IsSameAs("h", false) ||
+           m_dataId.IsSameAs("zg", false) ||
            m_dataId.IsSameAs("hgt", false);
 }
 
@@ -1563,6 +1564,7 @@ bool asPredictor::IsAirTemperature() const
     return m_dataId.IsSameAs("t", false) ||
            m_dataId.IsSameAs("temp", false) ||
            m_dataId.IsSameAs("tmp", false) ||
+           m_dataId.IsSameAs("ta", false) ||
            m_dataId.IsSameAs("air", false);
 }
 
@@ -1570,6 +1572,7 @@ bool asPredictor::IsRelativeHumidity() const
 {
     return m_dataId.IsSameAs("rh", false) ||
            m_dataId.IsSameAs("rhum", false) ||
+           m_dataId.IsSameAs("hur", false) ||
            m_dataId.IsSameAs("r", false);
 }
 
@@ -1577,6 +1580,7 @@ bool asPredictor::IsSpecificHumidity() const
 {
     return m_dataId.IsSameAs("sh", false) ||
            m_dataId.IsSameAs("shum", false) ||
+           m_dataId.IsSameAs("hus", false) ||
            m_dataId.IsSameAs("qv", false);
 }
 
@@ -1584,6 +1588,7 @@ bool asPredictor::IsVerticalVelocity() const
 {
     return m_dataId.IsSameAs("w", false) ||
            m_dataId.IsSameAs("vvel", false) ||
+           m_dataId.IsSameAs("wap", false) ||
            m_dataId.IsSameAs("omega", false);
 }
 
@@ -1599,6 +1604,7 @@ bool asPredictor::IsSeaLevelPressure() const
 {
     return m_dataId.IsSameAs("slp", false) ||
            m_dataId.IsSameAs("mslp", false) ||
+           m_dataId.IsSameAs("psl", false) ||
            m_dataId.IsSameAs("prmsl", false) ||
            m_dataId.IsSameAs("msl", false);
 }
@@ -1606,12 +1612,16 @@ bool asPredictor::IsSeaLevelPressure() const
 bool asPredictor::IsUwindComponent() const
 {
     return m_dataId.IsSameAs("u", false) ||
+           m_dataId.IsSameAs("ua", false) ||
+           m_dataId.IsSameAs("ugrd", false) ||
            m_dataId.IsSameAs("uwnd", false);
 }
 
 bool asPredictor::IsVwindComponent() const
 {
     return m_dataId.IsSameAs("v", false) ||
+           m_dataId.IsSameAs("va", false) ||
+           m_dataId.IsSameAs("vgrd", false) ||
            m_dataId.IsSameAs("vwnd", false);
 }
 
