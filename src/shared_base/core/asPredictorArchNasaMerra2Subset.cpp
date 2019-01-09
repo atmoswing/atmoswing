@@ -50,37 +50,38 @@ bool asPredictorArchNasaMerra2Subset::Init()
     // Data may not be available for lower layers !!
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
-        // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields V5.12.4 (M2I6NPANA.5.12.4)
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) ||
+        m_product.IsSameAs("ana", false) ||
+        m_product.IsSameAs("M2I6NPANA", false)) {
+        // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields
         m_fStr.hasLevelDim = true;
-        m_subFolder = "inst6_3d_ana_Np";
-        if (m_dataId.IsSameAs("h", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
             m_fileVarName = "H";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("qv", false)) {
+        } else if (IsSpecificHumidity()) {
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific humidity";
             m_fileVarName = "QV";
             m_unit = kg_kg;
-        } else if (m_dataId.IsSameAs("t", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air temperature";
             m_fileVarName = "T";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("slp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea-level pressure";
             m_fileVarName = "SLP";
             m_unit = Pa;
             m_fStr.hasLevelDim = false;
-        } else if (m_dataId.IsSameAs("u", false)) {
+        } else if (IsUwindComponent()) {
             m_parameter = Uwind;
             m_parameterName = "Eastward wind component";
             m_fileVarName = "U";
             m_unit = m_s;
-        } else if (m_dataId.IsSameAs("v", false)) {
+        } else if (IsVwindComponent()) {
             m_parameter = Vwind;
             m_parameterName = "Northward wind component";
             m_fileVarName = "V";
@@ -93,32 +94,33 @@ bool asPredictorArchNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) || m_product.IsSameAs("M2I3NPASM", false)) {
-        // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields V5.12.4 (M2I3NPASM.5.12.4)
+    } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) ||
+               m_product.IsSameAs("asm", false) ||
+               m_product.IsSameAs("M2I3NPASM", false)) {
+        // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields
         m_fStr.hasLevelDim = true;
-        m_subFolder = "inst3_3d_asm_Np";
-        if (m_dataId.IsSameAs("epv", false)) {
+        if (IsPotentialVorticity()) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Ertel's potential vorticity";
             m_fileVarName = "EPV";
             m_unit = degKm2_kg_s;
-        } else if (m_dataId.IsSameAs("omega", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical pressure velocity";
             m_fileVarName = "OMEGA";
             m_unit = Pa_s;
-        } else if (m_dataId.IsSameAs("rh", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity after moist";
             m_fileVarName = "RH";
             m_unit = unitary;
-        } else if (m_dataId.IsSameAs("slp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileVarName = "SLP";
             m_unit = Pa;
             m_fStr.hasLevelDim = false;
-        } else if (m_dataId.IsSameAs("t", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air temperature";
             m_fileVarName = "T";
@@ -131,10 +133,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst3_3d_asm_Np.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) || m_product.IsSameAs("M2I1NXINT", false)) {
-        // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics V5.12.4 (M2I1NXINT.5.12.4)
+    } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) ||
+               m_product.IsSameAs("M2I1NXINT", false)) {
+        // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics
         m_fStr.hasLevelDim = false;
-        m_subFolder = "inst1_2d_int_Nx";
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -158,10 +160,10 @@ bool asPredictorArchNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_int_Nx.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst1_2d_asm_Nx", false) || m_product.IsSameAs("M2I1NXASM", false)) {
-        // inst1_2d_asm_Nx: 2d,3-Hourly,Instantaneous,Single-Level,Assimilation,Single-Level Diagnostics V5.12.4 (M2I1NXASM)
+    } else if (m_product.IsSameAs("inst1_2d_asm_Nx", false) ||
+               m_product.IsSameAs("M2I1NXASM", false)) {
+        // inst1_2d_asm_Nx: 2d,3-Hourly,Instantaneous,Single-Level,Assimilation,Single-Level Diagnostics
         m_fStr.hasLevelDim = false;
-        m_subFolder = "inst1_2d_asm_Nx";
         if (m_dataId.IsSameAs("tqi", false)) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total precipitable ice water";
@@ -190,11 +192,11 @@ bool asPredictorArchNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_asm_Nx.%4d%02d%02d.SUB.nc4";
 
-    } else if (m_product.IsSameAs("tavg1_2d_flx_Nx", false) || m_product.IsSameAs("M2T1NXFLX", false)) {
-        // tavg1_2d_flx_Nx:  2d,1-Hourly,Time-Averaged,Single-Level,Assimilation,Surface Flux Diagnostics V5.12.4 (M2T1NXFLX)
+    } else if (m_product.IsSameAs("tavg1_2d_flx_Nx", false) ||
+               m_product.IsSameAs("M2T1NXFLX", false)) {
+        // tavg1_2d_flx_Nx:  2d,1-Hourly,Time-Averaged,Single-Level,Assimilation,Surface Flux Diagnostics
         m_fStr.hasLevelDim = false;
-        m_subFolder = "tavg1_2d_flx_Nx";
-        if (m_dataId.IsSameAs("prectot", false)) {
+        if (IsTotalPrecipitation()) {
             m_parameter = Precipitation;
             m_parameterName = "Total surface precipitation flux";
             m_fileVarName = "PRECTOT";
@@ -207,11 +209,11 @@ bool asPredictorArchNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.tavg1_2d_flx_Nx.%4d%02d%02d.SUB.nc4";
 
-    } else if (m_product.IsSameAs("tavg1_2d_lnd_Nx", false) || m_product.IsSameAs("M2T1NXLND", false)) {
+    } else if (m_product.IsSameAs("tavg1_2d_lnd_Nx", false) ||
+               m_product.IsSameAs("M2T1NXLND", false)) {
         // tavg1_2d_lnd_Nx:
         m_fStr.hasLevelDim = false;
-        m_subFolder = "tavg1_2d_lnd_Nx";
-        if (m_dataId.IsSameAs("prectot", false)) {
+        if (IsTotalPrecipitation()) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation land; bias corrected";
             m_fileVarName = "PRECTOTLAND";

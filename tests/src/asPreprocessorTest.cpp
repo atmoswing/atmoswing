@@ -56,7 +56,7 @@ TEST(Preprocessor, Gradients)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -217,7 +217,7 @@ TEST(Preprocessor, GradientsMultithreading)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -352,9 +352,9 @@ TEST(Preprocessor, Addition)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
@@ -466,9 +466,9 @@ TEST(Preprocessor, Average)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -574,8 +574,8 @@ TEST(Preprocessor, Difference)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -668,8 +668,8 @@ TEST(Preprocessor, Multiplication)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));

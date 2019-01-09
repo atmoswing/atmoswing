@@ -54,40 +54,39 @@ bool asPredictorArchNcepReanalysis1::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure", false) || m_product.IsSameAs("press", false)) {
+    if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-        m_subFolder = "pressure";
-        if (m_dataId.IsSameAs("air", false)) {
+        if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature";
             m_fileVarName = "air";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("hgt", false)) {
+        } else if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
             m_fileVarName = "hgt";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("rhum", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative Humidity";
             m_fileVarName = "rhum";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("shum", false)) {
+        } else if (IsSpecificHumidity()) {
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific Humidity";
             m_fileVarName = "shum";
             m_unit = kg_kg;
-        } else if (m_dataId.IsSameAs("omega", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical Velocity";
             m_fileVarName = "omega";
             m_unit = Pa_s;
-        } else if (m_dataId.IsSameAs("uwnd", false)) {
+        } else if (IsUwindComponent()) {
             m_parameter = Uwind;
             m_parameterName = "U-Wind";
             m_fileVarName = "uwnd";
             m_unit = m_s;
-        } else if (m_dataId.IsSameAs("vwnd", false)) {
+        } else if (IsVwindComponent()) {
             m_parameter = Vwind;
             m_parameterName = "V-Wind";
             m_fileVarName = "vwnd";
@@ -100,10 +99,9 @@ bool asPredictorArchNcepReanalysis1::Init()
         }
         m_fileNamePattern = m_fileVarName + ".%d.nc";
 
-    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false)) {
+    } else if (IsSurfaceLevel()) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "surface";
-        if (m_dataId.IsSameAs("air", false)) {
+        if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature";
             m_fileNamePattern = "air.sig995.%d.nc";
@@ -121,7 +119,7 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "lftx4.sfc.%d.nc";
             m_fileVarName = "lftx4";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("omega", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
             m_fileNamePattern = "omega.sig995.%d.nc";
@@ -133,7 +131,7 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "pottmp.sig995.%d.nc";
             m_fileVarName = "pottmp";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("prwtr", false)) {
+        } else if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileNamePattern = "pr_wtr.eatm.%d.nc";
@@ -145,25 +143,25 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "pres.sfc.%d.nc";
             m_fileVarName = "pres";
             m_unit = Pa;
-        } else if (m_dataId.IsSameAs("rhum", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileNamePattern = "rhum.sig995.%d.nc";
             m_fileVarName = "rhum";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("slp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileNamePattern = "slp.%d.nc";
             m_fileVarName = "slp";
             m_unit = Pa;
-        } else if (m_dataId.IsSameAs("uwnd", false)) {
+        } else if (IsUwindComponent()) {
             m_parameter = Uwind;
             m_parameterName = "U-wind";
             m_fileNamePattern = "uwnd.sig995.%d.nc";
             m_fileVarName = "uwnd";
             m_unit = m_s;
-        } else if (m_dataId.IsSameAs("vwnd", false)) {
+        } else if (IsVwindComponent()) {
             m_parameter = Vwind;
             m_parameterName = "V-wind";
             m_fileNamePattern = "vwnd.sig995.%d.nc";
@@ -174,11 +172,11 @@ bool asPredictorArchNcepReanalysis1::Init()
                                               m_dataId, m_product));
         }
 
-    } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
-               m_product.IsSameAs("flux", false)) {
+    } else if (IsSurfaceFluxesLevel() ||
+               m_product.IsSameAs("surface_gauss", false) ||
+               m_product.IsSameAs("gauss", false)) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "surface_gauss";
-        if (m_dataId.IsSameAs("air2m", false)) {
+        if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature 2m";
             m_fileNamePattern = "air.2m.gauss.%d.nc";
@@ -190,7 +188,7 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "pevpr.sfc.gauss.%d.nc";
             m_fileVarName = "pevpr";
             m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("shum2m", false)) {
+        } else if (IsSpecificHumidity()) {
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific humidity at 2m";
             m_fileNamePattern = "shum.2m.gauss.%d.nc";
@@ -232,13 +230,13 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "tmp.300cm.gauss.%d.nc";
             m_fileVarName = "tmp";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("uwnd10m", false)) {
+        } else if (IsUwindComponent()) {
             m_parameter = Uwind;
             m_parameterName = "U-wind at 10 m";
             m_fileNamePattern = "uwnd.10m.gauss.%d.nc";
             m_fileVarName = "uwnd";
             m_unit = m_s;
-        } else if (m_dataId.IsSameAs("vwnd10m", false)) {
+        } else if (IsVwindComponent()) {
             m_parameter = Vwind;
             m_parameterName = "V-wind at 10 m";
             m_fileNamePattern = "vwnd.10m.gauss.%d.nc";
@@ -346,7 +344,7 @@ bool asPredictorArchNcepReanalysis1::Init()
             m_fileNamePattern = "nswrs.sfc.gauss.%d.nc";
             m_fileVarName = "nswrs";
             m_unit = W_m2;
-        } else if (m_dataId.IsSameAs("prate", false)) {
+        } else if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
             m_fileNamePattern = "prate.sfc.gauss.%d.nc";

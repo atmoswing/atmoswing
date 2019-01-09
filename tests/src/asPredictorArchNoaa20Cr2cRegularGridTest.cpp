@@ -51,7 +51,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -108,7 +108,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -169,7 +169,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -222,7 +222,7 @@ TEST(PredictorArchNoaa20Cr2cRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-noaa-20crv2c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NOAA_20CR_v2c", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

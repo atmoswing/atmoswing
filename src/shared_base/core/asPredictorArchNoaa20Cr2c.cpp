@@ -52,40 +52,39 @@ bool asPredictorArchNoaa20Cr2c::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure", false) || m_product.IsSameAs("press", false)) {
+    if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-        m_subFolder = "pressure";
-        if (m_dataId.IsSameAs("air", false)) {
+        if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air Temperature";
             m_fileVarName = "air";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("hgt", false)) {
+        } else if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
             m_fileVarName = "hgt";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("omega", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
             m_fileVarName = "omega";
             m_unit = Pa_s;
-        } else if (m_dataId.IsSameAs("rhum", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative Humidity";
             m_fileVarName = "rhum";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("shum", false)) {
+        } else if (IsSpecificHumidity()) {
             m_parameter = SpecificHumidity;
             m_parameterName = "Specific Humidity";
             m_fileVarName = "shum";
             m_unit = kg_kg;
-        } else if (m_dataId.IsSameAs("uwnd", false)) {
+        } else if (IsUwindComponent()) {
             m_parameter = Uwind;
             m_parameterName = "U-Wind";
             m_fileVarName = "uwnd";
             m_unit = m_s;
-        } else if (m_dataId.IsSameAs("vwnd", false)) {
+        } else if (IsVwindComponent()) {
             m_parameter = Vwind;
             m_parameterName = "V-Wind";
             m_fileVarName = "vwnd";
@@ -98,17 +97,16 @@ bool asPredictorArchNoaa20Cr2c::Init()
         }
         m_fileNamePattern = m_fileVarName + ".%d.nc";
 
-    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
+    } else if (IsSurfaceLevel() ||
                m_product.IsSameAs("monolevel", false)) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "monolevel";
-        if (m_dataId.IsSameAs("prwtr", false)) {
+        if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileNamePattern = "pr_wtr.eatm.%d.nc";
             m_fileVarName = "pr_wtr";
             m_unit = mm;
-        } else if (m_dataId.IsSameAs("mslp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileNamePattern = "prmsl.%d.nc";
@@ -119,17 +117,17 @@ bool asPredictorArchNoaa20Cr2c::Init()
                                               m_dataId, m_product));
         }
 
-    } else if (m_product.IsSameAs("surface_gauss", false) || m_product.IsSameAs("gauss", false) ||
-               m_product.IsSameAs("gaussian", false) || m_product.IsSameAs("flux", false)) {
+    } else if (IsSurfaceFluxesLevel() ||
+               m_product.IsSameAs("surface_gauss", false) ||
+               m_product.IsSameAs("gauss", false) ||
+               m_product.IsSameAs("gaussian", false)) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "gaussian";
-        if (m_dataId.IsSameAs("prate", false)) {
+        if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
             m_fileNamePattern = "prate.%d.nc";
             m_fileVarName = "prate";
             m_unit = kg_m2_s;
-            m_subFolder.Append(DS + "monolevel");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));

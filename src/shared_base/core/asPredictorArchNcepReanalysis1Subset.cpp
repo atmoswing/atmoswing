@@ -44,7 +44,6 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_subFolder = wxEmptyString;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -54,56 +53,56 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
 bool asPredictorArchNcepReanalysis1Subset::Init()
 {
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt", false)) {
+    if (IsGeopotentialHeight()) {
         m_fStr.hasLevelDim = true;
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileNamePattern = "hgt.nc";
         m_fileVarName = "hgt";
         m_unit = m;
-    } else if (m_dataId.IsSameAs("air", false)) {
+    } else if (IsAirTemperature()) {
         m_fStr.hasLevelDim = true;
         m_parameter = AirTemperature;
         m_parameterName = "Air Temperature";
         m_fileNamePattern = "air.nc";
         m_fileVarName = "air";
         m_unit = degK;
-    } else if (m_dataId.IsSameAs("omega", false)) {
+    } else if (IsVerticalVelocity()) {
         m_fStr.hasLevelDim = true;
         m_parameter = VerticalVelocity;
         m_parameterName = "Vertical velocity";
         m_fileNamePattern = "omega.nc";
         m_fileVarName = "omega";
         m_unit = Pa_s;
-    } else if (m_dataId.IsSameAs("rhum", false)) {
+    } else if (IsRelativeHumidity()) {
         m_fStr.hasLevelDim = true;
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "rhum.nc";
         m_fileVarName = "rhum";
         m_unit = percent;
-    } else if (m_dataId.IsSameAs("shum", false)) {
+    } else if (IsSpecificHumidity()) {
         m_fStr.hasLevelDim = true;
         m_parameter = SpecificHumidity;
         m_parameterName = "Specific Humidity";
         m_fileNamePattern = "shum.nc";
         m_fileVarName = "shum";
         m_unit = kg_kg;
-    } else if (m_dataId.IsSameAs("uwnd", false)) {
+    } else if (IsUwindComponent()) {
         m_fStr.hasLevelDim = true;
         m_parameter = Uwind;
         m_parameterName = "U-Wind";
         m_fileNamePattern = "uwnd.nc";
         m_fileVarName = "uwnd";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("vwnd", false)) {
+    } else if (IsVwindComponent()) {
         m_fStr.hasLevelDim = true;
         m_parameter = Vwind;
         m_parameterName = "V-Wind";
         m_fileNamePattern = "vwnd.nc";
         m_fileVarName = "vwnd";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("prwtr", false)) {
+    } else if (IsPrecipitableWater()) {
         m_fStr.hasLevelDim = false;
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";

@@ -51,7 +51,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor != NULL);
@@ -131,7 +131,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -212,7 +212,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -291,7 +291,7 @@ TEST(PredictorArchEcmwfEra20CRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ecmwf-era-20c/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "press/z", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_20C", "pressure_level/z", predictorDataDir);
 
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));

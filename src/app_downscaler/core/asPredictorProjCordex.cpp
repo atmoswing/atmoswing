@@ -49,7 +49,6 @@ asPredictorProjCordex::asPredictorProjCordex(const wxString &dataId, const wxStr
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
     m_fStr.hasLevelDim = false;
-    m_subFolder = wxEmptyString;
     m_isLatLon = false;
 }
 

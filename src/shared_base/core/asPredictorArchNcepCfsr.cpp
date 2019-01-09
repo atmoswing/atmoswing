@@ -49,37 +49,34 @@ bool asPredictorArchNcepCfsr::Init()
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
-        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
-        m_product.IsSameAs("pgb", false)) {
+    if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
         m_fStr.singleLevel = true;
-        m_subFolder = "pgbh";
-        if (m_dataId.IsSameAs("hgt@iso", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             int arr[] = {0, 3, 5, 100};
             AssignGribCode(arr);
             m_parameterName = "Geopotential height @ Isobaric surface";
             m_unit = gpm;
-        } else if (m_dataId.IsSameAs("pwat@eal", false)) {
+        } else if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             int arr[] = {0, 1, 3, 200};
             AssignGribCode(arr);
             m_parameterName = "Precipitable water @ Entire atmosphere layer";
             m_unit = kg_m2;
-        } else if (m_dataId.IsSameAs("pres@msl", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             int arr[] = {0, 3, 0, 101};
             AssignGribCode(arr);
             m_parameterName = "Pressure @ Mean sea level";
             m_unit = Pa;
-        } else if (m_dataId.IsSameAs("rh@iso", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             int arr[] = {0, 1, 1, 100};
             AssignGribCode(arr);
             m_parameterName = "Relative humidity @ Isobaric surface";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("tmp@iso", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             int arr[] = {0, 0, 0, 100};
             AssignGribCode(arr);
@@ -90,12 +87,10 @@ bool asPredictorArchNcepCfsr::Init()
         }
         m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
 
-    } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
-               m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
+    } else if (IsIsentropicLevel()) {
         asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
 
-    } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
-               m_product.IsSameAs("flx", false)) {
+    } else if (IsSurfaceFluxesLevel()) {
         asThrowException(_("Surface fluxes grids for CFSR are not implemented yet."));
 
     } else {

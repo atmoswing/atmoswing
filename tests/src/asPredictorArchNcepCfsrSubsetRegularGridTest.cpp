@@ -51,7 +51,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -132,7 +132,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -197,7 +197,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -258,7 +258,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -319,7 +319,7 @@ TEST(PredictorArchNcepCfsrSubsetRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr-subset/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "press/hgt", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR_subset", "pgbhnl/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

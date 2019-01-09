@@ -51,7 +51,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -136,7 +136,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -213,7 +213,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -278,7 +278,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -343,7 +343,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -415,7 +415,7 @@ TEST(PredictorArchNcepR1v2003Gaussian, SetData)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 

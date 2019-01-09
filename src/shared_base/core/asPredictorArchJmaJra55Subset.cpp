@@ -54,35 +54,34 @@ bool asPredictorArchJmaJra55Subset::Init()
     // Get data: http://rda.ucar.edu/datasets/ds628.0/index.html#!cgi-bin/datasets/getSubset?dsnum=628.0&listAction=customize&_da=y
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("anl_p125", false)) {
+    if (IsPressureLevel() || m_product.IsSameAs("anl_p125", false)) {
         // JRA-55 6-Hourly 1.25 Degree Isobaric Analysis Fields
         m_fStr.hasLevelDim = true;
-        m_subFolder = "anl_p125";
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_product + ".";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";
         m_fStr.dimTimeName = "initial_time0_hours";
         m_fStr.dimLevelName = "lv_ISBL1";
         m_monthlyFiles = true;
-        if (m_dataId.IsSameAs("hgt", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential Height";
             m_fileVarName = "HGT_GDS0_ISBL";
             m_unit = gpm;
             m_fileNamePattern.Append("007_hgt");
-        } else if (m_dataId.IsSameAs("rh", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVarName = "RH_GDS0_ISBL";
             m_unit = percent;
             m_fileNamePattern.Append("052_rh");
-        } else if (m_dataId.IsSameAs("tmp", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
             m_fileVarName = "TMP_GDS0_ISBL";
             m_unit = degK;
             m_fileNamePattern.Append("011_tmp");
-        } else if (m_dataId.IsSameAs("vvel", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
             m_fileVarName = "VVEL_GDS0_ISBL";
@@ -94,16 +93,15 @@ bool asPredictorArchJmaJra55Subset::Init()
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
-    } else if (m_product.IsSameAs("anl_surf125", false)) {
+    } else if (IsSurfaceLevel() || m_product.IsSameAs("anl_surf125", false)) {
         // JRA-55 6-Hourly 1.25 Degree Surface Analysis Fields
         m_fStr.hasLevelDim = false;
-        m_subFolder = "anl_surf125";
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_product + ".";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
         m_fStr.dimTimeName = "initial_time0_hours";
         m_monthlyFiles = false;
-        if (m_dataId.IsSameAs("slp", false)) {
+        if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Pressure reduced to MSL";
             m_fileVarName = "PRMSL_GDS0_MSL";
@@ -115,16 +113,15 @@ bool asPredictorArchJmaJra55Subset::Init()
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
-    } else if (m_product.IsSameAs("anl_column125", false)) {
+    } else if (IsTotalColumnLevel() || m_product.IsSameAs("anl_column125", false)) {
         // JRA-55 6-Hourly 1.25 Degree Total Column Analysis Fields
         m_fStr.hasLevelDim = false;
-        m_subFolder = "anl_column125";
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_product + ".";
         m_fStr.dimLatName = "g0_lat_1";
         m_fStr.dimLonName = "g0_lon_2";
         m_fStr.dimTimeName = "initial_time0_hours";
         m_monthlyFiles = false;
-        if (m_dataId.IsSameAs("pwat", false)) {
+        if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileVarName = "PWAT_GDS0_EATM";
@@ -148,14 +145,12 @@ bool asPredictorArchJmaJra55Subset::Init()
             m_parameterName = "Total precipitation";
             m_fileVarName = "TPRAT_GDS0_SFC_ave3h";
             m_unit = mm_d;
-            m_subFolder = "fcst_phy2m125/tprat_00h-03h";
             m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
         } else if (m_dataId.IsSameAs("tprat6h", false)) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
             m_fileVarName = "TPRAT_GDS0_SFC_ave3h";
             m_unit = mm_d;
-            m_subFolder = "fcst_phy2m125/tprat_03h-06h";
             m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -163,23 +158,22 @@ bool asPredictorArchJmaJra55Subset::Init()
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
-    } else if (m_product.IsSameAs("anl_isentrop125", false)) {
+    } else if (IsIsentropicLevel() || m_product.IsSameAs("anl_isentrop125", false)) {
         // JRA-55 6-Hourly 1.25 Degree Isentropic Analysis Fields
         m_fStr.hasLevelDim = true;
-        m_subFolder = "anl_isentrop125";
-        m_fileNamePattern = m_subFolder + ".";
+        m_fileNamePattern = m_product + ".";
         m_fStr.dimLatName = "g0_lat_2";
         m_fStr.dimLonName = "g0_lon_3";
         m_fStr.dimTimeName = "initial_time0_hours";
         m_fStr.dimLevelName = "lv_THEL1";
         m_monthlyFiles = true;
-        if (m_dataId.IsSameAs("pv", false)) {
+        if (IsPotentialVorticity()) {
             m_parameter = PotentialVorticity;
             m_parameterName = "Potential vorticity";
             m_fileVarName = "pVOR_GDS0_THEL";
             m_unit = degKm2_kg_s;
             m_fileNamePattern.Append("004_pvor");
-        } else if (m_dataId.IsSameAs("hgt", false)) {
+        } else if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential Height";
             m_fileVarName = "HGT_GDS0_THEL";

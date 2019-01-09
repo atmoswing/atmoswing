@@ -151,7 +151,7 @@ public:
             directoryPath.Append(wxFileName::GetPathSeparators());
         }
 
-        directoryPath += m_subFolder;
+        directoryPath += m_product;
         if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
             directoryPath.Append(wxFileName::GetPathSeparators());
         }
@@ -318,7 +318,6 @@ protected:
     asFile::FileType m_fileType;
     bool m_initialized;
     bool m_axesChecked;
-    wxString m_subFolder;
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_datasetName;
@@ -397,6 +396,40 @@ protected:
     asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 
     void AssignGribCode(const int arr[]);
+
+    bool IsPressureLevel() const;
+
+    bool IsIsentropicLevel() const;
+
+    bool IsSurfaceLevel() const;
+
+    bool IsSurfaceFluxesLevel() const;
+
+    bool IsTotalColumnLevel() const;
+
+    bool IsGeopotentialHeight() const;
+
+    bool IsAirTemperature() const;
+
+    bool IsRelativeHumidity() const;
+
+    bool IsSpecificHumidity() const;
+
+    bool IsVerticalVelocity() const;
+
+    bool IsPrecipitableWater() const;
+
+    bool IsSeaLevelPressure() const;
+
+    bool IsUwindComponent() const;
+
+    bool IsVwindComponent() const;
+
+    bool IsPotentialVorticity() const;
+
+    bool IsTotalPrecipitation() const;
+
+    bool IsPrecipitationRate() const;
 
 private:
     wxString m_directoryPath;

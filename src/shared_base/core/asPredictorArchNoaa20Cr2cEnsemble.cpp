@@ -56,13 +56,12 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("analysis", false)) {
 
-        m_subFolder = "analysis";
-        if (m_dataId.IsSameAs("prmsl", false)) {
+        if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileVarName = "prmsl";
             m_unit = Pa;
-        } else if (m_dataId.IsSameAs("pwat", false)) {
+        } else if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileVarName = "pwat";
@@ -117,8 +116,7 @@ bool asPredictorArchNoaa20Cr2cEnsemble::Init()
 
     } else if (m_product.IsSameAs("first_guess", false)) {
 
-        m_subFolder = "first_guess";
-        if (m_dataId.IsSameAs("prate", false)) {
+        if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
             m_fileVarName = "prate";

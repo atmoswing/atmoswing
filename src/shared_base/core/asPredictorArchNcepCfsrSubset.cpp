@@ -53,78 +53,64 @@ bool asPredictorArchNcepCfsrSubset::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
-        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false) || m_product.IsSameAs("pgbh", false) ||
-        m_product.IsSameAs("pgb", false) || m_product.IsSameAs("pgbhnl", false)) {
+    if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-        m_subFolder = "pgbhnl";
-        if (m_dataId.IsSameAs("hgt", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
             m_fileVarName = "HGT_L100";
             m_unit = gpm;
-            m_subFolder.Append(DS + "hgt");
         } else if (m_dataId.IsSameAs("gpa", false)) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height anomaly";
             m_fileVarName = "GP_A_L100";
             m_unit = gpm;
-            m_subFolder.Append(DS + "hgt");
             m_fStr.dimLevelName = "level1";
-        } else if (m_dataId.IsSameAs("mslp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Mean sea level pressure";
             m_fileVarName = "PRES_L101";
             m_unit = Pa;
-            m_subFolder.Append(DS + "mslp");
             m_fStr.hasLevelDim = false;
-        } else if (m_dataId.IsSameAs("pwat", false)) {
+        } else if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Precipitable water";
             m_fileVarName = "P_WAT_L200";
             m_unit = kg_m2;
-            m_subFolder.Append(DS + "pwat");
             m_fStr.hasLevelDim = false;
-        } else if (m_dataId.IsSameAs("rh", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVarName = "R_H_L100";
             m_unit = percent;
-            m_subFolder.Append(DS + "rh");
-        } else if (m_dataId.IsSameAs("temp", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
             m_fileVarName = "TMP_L100";
             m_unit = degK;
-            m_subFolder.Append(DS + "temp");
-        } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("vvel", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical Velocity";
             m_fileVarName = "V_VEL_L100";
             m_unit = Pa_s;
-            m_subFolder.Append(DS + "vvel");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
-    } else if (m_product.IsSameAs("surface_fluxes", false) || m_product.IsSameAs("fluxes", false) ||
-               m_product.IsSameAs("flx", false)) {
+    } else if (IsSurfaceFluxesLevel()) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "flxf06";
-        if (m_dataId.IsSameAs("prate", false)) {
+        if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
             m_fileVarName = "PRATE_L1_Avg_1";
             m_unit = kg_m2_s;
-            m_subFolder.Append(DS + "prate");
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
         }
         m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
-    } else if (m_product.IsSameAs("isentropic_level", false) || m_product.IsSameAs("isentropic", false) ||
-               m_product.IsSameAs("ipvh", false) || m_product.IsSameAs("ipv", false)) {
+    } else if (IsIsentropicLevel()) {
         asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
 
     } else {

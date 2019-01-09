@@ -55,20 +55,21 @@ bool asPredictorArchNasaMerra2::Init()
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("M2I6NPANA", false)) {
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) ||
+        m_product.IsSameAs("ana", false) ||
+        m_product.IsSameAs("M2I6NPANA", false)) {
         m_fStr.hasLevelDim = true;
-        m_subFolder = "inst6_3d_ana_Np";
-        if (m_dataId.IsSameAs("h", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
             m_parameterName = "Geopotential height";
             m_fileVarName = "H";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("t", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Air temperature";
             m_fileVarName = "T";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("slp", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea-level pressure";
             m_fileVarName = "SLP";

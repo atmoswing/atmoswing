@@ -51,7 +51,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor != NULL);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
@@ -132,7 +132,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -197,7 +197,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -258,7 +258,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -319,7 +319,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-cfsr/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "press/hgt@iso", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 

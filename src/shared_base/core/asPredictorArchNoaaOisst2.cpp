@@ -43,7 +43,6 @@ asPredictorArchNoaaOisst2::asPredictorArchNoaaOisst2(const wxString &dataId)
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_subFolder = wxEmptyString;
     m_fileNamePattern = "%d/AVHRR/sst4-path-eot.%4d%02d%02d.nc";
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";

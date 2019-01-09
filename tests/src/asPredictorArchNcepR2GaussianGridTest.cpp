@@ -50,7 +50,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadEasy)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "gaussian_grid/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -135,7 +135,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadComposite)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "gaussian_grid/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -212,7 +212,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeft)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "gaussian_grid/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -277,7 +277,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderLeftOn720)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "gaussian_grid/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -342,7 +342,7 @@ TEST(PredictorArchNcepR2Gaussian, LoadBorderRight)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r2/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "flux/air2m", predictorDataDir);
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v2", "gaussian_grid/air", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 

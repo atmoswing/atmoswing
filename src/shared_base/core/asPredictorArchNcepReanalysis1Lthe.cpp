@@ -44,7 +44,6 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_strideAllowed = true;
     m_nanValues.push_back(32767);
     m_nanValues.push_back(936 * std::pow(10.f, 34.f));
-    m_subFolder = wxEmptyString;
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
@@ -67,13 +66,13 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
         m_fileVarName = "hgt";
         m_unit = m;
-    } else if (m_dataId.IsSameAs("prwtr", false)) {
+    } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater;
         m_parameterName = "Precipitable water";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
         m_fileVarName = "pwa";
         m_unit = mm;
-    } else if (m_dataId.IsSameAs("rhum", false)) {
+    } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative Humidity";
         m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";

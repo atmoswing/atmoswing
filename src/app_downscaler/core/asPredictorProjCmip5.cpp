@@ -48,7 +48,6 @@ asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxStrin
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
-    m_subFolder = wxEmptyString;
 }
 
 asPredictorProjCmip5::~asPredictorProjCmip5()

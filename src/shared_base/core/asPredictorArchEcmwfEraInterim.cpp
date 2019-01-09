@@ -45,7 +45,6 @@ asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &d
     m_fStr.dimLonName = "longitude";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "level";
-    m_subFolder = wxEmptyString;
 }
 
 bool asPredictorArchEcmwfEraInterim::Init()
@@ -55,26 +54,24 @@ bool asPredictorArchEcmwfEraInterim::Init()
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("pressure_level", false) || m_product.IsSameAs("pressure", false) ||
-        m_product.IsSameAs("press", false) || m_product.IsSameAs("pl", false)) {
+    if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-        m_subFolder = "pressure_level";
-        if (m_dataId.IsSameAs("z", false) || m_dataId.IsSameAs("hgt", false)) {
+        if (IsGeopotentialHeight()) {
             m_parameter = Geopotential;
             m_parameterName = "Geopotential";
             m_fileVarName = "z";
             m_unit = m2_s2;
-        } else if (m_dataId.IsSameAs("t", false)) {
+        } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
             m_parameterName = "Temperature";
             m_fileVarName = "t";
             m_unit = degK;
-        } else if (m_dataId.IsSameAs("r", false) || m_dataId.IsSameAs("rh", false)) {
+        } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
             m_parameterName = "Relative humidity";
             m_fileVarName = "r";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("w", false)) {
+        } else if (IsVerticalVelocity()) {
             m_parameter = VerticalVelocity;
             m_parameterName = "Vertical velocity";
             m_fileVarName = "w";
@@ -87,21 +84,19 @@ bool asPredictorArchEcmwfEraInterim::Init()
         }
         m_fileNamePattern = m_fileVarName + ".nc";
 
-    } else if (m_product.IsSameAs("surface", false) || m_product.IsSameAs("surf", false) ||
-               m_product.IsSameAs("sfc", false)) {
+    } else if (IsSurfaceLevel()) {
         m_fStr.hasLevelDim = false;
-        m_subFolder = "surface";
-        if (m_dataId.IsSameAs("tcw", false)) {
+        if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
             m_parameterName = "Total column water";
             m_fileVarName = "tcw";
             m_unit = kg_m2;
-        } else if (m_dataId.IsSameAs("tp", false)) {
+        } else if (IsTotalPrecipitation()) {
             m_parameter = Precipitation;
             m_parameterName = "Total precipitation";
             m_fileVarName = "tp";
             m_unit = m;
-        } else if (m_dataId.IsSameAs("mslp", false) || m_dataId.IsSameAs("msl", false)) {
+        } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
             m_fileVarName = "msl";

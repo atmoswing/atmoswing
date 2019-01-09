@@ -73,9 +73,9 @@ asPredictor::asPredictor(const wxString &dataId)
     AssignGribCode(arr);
 
     if (dataId.Contains('/')) {
-        wxString levelType = dataId.BeforeFirst('/');
+        wxString levelType = dataId.BeforeLast('/');
         m_product = levelType;
-        m_dataId = dataId.AfterFirst('/');
+        m_dataId = dataId.AfterLast('/');
     } else {
         wxLogVerbose(_("The data ID (%s) does not contain the level type"), dataId);
     }
@@ -1507,4 +1507,127 @@ void asPredictor::CheckLevelTypeIsDefined()
     }
 }
 
+bool asPredictor::IsPressureLevel() const
+{
+    return m_product.IsSameAs("pressure_level", false) ||
+           m_product.IsSameAs("pressure_levels", false) ||
+           m_product.IsSameAs("pressure", false) ||
+           m_product.IsSameAs("press", false) ||
+           m_product.IsSameAs("isobaric", false) ||
+           m_product.IsSameAs("pl", false) ||
+           m_product.IsSameAs("pgbh", false) ||
+           m_product.IsSameAs("pgbhnl", false) ||
+           m_product.IsSameAs("pgb", false);
+}
 
+bool asPredictor::IsIsentropicLevel() const
+{
+    return m_product.IsSameAs("isentropic_level", false) ||
+           m_product.IsSameAs("isentropic", false) ||
+           m_product.IsSameAs("ipvh", false) ||
+           m_product.IsSameAs("ipv", false);
+}
+
+bool asPredictor::IsSurfaceLevel() const
+{
+    return m_product.IsSameAs("surface", false) ||
+           m_product.IsSameAs("surf", false) ||
+           m_product.IsSameAs("sfc", false);
+}
+
+bool asPredictor::IsSurfaceFluxesLevel() const
+{
+    return m_product.IsSameAs("surface_fluxes", false) ||
+           m_product.IsSameAs("fluxes", false) ||
+           m_product.IsSameAs("flux", false) ||
+           m_product.IsSameAs("flxf06", false) ||
+           m_product.IsSameAs("flx", false);
+}
+
+bool asPredictor::IsTotalColumnLevel() const
+{
+    return m_product.IsSameAs("total_column", false) ||
+           m_product.IsSameAs("column", false) ||
+           m_product.IsSameAs("tc", false);
+}
+
+bool asPredictor::IsGeopotentialHeight() const
+{
+    return m_dataId.IsSameAs("z", false) ||
+           m_dataId.IsSameAs("h", false) ||
+           m_dataId.IsSameAs("hgt", false);
+}
+
+bool asPredictor::IsAirTemperature() const
+{
+    return m_dataId.IsSameAs("t", false) ||
+           m_dataId.IsSameAs("temp", false) ||
+           m_dataId.IsSameAs("tmp", false) ||
+           m_dataId.IsSameAs("air", false);
+}
+
+bool asPredictor::IsRelativeHumidity() const
+{
+    return m_dataId.IsSameAs("rh", false) ||
+           m_dataId.IsSameAs("rhum", false) ||
+           m_dataId.IsSameAs("r", false);
+}
+
+bool asPredictor::IsSpecificHumidity() const
+{
+    return m_dataId.IsSameAs("sh", false) ||
+           m_dataId.IsSameAs("shum", false) ||
+           m_dataId.IsSameAs("qv", false);
+}
+
+bool asPredictor::IsVerticalVelocity() const
+{
+    return m_dataId.IsSameAs("w", false) ||
+           m_dataId.IsSameAs("vvel", false) ||
+           m_dataId.IsSameAs("omega", false);
+}
+
+bool asPredictor::IsPrecipitableWater() const
+{
+    return m_dataId.IsSameAs("pwat", false) ||
+           m_dataId.IsSameAs("tcw", false) ||
+           m_dataId.IsSameAs("pr_wtr", false) ||
+           m_dataId.IsSameAs("prwtr", false);
+}
+
+bool asPredictor::IsSeaLevelPressure() const
+{
+    return m_dataId.IsSameAs("slp", false) ||
+           m_dataId.IsSameAs("mslp", false) ||
+           m_dataId.IsSameAs("prmsl", false) ||
+           m_dataId.IsSameAs("msl", false);
+}
+
+bool asPredictor::IsUwindComponent() const
+{
+    return m_dataId.IsSameAs("u", false) ||
+           m_dataId.IsSameAs("uwnd", false);
+}
+
+bool asPredictor::IsVwindComponent() const
+{
+    return m_dataId.IsSameAs("v", false) ||
+           m_dataId.IsSameAs("vwnd", false);
+}
+
+bool asPredictor::IsPotentialVorticity() const
+{
+    return m_dataId.IsSameAs("pv", false) ||
+           m_dataId.IsSameAs("epv", false);
+}
+
+bool asPredictor::IsTotalPrecipitation() const
+{
+    return m_dataId.IsSameAs("tp", false) ||
+           m_dataId.IsSameAs("prectot", false);
+}
+
+bool asPredictor::IsPrecipitationRate() const
+{
+    return m_dataId.IsSameAs("prate", false);
+}
