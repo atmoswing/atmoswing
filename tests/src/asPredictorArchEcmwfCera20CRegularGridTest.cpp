@@ -55,7 +55,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load1stMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectFirstMember();
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
@@ -121,7 +121,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3rdMember)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMember(3);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f rh = predictor->GetData();
@@ -187,7 +187,7 @@ TEST(PredictorArchEcmwfCera20CRegular, Load3Members)
     ASSERT_TRUE(predictor->IsEnsemble());
     predictor->SelectMembers(3);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     ASSERT_EQ(4, predictor->GetData().size());

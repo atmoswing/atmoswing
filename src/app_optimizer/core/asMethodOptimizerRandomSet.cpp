@@ -310,7 +310,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
 
 asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
 {
-    asParametersOptimization *params = NULL;
+    asParametersOptimization *params = nullptr;
     m_skipNext = false;
 
     if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {

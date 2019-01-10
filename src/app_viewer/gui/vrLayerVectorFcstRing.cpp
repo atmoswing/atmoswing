@@ -34,8 +34,8 @@
 
 vrLayerVectorFcstRing::vrLayerVectorFcstRing()
 {
-    wxASSERT(m_dataset == NULL);
-    wxASSERT(m_layer == NULL);
+    wxASSERT(m_dataset == nullptr);
+    wxASSERT(m_layer == nullptr);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
     m_valueMax = 1;
 }
@@ -51,7 +51,7 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data)
     wxASSERT(m_layer);
     feature->SetGeometry(geometry);
 
-    if (data != NULL) {
+    if (data != nullptr) {
         wxArrayDouble *dataArray = (wxArrayDouble *) data;
         wxASSERT(dataArray->GetCount() >= 3);
 

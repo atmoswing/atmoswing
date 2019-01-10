@@ -562,7 +562,7 @@ TEST(MethodCalibrator, PreloadingSimple)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesPreload;
@@ -617,7 +617,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesPreload;
@@ -965,7 +965,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asMethodCalibratorSingle calibrator3 = calibrator1;
     asMethodCalibratorSingle calibrator4 = calibrator1;
@@ -1553,7 +1553,7 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(predictorFilePath);
-    calibrator.SetPredictandDB(NULL);
+    calibrator.SetPredictandDB(nullptr);
     asResultsDates anaDates;
     asResultsDates anaSubDates;
 
@@ -1618,7 +1618,7 @@ TEST(MethodCalibrator, NormalizedS1Criteria)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesNorm;
@@ -1680,7 +1680,7 @@ TEST(MethodCalibrator, NormalizedRMSECriteria)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesNorm;

@@ -54,7 +54,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();
@@ -119,7 +119,7 @@ TEST(PredictorArchJmaJra55SubsetRegular, Around360)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("JMA_JRA_55_subset", "anl_p125/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();

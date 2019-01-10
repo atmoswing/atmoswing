@@ -163,7 +163,7 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *pa
                     for (unsigned int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
                         m_preloadedArchive[iStep][iPtor][iDat][iLevel].resize(preloadTimeHoursSize);
                         for (unsigned int iHour = 0; iHour < preloadTimeHoursSize; iHour++) {
-                            m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = NULL;
+                            m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = nullptr;
                         }
                     }
                 }
@@ -280,10 +280,10 @@ bool asMethodStandard::CheckArchiveDataIsPreloaded(const asParameters *params) c
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const
 {
-    for (int iPre = 0; iPre < m_preloadedArchive[iStep][iPtor].size(); iPre++) {
-        for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
-            for (int iHour = 0; iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {
-                if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != NULL) {
+    for (const auto &datPre : m_preloadedArchive[iStep][iPtor]) {
+        for (const auto &datLevel : datPre) {
+            for (auto datHour : datLevel) {
+                if (datHour != nullptr) {
                     return true;
                 }
             }
@@ -295,9 +295,9 @@ bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor) const
 
 bool asMethodStandard::HasPreloadedArchiveData(int iStep, int iPtor, int iPre) const
 {
-    for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
-        for (int iHour = 0; iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {
-            if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != NULL) {
+    for (const auto &datLevel : m_preloadedArchive[iStep][iPtor][iPre]) {
+        for (auto datHour : datLevel) {
+            if (datHour != nullptr) {
                 return true;
             }
         }
@@ -891,7 +891,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxASSERT((unsigned) iPre < m_preloadedArchive[iStep][iPtor].size());
     wxASSERT((unsigned) iLevel < m_preloadedArchive[iStep][iPtor][iPre].size());
     wxASSERT((unsigned) iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size());
-    if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] == NULL) {
+    if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] == nullptr) {
         if (!GetRandomValidData(params, iStep, iPtor, iPre)) {
             wxLogError(_("The pointer to preloaded data is null."));
             return false;
@@ -1119,7 +1119,7 @@ bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int i
 
     for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
         for (int iHour = 0; iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size(); iHour++) {
-            if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != NULL) {
+            if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
                 levels.push_back(iLevel);
                 hours.push_back(iHour);
             }

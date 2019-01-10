@@ -53,7 +53,7 @@ TEST(PredictorArchEcmwfEraIntRegular, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("ECMWF_ERA_interim", "pressure_level/z", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);

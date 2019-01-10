@@ -809,7 +809,7 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
 
 asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParameters()
 {
-    asParametersOptimizationGAs *params = NULL;
+    asParametersOptimizationGAs *params = nullptr;
     m_skipNext = false;
 
     if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) && m_iterator < m_paramsNb) {

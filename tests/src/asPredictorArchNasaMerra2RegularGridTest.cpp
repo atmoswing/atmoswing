@@ -54,7 +54,7 @@ TEST(PredictorArchNasaMerra2Regular, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/h", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();

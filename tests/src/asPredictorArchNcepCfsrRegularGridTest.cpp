@@ -53,7 +53,7 @@ TEST(PredictorArchNcepCfsrRegular, LoadEasy)
 
     asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_CFSR", "pgbh/hgt", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
     vva2f hgt = predictor->GetData();

@@ -128,7 +128,7 @@ bool AtmoswingAppForecaster::OnInit()
             wxMessageBox(_("Program already running, aborting."));
 
             // Cleanup
-            delete wxFileConfig::Set((wxFileConfig *) NULL);
+            delete wxFileConfig::Set((wxFileConfig *) nullptr);
             DeleteThreadsManager();
             DeleteLog();
             delete m_singleInstanceChecker;
@@ -623,7 +623,7 @@ int AtmoswingAppForecaster::OnExit()
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

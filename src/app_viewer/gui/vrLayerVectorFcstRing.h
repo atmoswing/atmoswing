@@ -54,7 +54,7 @@ public:
 
     virtual ~vrLayerVectorFcstRing();
 
-    virtual long AddFeature(OGRGeometry *geometry, void *data = NULL);
+    virtual long AddFeature(OGRGeometry *geometry, void *data = nullptr);
 
     void SetMaxValue(double val)
     {

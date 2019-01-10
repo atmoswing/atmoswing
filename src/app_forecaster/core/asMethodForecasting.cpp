@@ -80,7 +80,7 @@ bool asMethodForecasting::Manager()
 #if wxUSE_GUI
         // Switch off all leds
         wxCommandEvent eventStart(asEVT_STATUS_STARTING);
-        if (m_parent != NULL) {
+        if (m_parent != nullptr) {
             m_parent->ProcessWindowEvent(eventStart);
         }
 #endif
@@ -100,7 +100,7 @@ bool asMethodForecasting::Manager()
             // Send event
             wxCommandEvent eventRunning(asEVT_STATUS_RUNNING);
             eventRunning.SetInt(i);
-            if (m_parent != NULL) {
+            if (m_parent != nullptr) {
                 m_parent->ProcessWindowEvent(eventRunning);
             }
 
@@ -136,7 +136,7 @@ bool asMethodForecasting::Manager()
                 // Send event
                 wxCommandEvent eventFailed(asEVT_STATUS_FAILED);
                 eventFailed.SetInt(i);
-                if (m_parent != NULL) {
+                if (m_parent != nullptr) {
                     m_parent->ProcessWindowEvent(eventFailed);
                 }
 #endif
@@ -153,7 +153,7 @@ bool asMethodForecasting::Manager()
                 // Send event
                 wxCommandEvent eventSuccess(asEVT_STATUS_SUCCESS);
                 eventSuccess.SetInt(i);
-                if (m_parent != NULL) {
+                if (m_parent != nullptr) {
                     m_parent->ProcessWindowEvent(eventSuccess);
                 }
 #endif
@@ -229,7 +229,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         // Send event
 #if wxUSE_GUI
         wxCommandEvent eventDownloading(asEVT_STATUS_DOWNLOADING);
-        if (m_parent != NULL) {
+        if (m_parent != nullptr) {
             m_parent->ProcessWindowEvent(eventDownloading);
         }
 
@@ -270,7 +270,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
         // Send event
 #if wxUSE_GUI
         wxCommandEvent eventDownloaded(asEVT_STATUS_DOWNLOADED);
-        if (m_parent != NULL) {
+        if (m_parent != nullptr) {
             m_parent->ProcessWindowEvent(eventDownloaded);
         }
 #endif
@@ -347,7 +347,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 #if wxUSE_GUI
             // Send event
             wxCommandEvent eventSaving(asEVT_STATUS_SAVING);
-            if (m_parent != NULL) {
+            if (m_parent != nullptr) {
                 m_parent->ProcessWindowEvent(eventSaving);
             }
 #endif
@@ -370,7 +370,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 #if wxUSE_GUI
             // Send event
             wxCommandEvent eventSaved(asEVT_STATUS_SAVED);
-            if (m_parent != NULL) {
+            if (m_parent != nullptr) {
                 m_parent->ProcessWindowEvent(eventSaved);
             }
 #endif
@@ -696,7 +696,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 #if wxUSE_GUI
     // Send event
     wxCommandEvent eventLoading(asEVT_STATUS_LOADING);
-    if (m_parent != NULL) {
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventLoading);
     }
 #endif
@@ -996,7 +996,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     // Send events
     wxCommandEvent eventLoaded(asEVT_STATUS_LOADED);
     wxCommandEvent eventProcessing(asEVT_STATUS_PROCESSING);
-    if (m_parent != NULL) {
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventLoaded);
         m_parent->ProcessWindowEvent(eventProcessing);
     }
@@ -1159,7 +1159,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
 #if wxUSE_GUI
     // Send event
     wxCommandEvent eventLoading(asEVT_STATUS_LOADING);
-    if (m_parent != NULL) {
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventLoading);
     }
 #endif
@@ -1448,7 +1448,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     // Send events
     wxCommandEvent eventLoaded(asEVT_STATUS_LOADED);
     wxCommandEvent eventProcessing(asEVT_STATUS_PROCESSING);
-    if (m_parent != NULL) {
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventLoaded);
         m_parent->ProcessWindowEvent(eventProcessing);
     }
@@ -1598,7 +1598,7 @@ bool asMethodForecasting::GetAnalogsValues(asResultsForecast &results, asParamet
 #if wxUSE_GUI
     // Send event
     wxCommandEvent eventProcessed(asEVT_STATUS_PROCESSED);
-    if (m_parent != NULL) {
+    if (m_parent != nullptr) {
         m_parent->ProcessWindowEvent(eventProcessed);
     }
 #endif

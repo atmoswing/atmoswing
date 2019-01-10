@@ -192,7 +192,7 @@ bool AtmoswingAppOptimizer::OnInit()
     wxSize ppiDC = dcTestPpi.GetPPI();
     g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
 
-    m_singleInstanceChecker = NULL;
+    m_singleInstanceChecker = nullptr;
     if (g_guiMode) {
         // Check that it is the unique instance
         bool multipleInstances = false;
@@ -892,7 +892,7 @@ void AtmoswingAppOptimizer::CleanUp()
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

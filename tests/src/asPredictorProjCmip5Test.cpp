@@ -51,7 +51,7 @@ TEST(PredictorProjCmip5, LoadEasy)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -94,7 +94,7 @@ TEST(PredictorProjCmip5, LoadComposite)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -138,7 +138,7 @@ TEST(PredictorProjCmip5, LoadBorderLeft)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -180,7 +180,7 @@ TEST(PredictorProjCmip5, LoadBorderLeftOn720)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -222,7 +222,7 @@ TEST(PredictorProjCmip5, LoadBorderRight)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -265,7 +265,7 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
@@ -317,7 +317,7 @@ TEST(PredictorProjCmip5, LoadOver2Years)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "zg", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
@@ -391,7 +391,7 @@ TEST(PredictorProjCmip5, LoadAnotherModel)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CMIP5", "CNRM-CM5", "rcp85", "ua", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
     ASSERT_TRUE(predictor->Load(area, timearray, level));
 
