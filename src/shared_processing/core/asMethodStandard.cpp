@@ -891,10 +891,12 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxASSERT((unsigned) iPre < m_preloadedArchive[iStep][iPtor].size());
     wxASSERT((unsigned) iLevel < m_preloadedArchive[iStep][iPtor][iPre].size());
     wxASSERT((unsigned) iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size());
-    if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] == nullptr) {
-        if (!GetRandomValidData(params, iStep, iPtor, iPre)) {
-            wxLogError(_("The pointer to preloaded data is null."));
-            return false;
+    if (!m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]) {
+        if (!GetRandomLevelValidData(params, iStep, iPtor, iPre, iHour)) {
+            if (!GetRandomValidData(params, iStep, iPtor, iPre)) {
+                wxLogError(_("The pointer to preloaded data is null."));
+                return false;
+            }
         }
 
         level = params->GetPredictorLevel(iStep, iPtor);
@@ -1111,6 +1113,27 @@ void asMethodStandard::DeletePreloadedArchiveData()
     }
 
     m_preloaded = false;
+}
+
+bool asMethodStandard::GetRandomLevelValidData(asParameters *params, int iStep, int iPtor, int iPre, int iHour)
+{
+    vi levels;
+
+    for (int iLevel = 0; iLevel < m_preloadedArchive[iStep][iPtor][iPre].size(); iLevel++) {
+        wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel].size() > iHour);
+        if (m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] != nullptr) {
+            levels.push_back(iLevel);
+        }
+    }
+
+    wxASSERT(!levels.empty());
+
+    int randomIndex = asRandom(0, levels.size() - 1, 1);
+    float newLevel = params->GetPreloadLevels(iStep, iPtor)[levels[randomIndex]];
+
+    params->SetPredictorLevel(iStep, iPtor, newLevel);
+
+    return true;
 }
 
 bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int iPtor, int iPre)

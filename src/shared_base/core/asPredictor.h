@@ -404,6 +404,8 @@ protected:
 
     bool CheckFileStructure();
 
+    bool HasDesiredLevel();
+
     bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
     bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);

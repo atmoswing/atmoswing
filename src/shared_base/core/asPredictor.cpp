@@ -180,6 +180,11 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
             return false;
         }
 
+        // Check the level availability
+        if (!HasDesiredLevel()) {
+            return false;
+        }
+
         // Check the time array
         if (!CheckTimeArray(timeArray)) {
             wxLogError(_("The time array is not valid to load data."));
@@ -708,6 +713,17 @@ bool asPredictor::CheckFileStructure()
     }
 
     return true;
+}
+
+bool asPredictor::HasDesiredLevel()
+{
+    for (int i = 0; i < m_fStr.levels.size(); ++i) {
+        if (m_fStr.levels[i] == m_level) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)

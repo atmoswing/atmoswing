@@ -80,6 +80,8 @@ public:
     bool ExtractArchiveDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
                                              int iPtor, double timeStartData, double timeEndData);
 
+    bool GetRandomLevelValidData(asParameters *params, int iStep, int iPtor, int iPre, int iHour);
+
     bool GetRandomValidData(asParameters *params, int iStep, int iPtor, int iPre);
 
     void SetParamsFilePath(const wxString &val)
