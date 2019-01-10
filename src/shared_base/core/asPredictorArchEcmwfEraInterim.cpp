@@ -29,6 +29,8 @@
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <wx/dir.h>
+#include <wx/regex.h>
 
 
 asPredictorArchEcmwfEraInterim::asPredictorArchEcmwfEraInterim(const wxString &dataId)
@@ -112,7 +114,6 @@ bool asPredictorArchEcmwfEraInterim::Init()
             m_fileVarName = m_dataId;
             m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else if (IsIsentropicLevel()) {
         m_fStr.hasLevelDim = true;
@@ -162,7 +163,6 @@ bool asPredictorArchEcmwfEraInterim::Init()
             m_fileVarName = m_dataId;
             m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else if (IsSurfaceLevel() || m_product.IsSameAs("sfan", false) || m_product.IsSameAs("sffc", false)) {
         m_fStr.hasLevelDim = false;
@@ -253,7 +253,6 @@ bool asPredictorArchEcmwfEraInterim::Init()
             m_fileVarName = m_dataId;
             m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else if (IsPVLevel()) {
         m_fStr.hasLevelDim = false;
@@ -288,23 +287,22 @@ bool asPredictorArchEcmwfEraInterim::Init()
             m_fileVarName = m_dataId;
             m_unit = UnitUndefined;
         }
-        m_fileNamePattern = m_fileVarName + ".nc";
 
     } else {
         asThrowException(_("level type not implemented for this reanalysis dataset."));
     }
 
     // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
+    if (m_fileVarName.IsEmpty()) {
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
+                   m_dataId, m_datasetName);
         return false;
     }
 
@@ -316,7 +314,52 @@ bool asPredictorArchEcmwfEraInterim::Init()
 
 void asPredictorArchEcmwfEraInterim::ListFiles(asTimeArray &timeArray)
 {
-    m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
+    // Case 1: single file with the variable name
+    wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
+
+    if (wxFileExists(filePath)) {
+        m_files.push_back(filePath);
+        return;
+    }
+
+    // Case 2: yearly files
+    wxArrayString listFiles;
+    size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, "*.nc");
+
+    if (nbFiles == 0) {
+        asThrowException(_("No ERA-interim file found."));
+    }
+
+    listFiles.Sort();
+
+    double firstYear = timeArray.GetStartingYear();
+    double lastYear = timeArray.GetEndingYear();
+
+    for (size_t i = 0; i < listFiles.Count(); ++i) {
+        wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
+        if (!reDates.Matches(listFiles.Item(i))) {
+            continue;
+        }
+
+        wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
+        double fileYear = 0;
+        datesSrt.ToDouble(&fileYear);
+
+        if (fileYear < firstYear || fileYear > lastYear) {
+            continue;
+        }
+
+        m_files.push_back(listFiles.Item(i));
+    }
+
+    if (!m_files.empty()) {
+        return;
+    }
+
+    // Case 3: list all files from the directory
+    for (size_t i = 0; i < listFiles.Count(); ++i) {
+        m_files.push_back(listFiles.Item(i));
+    }
 }
 
 double asPredictorArchEcmwfEraInterim::ConvertToMjd(double timeValue, double refValue) const
