@@ -34,8 +34,8 @@
 
 vrLayerVectorFcstRing::vrLayerVectorFcstRing()
 {
-    wxASSERT(m_dataset == nullptr);
-    wxASSERT(m_layer == nullptr);
+    wxASSERT(!m_dataset);
+    wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
     m_valueMax = 1;
 }

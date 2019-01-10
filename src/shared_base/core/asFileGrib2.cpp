@@ -82,7 +82,7 @@ bool asFileGrib2::OpenDataset()
     // Open file
     m_filtPtr = fopen(filePath.mb_str(), "r");
 
-    if (m_filtPtr == nullptr) // Failed
+    if (!m_filtPtr) // Failed
     {
         wxLogError(_("The opening of the grib file failed."));
         wxFAIL;
