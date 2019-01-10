@@ -60,17 +60,27 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
 
     if (slctModeString.CmpNoCase("simple") == 0) {
         m_mode = Simple;
-    } else if (slctModeString.CmpNoCase("same_season") == 0 || slctModeString.CmpNoCase("SameSeason") == 0) {
+    } else if (slctModeString.CmpNoCase("same_season") == 0 ||
+               slctModeString.CmpNoCase("SameSeason") == 0) {
         m_mode = SameSeason;
-    } else if (slctModeString.CmpNoCase("season_DJF") == 0 || slctModeString.CmpNoCase("SeasonDJF") == 0) {
+    } else if (slctModeString.CmpNoCase("season_DJF") == 0 ||
+               slctModeString.CmpNoCase("SeasonDJF") == 0 ||
+               slctModeString.CmpNoCase("DJF") == 0) {
         m_mode = SeasonDJF;
-    } else if (slctModeString.CmpNoCase("season_MAM") == 0 || slctModeString.CmpNoCase("SeasonMAM") == 0) {
+    } else if (slctModeString.CmpNoCase("season_MAM") == 0 ||
+               slctModeString.CmpNoCase("SeasonMAM") == 0 ||
+               slctModeString.CmpNoCase("MAM") == 0) {
         m_mode = SeasonMAM;
-    } else if (slctModeString.CmpNoCase("season_JJA") == 0 || slctModeString.CmpNoCase("SeasonJJA") == 0) {
+    } else if (slctModeString.CmpNoCase("season_JJA") == 0 ||
+               slctModeString.CmpNoCase("SeasonJJA") == 0 ||
+               slctModeString.CmpNoCase("JJA") == 0) {
         m_mode = SeasonJJA;
-    } else if (slctModeString.CmpNoCase("season_SON") == 0 || slctModeString.CmpNoCase("SeasonSON") == 0) {
+    } else if (slctModeString.CmpNoCase("season_SON") == 0 ||
+               slctModeString.CmpNoCase("SeasonSON") == 0 ||
+               slctModeString.CmpNoCase("SON") == 0) {
         m_mode = SeasonSON;
-    } else if (slctModeString.CmpNoCase("days_interval") == 0 || slctModeString.CmpNoCase("DaysInterval") == 0) {
+    } else if (slctModeString.CmpNoCase("days_interval") == 0 ||
+               slctModeString.CmpNoCase("DaysInterval") == 0) {
         m_mode = DaysInterval;
     } else if (slctModeString.CmpNoCase("predictand_thresholds") == 0 ||
                slctModeString.CmpNoCase("PredictandThresholds") == 0) {
