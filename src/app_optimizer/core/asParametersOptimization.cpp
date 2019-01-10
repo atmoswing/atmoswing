@@ -845,8 +845,8 @@ bool asParametersOptimization::SetPreloadingProperties()
                     return false;
                 vd vTimeHours;
                 for (double h = GetPredictorTimeHoursLowerLimit(iStep, iPtor);
-                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor); h += GetPredictorTimeHoursIteration(iStep,
-                                                                                                             iPtor)) {
+                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor);
+                     h += GetPredictorTimeHoursIteration(iStep, iPtor)) {
                     vTimeHours.push_back(h);
                 }
                 if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
@@ -862,16 +862,16 @@ bool asParametersOptimization::SetPreloadingProperties()
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
@@ -879,8 +879,8 @@ bool asParametersOptimization::SetPreloadingProperties()
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {

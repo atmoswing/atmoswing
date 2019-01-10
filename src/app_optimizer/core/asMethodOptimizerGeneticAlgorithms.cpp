@@ -52,10 +52,7 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
 
 }
 
-asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms()
-{
-    //dtor
-}
+asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms() = default;
 
 void asMethodOptimizerGeneticAlgorithms::ClearAll()
 {
@@ -237,18 +234,17 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Create a result object to save the parameters sets
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
-    asResultsParametersArray results_final_population;
-    results_final_population.Init(wxString::Format(_("station_%s_final_population"),
-                                                   GetPredictandStationIdsList(stationId).c_str()));
-    asResultsParametersArray results_best_individual;
-    results_best_individual.Init(wxString::Format(_("station_%s_best_individual"),
-                                                  GetPredictandStationIdsList(stationId).c_str()));
-    asResultsParametersArray results_generations;
-    results_generations.Init(wxString::Format(_("station_%s_generations"),
-                                              GetPredictandStationIdsList(stationId).c_str()));
-    wxString resultsXmlFilePath = pConfig->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
-                                               GetPredictandStationIdsList(stationId).c_str()));
+    asResultsParametersArray resFinalPopulation;
+    resFinalPopulation.Init(wxString::Format(_("station_%s_final_population"),
+                                             GetPredictandStationIdsList(stationId).c_str()));
+    asResultsParametersArray resBestIndividual;
+    resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"),
+                                            GetPredictandStationIdsList(stationId).c_str()));
+    asResultsParametersArray resGenerations;
+    resGenerations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
+    wxString resXmlFilePath = pConfig->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
+                                           GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
 
     // Initialize parameters before loading data.
@@ -273,7 +269,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Reload previous results
-    if (!ResumePreviousRun(params, results_generations)) {
+    if (!ResumePreviousRun(params, resGenerations)) {
         wxLogError(_("Failed to resume previous runs"));
         return false;
     }
@@ -320,9 +316,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 vf scoreClim = m_scoreClimatology;
 
                 // Push the first parameters set
-                asThreadGeneticAlgorithms *firstThread = new asThreadGeneticAlgorithms(this, newParams,
-                                                                                       &m_scoresCalib[m_iterator],
-                                                                                       &m_scoreClimatology);
+                auto *firstThread = new asThreadGeneticAlgorithms(this, newParams, &m_scoresCalib[m_iterator],
+                                                                  &m_scoreClimatology);
                 int threadType = firstThread->GetType();
                 ThreadsManager().AddThread(firstThread);
 
@@ -352,15 +347,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
                     wxASSERT(nextParams);
                     if (nextParams->GetStepsNb() == 0) {
-                        wxLogError(_("The new parameters set is not correcty initialized in the thread array filling (iterator %d/%d)."),
+                        wxLogError(_("The new parameters set is not correctly initialized in the thread array filling (iterator %d/%d)."),
                                    m_iterator, m_paramsNb);
                         return false;
                     }
 
                     // Add it to the threads
-                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
-                                                                                      &m_scoresCalib[m_iterator],
-                                                                                      &m_scoreClimatology);
+                    auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                 &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -396,9 +390,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     }
 
                     // Add it to the threads
-                    asThreadGeneticAlgorithms *thread = new asThreadGeneticAlgorithms(this, nextParams,
-                                                                                      &m_scoresCalib[m_iterator],
-                                                                                      &m_scoreClimatology);
+                    auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
+                                                                 &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
                     wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
@@ -487,12 +480,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
                 // Save the full generation
                 for (unsigned int i = 0; i < m_parameters.size(); i++) {
-                    results_generations.Add(m_parameters[i], m_scoresCalib[i]);
+                    resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
                 }
 
                 // Print results every x generation
                 if (counterPrint > printResultsEveryNbGenerations - 1) {
-                    results_generations.Print();
+                    resGenerations.Print();
                     counterPrint = 0;
                 }
                 counterPrint++;
@@ -523,7 +516,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
         if (IsOver()) {
             for (unsigned int i = 0; i < m_parameters.size(); i++) {
-                results_final_population.Add(m_parameters[i], m_scoresCalib[i]);
+                resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
             }
         }
     }
@@ -539,17 +532,17 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     Validate(m_parameters[0]);
 
     // Print parameters in a text file
-    SetSelectedParameters(results_final_population);
-    if (!results_final_population.Print())
+    SetSelectedParameters(resFinalPopulation);
+    if (!resFinalPopulation.Print())
         return false;
-    SetBestParameters(results_best_individual);
-    if (!results_best_individual.Print())
+    SetBestParameters(resBestIndividual);
+    if (!resBestIndividual.Print())
         return false;
-    if (!results_generations.Print())
+    if (!resGenerations.Print())
         return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) {
+    if (!m_parameters[0].GenerateSimpleParametersFile(resXmlFilePath)) {
         wxLogError(_("The output xml parameters file could not be generated."));
     }
 
@@ -848,10 +841,10 @@ bool asMethodOptimizerGeneticAlgorithms::Optimize()
         SortScoresAndParameters();
 
         // Check if we should end
-        bool stopiterations = true;
-        if (!CheckConvergence(stopiterations))
+        bool stopIterations = true;
+        if (!CheckConvergence(stopIterations))
             return false;
-        if (stopiterations) {
+        if (stopIterations) {
             m_isOver = true;
             wxLogVerbose(_("Optimization process over."));
             return true;
@@ -1108,7 +1101,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
         wxASSERT(m_parametersTemp[i].GetChromosomeLength() > 0);
     }
 
-    int sizeParents = m_parametersTemp.size();
+    int sizeParents = static_cast<int>(m_parametersTemp.size());
     int counter = 0;
     int counterSame = 0;
     bool initialized = false;
