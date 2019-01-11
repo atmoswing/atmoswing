@@ -164,7 +164,11 @@ bool asPredictorArchEcmwfEraInterim::Init()
             m_unit = UnitUndefined;
         }
 
-    } else if (IsSurfaceLevel() || m_product.IsSameAs("sfan", false) || m_product.IsSameAs("sffc", false)) {
+    } else if (IsSurfaceLevel() ||
+               m_product.IsSameAs("sfa", false) ||
+               m_product.IsSameAs("sfan", false) ||
+               m_product.IsSameAs("sff", false) ||
+               m_product.IsSameAs("sffc", false)) {
         m_fStr.hasLevelDim = false;
         // Surface analysis
         if (m_dataId.IsSameAs("d2m", false)) {

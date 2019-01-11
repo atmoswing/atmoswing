@@ -143,7 +143,7 @@ bool asPredictorArchNcepCfsrSubset::Init()
             m_parameterName = "Relative_humidity";
             m_fileVarName = "R_H_L200";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("c_wat", false) || m_dataId.IsSameAs("C_WAT_L200", false)) {
+        } else if (m_dataId.IsSameAs("cwat", false) || m_dataId.IsSameAs("c_wat", false) || m_dataId.IsSameAs("C_WAT_L200", false)) {
             m_parameter = CloudWater;
             m_parameterName = "Cloud water";
             m_fileVarName = "C_WAT_L200";
