@@ -1126,7 +1126,9 @@ bool asMethodStandard::GetRandomLevelValidData(asParameters *params, int iStep, 
         }
     }
 
-    wxASSERT(!levels.empty());
+    if (levels.empty()) {
+        return false;
+    }
 
     int randomIndex = asRandom(0, levels.size() - 1, 1);
     float newLevel = params->GetPreloadLevels(iStep, iPtor)[levels[randomIndex]];
@@ -1147,6 +1149,10 @@ bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int i
                 hours.push_back(iHour);
             }
         }
+    }
+
+    if (levels.empty()) {
+        return false;
     }
 
     wxASSERT(!levels.empty());
