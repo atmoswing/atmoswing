@@ -194,7 +194,7 @@ bool asMethodStandard::ProceedToArchiveDataPreloading(asParameters *params)
 {
     bool parallelDataLoad = false;
     ThreadsManager().CritSectionConfig().Enter();
-    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, true);
+    wxFileConfig::Get()->Read("/General/ParallelDataLoad", &parallelDataLoad, false);
     ThreadsManager().CritSectionConfig().Leave();
 
     if (parallelDataLoad) {
