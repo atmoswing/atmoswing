@@ -298,7 +298,11 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
             if (m_allowResizeFromData) {
                 if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
-                    indexYmax = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
             }
 
@@ -308,7 +312,11 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
                 if (m_allowResizeFromData) {
                     if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
-                        indexYmin = nlats;
+                        if (lats[nlats] > lats[0]) {
+                            indexYmax = nlats;
+                        } else {
+                            indexYmax = 0;
+                        }
                     }
                 }
             }
@@ -320,10 +328,18 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
             if (m_allowResizeFromData) {
                 if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
-                    indexYmax = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
                 if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
-                    indexYmin = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
             }
 
