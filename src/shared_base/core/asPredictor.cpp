@@ -984,13 +984,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         dataF.resize(totLength);
 
         // Fill empty beginning with NaNs
-        int indexBegining = 0;
+        int indexBeginning = 0;
         if (m_fInd.cutStart > 0) {
-            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
+            int latLonLength = m_fInd.memberCount * m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fInd.cutStart; iEmpty++) {
-                for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
-                    dataF[indexBegining] = NaNf;
-                    indexBegining++;
+                for (int iEmptyLatLon = 0; iEmptyLatLon < latLonLength; iEmptyLatLon++) {
+                    dataF[indexBeginning] = NaNf;
+                    indexBeginning++;
                 }
             }
         }
@@ -999,10 +999,10 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         int indexEnd = m_fInd.memberCount * m_fInd.timeCount * m_fInd.areas[iArea].latCount *
                        m_fInd.areas[iArea].lonCount - 1;
         if (m_fInd.cutEnd > 0) {
-            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
+            int latLonLength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
                                m_fInd.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fInd.cutEnd; iEmpty++) {
-                for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
+                for (int iEmptyLatLon = 0; iEmptyLatLon < latLonLength; iEmptyLatLon++) {
                     indexEnd++;
                     dataF[indexEnd] = NaNf;
                 }
@@ -1011,7 +1011,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
         // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
         ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
-                            GetIndexesStrideNcdf(), &dataF[indexBegining]);
+                            GetIndexesStrideNcdf(), &dataF[indexBeginning]);
 
         // Keep data for later treatment
         vectData.push_back(dataF);
@@ -1035,9 +1035,9 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Loop to extract the data from the array
         int ind = 0;
         for (int iTime = 0; iTime < m_fInd.timeArrayCount; iTime++) {
-            va2f memlatlonData;
+            va2f memLatLonData;
             for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-                a2f latlonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
 
                 for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
                     for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
@@ -1051,27 +1051,27 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
                                   iTime * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
                         }
 
-                        latlonData(iLat, iLon) = data[ind];
+                        latLonData(iLat, iLon) = data[ind];
 
                         // Check if not NaN
                         bool notNan = true;
                         for (double nanValue : m_nanValues) {
-                            if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
+                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
                                 notNan = false;
                             }
                         }
                         if (!notNan) {
-                            latlonData(iLat, iLon) = NaNf;
+                            latLonData(iLat, iLon) = NaNf;
                         }
                     }
                 }
 
                 if (scalingNeeded) {
-                    latlonData = latlonData * dataScaleFactor + dataAddOffset;
+                    latLonData = latLonData * dataScaleFactor + dataAddOffset;
                 }
-                memlatlonData.push_back(latlonData);
+                memLatLonData.push_back(latLonData);
             }
-            compositeData[iArea].push_back(memlatlonData);
+            compositeData[iArea].push_back(memLatLonData);
         }
         data.clear();
     }
@@ -1121,35 +1121,35 @@ bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
         // Extract data
         vf data = vectData[iArea];
-        va2f memlatlonData;
+        va2f memLatLonData;
 
         for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
 
             // Loop to extract the data from the array
             int ind = 0;
-            a2f latlonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+            a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
 
             for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
                 for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
                     int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat; // Index reversed in Grib files
                     ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount;
-                    latlonData(iLat, iLon) = data[ind];
+                    latLonData(iLat, iLon) = data[ind];
 
                     // Check if not NaN
                     bool notNan = true;
                     for (double nanValue : m_nanValues) {
-                        if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
+                        if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
                             notNan = false;
                         }
                     }
                     if (!notNan) {
-                        latlonData(iLat, iLon) = NaNf;
+                        latLonData(iLat, iLon) = NaNf;
                     }
                 }
             }
-            memlatlonData.push_back(latlonData);
+            memLatLonData.push_back(latLonData);
         }
-        compositeData[iArea].push_back(memlatlonData);
+        compositeData[iArea].push_back(memLatLonData);
 
         data.clear();
     }
