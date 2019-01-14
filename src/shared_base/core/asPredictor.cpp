@@ -181,7 +181,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Check the level availability
-        if (!HasDesiredLevel()) {
+        if (m_fileType == asFile::Netcdf && !HasDesiredLevel()) {
             return false;
         }
 
@@ -717,6 +717,10 @@ bool asPredictor::CheckFileStructure()
 
 bool asPredictor::HasDesiredLevel()
 {
+    if (m_fStr.levels.size() == 0 && m_level == 0) {
+        return true;
+    }
+
     for (int i = 0; i < m_fStr.levels.size(); ++i) {
         if (m_fStr.levels[i] == m_level) {
             return true;
