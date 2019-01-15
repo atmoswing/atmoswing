@@ -1527,7 +1527,7 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
     Ref2MergeByHalfAndMultiply();
 }
 
-TEST(MethodCalibrator, PrelodingWithLevelCorrection)
+TEST(MethodCalibrator, PreloadingWithLevelCorrection)
 {
     wxLogNull logNull;
 
