@@ -350,7 +350,14 @@ void asPredictorArchEcmwfEraInterim::ListFiles(asTimeArray &timeArray)
         datesSrt.ToDouble(&fileYear);
 
         if (fileYear < firstYear || fileYear > lastYear) {
-            continue;
+            if (m_product.IsSameAs("sff", false) ||
+                m_product.IsSameAs("sffc", false)) {
+                if (fileYear != firstYear - 1) {
+                    continue;
+                }
+            } else {
+                continue;
+            }
         }
 
         m_files.push_back(listFiles.Item(i));

@@ -558,7 +558,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
     m_fStr.timeStart = ConvertToMjd(timeFirstVal, refValue);
     m_fStr.timeEnd = ConvertToMjd(timeLastVal, refValue);
     m_fStr.timeStep = asRound(24 * (m_fStr.timeEnd - m_fStr.timeStart) / (m_fStr.timeLength - 1));
-    m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    m_fStr.firstHour = 24 * fmod(m_fStr.timeStart, 1);
 
     return true;
 }
@@ -957,6 +957,10 @@ int *asPredictor::GetIndexesCountGrib(int iArea) const
 
 bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 {
+    // Check if loading data is relevant
+    if (m_fInd.timeCount == 0) {
+        return true;
+    }
 
     // Check if scaling is needed
     bool scalingNeeded = true;
@@ -998,6 +1002,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Fill empty end with NaNs
         int indexEnd = m_fInd.memberCount * m_fInd.timeCount * m_fInd.areas[iArea].latCount *
                        m_fInd.areas[iArea].lonCount - 1;
+        wxASSERT(indexEnd >= 0);
         if (m_fInd.cutEnd > 0) {
             int latLonLength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
                                m_fInd.areas[iArea].lonCount;
@@ -1081,6 +1086,11 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
 bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
 {
+    // Check if loading data is relevant
+    if (m_fInd.timeArrayCount == 0) {
+        return true;
+    }
+
     // Grib files do not handle stride
     if (m_fInd.lonStep != 1 || m_fInd.latStep != 1) {
         wxLogError(_("Grib files do not handle stride."));

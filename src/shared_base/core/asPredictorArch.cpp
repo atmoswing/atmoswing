@@ -124,8 +124,14 @@ bool asPredictorArch::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &tim
     if (m_fStr.timeLength > 1) {
         double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.timeStart, m_fStr.timeStep);
         double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.timeEnd, m_fStr.timeStep);
-        m_fInd.timeArrayCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
-        m_fInd.timeCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        if (timeArrayIndexStart == asOUT_OF_RANGE || timeArrayIndexEnd == asOUT_OF_RANGE) {
+            m_fInd.timeArrayCount = 0;
+            m_fInd.timeCount = 0;
+            return true;
+        } else {
+            m_fInd.timeArrayCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+            m_fInd.timeCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        }
 
         // Correct the time start and end
         double valFirstTime = m_fStr.timeStart;

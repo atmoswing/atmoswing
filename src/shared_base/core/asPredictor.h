@@ -285,6 +285,34 @@ public:
         return m_axisLon;
     }
 
+    double GetXmin() const
+    {
+        wxASSERT(m_axisLon.size() > 0);
+
+        return m_axisLon[0];
+    }
+
+    double GetYmin() const
+    {
+        wxASSERT(m_axisLat.size() > 0);
+
+        return wxMin(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+    }
+
+    double GetXmax() const
+    {
+        wxASSERT(m_axisLon.size() > 0);
+
+        return m_axisLon[m_axisLon.size() - 1];
+    }
+
+    double GetYmax() const
+    {
+        wxASSERT(m_axisLat.size() > 0);
+
+        return wxMax(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+    }
+
 
 protected:
     struct FileStructure

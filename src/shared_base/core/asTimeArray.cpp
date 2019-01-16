@@ -808,13 +808,14 @@ int asTimeArray::GetIndexFirstAfter(double date, double dataTimeStep) const
 
     if (date - 0.00001 > m_end) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNi;
+        return asOUT_OF_RANGE;
     }
 
     int index = asFindCeil(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
-    if (index == asOUT_OF_RANGE)
+    if (index == asOUT_OF_RANGE && date < m_timeArray[0]) {
         return 0;
+    }
 
     return index;
 }
@@ -832,13 +833,14 @@ int asTimeArray::GetIndexFirstBefore(double date, double dataTimeStep) const
 
     if (date + 0.00001 < m_start) { // Add a second for precision issues
         wxLogWarning(_("Trying to get a date outside of the time array."));
-        return NaNi;
+        return asOUT_OF_RANGE;
     }
 
     int index = asFindFloor(&m_timeArray[0], &m_timeArray[GetSize() - 1], date, asHIDE_WARNINGS);
 
-    if (index == asOUT_OF_RANGE)
+    if (index == asOUT_OF_RANGE && date > m_timeArray[GetSize() - 1]) {
         return GetSize() - 1;
+    }
 
     return index;
 }

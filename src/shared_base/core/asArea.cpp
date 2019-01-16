@@ -153,12 +153,12 @@ bool asArea::CheckConsistency()
 
 double asArea::GetXmin() const
 {
-    return wxMin(wxMin(m_cornerUL.x, m_cornerLL.x), wxMin(m_cornerUR.x, m_cornerLR.x));
+    return wxMin(m_cornerUL.x, m_cornerLL.x);
 }
 
 double asArea::GetXmax() const
 {
-    return wxMax(wxMax(m_cornerUL.x, m_cornerLL.x), wxMax(m_cornerUR.x, m_cornerLR.x));
+    return wxMax(m_cornerUR.x, m_cornerLR.x);
 }
 
 double asArea::GetXwidth() const

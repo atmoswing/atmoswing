@@ -918,6 +918,44 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
     wxASSERT(desiredArea);
 
+    // Check area with data availability
+    double xMinShift = 0;
+    if (desiredArea->GetXmin() > desiredPredictor->GetXmax()) {
+        xMinShift = -360;
+        if (desiredArea->GetXmin() + xMinShift > desiredPredictor->GetXmax()) {
+            wxLogError(_("An unexpected error occurred."));
+            return false;
+        }
+    }
+    if (desiredArea->GetXmin() < desiredPredictor->GetXmin()) {
+        xMinShift = 360;
+        if (desiredArea->GetXmin() + xMinShift < desiredPredictor->GetXmin()) {
+            wxLogError(_("An unexpected error occurred."));
+            return false;
+        }
+    }
+    double xMaxShift = xMinShift;
+    if (desiredArea->GetXmin() > desiredArea->GetXmax()) {
+        xMaxShift += 360;
+    }
+    if (desiredArea->GetXmax() + xMaxShift > desiredPredictor->GetXmax()) {
+        a1d lonAxis = desiredPredictor->GetLonAxis();
+        int indexXmin = asFindClosest(&lonAxis[0], &lonAxis[lonAxis.size() - 1], desiredArea->GetXmin() + xMinShift);
+        int indexXmax = lonAxis.size() - 1;
+        wxASSERT(indexXmin >= 0);
+        params->SetPredictorXptsnb(iStep, iPtor, indexXmax - indexXmin + 1);
+        wxDELETE(desiredArea);
+        desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+    }
+    if (desiredArea->GetYmax() > desiredPredictor->GetYmax()) {
+        a1d latAxis = desiredPredictor->GetLatAxis();
+        int indexYmin = asFindClosest(&latAxis[0], &latAxis[latAxis.size() - 1], desiredArea->GetYmin());
+        int indexYmax = asFindClosest(&latAxis[0], &latAxis[latAxis.size() - 1], desiredPredictor->GetYmax());
+        params->SetPredictorYptsnb(iStep, iPtor, std::abs(indexYmax - indexYmin) + 1);
+        wxDELETE(desiredArea);
+        desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
+    }
+
     if (!desiredPredictor->ClipToArea(desiredArea)) {
         wxLogError(_("The data could not be extracted (iStep = %d, iPtor = %d, iPre = %d, iLevel = %d, iHour = %d)."),
                    iStep, iPtor, iPre, iLevel, iHour);

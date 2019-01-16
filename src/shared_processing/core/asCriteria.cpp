@@ -153,7 +153,7 @@ asCriteria *asCriteria::GetInstance(Criteria criteriaEnum)
             return criteria;
         }
         default: {
-            wxLogError(_("The predictor criteria was not correctly defined."));
+            wxLogError(_("The predictor criteria was not correctly defined (%d)."), criteriaEnum);
             asCriteria *criteria = new asCriteriaSAD();
             return criteria;
         }
@@ -223,7 +223,7 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         asCriteria *criteria = new asCriteriaNDSD();
         return criteria;
     } else {
-        wxLogError(_("The predictor criteria was not correctly defined."));
+        wxLogError(_("The predictor criteria was not correctly defined (%s)."), criteriaString);
         asCriteria *criteria = new asCriteriaSAD();
         return criteria;
     }
