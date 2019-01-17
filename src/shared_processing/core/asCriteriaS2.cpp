@@ -44,8 +44,8 @@ float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
 {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
-    wxASSERT(refData.rows() > 0);
-    wxASSERT(refData.cols() > 0);
+    wxASSERT(refData.rows() > 2);
+    wxASSERT(refData.cols() > 2);
 
     float dividend = 0, divisor = 0;
 

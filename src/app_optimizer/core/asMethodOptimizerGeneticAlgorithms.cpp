@@ -565,7 +565,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
         wxDir dir(resultsDir);
         if (!dir.IsOpened()) {
-            wxLogWarning(_("The directory %s could not be opened."), resultsDir.c_str());
+            wxLogVerbose(_("The directory %s could not be opened."), resultsDir.c_str());
         } else {
             // Check if the resulting file is already present
             vi stationId = params.GetPredictandStationIds();

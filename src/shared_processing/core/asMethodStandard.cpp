@@ -956,6 +956,30 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
     }
 
+    // Check minimum size for S1
+    if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads", false)) {
+        if (params->GetPredictorXptsnb(iStep, iPtor) < 2) {
+            params->SetPredictorXptsnb(iStep, iPtor, 2);
+        }
+        if (params->GetPredictorYptsnb(iStep, iPtor) < 2) {
+            params->SetPredictorYptsnb(iStep, iPtor, 2);
+        }
+    }
+
+    // Check minimum size for S2
+    if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2", false)) {
+        if (params->GetPredictorXptsnb(iStep, iPtor) < 3) {
+            params->SetPredictorXptsnb(iStep, iPtor, 3);
+        }
+        if (params->GetPredictorYptsnb(iStep, iPtor) < 3) {
+            params->SetPredictorYptsnb(iStep, iPtor, 3);
+        }
+    }
+
     if (!desiredPredictor->ClipToArea(desiredArea)) {
         wxLogError(_("The data could not be extracted (iStep = %d, iPtor = %d, iPre = %d, iLevel = %d, iHour = %d)."),
                    iStep, iPtor, iPre, iLevel, iHour);

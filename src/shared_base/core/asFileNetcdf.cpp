@@ -937,9 +937,8 @@ wxString asFileNetcdf::GetAttString(const wxString &attName, const wxString &var
         nc_type nctype = m_struct.atts[attId].type;
         if (nctype != NC_CHAR) {
             wxDELETEA(text);
-            asThrowException(
-                    wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
-                                     attName, (int) nctype, (int) NC_CHAR));
+            asThrowException(wxString::Format(_("The attribute (%s) type (%d) in file doesn't match the desired type (%d)."),
+                    attName, (int) nctype, (int) NC_CHAR));
         }
 
         // Get value
