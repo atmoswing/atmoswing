@@ -60,7 +60,7 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
         return 100.0f * (dividend / divisor); // Can be NaN
     } else {
         if (dividend == 0) {
-            wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
             return NaNf;
