@@ -22,24 +22,24 @@
  */
 
 /*
- * Portions Copyright 2017-2019 Pascal Horton, University of Bern.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORARCHECMWFERAINTERIM_H
-#define ASPREDICTORARCHECMWFERAINTERIM_H
+#ifndef ASPREDICTORARCHGENERIC_H
+#define ASPREDICTORARCHGENERIC_H
 
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
 class asArea;
 
-class asPredictorArchEcmwfEraInterim
+class asPredictorArchGeneric
         : public asPredictorArch
 {
 public:
-    explicit asPredictorArchEcmwfEraInterim(const wxString &dataId);
+    explicit asPredictorArchGeneric(const wxString &dataId);
 
-    ~asPredictorArchEcmwfEraInterim() override = default;
+    ~asPredictorArchGeneric() override = default;
 
     bool Init() override;
 
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORARCHECMWFERAINTERIM_H
+#endif // ASPREDICTORARCHGENERIC_H

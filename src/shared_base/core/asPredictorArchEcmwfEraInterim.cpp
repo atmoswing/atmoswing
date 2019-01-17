@@ -22,7 +22,7 @@
  */
 
 /*
- * Portions Copyright 2016 Pascal Horton, University of Bern.
+ * Portions Copyright 2017-2019 Pascal Horton, University of Bern.
  */
 
 #include "asPredictorArchEcmwfEraInterim.h"
