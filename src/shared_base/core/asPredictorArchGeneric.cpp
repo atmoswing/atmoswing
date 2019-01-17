@@ -60,16 +60,12 @@ bool asPredictorArchGeneric::Init()
 
     if (IsPressureLevel()) {
         m_fStr.hasLevelDim = true;
-
     } else if (IsIsentropicLevel()) {
         m_fStr.hasLevelDim = true;
-
-    } else if (IsSurfaceLevel() {
+    } else if (IsSurfaceLevel()) {
         m_fStr.hasLevelDim = false;
-
     } else if (IsPVLevel()) {
         m_fStr.hasLevelDim = false;
-
     }
 
     // Check directory is set
