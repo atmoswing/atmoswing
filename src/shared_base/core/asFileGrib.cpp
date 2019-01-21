@@ -32,6 +32,7 @@
 asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode),
           m_filtPtr(nullptr),
+          m_handle(nullptr),
           m_index(asNOT_FOUND)
 {
     switch (fileMode) {
@@ -68,10 +69,16 @@ bool asFileGrib::Open()
 
 bool asFileGrib::Close()
 {
-    if (m_filtPtr != nullptr) {
+    if (m_filtPtr) {
         fclose(m_filtPtr);
         m_filtPtr = nullptr;
     }
+
+    if (m_handle) {
+        codes_handle_delete(m_handle);
+        m_handle = nullptr;
+    }
+
     return true;
 }
 
@@ -94,268 +101,12 @@ bool asFileGrib::OpenDataset()
     return ParseStructure();
 }
 
-/*
- * See http://stackoverflow.com/questions/11767169/using-libgrib2c-in-c-application-linker-error-undefined-reference-to
- */
 bool asFileGrib::ParseStructure()
 {
-    int currentMessageSize(1);
-    int seekPosition(0);
-    int offset(0);
-    int seekLength(32000);
 
-    for (;;) {
-        // Searches a file for the next GRIB message.
-        seekgb(m_filtPtr, seekPosition, seekLength, &offset, &currentMessageSize);
-        if (currentMessageSize == 0)
-            break;    // end loop at EOF or problem
 
-        // Reposition stream position indicator
-        if (fseek(m_filtPtr, offset, SEEK_SET) != 0) {
-            wxLogError(_("Grib file read error."));
-            return false;
-        }
 
-        // Read block of data from stream
-        auto *cgrib = (unsigned char *) malloc((size_t) currentMessageSize);
-        size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) currentMessageSize, m_filtPtr);
-        if (nbBytesRead == 0) {
-            free(cgrib);
-            return false;
-        }
-        seekPosition = offset + currentMessageSize;
 
-        // Get the number of gridded fields and the number (and maximum size) of Local Use Sections.
-        int listSec0[3], listSec1[13], numFields, numLocal;
-        int ierr = g2_info(cgrib, listSec0, listSec1, &numFields, &numLocal);
-        wxASSERT(numFields == 1);
-        wxASSERT(numLocal == 0);
-        if (ierr > 0) {
-            handleGribError(ierr);
-            free(cgrib);
-            return false;
-        }
-
-        for (long n = 0; n < numFields; n++) {
-
-            // Store elements in vectors here in order to ensure a corresponding lengths.
-            m_messageOffsets.push_back(offset);
-            m_messageSizes.push_back(currentMessageSize);
-            m_fieldNum.push_back(n);
-            m_refTimes.push_back(asTime::GetMJD((int) listSec1[5], (int) listSec1[6], (int) listSec1[7],
-                                                (int) listSec1[8], (int) listSec1[9]));
-
-            // Get all the metadata for a given data field
-            gribfield *gfld = nullptr;
-            int unpack = 0;
-            int expand = 0;
-            ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
-            if (ierr > 0) {
-                handleGribError(ierr);
-                g2_free(gfld);
-                free(cgrib);
-                return false;
-            }
-
-            wxASSERT(gfld);
-
-            m_times.push_back(asTime::GetMJD((int) gfld->idsect[5], (int) gfld->idsect[6], (int) gfld->idsect[7],
-                                             (int) gfld->idsect[8], (int) gfld->idsect[9]));
-
-            // Grid Definition
-            if (!CheckGridDefinition(gfld)) {
-                wxLogError(_("Grid definition not allowed yet."));
-                g2_free(gfld);
-                free(cgrib);
-                return false;
-            }
-
-            BuildAxes(gfld);
-
-            // Product Definition
-            if (!CheckProductDefinition(gfld)) {
-                wxLogError(_("Product definition not allowed yet."));
-                g2_free(gfld);
-                free(cgrib);
-                return false;
-            }
-
-            m_parameterDisciplines.push_back(0);
-            m_parameterCategories.push_back(static_cast<int>(gfld->ipdtmpl[0])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-1.shtml
-            m_parameterNums.push_back(static_cast<int>(gfld->ipdtmpl[1])); // www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-2-0-3.shtml
-            m_forecastTimes.push_back(static_cast<double>(gfld->ipdtmpl[8]));
-            GetLevel(gfld);
-
-            g2_free(gfld);
-        }
-        free(cgrib);
-    }
-
-    // Check unique time value
-    for (double time : m_times) {
-        if (time != m_times[0]) {
-            wxLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
-            return false;
-        }
-    }
-
-    return true;
-}
-
-void asFileGrib::GetLevel(const gribfield *gfld)
-{
-    float surfVal = gfld->ipdtmpl[11];
-
-    // Type of first fixed surface (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
-    if (gfld->ipdtmpl[9] == 100 || gfld->ipdtmpl[9] == 108) {
-        surfVal /= 100; // Pa to hPa
-    }
-
-    m_levelTypes.push_back(static_cast<int>(gfld->ipdtmpl[9]));
-    m_levels.push_back(surfVal);
-}
-
-bool asFileGrib::CheckProductDefinition(const gribfield *gfld) const
-{
-    if (gfld->ipdtnum != 0) {
-        wxLogError(_("Only the Product Definition Template 4.0 is implemented so far."));
-        return false;
-    }
-
-    // Product Definition Template 4.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp4-0.shtml
-    return gfld->ipdtmpl[7] == 1;
-}
-
-bool asFileGrib::CheckGridDefinition(const gribfield *gfld) const
-{
-    if (gfld->igdtnum != 0) {
-        wxLogError(_("Only the Grid Definition Template 3.0 is implemented so far."));
-        return false;
-    }
-
-    // Grid Definition Template 3.0 - http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_temp3-0.shtml
-    if (gfld->igdtmpl[0] != 6)
-        return false;
-    if (gfld->igdtmpl[1] != 0)
-        return false;
-    if (gfld->igdtmpl[2] != 0)
-        return false;
-    if (gfld->igdtmpl[3] != 0)
-        return false;
-    if (gfld->igdtmpl[4] != 0)
-        return false;
-    if (gfld->igdtmpl[5] != 0)
-        return false;
-    if (gfld->igdtmpl[6] != 0)
-        return false;
-    if (gfld->igdtmpl[9] != 0)
-        return false;
-
-    return true;
-}
-
-void asFileGrib::BuildAxes(const gribfield *gfld)
-{
-    double scale = 0.000001;
-    auto nX = (int) gfld->igdtmpl[7];
-    auto nY = (int) gfld->igdtmpl[8];
-    double latStart = gfld->igdtmpl[11] * scale;
-    double lonStart = gfld->igdtmpl[12] * scale;
-    double latEnd = gfld->igdtmpl[14] * scale;
-    double lonEnd = gfld->igdtmpl[15] * scale;
-    if (lonEnd < lonStart) {
-        lonEnd += 360;
-    }
-
-    a1d xAxis = a1d::LinSpaced(nX, lonStart, lonEnd);
-    a1d yAxis = a1d::LinSpaced(nY, latStart, latEnd);
-
-    m_xAxes.push_back(xAxis);
-    m_yAxes.push_back(yAxis);
-}
-
-void asFileGrib::handleGribError(int ierr) const
-{
-    if (ierr == 1) {
-        wxLogError(_("Beginning characters \"GRIB\" not found."));
-    } else if (ierr == 2) {
-        wxLogError(_("GRIB message is not Edition 2."));
-    } else if (ierr == 3) {
-        wxLogError(_("Could not find Section 1, where expected."));
-    } else if (ierr == 4) {
-        wxLogError(_("End string \"7777\" found, but not where expected."));
-    } else if (ierr == 5) {
-        wxLogError(_("End string \"7777\" not found at end of message."));
-    } else if (ierr == 6) {
-        wxLogError(_("Invalid section number found... OR"));
-        wxLogError(_("... GRIB message did not contain the requested number of data fields."));
-    } else if (ierr == 7) {
-        wxLogError(_("End string \"7777\" not found at end of message."));
-    } else if (ierr == 8) {
-        wxLogError(_("Unrecognized Section encountered."));
-    } else if (ierr == 9) {
-        wxLogError(_("Data Representation Template 5.NN not yet implemented."));
-    } else if (ierr >= 10 && ierr <= 16) {
-        wxLogError(_("Error unpacking a Section."));
-    } else {
-        wxLogError(_("Unknown Grib error."));
-    }
-}
-
-bool asFileGrib::GetXaxis(a1d &uaxis) const
-{
-    wxASSERT(m_opened);
-    wxASSERT(m_index != asNOT_FOUND);
-    wxASSERT(m_xAxes.size() > m_index);
-
-    uaxis = m_xAxes[m_index];
-
-    return true;
-}
-
-bool asFileGrib::GetYaxis(a1d &vaxis) const
-{
-    wxASSERT(m_opened);
-    wxASSERT(m_index != asNOT_FOUND);
-    wxASSERT(m_yAxes.size() > m_index);
-
-    vaxis = m_yAxes[m_index];
-
-    return true;
-}
-
-double asFileGrib::GetTime() const
-{
-    wxASSERT(m_opened);
-    wxASSERT(m_index != asNOT_FOUND);
-    wxASSERT(m_times.size() > m_index);
-
-    return m_times[m_index];
-}
-
-bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
-{
-    wxASSERT(gribCode.size() == 4);
-
-    // Find corresponding data
-    m_index = asNOT_FOUND;
-    for (int i = 0; i < m_parameterNums.size(); ++i) {
-        if (m_parameterDisciplines[i] == gribCode[0] && m_parameterCategories[i] == gribCode[1] &&
-            m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3], m_levels[i] == level) {
-
-            if (m_index >= 0) {
-                wxLogError(_("The desired parameter was found twice in the file."));
-                return false;
-            }
-
-            m_index = i;
-        }
-    }
-
-    if (m_index == asNOT_FOUND) {
-        wxLogError(_("The desired parameter was not found in the file."));
-        return false;
-    }
 
     return true;
 }
@@ -365,76 +116,10 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
-    // Reposition stream position indicator
-    if (fseek(m_filtPtr, m_messageOffsets[m_index], SEEK_SET) != 0) {
-        wxLogError(_("Grib file read error."));
-        return false;
-    }
 
-    // Read block of data from stream
-    auto *cgrib = (unsigned char *) malloc((size_t) m_messageSizes[m_index]);
-    size_t nbBytesRead = fread(cgrib, sizeof(unsigned char), (size_t) m_messageSizes[m_index], m_filtPtr);
-    if (nbBytesRead == 0) {
-        free(cgrib);
-        return false;
-    }
 
-    // Get the data
-    gribfield *gfld;
-    int unpack = 1;
-    int expand = 1;
-    int ierr = g2_getfld(cgrib, m_fieldNum[m_index] + 1, unpack, expand, &gfld);
-    if (ierr > 0) {
-        handleGribError(ierr);
-        g2_free(gfld);
-        free(cgrib);
-        return false;
-    }
 
-    if (gfld->unpacked != 1 || gfld->expanded != 1) {
-        wxLogError(_("The Grib data were not unpacked neither expanded."));
-        g2_free(gfld);
-        free(cgrib);
-        return false;
-    }
 
-    wxASSERT(gfld->ngrdpts > 0);
-    wxASSERT(gfld->ngrdpts == m_xAxes[m_index].size() * m_yAxes[m_index].size());
-
-    int iLonStart = IndexStart[0];
-    int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
-    int iLatStart = IndexStart[1];
-    int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
-    auto nLons = (int) m_xAxes[m_index].size();
-    auto nLats = (int) m_yAxes[m_index].size();
-    int finalIndex = 0;
-
-    if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
-        for (int iLat = nLats - 1; iLat >= 0; iLat--) {
-            if (iLat >= iLatStart && iLat <= iLatEnd) {
-                for (int iLon = 0; iLon < nLons; iLon++) {
-                    if (iLon >= iLonStart && iLon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
-                        finalIndex++;
-                    }
-                }
-            }
-        }
-    } else {
-        for (int iLat = 0; iLat < nLats; iLat++) {
-            if (iLat >= iLatStart && iLat <= iLatEnd) {
-                for (int iLon = 0; iLon < nLons; iLon++) {
-                    if (iLon >= iLonStart && iLon <= iLonEnd) {
-                        pValue[finalIndex] = gfld->fld[iLat * nLons + iLon];
-                        finalIndex++;
-                    }
-                }
-            }
-        }
-    }
-
-    g2_free(gfld);
-    free(cgrib);
 
     return true;
 }
