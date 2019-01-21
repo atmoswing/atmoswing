@@ -57,8 +57,14 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 
-# g2clib
-add_subdirectory(libs/g2clib)
+# ecCodes (https://confluence.ecmwf.int/display/ECC/ecCodes+installation)
+ExternalProject_Add(eccodes
+        URL https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.10.0-Source.tar.gz
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DBUILD_SHARED_LIBS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=ON
+        BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
+        )
+
+# lsVersion
 add_subdirectory(libs/lsversion)
 
 
