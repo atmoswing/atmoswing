@@ -44,8 +44,8 @@ asPredictorArchGeneric::asPredictorArchGeneric(const wxString &dataId)
     m_strideAllowed = true;
     m_nanValues.push_back(-32767);
     m_nanValues.push_back(3.4E38f);
-    m_fStr.dimLatName = "latitude";
-    m_fStr.dimLonName = "longitude";
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "level";
 }
@@ -57,16 +57,6 @@ bool asPredictorArchGeneric::Init()
     m_fileVarName = m_dataId;
     m_unit = UnitUndefined;
     m_fStr.hasLevelDim = true;
-
-    if (IsPressureLevel()) {
-        m_fStr.hasLevelDim = true;
-    } else if (IsIsentropicLevel()) {
-        m_fStr.hasLevelDim = true;
-    } else if (IsSurfaceLevel()) {
-        m_fStr.hasLevelDim = false;
-    } else if (IsPVLevel()) {
-        m_fStr.hasLevelDim = false;
-    }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
@@ -133,9 +123,6 @@ void asPredictorArchGeneric::ListFiles(asTimeArray &timeArray)
 
 double asPredictorArchGeneric::ConvertToMjd(double timeValue, double refValue) const
 {
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
-
     return timeValue;
 }
 

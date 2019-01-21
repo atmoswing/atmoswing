@@ -205,7 +205,7 @@ bool asPredictorArchNcepCfsrSubset::Init()
         } else if (IsSeaLevelPressure() || m_dataId.IsSameAs("PRMSL_L101", false)) {
             m_parameter = Pressure;
             m_parameterName = "Mean sea level pressure";
-            m_fileVarName = "PRES_L101";
+            m_fileVarName = "PRMSL_L101";
             m_unit = Pa;
         } else {
             asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
