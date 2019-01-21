@@ -24,29 +24,23 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018-2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFILEGRIB2_H
-#define ASFILEGRIB2_H
+#ifndef ASFILEGRIB_H
+#define ASFILEGRIB_H
 
 #include "asIncludes.h"
 #include <asFile.h>
+#include "eccodes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include "grib2.h"
-#ifdef __cplusplus
-}
-#endif
-
-class asFileGrib2
+class asFileGrib
         : public asFile
 {
 public:
-    asFileGrib2(const wxString &fileName, const FileMode &fileMode);
+    asFileGrib(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileGrib2() override;
+    ~asFileGrib() override;
 
     bool Open() override;
 
@@ -67,8 +61,8 @@ protected:
 private:
     FILE *m_filtPtr;
     int m_index;
-    std::vector<g2int> m_messageOffsets;
-    std::vector<g2int> m_messageSizes;
+    vi m_messageOffsets;
+    vi m_messageSizes;
     vl m_fieldNum;
     vi m_parameterDisciplines;
     vi m_parameterCategories;
@@ -85,7 +79,7 @@ private:
 
     bool ParseStructure();
 
-    void handleGribError(g2int ierr) const;
+    void handleGribError(int ierr) const;
 
     void BuildAxes(const gribfield *gfld);
 
@@ -96,4 +90,4 @@ private:
     void GetLevel(const gribfield *gfld);
 };
 
-#endif // ASFILEGRIB2_H
+#endif // ASFILEGRIB_H

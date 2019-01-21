@@ -407,13 +407,13 @@ bool asPredictor::EnquireGribFileStructure()
 
     // Open 2 Grib files
     ThreadsManager().CritSectionGrib().Enter();
-    asFileGrib2 gbFile0(m_files[0], asFileGrib2::ReadOnly);
+    asFileGrib gbFile0(m_files[0], asFileGrib::ReadOnly);
     if (!gbFile0.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
     }
-    asFileGrib2 gbFile1(m_files[1], asFileGrib2::ReadOnly);
+    asFileGrib gbFile1(m_files[1], asFileGrib::ReadOnly);
     if (!gbFile1.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -458,7 +458,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
 {
     // Open the Grib file
     ThreadsManager().CritSectionGrib().Enter();
-    asFileGrib2 gbFile(fileName, asFileGrib2::ReadOnly);
+    asFileGrib gbFile(fileName, asFileGrib::ReadOnly);
     if (!gbFile.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -666,7 +666,7 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asPredictor::ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1)
+bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
 {
     // Get full axes from the file
     gbFile0->GetXaxis(m_fStr.lons);
@@ -1084,7 +1084,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
     return true;
 }
 
-bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
+bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
 {
     // Check if loading data is relevant
     if (m_fInd.timeArrayCount == 0) {

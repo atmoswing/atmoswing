@@ -30,7 +30,7 @@
 #define ASPREDICTOR_H
 
 #include <asIncludes.h>
-#include <asFileGrib2.h>
+#include <asFileGrib.h>
 #include <asFileNetcdf.h>
 
 class asTimeArray;
@@ -414,7 +414,7 @@ protected:
 
     bool GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData);
 
-    bool GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData);
+    bool GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData);
 
     bool EnquireNetcdfFileStructure();
 
@@ -428,7 +428,7 @@ protected:
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1 = nullptr);
+    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1 = nullptr);
 
     bool CheckFileStructure();
 

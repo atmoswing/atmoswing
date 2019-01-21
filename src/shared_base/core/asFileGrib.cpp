@@ -24,11 +24,12 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018-2019 Pascal Horton, University of Bern.
  */
 
-#include "asFileGrib2.h"
+#include "asFileGrib.h"
 
-asFileGrib2::asFileGrib2(const wxString &fileName, const FileMode &fileMode)
+asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode),
           m_filtPtr(nullptr),
           m_index(asNOT_FOUND)
@@ -46,12 +47,12 @@ asFileGrib2::asFileGrib2(const wxString &fileName, const FileMode &fileMode)
     }
 }
 
-asFileGrib2::~asFileGrib2()
+asFileGrib::~asFileGrib()
 {
     Close();
 }
 
-bool asFileGrib2::Open()
+bool asFileGrib::Open()
 {
     if (!Find())
         return false;
@@ -65,7 +66,7 @@ bool asFileGrib2::Open()
     return true;
 }
 
-bool asFileGrib2::Close()
+bool asFileGrib::Close()
 {
     if (m_filtPtr != nullptr) {
         fclose(m_filtPtr);
@@ -74,7 +75,7 @@ bool asFileGrib2::Close()
     return true;
 }
 
-bool asFileGrib2::OpenDataset()
+bool asFileGrib::OpenDataset()
 {
     // Filepath
     wxString filePath = m_fileName.GetFullPath();
@@ -96,12 +97,12 @@ bool asFileGrib2::OpenDataset()
 /*
  * See http://stackoverflow.com/questions/11767169/using-libgrib2c-in-c-application-linker-error-undefined-reference-to
  */
-bool asFileGrib2::ParseStructure()
+bool asFileGrib::ParseStructure()
 {
-    g2int currentMessageSize(1);
-    g2int seekPosition(0);
-    g2int offset(0);
-    g2int seekLength(32000);
+    int currentMessageSize(1);
+    int seekPosition(0);
+    int offset(0);
+    int seekLength(32000);
 
     for (;;) {
         // Searches a file for the next GRIB message.
@@ -125,8 +126,8 @@ bool asFileGrib2::ParseStructure()
         seekPosition = offset + currentMessageSize;
 
         // Get the number of gridded fields and the number (and maximum size) of Local Use Sections.
-        g2int listSec0[3], listSec1[13], numFields, numLocal;
-        g2int ierr = g2_info(cgrib, listSec0, listSec1, &numFields, &numLocal);
+        int listSec0[3], listSec1[13], numFields, numLocal;
+        int ierr = g2_info(cgrib, listSec0, listSec1, &numFields, &numLocal);
         wxASSERT(numFields == 1);
         wxASSERT(numLocal == 0);
         if (ierr > 0) {
@@ -147,7 +148,7 @@ bool asFileGrib2::ParseStructure()
             // Get all the metadata for a given data field
             gribfield *gfld = nullptr;
             int unpack = 0;
-            g2int expand = 0;
+            int expand = 0;
             ierr = g2_getfld(cgrib, n + 1, unpack, expand, &gfld);
             if (ierr > 0) {
                 handleGribError(ierr);
@@ -201,7 +202,7 @@ bool asFileGrib2::ParseStructure()
     return true;
 }
 
-void asFileGrib2::GetLevel(const gribfield *gfld)
+void asFileGrib::GetLevel(const gribfield *gfld)
 {
     float surfVal = gfld->ipdtmpl[11];
 
@@ -214,7 +215,7 @@ void asFileGrib2::GetLevel(const gribfield *gfld)
     m_levels.push_back(surfVal);
 }
 
-bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
+bool asFileGrib::CheckProductDefinition(const gribfield *gfld) const
 {
     if (gfld->ipdtnum != 0) {
         wxLogError(_("Only the Product Definition Template 4.0 is implemented so far."));
@@ -225,7 +226,7 @@ bool asFileGrib2::CheckProductDefinition(const gribfield *gfld) const
     return gfld->ipdtmpl[7] == 1;
 }
 
-bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
+bool asFileGrib::CheckGridDefinition(const gribfield *gfld) const
 {
     if (gfld->igdtnum != 0) {
         wxLogError(_("Only the Grid Definition Template 3.0 is implemented so far."));
@@ -253,7 +254,7 @@ bool asFileGrib2::CheckGridDefinition(const gribfield *gfld) const
     return true;
 }
 
-void asFileGrib2::BuildAxes(const gribfield *gfld)
+void asFileGrib::BuildAxes(const gribfield *gfld)
 {
     double scale = 0.000001;
     auto nX = (int) gfld->igdtmpl[7];
@@ -273,7 +274,7 @@ void asFileGrib2::BuildAxes(const gribfield *gfld)
     m_yAxes.push_back(yAxis);
 }
 
-void asFileGrib2::handleGribError(g2int ierr) const
+void asFileGrib::handleGribError(int ierr) const
 {
     if (ierr == 1) {
         wxLogError(_("Beginning characters \"GRIB\" not found."));
@@ -301,7 +302,7 @@ void asFileGrib2::handleGribError(g2int ierr) const
     }
 }
 
-bool asFileGrib2::GetXaxis(a1d &uaxis) const
+bool asFileGrib::GetXaxis(a1d &uaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -312,7 +313,7 @@ bool asFileGrib2::GetXaxis(a1d &uaxis) const
     return true;
 }
 
-bool asFileGrib2::GetYaxis(a1d &vaxis) const
+bool asFileGrib::GetYaxis(a1d &vaxis) const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -323,7 +324,7 @@ bool asFileGrib2::GetYaxis(a1d &vaxis) const
     return true;
 }
 
-double asFileGrib2::GetTime() const
+double asFileGrib::GetTime() const
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -332,7 +333,7 @@ double asFileGrib2::GetTime() const
     return m_times[m_index];
 }
 
-bool asFileGrib2::SetIndexPosition(const vi gribCode, const float level)
+bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
 {
     wxASSERT(gribCode.size() == 4);
 
@@ -359,7 +360,7 @@ bool asFileGrib2::SetIndexPosition(const vi gribCode, const float level)
     return true;
 }
 
-bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue)
+bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue)
 {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
@@ -381,8 +382,8 @@ bool asFileGrib2::GetVarArray(const int IndexStart[], const int IndexCount[], fl
     // Get the data
     gribfield *gfld;
     int unpack = 1;
-    g2int expand = 1;
-    g2int ierr = g2_getfld(cgrib, m_fieldNum[m_index] + 1, unpack, expand, &gfld);
+    int expand = 1;
+    int ierr = g2_getfld(cgrib, m_fieldNum[m_index] + 1, unpack, expand, &gfld);
     if (ierr > 0) {
         handleGribError(ierr);
         g2_free(gfld);
