@@ -619,8 +619,12 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     if (!ncFile.HasVariable(m_fStr.dimLonName)) {
         if (ncFile.HasVariable("x")) {
             m_fStr.dimLonName = "x";
+        } else if (ncFile.HasVariable("lon")) {
+            m_fStr.dimLonName = "lon";
+        } else if (ncFile.HasVariable("longitude")) {
+            m_fStr.dimLonName = "longitude";
         } else {
-            wxLogError(_("X axis not found."));
+            wxLogError(_("X/longitude axis not found."));
             return false;
         }
     }
@@ -628,8 +632,12 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     if (!ncFile.HasVariable(m_fStr.dimLatName)) {
         if (ncFile.HasVariable("y")) {
             m_fStr.dimLatName = "y";
+        } else if (ncFile.HasVariable("lat")) {
+            m_fStr.dimLonName = "lat";
+        } else if (ncFile.HasVariable("latitude")) {
+            m_fStr.dimLonName = "latitude";
         } else {
-            wxLogError(_("Y axis not found."));
+            wxLogError(_("Y/latitude axis not found."));
             return false;
         }
     }
