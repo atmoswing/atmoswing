@@ -67,13 +67,6 @@ bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxS
 
 bool asPreprocessor::PreprocessGradients(std::vector<asPredictor *> predictors, asPredictor *result)
 {
-    // Get the processing method
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
-    ThreadsManager().CritSectionConfig().Leave();
-
     // Only one predictor
     wxASSERT(!predictors.empty());
     wxASSERT(predictors.size() == 1);
