@@ -31,6 +31,11 @@ link_libraries(${JASPER_LIBRARIES})
 include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
+# Proj4
+find_package(PROJ4 REQUIRED)
+include_directories(${PROJ4_INCLUDE_DIR})
+link_libraries(${PROJ4_LIBRARIES})
+
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
 mark_as_advanced(CLEAR NETCDF_LIBRARY)
