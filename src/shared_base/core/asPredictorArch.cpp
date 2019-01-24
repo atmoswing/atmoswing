@@ -30,7 +30,7 @@
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
-#include <asPredictorArchGeneric.h>
+#include <asPredictorArchGenericNetcdf.h>
 #include <asPredictorArchNcepReanalysis1.h>
 #include <asPredictorArchNcepReanalysis1Subset.h>
 #include <asPredictorArchNcepReanalysis1Lthe.h>
@@ -61,8 +61,8 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
 {
     asPredictorArch *predictor = nullptr;
 
-    if (datasetId.IsSameAs("Generic", false)) {
-        predictor = new asPredictorArchGeneric(dataId);
+    if (datasetId.IsSameAs("GenericNetcdf", false)) {
+        predictor = new asPredictorArchGenericNetcdf(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
         predictor = new asPredictorArchNcepReanalysis1(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_subset", false)) {

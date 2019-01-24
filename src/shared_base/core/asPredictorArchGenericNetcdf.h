@@ -33,13 +33,13 @@
 
 class asArea;
 
-class asPredictorArchGeneric
+class asPredictorArchGenericNetcdf
         : public asPredictorArch
 {
 public:
-    explicit asPredictorArchGeneric(const wxString &dataId);
+    explicit asPredictorArchGenericNetcdf(const wxString &dataId);
 
-    ~asPredictorArchGeneric() override = default;
+    ~asPredictorArchGenericNetcdf() override = default;
 
     bool Init() override;
 

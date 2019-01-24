@@ -25,7 +25,7 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorArchGeneric.h"
+#include "asPredictorArchGenericNetcdf.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
@@ -33,13 +33,13 @@
 #include <wx/regex.h>
 
 
-asPredictorArchGeneric::asPredictorArchGeneric(const wxString &dataId)
+asPredictorArchGenericNetcdf::asPredictorArchGenericNetcdf(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "Generic";
+    m_datasetId = "GenericNetcdf";
     m_provider = "";
-    m_datasetName = "Generic";
+    m_datasetName = "Generic Netcdf";
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_nanValues.push_back(-32767);
@@ -50,7 +50,7 @@ asPredictorArchGeneric::asPredictorArchGeneric(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorArchGeneric::Init()
+bool asPredictorArchGenericNetcdf::Init()
 {
     m_parameter = ParameterUndefined;
     m_parameterName = "Undefined";
@@ -71,7 +71,7 @@ bool asPredictorArchGeneric::Init()
     return true;
 }
 
-void asPredictorArchGeneric::ListFiles(asTimeArray &timeArray)
+void asPredictorArchGenericNetcdf::ListFiles(asTimeArray &timeArray)
 {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
@@ -121,7 +121,7 @@ void asPredictorArchGeneric::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorArchGeneric::ConvertToMjd(double timeValue, double refValue) const
+double asPredictorArchGenericNetcdf::ConvertToMjd(double timeValue, double refValue) const
 {
     return timeValue;
 }
