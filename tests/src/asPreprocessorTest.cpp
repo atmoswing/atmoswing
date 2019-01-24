@@ -72,7 +72,7 @@ TEST(Preprocessor, Gradients)
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
-    wxString method = "Gradients";
+    wxString method = "SimpleGradients";
     asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
@@ -233,7 +233,7 @@ TEST(Preprocessor, GradientsMultithreading)
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
-    wxString method = "Gradients";
+    wxString method = "SimpleGradients";
     asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 

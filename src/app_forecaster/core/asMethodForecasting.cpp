@@ -932,10 +932,11 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Fix the criteria if S1
-            wxString method = params.GetPreprocessMethod(iStep, iPtor);
-            if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
+            if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
+                params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
                 params.SetPredictorCriteria(iStep, iPtor, "S1grads");
-            } else if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
+            } else if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
+                       params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
                 params.SetPredictorCriteria(iStep, iPtor, "NS1grads");
             }
 
@@ -1386,10 +1387,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Fix the criteria if S1
-            wxString method = params.GetPreprocessMethod(iStep, iPtor);
-            if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
+            if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
+                params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
                 params.SetPredictorCriteria(iStep, iPtor, "S1grads");
-            } else if (method.IsSameAs("Gradients") && params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
+            } else if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
+                       params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
                 params.SetPredictorCriteria(iStep, iPtor, "NS1grads");
             }
 

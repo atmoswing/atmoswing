@@ -41,7 +41,9 @@ public:
 
     static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
-    static bool PreprocessGradients(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessSimpleGradients(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealGradients(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result);
 

@@ -492,10 +492,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     }
 
     // Fix the criteria if S1
-    if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("Gradients") &&
+    if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
         params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
         params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-    } else if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("Gradients") &&
+    } else if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
                params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
         params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
     }

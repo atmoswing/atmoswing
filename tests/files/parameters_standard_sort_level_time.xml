@@ -27,7 +27,7 @@
     <analogs_number>100</analogs_number>
     <predictor>
       <preprocessing>
-        <preprocessing_method>gradients</preprocessing_method>
+        <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_R-1</dataset_id>
           <data_id>hgt</data_id>
@@ -65,7 +65,7 @@
     </predictor>
     <predictor>
       <preprocessing>
-        <preprocessing_method>gradients</preprocessing_method>
+        <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_R-1</dataset_id>
           <data_id>hgt</data_id>

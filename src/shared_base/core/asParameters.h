@@ -430,6 +430,8 @@ public:
 
     bool SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
 
+    bool NeedsGradientPreprocessing(int iStep, int iPtor) const;
+
     wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 
     bool SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);

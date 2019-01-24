@@ -49,7 +49,7 @@
       <criteria>S1</criteria>
     </predictor>
     <predictor>
-      <preload>1</preload>
+      <preload>0</preload>
       <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
       <data_id>hgt_500hPa</data_id>
       <level>500</level>

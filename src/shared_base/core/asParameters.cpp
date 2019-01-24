@@ -532,7 +532,7 @@ bool asParameters::SetPreloadingProperties()
 
                 // Different actions depending on the preprocessing method.
                 wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
-                if (method.IsSameAs("Gradients")) {
+                if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
@@ -700,7 +700,7 @@ bool asParameters::PreprocessingPropertiesOk() const
                 if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
                     method.IsSameAs("Average")) {
                     // No constraints
-                } else if (method.IsSameAs("Gradients")) {
+                } else if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
@@ -1599,6 +1599,14 @@ bool asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString &val
     return true;
 }
 
+bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const
+{
+    wxString method = m_steps[iStep].predictors[iPtor].preprocessMethod;
+
+    return method.IsSameAs("Gradients", false) || method.IsSameAs("SimpleGradients", false) ||
+           method.IsSameAs("RealGradients", false);
+}
+
 wxString asParameters::GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const
 {
     if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
@@ -1740,7 +1748,9 @@ bool asParameters::SetPredictorDatasetId(int iStep, int iPtor, const wxString &v
         wxLogError(_("The provided value for the predictor dataset is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].datasetId = val;
+
     return true;
 }
 
@@ -1750,7 +1760,9 @@ bool asParameters::SetPredictorDataId(int iStep, int iPtor, wxString val)
         wxLogError(_("The provided value for the predictor data is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].dataId = val;
+
     return true;
 }
 
@@ -1760,7 +1772,9 @@ bool asParameters::SetPredictorLevel(int iStep, int iPtor, float val)
         wxLogError(_("The provided value for the predictor level is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].level = val;
+
     return true;
 }
 
@@ -1770,7 +1784,9 @@ bool asParameters::SetPredictorGridType(int iStep, int iPtor, wxString val)
         wxLogError(_("The provided value for the predictor grid type is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].gridType = val;
+
     return true;
 }
 
@@ -1780,7 +1796,9 @@ bool asParameters::SetPredictorXmin(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor xMin is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xMin = val;
+
     return true;
 }
 
@@ -1790,7 +1808,9 @@ bool asParameters::SetPredictorXptsnb(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the predictor points number on X is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xPtsNb = val;
+
     return true;
 }
 
@@ -1800,7 +1820,9 @@ bool asParameters::SetPredictorXstep(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor X step is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xStep = val;
+
     return true;
 }
 
@@ -1810,7 +1832,9 @@ bool asParameters::SetPredictorXshift(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor X shift is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xShift = val;
+
     return true;
 }
 
@@ -1820,7 +1844,9 @@ bool asParameters::SetPredictorYmin(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor yMin is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yMin = val;
+
     return true;
 }
 
@@ -1830,7 +1856,9 @@ bool asParameters::SetPredictorYptsnb(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the predictor points number on Y is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yPtsNb = val;
+
     return true;
 }
 
@@ -1840,7 +1868,9 @@ bool asParameters::SetPredictorYstep(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor Y step is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yStep = val;
+
     return true;
 }
 
@@ -1850,7 +1880,9 @@ bool asParameters::SetPredictorYshift(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor Y shift is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yShift = val;
+
     return true;
 }
 
@@ -1860,7 +1892,9 @@ bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the 'flat allowed' property is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].flatAllowed = val;
+
     return true;
 }
 
@@ -1904,6 +1938,8 @@ bool asParameters::SetPredictorWeight(int iStep, int iPtor, float val)
         wxLogError(_("The provided value for the predictor weight is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].weight = val;
+
     return true;
 }

@@ -535,8 +535,8 @@ bool asParametersCalibration::SetPreloadingProperties()
                 vd preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients") || method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
-                    method.IsSameAs("Addition") || method.IsSameAs("Average")) {
+                if (NeedsGradientPreprocessing(iStep, iPtor) || method.IsSameAs("Multiplication") ||
+                    method.IsSameAs("Multiply") || method.IsSameAs("Addition") || method.IsSameAs("Average")) {
                     // Get them all
                     GetAllPreprocessTimesAndLevels(iStep, iPtor, preprocLevels, preprocTimeHours);
                 } else if (method.IsSameAs("HumidityFlux")) {

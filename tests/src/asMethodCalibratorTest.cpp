@@ -302,15 +302,6 @@ TEST(MethodCalibrator, Ref1CalibPeriodMultithreads)
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-TEST(MethodCalibrator, Ref1MultithreadsNoPreprocessing)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-
-    Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
-}
-
 TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();

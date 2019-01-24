@@ -326,7 +326,7 @@ TEST(PredictorCriteria, ProcessS1preprocessed)
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
-    wxString method = "Gradients";
+    wxString method = "SimpleGradients";
     asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
@@ -404,7 +404,7 @@ TEST(PredictorCriteria, ProcessNS1preprocessed)
     vdata.push_back(predictor);
     vva2f hgtOriginal = predictor->GetData();
 
-    wxString method = "Gradients";
+    wxString method = "SimpleGradients";
     asPredictorArch *gradients = new asPredictorArch(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();

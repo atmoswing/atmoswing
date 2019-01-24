@@ -35,7 +35,7 @@
     <predictor>
       <preload>1</preload>
       <preprocessing>
-        <preprocessing_method>Gradients</preprocessing_method>
+        <preprocessing_method>RealGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
           <data_id>hgt_1000hPa</data_id>
@@ -57,7 +57,7 @@
     <predictor>
       <preload>1</preload>
       <preprocessing>
-        <preprocessing_method>Gradients</preprocessing_method>
+        <preprocessing_method>RealGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
           <data_id>hgt_500hPa</data_id>

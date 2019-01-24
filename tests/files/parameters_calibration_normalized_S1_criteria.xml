@@ -34,7 +34,7 @@
     <analogs_number>70</analogs_number>
     <predictor>
       <preprocessing>
-        <preprocessing_method>Gradients</preprocessing_method>
+        <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
           <data_id>hgt_1000hPa</data_id>
