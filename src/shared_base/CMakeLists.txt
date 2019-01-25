@@ -88,8 +88,9 @@ endif (USE_GUI)
 
 ##### LINKING
 
+add_dependencies(asbase eccodes)
 add_dependencies(asbase eigen)
-target_link_libraries(asbase g2clib)
+target_link_libraries(asbase -leccodes)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})

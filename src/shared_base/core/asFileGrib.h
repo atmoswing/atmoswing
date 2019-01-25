@@ -46,24 +46,28 @@ public:
 
     bool Close() override;
 
+    bool SetIndexPosition(vi gribCode, float level);
+
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
+
+    bool GetXaxis(a1d &uaxis) const;
+
+    bool GetYaxis(a1d &vaxis) const;
+
+    double GetTime() const;
 
 protected:
 
 private:
     FILE *m_filtPtr;
-    codes_handle *m_handle;
     int m_index;
-    vi m_messageOffsets;
-    vi m_messageSizes;
-    vl m_fieldNum;
     vi m_parameterDisciplines;
     vi m_parameterCategories;
     vi m_parameterNums;
     vi m_levelTypes;
+    vwxs m_levelTypesStr;
     vd m_refTimes;
     vd m_times;
-    vd m_forecastTimes;
     vd m_levels;
     va1d m_xAxes;
     va1d m_yAxes;
@@ -71,6 +75,16 @@ private:
     bool OpenDataset();
 
     bool ParseStructure();
+
+    void ExtractTime(codes_handle *h);
+
+    void ExtractLevel(codes_handle *h);
+
+    void ExtractAxes(codes_handle *h);
+
+    void ExtractGribCode(codes_handle *h);
+
+    bool CheckGribErrorCode(int ierr) const;
 };
 
 #endif // ASFILEGRIB_H

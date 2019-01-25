@@ -68,7 +68,7 @@ external/
 **/vroomgis/
 **/eigen-prefix/
 **/googletest-prefix/
+**/eccodes-prefix/
 *.resolve
 *.base
 *.info
-
