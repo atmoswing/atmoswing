@@ -5,72 +5,78 @@
 #  PROJ4_LIBRARIES   - List of libraries when using PROJ4
 #  PROJ4_FOUND       - True if PROJ4 was found
 
-IF(PROJ4_INCLUDE_DIR)
-  SET(PROJ4_FIND_QUIETLY TRUE)
-ENDIF(PROJ4_INCLUDE_DIR)
+if(PROJ4_INCLUDE_DIR)
+  set(PROJ4_FIND_QUIETLY TRUE)
+endif(PROJ4_INCLUDE_DIR)
 
-FIND_PATH(PROJ4_INCLUDE_DIR "proj_api.h"
-  PATHS
-  $ENV{EXTERNLIBS}/include
-  $ENV{EXTERNLIBS}/proj4/include
-  ~/Library/Frameworks/include
-  /Library/Frameworks/include
-  /usr/local/include
-  /usr/include
-  /sw/include # Fink
-  /opt/local/include # DarwinPorts
-  /opt/csw/include # Blastwave
-  /opt/include
-  DOC "PROJ4 - Headers"
-)
+find_path(PROJ4_INCLUDE_DIR "proj_api.h"
+        PATHS
+          ${CMAKE_PREFIX_PATH}
+          $ENV{EXTERNLIBS}
+          $ENV{EXTERNLIBS}/proj4
+          ~/Library/Frameworks
+          /Library/Frameworks
+          /usr/local
+          /usr
+          /sw # Fink
+          /opt/local # DarwinPorts
+          /opt/csw # Blastwave
+          /opt
+        PATH_SUFFIXES
+          include
+        DOC "PROJ4 - Headers"
+        )
 
-SET(PROJ4_NAMES Proj4 proj proj_4_9)
-SET(PROJ4_DBG_NAMES Proj4D projD proj_4_9_D)
+set(PROJ4_NAMES Proj4 proj proj_4_9)
+set(PROJ4_DBG_NAMES Proj4D projD proj_4_9_D)
 
-FIND_LIBRARY(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
-  PATHS
-  $ENV{EXTERNLIBS}
-  $ENV{EXTERNLIBS}/proj4
-  ~/Library/Frameworks
-  /Library/Frameworks
-  /usr/local
-  /usr
-  /sw
-  /opt/local
-  /opt/csw
-  /opt
-  PATH_SUFFIXES lib lib64
-  DOC "PROJ4 - Library"
-)
+find_library(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
+        PATHS
+          ${CMAKE_PREFIX_PATH}
+          $ENV{EXTERNLIBS}
+          $ENV{EXTERNLIBS}/proj4
+          ~/Library/Frameworks
+          /Library/Frameworks
+          /usr/local
+          /usr
+          /sw
+          /opt/local
+          /opt/csw
+          /opt
+        PATH_SUFFIXES
+          lib
+          lib64
+        DOC "PROJ4 - Library"
+        )
 
-INCLUDE(FindPackageHandleStandardArgs)
+include(FindPackageHandleStandardArgs)
 
-IF(MSVC)
+#[[if(MSVC)
   # VisualStudio needs a debug version
-  FIND_LIBRARY(PROJ4_LIBRARY_DEBUG NAMES ${PROJ4_DBG_NAMES}
+  find_library(PROJ4_LIBRARY_DEBUG NAMES ${PROJ4_DBG_NAMES}
     PATHS
     $ENV{EXTERNLIBS}/proj4/lib
     DOC "PROJ4 - Library (Debug)"
   )
   
-  IF(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
-    SET(PROJ4_LIBRARIES optimized ${PROJ4_LIBRARY} debug ${PROJ4_LIBRARY_DEBUG})
-  ENDIF(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
+  if(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
+    set(PROJ4_LIBRARIES optimized ${PROJ4_LIBRARY} debug ${PROJ4_LIBRARY_DEBUG})
+  endif(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
 
-  FIND_PACKAGE_HANDLE_STANDARD_ARGS(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
+  find_package_handle_standard_args(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
 
-  MARK_AS_ADVANCED(PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
+  mark_as_advanced(PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
   
-ELSE(MSVC)
+else(MSVC)]]
   # rest of the world
-  SET(PROJ4_LIBRARIES ${PROJ4_LIBRARY})
+  set(PROJ4_LIBRARIES ${PROJ4_LIBRARY})
 
-  FIND_PACKAGE_HANDLE_STANDARD_ARGS(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
+  find_package_handle_standard_args(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
   
-  MARK_AS_ADVANCED(PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
+  mark_as_advanced(PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
   
-ENDIF(MSVC)
+#[[endif(MSVC)]]
 
-IF(PROJ4_FOUND)
-  SET(PROJ4_INCLUDE_DIRS ${PROJ4_INCLUDE_DIR})
-ENDIF(PROJ4_FOUND)
+if(PROJ4_FOUND)
+  set(PROJ4_INCLUDE_DIRS ${PROJ4_INCLUDE_DIR})
+endif(PROJ4_FOUND)
