@@ -124,3 +124,22 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+# Install ecCodes
+if(!(Test-Path -Path "$LIB_DIR\include\eccodes.h") -Or $REBUILD_ECCODES) {
+  Init-Build "eccodes"
+  Write-Host "`nDownloading eccodes from $ECCODES_URL" -ForegroundColor Yellow
+  Invoke-WebRequest -Uri $ECCODES_URL -OutFile "eccodes.tar.gz"
+  7z x eccodes.tar.gz -o"$TMP_DIR" > $null
+  7z x eccodes.tar -o"$TMP_DIR" > $null
+  move "$TMP_DIR\eccodes-*" "$TMP_DIR\eccodes"
+  cd "$TMP_DIR\eccodes"
+  mkdir bld > $null
+  cd bld
+  copy "$PATCH_DIR\grib_lex.c" "$TMP_DIR\eccodes\src\grib_lex.c"
+  cmake .. -G"$VS_VER" -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR" -DDISABLE_OS_CHECK=ON > $null
+  cmake --build . --config release --target libs > $null
+  copy "$TMP_DIR\eccodes\bld\lib\Release\eccodes.lib" "$LIB_DIR\lib\eccodes.lib"
+  copy "$TMP_DIR\eccodes\src\*.h" "$LIB_DIR\include\"
+  copy "$TMP_DIR\eccodes\bld\src\eccodes_version.h" "$LIB_DIR\include\"
+  Copy-Item "$TMP_DIR\eccodes\definitions" -Destination "$LIB_DIR\share\eccodes\definitions" -Recurse
+}

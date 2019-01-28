@@ -85,7 +85,7 @@ endif ()
 ExternalProject_Add(googletest
         GIT_REPOSITORY https://github.com/google/googletest
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -Dgtest_force_shared_crt=ON
+        CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
         BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
 

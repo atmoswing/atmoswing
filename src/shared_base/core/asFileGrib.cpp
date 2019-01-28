@@ -138,13 +138,18 @@ void asFileGrib::ExtractTime(codes_handle *h)
 
     // Get reference date
     size_t dataDateLength = 20;
-    char buffer1[dataDateLength];
+    char *buffer1 = NULL;
+    buffer1 = (char *) malloc(dataDateLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
+    free(buffer1);
+
     size_t dataTimeLength = 20;
-    char buffer2[dataTimeLength];
+    char *buffer2 = NULL;
+    buffer2 = (char *) malloc(dataTimeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
+    free(buffer2);
     double refTime = asTime::GetTimeFromString(dataDate + dataTime, YYYYMMDDhhmm);
     m_refTimes.push_back(refTime);
 
@@ -161,9 +166,11 @@ void asFileGrib::ExtractLevel(codes_handle *h)
 
     // Get level type
     size_t typeLength = 255;
-    char typeVal[typeLength];
+    char *typeVal = NULL;
+    typeVal = (char *) malloc(typeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
+    free(typeVal);
     m_levelTypesStr.push_back(type);
 
     // Get level type code
@@ -187,16 +194,20 @@ void asFileGrib::ExtractAxes(codes_handle *h)
     // Get lat axis
     size_t latLength;
     codes_get_size(h, "distinctLatitudes", &latLength);
-    double latVals[latLength];
+    double *latVals = NULL;
+    latVals = (double *) malloc(latLength * sizeof(double));
     CODES_CHECK(codes_get_double_array(h, "distinctLatitudes", &latVals[0], &latLength), 0);
     a1d latAxis = Eigen::Map<a1d>(latVals, latLength);
+    free(latVals);
 
     // Get lon axis
     size_t lonLength;
     codes_get_size(h, "distinctLongitudes", &lonLength);
-    double lonVals[lonLength];
+    double *lonVals = NULL;
+    lonVals = (double *) malloc(lonLength * sizeof(double));
     CODES_CHECK(codes_get_double_array(h, "distinctLongitudes", &lonVals[0], &lonLength), 0);
     a1d lonAxis = Eigen::Map<a1d>(lonVals, lonLength);
+    free(lonVals);
 
     m_xAxes.push_back(lonAxis);
     m_yAxes.push_back(latAxis);
