@@ -55,8 +55,10 @@ if (BUILD_VIEWER)
 
 endif ()
 
-# g2clib
-include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
+# ecCodes
+find_package(eccodes MODULE REQUIRED)
+include_directories(${ECCODES_INCLUDE_DIRS})
+link_libraries(${ECCODES_LIBRARIES})
 
 # lsversion
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/lsversion/src")

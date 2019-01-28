@@ -57,8 +57,7 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 
-# g2clib
-add_subdirectory(libs/g2clib)
+# lsVersion
 add_subdirectory(libs/lsversion)
 
 
@@ -83,7 +82,6 @@ endif (USE_GUI)
 ##### LINKING
 
 add_dependencies(asbase eigen)
-target_link_libraries(asbase g2clib)
 
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})

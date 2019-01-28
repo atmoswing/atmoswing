@@ -24,29 +24,23 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2018-2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFILEGRIB2_H
-#define ASFILEGRIB2_H
+#ifndef ASFILEGRIB_H
+#define ASFILEGRIB_H
 
 #include "asIncludes.h"
 #include <asFile.h>
+#include "eccodes.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include "grib2.h"
-#ifdef __cplusplus
-}
-#endif
-
-class asFileGrib2
+class asFileGrib
         : public asFile
 {
 public:
-    asFileGrib2(const wxString &fileName, const FileMode &fileMode);
+    asFileGrib(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileGrib2() override;
+    ~asFileGrib() override;
 
     bool Open() override;
 
@@ -67,16 +61,13 @@ protected:
 private:
     FILE *m_filtPtr;
     int m_index;
-    std::vector<g2int> m_messageOffsets;
-    std::vector<g2int> m_messageSizes;
-    vl m_fieldNum;
     vi m_parameterDisciplines;
     vi m_parameterCategories;
     vi m_parameterNums;
     vi m_levelTypes;
+    vwxs m_levelTypesStr;
     vd m_refTimes;
     vd m_times;
-    vd m_forecastTimes;
     vd m_levels;
     va1d m_xAxes;
     va1d m_yAxes;
@@ -85,15 +76,15 @@ private:
 
     bool ParseStructure();
 
-    void handleGribError(g2int ierr) const;
+    void ExtractTime(codes_handle *h);
 
-    void BuildAxes(const gribfield *gfld);
+    void ExtractLevel(codes_handle *h);
 
-    bool CheckGridDefinition(const gribfield *gfld) const;
+    void ExtractAxes(codes_handle *h);
 
-    bool CheckProductDefinition(const gribfield *gfld) const;
+    void ExtractGribCode(codes_handle *h);
 
-    void GetLevel(const gribfield *gfld);
+    bool CheckGribErrorCode(int ierr) const;
 };
 
-#endif // ASFILEGRIB2_H
+#endif // ASFILEGRIB_H

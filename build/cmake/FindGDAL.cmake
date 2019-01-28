@@ -25,24 +25,33 @@ elseif (NOT GDAL_DIR AND ENV{GDAL_ROOT})
     SET(GDAL_DIR ENV{GDAL_ROOT})
 endif ()
 
-find_path(GDAL_INCLUDE_DIR gdal.h
+find_path(GDAL_INCLUDE_DIR
+        NAMES
+            gdal.h
         HINTS
-        ${GDAL_DIR}
-        ENV GDAL_DIR
-        ENV GDAL_ROOT
+            ${CMAKE_PREFIX_PATH}
+            ${GDAL_DIR}
+            ENV GDAL_DIR
+            ENV GDAL_ROOT
         PATH_SUFFIXES
-        include/gdal
-        include/GDAL
-        include
+            include
+            include/gdal
+            include/GDAL
         NO_DEFAULT_PATH
         )
 
 if (WIN32)
 
     find_library(GDAL_LIBRARY
-            gdal_i
-            HINTS ${GDAL_DIR}/lib
-            ${GDAL_DIR}
+                gdal_i
+            HINTS
+                ${CMAKE_PREFIX_PATH}
+                ${GDAL_DIR}
+                ENV GDAL_DIR
+                ENV GDAL_ROOT
+            PATH_SUFFIXES
+                lib
+                lib64
             NO_DEFAULT_PATH)
 
 elseif (APPLE)
@@ -50,10 +59,10 @@ elseif (APPLE)
     # If mac, use the dynamic library
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                    gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
                 PATHS
-                ${GDAL_DIR}/lib
-                ${GDAL_DIR}
+                    ${GDAL_DIR}/lib
+                    ${GDAL_DIR}
                 NO_DEFAULT_PATH)
 
     else ()
@@ -70,10 +79,10 @@ else ()
     # If linux, use the static library
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                    NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
                 PATHS
-                ${GDAL_DIR}/lib
-                ${GDAL_DIR}
+                    ${GDAL_DIR}/lib
+                    ${GDAL_DIR}
                 NO_DEFAULT_PATH)
 
         find_program(GDAL_CONFIG gdal-config
