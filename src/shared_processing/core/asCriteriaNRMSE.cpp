@@ -43,5 +43,9 @@ asCriteriaNRMSE::~asCriteriaNRMSE()
 
 float asCriteriaNRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
+    if (m_dataMax == m_dataMin) {
+        return 0;
+    }
+
     return asCriteriaRMSE::Assess(refData, evalData, rowsNb, colsNb) / (m_dataMax - m_dataMin);
 }
