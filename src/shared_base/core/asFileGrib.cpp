@@ -118,6 +118,9 @@ bool asFileGrib::ParseStructure()
 
         codes_handle_delete(h);
     }
+	if (!CheckGribErrorCode(err)) {
+		return false;
+	}
 
     // Check unique time value
     if (!m_times.empty()) {
@@ -190,24 +193,24 @@ void asFileGrib::ExtractLevel(codes_handle *h)
 void asFileGrib::ExtractAxes(codes_handle *h)
 {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/1/
+    long latsNb;
+    CODES_CHECK(codes_get_long(h, "Nj", &latsNb), 0);
+    long lonNb;
+    CODES_CHECK(codes_get_long(h, "Ni", &lonNb), 0);
+    double latStart;
+    CODES_CHECK(codes_get_double(h, "latitudeOfFirstGridPointInDegrees", &latStart), 0);
+    double lonStart;
+    CODES_CHECK(codes_get_double(h, "longitudeOfFirstGridPointInDegrees", &lonStart), 0);
+    double latEnd;
+    CODES_CHECK(codes_get_double(h, "latitudeOfLastGridPointInDegrees", &latEnd), 0);
+    double lonEnd;
+    CODES_CHECK(codes_get_double(h, "longitudeOfLastGridPointInDegrees", &lonEnd), 0);
+    if (lonEnd < lonStart) {
+        lonStart -= 360;
+    }
 
-    // Get lat axis
-    size_t latLength;
-    codes_get_size(h, "distinctLatitudes", &latLength);
-    double *latVals = NULL;
-    latVals = (double *) malloc(latLength * sizeof(double));
-    CODES_CHECK(codes_get_double_array(h, "distinctLatitudes", &latVals[0], &latLength), 0);
-    a1d latAxis = Eigen::Map<a1d>(latVals, latLength);
-    free(latVals);
-
-    // Get lon axis
-    size_t lonLength;
-    codes_get_size(h, "distinctLongitudes", &lonLength);
-    double *lonVals = NULL;
-    lonVals = (double *) malloc(lonLength * sizeof(double));
-    CODES_CHECK(codes_get_double_array(h, "distinctLongitudes", &lonVals[0], &lonLength), 0);
-    a1d lonAxis = Eigen::Map<a1d>(lonVals, lonLength);
-    free(lonVals);
+    a1d lonAxis = a1d::LinSpaced(lonNb, lonStart, lonEnd);
+    a1d latAxis = a1d::LinSpaced(latsNb, latStart, latEnd);
 
     m_xAxes.push_back(lonAxis);
     m_yAxes.push_back(latAxis);
@@ -284,7 +287,7 @@ bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
             m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] && m_levels[i] == level) {
 
             if (m_index >= 0) {
-                wxLogError(_("The desired parameter was found twice in the file."));
+                wxLogError(_("The desired parameter was found twice in the file %s."), m_fileName.GetFullName());
                 return false;
             }
 
@@ -293,7 +296,7 @@ bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
     }
 
     if (m_index == asNOT_FOUND) {
-        wxLogError(_("The desired parameter was not found in the file."));
+        wxLogError(_("The desired parameter was not found in the file %s."), m_fileName.GetFullName());
         return false;
     }
 
