@@ -8,6 +8,8 @@ chmod +x ci/travis/build-wxwidgets-osx.sh
 ci/travis/build-wxwidgets-osx.sh
 chmod +x ci/travis/build-gdal-osx.sh
 ci/travis/build-gdal-osx.sh
+chmod +x ci/travis/build-eccodes.sh
+ci/travis/build-eccodes.sh
 
 brew install netcdf
 
