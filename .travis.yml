@@ -24,6 +24,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
+            - libeccodes-dev
     - env:
       - TARGET=linux-server
       - DEPLOY=true
@@ -43,6 +44,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
+            - libeccodes-dev
     - env:
         - TARGET=osx-server
         - DEPLOY=true
@@ -67,6 +69,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - libeccodes-dev
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
@@ -86,6 +89,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - libeccodes-dev
     - env:
         - TARGET=osx-desktop
         - DEPLOY=true
@@ -109,6 +113,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - libeccodes-dev
             - lcov
     - env:
         - TARGET=coverity-scan
@@ -136,6 +141,7 @@ matrix:
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - libeccodes-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing
