@@ -186,8 +186,7 @@ bool asPredictandPrecipitation::Save(const wxString &destinationDir) const
 }
 
 bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                                  const wxString &patternDir,
-                                                  const wxString &destinationDir)
+                                                  const wxString &patternDir, const wxString &destinationDir)
 {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
@@ -219,7 +218,10 @@ bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePat
             return false;
     }
 
-    Save(destinationDir);
+    if (!destinationDir.IsEmpty()) {
+        if (!Save(destinationDir))
+            return false;
+    }
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));

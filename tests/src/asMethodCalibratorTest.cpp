@@ -42,8 +42,8 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
-                                                                          asPredictand::Daily, asPredictand::Station);
+    auto *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily,
+                                                     asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -52,11 +52,9 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -204,8 +202,6 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 #ifdef USE_CUDA
@@ -323,11 +319,9 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -490,8 +484,6 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2Multithreads)
@@ -663,11 +655,9 @@ void Ref1Preloading()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -794,8 +784,6 @@ void Ref1Preloading()
     file.Close();
 
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
@@ -820,11 +808,9 @@ void Ref1PreloadingSubset()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     // Get parameters
     wxString paramsFilePath = wxFileName::GetCwd();
@@ -873,8 +859,6 @@ void Ref1PreloadingSubset()
     // No unit test possible, as results will differ from Grenoble's results.
 
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded)
@@ -1029,11 +1013,9 @@ void Ref2Preloading()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1158,8 +1140,6 @@ void Ref2Preloading()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2PreloadingMultithreads)
@@ -1192,11 +1172,9 @@ void Ref2SavingIntermediateResults()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1344,8 +1322,6 @@ void Ref2SavingIntermediateResults()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2SavingIntermediateResults)
@@ -1376,11 +1352,9 @@ void Ref2MergeByHalfAndMultiply()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1505,8 +1479,6 @@ void Ref2MergeByHalfAndMultiply()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
