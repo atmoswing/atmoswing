@@ -492,7 +492,7 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
     return true;
 }
 
-bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result)
+bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -519,7 +519,7 @@ bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor 
     a1d latAxis = predictors[0]->GetLatAxis();
     a2f distXs = a2f::Zero(rowsNb, colsNb - 1);
     a2f distYs = a2f::Zero(rowsNb - 1, colsNb);
-    GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
+    asPreprocessor::GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
 
     // Create container
     vva2f curvature(timeSize);
@@ -584,7 +584,7 @@ bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor 
     return true;
 }
 
-bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -672,7 +672,7 @@ bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> pre
     return true;
 }
 
-bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // Only one predictor
     wxASSERT(!predictors.empty());
@@ -699,7 +699,7 @@ bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predi
     a1d latAxis = predictors[0]->GetLatAxis();
     a2f distXs = a2f::Zero(rowsNb, colsNb - 1);
     a2f distYs = a2f::Zero(rowsNb - 1, colsNb);
-    GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
+    asPreprocessor::GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
 
     // Create container
     vva2f curvature(timeSize);
@@ -723,6 +723,9 @@ bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predi
         xxxxxxxxxxo
         xxxxxxxxxxo
     */
+
+    a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
+    a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
 
     for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
         for (unsigned int iMem = 0; iMem < membersNb; iMem++) {

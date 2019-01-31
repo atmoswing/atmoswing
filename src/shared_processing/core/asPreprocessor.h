@@ -53,9 +53,9 @@ public:
 
     static bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessSimpleGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessRealGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result);
 
@@ -73,10 +73,11 @@ public:
 
     static bool PreprocessWindSpeed(std::vector<asPredictor *> predictors, asPredictor *result);
 
+    static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
+
 protected:
 
 private:
-    static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
 };
 
 #endif // ASPREPROCESSOR_H
