@@ -932,13 +932,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Fix the criteria if S1
-            if (params.NeedsGradientPreprocessing(iStep, iPtor) &&
-                params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-                params.SetPredictorCriteria(iStep, iPtor, "S1grads");
-            } else if (params.NeedsGradientPreprocessing(iStep, iPtor) &&
-                       params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-                params.SetPredictorCriteria(iStep, iPtor, "NS1grads");
-            }
+            params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instanciate an archive predictor object
             asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
@@ -1387,15 +1381,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Fix the criteria if S1
-            if (params.NeedsGradientPreprocessing(iStep, iPtor) &&
-                params.GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-                params.SetPredictorCriteria(iStep, iPtor, "S1grads");
-            } else if (params.NeedsGradientPreprocessing(iStep, iPtor) &&
-                       params.GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-                params.SetPredictorCriteria(iStep, iPtor, "NS1grads");
-            }
+            params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
-            // Instanciate an archive predictor object
+            // Instantiate an archive predictor object
             asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
@@ -1408,7 +1396,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 return false;
             }
 
-            // Instanciate an realtime predictor object
+            // Instantiate an realtime predictor object
             asPredictorOper *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);

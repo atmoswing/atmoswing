@@ -30,7 +30,6 @@
 asCriteriaNMD::asCriteriaNMD()
         : asCriteriaMD()
 {
-    m_criteria = asCriteria::NMD;
     m_name = "NMD";
     m_fullName = _("Normalized Mean Differences");
     m_needsDataRange = true;

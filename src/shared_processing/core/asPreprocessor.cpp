@@ -27,7 +27,8 @@
  */
 
 #include "asPreprocessor.h"
-#include <asPredictor.h>
+#include "asPredictor.h"
+#include "asCriteria.h"
 #include <geodesic.h>
 
 
@@ -41,6 +42,18 @@ bool asPreprocessor::Preprocess(std::vector<asPredictor *> predictors, const wxS
         return PreprocessSimpleGradients(predictors, result);
     } else if (method.IsSameAs("RealGradients")) {
         return PreprocessRealGradients(predictors, result);
+    } else if (method.IsSameAs("SimpleGradientsWithGaussianWeights")) {
+        return PreprocessSimpleGradientsWithGaussianWeights(predictors, result);
+    } else if (method.IsSameAs("RealGradientsWithGaussianWeights")) {
+        return PreprocessRealGradientsWithGaussianWeights(predictors, result);
+    } else if (method.IsSameAs("SimpleCurvature")) {
+        return PreprocessSimpleCurvature(predictors, result);
+    } else if (method.IsSameAs("RealCurvature")) {
+        return PreprocessRealCurvature(predictors, result);
+    } else if (method.IsSameAs("SimpleCurvatureWithGaussianWeights")) {
+        return PreprocessSimpleCurvatureWithGaussianWeights(predictors, result);
+    } else if (method.IsSameAs("RealCurvatureWithGaussianWeights")) {
+        return PreprocessRealCurvatureWithGaussianWeights(predictors, result);
     } else if (method.IsSameAs("Addition")) {
         return PreprocessAddition(predictors, result);
     } else if (method.IsSameAs("Average")) {
@@ -170,31 +183,11 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
     wxASSERT(membersNb > 0);
 
     // Process distance
-    double a = 6378137, f = 1/298.257223563; /* WGS84 */
-    struct geod_geodesic g;
-    double distX, distY;
-    geod_init(&g, a, f);
-
     a1d lonAxis = predictors[0]->GetLonAxis();
     a1d latAxis = predictors[0]->GetLatAxis();
     a2f distXs = a2f::Zero(rowsNb, colsNb - 1);
     a2f distYs = a2f::Zero(rowsNb - 1, colsNb);
-
-    for (int iLat = 0; iLat < latAxis.size(); ++iLat) {
-        for (int iLon = 0; iLon < lonAxis.size()-1; ++iLon) {
-            geod_inverse(&g, latAxis[iLat], lonAxis[iLon], latAxis[iLat], lonAxis[iLon + 1], &distX, 0, 0);
-            distXs(iLat, iLon) = distX;
-            wxASSERT(distX > 0);
-        }
-    }
-
-    for (int iLat = 0; iLat < latAxis.size()-1; ++iLat) {
-        for (int iLon = 0; iLon < lonAxis.size(); ++iLon) {
-            geod_inverse(&g, latAxis[iLat], lonAxis[iLon], latAxis[iLat + 1], lonAxis[iLon], &distY, 0, 0);
-            distYs(iLat, iLon) = distY;
-            wxASSERT(distY > 0);
-        }
-    }
+    GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
 
     // Create container
     vva2f gradients(timeSize);
@@ -244,6 +237,280 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
     result->SetCanBeClipped(true);
 
     return true;
+}
+
+
+bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+    // Only one predictor
+    wxASSERT(!predictors.empty());
+    wxASSERT(predictors.size() == 1);
+    if (predictors.size() != 1) {
+        wxLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
+
+    // Create container
+    vva2f gradients(timeSize);
+    gradients.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
+
+    a2f tmpgrad = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
+
+    /*
+    Illustration of the data arrangement
+        x = data
+        o = 0
+
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        ooooooooooo____
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+    */
+
+    a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
+    a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
+
+    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
+        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+            // Vertical gradients
+            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
+                    g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb));
+
+            // Horizontal gradients
+            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
+                    g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1));
+
+            if (asHasNaN(tmpgrad)) {
+                // std::cout << tmpgrad << std::endl;
+                // std::cout << "\n" << std::endl;
+                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
+
+                wxLogError(_("NaN found during gradients preprocessing !"));
+                return false;
+            }
+
+            gradients[iTime].push_back(tmpgrad);
+        }
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(gradients);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+    // Only one predictor
+    wxASSERT(!predictors.empty());
+    wxASSERT(predictors.size() == 1);
+    if (predictors.size() != 1) {
+        wxLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        return false;
+    }
+
+    // Only lat/lon
+    if (!predictors[0]->IsLatLon()) {
+        wxLogError(_("The predictor must be lat/lon to process the real gradients."));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+
+    wxASSERT(rowsNb > 1);
+    wxASSERT(colsNb > 1);
+    wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
+
+    // Process distance
+    a1d lonAxis = predictors[0]->GetLonAxis();
+    a1d latAxis = predictors[0]->GetLatAxis();
+    a2f distXs = a2f::Zero(rowsNb, colsNb - 1);
+    a2f distYs = a2f::Zero(rowsNb - 1, colsNb);
+    GetHorizontalDistances(lonAxis, latAxis, distXs, distYs);
+
+    // Create container
+    vva2f gradients(timeSize);
+    gradients.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
+
+    a2f tmpgrad = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
+
+    /*
+    Illustration of the data arrangement
+        x = data
+        o = 0
+
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        ooooooooooo____
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+    */
+
+    a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
+    a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
+
+    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
+        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+            // Vertical gradients
+            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
+                    g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb)) / distYs;
+
+            // Horizontal gradients
+            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
+                    g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
+
+            if (asHasNaN(tmpgrad)) {
+                wxLogError(_("NaN found during gradients preprocessing !"));
+                return false;
+            }
+
+            gradients[iTime].push_back(tmpgrad);
+        }
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(gradients);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+    // Only one predictor
+    wxASSERT(!predictors.empty());
+    wxASSERT(predictors.size() == 1);
+    if (predictors.size() != 1) {
+        wxLogError(_("The number of predictors must be equal to 1 in asPreprocessor::PreprocessGradients"));
+        return false;
+    }
+
+    // Get sizes
+    wxASSERT(predictors[0]);
+    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
+    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
+    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
+    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+
+    wxASSERT(rowsNb > 2);
+    wxASSERT(colsNb > 2);
+    wxASSERT(timeSize > 0);
+    wxASSERT(membersNb > 0);
+
+    // Create container
+    vva2f curvature(timeSize);
+    curvature.reserve(membersNb * timeSize * 2 * (rowsNb - 1) * (colsNb - 1));
+
+    a2f tmpgradH = a2f::Zero(rowsNb, colsNb - 1);
+    a2f tmpgradV = a2f::Zero(rowsNb - 1, colsNb);
+    a2f tmpcurv = a2f::Zero(2 * (rowsNb - 1), (colsNb - 1)); // Needs to be 0-filled for further simplification.
+
+    /*
+    Illustration of the data arrangement
+        x = data
+        o = 0
+
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        xxxxxxxxxxx
+        ooooooooooo____
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+        xxxxxxxxxxo
+    */
+
+    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
+        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+
+            // Vertical gradients
+            tmpgradV = predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                       predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb);
+
+            // Horizontal gradients
+            tmpgradH = predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                       predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
+
+
+
+
+
+            // Vertical gradients
+            tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
+                    predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb - 1, colsNb);
+
+            // Horizontal gradients
+            tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
+                    predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
+                    predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
+
+            if (asHasNaN(tmpgrad)) {
+                // std::cout << tmpgrad << std::endl;
+                // std::cout << "\n" << std::endl;
+                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
+
+                wxLogError(_("NaN found during gradients preprocessing !"));
+                return false;
+            }
+
+            curvature[iTime].push_back(tmpgrad);
+        }
+    }
+
+    // Overwrite the data in the predictor object
+    result->SetData(curvature);
+    result->SetIsPreprocessed(true);
+    result->SetCanBeClipped(true);
+
+    return true;
+}
+
+bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+
+}
+
+bool PreprocessSimpleGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+
+}
+
+bool PreprocessRealGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result)
+{
+
 }
 
 bool asPreprocessor::PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result)
@@ -698,4 +965,28 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asPredictor *> predictors, 
     result->SetCanBeClipped(true);
 
     return true;
+}
+
+void asPreprocessor::GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs)
+{
+    double a = 6378137, f = 1 / 298.257223563; /* WGS84 */
+    struct geod_geodesic g;
+    double distX, distY;
+    geod_init(&g, a, f);
+
+    for (int iLat = 0; iLat < latAxis.size(); ++iLat) {
+        for (int iLon = 0; iLon < lonAxis.size()-1; ++iLon) {
+            geod_inverse(&g, latAxis[iLat], lonAxis[iLon], latAxis[iLat], lonAxis[iLon + 1], &distX, 0, 0);
+            distXs(iLat, iLon) = distX;
+            wxASSERT(distX > 0);
+        }
+    }
+
+    for (int iLat = 0; iLat < latAxis.size()-1; ++iLat) {
+        for (int iLon = 0; iLon < lonAxis.size(); ++iLon) {
+            geod_inverse(&g, latAxis[iLat], lonAxis[iLon], latAxis[iLat + 1], lonAxis[iLon], &distY, 0, 0);
+            distYs(iLat, iLon) = distY;
+            wxASSERT(distY > 0);
+        }
+    }
 }

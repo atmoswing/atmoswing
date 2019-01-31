@@ -30,7 +30,6 @@
 asCriteriaNRMSE::asCriteriaNRMSE()
         : asCriteriaRMSE()
 {
-    m_criteria = asCriteria::NRMSE;
     m_name = "NRMSE";
     m_fullName = _("Normalized Root Mean Square Error");
     m_needsDataRange = true;

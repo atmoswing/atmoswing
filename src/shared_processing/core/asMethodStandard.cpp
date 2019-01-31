@@ -735,13 +735,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
     }
 
     // Fix the criteria if S1
-    if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-    } else if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
-               params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
-    }
+    params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
     return true;
 }
@@ -804,8 +798,6 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 {
     wxLogVerbose(_("Using preloaded data."));
 
-    bool doPreprocessGradients = false;
-
     // Get preload arrays
     vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
     vd preloadTimeHours = params->GetPreloadTimeHours(iStep, iPtor);
@@ -833,24 +825,13 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         iHour = asFind(&preloadTimeHours[0], &preloadTimeHours[preloadTimeHours.size() - 1], time);
 
         // Force gradients preprocessing anyway.
-        if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-            doPreprocessGradients = true;
-            params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-        } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads")) {
-            doPreprocessGradients = true;
-        } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-            doPreprocessGradients = true;
-            params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
-        } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads")) {
-            doPreprocessGradients = true;
-        }
+        params->ForceUsingGradientsPreprocessing(iStep, iPtor);
     } else {
         // Correct according to the method
         if (params->NeedsGradientPreprocessing(iStep, iPtor)) {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
             time = params->GetPreprocessTimeHours(iStep, iPtor, 0);
-            if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
-                params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
+            if (!params->IsCriteriaUsingGradients(iStep, iPtor)) {
                 wxLogError(_("The criteria value has not been changed after the gradient preprocessing."));
                 return false;
             }
@@ -960,7 +941,17 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
     // Check minimum size for S1
     if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r", false) ||
         params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG", false) ||
         params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads", false) ||
         params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads", false)) {
         if (params->GetPredictorXptsnb(iStep, iPtor) < 2) {
@@ -973,7 +964,19 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
     // Check minimum size for S2
     if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2", false)) {
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2grads", false) ||
+        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2grads", false)) {
         if (params->GetPredictorXptsnb(iStep, iPtor) < 3) {
             params->SetPredictorXptsnb(iStep, iPtor, 3);
         }
@@ -991,12 +994,12 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     }
     wxDELETE(desiredArea);
 
-    if (doPreprocessGradients) {
+    if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
         std::vector<asPredictorArch *> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 
         auto *newPredictor = new asPredictorArch(*predictorsPreprocess[0]);
-        if (!Preprocess(predictorsPreprocess, "RealGradients", newPredictor)) {
+        if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
             wxDELETE(newPredictor);
@@ -1028,18 +1031,7 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     timeArray.Init();
 
     // Force gradients preprocessing anyway.
-    bool doPreprocessGradients = false;
-    if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-        doPreprocessGradients = true;
-        params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-    } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads")) {
-        doPreprocessGradients = true;
-    } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-        doPreprocessGradients = true;
-        params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
-    } else if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads")) {
-        doPreprocessGradients = true;
-    }
+    params->ForceUsingGradientsPreprocessing(iStep, iPtor);
 
     // Loading the datasets information
     asPredictorArch *predictor = asPredictorArch::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
@@ -1067,12 +1059,12 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     }
     wxDELETE(area);
 
-    if (doPreprocessGradients) {
+    if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
         std::vector<asPredictorArch *> predictorsPreprocess;
         predictorsPreprocess.push_back(predictor);
 
         auto *newPredictor = new asPredictorArch(*predictorsPreprocess[0]);
-        if (!Preprocess(predictorsPreprocess, "RealGradients", newPredictor)) {
+        if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), newPredictor)) {
             wxLogError(_("Data preprocessing failed."));
             Cleanup(predictorsPreprocess);
             wxDELETE(newPredictor);
@@ -1140,14 +1132,8 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
         predictorsPreprocess.push_back(predictorPreprocess);
     }
 
-    // Fix the criteria if S1
-    if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-    } else if (params->NeedsGradientPreprocessing(iStep, iPtor) &&
-               params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
-    }
+    // Fix the criteria if S1/S2
+    params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
     asPredictorArch *predictor = new asPredictorArch(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {

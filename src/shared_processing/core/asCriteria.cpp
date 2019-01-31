@@ -37,6 +37,7 @@
 #include "asCriteriaRSE.h"
 #include "asCriteriaS1.h"
 #include "asCriteriaNS1.h"
+#include "asCriteriaS1G.h"
 #include "asCriteriaS1grads.h"
 #include "asCriteriaNS1grads.h"
 #include "asCriteriaS2.h"
@@ -49,9 +50,8 @@
 #include "asPredictor.h"
 
 
-asCriteria::asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order)
-        : m_criteria(criteria),
-          m_name(name),
+asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order order)
+        : m_name(name),
           m_fullName(fullname),
           m_order(order),
           m_needsDataRange(false),
@@ -69,157 +69,98 @@ asCriteria::~asCriteria()
     //dtor
 }
 
-asCriteria *asCriteria::GetInstance(Criteria criteriaEnum)
-{
-    switch (criteriaEnum) {
-        case (S1): {
-            asCriteria *criteria = new asCriteriaS1();
-            return criteria;
-        }
-        case (NS1): {
-            asCriteria *criteria = new asCriteriaNS1();
-            return criteria;
-        }
-        case (S1grads): {
-            asCriteria *criteria = new asCriteriaS1grads();
-            return criteria;
-        }
-        case (NS1grads): {
-            asCriteria *criteria = new asCriteriaNS1grads();
-            return criteria;
-        }
-        case (S2): {
-            asCriteria *criteria = new asCriteriaS2();
-            return criteria;
-        }
-        case (NS2): {
-            asCriteria *criteria = new asCriteriaNS2();
-            return criteria;
-        }
-        case (SAD): {
-            asCriteria *criteria = new asCriteriaSAD();
-            return criteria;
-        }
-        case (MD): {
-            asCriteria *criteria = new asCriteriaMD();
-            return criteria;
-        }
-        case (NMD): {
-            asCriteria *criteria = new asCriteriaNMD();
-            return criteria;
-        }
-        case (MRDtoMax): {
-            asCriteria *criteria = new asCriteriaMRDtoMax();
-            return criteria;
-        }
-        case (MRDtoMean): {
-            asCriteria *criteria = new asCriteriaMRDtoMean();
-            return criteria;
-        }
-        case (RMSE): {
-            asCriteria *criteria = new asCriteriaRMSE();
-            return criteria;
-        }
-        case (NRMSE): {
-            asCriteria *criteria = new asCriteriaNRMSE();
-            return criteria;
-        }
-        case (RMSEwithNaN): {
-            asCriteria *criteria = new asCriteriaRMSEwithNaN();
-            return criteria;
-        }
-        case (RMSEonMeanWithNaN): {
-            asCriteria *criteria = new asCriteriaRMSEonMeanWithNaN();
-            return criteria;
-        }
-        case (RSE): {
-            asCriteria *criteria = new asCriteriaRSE();
-            return criteria;
-        }
-        case (DMV): {
-            asCriteria *criteria = new asCriteriaDMV();
-            return criteria;
-        }
-        case (NDMV): {
-            asCriteria *criteria = new asCriteriaNDMV();
-            return criteria;
-        }
-        case (DSD): {
-            asCriteria *criteria = new asCriteriaDSD();
-            return criteria;
-        }
-        case (NDSD): {
-            asCriteria *criteria = new asCriteriaNDSD();
-            return criteria;
-        }
-        default: {
-            wxLogError(_("The predictor criteria was not correctly defined (%d)."), criteriaEnum);
-            asCriteria *criteria = new asCriteriaSAD();
-            return criteria;
-        }
-    }
-}
-
 asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
 {
-    if (criteriaString.CmpNoCase("S1") == 0) {
+    if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
+        // Teweles-Wobus
         asCriteria *criteria = new asCriteriaS1();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NS1") == 0) {
+    } else if (criteriaString.CmpNoCase("NS1") == 0 || criteriaString.CmpNoCase("NS1s") == 0) {
+        // Normalized Teweles-Wobus
         asCriteria *criteria = new asCriteriaNS1();
         return criteria;
+    } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
+        // Teweles-Wobus with Gaussian weights
+		asCriteria *criteria = new asCriteriaS1G();
+        return criteria;
     } else if (criteriaString.CmpNoCase("S1grads") == 0) {
+        // Teweles-Wobus on gradients
         asCriteria *criteria = new asCriteriaS1grads();
         return criteria;
     } else if (criteriaString.CmpNoCase("NS1grads") == 0) {
+        // Normalized Teweles-Wobus on gradients
         asCriteria *criteria = new asCriteriaNS1grads();
         return criteria;
-    } else if (criteriaString.CmpNoCase("S2") == 0) {
+    } else if (criteriaString.CmpNoCase("S2") == 0 || criteriaString.CmpNoCase("S2s") == 0) {
+        // Derivative of Teweles-Wobus
         asCriteria *criteria = new asCriteriaS2();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NS2") == 0) {
+    } else if (criteriaString.CmpNoCase("NS2") == 0 || criteriaString.CmpNoCase("NS2s") == 0) {
+        // Normalized derivative of Teweles-Wobus
         asCriteria *criteria = new asCriteriaNS2();
         return criteria;
+    } else if (criteriaString.CmpNoCase("S2grads") == 0) {
+        // Derivative of Teweles-Wobus on gradients
+        asCriteria *criteria = new asCriteriaS1grads();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("NS2grads") == 0) {
+        // Normalized derivative of Teweles-Wobus on gradients
+        asCriteria *criteria = new asCriteriaNS1grads();
+        return criteria;
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
+        // Sum of absolute differences
         asCriteria *criteria = new asCriteriaSAD();
         return criteria;
     } else if (criteriaString.CmpNoCase("MD") == 0) {
+        // Mean absolute difference
         asCriteria *criteria = new asCriteriaMD();
         return criteria;
     } else if (criteriaString.CmpNoCase("NMD") == 0) {
+        // Normalized Mean difference
         asCriteria *criteria = new asCriteriaNMD();
         return criteria;
     } else if (criteriaString.CmpNoCase("MRDtoMax") == 0) {
+        // Mean Relative difference to the max value
         asCriteria *criteria = new asCriteriaMRDtoMax();
         return criteria;
     } else if (criteriaString.CmpNoCase("MRDtoMean") == 0) {
+        // Mean Relative difference to the mean value
         asCriteria *criteria = new asCriteriaMRDtoMean();
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSE") == 0) {
+        // Root mean square error
         asCriteria *criteria = new asCriteriaRMSE();
         return criteria;
     } else if (criteriaString.CmpNoCase("NRMSE") == 0) {
+        // Normalized Root mean square error (min-max approach)
         asCriteria *criteria = new asCriteriaNRMSE();
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSEwithNaN") == 0) {
+        // Root mean square error with NaNs management
         asCriteria *criteria = new asCriteriaRMSEwithNaN();
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSEonMeanWithNaN") == 0) {
+        // Root Mean Square Error on the mean value of the grid, with NaNs management
         asCriteria *criteria = new asCriteriaRMSEonMeanWithNaN();
         return criteria;
     } else if (criteriaString.CmpNoCase("RSE") == 0) {
+        // Root square error (According to Bontron. Should not be used !)
         asCriteria *criteria = new asCriteriaRSE();
         return criteria;
     } else if (criteriaString.CmpNoCase("DMV") == 0) {
+        // Difference in mean value (nonspatial)
         asCriteria *criteria = new asCriteriaDMV();
         return criteria;
     } else if (criteriaString.CmpNoCase("NDMV") == 0) {
+        // Normalized difference in mean value (nonspatial)
         asCriteria *criteria = new asCriteriaNDMV();
         return criteria;
     } else if (criteriaString.CmpNoCase("DSD") == 0) {
+        // Difference in standard deviation (nonspatial)
         asCriteria *criteria = new asCriteriaDSD();
         return criteria;
     } else if (criteriaString.CmpNoCase("NDSD") == 0) {
+        // Normalized difference in standard deviation (nonspatial)
         asCriteria *criteria = new asCriteriaNDSD();
         return criteria;
     } else {

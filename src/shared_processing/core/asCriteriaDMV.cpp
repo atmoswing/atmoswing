@@ -28,7 +28,7 @@
 #include "asCriteriaDMV.h"
 
 asCriteriaDMV::asCriteriaDMV()
-        : asCriteria(asCriteria::DMV, "DMV", _("Difference in mean value (nonspatial)"), Asc)
+        : asCriteria("DMV", _("Difference in mean value (nonspatial)"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

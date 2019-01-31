@@ -30,7 +30,6 @@
 asCriteriaNDSD::asCriteriaNDSD()
         : asCriteriaDSD()
 {
-    m_criteria = asCriteria::NDSD;
     m_name = "NDSD";
     m_fullName = _("Normalized difference in standard deviation (nonspatial)");
     m_needsDataRange = true;

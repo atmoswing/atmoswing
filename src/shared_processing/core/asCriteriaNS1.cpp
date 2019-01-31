@@ -30,7 +30,6 @@
 asCriteriaNS1::asCriteriaNS1()
         : asCriteriaS1()
 {
-    m_criteria = asCriteria::NS1;
     m_name = "NS1";
     m_fullName = _("Normalized Teweles-Wobus");
     m_order = Asc;

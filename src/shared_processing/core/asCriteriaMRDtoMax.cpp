@@ -29,7 +29,7 @@
 #include "asCriteriaMRDtoMax.h"
 
 asCriteriaMRDtoMax::asCriteriaMRDtoMax()
-        : asCriteria(asCriteria::MRDtoMax, "MRDtoMax", _("Mean Relative Differences to the Maximum"), Asc)
+        : asCriteria("MRDtoMax", _("Mean Relative Differences to the Maximum"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

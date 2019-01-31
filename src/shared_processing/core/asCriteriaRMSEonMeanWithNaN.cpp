@@ -29,7 +29,7 @@
 #include "asCriteriaRMSEonMeanWithNaN.h"
 
 asCriteriaRMSEonMeanWithNaN::asCriteriaRMSEonMeanWithNaN()
-        : asCriteria(asCriteria::RMSEwithNaN, "RMSEonMeanWithNaN", _("Root Mean Square Error on the mean value of the grid, with NaNs management"), Asc)
+        : asCriteria("RMSEonMeanWithNaN", _("Root Mean Square Error on the mean value of the grid, with NaNs management"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

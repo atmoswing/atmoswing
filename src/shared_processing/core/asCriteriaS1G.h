@@ -22,25 +22,30 @@
  */
 
 /*
- * Portions Copyright 2018 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asCriteriaNS2.h"
+#ifndef ASPREDICTORCRITERIAS1G_H
+#define ASPREDICTORCRITERIAS1G_H
 
-asCriteriaNS2::asCriteriaNS2()
-        : asCriteriaS2()
-{
-    m_name = "NS2";
-    m_fullName = _("Normalized derivative of Teweles-Wobus");
-    m_order = Asc;
-}
+#include <asIncludes.h>
+#include <asCriteria.h>
 
-asCriteriaNS2::~asCriteriaNS2()
+class asCriteriaS1G
+        : public asCriteria
 {
-    //dtor
-}
+public:
+    asCriteriaS1G();
 
-float asCriteriaNS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
-{
-    return asCriteriaS2::Assess(refData, evalData, rowsNb, colsNb) / m_scaleWorst;
-}
+    ~asCriteriaS1G() override;
+
+    float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
+
+protected:
+
+private:
+
+};
+
+#endif

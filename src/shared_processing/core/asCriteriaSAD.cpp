@@ -29,7 +29,7 @@
 #include "asCriteriaSAD.h"
 
 asCriteriaSAD::asCriteriaSAD()
-        : asCriteria(asCriteria::SAD, "SAD", _("Sum of Absolute Differences"), Asc)
+        : asCriteria("SAD", _("Sum of Absolute Differences"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

@@ -30,7 +30,6 @@
 asCriteriaNS1grads::asCriteriaNS1grads()
         : asCriteriaS1grads()
 {
-    m_criteria = asCriteria::NS1grads;
     m_name = "NS1grads";
     m_fullName = _("Normalized Teweles-Wobus on gradients");
 }

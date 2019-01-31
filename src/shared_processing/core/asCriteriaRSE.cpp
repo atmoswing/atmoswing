@@ -29,7 +29,7 @@
 #include "asCriteriaRSE.h"
 
 asCriteriaRSE::asCriteriaRSE()
-        : asCriteria(asCriteria::RSE, "RSE", _("Root Squared Error"), Asc)
+        : asCriteria("RSE", _("Root Squared Error"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

@@ -29,7 +29,7 @@
 #include "asCriteriaRMSE.h"
 
 asCriteriaRMSE::asCriteriaRMSE()
-        : asCriteria(asCriteria::RMSE, "RMSE", _("Root Mean Square Error"), Asc)
+        : asCriteria("RMSE", _("Root Mean Square Error"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

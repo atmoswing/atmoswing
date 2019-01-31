@@ -29,7 +29,7 @@
 #include "asCriteriaMD.h"
 
 asCriteriaMD::asCriteriaMD()
-        : asCriteria(asCriteria::MD, "MD", _("Mean Absolute Difference"), Asc)
+        : asCriteria("MD", _("Mean Absolute Difference"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

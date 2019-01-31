@@ -1005,15 +1005,9 @@ void asParametersOptimization::InitRandomValues()
             }
 
             // Fix the criteria if S1
-            if (NeedsPreprocessing(i, j) && NeedsGradientPreprocessing(i, j) &&
-                GetPredictorCriteria(i, j).IsSameAs("S1")) {
-                SetPredictorCriteria(i, j, "S1grads");
+            if (NeedsPreprocessing(i, j)) {
+                FixCriteriaIfGradientsPreprocessed(i, j);
             }
-            if (NeedsPreprocessing(i, j) && NeedsGradientPreprocessing(i, j) &&
-                GetPredictorCriteria(i, j).IsSameAs("NS1")) {
-                SetPredictorCriteria(i, j, "NS1grads");
-            }
-
         }
     }
 

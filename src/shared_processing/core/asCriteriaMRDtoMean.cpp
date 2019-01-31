@@ -29,7 +29,7 @@
 #include "asCriteriaMRDtoMean.h"
 
 asCriteriaMRDtoMean::asCriteriaMRDtoMean()
-        : asCriteria(asCriteria::MRDtoMean, "MRDtoMean", _("Mean Relative Differences to the Mean"), Asc)
+        : asCriteria("MRDtoMean", _("Mean Relative Differences to the Mean"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

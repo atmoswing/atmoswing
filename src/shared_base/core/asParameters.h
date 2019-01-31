@@ -432,6 +432,12 @@ public:
 
     bool NeedsGradientPreprocessing(int iStep, int iPtor) const;
 
+    bool IsCriteriaUsingGradients(int iStep, int iPtor) const;
+
+    void FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor);
+
+    void ForceUsingGradientsPreprocessing(int iStep, int iPtor);
+
     wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 
     bool SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);

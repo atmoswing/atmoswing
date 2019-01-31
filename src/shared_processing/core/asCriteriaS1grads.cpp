@@ -29,7 +29,7 @@
 #include "asCriteriaS1grads.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
-        : asCriteria(asCriteria::S1grads, "S1grads", _("Teweles-Wobus on gradients"), Asc)
+        : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = 200;

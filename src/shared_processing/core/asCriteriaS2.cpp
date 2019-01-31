@@ -28,7 +28,7 @@
 #include "asCriteriaS2.h"
 
 asCriteriaS2::asCriteriaS2()
-        : asCriteria(asCriteria::S2, "S2", _("Derivative of Teweles-Wobus score"), Asc)
+        : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = 200;

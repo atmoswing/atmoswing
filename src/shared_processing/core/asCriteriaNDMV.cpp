@@ -30,7 +30,6 @@
 asCriteriaNDMV::asCriteriaNDMV()
         : asCriteriaDMV()
 {
-    m_criteria = asCriteria::NDMV;
     m_name = "NDMV";
     m_fullName = _("Normalized difference in mean value (nonspatial)");
     m_needsDataRange = true;

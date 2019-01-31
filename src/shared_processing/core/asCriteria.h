@@ -37,33 +37,8 @@ class asCriteria
         : public wxObject
 {
 public:
-    enum Criteria
-    {
-        S1, // Teweles-Wobus
-        NS1, // Normalized Teweles-Wobus
-        S1grads, // Teweles-Wobus on gradients
-        NS1grads, // Normalized Teweles-Wobus on gradients
-        S2, // Derivative of Teweles-Wobus
-        NS2, // Normalized derivative of Teweles-Wobus
-        SAD, // Sum of absolute differences
-        MD, // Mean absolute difference
-        NMD, // Normalized Mean difference
-        MRDtoMax, // Mean Relative difference to the max value
-        MRDtoMean, // Mean Relative difference to the mean value
-        RMSE, // Root mean square error
-        NRMSE, // Normalized Root mean square error (min-max approach)
-        RMSEwithNaN, // Root mean square error with NaNs management
-        RMSEonMeanWithNaN, // Root Mean Square Error on the mean value of the grid, with NaNs management
-        RSE, // Root square error (According to Bontron. Should not be used !)
-        DSD, // Difference in standard deviation (nonspatial)
-        NDSD, // Normalized difference in standard deviation (nonspatial)
-        DMV, // Difference in mean value (nonspatial)
-        NDMV // Normalized difference in mean value (nonspatial)
-    };
 
-    asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order);
-
-    static asCriteria *GetInstance(Criteria criteriaEnum);
+    asCriteria(const wxString &name, const wxString &fullname, Order order);
 
     static asCriteria *GetInstance(const wxString &criteriaString);
 
@@ -81,11 +56,6 @@ public:
     void SetDataRange(float minValue, float maxValue);
 
     static a2f GetGauss2D(int nY, int nX);
-
-    Criteria GetType() const
-    {
-        return m_criteria;
-    }
 
     wxString GetName() const
     {
@@ -108,7 +78,6 @@ public:
     }
 
 protected:
-    enum Criteria m_criteria;
     wxString m_name;
     wxString m_fullName;
     Order m_order;

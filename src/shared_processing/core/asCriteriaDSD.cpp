@@ -28,7 +28,7 @@
 #include "asCriteriaDSD.h"
 
 asCriteriaDSD::asCriteriaDSD()
-        : asCriteria(asCriteria::DSD, "DSD", _("Difference in standard deviation (nonspatial)"), Asc)
+        : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc)
 {
     m_scaleBest = 0;
     m_scaleWorst = NaNf;

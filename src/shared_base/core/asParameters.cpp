@@ -1027,6 +1027,11 @@ wxString asParameters::Print() const
             content.Append(wxString::Format("yPtsNb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
             content.Append(wxString::Format("yStep\t%g\t", GetPredictorYstep(iStep, iPtor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(iStep, iPtor)));
+            if (!GetPreprocessMethod(iStep, iPtor).IsEmpty()) {
+                content.Append(wxString::Format("%s\t", GetPreprocessMethod(iStep, iPtor)));
+            } else {
+                content.Append("NoPreprocessing\t");
+            }
             content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(iStep, iPtor)));
         }
     }
@@ -1603,8 +1608,114 @@ bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const
 {
     wxString method = m_steps[iStep].predictors[iPtor].preprocessMethod;
 
-    return method.IsSameAs("Gradients", false) || method.IsSameAs("SimpleGradients", false) ||
-           method.IsSameAs("RealGradients", false);
+    return method.IsSameAs("Gradients", false) ||
+           method.IsSameAs("SimpleGradients", false) ||
+           method.IsSameAs("RealGradients", false) ||
+           method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
+           method.IsSameAs("RealGradientsWithGaussianWeights", false);
+}
+
+bool asParameters::IsCriteriaUsingGradients(int iStep, int iPtor) const
+{
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads")) {
+        return true;
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads")) {
+        return true;
+    }
+
+    return false;
+}
+
+void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor)
+{
+    if (NeedsGradientPreprocessing(iStep, iPtor)) {
+        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
+            SetPredictorCriteria(iStep, iPtor, "S1grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG")) {
+            SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG")) {
+            SetPredictorCriteria(iStep, iPtor, "S2grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG")) {
+            SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        }
+    }
+}
+
+void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor)
+{
+    // Gradients - S1
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradientsWithGaussianWeights");
+    }
+
+    // Curvature - S2
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvatureWithGaussianWeights");
+    }
 }
 
 wxString asParameters::GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const

@@ -45,6 +45,18 @@ public:
 
     static bool PreprocessRealGradients(std::vector<asPredictor *> predictors, asPredictor *result);
 
+    static bool PreprocessSimpleGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessSimpleCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessSimpleGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealGradientsWithCurvatureWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
     static bool PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessAverage(std::vector<asPredictor *> predictors, asPredictor *result);
@@ -64,6 +76,7 @@ public:
 protected:
 
 private:
+    static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
 };
 
 #endif // ASPREPROCESSOR_H

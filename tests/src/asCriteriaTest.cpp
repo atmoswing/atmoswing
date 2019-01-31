@@ -573,7 +573,7 @@ TEST(Criteria, ProcessRSE)
     critRMSE[6] = 1791.5f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(asCriteria::RSE);
+    asCriteria *criteria = asCriteria::GetInstance("RSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -1151,7 +1151,7 @@ TEST(Criteria, ProcessDifferences)
     results[9] = 1354;
     results[10] = 908;
 
-    asCriteria *criteriaSAD = asCriteria::GetInstance(asCriteria::SAD);
+    asCriteria *criteriaSAD = asCriteria::GetInstance("SAD");
 
     float res;
     for (int i = 0; i < 11; i++) {
@@ -1175,7 +1175,7 @@ TEST(Criteria, ProcessDifferences)
     results[9] = 338.5;
     results[10] = 227;
 
-    asCriteria *criteriaMD = asCriteria::GetInstance(asCriteria::MD);
+    asCriteria *criteriaMD = asCriteria::GetInstance("MD");
 
     for (int i = 0; i < 11; i++) {
         res = criteriaMD->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
@@ -1198,7 +1198,7 @@ TEST(Criteria, ProcessDifferences)
     results[9] = 338.5f / 2298.0f;
     results[10] = 227.0f / 2298.0f;
 
-    asCriteria *criteriaNMD = asCriteria::GetInstance(asCriteria::NMD);
+    asCriteria *criteriaNMD = asCriteria::GetInstance("NMD");
     criteriaNMD->SetDataRange(2, 2300.0);
 
     for (int i = 0; i < 11; i++) {
@@ -1222,7 +1222,7 @@ TEST(Criteria, ProcessDifferences)
     results[9] = 1.3130f;
     results[10] = 0.4173f;
 
-    asCriteria *criteriaMRDtoMax = asCriteria::GetInstance(asCriteria::MRDtoMax);
+    asCriteria *criteriaMRDtoMax = asCriteria::GetInstance("MRDtoMax");
 
     for (int i = 0; i < 4; i++) {
         res = criteriaMRDtoMax->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
@@ -1250,7 +1250,7 @@ TEST(Criteria, ProcessDifferences)
     results[9] = NaNf;
     results[10] = 0.543f;
 
-    asCriteria *criteriaMRDtoMean = asCriteria::GetInstance(asCriteria::MRDtoMean);
+    asCriteria *criteriaMRDtoMean = asCriteria::GetInstance("MRDtoMean");
 
     for (int i = 0; i < 4; i++) {
         res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
