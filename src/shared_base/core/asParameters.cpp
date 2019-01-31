@@ -96,6 +96,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.timeHours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
+    predictor.membersNb = 0;
 
     step.predictors.push_back(predictor);
 }
@@ -127,6 +128,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.timeHours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
+    predictor.membersNb = 0;
 
     m_steps[iStep].predictors.push_back(predictor);
 }

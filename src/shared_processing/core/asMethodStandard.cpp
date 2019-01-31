@@ -798,6 +798,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 {
     wxLogVerbose(_("Using preloaded data."));
 
+    bool doPreprocessGradients = false;
+
     // Get preload arrays
     vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
     vd preloadTimeHours = params->GetPreloadTimeHours(iStep, iPtor);
@@ -826,6 +828,9 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 
         // Force gradients preprocessing anyway.
         params->ForceUsingGradientsPreprocessing(iStep, iPtor);
+        if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
+            doPreprocessGradients = true;
+        }
     } else {
         // Correct according to the method
         if (params->NeedsGradientPreprocessing(iStep, iPtor)) {
@@ -994,7 +999,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     }
     wxDELETE(desiredArea);
 
-    if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
+    if (doPreprocessGradients) {
         std::vector<asPredictorArch *> predictorsPreprocess;
         predictorsPreprocess.push_back(desiredPredictor);
 

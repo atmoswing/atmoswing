@@ -328,7 +328,8 @@ bool asPredictorArch::ClipToArea(asAreaCompGrid *desiredArea)
 
         if (IsPreprocessed()) {
             wxString method = GetPreprocessMethod();
-            if (method.IsSameAs("Gradients") || method.IsSameAs("SimpleGradients") || method.IsSameAs("RealGradients")) {
+            if (method.IsSameAs("Gradients") || method.IsSameAs("SimpleGradients") || method.IsSameAs("RealGradients") ||
+                method.IsSameAs("SimpleGradientsWithGaussianWeights") || method.IsSameAs("RealGradientsWithGaussianWeights")) {
                 vva2f originalData = m_data;
 
                 if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != 2 * m_axisLat.size()) {
