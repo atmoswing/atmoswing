@@ -80,6 +80,8 @@ public:
 
     void SetDataRange(float minValue, float maxValue);
 
+    static a2f GetGauss2D(int nY, int nX);
+
     Criteria GetType() const
     {
         return m_criteria;

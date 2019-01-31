@@ -240,3 +240,18 @@ void asCriteria::SetDataRange(float minValue, float maxValue)
     m_dataMin = minValue;
     m_dataMax = maxValue;
 }
+
+a2f asCriteria::GetGauss2D(int nY, int nX)
+{
+    float A = 1.0;
+    auto x0 = (nX + 1.0f) / 2.0f;
+    auto y0 = (nY + 1.0f) / 2.0f;
+
+    float a = 1 / (0.5f * std::pow(x0, 2));
+    float c = 1 / (0.5f * std::pow(y0, 2));
+
+    a2f X = Eigen::RowVectorXf::LinSpaced(nX, 1, nX).replicate(nY, 1);
+    a2f Y = Eigen::VectorXf::LinSpaced(nY, 1, nY).replicate(1, nX);
+
+    return A * (-(a * (X - x0).pow(2) + c * (Y - y0).pow(2))).exp();
+}
