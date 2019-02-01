@@ -135,6 +135,16 @@ public:
         return m_data;
     }
 
+    wxString GetDataId() const
+    {
+        return m_dataId;
+    }
+
+    wxString GetProduct() const
+    {
+        return m_product;
+    }
+
     Parameter GetParameter() const
     {
         return m_parameter;

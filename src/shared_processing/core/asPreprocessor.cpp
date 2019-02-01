@@ -138,7 +138,8 @@ bool asPreprocessor::PreprocessSimpleGradients(std::vector<asPredictor *> predic
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -223,7 +224,8 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
             if (asHasNaN(tmpgrad)) {
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -303,7 +305,8 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(std::vector<as
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -391,7 +394,8 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(std::vector<asPr
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
             if (asHasNaN(tmpgrad)) {
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -476,7 +480,8 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -568,7 +573,8 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -656,7 +662,8 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
@@ -751,7 +758,8 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
                 // std::cout << "\n" << std::endl;
                 // std::cout << predictors[0]->GetData()[iTime] << std::endl;
 
-                wxLogError(_("NaN found during gradients preprocessing !"));
+                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
+                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
                 return false;
             }
 
