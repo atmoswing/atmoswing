@@ -571,13 +571,15 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                     // Weight and add the score
                                     thisScore += tmpScore * params->GetPredictorWeight(step, iPtor);
 
-                                }
-                                if (asIsNaN(thisScore)) {
-                                    containsNaNs = true;
-                                    wxLogWarning(_("NaNs were found in the criteria values."));
-                                    wxLogWarning(_("Target date: %s, archive date: %s."),
-                                                 asTime::GetStringTime(timeTargetSelection[iDateTarg]),
-                                                 asTime::GetStringTime(dateArrayArchiveSelection[iDateArch]));
+                                    if (asIsNaN(tmpScore)) {
+                                        containsNaNs = true;
+                                        wxLogWarning(_("NaNs were found in the criteria values (%s/%s)."),
+                                                     predictorsArchive[iPtor]->GetProduct(),
+                                                     predictorsArchive[iPtor]->GetDataId());
+                                        wxLogWarning(_("Target date: %s, archive date: %s."),
+                                                     asTime::GetStringTime(timeTargetSelection[iDateTarg]),
+                                                     asTime::GetStringTime(dateArrayArchiveSelection[iDateArch]));
+                                    }
                                 }
 
                                 // Avoid duplicate analog dates
@@ -984,13 +986,16 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
                                 // Weight and add the score
                                 thisscore += tmpscore * params->GetPredictorWeight(step, iPtor);
-                            }
-                            if (asIsNaN(thisscore)) {
-                                containsNaNs = true;
-                                wxLogWarning(_("NaNs were found in the criteria values."));
-                                wxLogWarning(_("Target date: %s, archive date: %s."),
-                                             asTime::GetStringTime(timeTargetData[iTimeTarg]),
-                                             asTime::GetStringTime(timeArchiveData[iTimeArch]));
+
+                                if (asIsNaN(tmpscore)) {
+                                    containsNaNs = true;
+                                    wxLogWarning(_("NaNs were found in the criteria values (%s/%s)."),
+                                                 predictorsArchive[iPtor]->GetProduct(),
+                                                 predictorsArchive[iPtor]->GetDataId());
+                                    wxLogWarning(_("Target date: %s, archive date: %s."),
+                                                 asTime::GetStringTime(timeTargetData[iTimeTarg]),
+                                                 asTime::GetStringTime(timeArchiveData[iTimeArch]));
+                                }
                             }
 
                             // Check if the array is already full
