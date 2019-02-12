@@ -31,14 +31,11 @@ asCriteriaDSD::asCriteriaDSD()
         : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc)
 {
     m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
-asCriteriaDSD::~asCriteriaDSD()
-{
-    //dtor
-}
+asCriteriaDSD::~asCriteriaDSD() = default;
 
 float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -49,8 +46,31 @@ float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float) (refData.size() - 1));
-    float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float) (evalData.size() - 1));
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
 
-    return std::fabs(refStdDev - evalStdDev);
+        float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float) (refData.size() - 1));
+        float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float) (evalData.size() - 1));
+
+        return std::fabs(refStdDev - evalStdDev);
+
+    } else {
+
+        int size = (!evalData.isNaN() && !refData.isNaN()).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+            return m_scaleWorst;
+        }
+
+        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
+        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
+
+        a2f refDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(refData - refMean, 0);
+        a2f evalDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(evalData - evalMean, 0);
+
+        float refStdDev = std::sqrt((refDataDiff).square().sum() / (float) (size - 1));
+        float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float) (size - 1));
+
+        return std::fabs(refStdDev - evalStdDev);
+    }
+
 }

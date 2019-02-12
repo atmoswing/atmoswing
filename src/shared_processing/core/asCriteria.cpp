@@ -28,8 +28,6 @@
 #include "asCriteria.h"
 #include "asCriteriaMD.h"
 #include "asCriteriaNMD.h"
-#include "asCriteriaMRDtoMax.h"
-#include "asCriteriaMRDtoMean.h"
 #include "asCriteriaRMSE.h"
 #include "asCriteriaNRMSE.h"
 #include "asCriteriaRSE.h"
@@ -116,14 +114,6 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
     } else if (criteriaString.CmpNoCase("NMD") == 0) {
         // Normalized Mean difference
         asCriteria *criteria = new asCriteriaNMD();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("MRDtoMax") == 0) {
-        // Mean Relative difference to the max value
-        asCriteria *criteria = new asCriteriaMRDtoMax();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("MRDtoMean") == 0) {
-        // Mean Relative difference to the mean value
-        asCriteria *criteria = new asCriteriaMRDtoMean();
         return criteria;
     } else if (criteriaString.CmpNoCase("RMSE") == 0) {
         // Root mean square error

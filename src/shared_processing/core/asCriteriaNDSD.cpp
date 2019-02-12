@@ -35,10 +35,7 @@ asCriteriaNDSD::asCriteriaNDSD()
     m_needsDataRange = true;
 }
 
-asCriteriaNDSD::~asCriteriaNDSD()
-{
-    //dtor
-}
+asCriteriaNDSD::~asCriteriaNDSD() = default;
 
 float asCriteriaNDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

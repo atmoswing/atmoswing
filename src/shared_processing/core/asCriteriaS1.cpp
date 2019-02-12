@@ -36,10 +36,7 @@ asCriteriaS1::asCriteriaS1()
     m_canUseInline = false;
 }
 
-asCriteriaS1::~asCriteriaS1()
-{
-    //dtor
-}
+asCriteriaS1::~asCriteriaS1() = default;
 
 float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -50,6 +47,11 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
     wxASSERT(refData.rows() > 1);
     wxASSERT(refData.cols() > 1);
 
+    if (refData.hasNaN() || evalData.hasNaN()) {
+        wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
+        return NaNf;
+    }
+
     float dividend = 0, divisor = 0;
 
     dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
@@ -58,9 +60,9 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
                  (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb))).abs()).sum();
 
     divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs().max(
-            (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs())).sum() +
+               (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs())).sum() +
               ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs().max(
-                      (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs())).sum();
+               (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs())).sum();
 
 
     /* More readable version
@@ -89,7 +91,7 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNf;
+            return m_scaleWorst;
         }
     }
 

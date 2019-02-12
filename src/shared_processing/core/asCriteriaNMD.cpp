@@ -35,10 +35,7 @@ asCriteriaNMD::asCriteriaNMD()
     m_needsDataRange = true;
 }
 
-asCriteriaNMD::~asCriteriaNMD()
-{
-    //dtor
-}
+asCriteriaNMD::~asCriteriaNMD() = default;
 
 float asCriteriaNMD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

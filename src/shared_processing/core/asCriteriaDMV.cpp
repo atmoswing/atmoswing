@@ -28,17 +28,14 @@
 #include "asCriteriaDMV.h"
 
 asCriteriaDMV::asCriteriaDMV()
-        : asCriteria("DMV", _("Difference in mean value (nonspatial)"), Asc)
+        : asCriteria("DMV", _("Absolute difference in mean value (nonspatial)"), Asc)
 {
     m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
-asCriteriaDMV::~asCriteriaDMV()
-{
-    //dtor
-}
+asCriteriaDMV::~asCriteriaDMV() = default;
 
 float asCriteriaDMV::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -49,5 +46,22 @@ float asCriteriaDMV::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    return std::fabs(refData.mean() - evalData.mean());
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
+
+        return std::fabs(refData.mean() - evalData.mean());
+
+    } else {
+
+        int size = (!evalData.isNaN() && !refData.isNaN()).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+            return m_scaleWorst;
+        }
+
+        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
+        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
+
+        return std::fabs(refMean - evalMean);
+    }
+
 }

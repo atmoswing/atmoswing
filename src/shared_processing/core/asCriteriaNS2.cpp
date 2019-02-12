@@ -35,10 +35,7 @@ asCriteriaNS2::asCriteriaNS2()
     m_order = Asc;
 }
 
-asCriteriaNS2::~asCriteriaNS2()
-{
-    //dtor
-}
+asCriteriaNS2::~asCriteriaNS2() = default;
 
 float asCriteriaNS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

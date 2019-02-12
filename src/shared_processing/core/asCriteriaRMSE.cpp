@@ -50,15 +50,20 @@ float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb
     float mse = 0;
 
     if (!refData.hasNaN() && !evalData.hasNaN()) {
+
         mse = (evalData - refData).pow(2).sum() / (float) refData.size();
+
     } else {
+
         a2f diff = evalData - refData;
-        int size = (diff == diff).count();
+
+        int size = (!diff.isNaN()).count();
         if (size == 0) {
             wxLogVerbose(_("Only NaNs in the criteria calculation."));
             return m_scaleWorst;
         }
-        mse = ((diff == diff).select(diff, 0)).pow(2).sum() / (float) size;
+
+        mse = ((diff.isNaN()).select(0, diff)).pow(2).sum() / (float) size;
     }
 
     return std::sqrt(mse);

@@ -133,16 +133,6 @@ bool asPreprocessor::PreprocessSimpleGradients(std::vector<asPredictor *> predic
                     predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
 
-            if (asHasNaN(tmpgrad)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
-
             gradients[iTime].push_back(tmpgrad);
         }
     }
@@ -223,12 +213,6 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
                     (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
-            if (asHasNaN(tmpgrad)) {
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
-
             gradients[iTime].push_back(tmpgrad);
         }
     }
@@ -299,16 +283,6 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(std::vector<as
             tmpgrad.block(rowsNb, 0, rowsNb, colsNb - 1) =
                     g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1));
-
-            if (asHasNaN(tmpgrad)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
 
             gradients[iTime].push_back(tmpgrad);
         }
@@ -393,12 +367,6 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(std::vector<asPr
                     g1 * (predictors[0]->GetData()[iTime][iMem].block(0, 1, rowsNb, colsNb - 1) -
                     predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
-            if (asHasNaN(tmpgrad)) {
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
-
             gradients[iTime].push_back(tmpgrad);
         }
     }
@@ -474,16 +442,6 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
             // Horizontal gradients
             tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
-
-            if (asHasNaN(tmpcurv)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
 
             curvature[iTime].push_back(tmpcurv);
         }
@@ -568,16 +526,6 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
             tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
 
-            if (asHasNaN(tmpcurv)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
-
             curvature[iTime].push_back(tmpcurv);
         }
     }
@@ -656,16 +604,6 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
             // Horizontal gradients
             tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
-
-            if (asHasNaN(tmpcurv)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
 
             curvature[iTime].push_back(tmpcurv);
         }
@@ -752,16 +690,6 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
             // Horizontal gradients
             tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
-
-            if (asHasNaN(tmpcurv)) {
-                // std::cout << tmpgrad << std::endl;
-                // std::cout << "\n" << std::endl;
-                // std::cout << predictors[0]->GetData()[iTime] << std::endl;
-
-                wxLogError(_("NaN found during gradients preprocessing (%s/%s) !"),
-                           predictors[0]->GetProduct(), predictors[0]->GetDataId());
-                return false;
-            }
 
             curvature[iTime].push_back(tmpcurv);
         }

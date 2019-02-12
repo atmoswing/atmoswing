@@ -34,10 +34,7 @@ asCriteriaNS1grads::asCriteriaNS1grads()
     m_fullName = _("Normalized Teweles-Wobus on gradients");
 }
 
-asCriteriaNS1grads::~asCriteriaNS1grads()
-{
-    //dtor
-}
+asCriteriaNS1grads::~asCriteriaNS1grads() = default;
 
 float asCriteriaNS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

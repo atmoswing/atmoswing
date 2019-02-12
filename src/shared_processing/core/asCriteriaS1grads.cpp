@@ -36,10 +36,7 @@ asCriteriaS1grads::asCriteriaS1grads()
     m_canUseInline = true;
 }
 
-asCriteriaS1grads::~asCriteriaS1grads()
-{
-    //dtor
-}
+asCriteriaS1grads::~asCriteriaS1grads() = default;
 
 float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -53,8 +50,18 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
     // Note here that the actual gradient data do not fill the entire data blocks,
     // but the rest being 0-filled, we can simplify the sum calculation !
 
-    dividend = ((refData - evalData).abs()).sum();
-    divisor = (refData.abs().max(evalData.abs())).sum();
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
+
+        dividend = ((refData - evalData).abs()).sum();
+        divisor = (refData.abs().max(evalData.abs())).sum();
+
+    } else {
+        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
+        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
+
+        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
+        divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();
+    }
 
     if (divisor > 0) {
         return 100.0f * (dividend / divisor); // Can be NaN
@@ -63,7 +70,7 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNf;
+            return m_scaleWorst;
         }
     }
 

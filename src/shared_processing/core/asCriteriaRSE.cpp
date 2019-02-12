@@ -32,20 +32,35 @@ asCriteriaRSE::asCriteriaRSE()
         : asCriteria("RSE", _("Root Squared Error"), Asc)
 {
     m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
-asCriteriaRSE::~asCriteriaRSE()
-{
-    //dtor
-}
+asCriteriaRSE::~asCriteriaRSE() = default;
 
 float asCriteriaRSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 
-    return std::sqrt((evalData - refData).pow(2).sum()); // Can be NaN
+    float se = 0;
 
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
+
+        se = (evalData - refData).pow(2).sum();
+
+    } else {
+
+        a2f diff = evalData - refData;
+
+        int size = (!diff.isNaN()).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+            return m_scaleWorst;
+        }
+
+        se = ((diff.isNaN()).select(0, diff)).pow(2).sum();
+    }
+
+    return std::sqrt(se);
 }

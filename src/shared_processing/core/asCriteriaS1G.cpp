@@ -35,10 +35,7 @@ asCriteriaS1G::asCriteriaS1G()
     m_canUseInline = false;
 }
 
-asCriteriaS1G::~asCriteriaS1G()
-{
-    //dtor
-}
+asCriteriaS1G::~asCriteriaS1G() = default;
 
 float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -48,6 +45,11 @@ float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(refData.cols() == colsNb);
     wxASSERT(refData.rows() > 1);
     wxASSERT(refData.cols() > 1);
+
+    if (refData.hasNaN() || evalData.hasNaN()) {
+        wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
+        return NaNf;
+    }
 
     float dividend = 0, divisor = 0;
 
@@ -64,26 +66,6 @@ float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
               (g2 * (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs().max(
                (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs())).sum();
 
-
-    /* More readable version
-    Array2DFloat RefGradCols(rowsNb, colsNb - 1);
-    Array2DFloat RefGradRows(rowsNb - 1, colsNb);
-    Array2DFloat EvalGradCols(evalData.rows(), evalData.cols() - 1);
-    Array2DFloat EvalGradRows(evalData.rows() - 1, evalData.cols());
-
-    RefGradCols = (refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1));
-    RefGradRows = (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb));
-    EvalGradCols = (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-                    evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1));
-    EvalGradRows = (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                    evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()));
-
-    dividend = ((RefGradCols - EvalGradCols).abs()).sum() + ((RefGradRows - EvalGradRows).abs()).sum();
-    divisor = (RefGradCols.abs().max(EvalGradCols.abs())).sum() +
-              (RefGradRows.abs().max(EvalGradRows.abs())).sum();
-
-    */
-
     if (divisor > 0) {
         return 100.0f * (dividend / divisor); // Can be NaN
     } else {
@@ -91,7 +73,7 @@ float asCriteriaS1G::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNf;
+            return m_scaleWorst;
         }
     }
 

@@ -35,10 +35,7 @@ asCriteriaNDMV::asCriteriaNDMV()
     m_needsDataRange = true;
 }
 
-asCriteriaNDMV::~asCriteriaNDMV()
-{
-    //dtor
-}
+asCriteriaNDMV::~asCriteriaNDMV() = default;
 
 float asCriteriaNDMV::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

@@ -32,19 +32,32 @@ asCriteriaSAD::asCriteriaSAD()
         : asCriteria("SAD", _("Sum of Absolute Differences"), Asc)
 {
     m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
-asCriteriaSAD::~asCriteriaSAD()
-{
-    //dtor
-}
+asCriteriaSAD::~asCriteriaSAD() = default;
 
 float asCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 
-    return (evalData - refData).abs().sum();
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
+
+        return (evalData - refData).abs().sum();
+
+    } else {
+
+        a2f diff = evalData - refData;
+
+        int size = (!diff.isNaN()).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+            return m_scaleWorst;
+        }
+
+        return ((diff.isNaN()).select(0, diff)).abs().sum();
+    }
+
 }

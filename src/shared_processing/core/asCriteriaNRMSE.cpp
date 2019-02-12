@@ -35,10 +35,7 @@ asCriteriaNRMSE::asCriteriaNRMSE()
     m_needsDataRange = true;
 }
 
-asCriteriaNRMSE::~asCriteriaNRMSE()
-{
-    //dtor
-}
+asCriteriaNRMSE::~asCriteriaNRMSE() = default;
 
 float asCriteriaNRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {

@@ -36,7 +36,7 @@
 #include "gtest/gtest.h"
 
 
-TEST(Criteria, ProcessS1)
+TEST(Criteria, S1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -118,7 +118,7 @@ TEST(Criteria, ProcessS1)
     critS1[9] = 61.8f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("S1"));
+    asCriteria *criteria = asCriteria::GetInstance("S1");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -161,7 +161,7 @@ TEST(Criteria, ProcessS1)
 
 }
 
-TEST(Criteria, ProcessNS1)
+TEST(Criteria, NS1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -243,7 +243,7 @@ TEST(Criteria, ProcessNS1)
     critS1[9] = 61.8f / 200.0f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("NS1"));
+    asCriteria *criteria = asCriteria::GetInstance("NS1");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -286,7 +286,7 @@ TEST(Criteria, ProcessNS1)
 
 }
 
-TEST(Criteria, ProcessS1preprocessed)
+TEST(Criteria, S1preprocessed)
 {
     double xMin = 10;
     double xWidth = 10;
@@ -336,8 +336,8 @@ TEST(Criteria, ProcessS1preprocessed)
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("S1"));
-    asCriteria *criteriaGrads = asCriteria::GetInstance(_("S1grads"));
+    asCriteria *criteria = asCriteria::GetInstance("S1");
+    asCriteria *criteriaGrads = asCriteria::GetInstance("S1grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -359,7 +359,7 @@ TEST(Criteria, ProcessS1preprocessed)
 
 }
 
-TEST(Criteria, ProcessNS1preprocessed)
+TEST(Criteria, NS1preprocessed)
 {
     double xMin = 10;
     double xWidth = 10;
@@ -409,8 +409,8 @@ TEST(Criteria, ProcessNS1preprocessed)
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("NS1"));
-    asCriteria *criteriaGrads = asCriteria::GetInstance(_("NS1grads"));
+    asCriteria *criteria = asCriteria::GetInstance("NS1");
+    asCriteria *criteriaGrads = asCriteria::GetInstance("NS1grads");
 
     // Loop on every candidate
     for (int iCand = 1; iCand < candidatesNb; iCand++) {
@@ -432,7 +432,7 @@ TEST(Criteria, ProcessNS1preprocessed)
 
 }
 
-TEST(Criteria, ProcessRSE)
+TEST(Criteria, RSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -608,7 +608,7 @@ TEST(Criteria, ProcessRSE)
 
 }
 
-TEST(Criteria, ProcessRMSE)
+TEST(Criteria, RMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -713,7 +713,7 @@ TEST(Criteria, ProcessRMSE)
     critRMSE[6] = 632.32f;
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("RMSE"));
+    asCriteria *criteria = asCriteria::GetInstance("RMSE");
 
     // Loop on every candidate
     for (int iCand = 0; iCand < candidatesNb; iCand++) {
@@ -780,29 +780,29 @@ TEST(Criteria, ProcessRMSE)
 
 }
 
-TEST(Criteria, ProcessRMSEwithNaNs)
+TEST(Criteria, RMSEwithNaNs)
 {
     // Create the containers
     int lons = 4;
     int lats = 4;
     a2f refData(lats, lons), candData(lats, lons);
 
-    refData << 0.4903, 0.1785, 0.9245, 0.4212, 0.6166, NaNf, 0.4496, 0.612, 0.531, 0.5112, 0.6155, 0.4553, 0.2353,
-               0.5602, 0.2524, 0.8011;
-    candData << 0.0136, 0.2671, 0.3951, 0.8645, 0.0489, 0.0921, 0.6901, 0.0887, 0.5477, 0.0562, 0.4862, 0.9309, 0.3185,
-                0.2835, 0.5472, NaNf;
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    asCriteria *criteria = asCriteria::GetInstance(_("RMSE"));
+    asCriteria *criteria = asCriteria::GetInstance("RMSE");
 
     float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
 
-    EXPECT_FLOAT_EQ(0.3766817, res);
+    EXPECT_FLOAT_EQ(0.3766817f, res);
 
     wxDELETE(criteria);
 
 }
 
-TEST(Criteria, ProcessNRMSE)
+TEST(Criteria, NRMSE)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
@@ -907,7 +907,7 @@ TEST(Criteria, ProcessNRMSE)
     critRMSE[6] = 632.32f / (2053.4f - 62.1f);
 
     // Instantiate the criteria
-    asCriteria *criteria = asCriteria::GetInstance(_("NRMSE"));
+    asCriteria *criteria = asCriteria::GetInstance("NRMSE");
     criteria->SetDataRange(62.1f, 2053.4f); // fake range here...
 
     // Loop on every candidate
@@ -975,7 +975,7 @@ TEST(Criteria, ProcessNRMSE)
 
 }
 
-TEST(Criteria, ProcessDifferences)
+TEST(Criteria, Differences)
 {
     va2f refData;
     a2f dataTmp(2, 2);
@@ -1165,67 +1165,64 @@ TEST(Criteria, ProcessDifferences)
 
     wxDELETE(criteriaNMD);
 
-    // MRDtoMax
+}
 
-    results[0] = 0.956f;
-    results[1] = 0.9929f;
-    results[2] = 1;
-    results[3] = 0;
-    results[4] = NaNf;
-    results[5] = 1;
-    results[6] = 1.1098f;
-    results[7] = 1;
-    results[8] = 1;
-    results[9] = 1.3130f;
-    results[10] = 0.4173f;
+TEST(Criteria, DMV)
+{
+    // Create the containers
+    int lons = 4;
+    int lats = 4;
+    a2f refData(lats, lons), candData(lats, lons);
+    a2f refDataNaN(lats, lons), candDataNaN(lats, lons);
 
-    asCriteria *criteriaMRDtoMax = asCriteria::GetInstance("MRDtoMax");
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+            0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    for (int i = 0; i < 4; i++) {
-        res = criteriaMRDtoMax->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
-        EXPECT_NEAR(results[i], res, 0.0001);
-    }
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    for (int i = 5; i < 11; i++) {
-        res = criteriaMRDtoMax->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
-        EXPECT_NEAR(results[i], res, 0.0001);
-    }
+    asCriteria *criteria = asCriteria::GetInstance("DMV");
 
-    wxDELETE(criteriaMRDtoMax);
+    float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
+    float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
-    // MRDtoMean
+    EXPECT_FLOAT_EQ(0.1243563f, res);
+    EXPECT_FLOAT_EQ(0.09395714f, resNaN);
 
-    results[0] = 1.835f;
-    results[1] = 1.972f;
-    results[2] = 2;
-    results[3] = 0;
-    results[4] = NaNf;
-    results[5] = 2;
-    results[6] = 2.532f;
-    results[7] = 2;
-    results[8] = 2;
-    results[9] = NaNf;
-    results[10] = 0.543f;
+    wxDELETE(criteria);
+}
 
-    asCriteria *criteriaMRDtoMean = asCriteria::GetInstance("MRDtoMean");
+TEST(Criteria, DSD)
+{
+    // Create the containers
+    int lons = 4;
+    int lats = 4;
+    a2f refData(lats, lons), candData(lats, lons);
+    a2f refDataNaN(lats, lons), candDataNaN(lats, lons);
 
-    for (int i = 0; i < 4; i++) {
-        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
-        EXPECT_NEAR(results[i], res, 0.001);
-    }
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+            0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    for (int i = 5; i < 9; i++) {
-        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
-        EXPECT_NEAR(results[i], res, 0.001);
-    }
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
+            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
+            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
-    for (int i = 10; i < 11; i++) {
-        res = criteriaMRDtoMean->Assess(refData[i], candData[i], refData[i].rows(), refData[i].cols());
-        EXPECT_NEAR(results[i], res, 0.001);
-    }
+    asCriteria *criteria = asCriteria::GetInstance("DSD");
 
-    wxDELETE(criteriaMRDtoMean);
+    float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
+    float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
+    EXPECT_FLOAT_EQ(0.10311281f, res);
+    EXPECT_FLOAT_EQ(0.108632276f, resNaN);
+
+    wxDELETE(criteria);
 }
 
 TEST(Criteria, Gauss2D)
