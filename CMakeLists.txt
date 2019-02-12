@@ -43,7 +43,7 @@ else (WIN32)
 endif (WIN32)
 
 # Libraries version
-set(EIGEN_VERSION 3.3.5)
+set(EIGEN_VERSION 3.3.7)
 
 # MSYS condition
 if (WIN32)

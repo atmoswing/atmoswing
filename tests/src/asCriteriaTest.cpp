@@ -44,15 +44,11 @@ TEST(Criteria, ProcessS1)
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
-    // Resize the containers
+    // Create the containers
     int lons = 9;
     int lats = 5;
-    a2f refZ1000, candZ1000;
-    refZ1000.resize(lats, lons);
-    candZ1000.resize(lats, lons);
-    a2f refZ500, candZ500;
-    refZ500.resize(lats, lons);
-    candZ500.resize(lats, lons);
+    a2f refZ1000(lats, lons), candZ1000(lats, lons);
+    a2f refZ500(lats, lons), candZ500(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -85,10 +81,7 @@ TEST(Criteria, ProcessS1)
 
     // Vectors for candidates results
     int candidatesNb = 10;
-    vf checkZ1000, checkZ500, critS1;
-    checkZ1000.resize(candidatesNb);
-    checkZ500.resize(candidatesNb);
-    critS1.resize(candidatesNb);
+    vf checkZ1000(candidatesNb), checkZ500(candidatesNb), critS1(candidatesNb);
 
     // Real values for the read checks
     checkZ1000[0] = 122;
@@ -176,15 +169,11 @@ TEST(Criteria, ProcessNS1)
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
-    // Resize the containers
+    // Create the containers
     int lons = 9;
     int lats = 5;
-    a2f refZ1000, candZ1000;
-    refZ1000.resize(lats, lons);
-    candZ1000.resize(lats, lons);
-    a2f refZ500, candZ500;
-    refZ500.resize(lats, lons);
-    candZ500.resize(lats, lons);
+    a2f refZ1000(lats, lons), candZ1000(lats, lons);
+    a2f refZ500(lats, lons), candZ500(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -217,10 +206,7 @@ TEST(Criteria, ProcessNS1)
 
     // Vectors for candidates results
     int candidatesNb = 10;
-    vf checkZ1000, checkZ500, critS1;
-    checkZ1000.resize(candidatesNb);
-    checkZ500.resize(candidatesNb);
-    critS1.resize(candidatesNb);
+    vf checkZ1000(candidatesNb), checkZ500(candidatesNb), critS1(candidatesNb);
 
     // Real values for the read checks
     checkZ1000[0] = 122.0f / 200.0f;
@@ -331,18 +317,14 @@ TEST(Criteria, ProcessS1preprocessed)
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
-    // Resize the containers
+    // Create the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    a2f refOriginal, candOriginal;
-    refOriginal.resize(latsOriginal, lonsOriginal);
-    candOriginal.resize(latsOriginal, lonsOriginal);
+    a2f refOriginal(latsOriginal, lonsOriginal), candOriginal(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    a2f refPreproc, candPreproc;
-    refPreproc.resize(latsPreproc, lonsPreproc);
-    candPreproc.resize(latsPreproc, lonsPreproc);
+    a2f refPreproc(latsPreproc, lonsPreproc), candPreproc(latsPreproc, lonsPreproc);
 
     // Set target data
     refOriginal = hgtOriginal[0][0];
@@ -350,8 +332,7 @@ TEST(Criteria, ProcessS1preprocessed)
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
-    vf critS1;
-    critS1.resize(candidatesNb);
+    vf critS1(candidatesNb);
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
@@ -409,18 +390,14 @@ TEST(Criteria, ProcessNS1preprocessed)
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
-    // Resize the containers
+    // Create the containers
     int lonsOriginal = hgtOriginal[0][0].cols();
     int latsOriginal = hgtOriginal[0][0].rows();
-    a2f refOriginal, candOriginal;
-    refOriginal.resize(latsOriginal, lonsOriginal);
-    candOriginal.resize(latsOriginal, lonsOriginal);
+    a2f refOriginal(latsOriginal, lonsOriginal), candOriginal(latsOriginal, lonsOriginal);
 
     int lonsPreproc = hgtPreproc[0][0].cols();
     int latsPreproc = hgtPreproc[0][0].rows();
-    a2f refPreproc, candPreproc;
-    refPreproc.resize(latsPreproc, lonsPreproc);
-    candPreproc.resize(latsPreproc, lonsPreproc);
+    a2f refPreproc(latsPreproc, lonsPreproc), candPreproc(latsPreproc, lonsPreproc);
 
     // Set target data
     refOriginal = hgtOriginal[0][0];
@@ -428,8 +405,7 @@ TEST(Criteria, ProcessNS1preprocessed)
 
     // Vectors for results
     int candidatesNb = hgtOriginal.size();
-    vf critS1;
-    critS1.resize(candidatesNb);
+    vf critS1(candidatesNb);
     EXPECT_TRUE(candidatesNb > 1);
 
     // Instantiate the criteria
@@ -464,18 +440,12 @@ TEST(Criteria, ProcessRSE)
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
-    // Resize the containers
+    // Create the containers
     int lons = 2;
     int lats = 2;
-    a2f refPRWTR, candPRWTR;
-    refPRWTR.resize(lats, 2 * lons);
-    candPRWTR.resize(lats, 2 * lons);
-    a2f refRHUM850, candRHUM850;
-    refRHUM850.resize(lats, 2 * lons);
-    candRHUM850.resize(lats, 2 * lons);
-    a2f refMulti, candMulti;
-    refMulti.resize(lats, 2 * lons);
-    candMulti.resize(lats, 2 * lons);
+    a2f refPRWTR(lats, 2 * lons), candPRWTR(lats, 2 * lons);
+    a2f refRHUM850(lats, 2 * lons), candRHUM850(lats, 2 * lons);
+    a2f refMulti(lats, 2 * lons), candMulti(lats, 2 * lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -542,10 +512,7 @@ TEST(Criteria, ProcessRSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    vf checkPRWTR, checkRHUM850, critRMSE;
-    checkPRWTR.resize(candidatesNb);
-    checkRHUM850.resize(candidatesNb);
-    critRMSE.resize(candidatesNb);
+    vf checkPRWTR(candidatesNb), checkRHUM850(candidatesNb), critRMSE(candidatesNb);
 
     // Real values for the read checks
     checkPRWTR[0] = 16.7f;
@@ -649,24 +616,12 @@ TEST(Criteria, ProcessRMSE)
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
-    // Resize the containers
+    // Create the containers
     int lons = 2;
     int lats = 2;
-    a2f refPRWTR12h, refPRWTR24h, candPRWTR12h, candPRWTR24h;
-    refPRWTR12h.resize(lats, lons);
-    refPRWTR24h.resize(lats, lons);
-    candPRWTR12h.resize(lats, lons);
-    candPRWTR24h.resize(lats, lons);
-    a2f refRHUM85012h, refRHUM85024h, candRHUM85012h, candRHUM85024h;
-    refRHUM85012h.resize(lats, lons);
-    refRHUM85024h.resize(lats, lons);
-    candRHUM85012h.resize(lats, lons);
-    candRHUM85024h.resize(lats, lons);
-    a2f refMulti12h, refMulti24h, candMulti12h, candMulti24h;
-    refMulti12h.resize(lats, lons);
-    refMulti24h.resize(lats, lons);
-    candMulti12h.resize(lats, lons);
-    candMulti24h.resize(lats, lons);
+    a2f refPRWTR12h(lats, lons), refPRWTR24h(lats, lons), candPRWTR12h(lats, lons), candPRWTR24h(lats, lons);
+    a2f refRHUM85012h(lats, lons), refRHUM85024h(lats, lons), candRHUM85012h(lats, lons), candRHUM85024h(lats, lons);
+    a2f refMulti12h(lats, lons), refMulti24h(lats, lons), candMulti12h(lats, lons), candMulti24h(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -730,10 +685,7 @@ TEST(Criteria, ProcessRMSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    vf checkPRWTR12h, checkRHUM85012h, critRMSE;
-    checkPRWTR12h.resize(candidatesNb);
-    checkRHUM85012h.resize(candidatesNb);
-    critRMSE.resize(candidatesNb);
+    vf checkPRWTR12h(candidatesNb), checkRHUM85012h(candidatesNb), critRMSE(candidatesNb);
 
     // Real values for the read checks
     checkPRWTR12h[0] = 16.7f;
@@ -828,6 +780,28 @@ TEST(Criteria, ProcessRMSE)
 
 }
 
+TEST(Criteria, ProcessRMSEwithNaNs)
+{
+    // Create the containers
+    int lons = 4;
+    int lats = 4;
+    a2f refData(lats, lons), candData(lats, lons);
+
+    refData << 0.4903, 0.1785, 0.9245, 0.4212, 0.6166, NaNf, 0.4496, 0.612, 0.531, 0.5112, 0.6155, 0.4553, 0.2353,
+               0.5602, 0.2524, 0.8011;
+    candData << 0.0136, 0.2671, 0.3951, 0.8645, 0.0489, 0.0921, 0.6901, 0.0887, 0.5477, 0.0562, 0.4862, 0.9309, 0.3185,
+                0.2835, 0.5472, NaNf;
+
+    asCriteria *criteria = asCriteria::GetInstance(_("RMSE"));
+
+    float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
+
+    EXPECT_FLOAT_EQ(0.3766817, res);
+
+    wxDELETE(criteria);
+
+}
+
 TEST(Criteria, ProcessNRMSE)
 {
     // Get the data file
@@ -836,24 +810,12 @@ TEST(Criteria, ProcessNRMSE)
     asFileAscii file(filepath, asFile::ReadOnly);
     file.Open();
 
-    // Resize the containers
+    // Create the containers
     int lons = 2;
     int lats = 2;
-    a2f refPRWTR12h, refPRWTR24h, candPRWTR12h, candPRWTR24h;
-    refPRWTR12h.resize(lats, lons);
-    refPRWTR24h.resize(lats, lons);
-    candPRWTR12h.resize(lats, lons);
-    candPRWTR24h.resize(lats, lons);
-    a2f refRHUM85012h, refRHUM85024h, candRHUM85012h, candRHUM85024h;
-    refRHUM85012h.resize(lats, lons);
-    refRHUM85024h.resize(lats, lons);
-    candRHUM85012h.resize(lats, lons);
-    candRHUM85024h.resize(lats, lons);
-    a2f refMulti12h, refMulti24h, candMulti12h, candMulti24h;
-    refMulti12h.resize(lats, lons);
-    refMulti24h.resize(lats, lons);
-    candMulti12h.resize(lats, lons);
-    candMulti24h.resize(lats, lons);
+    a2f refPRWTR12h(lats, lons), refPRWTR24h(lats, lons), candPRWTR12h(lats, lons), candPRWTR24h(lats, lons);
+    a2f refRHUM85012h(lats, lons), refRHUM85024h(lats, lons), candRHUM85012h(lats, lons), candRHUM85024h(lats, lons);
+    a2f refMulti12h(lats, lons), refMulti24h(lats, lons), candMulti12h(lats, lons), candMulti24h(lats, lons);
 
     // Skip the header
     file.SkipLines(9);
@@ -917,10 +879,7 @@ TEST(Criteria, ProcessNRMSE)
 
     // Vectors for candidates results
     int candidatesNb = 7;
-    vf checkPRWTR12h, checkRHUM85012h, critRMSE;
-    checkPRWTR12h.resize(candidatesNb);
-    checkRHUM85012h.resize(candidatesNb);
-    critRMSE.resize(candidatesNb);
+    vf checkPRWTR12h(candidatesNb), checkRHUM85012h(candidatesNb), critRMSE(candidatesNb);
 
     // Real values for the read checks
     checkPRWTR12h[0] = 16.7f;
@@ -1019,8 +978,7 @@ TEST(Criteria, ProcessNRMSE)
 TEST(Criteria, ProcessDifferences)
 {
     va2f refData;
-    a2f dataTmp;
-    dataTmp.resize(2, 2);
+    a2f dataTmp(2, 2);
 
     dataTmp(0, 0) = 12;
     dataTmp(0, 1) = 23;
@@ -1137,8 +1095,7 @@ TEST(Criteria, ProcessDifferences)
 
     // SAD
 
-    vf results;
-    results.resize(11);
+    vf results(11);
     results[0] = 4765;
     results[1] = 8790;
     results[2] = 188;

@@ -32,14 +32,11 @@ asCriteriaRMSE::asCriteriaRMSE()
         : asCriteria("RMSE", _("Root Mean Square Error"), Asc)
 {
     m_scaleBest = 0;
-    m_scaleWorst = NaNf;
+    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
-asCriteriaRMSE::~asCriteriaRMSE()
-{
-    //dtor
-}
+asCriteriaRMSE::~asCriteriaRMSE() = default;
 
 float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
@@ -50,7 +47,19 @@ float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    float mse = (evalData - refData).pow(2).sum() / (float) refData.size(); // Can be NaN
+    float mse = 0;
+
+    if (!refData.hasNaN() && !evalData.hasNaN()) {
+        mse = (evalData - refData).pow(2).sum() / (float) refData.size();
+    } else {
+        a2f diff = evalData - refData;
+        int size = (diff == diff).count();
+        if (size == 0) {
+            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+            return m_scaleWorst;
+        }
+        mse = ((diff == diff).select(diff, 0)).pow(2).sum() / (float) size;
+    }
 
     return std::sqrt(mse);
 }

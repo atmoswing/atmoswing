@@ -32,8 +32,6 @@
 #include "asCriteriaMRDtoMean.h"
 #include "asCriteriaRMSE.h"
 #include "asCriteriaNRMSE.h"
-#include "asCriteriaRMSEwithNaN.h"
-#include "asCriteriaRMSEonMeanWithNaN.h"
 #include "asCriteriaRSE.h"
 #include "asCriteriaS1.h"
 #include "asCriteriaNS1.h"
@@ -134,14 +132,6 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
     } else if (criteriaString.CmpNoCase("NRMSE") == 0) {
         // Normalized Root mean square error (min-max approach)
         asCriteria *criteria = new asCriteriaNRMSE();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("RMSEwithNaN") == 0) {
-        // Root mean square error with NaNs management
-        asCriteria *criteria = new asCriteriaRMSEwithNaN();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("RMSEonMeanWithNaN") == 0) {
-        // Root Mean Square Error on the mean value of the grid, with NaNs management
-        asCriteria *criteria = new asCriteriaRMSEonMeanWithNaN();
         return criteria;
     } else if (criteriaString.CmpNoCase("RSE") == 0) {
         // Root square error (According to Bontron. Should not be used !)
