@@ -43,7 +43,7 @@ float asCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
 
-    if (!refData.hasNaN() && !evalData.hasNaN()) {
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
 
         return (evalData - refData).abs().sum();
 

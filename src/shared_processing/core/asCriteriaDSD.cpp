@@ -46,7 +46,7 @@ float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    if (!refData.hasNaN() && !evalData.hasNaN()) {
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
 
         float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float) (refData.size() - 1));
         float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float) (evalData.size() - 1));

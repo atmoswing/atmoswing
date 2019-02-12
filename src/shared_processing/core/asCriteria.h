@@ -42,7 +42,7 @@ public:
 
     static asCriteria *GetInstance(const wxString &criteriaString);
 
-    virtual ~asCriteria();
+    ~asCriteria() override;
 
     virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
@@ -54,6 +54,8 @@ public:
     void SetDataRange(const asPredictor *data);
 
     void SetDataRange(float minValue, float maxValue);
+
+    void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
 
     static a2f GetGauss2D(int nY, int nX);
 
@@ -77,6 +79,11 @@ public:
         return m_canUseInline;
     }
 
+    bool CheckNans() const
+    {
+        return m_checkNaNs;
+    }
+
 protected:
     wxString m_name;
     wxString m_fullName;
@@ -87,6 +94,7 @@ protected:
     float m_scaleBest;
     float m_scaleWorst;
     bool m_canUseInline;
+    bool m_checkNaNs;
 
 private:
 

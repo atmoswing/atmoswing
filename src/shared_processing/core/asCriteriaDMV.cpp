@@ -46,7 +46,7 @@ float asCriteriaDMV::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(evalData.rows() == rowsNb);
     wxASSERT(evalData.cols() == colsNb);
 
-    if (!refData.hasNaN() && !evalData.hasNaN()) {
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
 
         return std::fabs(refData.mean() - evalData.mean());
 

@@ -101,9 +101,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     unsigned int membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
 
     wxASSERT(!predictorsArchive.empty());
-    wxASSERT_MSG((int) predictorsArchive.size() == predictorsNb,
-                 wxString::Format("predictorsArchive.size() = %d, predictorsNb = %d", (int) predictorsArchive.size(),
-                                  predictorsNb));
+    wxASSERT((int) predictorsArchive.size() == predictorsNb);
 
     // Check analogs number. Correct if superior to the time serie
     int analogsNb = params->GetAnalogsNumber(step);
@@ -137,6 +135,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             wxLogError(_("You cannot combine criteria that are ascendant and descendant."));
             return false;
         }
+
+        // Check for NaNs
+        criteria[iPtor]->CheckNaNs(predictorsArchive[iPtor], predictorsTarget[iPtor]);
     }
 
     // Containers for final results
@@ -696,43 +697,47 @@ void asProcessor::InsertInArraysNoDuplicate(bool isAsc, int analogsNb, float ana
 {
 
     if (isAsc) {
-        if (score < scoreArrayOneDay[analogsNb - 1]) {
-
-            // Look for duplicate analogue date
-            for (int i = 0; i < analogsNb; ++i) {
-                if (dateArrayOneDay[i] == analogDate) {
-                    if (score < scoreArrayOneDay[i]) {
-                        dateArrayOneDay[i] = analogDate;
-                        scoreArrayOneDay[i] = score;
-                        asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Asc);
-                    }
-                    return;
-                }
-            }
-
-            asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                           &dateArrayOneDay[analogsNb - 1], Asc, score, analogDate);
+        if (score >= scoreArrayOneDay[analogsNb - 1]) {
+            return;
         }
+
+        // Look for duplicate analogue date
+        for (int i = 0; i < analogsNb; ++i) {
+            if (dateArrayOneDay[i] == analogDate) {
+                if (score < scoreArrayOneDay[i]) {
+                    dateArrayOneDay[i] = analogDate;
+                    scoreArrayOneDay[i] = score;
+                    asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                 &dateArrayOneDay[analogsNb - 1], Asc);
+                }
+                return;
+            }
+        }
+
+        asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                       &dateArrayOneDay[analogsNb - 1], Asc, score, analogDate);
+
     } else {
-        if (score > scoreArrayOneDay[analogsNb - 1]) {
-
-            // Look for duplicate analogue date
-            for (int i = 0; i < analogsNb; ++i) {
-                if (dateArrayOneDay[i] == analogDate) {
-                    if (score > scoreArrayOneDay[i]) {
-                        dateArrayOneDay[i] = analogDate;
-                        scoreArrayOneDay[i] = score;
-                        asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                                            &dateArrayOneDay[analogsNb - 1], Desc);
-                    }
-                    return;
-                }
-            }
-
-            asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
-                           &dateArrayOneDay[analogsNb - 1], Desc, score, analogDate);
+        if (score <= scoreArrayOneDay[analogsNb - 1]) {
+            return;
         }
+
+        // Look for duplicate analogue date
+        for (int i = 0; i < analogsNb; ++i) {
+            if (dateArrayOneDay[i] == analogDate) {
+                if (score > scoreArrayOneDay[i]) {
+                    dateArrayOneDay[i] = analogDate;
+                    scoreArrayOneDay[i] = score;
+                    asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                 &dateArrayOneDay[analogsNb - 1], Desc);
+                }
+                return;
+            }
+        }
+
+        asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                       &dateArrayOneDay[analogsNb - 1], Desc, score, analogDate);
+
     }
 
 }
@@ -779,19 +784,19 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
     // Extract some data
     a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
-    unsigned int timeArchiveDataSize = (unsigned int) timeArchiveData.size();
+    auto timeArchiveDataSize = (unsigned int) timeArchiveData.size();
     wxASSERT(timeArchiveDataSize > 0);
     a1d timeTargetData = timeArrayTargetData.GetTimeArray();
-    unsigned int timeTargetDataSize = (unsigned int) timeTargetData.size();
+    auto timeTargetDataSize = (unsigned int) timeTargetData.size();
     wxASSERT(timeTargetDataSize > 0);
     a1f timeTargetSelection = anaDates.GetTargetDates();
-    unsigned int timeTargetSelectionSize = (unsigned int) timeTargetSelection.size();
+    auto timeTargetSelectionSize = (unsigned int) timeTargetSelection.size();
     wxASSERT(timeTargetSelectionSize > 0);
     a2f analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder() == Asc);
-    unsigned int predictorsNb = (unsigned int) params->GetPredictorsNb(step);
+    auto predictorsNb = (unsigned int) params->GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
-    unsigned int membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
+    auto membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
 
     // Check the analogs number. Correct if superior to the time serie
     int analogsNb = params->GetAnalogsNumber(step);
@@ -822,6 +827,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             wxLogError(_("You cannot combine criteria that are ascendant and descendant."));
             return false;
         }
+
+        // Check for NaNs
+        criteria[iPtor]->CheckNaNs(predictorsArchive[iPtor], predictorsTarget[iPtor]);
     }
 
     // Containers for daily results

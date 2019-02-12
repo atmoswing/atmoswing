@@ -45,7 +45,7 @@ float asCriteriaRSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
 
     float se = 0;
 
-    if (!refData.hasNaN() && !evalData.hasNaN()) {
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
 
         se = (evalData - refData).pow(2).sum();
 

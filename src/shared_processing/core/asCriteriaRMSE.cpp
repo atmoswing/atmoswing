@@ -49,7 +49,7 @@ float asCriteriaRMSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb
 
     float mse = 0;
 
-    if (!refData.hasNaN() && !evalData.hasNaN()) {
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
 
         mse = (evalData - refData).pow(2).sum() / (float) refData.size();
 

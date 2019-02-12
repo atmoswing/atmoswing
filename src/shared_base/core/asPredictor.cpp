@@ -1529,6 +1529,19 @@ float asPredictor::GetMaxValue() const
     return maxValue;
 }
 
+bool asPredictor::HasNaN() const
+{
+    for (const auto &dat : m_data) {
+        for (const auto &v : dat) {
+            if (v.hasNaN()) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool asPredictor::IsLatLon(const wxString &datasetId)
 {
     if (datasetId.IsSameAs("CORDEX", false)) {

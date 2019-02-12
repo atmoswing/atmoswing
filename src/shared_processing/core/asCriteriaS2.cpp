@@ -44,7 +44,7 @@ float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
     wxASSERT(refData.rows() > 2);
     wxASSERT(refData.cols() > 2);
 
-    if (refData.hasNaN() || evalData.hasNaN()) {
+    if (m_checkNaNs || (refData.hasNaN() || evalData.hasNaN())) {
         wxLogWarning(_("NaNs are not handled in with S2 without preprocessing."));
         return NaNf;
     }

@@ -124,6 +124,8 @@ public:
 
     float GetMaxValue() const;
 
+    bool HasNaN() const;
+
     vva2f &GetData()
     {
         wxASSERT((int) m_data.size() >= (int) m_time.size());

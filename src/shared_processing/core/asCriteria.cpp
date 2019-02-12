@@ -55,15 +55,13 @@ asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order ord
           m_dataMax(NaNf),
           m_scaleBest(NaNf),
           m_scaleWorst(NaNf),
-          m_canUseInline(false)
+          m_canUseInline(false),
+          m_checkNaNs(true)
 {
 
 }
 
-asCriteria::~asCriteria()
-{
-    //dtor
-}
+asCriteria::~asCriteria() = default;
 
 asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
 {
@@ -160,6 +158,13 @@ void asCriteria::SetDataRange(float minValue, float maxValue)
 {
     m_dataMin = minValue;
     m_dataMax = maxValue;
+}
+
+void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)
+{
+    if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
+        m_checkNaNs = false;
+    }
 }
 
 a2f asCriteria::GetGauss2D(int nY, int nX)
