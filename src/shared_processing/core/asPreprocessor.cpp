@@ -403,11 +403,11 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
 
     // Create container
     vva2f curvature(timeSize);
-    curvature.reserve(membersNb * timeSize * 2 * (rowsNb - 1) * (colsNb - 1));
+    curvature.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
     a2f tmpgradH = a2f::Zero(rowsNb, colsNb - 1);
     a2f tmpgradV = a2f::Zero(rowsNb - 1, colsNb);
-    a2f tmpcurv = a2f::Zero(2 * (rowsNb - 1), (colsNb - 1)); // Needs to be 0-filled for further simplification.
+    a2f tmpcurv = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
     /*
     Illustration of the data arrangement
@@ -436,11 +436,11 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
                        predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1);
 
             // Vertical gradients
-            tmpcurv.block(0, 0, rowsNb - 2, colsNb - 1) =
+            tmpcurv.block(0, 0, rowsNb - 2, colsNb) =
                     tmpgradV.block(1, 0, rowsNb - 2, colsNb) - tmpgradV.block(0, 0, rowsNb - 2, colsNb);
 
             // Horizontal gradients
-            tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
+            tmpcurv.block(rowsNb, 0, rowsNb, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
 
             curvature[iTime].push_back(tmpcurv);
@@ -486,11 +486,11 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
 
     // Create container
     vva2f curvature(timeSize);
-    curvature.reserve(membersNb * timeSize * 2 * (rowsNb - 1) * (colsNb - 1));
+    curvature.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
     a2f tmpgradH = a2f::Zero(rowsNb, colsNb - 1);
     a2f tmpgradV = a2f::Zero(rowsNb - 1, colsNb);
-    a2f tmpcurv = a2f::Zero(2 * (rowsNb - 1), (colsNb - 1)); // Needs to be 0-filled for further simplification.
+    a2f tmpcurv = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
     /*
     Illustration of the data arrangement
@@ -519,11 +519,11 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
                        predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
             // Vertical gradients
-            tmpcurv.block(0, 0, rowsNb - 2, colsNb - 1) =
+            tmpcurv.block(0, 0, rowsNb - 2, colsNb) =
                     tmpgradV.block(1, 0, rowsNb - 2, colsNb) - tmpgradV.block(0, 0, rowsNb - 2, colsNb);
 
             // Horizontal gradients
-            tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
+            tmpcurv.block(rowsNb, 0, rowsNb, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
 
             curvature[iTime].push_back(tmpcurv);
@@ -562,11 +562,11 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
 
     // Create container
     vva2f curvature(timeSize);
-    curvature.reserve(membersNb * timeSize * 2 * (rowsNb - 1) * (colsNb - 1));
+    curvature.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
     a2f tmpgradH = a2f::Zero(rowsNb, colsNb - 1);
     a2f tmpgradV = a2f::Zero(rowsNb - 1, colsNb);
-    a2f tmpcurv = a2f::Zero(2 * (rowsNb - 1), (colsNb - 1)); // Needs to be 0-filled for further simplification.
+    a2f tmpcurv = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
     /*
     Illustration of the data arrangement
@@ -598,11 +598,11 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
                        predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1));
 
             // Vertical gradients
-            tmpcurv.block(0, 0, rowsNb - 2, colsNb - 1) =
+            tmpcurv.block(0, 0, rowsNb - 2, colsNb) =
                     tmpgradV.block(1, 0, rowsNb - 2, colsNb) - tmpgradV.block(0, 0, rowsNb - 2, colsNb);
 
             // Horizontal gradients
-            tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
+            tmpcurv.block(rowsNb, 0, rowsNb, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
 
             curvature[iTime].push_back(tmpcurv);
@@ -648,11 +648,11 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
 
     // Create container
     vva2f curvature(timeSize);
-    curvature.reserve(membersNb * timeSize * 2 * (rowsNb - 1) * (colsNb - 1));
+    curvature.reserve(membersNb * timeSize * 2 * rowsNb * colsNb);
 
     a2f tmpgradH = a2f::Zero(rowsNb, colsNb - 1);
     a2f tmpgradV = a2f::Zero(rowsNb - 1, colsNb);
-    a2f tmpcurv = a2f::Zero(2 * (rowsNb - 1), (colsNb - 1)); // Needs to be 0-filled for further simplification.
+    a2f tmpcurv = a2f::Zero(2 * rowsNb, colsNb); // Needs to be 0-filled for further simplification.
 
     /*
     Illustration of the data arrangement
@@ -684,11 +684,11 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
                        predictors[0]->GetData()[iTime][iMem].block(0, 0, rowsNb, colsNb - 1)) / distXs;
 
             // Vertical gradients
-            tmpcurv.block(0, 0, rowsNb - 2, colsNb - 1) =
+            tmpcurv.block(0, 0, rowsNb - 2, colsNb) =
                     tmpgradV.block(1, 0, rowsNb - 2, colsNb) - tmpgradV.block(0, 0, rowsNb - 2, colsNb);
 
             // Horizontal gradients
-            tmpcurv.block(rowsNb, 0, rowsNb - 1, colsNb - 2) =
+            tmpcurv.block(rowsNb, 0, rowsNb, colsNb - 2) =
                     tmpgradH.block(0, 1, rowsNb, colsNb - 2) - tmpgradH.block(0, 0, rowsNb, colsNb - 2);
 
             curvature[iTime].push_back(tmpcurv);
