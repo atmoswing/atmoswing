@@ -56,8 +56,8 @@ float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     } else {
 
         int size = (!evalData.isNaN() && !refData.isNaN()).count();
-        if (size == 0) {
-            wxLogVerbose(_("Only NaNs in the criteria calculation."));
+        if (size <= 1) {
+            wxLogVerbose(_("Not enough data to process the DSD score."));
             return m_scaleWorst;
         }
 
