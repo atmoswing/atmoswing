@@ -74,6 +74,11 @@ public:
         return m_order;
     }
 
+    int GetMinPointsNb() const
+    {
+        return m_minPointsNb;
+    }
+
     bool CanUseInline() const
     {
         return m_canUseInline;
@@ -88,6 +93,7 @@ protected:
     wxString m_name;
     wxString m_fullName;
     Order m_order;
+    int m_minPointsNb;
     bool m_needsDataRange;
     float m_dataMin;
     float m_dataMax;

@@ -31,8 +31,6 @@
 asCriteriaRMSE::asCriteriaRMSE()
         : asCriteria("RMSE", _("Root Mean Square Error"), Asc)
 {
-    m_scaleBest = 0;
-    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 

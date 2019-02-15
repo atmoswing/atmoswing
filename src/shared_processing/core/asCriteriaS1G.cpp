@@ -30,7 +30,7 @@
 asCriteriaS1G::asCriteriaS1G()
         : asCriteria("S1", _("Teweles-Wobus score with a Gaussian weighting"), Asc)
 {
-    m_scaleBest = 0;
+    m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
 }

@@ -37,6 +37,7 @@
 #include "asCriteriaS1grads.h"
 #include "asCriteriaNS1grads.h"
 #include "asCriteriaS2.h"
+#include "asCriteriaS2grads.h"
 #include "asCriteriaNS2.h"
 #include "asCriteriaSAD.h"
 #include "asCriteriaDSD.h"
@@ -50,11 +51,12 @@ asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order ord
         : m_name(name),
           m_fullName(fullname),
           m_order(order),
+          m_minPointsNb(1),
           m_needsDataRange(false),
           m_dataMin(NaNf),
           m_dataMax(NaNf),
-          m_scaleBest(NaNf),
-          m_scaleWorst(NaNf),
+          m_scaleBest(0),
+          m_scaleWorst(Inff),
           m_canUseInline(false),
           m_checkNaNs(true)
 {
@@ -95,7 +97,7 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         return criteria;
     } else if (criteriaString.CmpNoCase("S2grads") == 0) {
         // Derivative of Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaS1grads();
+        asCriteria *criteria = new asCriteriaS2grads();
         return criteria;
     } else if (criteriaString.CmpNoCase("NS2grads") == 0) {
         // Normalized derivative of Teweles-Wobus on gradients

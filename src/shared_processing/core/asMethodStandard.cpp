@@ -901,6 +901,16 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
     auto *desiredPredictor = new asPredictorArch(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
 
+    // Check minimum number of points
+    asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
+    if (params->GetPredictorXptsnb(iStep, iPtor) < criterion->GetMinPointsNb()) {
+        params->SetPredictorXptsnb(iStep, iPtor, criterion->GetMinPointsNb());
+    }
+    if (params->GetPredictorYptsnb(iStep, iPtor) < criterion->GetMinPointsNb()) {
+        params->SetPredictorYptsnb(iStep, iPtor, criterion->GetMinPointsNb());
+    }
+    wxDELETE(criterion);
+
     // Area object instantiation
     asAreaCompGrid *desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
 
@@ -942,52 +952,6 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         params->SetPredictorYptsnb(iStep, iPtor, std::abs(indexYmax - indexYmin) + 1);
         wxDELETE(desiredArea);
         desiredArea = asAreaCompGrid::GetInstance(params, iStep, iPtor);
-    }
-
-    // Check minimum size for S1
-    if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads", false)) {
-        if (params->GetPredictorXptsnb(iStep, iPtor) < 2) {
-            params->SetPredictorXptsnb(iStep, iPtor, 2);
-        }
-        if (params->GetPredictorYptsnb(iStep, iPtor) < 2) {
-            params->SetPredictorYptsnb(iStep, iPtor, 2);
-        }
-    }
-
-    // Check minimum size for S2
-    if (params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S2grads", false) ||
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2grads", false)) {
-        if (params->GetPredictorXptsnb(iStep, iPtor) < 3) {
-            params->SetPredictorXptsnb(iStep, iPtor, 3);
-        }
-        if (params->GetPredictorYptsnb(iStep, iPtor) < 3) {
-            params->SetPredictorYptsnb(iStep, iPtor, 3);
-        }
     }
 
     if (!desiredPredictor->ClipToArea(desiredArea)) {
@@ -1157,8 +1121,8 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
 void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictors)
 {
     if (!predictors.empty()) {
-        for (unsigned int i = 0; i < predictors.size(); i++) {
-            wxDELETE(predictors[i]);
+        for (auto &predictor : predictors) {
+            wxDELETE(predictor);
         }
         predictors.resize(0);
     }
@@ -1167,8 +1131,8 @@ void asMethodStandard::Cleanup(std::vector<asPredictorArch *> predictors)
 void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
 {
     if (!predictors.empty()) {
-        for (unsigned int i = 0; i < predictors.size(); i++) {
-            wxDELETE(predictors[i]);
+        for (auto &predictor : predictors) {
+            wxDELETE(predictor);
         }
         predictors.resize(0);
     }
@@ -1177,8 +1141,8 @@ void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
 void asMethodStandard::Cleanup(std::vector<asCriteria *> criteria)
 {
     if (!criteria.empty()) {
-        for (unsigned int i = 0; i < criteria.size(); i++) {
-            wxDELETE(criteria[i]);
+        for (auto &criterion : criteria) {
+            wxDELETE(criterion);
         }
         criteria.resize(0);
     }
@@ -1193,9 +1157,9 @@ void asMethodStandard::DeletePreloadedArchiveData()
         for (unsigned int j = 0; j < m_preloadedArchive[i].size(); j++) {
             for (unsigned int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
                 if (!m_preloadedArchivePointerCopy[i][j][k]) {
-                    for (unsigned int l = 0; l < m_preloadedArchive[i][j][k].size(); l++) {
-                        for (unsigned int m = 0; m < m_preloadedArchive[i][j][k][l].size(); m++) {
-                            wxDELETE(m_preloadedArchive[i][j][k][l][m]);
+                    for (auto &l : m_preloadedArchive[i][j][k]) {
+                        for (auto &m : l) {
+                            wxDELETE(m);
                         }
                     }
                 }

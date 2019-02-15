@@ -31,7 +31,7 @@
 asCriteriaS1::asCriteriaS1()
         : asCriteria("S1", _("Teweles-Wobus score"), Asc)
 {
-    m_scaleBest = 0;
+    m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
 }

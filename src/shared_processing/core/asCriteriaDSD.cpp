@@ -30,8 +30,7 @@
 asCriteriaDSD::asCriteriaDSD()
         : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc)
 {
-    m_scaleBest = 0;
-    m_scaleWorst = Inff;
+    m_minPointsNb = 2;
     m_canUseInline = true;
 }
 

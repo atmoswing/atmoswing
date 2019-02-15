@@ -31,8 +31,6 @@
 asCriteriaSAD::asCriteriaSAD()
         : asCriteria("SAD", _("Sum of Absolute Differences"), Asc)
 {
-    m_scaleBest = 0;
-    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 

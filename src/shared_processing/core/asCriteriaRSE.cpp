@@ -31,8 +31,6 @@
 asCriteriaRSE::asCriteriaRSE()
         : asCriteria("RSE", _("Root Squared Error"), Asc)
 {
-    m_scaleBest = 0;
-    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 

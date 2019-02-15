@@ -1619,9 +1619,11 @@ bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const
 
 bool asParameters::IsCriteriaUsingGradients(int iStep, int iPtor) const
 {
-    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads")) {
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads") ||
+        GetPredictorCriteria(iStep, iPtor).IsSameAs("S2grads")) {
         return true;
-    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads")) {
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads") ||
+               GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2grads")) {
         return true;
     }
 

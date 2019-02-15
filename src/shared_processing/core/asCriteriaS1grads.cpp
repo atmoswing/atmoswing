@@ -31,7 +31,7 @@
 asCriteriaS1grads::asCriteriaS1grads()
         : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc)
 {
-    m_scaleBest = 0;
+    m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = true;
 }

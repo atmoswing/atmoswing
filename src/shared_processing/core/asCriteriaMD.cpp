@@ -31,8 +31,6 @@
 asCriteriaMD::asCriteriaMD()
         : asCriteria("MD", _("Mean Absolute Difference"), Asc)
 {
-    m_scaleBest = 0;
-    m_scaleWorst = Inff;
     m_canUseInline = true;
 }
 
