@@ -432,6 +432,79 @@ TEST(Criteria, NS1preprocessed)
 
 }
 
+TEST(Criteria, S2preprocessed)
+{
+    double xMin = 10;
+    double xWidth = 10;
+    double yMin = 35;
+    double yWidth = 5;
+    double step = 2.5;
+    float level = 1000;
+    asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+
+    double start = asTime::GetMJD(1960, 1, 1, 00, 00);
+    double end = asTime::GetMJD(1960, 1, 11, 00, 00);
+    double timeStep = 6;
+    asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
+    timearray.Init();
+
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/data-ncep-r1/v2003/");
+
+    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+
+    ASSERT_TRUE(predictor->Load(&area, timearray, level));
+    std::vector<asPredictor *> vdata;
+    vdata.push_back(predictor);
+    vva2f hgtOriginal = predictor->GetData();
+
+    wxString method = "SimpleCurvature";
+    asPredictorArch *curv = new asPredictorArch(*predictor);
+    asPreprocessor::Preprocess(vdata, method, curv);
+    vva2f hgtPreproc = curv->GetData();
+
+    // Create the containers
+    int lonsOriginal = hgtOriginal[0][0].cols();
+    int latsOriginal = hgtOriginal[0][0].rows();
+    a2f refOriginal(latsOriginal, lonsOriginal), candOriginal(latsOriginal, lonsOriginal);
+
+    int lonsPreproc = hgtPreproc[0][0].cols();
+    int latsPreproc = hgtPreproc[0][0].rows();
+    a2f refPreproc(latsPreproc, lonsPreproc), candPreproc(latsPreproc, lonsPreproc);
+
+    // Set target data
+    refOriginal = hgtOriginal[0][0];
+    refPreproc = hgtPreproc[0][0];
+
+    // Vectors for results
+    int candidatesNb = hgtOriginal.size();
+    vf critS1(candidatesNb);
+    EXPECT_TRUE(candidatesNb > 1);
+
+    // Instantiate the criteria
+    asCriteria *criteria = asCriteria::GetInstance("S2");
+    asCriteria *criteriaGrads = asCriteria::GetInstance("S2grads");
+
+    // Loop on every candidate
+    for (int iCand = 1; iCand < candidatesNb; iCand++) {
+        float S2Original, S2Preproc;
+
+        // Get candidate data
+        candOriginal = hgtOriginal[iCand][0];
+        candPreproc = hgtPreproc[iCand][0];
+
+        S2Original = criteria->Assess(refOriginal, candOriginal, candOriginal.rows(), candOriginal.cols());
+        S2Preproc = criteriaGrads->Assess(refPreproc, candPreproc, candPreproc.rows(), candPreproc.cols());
+        EXPECT_FLOAT_EQ(S2Original, S2Preproc);
+    }
+
+    wxDELETE(predictor);
+    wxDELETE(curv);
+    wxDELETE(criteria);
+    wxDELETE(criteriaGrads);
+
+}
+
 TEST(Criteria, RSE)
 {
     // Get the data file
