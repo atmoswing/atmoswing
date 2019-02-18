@@ -31,6 +31,7 @@
 #include "asCriteriaRMSE.h"
 #include "asCriteriaNRMSE.h"
 #include "asCriteriaRSE.h"
+#include "asCriteriaS0.h"
 #include "asCriteriaS1.h"
 #include "asCriteriaNS1.h"
 #include "asCriteriaS1G.h"
@@ -102,6 +103,10 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
     } else if (criteriaString.CmpNoCase("NS2grads") == 0) {
         // Normalized derivative of Teweles-Wobus on gradients
         asCriteria *criteria = new asCriteriaNS1grads();
+        return criteria;
+    } else if (criteriaString.CmpNoCase("S0") == 0) {
+        // Teweles-Wobus on raw data
+        asCriteria *criteria = new asCriteriaS0();
         return criteria;
     } else if (criteriaString.CmpNoCase("SAD") == 0) {
         // Sum of absolute differences
