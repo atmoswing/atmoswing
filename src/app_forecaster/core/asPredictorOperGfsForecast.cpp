@@ -40,7 +40,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_provider = "NWS";
     m_transformedBy = wxEmptyString;
     m_datasetName = "Global Forecast System";
-    m_fileType = asFile::Grib2;
+    m_fileType = asFile::Grib;
     m_leadTimeStart = 0;
     m_leadTimeEnd = 240; // After 240h, available in another temporal resolution
     m_leadTimeStep = 6;

@@ -38,7 +38,7 @@ asPredictorArchNcepCfsr::asPredictorArchNcepCfsr(const wxString &dataId)
     m_datasetId = "NCEP_CFSR";
     m_provider = "NCEP";
     m_datasetName = "CFSR";
-    m_fileType = asFile::Grib2;
+    m_fileType = asFile::Grib;
     m_strideAllowed = false;
 }
 

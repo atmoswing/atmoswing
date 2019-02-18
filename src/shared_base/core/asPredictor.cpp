@@ -292,7 +292,7 @@ bool asPredictor::EnquireFileStructure()
             }
             break;
         }
-        case (asFile::Grib2) : {
+        case (asFile::Grib) : {
             if (!EnquireGribFileStructure()) {
                 return false;
             }
@@ -317,7 +317,7 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
             }
             break;
         }
-        case (asFile::Grib2) : {
+        case (asFile::Grib) : {
             for (const auto &fileName : m_files) {
                 if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
                     return false;

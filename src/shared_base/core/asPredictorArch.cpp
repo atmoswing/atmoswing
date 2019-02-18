@@ -33,7 +33,6 @@
 #include <asPredictorArchGenericNetcdf.h>
 #include <asPredictorArchNcepReanalysis1.h>
 #include <asPredictorArchNcepReanalysis1Subset.h>
-#include <asPredictorArchNcepReanalysis1Lthe.h>
 #include <asPredictorArchNcepReanalysis2.h>
 #include <asPredictorArchNcepCfsr.h>
 #include <asPredictorArchNcepCfsrSubset.h>
@@ -48,6 +47,7 @@
 #include <asPredictorArchJmaJra55CSubset.h>
 #include <asPredictorArchNoaa20Cr2c.h>
 #include <asPredictorArchNoaa20Cr2cEnsemble.h>
+#include <asPredictorArchCustomLtheNR1.h>
 
 
 asPredictorArch::asPredictorArch(const wxString &dataId)
@@ -67,8 +67,6 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchNcepReanalysis1(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_subset", false)) {
         predictor = new asPredictorArchNcepReanalysis1Subset(dataId);
-    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_lthe", false)) {
-        predictor = new asPredictorArchNcepReanalysis1Lthe(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asPredictorArchNcepReanalysis2(dataId);
     } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
@@ -97,6 +95,8 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchNoaaOisst2(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
         predictor = new asPredictorArchNoaaOisst2Subset(dataId);
+    } else if (datasetId.IsSameAs("Custom_LTHE_NR1", false)) {
+        predictor = new asPredictorArchCustomLtheNR1(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

@@ -26,17 +26,17 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorArchNcepReanalysis1Lthe.h"
+#include "asPredictorArchCustomLtheNR1.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
 
 
-asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxString &dataId)
+asPredictorArchCustomLtheNR1::asPredictorArchCustomLtheNR1(const wxString &dataId)
         : asPredictorArchNcepReanalysis1Subset(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "NCEP_Reanalysis_v1_lthe";
+    m_datasetId = "Custom_LTHE_NCEP_Reanalysis_1";
     m_provider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
@@ -51,7 +51,7 @@ asPredictorArchNcepReanalysis1Lthe::asPredictorArchNcepReanalysis1Lthe(const wxS
     m_fStr.hasLevelDim = true;
 }
 
-bool asPredictorArchNcepReanalysis1Lthe::Init()
+bool asPredictorArchCustomLtheNR1::Init()
 {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt_500hPa", false)) {
@@ -103,12 +103,12 @@ bool asPredictorArchNcepReanalysis1Lthe::Init()
     return true;
 }
 
-void asPredictorArchNcepReanalysis1Lthe::ListFiles(asTimeArray &timeArray)
+void asPredictorArchCustomLtheNR1::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorArchNcepReanalysis1Lthe::ConvertToMjd(double timeValue, double refValue) const
+double asPredictorArchCustomLtheNR1::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     if (timeValue < 500 * 365) { // New format
