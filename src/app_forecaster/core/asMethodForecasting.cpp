@@ -1270,6 +1270,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
+
+                wxLogVerbose(_("Loading predictor %d."), iPre);
+
                 // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
                 double ptorStartArchive = timeStartArchive - params.GetTimeShiftDays() +
                                           params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
