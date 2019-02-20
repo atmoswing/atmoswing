@@ -8,11 +8,11 @@ if ($env:APPVEYOR) {
   $PATCH_DIR="C:\projects\atmoswing\ci\appveyor\patches"
 } else {
   $MSC_VER=1916
-  $TMP_DIR="C:\Users\$env:UserName\Downloads\tmp"
-  $LIB_DIR="C:\Users\$env:UserName\AtmoSwing-libs"
+  $TMP_DIR="$env:UserProfile\Downloads\tmp"
+  $LIB_DIR="$env:UserProfile\AtmoSwing-libs"
   $CMAKE_DIR="C:\Program Files\CMake\bin"
   $WIX_DIR="C:\Program Files\WiX"
-  $PATCH_DIR="C:\WinData\Development\AtmoSwing\ci\appveyor\patches"
+  $PATCH_DIR=".\patches"
 }
 
 # Force rebuilding some libraries
