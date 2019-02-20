@@ -739,6 +739,8 @@ bool asPredictor::HasDesiredLevel()
         }
     }
 
+    wxLogWarning(_("Cannot find level %f"), m_level);
+
     return false;
 }
 
