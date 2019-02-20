@@ -538,7 +538,7 @@ int AtmoswingAppForecaster::OnRun()
             wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
 
             // Write the resulting files path into a temp file.
-            wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
+            wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
             asFileAscii filePaths(tempFile, asFile::Replace);
             vwxs filePathsVect = forecaster.GetResultsFilePaths();
 

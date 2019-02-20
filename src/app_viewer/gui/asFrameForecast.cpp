@@ -1182,7 +1182,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent &event)
 void asFrameForecast::OpenForecastsFromTmpList()
 {
     // Write the resulting files path into a temp file.
-    wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
+    wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
     if (!filePaths.Open()) {

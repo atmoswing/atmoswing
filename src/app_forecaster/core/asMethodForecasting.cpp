@@ -130,7 +130,7 @@ bool asMethodForecasting::Manager()
 
             // Forecast
             if (!Forecast(params)) {
-                wxPrintf(_("FAILED.\n"));
+                wxPrintf(_("FAILED!\n"));
                 wxLogError(_("The forecast could not be achived"));
 
 #if wxUSE_GUI
