@@ -172,16 +172,19 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // List files and check availability
         ListFiles(timeArray);
         if (!CheckFilesPresence()) {
+            wxLogError(_("Files not found."));
             return false;
         }
 
         // Get file axes
         if (!EnquireFileStructure()) {
+            wxLogError(_("Failing to get the file structure."));
             return false;
         }
 
         // Check the level availability
         if (m_fileType == asFile::Netcdf && !HasDesiredLevel()) {
+            wxLogError(_("Failing to get the desired level."));
             return false;
         }
 
@@ -208,13 +211,14 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // Extract composite data from files
         vvva2f compositeData((unsigned long) compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
-            wxLogWarning(_("Extracting data from files failed."));
+            wxLogError(_("Extracting data from files failed."));
             wxDELETE(dataArea);
             return false;
         }
 
         // Transform data
         if (!TransformData(compositeData)) {
+            wxLogError(_("Data transformation has failed."));
             wxFAIL;
             return false;
         }
@@ -253,7 +257,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if (!fullMessage.IsEmpty()) {
             wxLogError(fullMessage);
         }
-        wxLogError(_("Failed to load data."));
+        wxLogError(_("Failed to load data (exception)."));
         return false;
     }
 
