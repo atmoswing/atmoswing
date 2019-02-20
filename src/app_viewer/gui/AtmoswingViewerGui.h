@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan 23 2018)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __ATMOSWINGVIEWERGUI_H__
-#define __ATMOSWINGVIEWERGUI_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -19,12 +18,12 @@
 #include <wx/settings.h>
 #include <wx/string.h>
 #include <wx/stattext.h>
-#include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/splitter.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/button.h>
+#include <wx/panel.h>
+#include <wx/splitter.h>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
@@ -50,10 +49,10 @@ WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages );
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameForecastVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameForecastVirtual : public wxFrame 
+class asFrameForecastVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelMain;
 		wxSplitterWindow* m_splitterGIS;
@@ -83,7 +82,7 @@ class asFrameForecastVirtual : public wxFrame
 		wxMenu* m_menuHelp;
 		wxToolBar* m_toolBar;
 		wxStatusBar* m_statusBar;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnLoadPreviousDay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLoadPreviousForecast( wxCommandEvent& event ) { event.Skip(); }
@@ -105,29 +104,29 @@ class asFrameForecastVirtual : public wxFrame
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel3( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFrameAbout( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFrameForecastVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFrameForecastVirtual();
-		
+
 		void m_splitterGISOnIdle( wxIdleEvent& )
 		{
 			m_splitterGIS->SetSashPosition( 270 );
 			m_splitterGIS->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFrameForecastVirtual::m_splitterGISOnIdle ), NULL, this );
 		}
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asWizardWorkspaceVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asWizardWorkspaceVirtual : public wxWizard 
+class asWizardWorkspaceVirtual : public wxWizard
 {
 	private:
-	
+
 	protected:
 		wxStaticText* m_staticText37;
 		wxStaticText* m_staticText35;
@@ -144,27 +143,27 @@ class asWizardWorkspaceVirtual : public wxWizard
 		wxStaticText* m_staticText40;
 		wxChoice* m_choiceBaseMap;
 		wxStaticText* m_staticText41;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnWizardFinished( wxWizardEvent& event ) { event.Skip(); }
 		virtual void OnLoadExistingWorkspace( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asWizardWorkspaceVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Workspace creation wizard"), const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
 		WizardPages m_pages;
 		~asWizardWorkspaceVirtual();
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asPanelSidebarVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asPanelSidebarVirtual : public wxPanel 
+class asPanelSidebarVirtual : public wxPanel
 {
 	private:
-	
+
 	protected:
 		wxBoxSizer* m_sizerMain;
 		wxPanel* m_panel28;
@@ -172,25 +171,25 @@ class asPanelSidebarVirtual : public wxPanel
 		wxStaticText* m_header;
 		wxStaticBitmap* m_bitmapCaret;
 		wxBoxSizer* m_sizerContent;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnReducePanel( wxMouseEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
-		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL ); 
+
+		asPanelSidebarVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 		~asPanelSidebarVirtual();
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePlotTimeSeriesVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePlotTimeSeriesVirtual : public wxFrame 
+class asFramePlotTimeSeriesVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelStationName;
 		wxStaticText* m_staticTextStationName;
@@ -203,35 +202,35 @@ class asFramePlotTimeSeriesVirtual : public wxFrame
 		wxCheckListBox* m_checkListPast;
 		wxPanel* m_panelRight;
 		wxBoxSizer* m_sizerPlot;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnExportTXT( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPreview( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPrint( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTocSelectionChange( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePlotTimeSeriesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Forecast plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 700,400 ), long style = wxDEFAULT_FRAME_STYLE|wxFRAME_FLOAT_ON_PARENT|wxTAB_TRAVERSAL );
-		
+
 		~asFramePlotTimeSeriesVirtual();
-		
+
 		void m_splitterOnIdle( wxIdleEvent& )
 		{
 			m_splitter->SetSashPosition( 150 );
 			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotTimeSeriesVirtual::m_splitterOnIdle ), NULL, this );
 		}
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePlotDistributionsVirutal
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePlotDistributionsVirutal : public wxFrame 
+class asFramePlotDistributionsVirutal : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelOptions;
 		wxStaticText* m_staticTextForecast;
@@ -249,35 +248,35 @@ class asFramePlotDistributionsVirutal : public wxFrame
 		wxBoxSizer* m_sizerPlotPredictands;
 		wxPanel* m_panelCriteria;
 		wxBoxSizer* m_sizerPlotCriteria;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnChoiceForecastChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceStationChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTocSelectionChange( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePlotDistributionsVirutal( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Distribution plots"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFramePlotDistributionsVirutal();
-		
+
 		void m_splitter4OnIdle( wxIdleEvent& )
 		{
 			m_splitter4->SetSashPosition( 178 );
 			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePlotDistributionsVirutal::m_splitter4OnIdle ), NULL, this );
 		}
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameGridAnalogsValuesVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameGridAnalogsValuesVirtual : public wxFrame 
+class asFrameGridAnalogsValuesVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelOptions;
 		wxStaticText* m_staticTextForecast;
@@ -287,29 +286,29 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame
 		wxStaticText* m_staticTextDate;
 		wxChoice* m_choiceDate;
 		wxGrid* m_grid;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnChoiceForecastChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceStationChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SortGrid( wxGridEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFrameGridAnalogsValuesVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Analogs details"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 473,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFrameGridAnalogsValuesVirtual();
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePredictorsVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePredictorsVirtual : public wxFrame 
+class asFramePredictorsVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panel15;
 		wxSplitterWindow* m_splitterToc;
@@ -340,7 +339,7 @@ class asFramePredictorsVirtual : public wxFrame
 		wxMenu* m_menuFile;
 		wxMenu* m_menuTools;
 		wxToolBar* m_toolBar;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnForecastChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnPredictorSelectionChange( wxCommandEvent& event ) { event.Skip(); }
@@ -349,29 +348,29 @@ class asFramePredictorsVirtual : public wxFrame
 		virtual void OnSwitchLeft( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAnalogDateChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnOpenLayer( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePredictorsVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFramePredictorsVirtual();
-		
+
 		void m_splitterTocOnIdle( wxIdleEvent& )
 		{
 			m_splitterToc->SetSashPosition( 170 );
 			m_splitterToc->Disconnect( wxEVT_IDLE, wxIdleEventHandler( asFramePredictorsVirtual::m_splitterTocOnIdle ), NULL, this );
 		}
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePreferencesViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesViewerVirtual : public wxFrame 
+class asFramePreferencesViewerVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
@@ -416,19 +415,18 @@ class asFramePreferencesViewerVirtual : public wxFrame
 		wxButton* m_buttonsConfirmationOK;
 		wxButton* m_buttonsConfirmationApply;
 		wxButton* m_buttonsConfirmationCancel;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
 		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePreferencesViewerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFramePreferencesViewerVirtual();
-	
+
 };
 
-#endif //__ATMOSWINGVIEWERGUI_H__

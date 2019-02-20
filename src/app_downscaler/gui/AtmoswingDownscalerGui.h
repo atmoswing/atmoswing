@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan 23 2018)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __ATMOSWINGDOWNSCALERGUI_H__
-#define __ATMOSWINGDOWNSCALERGUI_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -22,10 +21,10 @@
 #include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
-#include <wx/button.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include <wx/button.h>
 #include <wx/menu.h>
 #include <wx/toolbar.h>
 #include <wx/statusbr.h>
@@ -43,10 +42,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameDownscalerVirtual : public wxFrame 
+class asFrameDownscalerVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelMain;
 		wxPanel* m_panelControls;
@@ -74,7 +73,7 @@ class asFrameDownscalerVirtual : public wxFrame
 		wxMenu* m_menuHelp;
 		wxToolBar* m_toolBar;
 		wxStatusBar* m_statusBar1;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSaveDefault( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
@@ -84,23 +83,23 @@ class asFrameDownscalerVirtual : public wxFrame
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel3( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFrameAbout( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFrameDownscalerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Downscaler"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 606,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFrameDownscalerVirtual();
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePreferencesDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesDownscalerVirtual : public wxFrame 
+class asFramePreferencesDownscalerVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
@@ -141,20 +140,19 @@ class asFramePreferencesDownscalerVirtual : public wxFrame
 		wxButton* m_buttonsConfirmationOK;
 		wxButton* m_buttonsConfirmationApply;
 		wxButton* m_buttonsConfirmationCancel;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
 		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePreferencesDownscalerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFramePreferencesDownscalerVirtual();
-	
+
 };
 
-#endif //__ATMOSWINGDOWNSCALERGUI_H__

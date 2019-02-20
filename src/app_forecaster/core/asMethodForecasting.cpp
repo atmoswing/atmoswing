@@ -107,7 +107,7 @@ bool asMethodForecasting::Manager()
             if (g_responsive)
                 wxGetApp().Yield();
 #endif
-            wxPrintf("Processing %s... ", m_batchForecasts->GetForecastFileName(i));
+            wxPrintf("Processing %s...\n", m_batchForecasts->GetForecastFileName(i));
             wxLogMessage("Processing %s", m_batchForecasts->GetForecastFileName(i));
             fflush(stdout);
 
