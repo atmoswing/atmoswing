@@ -822,6 +822,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
+
+                wxLogVerbose(_("Loading predictor %d."), iPre);
 #if wxUSE_GUI
                 if (g_responsive)
                     wxGetApp().Yield();
