@@ -26,21 +26,21 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORARCHNCEPREANALYSIS1SUBSET_H
-#define ASPREDICTORARCHNCEPREANALYSIS1SUBSET_H
+#ifndef ASPREDICTORARCHNOAAOISST2SUBSET_H
+#define ASPREDICTORARCHNOAAOISST2SUBSET_H
 
 #include <asIncludes.h>
 #include <asPredictorArch.h>
 
 class asArea;
 
-class asPredictorArchNcepReanalysis1Subset
+class asPredictorArchCustomUnilOisst2
         : public asPredictorArch
 {
 public:
-    explicit asPredictorArchNcepReanalysis1Subset(const wxString &dataId);
+    explicit asPredictorArchCustomUnilOisst2(const wxString &dataId);
 
-    ~asPredictorArchNcepReanalysis1Subset() override = default;
+    ~asPredictorArchCustomUnilOisst2() override = default;
 
     bool Init() override;
 
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // ASPREDICTORARCHNCEPREANALYSIS1SUBSET_H
+#endif // ASPREDICTORARCHNOAAOISST2SUBSET_H

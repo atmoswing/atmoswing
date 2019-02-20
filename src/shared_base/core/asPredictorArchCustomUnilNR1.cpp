@@ -26,17 +26,17 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorArchNcepReanalysis1Subset.h"
+#include "asPredictorArchCustomUnilNR1.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
 
 
-asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const wxString &dataId)
+asPredictorArchCustomUnilNR1::asPredictorArchCustomUnilNR1(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "NCEP_Reanalysis_v1_subset";
+    m_datasetId = "Custom_Unil_NR1";
     m_provider = "NCEP/NCAR";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Reanalysis 1 subset";
@@ -50,7 +50,7 @@ asPredictorArchNcepReanalysis1Subset::asPredictorArchNcepReanalysis1Subset(const
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorArchNcepReanalysis1Subset::Init()
+bool asPredictorArchCustomUnilNR1::Init()
 {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotentialHeight()) {
@@ -134,12 +134,12 @@ bool asPredictorArchNcepReanalysis1Subset::Init()
     return true;
 }
 
-void asPredictorArchNcepReanalysis1Subset::ListFiles(asTimeArray &timeArray)
+void asPredictorArchCustomUnilNR1::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorArchNcepReanalysis1Subset::ConvertToMjd(double timeValue, double refValue) const
+double asPredictorArchCustomUnilNR1::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     if (timeValue < 500 * 365) { // New format

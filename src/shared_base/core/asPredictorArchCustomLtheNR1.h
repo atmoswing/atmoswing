@@ -30,12 +30,12 @@
 #define ASPREDICTORARCHCUSTOMLTHENR1_H
 
 #include <asIncludes.h>
-#include <asPredictorArchNcepReanalysis1Subset.h>
+#include <asPredictorArchCustomUnilNR1.h>
 
 class asArea;
 
 class asPredictorArchCustomLtheNR1
-        : public asPredictorArchNcepReanalysis1Subset
+        : public asPredictorArchCustomUnilNR1
 {
 public:
     explicit asPredictorArchCustomLtheNR1(const wxString &dataId);

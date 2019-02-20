@@ -26,17 +26,17 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorArchNoaaOisst2Subset.h"
+#include "asPredictorArchCustomUnilOisst2.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
 
 
-asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString &dataId)
+asPredictorArchCustomUnilOisst2::asPredictorArchCustomUnilOisst2(const wxString &dataId)
         : asPredictorArch(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "NOAA_OISST_v2_subset";
+    m_datasetId = "Custom_Unil_OISST_v2";
     m_provider = "NOAA";
     m_transformedBy = "Pascal Horton";
     m_datasetName = "Optimum Interpolation Sea Surface Temperature, version 2, subset";
@@ -50,7 +50,7 @@ asPredictorArchNoaaOisst2Subset::asPredictorArchNoaaOisst2Subset(const wxString 
     m_fStr.hasLevelDim = false;
 }
 
-bool asPredictorArchNoaaOisst2Subset::Init()
+bool asPredictorArchCustomUnilOisst2::Init()
 {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("sst", false)) {
@@ -90,12 +90,12 @@ bool asPredictorArchNoaaOisst2Subset::Init()
     return true;
 }
 
-void asPredictorArchNoaaOisst2Subset::ListFiles(asTimeArray &timeArray)
+void asPredictorArchCustomUnilOisst2::ListFiles(asTimeArray &timeArray)
 {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorArchNoaaOisst2Subset::ConvertToMjd(double timeValue, double refValue) const
+double asPredictorArchCustomUnilOisst2::ConvertToMjd(double timeValue, double refValue) const
 {
     timeValue = (timeValue / 24.0); // hours to days
     if (timeValue < 500 * 365) { // New format

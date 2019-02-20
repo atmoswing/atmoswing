@@ -32,12 +32,12 @@
 #include <asAreaCompGrid.h>
 #include <asPredictorArchGenericNetcdf.h>
 #include <asPredictorArchNcepReanalysis1.h>
-#include <asPredictorArchNcepReanalysis1Subset.h>
+#include <asPredictorArchCustomUnilNR1.h>
 #include <asPredictorArchNcepReanalysis2.h>
 #include <asPredictorArchNcepCfsr.h>
 #include <asPredictorArchNcepCfsrSubset.h>
 #include <asPredictorArchNoaaOisst2.h>
-#include <asPredictorArchNoaaOisst2Subset.h>
+#include <asPredictorArchCustomUnilOisst2.h>
 #include <asPredictorArchEcmwfEraInterim.h>
 #include <asPredictorArchEcmwfEra20C.h>
 #include <asPredictorArchEcmwfCera20C.h>
@@ -65,8 +65,6 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchGenericNetcdf(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
         predictor = new asPredictorArchNcepReanalysis1(dataId);
-    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1_subset", false)) {
-        predictor = new asPredictorArchNcepReanalysis1Subset(dataId);
     } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
         predictor = new asPredictorArchNcepReanalysis2(dataId);
     } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
@@ -93,8 +91,10 @@ asPredictorArch *asPredictorArch::GetInstance(const wxString &datasetId, const w
         predictor = new asPredictorArchNoaa20Cr2cEnsemble(dataId);
     } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
         predictor = new asPredictorArchNoaaOisst2(dataId);
-    } else if (datasetId.IsSameAs("NOAA_OISST_v2_subset", false)) {
-        predictor = new asPredictorArchNoaaOisst2Subset(dataId);
+    } else if (datasetId.IsSameAs("Custom_Unil_NR1", false)) {
+        predictor = new asPredictorArchCustomUnilNR1(dataId);
+    } else if (datasetId.IsSameAs("Custom_Unil_OISST_v2", false)) {
+        predictor = new asPredictorArchCustomUnilOisst2(dataId);
     } else if (datasetId.IsSameAs("Custom_LTHE_NR1", false)) {
         predictor = new asPredictorArchCustomLtheNR1(dataId);
     } else {

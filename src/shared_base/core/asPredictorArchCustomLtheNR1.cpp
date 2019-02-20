@@ -33,10 +33,10 @@
 
 
 asPredictorArchCustomLtheNR1::asPredictorArchCustomLtheNR1(const wxString &dataId)
-        : asPredictorArchNcepReanalysis1Subset(dataId)
+        : asPredictorArchCustomUnilNR1(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "Custom_LTHE_NCEP_Reanalysis_1";
+    m_datasetId = "Custom_LTHE_NR1";
     m_provider = "NCEP/NCAR";
     m_transformedBy = "LTHE";
     m_datasetName = "Reanalysis 1 subset from LTHE";
