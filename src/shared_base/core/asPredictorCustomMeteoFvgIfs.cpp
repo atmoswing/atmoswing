@@ -43,5 +43,5 @@ asPredictorCustomMeteoFvgIfs::asPredictorCustomMeteoFvgIfs(const wxString &dataI
 
 void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
 {
-    ...
+    //...
 }
