@@ -22,34 +22,34 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef ASPREDICTORNCEPCFSR2SUBSET_H
+#define ASPREDICTORNCEPCFSR2SUBSET_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
 
 class asArea;
 
-class asPredictorProj
-        : public asPredictor {
+class asPredictorNcepCfsrSubset
+        : public asPredictor
+{
 public:
-    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+    explicit asPredictorNcepCfsrSubset(const wxString &dataId);
 
-    ~asPredictorProj() override = default;
+    ~asPredictorNcepCfsrSubset() override = default;
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                        const wxString &dataId, const wxString &directory = wxEmptyString);
+    bool Init() override;
 
 protected:
-    wxString m_model;
-    wxString m_scenario;
+    void ListFiles(asTimeArray &timeArray) override;
 
+    double ConvertToMjd(double timeValue, double refValue) const override;
 
 private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif // ASPREDICTORNCEPCFSR2SUBSET_H

@@ -106,11 +106,6 @@ asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const w
     return predictor;
 }
 
-bool asPredictorOper::Init()
-{
-    return false;
-}
-
 int asPredictorOper::Download()
 {
     wxASSERT(!m_predictorsRealtimeDir.IsEmpty());
@@ -298,82 +293,4 @@ void asPredictorOper::ListFiles(asTimeArray &timeArray)
 
         m_files.push_back(filePath);
     }
-}
-
-bool asPredictorOper::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
-{
-    m_fInd.areas.clear();
-
-    // Get the time length
-    m_fInd.timeArrayCount = 1;
-    m_fInd.timeCount = 1;
-
-    // Go through every area
-    m_fInd.areas.resize(compositeData.size());
-    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
-
-        if (dataArea) {
-            // Get the spatial extent
-            auto lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
-            auto latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
-            auto latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
-
-            // The dimensions lengths
-            m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
-            m_fInd.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
-
-            // Get the spatial indices of the desired data
-            m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f,
-                                                  asHIDE_WARNINGS);
-            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
-                // If not found, try with negative angles
-                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                      lonMin - 360, 0.01f, asHIDE_WARNINGS);
-            }
-            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
-                // If not found, try with angles above 360 degrees
-                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
-                                                      lonMin + 360, 0.01f, asHIDE_WARNINGS);
-            }
-            if (m_fInd.areas[iArea].lonStart < 0) {
-                wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
-                           m_fStr.lons[0], (int) m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1]);
-                return false;
-            }
-            wxASSERT_MSG(m_fInd.areas[iArea].lonStart >= 0,
-                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f", m_fStr.lons[0],
-                                          (int) m_fStr.lons.size(), m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
-
-            int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
-            int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
-            wxASSERT_MSG(indexStartLat1 >= 0,
-                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
-                                          m_fStr.lats[m_fStr.lats.size() - 1]));
-            wxASSERT_MSG(indexStartLat2 >= 0, wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
-                                                               m_fStr.lats[m_fStr.lats.size() - 1]));
-            m_fInd.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
-        } else {
-            m_fInd.areas[iArea].lonStart = 0;
-            m_fInd.areas[iArea].latStart = 0;
-            m_fInd.areas[iArea].lonCount = m_lonPtsnb;
-            m_fInd.areas[iArea].latCount = m_latPtsnb;
-        }
-
-        if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
-            m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
-            if (m_fInd.level < 0) {
-                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
-                return false;
-            }
-        } else if (m_fStr.hasLevelDim && m_fStr.singleLevel) {
-            m_fInd.level = 0;
-        }
-    }
-
-    return true;
-}
-
-double asPredictorOper::ConvertToMjd(double timeValue, double refValue) const
-{
-    return NaNd;
 }

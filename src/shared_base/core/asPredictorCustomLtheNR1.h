@@ -8,48 +8,49 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef ASPREDICTORCUSTOMLTHENR1_H
+#define ASPREDICTORCUSTOMLTHENR1_H
 
 #include <asIncludes.h>
-#include <asPredictor.h>
+#include <asPredictorCustomUnilNR1.h>
 
 class asArea;
 
-class asPredictorProj
-        : public asPredictor {
+class asPredictorCustomLtheNR1
+        : public asPredictorCustomUnilNR1
+{
 public:
-    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+    explicit asPredictorCustomLtheNR1(const wxString &dataId);
 
-    ~asPredictorProj() override = default;
+    ~asPredictorCustomLtheNR1() override = default;
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                        const wxString &dataId, const wxString &directory = wxEmptyString);
+    bool Init() override;
 
 protected:
-    wxString m_model;
-    wxString m_scenario;
+    void ListFiles(asTimeArray &timeArray) override;
 
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif // ASPREDICTORCUSTOMLTHENR1_H

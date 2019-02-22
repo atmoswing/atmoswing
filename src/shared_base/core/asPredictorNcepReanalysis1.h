@@ -22,34 +22,35 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef ASPREDICTORNCEPREANALYSIS1_H
+#define ASPREDICTORNCEPREANALYSIS1_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
 
 class asArea;
 
-class asPredictorProj
-        : public asPredictor {
+class asPredictorNcepReanalysis1
+        : public asPredictor
+{
 public:
-    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+    explicit asPredictorNcepReanalysis1(const wxString &dataId);
 
-    ~asPredictorProj() override = default;
+    ~asPredictorNcepReanalysis1() override = default;
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                        const wxString &dataId, const wxString &directory = wxEmptyString);
+    bool Init() override;
 
 protected:
-    wxString m_model;
-    wxString m_scenario;
+    void ListFiles(asTimeArray &timeArray) override;
 
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif // ASPREDICTORNCEPREANALYSIS1_H

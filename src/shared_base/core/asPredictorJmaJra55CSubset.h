@@ -22,34 +22,31 @@
  */
 
 /*
- * Portions Copyright 2017 Pascal Horton, University of Bern.
+ * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef ASPREDICTORJMAJRA55CSUBSET_H
+#define ASPREDICTORJMAJRA55CSUBSET_H
 
 #include <asIncludes.h>
-#include <asPredictor.h>
+#include <asPredictorJmaJra55Subset.h>
 
 class asArea;
 
-class asPredictorProj
-        : public asPredictor {
+class asPredictorJmaJra55CSubset
+        : public asPredictorJmaJra55Subset
+{
 public:
-    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+    explicit asPredictorJmaJra55CSubset(const wxString &dataId);
 
-    ~asPredictorProj() override = default;
+    ~asPredictorJmaJra55CSubset() override = default;
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                        const wxString &dataId, const wxString &directory = wxEmptyString);
+    bool Init() override;
 
 protected:
-    wxString m_model;
-    wxString m_scenario;
-
 
 private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif // ASPREDICTORJMAJRA55CSUBSET_H

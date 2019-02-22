@@ -25,31 +25,31 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef ASPREDICTORECMWFCERA20C_H
+#define ASPREDICTORECMWFCERA20C_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
 
 class asArea;
 
-class asPredictorProj
-        : public asPredictor {
+class asPredictorEcmwfCera20C
+        : public asPredictor
+{
 public:
-    asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
+    explicit asPredictorEcmwfCera20C(const wxString &dataId);
 
-    ~asPredictorProj() override = default;
+    ~asPredictorEcmwfCera20C() override = default;
 
-    static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
-                                        const wxString &dataId, const wxString &directory = wxEmptyString);
+    bool Init() override;
 
 protected:
-    wxString m_model;
-    wxString m_scenario;
+    void ListFiles(asTimeArray &timeArray) override;
 
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
 private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif // ASPREDICTORECMWFCERA20C_H

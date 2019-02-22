@@ -33,7 +33,7 @@
 #include <asPredictand.h>
 
 
-class asPredictorArch;
+class asPredictor;
 class asPredictor;
 class asParameters;
 class asCriteria;
@@ -116,10 +116,10 @@ protected:
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
     asPredictand *m_predictandDB;
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
     std::vector<vvb> m_preloadedArchivePointerCopy;
 
-    bool Preprocess(std::vector<asPredictorArch *> predictors, const wxString &method, asPredictor *result);
+    bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
     double GetTimeStartArchive(asParameters *params) const;
 
@@ -127,7 +127,7 @@ protected:
 
     virtual void InitializePreloadedArchiveDataContainers(asParameters *params);
 
-    virtual void Cleanup(std::vector<asPredictorArch *> predictors);
+    virtual void Cleanup(std::vector<asPredictor *> predictors);
 
     virtual void Cleanup(std::vector<asPredictor *> predictors);
 

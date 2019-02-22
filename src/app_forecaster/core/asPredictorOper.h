@@ -44,8 +44,6 @@ public:
 
     static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
 
-    bool Init() override;
-
     int Download();
 
     double UpdateRunDateInUse();
@@ -110,10 +108,6 @@ protected:
     vd m_dataDates;
 
     void ListFiles(asTimeArray &timeArray) override;
-
-    bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) override;
-
-    double ConvertToMjd(double timeValue, double refValue) const override;
 
     bool CheckTimeArray(asTimeArray &timeArray) const override;
 

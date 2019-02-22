@@ -525,7 +525,7 @@ void asMethodDownscaler::Cleanup(std::vector<asPredictorProj *> predictors)
     }
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorArch *> predictors)
+void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
 {
     if (!predictors.empty()) {
         for (auto &predictor : predictors) {

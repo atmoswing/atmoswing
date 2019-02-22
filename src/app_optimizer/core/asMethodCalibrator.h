@@ -33,7 +33,7 @@
 #include <asMethodStandard.h>
 #include <asParametersCalibration.h>
 #include <asResultsDates.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 #include <asResultsParametersArray.h>
 #include <asResultsDates.h>
 #include <asResultsValues.h>

@@ -730,7 +730,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asPredictorArch *predictorArchive = asPredictorArch::GetInstance(
+            asPredictor *predictorArchive = asPredictor::GetInstance(
                     params.GetPredictorArchiveDatasetId(iStep, iPtor),
                     params.GetPredictorArchiveDataId(iStep, iPtor),
                     m_batchForecasts->GetPredictorsArchiveDirectory());
@@ -847,7 +847,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asPredictorArch *predictorArchivePreprocess = asPredictorArch::GetInstance(
+                asPredictor *predictorArchivePreprocess = asPredictor::GetInstance(
                         params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
                         params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
                         m_batchForecasts->GetPredictorsArchiveDirectory());
@@ -938,7 +938,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instanciate an archive predictor object
-            asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
+            asPredictor *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -1185,7 +1185,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             timeArrayDataTarget.Init();
 
             // Instanciate an archive predictor object
-            asPredictorArch *predictorArchive = asPredictorArch::GetInstance(
+            asPredictor *predictorArchive = asPredictor::GetInstance(
                     params.GetPredictorArchiveDatasetId(iStep, iPtor), params.GetPredictorArchiveDataId(iStep, iPtor),
                     m_batchForecasts->GetPredictorsArchiveDirectory());
             if (!predictorArchive) {
@@ -1291,7 +1291,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
-                asPredictorArch *predictorArchivePreprocess = asPredictorArch::GetInstance(
+                asPredictor *predictorArchivePreprocess = asPredictor::GetInstance(
                         params.GetPreprocessArchiveDatasetId(iStep, iPtor, iPre),
                         params.GetPreprocessArchiveDataId(iStep, iPtor, iPre),
                         m_batchForecasts->GetPredictorsArchiveDirectory());
@@ -1390,7 +1390,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            asPredictorArch *predictorArchive = new asPredictorArch(*m_storagePredictorsArchivePreprocess[0]);
+            asPredictor *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }

@@ -29,7 +29,7 @@
 #include "wx/filename.h"
 #include <asCriteria.h>
 #include <asAreaCompRegGrid.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 #include <asPreprocessor.h>
 #include <asFileAscii.h>
 #include <asTimeArray.h>
@@ -305,7 +305,7 @@ TEST(Criteria, S1preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
     std::vector<asPredictor *> vdata;
@@ -313,7 +313,7 @@ TEST(Criteria, S1preprocessed)
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "SimpleGradients";
-    asPredictorArch *gradients = new asPredictorArch(*predictor);
+    asPredictor *gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
@@ -378,7 +378,7 @@ TEST(Criteria, NS1preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
     std::vector<asPredictor *> vdata;
@@ -386,7 +386,7 @@ TEST(Criteria, NS1preprocessed)
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "SimpleGradients";
-    asPredictorArch *gradients = new asPredictorArch(*predictor);
+    asPredictor *gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
     vva2f hgtPreproc = gradients->GetData();
 
@@ -451,7 +451,7 @@ TEST(Criteria, S2preprocessed)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
     std::vector<asPredictor *> vdata;
@@ -459,7 +459,7 @@ TEST(Criteria, S2preprocessed)
     vva2f hgtOriginal = predictor->GetData();
 
     wxString method = "SimpleCurvature";
-    asPredictorArch *curv = new asPredictorArch(*predictor);
+    asPredictor *curv = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, curv);
     vva2f hgtPreproc = curv->GetData();
 

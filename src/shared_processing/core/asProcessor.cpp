@@ -32,7 +32,7 @@
 #include <asParameters.h>
 #include <asPreprocessor.h>
 #include <asCriteria.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 #include <asResultsDates.h>
 #include <asResultsValues.h>
 #include <asThreadGetAnalogsDates.h>

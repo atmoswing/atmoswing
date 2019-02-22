@@ -100,7 +100,10 @@ public:
 
     ~asPredictor() override = default;
 
-    virtual bool Init() = 0;
+    static asPredictor *GetInstance(const wxString &datasetId, const wxString &dataId,
+                                    const wxString &directory = wxEmptyString);
+
+    virtual bool Init();
 
     void CheckLevelTypeIsDefined();
 
@@ -115,6 +118,8 @@ public:
     bool Load(asAreaCompGrid *desiredArea, double date, float level);
 
     bool TransformData(vvva2f &compositeData);
+
+    bool ClipToArea(asAreaCompGrid *desiredArea);
 
     bool Inline();
 
@@ -384,6 +389,7 @@ protected:
     vi m_gribCode;
     wxString m_product;
     wxString m_fileVarName;
+    wxString m_fileNamePattern;
     Unit m_unit;
     bool m_strideAllowed;
     float m_level;
@@ -402,17 +408,17 @@ protected:
     wxString m_preprocessMethod;
     vwxs m_files;
 
-    virtual void ListFiles(asTimeArray &timeArray) = 0;
+    virtual void ListFiles(asTimeArray &timeArray);
 
     bool EnquireFileStructure();
 
     bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNd);
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
+    virtual bool CheckTimeArray(asTimeArray &timeArray);
 
-    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
+    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 
