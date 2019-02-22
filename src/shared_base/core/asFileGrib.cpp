@@ -267,6 +267,20 @@ bool asFileGrib::GetYaxis(a1d &vaxis) const
     return true;
 }
 
+bool asFileGrib::GetLevels(a1d &levels) const
+{
+    wxASSERT(m_opened);
+    wxASSERT(m_index != asNOT_FOUND);
+
+    levels.resize(m_levels.size());
+
+    for (int i = 0; i < m_levels.size(); ++i) {
+        levels[i] = m_levels[i];
+    }
+
+    return true;
+}
+
 double asFileGrib::GetTime() const
 {
     wxASSERT(m_opened);

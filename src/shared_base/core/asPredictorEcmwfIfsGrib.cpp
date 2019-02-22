@@ -53,37 +53,30 @@ bool asPredictorEcmwfIfsGrib::Init()
     if (IsGeopotentialHeight()) {
         m_parameter = GeopotentialHeight;
         m_gribCode = {0, 3, 5, 100};
-        m_fileVarName = "Geopotential_isobaric";
         m_unit = m;
     } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
         m_gribCode = {0, 0, 0, 100};
-        m_fileVarName = "TEMP";
         m_unit = degK;
     } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
         m_gribCode = {0, 2, 8, 100};
-        m_fileVarName = "VVEL";
         m_unit = Pa_s;
     } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_gribCode = {0, 1, 1, 100};
-        m_fileVarName = "RH";
         m_unit = percent;
     } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_gribCode = {0, 2, 2, 100};
-        m_fileVarName = "UGRD";
         m_unit = m_s;
     } else if (IsVwindComponent()) {
         m_parameter = Vwind;
         m_gribCode = {0, 2, 3, 100};
-        m_fileVarName = "VGRD";
         m_unit = m_s;
     } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater;
         m_gribCode = {0, 1, 3, 200};
-        m_fileVarName = "PWAT";
         m_unit = mm;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -91,7 +84,7 @@ bool asPredictorEcmwfIfsGrib::Init()
     }
 
     // Check data ID
-    if (m_fileVarName.IsEmpty()) {
+    if (m_parameter == ParameterUndefined) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
                    m_dataId, m_datasetName);
         return false;

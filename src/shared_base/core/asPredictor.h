@@ -458,8 +458,6 @@ protected:
 
     asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 
-    void AssignGribCode(const int arr[]);
-
     bool IsPressureLevel() const;
 
     bool IsIsentropicLevel() const;

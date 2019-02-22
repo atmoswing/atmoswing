@@ -129,8 +129,6 @@ protected:
 
     virtual void Cleanup(std::vector<asPredictor *> predictors);
 
-    virtual void Cleanup(std::vector<asPredictor *> predictors);
-
     virtual void Cleanup(std::vector<asCriteria *> criteria);
 
     void DeletePreloadedArchiveData();

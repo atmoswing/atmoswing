@@ -53,6 +53,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";
     m_fStr.hasLevelDim = false;
+    m_parameter = ParameterUndefined;
 }
 
 asPredictorOperGfsForecast::~asPredictorOperGfsForecast()
@@ -71,43 +72,42 @@ bool asPredictorOperGfsForecast::Init()
         m_parameter = GeopotentialHeight;
         m_gribCode = {0, 3, 5, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/hgt", m_commandDownload);
-        m_fileVarName = "HGT";
         m_unit = m;
+        m_fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
         m_gribCode = {0, 0, 0, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/temp", m_commandDownload);
-        m_fileVarName = "TEMP";
         m_unit = degK;
+        m_fStr.hasLevelDim = true;
     } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
         m_gribCode = {0, 2, 8, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vvel", m_commandDownload);
-        m_fileVarName = "VVEL";
         m_unit = Pa_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_gribCode = {0, 1, 1, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/rh", m_commandDownload);
-        m_fileVarName = "RH";
         m_unit = percent;
+        m_fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_gribCode = {0, 2, 2, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/uwnd", m_commandDownload);
-        m_fileVarName = "UGRD";
         m_unit = m_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsVwindComponent()) {
         m_parameter = Vwind;
         m_gribCode = {0, 2, 3, 100};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vwnd", m_commandDownload);
-        m_fileVarName = "VGRD";
         m_unit = m_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater;
         m_gribCode = {0, 1, 3, 200};
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/pwat", m_commandDownload);
-        m_fileVarName = "PWAT";
         m_unit = mm;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -115,7 +115,7 @@ bool asPredictorOperGfsForecast::Init()
     }
 
     // Check data ID
-    if (m_fileVarName.IsEmpty()) {
+    if (m_parameter == ParameterUndefined) {
         wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
                    m_dataId, m_datasetName);
         return false;

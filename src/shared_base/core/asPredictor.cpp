@@ -89,8 +89,7 @@ asPredictor::asPredictor(const wxString &dataId)
     m_fInd.timeStart = 0;
     m_fInd.timeStep = 0;
 
-    int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
-    AssignGribCode(arr);
+    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
 
     if (dataId.Contains('/')) {
         wxString levelType = dataId.BeforeLast('/');
@@ -808,11 +807,7 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
     // Get full axes from the file
     gbFile0->GetXaxis(m_fStr.lons);
     gbFile0->GetYaxis(m_fStr.lats);
-
-    if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
-        wxLogError(_("The level dimension is not yet implemented for Grib files."));
-        return false;
-    }
+    gbFile0->GetLevels(m_fStr.levels);
 
     // Yet handle a unique time value per file.
     m_fStr.timeLength = 1;
@@ -939,14 +934,6 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
     return nullptr;
 }
 
-void asPredictor::AssignGribCode(const int arr[])
-{
-    m_gribCode.clear();
-    for (int i = 0; i < 4; ++i) {
-        m_gribCode.push_back(arr[i]);
-    }
-}
-
 bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
     m_fInd.areas.clear();
@@ -1047,6 +1034,7 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
         }
 
         if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
+            wxASSERT(m_fStr.levels.size() > 0);
             m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
             if (m_fInd.level < 0) {
                 wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);

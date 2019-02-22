@@ -54,32 +54,27 @@ bool asPredictorNcepCfsr::Init()
         m_fStr.singleLevel = true;
         if (IsGeopotentialHeight()) {
             m_parameter = GeopotentialHeight;
-            int arr[] = {0, 3, 5, 100};
-            AssignGribCode(arr);
+            m_gribCode = {0, 3, 5, 100};
             m_parameterName = "Geopotential height @ Isobaric surface";
             m_unit = gpm;
         } else if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
-            int arr[] = {0, 1, 3, 200};
-            AssignGribCode(arr);
+            m_gribCode = {0, 1, 3, 200};
             m_parameterName = "Precipitable water @ Entire atmosphere layer";
             m_unit = kg_m2;
         } else if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
-            int arr[] = {0, 3, 0, 101};
-            AssignGribCode(arr);
+            m_gribCode = {0, 3, 0, 101};
             m_parameterName = "Pressure @ Mean sea level";
             m_unit = Pa;
         } else if (IsRelativeHumidity()) {
             m_parameter = RelativeHumidity;
-            int arr[] = {0, 1, 1, 100};
-            AssignGribCode(arr);
+            m_gribCode = {0, 1, 1, 100};
             m_parameterName = "Relative humidity @ Isobaric surface";
             m_unit = percent;
         } else if (IsAirTemperature()) {
             m_parameter = AirTemperature;
-            int arr[] = {0, 0, 0, 100};
-            AssignGribCode(arr);
+            m_gribCode = {0, 0, 0, 100};
             m_parameterName = "Temperature @ Isobaric surface";
             m_unit = degK;
         } else {

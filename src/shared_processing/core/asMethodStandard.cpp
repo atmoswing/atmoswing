@@ -1128,16 +1128,6 @@ void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
     }
 }
 
-void asMethodStandard::Cleanup(std::vector<asPredictor *> predictors)
-{
-    if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
-            wxDELETE(predictor);
-        }
-        predictors.resize(0);
-    }
-}
-
 void asMethodStandard::Cleanup(std::vector<asCriteria *> criteria)
 {
     if (!criteria.empty()) {

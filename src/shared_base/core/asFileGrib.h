@@ -54,6 +54,8 @@ public:
 
     bool GetYaxis(a1d &vaxis) const;
 
+    bool GetLevels(a1d &levels) const;
+
     double GetTime() const;
 
 protected:
