@@ -34,22 +34,24 @@
 #include <asAreaCompGenGrid.h>
 #include <asPredictorGenericNetcdf.h>
 #include <asPredictorNcepReanalysis1.h>
-#include <asPredictorCustomUnilNR1.h>
 #include <asPredictorNcepReanalysis2.h>
 #include <asPredictorNcepCfsr.h>
 #include <asPredictorNcepCfsrSubset.h>
 #include <asPredictorNoaaOisst2.h>
-#include <asPredictorCustomUnilOisst2.h>
 #include <asPredictorEcmwfEraInterim.h>
 #include <asPredictorEcmwfEra20C.h>
 #include <asPredictorEcmwfCera20C.h>
+#include <asPredictorEcmwfIfsGrib.h>
 #include <asPredictorNasaMerra2.h>
 #include <asPredictorNasaMerra2Subset.h>
 #include <asPredictorJmaJra55Subset.h>
 #include <asPredictorJmaJra55CSubset.h>
 #include <asPredictorNoaa20Cr2c.h>
 #include <asPredictorNoaa20Cr2cEnsemble.h>
+#include <asPredictorCustomUnilNR1.h>
+#include <asPredictorCustomUnilOisst2.h>
 #include <asPredictorCustomLtheNR1.h>
+#include <asPredictorCustomMeteoFvgIfs.h>
 
 
 asPredictor::asPredictor(const wxString &dataId)
@@ -120,6 +122,8 @@ asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString 
         predictor = new asPredictorEcmwfEra20C(dataId);
     } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
         predictor = new asPredictorEcmwfCera20C(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB", false)) {
+        predictor = new asPredictorEcmwfIfsGrib(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
         predictor = new asPredictorNasaMerra2(dataId);
     } else if (datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
@@ -140,6 +144,8 @@ asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString 
         predictor = new asPredictorCustomUnilOisst2(dataId);
     } else if (datasetId.IsSameAs("Custom_LTHE_NR1", false)) {
         predictor = new asPredictorCustomLtheNR1(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS", false)) {
+        predictor = new asPredictorCustomMeteoFvgIfs(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;
