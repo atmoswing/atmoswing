@@ -234,6 +234,9 @@ bool asPredictor::CheckFilesPresence()
                         m_files[i] = fileName.GetFullPath();
                         break;
                     }
+                } else {
+                    wxLogError(_("File not found: %s"), m_files[i]);
+                    return false;
                 }
             }
         }

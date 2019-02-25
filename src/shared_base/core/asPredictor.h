@@ -87,7 +87,8 @@ public:
         Vorticity,
         DewpointTemperature,
         WaterVapour,
-        MoistureFlux
+        MoistureFlux,
+        Other
     };
 
     enum Unit

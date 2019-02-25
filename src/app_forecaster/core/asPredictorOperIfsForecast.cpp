@@ -63,9 +63,14 @@ asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId)
 bool asPredictorOperIfsForecast::Init()
 {
     // Identify data ID and set the corresponding properties.
-    if (IsGeopotentialHeight()) {
-        m_parameter = GeopotentialHeight;
+    if (m_dataId.IsSameAs("z", false)) {
+        m_parameter = Geopotential;
         m_gribCode = {0, 128, 129, 100};
+        m_unit = m2_s2;
+        m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("gh", false)) {
+        m_parameter = GeopotentialHeight;
+        m_gribCode = {0, 128, 156, 100};
         m_unit = m;
         m_fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {

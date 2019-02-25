@@ -54,9 +54,14 @@ asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
 bool asPredictorEcmwfIfsGrib::Init()
 {
     // Identify data ID and set the corresponding properties.
-    if (IsGeopotentialHeight()) {
-        m_parameter = GeopotentialHeight;
+    if (m_dataId.IsSameAs("z", false)) {
+        m_parameter = Geopotential;
         m_gribCode = {0, 128, 129, 100};
+        m_unit = m2_s2;
+        m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("gh", false)) {
+        m_parameter = GeopotentialHeight;
+        m_gribCode = {0, 128, 156, 100};
         m_unit = m;
         m_fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
@@ -74,6 +79,11 @@ bool asPredictorEcmwfIfsGrib::Init()
         m_gribCode = {0, 128, 157, 100};
         m_unit = percent;
         m_fStr.hasLevelDim = true;
+    } else if (IsSpecificHumidity()) {
+        m_parameter = SpecificHumidity;
+        m_gribCode = {0, 128, 133, 100};
+        m_unit = percent;
+        m_fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_gribCode = {0, 128, 131, 100};
@@ -83,6 +93,16 @@ bool asPredictorEcmwfIfsGrib::Init()
         m_parameter = Vwind;
         m_gribCode = {0, 128, 132, 100};
         m_unit = m_s;
+        m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("thetaE", false)) {
+        m_parameter = Radiation;
+        m_gribCode = {0, 3, 113, 100};
+        m_unit = W_m2;
+        m_fStr.hasLevelDim = true;
+    } else if (m_dataId.IsSameAs("thetaES", false)) {
+        m_parameter = Radiation;
+        m_gribCode = {0, 3, 114, 100};
+        m_unit = W_m2;
         m_fStr.hasLevelDim = true;
     } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater; // Total column water

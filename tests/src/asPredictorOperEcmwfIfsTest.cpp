@@ -49,7 +49,7 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "hgt");
+    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -68,16 +68,16 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay)
     -947.1	-930.4	-911.6	-879.4	-845.4	-787.0
     -858.9	-849.9	-839.8	-810.4	-779.9	-727.9
     */
-    EXPECT_NEAR(-1107.0, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(-1059.0, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(-1007.2, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(-972.1, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(-959.9, hgt[0][0](0, 4), 0.5);
-    EXPECT_NEAR(-925.2, hgt[0][0](0, 5), 0.5);
-    EXPECT_NEAR(-1025.7, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(-947.1, hgt[0][0](2, 0), 0.5);
-    EXPECT_NEAR(-858.9, hgt[0][0](3, 0), 0.5);
-    EXPECT_NEAR(-727.9, hgt[0][0](3, 5), 0.5);
+    EXPECT_NEAR(-1107.0 / 9.80665, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(-1059.0 / 9.80665, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(-1007.2 / 9.80665, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(-972.1 / 9.80665, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(-959.9 / 9.80665, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(-925.2 / 9.80665, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(-1025.7 / 9.80665, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(-947.1 / 9.80665, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(-858.9 / 9.80665, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(-727.9 / 9.80665, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(area);
     wxDELETE(predictor);
@@ -100,7 +100,7 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "hgt");
+    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -119,16 +119,16 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep)
     -1287.1	-1232.4	-1162.9	-1107.2	-1075.5	-1024.2
     -1220.5	-1161.5	-1112.4	-1068.0	-1033.8	-986.9
     */
-    EXPECT_NEAR(-1382.0, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(-1327.9, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(-1262.4, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(-1218.4, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(-1187.6, hgt[0][0](0, 4), 0.5);
-    EXPECT_NEAR(-1137.3, hgt[0][0](0, 5), 0.5);
-    EXPECT_NEAR(-1340.5, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(-1287.1, hgt[0][0](2, 0), 0.5);
-    EXPECT_NEAR(-1220.5, hgt[0][0](3, 0), 0.5);
-    EXPECT_NEAR(-986.9, hgt[0][0](3, 5), 0.5);
+    EXPECT_NEAR(-1382.0 / 9.80665, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(-1327.9 / 9.80665, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(-1262.4 / 9.80665, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(-1218.4 / 9.80665, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(-1187.6 / 9.80665, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(-1137.3 / 9.80665, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(-1340.5 / 9.80665, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(-1287.1 / 9.80665, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(-1220.5 / 9.80665, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(-986.9 / 9.80665, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(area);
     wxDELETE(predictor);
@@ -151,7 +151,7 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "hgt");
+    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -170,16 +170,16 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep)
     1030.2	981.8	934.3	876.8	827.8	786.0
     1042.3	987.1	944.1	898.4	846.0	793.8
     */
-    EXPECT_NEAR(1037.8, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(986.4, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(931.6, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(874.8, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(818.0, hgt[0][0](0, 4), 0.5);
-    EXPECT_NEAR(765.6, hgt[0][0](0, 5), 0.5);
-    EXPECT_NEAR(1030.3, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(1030.2, hgt[0][0](2, 0), 0.5);
-    EXPECT_NEAR(1042.3, hgt[0][0](3, 0), 0.5);
-    EXPECT_NEAR(793.8, hgt[0][0](3, 5), 0.5);
+    EXPECT_NEAR(1037.8 / 9.80665, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(986.4 / 9.80665, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(931.6 / 9.80665, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(874.8 / 9.80665, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(818.0 / 9.80665, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(765.6 / 9.80665, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(1030.3 / 9.80665, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(1030.2 / 9.80665, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(1042.3 / 9.80665, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(793.8 / 9.80665, hgt[0][0](3, 5), 0.5);
 
     wxDELETE(area);
     wxDELETE(predictor);
@@ -202,7 +202,7 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "hgt");
+    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -221,16 +221,16 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
     -947.1	-930.4	-911.6	-879.4	-845.4	-787.0
     -858.9	-849.9	-839.8	-810.4	-779.9	-727.9
     */
-    EXPECT_NEAR(-1107.0, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(-1059.0, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(-1007.2, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(-972.1, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(-959.9, hgt[0][0](0, 4), 0.5);
-    EXPECT_NEAR(-925.2, hgt[0][0](0, 5), 0.5);
-    EXPECT_NEAR(-1025.7, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(-947.1, hgt[0][0](2, 0), 0.5);
-    EXPECT_NEAR(-858.9, hgt[0][0](3, 0), 0.5);
-    EXPECT_NEAR(-727.9, hgt[0][0](3, 5), 0.5);
+    EXPECT_NEAR(-1107.0 / 9.80665, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(-1059.0 / 9.80665, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(-1007.2 / 9.80665, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(-972.1 / 9.80665, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(-959.9 / 9.80665, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(-925.2 / 9.80665, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(-1025.7 / 9.80665, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(-947.1 / 9.80665, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(-858.9 / 9.80665, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(-727.9 / 9.80665, hgt[0][0](3, 5), 0.5);
 
     /* Values time step 1 (horizontal=Lon, vertical=Lat)
     Extracted:
@@ -239,16 +239,16 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
     -1287.1	-1232.4	-1162.9	-1107.2	-1075.5	-1024.2
     -1220.5	-1161.5	-1112.4	-1068.0	-1033.8	-986.9
     */
-    EXPECT_NEAR(-1382.0, hgt[1][0](0, 0), 0.5);
-    EXPECT_NEAR(-1327.9, hgt[1][0](0, 1), 0.5);
-    EXPECT_NEAR(-1262.4, hgt[1][0](0, 2), 0.5);
-    EXPECT_NEAR(-1218.4, hgt[1][0](0, 3), 0.5);
-    EXPECT_NEAR(-1187.6, hgt[1][0](0, 4), 0.5);
-    EXPECT_NEAR(-1137.3, hgt[1][0](0, 5), 0.5);
-    EXPECT_NEAR(-1340.5, hgt[1][0](1, 0), 0.5);
-    EXPECT_NEAR(-1287.1, hgt[1][0](2, 0), 0.5);
-    EXPECT_NEAR(-1220.5, hgt[1][0](3, 0), 0.5);
-    EXPECT_NEAR(-986.9, hgt[1][0](3, 5), 0.5);
+    EXPECT_NEAR(-1382.0 / 9.80665, hgt[1][0](0, 0), 0.5);
+    EXPECT_NEAR(-1327.9 / 9.80665, hgt[1][0](0, 1), 0.5);
+    EXPECT_NEAR(-1262.4 / 9.80665, hgt[1][0](0, 2), 0.5);
+    EXPECT_NEAR(-1218.4 / 9.80665, hgt[1][0](0, 3), 0.5);
+    EXPECT_NEAR(-1187.6 / 9.80665, hgt[1][0](0, 4), 0.5);
+    EXPECT_NEAR(-1137.3 / 9.80665, hgt[1][0](0, 5), 0.5);
+    EXPECT_NEAR(-1340.5 / 9.80665, hgt[1][0](1, 0), 0.5);
+    EXPECT_NEAR(-1287.1 / 9.80665, hgt[1][0](2, 0), 0.5);
+    EXPECT_NEAR(-1220.5 / 9.80665, hgt[1][0](3, 0), 0.5);
+    EXPECT_NEAR(-986.9 / 9.80665, hgt[1][0](3, 5), 0.5);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     Extracted:
@@ -257,16 +257,16 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
     1030.2	981.8	934.3	876.8	827.8	786.0
     1042.3	987.1	944.1	898.4	846.0	793.8
     */
-    EXPECT_NEAR(1037.8, hgt[7][0](0, 0), 0.5);
-    EXPECT_NEAR(986.4, hgt[7][0](0, 1), 0.5);
-    EXPECT_NEAR(931.6, hgt[7][0](0, 2), 0.5);
-    EXPECT_NEAR(874.8, hgt[7][0](0, 3), 0.5);
-    EXPECT_NEAR(818.0, hgt[7][0](0, 4), 0.5);
-    EXPECT_NEAR(765.6, hgt[7][0](0, 5), 0.5);
-    EXPECT_NEAR(1030.3, hgt[7][0](1, 0), 0.5);
-    EXPECT_NEAR(1030.2, hgt[7][0](2, 0), 0.5);
-    EXPECT_NEAR(1042.3, hgt[7][0](3, 0), 0.5);
-    EXPECT_NEAR(793.8, hgt[7][0](3, 5), 0.5);
+    EXPECT_NEAR(1037.8 / 9.80665, hgt[7][0](0, 0), 0.5);
+    EXPECT_NEAR(986.4 / 9.80665, hgt[7][0](0, 1), 0.5);
+    EXPECT_NEAR(931.6 / 9.80665, hgt[7][0](0, 2), 0.5);
+    EXPECT_NEAR(874.8 / 9.80665, hgt[7][0](0, 3), 0.5);
+    EXPECT_NEAR(818.0 / 9.80665, hgt[7][0](0, 4), 0.5);
+    EXPECT_NEAR(765.6 / 9.80665, hgt[7][0](0, 5), 0.5);
+    EXPECT_NEAR(1030.3 / 9.80665, hgt[7][0](1, 0), 0.5);
+    EXPECT_NEAR(1030.2 / 9.80665, hgt[7][0](2, 0), 0.5);
+    EXPECT_NEAR(1042.3 / 9.80665, hgt[7][0](3, 0), 0.5);
+    EXPECT_NEAR(793.8 / 9.80665, hgt[7][0](3, 5), 0.5);
 
     wxDELETE(area);
     wxDELETE(predictor);
@@ -289,7 +289,7 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst)
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
-    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "hgt");
+    asPredictorOper *predictor = asPredictorOper::GetInstance("ECMWF_IFS_GRIB_Forecast", "z");
     wxASSERT(predictor);
 
     // Create file names
@@ -308,16 +308,16 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst)
     -1287.1	-1232.4	-1162.9	-1107.2	-1075.5	-1024.2
     -1220.5	-1161.5	-1112.4	-1068.0	-1033.8	-986.9
     */
-    EXPECT_NEAR(-1382.0, hgt[0][0](0, 0), 0.5);
-    EXPECT_NEAR(-1327.9, hgt[0][0](0, 1), 0.5);
-    EXPECT_NEAR(-1262.4, hgt[0][0](0, 2), 0.5);
-    EXPECT_NEAR(-1218.4, hgt[0][0](0, 3), 0.5);
-    EXPECT_NEAR(-1187.6, hgt[0][0](0, 4), 0.5);
-    EXPECT_NEAR(-1137.3, hgt[0][0](0, 5), 0.5);
-    EXPECT_NEAR(-1340.5, hgt[0][0](1, 0), 0.5);
-    EXPECT_NEAR(-1287.1, hgt[0][0](2, 0), 0.5);
-    EXPECT_NEAR(-1220.5, hgt[0][0](3, 0), 0.5);
-    EXPECT_NEAR(-986.9, hgt[0][0](3, 5), 0.5);
+    EXPECT_NEAR(-1382.0 / 9.80665, hgt[0][0](0, 0), 0.5);
+    EXPECT_NEAR(-1327.9 / 9.80665, hgt[0][0](0, 1), 0.5);
+    EXPECT_NEAR(-1262.4 / 9.80665, hgt[0][0](0, 2), 0.5);
+    EXPECT_NEAR(-1218.4 / 9.80665, hgt[0][0](0, 3), 0.5);
+    EXPECT_NEAR(-1187.6 / 9.80665, hgt[0][0](0, 4), 0.5);
+    EXPECT_NEAR(-1137.3 / 9.80665, hgt[0][0](0, 5), 0.5);
+    EXPECT_NEAR(-1340.5 / 9.80665, hgt[0][0](1, 0), 0.5);
+    EXPECT_NEAR(-1287.1 / 9.80665, hgt[0][0](2, 0), 0.5);
+    EXPECT_NEAR(-1220.5 / 9.80665, hgt[0][0](3, 0), 0.5);
+    EXPECT_NEAR(-986.9 / 9.80665, hgt[0][0](3, 5), 0.5);
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     Extracted:
@@ -326,16 +326,16 @@ TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst)
     1030.2	981.8	934.3	876.8	827.8	786.0
     1042.3	987.1	944.1	898.4	846.0	793.8
     */
-    EXPECT_NEAR(1037.8, hgt[6][0](0, 0), 0.5);
-    EXPECT_NEAR(986.4, hgt[6][0](0, 1), 0.5);
-    EXPECT_NEAR(931.6, hgt[6][0](0, 2), 0.5);
-    EXPECT_NEAR(874.8, hgt[6][0](0, 3), 0.5);
-    EXPECT_NEAR(818.0, hgt[6][0](0, 4), 0.5);
-    EXPECT_NEAR(765.6, hgt[6][0](0, 5), 0.5);
-    EXPECT_NEAR(1030.3, hgt[6][0](1, 0), 0.5);
-    EXPECT_NEAR(1030.2, hgt[6][0](2, 0), 0.5);
-    EXPECT_NEAR(1042.3, hgt[6][0](3, 0), 0.5);
-    EXPECT_NEAR(793.8, hgt[6][0](3, 5), 0.5);
+    EXPECT_NEAR(1037.8 / 9.80665, hgt[6][0](0, 0), 0.5);
+    EXPECT_NEAR(986.4 / 9.80665, hgt[6][0](0, 1), 0.5);
+    EXPECT_NEAR(931.6 / 9.80665, hgt[6][0](0, 2), 0.5);
+    EXPECT_NEAR(874.8 / 9.80665, hgt[6][0](0, 3), 0.5);
+    EXPECT_NEAR(818.0 / 9.80665, hgt[6][0](0, 4), 0.5);
+    EXPECT_NEAR(765.6 / 9.80665, hgt[6][0](0, 5), 0.5);
+    EXPECT_NEAR(1030.3 / 9.80665, hgt[6][0](1, 0), 0.5);
+    EXPECT_NEAR(1030.2 / 9.80665, hgt[6][0](2, 0), 0.5);
+    EXPECT_NEAR(1042.3 / 9.80665, hgt[6][0](3, 0), 0.5);
+    EXPECT_NEAR(793.8 / 9.80665, hgt[6][0](3, 5), 0.5);
 
     wxDELETE(area);
     wxDELETE(predictor);
