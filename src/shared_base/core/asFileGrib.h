@@ -58,6 +58,16 @@ public:
 
     double GetTime() const;
 
+    vd GetRealTimeArray() const;
+
+    double GetTimeStart() const;
+
+    double GetTimeEnd() const;
+
+    int GetTimeLength() const;
+
+    vd GetRealForecastTimeArray() const;
+
 protected:
 
 private:

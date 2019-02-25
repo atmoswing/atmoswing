@@ -311,10 +311,19 @@ bool asFileGrib::GetLevels(a1d &levels) const
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
-    levels.resize(m_levels.size());
+    vd realLevels;
+    double lastVal = -1;
+    for (double level : m_levels) {
+        if (level != lastVal) {
+            realLevels.push_back(level);
+            lastVal = level;
+        }
+    }
 
-    for (int i = 0; i < m_levels.size(); ++i) {
-        levels[i] = m_levels[i];
+    levels.resize(realLevels.size());
+
+    for (int i = 0; i < realLevels.size(); ++i) {
+        levels[i] = realLevels[i];
     }
 
     return true;
@@ -327,6 +336,65 @@ double asFileGrib::GetTime() const
     wxASSERT(m_times.size() > m_index);
 
     return m_times[m_index];
+}
+
+vd asFileGrib::GetRealTimeArray() const
+{
+    wxASSERT(m_opened);
+
+    // Get independent time entries
+    vd realTimeArray;
+    double lastTimeVal = 0;
+
+    for (double time : m_times) {
+        if (time != lastTimeVal) {
+            realTimeArray.push_back(time);
+            lastTimeVal = time;
+        }
+    }
+
+    return realTimeArray;
+}
+
+double asFileGrib::GetTimeStart() const
+{
+    wxASSERT(m_opened);
+
+    return GetRealTimeArray()[0];
+}
+
+double asFileGrib::GetTimeEnd() const
+{
+    wxASSERT(m_opened);
+
+    vd realTimeArray = GetRealTimeArray();
+
+    return realTimeArray[realTimeArray.size() - 1];
+}
+
+int asFileGrib::GetTimeLength() const
+{
+    wxASSERT(m_opened);
+
+    return GetRealTimeArray().size();
+}
+
+vd asFileGrib::GetRealForecastTimeArray() const
+{
+    wxASSERT(m_opened);
+
+    // Get independent time entries
+    vd forecastTimeArray;
+    double lastTimeVal = -1;
+
+    for (double time : m_forecastTimes) {
+        if (time != lastTimeVal) {
+            forecastTimeArray.push_back(time);
+            lastTimeVal = time;
+        }
+    }
+
+    return forecastTimeArray;
 }
 
 bool asFileGrib::SetIndexPosition(const vi gribCode, const float level, const double time)
@@ -362,96 +430,105 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
-    int iLonStart = IndexStart[0];
-    int iLonEnd = IndexStart[0] + IndexCount[0] - 1;
-    int iLatStart = IndexStart[1];
-    int iLatEnd = IndexStart[1] + IndexCount[1] - 1;
+    vd forecastTimeArray = GetRealForecastTimeArray();
+
+    int iTimeStart = IndexStart[0];
+    int iTimeEnd = IndexStart[0] + IndexCount[0] - 1;
+    int iLonStart = IndexStart[1];
+    int iLonEnd = IndexStart[1] + IndexCount[1] - 1;
+    int iLatStart = IndexStart[2];
+    int iLatEnd = IndexStart[2] + IndexCount[2] - 1;
     auto nLons = (int) m_xAxes[m_index].size();
     auto nLats = (int) m_yAxes[m_index].size();
 
-    codes_index *index = nullptr;
-    codes_handle *h = nullptr;
-    int err = 0;
-    int count = 0;
+    int finalIndex = 0;
 
-    if (m_version == 2) {
-        index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,forecastTime", &err);
-    } else if (m_version == 1) {
-        index = codes_index_new(0, "table2Version,indicatorOfParameter,level,endStep", &err);
-    }
+    for (int iTime = iTimeStart; iTime <= iTimeEnd; ++iTime) {
 
-    if (!CheckGribErrorCode(err)) {
-        return false;
-    }
+        double forecastTime = forecastTimeArray[iTime];
 
-    err = codes_index_add_file(index, m_fileName.GetFullPath().mb_str());
-    if (!CheckGribErrorCode(err)) {
-        return false;
-    }
+        codes_index *index = nullptr;
+        codes_handle *h = nullptr;
+        int err = 0;
+        int count = 0;
 
-    if (m_version == 2) {
-        codes_index_select_long(index, "discipline", m_parameterCode1[m_index]);
-        codes_index_select_long(index, "parameterCategory", m_parameterCode2[m_index]);
-        codes_index_select_long(index, "parameterNumber", m_parameterCode3[m_index]);
-        codes_index_select_double(index, "level", m_levels[m_index]);
-        codes_index_select_double(index, "forecastTime", m_forecastTimes[m_index]);
-    } else if (m_version == 1) {
-        codes_index_select_long(index, "table2Version", m_parameterCode2[m_index]);
-        codes_index_select_long(index, "indicatorOfParameter", m_parameterCode3[m_index]);
-        codes_index_select_double(index, "level", m_levels[m_index]);
-        codes_index_select_double(index, "endStep", m_forecastTimes[m_index]);
-    }
+        if (m_version == 2) {
+            index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,forecastTime", &err);
+        } else if (m_version == 1) {
+            index = codes_index_new(0, "table2Version,indicatorOfParameter,level,endStep", &err);
+        }
 
-    while ((h = codes_handle_new_from_index(index, &err)) != NULL) {
         if (!CheckGribErrorCode(err)) {
             return false;
         }
-        if (count > 0) {
-            wxLogError(_("Multiple messages found in GRIB file for the given constraints."));
+
+        err = codes_index_add_file(index, m_fileName.GetFullPath().mb_str());
+        if (!CheckGribErrorCode(err)) {
             return false;
         }
-        count++;
 
-        // Get data
-        double *values = NULL;
-        size_t valuesLenth = 0;
-        CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
-        values = (double *) malloc(valuesLenth * sizeof(double));
-        CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), 0);
-
-        int finalIndex = 0;
-
-        if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
-            for (int iLat = nLats - 1; iLat >= 0; iLat--) {
-                if (iLat >= iLatStart && iLat <= iLatEnd) {
-                    for (int iLon = 0; iLon < nLons; iLon++) {
-                        if (iLon >= iLonStart && iLon <= iLonEnd) {
-                            pValue[finalIndex] = (float)values[iLat * nLons + iLon];
-                            finalIndex++;
-                        }
-                    }
-                }
-            }
-        } else {
-            for (int iLat = 0; iLat < nLats; iLat++) {
-                if (iLat >= iLatStart && iLat <= iLatEnd) {
-                    for (int iLon = 0; iLon < nLons; iLon++) {
-                        if (iLon >= iLonStart && iLon <= iLonEnd) {
-                            pValue[finalIndex] = (float)values[iLat * nLons + iLon];
-                            finalIndex++;
-                        }
-                    }
-                }
-            }
+        if (m_version == 2) {
+            codes_index_select_long(index, "discipline", m_parameterCode1[m_index]);
+            codes_index_select_long(index, "parameterCategory", m_parameterCode2[m_index]);
+            codes_index_select_long(index, "parameterNumber", m_parameterCode3[m_index]);
+            codes_index_select_double(index, "level", m_levels[m_index]);
+            codes_index_select_double(index, "forecastTime", forecastTime);
+        } else if (m_version == 1) {
+            codes_index_select_long(index, "table2Version", m_parameterCode2[m_index]);
+            codes_index_select_long(index, "indicatorOfParameter", m_parameterCode3[m_index]);
+            codes_index_select_double(index, "level", m_levels[m_index]);
+            codes_index_select_double(index, "endStep", forecastTime);
         }
 
-        free(values);
-        codes_handle_delete(h);
-    }
+        while ((h = codes_handle_new_from_index(index, &err)) != NULL) {
+            if (!CheckGribErrorCode(err)) {
+                return false;
+            }
+            if (count > 0) {
+                wxLogError(_("Multiple messages found in GRIB file for the given constraints."));
+                return false;
+            }
+            count++;
 
-    if (count == 0) {
-        wxLogError(_("GRIB message not found for the given constraints."));
-        return false;
+            // Get data
+            double *values = NULL;
+            size_t valuesLenth = 0;
+            CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
+            values = (double *) malloc(valuesLenth * sizeof(double));
+            CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), 0);
+
+            if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
+                for (int iLat = nLats - 1; iLat >= 0; iLat--) {
+                    if (iLat >= iLatStart && iLat <= iLatEnd) {
+                        for (int iLon = 0; iLon < nLons; iLon++) {
+                            if (iLon >= iLonStart && iLon <= iLonEnd) {
+                                pValue[finalIndex] = (float) values[iLat * nLons + iLon];
+                                finalIndex++;
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (int iLat = 0; iLat < nLats; iLat++) {
+                    if (iLat >= iLatStart && iLat <= iLatEnd) {
+                        for (int iLon = 0; iLon < nLons; iLon++) {
+                            if (iLon >= iLonStart && iLon <= iLonEnd) {
+                                pValue[finalIndex] = (float) values[iLat * nLons + iLon];
+                                finalIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            free(values);
+            codes_handle_delete(h);
+        }
+
+        if (count == 0) {
+            wxLogError(_("GRIB message not found for the given constraints."));
+            return false;
+        }
     }
 
     return true;

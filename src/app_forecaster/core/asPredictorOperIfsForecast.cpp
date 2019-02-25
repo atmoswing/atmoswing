@@ -50,7 +50,7 @@ asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId)
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
     m_parameter = ParameterUndefined;
-    m_fileExtension = "grib2";
+    m_fileExtension = "grib";
     m_leadTimeStart = 0;
     m_leadTimeEnd = 240;
     m_leadTimeStep = 6;

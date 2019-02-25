@@ -834,13 +834,12 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
     gbFile0->GetLevels(m_fStr.levels);
 
     // Yet handle a unique time value per file.
-    m_fStr.timeLength = 1;
-    m_fStr.timeStart = gbFile0->GetTime();
-    m_fStr.timeEnd = gbFile0->GetTime();
+    m_fStr.timeLength = gbFile0->GetTimeLength();
+    m_fStr.timeStart = gbFile0->GetTimeStart();
+    m_fStr.timeEnd = gbFile0->GetTimeEnd();
 
     if (gbFile1 != nullptr) {
-        double secondFileTime = gbFile1->GetTime();
-        m_fStr.timeStep = asRound(24 * (secondFileTime - m_fStr.timeStart));
+        m_fStr.timeStep = asRound(24 * (gbFile1->GetTime() - gbFile0->GetTime()));
         m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
     }
 
@@ -1208,18 +1207,20 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const
 
 int *asPredictor::GetIndexesStartGrib(int iArea) const
 {
-    static int array[2] = {0, 0};
-    array[0] = m_fInd.areas[iArea].lonStart;
-    array[1] = m_fInd.areas[iArea].latStart;
+    static int array[3] = {0, 0, 0};
+    array[0] = m_fInd.timeStart;
+    array[1] = m_fInd.areas[iArea].lonStart;
+    array[2] = m_fInd.areas[iArea].latStart;
 
     return array;
 }
 
 int *asPredictor::GetIndexesCountGrib(int iArea) const
 {
-    static int array[2] = {0, 0};
-    array[0] = m_fInd.areas[iArea].lonCount;
-    array[1] = m_fInd.areas[iArea].latCount;
+    static int array[3] = {0, 0, 0};
+    array[0] = m_fInd.timeCount;
+    array[1] = m_fInd.areas[iArea].lonCount;
+    array[2] = m_fInd.areas[iArea].latCount;
 
     return array;
 }
@@ -1379,6 +1380,9 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
 
+        wxASSERT(m_fInd.cutStart == 0);
+        wxASSERT(m_fInd.cutEnd == 0);
+
         // Extract data
         if (!gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0])) {
             return false;
@@ -1402,36 +1406,39 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
         // Extract data
         vf data = vectData[iArea];
-        va2f memLatLonData;
 
-        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+        // Loop to extract the data from the array
+        int ind = 0;
+        for (int iTime = 0; iTime < m_fInd.timeArrayCount; iTime++) {
+            va2f memLatLonData;
+            for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
 
-            // Loop to extract the data from the array
-            int ind = 0;
-            a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
+                    for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
+                        int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat;
+                        ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount +
+                              iMem * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount +
+                              iTime * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
 
-            for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
-                for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
-                    int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat; // Index reversed in Grib files
-                    ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount;
-                    latLonData(iLat, iLon) = data[ind];
+                        latLonData(iLat, iLon) = data[ind];
 
-                    // Check if not NaN
-                    bool notNan = true;
-                    for (double nanValue : m_nanValues) {
-                        if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
-                            notNan = false;
+                        // Check if not NaN
+                        bool notNan = true;
+                        for (double nanValue : m_nanValues) {
+                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
+                                notNan = false;
+                            }
+                        }
+                        if (!notNan) {
+                            latLonData(iLat, iLon) = NaNf;
                         }
                     }
-                    if (!notNan) {
-                        latLonData(iLat, iLon) = NaNf;
-                    }
                 }
+                memLatLonData.push_back(latLonData);
             }
-            memLatLonData.push_back(latLonData);
+            compositeData[iArea].push_back(memLatLonData);
         }
-        compositeData[iArea].push_back(memLatLonData);
-
         data.clear();
     }
 
