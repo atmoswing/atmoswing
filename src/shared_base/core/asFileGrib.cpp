@@ -33,6 +33,7 @@
 asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode),
           m_filtPtr(nullptr),
+          m_version(0),
           m_index(asNOT_FOUND)
 {
     switch (fileMode) {
@@ -111,6 +112,13 @@ bool asFileGrib::ParseStructure()
             return false;
         }
 
+        if (m_version == 0) {
+            long version;
+            CODES_CHECK(codes_get_long(h, "editionNumber", &version), 0);
+            m_version = version;
+        }
+        wxASSERT(m_version == 1 || m_version == 2);
+
         ExtractAxes(h);
         ExtractLevel(h);
         ExtractTime(h);
@@ -118,21 +126,8 @@ bool asFileGrib::ParseStructure()
 
         codes_handle_delete(h);
     }
-	if (!CheckGribErrorCode(err)) {
-		return false;
-	}
 
-    // Check unique time value
-    if (!m_times.empty()) {
-        for (double time : m_times) {
-            if (time != m_times[0]) {
-                wxLogError(_("Handling of multiple time values in a Grib file is not yet implemented."));
-                return false;
-            }
-        }
-    }
-
-    return true;
+    return CheckGribErrorCode(err);
 }
 
 void asFileGrib::ExtractTime(codes_handle *h)
@@ -157,9 +152,30 @@ void asFileGrib::ExtractTime(codes_handle *h)
     m_refTimes.push_back(refTime);
 
     // Get forecast time
-    double forecastTime;
-    CODES_CHECK(codes_get_double(h, "forecastTime", &forecastTime), 0);
-    double time = refTime + forecastTime / 24.0;
+    double forecastTime = 0;
+    if (m_version == 2) {
+        CODES_CHECK(codes_get_double(h, "forecastTime", &forecastTime), 0);
+    } else if (m_version == 1) {
+        CODES_CHECK(codes_get_double(h, "endStep", &forecastTime), 0);
+    }
+    m_forecastTimes.push_back(forecastTime);
+
+    long timeUnit;
+    CODES_CHECK(codes_get_long(h, "stepUnits", &timeUnit), 0);
+
+    if (timeUnit == 0) {
+        // Minutes
+        forecastTime /= 1440;
+    } else if (timeUnit == 1) {
+        // Hours
+        forecastTime /= 24;
+    } else if (timeUnit == 2) {
+        // Days -> nothing to do
+    } else {
+        asThrowException("Error reading grib file: unlisted time unit.");
+    }
+
+    double time = refTime + forecastTime;
     m_times.push_back(time);
 }
 
@@ -178,7 +194,15 @@ void asFileGrib::ExtractLevel(codes_handle *h)
 
     // Get level type code
     long typeCode;
-    CODES_CHECK(codes_get_long(h, "typeOfFirstFixedSurface", &typeCode), 0);
+    if (m_version == 2) {
+        wxASSERT(codes_is_defined(h, "typeOfFirstFixedSurface"));
+        CODES_CHECK(codes_get_long(h, "typeOfFirstFixedSurface", &typeCode), 0);
+    } else if (m_version == 1) {
+        wxASSERT(codes_is_defined(h, "indicatorOfTypeOfLevel"));
+        CODES_CHECK(codes_get_long(h, "indicatorOfTypeOfLevel", &typeCode), 0);
+    } else {
+        asThrowException("Error reading grib file: type of level not found.");
+    }
     m_levelTypes.push_back((int) typeCode);
 
     // Get level value
@@ -218,20 +242,35 @@ void asFileGrib::ExtractAxes(codes_handle *h)
 
 void asFileGrib::ExtractGribCode(codes_handle *h)
 {
-    // Get discipline
-    long discipline;
-    CODES_CHECK(codes_get_long(h, "discipline", &discipline), 0);
-    m_parameterDisciplines.push_back((int) discipline);
+    if (m_version == 2) {
+        // Get discipline
+        long discipline;
+        CODES_CHECK(codes_get_long(h, "discipline", &discipline), 0);
+        m_parameterCode1.push_back((int) discipline);
 
-    // Get category
-    long category;
-    CODES_CHECK(codes_get_long(h, "parameterCategory", &category), 0);
-    m_parameterCategories.push_back((int) category);
+        // Get category
+        long category;
+        CODES_CHECK(codes_get_long(h, "parameterCategory", &category), 0);
+        m_parameterCode2.push_back((int) category);
 
-    // Get parameter number
-    long number;
-    CODES_CHECK(codes_get_long(h, "parameterNumber", &number), 0);
-    m_parameterNums.push_back((int) number);
+        // Get parameter number
+        long number;
+        CODES_CHECK(codes_get_long(h, "parameterNumber", &number), 0);
+        m_parameterCode3.push_back((int) number);
+
+    } else if (m_version == 1) {
+        m_parameterCode1.push_back(0);
+
+        // Get category
+        long category;
+        CODES_CHECK(codes_get_long(h, "table2Version", &category), 0);
+        m_parameterCode2.push_back((int) category);
+
+        // Get parameter number
+        long number;
+        CODES_CHECK(codes_get_long(h, "indicatorOfParameter", &number), 0);
+        m_parameterCode3.push_back((int) number);
+    }
 }
 
 bool asFileGrib::CheckGribErrorCode(int ierr) const
@@ -290,15 +329,16 @@ double asFileGrib::GetTime() const
     return m_times[m_index];
 }
 
-bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
+bool asFileGrib::SetIndexPosition(const vi gribCode, const float level, const double time)
 {
     wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
     m_index = asNOT_FOUND;
-    for (int i = 0; i < m_parameterNums.size(); ++i) {
-        if (m_parameterDisciplines[i] == gribCode[0] && m_parameterCategories[i] == gribCode[1] &&
-            m_parameterNums[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] && m_levels[i] == level) {
+    for (int i = 0; i < m_parameterCode3.size(); ++i) {
+        if (m_parameterCode1[i] == gribCode[0] && m_parameterCode2[i] == gribCode[1] &&
+            m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] &&
+            m_levels[i] == level && m_times[i] == time) {
 
             if (m_index >= 0) {
                 wxLogError(_("The desired parameter was found twice in the file %s."), m_fileName.GetFullName());
@@ -334,8 +374,12 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
     int err = 0;
     int count = 0;
 
-    //index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,typeOfFirstFixedSurface,level", &err);
-    index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level", &err);
+    if (m_version == 2) {
+        index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,forecastTime", &err);
+    } else if (m_version == 1) {
+        index = codes_index_new(0, "table2Version,indicatorOfParameter,level,endStep", &err);
+    }
+
     if (!CheckGribErrorCode(err)) {
         return false;
     }
@@ -345,11 +389,18 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         return false;
     }
 
-    codes_index_select_long(index, "discipline", m_parameterDisciplines[m_index]);
-    codes_index_select_long(index, "parameterCategory", m_parameterCategories[m_index]);
-    codes_index_select_long(index, "parameterNumber", m_parameterNums[m_index]);
-    //codes_index_select_long(index, "typeOfFirstFixedSurface", m_levelTypes[m_index]);
-    codes_index_select_double(index, "level", m_levels[m_index]);
+    if (m_version == 2) {
+        codes_index_select_long(index, "discipline", m_parameterCode1[m_index]);
+        codes_index_select_long(index, "parameterCategory", m_parameterCode2[m_index]);
+        codes_index_select_long(index, "parameterNumber", m_parameterCode3[m_index]);
+        codes_index_select_double(index, "level", m_levels[m_index]);
+        codes_index_select_double(index, "forecastTime", m_forecastTimes[m_index]);
+    } else if (m_version == 1) {
+        codes_index_select_long(index, "table2Version", m_parameterCode2[m_index]);
+        codes_index_select_long(index, "indicatorOfParameter", m_parameterCode3[m_index]);
+        codes_index_select_double(index, "level", m_levels[m_index]);
+        codes_index_select_double(index, "endStep", m_forecastTimes[m_index]);
+    }
 
     while ((h = codes_handle_new_from_index(index, &err)) != NULL) {
         if (!CheckGribErrorCode(err)) {

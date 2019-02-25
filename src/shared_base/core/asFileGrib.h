@@ -46,7 +46,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(vi gribCode, float level);
+    bool SetIndexPosition(vi gribCode, float level, double time);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
@@ -62,14 +62,16 @@ protected:
 
 private:
     FILE *m_filtPtr;
+    int m_version;
     int m_index;
-    vi m_parameterDisciplines;
-    vi m_parameterCategories;
-    vi m_parameterNums;
+    vi m_parameterCode1;
+    vi m_parameterCode2;
+    vi m_parameterCode3;
     vi m_levelTypes;
     vwxs m_levelTypesStr;
     vd m_refTimes;
     vd m_times;
+    vd m_forecastTimes;
     vd m_levels;
     va1d m_xAxes;
     va1d m_yAxes;
