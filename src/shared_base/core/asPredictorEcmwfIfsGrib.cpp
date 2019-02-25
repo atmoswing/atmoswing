@@ -45,6 +45,10 @@ asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "level";
+    m_fStr.hasLevelDim = false;
+    m_nanValues.push_back(NaNd);
+    m_nanValues.push_back(NaNf);
+    m_parameter = ParameterUndefined;
 }
 
 bool asPredictorEcmwfIfsGrib::Init()
@@ -54,26 +58,32 @@ bool asPredictorEcmwfIfsGrib::Init()
         m_parameter = GeopotentialHeight;
         m_gribCode = {0, 3, 5, 100};
         m_unit = m;
+        m_fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
         m_gribCode = {0, 0, 0, 100};
         m_unit = degK;
+        m_fStr.hasLevelDim = true;
     } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
         m_gribCode = {0, 2, 8, 100};
         m_unit = Pa_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_gribCode = {0, 1, 1, 100};
         m_unit = percent;
+        m_fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_gribCode = {0, 2, 2, 100};
         m_unit = m_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsVwindComponent()) {
         m_parameter = Vwind;
         m_gribCode = {0, 2, 3, 100};
         m_unit = m_s;
+        m_fStr.hasLevelDim = true;
     } else if (IsPrecipitableWater()) {
         m_parameter = PrecipitableWater;
         m_gribCode = {0, 1, 3, 200};
@@ -81,20 +91,6 @@ bool asPredictorEcmwfIfsGrib::Init()
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                           m_dataId, m_product));
-    }
-
-    // Check data ID
-    if (m_parameter == ParameterUndefined) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                   m_dataId, m_datasetName);
-        return false;
-    }
-
-    // Check directory is set
-    if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                   m_dataId, m_datasetName);
-        return false;
     }
 
     // Set to initialized

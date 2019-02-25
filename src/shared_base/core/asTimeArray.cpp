@@ -55,7 +55,7 @@ asTimeArray::asTimeArray(double start, double end, double timestephours, const w
           m_intervalDays(0),
           m_exclusionDays(0)
 {
-    wxASSERT(m_end > m_start);
+    wxASSERT(m_end >= m_start);
     wxASSERT(m_timeStepDays > 0);
 
     if (slctModeString.CmpNoCase("simple") == 0) {

@@ -31,6 +31,7 @@
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
 #include "asPredictorOperGfsForecast.h"
+#include "asPredictorOperIfsForecast.h"
 #include <asInternet.h>
 
 
@@ -94,6 +95,8 @@ asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const w
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
         predictor = new asPredictorOperGfsForecast(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB_Forecast", false)) {
+        predictor = new asPredictorOperIfsForecast(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

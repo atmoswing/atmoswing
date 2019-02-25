@@ -262,7 +262,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Get file axes
-        if (!EnquireFileStructure()) {
+        if (!EnquireFileStructure(timeArray)) {
             wxLogError(_("Failing to get the file structure."));
             return false;
         }
@@ -409,7 +409,7 @@ double asPredictor::ConvertToMjd(double timeValue, double refValue) const
     return NaNd;
 }
 
-bool asPredictor::EnquireFileStructure()
+bool asPredictor::EnquireFileStructure(asTimeArray &timeArray)
 {
     wxASSERT(m_files.size() > 0);
 
@@ -421,7 +421,7 @@ bool asPredictor::EnquireFileStructure()
             break;
         }
         case (asFile::Grib) : {
-            if (!EnquireGribFileStructure()) {
+            if (!EnquireGribFileStructure(timeArray)) {
                 return false;
             }
             break;
@@ -529,9 +529,11 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid
     return true;
 }
 
-bool asPredictor::EnquireGribFileStructure()
+bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
 {
-    wxASSERT(m_files.size() > 1);
+    wxASSERT(m_files.size() > 0);
+
+    a1d times = timeArray.GetTimeArray();
 
     // Open 2 Grib files
     ThreadsManager().CritSectionGrib().Enter();
@@ -541,22 +543,26 @@ bool asPredictor::EnquireGribFileStructure()
         wxFAIL;
         return false;
     }
-    asFileGrib gbFile1(m_files[1], asFileGrib::ReadOnly);
-    if (!gbFile1.Open()) {
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
+
+    asFileGrib gbFile1 = asFileGrib(wxEmptyString, asFile::ReadOnly);
+    if (m_files.size() > 1) {
+        gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
+        if (!gbFile1.Open()) {
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+    } else if (times.size() > 1) {
+        gbFile1 = asFileGrib(m_files[0], asFileGrib::ReadOnly);
+        if (!gbFile1.Open()) {
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
     }
 
     // Set index position
-    if (!gbFile0.SetIndexPosition(m_gribCode, m_level)) {
-        gbFile0.Close();
-        gbFile1.Close();
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
-    }
-    if (!gbFile1.SetIndexPosition(m_gribCode, m_level)) {
+    if (!gbFile0.SetIndexPosition(m_gribCode, m_level, times[0])) {
         gbFile0.Close();
         gbFile1.Close();
         ThreadsManager().CritSectionGrib().Leave();
@@ -565,12 +571,30 @@ bool asPredictor::EnquireGribFileStructure()
     }
 
     // Parse file structure
-    if (!ParseFileStructure(&gbFile0, &gbFile1)) {
-        gbFile0.Close();
-        gbFile1.Close();
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
+    if (m_files.size() > 1 || times.size() > 1) {
+        wxASSERT(times.size() > 1);
+        if (!gbFile1.SetIndexPosition(m_gribCode, m_level, times[1])) {
+            gbFile0.Close();
+            gbFile1.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+
+        if (!ParseFileStructure(&gbFile0, &gbFile1)) {
+            gbFile0.Close();
+            gbFile1.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+    } else {
+        if (!ParseFileStructure(&gbFile0, nullptr)) {
+            gbFile0.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
     }
 
     // Close the nc file
@@ -594,7 +618,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     }
 
     // Set index position
-    if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
+    if (!gbFile.SetIndexPosition(m_gribCode, m_level, timeArray.GetStart())) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -1356,7 +1380,9 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
         dataF.resize(totLength);
 
         // Extract data
-        gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0]);
+        if (!gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0])) {
+            return false;
+        }
 
         // Keep data for later treatment
         vectData.push_back(dataF);

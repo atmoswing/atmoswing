@@ -410,7 +410,7 @@ protected:
 
     virtual void ListFiles(asTimeArray &timeArray);
 
-    bool EnquireFileStructure();
+    bool EnquireFileStructure(asTimeArray &timeArray);
 
     bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
@@ -439,7 +439,7 @@ protected:
     bool ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
 
-    bool EnquireGribFileStructure();
+    bool EnquireGribFileStructure(asTimeArray &timeArray);
 
     bool ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);

@@ -26,88 +26,76 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorOperGfsForecast.h"
+#include "asPredictorOperIfsForecast.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
 
 
-asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
+asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId)
         : asPredictorOper(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "NWS_GFS_Forecast";
-    m_provider = "NWS";
-    m_transformedBy = wxEmptyString;
-    m_datasetName = "Global Forecast System";
+    m_datasetId = "ECMWF_IFS_GRIB";
+    m_provider = "ECMWF";
+    m_datasetName = "Integrated Forecasting System (IFS) grib files";
     m_fileType = asFile::Grib;
+    m_isEnsemble = false;
+    m_strideAllowed = false;
+    m_fStr.dimLatName = "lat";
+    m_fStr.dimLonName = "lon";
+    m_fStr.dimTimeName = "time";
+    m_fStr.dimLevelName = "level";
+    m_fStr.hasLevelDim = false;
+    m_nanValues.push_back(NaNd);
+    m_nanValues.push_back(NaNf);
+    m_parameter = ParameterUndefined;
+    m_fileExtension = "grib2";
     m_leadTimeStart = 0;
-    m_leadTimeEnd = 240; // After 240h, available in another temporal resolution
+    m_leadTimeEnd = 240;
     m_leadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
-    m_strideAllowed = false;
-    m_nanValues.push_back(NaNd);
-    m_nanValues.push_back(NaNf);
     m_restrictTimeHours = 0;
     m_restrictTimeStepHours = 24;
-    m_fileExtension = "grib2";
-    m_fStr.hasLevelDim = false;
-    m_parameter = ParameterUndefined;
 }
 
-asPredictorOperGfsForecast::~asPredictorOperGfsForecast()
+bool asPredictorOperIfsForecast::Init()
 {
-
-}
-
-bool asPredictorOperGfsForecast::Init()
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-
-    // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
-
     // Identify data ID and set the corresponding properties.
     if (IsGeopotentialHeight()) {
         m_parameter = GeopotentialHeight;
-        m_gribCode = {0, 3, 5, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/hgt", m_commandDownload);
+        m_gribCode = {0, 128, 129, 100};
         m_unit = m;
         m_fStr.hasLevelDim = true;
     } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
-        m_gribCode = {0, 0, 0, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/temp", m_commandDownload);
+        m_gribCode = {0, 128, 130, 100};
         m_unit = degK;
         m_fStr.hasLevelDim = true;
     } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
-        m_gribCode = {0, 2, 8, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vvel", m_commandDownload);
+        m_gribCode = {0, 128, 135, 100};
         m_unit = Pa_s;
         m_fStr.hasLevelDim = true;
     } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
-        m_gribCode = {0, 1, 1, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/rh", m_commandDownload);
+        m_gribCode = {0, 128, 157, 100};
         m_unit = percent;
         m_fStr.hasLevelDim = true;
     } else if (IsUwindComponent()) {
         m_parameter = Uwind;
-        m_gribCode = {0, 2, 2, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/uwnd", m_commandDownload);
+        m_gribCode = {0, 128, 131, 100};
         m_unit = m_s;
         m_fStr.hasLevelDim = true;
     } else if (IsVwindComponent()) {
         m_parameter = Vwind;
-        m_gribCode = {0, 2, 3, 100};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/vwnd", m_commandDownload);
+        m_gribCode = {0, 128, 132, 100};
         m_unit = m_s;
         m_fStr.hasLevelDim = true;
     } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater;
-        m_gribCode = {0, 1, 3, 200};
-        m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/pwat", m_commandDownload);
+        m_parameter = PrecipitableWater; // Total column water
+        m_gribCode = {0, 128, 136, 200};
         m_unit = mm;
     } else {
         asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
@@ -119,3 +107,12 @@ bool asPredictorOperGfsForecast::Init()
 
     return true;
 }
+
+double asPredictorOperIfsForecast::ConvertToMjd(double timeValue, double refValue) const
+{
+    wxASSERT(refValue > 30000);
+    wxASSERT(refValue < 70000);
+
+    return refValue + (timeValue / 24.0); // hours to days
+}
+
