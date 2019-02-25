@@ -46,7 +46,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(vi gribCode, float level, double time);
+    bool SetIndexPosition(vi gribCode, float level);
 
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
@@ -56,8 +56,6 @@ public:
 
     bool GetLevels(a1d &levels) const;
 
-    double GetTime() const;
-
     vd GetRealTimeArray() const;
 
     double GetTimeStart() const;
@@ -65,6 +63,8 @@ public:
     double GetTimeEnd() const;
 
     int GetTimeLength() const;
+
+    double GetTimeStepHours() const;
 
     vd GetRealForecastTimeArray() const;
 

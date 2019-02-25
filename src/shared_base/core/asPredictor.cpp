@@ -535,45 +535,38 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
 
     a1d times = timeArray.GetTimeArray();
 
-    // Open 2 Grib files
+    // Open Grib files
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile0(m_files[0], asFileGrib::ReadOnly);
+
     if (!gbFile0.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
     }
 
-    asFileGrib gbFile1 = asFileGrib(wxEmptyString, asFile::ReadOnly);
-    if (m_files.size() > 1) {
-        gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
-        if (!gbFile1.Open()) {
-            ThreadsManager().CritSectionGrib().Leave();
-            wxFAIL;
-            return false;
-        }
-    } else if (times.size() > 1) {
-        gbFile1 = asFileGrib(m_files[0], asFileGrib::ReadOnly);
-        if (!gbFile1.Open()) {
-            ThreadsManager().CritSectionGrib().Leave();
-            wxFAIL;
-            return false;
-        }
-    }
-
     // Set index position
-    if (!gbFile0.SetIndexPosition(m_gribCode, m_level, times[0])) {
+    if (!gbFile0.SetIndexPosition(m_gribCode, m_level)) {
         gbFile0.Close();
-        gbFile1.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
     }
 
     // Parse file structure
-    if (m_files.size() > 1 || times.size() > 1) {
+    if (m_files.size() > 1) {
         wxASSERT(times.size() > 1);
-        if (!gbFile1.SetIndexPosition(m_gribCode, m_level, times[1])) {
+
+        asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
+
+        if (!gbFile1.Open()) {
+            gbFile0.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+
+        if (!gbFile1.SetIndexPosition(m_gribCode, m_level)) {
             gbFile0.Close();
             gbFile1.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -588,6 +581,9 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
             wxFAIL;
             return false;
         }
+
+        gbFile1.Close();
+
     } else {
         if (!ParseFileStructure(&gbFile0, nullptr)) {
             gbFile0.Close();
@@ -599,7 +595,6 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
 
     // Close the nc file
     gbFile0.Close();
-    gbFile1.Close();
     ThreadsManager().CritSectionGrib().Leave();
 
     return true;
@@ -618,7 +613,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     }
 
     // Set index position
-    if (!gbFile.SetIndexPosition(m_gribCode, m_level, timeArray.GetStart())) {
+    if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -833,13 +828,16 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
     gbFile0->GetYaxis(m_fStr.lats);
     gbFile0->GetLevels(m_fStr.levels);
 
-    // Yet handle a unique time value per file.
+    // Time properties
     m_fStr.timeLength = gbFile0->GetTimeLength();
     m_fStr.timeStart = gbFile0->GetTimeStart();
     m_fStr.timeEnd = gbFile0->GetTimeEnd();
 
     if (gbFile1 != nullptr) {
-        m_fStr.timeStep = asRound(24 * (gbFile1->GetTime() - gbFile0->GetTime()));
+        m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
+        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    } else if (m_fStr.timeLength > 1) {
+        m_fStr.timeStep = gbFile0->GetTimeStepHours();
         m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
     }
 

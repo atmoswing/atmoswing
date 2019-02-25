@@ -329,15 +329,6 @@ bool asFileGrib::GetLevels(a1d &levels) const
     return true;
 }
 
-double asFileGrib::GetTime() const
-{
-    wxASSERT(m_opened);
-    wxASSERT(m_index != asNOT_FOUND);
-    wxASSERT(m_times.size() > m_index);
-
-    return m_times[m_index];
-}
-
 vd asFileGrib::GetRealTimeArray() const
 {
     wxASSERT(m_opened);
@@ -379,6 +370,19 @@ int asFileGrib::GetTimeLength() const
     return GetRealTimeArray().size();
 }
 
+double asFileGrib::GetTimeStepHours() const
+{
+    wxASSERT(m_opened);
+
+    vd realTimeArray = GetRealTimeArray();
+
+    if (realTimeArray.size() == 1) {
+        return 0;
+    }
+
+    return 24 * (realTimeArray[1] - realTimeArray[0]);
+}
+
 vd asFileGrib::GetRealForecastTimeArray() const
 {
     wxASSERT(m_opened);
@@ -397,7 +401,7 @@ vd asFileGrib::GetRealForecastTimeArray() const
     return forecastTimeArray;
 }
 
-bool asFileGrib::SetIndexPosition(const vi gribCode, const float level, const double time)
+bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
 {
     wxASSERT(gribCode.size() == 4);
 
@@ -406,23 +410,16 @@ bool asFileGrib::SetIndexPosition(const vi gribCode, const float level, const do
     for (int i = 0; i < m_parameterCode3.size(); ++i) {
         if (m_parameterCode1[i] == gribCode[0] && m_parameterCode2[i] == gribCode[1] &&
             m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] &&
-            m_levels[i] == level && m_times[i] == time) {
-
-            if (m_index >= 0) {
-                wxLogError(_("The desired parameter was found twice in the file %s."), m_fileName.GetFullName());
-                return false;
-            }
+            m_levels[i] == level) {
 
             m_index = i;
+            return true;
         }
     }
 
-    if (m_index == asNOT_FOUND) {
-        wxLogError(_("The desired parameter was not found in the file %s."), m_fileName.GetFullName());
-        return false;
-    }
+    wxLogError(_("The desired parameter was not found in the file %s."), m_fileName.GetFullName());
 
-    return true;
+    return false;
 }
 
 bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue)
