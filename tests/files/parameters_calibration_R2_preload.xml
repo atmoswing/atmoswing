@@ -37,7 +37,7 @@
       <preprocessing>
         <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>hgt_1000hPa</data_id>
           <level>1000</level>
           <time>12</time>
@@ -58,7 +58,7 @@
       <preprocessing>
         <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>hgt_500hPa</data_id>
           <level>500</level>
           <time>24</time>
@@ -82,25 +82,25 @@
       <preprocessing>
         <preprocessing_method>FormerHumidityIndex</preprocessing_method>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>rhum</data_id>
           <level>850</level>
           <time>12</time>
         </preprocessing_data>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>rhum</data_id>
           <level>850</level>
           <time>24</time>
         </preprocessing_data>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>prwtr</data_id>
           <level>0</level>
           <time>12</time>
         </preprocessing_data>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>prwtr</data_id>
           <level>0</level>
           <time>24</time>

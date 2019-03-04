@@ -36,7 +36,7 @@
       <preprocessing>
         <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
-          <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+          <dataset_id>Custom_LTHE_NR1</dataset_id>
           <data_id>hgt_1000hPa</data_id>
           <level>1000</level>
           <time>12</time>

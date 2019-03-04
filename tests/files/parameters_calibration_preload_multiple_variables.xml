@@ -34,7 +34,7 @@
     <analogs_number>50</analogs_number>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
@@ -50,7 +50,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
@@ -66,7 +66,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
@@ -85,7 +85,7 @@
     <analogs_number>30</analogs_number>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
@@ -101,7 +101,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
@@ -117,7 +117,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
-      <dataset_id>NCEP_Reanalysis_v1_lthe</dataset_id>
+      <dataset_id>Custom_LTHE_NR1</dataset_id>
       <data_id method="array">hgt_500hPa, hgt_1000hPa, prwtr, rhum</data_id>
       <level method="array">0, 500, 850, 1000</level>
       <time method="array">6, 12, 24</time>
