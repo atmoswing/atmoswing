@@ -44,6 +44,7 @@ asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId)
     m_strideAllowed = true;
     m_nanValues.push_back(-32767);
     m_nanValues.push_back(3.4E38f);
+    m_nanValues.push_back(100000002004087730000.0);
     m_fStr.dimLatName = "lat";
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
