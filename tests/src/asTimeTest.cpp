@@ -429,7 +429,7 @@ TEST(Time, GetStringTimeTimeStruct)
     date.min = 5;
     date.sec = 5;
 
-    wxString datestr = asTime::GetStringTime(date, timeonly);
+    wxString datestr = asTime::GetStringTime(date, timeOnly);
 
     int result = datestr.CompareTo(_T("03:05"));
 
@@ -446,7 +446,7 @@ TEST(Time, GetTimeFromStringFormatISOdate)
 
 TEST(Time, GetTimeFromStringFormatISOdatetime)
 {
-    double conversion = asTime::GetTimeFromString("2007-11-23 13:05:01", ISOdatetime);
+    double conversion = asTime::GetTimeFromString("2007-11-23 13:05:01", ISOdateTime);
     double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -559,7 +559,7 @@ TEST(Time, GetTimeFromStringFormathhmmException)
 
 TEST(Time, GetTimeFromStringFormatnowplushours)
 {
-    double conversion = asTime::GetTimeFromString("+2", nowplushours);
+    double conversion = asTime::GetTimeFromString("+2", nowPlusHours);
     wxString datestr = asTime::GetStringTime(conversion);
 
     wxPrintf("UTM time +2 hours is %s\n", datestr);
@@ -569,19 +569,19 @@ TEST(Time, GetTimeFromStringFormatnowplushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2:23", nowplushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2:23", nowPlusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowplushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2.23", nowplushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2.23", nowPlusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushours)
 {
-    double conversion = asTime::GetTimeFromString("-2", nowminushours);
+    double conversion = asTime::GetTimeFromString("-2", nowMinusHours);
     wxString datestr = asTime::GetStringTime(conversion);
 
     wxPrintf("UTM time -2 hours is %s\n", datestr);
@@ -591,28 +591,28 @@ TEST(Time, GetTimeFromStringFormatnowminushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2:23", nowminushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2:23", nowMinusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2.23", nowminushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2.23", nowMinusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignPlus)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2", nowminushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2", nowMinusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignNo)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("2", nowminushours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("2", nowMinusHours), asException);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYY)

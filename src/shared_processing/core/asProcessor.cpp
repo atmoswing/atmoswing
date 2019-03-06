@@ -486,9 +486,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             wxASSERT(timeArchiveData.size() > 0);
             wxASSERT(!predictorsArchive.empty());
             wxASSERT(!predictorsArchive[0]->GetData().empty());
-            wxASSERT_MSG(timeArchiveData.size() == predictorsArchive[0]->GetData().size(),
-                         wxString::Format("timeArchiveData.size() = %d, predictorsArchive[0].GetData().size() = %d",
-                                          (int) timeArchiveData.size(), (int) predictorsArchive[0]->GetData().size()));
+            wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
             a1d timeTargetData = timeArrayTargetData.GetTimeArray();
             wxASSERT(predictorsTarget[0]);
             wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());

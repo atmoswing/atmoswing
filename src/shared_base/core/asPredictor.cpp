@@ -329,8 +329,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if ((unsigned) m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int) m_time.size(), (int) m_data.size());
-            wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdatetime),
-                       asTime::GetStringTime(m_time[m_time.size() - 1], ISOdatetime));
+            wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdateTime),
+                       asTime::GetStringTime(m_time[m_time.size() - 1], ISOdateTime));
             wxDELETE(dataArea);
             return false;
         }
@@ -359,7 +359,7 @@ bool asPredictor::Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, floa
 
 bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level)
 {
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(&desiredArea, timeArray, level);
@@ -367,7 +367,7 @@ bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level)
 
 bool asPredictor::Load(asAreaCompGrid *desiredArea, double date, float level)
 {
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(desiredArea, timeArray, level);

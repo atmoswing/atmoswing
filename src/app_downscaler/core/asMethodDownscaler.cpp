@@ -535,21 +535,11 @@ void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
     }
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
-{
-    if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
-            wxDELETE(predictor);
-        }
-        predictors.resize(0);
-    }
-}
-
 void asMethodDownscaler::Cleanup(std::vector<asCriteria *> criteria)
 {
     if (!criteria.empty()) {
-        for (unsigned int i = 0; i < criteria.size(); i++) {
-            wxDELETE(criteria[i]);
+        for (auto &i : criteria) {
+            wxDELETE(i);
         }
         criteria.resize(0);
     }

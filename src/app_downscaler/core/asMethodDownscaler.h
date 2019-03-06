@@ -103,8 +103,6 @@ protected:
 
     void Cleanup(std::vector<asPredictor *> predictors) override;
 
-    void Cleanup(std::vector<asPredictor *> predictors) override;
-
     void Cleanup(std::vector<asCriteria *> criteria) override;
 
 private:

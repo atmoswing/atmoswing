@@ -111,12 +111,6 @@ protected:
 
     static double TimeTmToMJD(const struct tm &date);
 
-    static Time GetSeasonStart(Season season);
-
-    static Time GetSeasonEnd(Season season, int year);
-
-    static Season GetSeason(int month);
-
 };
 
 #endif
