@@ -377,6 +377,111 @@ TEST(TimeArray, BuildArraySeasonSON24h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 9, 3, 0, 0), timeArray[2]);
 }
 
+TEST(TimeArray, BuildArrayAprilToSeptember)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "april_to_september");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 9, 30, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayAprilToSeptember2)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "AprilToSeptember");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 9, 30, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayJanuaryToDecember)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "january_to_december");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 12, 31, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayJuneToJuly)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "june_to_july");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 7, 31, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayJuneToMarch)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "june_to_march");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 12, 31, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayJuneToJanuary)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "june_to_january");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 12, 31, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
+}
+
+TEST(TimeArray, BuildArrayDecemberToJanuary)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2008, 12, 31);
+    double timeStep = 24;
+
+    asTimeArray timeArray(start, end, timeStep, "december_to_january");
+    timeArray.Init();
+
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 12, 31, 0, 0), timeArray.GetLast());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 0, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
+}
+
 TEST(TimeArray, GetFirstDayHour)
 {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);

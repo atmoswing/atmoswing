@@ -76,21 +76,13 @@ asTimeArray::asTimeArray(double start, double end, double timeStepHours, const w
                mode.IsSameAs("PredictandThresholds", false) ) {
         m_mode = PredictandThresholds;
     } else {
-        if (mode.Contains("_to_")) {
-
-        } else if (mode.Contains("to")) {
-
+        if (mode.Contains("_to_") || mode.Contains("To")) {
+            m_modeStr = mode;
+            m_mode = MonthsSelection;
         } else {
             wxLogError(_("Time array mode not correctly defined (%s)!"), mode);
             m_mode = Custom;
-            return;
         }
-
-
-        m_mode = MonthsSelection;
-
-
-
     }
 }
 
@@ -341,7 +333,7 @@ bool asTimeArray::BuildArraySeason()
     int lastHour = 24 - 24 * m_timeStepDays;
 
     // Array resizing
-    int totlength = int((end.year - start.year + 1) * (93 / m_timeStepDays));
+    int totlength = int((end.year - start.year + 1) * (366 / m_timeStepDays));
     m_timeArray.resize(totlength);
 
     // Build the time array
@@ -371,10 +363,87 @@ bool asTimeArray::BuildArraySeason()
                 seasonStart = GetMJD(year, 9, 1);
                 seasonEnd = GetMJD(year, 11, 30, lastHour);
                 break;
-            case AprToSept:
-                seasonStart = GetMJD(year, 9, 1);
-                seasonEnd = GetMJD(year, 11, 30, lastHour);
+            case MonthsSelection: {
+                wxString separator;
+                if (m_modeStr.Contains("_to_")) {
+                    separator = "_to_";
+                } else if (m_modeStr.Contains("To")) {
+                    separator = "To";
+                }
+
+                int sep = m_modeStr.Find(separator);
+                wxString monthStart = m_modeStr.Left(sep);
+                wxString monthEnd = m_modeStr.Mid(sep + separator.Length());
+
+                if (monthStart.IsSameAs("January", false)) {
+                    seasonStart = GetMJD(year, 1, 1);
+                } else if (monthStart.IsSameAs("February", false)) {
+                    seasonStart = GetMJD(year, 2, 1);
+                } else if (monthStart.IsSameAs("March", false)) {
+                    seasonStart = GetMJD(year, 3, 1);
+                } else if (monthStart.IsSameAs("April", false)) {
+                    seasonStart = GetMJD(year, 4, 1);
+                } else if (monthStart.IsSameAs("May", false)) {
+                    seasonStart = GetMJD(year, 5, 1);
+                } else if (monthStart.IsSameAs("June", false)) {
+                    seasonStart = GetMJD(year, 6, 1);
+                } else if (monthStart.IsSameAs("July", false)) {
+                    seasonStart = GetMJD(year, 7, 1);
+                } else if (monthStart.IsSameAs("August", false)) {
+                    seasonStart = GetMJD(year, 8, 1);
+                } else if (monthStart.IsSameAs("September", false)) {
+                    seasonStart = GetMJD(year, 9, 1);
+                } else if (monthStart.IsSameAs("October", false)) {
+                    seasonStart = GetMJD(year, 10, 1);
+                } else if (monthStart.IsSameAs("November", false)) {
+                    seasonStart = GetMJD(year, 11, 1);
+                } else if (monthStart.IsSameAs("December", false)) {
+                    seasonStart = GetMJD(year, 12, 1);
+                } else {
+                    wxLogError(_("Month '%s' not recognized."), monthStart);
+                    return false;
+                }
+
+                if (monthEnd.IsSameAs("January", false)) {
+                    seasonEnd = GetMJD(year, 1, 31, lastHour);
+                } else if (monthEnd.IsSameAs("February", false)) {
+                    if (IsLeapYear(year)) {
+                        seasonEnd = GetMJD(year, 2, 29, lastHour);
+                    } else {
+                        seasonEnd = GetMJD(year, 2, 28, lastHour);
+                    }
+                } else if (monthEnd.IsSameAs("March", false)) {
+                    seasonEnd = GetMJD(year, 3, 31, lastHour);
+                } else if (monthEnd.IsSameAs("April", false)) {
+                    seasonEnd = GetMJD(year, 4, 30, lastHour);
+                } else if (monthEnd.IsSameAs("May", false)) {
+                    seasonEnd = GetMJD(year, 5, 31, lastHour);
+                } else if (monthEnd.IsSameAs("June", false)) {
+                    seasonEnd = GetMJD(year, 6, 30, lastHour);
+                } else if (monthEnd.IsSameAs("July", false)) {
+                    seasonEnd = GetMJD(year, 7, 31, lastHour);
+                } else if (monthEnd.IsSameAs("August", false)) {
+                    seasonEnd = GetMJD(year, 8, 31, lastHour);
+                } else if (monthEnd.IsSameAs("September", false)) {
+                    seasonEnd = GetMJD(year, 9, 30, lastHour);
+                } else if (monthEnd.IsSameAs("October", false)) {
+                    seasonEnd = GetMJD(year, 10, 31, lastHour);
+                } else if (monthEnd.IsSameAs("November", false)) {
+                    seasonEnd = GetMJD(year, 11, 30, lastHour);
+                } else if (monthEnd.IsSameAs("December", false)) {
+                    seasonEnd = GetMJD(year, 12, 31, lastHour);
+                } else {
+                    wxLogError(_("Month '%s' not recognized."), monthEnd);
+                    return false;
+                }
+
+                if (seasonEnd < seasonStart) {
+                    Time timeStr = GetTimeStruct(seasonStart);
+                    seasonStart = GetMJD(year - 1, timeStr.month, 1);
+                }
+
                 break;
+            }
             default:
                 wxLogError(_("Season not recognized."));
                 return false;

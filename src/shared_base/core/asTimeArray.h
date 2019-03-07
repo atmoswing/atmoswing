@@ -222,6 +222,7 @@ private:
     double m_intervalDays;
     double m_exclusionDays;
     vi m_forbiddenYears;
+    wxString m_modeStr;
 
     void fixStartIfForbidden(double &currentStart) const;
 
