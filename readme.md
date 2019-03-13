@@ -5,6 +5,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1otp6de8c8go0nxm?svg=true)](https://ci.appveyor.com/project/pascalhorton/atmoswing)
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
+[![Documentation Status](https://readthedocs.org/projects/atmoswing/badge/?version=latest)](https://atmoswing.readthedocs.io/en/latest/?badge=latest)
+
 
 Analog methods (AMs) allow predicting local meteorological variables of interest (predictand), such as the daily precipitation, based on synoptic variables (predictors). They rely on the hypothesis that similar atmospheric conditions are likely to result in similar local effects. The statistical relationship is first defined (e.g. which predictors, and how many subsampling steps) and calibrated (e.g. which spatial domain, and how many analogues) before being applied to the target period, may it be for operational forecasting or for climate impact studies. A benefit of AMs is that they are lightweight and can provide valuable results for a negligible cost.
 
