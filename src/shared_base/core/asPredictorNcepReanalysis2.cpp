@@ -306,12 +306,6 @@ bool asPredictorNcepReanalysis2::Init()
             m_fileNamePattern = "vgwd.sfc.gauss.%d.nc";
             m_fileVarName = "vgwd";
             m_unit = N_m2;
-        } else if (m_dataId.IsSameAs("vgwd", false)) {
-            m_parameter = GravityWaveStress;
-            m_parameterName = "Meridional Gravity Wave Stress";
-            m_fileNamePattern = "vgwd.sfc.gauss.%d.nc";
-            m_fileVarName = "vgwd";
-            m_unit = N_m2;
         } else {
             asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
                                               m_dataId, m_product));
