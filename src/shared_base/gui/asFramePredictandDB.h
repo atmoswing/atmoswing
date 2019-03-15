@@ -38,15 +38,18 @@ public:
     explicit asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
 
 protected:
-    void OnSaveDefault(wxCommandEvent &event) override;
+    void OnClose(wxCloseEvent&);
 
     void CloseFrame(wxCommandEvent &event) override;
 
+    void FixFrameSize();
+
     void OnDataSelection(wxCommandEvent &event) override;
 
-    void ToggleProcessing();
-
     void BuildDatabase(wxCommandEvent &event) override;
+
+private:
+    wxPanel *m_panelProcessing;
 
 };
 

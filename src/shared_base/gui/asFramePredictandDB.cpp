@@ -36,20 +36,11 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
 {
     // Set the defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long choiceDataParam = pConfig->Read("/PredictandDBToolbox/ChoiceDataParam", 0l);
-    m_choiceDataParam->SetSelection((int) choiceDataParam);
-    long choiceDataTempResol = pConfig->Read("/PredictandDBToolbox/ChoiceDataTempResol", 0l);
-    m_choiceDataTempResol->SetSelection((int) choiceDataTempResol);
-    long choiceDataSpatAggreg = pConfig->Read("/PredictandDBToolbox/ChoiceDataSpatAggreg", 0l);
-    m_choiceDataSpatAggreg->SetSelection((int) choiceDataSpatAggreg);
-    wxString ReturnPeriodNorm = pConfig->Read("/PredictandDBToolbox/ReturnPeriodNorm", "10");
-    m_textCtrlReturnPeriod->SetValue(ReturnPeriodNorm);
-    bool normalizeByReturnPeriod = true;
-    pConfig->Read("/PredictandDBToolbox/NormalizeByReturnPeriod", &normalizeByReturnPeriod);
-    m_checkBoxReturnPeriod->SetValue(normalizeByReturnPeriod);
-    bool processSquareRoot = false;
-    pConfig->Read("/PredictandDBToolbox/ProcessSquareRoot", &processSquareRoot);
-    m_checkBoxSqrt->SetValue(processSquareRoot);
+    m_choiceDataParam->SetSelection((int) 0);
+
+    m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
+
     wxString catalogPath = pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString);
     m_filePickerCatalogPath->SetPath(catalogPath);
     wxString predictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
@@ -59,35 +50,19 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
     wxString patternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
     m_dirPickerPatternsDir->SetPath(patternsDir);
 
-    ToggleProcessing();
-
     // Icon
 #ifdef __WXMSW__
     SetIcon(wxICON(myicon));
 #endif
 }
 
-void asFramePredictandDB::OnSaveDefault(wxCommandEvent &event)
+void asFramePredictandDB::OnClose(wxCloseEvent&)
 {
     wxBusyCursor wait;
 
     // Save as defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    auto choiceDataParam = (long) m_choiceDataParam->GetSelection();
-    pConfig->Write("/PredictandDBToolbox/ChoiceDataParam", choiceDataParam);
-    m_choiceDataParam->SetSelection((int) choiceDataParam);
-    auto choiceDataTempResol = (long) m_choiceDataTempResol->GetSelection();
-    pConfig->Write("/PredictandDBToolbox/ChoiceDataTempResol", choiceDataTempResol);
-    m_choiceDataTempResol->SetSelection((int) choiceDataTempResol);
-    auto choiceDataSpatAggreg = (long) m_choiceDataSpatAggreg->GetSelection();
-    pConfig->Write("/PredictandDBToolbox/ChoiceDataSpatAggreg", choiceDataSpatAggreg);
-    m_choiceDataSpatAggreg->SetSelection((int) choiceDataSpatAggreg);
-    wxString returnPeriodNorm = m_textCtrlReturnPeriod->GetValue();
-    pConfig->Write("/PredictandDBToolbox/ReturnPeriodNorm", returnPeriodNorm);
-    bool normalizeByReturnPeriod = m_checkBoxReturnPeriod->GetValue();
-    pConfig->Write("/PredictandDBToolbox/NormalizeByReturnPeriod", normalizeByReturnPeriod);
-    bool processSquareRoot = m_checkBoxSqrt->GetValue();
-    pConfig->Write("/PredictandDBToolbox/ProcessSquareRoot", processSquareRoot);
+
     wxString catalogPath = m_filePickerCatalogPath->GetPath();
     pConfig->Write("/PredictandDBToolbox/CatalogPath", catalogPath);
     wxString predictandDataDir = m_dirPickerDataDir->GetPath();
@@ -105,33 +80,53 @@ void asFramePredictandDB::CloseFrame(wxCommandEvent &event)
     Close();
 }
 
-void asFramePredictandDB::OnDataSelection(wxCommandEvent &event)
+void asFramePredictandDB::FixFrameSize()
 {
-    ToggleProcessing();
+    int w = -1;
+    int h = -1;
+    GetSize(&w, &h);
+    SetMinSize(wxSize(w, -1));
+    SetMaxSize(wxSize(w, -1));
+
+    m_panelMain->Layout();
+    m_sizerMainPanel->Fit(m_panelMain);
+    Layout();
+    m_sizerMain->Fit(this);
+
+    GetSize(&w, &h);
+    SetMinSize(wxSize(w, h));
+    SetMaxSize(wxSize(w, h));
 }
 
-void asFramePredictandDB::ToggleProcessing()
+void asFramePredictandDB::OnDataSelection(wxCommandEvent &event)
 {
+    Freeze();
+
+    m_sizerProcessing->Clear();
+    wxDELETE(m_panelProcessing);
+
     switch (m_choiceDataParam->GetSelection()) {
         case 0: // precipitation
         {
-            m_panelDataProcessing->Enable();
-            m_checkBoxReturnPeriod->Enable();
-            m_textCtrlReturnPeriod->Enable();
-            m_staticTextYears->Enable();
-            m_checkBoxSqrt->Enable();
+            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
+            break;
+        }
+        case 2: // lightnings
+        {
+            m_panelProcessing = new asPanelProcessingLightnings(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
             break;
         }
         default: // other
         {
-            m_panelDataProcessing->Disable();
-            m_checkBoxReturnPeriod->Disable();
-            m_textCtrlReturnPeriod->Disable();
-            m_staticTextYears->Disable();
-            m_checkBoxSqrt->Disable();
+            // Nothing to do
             break;
         }
     }
+
+    FixFrameSize();
+    Thaw();
 }
 
 void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
@@ -162,7 +157,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        asPredictand::TemporalResolution temporalResolution = asPredictand::Daily;
+        asPredictand::TemporalResolution temporalResol = asPredictand::Daily;
         switch (m_choiceDataTempResol->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the temporal resolution option."));
@@ -170,32 +165,32 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // 24 hours
             {
-                temporalResolution = asPredictand::Daily;
+                temporalResol = asPredictand::Daily;
                 break;
             }
             case 1: // 6 hours
             {
-                temporalResolution = asPredictand::SixHourly;
+                temporalResol = asPredictand::SixHourly;
                 break;
             }
             case 2: // Moving temporal window (1-hourly)
             {
-                temporalResolution = asPredictand::OneHourlyMTW;
+                temporalResol = asPredictand::OneHourlyMTW;
                 break;
             }
             case 3: // Moving temporal window (3-hourly)
             {
-                temporalResolution = asPredictand::ThreeHourlyMTW;
+                temporalResol = asPredictand::ThreeHourlyMTW;
                 break;
             }
             case 4: // Moving temporal window (6-hourly)
             {
-                temporalResolution = asPredictand::SixHourlyMTW;
+                temporalResol = asPredictand::SixHourlyMTW;
                 break;
             }
             case 5: // Moving temporal window (12-hourly)
             {
-                temporalResolution = asPredictand::TwelveHourlyMTW;
+                temporalResol = asPredictand::TwelveHourlyMTW;
                 break;
             }
             default:
@@ -203,7 +198,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
 
         // Get temporal resolution
-        asPredictand::SpatialAggregation spatialAggregation = asPredictand::Station;
+        asPredictand::SpatialAggregation spatialAggr = asPredictand::Station;
         switch (m_choiceDataSpatAggreg->GetSelection()) {
             case wxNOT_FOUND: {
                 wxLogError(_("Wrong selection of the spatial aggregation option."));
@@ -211,17 +206,17 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // Station
             {
-                spatialAggregation = asPredictand::Station;
+                spatialAggr = asPredictand::Station;
                 break;
             }
             case 1: // Groupment
             {
-                spatialAggregation = asPredictand::Groupment;
+                spatialAggr = asPredictand::Groupment;
                 break;
             }
             case 2: // Catchment
             {
-                spatialAggregation = asPredictand::Catchment;
+                spatialAggr = asPredictand::Catchment;
                 break;
             }
             default:
@@ -236,11 +231,16 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             }
             case 0: // Precipitation
             {
-                // Get data processing options
+                wxASSERT(m_panelProcessing);
+                auto *panel = dynamic_cast<asPanelProcessingPrecipitation *> (m_panelProcessing);
+                wxASSERT(panel->m_checkBoxReturnPeriod);
+                wxASSERT(panel->m_textCtrlReturnPeriod);
+                wxASSERT(panel->m_checkBoxSqrt);
+
                 // Return period
                 double valReturnPeriod = 0;
-                if (m_checkBoxReturnPeriod->GetValue()) {
-                    wxString valReturnPeriodString = m_textCtrlReturnPeriod->GetValue();
+                if (panel->m_checkBoxReturnPeriod->GetValue()) {
+                    wxString valReturnPeriodString = panel->m_textCtrlReturnPeriod->GetValue();
                     valReturnPeriodString.ToDouble(&valReturnPeriod);
                     if ((valReturnPeriod < 1) | (valReturnPeriod > 1000)) {
                         wxLogError(_("The given return period is not consistent."));
@@ -249,25 +249,28 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 }
 
                 // Instantiate a predictand object
-                asPredictandPrecipitation predictand(asPredictand::Precipitation, temporalResolution,
-                                                     spatialAggregation);
-                predictand.SetHasReferenceValues(m_checkBoxReturnPeriod->GetValue());
-                predictand.SetIsSqrt(m_checkBoxSqrt->GetValue());
+                asPredictandPrecipitation predictand(asPredictand::Precipitation, temporalResol, spatialAggr);
+                predictand.SetHasReferenceValues(panel->m_checkBoxReturnPeriod->GetValue());
+                predictand.SetIsSqrt(panel->m_checkBoxSqrt->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 1: // Temperature
             {
                 // Instantiate a predictand object
-                asPredictandTemperature predictand(asPredictand::AirTemperature, temporalResolution,
-                                                   spatialAggregation);
+                asPredictandTemperature predictand(asPredictand::AirTemperature, temporalResol, spatialAggr);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
             case 2: // Lightnings
             {
+                wxASSERT(m_panelProcessing);
+                auto *panel = dynamic_cast<asPanelProcessingLightnings *> (m_panelProcessing);
+                wxASSERT(panel->m_checkBoxLog);
+
                 // Instantiate a predictand object
-                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResolution, spatialAggregation);
+                asPredictandLightnings predictand(asPredictand::Lightnings, temporalResol, spatialAggr);
+                predictand.SetHasReferenceValues(panel->m_checkBoxLog->GetValue());
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
