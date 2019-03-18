@@ -69,7 +69,7 @@ public:
 
     enum SpatialAggregation
     {
-        Station, Groupment, Catchment
+        Station, Groupment, Catchment, Region
     };
 
     asPredictand(Parameter parameter, TemporalResolution temporalResolution,

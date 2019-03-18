@@ -122,7 +122,7 @@ asFramePredictandDBVirtual::asFramePredictandDBVirtual( wxWindow* parent, wxWind
 	m_staticTextDataSpatAggreg->Wrap( -1 );
 	fgSizer2->Add( m_staticTextDataSpatAggreg, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	wxString m_choiceDataSpatAggregChoices[] = { _("Station"), _("Groupment"), _("Catchment") };
+	wxString m_choiceDataSpatAggregChoices[] = { _("Station"), _("Groupment"), _("Catchment"), _("Region") };
 	int m_choiceDataSpatAggregNChoices = sizeof( m_choiceDataSpatAggregChoices ) / sizeof( wxString );
 	m_choiceDataSpatAggreg = new wxChoice( m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceDataSpatAggregNChoices, m_choiceDataSpatAggregChoices, 0 );
 	m_choiceDataSpatAggreg->SetSelection( 0 );
@@ -264,7 +264,7 @@ asPanelProcessingLightnings::asPanelProcessingLightnings( wxWindow* parent, wxWi
 	wxBoxSizer* bSizer21;
 	bSizer21 = new wxBoxSizer( wxVERTICAL );
 
-	m_checkBoxLog = new wxCheckBox( this, wxID_ANY, _("Process log10(1+nb)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBoxLog = new wxCheckBox( this, wxID_ANY, _("Process log10(nb+1)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_checkBoxLog->SetValue(true);
 	bSizer21->Add( m_checkBoxLog, 0, wxTOP|wxBOTTOM|wxRIGHT, 9 );
 

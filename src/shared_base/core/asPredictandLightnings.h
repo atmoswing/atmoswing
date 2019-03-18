@@ -54,6 +54,8 @@ protected:
 
 private:
     bool InitContainers();
+
+    bool BuildDataNormalized();
 };
 
 #endif // ASDATAPREDICTANDLIGHTNINGS_H

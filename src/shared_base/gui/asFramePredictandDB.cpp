@@ -219,6 +219,11 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 spatialAggr = asPredictand::Catchment;
                 break;
             }
+            case 3: // Region
+            {
+                spatialAggr = asPredictand::Region;
+                break;
+            }
             default:
                 wxLogError(_("Wrong selection of the spatial aggregation option."));
         }
