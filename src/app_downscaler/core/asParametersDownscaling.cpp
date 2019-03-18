@@ -255,7 +255,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
-            if (!SetAnalogsNumber(iStep, fileParams.GetInt(nodeParamBlock)))
+            if (!SetAnalogsNumber(iStep, asFileParametersDownscaling::GetInt(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
@@ -265,55 +265,57 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
-                    SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+                    SetPreload(iStep, iPtor, asFileParametersDownscaling::GetBool(nodeParam));
+                } else if (nodeParam->GetName() == "standardize") {
+                    SetStandardize(iStep, iPtor, asFileParametersDownscaling::GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
                         return false;
                 } else if (nodeParam->GetName() == "proj_dataset_id") {
-                    if (!SetPredictorProjDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorProjDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "proj_data_id") {
-                    if (!SetPredictorProjDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorProjDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "archive_dataset_id") {
-                    if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "archive_data_id") {
-                    if (!SetPredictorDataId(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "level") {
-                    if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
+                    if (!SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+                    if (!SetPredictorTimeHours(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
-                    if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
+                    if (!SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "spatial_window") {
                     wxXmlNode *nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
                         if (nodeWindow->GetName() == "grid_type") {
-                            if (!SetPredictorGridType(iStep, iPtor, fileParams.GetString(nodeWindow, "regular")))
+                            if (!SetPredictorGridType(iStep, iPtor, asFileParametersDownscaling::GetString(nodeWindow, "regular")))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_min") {
-                            if (!SetPredictorXmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                            if (!SetPredictorXmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_points_nb") {
-                            if (!SetPredictorXptsnb(iStep, iPtor, fileParams.GetInt(nodeWindow)))
+                            if (!SetPredictorXptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_step") {
-                            if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                            if (!SetPredictorXstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_min") {
-                            if (!SetPredictorYmin(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                            if (!SetPredictorYmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_points_nb") {
-                            if (!SetPredictorYptsnb(iStep, iPtor, fileParams.GetInt(nodeWindow)))
+                            if (!SetPredictorYptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_step") {
-                            if (!SetPredictorYstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
+                            if (!SetPredictorYstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
                                 return false;
                         } else {
                             fileParams.UnknownNode(nodeWindow);
@@ -321,10 +323,10 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                         nodeWindow = nodeWindow->GetNext();
                     }
                 } else if (nodeParam->GetName() == "criteria") {
-                    if (!SetPredictorCriteria(iStep, iPtor, fileParams.GetString(nodeParam)))
+                    if (!SetPredictorCriteria(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "weight") {
-                    if (!SetPredictorWeight(iStep, iPtor, fileParams.GetFloat(nodeParam)))
+                    if (!SetPredictorWeight(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);

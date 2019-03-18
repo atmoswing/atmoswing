@@ -791,6 +791,12 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             // Area object instantiation
             asAreaCompGrid *area = asAreaCompGrid::GetInstance(&params, iStep, iPtor);
 
+            // Standardize
+            if (params.GetStandardize(iStep, iPtor)) {
+                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
+                return false;
+            }
+
             // Archive data loading
             wxLogVerbose(_("Loading archive data."));
             if (!predictorArchive->Load(area, timeArrayDataArchive, params.GetPredictorLevel(iStep, iPtor))) {
@@ -964,6 +970,12 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
+                return false;
+            }
+
+            // Standardize
+            if (params.GetStandardize(iStep, iPtor)) {
+                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
                 return false;
             }
 
@@ -1245,6 +1257,12 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             // Area object instantiation
             asAreaCompGrid *area = asAreaCompGrid::GetInstance(&params, iStep, iPtor);
 
+            // Standardize
+            if (params.GetStandardize(iStep, iPtor)) {
+                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
+                return false;
+            }
+
             // Archive data loading
             if (!predictorArchive->Load(area, timeArrayDataArchive, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Archive data (%s) could not be loaded."), predictorArchive->GetDataId());
@@ -1415,6 +1433,12 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 wxLogError(_("Data preprocessing failed."));
                 wxDELETE(predictorArchive);
                 wxDELETE(predictorRealtime);
+                return false;
+            }
+
+            // Standardize
+            if (params.GetStandardize(iStep, iPtor)) {
+                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
                 return false;
             }
 

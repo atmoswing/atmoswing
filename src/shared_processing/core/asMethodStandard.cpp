@@ -514,6 +514,11 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             wxASSERT(area);
             area->AllowResizeFromData();
 
+            // Set standardize option
+            if (params->GetStandardize(iStep, iPtor)) {
+                predictor->SetStandardize(true);
+            }
+
             // Data loading
             wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[iDat], (int) preloadLevels[iLevel],
                          preloadTimeHours[iHour]);
@@ -526,12 +531,15 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                     continue; // The requested data can be missing (e.g. level not available).
                 }
             } catch (std::bad_alloc &ba) {
+
                 wxString msg(ba.what(), wxConvUTF8);
                 wxLogError(_("Bad allocation in the data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
+
             } catch (std::exception &e) {
+
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception in the data preloading: %s"), msg);
                 wxDELETE(area);
@@ -705,7 +713,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
             }
 
             wxLogVerbose(_("Preprocessing data."));
-            asPredictor *predictor = new asPredictor(*predictorsPreprocess[0]);
+            auto *predictor = new asPredictor(*predictorsPreprocess[0]);
 
             try {
                 if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor),
@@ -715,14 +723,24 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                     Cleanup(predictorsPreprocess);
                     return false;
                 }
+
+                // Standardize
+                if (params->GetStandardize(iStep, iPtor)) {
+                    predictor->StandardizeData();
+                }
+
                 m_preloadedArchive[iStep][iPtor][0][iLevel][iHour] = predictor;
+
             } catch (std::bad_alloc &ba) {
+
                 wxString msg(ba.what(), wxConvUTF8);
                 wxLogError(_("Bad allocation caught in the data preprocessing: %s"), msg);
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
+
             } catch (std::exception &e) {
+
                 wxString msg(e.what(), wxConvUTF8);
                 wxLogError(_("Exception in the data preprocessing: %s"), msg);
                 wxDELETE(predictor);
@@ -1019,6 +1037,11 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
+    // Set standardize option
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->SetStandardize(true);
+    }
+
     // Data loading
     if (!predictor->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
         wxLogError(_("The data could not be loaded."));
@@ -1110,6 +1133,11 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
         Cleanup(predictorsPreprocess);
         wxDELETE(predictor);
         return false;
+    }
+
+    // Standardize
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->StandardizeData();
     }
 
     Cleanup(predictorsPreprocess);

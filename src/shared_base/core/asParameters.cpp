@@ -83,6 +83,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.preprocessMethod = wxEmptyString;
+    predictor.standardize = false;
     predictor.level = 0;
     predictor.xMin = 0;
     predictor.xPtsNb = 1;
@@ -114,6 +115,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.preprocessMethod = wxEmptyString;
+    predictor.standardize = false;
     predictor.level = 0;
     predictor.gridType = "regular";
     predictor.xMin = 0;
@@ -307,6 +309,7 @@ bool asParameters::ParseAnalogDatesParams(asFileParameters &fileParams, int iSte
             AddPredictor(iStep);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
+            SetStandardize(iStep, iPtor, false);
             if (!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock))
                 return false;
             iPtor++;
@@ -325,6 +328,8 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, asFileParameters::GetBool(nodeParam));
+        } else if (nodeParam->GetName() == "standardize") {
+            SetStandardize(iStep, iPtor, asFileParameters::GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))

@@ -118,9 +118,9 @@ public:
 
     bool Load(asAreaCompGrid *desiredArea, double date, float level);
 
-    bool TransformData(vvva2f &compositeData);
-
     bool ClipToArea(asAreaCompGrid *desiredArea);
+
+    bool StandardizeData();
 
     bool Inline();
 
@@ -212,6 +212,11 @@ public:
     int GetLonPtsnb() const
     {
         return m_lonPtsnb;
+    }
+
+    void SetStandardize(bool val = true)
+    {
+        m_standardize = val;
     }
 
     static bool IsLatLon(const wxString &datasetId);
@@ -378,6 +383,7 @@ protected:
     FileIndexes m_fInd;
     asFile::FileType m_fileType;
     bool m_initialized;
+    bool m_standardize;
     bool m_axesChecked;
     wxString m_dataId;
     wxString m_datasetId;
@@ -456,6 +462,8 @@ protected:
     bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
     bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
+
+    bool TransformData(vvva2f &compositeData);
 
     asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 

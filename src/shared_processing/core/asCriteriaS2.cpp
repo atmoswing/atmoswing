@@ -31,6 +31,7 @@ asCriteriaS2::asCriteriaS2()
         : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc)
 {
     m_minPointsNb = 3;
+    m_scaleWorst = 200;
     m_canUseInline = false;
 }
 

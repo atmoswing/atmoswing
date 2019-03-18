@@ -56,6 +56,7 @@
 
 asPredictor::asPredictor(const wxString &dataId)
         : m_initialized(false),
+          m_standardize(false),
           m_axesChecked(false),
           m_dataId(dataId),
           m_parameter(ParameterUndefined),
@@ -322,6 +323,13 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if (desiredArea && desiredArea->IsRegular() && !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
+            return false;
+        }
+
+        // Normalize data
+        if (m_standardize && !StandardizeData()) {
+            wxLogError(_("Data normalization has failed."));
+            wxFAIL;
             return false;
         }
 
@@ -1460,6 +1468,42 @@ bool asPredictor::TransformData(vvva2f &compositeData)
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_unit = m;
+    }
+
+    return true;
+}
+
+bool asPredictor::StandardizeData()
+{
+    // Get the mean
+    double sum = 0;
+    int count = 0;
+
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            sum += datMem.isNaN().select(0, datMem).sum();
+            count += datMem.isNaN().sum();
+        }
+    }
+
+    double mean = sum / (double) count;
+
+    // Get the standard deviation
+    double sd = 0;
+
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+        }
+    }
+
+    sd = std::sqrt(sd / (double) count);
+
+    // Standardize
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            datMem = (datMem - mean) / sd;
+        }
     }
 
     return true;

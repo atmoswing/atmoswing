@@ -47,6 +47,7 @@ public:
         wxString datasetId;
         wxString dataId;
         bool preload;
+        bool standardize;
         vwxs preloadDataIds;
         vd preloadTimeHours;
         vf preloadLevels;
@@ -351,6 +352,16 @@ public:
     void SetPreload(int iStep, int iPtor, bool val)
     {
         m_steps[iStep].predictors[iPtor].preload = val;
+    }
+
+    void SetStandardize(int iStep, int iPtor, bool val)
+    {
+        m_steps[iStep].predictors[iPtor].standardize = val;
+    }
+
+    bool GetStandardize(int iStep, int iPtor)
+    {
+        return m_steps[iStep].predictors[iPtor].standardize;
     }
 
     vwxs GetPreloadDataIds(int iStep, int iPtor) const

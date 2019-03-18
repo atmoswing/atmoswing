@@ -415,6 +415,11 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
         return false;
     }
 
+    // Set standardize option
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->SetStandardize(true);
+    }
+
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
         predictor->SelectMembers(params->GetPredictorProjMembersNb(iStep, iPtor));
@@ -500,6 +505,11 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         Cleanup(predictorsPreprocess);
         wxDELETE(predictor);
         return false;
+    }
+
+    // Standardize
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->StandardizeData();
     }
 
     Cleanup(predictorsPreprocess);

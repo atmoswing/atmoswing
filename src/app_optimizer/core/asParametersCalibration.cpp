@@ -284,6 +284,8 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+                } else if (nodeParam->GetName() == "standardize") {
+                    SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
