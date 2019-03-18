@@ -1482,7 +1482,7 @@ bool asPredictor::StandardizeData()
     for (auto &datTime : m_data) {
         for (auto &datMem : datTime) {
             sum += datMem.isNaN().select(0, datMem).sum();
-            count += datMem.isNaN().sum();
+            count += datMem.size() - datMem.isNaN().count();
         }
     }
 
@@ -1497,7 +1497,7 @@ bool asPredictor::StandardizeData()
         }
     }
 
-    sd = std::sqrt(sd / (double) count);
+    sd = std::sqrt(sd / (double) (count - 1));
 
     // Standardize
     for (auto &datTime : m_data) {
