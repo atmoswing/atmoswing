@@ -110,8 +110,8 @@ bool asPredictorOperGfsForecast::Init()
         m_commandDownload = pConfig->Read("/PredictorsUrl/GFS/pwat", m_commandDownload);
         m_unit = mm;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        return false;
     }
 
     // Set to initialized

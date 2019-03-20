@@ -103,8 +103,8 @@ bool asPredictorOperIfsForecast::Init()
         m_gribCode = {0, 128, 136, 200};
         m_unit = mm;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        return false;
     }
 
     // Set to initialized
