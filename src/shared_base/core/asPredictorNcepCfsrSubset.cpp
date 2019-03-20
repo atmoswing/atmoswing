@@ -132,7 +132,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_unit = m2_s;
             m_fStr.dimLevelName = "level1";
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -154,7 +155,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "P_WAT_L200";
             m_unit = kg_m2;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -191,7 +193,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "HGT_L1";
             m_unit = gpm;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -208,7 +211,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "PRMSL_L101";
             m_unit = Pa;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -255,7 +259,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "V_VEL_L107";
             m_unit = Pa_s;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -292,7 +297,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "VW_SH_L109";
             m_unit = per_s;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "pgbhnl.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
@@ -304,15 +310,18 @@ bool asPredictorNcepCfsrSubset::Init()
             m_fileVarName = "PRATE_L1_Avg_1";
             m_unit = kg_m2_s;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern = "flxf06.gdas.%4d%02d%02d-%4d%02d%02d.grb2.nc";
 
     } else if (IsIsentropicLevel()) {
-        asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
+        wxLogError(_("Isentropic levels for CFSR are not implemented yet."));
+        return false;
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

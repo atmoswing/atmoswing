@@ -233,7 +233,8 @@ bool asPredictorNasaMerra2Subset::Init()
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.tavg1_2d_lnd_Nx.%4d%02d%02d.SUB.nc4";
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

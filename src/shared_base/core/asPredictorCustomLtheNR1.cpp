@@ -79,8 +79,8 @@ bool asPredictorCustomLtheNR1::Init()
         m_fileVarName = "rhum";
         m_unit = percent;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        return false;
     }
 
     // Check data ID

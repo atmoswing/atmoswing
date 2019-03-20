@@ -293,7 +293,8 @@ bool asPredictorEcmwfEraInterim::Init()
         }
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

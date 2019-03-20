@@ -49,90 +49,63 @@ bool asPredictorCustomMeteoFvgIfs::Init()
 
     if (m_product.IsSameAs("data", false)) {
 
-        if (m_dataId.IsSameAs("gh_500", false) ||
-            m_dataId.IsSameAs("gh_700", false) ||
-            m_dataId.IsSameAs("gh_850", false) ||
-            m_dataId.IsSameAs("gh_925", false)) {
+        if (m_dataId.Contains("gh_")) {
             m_parameter = GeopotentialHeight;
             m_gribCode = {0, 128, 156, 100};
             m_unit = m;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("t_500", false) ||
-                   m_dataId.IsSameAs("t_700", false) ||
-                   m_dataId.IsSameAs("t_850", false) ||
-                   m_dataId.IsSameAs("t_925", false)) {
+        } else if (m_dataId.Contains("t_")) {
             m_parameter = AirTemperature;
             m_gribCode = {0, 128, 130, 100};
             m_unit = degK;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("w_500", false) ||
-                   m_dataId.IsSameAs("w_700", false) ||
-                   m_dataId.IsSameAs("w_850", false) ||
-                   m_dataId.IsSameAs("w_925", false)) {
+        } else if (m_dataId.Contains("w_")) {
             m_parameter = VerticalVelocity;
             m_gribCode = {0, 128, 135, 100};
             m_unit = Pa_s;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("r_500", false) ||
-                   m_dataId.IsSameAs("r_700", false) ||
-                   m_dataId.IsSameAs("r_850", false) ||
-                   m_dataId.IsSameAs("r_925", false)) {
+        } else if (m_dataId.Contains("r_")) {
             m_parameter = RelativeHumidity;
             m_gribCode = {0, 128, 157, 100};
             m_unit = percent;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("u_500", false) ||
-                   m_dataId.IsSameAs("u_700", false) ||
-                   m_dataId.IsSameAs("u_850", false) ||
-                   m_dataId.IsSameAs("u_925", false)) {
+        } else if (m_dataId.Contains("u_")) {
             m_parameter = Uwind;
             m_gribCode = {0, 128, 131, 100};
             m_unit = m_s;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("v_500", false) ||
-                   m_dataId.IsSameAs("v_700", false) ||
-                   m_dataId.IsSameAs("v_850", false) ||
-                   m_dataId.IsSameAs("v_925", false)) {
+        } else if (m_dataId.Contains("v_")) {
             m_parameter = Vwind;
             m_gribCode = {0, 128, 132, 100};
             m_unit = m_s;
             m_fStr.hasLevelDim = true;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
 
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
 
     } else if (m_product.IsSameAs("datader", false)) {
 
-        if (m_dataId.IsSameAs("q_500", false) ||
-            m_dataId.IsSameAs("q_700", false) ||
-            m_dataId.IsSameAs("q_850", false) ||
-            m_dataId.IsSameAs("q_925", false)) {
+        if (m_dataId.Contains("q_"))) {
             m_parameter = SpecificHumidity;
             m_gribCode = {0, 128, 133, 100};
             m_unit = percent;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("thetaE_500", false) ||
-                   m_dataId.IsSameAs("thetaE_700", false) ||
-                   m_dataId.IsSameAs("thetaE_850", false) ||
-                   m_dataId.IsSameAs("thetaE_925", false)) {
+        } else if (m_dataId.Contains("thetaE_")) {
             m_parameter = Radiation;
             m_gribCode = {0, 3, 113, 100};
             m_unit = W_m2;
             m_fStr.hasLevelDim = true;
-        } else if (m_dataId.IsSameAs("thetaES_500", false) ||
-                   m_dataId.IsSameAs("thetaES_700", false) ||
-                   m_dataId.IsSameAs("thetaES_850", false) ||
-                   m_dataId.IsSameAs("thetaES_925", false)) {
+        } else if (m_dataId.Contains("thetaES_")) {
             m_parameter = Radiation;
             m_gribCode = {0, 3, 114, 100};
             m_unit = W_m2;
             m_fStr.hasLevelDim = true;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
 
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
@@ -159,8 +132,8 @@ bool asPredictorCustomMeteoFvgIfs::Init()
         } else if (m_dataId.IsSameAs("MB700925", false)) {
             m_gribCode = {0, 3, 114, 100};
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
 
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";

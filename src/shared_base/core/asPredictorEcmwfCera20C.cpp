@@ -111,7 +111,8 @@ bool asPredictorEcmwfCera20C::Init()
         m_fileNamePattern = m_fileVarName + ".%d.nc";
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

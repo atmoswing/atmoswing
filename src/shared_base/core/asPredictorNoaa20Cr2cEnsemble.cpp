@@ -130,7 +130,8 @@ bool asPredictorNoaa20Cr2cEnsemble::Init()
         m_fileNamePattern = m_fileVarName + "_%d.nc";
 
     } else {
-        asThrowException(_("Product type not implemented for this reanalysis dataset."));
+        wxLogError(_("Product type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

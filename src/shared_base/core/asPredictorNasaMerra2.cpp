@@ -83,7 +83,8 @@ bool asPredictorNasaMerra2::Init()
         m_fileNamePattern = "%4d/%02d/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.nc4";
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

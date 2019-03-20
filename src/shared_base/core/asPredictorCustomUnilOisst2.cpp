@@ -66,8 +66,8 @@ bool asPredictorCustomUnilOisst2::Init()
         m_fileVarName = "anom";
         m_unit = degC;
     } else {
-        asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                          m_dataId, m_product));
+        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+        return false;
     }
 
     // Check data ID

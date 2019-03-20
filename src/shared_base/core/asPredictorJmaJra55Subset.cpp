@@ -88,8 +88,8 @@ bool asPredictorJmaJra55Subset::Init()
             m_unit = Pa_s;
             m_fileNamePattern.Append("039_vvel");
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
@@ -108,8 +108,8 @@ bool asPredictorJmaJra55Subset::Init()
             m_unit = Pa;
             m_fileNamePattern.Append("002_prmsl");
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
@@ -128,8 +128,8 @@ bool asPredictorJmaJra55Subset::Init()
             m_unit = kg_m2;
             m_fileNamePattern.Append("054_pwat");
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
@@ -153,8 +153,8 @@ bool asPredictorJmaJra55Subset::Init()
             m_unit = mm_d;
             m_fileNamePattern.Append("fcst_phy2m125.061_tprat");
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
@@ -180,13 +180,14 @@ bool asPredictorJmaJra55Subset::Init()
             m_unit = gpm;
             m_fileNamePattern.Append("007_hgt");
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
         m_fileNamePattern.Append(".%4d%02d01*.nc");
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

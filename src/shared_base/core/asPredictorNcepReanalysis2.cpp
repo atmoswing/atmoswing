@@ -115,8 +115,8 @@ bool asPredictorNcepReanalysis2::Init()
             m_fileVarName = "mslp";
             m_unit = Pa;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
 
     } else if (IsSurfaceFluxesLevel() ||
@@ -307,12 +307,13 @@ bool asPredictorNcepReanalysis2::Init()
             m_fileVarName = "vgwd";
             m_unit = N_m2;
         } else {
-            asThrowException(wxString::Format(_("No '%s' parameter identified for the provided level type (%s)."),
-                                              m_dataId, m_product));
+            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+            return false;
         }
 
     } else {
-        asThrowException(_("Product type not implemented for this reanalysis dataset."));
+        wxLogError(_("Product type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID

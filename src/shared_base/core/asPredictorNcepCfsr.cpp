@@ -78,18 +78,22 @@ bool asPredictorNcepCfsr::Init()
             m_parameterName = "Temperature @ Isobaric surface";
             m_unit = degK;
         } else {
-            asThrowException(wxString::Format(_("Parameter '%s' not implemented yet."), m_dataId));
+            wxLogError(_("Parameter '%s' not implemented yet."), m_dataId);
+            return false;
         }
         m_fileNamePattern = "%4d/%4d%02d/%4d%02d%02d/pgbhnl.gdas.%4d%02d%02d%02d.grb2";
 
     } else if (IsIsentropicLevel()) {
-        asThrowException(_("Isentropic levels for CFSR are not implemented yet."));
+        wxLogError(_("Isentropic levels for CFSR are not implemented yet."));
+        return false;
 
     } else if (IsSurfaceFluxesLevel()) {
-        asThrowException(_("Surface fluxes grids for CFSR are not implemented yet."));
+        wxLogError(_("Surface fluxes grids for CFSR are not implemented yet."));
+        return false;
 
     } else {
-        asThrowException(_("level type not implemented for this reanalysis dataset."));
+        wxLogError(_("level type not implemented for this reanalysis dataset."));
+        return false;
     }
 
     // Check data ID
