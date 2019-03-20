@@ -215,6 +215,8 @@ private:
     void fixStartIfForbidden(double &currentStart) const;
 
     void fixEndIfForbidden(double &currentEnd) const;
+
+    void RemoveExcludedDates(double targetDate, double exclusionDays);
 };
 
 #endif

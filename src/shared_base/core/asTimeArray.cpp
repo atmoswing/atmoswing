@@ -211,6 +211,15 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
         }
     }
 
+    RemoveExcludedDates(targetDate, exclusionDays);
+
+    m_initialized = true;
+
+    return true;
+}
+
+void asTimeArray::RemoveExcludedDates(double targetDate, double exclusionDays)
+{
     a1d newTimeArray;
     newTimeArray.resize(m_timeArray.size());
 
@@ -236,10 +245,6 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
     if (m_timeArray.size() != counter) {
         m_timeArray.conservativeResize(counter);
     }
-
-    m_initialized = true;
-
-    return true;
 }
 
 bool asTimeArray::Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
