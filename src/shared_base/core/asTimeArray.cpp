@@ -176,8 +176,6 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
 {
     m_timeArray.resize(0);
 
-    wxASSERT(exclusionDays > 0);
-
     switch (m_mode) {
         case DaysInterval: {
             wxASSERT(intervalDays > 0);
@@ -215,6 +213,11 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
 
     a1d newTimeArray;
     newTimeArray.resize(m_timeArray.size());
+
+    if (exclusionDays == 0) {
+        exclusionDays = 30;
+        wxLogWarning(_("The 'exclude_days' parameter cannot be 0 or ignored. Defaulted to 30 days."));
+    }
 
     // The period to exclude
     double excludeStart = targetDate - exclusionDays;
