@@ -122,8 +122,6 @@ TEST(TimeArray, BuildArrayDaysIntervalNormal)
     asTimeArray timeArray(start, end, timeStep, asTimeArray::DaysInterval);
     timeArray.Init(targetDate, intervaldays, exclusionDays);
 
-    EXPECT_DOUBLE_EQ(intervaldays * 24, timeArray.GetIntervalHours());
-    EXPECT_DOUBLE_EQ(intervaldays, timeArray.GetIntervalDays());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 0, 0), timeArray.GetFirst());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 7, 31, 0, 0), timeArray.GetLast());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 6, 0), timeArray[1]);
@@ -148,8 +146,6 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
     asTimeArray timeArray(start, end, timeStep, slctModeString);
     timeArray.Init(targetDate, intervaldays, exclusionDays);
 
-    EXPECT_DOUBLE_EQ(intervaldays * 24, timeArray.GetIntervalHours());
-    EXPECT_DOUBLE_EQ(intervaldays, timeArray.GetIntervalDays());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 0, 0), timeArray.GetFirst());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 7, 31, 0, 0), timeArray.GetLast());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 2, 6, 0), timeArray[1]);

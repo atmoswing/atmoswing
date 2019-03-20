@@ -83,7 +83,7 @@ public:
 
     bool BuildArraySimple();
 
-    bool BuildArrayDaysInterval(double targetDate);
+    bool BuildArrayDaysInterval(double targetDate, double intervalDays);
 
     bool BuildArraySeason();
 
@@ -172,16 +172,6 @@ public:
         return m_timeStepDays;
     }
 
-    double GetIntervalHours() const
-    {
-        return m_intervalDays * 24;
-    }
-
-    double GetIntervalDays() const
-    {
-        return m_intervalDays;
-    }
-
     a1d GetTimeArray() const
     {
         return m_timeArray;
@@ -219,8 +209,6 @@ private:
     double m_start;
     double m_end;
     double m_timeStepDays;
-    double m_intervalDays;
-    double m_exclusionDays;
     vi m_forbiddenYears;
     wxString m_modeStr;
 

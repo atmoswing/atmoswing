@@ -39,9 +39,7 @@ asTimeArray::asTimeArray(double start, double end, double timeStepHours, Mode mo
           m_mode(mode),
           m_start(start),
           m_end(end),
-          m_timeStepDays(timeStepHours / 24.0),
-          m_intervalDays(0),
-          m_exclusionDays(0)
+          m_timeStepDays(timeStepHours / 24.0)
 {
     wxASSERT(m_end >= m_start);
     wxASSERT(m_timeStepDays > 0);
@@ -52,9 +50,7 @@ asTimeArray::asTimeArray(double start, double end, double timeStepHours, const w
           m_initialized(false),
           m_start(start),
           m_end(end),
-          m_timeStepDays(timeStepHours / 24.0),
-          m_intervalDays(0),
-          m_exclusionDays(0)
+          m_timeStepDays(timeStepHours / 24.0)
 {
     wxASSERT(m_end >= m_start);
     wxASSERT(m_timeStepDays > 0);
@@ -92,18 +88,14 @@ asTimeArray::asTimeArray(double date)
           m_mode(SingleDay),
           m_start(date),
           m_end(date),
-          m_timeStepDays(0),
-          m_intervalDays(0),
-          m_exclusionDays(0)
+          m_timeStepDays(0)
 {
 }
 
 asTimeArray::asTimeArray(vd &timeArray)
         : asTime(),
           m_initialized(false),
-          m_mode(Custom),
-          m_intervalDays(0),
-          m_exclusionDays(0)
+          m_mode(Custom)
 {
     wxASSERT(timeArray.size() > 1);
     wxASSERT(timeArray[timeArray.size() - 1] > timeArray[0]);
@@ -122,9 +114,7 @@ asTimeArray::asTimeArray(vd &timeArray)
 asTimeArray::asTimeArray(a1d &timeArray)
         : asTime(),
           m_initialized(false),
-          m_mode(Custom),
-          m_intervalDays(0),
-          m_exclusionDays(0)
+          m_mode(Custom)
 {
     wxASSERT(timeArray.size() > 0);
 
@@ -187,18 +177,61 @@ bool asTimeArray::Init(double targetDate, double intervalDays, double exclusionD
     m_timeArray.resize(0);
 
     wxASSERT(exclusionDays > 0);
-    wxASSERT(intervalDays > 0);
-    wxASSERT(targetDate > 15022); // After 1900
-    wxASSERT(targetDate < 88069); // Before 2100
-    wxASSERT(m_mode == DaysInterval);
 
-    // Get values
-    m_intervalDays = intervalDays;
-    m_exclusionDays = exclusionDays;
+    switch (m_mode) {
+        case DaysInterval: {
+            wxASSERT(intervalDays > 0);
+            if (!BuildArrayDaysInterval(targetDate, intervalDays)) {
+                wxLogError(_("Time array creation failed"));
+                return false;
+            }
+            break;
+        }
+        case Simple: {
+            m_timeArray.resize(0);
+            if (!BuildArraySimple()) {
+                wxLogError(_("Time array creation failed."));
+                return false;
+            }
+            break;
+        }
+        case DJF:
+        case MAM:
+        case JJA:
+        case SON:
+        case MonthsSelection:{
+            m_timeArray.resize(0);
+            if (!BuildArraySeason()) {
+                wxLogError(_("Time array creation failed"));
+                return false;
+            }
+            break;
+        }
+        default: {
+            wxLogError(_("The time array mode is not allowed for the analogs."));
+            return false;
+        }
+    }
 
-    if (!BuildArrayDaysInterval(targetDate)) {
-        wxLogError(_("Time array creation failed"));
-        return false;
+    a1d newTimeArray;
+    newTimeArray.resize(m_timeArray.size());
+
+    // The period to exclude
+    double excludeStart = targetDate - exclusionDays;
+    double excludeEnd = targetDate + exclusionDays;
+
+    int counter = 0;
+    for (int i = 0; i < m_timeArray.size(); ++i) {
+        if (m_timeArray[i] < excludeStart || m_timeArray[i] > excludeEnd) {
+            newTimeArray[counter] = m_timeArray[i];
+            counter++;
+        }
+    }
+    m_timeArray = newTimeArray;
+
+    // Resize final array
+    if (m_timeArray.size() != counter) {
+        m_timeArray.conservativeResize(counter);
     }
 
     m_initialized = true;
@@ -262,7 +295,7 @@ bool asTimeArray::BuildArraySimple()
     return true;
 }
 
-bool asTimeArray::BuildArrayDaysInterval(double targetDate)
+bool asTimeArray::BuildArrayDaysInterval(double targetDate, double intervalDays)
 {
     // Check the timestep integrity
     wxCHECK(m_timeStepDays > 0, false);
@@ -271,14 +304,10 @@ bool asTimeArray::BuildArrayDaysInterval(double targetDate)
     wxASSERT(m_start > 0);
     wxASSERT(m_end > 0);
 
-    // The period to exclude
-    double excludeStart = targetDate - m_exclusionDays;
-    double excludeEnd = targetDate + m_exclusionDays;
-
     // Array resizing (larger than required)
     int firstYear = GetTimeStruct(m_start).year;
     int lastYear = GetTimeStruct(m_end).year;
-    int totLength = int((lastYear - firstYear + 1) * 2 * (m_intervalDays + 1) * (1.0 / m_timeStepDays));
+    int totLength = int((lastYear - firstYear + 1) * 2 * (intervalDays + 1) * (1.0 / m_timeStepDays));
     wxASSERT(totLength > 0);
     wxASSERT(totLength < 289600); // 4 times daily during 200 years...
     m_timeArray.resize(totLength);
@@ -290,8 +319,8 @@ bool asTimeArray::BuildArrayDaysInterval(double targetDate)
         // Get the interval boundaries
         Time targetDateStruct = GetTimeStruct(targetDate);
         targetDateStruct.year = year;
-        double currentStart = GetMJD(targetDateStruct) - m_intervalDays;
-        double currentEnd = GetMJD(targetDateStruct) + m_intervalDays;
+        double currentStart = GetMJD(targetDateStruct) - intervalDays;
+        double currentEnd = GetMJD(targetDateStruct) + intervalDays;
 
         // Check for forbidden years (validation)
         if (HasForbiddenYears()) {
@@ -302,12 +331,9 @@ bool asTimeArray::BuildArrayDaysInterval(double targetDate)
         double thisTimeStep = currentStart;
         while (thisTimeStep <= currentEnd) {
             if (thisTimeStep >= m_start && thisTimeStep <= m_end) {
-                if (thisTimeStep < excludeStart || thisTimeStep > excludeEnd) {
-
-                    wxASSERT(counter < totLength);
-                    m_timeArray[counter] = thisTimeStep;
-                    counter++;
-                }
+                wxASSERT(counter < totLength);
+                m_timeArray[counter] = thisTimeStep;
+                counter++;
             }
             thisTimeStep += m_timeStepDays;
         }
