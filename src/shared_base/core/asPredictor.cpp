@@ -415,35 +415,6 @@ bool asPredictor::CheckTimeArray(asTimeArray &timeArray)
         return false;
     }
 
-    // Check with files presence
-    vi rowsToPop;
-    for (int i = 0; i < m_files.size(); ++i) {
-        if (m_files[i].IsEmpty()) {
-            if (m_files.size() == timeArray.GetSize()) {
-                rowsToPop.push_back(i);
-            } else {
-                wxLogError(_("Missing files not handled (nb tot files = %d, time array size = %d)."),
-                           (int) m_files.size(), timeArray.GetSize());
-                return false;
-            }
-        }
-    }
-
-    if (!rowsToPop.empty()) {
-        for (int j = rowsToPop.size() - 1; j >= 0; j--) {
-            timeArray.Pop(rowsToPop[j]);
-        }
-        vwxs files = m_files;
-        m_files.resize(0);
-        m_files.reserve(files.size() - rowsToPop.size());
-        for (auto &file : files) {
-            if (!file.IsEmpty()) {
-                m_files.push_back(file);
-            }
-        }
-
-    }
-
     return true;
 }
 
@@ -645,6 +616,15 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
 bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                       vvva2f &compositeData)
 {
+    // Handle missing file
+    if (fileName.IsEmpty()) {
+        if (FillWithNaNs(compositeData)) {
+            return true;
+        }
+        wxFAIL;
+        return false;
+    }
+
     // Open the Grib file
     ThreadsManager().CritSectionGrib().Enter();
     asFileGrib gbFile(fileName, asFileGrib::ReadOnly);
@@ -688,6 +668,34 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     // Close the nc file
     gbFile.Close();
     ThreadsManager().CritSectionGrib().Leave();
+
+    return true;
+}
+
+bool asPredictor::FillWithNaNs(vvva2f &compositeData) const
+{
+    for (auto &area : compositeData) {
+
+        // Check that it's not the first file
+        if (area.empty()) {
+            wxLogError(_("The first file cannot be missing."));
+            return false;
+        }
+
+        // Check that it's 1 file per time step
+        if (m_fInd.timeArrayCount > 1) {
+            wxLogError(_("Missing files are handled only when there is 1 file per time step."));
+            return false;
+        }
+
+        // Fill with NaNs
+        va2f memLatLonData;
+        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+            a2f latLonData = NaNf * a2f::Ones(area[0][iMem].rows(), area[0][iMem].cols());
+            memLatLonData.push_back(latLonData);
+        }
+        area.push_back(memLatLonData);
+    }
 
     return true;
 }

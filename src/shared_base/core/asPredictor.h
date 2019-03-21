@@ -515,6 +515,8 @@ private:
     bool ExtractLevelAxis(asFileNetcdf &ncFile);
 
     bool ExtractTimeAxis(asFileNetcdf &ncFile);
+
+    bool FillWithNaNs(vvva2f &compositeData) const;
 };
 
 #endif // ASPREDICTOR_H
