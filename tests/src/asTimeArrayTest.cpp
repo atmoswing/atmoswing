@@ -614,3 +614,69 @@ TEST(TimeArray, GetIndexFirstBeforeEqual)
 
     EXPECT_DOUBLE_EQ(3, timeArray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30), 6));
 }
+
+TEST(TimeArray, PopFirst)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2009, 1, 1);
+    double timeStep = 24;
+    asTimeArray timeArray(start, end, timeStep, asTimeArray::Simple);
+    timeArray.Init();
+
+    timeArray.Pop(0);
+
+    EXPECT_DOUBLE_EQ(start + 1, timeArray.GetStart());
+    EXPECT_DOUBLE_EQ(end, timeArray.GetEnd());
+
+    EXPECT_DOUBLE_EQ(start + 1, timeArray[0]);
+    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double) 3, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double) 11, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double) 101, timeArray[100]);
+
+    EXPECT_EQ(21550, timeArray.GetSize());
+}
+
+TEST(TimeArray, PopLast)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2009, 1, 1);
+    double timeStep = 24;
+    asTimeArray timeArray(start, end, timeStep, asTimeArray::Simple);
+    timeArray.Init();
+
+    timeArray.Pop(timeArray.GetSize() - 1);
+
+    EXPECT_DOUBLE_EQ(start, timeArray.GetStart());
+    EXPECT_DOUBLE_EQ(end - 1, timeArray.GetEnd());
+
+    EXPECT_DOUBLE_EQ(start, timeArray[0]);
+    EXPECT_DOUBLE_EQ(start + (double) 1, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double) 10, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double) 100, timeArray[100]);
+
+    EXPECT_EQ(21550, timeArray.GetSize());
+}
+
+TEST(TimeArray, PopMiddle)
+{
+    double start = asTime::GetMJD(1950, 1, 1);
+    double end = asTime::GetMJD(2009, 1, 1);
+    double timeStep = 24;
+    asTimeArray timeArray(start, end, timeStep, asTimeArray::Simple);
+    timeArray.Init();
+
+    timeArray.Pop(10);
+
+    EXPECT_DOUBLE_EQ(start, timeArray.GetStart());
+    EXPECT_DOUBLE_EQ(end, timeArray.GetEnd());
+
+    EXPECT_DOUBLE_EQ(start, timeArray[0]);
+    EXPECT_DOUBLE_EQ(start + (double) 1, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double) 11, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double) 101, timeArray[100]);
+
+    EXPECT_EQ(21550, timeArray.GetSize());
+}

@@ -81,6 +81,8 @@ public:
         return m_timeArray[i];
     }
 
+    void Pop(int index);
+
     bool BuildArraySimple();
 
     bool BuildArrayDaysInterval(double targetDate, double intervalDays);
@@ -107,11 +109,6 @@ public:
     bool RemoveYears(vi years);
 
     bool KeepOnlyYears(vi years);
-
-    bool IsSimpleMode() const
-    {
-        return (m_mode == Simple) || (m_mode == SingleDay);
-    }
 
     double GetStart() const
     {

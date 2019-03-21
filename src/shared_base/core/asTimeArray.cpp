@@ -137,7 +137,8 @@ bool asTimeArray::Init()
             m_timeArray[0] = m_start;
             break;
         }
-        case Simple: {
+        case Simple:
+        case DaysInterval: {
             m_timeArray.resize(0);
             if (!BuildArraySimple()) {
                 wxLogError(_("Time array creation failed."));
@@ -266,6 +267,27 @@ bool asTimeArray::Init(asPredictand &predictand, const wxString &seriesName, int
     m_initialized = true;
 
     return true;
+}
+
+void asTimeArray::Pop(int index)
+{
+    if (index < 0 || index >= m_timeArray.size()) {
+        return;
+    }
+
+    a1d timeArray = m_timeArray;
+    m_timeArray.resize(timeArray.size() - 1);
+
+    if (index == 0) {
+        m_timeArray = timeArray.bottomRows(timeArray.size() - 1);
+        m_start = m_timeArray[0];
+    } else if (index == timeArray.size()-1) {
+        m_timeArray = timeArray.topRows(index);
+        m_end = m_timeArray[m_timeArray.size() - 1];
+    } else {
+        m_timeArray.topRows(index) = timeArray.topRows(index);
+        m_timeArray.bottomRows(timeArray.size() - 1 - index) = timeArray.bottomRows(timeArray.size() - 1 - index);
+    }
 }
 
 bool asTimeArray::BuildArraySimple()
