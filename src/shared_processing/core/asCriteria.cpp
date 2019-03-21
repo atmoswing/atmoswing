@@ -27,24 +27,17 @@
 
 #include "asCriteria.h"
 #include "asCriteriaMD.h"
-#include "asCriteriaNMD.h"
 #include "asCriteriaRMSE.h"
-#include "asCriteriaNRMSE.h"
 #include "asCriteriaRSE.h"
 #include "asCriteriaS0.h"
 #include "asCriteriaS1.h"
-#include "asCriteriaNS1.h"
 #include "asCriteriaS1G.h"
 #include "asCriteriaS1grads.h"
-#include "asCriteriaNS1grads.h"
 #include "asCriteriaS2.h"
 #include "asCriteriaS2grads.h"
-#include "asCriteriaNS2.h"
 #include "asCriteriaSAD.h"
 #include "asCriteriaDSD.h"
-#include "asCriteriaNDSD.h"
 #include "asCriteriaDMV.h"
-#include "asCriteriaNDMV.h"
 #include "asPredictor.h"
 
 
@@ -72,10 +65,6 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         // Teweles-Wobus
         asCriteria *criteria = new asCriteriaS1();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NS1") == 0 || criteriaString.CmpNoCase("NS1s") == 0) {
-        // Normalized Teweles-Wobus
-        asCriteria *criteria = new asCriteriaNS1();
-        return criteria;
     } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
         // Teweles-Wobus with Gaussian weights
 		asCriteria *criteria = new asCriteriaS1G();
@@ -84,25 +73,13 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         // Teweles-Wobus on gradients
         asCriteria *criteria = new asCriteriaS1grads();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NS1grads") == 0) {
-        // Normalized Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaNS1grads();
-        return criteria;
     } else if (criteriaString.CmpNoCase("S2") == 0 || criteriaString.CmpNoCase("S2s") == 0) {
         // Derivative of Teweles-Wobus
         asCriteria *criteria = new asCriteriaS2();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NS2") == 0 || criteriaString.CmpNoCase("NS2s") == 0) {
-        // Normalized derivative of Teweles-Wobus
-        asCriteria *criteria = new asCriteriaNS2();
-        return criteria;
     } else if (criteriaString.CmpNoCase("S2grads") == 0) {
         // Derivative of Teweles-Wobus on gradients
         asCriteria *criteria = new asCriteriaS2grads();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("NS2grads") == 0) {
-        // Normalized derivative of Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaNS1grads();
         return criteria;
     } else if (criteriaString.CmpNoCase("S0") == 0) {
         // Teweles-Wobus on raw data
@@ -116,17 +93,9 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         // Mean absolute difference
         asCriteria *criteria = new asCriteriaMD();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NMD") == 0) {
-        // Normalized Mean difference
-        asCriteria *criteria = new asCriteriaNMD();
-        return criteria;
     } else if (criteriaString.CmpNoCase("RMSE") == 0) {
         // Root mean square error
         asCriteria *criteria = new asCriteriaRMSE();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("NRMSE") == 0) {
-        // Normalized Root mean square error (min-max approach)
-        asCriteria *criteria = new asCriteriaNRMSE();
         return criteria;
     } else if (criteriaString.CmpNoCase("RSE") == 0) {
         // Root square error (According to Bontron. Should not be used !)
@@ -136,17 +105,9 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         // Difference in mean value (nonspatial)
         asCriteria *criteria = new asCriteriaDMV();
         return criteria;
-    } else if (criteriaString.CmpNoCase("NDMV") == 0) {
-        // Normalized difference in mean value (nonspatial)
-        asCriteria *criteria = new asCriteriaNDMV();
-        return criteria;
     } else if (criteriaString.CmpNoCase("DSD") == 0) {
         // Difference in standard deviation (nonspatial)
         asCriteria *criteria = new asCriteriaDSD();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("NDSD") == 0) {
-        // Normalized difference in standard deviation (nonspatial)
-        asCriteria *criteria = new asCriteriaNDSD();
         return criteria;
     } else {
         wxLogError(_("The predictor criteria was not correctly defined (%s)."), criteriaString);
