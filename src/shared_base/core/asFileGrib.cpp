@@ -417,6 +417,26 @@ bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
         }
     }
 
+    wxLogWarning(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+
+    return false;
+}
+
+bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode)
+{
+    wxASSERT(gribCode.size() == 4);
+
+    // Find corresponding data
+    m_index = asNOT_FOUND;
+    for (int i = 0; i < m_parameterCode3.size(); ++i) {
+        if (m_parameterCode1[i] == gribCode[0] && m_parameterCode2[i] == gribCode[1] &&
+            m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3]) {
+
+            m_index = i;
+            return true;
+        }
+    }
+
     wxLogError(_("The desired parameter was not found in the file %s."), m_fileName.GetFullName());
 
     return false;

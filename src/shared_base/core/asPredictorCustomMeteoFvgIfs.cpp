@@ -144,6 +144,11 @@ bool asPredictorCustomMeteoFvgIfs::Init()
 
 void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
 {
+    // Starts at 6h
+    if (asTime::GetTimeStruct(timeArray[0]).hour == 0) {
+        timeArray.Pop(0);
+    }
+
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
         if (wxDirExists(GetDirectoryPath())) {

@@ -190,6 +190,7 @@ bool asPredictor::CheckFilesPresence()
     }
 
     int nbDirsToRemove = 0;
+    int countMissing = 0;
 
     for (int i = 0; i < m_files.size(); i++) {
         if (i > 0 && nbDirsToRemove > 0) {
@@ -236,11 +237,19 @@ bool asPredictor::CheckFilesPresence()
                         break;
                     }
                 } else {
-                    wxLogError(_("File not found: %s"), m_files[i]);
-                    return false;
+                    wxLogWarning(_("File not found: %s"), m_files[i]);
+                    m_files[i] = wxEmptyString;
+                    countMissing++;
+                    break;
                 }
             }
         }
+    }
+
+    float percentMissing = 100.0 * float(countMissing) / float(m_files.size());
+    if (percentMissing > 5) {
+        wxLogError(_("%.2f percent of the files are missing."), percentMissing);
+        return false;
     }
 
     return true;
@@ -300,7 +309,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // Extract composite data from files
         vvva2f compositeData((unsigned long) compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
-            wxLogError(_("Extracting data from files failed."));
+            wxLogWarning(_("Extracting data from files failed."));
             wxDELETE(dataArea);
             return false;
         }
@@ -386,13 +395,8 @@ void asPredictor::ListFiles(asTimeArray &timeArray)
     m_files = vwxs();
 }
 
-bool asPredictor::CheckTimeArray(asTimeArray &timeArray) const
+bool asPredictor::CheckTimeArray(asTimeArray &timeArray)
 {
-    if (!timeArray.IsSimpleMode()) {
-        wxLogError(_("The data loading only accepts time arrays in simple mode."));
-        return false;
-    }
-
     // Check the time steps
     if ((timeArray.GetTimeStepDays() > 0) && (m_fStr.timeStep / 24.0 > timeArray.GetTimeStepDays())) {
         wxLogError(_("The desired timestep is smaller than the data timestep."));
@@ -404,12 +408,40 @@ bool asPredictor::CheckTimeArray(asTimeArray &timeArray) const
         wxLogError(_("The desired timestep is not a multiple of the data timestep."));
         return false;
     }
-    fractpart = modf((timeArray.GetStartingHour() - m_fStr.firstHour) /
-                     m_fStr.timeStep, &intpart);
+    fractpart = modf((timeArray.GetStartingHour() - m_fStr.firstHour) / m_fStr.timeStep, &intpart);
     if (fractpart > 0.0001 && fractpart < 0.9999) {
         wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
                    timeArray.GetStartingHour(), fractpart);
         return false;
+    }
+
+    // Check with files presence
+    vi rowsToPop;
+    for (int i = 0; i < m_files.size(); ++i) {
+        if (m_files[i].IsEmpty()) {
+            if (m_files.size() == timeArray.GetSize()) {
+                rowsToPop.push_back(i);
+            } else {
+                wxLogError(_("Missing files not handled (nb tot files = %d, time array size = %d)."),
+                           (int) m_files.size(), timeArray.GetSize());
+                return false;
+            }
+        }
+    }
+
+    if (!rowsToPop.empty()) {
+        for (int j = rowsToPop.size() - 1; j >= 0; j--) {
+            timeArray.Pop(rowsToPop[j]);
+        }
+        vwxs files = m_files;
+        m_files.resize(0);
+        m_files.reserve(files.size() - rowsToPop.size());
+        for (auto &file : files) {
+            if (!file.IsEmpty()) {
+                m_files.push_back(file);
+            }
+        }
+
     }
 
     return true;
@@ -557,10 +589,9 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
     }
 
     // Set index position
-    if (!gbFile0.SetIndexPosition(m_gribCode, m_level)) {
+    if (!gbFile0.SetIndexPositionAnyLevel(m_gribCode)) {
         gbFile0.Close();
         ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
         return false;
     }
 
@@ -577,7 +608,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
             return false;
         }
 
-        if (!gbFile1.SetIndexPosition(m_gribCode, m_level)) {
+        if (!gbFile1.SetIndexPositionAnyLevel(m_gribCode)) {
             gbFile0.Close();
             gbFile1.Close();
             ThreadsManager().CritSectionGrib().Leave();
@@ -627,7 +658,6 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
         return false;
     }
 

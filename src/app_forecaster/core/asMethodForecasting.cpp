@@ -718,7 +718,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays()
                                     + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                             params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                             params.GetTimeArrayAnalogsTimeStepHours(),
+                                             params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
             double ptorStartTarget = timeStartTarget - params.GetTimeShiftDays()
@@ -841,7 +842,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays() +
                                         params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                                 params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                                 params.GetTimeArrayAnalogsTimeStepHours(),
+                                                 params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
                 double ptorStartTarget = timeStartTarget - params.GetTimeShiftDays() +
@@ -1185,7 +1187,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             double ptorEndArchive =
                     timeEndArchive - params.GetTimeShiftDays() + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                             params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                             params.GetTimeArrayAnalogsTimeStepHours(),
+                                             params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
             double ptorStartTarget =
@@ -1297,7 +1300,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays() +
                                         params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                                 params.GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                                 params.GetTimeArrayAnalogsTimeStepHours(),
+                                                 params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
                 double ptorStartTarget = timeStartTarget - params.GetTimeShiftDays() +

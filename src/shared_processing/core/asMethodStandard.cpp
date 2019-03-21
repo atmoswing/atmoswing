@@ -481,7 +481,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
             double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
 
-            asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+            asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+                                  params->GetTimeArrayAnalogsMode());
             timeArray.Init();
 
             double yMax = params->GetPreloadYmin(iStep, iPtor) +
@@ -656,7 +657,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) + timeHours / 24.0;
                 double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) + timeHours / 24.0;
                 asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
-                                      asTimeArray::Simple);
+                                      params->GetTimeArrayAnalogsMode());
                 timeArray.Init();
 
                 // Loading the datasets information
@@ -1014,7 +1015,8 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
                        params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
     double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
                      params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+                          params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
     // Force gradients preprocessing anyway.
@@ -1091,7 +1093,8 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
                            params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
         double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
                          params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+                              params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
         // Loading the dataset information

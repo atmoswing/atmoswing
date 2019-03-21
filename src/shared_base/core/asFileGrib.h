@@ -48,6 +48,8 @@ public:
 
     bool SetIndexPosition(vi gribCode, float level);
 
+    bool SetIndexPositionAnyLevel(vi gribCode);
+
     bool GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue);
 
     bool GetXaxis(a1d &uaxis) const;

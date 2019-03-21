@@ -423,7 +423,7 @@ protected:
 
     virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const;
+    virtual bool CheckTimeArray(asTimeArray &timeArray);
 
     virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
