@@ -140,7 +140,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
-                                 params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                 params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     if (!timeArrayArchive.Init()) {
         wxLogError(_("The time array mode for the archive dates is not correctly defined."));
         return false;
@@ -155,7 +155,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 
     // Target date array
     asTimeArray timeArrayTarget(GetTimeStartDownscaling(params), GetTimeEndDownscaling(params),
-                                params->GetTimeArrayTargetTimeStepHours(), params->GetTimeArrayTargetMode());
+                                params->GetTargetTimeStepHours(), params->GetTimeArrayTargetMode());
     if (!timeArrayTarget.Init()) {
         wxLogError(_("The time array mode for the target dates is not correctly defined."));
         return false;
@@ -248,7 +248,7 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     double timeStart = params->GetArchiveStart();
     double timeEnd = params->GetArchiveEnd();
     timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
 
@@ -402,7 +402,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     // and the predictor dates are aligned with the target dates, but the dates are not the same.
     double ptorStart = timeStartData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
     double ptorEnd = timeEndData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+    asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
     // Loading the datasets information
@@ -460,7 +460,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
                            params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
         double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
                          params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+        asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
         // Loading the dataset information

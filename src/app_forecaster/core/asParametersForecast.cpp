@@ -173,7 +173,7 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -192,9 +192,9 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_analogs") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -203,10 +203,10 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                     if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -408,23 +408,23 @@ bool asParametersForecast::InputsOK() const
         return false;
     }
 
-    if (GetTimeArrayTargetTimeStepHours() <= 0) {
+    if (GetTargetTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
-    if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
+    if (GetAnalogsTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
-        if (GetTimeArrayAnalogsIntervalDays() <= 0) {
+        if (GetAnalogsIntervalDays() <= 0) {
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
-        if (GetTimeArrayAnalogsExcludeDays() <= 0) {
+        if (GetAnalogsExcludeDays() <= 0) {
             wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }

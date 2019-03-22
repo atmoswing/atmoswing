@@ -244,7 +244,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -267,7 +267,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                     if (!SetCalibrationEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -296,9 +296,9 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                     return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -329,11 +329,11 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                 } else if (nodeParam->GetName() == "interval_days") {
                     SetTimeArrayAnalogsIntervalDaysLock(fileParams.GetAttributeBool(nodeParam, "lock", true, false));
                     if (IsTimeArrayAnalogsIntervalDaysLocked()) {
-                        if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
+                        if (!SetAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
                             return false;
-                        if (!SetTimeArrayAnalogsIntervalDaysLowerLimit(GetTimeArrayAnalogsIntervalDays()))
+                        if (!SetTimeArrayAnalogsIntervalDaysLowerLimit(GetAnalogsIntervalDays()))
                             return false;
-                        if (!SetTimeArrayAnalogsIntervalDaysUpperLimit(GetTimeArrayAnalogsIntervalDays()))
+                        if (!SetTimeArrayAnalogsIntervalDaysUpperLimit(GetAnalogsIntervalDays()))
                             return false;
                         if (!SetTimeArrayAnalogsIntervalDaysIteration(1))
                             return false;
@@ -349,7 +349,7 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
                             return false;
                     }
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -906,7 +906,7 @@ bool asParametersOptimization::SetPreloadingProperties()
 void asParametersOptimization::InitRandomValues()
 {
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_timeArrayAnalogsIntervalDays = asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit,
+        m_analogsIntervalDays = asRandom(m_timeArrayAnalogsIntervalDaysLowerLimit,
                                                          m_timeArrayAnalogsIntervalDaysUpperLimit,
                                                          m_timeArrayAnalogsIntervalDaysIteration);
     }
@@ -1023,11 +1023,11 @@ void asParametersOptimization::CheckRange()
 {
     // Check that the actual parameters values are within ranges
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        m_timeArrayAnalogsIntervalDays = wxMax(
-                wxMin(m_timeArrayAnalogsIntervalDays, m_timeArrayAnalogsIntervalDaysUpperLimit),
+        m_analogsIntervalDays = wxMax(
+                wxMin(m_analogsIntervalDays, m_timeArrayAnalogsIntervalDaysUpperLimit),
                 m_timeArrayAnalogsIntervalDaysLowerLimit);
     }
-    wxASSERT(m_timeArrayAnalogsIntervalDays > 0);
+    wxASSERT(m_analogsIntervalDays > 0);
 
     for (int i = 0; i < GetStepsNb(); i++) {
         if (!m_stepsLocks[i].analogsNumber) {
@@ -1127,9 +1127,9 @@ bool asParametersOptimization::IsInRange()
 {
     // Check that the actual parameters values are within ranges
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        if (m_timeArrayAnalogsIntervalDays > m_timeArrayAnalogsIntervalDaysUpperLimit)
+        if (m_analogsIntervalDays > m_timeArrayAnalogsIntervalDaysUpperLimit)
             return false;
-        if (m_timeArrayAnalogsIntervalDays < m_timeArrayAnalogsIntervalDaysLowerLimit)
+        if (m_analogsIntervalDays < m_timeArrayAnalogsIntervalDaysLowerLimit)
             return false;
     }
 

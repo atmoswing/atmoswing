@@ -428,7 +428,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
 
     // Get index step
     double predictandTimeStep = predictandTime[1] - predictandTime[0];
-    double targetTimeStep = params->GetTimeArrayTargetTimeStepHours() / 24.0;
+    double targetTimeStep = params->GetTargetTimeStepHours() / 24.0;
     int indexStep = static_cast<int>(targetTimeStep / predictandTimeStep);
 
     // Get vector length
@@ -460,7 +460,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
-                                 params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+                                 params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     if (params->HasValidationPeriod()) // remove validation years
     {
         timeArrayArchive.SetForbiddenYears(params->GetValidationYearsVector());
@@ -469,7 +469,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 
     // Target date array
     asTimeArray timeArrayTarget(GetTimeStartCalibration(params), GetTimeEndCalibration(params),
-                                params->GetTimeArrayTargetTimeStepHours(), params->GetTimeArrayTargetMode());
+                                params->GetTargetTimeStepHours(), params->GetTimeArrayTargetMode());
 
     // Remove validation years
     if (!m_validationMode && params->HasValidationPeriod())
@@ -504,9 +504,9 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     }
 
     // Data date array
-    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params)); // Always Jan 1st
+    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
-    asTimeArray timeArrayData(timeStartData, timeEndData, params->GetTimeArrayAnalogsTimeStepHours(),
+    asTimeArray timeArrayData(timeStartData, timeEndData, params->GetAnalogsTimeStepHours(),
                               params->GetTimeArrayTargetMode());
     timeArrayData.Init();
 
@@ -588,7 +588,7 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     double timeStart = params->GetArchiveStart();
     double timeEnd = params->GetArchiveEnd();
     timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(),
                                  params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
@@ -710,9 +710,9 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asPa
     double timeStart = params->GetCalibrationStart();
     double timeEnd = params->GetCalibrationEnd() + 1;
     while (timeEnd > params->GetCalibrationEnd() + 0.999) {
-        timeEnd -= params->GetTimeArrayTargetTimeStepHours() / 24.0;
+        timeEnd -= params->GetTargetTimeStepHours() / 24.0;
     }
-    asTimeArray timeArray(timeStart, timeEnd, params->GetTimeArrayTargetTimeStepHours(), params->GetScoreTimeArrayMode());
+    asTimeArray timeArray(timeStart, timeEnd, params->GetTargetTimeStepHours(), params->GetScoreTimeArrayMode());
 
     // TODO: Add every options for the Init function (generic version)
     //    timeArray.Init(params->GetScoreTimeArrayDate(), params->GetForecastScoreTimeArrayIntervalDays());

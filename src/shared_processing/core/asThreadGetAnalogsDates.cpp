@@ -107,8 +107,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
     // the predictors we are interested in, but which didn't take place at the same time.
     asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),
-                                          m_pTimeArrayArchiveSelection->GetEnd(),
-                                          m_params->GetTimeArrayAnalogsTimeStepHours(),
+                                          m_pTimeArrayArchiveSelection->GetEnd(), m_params->GetAnalogsTimeStepHours(),
                                           m_params->GetTimeArrayAnalogsMode());
     dateArrayArchiveSelection.SetForbiddenYears(m_pTimeArrayArchiveSelection->GetForbiddenYears());
 
@@ -128,8 +127,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             iTimeTargStart = iTimeTarg;
 
             // DateArray object initialization.
-            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetTimeArrayAnalogsIntervalDays(),
-                                           m_params->GetTimeArrayAnalogsExcludeDays());
+            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetAnalogsIntervalDays(),
+                                           m_params->GetAnalogsExcludeDays());
 
             // Counter representing the current index
             int counter = 0;

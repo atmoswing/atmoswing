@@ -41,10 +41,10 @@ TEST(Parameters, ParametersLoadFromFile)
 
     EXPECT_EQ(asTime::GetMJD(1962, 1, 1), params.GetArchiveStart());
     EXPECT_EQ(asTime::GetMJD(2008, 12, 31), params.GetArchiveEnd());
-    EXPECT_EQ(24, params.GetTimeArrayAnalogsTimeStepHours());
-    EXPECT_EQ(24, params.GetTimeArrayTargetTimeStepHours());
-    EXPECT_EQ(60, params.GetTimeArrayAnalogsIntervalDays());
-    EXPECT_EQ(60, params.GetTimeArrayAnalogsExcludeDays());
+    EXPECT_EQ(24, params.GetAnalogsTimeStepHours());
+    EXPECT_EQ(24, params.GetTargetTimeStepHours());
+    EXPECT_EQ(60, params.GetAnalogsIntervalDays());
+    EXPECT_EQ(60, params.GetAnalogsExcludeDays());
     EXPECT_TRUE(params.GetTimeArrayAnalogsMode().IsSameAs("days_interval"));
     EXPECT_TRUE(params.GetTimeArrayTargetMode().IsSameAs("simple"));
 

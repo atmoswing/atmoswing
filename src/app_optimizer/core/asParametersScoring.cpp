@@ -128,7 +128,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     }
 
     wxString timeArrayTimeStep;
-    timeArrayTimeStep << GetTimeArrayTargetTimeStepHours();
+    timeArrayTimeStep << GetTargetTimeStepHours();
     nodeTime->AddChild(fileParams.CreateNodeWithValue("time_step", timeArrayTimeStep));
 
     wxXmlNode *nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
@@ -146,8 +146,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode *nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
     nodeTime->AddChild(nodeTimeArrayAnalogs);
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayAnalogsMode()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetTimeArrayAnalogsIntervalDays()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetTimeArrayAnalogsExcludeDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetAnalogsIntervalDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetAnalogsExcludeDays()));
 
     fileParams.AddChild(nodeTime);
 

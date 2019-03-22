@@ -507,8 +507,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks the predictors we are interested in, but which didn't take place at the same time.
             asTimeArray dateArrayArchiveSelection(timeArrayArchiveSelection.GetStart(),
-                                                  timeArrayArchiveSelection.GetEnd(),
-                                                  params->GetTimeArrayAnalogsTimeStepHours(),
+                                                  timeArrayArchiveSelection.GetEnd(), params->GetAnalogsTimeStepHours(),
                                                   params->GetTimeArrayAnalogsMode());
             if (timeArrayArchiveSelection.HasForbiddenYears()) {
                 dateArrayArchiveSelection.SetForbiddenYears(timeArrayArchiveSelection.GetForbiddenYears());
@@ -532,9 +531,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 iTimeTargStart = iTimeTarg;
 
                 // DateArray object initialization.
-                dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg],
-                                               params->GetTimeArrayAnalogsIntervalDays(),
-                                               params->GetTimeArrayAnalogsExcludeDays());
+                dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], params->GetAnalogsIntervalDays(),
+                                               params->GetAnalogsExcludeDays());
 
                 // Counter representing the current index
                 int counter = 0;

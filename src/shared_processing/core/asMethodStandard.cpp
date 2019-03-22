@@ -478,10 +478,10 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             // Date array object instantiation for the data loading.
             // The array has the same length than timeArrayArchive, and the predictor dates are aligned with the
             // target dates, but the dates are not the same.
-            double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
-            double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) + preloadTimeHours[iHour] / 24.0;
+            double ptorStart = timeStartData - params->GetTimeShiftDays() + preloadTimeHours[iHour] / 24.0;
+            double ptorEnd = timeEndData - params->GetTimeShiftDays() + preloadTimeHours[iHour] / 24.0;
 
-            asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+            asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                   params->GetTimeArrayAnalogsMode());
             timeArray.Init();
 
@@ -654,9 +654,9 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 // Date array object instantiation for the data loading.
                 // The array has the same length than timeArrayArchive, and the predictor dates are aligned
                 // with the target dates, but the dates are not the same.
-                double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) + timeHours / 24.0;
-                double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) + timeHours / 24.0;
-                asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+                double ptorStart = timeStartData - params->GetTimeShiftDays() + timeHours / 24.0;
+                double ptorEnd = timeEndData - params->GetTimeShiftDays() + timeHours / 24.0;
+                asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                       params->GetTimeArrayAnalogsMode());
                 timeArray.Init();
 
@@ -1010,12 +1010,11 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
                                                               asParameters *params, int iStep, int iPtor,
                                                               double timeStartData, double timeEndData)
 {
-    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-    double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) +
-                       params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
-                     params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
+    // and the predictor dates are aligned with the target dates, but the dates are not the same.
+    double ptorStart = timeStartData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
+    double ptorEnd = timeEndData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
+    asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                           params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
@@ -1089,11 +1088,11 @@ bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredict
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) +
+        double ptorStart = timeStartData - params->GetTimeShiftDays() +
                            params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
+        double ptorEnd = timeEndData - params->GetTimeShiftDays() +
                          params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+        asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                               params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 

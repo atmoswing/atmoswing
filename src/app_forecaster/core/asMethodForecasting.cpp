@@ -442,9 +442,9 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
             }
 
             // Restriction needed
-            wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+            wxASSERT(params.GetTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 
             // Update forecasting date
@@ -527,9 +527,9 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
                 m_forecastDate = predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
 
                 // Restriction needed
-                wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+                wxASSERT(params.GetTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetTargetTimeStepHours(),
                                                                params.GetLeadTimeNb());
 
                 // Update forecasting date
@@ -603,7 +603,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     double timeEndArchive = params.GetArchiveEnd();
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive -
                                            params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetTimeArrayAnalogsTimeStepHours(),
+    asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetAnalogsTimeStepHours(),
                                  asTimeArray::Simple);
     timeArrayArchive.Init();
 
@@ -717,8 +717,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                                       + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays()
                                     + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
-            asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                             params.GetTimeArrayAnalogsTimeStepHours(),
+            asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                              params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
@@ -726,7 +725,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                                      + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             double ptorEndTarget = timeEndTarget - params.GetTimeShiftDays()
                                    + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
-            asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTimeArrayTargetTimeStepHours(),
+            asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(),
                                             asTimeArray::Simple);
             timeArrayDataTarget.Init();
 
@@ -761,9 +760,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Restriction needed
-            wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+            wxASSERT(params.GetTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 
             // Update
@@ -841,8 +840,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                                           params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays() +
                                         params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-                asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                                 params.GetTimeArrayAnalogsTimeStepHours(),
+                asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                                  params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
@@ -850,8 +848,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                                          params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 double ptorEndTarget = timeEndTarget - params.GetTimeShiftDays() +
                                        params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-                asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget,
-                                                params.GetTimeArrayTargetTimeStepHours(), asTimeArray::Simple);
+                asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(), asTimeArray::Simple);
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
@@ -887,9 +884,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 }
 
                 // Restriction needed
-                wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+                wxASSERT(params.GetTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetTargetTimeStepHours(),
                                                                params.GetLeadTimeNb());
 
                 // Update
@@ -1076,7 +1073,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     double timeEndArchive = params.GetArchiveEnd();
     timeEndArchive = wxMin(timeEndArchive, timeEndArchive -
                                            params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetTimeArrayAnalogsTimeStepHours(),
+    asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetAnalogsTimeStepHours(),
                                  asTimeArray::Simple);
     timeArrayArchive.Init();
 
@@ -1186,8 +1183,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                     timeStartArchive - params.GetTimeShiftDays() + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             double ptorEndArchive =
                     timeEndArchive - params.GetTimeShiftDays() + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
-            asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                             params.GetTimeArrayAnalogsTimeStepHours(),
+            asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                              params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
@@ -1195,7 +1191,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                     timeStartTarget - params.GetTimeShiftDays() + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
             double ptorEndTarget =
                     timeEndTarget - params.GetTimeShiftDays() + params.GetPredictorTimeHours(iStep, iPtor) / 24.0;
-            asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTimeArrayTargetTimeStepHours(),
+            asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(),
                                             asTimeArray::Simple);
             timeArrayDataTarget.Init();
 
@@ -1229,9 +1225,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Restriction needed
-            wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+            wxASSERT(params.GetTargetTimeStepHours() > 0);
             predictorRealtime->RestrictTimeArray(params.GetPredictorTimeHours(iStep, iPtor),
-                                                 params.GetTimeArrayTargetTimeStepHours(),
+                                                 params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 
             // Update
@@ -1299,8 +1295,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                                           params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 double ptorEndArchive = timeEndArchive - params.GetTimeShiftDays() +
                                         params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-                asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive,
-                                                 params.GetTimeArrayAnalogsTimeStepHours(),
+                asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                                  params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
@@ -1308,8 +1303,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                                          params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
                 double ptorEndTarget = timeEndTarget - params.GetTimeShiftDays() +
                                        params.GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-                asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget,
-                                                params.GetTimeArrayTargetTimeStepHours(), asTimeArray::Simple);
+                asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(), asTimeArray::Simple);
                 timeArrayDataTarget.Init();
 
                 // Instanciate an archive predictor object
@@ -1345,9 +1339,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 }
 
                 // Restriction needed
-                wxASSERT(params.GetTimeArrayTargetTimeStepHours() > 0);
+                wxASSERT(params.GetTargetTimeStepHours() > 0);
                 predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessTimeHours(iStep, iPtor, iPre),
-                                                               params.GetTimeArrayTargetTimeStepHours(),
+                                                               params.GetTargetTimeStepHours(),
                                                                params.GetLeadTimeNb());
 
                 // Update

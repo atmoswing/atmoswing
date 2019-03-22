@@ -239,33 +239,33 @@ public:
         return true;
     }
 
-    int GetTimeShiftDays() const
+    double GetTimeShiftDays() const
     {
-        int shift = 0;
+        double shift = 0;
         if (m_timeMinHours < 0) {
             shift = (int) floor(m_timeMinHours / 24.0);
         }
         return shift;
     }
 
-    int GetTimeSpanDays() const
+    double GetTimeSpanDays() const
     {
         return ceil(m_timeMaxHours / 24.0) + std::abs(GetTimeShiftDays());
     }
 
-    double GetTimeArrayTargetTimeStepHours() const
+    double GetTargetTimeStepHours() const
     {
-        return m_timeArrayTargetTimeStepHours;
+        return m_targetTimeStepHours;
     }
 
-    bool SetTimeArrayTargetTimeStepHours(double val);
+    bool SetTargetTimeStepHours(double val);
 
-    double GetTimeArrayAnalogsTimeStepHours() const
+    double GetAnalogsTimeStepHours() const
     {
-        return m_timeArrayAnalogsTimeStepHours;
+        return m_analogsTimeStepHours;
     }
 
-    bool SetTimeArrayAnalogsTimeStepHours(double val);
+    bool SetAnalogsTimeStepHours(double val);
 
     wxString GetTimeArrayTargetMode() const
     {
@@ -302,19 +302,19 @@ public:
 
     bool SetTimeArrayAnalogsMode(const wxString &val);
 
-    int GetTimeArrayAnalogsExcludeDays() const
+    int GetAnalogsExcludeDays() const
     {
-        return m_timeArrayAnalogsExcludeDays;
+        return m_analogsExcludeDays;
     }
 
-    bool SetTimeArrayAnalogsExcludeDays(int val);
+    bool SetAnalogsExcludeDays(int val);
 
-    int GetTimeArrayAnalogsIntervalDays() const
+    int GetAnalogsIntervalDays() const
     {
-        return m_timeArrayAnalogsIntervalDays;
+        return m_analogsIntervalDays;
     }
 
-    bool SetTimeArrayAnalogsIntervalDays(int val);
+    bool SetAnalogsIntervalDays(int val);
 
     vi GetPredictandStationIds() const
     {
@@ -612,7 +612,7 @@ protected:
     wxString m_description;
     double m_archiveStart;
     double m_archiveEnd;
-    int m_timeArrayAnalogsIntervalDays;
+    int m_analogsIntervalDays;
     vi m_predictandStationIds;
     double m_timeMinHours;
     double m_timeMaxHours;
@@ -621,13 +621,13 @@ private:
     VectorParamsStep m_steps; // Set as private to force use of setters.
     wxString m_dateProcessed;
     wxString m_timeArrayTargetMode;
-    double m_timeArrayTargetTimeStepHours;
+    double m_targetTimeStepHours;
     wxString m_timeArrayTargetPredictandSerieName;
     float m_timeArrayTargetPredictandMinThreshold;
     float m_timeArrayTargetPredictandMaxThreshold;
     wxString m_timeArrayAnalogsMode;
-    double m_timeArrayAnalogsTimeStepHours;
-    int m_timeArrayAnalogsExcludeDays;
+    double m_analogsTimeStepHours;
+    int m_analogsExcludeDays;
     asPredictand::Parameter m_predictandParameter;
     asPredictand::TemporalResolution m_predictandTemporalResolution;
     asPredictand::SpatialAggregation m_predictandSpatialAggregation;

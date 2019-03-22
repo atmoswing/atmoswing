@@ -36,18 +36,18 @@
 asParameters::asParameters()
         : m_archiveStart(NaNd),
           m_archiveEnd(NaNd),
-          m_timeArrayAnalogsIntervalDays(0),
+          m_analogsIntervalDays(0),
           m_predictandStationIds(),
           m_timeMinHours(0),
           m_timeMaxHours(0),
           m_dateProcessed(asTime::GetStringTime(asTime::NowTimeStruct(asLOCAL))),
           m_timeArrayTargetMode("simple"),
-          m_timeArrayTargetTimeStepHours(0),
+          m_targetTimeStepHours(0),
           m_timeArrayTargetPredictandMinThreshold(0),
           m_timeArrayTargetPredictandMaxThreshold(0),
           m_timeArrayAnalogsMode("days_interval"),
-          m_timeArrayAnalogsTimeStepHours(0),
-          m_timeArrayAnalogsExcludeDays(0),
+          m_analogsTimeStepHours(0),
+          m_analogsExcludeDays(0),
           m_predictandParameter(asPredictand::Precipitation),
           m_predictandTemporalResolution(asPredictand::Daily),
           m_predictandSpatialAggregation(asPredictand::Station),
@@ -240,7 +240,7 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
                     if (!SetArchiveEnd(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -248,9 +248,9 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(asFileParameters::GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -279,10 +279,10 @@ bool asParameters::ParseTimeProperties(asFileParameters &fileParams, const wxXml
                     if (!SetTimeArrayAnalogsMode(asFileParameters::GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDays(asFileParameters::GetInt(nodeParam)))
+                    if (!SetAnalogsIntervalDays(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(asFileParameters::GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(asFileParameters::GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -597,12 +597,12 @@ bool asParameters::InputsOK() const
         return false;
     }
 
-    if (GetTimeArrayTargetTimeStepHours() <= 0) {
+    if (GetTargetTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
-    if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
+    if (GetAnalogsTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
@@ -621,11 +621,11 @@ bool asParameters::InputsOK() const
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
-        if (GetTimeArrayAnalogsIntervalDays() <= 0) {
+        if (GetAnalogsIntervalDays() <= 0) {
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
-        if (GetTimeArrayAnalogsExcludeDays() <= 0) {
+        if (GetAnalogsExcludeDays() <= 0) {
             wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
@@ -1000,8 +1000,8 @@ wxString asParameters::Print() const
     wxString content = wxEmptyString;
 
     content.Append(wxString::Format("Station\t%s\t", GetPredictandStationIdsString()));
-    content.Append(wxString::Format("DaysInt\t%d\t", GetTimeArrayAnalogsIntervalDays()));
-    content.Append(wxString::Format("ExcludeDays\t%d\t", GetTimeArrayAnalogsExcludeDays()));
+    content.Append(wxString::Format("DaysInt\t%d\t", GetAnalogsIntervalDays()));
+    content.Append(wxString::Format("ExcludeDays\t%d\t", GetAnalogsExcludeDays()));
 
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         content.Append(wxString::Format("|||| Step(%d)\t", iStep));
@@ -1091,7 +1091,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
         wxLogError(errMsg);
         return false;
     }
-    if (!SetTimeArrayAnalogsIntervalDays(static_cast<int>(lVal))) {
+    if (!SetAnalogsIntervalDays(static_cast<int>(lVal))) {
         wxLogError(errMsg);
         return false;
     }
@@ -1338,23 +1338,23 @@ bool asParameters::GetValuesFromString(wxString stringVals)
     return true;
 }
 
-bool asParameters::SetTimeArrayTargetTimeStepHours(double val)
+bool asParameters::SetTargetTimeStepHours(double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the target time step is null"));
         return false;
     }
-    m_timeArrayTargetTimeStepHours = val;
+    m_targetTimeStepHours = val;
     return true;
 }
 
-bool asParameters::SetTimeArrayAnalogsTimeStepHours(double val)
+bool asParameters::SetAnalogsTimeStepHours(double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the analogs time step is null"));
         return false;
     }
-    m_timeArrayAnalogsTimeStepHours = val;
+    m_analogsTimeStepHours = val;
     return true;
 }
 
@@ -1408,23 +1408,23 @@ bool asParameters::SetTimeArrayAnalogsMode(const wxString &val)
     return true;
 }
 
-bool asParameters::SetTimeArrayAnalogsExcludeDays(int val)
+bool asParameters::SetAnalogsExcludeDays(int val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the 'exclude days' is null"));
         return false;
     }
-    m_timeArrayAnalogsExcludeDays = val;
+    m_analogsExcludeDays = val;
     return true;
 }
 
-bool asParameters::SetTimeArrayAnalogsIntervalDays(int val)
+bool asParameters::SetAnalogsIntervalDays(int val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the analogs interval days is null"));
         return false;
     }
-    m_timeArrayAnalogsIntervalDays = val;
+    m_analogsIntervalDays = val;
     return true;
 }
 

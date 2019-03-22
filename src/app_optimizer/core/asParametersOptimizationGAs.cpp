@@ -442,7 +442,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            return (double) GetTimeArrayAnalogsIntervalDays();
+            return (double) GetAnalogsIntervalDays();
         }
     }
     counter++;
@@ -969,8 +969,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
             int val = asRound(newVal);
-            if (!SetTimeArrayAnalogsIntervalDays(val)) {
-                asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
+            if (!SetAnalogsIntervalDays(val)) {
+                asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
             }
             return;
         }
@@ -1080,7 +1080,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     if (counter == index) {
                         int val = asRound(newVal);
                         if (!SetPredictorTimeHours(i, j, val)) {
-                            asThrowException(_("Error in SetTimeArrayAnalogsIntervalDays from GAs."));
+                            asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
                         }
                         return;
                     }

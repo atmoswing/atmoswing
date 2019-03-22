@@ -165,7 +165,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -188,7 +188,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                     if (!SetCalibrationEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -217,9 +217,9 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                     return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -251,7 +251,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
                     if (!SetTimeArrayAnalogsIntervalDaysVector(fileParams.GetVectorInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -626,12 +626,12 @@ bool asParametersCalibration::InputsOK() const
         // allowed
     }
 
-    if (GetTimeArrayTargetTimeStepHours() <= 0) {
+    if (GetTargetTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
-    if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
+    if (GetAnalogsTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
@@ -654,7 +654,7 @@ bool asParametersCalibration::InputsOK() const
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
-        if (GetTimeArrayAnalogsExcludeDays() <= 0) {
+        if (GetAnalogsExcludeDays() <= 0) {
             wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
@@ -799,7 +799,7 @@ void asParametersCalibration::InitValues()
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];
-    m_timeArrayAnalogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
+    m_analogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
     SetScoreName(m_scoreVect.name[0]);
     SetScoreTimeArrayMode(m_scoreVect.timeArrayMode[0]);
 
