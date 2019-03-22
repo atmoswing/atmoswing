@@ -430,9 +430,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 vSuccess.push_back(success);
                 int start = end + 1;
                 end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
-                wxASSERT_MSG(end >= start,
-                             wxString::Format("start = %d, end = %d, timeTargetSelectionSize = %d", start, end,
-                                              timeTargetSelectionSize));
+                wxASSERT(end >= start);
 
                 asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive, predictorsTarget,
                                                                               &timeArrayArchiveData,
@@ -487,9 +485,19 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             wxASSERT(!predictorsArchive.empty());
             wxASSERT(!predictorsArchive[0]->GetData().empty());
             wxASSERT(timeArchiveData.size() == predictorsArchive[0]->GetData().size());
+            if (timeArchiveData.size() != predictorsArchive[0]->GetData().size()) {
+                wxLogError(_("The size of the time array and the archive data are not equal (%d != %d)."),
+                           (int) timeArchiveData.size(), (int) predictorsArchive[0]->GetData().size());
+                return false;
+            }
             a1d timeTargetData = timeArrayTargetData.GetTimeArray();
             wxASSERT(predictorsTarget[0]);
             wxASSERT(timeTargetData.size() == predictorsTarget[0]->GetData().size());
+            if (timeTargetData.size() != predictorsTarget[0]->GetData().size()) {
+                wxLogError(_("The size of the time array and the target data are not equal (%d != %d)."),
+                           (int) timeTargetData.size(), (int) predictorsTarget[0]->GetData().size());
+                return false;
+            }
 
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
