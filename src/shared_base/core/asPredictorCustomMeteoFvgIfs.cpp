@@ -94,12 +94,12 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_unit = percent;
             m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("thetaE_")) {
-            m_parameter = Radiation;
+            m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 113, 100};
             m_unit = W_m2;
             m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("thetaES_")) {
-            m_parameter = Radiation;
+            m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 114, 100};
             m_unit = W_m2;
             m_fStr.hasLevelDim = true;

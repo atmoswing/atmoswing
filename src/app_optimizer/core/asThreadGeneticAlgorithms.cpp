@@ -57,8 +57,7 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
     *m_finalScoreCalib = NaNf;
 
     // Set the climatology score value
-    if (m_scoreClimatology->size() != 0) {
-        wxLogVerbose(_("Process score of the climatology"));
+    if (!m_scoreClimatology->empty()) {
         m_optimizer->SetScoreClimatology(*m_scoreClimatology);
     }
 
@@ -109,7 +108,7 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
     }
     *m_finalScoreCalib = anaScoreFinal.GetScore();
 
-    if (m_scoreClimatology->size() == 0) {
+    if (m_scoreClimatology->empty()) {
         *m_scoreClimatology = m_optimizer->GetScoreClimatology();
     }
 
