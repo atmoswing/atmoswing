@@ -119,7 +119,7 @@ int asPredictorOper::Download()
     return internet.Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
 }
 
-bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray) const
+bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray)
 {
     return true;
 }

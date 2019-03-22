@@ -109,7 +109,7 @@ protected:
 
     void ListFiles(asTimeArray &timeArray) override;
 
-    bool CheckTimeArray(asTimeArray &timeArray) const override;
+    bool CheckTimeArray(asTimeArray &timeArray) override;
 
 };
 
