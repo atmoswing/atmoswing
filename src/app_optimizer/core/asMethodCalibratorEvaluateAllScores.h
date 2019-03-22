@@ -38,10 +38,10 @@ class asMethodCalibratorEvaluateAllScores
 public:
     asMethodCalibratorEvaluateAllScores();
 
-    virtual ~asMethodCalibratorEvaluateAllScores();
+    ~asMethodCalibratorEvaluateAllScores() override;
 
 protected:
-    virtual bool Calibrate(asParametersCalibration &params);
+    bool Calibrate(asParametersCalibration &params) override;
 
 private:
 

@@ -38,7 +38,7 @@ class asMethodCalibratorClassic
 public:
     asMethodCalibratorClassic();
 
-    virtual ~asMethodCalibratorClassic();
+    ~asMethodCalibratorClassic() override;
 
     void SetAsCalibrationPlus(bool val = true)
     {
@@ -46,7 +46,7 @@ public:
     }
 
 protected:
-    virtual bool Calibrate(asParametersCalibration &params);
+    bool Calibrate(asParametersCalibration &params) override;
 
 private:
     bool m_plus;

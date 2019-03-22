@@ -37,10 +37,10 @@ class asMethodCalibratorSingleOnlyDates
 public:
     asMethodCalibratorSingleOnlyDates();
 
-    virtual ~asMethodCalibratorSingleOnlyDates();
+    ~asMethodCalibratorSingleOnlyDates() override;
 
 protected:
-    virtual bool Calibrate(asParametersCalibration &params);
+    bool Calibrate(asParametersCalibration &params) override;
 
 private:
 

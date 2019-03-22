@@ -40,9 +40,9 @@ class asMethodOptimizer
 public:
     asMethodOptimizer();
 
-    virtual ~asMethodOptimizer();
+    ~asMethodOptimizer() override;
 
-    virtual bool Manager() = 0;
+    bool Manager() override = 0;
 
 protected:
     bool m_isOver;
@@ -51,7 +51,7 @@ protected:
     int m_paramsNb;
     int m_iterator;
 
-    virtual bool Calibrate(asParametersCalibration &params)
+    bool Calibrate(asParametersCalibration &params) override
     {
         wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
         return false;

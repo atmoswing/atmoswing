@@ -96,14 +96,14 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParameters()
     }
 }
 
-void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
+bool asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
 {
     wxASSERT(m_scoresCalibTemp.size() == m_parametersTemp.size());
     wxASSERT(m_scoresCalibTemp.size() >= 1);
     wxASSERT(m_parametersTemp.size() >= 1);
 
     if (m_parametersTemp.size() == 1)
-        return;
+        return true;
 
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
@@ -119,6 +119,8 @@ void asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
         int index = vIndices(i);
         m_parametersTemp[i] = copyParameters[index];
     }
+
+    return true;
 }
 
 bool asMethodOptimizerGeneticAlgorithms::SetBestParameters(asResultsParametersArray &results)

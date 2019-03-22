@@ -38,16 +38,16 @@ class asMethodOptimizerRandomSet
 public:
     asMethodOptimizerRandomSet();
 
-    virtual ~asMethodOptimizerRandomSet();
+    ~asMethodOptimizerRandomSet() override;
 
-    bool Manager();
+    bool Manager() override;
 
 protected:
     virtual void InitParameters(asParametersOptimization &params);
 
     virtual asParametersOptimization *GetNextParameters();
 
-    bool SetBestParameters(asResultsParametersArray &results);
+    bool SetBestParameters(asResultsParametersArray &results) override;
 
     virtual bool Optimize(asParametersOptimization &params);
 

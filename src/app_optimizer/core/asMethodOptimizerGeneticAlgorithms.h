@@ -75,9 +75,9 @@ public:
 
     asMethodOptimizerGeneticAlgorithms();
 
-    virtual ~asMethodOptimizerGeneticAlgorithms();
+    ~asMethodOptimizerGeneticAlgorithms() override;
 
-    bool Manager();
+    bool Manager() override;
 
     bool ManageOneRun();
 
@@ -98,15 +98,15 @@ private:
     vf m_bestScores;
     vf m_meanScores;
 
-    void ClearAll();
+    void ClearAll() override;
 
-    void ClearTemp();
+    void ClearTemp() override;
 
     void SortScoresAndParameters();
 
-    void SortScoresAndParametersTemp();
+    bool SortScoresAndParametersTemp() override;
 
-    bool SetBestParameters(asResultsParametersArray &results);
+    bool SetBestParameters(asResultsParametersArray &results) override;
 
     bool ResumePreviousRun(asParametersOptimizationGAs &params, asResultsParametersArray &results_generations);
 
