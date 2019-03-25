@@ -243,9 +243,9 @@ public:
     {
         double shift = 0;
         if (m_timeMinHours < 0) {
-            shift = (int) floor(m_timeMinHours / 24.0);
+            shift = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
         }
-        return shift;
+        return std::abs(shift);
     }
 
     double GetTimeSpanDays() const

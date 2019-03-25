@@ -108,7 +108,7 @@ void asMethodDownscaler::ClearAll()
 double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling *params) const
 {
     double timeStartDownscaling = params->GetDownscalingStart();
-    timeStartDownscaling += std::abs(params->GetPredictorsStartDiff());
+    timeStartDownscaling += params->GetPredictorsStartDiff();
 
     return timeStartDownscaling;
 }
@@ -398,10 +398,9 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
                                                                    int iPtor, double timeStartData,
                                                                    double timeEndData)
 {
-    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
-    // and the predictor dates are aligned with the target dates, but the dates are not the same.
-    double ptorStart = timeStartData - params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData - params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    // Date array object instantiation for the data loading.
+    double ptorStart = timeStartData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
@@ -454,11 +453,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
-        // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
-        // and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - double(params->GetPredictorsStartDiff()) +
+        // Date array object instantiation for the data loading.
+        double ptorStart = timeStartData + params->GetPredictorsStartDiff() +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData - double(params->GetPredictorsStartDiff()) +
+        double ptorEnd = timeEndData + params->GetPredictorsStartDiff() +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();

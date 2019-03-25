@@ -120,7 +120,7 @@ bool asMethodStandard::Preprocess(std::vector<asPredictor *> predictors, const w
 double asMethodStandard::GetTimeStartArchive(asParameters *params) const
 {
     double timeStartArchive = params->GetArchiveStart();
-    timeStartArchive += std::abs(params->GetTimeShiftDays());
+    timeStartArchive += params->GetPredictorsStartDiff();
 
     return timeStartArchive;
 }
@@ -478,8 +478,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             // Date array object instantiation for the data loading.
             // The array has the same length than timeArrayArchive, and the predictor dates are aligned with the
             // target dates, but the dates are not the same.
-            double ptorStart = timeStartData - params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
-            double ptorEnd = timeEndData - params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
+            double ptorStart = timeStartData + params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
+            double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
 
             asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                   params->GetTimeArrayAnalogsMode());
@@ -654,8 +654,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 // Date array object instantiation for the data loading.
                 // The array has the same length than timeArrayArchive, and the predictor dates are aligned
                 // with the target dates, but the dates are not the same.
-                double ptorStart = timeStartData - params->GetPredictorsStartDiff() + hours / 24.0;
-                double ptorEnd = timeEndData - params->GetPredictorsStartDiff() + hours / 24.0;
+                double ptorStart = timeStartData + params->GetPredictorsStartDiff() + hours / 24.0;
+                double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + hours / 24.0;
                 asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                       params->GetTimeArrayAnalogsMode());
                 timeArray.Init();
@@ -1009,8 +1009,8 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
 {
     // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
     // and the predictor dates are aligned with the target dates, but the dates are not the same.
-    double ptorStart = timeStartData - params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData - params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorStart = timeStartData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                           params->GetTimeArrayAnalogsMode());
     timeArray.Init();
@@ -1084,9 +1084,9 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - params->GetPredictorsStartDiff() +
+        double ptorStart = timeStartData + params->GetPredictorsStartDiff() +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData - params->GetPredictorsStartDiff() +
+        double ptorEnd = timeEndData + params->GetPredictorsStartDiff() +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                               params->GetTimeArrayAnalogsMode());
