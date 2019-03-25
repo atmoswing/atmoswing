@@ -74,11 +74,11 @@ public:
 
     bool ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor);
 
-    bool ExtractArchiveDataWithoutPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
-                                                int iPtor, double timeStartData, double timeEndData);
+    bool ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor,
+                            double timeStartData, double timeEndData);
 
-    bool ExtractArchiveDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
-                                             int iPtor, double timeStartData, double timeEndData);
+    bool PreprocessArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor,
+                               double timeStartData, double timeEndData);
 
     bool GetRandomLevelValidData(asParameters *params, int iStep, int iPtor, int iPre, int iHour);
 

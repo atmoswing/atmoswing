@@ -778,13 +778,11 @@ bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, a
                 wxLogVerbose(_("Loading data."));
 
                 if (!params->NeedsPreprocessing(iStep, iPtor)) {
-                    if (!ExtractArchiveDataWithoutPreprocessing(predictors, params, iStep, iPtor, timeStartData,
-                                                                timeEndData)) {
+                    if (!ExtractArchiveData(predictors, params, iStep, iPtor, timeStartData, timeEndData)) {
                         return false;
                     }
                 } else {
-                    if (!ExtractArchiveDataWithPreprocessing(predictors, params, iStep, iPtor, timeStartData,
-                                                             timeEndData)) {
+                    if (!PreprocessArchiveData(predictors, params, iStep, iPtor, timeStartData, timeEndData)) {
                         return false;
                     }
                 }
@@ -1006,9 +1004,8 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     return true;
 }
 
-bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPredictor *> &predictors,
-                                                              asParameters *params, int iStep, int iPtor,
-                                                              double timeStartData, double timeEndData)
+bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+                                          int iPtor, double timeStartData, double timeEndData)
 {
     // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
     // and the predictor dates are aligned with the target dates, but the dates are not the same.
@@ -1076,9 +1073,8 @@ bool asMethodStandard::ExtractArchiveDataWithoutPreprocessing(std::vector<asPred
     return true;
 }
 
-bool asMethodStandard::ExtractArchiveDataWithPreprocessing(std::vector<asPredictor *> &predictors,
-                                                           asParameters *params, int iStep, int iPtor,
-                                                           double timeStartData, double timeEndData)
+bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+                                             int iPtor, double timeStartData, double timeEndData)
 {
     std::vector<asPredictor *> predictorsPreprocess;
 
