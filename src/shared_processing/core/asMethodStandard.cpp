@@ -675,7 +675,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 double yMax = params->GetPreloadYmin(iStep, iPtor) + params->GetPredictorYstep(iStep, iPtor) *
-                                                                    static_cast<double>(params->GetPreloadYptsnb(iStep, iPtor) - 1);
+                                                                    double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
 
                 if (predictorPreprocess->IsLatLon() && yMax > 90) {
                     double diff = yMax - 90;

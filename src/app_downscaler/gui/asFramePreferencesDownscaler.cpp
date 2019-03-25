@@ -100,7 +100,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
 
     // GUI options
     long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
-    m_radioBoxGui->SetSelection(static_cast<int>(guiOptions));
+    m_radioBoxGui->SetSelection(int(guiOptions));
     if (guiOptions == 0) {
         g_silentMode = true;
     } else {

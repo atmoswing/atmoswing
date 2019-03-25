@@ -85,7 +85,7 @@ bool asMethodDownscaler::Manager()
     // Downscale
     if (Downscale(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Downscaling over."));
 #endif
@@ -456,9 +456,9 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
         // and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - static_cast<double>(params->GetPredictorsStartDiff()) +
+        double ptorStart = timeStartData - double(params->GetPredictorsStartDiff()) +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData - static_cast<double>(params->GetPredictorsStartDiff()) +
+        double ptorEnd = timeEndData - double(params->GetPredictorsStartDiff()) +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();

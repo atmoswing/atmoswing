@@ -639,7 +639,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), static_cast<float>(sw.Time()) / 1000.0f);
+    wxLogVerbose(_("The function asProcessor::GetAnalogsDates took %.3f s to execute"), float(sw.Time()) / 1000.0f);
 
     return true;
 }
@@ -1086,7 +1086,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     results.SetAnalogsDates(finalAnalogsDates);
 
     // Display the time the function took
-    wxLogVerbose(_("The function asProcessor::GetAnalogsSubDates took %.3f s to execute"), static_cast<float>(sw.Time()) / 1000);
+    wxLogVerbose(_("The function asProcessor::GetAnalogsSubDates took %.3f s to execute"), float(sw.Time()) / 1000);
 
     return true;
 }

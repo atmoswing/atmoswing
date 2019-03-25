@@ -190,7 +190,7 @@ bool AtmoswingAppOptimizer::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
     if (g_guiMode) {
@@ -319,7 +319,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
         if (groupsNb != pConfigRef->GetNumberOfGroups(true)) {
             wxLogError(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb,
-                       static_cast<int>(pConfigRef->GetNumberOfGroups()));
+                       int(pConfigRef->GetNumberOfGroups()));
             m_forceQuit = true;
         }
 

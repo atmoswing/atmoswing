@@ -81,7 +81,7 @@ float asTotalScoreH::Assess(const a1f &targetDates, const a1f &scores, const asT
 
     if (countTot > 0) {
         if (countA + countC > 0) {
-            score = static_cast<float>(countA) / static_cast<float>(countA + countC);
+            score = float(countA) / float(countA + countC);
         } else {
             score = 0;
         }

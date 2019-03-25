@@ -266,7 +266,7 @@ bool asMethodOptimizerRandomSet::Manager()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif

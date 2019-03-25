@@ -772,7 +772,7 @@ bool asPreprocessor::PreprocessAverage(std::vector<asPredictor *> predictors, as
                 wxASSERT(predictors[iPre]);
                 average[iTime][iMem] += predictors[iPre]->GetData()[iTime][iMem];
             }
-            average[iTime][iMem] /= static_cast<float>(predictors.size());
+            average[iTime][iMem] /= float(predictors.size());
         }
     }
 

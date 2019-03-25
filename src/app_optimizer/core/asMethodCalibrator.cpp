@@ -86,7 +86,7 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Calibration over."));
 #endif
@@ -373,7 +373,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
 
     // Get start and end dates
     a1d predictandTime = m_predictandDB->GetTime();
-    auto predictandTimeDays = static_cast<float>(params->GetPredictandTimeHours() / 24.0);
+    auto predictandTimeDays = float(params->GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0], params->GetCalibrationStart());
     timeStart = floor(timeStart) + predictandTimeDays;
@@ -429,7 +429,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
     // Get index step
     double predictandTimeStep = predictandTime[1] - predictandTime[0];
     double targetTimeStep = params->GetTargetTimeStepHours() / 24.0;
-    int indexStep = static_cast<int>(targetTimeStep / predictandTimeStep);
+    int indexStep = int(targetTimeStep / predictandTimeStep);
 
     // Get vector length
     int dataLength = (indexPredictandTimeEnd - indexPredictandTimeStart) / indexStep + 1;
@@ -736,7 +736,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
     // Cannot be superior to previous analogs nb
-    int rowEnd = static_cast<int>(analogsNbVect.size() - 1);
+    int rowEnd = int(analogsNbVect.size() - 1);
     if (iStep > 0) {
         int prevAnalogsNb = params.GetAnalogsNumber(iStep - 1);
         if (prevAnalogsNb < analogsNbVect[analogsNbVect.size() - 1]) {

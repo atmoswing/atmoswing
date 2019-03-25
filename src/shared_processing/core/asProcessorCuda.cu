@@ -51,8 +51,8 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
     int i_cand = offset + threadIdx.x + blockIdx.x * blockDim.x;
     if (i_cand < n_cand) {
         // Find the target index
-        float meanNbCand = static_cast<float>(n_cand) / static_cast<float>(n_targ);
-        int i_targ = floorf(static_cast<float>(i_cand) / meanNbCand);
+        float meanNbCand = float(n_cand) / float(n_targ);
+        int i_targ = floorf(float(i_cand) / meanNbCand);
 
         if (i_targ < 0) {
             i_targ = 0;
@@ -119,8 +119,8 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
     for (int i_cand = index; i_cand < n_cand; i_cand += stride) {
 
         // Find the target index
-        float meanNbCand = static_cast<float>(n_cand) / static_cast<float>(n_targ);
-        int i_targ = (int)floorf(static_cast<float>(i_cand) / meanNbCand);
+        float meanNbCand = float(n_cand) / float(n_targ);
+        int i_targ = (int)floorf(float(i_cand) / meanNbCand);
 
         if (i_targ < 0) {
             i_targ = 0;
@@ -237,7 +237,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     // Create streams
     const int nStreams = 4; // no need to change
     // rowsNbPerStream must be dividable by nStreams and threadsPerBlock
-    int rowsNbPerStream = ceil(static_cast<float>(nbArchCandidatesSum) / static_cast<float>(nStreams * threadsPerBlock)) * threadsPerBlock;
+    int rowsNbPerStream = ceil(float(nbArchCandidatesSum) / float(nStreams * threadsPerBlock)) * threadsPerBlock;
     // Streams
     cudaStream_t stream[nStreams];
     for (int i = 0; i < nStreams; i++) {

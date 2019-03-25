@@ -56,7 +56,7 @@ public:
 
     int GetCount() const
     {
-        return static_cast<int>(m_parameters.size());
+        return int(m_parameters.size());
     }
 
 protected:

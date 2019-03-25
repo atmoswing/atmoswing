@@ -81,7 +81,7 @@ float asTotalScoreFAR::Assess(const a1f &targetDates, const a1f &scores, const a
 
     if (countTot > 0) {
         if (countA + countB > 0) {
-            score = static_cast<float>(countB) / static_cast<float>(countA + countB);
+            score = float(countB) / float(countA + countB);
         } else {
             score = 0;
         }

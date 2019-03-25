@@ -223,7 +223,7 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
     for (int i = 0; i < GetNbComposites(); ++i) {
 
         int indexXmin, indexXmax;
-        auto nlons = static_cast<int>(lons.size() - 1);
+        auto nlons = int(lons.size() - 1);
 
         if (getLarger) { // Get larger when interpolation is needed interpolation
 
@@ -289,7 +289,7 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
         wxASSERT(indexXmin <= indexXmax);
 
         int indexYmin, indexYmax;
-        int nlats = static_cast<int>(lats.size() - 1);
+        int nlats = int(lats.size() - 1);
 
         if (getLarger) {
 

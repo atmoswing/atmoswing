@@ -65,14 +65,14 @@ public:
     {
         wxASSERT(m_xStep > 0);
         wxASSERT(fmod(m_xStep, m_xStepData) == 0);
-        return static_cast<int>(m_xStep / m_xStepData);
+        return int(m_xStep / m_xStepData);
     }
 
     int GetYstepStride() const
     {
         wxASSERT(m_yStep > 0);
         wxASSERT(fmod(m_yStep, m_yStepData) == 0);
-        return static_cast<int>(m_yStep / m_yStepData);
+        return int(m_yStep / m_yStepData);
     }
 
     void SetSameStepAsData()

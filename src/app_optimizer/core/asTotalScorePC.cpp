@@ -80,7 +80,7 @@ float asTotalScorePC::Assess(const a1f &targetDates, const a1f &scores, const as
     float score;
 
     if (countTot > 0) {
-        score = static_cast<float>(countA + countD) / static_cast<float>(countTot);
+        score = float(countA + countD) / float(countTot);
     } else {
         score = NaNf;
     }

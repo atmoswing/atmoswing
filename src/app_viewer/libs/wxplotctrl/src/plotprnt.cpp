@@ -127,21 +127,21 @@ bool wxPlotPrintout::OnPrintPage(int page_n)
     GetPPIScreen(&ppiScr.x, &ppiScr.y);
     GetPPIPrinter(&ppiPrn.x, &ppiPrn.y);
 
-    float ppi_scale_x = static_cast<float>(ppiPrn.x) / static_cast<float>(ppiScr.x);
-    float ppi_scale_y = static_cast<float>(ppiPrn.y) / static_cast<float>(ppiScr.y);
+    float ppi_scale_x = float(ppiPrn.x) / float(ppiScr.x);
+    float ppi_scale_y = float(ppiPrn.y) / float(ppiScr.y);
 
     // Get the size of DC in pixels and the number of pixels in the page
     wxSize dcSize, pagePixSize;
     dc->GetSize(&dcSize.x, &dcSize.y);
     GetPageSizePixels(&pagePixSize.x, &pagePixSize.y);
 
-    float dc_pagepix_scale_x = static_cast<float>(dcSize.x) / static_cast<float>(pagePixSize.x);
-    float dc_pagepix_scale_y = static_cast<float>(dcSize.y) / static_cast<float>(pagePixSize.y);
+    float dc_pagepix_scale_x = float(dcSize.x) / float(pagePixSize.x);
+    float dc_pagepix_scale_y = float(dcSize.y) / float(pagePixSize.y);
 
     // the actual ppi using the size of the dc or page in pixels
     //wxSize pixelSize = IsPreview() ? dcSize : pagePixSize;
-    //float page_ppi_x = static_cast<float>(pixelSize.x) * (25.4 / static_cast<float>(pageMMSize.x));
-    //float page_ppi_y = static_cast<float>(pixelSize.y) * (25.4 / static_cast<float>(pageMMSize.y));
+    //float page_ppi_x = float(pixelSize.x) * (25.4 / float(pageMMSize.x));
+    //float page_ppi_y = float(pixelSize.y) * (25.4 / float(pageMMSize.y));
 
     // If printer pageWidth == current DC width, then this doesn't
     // change. But w might be the preview bitmap width, so scale down.
@@ -149,8 +149,8 @@ bool wxPlotPrintout::OnPrintPage(int page_n)
     float dc_scale_y = ppi_scale_y * dc_pagepix_scale_y;
 
     // calculate the pixels / mm (25.4 mm = 1 inch)
-    float ppmm_x = static_cast<float>(ppiScr.x) / 25.4;
-    float ppmm_y = static_cast<float>(ppiScr.y) / 25.4;
+    float ppmm_x = float(ppiScr.x) / 25.4;
+    float ppmm_y = float(ppiScr.y) / 25.4;
 
     // Adjust the page size for the pixels / mm scaling factor
     //wxSize paperSize = GetPageSetupData(true)->GetPaperSize();
@@ -179,7 +179,7 @@ bool wxPlotPrintout::OnPrintPage(int page_n)
     //set dpi of the drawwholeplot function
     if (IsPreview()) {
         //dpi is the (screen dpi) * (percent of screen used by preview)
-        dpi = static_cast<double>(ppiScr.x) *
+        dpi = double(ppiScr.x) *
               dc_pagepix_scale_x; //((double)pagePixSize.x / rect.width); //((double)rect.width / dcSize.x);
     }
 

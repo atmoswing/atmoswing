@@ -1017,8 +1017,8 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
             m_fInd.timeCount = 0;
             return true;
         } else {
-            m_fInd.timeArrayCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
-            m_fInd.timeCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+            m_fInd.timeArrayCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
+            m_fInd.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
         }
 
         // Correct the time start and end
@@ -1027,7 +1027,7 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
         m_fInd.cutStart = 0;
         bool firstFile = (compositeData[0].empty());
         if (firstFile) {
-            m_fInd.cutStart = static_cast<int>(timeArrayIndexStart);
+            m_fInd.cutStart = int(timeArrayIndexStart);
         }
         m_fInd.cutEnd = 0;
         while (valFirstTime < timeArray[timeArrayIndexStart]) {
