@@ -475,9 +475,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 predictor->SelectMembers(params->GetPredictorMembersNb(iStep, iPtor));
             }
 
-            // Date array object instantiation for the data loading.
-            // The array has the same length than timeArrayArchive, and the predictor dates are aligned with the
-            // target dates, but the dates are not the same.
+            // Date array object instantiation for data loading.
             double ptorStart = timeStartData + params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
             double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + preloadHours[iHour] / 24.0;
 
@@ -651,9 +649,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                         hours = preloadHours[1];
                 }
 
-                // Date array object instantiation for the data loading.
-                // The array has the same length than timeArrayArchive, and the predictor dates are aligned
-                // with the target dates, but the dates are not the same.
+                // Date array object instantiation for data loading.
                 double ptorStart = timeStartData + params->GetPredictorsStartDiff() + hours / 24.0;
                 double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + hours / 24.0;
                 asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
@@ -1007,8 +1003,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
 bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
                                           int iPtor, double timeStartData, double timeEndData)
 {
-    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
-    // and the predictor dates are aligned with the target dates, but the dates are not the same.
+    // Date array object instantiation for the data loading.
     double ptorStart = timeStartData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
     double ptorEnd = timeEndData + params->GetPredictorsStartDiff() + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
@@ -1020,8 +1015,7 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
 
     // Loading the datasets information
     asPredictor *predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
-                                                              params->GetPredictorDataId(iStep, iPtor),
-                                                              m_predictorDataDir);
+                                                      params->GetPredictorDataId(iStep, iPtor), m_predictorDataDir);
     if (!predictor) {
         return false;
     }
@@ -1083,7 +1077,7 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
     wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
-        // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
+        // Date array object instantiation for data loading.
         double ptorStart = timeStartData + params->GetPredictorsStartDiff() +
                 params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         double ptorEnd = timeEndData + params->GetPredictorsStartDiff() +

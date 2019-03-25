@@ -70,7 +70,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     asResultsParametersArray resultsAll;
     resultsAll.Init(_("all_station_best_parameters"));
 
-    // Create a analogsdate object to save previous analogs dates selection.
+    // Create an object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
     for (auto stationId : stationsId) {
@@ -515,7 +515,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
 
             // Assess parameters
             asResultsDates anaDates;
-            asResultsDates anaDatesPreviousSubRuns;
+            asResultsDates anaDatesPrev;
             asResultsValues anaValues;
             asResultsScores anaScores;
             asResultsTotalScore anaScoreFinal;
@@ -541,7 +541,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                     return false;
             } else {
                 bool continueLoop = true;
-                anaDatesPreviousSubRuns = anaDatesPrevious;
+                anaDatesPrev = anaDatesPrevious;
                 for (int sub_step = iStep; sub_step < params.GetStepsNb(); sub_step++) {
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
@@ -549,7 +549,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                         if (!GetAnalogsDates(anaDates, &params, sub_step, containsNaNs))
                             return false;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrev, sub_step, containsNaNs))
                             return false;
                     }
                     if (containsNaNs) {
@@ -557,7 +557,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                         isover = false;
                         continue;
                     }
-                    anaDatesPreviousSubRuns = anaDates;
+                    anaDatesPrev = anaDates;
                 }
                 if (continueLoop) {
                     if (!GetAnalogsValues(anaValues, &params, anaDates, params.GetStepsNb() - 1))

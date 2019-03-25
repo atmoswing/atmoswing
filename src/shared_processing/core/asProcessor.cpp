@@ -1115,11 +1115,13 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     wxASSERT(timeTargetSelectionLength > 0);
 
     // Correct the time arrays to account for predictand time and not predictors time
-    for (int iTime = 0; iTime < timeTargetSelectionLength; iTime++) {
-        timeTargetSelection[iTime] += params->GetPredictorsStartDiff();
+    if (params->GetPredictorsStartDiff() != 0) {
+        for (int iTime = 0; iTime < timeTargetSelectionLength; iTime++) {
+            timeTargetSelection[iTime] += params->GetPredictorsStartDiff();
 
-        for (int iAnalog = 0; iAnalog < analogsNb; iAnalog++) {
-            analogsDates(iTime, iAnalog) += params->GetPredictorsStartDiff();
+            for (int iAnalog = 0; iAnalog < analogsNb; iAnalog++) {
+                analogsDates(iTime, iAnalog) += params->GetPredictorsStartDiff();
+            }
         }
     }
 
