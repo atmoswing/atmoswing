@@ -107,10 +107,7 @@ void asMethodDownscaler::ClearAll()
 
 double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling *params) const
 {
-    double timeStartDownscaling = params->GetDownscalingStart();
-    timeStartDownscaling += params->GetPredictorsStartDiff();
-
-    return timeStartDownscaling;
+    return params->GetDownscalingStart() + params->GetPredictorsStartDiff();
 }
 
 double asMethodDownscaler::GetTimeEndDownscaling(asParametersDownscaling *params) const

@@ -339,10 +339,7 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 
 double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring *params) const
 {
-    double timeStartCalibration = params->GetCalibrationStart();
-    timeStartCalibration += params->GetPredictorsStartDiff();
-
-    return timeStartCalibration;
+    return params->GetCalibrationStart() + params->GetPredictorsStartDiff();
 }
 
 double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring *params) const

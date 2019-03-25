@@ -119,10 +119,7 @@ bool asMethodStandard::Preprocess(std::vector<asPredictor *> predictors, const w
 
 double asMethodStandard::GetTimeStartArchive(asParameters *params) const
 {
-    double timeStartArchive = params->GetArchiveStart();
-    timeStartArchive += params->GetPredictorsStartDiff();
-
-    return timeStartArchive;
+    return params->GetArchiveStart() + params->GetPredictorsStartDiff();
 }
 
 double asMethodStandard::GetTimeEndArchive(asParameters *params) const
