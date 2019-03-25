@@ -288,7 +288,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     if (!SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorTimeHours(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
+                    if (!SetPredictorHours(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam)))
@@ -370,7 +370,7 @@ bool asParametersDownscaling::ParsePreprocessedPredictors(asFileParametersDownsc
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
                     if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
@@ -552,12 +552,12 @@ bool asParametersDownscaling::FixTimeLimits()
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessTimeHours(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessTimeHours(i, j, k), maxHour);
+                    minHour = wxMin(GetPreprocessHour(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessHour(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorTimeHours(i, j), minHour);
-                maxHour = wxMax(GetPredictorTimeHours(i, j), maxHour);
+                minHour = wxMin(GetPredictorHours(i, j), minHour);
+                maxHour = wxMax(GetPredictorHours(i, j), maxHour);
             }
         }
     }

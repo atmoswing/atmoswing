@@ -78,7 +78,7 @@ void asParametersOptimization::AddPredictorIteration(ParamsStep &step)
     predictor.xPtsNb = 1;
     predictor.yMin = 2.5;
     predictor.yPtsNb = 1;
-    predictor.timeHours = 6;
+    predictor.hours = 6;
     predictor.weight = 0.01f;
 
     step.predictors.push_back(predictor);
@@ -92,7 +92,7 @@ void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step)
     predictor.xPtsNb = 20;
     predictor.yMin = 87.5;
     predictor.yPtsNb = 16;
-    predictor.timeHours = 36;
+    predictor.hours = 36;
     predictor.weight = 1;
 
     step.predictors.push_back(predictor);
@@ -106,7 +106,7 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step)
     predictor.xPtsNb = 1;
     predictor.yMin = 0;
     predictor.yPtsNb = 1;
-    predictor.timeHours = 6;
+    predictor.hours = 6;
     predictor.weight = 0;
 
     step.predictors.push_back(predictor);
@@ -122,7 +122,7 @@ void asParametersOptimization::AddPredictorLocks(ParamsStepBool &step)
     predictor.xPtsNb = true;
     predictor.yMin = true;
     predictor.yPtsNb = true;
-    predictor.timeHours = true;
+    predictor.hours = true;
     predictor.weight = true;
     predictor.criteria = true;
 
@@ -442,32 +442,29 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
                     return false;
             }
         } else if (nodeParam->GetName() == "time") {
-            SetPredictorTimeHoursLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
-            if (IsPredictorTimeHoursLocked(iStep, iPtor)) {
-                if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+            SetPredictorHourLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
+            if (IsPredictorHourLocked(iStep, iPtor)) {
+                if (!SetPredictorHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                     return false;
-                vd vTimeHours;
-                vTimeHours.push_back(GetPredictorTimeHours(iStep, iPtor));
-                if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
+                vd vHours;
+                vHours.push_back(GetPredictorHours(iStep, iPtor));
+                if (!SetPreloadHours(iStep, iPtor, vHours))
                     return false;
-                if (!SetPredictorTimeHoursLowerLimit(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor)))
+                if (!SetPredictorHoursLowerLimit(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
                     return false;
-                if (!SetPredictorTimeHoursUpperLimit(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor)))
+                if (!SetPredictorHoursUpperLimit(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
                     return false;
-                if (!SetPredictorTimeHoursIteration(iStep, iPtor, 6))
+                if (!SetPredictorHoursIteration(iStep, iPtor, 6))
                     return false;
             } else {
-                if (!SetPredictorTimeHoursLowerLimit(iStep, iPtor,
-                                                     fileParams.GetAttributeDouble(nodeParam, "lowerlimit")))
+                if (!SetPredictorHoursLowerLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "lowerlimit")))
                     return false;
-                if (!SetPredictorTimeHoursUpperLimit(iStep, iPtor,
-                                                     fileParams.GetAttributeDouble(nodeParam, "upperlimit")))
+                if (!SetPredictorHoursUpperLimit(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "upperlimit")))
                     return false;
-                if (!SetPredictorTimeHoursIteration(iStep, iPtor,
-                                                    fileParams.GetAttributeDouble(nodeParam, "iteration")))
+                if (!SetPredictorHoursIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "iteration")))
                     return false;
                 // Initialize to ensure correct array sizes
-                if (!SetPredictorTimeHours(iStep, iPtor, GetPredictorTimeHoursLowerLimit(iStep, iPtor)))
+                if (!SetPredictorHours(iStep, iPtor, GetPredictorHoursLowerLimit(iStep, iPtor)))
                     return false;
             }
         } else if (nodeParam->GetName() == "members") {
@@ -669,29 +666,29 @@ bool asParametersOptimization::ParsePreprocessedPredictorDataset(asFileParameter
                     return false;
             }
         } else if (nodeParamPreprocess->GetName() == "time") {
-            SetPreprocessTimeHoursLock(iStep, iPtor, iPre,
-                                       fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
-            if (IsPreprocessTimeHoursLocked(iStep, iPtor, iPre)) {
-                if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+            SetPreprocessHourLock(iStep, iPtor, iPre,
+                                  fileParams.GetAttributeBool(nodeParamPreprocess, "lock", true, false));
+            if (IsPreprocessHourLocked(iStep, iPtor, iPre)) {
+                if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                     return false;
-                if (!SetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre, GetPreprocessTimeHours(iStep, iPtor, iPre)))
+                if (!SetPreprocessHoursLowerLimit(iStep, iPtor, iPre, GetPreprocessHour(iStep, iPtor, iPre)))
                     return false;
-                if (!SetPreprocessTimeHoursUpperLimit(iStep, iPtor, iPre, GetPreprocessTimeHours(iStep, iPtor, iPre)))
+                if (!SetPreprocessHoursUpperLimit(iStep, iPtor, iPre, GetPreprocessHour(iStep, iPtor, iPre)))
                     return false;
-                if (!SetPreprocessTimeHoursIteration(iStep, iPtor, iPre, 6))
+                if (!SetPreprocessHoursIteration(iStep, iPtor, iPre, 6))
                     return false;
             } else {
-                if (!SetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre,
-                                                      fileParams.GetAttributeDouble(nodeParamPreprocess, "lowerlimit")))
+                if (!SetPreprocessHoursLowerLimit(iStep, iPtor, iPre,
+                                                  fileParams.GetAttributeDouble(nodeParamPreprocess, "lowerlimit")))
                     return false;
-                if (!SetPreprocessTimeHoursUpperLimit(iStep, iPtor, iPre,
-                                                      fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit")))
+                if (!SetPreprocessHoursUpperLimit(iStep, iPtor, iPre,
+                                                  fileParams.GetAttributeDouble(nodeParamPreprocess, "upperlimit")))
                     return false;
-                if (!SetPreprocessTimeHoursIteration(iStep, iPtor, iPre,
-                                                     fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration")))
+                if (!SetPreprocessHoursIteration(iStep, iPtor, iPre,
+                                                 fileParams.GetAttributeDouble(nodeParamPreprocess, "iteration")))
                     return false;
                 // Initialize to ensure correct array sizes
-                if (!SetPreprocessTimeHours(iStep, iPtor, iPre, GetPreprocessTimeHoursLowerLimit(iStep, iPtor, iPre)))
+                if (!SetPreprocessHour(iStep, iPtor, iPre, GetPreprocessHoursLowerLimit(iStep, iPtor, iPre)))
                     return false;
             }
         } else if (nodeParamPreprocess->GetName() == "members") {
@@ -830,12 +827,12 @@ bool asParametersOptimization::SetPreloadingProperties()
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
                     SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
                     SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
-                    SetPredictorTimeHours(iStep, iPtor, GetPreprocessTimeHours(iStep, iPtor, 0));
+                    SetPredictorHours(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
                 } else {
                     SetPredictorDatasetId(iStep, iPtor, "mix");
                     SetPredictorDataId(iStep, iPtor, "mix");
                     SetPredictorLevel(iStep, iPtor, 0);
-                    SetPredictorTimeHours(iStep, iPtor, 0);
+                    SetPredictorHours(iStep, iPtor, 0);
                 }
             }
 
@@ -845,45 +842,45 @@ bool asParametersOptimization::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevelVector(iStep, iPtor)))
                     return false;
-                vd vTimeHours;
-                for (double h = GetPredictorTimeHoursLowerLimit(iStep, iPtor);
-                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor);
-                     h += GetPredictorTimeHoursIteration(iStep, iPtor)) {
-                    vTimeHours.push_back(h);
+                vd vHours;
+                for (double h = GetPredictorHoursLowerLimit(iStep, iPtor);
+                     h <= GetPredictorHoursUpperLimit(iStep, iPtor);
+                     h += GetPredictorHoursIteration(iStep, iPtor)) {
+                    vHours.push_back(h);
                 }
-                if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
+                if (!SetPreloadHours(iStep, iPtor, vHours))
                     return false;
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
                 vf preprocLevels;
-                vd preprocTimeHours;
+                vd preprocHours;
 
                 // Different actions depending on the preprocessing method.
                 if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
-                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
-                        preprocTimeHours.push_back(h);
+                    for (double h = GetPreprocessHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessHoursIteration(iStep, iPtor, 0)) {
+                        preprocHours.push_back(h);
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
-                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
-                        preprocTimeHours.push_back(h);
+                    for (double h = GetPreprocessHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessHoursIteration(iStep, iPtor, 0)) {
+                        preprocHours.push_back(h);
                     }
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
                            method.IsSameAs("HumidityIndex")) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
-                    for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
-                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
-                        preprocTimeHours.push_back(h);
+                    for (double h = GetPreprocessHoursLowerLimit(iStep, iPtor, 0);
+                         h <= GetPreprocessHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessHoursIteration(iStep, iPtor, 0)) {
+                        preprocHours.push_back(h);
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     wxLogWarning(_("The %s preprocessing method is not handled in the optimizer."), method);
@@ -894,7 +891,7 @@ bool asParametersOptimization::SetPreloadingProperties()
 
                 if (!SetPreloadLevels(iStep, iPtor, preprocLevels))
                     return false;
-                if (!SetPreloadTimeHours(iStep, iPtor, preprocTimeHours))
+                if (!SetPreloadHours(iStep, iPtor, preprocHours))
                     return false;
             }
         }
@@ -936,11 +933,10 @@ void asParametersOptimization::InitRandomValues()
                         SetPreprocessLevel(i, j, k, m_stepsVect[i].predictors[j].preprocessLevels[k][row]);
                     }
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
-                        SetPreprocessTimeHours(i, j, k, asRandom(
-                                m_stepsLowerLimit[i].predictors[j].preprocessTimeHours[k],
-                                m_stepsUpperLimit[i].predictors[j].preprocessTimeHours[k],
-                                m_stepsIteration[i].predictors[j].preprocessTimeHours[k]));
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        SetPreprocessHour(i, j, k, asRandom(m_stepsLowerLimit[i].predictors[j].preprocessHours[k],
+                                                            m_stepsUpperLimit[i].predictors[j].preprocessHours[k],
+                                                            m_stepsIteration[i].predictors[j].preprocessHours[k]));
                     }
                 }
             } else {
@@ -960,10 +956,10 @@ void asParametersOptimization::InitRandomValues()
                     SetPredictorLevel(i, j, m_stepsVect[i].predictors[j].level[row]);
                 }
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
-                    SetPredictorTimeHours(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].timeHours,
-                                                                m_stepsUpperLimit[i].predictors[j].timeHours,
-                                                                m_stepsIteration[i].predictors[j].timeHours));
+                if (!m_stepsLocks[i].predictors[j].hours) {
+                    SetPredictorHours(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].hours,
+                                                     m_stepsUpperLimit[i].predictors[j].hours,
+                                                     m_stepsIteration[i].predictors[j].hours));
                 }
 
             }
@@ -1044,18 +1040,18 @@ void asParametersOptimization::CheckRange()
             if (NeedsPreprocessing(i, j)) {
                 int preprocessSize = GetPreprocessSize(i, j);
                 for (int k = 0; k < preprocessSize; k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
-                        SetPreprocessTimeHours(i, j, k, wxMax(wxMin(GetPreprocessTimeHours(i, j, k),
-                                                                    m_stepsUpperLimit[i].predictors[j].preprocessTimeHours[k]),
-                                                              m_stepsLowerLimit[i].predictors[j].preprocessTimeHours[k]));
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        SetPreprocessHour(i, j, k, wxMax(wxMin(GetPreprocessHour(i, j, k),
+                                                               m_stepsUpperLimit[i].predictors[j].preprocessHours[k]),
+                                                         m_stepsLowerLimit[i].predictors[j].preprocessHours[k]));
                     }
-                    SetPredictorTimeHours(i, j, 0);
+                    SetPredictorHours(i, j, 0);
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
-                    SetPredictorTimeHours(i, j, wxMax(wxMin(GetPredictorTimeHours(i, j),
-                                                            m_stepsUpperLimit[i].predictors[j].timeHours),
-                                                      m_stepsLowerLimit[i].predictors[j].timeHours));
+                if (!m_stepsLocks[i].predictors[j].hours) {
+                    SetPredictorHours(i, j, wxMax(wxMin(GetPredictorHours(i, j),
+                                                        m_stepsUpperLimit[i].predictors[j].hours),
+                                                  m_stepsLowerLimit[i].predictors[j].hours));
                 }
             }
 
@@ -1117,7 +1113,7 @@ void asParametersOptimization::CheckRange()
         }
     }
 
-    FixTimeHours();
+    FixHours();
     FixWeights();
     FixCoordinates();
     FixAnalogsNb();
@@ -1144,18 +1140,18 @@ bool asParametersOptimization::IsInRange()
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
-                        if (GetPreprocessTimeHours(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessTimeHours[k])
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        if (GetPreprocessHour(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessHours[k])
                             return false;
-                        if (GetPreprocessTimeHours(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessTimeHours[k])
+                        if (GetPreprocessHour(i, j, k) < m_stepsLowerLimit[i].predictors[j].preprocessHours[k])
                             return false;
                     }
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
-                    if (GetPredictorTimeHours(i, j) < m_stepsLowerLimit[i].predictors[j].timeHours)
+                if (!m_stepsLocks[i].predictors[j].hours) {
+                    if (GetPredictorHours(i, j) < m_stepsLowerLimit[i].predictors[j].hours)
                         return false;
-                    if (GetPredictorTimeHours(i, j) < m_stepsLowerLimit[i].predictors[j].timeHours)
+                    if (GetPredictorHours(i, j) < m_stepsLowerLimit[i].predictors[j].hours)
                         return false;
                 }
             }
@@ -1220,12 +1216,12 @@ bool asParametersOptimization::FixTimeLimits()
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessTimeHoursLowerLimit(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessTimeHoursUpperLimit(i, j, k), maxHour);
+                    minHour = wxMin(GetPreprocessHoursLowerLimit(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessHoursUpperLimit(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorTimeHoursLowerLimit(i, j), minHour);
-                maxHour = wxMax(GetPredictorTimeHoursUpperLimit(i, j), maxHour);
+                minHour = wxMin(GetPredictorHoursLowerLimit(i, j), minHour);
+                maxHour = wxMax(GetPredictorHoursUpperLimit(i, j), maxHour);
             }
         }
     }
@@ -1236,29 +1232,28 @@ bool asParametersOptimization::FixTimeLimits()
     return true;
 }
 
-void asParametersOptimization::FixTimeHours()
+void asParametersOptimization::FixHours()
 {
     for (int i = 0; i < GetStepsNb(); i++) {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
-                        if (m_stepsIteration[i].predictors[j].preprocessTimeHours[k] != 0) {
-                            float ratio = (float) GetPreprocessTimeHours(i, j, k) /
-                                          (float) m_stepsIteration[i].predictors[j].preprocessTimeHours[k];
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
+                        if (m_stepsIteration[i].predictors[j].preprocessHours[k] != 0) {
+                            float ratio = (float) GetPreprocessHour(i, j, k) /
+                                          (float) m_stepsIteration[i].predictors[j].preprocessHours[k];
                             ratio = asRound(ratio);
-                            SetPreprocessTimeHours(i, j, k,
-                                                   ratio * m_stepsIteration[i].predictors[j].preprocessTimeHours[k]);
+                            SetPreprocessHour(i, j, k, ratio * m_stepsIteration[i].predictors[j].preprocessHours[k]);
                         }
                     }
                 }
             } else {
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
-                    if (m_stepsIteration[i].predictors[j].timeHours != 0) {
-                        float ratio = (float) GetPredictorTimeHours(i, j) /
-                                      (float) m_stepsIteration[i].predictors[j].timeHours;
+                if (!m_stepsLocks[i].predictors[j].hours) {
+                    if (m_stepsIteration[i].predictors[j].hours != 0) {
+                        float ratio = (float) GetPredictorHours(i, j) /
+                                      (float) m_stepsIteration[i].predictors[j].hours;
                         ratio = asRound(ratio);
-                        SetPredictorTimeHours(i, j, ratio * m_stepsIteration[i].predictors[j].timeHours);
+                        SetPredictorHours(i, j, ratio * m_stepsIteration[i].predictors[j].hours);
                     }
                 }
             }
@@ -1330,12 +1325,12 @@ void asParametersOptimization::LockAll()
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     m_stepsLocks[i].predictors[j].preprocessDataId[k] = true;
                     m_stepsLocks[i].predictors[j].preprocessLevels[k] = true;
-                    m_stepsLocks[i].predictors[j].preprocessTimeHours[k] = true;
+                    m_stepsLocks[i].predictors[j].preprocessHours[k] = true;
                 }
             } else {
                 m_stepsLocks[i].predictors[j].dataId = true;
                 m_stepsLocks[i].predictors[j].level = true;
-                m_stepsLocks[i].predictors[j].timeHours = true;
+                m_stepsLocks[i].predictors[j].hours = true;
             }
 
             m_stepsLocks[i].predictors[j].xMin = true;
@@ -1378,7 +1373,7 @@ void asParametersOptimization::Unlock(vi &indices)
                     }
                     counter++;
                     if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                        m_stepsLocks[i].predictors[j].preprocessTimeHours[k] = false;
+                        m_stepsLocks[i].predictors[j].preprocessHours[k] = false;
                     }
                     counter++;
                 }
@@ -1392,7 +1387,7 @@ void asParametersOptimization::Unlock(vi &indices)
                 }
                 counter++;
                 if (asFind(&indices[0], &indices[length - 1], counter) >= 0) {
-                    m_stepsLocks[i].predictors[j].timeHours = false;
+                    m_stepsLocks[i].predictors[j].hours = false;
                 }
                 counter++;
             }
@@ -1443,7 +1438,7 @@ int asParametersOptimization::GetVariablesNb()
                         counter++;
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k])
                         counter++;
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k])
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k])
                         counter++;
                 }
             } else {
@@ -1451,7 +1446,7 @@ int asParametersOptimization::GetVariablesNb()
                     counter++;
                 if (!m_stepsLocks[i].predictors[j].level)
                     counter++;
-                if (!m_stepsLocks[i].predictors[j].timeHours)
+                if (!m_stepsLocks[i].predictors[j].hours)
                     counter++;
             }
 

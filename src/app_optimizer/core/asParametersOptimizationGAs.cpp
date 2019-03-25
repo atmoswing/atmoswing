@@ -81,7 +81,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         indices.push_back(counter);
                     }
                     counter++;
@@ -97,7 +97,7 @@ void asParametersOptimizationGAs::BuildChromosomes()
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     indices.push_back(counter);
                 }
                 counter++;
@@ -219,7 +219,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index)
                             return false;
                     } else {
@@ -247,7 +247,7 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index)
                         return false;
                 } else {
@@ -363,7 +363,7 @@ int asParametersOptimizationGAs::GetParamType(int index)
                     }
                     counter++;
 
-                    // PreprocessTimeHours
+                    // PreprocessHours
                     if (counter == index) {
                         return 1;
                     }
@@ -491,9 +491,9 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessTimeHours(i, j, k);
+                            return (double) GetPreprocessHour(i, j, k);
                         }
                     }
                     counter++;
@@ -531,9 +531,9 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorTimeHours(i, j);
+                        return (double) GetPredictorHours(i, j);
                     }
                 }
                 counter++;
@@ -639,9 +639,9 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessTimeHoursUpperLimit(i, j, k);
+                            return (double) GetPreprocessHoursUpperLimit(i, j, k);
                         }
                     }
                     counter++;
@@ -663,9 +663,9 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorTimeHoursUpperLimit(i, j);
+                        return (double) GetPredictorHoursUpperLimit(i, j);
                     }
                 }
                 counter++;
@@ -761,9 +761,9 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessTimeHoursLowerLimit(i, j, k);
+                            return (double) GetPreprocessHoursLowerLimit(i, j, k);
                         }
                     }
                     counter++;
@@ -783,9 +783,9 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorTimeHoursLowerLimit(i, j);
+                        return (double) GetPredictorHoursLowerLimit(i, j);
                     }
                 }
                 counter++;
@@ -880,9 +880,9 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessTimeHoursIteration(i, j, k);
+                            return (double) GetPreprocessHoursIteration(i, j, k);
                         }
                     }
                     counter++;
@@ -902,9 +902,9 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorTimeHoursIteration(i, j);
+                        return (double) GetPredictorHoursIteration(i, j);
                     }
                 }
                 counter++;
@@ -1028,11 +1028,11 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     }
                     counter++;
 
-                    if (!m_stepsLocks[i].predictors[j].preprocessTimeHours[k]) {
+                    if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
                             int val = asRound(newVal);
-                            if (!SetPreprocessTimeHours(i, j, k, val)) {
-                                asThrowException(_("Error in SetPreprocessTimeHours from GAs."));
+                            if (!SetPreprocessHour(i, j, k, val)) {
+                                asThrowException(_("Error in SetPreprocessHour from GAs."));
                             }
                             return;
                         }
@@ -1076,10 +1076,10 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 }
                 counter++;
 
-                if (!m_stepsLocks[i].predictors[j].timeHours) {
+                if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
                         int val = asRound(newVal);
-                        if (!SetPredictorTimeHours(i, j, val)) {
+                        if (!SetPredictorHours(i, j, val)) {
                             asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
                         }
                         return;

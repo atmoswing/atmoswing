@@ -56,7 +56,7 @@ asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId)
     m_leadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
-    m_restrictTimeHours = 0;
+    m_restrictHours = 0;
     m_restrictTimeStepHours = 24;
 }
 

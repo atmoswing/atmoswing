@@ -57,14 +57,14 @@ public:
     {
         vvwxs preprocessDataId;
         vvf preprocessLevels;
-        vvd preprocessTimeHours;
+        vvd preprocessHours;
         vwxs dataId;
         vf level;
         vd xMin;
         vi xPtsNb;
         vd yMin;
         vi yPtsNb;
-        vd timeHours;
+        vd hours;
         vwxs criteria;
         vf weight;
     } ParamsPredictorVect;
@@ -93,14 +93,14 @@ public:
     {
         vb preprocessDataId;
         vb preprocessLevels;
-        vb preprocessTimeHours;
+        vb preprocessHours;
         bool dataId;
         bool level;
         bool xMin;
         bool xPtsNb;
         bool yMin;
         bool yPtsNb;
-        bool timeHours;
+        bool hours;
         bool weight;
         bool criteria;
     } ParamsPredictorBool;
@@ -281,7 +281,7 @@ public:
         return true;
     }
 
-    bool SetPreprocessTimeHoursVector(int iStep, int iPtor, int iPre, vd val)
+    bool SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val)
     {
         if (val.empty()) {
             wxLogError(_("The provided preprocess time (hours) vector is empty."));
@@ -295,11 +295,11 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre].clear();
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
 
         return true;
@@ -393,12 +393,12 @@ public:
         return true;
     }
 
-    vd GetPredictorTimeHoursVector(int iStep, int iPtor) const
+    vd GetPredictorHourVector(int iStep, int iPtor) const
     {
-        return m_stepsVect[iStep].predictors[iPtor].timeHours;
+        return m_stepsVect[iStep].predictors[iPtor].hours;
     }
 
-    bool SetPredictorTimeHoursVector(int iStep, int iPtor, vd val)
+    bool SetPredictorHoursVector(int iStep, int iPtor, vd val)
     {
         if (val.empty()) {
             wxLogError(_("The provided predictor time (hours) vector is empty."));
@@ -411,7 +411,7 @@ public:
                 }
             }
         }
-        m_stepsVect[iStep].predictors[iPtor].timeHours = val;
+        m_stepsVect[iStep].predictors[iPtor].hours = val;
         return true;
     }
 
@@ -507,14 +507,14 @@ public:
         return true;
     }
 
-    vd GetPreprocessTimeHoursVector(int iStep, int iPtor, int iPre) const
+    vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const
     {
-        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPre);
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            return m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+            return m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre];
         } else {
-            wxLogError(_("Trying to access to an element outside of preprocessTimeHours (vect) in the parameters object."));
+            wxLogError(_("Trying to access to an element outside of preprocessHours (vect) in the parameters object."));
             vd empty;
             return empty;
         }

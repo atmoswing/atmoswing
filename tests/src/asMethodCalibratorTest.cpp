@@ -1507,9 +1507,9 @@ TEST(MethodCalibrator, PreloadingWithLevelCorrection)
 
     // Check original parameters
     EXPECT_EQ(params.GetPredictorLevel(0, 0), 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 6);
+    EXPECT_EQ(params.GetPredictorHours(0, 0), 6);
     EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0, 1), 6);
+    EXPECT_EQ(params.GetPredictorHours(0, 1), 6);
 
     // Preload data
     asMethodCalibratorSingle calibrator;
@@ -1536,9 +1536,9 @@ TEST(MethodCalibrator, PreloadingWithLevelCorrection)
 
     // Check corrected parameters
     EXPECT_TRUE(params.GetPredictorLevel(0, 0) > 0);
-    EXPECT_EQ(params.GetPredictorTimeHours(0, 0), 24);
+    EXPECT_EQ(params.GetPredictorHours(0, 0), 24);
     EXPECT_EQ(params.GetPredictorLevel(0, 1), 0);
-    EXPECT_TRUE(params.GetPredictorTimeHours(0, 1) > 6);
+    EXPECT_TRUE(params.GetPredictorHours(0, 1) > 6);
 
     // Check pointer sharing
     EXPECT_FALSE(calibrator.IsArchiveDataPointerCopy(0, 0, 1));

@@ -54,7 +54,7 @@ public:
 
     bool BuildFilenamesUrls();
 
-    void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours, int leadTimeNb);
+    void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
 
     double GetForecastLeadTimeEnd() const
     {
@@ -101,7 +101,7 @@ protected:
     double m_runDateInUse;
     wxString m_commandDownload;
     bool m_restrictDownloads;
-    double m_restrictTimeHours;
+    double m_restrictHours;
     double m_restrictTimeStepHours;
     vwxs m_fileNames;
     vwxs m_urls;

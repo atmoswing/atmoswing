@@ -45,7 +45,7 @@ asPredictorOper::asPredictorOper(const wxString &dataId)
           m_runDateInUse(0.0),
           m_commandDownload(),
           m_restrictDownloads(false),
-          m_restrictTimeHours(0.0),
+          m_restrictHours(0.0),
           m_restrictTimeStepHours(0.0)
 {
 
@@ -165,15 +165,15 @@ double asPredictorOper::DecrementRunDateInUse()
     return m_runDateInUse;
 }
 
-void asPredictorOper::RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours, int leadTimeNb)
+void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb)
 {
     m_restrictDownloads = true;
-    m_restrictTimeHours = restrictTimeHours;
+    m_restrictHours = restrictHours;
     m_restrictTimeStepHours = restrictTimeStepHours;
-    m_leadTimeEnd = 24 * (leadTimeNb + floor(restrictTimeHours / restrictTimeStepHours));
+    m_leadTimeEnd = 24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
-    wxASSERT(m_restrictTimeHours > -100);
-    wxASSERT(m_restrictTimeHours < 100);
+    wxASSERT(m_restrictHours > -100);
+    wxASSERT(m_restrictHours < 100);
 }
 
 bool asPredictorOper::BuildFilenamesUrls()
@@ -209,7 +209,7 @@ bool asPredictorOper::BuildFilenamesUrls()
     if (m_restrictDownloads) {
         // Get the real lead time
         double dayRun = floor(m_runDateInUse);
-        double desiredTime = dayRun + m_restrictTimeHours / 24.0;
+        double desiredTime = dayRun + m_restrictHours / 24.0;
         double diff = desiredTime - m_runDateInUse;
         m_leadTimeStart = (int) (diff * 24.0);
         m_leadTimeStep = m_restrictTimeStepHours;

@@ -340,7 +340,7 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring *params) const
 {
     double timeStartCalibration = params->GetCalibrationStart();
-    timeStartCalibration += std::abs(params->GetTimeShiftDays());
+    timeStartCalibration += std::abs(params->GetPredictorsStartDiff());
 
     return timeStartCalibration;
 }

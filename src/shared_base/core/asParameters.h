@@ -49,7 +49,7 @@ public:
         bool preload;
         bool standardize;
         vwxs preloadDataIds;
-        vd preloadTimeHours;
+        vd preloadHours;
         vf preloadLevels;
         double preloadXmin;
         int preloadXptsnb;
@@ -60,7 +60,7 @@ public:
         vwxs preprocessDatasetIds;
         vwxs preprocessDataIds;
         vf preprocessLevels;
-        vd preprocessTimeHours;
+        vd preprocessHours;
         vi preprocessMembersNb;
         float level;
         wxString gridType;
@@ -73,7 +73,7 @@ public:
         double yStep;
         double yShift;
         int flatAllowed;
-        double timeHours;
+        double hours;
         int membersNb;
         wxString criteria;
         float weight;
@@ -239,7 +239,7 @@ public:
         return true;
     }
 
-    double GetTimeShiftDays() const
+    double GetPredictorsStartDiff() const
     {
         double shift = 0;
         if (m_timeMinHours < 0) {
@@ -373,14 +373,14 @@ public:
 
     bool SetPreloadDataIds(int iStep, int iPtor, wxString val);
 
-    vd GetPreloadTimeHours(int iStep, int iPtor) const
+    vd GetPreloadHours(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].preloadTimeHours;
+        return m_steps[iStep].predictors[iPtor].preloadHours;
     }
 
-    bool SetPreloadTimeHours(int iStep, int iPtor, vd val);
+    bool SetPreloadHours(int iStep, int iPtor, vd val);
 
-    bool SetPreloadTimeHours(int iStep, int iPtor, double val);
+    bool SetPreloadHours(int iStep, int iPtor, double val);
 
     vf GetPreloadLevels(int iStep, int iPtor) const
     {
@@ -461,9 +461,11 @@ public:
 
     bool SetPreprocessLevel(int iStep, int iPtor, int iPre, float val);
 
-    double GetPreprocessTimeHours(int iStep, int iPtor, int iPre) const;
+    double GetPreprocessHour(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessTimeHours(int iStep, int iPtor, int iPre, double val);
+    double GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) const;
+
+    bool SetPreprocessHour(int iStep, int iPtor, int iPre, double val);
 
     int GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const;
 
@@ -560,12 +562,17 @@ public:
 
     bool SetPredictorFlatAllowed(int iStep, int iPtor, int val);
 
-    double GetPredictorTimeHours(int iStep, int iPtor) const
+    double GetPredictorHours(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].timeHours;
+        return m_steps[iStep].predictors[iPtor].hours;
     }
 
-    bool SetPredictorTimeHours(int iStep, int iPtor, double val);
+    double GetPredictorTimeAsDays(int iStep, int iPtor) const
+    {
+        return m_steps[iStep].predictors[iPtor].hours / 24.0;
+    }
+
+    bool SetPredictorHours(int iStep, int iPtor, double val);
 
     int GetPredictorMembersNb(int iStep, int iPtor) const
     {

@@ -65,10 +65,10 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_TRUE(params.GetPredictorDatasetId(0, 0).IsSameAs("NCEP_R-1"));
     EXPECT_TRUE(params.GetPredictorDataId(0, 0).IsSameAs("hgt"));
     EXPECT_EQ(500, params.GetPredictorLevel(0, 0));
-    EXPECT_EQ(6, params.GetPredictorTimeHoursIteration(0, 0));
-    EXPECT_EQ(-48, params.GetPredictorTimeHoursLowerLimit(0, 0));
-    EXPECT_EQ(48, params.GetPredictorTimeHoursUpperLimit(0, 0));
-    EXPECT_FALSE(params.IsPredictorTimeHoursLocked(0, 0));
+    EXPECT_EQ(6, params.GetPredictorHoursIteration(0, 0));
+    EXPECT_EQ(-48, params.GetPredictorHoursLowerLimit(0, 0));
+    EXPECT_EQ(48, params.GetPredictorHoursUpperLimit(0, 0));
+    EXPECT_FALSE(params.IsPredictorHourLocked(0, 0));
     EXPECT_TRUE(params.GetPredictorGridType(0, 0).IsSameAs("regular"));
     EXPECT_EQ(2.5, params.GetPredictorXminIteration(0, 0));
     EXPECT_EQ(300, params.GetPredictorXminLowerLimit(0, 0));
@@ -101,9 +101,9 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_EQ(2, params.GetPreprocessLevelVector(0, 1, 0).size());
     EXPECT_EQ(850, params.GetPreprocessLevelVector(0, 1, 0)[0]);
     EXPECT_EQ(1000, params.GetPreprocessLevelVector(0, 1, 0)[1]);
-    EXPECT_EQ(6, params.GetPreprocessTimeHoursIteration(0, 1, 0));
-    EXPECT_EQ(-6, params.GetPreprocessTimeHoursLowerLimit(0, 1, 0));
-    EXPECT_EQ(24, params.GetPreprocessTimeHoursUpperLimit(0, 1, 0));
+    EXPECT_EQ(6, params.GetPreprocessHoursIteration(0, 1, 0));
+    EXPECT_EQ(-6, params.GetPreprocessHoursLowerLimit(0, 1, 0));
+    EXPECT_EQ(24, params.GetPreprocessHoursUpperLimit(0, 1, 0));
     EXPECT_TRUE(params.GetPredictorGridType(0, 1).IsSameAs("regular"));
     EXPECT_EQ(2.5, params.GetPredictorXminIteration(0, 1));
     EXPECT_EQ(300, params.GetPredictorXminLowerLimit(0, 1));

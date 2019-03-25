@@ -45,7 +45,7 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
     wxLogMessage(_("Processing variables exploration for step %d"), iStep);
     wxLogMessage(_("Processing %d variables, %d hours, %d levels, %d criteria."),
                  (int) params.GetPredictorDataIdVector(iStep, 0).size(),
-                 (int) params.GetPredictorTimeHoursVector(iStep, 0).size(),
+                 (int) params.GetPredictorHourVector(iStep, 0).size(),
                  (int) params.GetPredictorLevelVector(iStep, 0).size(),
                  (int) params.GetPredictorCriteriaVector(iStep, 0).size());
 
@@ -66,10 +66,10 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
                 if (!params.SetPredictorDataId(iStep, iPtor, dataId))
                     return false;
 
-                vd vPredictorTimeHours = params.GetPredictorTimeHoursVector(iStep, iPtor);
+                vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
 
-                for (double timeHour : vPredictorTimeHours) {
-                    if (!params.SetPredictorTimeHours(iStep, iPtor, timeHour))
+                for (double hour : vPredictorHours) {
+                    if (!params.SetPredictorHours(iStep, iPtor, hour))
                         return false;
 
                     vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
@@ -89,9 +89,9 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
                             if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels))
                                 return false;
 
-                            vd slctPreloadTimeHours;
-                            slctPreloadTimeHours.push_back(timeHour);
-                            if (!params.SetPreloadTimeHours(iStep, iPtor, slctPreloadTimeHours))
+                            vd slctPreloadHours;
+                            slctPreloadHours.push_back(hour);
+                            if (!params.SetPreloadHours(iStep, iPtor, slctPreloadHours))
                                 return false;
 
                             m_originalParams = params;

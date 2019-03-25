@@ -261,7 +261,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                     if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+                    if (!SetPredictorHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
@@ -343,7 +343,7 @@ bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast 
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
                     if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))

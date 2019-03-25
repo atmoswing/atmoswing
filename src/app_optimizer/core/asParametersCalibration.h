@@ -106,7 +106,7 @@ public:
         return m_scoreVect.postprocessDupliExp;
     }
 
-    double GetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre) const;
+    double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const;
 
     double GetPredictorXminLowerLimit(int iStep, int iPtor) const;
 
@@ -116,9 +116,9 @@ public:
 
     int GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const;
 
-    double GetPredictorTimeHoursLowerLimit(int iStep, int iPtor) const;
+    double GetPredictorHoursLowerLimit(int iStep, int iPtor) const;
 
-    double GetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre) const;
+    double GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const;
 
     double GetPredictorXminUpperLimit(int iStep, int iPtor) const;
 
@@ -128,7 +128,7 @@ public:
 
     int GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorTimeHoursUpperLimit(int iStep, int iPtor) const;
+    double GetPredictorHoursUpperLimit(int iStep, int iPtor) const;
 
     int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
 
@@ -142,7 +142,7 @@ private:
     vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsScoreVect m_scoreVect;
 
-    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocTimeHours) const;
+    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocHours) const;
 
     bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 

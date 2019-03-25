@@ -94,7 +94,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.yStep = 0;
     predictor.yShift = 0;
     predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.timeHours = 0;
+    predictor.hours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
     predictor.membersNb = 0;
@@ -127,7 +127,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.yStep = 0;
     predictor.yShift = 0;
     predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.timeHours = 0;
+    predictor.hours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
     predictor.membersNb = 0;
@@ -344,7 +344,7 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
             if (!SetPredictorLevel(iStep, iPtor, asFileParameters::GetFloat(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "time") {
-            if (!SetPredictorTimeHours(iStep, iPtor, asFileParameters::GetDouble(nodeParam)))
+            if (!SetPredictorHours(iStep, iPtor, asFileParameters::GetDouble(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "members") {
             if (!SetPredictorMembersNb(iStep, iPtor, asFileParameters::GetInt(nodeParam)))
@@ -415,7 +415,7 @@ bool asParameters::ParsePreprocessedPredictors(asFileParameters &fileParams, int
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, asFileParameters::GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, asFileParameters::GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, asFileParameters::GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
                     if (!SetPreprocessMembersNb(iStep, iPtor, iPre, asFileParameters::GetInt(nodeParamPreprocess)))
@@ -513,12 +513,12 @@ bool asParameters::SetPreloadingProperties()
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
                     SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
                     SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
-                    SetPredictorTimeHours(iStep, iPtor, GetPreprocessTimeHours(iStep, iPtor, 0));
+                    SetPredictorHours(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
                 } else {
                     SetPredictorDatasetId(iStep, iPtor, "mix");
                     SetPredictorDataId(iStep, iPtor, "mix");
                     SetPredictorLevel(iStep, iPtor, 0);
-                    SetPredictorTimeHours(iStep, iPtor, 0);
+                    SetPredictorHours(iStep, iPtor, 0);
                 }
             }
 
@@ -528,13 +528,13 @@ bool asParameters::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevel(iStep, iPtor)))
                     return false;
-                if (!SetPreloadTimeHours(iStep, iPtor, GetPredictorTimeHours(iStep, iPtor)))
+                if (!SetPreloadHours(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
                     return false;
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
                 vf preprocLevels;
-                vd preprocTimeHours;
+                vd preprocHours;
                 int preprocSize = GetPreprocessSize(iStep, iPtor);
 
                 // Different actions depending on the preprocessing method.
@@ -545,14 +545,14 @@ bool asParameters::SetPreloadingProperties()
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(iStep, iPtor, 0));
-                    preprocTimeHours.push_back(GetPreprocessTimeHours(iStep, iPtor, 0));
+                    preprocHours.push_back(GetPreprocessHour(iStep, iPtor, 0));
                 } else if (method.IsSameAs("HumidityFlux")) {
                     if (preprocSize != 4) {
                         wxLogError(msg, preprocSize, 4, "HumidityFlux");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(iStep, iPtor, 0));
-                    preprocTimeHours.push_back(GetPreprocessTimeHours(iStep, iPtor, 0));
+                    preprocHours.push_back(GetPreprocessHour(iStep, iPtor, 0));
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
                            method.IsSameAs("HumidityIndex")) {
                     if (preprocSize != 2) {
@@ -560,22 +560,22 @@ bool asParameters::SetPreloadingProperties()
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(iStep, iPtor, 0));
-                    preprocTimeHours.push_back(GetPreprocessTimeHours(iStep, iPtor, 0));
+                    preprocHours.push_back(GetPreprocessHour(iStep, iPtor, 0));
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
                     if (preprocSize != 4) {
                         wxLogError(msg, preprocSize, 4, "FormerHumidityIndex");
                         return false;
                     }
                     preprocLevels.push_back(GetPreprocessLevel(iStep, iPtor, 0));
-                    preprocTimeHours.push_back(GetPreprocessTimeHours(iStep, iPtor, 0));
-                    preprocTimeHours.push_back(GetPreprocessTimeHours(iStep, iPtor, 1));
+                    preprocHours.push_back(GetPreprocessHour(iStep, iPtor, 0));
+                    preprocHours.push_back(GetPreprocessHour(iStep, iPtor, 1));
                 } else {
                     wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
                 if (!SetPreloadLevels(iStep, iPtor, preprocLevels))
                     return false;
-                if (!SetPreloadTimeHours(iStep, iPtor, preprocTimeHours))
+                if (!SetPreloadHours(iStep, iPtor, preprocHours))
                     return false;
             }
         }
@@ -772,10 +772,10 @@ void asParameters::SortLevelsAndTime()
             double hour;
             if (oldPtors[0].preprocess) {
                 level = oldPtors[0].preprocessLevels[0];
-                hour = oldPtors[0].preprocessTimeHours[0];
+                hour = oldPtors[0].preprocessHours[0];
             } else {
                 level = oldPtors[0].level;
-                hour = oldPtors[0].timeHours;
+                hour = oldPtors[0].hours;
             }
 
             for (unsigned int i = 1; i < oldPtors.size(); i++) {
@@ -784,10 +784,10 @@ void asParameters::SortLevelsAndTime()
                 double nextHour;
                 if (oldPtors[i].preprocess) {
                     nextLevel = oldPtors[i].preprocessLevels[0];
-                    nextHour = oldPtors[i].preprocessTimeHours[0];
+                    nextHour = oldPtors[i].preprocessHours[0];
                 } else {
                     nextLevel = oldPtors[i].level;
-                    nextHour = oldPtors[i].timeHours;
+                    nextHour = oldPtors[i].hours;
                 }
 
                 // Compare to previous one
@@ -906,15 +906,15 @@ bool asParameters::FixTimeLimits()
                 double minHourPredictor = 1000.0, maxHourPredictor = -1000.0;
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(m_steps[i].predictors[j].preprocessTimeHours[k], minHour);
-                    maxHour = wxMax(m_steps[i].predictors[j].preprocessTimeHours[k], maxHour);
-                    minHourPredictor = wxMin(m_steps[i].predictors[j].preprocessTimeHours[k], minHourPredictor);
-                    maxHourPredictor = wxMax(m_steps[i].predictors[j].preprocessTimeHours[k], maxHourPredictor);
-                    m_steps[i].predictors[j].timeHours = minHourPredictor;
+                    minHour = wxMin(m_steps[i].predictors[j].preprocessHours[k], minHour);
+                    maxHour = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHour);
+                    minHourPredictor = wxMin(m_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
+                    maxHourPredictor = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
+                    m_steps[i].predictors[j].hours = minHourPredictor;
                 }
             } else {
-                minHour = wxMin(m_steps[i].predictors[j].timeHours, minHour);
-                maxHour = wxMax(m_steps[i].predictors[j].timeHours, maxHour);
+                minHour = wxMin(m_steps[i].predictors[j].hours, minHour);
+                maxHour = wxMax(m_steps[i].predictors[j].hours, maxHour);
             }
         }
     }
@@ -1017,13 +1017,13 @@ wxString asParameters::Print() const
                     content.Append(wxString::Format("| %s %s\t", GetPreprocessDatasetId(iStep, iPtor, iPre),
                                                     GetPreprocessDataId(iStep, iPtor, iPre)));
                     content.Append(wxString::Format("Level\t%g\t", GetPreprocessLevel(iStep, iPtor, iPre)));
-                    content.Append(wxString::Format("Time\t%g\t", GetPreprocessTimeHours(iStep, iPtor, iPre)));
+                    content.Append(wxString::Format("Time\t%g\t", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
                 content.Append(wxString::Format("%s %s\t", GetPredictorDatasetId(iStep, iPtor),
                                                 GetPredictorDataId(iStep, iPtor)));
                 content.Append(wxString::Format("Level\t%g\t", GetPredictorLevel(iStep, iPtor)));
-                content.Append(wxString::Format("Time\t%g\t", GetPredictorTimeHours(iStep, iPtor)));
+                content.Append(wxString::Format("Time\t%g\t", GetPredictorHours(iStep, iPtor)));
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(iStep, iPtor)));
@@ -1146,7 +1146,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                         wxLogError(errMsg);
                         return false;
                     }
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, static_cast<float>(dVal))) {
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, static_cast<float>(dVal))) {
                         wxLogError(errMsg);
                         return false;
                     }
@@ -1181,7 +1181,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                if (!SetPredictorTimeHours(iStep, iPtor, static_cast<float>(dVal))) {
+                if (!SetPredictorHours(iStep, iPtor, static_cast<float>(dVal))) {
                     wxLogError(errMsg);
                     return false;
                 }
@@ -1503,7 +1503,7 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val)
     return true;
 }
 
-bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
+bool asParameters::SetPreloadHours(int iStep, int iPtor, vd val)
 {
     if (val.empty()) {
         wxLogError(_("The provided preload time (hours) vector is empty."));
@@ -1516,19 +1516,19 @@ bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, vd val)
             }
         }
     }
-    m_steps[iStep].predictors[iPtor].preloadTimeHours = val;
+    m_steps[iStep].predictors[iPtor].preloadHours = val;
     return true;
 }
 
-bool asParameters::SetPreloadTimeHours(int iStep, int iPtor, double val)
+bool asParameters::SetPreloadHours(int iStep, int iPtor, double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided preload time parameter is a NaN."));
         return false;
     }
 
-    m_steps[iStep].predictors[iPtor].preloadTimeHours.clear();
-    m_steps[iStep].predictors[iPtor].preloadTimeHours.push_back(val);
+    m_steps[iStep].predictors[iPtor].preloadHours.clear();
+    m_steps[iStep].predictors[iPtor].preloadHours.push_back(val);
     return true;
 }
 
@@ -1808,28 +1808,33 @@ bool asParameters::SetPreprocessLevel(int iStep, int iPtor, int iPre, float val)
     return true;
 }
 
-double asParameters::GetPreprocessTimeHours(int iStep, int iPtor, int iPre) const
+double asParameters::GetPreprocessHour(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-        return m_steps[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        return m_steps[iStep].predictors[iPtor].preprocessHours[iPre];
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessTimeHours (std) in the parameters object."));
+        wxLogError(_("Trying to access to an element outside of preprocessHours (std) in the parameters object."));
         return NaNd;
     }
 }
 
-bool asParameters::SetPreprocessTimeHours(int iStep, int iPtor, int iPre, double val)
+double asParameters::GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) const
+{
+    return GetPreprocessHour(iStep, iPtor, iPre) / 24.0;
+}
+
+bool asParameters::SetPreprocessHour(int iStep, int iPtor, int iPre, double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the preprocess time (hours) is null"));
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-        m_steps[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        m_steps[iStep].predictors[iPtor].preprocessHours[iPre] = val;
     } else {
-        wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessTimeHours.size() == iPre);
-        m_steps[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+        wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessHours.size() == iPre);
+        m_steps[iStep].predictors[iPtor].preprocessHours.push_back(val);
     }
 
     return true;
@@ -2018,14 +2023,14 @@ bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
     return true;
 }
 
-bool asParameters::SetPredictorTimeHours(int iStep, int iPtor, double val)
+bool asParameters::SetPredictorHours(int iStep, int iPtor, double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor time (hours) is null"));
         return false;
     }
 
-    m_steps[iStep].predictors[iPtor].timeHours = val;
+    m_steps[iStep].predictors[iPtor].hours = val;
 
     return true;
 }

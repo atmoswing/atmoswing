@@ -61,7 +61,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
     predictor.xPtsNb.push_back(0);
     predictor.yMin.push_back(0);
     predictor.yPtsNb.push_back(0);
-    predictor.timeHours.push_back(0);
+    predictor.hours.push_back(0);
     predictor.criteria.push_back("");
     predictor.weight.push_back(1);
 
@@ -183,14 +183,14 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                     nodePreprocessingData->AddChild(
                             fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("time", GetPreprocessTimeHours(iStep, iPtor, iPre)));
+                            fileParams.CreateNodeWithValue("time", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
                 nodePredictor->AddChild(
                         fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorTimeHours(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHours(iStep, iPtor)));
             }
 
             wxXmlNode *nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
