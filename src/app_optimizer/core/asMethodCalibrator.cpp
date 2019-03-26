@@ -321,6 +321,10 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 
     if (stationIds.size() == 1) {
         id << stationIds[0];
+    } else if (stationIds.size() > 10) {
+        id << stationIds[0];
+        id << '-';
+        id << stationIds[stationIds.size() - 1];
     } else {
         for (int i = 0; i < (int) stationIds.size(); i++) {
             id << stationIds[i];
@@ -456,7 +460,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
-                                 params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                 params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     if (params->HasValidationPeriod()) // remove validation years
     {
         timeArrayArchive.SetForbiddenYears(params->GetValidationYearsVector());
@@ -503,7 +507,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params)); // Always Jan 1st
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
     asTimeArray timeArrayData(timeStartData, timeEndData, params->GetTimeArrayAnalogsTimeStepHours(),
-                              asTimeArray::Simple);
+                              params->GetTimeArrayTargetMode());
     timeArrayData.Init();
 
     // Check on the archive length
@@ -513,39 +517,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
         return false;
     }
     wxLogVerbose(_("Date arrays created."));
-    /*
-        // Calculate needed memory
-        wxLongLong neededMem = 0;
-        for(int iPtor=0; iPtor<params->GetPredictorsNb(iStep); iPtor++)
-        {
-            neededMem += (params->GetPredictorXptsnb(iStep, iPtor))
-                         * (params->GetPredictorYptsnb(iStep, iPtor));
-        }
-        neededMem *= timeArrayArchive.GetSize(); // time dimension
-        neededMem *= 4; // to bytes (for floats)
-        double neededMemMb = neededMem.ToDouble();
-        neededMemMb /= 1048576.0; // to Mb
 
-        // Get available memory
-        wxMemorySize freeMemSize = wxGetFreeMemory();
-        wxLongLong freeMem = freeMemSize;
-        double freeMemMb = freeMem.ToDouble();
-        freeMemMb /= 1048576.0; // To Mb
-
-        if(freeMemSize==-1)
-        {
-            wxLogVerbose(_("Needed memory for data: %.2f Mb (cannot evaluate available memory)"), neededMemMb);
-        }
-        else
-        {
-            wxLogVerbose(_("Needed memory for data: %.2f Mb (%.2f Mb available)"), neededMemMb, freeMemMb);
-            if(neededMemMb>freeMemMb)
-            {
-                wxLogError(_("Data cannot fit into available memory."));
-                return false;
-            }
-        }
-    */
     // Load the predictor data
     std::vector<asPredictor *> predictors;
     if (!LoadArchiveData(predictors, params, iStep, timeStartData, timeEndData)) {
@@ -616,7 +588,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     double timeStart = params->GetArchiveStart();
     double timeEnd = params->GetArchiveEnd();
     timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+                                 params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
 
@@ -900,7 +873,7 @@ bool asMethodCalibrator::Validate(asParametersCalibration *params)
 
     if (!params->HasValidationPeriod()) {
         wxLogWarning("The parameters have no validation period !");
-        return false;
+        return true;
     }
 
     m_validationMode = true;

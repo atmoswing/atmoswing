@@ -143,22 +143,14 @@ enum
 enum Order
 {
     Asc,    // Ascendant
-    Desc,    // Descendant
-};
-
-enum Season
-{
-    DJF,    //  Winter
-    MAM,    // Spring
-    JJA,    // Summer
-    SON,    // Fall
+    Desc,   // Descendant
 };
 
 enum TimeFormat
 {
     classic,
     ISOdate,
-    ISOdatetime,
+    ISOdateTime,
     DDMMYYYY,
     YYYYMMDD,
     full,
@@ -167,10 +159,10 @@ enum TimeFormat
     YYYYMMDDhhmm,
     DDMMYYYYhhmmss,
     YYYYMMDDhhmmss,
-    timeonly,
+    timeOnly,
     hhmm,
-    nowplushours,
-    nowminushours,
+    nowPlusHours,
+    nowMinusHours,
     concentrate,
     guess
 };

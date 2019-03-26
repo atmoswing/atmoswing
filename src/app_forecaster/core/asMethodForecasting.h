@@ -33,7 +33,7 @@
 #include <asMethodStandard.h>
 #include <asParametersForecast.h>
 #include <asPredictorOper.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 #include <asCriteria.h>
 #include <asBatchForecasts.h>
 #include <asResultsForecastAggregator.h>
@@ -98,7 +98,7 @@ private:
     asResultsForecastAggregator m_aggregator;
     vwxs m_resultsFilePaths;
     wxWindow *m_parent;
-    std::vector<asPredictorArch *> m_storagePredictorsArchivePreprocess;
+    std::vector<asPredictor *> m_storagePredictorsArchivePreprocess;
     std::vector<asPredictorOper *> m_storagePredictorsRealtimePreprocess;
     std::vector<asPredictor *> m_storagePredictorsArchive;
     std::vector<asPredictor *> m_storagePredictorsRealtime;

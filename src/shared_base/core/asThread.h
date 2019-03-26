@@ -42,7 +42,6 @@ public:
         PreloadData,
         ProcessorGetAnalogsDates,
         ProcessorGetAnalogsSubDates,
-        PreprocessorGradients,
         MethodOptimizerRandomSet,
         MethodOptimizerGeneticAlgorithms
     };

@@ -28,7 +28,8 @@
 
 #include "asConfig.h"
 
-#include "wx/stdpaths.h"        // wxStandardPaths returns the standard locations in the file system
+#include <wx/dir.h>
+#include <wx/stdpaths.h>        // wxStandardPaths returns the standard locations in the file system
 
 
 wxString asConfig::GetLogDir()
@@ -52,20 +53,32 @@ wxString asConfig::GetTempDir()
 wxString asConfig::CreateTempFileName(const wxString &prefix)
 {
     wxString path = asConfig::GetTempDir() + prefix;
-    wxString pathTry;
 
     static const size_t numTries = 1000;
     for (size_t n = 0; n < numTries; n++) {
-        // 3 hex digits is enough for numTries == 1000 < 4096
-        pathTry = path + wxString::Format(wxT("%.03x"), (unsigned int) n);
-        if (!wxFileName::FileExists(pathTry) && !wxFileName::DirExists(pathTry)) {
-            break;
+        wxString pathFile = path + wxString::Format(wxT("%.03x"), (unsigned int) n);
+        if (!wxFileName::FileExists(pathFile) && !wxFileName::DirExists(pathFile)) {
+            return pathFile;
         }
-
-        pathTry.clear();
     }
 
-    return pathTry;
+    return wxEmptyString;
+}
+
+wxString asConfig::CreateTempDir(const wxString &prefix)
+{
+    wxString path = asConfig::GetTempDir() + prefix;
+
+    static const size_t numTries = 1000;
+    for (size_t n = 0; n < numTries; n++) {
+        wxString pathDir = path + wxString::Format(wxT("%.03x"), (unsigned int) n);
+        if (!wxFileName::FileExists(pathDir) && !wxFileName::DirExists(pathDir)) {
+            wxDir::Make(pathDir);
+            return pathDir;
+        }
+    }
+
+    return wxEmptyString;
 }
 
 wxString asConfig::GetDataDir()

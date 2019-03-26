@@ -33,7 +33,7 @@
 #include <asMethodStandard.h>
 #include <asParametersCalibration.h>
 #include <asResultsDates.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 #include <asResultsParametersArray.h>
 #include <asResultsDates.h>
 #include <asResultsValues.h>
@@ -49,6 +49,7 @@
 #include <asProcessorScore.h>
 #include <asPreprocessor.h>
 #include <asScore.h>
+#include <utility>
 
 
 class asMethodCalibrator
@@ -57,7 +58,7 @@ class asMethodCalibrator
 public:
     asMethodCalibrator();
 
-    virtual ~asMethodCalibrator();
+    ~asMethodCalibrator() override;
 
     bool GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep, bool &containsNaNs);
 
@@ -73,9 +74,9 @@ public:
 
     bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep = 0);
 
-    void ClearAll();
+    virtual void ClearAll();
 
-    void ClearTemp();
+    virtual void ClearTemp();
 
     bool PushBackBestTemp();
 
@@ -87,7 +88,7 @@ public:
 
     void KeepFirstTemp();
 
-    bool SortScoresAndParametersTemp();
+    virtual bool SortScoresAndParametersTemp();
 
     bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
@@ -95,11 +96,11 @@ public:
 
     bool SetSelectedParameters(asResultsParametersArray &results);
 
-    bool SetBestParameters(asResultsParametersArray &results);
+    virtual bool SetBestParameters(asResultsParametersArray &results);
 
     wxString GetPredictandStationIdsList(vi &stationIds) const;
 
-    bool Manager();
+    bool Manager() override;
 
     bool SaveDetails(asParametersCalibration *params);
 
@@ -117,12 +118,12 @@ public:
 
     void SetScoreClimatology(vf val)
     {
-        m_scoreClimatology = val;
+        m_scoreClimatology = std::move(val);
     }
 
     void SetPredictandStationIds(vi val)
     {
-        m_predictandStationIds = val;
+        m_predictandStationIds = std::move(val);
     }
 
 protected:
@@ -154,9 +155,9 @@ protected:
 
     va1f GetClimatologyData(asParametersScoring *params);
 
-    double GetEffectiveArchiveDataStart(asParameters *params) const;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-    double GetEffectiveArchiveDataEnd(asParameters *params) const;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
 private:
 

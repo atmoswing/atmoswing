@@ -191,9 +191,10 @@ asPredictand::SpatialAggregation asPredictand::StringToSpatialAggregationEnum(co
         return Groupment;
     } else if (spatialAggregation.CmpNoCase("Catchment") == 0) {
         return Catchment;
+    } else if (spatialAggregation.CmpNoCase("Region") == 0) {
+        return Region;
     } else {
-        asThrowException(wxString::Format(_("The spatialAggregation enumeration (%s) entry doesn't exists"),
-                                          spatialAggregation));
+        wxLogError(_("The spatialAggregation enumeration (%s) entry doesn't exists"), spatialAggregation);
     }
     return Station;
 }
@@ -207,6 +208,8 @@ wxString asPredictand::SpatialAggregationEnumToString(asPredictand::SpatialAggre
             return "Groupment";
         case (Catchment):
             return "Catchment";
+        case (Region):
+            return "Region";
         default:
             wxLogError(_("The given data spatial aggregation type in unknown."));
     }

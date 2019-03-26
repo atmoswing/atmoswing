@@ -47,6 +47,7 @@ public:
         wxString datasetId;
         wxString dataId;
         bool preload;
+        bool standardize;
         vwxs preloadDataIds;
         vd preloadTimeHours;
         vf preloadLevels;
@@ -353,6 +354,16 @@ public:
         m_steps[iStep].predictors[iPtor].preload = val;
     }
 
+    void SetStandardize(int iStep, int iPtor, bool val)
+    {
+        m_steps[iStep].predictors[iPtor].standardize = val;
+    }
+
+    bool GetStandardize(int iStep, int iPtor)
+    {
+        return m_steps[iStep].predictors[iPtor].standardize;
+    }
+
     vwxs GetPreloadDataIds(int iStep, int iPtor) const
     {
         return m_steps[iStep].predictors[iPtor].preloadDataIds;
@@ -429,6 +440,14 @@ public:
     }
 
     bool SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
+
+    bool NeedsGradientPreprocessing(int iStep, int iPtor) const;
+
+    bool IsCriteriaUsingGradients(int iStep, int iPtor) const;
+
+    void FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor);
+
+    void ForceUsingGradientsPreprocessing(int iStep, int iPtor);
 
     wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 

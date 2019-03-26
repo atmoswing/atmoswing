@@ -38,10 +38,10 @@ class asMethodCalibratorSingleOnlyValues
 public:
     asMethodCalibratorSingleOnlyValues();
 
-    virtual ~asMethodCalibratorSingleOnlyValues();
+    ~asMethodCalibratorSingleOnlyValues() override;
 
 protected:
-    virtual bool Calibrate(asParametersCalibration &params);
+    bool Calibrate(asParametersCalibration &params) override;
 
 private:
 

@@ -152,13 +152,8 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
 
     wxLogMessage(_("Do not process a score. Use to save intermediate values."));
 
-    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
+    for (const auto &stationId : stationsId) {
         ClearAll();
-
-        vi stationId = stationsId[iStat];
-
-        // Reset the score of the climatology
-        m_scoreClimatology.clear();
 
         // Create results objects
         asResultsDates anaDates;
@@ -188,6 +183,9 @@ bool asMethodCalibratorSingleOnlyValues::Calibrate(asParametersCalibration &para
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;
         }
+
+        anaDates.Save();
+        anaValues.Save();
     }
 
     return true;

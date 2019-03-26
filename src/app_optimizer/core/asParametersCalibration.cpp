@@ -197,14 +197,24 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             }
         } else if (nodeParamBlock->GetName() == "validation_period") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
                     if (!SetValidationYearsVector(fileParams.GetVectorInt(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "start_year") {
+                    yStart = fileParams.GetInt(nodeParam);
+                } else if (nodeParam->GetName() == "end_year") {
+                    yEnd = fileParams.GetInt(nodeParam);
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
                 nodeParam = nodeParam->GetNext();
+            }
+            if (yStart > 0 && yEnd > 0) {
+                vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
+                if (!SetValidationYearsVector(vect))
+                    return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
             if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
@@ -274,6 +284,8 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
             while (nodeParam) {
                 if (nodeParam->GetName() == "preload") {
                     SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+                } else if (nodeParam->GetName() == "standardize") {
+                    SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
@@ -525,8 +537,8 @@ bool asParametersCalibration::SetPreloadingProperties()
                 vd preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients") || method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
-                    method.IsSameAs("Addition") || method.IsSameAs("Average")) {
+                if (NeedsGradientPreprocessing(iStep, iPtor) || method.IsSameAs("Multiplication") ||
+                    method.IsSameAs("Multiply") || method.IsSameAs("Addition") || method.IsSameAs("Average")) {
                     // Get them all
                     GetAllPreprocessTimesAndLevels(iStep, iPtor, preprocLevels, preprocTimeHours);
                 } else if (method.IsSameAs("HumidityFlux")) {
@@ -589,22 +601,22 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
 bool asParametersCalibration::InputsOK() const
 {
     // Time properties
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetCalibrationStart() <= 0) {
+    if (asIsNaN(GetCalibrationStart())) {
         wxLogError(_("The beginning of the calibration period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetCalibrationEnd() <= 0) {
+    if (asIsNaN(GetCalibrationEnd())) {
         wxLogError(_("The end of the calibration period was not provided in the parameters file."));
         return false;
     }

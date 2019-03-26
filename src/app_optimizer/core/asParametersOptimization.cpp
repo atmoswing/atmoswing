@@ -276,14 +276,24 @@ bool asParametersOptimization::ParseTimeProperties(asFileParametersOptimization 
             }
         } else if (nodeParamBlock->GetName() == "validation_period") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
+            int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
                     if (!SetValidationYearsVector(fileParams.GetVectorInt(nodeParam)))
                         return false;
+                } else if (nodeParam->GetName() == "start_year") {
+                    yStart = fileParams.GetInt(nodeParam);
+                } else if (nodeParam->GetName() == "end_year") {
+                    yEnd = fileParams.GetInt(nodeParam);
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
                 nodeParam = nodeParam->GetNext();
+            }
+            if (yStart > 0 && yEnd > 0) {
+                vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
+                if (!SetValidationYearsVector(vect))
+                    return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
             if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
@@ -406,6 +416,8 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
+        } else if (nodeParam->GetName() == "standardize") {
+            SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
@@ -835,8 +847,8 @@ bool asParametersOptimization::SetPreloadingProperties()
                     return false;
                 vd vTimeHours;
                 for (double h = GetPredictorTimeHoursLowerLimit(iStep, iPtor);
-                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor); h += GetPredictorTimeHoursIteration(iStep,
-                                                                                                             iPtor)) {
+                     h <= GetPredictorTimeHoursUpperLimit(iStep, iPtor);
+                     h += GetPredictorTimeHoursIteration(iStep, iPtor)) {
                     vTimeHours.push_back(h);
                 }
                 if (!SetPreloadTimeHours(iStep, iPtor, vTimeHours))
@@ -848,20 +860,20 @@ bool asParametersOptimization::SetPreloadingProperties()
                 vd preprocTimeHours;
 
                 // Different actions depending on the preprocessing method.
-                if (method.IsSameAs("Gradients")) {
+                if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("HumidityFlux")) {
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") ||
@@ -869,8 +881,8 @@ bool asParametersOptimization::SetPreloadingProperties()
                     preprocLevels = GetPreprocessLevelVector(iStep, iPtor, 0);
 
                     for (double h = GetPreprocessTimeHoursLowerLimit(iStep, iPtor, 0);
-                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0); h += GetPreprocessTimeHoursIteration(
-                            iStep, iPtor, 0)) {
+                         h <= GetPreprocessTimeHoursUpperLimit(iStep, iPtor, 0);
+                         h += GetPreprocessTimeHoursIteration(iStep, iPtor, 0)) {
                         preprocTimeHours.push_back(h);
                     }
                 } else if (method.IsSameAs("FormerHumidityIndex")) {
@@ -995,11 +1007,9 @@ void asParametersOptimization::InitRandomValues()
             }
 
             // Fix the criteria if S1
-            if (NeedsPreprocessing(i, j) && GetPreprocessMethod(i, j).IsSameAs("Gradients") &&
-                GetPredictorCriteria(i, j).IsSameAs("S1")) {
-                SetPredictorCriteria(i, j, "S1grads");
+            if (NeedsPreprocessing(i, j)) {
+                FixCriteriaIfGradientsPreprocessed(i, j);
             }
-
         }
     }
 

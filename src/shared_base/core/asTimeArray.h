@@ -24,6 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
 #ifndef ASTIMEARRAY_H
@@ -40,26 +41,25 @@ class asTimeArray
 {
 public:
 
-    enum Mode //!< Enumaration of the period selection mode
+    enum Mode
     {
-        SingleDay,      // A single day
-        Simple,         // A simple full time array
-        SameSeason,        // Into the same season in reference to a date
-        SeasonDJF,      // The DJF season
-        SeasonMAM,      // The MAM season
-        SeasonJJA,      // The JJA season
-        SeasonSON,      // The SON season
-        DaysInterval,    // + or - an amount of days in reference to a date
-        PredictandThresholds, Custom
+        SingleDay, // A single day
+        Simple, // A simple full time array
+        DJF, // The DJF season
+        MAM, // The MAM season
+        JJA, // The JJA season
+        SON, // The SON season
+        MonthsSelection, // Selection of months
+        DaysInterval, // + or - an amount of days in reference to a date
+        PredictandThresholds,
+        Custom
     };
 
-    asTimeArray(double start, double end, double timestephours, Mode slctmode);
+    asTimeArray(double start, double end, double timeStepHours, Mode mode);
 
-    asTimeArray(double start, double end, double timestephours, const wxString &slctModeString);
+    asTimeArray(double start, double end, double timeStepHours, const wxString &mode);
 
-    asTimeArray();
-
-    asTimeArray(double date, Mode slctmode);
+    explicit asTimeArray(double date);
 
     explicit asTimeArray(vd &timeArray);
 
@@ -69,15 +69,10 @@ public:
 
     bool Init();
 
-    bool Init(double forecastdate, double exclusiondays);
+    bool Init(double targetDate, double intervalDays, double exclusionDays);
 
-    bool Init(double forecastdate, double intervaldays, double exclusiondays);
-
-    bool Init(asPredictand &predictand, const wxString &serieName, int stationId, float minThreshold,
+    bool Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
               float maxThreshold);
-
-    bool Init(double forecastdate, double intervaldays, double exclusiondays, asPredictand &predictand,
-              const wxString &serieName, int stationId, float minThreshold, float maxThreshold);
 
     double operator[](unsigned int i)
     {
@@ -86,13 +81,15 @@ public:
         return m_timeArray[i];
     }
 
+    void Pop(int index);
+
     bool BuildArraySimple();
 
-    bool BuildArrayDaysInterval(double forecastDate);
+    bool BuildArrayDaysInterval(double targetDate, double intervalDays);
 
-    bool BuildArraySeasons(double forecastDate);
+    bool BuildArraySeason();
 
-    bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &serieName, int stationId,
+    bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &seriesName, int stationId,
                                         float minThreshold, float maxThreshold);
 
     bool HasForbiddenYears() const;
@@ -109,14 +106,9 @@ public:
         m_forbiddenYears = years;
     }
 
-    bool RemoveYears(const vi &years);
+    bool RemoveYears(vi years);
 
-    bool KeepOnlyYears(const vi &years);
-
-    bool IsSimpleMode() const
-    {
-        return (m_mode == Simple) || (m_mode == SingleDay);
-    }
+    bool KeepOnlyYears(vi years);
 
     double GetStart() const
     {
@@ -177,16 +169,6 @@ public:
         return m_timeStepDays;
     }
 
-    double GetIntervalHours() const
-    {
-        return m_intervalDays * 24;
-    }
-
-    double GetIntervalDays() const
-    {
-        return m_intervalDays;
-    }
-
     a1d GetTimeArray() const
     {
         return m_timeArray;
@@ -224,10 +206,14 @@ private:
     double m_start;
     double m_end;
     double m_timeStepDays;
-    double m_intervalDays;
-    double m_exclusionDays;
     vi m_forbiddenYears;
+    wxString m_modeStr;
 
+    void fixStartIfForbidden(double &currentStart) const;
+
+    void fixEndIfForbidden(double &currentEnd) const;
+
+    void RemoveExcludedDates(double targetDate, double exclusionDays);
 };
 
 #endif

@@ -1,12 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan 23 2018)
+// C++ code generated with wxFormBuilder (version Oct 26 2018)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __ATMOSWINGOPTIMIZERGUI_H__
-#define __ATMOSWINGOPTIMIZERGUI_H__
+#pragma once
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -43,10 +42,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFrameOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFrameOptimizerVirtual : public wxFrame 
+class asFrameOptimizerVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelMain;
 		wxNotebook* m_notebookBase;
@@ -163,7 +162,7 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxMenu* m_menuHelp;
 		wxToolBar* m_toolBar;
 		wxStatusBar* m_statusBar1;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnSaveDefault( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFramePreferences( wxCommandEvent& event ) { event.Skip(); }
@@ -173,23 +172,23 @@ class asFrameOptimizerVirtual : public wxFrame
 		virtual void OnLogLevel2( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogLevel3( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OpenFrameAbout( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFrameOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Atmoswing Optimizer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFrameOptimizerVirtual();
-	
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class asFramePreferencesOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
-class asFramePreferencesOptimizerVirtual : public wxFrame 
+class asFramePreferencesOptimizerVirtual : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxPanel* m_panelBase;
 		wxNotebook* m_notebookBase;
@@ -228,20 +227,19 @@ class asFramePreferencesOptimizerVirtual : public wxFrame
 		wxButton* m_buttonsConfirmationOK;
 		wxButton* m_buttonsConfirmationApply;
 		wxButton* m_buttonsConfirmationCancel;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnChangeMultithreadingCheckBox( wxCommandEvent& event ) { event.Skip(); }
 		virtual void ApplyChanges( wxCommandEvent& event ) { event.Skip(); }
 		virtual void CloseFrame( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveAndClose( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		asFramePreferencesOptimizerVirtual( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 482,534 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-		
+
 		~asFramePreferencesOptimizerVirtual();
-	
+
 };
 
-#endif //__ATMOSWINGOPTIMIZERGUI_H__

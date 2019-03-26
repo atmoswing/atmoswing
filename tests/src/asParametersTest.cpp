@@ -66,7 +66,7 @@ TEST(Parameters, ParametersLoadFromFile)
     EXPECT_FLOAT_EQ(0.6f, params.GetPredictorWeight(0, 0));
 
     EXPECT_TRUE(params.NeedsPreprocessing(0, 1));
-    EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("gradients"));
+    EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("SimpleGradients", false));
     EXPECT_TRUE(params.GetPreprocessDatasetId(0, 1, 0).IsSameAs("NCEP_R-1"));
     EXPECT_TRUE(params.GetPreprocessDataId(0, 1, 0).IsSameAs("hgt"));
     EXPECT_EQ(1000, params.GetPreprocessLevel(0, 1, 0));

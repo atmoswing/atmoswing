@@ -46,7 +46,7 @@ public:
     enum FileType
     {
         Netcdf,
-        Grib2,
+        Grib,
         Ascii
     };
 

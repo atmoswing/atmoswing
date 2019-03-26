@@ -29,51 +29,40 @@
 #include "asCriteriaS1.h"
 
 asCriteriaS1::asCriteriaS1()
-        : asCriteria(asCriteria::S1, "S1", _("Teweles-Wobus score"), Asc)
+        : asCriteria("S1", _("Teweles-Wobus score"), Asc)
 {
-    m_scaleBest = 0;
+    m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = false;
 }
 
-asCriteriaS1::~asCriteriaS1()
-{
-    //dtor
-}
+asCriteriaS1::~asCriteriaS1() = default;
 
 float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
-    wxASSERT_MSG(refData.rows() == evalData.rows(),
-                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
-                                  (int) evalData.rows()));
-    wxASSERT_MSG(refData.cols() == evalData.cols(),
-                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
-                                  (int) evalData.cols()));
-    wxASSERT_MSG(refData.rows() > 0, wxString::Format("refData.rows()=%d", (int) refData.rows()));
-    wxASSERT_MSG(refData.cols() > 0, wxString::Format("refData.cols()=%d", (int) refData.cols()));
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() == rowsNb);
+    wxASSERT(refData.cols() == colsNb);
+    wxASSERT(refData.rows() > 1);
+    wxASSERT(refData.cols() > 1);
 
-#ifdef _DEBUG
-    if (refData.rows() < 1)
-        asThrowException(_("The number of rows of the data is null in the S1 criteria processing."));
-    if (refData.cols() < 1)
-        asThrowException(_("The number of cols of the data is null in the S1 criteria processing."));
-#endif
+    if (m_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
+        wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
+        return NaNf;
+    }
 
     float dividend = 0, divisor = 0;
 
     dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
-                 (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-                  evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1))).abs()).sum() +
+                 (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1))).abs()).sum() +
                (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
-                 (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                  evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()))).abs()).sum();
+                 (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb))).abs()).sum();
 
     divisor = ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)).abs().max(
-            (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-             evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1)).abs())).sum() +
+               (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs())).sum() +
               ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)).abs().max(
-                      (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                       evalData.topLeftCorner(evalData.rows() - 1, evalData.cols())).abs())).sum();
+               (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs())).sum();
 
 
     /* More readable version
@@ -99,10 +88,10 @@ float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
         return 100.0f * (dividend / divisor); // Can be NaN
     } else {
         if (dividend == 0) {
-            wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNf;
+            return m_scaleWorst;
         }
     }
 

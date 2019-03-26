@@ -1,3 +1,5 @@
+$stopwatchlibs = [system.diagnostics.stopwatch]::StartNew()
+
 # Install a recent CMake
 if ($APPVEYOR) {
   Write-Host "`nInstalling CMake" -ForegroundColor Yellow
@@ -51,6 +53,7 @@ $env:WXWIN = "$LIB_DIR"
 
 . $PSScriptRoot\libs-common-install.ps1
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install Gdal
 if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {

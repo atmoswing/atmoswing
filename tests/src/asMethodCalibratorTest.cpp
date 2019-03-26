@@ -42,8 +42,8 @@
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
     // Create predictand database
-    asPredictandPrecipitation *predictand = new asPredictandPrecipitation(asPredictand::Precipitation,
-                                                                          asPredictand::Daily, asPredictand::Station);
+    auto *predictand = new asPredictandPrecipitation(asPredictand::Precipitation, asPredictand::Daily,
+                                                     asPredictand::Station);
 
     wxString datasetPredictandFilePath = wxFileName::GetCwd();
     datasetPredictandFilePath.Append("/files/catalog_precipitation_somewhere.xml");
@@ -52,11 +52,9 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -204,8 +202,6 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 #ifdef USE_CUDA
@@ -302,15 +298,6 @@ TEST(MethodCalibrator, Ref1CalibPeriodMultithreads)
     Ref1("parameters_calibration_R1_calib_period.xml", true);
 }
 
-TEST(MethodCalibrator, Ref1MultithreadsNoPreprocessing)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-
-    Ref1("parameters_calibration_R1_full_no_preproc.xml", false);
-}
-
 TEST(MethodCalibrator, Ref1CalibPeriodStandard)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
@@ -332,11 +319,9 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -499,8 +484,6 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2Multithreads)
@@ -562,7 +545,7 @@ TEST(MethodCalibrator, PreloadingSimple)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesPreload;
@@ -617,7 +600,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asResultsDates anaDatesStd;
     asResultsDates anaDatesPreload;
@@ -672,11 +655,9 @@ void Ref1Preloading()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -803,8 +784,6 @@ void Ref1Preloading()
     file.Close();
 
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref1PreloadingMultithreaded)
@@ -829,11 +808,9 @@ void Ref1PreloadingSubset()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(datasetPredictandFilePath, dataFileDir, patternFileDir);
 
     // Get parameters
     wxString paramsFilePath = wxFileName::GetCwd();
@@ -882,8 +859,6 @@ void Ref1PreloadingSubset()
     // No unit test possible, as results will differ from Grenoble's results.
 
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref1PreloadingSubsetMultithreaded)
@@ -965,7 +940,7 @@ TEST(MethodCalibrator, SmallerSpatialArea)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
+    calibrator1.SetPredictandDB(nullptr);
     asMethodCalibratorSingle calibrator2 = calibrator1;
     asMethodCalibratorSingle calibrator3 = calibrator1;
     asMethodCalibratorSingle calibrator4 = calibrator1;
@@ -1038,11 +1013,9 @@ void Ref2Preloading()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1167,8 +1140,6 @@ void Ref2Preloading()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2PreloadingMultithreads)
@@ -1201,11 +1172,9 @@ void Ref2SavingIntermediateResults()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1353,8 +1322,6 @@ void Ref2SavingIntermediateResults()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2SavingIntermediateResults)
@@ -1385,11 +1352,9 @@ void Ref2MergeByHalfAndMultiply()
     wxString patternFileDir = wxFileName::GetCwd();
     patternFileDir.Append("/files/");
 
-    wxString tmpDir = asConfig::CreateTempFileName("predictandDBtest");
-
     predictand->SetIsSqrt(true);
     predictand->SetReturnPeriodNormalization(10);
-    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir, tmpDir);
+    predictand->BuildPredictandDB(catalogPredictandFilePath, dataFileDir, patternFileDir);
 
     float P10 = 68.42240f;
 
@@ -1514,8 +1479,6 @@ void Ref2MergeByHalfAndMultiply()
 
     file.Close();
     // predictand pointer deleted by asMethodCalibration
-
-    asRemoveDir(tmpDir);
 }
 
 TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
@@ -1527,7 +1490,7 @@ TEST(MethodCalibrator, Ref2MergeByHalfAndMultiply)
     Ref2MergeByHalfAndMultiply();
 }
 
-TEST(MethodCalibrator, PrelodingWithLevelCorrection)
+TEST(MethodCalibrator, PreloadingWithLevelCorrection)
 {
     wxLogNull logNull;
 
@@ -1553,7 +1516,7 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     wxString predictorFilePath = wxFileName::GetCwd();
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(predictorFilePath);
-    calibrator.SetPredictandDB(NULL);
+    calibrator.SetPredictandDB(nullptr);
     asResultsDates anaDates;
     asResultsDates anaSubDates;
 
@@ -1596,128 +1559,4 @@ TEST(MethodCalibrator, PrelodingWithLevelCorrection)
     EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 2));
     EXPECT_TRUE(calibrator.IsArchiveDataPointerCopy(1, 2, 3));
 
-}
-
-TEST(MethodCalibrator, NormalizedS1Criteria)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-
-    // Get parameters
-    asParametersCalibration paramsStd;
-    asParametersCalibration paramsNorm;
-    wxString paramsFilePath = wxFileName::GetCwd();
-    paramsFilePath.Append("/files/parameters_calibration_normalized_S1_criteria.xml");
-    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePath));
-    ASSERT_TRUE(paramsNorm.LoadFromFile(paramsFilePath));
-    paramsStd.SetPredictorCriteria(0, 0, "S1");
-    ASSERT_TRUE(paramsStd.GetPredictorCriteria(0, 0).IsSameAs("S1"));
-
-    // Proceed to the calculations
-    asMethodCalibratorSingle calibrator1;
-    wxString predictorFilePath = wxFileName::GetCwd();
-    predictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
-    asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsDates anaDatesStd;
-    asResultsDates anaDatesNorm;
-
-    try {
-        int step = 0;
-        bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, &paramsNorm, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
-        return;
-    }
-
-    a1f targetDatesStd = anaDatesStd.GetTargetDates();
-    a1f targetDatesPreload = anaDatesNorm.GetTargetDates();
-    int targetDatesSize = (int) wxMax(targetDatesStd.cols(), targetDatesStd.rows());
-    for (int i = 0; i < targetDatesSize; i++) {
-        EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
-    }
-
-    a2f datesStd = anaDatesStd.GetAnalogsDates();
-    a2f datesNorm = anaDatesNorm.GetAnalogsDates();
-    a2f criteriaStd = anaDatesStd.GetAnalogsCriteria();
-    a2f criteriaNorm = anaDatesNorm.GetAnalogsCriteria();
-
-    EXPECT_EQ(datesStd.cols(), datesNorm.cols());
-    EXPECT_EQ(datesStd.rows(), datesNorm.rows());
-    EXPECT_EQ(criteriaStd.cols(), criteriaNorm.cols());
-    EXPECT_EQ(criteriaStd.rows(), criteriaNorm.rows());
-
-    for (int i = 0; i < datesStd.rows(); i++) {
-        for (int j = 0; j < datesStd.cols(); j++) {
-            EXPECT_EQ(datesStd.coeff(i, j), datesNorm.coeff(i, j));
-            EXPECT_NE(criteriaStd.coeff(i, j), criteriaNorm.coeff(i, j));
-        }
-    }
-}
-
-TEST(MethodCalibrator, NormalizedRMSECriteria)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-
-    // Get parameters
-    asParametersCalibration paramsStd;
-    asParametersCalibration paramsNorm;
-    wxString paramsFilePath = wxFileName::GetCwd();
-    paramsFilePath.Append("/files/parameters_calibration_normalized_RMSE_criteria.xml");
-    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePath));
-    ASSERT_TRUE(paramsNorm.LoadFromFile(paramsFilePath));
-    paramsStd.SetPredictorCriteria(0, 0, "RMSE");
-    ASSERT_TRUE(paramsStd.GetPredictorCriteria(0, 0).IsSameAs("RMSE"));
-
-    // Proceed to the calculations
-    asMethodCalibratorSingle calibrator1;
-    wxString predictorFilePath = wxFileName::GetCwd();
-    predictorFilePath.Append("/files/data-ncep-r1/others/");
-    calibrator1.SetPredictorDataDir(predictorFilePath);
-    calibrator1.SetPredictandDB(NULL);
-    asMethodCalibratorSingle calibrator2 = calibrator1;
-    asResultsDates anaDatesStd;
-    asResultsDates anaDatesNorm;
-
-    try {
-        int step = 0;
-        bool containsNaNs = false;
-        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesNorm, &paramsNorm, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
-        return;
-    }
-
-    a1f targetDatesStd = anaDatesStd.GetTargetDates();
-    a1f targetDatesPreload = anaDatesNorm.GetTargetDates();
-    int targetDatesSize = (int) wxMax(targetDatesStd.cols(), targetDatesStd.rows());
-    for (int i = 0; i < targetDatesSize; i++) {
-        EXPECT_EQ(targetDatesStd[i], targetDatesPreload[i]);
-    }
-
-    a2f datesStd = anaDatesStd.GetAnalogsDates();
-    a2f datesNorm = anaDatesNorm.GetAnalogsDates();
-    a2f criteriaStd = anaDatesStd.GetAnalogsCriteria();
-    a2f criteriaNorm = anaDatesNorm.GetAnalogsCriteria();
-
-    EXPECT_EQ(datesStd.cols(), datesNorm.cols());
-    EXPECT_EQ(datesStd.rows(), datesNorm.rows());
-    EXPECT_EQ(criteriaStd.cols(), criteriaNorm.cols());
-    EXPECT_EQ(criteriaStd.rows(), criteriaNorm.rows());
-
-    for (int i = 0; i < datesStd.rows(); i++) {
-        for (int j = 0; j < datesStd.cols(); j++) {
-            EXPECT_EQ(datesStd.coeff(i, j), datesNorm.coeff(i, j));
-            EXPECT_NE(criteriaStd.coeff(i, j), criteriaNorm.coeff(i, j));
-        }
-    }
 }

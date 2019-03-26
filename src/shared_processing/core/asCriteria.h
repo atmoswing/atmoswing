@@ -37,31 +37,12 @@ class asCriteria
         : public wxObject
 {
 public:
-    enum Criteria
-    {
-        S1, // Teweles-Wobus
-        NS1, // Normalized Teweles-Wobus
-        S1grads, // Teweles-Wobus on gradients
-        NS1grads, // Normalized Teweles-Wobus on gradients
-        SAD, // Sum of absolute differences
-        MD, // Mean absolute difference
-        NMD, // Normalized Mean difference
-        MRDtoMax, // Mean Relative difference to the max value
-        MRDtoMean, // Mean Relative difference to the mean value
-        RMSE, // Root mean square error
-        NRMSE, // Normalized Root mean square error (min-max approach)
-        RMSEwithNaN, // Root mean square error with NaNs management
-        RMSEonMeanWithNaN, // Root Mean Square Error on the mean value of the grid, with NaNs management
-        RSE // Root square error (According to Bontron. Should not be used !)
-    };
 
-    asCriteria(Criteria criteria, const wxString &name, const wxString &fullname, Order order);
-
-    static asCriteria *GetInstance(Criteria criteriaEnum);
+    asCriteria(const wxString &name, const wxString &fullname, Order order);
 
     static asCriteria *GetInstance(const wxString &criteriaString);
 
-    virtual ~asCriteria();
+    ~asCriteria() override;
 
     virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
@@ -74,10 +55,9 @@ public:
 
     void SetDataRange(float minValue, float maxValue);
 
-    Criteria GetType() const
-    {
-        return m_criteria;
-    }
+    void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
+
+    static a2f GetGauss2D(int nY, int nX);
 
     wxString GetName() const
     {
@@ -94,22 +74,33 @@ public:
         return m_order;
     }
 
+    int GetMinPointsNb() const
+    {
+        return m_minPointsNb;
+    }
+
     bool CanUseInline() const
     {
         return m_canUseInline;
     }
 
+    bool CheckNans() const
+    {
+        return m_checkNaNs;
+    }
+
 protected:
-    enum Criteria m_criteria;
     wxString m_name;
     wxString m_fullName;
     Order m_order;
+    int m_minPointsNb;
     bool m_needsDataRange;
     float m_dataMin;
     float m_dataMax;
     float m_scaleBest;
     float m_scaleWorst;
     bool m_canUseInline;
+    bool m_checkNaNs;
 
 private:
 

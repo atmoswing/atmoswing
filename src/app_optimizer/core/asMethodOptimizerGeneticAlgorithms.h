@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODOPTIMIZERGeneticAlgorithms_H
-#define ASMETHODOPTIMIZERGeneticAlgorithms_H
+#ifndef ASMETHODOPTIMIZERGENETICALGORITHMS_H
+#define ASMETHODOPTIMIZERGENETICALGORITHMS_H
 
 #include <asMethodOptimizer.h>
 #include <asParametersOptimizationGAs.h>
@@ -75,9 +75,9 @@ public:
 
     asMethodOptimizerGeneticAlgorithms();
 
-    virtual ~asMethodOptimizerGeneticAlgorithms();
+    ~asMethodOptimizerGeneticAlgorithms() override;
 
-    bool Manager();
+    bool Manager() override;
 
     bool ManageOneRun();
 
@@ -98,15 +98,15 @@ private:
     vf m_bestScores;
     vf m_meanScores;
 
-    void ClearAll();
+    void ClearAll() override;
 
-    void ClearTemp();
+    void ClearTemp() override;
 
     void SortScoresAndParameters();
 
-    void SortScoresAndParametersTemp();
+    bool SortScoresAndParametersTemp() override;
 
-    bool SetBestParameters(asResultsParametersArray &results);
+    bool SetBestParameters(asResultsParametersArray &results) override;
 
     bool ResumePreviousRun(asParametersOptimizationGAs &params, asResultsParametersArray &results_generations);
 
@@ -130,4 +130,4 @@ private:
 
 };
 
-#endif // ASMETHODOPTIMIZERGeneticAlgorithms_H
+#endif // ASMETHODOPTIMIZERGENETICALGORITHMS_H

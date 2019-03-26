@@ -298,7 +298,11 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
             if (m_allowResizeFromData) {
                 if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
-                    indexYmax = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
             }
 
@@ -308,7 +312,11 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
                 if (m_allowResizeFromData) {
                     if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
-                        indexYmin = nlats;
+                        if (lats[nlats] > lats[0]) {
+                            indexYmax = nlats;
+                        } else {
+                            indexYmax = 0;
+                        }
                     }
                 }
             }
@@ -320,10 +328,18 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
             if (m_allowResizeFromData) {
                 if (indexYmin != asOUT_OF_RANGE && indexYmax == asOUT_OF_RANGE) {
-                    indexYmax = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
                 if (indexYmin == asOUT_OF_RANGE && indexYmax != asOUT_OF_RANGE) {
-                    indexYmin = nlats;
+                    if (lats[nlats] > lats[0]) {
+                        indexYmax = nlats;
+                    } else {
+                        indexYmax = 0;
+                    }
                 }
             }
 
@@ -553,8 +569,12 @@ a1d asAreaCompGrid::GetXaxis()
     }
 
     a1d newAxis(GetXaxisCompositePtsnb(0) + GetXaxisCompositePtsnb(1));
-    //newAxis.head(GetXaxisCompositePtsnb(0)) = m_compositeXaxes[0];
-    //newAxis.tail(GetXaxisCompositePtsnb(1)) = m_compositeXaxes[1];
+    newAxis.head(GetXaxisCompositePtsnb(0)) = m_compositeXaxes[0];
+    a1d rightPart = m_compositeXaxes[1];
+    if (m_compositeXaxes[0][m_compositeXaxes[0].size() - 1] > m_compositeXaxes[1][0]) {
+        rightPart = rightPart + 360;
+    }
+    newAxis.tail(GetXaxisCompositePtsnb(1)) = rightPart;
 
     return newAxis;
 }

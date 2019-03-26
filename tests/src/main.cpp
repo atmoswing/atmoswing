@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     wxUninitialize();
     DeleteThreadsManager();
     DeleteLog();
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     return resultTest;
 }

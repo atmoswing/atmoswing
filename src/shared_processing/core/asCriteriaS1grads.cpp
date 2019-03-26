@@ -29,52 +29,48 @@
 #include "asCriteriaS1grads.h"
 
 asCriteriaS1grads::asCriteriaS1grads()
-        : asCriteria(asCriteria::S1grads, "S1grads", _("Teweles-Wobus on gradients"), Asc)
+        : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc)
 {
-    m_scaleBest = 0;
+    m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = true;
 }
 
-asCriteriaS1grads::~asCriteriaS1grads()
-{
-    //dtor
-}
+asCriteriaS1grads::~asCriteriaS1grads() = default;
 
 float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
 {
-    wxASSERT_MSG(refData.rows() == evalData.rows(),
-                 wxString::Format("refData.rows()=%d, evalData.rows()=%d", (int) refData.rows(),
-                                  (int) evalData.rows()));
-    wxASSERT_MSG(refData.cols() == evalData.cols(),
-                 wxString::Format("refData.cols()=%d, evalData.cols()=%d", (int) refData.cols(),
-                                  (int) evalData.cols()));
-    wxASSERT_MSG(refData.rows() > 0, wxString::Format("refData.rows()=%d", (int) refData.rows()));
-    wxASSERT_MSG(refData.cols() > 0, wxString::Format("refData.cols()=%d", (int) refData.cols()));
-
-#ifdef _DEBUG
-    if (refData.rows() < 1)
-        asThrowException(_("The number of rows of the data is null in the S1grads criteria processing."));
-    if (refData.cols() < 1)
-        asThrowException(_("The number of cols of the data is null in the S1grads criteria processing."));
-#endif
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() > 0);
+    wxASSERT(refData.cols() > 0);
 
     float dividend = 0, divisor = 0;
 
     // Note here that the actual gradient data do not fill the entire data blocks,
     // but the rest being 0-filled, we can simplify the sum calculation !
 
-    dividend = ((refData - evalData).abs()).sum();
-    divisor = (refData.abs().max(evalData.abs())).sum();
+    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+
+        dividend = ((refData - evalData).abs()).sum();
+        divisor = (refData.abs().max(evalData.abs())).sum();
+
+    } else {
+        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
+        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
+
+        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
+        divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();
+    }
 
     if (divisor > 0) {
         return 100.0f * (dividend / divisor); // Can be NaN
     } else {
         if (dividend == 0) {
-            wxLogWarning(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
             return m_scaleBest;
         } else {
-            return NaNf;
+            return m_scaleWorst;
         }
     }
 

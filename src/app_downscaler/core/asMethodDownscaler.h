@@ -101,14 +101,12 @@ protected:
 
     void Cleanup(std::vector<asPredictorProj *> predictors);
 
-    void Cleanup(std::vector<asPredictorArch *> predictors) override;
-
     void Cleanup(std::vector<asPredictor *> predictors) override;
 
     void Cleanup(std::vector<asCriteria *> criteria) override;
 
 private:
-    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorArch *> > > > > m_preloadedArchive;
+    std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
     std::vector<vvb> m_preloadedArchivePointerCopy;
     std::vector<vvb> m_preloadedProjectionPointerCopy;

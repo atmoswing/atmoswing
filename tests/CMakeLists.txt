@@ -25,6 +25,7 @@ if (BUILD_FORECASTER)
 else ()
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsGeneralGridTest.cpp")
     list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperNwsGfsRegularGridTest.cpp")
+    list(REMOVE_ITEM src_tests "${PROJECT_SOURCE_DIR}/src/asPredictorOperEcmwfIfsTest.cpp")
 endif ()
 if (BUILD_OPTIMIZER)
     file(GLOB_RECURSE src_optim_core_h ${CMAKE_SOURCE_DIR}/src/app_optimizer/core/*.h)
@@ -85,7 +86,7 @@ endif ()
 ExternalProject_Add(googletest
         GIT_REPOSITORY https://github.com/google/googletest
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -Dgtest_force_shared_crt=ON
+        CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
         BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
 

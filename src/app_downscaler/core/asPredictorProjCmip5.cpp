@@ -48,7 +48,6 @@ asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxStrin
     m_fStr.dimLonName = "lon";
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
-    m_subFolder = wxEmptyString;
 }
 
 asPredictorProjCmip5::~asPredictorProjCmip5()
@@ -59,31 +58,31 @@ asPredictorProjCmip5::~asPredictorProjCmip5()
 bool asPredictorProjCmip5::Init()
 {
     // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("hgt", false) || m_dataId.IsSameAs("zg", false)) {
+    if (IsGeopotentialHeight()) {
         m_parameter = GeopotentialHeight;
         m_parameterName = "Geopotential height";
         m_fileVarName = "zg";
         m_unit = m;
         m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("ua", false) || m_dataId.IsSameAs("uwnd", false)) {
+    } else if (IsUwindComponent()) {
         m_parameter = Uwind;
         m_parameterName = "Eastward Wind";
         m_fileVarName = "ua";
         m_unit = m_s;
         m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("va", false) || m_dataId.IsSameAs("vwnd", false)) {
+    } else if (IsVwindComponent()) {
         m_parameter = Vwind;
         m_parameterName = "Northward Wind";
         m_fileVarName = "va";
         m_unit = m_s;
         m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("slp", false) || m_dataId.IsSameAs("psl", false)) {
+    } else if (IsSeaLevelPressure()) {
         m_parameter = Pressure;
         m_parameterName = "Sea level pressure";
         m_fileVarName = "psl";
         m_unit = Pa;
         m_fStr.hasLevelDim = false;
-    } else if (m_dataId.IsSameAs("rh", false) || m_dataId.IsSameAs("hur", false)) {
+    } else if (IsRelativeHumidity()) {
         m_parameter = RelativeHumidity;
         m_parameterName = "Relative humidity";
         m_fileVarName = "hur";
@@ -95,7 +94,7 @@ bool asPredictorProjCmip5::Init()
         m_fileVarName = "rhs";
         m_unit = percent;
         m_fStr.hasLevelDim = false;
-    } else if (m_dataId.IsSameAs("sh", false) || m_dataId.IsSameAs("hus", false)) {
+    } else if (IsSpecificHumidity()) {
         m_parameter = SpecificHumidity;
         m_parameterName = "Specific humidity";
         m_fileVarName = "hus";
@@ -119,7 +118,7 @@ bool asPredictorProjCmip5::Init()
         m_fileVarName = "prc";
         m_unit = kg_m2_s;
         m_fStr.hasLevelDim = false;
-    } else if (m_dataId.IsSameAs("temp", false) || m_dataId.IsSameAs("ta", false)) {
+    } else if (IsAirTemperature()) {
         m_parameter = AirTemperature;
         m_parameterName = "Air Temperature";
         m_fileVarName = "ta";
@@ -143,7 +142,7 @@ bool asPredictorProjCmip5::Init()
         m_fileVarName = "tasmin";
         m_unit = degK;
         m_fStr.hasLevelDim = false;
-    } else if (m_dataId.IsSameAs("omega", false) || m_dataId.IsSameAs("wap", false)) {
+    } else if (IsVerticalVelocity()) {
         m_parameter = VerticalVelocity;
         m_parameterName = "Vertical Velocity";
         m_fileVarName = "wap";

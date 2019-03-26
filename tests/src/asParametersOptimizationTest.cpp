@@ -95,7 +95,7 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_FALSE(params.IsPredictorWeightLocked(0, 0));
 
     EXPECT_TRUE(params.NeedsPreprocessing(0, 1));
-    EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("Gradients"));
+    EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("SimpleGradients"));
     EXPECT_TRUE(params.GetPreprocessDatasetId(0, 1, 0).IsSameAs("NCEP_R-1"));
     EXPECT_TRUE(params.GetPreprocessDataId(0, 1, 0).IsSameAs("hgt"));
     EXPECT_EQ(2, params.GetPreprocessLevelVector(0, 1, 0).size());

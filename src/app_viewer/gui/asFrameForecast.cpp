@@ -1182,7 +1182,7 @@ void asFrameForecast::OnOpenForecast(wxCommandEvent &event)
 void asFrameForecast::OpenForecastsFromTmpList()
 {
     // Write the resulting files path into a temp file.
-    wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
+    wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
     asFileAscii filePaths(tempFile, asFile::ReadOnly);
     wxArrayString filePathsVect;
     if (!filePaths.Open()) {
@@ -1493,7 +1493,7 @@ void asFrameForecast::OnKeyDown(wxKeyEvent &event)
     }
 
     const vrDisplayTool *tool = m_displayCtrl->GetTool();
-    if (tool == nullptr) {
+    if (!tool) {
         event.Skip();
         return;
     }
@@ -1512,7 +1512,7 @@ void asFrameForecast::OnKeyUp(wxKeyEvent &event)
     }
 
     const vrDisplayTool *tool = m_displayCtrl->GetTool();
-    if (tool == nullptr) {
+    if (!tool) {
         event.Skip();
         return;
     }
@@ -1801,7 +1801,7 @@ void asFrameForecast::OnStationSelection(wxCommandEvent &event)
     // Display on the map when only the specific layer exists
     vrLayerVector *layer = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - specific.memory"));
     vrLayerVector *layerOther = (vrLayerVector *) m_layerManager->GetLayer(_("Forecast - other.memory"));
-    if (layer != nullptr && layerOther == nullptr) {
+    if (layer && !layerOther) {
         // Set selection
         wxArrayLong station;
         station.Add(choice);

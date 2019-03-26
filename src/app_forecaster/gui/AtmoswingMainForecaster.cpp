@@ -158,7 +158,7 @@ AtmoswingFrameForecaster::~AtmoswingFrameForecaster()
 {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if (pConfig == nullptr)
+    if (!pConfig)
         return;
 
     // Save the frame position

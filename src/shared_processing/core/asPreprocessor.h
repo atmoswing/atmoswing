@@ -41,7 +41,21 @@ public:
 
     static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
-    static bool PreprocessGradients(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessSimpleGradients(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealGradients(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessSimpleGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessSimpleCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessAddition(std::vector<asPredictor *> predictors, asPredictor *result);
 
@@ -58,6 +72,8 @@ public:
     static bool PreprocessHumidityFlux(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessWindSpeed(std::vector<asPredictor *> predictors, asPredictor *result);
+
+    static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
 
 protected:
 

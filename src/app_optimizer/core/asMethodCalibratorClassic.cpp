@@ -39,10 +39,7 @@ asMethodCalibratorClassic::asMethodCalibratorClassic()
 
 }
 
-asMethodCalibratorClassic::~asMethodCalibratorClassic()
-{
-
-}
+asMethodCalibratorClassic::~asMethodCalibratorClassic() = default;
 
 bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
 {

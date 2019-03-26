@@ -28,14 +28,35 @@
 
 #include "asPredictor.h"
 
+#include <wx/dir.h>
 #include <asTimeArray.h>
 #include <asAreaCompRegGrid.h>
 #include <asAreaCompGenGrid.h>
-#include <wx/dir.h>
+#include <asPredictorGenericNetcdf.h>
+#include <asPredictorNcepReanalysis1.h>
+#include <asPredictorNcepReanalysis2.h>
+#include <asPredictorNcepCfsr.h>
+#include <asPredictorNcepCfsrSubset.h>
+#include <asPredictorNoaaOisst2.h>
+#include <asPredictorEcmwfEraInterim.h>
+#include <asPredictorEcmwfEra20C.h>
+#include <asPredictorEcmwfCera20C.h>
+#include <asPredictorEcmwfIfsGrib.h>
+#include <asPredictorNasaMerra2.h>
+#include <asPredictorNasaMerra2Subset.h>
+#include <asPredictorJmaJra55Subset.h>
+#include <asPredictorJmaJra55CSubset.h>
+#include <asPredictorNoaa20Cr2c.h>
+#include <asPredictorNoaa20Cr2cEnsemble.h>
+#include <asPredictorCustomUnilNR1.h>
+#include <asPredictorCustomUnilOisst2.h>
+#include <asPredictorCustomLtheNR1.h>
+#include <asPredictorCustomMeteoFvgIfs.h>
 
 
 asPredictor::asPredictor(const wxString &dataId)
         : m_initialized(false),
+          m_standardize(false),
           m_axesChecked(false),
           m_dataId(dataId),
           m_parameter(ParameterUndefined),
@@ -69,17 +90,82 @@ asPredictor::asPredictor(const wxString &dataId)
     m_fInd.timeStart = 0;
     m_fInd.timeStep = 0;
 
-    int arr[] = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
-    AssignGribCode(arr);
+    m_gribCode = {asNOT_FOUND, asNOT_FOUND, asNOT_FOUND, asNOT_FOUND};
 
     if (dataId.Contains('/')) {
-        wxString levelType = dataId.BeforeFirst('/');
+        wxString levelType = dataId.BeforeLast('/');
         m_product = levelType;
-        m_dataId = dataId.AfterFirst('/');
+        m_dataId = dataId.AfterLast('/');
     } else {
         wxLogVerbose(_("The data ID (%s) does not contain the level type"), dataId);
     }
 
+}
+
+asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString &dataId,
+                                      const wxString &directory) {
+    asPredictor *predictor = nullptr;
+
+    if (datasetId.IsSameAs("GenericNetcdf", false)) {
+        predictor = new asPredictorGenericNetcdf(dataId);
+    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
+        predictor = new asPredictorNcepReanalysis1(dataId);
+    } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
+        predictor = new asPredictorNcepReanalysis2(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
+        predictor = new asPredictorNcepCfsr(dataId);
+    } else if (datasetId.IsSameAs("NCEP_CFSR_subset", false)) {
+        predictor = new asPredictorNcepCfsrSubset(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_ERA_interim", false)) {
+        predictor = new asPredictorEcmwfEraInterim(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_ERA_20C", false)) {
+        predictor = new asPredictorEcmwfEra20C(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_CERA_20C", false)) {
+        predictor = new asPredictorEcmwfCera20C(dataId);
+    } else if (datasetId.IsSameAs("ECMWF_IFS_GRIB", false)) {
+        predictor = new asPredictorEcmwfIfsGrib(dataId);
+    } else if (datasetId.IsSameAs("NASA_MERRA_2", false)) {
+        predictor = new asPredictorNasaMerra2(dataId);
+    } else if (datasetId.IsSameAs("NASA_MERRA_2_subset", false)) {
+        predictor = new asPredictorNasaMerra2Subset(dataId);
+    } else if (datasetId.IsSameAs("JMA_JRA_55_subset", false)) {
+        predictor = new asPredictorJmaJra55Subset(dataId);
+    } else if (datasetId.IsSameAs("JMA_JRA_55C_subset", false)) {
+        predictor = new asPredictorJmaJra55CSubset(dataId);
+    } else if (datasetId.IsSameAs("NOAA_20CR_v2c", false)) {
+        predictor = new asPredictorNoaa20Cr2c(dataId);
+    } else if (datasetId.IsSameAs("NOAA_20CR_v2c_ens", false)) {
+        predictor = new asPredictorNoaa20Cr2cEnsemble(dataId);
+    } else if (datasetId.IsSameAs("NOAA_OISST_v2", false)) {
+        predictor = new asPredictorNoaaOisst2(dataId);
+    } else if (datasetId.IsSameAs("Custom_Unil_NR1", false)) {
+        predictor = new asPredictorCustomUnilNR1(dataId);
+    } else if (datasetId.IsSameAs("Custom_Unil_OISST_v2", false)) {
+        predictor = new asPredictorCustomUnilOisst2(dataId);
+    } else if (datasetId.IsSameAs("Custom_LTHE_NR1", false)) {
+        predictor = new asPredictorCustomLtheNR1(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS", false)) {
+        predictor = new asPredictorCustomMeteoFvgIfs(dataId);
+    } else {
+        wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
+        return nullptr;
+    }
+
+    if (!directory.IsEmpty()) {
+        predictor->SetDirectoryPath(directory);
+    }
+
+    if (!predictor->Init()) {
+        wxLogError(_("The predictor did not initialize correctly."));
+        return nullptr;
+    }
+
+    return predictor;
+}
+
+bool asPredictor::Init()
+{
+    return false;
 }
 
 bool asPredictor::SetData(vva2f &val)
@@ -104,6 +190,7 @@ bool asPredictor::CheckFilesPresence()
     }
 
     int nbDirsToRemove = 0;
+    int countMissing = 0;
 
     for (int i = 0; i < m_files.size(); i++) {
         if (i > 0 && nbDirsToRemove > 0) {
@@ -149,9 +236,20 @@ bool asPredictor::CheckFilesPresence()
                         m_files[i] = fileName.GetFullPath();
                         break;
                     }
+                } else {
+                    wxLogWarning(_("File not found: %s"), m_files[i]);
+                    m_files[i] = wxEmptyString;
+                    countMissing++;
+                    break;
                 }
             }
         }
+    }
+
+    float percentMissing = 100.0 * float(countMissing) / float(m_files.size());
+    if (percentMissing > 5) {
+        wxLogError(_("%.2f percent of the files are missing."), percentMissing);
+        return false;
     }
 
     return true;
@@ -172,11 +270,19 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // List files and check availability
         ListFiles(timeArray);
         if (!CheckFilesPresence()) {
+            wxLogError(_("Files not found."));
             return false;
         }
 
         // Get file axes
-        if (!EnquireFileStructure()) {
+        if (!EnquireFileStructure(timeArray)) {
+            wxLogError(_("Failing to get the file structure."));
+            return false;
+        }
+
+        // Check the level availability
+        if (m_fileType == asFile::Netcdf && !HasDesiredLevel()) {
+            wxLogError(_("Failing to get the desired level."));
             return false;
         }
 
@@ -210,6 +316,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
 
         // Transform data
         if (!TransformData(compositeData)) {
+            wxLogError(_("Data transformation has failed."));
             wxFAIL;
             return false;
         }
@@ -228,12 +335,19 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
             return false;
         }
 
+        // Normalize data
+        if (m_standardize && !StandardizeData()) {
+            wxLogError(_("Data normalization has failed."));
+            wxFAIL;
+            return false;
+        }
+
         // Check the data container length
         if ((unsigned) m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int) m_time.size(), (int) m_data.size());
-            wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdatetime),
-                       asTime::GetStringTime(m_time[m_time.size() - 1], ISOdatetime));
+            wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdateTime),
+                       asTime::GetStringTime(m_time[m_time.size() - 1], ISOdateTime));
             wxDELETE(dataArea);
             return false;
         }
@@ -248,7 +362,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if (!fullMessage.IsEmpty()) {
             wxLogError(fullMessage);
         }
-        wxLogError(_("Failed to load data."));
+        wxLogError(_("Failed to load data (exception)."));
         return false;
     }
 
@@ -262,7 +376,7 @@ bool asPredictor::Load(asAreaCompGrid &desiredArea, asTimeArray &timeArray, floa
 
 bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level)
 {
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(&desiredArea, timeArray, level);
@@ -270,13 +384,46 @@ bool asPredictor::Load(asAreaCompGrid &desiredArea, double date, float level)
 
 bool asPredictor::Load(asAreaCompGrid *desiredArea, double date, float level)
 {
-    asTimeArray timeArray(date, asTimeArray::SingleDay);
+    asTimeArray timeArray(date);
     timeArray.Init();
 
     return Load(desiredArea, timeArray, level);
 }
 
-bool asPredictor::EnquireFileStructure()
+void asPredictor::ListFiles(asTimeArray &timeArray)
+{
+    m_files = vwxs();
+}
+
+bool asPredictor::CheckTimeArray(asTimeArray &timeArray)
+{
+    // Check the time steps
+    if ((timeArray.GetTimeStepDays() > 0) && (m_fStr.timeStep / 24.0 > timeArray.GetTimeStepDays())) {
+        wxLogError(_("The desired timestep is smaller than the data timestep."));
+        return false;
+    }
+    double intpart, fractpart;
+    fractpart = modf(timeArray.GetTimeStepDays() / (m_fStr.timeStep / 24.0), &intpart);
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
+        wxLogError(_("The desired timestep is not a multiple of the data timestep."));
+        return false;
+    }
+    fractpart = modf((timeArray.GetStartingHour() - m_fStr.firstHour) / m_fStr.timeStep, &intpart);
+    if (fractpart > 0.0001 && fractpart < 0.9999) {
+        wxLogError(_("The desired startDate (%gh) is not coherent with the data properties (fractpart = %g)."),
+                   timeArray.GetStartingHour(), fractpart);
+        return false;
+    }
+
+    return true;
+}
+
+double asPredictor::ConvertToMjd(double timeValue, double refValue) const
+{
+    return NaNd;
+}
+
+bool asPredictor::EnquireFileStructure(asTimeArray &timeArray)
 {
     wxASSERT(m_files.size() > 0);
 
@@ -287,8 +434,8 @@ bool asPredictor::EnquireFileStructure()
             }
             break;
         }
-        case (asFile::Grib2) : {
-            if (!EnquireGribFileStructure()) {
+        case (asFile::Grib) : {
+            if (!EnquireGribFileStructure(timeArray)) {
                 return false;
             }
             break;
@@ -312,7 +459,7 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
             }
             break;
         }
-        case (asFile::Grib2) : {
+        case (asFile::Grib) : {
             for (const auto &fileName : m_files) {
                 if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
                     return false;
@@ -396,53 +543,71 @@ bool asPredictor::ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid
     return true;
 }
 
-bool asPredictor::EnquireGribFileStructure()
+bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
 {
-    wxASSERT(m_files.size() > 1);
+    wxASSERT(m_files.size() > 0);
 
-    // Open 2 Grib files
+    a1d times = timeArray.GetTimeArray();
+
+    // Open Grib files
     ThreadsManager().CritSectionGrib().Enter();
-    asFileGrib2 gbFile0(m_files[0], asFileGrib2::ReadOnly);
+    asFileGrib gbFile0(m_files[0], asFileGrib::ReadOnly);
+
     if (!gbFile0.Open()) {
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
-    }
-    asFileGrib2 gbFile1(m_files[1], asFileGrib2::ReadOnly);
-    if (!gbFile1.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
         return false;
     }
 
     // Set index position
-    if (!gbFile0.SetIndexPosition(m_gribCode, m_level)) {
+    if (!gbFile0.SetIndexPositionAnyLevel(m_gribCode)) {
         gbFile0.Close();
-        gbFile1.Close();
         ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
-    }
-    if (!gbFile1.SetIndexPosition(m_gribCode, m_level)) {
-        gbFile0.Close();
-        gbFile1.Close();
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
         return false;
     }
 
     // Parse file structure
-    if (!ParseFileStructure(&gbFile0, &gbFile1)) {
-        gbFile0.Close();
+    if (m_files.size() > 1) {
+        wxASSERT(times.size() > 1);
+
+        asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
+
+        if (!gbFile1.Open()) {
+            gbFile0.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+
+        if (!gbFile1.SetIndexPositionAnyLevel(m_gribCode)) {
+            gbFile0.Close();
+            gbFile1.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+
+        if (!ParseFileStructure(&gbFile0, &gbFile1)) {
+            gbFile0.Close();
+            gbFile1.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
+
         gbFile1.Close();
-        ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
-        return false;
+
+    } else {
+        if (!ParseFileStructure(&gbFile0, nullptr)) {
+            gbFile0.Close();
+            ThreadsManager().CritSectionGrib().Leave();
+            wxFAIL;
+            return false;
+        }
     }
 
     // Close the nc file
     gbFile0.Close();
-    gbFile1.Close();
     ThreadsManager().CritSectionGrib().Leave();
 
     return true;
@@ -451,9 +616,18 @@ bool asPredictor::EnquireGribFileStructure()
 bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                       vvva2f &compositeData)
 {
+    // Handle missing file
+    if (fileName.IsEmpty()) {
+        if (FillWithNaNs(compositeData)) {
+            return true;
+        }
+        wxFAIL;
+        return false;
+    }
+
     // Open the Grib file
     ThreadsManager().CritSectionGrib().Enter();
-    asFileGrib2 gbFile(fileName, asFileGrib2::ReadOnly);
+    asFileGrib gbFile(fileName, asFileGrib::ReadOnly);
     if (!gbFile.Open()) {
         ThreadsManager().CritSectionGrib().Leave();
         wxFAIL;
@@ -464,7 +638,6 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
-        wxFAIL;
         return false;
     }
 
@@ -495,6 +668,34 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     // Close the nc file
     gbFile.Close();
     ThreadsManager().CritSectionGrib().Leave();
+
+    return true;
+}
+
+bool asPredictor::FillWithNaNs(vvva2f &compositeData) const
+{
+    for (auto &area : compositeData) {
+
+        // Check that it's not the first file
+        if (area.empty()) {
+            wxLogError(_("The first file cannot be missing."));
+            return false;
+        }
+
+        // Check that it's 1 file per time step
+        if (m_fInd.timeArrayCount > 1) {
+            wxLogError(_("Missing files are handled only when there is 1 file per time step."));
+            return false;
+        }
+
+        // Fill with NaNs
+        va2f memLatLonData;
+        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+            a2f latLonData = NaNf * a2f::Ones(area[0][iMem].rows(), area[0][iMem].cols());
+            memLatLonData.push_back(latLonData);
+        }
+        area.push_back(memLatLonData);
+    }
 
     return true;
 }
@@ -553,7 +754,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile)
     m_fStr.timeStart = ConvertToMjd(timeFirstVal, refValue);
     m_fStr.timeEnd = ConvertToMjd(timeLastVal, refValue);
     m_fStr.timeStep = asRound(24 * (m_fStr.timeEnd - m_fStr.timeStart) / (m_fStr.timeLength - 1));
-    m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    m_fStr.firstHour = 24 * fmod(m_fStr.timeStart, 1);
 
     return true;
 }
@@ -614,8 +815,12 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     if (!ncFile.HasVariable(m_fStr.dimLonName)) {
         if (ncFile.HasVariable("x")) {
             m_fStr.dimLonName = "x";
+        } else if (ncFile.HasVariable("lon")) {
+            m_fStr.dimLonName = "lon";
+        } else if (ncFile.HasVariable("longitude")) {
+            m_fStr.dimLonName = "longitude";
         } else {
-            wxLogError(_("X axis not found."));
+            wxLogError(_("X/longitude axis not found."));
             return false;
         }
     }
@@ -623,8 +828,12 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     if (!ncFile.HasVariable(m_fStr.dimLatName)) {
         if (ncFile.HasVariable("y")) {
             m_fStr.dimLatName = "y";
+        } else if (ncFile.HasVariable("lat")) {
+            m_fStr.dimLonName = "lat";
+        } else if (ncFile.HasVariable("latitude")) {
+            m_fStr.dimLonName = "latitude";
         } else {
-            wxLogError(_("Y axis not found."));
+            wxLogError(_("Y/latitude axis not found."));
             return false;
         }
     }
@@ -661,25 +870,23 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     return true;
 }
 
-bool asPredictor::ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1)
+bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
 {
     // Get full axes from the file
     gbFile0->GetXaxis(m_fStr.lons);
     gbFile0->GetYaxis(m_fStr.lats);
+    gbFile0->GetLevels(m_fStr.levels);
 
-    if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
-        wxLogError(_("The level dimension is not yet implemented for Grib files."));
-        return false;
-    }
-
-    // Yet handle a unique time value per file.
-    m_fStr.timeLength = 1;
-    m_fStr.timeStart = gbFile0->GetTime();
-    m_fStr.timeEnd = gbFile0->GetTime();
+    // Time properties
+    m_fStr.timeLength = gbFile0->GetTimeLength();
+    m_fStr.timeStart = gbFile0->GetTimeStart();
+    m_fStr.timeEnd = gbFile0->GetTimeEnd();
 
     if (gbFile1 != nullptr) {
-        double secondFileTime = gbFile1->GetTime();
-        m_fStr.timeStep = asRound(24 * (secondFileTime - m_fStr.timeStart));
+        m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
+        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    } else if (m_fStr.timeLength > 1) {
+        m_fStr.timeStep = gbFile0->GetTimeStepHours();
         m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
     }
 
@@ -708,6 +915,23 @@ bool asPredictor::CheckFileStructure()
     }
 
     return true;
+}
+
+bool asPredictor::HasDesiredLevel()
+{
+    if (m_fStr.levels.size() == 0 && m_level == 0) {
+        return true;
+    }
+
+    for (int i = 0; i < m_fStr.levels.size(); ++i) {
+        if (m_fStr.levels[i] == m_level) {
+            return true;
+        }
+    }
+
+    wxLogWarning(_("Cannot find level %f"), m_level);
+
+    return false;
 }
 
 asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
@@ -780,12 +1004,123 @@ asAreaCompGrid *asPredictor::CreateMatchingArea(asAreaCompGrid *desiredArea)
     return nullptr;
 }
 
-void asPredictor::AssignGribCode(const int arr[])
+bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
 {
-    m_gribCode.clear();
-    for (int i = 0; i < 4; ++i) {
-        m_gribCode.push_back(arr[i]);
+    m_fInd.areas.clear();
+
+    // Get the time length
+    if (m_fStr.timeLength > 1) {
+        double timeArrayIndexStart = timeArray.GetIndexFirstAfter(m_fStr.timeStart, m_fStr.timeStep);
+        double timeArrayIndexEnd = timeArray.GetIndexFirstBefore(m_fStr.timeEnd, m_fStr.timeStep);
+        if (timeArrayIndexStart == asOUT_OF_RANGE || timeArrayIndexEnd == asOUT_OF_RANGE) {
+            m_fInd.timeArrayCount = 0;
+            m_fInd.timeCount = 0;
+            return true;
+        } else {
+            m_fInd.timeArrayCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+            m_fInd.timeCount = static_cast<int>(timeArrayIndexEnd - timeArrayIndexStart + 1);
+        }
+
+        // Correct the time start and end
+        double valFirstTime = m_fStr.timeStart;
+        m_fInd.timeStart = 0;
+        m_fInd.cutStart = 0;
+        bool firstFile = (compositeData[0].empty());
+        if (firstFile) {
+            m_fInd.cutStart = static_cast<int>(timeArrayIndexStart);
+        }
+        m_fInd.cutEnd = 0;
+        while (valFirstTime < timeArray[timeArrayIndexStart]) {
+            valFirstTime += m_fStr.timeStep / 24.0;
+            m_fInd.timeStart++;
+        }
+        if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.timeLength) {
+            m_fInd.timeCount--;
+            m_fInd.cutEnd++;
+        }
+    } else {
+        m_fInd.timeArrayCount = 1;
+        m_fInd.timeCount = 1;
+        m_fInd.timeStart = 0;
+        m_fInd.cutStart = 0;
+        m_fInd.cutEnd = 0;
     }
+
+    wxASSERT(m_fInd.timeArrayCount > 0);
+    wxASSERT(m_fInd.timeCount > 0);
+
+    // Go through every area
+    m_fInd.areas.resize(compositeData.size());
+    for (int iArea = 0; iArea < compositeData.size(); iArea++) {
+
+        if (dataArea) {
+            // Get the spatial extent
+            auto lonMin = (float) dataArea->GetXaxisCompositeStart(iArea);
+            auto latMinStart = (float) dataArea->GetYaxisCompositeStart(iArea);
+            auto latMinEnd = (float) dataArea->GetYaxisCompositeEnd(iArea);
+
+            // The dimensions lengths
+            m_fInd.areas[iArea].lonCount = dataArea->GetXaxisCompositePtsnb(iArea);
+            m_fInd.areas[iArea].latCount = dataArea->GetYaxisCompositePtsnb(iArea);
+
+            // Get the spatial indices of the desired data
+            m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1], lonMin, 0.01f,
+                                                  asHIDE_WARNINGS);
+            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with negative angles
+                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                      lonMin - 360, 0.01f, asHIDE_WARNINGS);
+            }
+            if (m_fInd.areas[iArea].lonStart == asOUT_OF_RANGE) {
+                // If not found, try with angles above 360 degrees
+                m_fInd.areas[iArea].lonStart = asFind(&m_fStr.lons[0], &m_fStr.lons[m_fStr.lons.size() - 1],
+                                                      lonMin + 360, 0.01f, asHIDE_WARNINGS);
+            }
+            if (m_fInd.areas[iArea].lonStart < 0) {
+                wxLogError("Cannot find lonMin (%f) in the array axisDataLon ([0]=%f -> [%d]=%f) ", lonMin,
+                           m_fStr.lons[0], (int) m_fStr.lons.size(),
+                           m_fStr.lons[m_fStr.lons.size() - 1]);
+                return false;
+            }
+            wxASSERT_MSG(m_fInd.areas[iArea].lonStart >= 0,
+                         wxString::Format("axisDataLon[0] = %f, &axisDataLon[%d] = %f & lonMin = %f",
+                                          m_fStr.lons[0], (int) m_fStr.lons.size(),
+                                          m_fStr.lons[m_fStr.lons.size() - 1], lonMin));
+
+            int indexStartLat1 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinStart, 0.01f);
+            int indexStartLat2 = asFind(&m_fStr.lats[0], &m_fStr.lats[m_fStr.lats.size() - 1], latMinEnd, 0.01f);
+            wxASSERT_MSG(indexStartLat1 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinStart, m_fStr.lats[0],
+                                          m_fStr.lats[m_fStr.lats.size() - 1]));
+            wxASSERT_MSG(indexStartLat2 >= 0,
+                         wxString::Format("Looking for %g in %g to %g", latMinEnd, m_fStr.lats[0],
+                                          m_fStr.lats[m_fStr.lats.size() - 1]));
+            m_fInd.areas[iArea].latStart = wxMin(indexStartLat1, indexStartLat2);
+        } else {
+            m_fInd.areas[iArea].lonStart = 0;
+            m_fInd.areas[iArea].latStart = 0;
+            m_fInd.areas[iArea].lonCount = m_lonPtsnb;
+            m_fInd.areas[iArea].latCount = m_latPtsnb;
+        }
+
+        if (m_fStr.hasLevelDim && !m_fStr.singleLevel) {
+            wxASSERT(m_fStr.levels.size() > 0);
+            m_fInd.level = asFind(&m_fStr.levels[0], &m_fStr.levels[m_fStr.levels.size() - 1], m_level, 0.01f);
+            if (m_fInd.level < 0) {
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
+                return false;
+            }
+        } else if (m_fStr.hasLevelDim && m_fStr.singleLevel) {
+            m_fInd.level = 0;
+        } else {
+            if (m_level > 0) {
+                wxLogWarning(_("The desired level (%g) does not exist for %s"), m_level, m_fileVarName);
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 size_t *asPredictor::GetIndexesStartNcdf(int iArea) const
@@ -919,24 +1254,30 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const
 
 int *asPredictor::GetIndexesStartGrib(int iArea) const
 {
-    static int array[2] = {0, 0};
-    array[0] = m_fInd.areas[iArea].lonStart;
-    array[1] = m_fInd.areas[iArea].latStart;
+    static int array[3] = {0, 0, 0};
+    array[0] = m_fInd.timeStart;
+    array[1] = m_fInd.areas[iArea].lonStart;
+    array[2] = m_fInd.areas[iArea].latStart;
 
     return array;
 }
 
 int *asPredictor::GetIndexesCountGrib(int iArea) const
 {
-    static int array[2] = {0, 0};
-    array[0] = m_fInd.areas[iArea].lonCount;
-    array[1] = m_fInd.areas[iArea].latCount;
+    static int array[3] = {0, 0, 0};
+    array[0] = m_fInd.timeCount;
+    array[1] = m_fInd.areas[iArea].lonCount;
+    array[2] = m_fInd.areas[iArea].latCount;
 
     return array;
 }
 
 bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 {
+    // Check if loading data is relevant
+    if (m_fInd.timeCount == 0) {
+        return true;
+    }
 
     // Check if scaling is needed
     bool scalingNeeded = true;
@@ -964,13 +1305,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         dataF.resize(totLength);
 
         // Fill empty beginning with NaNs
-        int indexBegining = 0;
+        int indexBeginning = 0;
         if (m_fInd.cutStart > 0) {
-            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
+            int latLonLength = m_fInd.memberCount * m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fInd.cutStart; iEmpty++) {
-                for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
-                    dataF[indexBegining] = NaNf;
-                    indexBegining++;
+                for (int iEmptyLatLon = 0; iEmptyLatLon < latLonLength; iEmptyLatLon++) {
+                    dataF[indexBeginning] = NaNf;
+                    indexBeginning++;
                 }
             }
         }
@@ -978,11 +1319,12 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Fill empty end with NaNs
         int indexEnd = m_fInd.memberCount * m_fInd.timeCount * m_fInd.areas[iArea].latCount *
                        m_fInd.areas[iArea].lonCount - 1;
+        wxASSERT(indexEnd >= 0);
         if (m_fInd.cutEnd > 0) {
-            int latlonlength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
+            int latLonLength = m_fInd.memberCount * m_fInd.areas[iArea].latCount *
                                m_fInd.areas[iArea].lonCount;
             for (int iEmpty = 0; iEmpty < m_fInd.cutEnd; iEmpty++) {
-                for (int iEmptylatlon = 0; iEmptylatlon < latlonlength; iEmptylatlon++) {
+                for (int iEmptyLatLon = 0; iEmptyLatLon < latLonLength; iEmptyLatLon++) {
                     indexEnd++;
                     dataF[indexEnd] = NaNf;
                 }
@@ -991,7 +1333,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
         // In the netCDF Common Data Language, variables are printed with the outermost dimension first and the innermost dimension last.
         ncFile.GetVarSample(m_fileVarName, GetIndexesStartNcdf(iArea), GetIndexesCountNcdf(iArea),
-                            GetIndexesStrideNcdf(), &dataF[indexBegining]);
+                            GetIndexesStrideNcdf(), &dataF[indexBeginning]);
 
         // Keep data for later treatment
         vectData.push_back(dataF);
@@ -1015,9 +1357,9 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         // Loop to extract the data from the array
         int ind = 0;
         for (int iTime = 0; iTime < m_fInd.timeArrayCount; iTime++) {
-            va2f memlatlonData;
+            va2f memLatLonData;
             for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
-                a2f latlonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
 
                 for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
                     for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
@@ -1031,27 +1373,27 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
                                   iTime * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
                         }
 
-                        latlonData(iLat, iLon) = data[ind];
+                        latLonData(iLat, iLon) = data[ind];
 
                         // Check if not NaN
                         bool notNan = true;
                         for (double nanValue : m_nanValues) {
-                            if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
+                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
                                 notNan = false;
                             }
                         }
                         if (!notNan) {
-                            latlonData(iLat, iLon) = NaNf;
+                            latLonData(iLat, iLon) = NaNf;
                         }
                     }
                 }
 
                 if (scalingNeeded) {
-                    latlonData = latlonData * dataScaleFactor + dataAddOffset;
+                    latLonData = latLonData * dataScaleFactor + dataAddOffset;
                 }
-                memlatlonData.push_back(latlonData);
+                memLatLonData.push_back(latLonData);
             }
-            compositeData[iArea].push_back(memlatlonData);
+            compositeData[iArea].push_back(memLatLonData);
         }
         data.clear();
     }
@@ -1059,8 +1401,13 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
     return true;
 }
 
-bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
+bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
 {
+    // Check if loading data is relevant
+    if (m_fInd.timeArrayCount == 0) {
+        return true;
+    }
+
     // Grib files do not handle stride
     if (m_fInd.lonStep != 1 || m_fInd.latStep != 1) {
         wxLogError(_("Grib files do not handle stride."));
@@ -1080,8 +1427,13 @@ bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
 
+        wxASSERT(m_fInd.cutStart == 0);
+        wxASSERT(m_fInd.cutEnd == 0);
+
         // Extract data
-        gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0]);
+        if (!gbFile.GetVarArray(GetIndexesStartGrib(iArea), GetIndexesCountGrib(iArea), &dataF[0])) {
+            return false;
+        }
 
         // Keep data for later treatment
         vectData.push_back(dataF);
@@ -1101,36 +1453,39 @@ bool asPredictor::GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData)
     for (int iArea = 0; iArea < compositeData.size(); iArea++) {
         // Extract data
         vf data = vectData[iArea];
-        va2f memlatlonData;
 
-        for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+        // Loop to extract the data from the array
+        int ind = 0;
+        for (int iTime = 0; iTime < m_fInd.timeArrayCount; iTime++) {
+            va2f memLatLonData;
+            for (int iMem = 0; iMem < m_fInd.memberCount; iMem++) {
+                a2f latLonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
 
-            // Loop to extract the data from the array
-            int ind = 0;
-            a2f latlonData(m_fInd.areas[iArea].latCount, m_fInd.areas[iArea].lonCount);
+                for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
+                    for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
+                        int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat;
+                        ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount +
+                              iMem * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount +
+                              iTime * m_fInd.memberCount * m_fInd.areas[iArea].lonCount * m_fInd.areas[iArea].latCount;
 
-            for (int iLat = 0; iLat < m_fInd.areas[iArea].latCount; iLat++) {
-                for (int iLon = 0; iLon < m_fInd.areas[iArea].lonCount; iLon++) {
-                    int latRevIndex = m_fInd.areas[iArea].latCount - 1 - iLat; // Index reversed in Grib files
-                    ind = iLon + latRevIndex * m_fInd.areas[iArea].lonCount;
-                    latlonData(iLat, iLon) = data[ind];
+                        latLonData(iLat, iLon) = data[ind];
 
-                    // Check if not NaN
-                    bool notNan = true;
-                    for (double nanValue : m_nanValues) {
-                        if (data[ind] == nanValue || latlonData(iLat, iLon) == nanValue) {
-                            notNan = false;
+                        // Check if not NaN
+                        bool notNan = true;
+                        for (double nanValue : m_nanValues) {
+                            if (data[ind] == nanValue || latLonData(iLat, iLon) == nanValue) {
+                                notNan = false;
+                            }
+                        }
+                        if (!notNan) {
+                            latLonData(iLat, iLon) = NaNf;
                         }
                     }
-                    if (!notNan) {
-                        latlonData(iLat, iLon) = NaNf;
-                    }
                 }
+                memLatLonData.push_back(latLonData);
             }
-            memlatlonData.push_back(latlonData);
+            compositeData[iArea].push_back(memLatLonData);
         }
-        compositeData[iArea].push_back(memlatlonData);
-
         data.clear();
     }
 
@@ -1152,6 +1507,298 @@ bool asPredictor::TransformData(vvva2f &compositeData)
         m_parameterName = "Geopotential height";
         m_unit = m;
     }
+
+    return true;
+}
+
+bool asPredictor::StandardizeData()
+{
+    // Get the mean
+    double sum = 0;
+    int count = 0;
+
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            sum += datMem.isNaN().select(0, datMem).sum();
+            count += datMem.size() - datMem.isNaN().count();
+        }
+    }
+
+    double mean = sum / (double) count;
+
+    // Get the standard deviation
+    double sd = 0;
+
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+        }
+    }
+
+    sd = std::sqrt(sd / (double) (count - 1));
+
+    // Standardize
+    for (auto &datTime : m_data) {
+        for (auto &datMem : datTime) {
+            datMem = (datMem - mean) / sd;
+        }
+    }
+
+    return true;
+}
+
+bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea)
+{
+    double xMin = desiredArea->GetXmin();
+    double xMax = desiredArea->GetXmax();
+    if (xMin > xMax) {
+        xMin -= 360;
+    }
+
+    wxASSERT(m_axisLon.size() > 0);
+    double toleranceLon = 0.1;
+    if (m_axisLon.size() > 1) {
+        toleranceLon = std::abs(m_axisLon[1] - m_axisLon[0]) / 20;
+    }
+    int xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin, toleranceLon, asHIDE_WARNINGS);
+    int xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax, toleranceLon, asHIDE_WARNINGS);
+    if (xStartIndex < 0) {
+        xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin + 360, toleranceLon, asHIDE_WARNINGS);
+        xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax + 360, toleranceLon, asHIDE_WARNINGS);
+        if (xStartIndex < 0 || xEndIndex < 0) {
+            xStartIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMin - 360, toleranceLon);
+            xEndIndex = asFind(&m_axisLon[0], &m_axisLon[m_axisLon.size() - 1], xMax - 360, toleranceLon);
+            if (xStartIndex < 0 || xEndIndex < 0) {
+                wxLogError(_("An error occurred while trying to clip data to another area (extended axis)."));
+                wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin,
+                           xMax, m_axisLon[0], m_axisLon[m_axisLon.size() - 1]);
+                return false;
+            }
+        }
+    }
+    if (xStartIndex < 0 || xEndIndex < 0) {
+        wxLogError(_("An error occurred while trying to clip data to another area."));
+        wxLogError(_("Looking for lon %.2f and %.2f in between %.2f to %.2f."), xMin, xMax, m_axisLon[0],
+                   m_axisLon[m_axisLon.size() - 1]);
+        return false;
+    }
+    int xLength = xEndIndex - xStartIndex + 1;
+
+    double yMin = desiredArea->GetYmin();
+    double yMax = desiredArea->GetYmax();
+    wxASSERT(m_axisLat.size() > 0);
+    double toleranceLat = 0.1;
+    if (m_axisLat.size() > 1) {
+        toleranceLat = std::abs(m_axisLat[1] - m_axisLat[0]) / 20;
+    }
+    int yStartIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMin, toleranceLat, asHIDE_WARNINGS);
+    int yEndIndex = asFind(&m_axisLat[0], &m_axisLat[m_axisLat.size() - 1], yMax, toleranceLat, asHIDE_WARNINGS);
+    if (yStartIndex < 0 || yEndIndex < 0) {
+        wxLogError(_("An error occurred while trying to clip data to another area."));
+        wxLogError(_("Looking for lat %.2f and %.2f in between %.2f to %.2f."), yMin, yMax, m_axisLat[0],
+                   m_axisLat[m_axisLat.size() - 1]);
+        return false;
+    }
+
+    int yStartIndexReal = wxMin(yStartIndex, yEndIndex);
+    int yLength = std::abs(yEndIndex - yStartIndex) + 1;
+
+    // Check if already the correct size
+    if (yStartIndexReal == 0 && xStartIndex == 0 && yLength == m_axisLat.size() && xLength == m_axisLon.size()) {
+        if (IsPreprocessed()) {
+            if (m_data[0][0].cols() == m_axisLon.size() && m_data[0][0].rows() == 2 * m_axisLat.size()) {
+                // Nothing to do
+                return true;
+            } else {
+                // Clear axes
+                a1d newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
+                    newAxisLon[i] = NaNd;
+                }
+                m_axisLon = newAxisLon;
+
+                a1d newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
+                    newAxisLat[i] = NaNd;
+                }
+                m_axisLat = newAxisLat;
+
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
+            }
+        } else {
+            // Nothing to do
+            return true;
+        }
+    } else {
+        if (!CanBeClipped()) {
+            wxLogError(_("The preprocessed area cannot be clipped to another area."));
+            return false;
+        }
+
+        if (IsPreprocessed()) {
+            wxString method = GetPreprocessMethod();
+            if (method.IsSameAs("Gradients") || method.IsSameAs("SimpleGradients") || method.IsSameAs("RealGradients") ||
+                method.IsSameAs("SimpleGradientsWithGaussianWeights") || method.IsSameAs("RealGradientsWithGaussianWeights")) {
+                vva2f originalData = m_data;
+
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != 2 * m_axisLat.size()) {
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
+                               (int) m_axisLat.size());
+                    return false;
+                }
+
+                /*
+                Illustration of the data arrangement
+                    x = data
+                    o = 0
+
+                    xxxxxxxxxxx
+                    xxxxxxxxxxx
+                    xxxxxxxxxxx
+                    ooooooooooo____
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                    xxxxxxxxxxo
+                */
+
+                for (unsigned int i = 0; i < originalData.size(); i++) {
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength - 1, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength - 1);
+                        // Needs to be 0-filled for further simplification.
+                        a2f datMerged = a2f::Zero(2 * yLength, xLength);
+                        datMerged.block(0, 0, yLength - 1, xLength) = dat1;
+                        datMerged.block(yLength, 0, yLength, xLength - 1) = dat2;
+                        m_data[i][j] = datMerged;
+                    }
+                }
+
+                a1d newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
+                    newAxisLon[i] = NaNd;
+                }
+                m_axisLon = newAxisLon;
+
+                a1d newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
+                    newAxisLat[i] = NaNd;
+                }
+                m_axisLat = newAxisLat;
+
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
+
+                return true;
+
+            } else if (method.IsSameAs("FormerHumidityIndex")) {
+                vva2f originalData = m_data;
+
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != 2 * m_axisLat.size()) {
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
+                               (int) m_axisLat.size());
+                    return false;
+                }
+
+                for (unsigned int i = 0; i < originalData.size(); i++) {
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
+                        a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
+                                                            xLength);
+                        a2f datMerged(2 * yLength, xLength);
+                        datMerged.block(0, 0, yLength, xLength) = dat1;
+                        datMerged.block(yLength, 0, yLength, xLength) = dat2;
+                        m_data[i][j] = datMerged;
+                    }
+                }
+
+                a1d newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
+                    newAxisLon[i] = NaNd;
+                }
+                m_axisLon = newAxisLon;
+
+                a1d newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
+                    newAxisLat[i] = NaNd;
+                }
+                m_axisLat = newAxisLat;
+
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
+
+                return true;
+
+            } else if (method.IsSameAs("Multiply") || method.IsSameAs("Multiplication") ||
+                       method.IsSameAs("HumidityFlux") || method.IsSameAs("HumidityIndex") ||
+                       method.IsSameAs("Addition") || method.IsSameAs("Average")) {
+                vva2f originalData = m_data;
+
+                if (originalData[0][0].cols() != m_axisLon.size() || originalData[0][0].rows() != m_axisLat.size()) {
+                    wxLogError(_("Wrong axes lengths (cannot be clipped to another area)."));
+                    wxLogError("originalData[0].cols() = %d, m_axisLon.size() = %d, originalData[0].rows() = %d, m_axisLat.size() = %d",
+                               (int) originalData[0][0].cols(), (int) m_axisLon.size(), (int) originalData[0][0].rows(),
+                               (int) m_axisLat.size());
+                    return false;
+                }
+
+                for (unsigned int i = 0; i < originalData.size(); i++) {
+                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                        m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
+                    }
+                }
+
+                a1d newAxisLon(xLength);
+                for (int i = 0; i < xLength; i++) {
+                    newAxisLon[i] = NaNd;
+                }
+                m_axisLon = newAxisLon;
+
+                a1d newAxisLat(2 * yLength);
+                for (int i = 0; i < 2 * yLength; i++) {
+                    newAxisLat[i] = NaNd;
+                }
+                m_axisLat = newAxisLat;
+
+                m_latPtsnb = m_axisLat.size();
+                m_lonPtsnb = m_axisLon.size();
+
+                return true;
+
+            } else {
+                wxLogError(_("Wrong preprocessing definition (cannot be clipped to another area)."));
+                return false;
+            }
+        }
+    }
+
+    vva2f originalData = m_data;
+    for (unsigned int i = 0; i < originalData.size(); i++) {
+        for (unsigned int j = 0; j < originalData[i].size(); j++) {
+            m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
+        }
+    }
+
+    a1d newAxisLon(xLength);
+    for (int i = 0; i < xLength; i++) {
+        newAxisLon[i] = m_axisLon[xStartIndex + i];
+    }
+    m_axisLon = newAxisLon;
+
+    a1d newAxisLat(yLength);
+    for (int i = 0; i < yLength; i++) {
+        newAxisLat[i] = m_axisLat[yStartIndexReal + i];
+    }
+    m_axisLat = newAxisLat;
+
+    m_latPtsnb = m_axisLat.size();
+    m_lonPtsnb = m_axisLon.size();
 
     return true;
 }
@@ -1491,6 +2138,19 @@ float asPredictor::GetMaxValue() const
     return maxValue;
 }
 
+bool asPredictor::HasNaN() const
+{
+    for (const auto &dat : m_data) {
+        for (const auto &v : dat) {
+            if (v.hasNaN()) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 bool asPredictor::IsLatLon(const wxString &datasetId)
 {
     if (datasetId.IsSameAs("CORDEX", false)) {
@@ -1507,4 +2167,170 @@ void asPredictor::CheckLevelTypeIsDefined()
     }
 }
 
+bool asPredictor::IsPressureLevel() const
+{
+    return m_product.IsSameAs("pressure_level", false) ||
+           m_product.IsSameAs("pressure_levels", false) ||
+           m_product.IsSameAs("pressure", false) ||
+           m_product.IsSameAs("press", false) ||
+           m_product.IsSameAs("isobaric", false) ||
+           m_product.IsSameAs("pl", false) ||
+           m_product.IsSameAs("pgbh", false) ||
+           m_product.IsSameAs("pgbhnl", false) ||
+           m_product.IsSameAs("pgb", false);
+}
 
+bool asPredictor::IsIsentropicLevel() const
+{
+    return m_product.IsSameAs("isentropic_level", false) ||
+           m_product.IsSameAs("isentropic", false) ||
+           m_product.IsSameAs("potential_temperature", false) ||
+           m_product.IsSameAs("pt", false) ||
+           m_product.IsSameAs("ipvh", false) ||
+           m_product.IsSameAs("ipv", false);
+}
+
+bool asPredictor::IsSurfaceLevel() const
+{
+    return m_product.IsSameAs("surface", false) ||
+           m_product.IsSameAs("surf", false) ||
+           m_product.IsSameAs("ground", false) ||
+           m_product.IsSameAs("sfc", false) ||
+           m_product.IsSameAs("sf", false);
+}
+
+bool asPredictor::IsSurfaceFluxesLevel() const
+{
+    return m_product.IsSameAs("surface_fluxes", false) ||
+           m_product.IsSameAs("fluxes", false) ||
+           m_product.IsSameAs("flux", false) ||
+           m_product.IsSameAs("flxf06", false) ||
+           m_product.IsSameAs("flx", false);
+}
+
+bool asPredictor::IsTotalColumnLevel() const
+{
+    return m_product.IsSameAs("total_column", false) ||
+           m_product.IsSameAs("column", false) ||
+           m_product.IsSameAs("tc", false) ||
+           m_product.IsSameAs("entire_atmosphere", false) ||
+           m_product.IsSameAs("ea", false);
+}
+
+bool asPredictor::IsPVLevel() const
+{
+    return m_product.IsSameAs("potential_vorticity", false) ||
+           m_product.IsSameAs("pv", false) ||
+           m_product.IsSameAs("pv_surface", false) ||
+           m_product.IsSameAs("epv", false);
+}
+
+bool asPredictor::IsGeopotential() const
+{
+    return m_dataId.IsSameAs("z", false) ||
+           m_dataId.IsSameAs("h", false) ||
+           m_dataId.IsSameAs("zg", false);
+}
+
+bool asPredictor::IsGeopotentialHeight() const
+{
+    return m_dataId.IsSameAs("z", false) ||
+           m_dataId.IsSameAs("h", false) ||
+           m_dataId.IsSameAs("zg", false) ||
+           m_dataId.IsSameAs("hgt", false);
+}
+
+bool asPredictor::IsAirTemperature() const
+{
+    return m_dataId.IsSameAs("t", false) ||
+           m_dataId.IsSameAs("temp", false) ||
+           m_dataId.IsSameAs("tmp", false) ||
+           m_dataId.IsSameAs("ta", false) ||
+           m_dataId.IsSameAs("air", false);
+}
+
+bool asPredictor::IsRelativeHumidity() const
+{
+    return m_dataId.IsSameAs("rh", false) ||
+           m_dataId.IsSameAs("rhum", false) ||
+           m_dataId.IsSameAs("hur", false) ||
+           m_dataId.IsSameAs("r", false);
+}
+
+bool asPredictor::IsSpecificHumidity() const
+{
+    return m_dataId.IsSameAs("sh", false) ||
+           m_dataId.IsSameAs("shum", false) ||
+           m_dataId.IsSameAs("hus", false) ||
+           m_dataId.IsSameAs("q", false) ||
+           m_dataId.IsSameAs("qv", false);
+}
+
+bool asPredictor::IsVerticalVelocity() const
+{
+    return m_dataId.IsSameAs("w", false) ||
+           m_dataId.IsSameAs("vvel", false) ||
+           m_dataId.IsSameAs("wap", false) ||
+           m_dataId.IsSameAs("omega", false);
+}
+
+bool asPredictor::IsPrecipitableWater() const
+{
+    return m_dataId.IsSameAs("pwat", false) ||
+           m_dataId.IsSameAs("p_wat", false) ||
+           m_dataId.IsSameAs("tcw", false) ||
+           m_dataId.IsSameAs("pr_wtr", false) ||
+           m_dataId.IsSameAs("prwtr", false);
+}
+
+bool asPredictor::IsPressure() const
+{
+    return m_dataId.IsSameAs("pressure", false) ||
+           m_dataId.IsSameAs("press", false) ||
+           m_dataId.IsSameAs("pres", false);
+}
+
+bool asPredictor::IsSeaLevelPressure() const
+{
+    return m_dataId.IsSameAs("slp", false) ||
+           m_dataId.IsSameAs("mslp", false) ||
+           m_dataId.IsSameAs("psl", false) ||
+           m_dataId.IsSameAs("prmsl", false) ||
+           m_dataId.IsSameAs("msl", false);
+}
+
+bool asPredictor::IsUwindComponent() const
+{
+    return m_dataId.IsSameAs("u", false) ||
+           m_dataId.IsSameAs("ua", false) ||
+           m_dataId.IsSameAs("ugrd", false) ||
+           m_dataId.IsSameAs("u_grd", false) ||
+           m_dataId.IsSameAs("uwnd", false);
+}
+
+bool asPredictor::IsVwindComponent() const
+{
+    return m_dataId.IsSameAs("v", false) ||
+           m_dataId.IsSameAs("va", false) ||
+           m_dataId.IsSameAs("vgrd", false) ||
+           m_dataId.IsSameAs("v_grd", false) ||
+           m_dataId.IsSameAs("vwnd", false);
+}
+
+bool asPredictor::IsPotentialVorticity() const
+{
+    return m_dataId.IsSameAs("pv", false) ||
+           m_dataId.IsSameAs("pvort", false) ||
+           m_dataId.IsSameAs("epv", false);
+}
+
+bool asPredictor::IsTotalPrecipitation() const
+{
+    return m_dataId.IsSameAs("tp", false) ||
+           m_dataId.IsSameAs("prectot", false);
+}
+
+bool asPredictor::IsPrecipitationRate() const
+{
+    return m_dataId.IsSameAs("prate", false);
+}

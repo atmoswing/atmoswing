@@ -49,7 +49,6 @@ asPredictorProjCordex::asPredictorProjCordex(const wxString &dataId, const wxStr
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
     m_fStr.hasLevelDim = false;
-    m_subFolder = wxEmptyString;
     m_isLatLon = false;
 }
 
@@ -106,7 +105,7 @@ bool asPredictorProjCordex::Init()
         m_parameterName = "Eastward Wind";
         m_fileVarName = "ua850";
         m_unit = m_s;
-    } else if (m_dataId.IsSameAs("slp", false) || m_dataId.IsSameAs("psl", false)) {
+    } else if (IsSeaLevelPressure()) {
         m_parameter = Pressure;
         m_parameterName = "Sea level pressure";
         m_fileVarName = "psl";

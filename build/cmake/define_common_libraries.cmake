@@ -31,6 +31,11 @@ link_libraries(${JASPER_LIBRARIES})
 include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
+# Proj4
+find_package(PROJ4 REQUIRED)
+include_directories(${PROJ4_INCLUDE_DIR})
+link_libraries(${PROJ4_LIBRARIES})
+
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
 mark_as_advanced(CLEAR NETCDF_LIBRARY)
@@ -50,8 +55,10 @@ if (BUILD_VIEWER)
 
 endif ()
 
-# g2clib
-include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/g2clib/src")
+# ecCodes
+find_package(eccodes MODULE REQUIRED)
+include_directories(${ECCODES_INCLUDE_DIRS})
+link_libraries(${ECCODES_LIBRARIES})
 
 # lsversion
 include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/lsversion/src")

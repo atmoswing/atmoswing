@@ -402,7 +402,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
     // and the predictor dates are aligned with the target dates, but the dates are not the same.
     double ptorStart = timeStartData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
     double ptorEnd = timeEndData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
     // Loading the datasets information
@@ -413,6 +413,11 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
                                                               m_predictorProjectionDataDir);
     if (!predictor) {
         return false;
+    }
+
+    // Set standardize option
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->SetStandardize(true);
     }
 
     // Select the number of members for ensemble data.
@@ -455,7 +460,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
                            params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
         double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
                          params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
         // Loading the dataset information
@@ -492,13 +497,7 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     }
 
     // Fix the criteria if S1
-    if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("Gradients") &&
-        params->GetPredictorCriteria(iStep, iPtor).IsSameAs("S1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "S1grads");
-    } else if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("Gradients") &&
-               params->GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1")) {
-        params->SetPredictorCriteria(iStep, iPtor, "NS1grads");
-    }
+    params->FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
     auto *predictor = new asPredictorProj(*predictorsPreprocess[0]);
     if (!Preprocess(predictorsPreprocess, params->GetPreprocessMethod(iStep, iPtor), predictor)) {
@@ -506,6 +505,11 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         Cleanup(predictorsPreprocess);
         wxDELETE(predictor);
         return false;
+    }
+
+    // Standardize
+    if (params->GetStandardize(iStep, iPtor)) {
+        predictor->StandardizeData();
     }
 
     Cleanup(predictorsPreprocess);
@@ -531,16 +535,6 @@ void asMethodDownscaler::Cleanup(std::vector<asPredictorProj *> predictors)
     }
 }
 
-void asMethodDownscaler::Cleanup(std::vector<asPredictorArch *> predictors)
-{
-    if (!predictors.empty()) {
-        for (auto &predictor : predictors) {
-            wxDELETE(predictor);
-        }
-        predictors.resize(0);
-    }
-}
-
 void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
 {
     if (!predictors.empty()) {
@@ -554,8 +548,8 @@ void asMethodDownscaler::Cleanup(std::vector<asPredictor *> predictors)
 void asMethodDownscaler::Cleanup(std::vector<asCriteria *> criteria)
 {
     if (!criteria.empty()) {
-        for (unsigned int i = 0; i < criteria.size(); i++) {
-            wxDELETE(criteria[i]);
+        for (auto &i : criteria) {
+            wxDELETE(i);
         }
         criteria.resize(0);
     }

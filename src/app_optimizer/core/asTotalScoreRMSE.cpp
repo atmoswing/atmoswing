@@ -64,7 +64,7 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
                 }
             }
 
-            score = sqrt(score / divisor);
+            score = std::sqrt(score / divisor);
             return score;
         }
 
@@ -96,7 +96,7 @@ float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const 
                 }
             }
 
-            score = sqrt(score / divisor);
+            score = std::sqrt(score / divisor);
             return score;
         }
 

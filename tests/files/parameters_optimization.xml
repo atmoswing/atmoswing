@@ -52,7 +52,7 @@
     <predictor>
       <preload>1</preload>
       <preprocessing>
-        <preprocessing_method>Gradients</preprocessing_method>
+        <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_R-1</dataset_id>
           <data_id>hgt</data_id>
@@ -74,7 +74,7 @@
     <predictor>
       <preload>1</preload>
       <preprocessing>
-        <preprocessing_method>Gradients</preprocessing_method>
+        <preprocessing_method>SimpleGradients</preprocessing_method>
         <preprocessing_data>
           <dataset_id>NCEP_R-1</dataset_id>
           <data_id>hgt</data_id>

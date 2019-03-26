@@ -399,7 +399,7 @@ bool asResultsForecast::Load()
 
         m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
 
-        if (versionMajor == 1 && versionMinor >= 5) {
+        if (versionMajor > 1 || (versionMajor == 1 && versionMinor >= 5)) {
             m_predictandDatabase = ncFile.GetAttString("predictand_database");
             SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
         }

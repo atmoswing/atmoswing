@@ -56,22 +56,31 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 #endif
 
 static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-        {{wxCMD_LINE_SWITCH, "h",  "help",          "This help text"},
-         {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
-         {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
-         {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
-         {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
-         {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
-         {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
-         {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
-                                                            "\n \t\t\t\t 0: minimum"
-                                                            "\n \t\t\t\t 1: errors"
-                                                            "\n \t\t\t\t 2: warnings (default)"
-                                                            "\n \t\t\t\t 3: verbose"},
-         {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
-         {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
-         {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-         {wxCMD_LINE_NONE}};
+{
+    {wxCMD_LINE_SWITCH, "h",  "help",          "This help text"},
+    {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
+    {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
+    {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
+    {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
+    {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
+    {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
+    {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
+                                               "\n \t\t\t\t\t - 1: errors"
+                                               "\n \t\t\t\t\t - 2: warnings"
+                                               "\n \t\t\t\t\t - 3: verbose"
+                                               "\n \t\t\t\t\t - 4: debug"},
+    {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
+    {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
+    {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+    {wxCMD_LINE_NONE}};
+
+static const wxString cmdLineLogo = wxT("\n"\
+"_________________________________________\n"\
+"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
+"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
+"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
+"_________________________________________\n"\
+"\n");
 
 bool AtmoswingAppForecaster::OnInit()
 {
@@ -119,7 +128,7 @@ bool AtmoswingAppForecaster::OnInit()
             wxMessageBox(_("Program already running, aborting."));
 
             // Cleanup
-            delete wxFileConfig::Set((wxFileConfig *) NULL);
+            delete wxFileConfig::Set((wxFileConfig *) nullptr);
             DeleteThreadsManager();
             DeleteLog();
             delete m_singleInstanceChecker;
@@ -176,8 +185,9 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
 
 void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
     parser.SetDesc(g_cmdLineDesc);
+    parser.SetLogo(cmdLineLogo);
+
     // Must refuse '/' as parameter starter or cannot use "/path" style paths
     parser.SetSwitchChars(wxT("-"));
 }
@@ -528,7 +538,7 @@ int AtmoswingAppForecaster::OnRun()
             wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
 
             // Write the resulting files path into a temp file.
-            wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecatsFilePaths.txt";
+            wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
             asFileAscii filePaths(tempFile, asFile::Replace);
             vwxs filePathsVect = forecaster.GetResultsFilePaths();
 
@@ -613,7 +623,7 @@ int AtmoswingAppForecaster::OnExit()
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) NULL);
+    delete wxFileConfig::Set((wxFileConfig *) nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();

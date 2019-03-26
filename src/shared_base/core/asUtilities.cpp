@@ -127,7 +127,7 @@ double asRandomNormal(const double mean, const double stDev, const double step)
     }
 
     // Box-Muller transform
-    double z0 = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
+    double z0 = std::sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
     //double z1 = sqrt(-2*log(u1))*sin(2*M_PI*u2);
 
     z0 *= stDev;
@@ -219,9 +219,9 @@ float asStDev(const int *pArrStart, const int *pArrEnd, const int sample)
     }
 
     if (sample == asSAMPLE) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNf;
     }
@@ -239,9 +239,9 @@ float asStDev(const float *pArrStart, const float *pArrEnd, const int sample)
     }
 
     if (sample == asSAMPLE) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNf;
     }
@@ -259,9 +259,9 @@ double asStDev(const double *pArrStart, const double *pArrEnd, const int sample)
     }
 
     if (sample == asSAMPLE) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb - 1));
     } else if (sample == asENTIRE_POPULATION) {
-        return sqrt((sumsquares - (sum * sum / nb)) / (nb));
+        return std::sqrt((sumsquares - (sum * sum / nb)) / (nb));
     } else {
         return NaNd;
     }

@@ -61,6 +61,14 @@ bool asPredictandLightnings::Load(const wxString &filePath)
     // Load common data
     LoadCommonData(ncFile);
 
+    if (m_hasNormalizedData) {
+        // Get normalized data
+        size_t indexStart[2] = {0, 0};
+        size_t indexCount[2] = {size_t(m_timeLength), size_t(m_stationsNb)};
+        m_dataNormalized.resize(m_timeLength, m_stationsNb);
+        ncFile.GetVarArray("data_normalized", indexStart, indexCount, &m_dataNormalized(0, 0));
+    }
+
     // Close the netCDF file
     ncFile.Close();
 
@@ -80,11 +88,36 @@ bool asPredictandLightnings::Save(const wxString &destinationDir) const
     // Set common definitions
     SetCommonDefinitions(ncFile);
 
+    if (m_hasNormalizedData) {
+
+        // Define dimensions
+        vstds dimNames2D;
+        dimNames2D.push_back("time");
+        dimNames2D.push_back("stations");
+
+        // Define variable
+        ncFile.DefVar("data_normalized", NC_FLOAT, 2, dimNames2D);
+
+        // Put attributes for the variable
+        ncFile.PutAtt("long_name", "Normalized data", "data_normalized");
+        ncFile.PutAtt("var_desc", "Normalized data", "data_normalized");
+        ncFile.PutAtt("units", "-", "data_normalized");
+    }
+
     // End definitions: leave define mode
     ncFile.EndDef();
 
     // Save common data
     SaveCommonData(ncFile);
+
+    if (m_hasNormalizedData) {
+        // Provide sizes for variable
+        size_t start2[] = {0, 0};
+        size_t count2[] = {size_t(m_timeLength), size_t(m_stationsNb)};
+
+        // Write data
+        ncFile.PutVarArray("data_normalized", start2, count2, &m_dataNormalized(0, 0));
+    }
 
     // Close:save new netCDF dataset
     ncFile.Close();
@@ -111,7 +144,15 @@ bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, 
     if (!ParseData(catalogFilePath, dataDir, patternDir))
         return false;
 
-    Save(destinationDir);
+    if (m_hasNormalizedData) {
+        if (!BuildDataNormalized())
+            return false;
+    }
+
+    if (!destinationDir.IsEmpty()) {
+        if (!Save(destinationDir))
+            return false;
+    }
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));
@@ -123,5 +164,15 @@ bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, 
     }
 #endif
 
+    return true;
+}
+
+bool asPredictandLightnings::BuildDataNormalized()
+{
+    for (int iStat = 0; iStat < m_stationsNb; iStat++) {
+        for (int iTime = 0; iTime < m_timeLength; iTime++) {
+            m_dataNormalized(iTime, iStat) = log10(m_dataRaw(iTime, iStat) + 1);
+        }
+    }
     return true;
 }

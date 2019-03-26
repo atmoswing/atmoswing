@@ -208,7 +208,7 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format)
         case (ISOdate):
             datestr = wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
             break;
-        case (ISOdatetime):
+        case (ISOdateTime):
             datestr = wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min, date.sec);
             break;
@@ -236,7 +236,7 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format)
             datestr = wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day,
                                        date.hour, date.min, date.sec);
             break;
-        case (timeonly):
+        case (timeOnly):
         case (hhmm):
             datestr = wxString::Format("%2.2d:%2.2d", date.hour, date.min);
             break;
@@ -278,7 +278,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
-        case (ISOdatetime):
+        case (ISOdateTime):
 
             if (datestr.Len() == 19) {
                 if (!datestr.Mid(0, 4).ToLong(&year))
@@ -498,7 +498,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
-        case (timeonly):
+        case (timeOnly):
         case (hhmm):
 
             if (datestr.Len() == 5) {
@@ -517,7 +517,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 4, 5));
 
-        case (nowplushours):
+        case (nowPlusHours):
 
             if (datestr.Mid(0, 1) != "+")
                 asThrowException(_("The date format is not correctly set"));
@@ -528,7 +528,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             return date;
             break;
 
-        case (nowminushours):
+        case (nowMinusHours):
 
             if (datestr.Mid(0, 1) != "-")
                 asThrowException(_("The date format is not correctly set"));
@@ -909,112 +909,4 @@ double asTime::SubtractYear(double mjd)
     }
 
     return mjd;
-}
-
-Time asTime::GetSeasonStart(Season season)
-{
-    Time ret;
-    TimeStructInit(ret);
-
-    switch (season) {
-        case DJF:
-            ret.month = 12;
-            break;
-        case MAM:
-            ret.month = 3;
-            break;
-        case JJA:
-            ret.month = 6;
-            break;
-        case SON:
-            ret.month = 9;
-            break;
-        default:
-            asThrowException(_("Not a valid season."));
-    }
-
-    ret.day = 1;
-
-    return ret;
-}
-
-Time asTime::GetSeasonEnd(Season season, int year)
-{
-    Time ret;
-    TimeStructInit(ret);
-
-    switch (season) {
-        case DJF:
-            ret.month = 2;
-            if (IsLeapYear(year)) {
-                ret.day = 29;
-            } else {
-                ret.day = 28;
-            }
-            break;
-        case MAM:
-            ret.month = 5;
-            ret.day = 31;
-            break;
-        case JJA:
-            ret.month = 8;
-            ret.day = 31;
-            break;
-        case SON:
-            ret.month = 11;
-            ret.day = 30;
-            break;
-        default:
-            asThrowException(_("Not a valid season."));
-    }
-
-    return ret;
-}
-
-Season asTime::GetSeason(int month)
-{
-    Season season;
-
-    switch (month) {
-        case 1 :
-            season = DJF;
-            break;
-        case 2 :
-            season = DJF;
-            break;
-        case 3 :
-            season = MAM;
-            break;
-        case 4 :
-            season = MAM;
-            break;
-        case 5 :
-            season = MAM;
-            break;
-        case 6 :
-            season = JJA;
-            break;
-        case 7 :
-            season = JJA;
-            break;
-        case 8 :
-            season = JJA;
-            break;
-        case 9 :
-            season = SON;
-            break;
-        case 10 :
-            season = SON;
-            break;
-        case 11 :
-            season = SON;
-            break;
-        case 12 :
-            season = DJF;
-            break;
-        default:
-            asThrowException(_("Not a valid month."));
-    }
-
-    return season;
 }

@@ -100,7 +100,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
     // Containers for daily results
     a1f scoreArrayOneDay(analogsNb);
+    scoreArrayOneDay.fill(NaNf);
     a1f dateArrayOneDay(analogsNb);
+    dateArrayOneDay.fill(NaNf);
 
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
     // the predictors we are interested in, but which didn't take place at the same time.
@@ -131,6 +133,9 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
             // Counter representing the current index
             int counter = 0;
+
+            scoreArrayOneDay.fill(NaNf);
+            dateArrayOneDay.fill(NaNf);
 
             // Loop over the members
             for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
@@ -199,19 +204,14 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                 }
             }
 
-            // Check that the number of occurrences are larger than the desired analogs number. If not, set a warning
-            if (counter >= analogsNb) {
-                // Copy results
-                m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.transpose();
-                m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.transpose();
-            } else {
-                wxLogError(_("There is not enough available data to satisfy the number of analogs:"));
-                wxLogError(_("   Analogs number (%d) > counter (%d), date array size (%d) with %d days intervals."),
-                           analogsNb, counter, dateArrayArchiveSelection.GetSize(),
-                           m_params->GetTimeArrayAnalogsIntervalDays());
-                *m_success = false;
-                return (wxThread::ExitCode) -1;
+            if (counter <= analogsNb) {
+                wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
+                wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             }
+
+            // Copy results
+            m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.transpose();
+            m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.transpose();
         }
     }
 

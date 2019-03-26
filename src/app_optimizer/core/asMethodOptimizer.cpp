@@ -91,7 +91,7 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
 {
     if (!params.HasValidationPeriod()) {
         wxLogWarning("The parameters have no validation period !");
-        return false;
+        return true;
     }
 
     m_validationMode = true;

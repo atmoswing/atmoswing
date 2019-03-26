@@ -38,10 +38,10 @@ class asMethodCalibratorClassicVarExplo
 public:
     asMethodCalibratorClassicVarExplo();
 
-    virtual ~asMethodCalibratorClassicVarExplo();
+    ~asMethodCalibratorClassicVarExplo() override;
 
 protected:
-    virtual bool Calibrate(asParametersCalibration &params);
+    bool Calibrate(asParametersCalibration &params) override;
 
 private:
 

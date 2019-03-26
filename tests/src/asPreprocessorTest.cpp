@@ -27,7 +27,7 @@
  */
 
 #include "wx/filename.h"
-#include "asPredictorArch.h"
+#include "asPredictor.h"
 #include "asPreprocessor.h"
 #include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
@@ -56,7 +56,7 @@ TEST(Preprocessor, Gradients)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -72,8 +72,8 @@ TEST(Preprocessor, Gradients)
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
-    wxString method = "Gradients";
-    asPredictorArch *gradients = new asPredictorArch(*predictor);
+    wxString method = "SimpleGradients";
+    asPredictor *gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     vva2f grads = gradients->GetData();
@@ -217,7 +217,7 @@ TEST(Preprocessor, GradientsMultithreading)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "press/hgt", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
 
     ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -233,8 +233,8 @@ TEST(Preprocessor, GradientsMultithreading)
     std::vector<asPredictor *> vdata;
     vdata.push_back(predictor);
 
-    wxString method = "Gradients";
-    asPredictorArch *gradients = new asPredictorArch(*predictor);
+    wxString method = "SimpleGradients";
+    asPredictor *gradients = new asPredictor(*predictor);
     asPreprocessor::Preprocess(vdata, method, gradients);
 
     vva2f hgt = gradients->GetData();
@@ -352,9 +352,9 @@ TEST(Preprocessor, Addition)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor3 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
@@ -375,7 +375,7 @@ TEST(Preprocessor, Addition)
     vdata.push_back(predictor3);
 
     wxString method = "Addition";
-    asPredictorArch *addition = new asPredictorArch(*predictor1);
+    asPredictor *addition = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, addition);
 
     vva2f adds = addition->GetData();
@@ -466,9 +466,9 @@ TEST(Preprocessor, Average)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor3 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor3 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -485,7 +485,7 @@ TEST(Preprocessor, Average)
     vdata.push_back(predictor3);
 
     wxString method = "Average";
-    asPredictorArch *average = new asPredictorArch(*predictor1);
+    asPredictor *average = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, average);
 
     vva2f avg = average->GetData();
@@ -574,8 +574,8 @@ TEST(Preprocessor, Difference)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -590,7 +590,7 @@ TEST(Preprocessor, Difference)
     vdata.push_back(predictor2);
 
     wxString method = "Difference";
-    asPredictorArch *difference = new asPredictorArch(*predictor1);
+    asPredictor *difference = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, difference);
 
     vva2f diffs = difference->GetData();
@@ -668,8 +668,8 @@ TEST(Preprocessor, Multiplication)
     wxString dir = wxFileName::GetCwd();
     dir.Append("/files/data-ncep-r1/v2003/");
 
-    asPredictorArch *predictor1 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
-    asPredictorArch *predictor2 = asPredictorArch::GetInstance("NCEP_Reanalysis_v1", "gauss/air2m", dir);
+    asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+    asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
 
     ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
     ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -684,7 +684,7 @@ TEST(Preprocessor, Multiplication)
     vdata.push_back(predictor2);
 
     wxString method = "Multiplication";
-    asPredictorArch *multiplication = new asPredictorArch(*predictor1);
+    asPredictor *multiplication = new asPredictor(*predictor1);
     asPreprocessor::Preprocess(vdata, method, multiplication);
 
     vva2f multi = multiplication->GetData();

@@ -51,7 +51,7 @@ TEST(PredictorProjCordex, LoadEasy)
     asTimeArray timearray(start, end, timeStepHours, asTimeArray::Simple);
     timearray.Init();
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -93,7 +93,7 @@ TEST(PredictorProjCordex, LoadOver2Files)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 
@@ -174,7 +174,7 @@ TEST(PredictorProjCordex, LoadAnotherModel)
 
     asPredictorProj *predictor = asPredictorProj::GetInstance("CORDEX", "ICHEC-EC-EARTH", "rcp85", "psl", predictorDataDir);
 
-    ASSERT_TRUE(predictor != NULL);
+    ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
     ASSERT_TRUE(predictor->Load(area, timearray, 0));
 

@@ -34,8 +34,8 @@
 
 
 asParameters::asParameters()
-        : m_archiveStart(0),
-          m_archiveEnd(0),
+        : m_archiveStart(NaNd),
+          m_archiveEnd(NaNd),
           m_timeArrayAnalogsIntervalDays(0),
           m_predictandStationIds(),
           m_timeMinHours(0),
@@ -83,6 +83,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.preprocessMethod = wxEmptyString;
+    predictor.standardize = false;
     predictor.level = 0;
     predictor.xMin = 0;
     predictor.xPtsNb = 1;
@@ -96,6 +97,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.timeHours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
+    predictor.membersNb = 0;
 
     step.predictors.push_back(predictor);
 }
@@ -113,6 +115,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.preprocessMethod = wxEmptyString;
+    predictor.standardize = false;
     predictor.level = 0;
     predictor.gridType = "regular";
     predictor.xMin = 0;
@@ -127,6 +130,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.timeHours = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
+    predictor.membersNb = 0;
 
     m_steps[iStep].predictors.push_back(predictor);
 }
@@ -305,6 +309,7 @@ bool asParameters::ParseAnalogDatesParams(asFileParameters &fileParams, int iSte
             AddPredictor(iStep);
             SetPreprocess(iStep, iPtor, false);
             SetPreload(iStep, iPtor, false);
+            SetStandardize(iStep, iPtor, false);
             if (!ParsePredictors(fileParams, iStep, iPtor, nodeParamBlock))
                 return false;
             iPtor++;
@@ -323,6 +328,8 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
     while (nodeParam) {
         if (nodeParam->GetName() == "preload") {
             SetPreload(iStep, iPtor, asFileParameters::GetBool(nodeParam));
+        } else if (nodeParam->GetName() == "standardize") {
+            SetStandardize(iStep, iPtor, asFileParameters::GetBool(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
@@ -532,7 +539,7 @@ bool asParameters::SetPreloadingProperties()
 
                 // Different actions depending on the preprocessing method.
                 wxString msg = _("The size of the provided predictors (%d) does not match the requirements (%d) in the preprocessing %s method.");
-                if (method.IsSameAs("Gradients")) {
+                if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
@@ -580,12 +587,12 @@ bool asParameters::SetPreloadingProperties()
 bool asParameters::InputsOK() const
 {
     // Time properties
-    if (GetArchiveStart() <= 0) {
+    if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
         return false;
     }
 
-    if (GetArchiveEnd() <= 0) {
+    if (asIsNaN(GetArchiveEnd())) {
         wxLogError(_("The end of the archive period was not provided in the parameters file."));
         return false;
     }
@@ -700,7 +707,7 @@ bool asParameters::PreprocessingPropertiesOk() const
                 if (method.IsSameAs("Multiplication") || method.IsSameAs("Multiply") || method.IsSameAs("Addition") ||
                     method.IsSameAs("Average")) {
                     // No constraints
-                } else if (method.IsSameAs("Gradients")) {
+                } else if (NeedsGradientPreprocessing(iStep, iPtor)) {
                     if (preprocSize != 1) {
                         wxLogError(msg, preprocSize, 1, "Gradient");
                         return false;
@@ -1027,6 +1034,11 @@ wxString asParameters::Print() const
             content.Append(wxString::Format("yPtsNb\t%d\t", GetPredictorYptsnb(iStep, iPtor)));
             content.Append(wxString::Format("yStep\t%g\t", GetPredictorYstep(iStep, iPtor)));
             content.Append(wxString::Format("Weight\t%e\t", GetPredictorWeight(iStep, iPtor)));
+            if (!GetPreprocessMethod(iStep, iPtor).IsEmpty()) {
+                content.Append(wxString::Format("%s\t", GetPreprocessMethod(iStep, iPtor)));
+            } else {
+                content.Append("NoPreprocessing\t");
+            }
             content.Append(wxString::Format("Criteria\t%s\t", GetPredictorCriteria(iStep, iPtor)));
         }
     }
@@ -1599,6 +1611,122 @@ bool asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString &val
     return true;
 }
 
+bool asParameters::NeedsGradientPreprocessing(int iStep, int iPtor) const
+{
+    wxString method = m_steps[iStep].predictors[iPtor].preprocessMethod;
+
+    return method.IsSameAs("Gradients", false) ||
+           method.IsSameAs("SimpleGradients", false) ||
+           method.IsSameAs("RealGradients", false) ||
+           method.IsSameAs("SimpleGradientsWithGaussianWeights", false) ||
+           method.IsSameAs("RealGradientsWithGaussianWeights", false);
+}
+
+bool asParameters::IsCriteriaUsingGradients(int iStep, int iPtor) const
+{
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1grads") ||
+        GetPredictorCriteria(iStep, iPtor).IsSameAs("S2grads")) {
+        return true;
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1grads") ||
+               GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2grads")) {
+        return true;
+    }
+
+    return false;
+}
+
+void asParameters::FixCriteriaIfGradientsPreprocessed(int iStep, int iPtor)
+{
+    if (NeedsGradientPreprocessing(iStep, iPtor)) {
+        if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG") ||
+             GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
+            SetPredictorCriteria(iStep, iPtor, "S1grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG")) {
+            SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG")) {
+            SetPredictorCriteria(iStep, iPtor, "S2grads");
+        } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG") ||
+                   GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG")) {
+            SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        }
+    }
+}
+
+void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor)
+{
+    // Gradients - S1
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1r")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1s")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S1rG")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S1sG")) {
+        SetPredictorCriteria(iStep, iPtor, "S1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1r")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1s")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradients");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1rG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "RealGradientsWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS1sG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS1grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleGradientsWithGaussianWeights");
+    }
+
+    // Curvature - S2
+    if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2r")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2s")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("S2rG")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("S2sG")) {
+        SetPredictorCriteria(iStep, iPtor, "S2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2r")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2s")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvature");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2G") || GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2rG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "RealCurvatureWithGaussianWeights");
+    } else if (GetPredictorCriteria(iStep, iPtor).IsSameAs("NS2sG")) {
+        SetPredictorCriteria(iStep, iPtor, "NS2grads");
+        SetPreprocessMethod(iStep, iPtor, "SimpleCurvatureWithGaussianWeights");
+    }
+}
+
 wxString asParameters::GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const
 {
     if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
@@ -1740,7 +1868,9 @@ bool asParameters::SetPredictorDatasetId(int iStep, int iPtor, const wxString &v
         wxLogError(_("The provided value for the predictor dataset is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].datasetId = val;
+
     return true;
 }
 
@@ -1750,7 +1880,9 @@ bool asParameters::SetPredictorDataId(int iStep, int iPtor, wxString val)
         wxLogError(_("The provided value for the predictor data is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].dataId = val;
+
     return true;
 }
 
@@ -1760,7 +1892,9 @@ bool asParameters::SetPredictorLevel(int iStep, int iPtor, float val)
         wxLogError(_("The provided value for the predictor level is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].level = val;
+
     return true;
 }
 
@@ -1770,7 +1904,9 @@ bool asParameters::SetPredictorGridType(int iStep, int iPtor, wxString val)
         wxLogError(_("The provided value for the predictor grid type is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].gridType = val;
+
     return true;
 }
 
@@ -1780,7 +1916,9 @@ bool asParameters::SetPredictorXmin(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor xMin is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xMin = val;
+
     return true;
 }
 
@@ -1790,7 +1928,9 @@ bool asParameters::SetPredictorXptsnb(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the predictor points number on X is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xPtsNb = val;
+
     return true;
 }
 
@@ -1800,7 +1940,9 @@ bool asParameters::SetPredictorXstep(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor X step is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xStep = val;
+
     return true;
 }
 
@@ -1810,7 +1952,9 @@ bool asParameters::SetPredictorXshift(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor X shift is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].xShift = val;
+
     return true;
 }
 
@@ -1820,7 +1964,9 @@ bool asParameters::SetPredictorYmin(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor yMin is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yMin = val;
+
     return true;
 }
 
@@ -1830,7 +1976,9 @@ bool asParameters::SetPredictorYptsnb(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the predictor points number on Y is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yPtsNb = val;
+
     return true;
 }
 
@@ -1840,7 +1988,9 @@ bool asParameters::SetPredictorYstep(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor Y step is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yStep = val;
+
     return true;
 }
 
@@ -1850,7 +2000,9 @@ bool asParameters::SetPredictorYshift(int iStep, int iPtor, double val)
         wxLogError(_("The provided value for the predictor Y shift is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].yShift = val;
+
     return true;
 }
 
@@ -1860,7 +2012,9 @@ bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
         wxLogError(_("The provided value for the 'flat allowed' property is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].flatAllowed = val;
+
     return true;
 }
 
@@ -1904,6 +2058,8 @@ bool asParameters::SetPredictorWeight(int iStep, int iPtor, float val)
         wxLogError(_("The provided value for the predictor weight is null"));
         return false;
     }
+
     m_steps[iStep].predictors[iPtor].weight = val;
+
     return true;
 }

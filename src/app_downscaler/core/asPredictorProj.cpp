@@ -34,7 +34,7 @@
 
 
 asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario)
-        : asPredictorArch(dataId),
+        : asPredictor(dataId),
           m_model(model),
           m_scenario(scenario)
 {

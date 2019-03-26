@@ -29,12 +29,12 @@
 #define ASPREDICTORPROJ_H
 
 #include <asIncludes.h>
-#include <asPredictorArch.h>
+#include <asPredictor.h>
 
 class asArea;
 
 class asPredictorProj
-        : public asPredictorArch {
+        : public asPredictor {
 public:
     asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
 

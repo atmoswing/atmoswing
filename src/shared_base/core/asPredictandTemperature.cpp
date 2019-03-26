@@ -111,7 +111,10 @@ bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath,
     if (!ParseData(catalogFilePath, dataDir, patternDir))
         return false;
 
-    Save(destinationDir);
+    if (!destinationDir.IsEmpty()) {
+        if (!Save(destinationDir))
+            return false;
+    }
 
     if (!g_unitTesting) {
         wxLogVerbose(_("Predictand DB saved."));

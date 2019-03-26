@@ -30,7 +30,7 @@
 #define ASPREDICTOR_H
 
 #include <asIncludes.h>
-#include <asFileGrib2.h>
+#include <asFileGrib.h>
 #include <asFileNetcdf.h>
 
 class asTimeArray;
@@ -49,8 +49,9 @@ public:
         ParameterUndefined,
         AirTemperature,
         PotentialTemperature,
-        GeopotentialHeight,
         Geopotential,
+        GeopotentialHeight,
+        GeopotentialHeightAnomaly,
         PrecipitableWater,
         Precipitation,
         PrecipitationRate,
@@ -68,24 +69,42 @@ public:
         SoilTemperature,
         SnowWaterEquivalent,
         CloudCover,
+        CloudWater,
         Radiation,
         MomentumFlux,
         GravityWaveStress,
         SeaSurfaceTemperature,
-        SeaSurfaceTemperatureAnomaly
+        SeaSurfaceTemperatureAnomaly,
+        CAPE,
+        CIN,
+        LapseRate,
+        StreamFunction,
+        AbsoluteVorticity,
+        VelocityPotential,
+        WindShear,
+        Divergence,
+        MontgomeryPotential,
+        Vorticity,
+        DewpointTemperature,
+        WaterVapour,
+        MoistureFlux,
+        Other
     };
 
     enum Unit
     {
         UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, g_kg, kg_kg, m_s, W_m2,
-        kg_m2, kg_m2_s, N_m2, m2_s2, degKm2_kg_s, mm_d
+        kg_m2, kg_m2_s, N_m2, m2_s2, m2_s, degKm2_kg_s, mm_d, J_kg, degK_m, per_s, J_m2
     };
 
     explicit asPredictor(const wxString &dataId);
 
     ~asPredictor() override = default;
 
-    virtual bool Init() = 0;
+    static asPredictor *GetInstance(const wxString &datasetId, const wxString &dataId,
+                                    const wxString &directory = wxEmptyString);
+
+    virtual bool Init();
 
     void CheckLevelTypeIsDefined();
 
@@ -99,7 +118,9 @@ public:
 
     bool Load(asAreaCompGrid *desiredArea, double date, float level);
 
-    bool TransformData(vvva2f &compositeData);
+    bool ClipToArea(asAreaCompGrid *desiredArea);
+
+    bool StandardizeData();
 
     bool Inline();
 
@@ -108,6 +129,8 @@ public:
     float GetMinValue() const;
 
     float GetMaxValue() const;
+
+    bool HasNaN() const;
 
     vva2f &GetData()
     {
@@ -118,6 +141,16 @@ public:
         wxASSERT(m_data[0][0].rows() > 0);
 
         return m_data;
+    }
+
+    wxString GetDataId() const
+    {
+        return m_dataId;
+    }
+
+    wxString GetProduct() const
+    {
+        return m_product;
     }
 
     Parameter GetParameter() const
@@ -151,7 +184,7 @@ public:
             directoryPath.Append(wxFileName::GetPathSeparators());
         }
 
-        directoryPath += m_subFolder;
+        directoryPath += m_product;
         if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
             directoryPath.Append(wxFileName::GetPathSeparators());
         }
@@ -179,6 +212,11 @@ public:
     int GetLonPtsnb() const
     {
         return m_lonPtsnb;
+    }
+
+    void SetStandardize(bool val = true)
+    {
+        m_standardize = val;
     }
 
     static bool IsLatLon(const wxString &datasetId);
@@ -270,6 +308,34 @@ public:
         return m_axisLon;
     }
 
+    double GetXmin() const
+    {
+        wxASSERT(m_axisLon.size() > 0);
+
+        return m_axisLon[0];
+    }
+
+    double GetYmin() const
+    {
+        wxASSERT(m_axisLat.size() > 0);
+
+        return wxMin(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+    }
+
+    double GetXmax() const
+    {
+        wxASSERT(m_axisLon.size() > 0);
+
+        return m_axisLon[m_axisLon.size() - 1];
+    }
+
+    double GetYmax() const
+    {
+        wxASSERT(m_axisLat.size() > 0);
+
+        return wxMax(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
+    }
+
 
 protected:
     struct FileStructure
@@ -317,8 +383,8 @@ protected:
     FileIndexes m_fInd;
     asFile::FileType m_fileType;
     bool m_initialized;
+    bool m_standardize;
     bool m_axesChecked;
-    wxString m_subFolder;
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_datasetName;
@@ -330,6 +396,7 @@ protected:
     vi m_gribCode;
     wxString m_product;
     wxString m_fileVarName;
+    wxString m_fileNamePattern;
     Unit m_unit;
     bool m_strideAllowed;
     float m_level;
@@ -348,17 +415,17 @@ protected:
     wxString m_preprocessMethod;
     vwxs m_files;
 
-    virtual void ListFiles(asTimeArray &timeArray) = 0;
+    virtual void ListFiles(asTimeArray &timeArray);
 
-    bool EnquireFileStructure();
+    bool EnquireFileStructure(asTimeArray &timeArray);
 
     bool ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
-    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const = 0;
+    virtual double ConvertToMjd(double timeValue, double refValue = NaNd) const;
 
-    virtual bool CheckTimeArray(asTimeArray &timeArray) const = 0;
+    virtual bool CheckTimeArray(asTimeArray &timeArray);
 
-    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData) = 0;
+    virtual bool GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData);
 
     size_t *GetIndexesStartNcdf(int iArea) const;
 
@@ -372,31 +439,73 @@ protected:
 
     bool GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData);
 
-    bool GetDataFromFile(asFileGrib2 &gbFile, vvva2f &compositeData);
+    bool GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData);
 
     bool EnquireNetcdfFileStructure();
 
     bool ExtractFromNetcdfFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                                vvva2f &compositeData);
 
-    bool EnquireGribFileStructure();
+    bool EnquireGribFileStructure(asTimeArray &timeArray);
 
     bool ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *&dataArea, asTimeArray &timeArray,
                              vvva2f &compositeData);
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib2 *gbFile0, asFileGrib2 *gbFile1 = nullptr);
+    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1 = nullptr);
 
     bool CheckFileStructure();
+
+    bool HasDesiredLevel();
 
     bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
     bool InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *desiredArea);
 
+    bool TransformData(vvva2f &compositeData);
+
     asAreaCompGrid *CreateMatchingArea(asAreaCompGrid *desiredArea);
 
-    void AssignGribCode(const int arr[]);
+    bool IsPressureLevel() const;
+
+    bool IsIsentropicLevel() const;
+
+    bool IsSurfaceLevel() const;
+
+    bool IsSurfaceFluxesLevel() const;
+
+    bool IsTotalColumnLevel() const;
+
+    bool IsPVLevel() const;
+
+    bool IsGeopotential() const;
+
+    bool IsGeopotentialHeight() const;
+
+    bool IsAirTemperature() const;
+
+    bool IsRelativeHumidity() const;
+
+    bool IsSpecificHumidity() const;
+
+    bool IsVerticalVelocity() const;
+
+    bool IsPrecipitableWater() const;
+
+    bool IsPressure() const;
+
+    bool IsSeaLevelPressure() const;
+
+    bool IsUwindComponent() const;
+
+    bool IsVwindComponent() const;
+
+    bool IsPotentialVorticity() const;
+
+    bool IsTotalPrecipitation() const;
+
+    bool IsPrecipitationRate() const;
 
 private:
     wxString m_directoryPath;
@@ -406,6 +515,8 @@ private:
     bool ExtractLevelAxis(asFileNetcdf &ncFile);
 
     bool ExtractTimeAxis(asFileNetcdf &ncFile);
+
+    bool FillWithNaNs(vvva2f &compositeData) const;
 };
 
 #endif // ASPREDICTOR_H
