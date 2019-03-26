@@ -78,6 +78,25 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
+# Install SQLite
+if(!(Test-Path -Path "$LIB_DIR\include\sqlite.h") -Or $REBUILD_SQLITE) {
+  Init-Build "sqlite"
+  Download-Lib "sqlite_src" $SQLITE_SRC_URL
+  Download-Lib "sqlite_dll" $SQLITE_DLL_URL
+  Download-Lib "sqlite_tools" $SQLITE_TOOLS_URL
+  7z x sqlite_src.zip -o"$TMP_DIR" > $null
+  7z x sqlite_dll.zip -o"$TMP_DIR" > $null
+  7z x sqlite_tools.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\sqlite-tools*" "$TMP_DIR\sqlitetools"
+  move "$TMP_DIR\sqlite-*" "$TMP_DIR\sqlite"
+  lib /def:sqlite3.def
+  copy "$TMP_DIR\sqlite3.dll" "$LIB_DIR\bin\sqlite3.dll"
+  copy "$TMP_DIR\sqlite3.lib" "$LIB_DIR\lib\sqlite3.lib"
+  copy "$TMP_DIR\sqlitetools\sqlite3.exe" "$LIB_DIR\bin\sqlite3.exe"
+  copy "$TMP_DIR\sqlite\sqlite3.h" "$LIB_DIR\include\sqlite3.h"
+  copy "$TMP_DIR\sqlite\sqlite3ext.h" "$LIB_DIR\include\sqlite3ext.h"
+}
+
 # Install Proj
 if(!(Test-Path -Path "$LIB_DIR\include\proj_api.h") -Or $REBUILD_PROJ) {
   Init-Build "proj"
@@ -85,8 +104,11 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj_api.h") -Or $REBUILD_PROJ) {
   7z x proj.zip -o"$TMP_DIR" > $null
   move "$TMP_DIR\proj.4-*" "$TMP_DIR\proj"
   cd "$TMP_DIR\proj"
-  nmake -f makefile.vc INSTDIR="$LIB_DIR" > $null
-  nmake -f makefile.vc INSTDIR="$LIB_DIR" install-all > $null
+  mkdir build
+  cd build
+  cmake -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
+  cmake --build . --config Release > $null
+  cmake --build . --config Release --target INSTALL > $null
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
