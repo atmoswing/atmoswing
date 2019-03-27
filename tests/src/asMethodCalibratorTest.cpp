@@ -667,14 +667,39 @@ TEST(MethodCalibrator, ComplexPredictorHours)
     asParametersCalibration paramsStdNeg = paramsStd;
     asParametersCalibration paramsPreloadPos = paramsPreload;
     asParametersCalibration paramsPreloadNeg = paramsPreload;
-    paramsStdPos.SetPredictorHours(0, 0, 36);
-    paramsStdPos.SetPredictorHours(0, 1, 48);
-    paramsStdNeg.SetPredictorHours(0, 0, -12);
-    paramsStdNeg.SetPredictorHours(0, 1, 0);
-    paramsPreloadPos.SetPredictorHours(0, 0, 36);
-    paramsPreloadPos.SetPredictorHours(0, 1, 48);
-    paramsPreloadNeg.SetPredictorHours(0, 0, -12);
-    paramsPreloadNeg.SetPredictorHours(0, 1, 0);
+
+    vd hour;
+
+    hour.push_back(36);
+    paramsStdPos.SetPredictorHoursVector(0, 0, hour);
+    hour[0] = 48;
+    paramsStdPos.SetPredictorHoursVector(0, 1, hour);
+
+    hour[0] = -12;
+    paramsStdNeg.SetPredictorHoursVector(0, 0, hour);
+    hour[0] = 0;
+    paramsStdNeg.SetPredictorHoursVector(0, 1, hour);
+
+    hour[0] = 36;
+    paramsPreloadPos.SetPredictorHoursVector(0, 0, hour);
+    hour[0] = 48;
+    paramsPreloadPos.SetPredictorHoursVector(0, 1, hour);
+
+    hour[0] = -12;
+    paramsPreloadNeg.SetPredictorHoursVector(0, 0, hour);
+    hour[0] = 0;
+    paramsPreloadNeg.SetPredictorHoursVector(0, 1, hour);
+
+    paramsStdPos.InitValues();
+    paramsStdPos.FixTimeLimits();
+    paramsStdNeg.InitValues();
+    paramsStdNeg.FixTimeLimits();
+    paramsPreloadPos.SetPreloadingProperties();
+    paramsPreloadPos.InitValues();
+    paramsPreloadPos.FixTimeLimits();
+    paramsPreloadNeg.SetPreloadingProperties();
+    paramsPreloadNeg.InitValues();
+    paramsPreloadNeg.FixTimeLimits();
 
     // Proceed to the calculations
     asMethodCalibratorSingle calibrator;
@@ -682,22 +707,25 @@ TEST(MethodCalibrator, ComplexPredictorHours)
     predictorFilePath.Append("/files/data-ncep-r1/others/");
     calibrator.SetPredictorDataDir(predictorFilePath);
     calibrator.SetPredictandDB(nullptr);
+    asMethodCalibratorSingle calibrator1 = calibrator;
+    asMethodCalibratorSingle calibrator2 = calibrator;
+    asMethodCalibratorSingle calibrator3 = calibrator;
     asResultsDates anaDatesStd, anaDatesStdPos, anaDatesStdNeg;
     asResultsDates anaDatesPreload, anaDatesPreloadPos, anaDatesPreloadNeg;
 
     try {
         bool containsNaNs = false;
-        //ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStd, &paramsStd, 0, containsNaNs));
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStd, &paramsStd, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStdPos, &paramsStdPos, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStdNeg, &paramsStdNeg, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreload, &paramsPreload, 0, containsNaNs));
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesPreload, &paramsPreload, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreloadPos, &paramsPreloadPos, 0, containsNaNs));
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreloadPos, &paramsPreloadPos, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreloadNeg, &paramsPreloadNeg, 0, containsNaNs));
+        ASSERT_TRUE(calibrator3.GetAnalogsDates(anaDatesPreloadNeg, &paramsPreloadNeg, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
     } catch (asException &e) {
         wxPrintf(e.GetFullMessage());

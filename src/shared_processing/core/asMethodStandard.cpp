@@ -470,8 +470,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             }
 
             // Date array object instantiation for data loading.
-            double ptorStart = timeStartData + params->GetTimeShiftDays() + preloadHours[iHour] / 24.0;
-            double ptorEnd = timeEndData + params->GetTimeShiftDays() + preloadHours[iHour] / 24.0;
+            double ptorStart = timeStartData + preloadHours[iHour] / 24.0;
+            double ptorEnd = timeEndData + preloadHours[iHour] / 24.0;
 
             asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                   params->GetTimeArrayAnalogsMode());
@@ -644,8 +644,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 // Date array object instantiation for data loading.
-                double ptorStart = timeStartData + params->GetTimeShiftDays() + hours / 24.0;
-                double ptorEnd = timeEndData + params->GetTimeShiftDays() + hours / 24.0;
+                double ptorStart = timeStartData + hours / 24.0;
+                double ptorEnd = timeEndData + hours / 24.0;
                 asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                       params->GetTimeArrayAnalogsMode());
                 timeArray.Init();
@@ -811,7 +811,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
     vd preloadHours = params->GetPreloadHours(iStep, iPtor);
     float level;
-    double time;
+    double hour;
     int iLevel = 0, iHour = 0, iPre = 0;
 
     // Get data ID
@@ -827,11 +827,11 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         wxASSERT(!preloadHours.empty());
 
         level = params->GetPredictorLevel(iStep, iPtor);
-        time = params->GetPredictorHour(iStep, iPtor);
+        hour = params->GetPredictorHour(iStep, iPtor);
 
         // Get level and hour indices
         iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
-        iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], time);
+        iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], hour);
 
         // Force gradients preprocessing anyway.
         params->ForceUsingGradientsPreprocessing(iStep, iPtor);
@@ -842,23 +842,23 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         // Correct according to the method
         if (params->NeedsGradientPreprocessing(iStep, iPtor)) {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
-            time = params->GetPreprocessHour(iStep, iPtor, 0);
+            hour = params->GetPreprocessHour(iStep, iPtor, 0);
             if (!params->IsCriteriaUsingGradients(iStep, iPtor)) {
                 wxLogError(_("The criteria value has not been changed after the gradient preprocessing."));
                 return false;
             }
         } else if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("HumidityIndex")) {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
-            time = params->GetPreprocessHour(iStep, iPtor, 0);
+            hour = params->GetPreprocessHour(iStep, iPtor, 0);
         } else if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("HumidityFlux")) {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
-            time = params->GetPreprocessHour(iStep, iPtor, 0);
+            hour = params->GetPreprocessHour(iStep, iPtor, 0);
         } else if (params->GetPreprocessMethod(iStep, iPtor).IsSameAs("FormerHumidityIndex")) {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
-            time = params->GetPreprocessHour(iStep, iPtor, 0);
+            hour = params->GetPreprocessHour(iStep, iPtor, 0);
         } else {
             level = params->GetPreprocessLevel(iStep, iPtor, 0);
-            time = params->GetPreprocessHour(iStep, iPtor, 0);
+            hour = params->GetPreprocessHour(iStep, iPtor, 0);
         }
 
         // Get level and hour indices
@@ -866,7 +866,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
             iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
         }
         if (!preloadHours.empty()) {
-            iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], time);
+            iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], hour);
         }
     }
 
@@ -876,7 +876,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         return false;
     }
     if (iHour == asNOT_FOUND || iHour == asOUT_OF_RANGE) {
-        wxLogError(_("The hour (%d) could not be found in the preloaded data."), (int) time);
+        wxLogError(_("The hour (%d) could not be found in the preloaded data."), (int) hour);
         return false;
     }
 
@@ -895,9 +895,9 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         }
 
         level = params->GetPredictorLevel(iStep, iPtor);
-        time = params->GetPredictorHour(iStep, iPtor);
+        hour = params->GetPredictorHour(iStep, iPtor);
         iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
-        iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], time);
+        iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], hour);
     }
     if (iLevel < 0 || iHour < 0) {
         wxLogError(_("An unexpected error occurred."));
@@ -998,8 +998,8 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
                                           int iPtor, double timeStartData, double timeEndData)
 {
     // Date array object instantiation for the data loading.
-    double ptorStart = timeStartData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                           params->GetTimeArrayAnalogsMode());
     timeArray.Init();
@@ -1072,10 +1072,8 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for data loading.
-        double ptorStart = timeStartData + params->GetTimeShiftDays() +
-                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData  + params->GetTimeShiftDays()+
-                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorStart = timeStartData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorEnd = timeEndData  + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                               params->GetTimeArrayAnalogsMode());
         timeArray.Init();

@@ -382,8 +382,8 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
                                                                    double timeEndData)
 {
     // Date array object instantiation for the data loading.
-    double ptorStart = timeStartData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
@@ -437,10 +437,8 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading.
-        double ptorStart = timeStartData + params->GetTimeShiftDays() +
-                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData + params->GetTimeShiftDays() +
-                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorStart = timeStartData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorEnd = timeEndData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
