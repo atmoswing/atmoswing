@@ -985,11 +985,6 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
         // Instantiate a score object
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria *criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(m_storagePredictorsArchive.size() > iPtor);
-            wxASSERT(m_storagePredictorsArchive[iPtor]);
-            criterion->SetDataRange(m_storagePredictorsArchive[iPtor]);
-        }
         m_storageCriteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
 
@@ -1440,11 +1435,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         // Instantiate a score object
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria *criterion = asCriteria::GetInstance(params.GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(m_storagePredictorsArchive.size() > iPtor);
-            wxASSERT(m_storagePredictorsArchive[iPtor]);
-            criterion->SetDataRange(m_storagePredictorsArchive[iPtor]);
-        }
         m_storageCriteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
 

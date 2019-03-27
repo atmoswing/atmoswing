@@ -46,11 +46,6 @@ public:
 
     virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
-    bool NeedsDataRange() const
-    {
-        return m_needsDataRange;
-    }
-
     void SetDataRange(const asPredictor *data);
 
     void SetDataRange(float minValue, float maxValue);
@@ -94,9 +89,6 @@ protected:
     wxString m_fullName;
     Order m_order;
     int m_minPointsNb;
-    bool m_needsDataRange;
-    float m_dataMin;
-    float m_dataMax;
     float m_scaleBest;
     float m_scaleWorst;
     bool m_canUseInline;

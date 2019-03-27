@@ -46,9 +46,6 @@ asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order ord
           m_fullName(fullname),
           m_order(order),
           m_minPointsNb(1),
-          m_needsDataRange(false),
-          m_dataMin(NaNf),
-          m_dataMax(NaNf),
           m_scaleBest(0),
           m_scaleWorst(Inff),
           m_canUseInline(false),
@@ -114,18 +111,6 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
         asCriteria *criteria = new asCriteriaSAD();
         return criteria;
     }
-}
-
-void asCriteria::SetDataRange(const asPredictor *data)
-{
-    m_dataMin = data->GetMinValue();
-    m_dataMax = data->GetMaxValue();
-}
-
-void asCriteria::SetDataRange(float minValue, float maxValue)
-{
-    m_dataMin = minValue;
-    m_dataMax = maxValue;
 }
 
 void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)

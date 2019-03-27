@@ -177,11 +177,6 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictorsArch.size() > iPtor);
-            wxASSERT(predictorsArch[iPtor]);
-            criterion->SetDataRange(predictorsArch[iPtor]);
-        }
         criteria.push_back(criterion);
     }
 
@@ -258,11 +253,6 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size() > iPtor);
-            wxASSERT(predictors[iPtor]);
-            criterion->SetDataRange(predictors[iPtor]);
-        }
         criteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
     }
