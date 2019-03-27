@@ -533,7 +533,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorHours(i, j);
+                        return (double) GetPredictorHour(i, j);
                     }
                 }
                 counter++;
@@ -1079,7 +1079,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
                         int val = asRound(newVal);
-                        if (!SetPredictorHours(i, j, val)) {
+                        if (!SetPredictorHour(i, j, val)) {
                             asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
                         }
                         return;

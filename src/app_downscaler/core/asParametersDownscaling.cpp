@@ -288,7 +288,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     if (!SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorHours(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
+                    if (!SetPredictorHour(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam)))
@@ -556,8 +556,8 @@ bool asParametersDownscaling::FixTimeLimits()
                     maxHour = wxMax(GetPreprocessHour(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorHours(i, j), minHour);
-                maxHour = wxMax(GetPredictorHours(i, j), maxHour);
+                minHour = wxMin(GetPredictorHour(i, j), minHour);
+                maxHour = wxMax(GetPredictorHour(i, j), maxHour);
             }
         }
     }

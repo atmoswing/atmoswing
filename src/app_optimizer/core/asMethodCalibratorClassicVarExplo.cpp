@@ -69,7 +69,7 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
                 vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
 
                 for (double hour : vPredictorHours) {
-                    if (!params.SetPredictorHours(iStep, iPtor, hour))
+                    if (!params.SetPredictorHour(iStep, iPtor, hour))
                         return false;
 
                     vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);

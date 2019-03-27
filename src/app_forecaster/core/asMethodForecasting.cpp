@@ -443,7 +443,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 
             // Restriction needed
             wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHours(iStep, iPtor),
+            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor),
                                                  params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 
@@ -759,7 +759,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 
             // Restriction needed
             wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHours(iStep, iPtor),
+            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor),
                                                  params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 
@@ -1220,7 +1220,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
 
             // Restriction needed
             wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHours(iStep, iPtor),
+            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor),
                                                  params.GetTargetTimeStepHours(),
                                                  params.GetLeadTimeNb());
 

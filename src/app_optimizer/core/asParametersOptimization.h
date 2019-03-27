@@ -144,7 +144,7 @@ public:
 
     double GetPredictorHoursIteration(int iStep, int iPtor)
     {
-        return m_stepsIteration[iStep].predictors[iPtor].hours;
+        return m_stepsIteration[iStep].predictors[iPtor].hour;
     }
 
     bool SetPredictorHoursIteration(int iStep, int iPtor, double val)
@@ -153,7 +153,7 @@ public:
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsIteration[iStep].predictors[iPtor].hours = val;
+        m_stepsIteration[iStep].predictors[iPtor].hour = val;
         return true;
     }
 
@@ -286,7 +286,7 @@ public:
 
     double GetPredictorHoursUpperLimit(int iStep, int iPtor)
     {
-        return m_stepsUpperLimit[iStep].predictors[iPtor].hours;
+        return m_stepsUpperLimit[iStep].predictors[iPtor].hour;
     }
 
     bool SetPredictorHoursUpperLimit(int iStep, int iPtor, double val)
@@ -295,7 +295,7 @@ public:
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsUpperLimit[iStep].predictors[iPtor].hours = val;
+        m_stepsUpperLimit[iStep].predictors[iPtor].hour = val;
         return true;
     }
 
@@ -428,7 +428,7 @@ public:
 
     double GetPredictorHoursLowerLimit(int iStep, int iPtor)
     {
-        return m_stepsLowerLimit[iStep].predictors[iPtor].hours;
+        return m_stepsLowerLimit[iStep].predictors[iPtor].hour;
     }
 
     bool SetPredictorHoursLowerLimit(int iStep, int iPtor, double val)
@@ -437,7 +437,7 @@ public:
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsLowerLimit[iStep].predictors[iPtor].hours = val;
+        m_stepsLowerLimit[iStep].predictors[iPtor].hour = val;
         return true;
     }
 

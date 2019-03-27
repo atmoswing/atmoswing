@@ -73,7 +73,7 @@ public:
         double yStep;
         double yShift;
         int flatAllowed;
-        double hours;
+        double hour;
         int membersNb;
         wxString criteria;
         float weight;
@@ -566,17 +566,17 @@ public:
 
     bool SetPredictorFlatAllowed(int iStep, int iPtor, int val);
 
-    double GetPredictorHours(int iStep, int iPtor) const
+    double GetPredictorHour(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].hours;
+        return m_steps[iStep].predictors[iPtor].hour;
     }
 
     double GetPredictorTimeAsDays(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].hours / 24.0;
+        return m_steps[iStep].predictors[iPtor].hour / 24.0;
     }
 
-    bool SetPredictorHours(int iStep, int iPtor, double val);
+    bool SetPredictorHour(int iStep, int iPtor, double val);
 
     int GetPredictorMembersNb(int iStep, int iPtor) const
     {

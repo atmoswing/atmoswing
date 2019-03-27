@@ -261,7 +261,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                     if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+                    if (!SetPredictorHour(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))

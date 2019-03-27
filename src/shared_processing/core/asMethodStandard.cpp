@@ -827,7 +827,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         wxASSERT(!preloadHours.empty());
 
         level = params->GetPredictorLevel(iStep, iPtor);
-        time = params->GetPredictorHours(iStep, iPtor);
+        time = params->GetPredictorHour(iStep, iPtor);
 
         // Get level and hour indices
         iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
@@ -895,7 +895,7 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
         }
 
         level = params->GetPredictorLevel(iStep, iPtor);
-        time = params->GetPredictorHours(iStep, iPtor);
+        time = params->GetPredictorHour(iStep, iPtor);
         iLevel = asFind(&preloadLevels[0], &preloadLevels[preloadLevels.size() - 1], level);
         iHour = asFind(&preloadHours[0], &preloadHours[preloadHours.size() - 1], time);
     }
@@ -1223,7 +1223,7 @@ bool asMethodStandard::GetRandomValidData(asParameters *params, int iStep, int i
     double newHour = params->GetPreloadHours(iStep, iPtor)[hours[randomIndex]];
 
     params->SetPredictorLevel(iStep, iPtor, newLevel);
-    params->SetPredictorHours(iStep, iPtor, newHour);
+    params->SetPredictorHour(iStep, iPtor, newHour);
 
     return true;
 }

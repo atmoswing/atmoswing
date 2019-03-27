@@ -190,7 +190,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                         fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHours(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHour(iStep, iPtor)));
             }
 
             wxXmlNode *nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");

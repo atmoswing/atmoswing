@@ -78,7 +78,7 @@ void asParametersOptimization::AddPredictorIteration(ParamsStep &step)
     predictor.xPtsNb = 1;
     predictor.yMin = 2.5;
     predictor.yPtsNb = 1;
-    predictor.hours = 6;
+    predictor.hour = 6;
     predictor.weight = 0.01f;
 
     step.predictors.push_back(predictor);
@@ -92,7 +92,7 @@ void asParametersOptimization::AddPredictorUpperLimit(ParamsStep &step)
     predictor.xPtsNb = 20;
     predictor.yMin = 87.5;
     predictor.yPtsNb = 16;
-    predictor.hours = 36;
+    predictor.hour = 36;
     predictor.weight = 1;
 
     step.predictors.push_back(predictor);
@@ -106,7 +106,7 @@ void asParametersOptimization::AddPredictorLowerLimit(ParamsStep &step)
     predictor.xPtsNb = 1;
     predictor.yMin = 0;
     predictor.yPtsNb = 1;
-    predictor.hours = 6;
+    predictor.hour = 6;
     predictor.weight = 0;
 
     step.predictors.push_back(predictor);
@@ -444,15 +444,15 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
         } else if (nodeParam->GetName() == "time") {
             SetPredictorHourLock(iStep, iPtor, fileParams.GetAttributeBool(nodeParam, "lock", true, false));
             if (IsPredictorHourLocked(iStep, iPtor)) {
-                if (!SetPredictorHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+                if (!SetPredictorHour(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                     return false;
                 vd vHours;
-                vHours.push_back(GetPredictorHours(iStep, iPtor));
+                vHours.push_back(GetPredictorHour(iStep, iPtor));
                 if (!SetPreloadHours(iStep, iPtor, vHours))
                     return false;
-                if (!SetPredictorHoursLowerLimit(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
+                if (!SetPredictorHoursLowerLimit(iStep, iPtor, GetPredictorHour(iStep, iPtor)))
                     return false;
-                if (!SetPredictorHoursUpperLimit(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
+                if (!SetPredictorHoursUpperLimit(iStep, iPtor, GetPredictorHour(iStep, iPtor)))
                     return false;
                 if (!SetPredictorHoursIteration(iStep, iPtor, 6))
                     return false;
@@ -464,7 +464,7 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
                 if (!SetPredictorHoursIteration(iStep, iPtor, fileParams.GetAttributeDouble(nodeParam, "iteration")))
                     return false;
                 // Initialize to ensure correct array sizes
-                if (!SetPredictorHours(iStep, iPtor, GetPredictorHoursLowerLimit(iStep, iPtor)))
+                if (!SetPredictorHour(iStep, iPtor, GetPredictorHoursLowerLimit(iStep, iPtor)))
                     return false;
             }
         } else if (nodeParam->GetName() == "members") {
@@ -827,12 +827,12 @@ bool asParametersOptimization::SetPreloadingProperties()
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
                     SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
                     SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
-                    SetPredictorHours(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
+                    SetPredictorHour(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
                 } else {
                     SetPredictorDatasetId(iStep, iPtor, "mix");
                     SetPredictorDataId(iStep, iPtor, "mix");
                     SetPredictorLevel(iStep, iPtor, 0);
-                    SetPredictorHours(iStep, iPtor, 0);
+                    SetPredictorHour(iStep, iPtor, 0);
                 }
             }
 
@@ -957,9 +957,9 @@ void asParametersOptimization::InitRandomValues()
                 }
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
-                    SetPredictorHours(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].hours,
-                                                     m_stepsUpperLimit[i].predictors[j].hours,
-                                                     m_stepsIteration[i].predictors[j].hours));
+                    SetPredictorHour(i, j, asRandom(m_stepsLowerLimit[i].predictors[j].hour,
+                                                    m_stepsUpperLimit[i].predictors[j].hour,
+                                                    m_stepsIteration[i].predictors[j].hour));
                 }
 
             }
@@ -1045,13 +1045,12 @@ void asParametersOptimization::CheckRange()
                                                                m_stepsUpperLimit[i].predictors[j].preprocessHours[k]),
                                                          m_stepsLowerLimit[i].predictors[j].preprocessHours[k]));
                     }
-                    SetPredictorHours(i, j, 0);
+                    SetPredictorHour(i, j, 0);
                 }
             } else {
                 if (!m_stepsLocks[i].predictors[j].hours) {
-                    SetPredictorHours(i, j, wxMax(wxMin(GetPredictorHours(i, j),
-                                                        m_stepsUpperLimit[i].predictors[j].hours),
-                                                  m_stepsLowerLimit[i].predictors[j].hours));
+                    SetPredictorHour(i, j, wxMax(wxMin(GetPredictorHour(i, j), m_stepsUpperLimit[i].predictors[j].hour),
+                                                 m_stepsLowerLimit[i].predictors[j].hour));
                 }
             }
 
@@ -1149,9 +1148,9 @@ bool asParametersOptimization::IsInRange()
                 }
             } else {
                 if (!m_stepsLocks[i].predictors[j].hours) {
-                    if (GetPredictorHours(i, j) < m_stepsLowerLimit[i].predictors[j].hours)
+                    if (GetPredictorHour(i, j) < m_stepsLowerLimit[i].predictors[j].hour)
                         return false;
-                    if (GetPredictorHours(i, j) < m_stepsLowerLimit[i].predictors[j].hours)
+                    if (GetPredictorHour(i, j) < m_stepsLowerLimit[i].predictors[j].hour)
                         return false;
                 }
             }
@@ -1249,11 +1248,11 @@ void asParametersOptimization::FixHours()
                 }
             } else {
                 if (!m_stepsLocks[i].predictors[j].hours) {
-                    if (m_stepsIteration[i].predictors[j].hours != 0) {
-                        float ratio = (float) GetPredictorHours(i, j) /
-                                      (float) m_stepsIteration[i].predictors[j].hours;
+                    if (m_stepsIteration[i].predictors[j].hour != 0) {
+                        float ratio = (float) GetPredictorHour(i, j) /
+                                      (float) m_stepsIteration[i].predictors[j].hour;
                         ratio = asRound(ratio);
-                        SetPredictorHours(i, j, ratio * m_stepsIteration[i].predictors[j].hours);
+                        SetPredictorHour(i, j, ratio * m_stepsIteration[i].predictors[j].hour);
                     }
                 }
             }

@@ -513,12 +513,12 @@ bool asParametersCalibration::SetPreloadingProperties()
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
                     SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
                     SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
-                    SetPredictorHours(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
+                    SetPredictorHour(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
                 } else {
                     SetPredictorDatasetId(iStep, iPtor, "mix");
                     SetPredictorDataId(iStep, iPtor, "mix");
                     SetPredictorLevel(iStep, iPtor, 0);
-                    SetPredictorHours(iStep, iPtor, 0);
+                    SetPredictorHour(iStep, iPtor, 0);
                 }
             }
 
@@ -824,7 +824,7 @@ void asParametersCalibration::InitValues()
             } else {
                 SetPredictorDataId(i, j, m_stepsVect[i].predictors[j].dataId[0]);
                 SetPredictorLevel(i, j, m_stepsVect[i].predictors[j].level[0]);
-                SetPredictorHours(i, j, m_stepsVect[i].predictors[j].hours[0]);
+                SetPredictorHour(i, j, m_stepsVect[i].predictors[j].hours[0]);
             }
 
             SetPredictorXmin(i, j, m_stepsVect[i].predictors[j].xMin[0]);

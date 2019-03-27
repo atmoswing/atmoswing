@@ -94,7 +94,7 @@ void asParameters::AddPredictor(ParamsStep &step)
     predictor.yStep = 0;
     predictor.yShift = 0;
     predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.hours = 0;
+    predictor.hour = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
     predictor.membersNb = 0;
@@ -127,7 +127,7 @@ void asParameters::AddPredictor(int iStep)
     predictor.yStep = 0;
     predictor.yShift = 0;
     predictor.flatAllowed = asFLAT_FORBIDDEN;
-    predictor.hours = 0;
+    predictor.hour = 0;
     predictor.criteria = wxEmptyString;
     predictor.weight = 1;
     predictor.membersNb = 0;
@@ -344,7 +344,7 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
             if (!SetPredictorLevel(iStep, iPtor, asFileParameters::GetFloat(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "time") {
-            if (!SetPredictorHours(iStep, iPtor, asFileParameters::GetDouble(nodeParam)))
+            if (!SetPredictorHour(iStep, iPtor, asFileParameters::GetDouble(nodeParam)))
                 return false;
         } else if (nodeParam->GetName() == "members") {
             if (!SetPredictorMembersNb(iStep, iPtor, asFileParameters::GetInt(nodeParam)))
@@ -513,12 +513,12 @@ bool asParameters::SetPreloadingProperties()
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
                     SetPredictorDataId(iStep, iPtor, GetPreprocessDataId(iStep, iPtor, 0));
                     SetPredictorLevel(iStep, iPtor, GetPreprocessLevel(iStep, iPtor, 0));
-                    SetPredictorHours(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
+                    SetPredictorHour(iStep, iPtor, GetPreprocessHour(iStep, iPtor, 0));
                 } else {
                     SetPredictorDatasetId(iStep, iPtor, "mix");
                     SetPredictorDataId(iStep, iPtor, "mix");
                     SetPredictorLevel(iStep, iPtor, 0);
-                    SetPredictorHours(iStep, iPtor, 0);
+                    SetPredictorHour(iStep, iPtor, 0);
                 }
             }
 
@@ -528,7 +528,7 @@ bool asParameters::SetPreloadingProperties()
                     return false;
                 if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevel(iStep, iPtor)))
                     return false;
-                if (!SetPreloadHours(iStep, iPtor, GetPredictorHours(iStep, iPtor)))
+                if (!SetPreloadHours(iStep, iPtor, GetPredictorHour(iStep, iPtor)))
                     return false;
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
@@ -775,7 +775,7 @@ void asParameters::SortLevelsAndTime()
                 hour = oldPtors[0].preprocessHours[0];
             } else {
                 level = oldPtors[0].level;
-                hour = oldPtors[0].hours;
+                hour = oldPtors[0].hour;
             }
 
             for (unsigned int i = 1; i < oldPtors.size(); i++) {
@@ -787,7 +787,7 @@ void asParameters::SortLevelsAndTime()
                     nextHour = oldPtors[i].preprocessHours[0];
                 } else {
                     nextLevel = oldPtors[i].level;
-                    nextHour = oldPtors[i].hours;
+                    nextHour = oldPtors[i].hour;
                 }
 
                 // Compare to previous one
@@ -910,11 +910,11 @@ bool asParameters::FixTimeLimits()
                     maxHour = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHour);
                     minHourPredictor = wxMin(m_steps[i].predictors[j].preprocessHours[k], minHourPredictor);
                     maxHourPredictor = wxMax(m_steps[i].predictors[j].preprocessHours[k], maxHourPredictor);
-                    m_steps[i].predictors[j].hours = minHourPredictor;
+                    m_steps[i].predictors[j].hour = minHourPredictor;
                 }
             } else {
-                minHour = wxMin(m_steps[i].predictors[j].hours, minHour);
-                maxHour = wxMax(m_steps[i].predictors[j].hours, maxHour);
+                minHour = wxMin(m_steps[i].predictors[j].hour, minHour);
+                maxHour = wxMax(m_steps[i].predictors[j].hour, maxHour);
             }
         }
     }
@@ -1023,7 +1023,7 @@ wxString asParameters::Print() const
                 content.Append(wxString::Format("%s %s\t", GetPredictorDatasetId(iStep, iPtor),
                                                 GetPredictorDataId(iStep, iPtor)));
                 content.Append(wxString::Format("Level\t%g\t", GetPredictorLevel(iStep, iPtor)));
-                content.Append(wxString::Format("Time\t%g\t", GetPredictorHours(iStep, iPtor)));
+                content.Append(wxString::Format("Time\t%g\t", GetPredictorHour(iStep, iPtor)));
             }
 
             content.Append(wxString::Format("GridType\t%s\t", GetPredictorGridType(iStep, iPtor)));
@@ -1181,7 +1181,7 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     wxLogError(errMsg);
                     return false;
                 }
-                if (!SetPredictorHours(iStep, iPtor, float(dVal))) {
+                if (!SetPredictorHour(iStep, iPtor, float(dVal))) {
                     wxLogError(errMsg);
                     return false;
                 }
@@ -2023,14 +2023,14 @@ bool asParameters::SetPredictorFlatAllowed(int iStep, int iPtor, int val)
     return true;
 }
 
-bool asParameters::SetPredictorHours(int iStep, int iPtor, double val)
+bool asParameters::SetPredictorHour(int iStep, int iPtor, double val)
 {
     if (asIsNaN(val)) {
         wxLogError(_("The provided value for the predictor time (hours) is null"));
         return false;
     }
 
-    m_steps[iStep].predictors[iPtor].hours = val;
+    m_steps[iStep].predictors[iPtor].hour = val;
 
     return true;
 }
