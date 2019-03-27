@@ -642,6 +642,69 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
     }
 }
 
+TEST(MethodCalibrator, ComplexPredictorHours)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+
+    wxString dataFileDir = wxFileName::GetCwd();
+    dataFileDir.Append("/files/");
+    wxString patternFileDir = wxFileName::GetCwd();
+    patternFileDir.Append("/files/");
+
+    // Get parameters
+    asParametersCalibration paramsStd;
+    asParametersCalibration paramsPreload;
+    wxString paramsFilePathStd = wxFileName::GetCwd();
+    wxString paramsFilePathPreload = wxFileName::GetCwd();
+    paramsFilePathStd.Append("/files/parameters_calibration_compare_no_preload.xml");
+    paramsFilePathPreload.Append("/files/parameters_calibration_compare_preload.xml");
+    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePathStd));
+    ASSERT_TRUE(paramsPreload.LoadFromFile(paramsFilePathPreload));
+
+    // Set +- 24h
+    asParametersCalibration paramsStdPos = paramsStd;
+    asParametersCalibration paramsStdNeg = paramsStd;
+    asParametersCalibration paramsPreloadPos = paramsPreload;
+    asParametersCalibration paramsPreloadNeg = paramsPreload;
+    paramsStdPos.SetPredictorHours(0, 0, 36);
+    paramsStdPos.SetPredictorHours(0, 1, 48);
+    paramsStdNeg.SetPredictorHours(0, 0, -12);
+    paramsStdNeg.SetPredictorHours(0, 1, 0);
+    paramsPreloadPos.SetPredictorHours(0, 0, 36);
+    paramsPreloadPos.SetPredictorHours(0, 1, 48);
+    paramsPreloadNeg.SetPredictorHours(0, 0, -12);
+    paramsPreloadNeg.SetPredictorHours(0, 1, 0);
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibrator;
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator.SetPredictorDataDir(predictorFilePath);
+    calibrator.SetPredictandDB(nullptr);
+    asResultsDates anaDatesStd, anaDatesStdPos, anaDatesStdNeg;
+    asResultsDates anaDatesPreload, anaDatesPreloadPos, anaDatesPreloadNeg;
+
+    try {
+        bool containsNaNs = false;
+        //ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStd, &paramsStd, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStdPos, &paramsStdPos, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesStdNeg, &paramsStdNeg, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreload, &paramsPreload, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreloadPos, &paramsPreloadPos, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDatesPreloadNeg, &paramsPreloadNeg, 0, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+    } catch (asException &e) {
+        wxPrintf(e.GetFullMessage());
+        return;
+    }
+}
+
 void Ref1Preloading()
 {
     // Create predictand database

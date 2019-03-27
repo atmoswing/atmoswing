@@ -251,7 +251,7 @@ public:
     double GetTimeSpanDays() const
     {
         double margin = 0;
-        if (m_timeMaxHours >= 24) {
+        if (m_timeMaxHours > 24 - m_targetTimeStepHours) {
             margin = ceil(m_timeMaxHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
         }
         return std::abs(margin) + std::abs(GetTimeShiftDays());
