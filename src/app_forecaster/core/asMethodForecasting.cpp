@@ -599,10 +599,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     results.Init(params, m_forecastDate);
 
     // Archive time array
-    double timeStartArchive = params.GetArchiveStart();
-    double timeEndArchive = params.GetArchiveEnd();
-    timeEndArchive = wxMin(timeEndArchive, timeEndArchive -
-                                           params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
+    double timeStartArchive = GetTimeStartArchive(&params);
+    double timeEndArchive = GetTimeEndArchive(&params);
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetAnalogsTimeStepHours(),
                                  asTimeArray::Simple);
     timeArrayArchive.Init();
@@ -620,8 +618,8 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime = wxMin(lastLeadTime,
-                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 -
+                    params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
@@ -636,7 +634,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 
                 predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                   params.GetTimeSpanDays());
+                        params.GetTimeSpanDays());
 
                 wxDELETE(predictorRealtimePreprocess);
             }
@@ -712,18 +710,16 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-            double ptorStartArchive = timeStartArchive + params.GetPredictorsStartDiff()
-                                      + params.GetPredictorTimeAsDays(iStep, iPtor);
-            double ptorEndArchive = timeEndArchive + params.GetPredictorsStartDiff()
-                                    + params.GetPredictorTimeAsDays(iStep, iPtor);
+            // Date array object instantiation for the data loading.
+            double ptorStartArchive = timeStartArchive + params.GetPredictorTimeAsDays(iStep, iPtor);
+            double ptorEndArchive = timeEndArchive + params.GetPredictorTimeAsDays(iStep, iPtor);
             asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                              params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
-            double ptorStartTarget = timeStartTarget + params.GetPredictorsStartDiff()
+            double ptorStartTarget = timeStartTarget + params.GetTimeShiftDays()
                                      + params.GetPredictorTimeAsDays(iStep, iPtor);
-            double ptorEndTarget = timeEndTarget + params.GetPredictorsStartDiff()
+            double ptorEndTarget = timeEndTarget - params.GetTimeSpanDays()
                                    + params.GetPredictorTimeAsDays(iStep, iPtor);
             asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(),
                                             asTimeArray::Simple);
@@ -836,17 +832,15 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 #endif
 
                 // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-                double ptorStartArchive = timeStartArchive + params.GetPredictorsStartDiff() +
-                        params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-                double ptorEndArchive = timeEndArchive + params.GetPredictorsStartDiff() +
-                        params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+                double ptorStartArchive = timeStartArchive + params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+                double ptorEndArchive = timeEndArchive + params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
                 asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                                  params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
-                double ptorStartTarget = timeStartTarget + params.GetPredictorsStartDiff() +
+                double ptorStartTarget = timeStartTarget + params.GetTimeShiftDays() +
                         params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-                double ptorEndTarget = timeEndTarget + params.GetPredictorsStartDiff() +
+                double ptorEndTarget = timeEndTarget - params.GetTimeSpanDays() +
                         params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
                 asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(), asTimeArray::Simple);
                 timeArrayDataTarget.Init();
@@ -1069,10 +1063,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     wxLogVerbose(_("Creating a date arrays for the processor."));
 
     // Archive time array
-    double timeStartArchive = params.GetArchiveStart();
-    double timeEndArchive = params.GetArchiveEnd();
-    timeEndArchive = wxMin(timeEndArchive, timeEndArchive -
-                                           params.GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
+    double timeStartArchive = GetTimeStartArchive(&params);
+    double timeEndArchive = GetTimeEndArchive(&params);
     asTimeArray timeArrayArchive(timeStartArchive, timeEndArchive, params.GetAnalogsTimeStepHours(),
                                  asTimeArray::Simple);
     timeArrayArchive.Init();
@@ -1090,8 +1082,8 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
             predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
             predictorRealtime->SetRunDateInUse(m_forecastDate);
-            lastLeadTime = wxMin(lastLeadTime,
-                                 predictorRealtime->GetForecastLeadTimeEnd() / 24.0 - params.GetTimeSpanDays());
+            lastLeadTime = wxMin(lastLeadTime, predictorRealtime->GetForecastLeadTimeEnd() / 24.0 -
+                    params.GetTimeSpanDays());
 
             wxDELETE(predictorRealtime);
         } else {
@@ -1107,7 +1099,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                         m_batchForecasts->GetPredictorsRealtimeDirectory());
                 predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
                 lastLeadTime = wxMin(lastLeadTime, predictorRealtimePreprocess->GetForecastLeadTimeEnd() / 24.0 -
-                                                   params.GetTimeSpanDays());
+                        params.GetTimeSpanDays());
 
                 wxDELETE(predictorRealtimePreprocess);
             }
@@ -1117,11 +1109,11 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     // Target time array
     vi leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
-    for (unsigned int i = 0; i < leadTime.size(); i++) {
-        if (leadTime[i] > lastLeadTime)
+    for (int time : leadTime) {
+        if (time > lastLeadTime)
             break;
 
-        double tmpDate = floor(m_forecastDate) + leadTime[i];
+        double tmpDate = floor(m_forecastDate) + time;
         tmpTimeArray.push_back(tmpDate);
     }
     wxASSERT(!tmpTimeArray.empty());
@@ -1178,18 +1170,16 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
         wxLogVerbose(_("Loading data."));
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-            double ptorStartArchive = timeStartArchive + params.GetPredictorsStartDiff() +
-                    params.GetPredictorTimeAsDays(iStep, iPtor);
-            double ptorEndArchive = timeEndArchive + params.GetPredictorsStartDiff() +
-                    params.GetPredictorTimeAsDays(iStep, iPtor);
+            // Date array object instantiation for the data loading.
+            double ptorStartArchive = timeStartArchive + params.GetPredictorTimeAsDays(iStep, iPtor);
+            double ptorEndArchive = timeEndArchive + params.GetPredictorTimeAsDays(iStep, iPtor);
             asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                              params.GetTimeArrayAnalogsMode());
             timeArrayDataArchive.Init();
 
-            double ptorStartTarget = timeStartTarget + params.GetPredictorsStartDiff() +
+            double ptorStartTarget = timeStartTarget + params.GetTimeShiftDays() +
                     params.GetPredictorTimeAsDays(iStep, iPtor);
-            double ptorEndTarget = timeEndTarget + params.GetPredictorsStartDiff() +
+            double ptorEndTarget = timeEndTarget - params.GetTimeSpanDays() +
                     params.GetPredictorTimeAsDays(iStep, iPtor);
             asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(),
                                             asTimeArray::Simple);
@@ -1290,18 +1280,16 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
 
                 wxLogVerbose(_("Loading predictor %d."), iPre);
 
-                // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive, and the predictor dates are aligned with the target dates, but the dates are not the same.
-                double ptorStartArchive = timeStartArchive + params.GetPredictorsStartDiff() +
-                        params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-                double ptorEndArchive = timeEndArchive + params.GetPredictorsStartDiff() +
-                        params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+                // Date array object instantiation for data loading.
+                double ptorStartArchive = timeStartArchive + params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+                double ptorEndArchive = timeEndArchive + params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
                 asTimeArray timeArrayDataArchive(ptorStartArchive, ptorEndArchive, params.GetAnalogsTimeStepHours(),
                                                  params.GetTimeArrayAnalogsMode());
                 timeArrayDataArchive.Init();
 
-                double ptorStartTarget = timeStartTarget + params.GetPredictorsStartDiff() +
+                double ptorStartTarget = timeStartTarget + params.GetTimeShiftDays() +
                         params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-                double ptorEndTarget = timeEndTarget + params.GetPredictorsStartDiff() +
+                double ptorEndTarget = timeEndTarget + params.GetTimeShiftDays() +
                         params.GetPreprocessTimeAsDays(iStep, iPtor, iPre);
                 asTimeArray timeArrayDataTarget(ptorStartTarget, ptorEndTarget, params.GetTargetTimeStepHours(), asTimeArray::Simple);
                 timeArrayDataTarget.Init();

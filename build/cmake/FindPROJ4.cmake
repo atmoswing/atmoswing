@@ -27,8 +27,8 @@ find_path(PROJ4_INCLUDE_DIR "proj_api.h"
         DOC "PROJ4 - Headers"
         )
 
-set(PROJ4_NAMES Proj4 proj proj_4_9)
-set(PROJ4_DBG_NAMES Proj4D projD proj_4_9_D)
+set(PROJ4_NAMES Proj4 proj proj_4_9 proj_6_0)
+set(PROJ4_DBG_NAMES Proj4D projD proj_4_9_D proj_6_0_D)
 
 find_library(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
         PATHS

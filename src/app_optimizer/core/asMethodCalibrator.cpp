@@ -339,15 +339,12 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 
 double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring *params) const
 {
-    return params->GetCalibrationStart() + params->GetPredictorsStartDiff();
+    return params->GetCalibrationStart() + params->GetTimeShiftDays();
 }
 
 double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring *params) const
 {
-    double timeEndCalibration = params->GetCalibrationEnd();
-    timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration - params->GetTimeSpanDays());
-
-    return timeEndCalibration;
+    return params->GetCalibrationEnd() - params->GetTimeSpanDays();
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters *params) const
@@ -582,9 +579,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
 
     // Date array object instantiation for the processor
     wxLogVerbose(_("Creating a date arrays for the processor."));
-    double timeStart = params->GetArchiveStart();
-    double timeEnd = params->GetArchiveEnd();
-    timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
+    double timeStart = GetTimeStartArchive(params);
+    double timeEnd = GetTimeEndArchive(params);
     asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(),
                                  params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();

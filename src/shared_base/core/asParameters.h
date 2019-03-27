@@ -239,18 +239,22 @@ public:
         return true;
     }
 
-    double GetPredictorsStartDiff() const
+    double GetTimeShiftDays() const
     {
-        double shift = 0;
+        double margin = 0;
         if (m_timeMinHours < 0) {
-            shift = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
+            margin = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
         }
-        return std::abs(shift);
+        return std::abs(margin);
     }
 
     double GetTimeSpanDays() const
     {
-        return ceil(m_timeMaxHours / 24.0) + std::abs(GetTimeShiftDays());
+        double margin = 0;
+        if (m_timeMaxHours >= 24) {
+            margin = ceil(m_timeMaxHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
+        }
+        return std::abs(margin) + std::abs(GetTimeShiftDays());
     }
 
     double GetTargetTimeStepHours() const
