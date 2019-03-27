@@ -46,9 +46,6 @@ The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile t
 
 1. [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
 3. [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)
-4. [**Compile**](https://github.com/atmoswing/atmoswing/wiki/Compile)
-5. [**Test**](https://github.com/atmoswing/atmoswing/wiki/Test)
-6. [**Install**](https://github.com/atmoswing/atmoswing/wiki/Install)
 
 ## How to contribute ##
 
