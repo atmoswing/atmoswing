@@ -574,8 +574,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
 
     // Date array object instantiation for the processor
     wxLogVerbose(_("Creating a date arrays for the processor."));
-    double timeStart = GetTimeStartArchive(params);
-    double timeEnd = GetTimeEndArchive(params);
+    double timeStart = params->GetArchiveStart();
+    double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
     asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(),
                                  params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();

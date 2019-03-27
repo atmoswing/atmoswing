@@ -470,8 +470,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             }
 
             // Date array object instantiation for data loading.
-            double ptorStart = timeStartData + preloadHours[iHour] / 24.0;
-            double ptorEnd = timeEndData + preloadHours[iHour] / 24.0;
+            double ptorStart = timeStartData + params->GetTimeShiftDays() + preloadHours[iHour] / 24.0;
+            double ptorEnd = timeEndData + params->GetTimeShiftDays() + preloadHours[iHour] / 24.0;
 
             asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                   params->GetTimeArrayAnalogsMode());
@@ -644,8 +644,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                 }
 
                 // Date array object instantiation for data loading.
-                double ptorStart = timeStartData + hours / 24.0;
-                double ptorEnd = timeEndData + hours / 24.0;
+                double ptorStart = timeStartData + params->GetTimeShiftDays() + hours / 24.0;
+                double ptorEnd = timeEndData + params->GetTimeShiftDays() + hours / 24.0;
                 asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                                       params->GetTimeArrayAnalogsMode());
                 timeArray.Init();
@@ -998,8 +998,8 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
                                           int iPtor, double timeStartData, double timeEndData)
 {
     // Date array object instantiation for the data loading.
-    double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorStart = timeStartData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                           params->GetTimeArrayAnalogsMode());
     timeArray.Init();
@@ -1072,8 +1072,10 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for data loading.
-        double ptorStart = timeStartData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorStart = timeStartData + params->GetTimeShiftDays() +
+                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorEnd = timeEndData  + params->GetTimeShiftDays()+
+                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(),
                               params->GetTimeArrayAnalogsMode());
         timeArray.Init();

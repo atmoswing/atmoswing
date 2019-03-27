@@ -234,8 +234,8 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
 
     // Date array object instantiation for the processor
     wxLogVerbose(_("Creating a date arrays for the processor."));
-    double timeStart = GetTimeStartArchive(params);
-    double timeEnd = GetTimeEndArchive(params);
+    double timeStart = params->GetArchiveStart();
+    double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
     asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
@@ -382,8 +382,8 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
                                                                    double timeEndData)
 {
     // Date array object instantiation for the data loading.
-    double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
-    double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorStart = timeStartData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetTimeShiftDays() + params->GetPredictorTimeAsDays(iStep, iPtor);
     asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
@@ -437,8 +437,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
         // Date array object instantiation for the data loading.
-        double ptorStart = timeStartData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
-        double ptorEnd = timeEndData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorStart = timeStartData + params->GetTimeShiftDays() +
+                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorEnd = timeEndData + params->GetTimeShiftDays() +
+                params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
         asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
