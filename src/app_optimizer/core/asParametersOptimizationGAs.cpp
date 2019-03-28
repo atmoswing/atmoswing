@@ -577,6 +577,9 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
                     wxString dat = GetPredictorCriteria(i, j);
+                    if (dat.Contains("grads")) {
+                        dat = dat.RemoveLast(5);
+                    }
                     vwxs vect = GetPredictorCriteriaVector(i, j);
                     int iPre = -1;
                     for (unsigned int r = 0; r < vect.size(); r++) {
