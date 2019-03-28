@@ -384,7 +384,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         resCounter++;
                     }
 
-                    if (resCounter <= analogsNb) {
+                    if (resCounter < analogsNb) {
                         wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
                         wxLogWarning(_("Analogs number (%d) > vectCriteriaSize (%d), date array size (%d) with %d days intervals."),
                                      analogsNb, vectCriteriaSize, dateArrayArchiveSelection.GetSize(),
@@ -620,7 +620,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     }
                 }
 
-                if (counter <= analogsNb) {
+                if (counter < analogsNb) {
                     wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asProcessor::GetAnalogsDates)."));
                 }
 
@@ -1060,7 +1060,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     }
                 }
 
-                if (counter <= analogsNb) {
+                if (counter < analogsNb) {
                     wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asProcessor::GetAnalogsSubDates)."));
                     wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
                 }
