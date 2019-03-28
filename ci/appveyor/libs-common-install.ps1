@@ -79,7 +79,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install SQLite
-if(!(Test-Path -Path "$LIB_DIR\include\sqlite.h") -Or $REBUILD_SQLITE) {
+if(!(Test-Path -Path "$LIB_DIR\include\sqlite3.h") -Or $REBUILD_SQLITE) {
   Init-Build "sqlite"
   Download-Lib "sqlite_src" $SQLITE_SRC_URL
   Download-Lib "sqlite_dll" $SQLITE_DLL_URL
