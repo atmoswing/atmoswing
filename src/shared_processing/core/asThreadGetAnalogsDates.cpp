@@ -204,7 +204,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             }
 
             if (counter <= analogsNb) {
-                wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
+                wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asThreadGetAnalogsDates)."));
                 wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             }
 
