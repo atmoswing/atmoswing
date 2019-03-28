@@ -167,7 +167,7 @@ if (WIN32)
 
     # Proj
     find_file(PROJ_DLL_NAME
-            proj.dll
+            proj.dll NAMES proj_6_0.dll proj_6_1.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)
@@ -176,9 +176,9 @@ if (WIN32)
     endif ()
     message(STATUS "PROJ DLL: ${PROJ_DLL_NAME}")
     add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            COMMAND ${CMAKE_COMMAND} -E copy
             "${PROJ_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
+            "${CMAKE_BINARY_DIR}/proj.dll")
     install(FILES ${PROJ_DLL_NAME} DESTINATION bin)
 
 endif (WIN32)
