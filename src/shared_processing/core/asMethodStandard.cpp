@@ -454,6 +454,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     wxASSERT(!preloadLevels.empty());
     wxASSERT(!preloadHours.empty());
 
+    int predictorSize = 0;
+
     // Load data for every level and every hour
     for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
         for (unsigned int iHour = 0; iHour < preloadHours.size(); iHour++) {
@@ -541,6 +543,15 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             }
             wxLogVerbose(_("Data loaded."));
             wxDELETE(area);
+
+            if (predictorSize > 0 && predictorSize != predictor->GetData().size()) {
+                wxLogError(_("The preloaded data has a different length than other data series: %d != %d"),
+                           (int) predictor->GetData().size(), predictorSize);
+                wxDELETE(predictor);
+                return false;
+            } else {
+                predictorSize = predictor->GetData().size();
+            }
 
             m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
         }

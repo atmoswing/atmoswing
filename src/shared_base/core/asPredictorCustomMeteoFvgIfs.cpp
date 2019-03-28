@@ -144,11 +144,6 @@ bool asPredictorCustomMeteoFvgIfs::Init()
 
 void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
 {
-    // Starts at 6h
-    if (asTime::GetTimeStruct(timeArray[0]).hour == 0) {
-        timeArray.Pop(0);
-    }
-
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
         if (wxDirExists(GetDirectoryPath())) {
@@ -179,8 +174,8 @@ void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
                 path = GetFullDirectoryPath() + wxString::Format("%4d/", t.year);
             }
             m_files.push_back(path + wxString::Format(m_fileNamePattern, t.year, t.month, t.day, t.hour));
-        } else if (i > 0) {
-            Time t2 = asTime::GetTimeStruct(timeArray[i-1]);
+        } else {
+            Time t2 = asTime::GetTimeStruct(timeArray[i] - timeArray.GetTimeStepDays());
             if (!skipMonthDayInPath) {
                 path = GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d/", t2.year, t2.month, t2.day);
             } else {
