@@ -41,16 +41,16 @@ asScoreCRPSsharpEP::~asScoreCRPSsharpEP()
     //dtor
 }
 
-float asScoreCRPSsharpEP::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
+float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) const
 {
-    wxASSERT(forcastVals.size() > 1);
+    wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Check inputs
-    if (!CheckObservedValue(observedVal)) {
+    if (!CheckObservedValue(obs)) {
         return NaNf;
     }
-    if (!CheckVectorLength(forcastVals, nbElements)) {
+    if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -62,7 +62,7 @@ float asScoreCRPSsharpEP::Assess(float observedVal, const a1f &forcastVals, int 
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(forcastVals, x, nbElements);
+    int nbPredict = CleanNans(values, x, nbElements);
 
     // Sort the forcast array
     asSortArray(&x[0], &x[nbPredict - 1], Asc);

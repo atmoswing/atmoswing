@@ -81,15 +81,15 @@ public:
 
     virtual bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) = 0;
 
-    virtual float Assess(float observedVal, const a1f &forcastVals, int nbElements) const = 0;
+    virtual float Assess(float obs, const a1f &values, int nbElements) const = 0;
 
-    virtual a1f AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const;
+    virtual a1f AssessOnArray(float obs, const a1f &values, int nbElements) const;
 
-    bool CheckObservedValue(float observedVal) const;
+    bool CheckObservedValue(float obs) const;
 
-    bool CheckVectorLength(const a1f &forcastVals, int nbElements) const;
+    bool CheckVectorLength(const a1f &values, int nbElements) const;
 
-    int CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbElements) const;
+    int CleanNans(const a1f &values, a1f &valuesSorted, int nbElements) const;
 
     wxString GetName() const
     {

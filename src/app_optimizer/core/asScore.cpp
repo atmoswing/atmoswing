@@ -296,17 +296,17 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     }
 }
 
-a1f asScore::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const
+a1f asScore::AssessOnArray(float obs, const a1f &values, int nbElements) const
 {
     wxLogError(_("This asScore class has no AssessOnArrays method implemented !"));
 
     return a1f();
 }
 
-bool asScore::CheckObservedValue(float observedVal) const
+bool asScore::CheckObservedValue(float obs) const
 {
     // Check that the observed value is not a NaN
-    if (asIsNaN(observedVal)) {
+    if (asIsNaN(obs)) {
         wxLogVerbose(_("The observed value is a NaN for the score calculation."));
         return false;
     }
@@ -314,13 +314,13 @@ bool asScore::CheckObservedValue(float observedVal) const
     return true;
 }
 
-bool asScore::CheckVectorLength(const a1f &forcastVals, int nbElements) const
+bool asScore::CheckVectorLength(const a1f &values, int nbElements) const
 {
     // Check the element numbers vs vector length
-    wxASSERT_MSG(forcastVals.rows() >= nbElements,
+    wxASSERT_MSG(values.rows() >= nbElements,
                  _("The required elements number is above the vector length in the score calculation."));
     wxASSERT(nbElements > 1);
-    if (forcastVals.rows() < nbElements) {
+    if (values.rows() < nbElements) {
         wxLogError(_("The required elements number is above the vector length in the score calculation."));
         return false;
     }
@@ -328,7 +328,7 @@ bool asScore::CheckVectorLength(const a1f &forcastVals, int nbElements) const
     return true;
 }
 
-int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbElements) const
+int asScore::CleanNans(const a1f &values, a1f &valuesSorted, int nbElements) const
 {
     // Remove the NaNs and copy content
     int nbPredict = 0, nbNans = 0;
@@ -336,7 +336,7 @@ int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbEle
     while (nbPredict < nbElements) {
         // Add a check to not overflow the array
         if (iVal >= nbElements) {
-            if (iVal == forcastVals.rows()) {
+            if (iVal == values.rows()) {
                 wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
                 wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbPredict,
                              nbNans);
@@ -344,8 +344,8 @@ int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbEle
             }
         }
 
-        if (!asIsNaN(forcastVals[iVal])) {
-            forcastValsSorted(nbPredict) = forcastVals[iVal];
+        if (!asIsNaN(values[iVal])) {
+            valuesSorted(nbPredict) = values[iVal];
             nbPredict++;
         } else {
             nbNans++;
