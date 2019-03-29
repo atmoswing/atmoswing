@@ -36,7 +36,7 @@
 asParameters::asParameters()
         : m_archiveStart(NaNd),
           m_archiveEnd(NaNd),
-          m_analogsIntervalDays(0),
+          m_analogsIntervalDays(200),
           m_predictandStationIds(),
           m_timeMinHours(0),
           m_timeMaxHours(0),
