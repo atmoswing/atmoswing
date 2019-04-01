@@ -1556,7 +1556,7 @@ void asParametersOptimizationGAs::MutateUniformDistribution(double probability, 
         if (!IsParamLocked(counter)) {
             if (asRandom(0.0, 1.0) < probability) {
                 double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                GetParameterIteration(counter));
+                                         GetParameterIteration(counter));
                 SetParameterValue(counter, newVal);
 
                 hasMutated = true;
@@ -1584,7 +1584,7 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
                 } else {
                     // Uniform distribution in the case of parameters as a list
                     double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                    GetParameterIteration(counter));
+                                             GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
 
@@ -1625,7 +1625,7 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
                 } else {
                     // Uniform distribution in the case of parameters as a list
                     double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                    GetParameterIteration(counter));
+                                             GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
 
@@ -1683,7 +1683,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
                 } else {
                     // Uniform distribution in the case of parameters as a list
                     double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                    GetParameterIteration(counter));
+                                             GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
 
@@ -1717,7 +1717,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
             if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
                 // Uniform distribution in the case of parameters as a list
                 double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                GetParameterIteration(counter));
+                                         GetParameterIteration(counter));
                 SetParameterValue(counter, newVal);
 
                 hasMutated = true;
@@ -1779,7 +1779,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
                 } else {
                     // Uniform distribution in the case of parameters as a list
                     double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                    GetParameterIteration(counter));
+                                             GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
 
@@ -1830,7 +1830,7 @@ void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &has
                 } else {
                     // Uniform distribution in the case of parameters as a list
                     double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
-                                                    GetParameterIteration(counter));
+                                             GetParameterIteration(counter));
                     SetParameterValue(counter, newVal);
                 }
 

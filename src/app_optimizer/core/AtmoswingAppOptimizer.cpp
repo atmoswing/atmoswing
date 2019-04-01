@@ -761,6 +761,10 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
         return true;
+    } else {
+        parser.Usage();
+
+        return false;
     }
 
     return wxAppConsole::OnCmdLineParsed(parser);

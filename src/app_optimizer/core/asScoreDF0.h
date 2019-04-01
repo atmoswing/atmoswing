@@ -40,7 +40,7 @@ public:
 
     ~asScoreDF0() override = default;
 
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const override;
+    float Assess(float obs, const a1f &values, int nbElements) const override;
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 

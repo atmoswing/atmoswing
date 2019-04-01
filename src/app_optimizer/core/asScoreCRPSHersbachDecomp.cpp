@@ -41,22 +41,22 @@ asScoreCRPSHersbachDecomp::~asScoreCRPSHersbachDecomp()
     //dtor
 }
 
-float asScoreCRPSHersbachDecomp::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
+float asScoreCRPSHersbachDecomp::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxLogError(_("The Hersbach decomposition of the CRPS cannot provide a single score value !"));
     return NaNf;
 }
 
-a1f asScoreCRPSHersbachDecomp::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const
+a1f asScoreCRPSHersbachDecomp::AssessOnArray(float obs, const a1f &values, int nbElements) const
 {
-    wxASSERT(forcastVals.size() > 1);
+    wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Create the container to sort the data
-    a1f x = forcastVals;
+    a1f x = values;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(observedVal)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
         wxLogError(_("NaNs were found in the CRPS Hersbach decomposition processing function. Cannot continue."));
         return a2f();
     }
@@ -77,23 +77,23 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float observedVal, const a1f &forca
     z.segment(1, nbElements) = x;
     z[binsNbsExtra - 1] = x[nbElements - 1];
 
-    if (observedVal < z[0]) {
-        z[0] = observedVal;
+    if (obs < z[0]) {
+        z[0] = obs;
     }
 
-    if (observedVal > z[binsNbsExtra - 1]) {
-        z[binsNbsExtra - 1] = observedVal;
+    if (obs > z[binsNbsExtra - 1]) {
+        z[binsNbsExtra - 1] = obs;
     }
 
     // Loop on bins (Hersbach, Eq 26)
     for (int k = 0; k < binsNbs; k++) {
         g[k] = z[k + 1] - z[k];
-        if (observedVal > z(k + 1)) {
+        if (obs > z(k + 1)) {
             alpha[k] = g[k];
             beta[k] = 0;
-        } else if ((observedVal <= z[k + 1]) && (observedVal >= z[k])) {
-            alpha[k] = observedVal - z[k];
-            beta[k] = z[k + 1] - observedVal;
+        } else if ((obs <= z[k + 1]) && (obs >= z[k])) {
+            alpha[k] = obs - z[k];
+            beta[k] = z[k + 1] - obs;
         } else {
             alpha[k] = 0;
             beta[k] = g[k];
@@ -101,11 +101,11 @@ a1f asScoreCRPSHersbachDecomp::AssessOnArray(float observedVal, const a1f &forca
     }
 
     // Outliers cases (Hersbach, Eq 27)
-    if (observedVal == z[0]) {
+    if (obs == z[0]) {
         alpha = a1f::Zero(binsNbs);
-        beta[0] = z[1] - observedVal;
-    } else if (observedVal == z[binsNbsExtra - 1]) {
-        alpha[binsNbs - 1] = observedVal - z[binsNbs - 1];
+        beta[0] = z[1] - obs;
+    } else if (obs == z[binsNbsExtra - 1]) {
+        alpha[binsNbs - 1] = obs - z[binsNbs - 1];
         beta = a1f::Zero(binsNbs);
     }
 

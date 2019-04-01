@@ -40,26 +40,26 @@ asScoreCRPSEP::~asScoreCRPSEP()
     //dtor
 }
 
-float asScoreCRPSEP::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
+float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const
 {
-    wxASSERT(forcastVals.size() > 1);
+    wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Check inputs
-    if (!CheckObservedValue(observedVal)) {
+    if (!CheckObservedValue(obs)) {
         return NaNf;
     }
-    if (!CheckVectorLength(forcastVals, nbElements)) {
+    if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
     a1f x(nbElements);
-    float xObs = observedVal;
+    float xObs = obs;
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(forcastVals, x, nbElements);
+    int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function"));
         return NaNf;
