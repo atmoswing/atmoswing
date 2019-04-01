@@ -411,6 +411,10 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         wxLogVerbose(_("Given downscaling method: %s"), m_downscalingMethod);
         return true;
+    } else {
+        parser.Usage();
+
+        return false;
     }
 
     return wxAppConsole::OnCmdLineParsed(parser);
