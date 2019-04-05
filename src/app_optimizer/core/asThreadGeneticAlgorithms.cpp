@@ -108,7 +108,7 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
     }
     *m_finalScoreCalib = anaScoreFinal.GetScore();
 
-    if (!m_scoreClimatology->empty()) {
+    if (m_scoreClimatology->empty()) {
         *m_scoreClimatology = m_optimizer->GetScoreClimatology();
     }
 

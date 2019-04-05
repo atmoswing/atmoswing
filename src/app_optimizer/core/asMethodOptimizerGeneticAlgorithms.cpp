@@ -282,10 +282,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Get a score object to extract the score order
     asScore *score = asScore::GetInstance(params.GetScoreName());
     Order scoreOrder = score->GetOrder();
-    if (!score->UsesClimatology()) {
-        // Set a NaN so it's not empty (avoid future calculations).
-        m_scoreClimatology.push_back(NaNf);
-    }
     wxDELETE(score);
     SetScoreOrder(scoreOrder);
 
