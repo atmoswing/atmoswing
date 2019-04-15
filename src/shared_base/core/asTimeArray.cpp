@@ -387,7 +387,7 @@ bool asTimeArray::BuildArraySeason()
     Time start = GetTimeStruct(m_start);
     Time end = GetTimeStruct(m_end);
     int firstHour = 0;
-    if (m_timeStepDays < 24.0) {
+    if (m_timeStepDays < 1.0) {
         firstHour = 24 * m_timeStepDays;
     }
     int lastHour = 24 - 24 * m_timeStepDays;
