@@ -328,24 +328,13 @@ bool asScore::CheckVectorLength(const a1f &values, int nbElements) const
     return true;
 }
 
-int asScore::CleanNans(const a1f &values, a1f &valuesSorted, int nbElements) const
+int asScore::CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const
 {
     // Remove the NaNs and copy content
-    int nbPredict = 0, nbNans = 0;
-    int iVal = 0;
-    while (nbPredict < nbElements) {
-        // Add a check to not overflow the array
-        if (iVal >= nbElements) {
-            if (iVal == values.rows()) {
-                wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
-                wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbPredict,
-                             nbNans);
-                break;
-            }
-        }
-
-        if (!asIsNaN(values[iVal])) {
-            valuesSorted(nbPredict) = values[iVal];
+    int nbPredict = 0, nbNans = 0, iVal = 0;
+    while (iVal < nbElements) {
+        if (!asIsNaN(valuesIn[iVal])) {
+            valuesOut(nbPredict) = valuesIn[iVal];
             nbPredict++;
         } else {
             nbNans++;

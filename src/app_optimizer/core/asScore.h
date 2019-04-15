@@ -89,7 +89,7 @@ public:
 
     bool CheckVectorLength(const a1f &values, int nbElements) const;
 
-    int CleanNans(const a1f &values, a1f &valuesSorted, int nbElements) const;
+    int CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const;
 
     wxString GetName() const
     {
