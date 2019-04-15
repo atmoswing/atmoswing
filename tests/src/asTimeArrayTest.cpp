@@ -309,8 +309,8 @@ TEST(TimeArray, BuildArraySeasonJJA6h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 12, 0), timeArray[1]);
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 18, 0), timeArray[2]);
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 8, 31, 18, 0), timeArray[366]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 0, 0), timeArray[367]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 6, 0), timeArray[368]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 6, 0), timeArray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 12, 0), timeArray[368]);
 }
 
 TEST(TimeArray, BuildArraySeasonDJF24h)
