@@ -175,16 +175,13 @@ void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
             }
             m_files.push_back(path + wxString::Format(m_fileNamePattern, t.year, t.month, t.day, t.hour));
         } else {
-            double prevTimeStep = timeArray[i] - timeArray.GetTimeStepDays();
-            if (i > 0 && prevTimeStep == timeArray[i - 1]) {
-                Time t2 = asTime::GetTimeStruct(prevTimeStep);
-                if (!skipMonthDayInPath) {
-                    path = GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d/", t2.year, t2.month, t2.day);
-                } else {
-                    path = GetFullDirectoryPath() + wxString::Format("%4d/", t2.year);
-                }
-                m_files.push_back(path + wxString::Format(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
+            Time t2 = asTime::GetTimeStruct(timeArray[i] - timeArray.GetTimeStepDays());
+            if (!skipMonthDayInPath) {
+                path = GetFullDirectoryPath() + wxString::Format("%4d/%02d/%02d/", t2.year, t2.month, t2.day);
+            } else {
+                path = GetFullDirectoryPath() + wxString::Format("%4d/", t2.year);
             }
+            m_files.push_back(path + wxString::Format(m_fileNamePattern, t2.year, t2.month, t2.day, 24));
         }
     }
 }
