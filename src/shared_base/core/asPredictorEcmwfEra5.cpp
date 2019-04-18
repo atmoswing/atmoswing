@@ -253,6 +253,11 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (size_t i = 0; i < listFiles.Count(); ++i) {
+
+        if (!listFiles.Item(i).StartsWith(wxString::Format("%s.", m_fileVarName))) {
+            continue;
+        }
+
         wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
             continue;
