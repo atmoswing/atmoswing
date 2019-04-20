@@ -123,7 +123,7 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_gribCode = {0, 128, 130, 100};
         } else if (m_dataId.IsSameAs("LRTE700500", false)) {
             m_gribCode = {0, 3, 113, 100};
-        } else if (m_dataId.IsSameAs("LRTE85050", false)) {
+        } else if (m_dataId.IsSameAs("LRTE850500", false)) {
             m_gribCode = {0, 3, 113, 100};
         } else if (m_dataId.IsSameAs("MB500850", false)) {
             m_gribCode = {0, 3, 114, 100};
