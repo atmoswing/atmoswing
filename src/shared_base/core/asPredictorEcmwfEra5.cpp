@@ -255,8 +255,6 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
     for (size_t i = 0; i < listFiles.Count(); ++i) {
 
         if (!listFiles.Item(i).StartsWith(GetFullDirectoryPath() + m_fileVarName + ".")) {
-            wxLogWarning(_("--- %s does not start with %s"), listFiles.Item(i), m_fileVarName);
-
             continue;
         }
 
@@ -270,12 +268,8 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
         datesSrt.ToDouble(&fileYear);
 
         if (fileYear < firstYear || fileYear > lastYear) {
-            wxLogWarning(_("--- Year not in range %f"), (float)fileYear);
-
             continue;
         }
-
-        wxLogWarning(_("--- Adding file %s"), listFiles.Item(i));
 
         m_files.push_back(listFiles.Item(i));
     }
@@ -283,7 +277,6 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
     if (!m_files.empty()) {
         return;
     }
-    wxLogWarning(_("--- no file"));
 
     // Case 3: list all files from the directory
     for (size_t i = 0; i < listFiles.Count(); ++i) {
