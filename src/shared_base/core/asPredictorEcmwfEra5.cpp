@@ -254,7 +254,7 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
 
     for (size_t i = 0; i < listFiles.Count(); ++i) {
 
-        if (!listFiles.Item(i).StartsWith(wxString::Format("%s.", m_fileVarName))) {
+        if (!listFiles.Item(i).StartsWith(m_fileVarName + ".")) {
             wxLogWarning(_("--- %s does not start with %s"), listFiles.Item(i), m_fileVarName);
 
             continue;
