@@ -271,6 +271,8 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
             continue;
         }
 
+        wxLogVerbose(_("Adding file %s"), listFiles.Item(i));
+
         m_files.push_back(listFiles.Item(i));
     }
 
