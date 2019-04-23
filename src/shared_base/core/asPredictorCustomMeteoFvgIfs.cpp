@@ -103,6 +103,16 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_gribCode = {0, 3, 114, 100};
             m_unit = W_m2;
             m_fStr.hasLevelDim = true;
+        } else if (m_dataId.Contains("vflux_")) {
+            m_parameter = MomentumFlux;
+            m_gribCode = {0, 3, 125, 100};
+            m_unit = kg_m2_s;
+            m_fStr.hasLevelDim = false;
+        } else if (m_dataId.Contains("uflux_")) {
+            m_parameter = MoistureFlux;
+            m_gribCode = {0, 3, 124, 100};
+            m_unit = kg_m2_s;
+            m_fStr.hasLevelDim = false;
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
             return false;
