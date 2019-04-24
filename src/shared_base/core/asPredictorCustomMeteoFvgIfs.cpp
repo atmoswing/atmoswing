@@ -39,6 +39,7 @@ asPredictorCustomMeteoFvgIfs::asPredictorCustomMeteoFvgIfs(const wxString &dataI
     m_provider = "ECMWF";
     m_transformedBy = "Meteo FVG";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
+    m_fStr.hasLevelDim = true;
 }
 
 bool asPredictorCustomMeteoFvgIfs::Init()
@@ -53,32 +54,26 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_parameter = GeopotentialHeight;
             m_gribCode = {0, 128, 156, 100};
             m_unit = m;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("t_")) {
             m_parameter = AirTemperature;
             m_gribCode = {0, 128, 130, 100};
             m_unit = degK;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("w_")) {
             m_parameter = VerticalVelocity;
             m_gribCode = {0, 128, 135, 100};
             m_unit = Pa_s;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("r_")) {
             m_parameter = RelativeHumidity;
             m_gribCode = {0, 128, 157, 100};
             m_unit = percent;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("u_")) {
             m_parameter = Uwind;
             m_gribCode = {0, 128, 131, 100};
             m_unit = m_s;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("v_")) {
             m_parameter = Vwind;
             m_gribCode = {0, 128, 132, 100};
             m_unit = m_s;
-            m_fStr.hasLevelDim = true;
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
             return false;
@@ -92,27 +87,22 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_parameter = SpecificHumidity;
             m_gribCode = {0, 128, 133, 100};
             m_unit = percent;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("thetaE_")) {
             m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 113, 100};
             m_unit = W_m2;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("thetaES_")) {
             m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 114, 100};
             m_unit = W_m2;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("vflux_")) {
-            m_parameter = MoistureFlux;
+            m_parameter = MomentumFlux;
             m_gribCode = {0, 3, 125, 100};
             m_unit = kg_m2_s;
-            m_fStr.hasLevelDim = true;
         } else if (m_dataId.Contains("uflux_")) {
-            m_parameter = MoistureFlux;
+            m_parameter = MomentumFlux;
             m_gribCode = {0, 3, 124, 100};
             m_unit = kg_m2_s;
-            m_fStr.hasLevelDim = true;
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
             return false;
@@ -123,7 +113,6 @@ bool asPredictorCustomMeteoFvgIfs::Init()
     } else if (m_product.IsSameAs("vertdiff", false)) {
 
         m_parameter = Other;
-        m_fStr.hasLevelDim = true;
 
         if (m_dataId.IsSameAs("DP500925", false)) {
             m_gribCode = {0, 3, 113, 100};
