@@ -500,8 +500,12 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     // Data date array
     double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
+    wxString timeArrayMode = params->GetTimeArrayAnalogsMode();
+    if (timeArrayMode.IsSameAs("days_interval")) {
+        timeArrayMode = "simple";
+    }
     asTimeArray timeArrayData(timeStartData, timeEndData, params->GetAnalogsTimeStepHours(),
-                              params->GetTimeArrayTargetMode());
+                              timeArrayMode);
     timeArrayData.Init();
 
     // Check on the archive length
