@@ -54,6 +54,7 @@
 #include <asPredictorCustomUnilOisst2.h>
 #include <asPredictorCustomLtheNR1.h>
 #include <asPredictorCustomMeteoFvgIfs.h>
+#include <asPredictorCustomMeteoFvgIfsPacked.h>
 
 
 asPredictor::asPredictor(const wxString &dataId)
@@ -152,6 +153,8 @@ asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString 
         predictor = new asPredictorCustomLtheNR1(dataId);
     } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS", false)) {
         predictor = new asPredictorCustomMeteoFvgIfs(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS_packed", false)) {
+        predictor = new asPredictorCustomMeteoFvgIfsPacked(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;
