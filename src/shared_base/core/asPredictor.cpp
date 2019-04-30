@@ -71,7 +71,9 @@ asPredictor::asPredictor(const wxString &dataId)
           m_isPreprocessed(false),
           m_isEnsemble(false),
           m_canBeClipped(true),
-          m_parseTimeReference(false)
+          m_parseTimeReference(false),
+          m_warnMissingFiles(true),
+          m_warnMissingLevels(true)
 {
 
     m_fStr.hasLevelDim = true;
@@ -241,7 +243,11 @@ bool asPredictor::CheckFilesPresence()
                         break;
                     }
                 } else {
-                    wxLogWarning(_("File not found: %s"), m_files[i]);
+                    if (m_warnMissingFiles) {
+                        wxLogWarning(_("File not found: %s"), m_files[i]);
+                    } else {
+                        wxLogVerbose(_("File not found: %s"), m_files[i]);
+                    }
                     m_files[i] = wxEmptyString;
                     countMissing++;
                     break;
@@ -252,7 +258,7 @@ bool asPredictor::CheckFilesPresence()
 
     float percentMissing = 100.0 * float(countMissing) / float(m_files.size());
     if (percentMissing > 5) {
-        wxLogError(_("%.2f percent of the files are missing."), percentMissing);
+        wxLogError(_("%.2f percent of the files are missing (%s, %s)."), percentMissing, m_datasetId, m_dataId);
         return false;
     }
 
@@ -285,8 +291,12 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Check the level availability
-        if (m_fileType == asFile::Netcdf && !HasDesiredLevel()) {
-            wxLogError(_("Failing to get the desired level."));
+        if (m_fileType == asFile::Netcdf && !HasDesiredLevel(m_warnMissingLevels)) {
+            if (m_warnMissingLevels) {
+                wxLogError(_("Failing to get the desired level."));
+            } else {
+                wxLogVerbose(_("Failing to get the desired level."));
+            }
             return false;
         }
 
@@ -313,7 +323,11 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // Extract composite data from files
         vvva2f compositeData((unsigned long) compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
-            wxLogWarning(_("Extracting data from files failed."));
+            if (m_warnMissingFiles && m_warnMissingLevels) {
+                wxLogWarning(_("Extracting data from files failed."));
+            } else {
+                wxLogVerbose(_("Extracting data from files failed."));
+            }
             wxDELETE(dataArea);
             return false;
         }
@@ -639,7 +653,7 @@ bool asPredictor::ExtractFromGribFile(const wxString &fileName, asAreaCompGrid *
     }
 
     // Set index position
-    if (!gbFile.SetIndexPosition(m_gribCode, m_level)) {
+    if (!gbFile.SetIndexPosition(m_gribCode, m_level, m_warnMissingLevels)) {
         gbFile.Close();
         ThreadsManager().CritSectionGrib().Leave();
         return false;
@@ -921,7 +935,7 @@ bool asPredictor::CheckFileStructure()
     return true;
 }
 
-bool asPredictor::HasDesiredLevel()
+bool asPredictor::HasDesiredLevel(bool useWarnings)
 {
     if (m_fStr.levels.size() == 0 && m_level == 0) {
         return true;
@@ -933,7 +947,11 @@ bool asPredictor::HasDesiredLevel()
         }
     }
 
-    wxLogWarning(_("Cannot find level %f"), m_level);
+    if (useWarnings) {
+        wxLogWarning(_("Cannot find level %f"), m_level);
+    } else {
+        wxLogVerbose(_("Cannot find level %f"), m_level);
+    }
 
     return false;
 }

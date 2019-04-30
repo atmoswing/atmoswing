@@ -54,6 +54,7 @@ wxDEFINE_EVENT(asEVT_STATUS_PROCESSED, wxCommandEvent);
 asMethodStandard::asMethodStandard()
         : m_cancel(false),
           m_preloaded(false),
+          m_warnFailedLoadingData(true),
           m_predictandDB(nullptr)
 {
 
@@ -466,6 +467,9 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 return false;
             }
 
+            // Set warning option
+            predictor->SetWarnMissingLevels(m_warnFailedLoadingData);
+
             // Select the number of members for ensemble data.
             if (predictor->IsEnsemble()) {
                 predictor->SelectMembers(params->GetPredictorMembersNb(iStep, iPtor));
@@ -519,8 +523,13 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                          preloadHours[iHour]);
             try {
                 if (!predictor->Load(area, timeArray, preloadLevels[iLevel])) {
-                    wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[iDat],
-                                 (int) preloadLevels[iLevel], preloadHours[iHour]);
+                    if (m_warnFailedLoadingData) {
+                        wxLogWarning(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[iDat],
+                                     (int) preloadLevels[iLevel], preloadHours[iHour]);
+                    } else {
+                        wxLogVerbose(_("The data (%s for level %d, at %gh) could not be loaded."), preloadDataIds[iDat],
+                                     (int) preloadLevels[iLevel], preloadHours[iHour]);
+                    }
                     wxDELETE(area);
                     wxDELETE(predictor);
                     continue; // The requested data can be missing (e.g. level not available).
@@ -669,6 +678,9 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                     Cleanup(predictorsPreprocess);
                     return false;
                 }
+
+                // Set warning option
+                predictorPreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
 
                 // Select the number of members for ensemble data.
                 if (predictorPreprocess->IsEnsemble()) {
@@ -1025,6 +1037,9 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
         return false;
     }
 
+    // Set warning option
+    predictor->SetWarnMissingLevels(m_warnFailedLoadingData);
+
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
         predictor->SelectMembers(params->GetPredictorMembersNb(iStep, iPtor));
@@ -1098,6 +1113,9 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
             return false;
         }
 
+        // Set warning option
+        predictorPreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
+        
         // Select the number of members for ensemble data.
         if (predictorPreprocess->IsEnsemble()) {
             predictorPreprocess->SelectMembers(params->GetPreprocessMembersNb(iStep, iPtor, iPre));

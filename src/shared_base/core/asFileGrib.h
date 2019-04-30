@@ -46,7 +46,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(vi gribCode, float level);
+    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
     bool SetIndexPositionAnyLevel(vi gribCode);
 

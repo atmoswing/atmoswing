@@ -401,7 +401,7 @@ vd asFileGrib::GetRealForecastTimeArray() const
     return forecastTimeArray;
 }
 
-bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
+bool asFileGrib::SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings)
 {
     wxASSERT(gribCode.size() == 4);
 
@@ -417,7 +417,11 @@ bool asFileGrib::SetIndexPosition(const vi gribCode, const float level)
         }
     }
 
-    wxLogWarning(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+    if (useWarnings) {
+        wxLogWarning(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+    } else {
+        wxLogVerbose(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+    }
 
     return false;
 }

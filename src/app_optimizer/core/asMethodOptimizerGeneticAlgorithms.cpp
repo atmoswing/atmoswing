@@ -49,7 +49,7 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
           m_mutationsModeType(0),
           m_allowElitismForTheBest(true)
 {
-
+    m_warnFailedLoadingData = false;
 }
 
 asMethodOptimizerGeneticAlgorithms::~asMethodOptimizerGeneticAlgorithms() = default;

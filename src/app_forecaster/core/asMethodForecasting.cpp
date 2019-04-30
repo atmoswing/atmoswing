@@ -736,6 +736,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 return false;
             }
 
+            // Set warning option
+            predictorArchive->SetWarnMissingLevels(m_warnFailedLoadingData);
+
             // Select the number of members for ensemble data.
             if (predictorArchive->IsEnsemble()) {
                 predictorArchive->SelectMembers(params.GetPredictorArchiveMembersNb(iStep, iPtor));
@@ -860,6 +863,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
+
+                // Set warning option
+                predictorArchivePreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
 
                 // Select the number of members for ensemble data.
                 if (predictorArchivePreprocess->IsEnsemble()) {
@@ -1197,6 +1203,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 return false;
             }
 
+            // Set warning option
+            predictorArchive->SetWarnMissingLevels(m_warnFailedLoadingData);
+
             // Select the number of members for ensemble data.
             if (predictorArchive->IsEnsemble()) {
                 predictorArchive->SelectMembers(params.GetPredictorArchiveMembersNb(iStep, iPtor));
@@ -1308,6 +1317,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 if (!predictorArchivePreprocess) {
                     return false;
                 }
+
+                // Set warning option
+                predictorArchivePreprocess->SetWarnMissingLevels(m_warnFailedLoadingData);
 
                 // Select the number of members for ensemble data.
                 if (predictorArchivePreprocess->IsEnsemble()) {
