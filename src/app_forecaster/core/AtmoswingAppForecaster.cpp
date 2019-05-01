@@ -322,7 +322,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-date", &dateForecastStr)) {
         InitForCmdLineOnly(logLevel);
         m_doForecast = true;
-        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYYMMDDhh);
+        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
         return true;
     }

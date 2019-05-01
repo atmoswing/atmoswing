@@ -57,7 +57,7 @@ void asResultsParametersArray::BuildFileName(const wxString &fileTag)
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
 }
 

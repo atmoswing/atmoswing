@@ -148,22 +148,18 @@ enum Order
 
 enum TimeFormat
 {
-    classic,
     ISOdate,
     ISOdateTime,
-    DDMMYYYY,
     YYYYMMDD,
-    full,
-    YYYYMMDDhh,
-    DDMMYYYYhhmm,
-    YYYYMMDDhhmm,
-    DDMMYYYYhhmmss,
-    YYYYMMDDhhmmss,
-    timeOnly,
-    hhmm,
-    nowPlusHours,
-    nowMinusHours,
-    concentrate,
+    YYYY_MM_DD,
+    YYYY_MM_DD_hh,
+    YYYYMMDD_hhmm,
+    YYYY_MM_DD_hh_mm,
+    YYYY_MM_DD_hh_mm_ss,
+    DD_MM_YYYY,
+    DD_MM_YYYY_hh_mm,
+    DD_MM_YYYY_hh_mm_ss,
+    hh_mm,
     guess
 };
 

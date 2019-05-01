@@ -212,35 +212,35 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format)
             datestr = wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min, date.sec);
             break;
-        case (classic):
-        case (DDMMYYYY):
+        case (DD_MM_YYYY):
             datestr = wxString::Format("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
             break;
-        case (YYYYMMDD):
+        case (YYYY_MM_DD):
             datestr = wxString::Format("%4.4d/%2.2d/%2.2d", date.year, date.month, date.day);
             break;
-        case (full):
-        case (DDMMYYYYhhmm):
+        case (YYYYMMDD):
+            datestr = wxString::Format("%4.4d%2.2d%2.2d", date.year, date.month, date.day);
+            break;
+        case (DD_MM_YYYY_hh_mm):
             datestr = wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d", date.day, date.month, date.year, date.hour,
                                        date.min);
             break;
-        case (YYYYMMDDhhmm):
+        case (YYYY_MM_DD_hh_mm):
             datestr = wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min);
             break;
-        case (DDMMYYYYhhmmss):
+        case (DD_MM_YYYY_hh_mm_ss):
             datestr = wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d:%2.2d", date.day, date.month, date.year,
                                        date.hour, date.min, date.sec);
             break;
-        case (YYYYMMDDhhmmss):
+        case (YYYY_MM_DD_hh_mm_ss):
             datestr = wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day,
                                        date.hour, date.min, date.sec);
             break;
-        case (timeOnly):
-        case (hhmm):
+        case (hh_mm):
             datestr = wxString::Format("%2.2d:%2.2d", date.hour, date.min);
             break;
-        case (concentrate):
+        case (YYYYMMDD_hhmm):
             datestr = wxString::Format("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min);
             break;
@@ -298,8 +298,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
-        case (classic):
-        case (DDMMYYYY):
+        case (DD_MM_YYYY):
 
             if (datestr.Len() == 10) {
                 if (!datestr.Mid(0, 2).ToLong(&day))
@@ -321,7 +320,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
 
-        case (YYYYMMDD):
+        case (YYYY_MM_DD):
 
             if (datestr.Len() == 10) {
                 if (!datestr.Mid(0, 4).ToLong(&year))
@@ -343,7 +342,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
 
-        case (YYYYMMDDhh):
+        case (YYYY_MM_DD_hh):
 
             if (datestr.Len() == 13) {
                 if (!datestr.Mid(0, 4).ToLong(&year))
@@ -369,8 +368,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 10, 13));
 
-        case (full):
-        case (DDMMYYYYhhmm):
+        case (DD_MM_YYYY_hh_mm):
 
             if (datestr.Len() == 16) {
                 if (!datestr.Mid(0, 2).ToLong(&day))
@@ -400,7 +398,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
 
-        case (YYYYMMDDhhmm):
+        case (YYYY_MM_DD_hh_mm):
 
             if (datestr.Len() == 16) {
                 if (!datestr.Mid(0, 4).ToLong(&year))
@@ -430,7 +428,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 12, 16));
 
-        case (DDMMYYYYhhmmss):
+        case (DD_MM_YYYY_hh_mm_ss):
 
             if (datestr.Len() == 19) {
                 if (!datestr.Mid(0, 2).ToLong(&day))
@@ -464,7 +462,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
-        case (YYYYMMDDhhmmss):
+        case (YYYY_MM_DD_hh_mm_ss):
 
             if (datestr.Len() == 19) {
                 if (!datestr.Mid(0, 4).ToLong(&year))
@@ -498,8 +496,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 14, 19));
 
-        case (timeOnly):
-        case (hhmm):
+        case (hh_mm):
 
             if (datestr.Len() == 5) {
                 if (!datestr.Mid(0, 2).ToLong(&hour))
@@ -516,28 +513,6 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             }
 
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 4, 5));
-
-        case (nowPlusHours):
-
-            if (datestr.Mid(0, 1) != "+")
-                asThrowException(_("The date format is not correctly set"));
-            if (!datestr.Mid(1).ToLong(&hour))
-                asThrowException(wxString::Format(errormsgconversion, datestr));
-            date = NowMJD(asUTM);
-            date += (double) hour / 24;
-            return date;
-            break;
-
-        case (nowMinusHours):
-
-            if (datestr.Mid(0, 1) != "-")
-                asThrowException(_("The date format is not correctly set"));
-            if (!datestr.Mid(1).ToLong(&hour))
-                asThrowException(wxString::Format(errormsgconversion, datestr));
-            date = NowMJD(asUTM);
-            date -= (double) hour / 24;
-            return date;
-            break;
 
         case (guess):
 

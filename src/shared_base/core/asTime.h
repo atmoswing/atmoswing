@@ -51,9 +51,9 @@ public:
 
     static wxString GetStringTime(const Time &date, const wxString &format);
 
-    static wxString GetStringTime(double mjd, TimeFormat format = full);
+    static wxString GetStringTime(double mjd, TimeFormat format = DD_MM_YYYY_hh_mm);
 
-    static wxString GetStringTime(const Time &date, TimeFormat format = full);
+    static wxString GetStringTime(const Time &date, TimeFormat format = DD_MM_YYYY_hh_mm);
 
     static double GetTimeFromString(const wxString &datestr, TimeFormat format = guess);
 

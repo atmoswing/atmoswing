@@ -72,7 +72,7 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Create a result object to save the parameters sets
     vi stationId = params.GetPredictandStationIds();
-    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray results_all;
     results_all.Init(wxString::Format(_("station_%s_tested_parameters"),
                                       GetPredictandStationIdsList(stationId).c_str()));
