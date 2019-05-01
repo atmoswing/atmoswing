@@ -202,53 +202,40 @@ wxString asTime::GetStringTime(double mjd, TimeFormat format)
 
 wxString asTime::GetStringTime(const Time &date, TimeFormat format)
 {
-    wxString datestr = wxEmptyString;
-
     switch (format) {
         case (ISOdate):
-            datestr = wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
-            break;
+            return wxString::Format("%4.4d-%2.2d-%2.2d", date.year, date.month, date.day);
         case (ISOdateTime):
-            datestr = wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
+            return wxString::Format("%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min, date.sec);
-            break;
         case (DD_MM_YYYY):
-            datestr = wxString::Format("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
-            break;
+            return wxString::Format("%2.2d.%2.2d.%4.4d", date.day, date.month, date.year);
         case (YYYY_MM_DD):
-            datestr = wxString::Format("%4.4d/%2.2d/%2.2d", date.year, date.month, date.day);
-            break;
+            return wxString::Format("%4.4d/%2.2d/%2.2d", date.year, date.month, date.day);
         case (YYYYMMDD):
-            datestr = wxString::Format("%4.4d%2.2d%2.2d", date.year, date.month, date.day);
-            break;
+            return wxString::Format("%4.4d%2.2d%2.2d", date.year, date.month, date.day);
         case (DD_MM_YYYY_hh_mm):
-            datestr = wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d", date.day, date.month, date.year, date.hour,
+            return wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d", date.day, date.month, date.year, date.hour,
                                        date.min);
-            break;
         case (YYYY_MM_DD_hh_mm):
-            datestr = wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d", date.year, date.month, date.day, date.hour,
+            return wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min);
-            break;
         case (DD_MM_YYYY_hh_mm_ss):
-            datestr = wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d:%2.2d", date.day, date.month, date.year,
+            return wxString::Format("%2.2d.%2.2d.%4.4d %2.2d:%2.2d:%2.2d", date.day, date.month, date.year,
                                        date.hour, date.min, date.sec);
-            break;
         case (YYYY_MM_DD_hh_mm_ss):
-            datestr = wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day,
+            return wxString::Format("%4.4d/%2.2d/%2.2d %2.2d:%2.2d:%2.2d", date.year, date.month, date.day,
                                        date.hour, date.min, date.sec);
-            break;
         case (hh_mm):
-            datestr = wxString::Format("%2.2d:%2.2d", date.hour, date.min);
-            break;
+            return wxString::Format("%2.2d:%2.2d", date.hour, date.min);
         case (YYYYMMDD_hhmm):
-            datestr = wxString::Format("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour,
+            return wxString::Format("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour,
                                        date.min);
-            break;
         default:
             asThrowException(_("The date format is not correctly set"));
     }
 
-    return datestr;
+    return wxEmptyString;
 }
 
 double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
@@ -321,6 +308,7 @@ double asTime::GetTimeFromString(const wxString &datestr, TimeFormat format)
             asThrowException(wxString::Format(errormsglength, (int) datestr.Len(), 8, 10));
 
         case (YYYY_MM_DD):
+        case (YYYYMMDD):
 
             if (datestr.Len() == 10) {
                 if (!datestr.Mid(0, 4).ToLong(&year))

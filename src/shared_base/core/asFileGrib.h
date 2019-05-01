@@ -68,6 +68,10 @@ public:
 
     double GetTimeStepHours() const;
 
+    vd GetRealReferenceDateArray() const;
+
+    vd GetRealReferenceTimeArray() const;
+
     vd GetRealForecastTimeArray() const;
 
 protected:
@@ -81,6 +85,7 @@ private:
     vi m_parameterCode3;
     vi m_levelTypes;
     vwxs m_levelTypesStr;
+    vd m_refDates;
     vd m_refTimes;
     vd m_times;
     vd m_forecastTimes;

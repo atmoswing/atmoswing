@@ -79,6 +79,7 @@ asPredictor::asPredictor(const wxString &dataId)
 
     m_fStr.hasLevelDim = true;
     m_fStr.singleLevel = false;
+    m_fStr.singleTimeStep = false;
     m_fStr.timeStep = 0;
     m_fStr.timeStart = 0;
     m_fStr.timeEnd = 0;
@@ -588,7 +589,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
     }
 
     // Parse file structure
-    if (m_files.size() > 1) {
+    if (m_fStr.singleTimeStep) {
         wxASSERT(times.size() > 1);
 
         asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
@@ -619,7 +620,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
         gbFile1.Close();
 
     } else {
-        if (!ParseFileStructure(&gbFile0, nullptr)) {
+        if (!ParseFileStructure(&gbFile0)) {
             gbFile0.Close();
             ThreadsManager().CritSectionGrib().Leave();
             wxFAIL;
@@ -891,6 +892,26 @@ bool asPredictor::ExtractSpatialAxes(asFileNetcdf &ncFile)
     return true;
 }
 
+bool asPredictor::ParseFileStructure(asFileGrib *gbFile0)
+{
+    // Get full axes from the file
+    gbFile0->GetXaxis(m_fStr.lons);
+    gbFile0->GetYaxis(m_fStr.lats);
+    gbFile0->GetLevels(m_fStr.levels);
+
+    // Time properties
+    m_fStr.timeLength = gbFile0->GetTimeLength();
+    m_fStr.timeStart = gbFile0->GetTimeStart();
+    m_fStr.timeEnd = gbFile0->GetTimeEnd();
+
+    if (m_fStr.timeLength > 1) {
+        m_fStr.timeStep = gbFile0->GetTimeStepHours();
+        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
+    }
+
+    return CheckFileStructure();
+}
+
 bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
 {
     // Get full axes from the file
@@ -903,13 +924,8 @@ bool asPredictor::ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1)
     m_fStr.timeStart = gbFile0->GetTimeStart();
     m_fStr.timeEnd = gbFile0->GetTimeEnd();
 
-    if (gbFile1 != nullptr) {
-        m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
-        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
-    } else if (m_fStr.timeLength > 1) {
-        m_fStr.timeStep = gbFile0->GetTimeStepHours();
-        m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
-    }
+    m_fStr.timeStep = asRound(24 * (gbFile1->GetTimeStart() - gbFile0->GetTimeStart()));
+    m_fStr.firstHour = fmod(24 * m_fStr.timeStart, m_fStr.timeStep);
 
     return CheckFileStructure();
 }
@@ -1046,22 +1062,26 @@ bool asPredictor::GetAxesIndexes(asAreaCompGrid *&dataArea, asTimeArray &timeArr
             m_fInd.timeCount = int(timeArrayIndexEnd - timeArrayIndexStart + 1);
         }
 
-        // Correct the time start and end
-        double valFirstTime = m_fStr.timeStart;
-        m_fInd.timeStart = 0;
-        m_fInd.cutStart = 0;
-        bool firstFile = (compositeData[0].empty());
-        if (firstFile) {
-            m_fInd.cutStart = int(timeArrayIndexStart);
-        }
-        m_fInd.cutEnd = 0;
-        while (valFirstTime < timeArray[timeArrayIndexStart]) {
-            valFirstTime += m_fStr.timeStep / 24.0;
-            m_fInd.timeStart++;
-        }
-        if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.timeLength) {
-            m_fInd.timeCount--;
-            m_fInd.cutEnd++;
+        // In case of missing time steps
+        if (m_fStr.timeLength > m_fInd.timeCount) {
+
+            // Correct the time start and end
+            double valFirstTime = m_fStr.timeStart;
+            m_fInd.timeStart = 0;
+            m_fInd.cutStart = 0;
+            bool firstFile = (compositeData[0].empty());
+            if (firstFile) {
+                m_fInd.cutStart = int(timeArrayIndexStart);
+            }
+            m_fInd.cutEnd = 0;
+            while (valFirstTime < timeArray[timeArrayIndexStart]) {
+                valFirstTime += m_fStr.timeStep / 24.0;
+                m_fInd.timeStart++;
+            }
+            if (m_fInd.timeStart + (m_fInd.timeCount - 1) * m_fInd.timeStep > m_fStr.timeLength) {
+                m_fInd.timeCount--;
+                m_fInd.cutEnd++;
+            }
         }
     } else {
         m_fInd.timeArrayCount = 1;

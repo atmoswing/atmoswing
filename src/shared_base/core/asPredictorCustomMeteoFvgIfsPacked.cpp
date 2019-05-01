@@ -42,6 +42,7 @@ asPredictorCustomMeteoFvgIfsPacked::asPredictorCustomMeteoFvgIfsPacked(const wxS
     m_transformedBy = "Meteo FVG";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
     m_fStr.hasLevelDim = true;
+    m_fStr.singleTimeStep = false;
     m_warnMissingFiles = true;
 }
 

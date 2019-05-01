@@ -53,6 +53,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";
     m_fStr.hasLevelDim = false;
+    m_fStr.singleTimeStep = true;
     m_parameter = ParameterUndefined;
 }
 

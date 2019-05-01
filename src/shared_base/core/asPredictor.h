@@ -352,6 +352,7 @@ protected:
         wxString dimMemberName;
         bool hasLevelDim;
         bool singleLevel;
+        bool singleTimeStep;
         a1d lons;
         a1d lats;
         a1d levels;
@@ -460,7 +461,9 @@ protected:
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1 = nullptr);
+    bool ParseFileStructure(asFileGrib *gbFile0);
+
+    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1);
 
     bool CheckFileStructure();
 

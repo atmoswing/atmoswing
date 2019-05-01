@@ -47,6 +47,7 @@ asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId)
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "level";
     m_fStr.hasLevelDim = false;
+    m_fStr.singleTimeStep = true;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
     m_parameter = ParameterUndefined;

@@ -41,11 +41,8 @@ asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
     m_fileType = asFile::Grib;
     m_isEnsemble = false;
     m_strideAllowed = false;
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimLevelName = "level";
     m_fStr.hasLevelDim = false;
+    m_fStr.singleTimeStep = true;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
     m_parameter = ParameterUndefined;
