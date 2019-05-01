@@ -589,7 +589,7 @@ bool asPredictor::EnquireGribFileStructure(asTimeArray &timeArray)
     }
 
     // Parse file structure
-    if (m_fStr.singleTimeStep) {
+    if (m_fStr.singleTimeStep && m_files.size() > 1) {
         wxASSERT(times.size() > 1);
 
         asFileGrib gbFile1 = asFileGrib(m_files[1], asFileGrib::ReadOnly);
