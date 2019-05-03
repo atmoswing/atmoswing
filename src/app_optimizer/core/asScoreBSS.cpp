@@ -54,6 +54,7 @@ float asScoreBSS::Assess(float obs, const a1f &values, int nbElements) const
     asScoreBS scoreBS = asScoreBS();
     scoreBS.SetThreshold(GetThreshold());
     scoreBS.SetQuantile(GetQuantile());
+    scoreBS.SetOnMean(GetOnMean());
     float score = scoreBS.Assess(obs, values, nbElements);
     float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
@@ -72,6 +73,7 @@ bool asScoreBSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatol
     asScore *score = asScore::GetInstance(asScore::BS);
     score->SetThreshold(GetThreshold());
     score->SetQuantile(GetQuantile());
+    score->SetOnMean(GetOnMean());
 
     for (int iRefTime = 0; iRefTime < refVals.size(); iRefTime++) {
         if (!asIsNaN(refVals(iRefTime))) {

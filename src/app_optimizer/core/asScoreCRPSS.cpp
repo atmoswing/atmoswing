@@ -61,6 +61,7 @@ float asScoreCRPSS::Assess(float obs, const a1f &values, int nbElements) const
     asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
     scoreCRPS.SetThreshold(GetThreshold());
     scoreCRPS.SetQuantile(GetQuantile());
+    scoreCRPS.SetOnMean(GetOnMean());
     float score = scoreCRPS.Assess(obs, values, nbElements);
     float skillScore = (score - m_scoreClimatology) / ((float) 0 - m_scoreClimatology);
 
@@ -76,6 +77,7 @@ bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climat
     asScore *score = asScore::GetInstance(asScore::CRPSAR);
     score->SetThreshold(GetThreshold());
     score->SetQuantile(GetQuantile());
+    score->SetOnMean(GetOnMean());
 
     for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
         if (!asIsNaN(refVals(iReftime))) {

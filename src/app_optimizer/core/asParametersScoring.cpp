@@ -42,6 +42,7 @@ asParametersScoring::asParametersScoring()
     m_score.postprocess = false;
     m_score.postprocessDupliExp = 0;
     m_score.postprocessMethod = wxEmptyString;
+    m_score.onMean = false;
     m_score.threshold = NaNf;
     m_score.quantile = NaNf;
 }

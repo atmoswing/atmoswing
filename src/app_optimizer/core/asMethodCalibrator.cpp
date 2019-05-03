@@ -657,6 +657,7 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParameters
     asScore *score = asScore::GetInstance(params->GetScoreName());
     score->SetQuantile(params->GetScoreQuantile());
     score->SetThreshold(params->GetScoreThreshold());
+    score->SetOnMean(params->GetOnMean());
 
     if (score->UsesClimatology() && m_scoreClimatology.empty()) {
         wxLogVerbose(_("Processing the score of the climatology."));

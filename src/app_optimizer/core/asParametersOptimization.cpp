@@ -738,6 +738,8 @@ bool asParametersOptimization::ParseScore(asFileParametersOptimization &filePara
                 return false;
         } else if (nodeParamBlock->GetName() == "threshold") {
             SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
+        } else if (nodeParamBlock->GetName() == "on_mean") {
+            SetOnMean(fileParams.GetBool(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array") {

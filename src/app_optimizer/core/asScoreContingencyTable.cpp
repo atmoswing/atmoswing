@@ -44,9 +44,6 @@ float asScoreContingencyTable::Assess(float obs, const a1f &values, int nbElemen
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_threshold));
-    wxASSERT(!asIsNaN(m_quantile));
-    wxASSERT(m_quantile > 0);
-    wxASSERT(m_quantile < 1);
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -72,24 +69,32 @@ float asScoreContingencyTable::Assess(float obs, const a1f &values, int nbElemen
 
     a1f cleanValues = x.head(nbPredict);
     float score = NaNf;
+    float value = 0;
 
-    // Get value for quantile
-    float xQuantile = asGetValueForQuantile(cleanValues, m_quantile);
+    if (m_onMean) {
+        value = cleanValues.mean();
+    } else {
+        // Get value for quantile
+        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(m_quantile > 0);
+        wxASSERT(m_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, m_quantile);
+    }
 
     // Predicted and observed
-    if (xQuantile >= m_threshold && obs >= m_threshold) {
+    if (value >= m_threshold && obs >= m_threshold) {
         score = 1;
     }
         // Predicted but not observed
-    else if (xQuantile >= m_threshold && obs < m_threshold) {
+    else if (value >= m_threshold && obs < m_threshold) {
         score = 2;
     }
         // Not predicted but observed
-    else if (xQuantile < m_threshold && obs >= m_threshold) {
+    else if (value < m_threshold && obs >= m_threshold) {
         score = 3;
     }
         // Not predicted and not observed
-    else if (xQuantile < m_threshold && obs < m_threshold) {
+    else if (value < m_threshold && obs < m_threshold) {
         score = 4;
     }
 

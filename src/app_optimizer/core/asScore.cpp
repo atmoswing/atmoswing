@@ -51,6 +51,7 @@ asScore::asScore()
           m_scaleWorst(NaNf),
           m_usesClimatology(false),
           m_singleValue(true),
+          m_onMean(false),
           m_scoreClimatology(0),
           m_threshold(NaNf),
           m_quantile(NaNf)
@@ -68,6 +69,7 @@ asScore::asScore(Score score, const wxString &name, const wxString &fullname, Or
           m_scaleWorst(scaleWorst),
           m_usesClimatology(usesClimatology),
           m_singleValue(singleValue),
+          m_onMean(false),
           m_scoreClimatology(0),
           m_threshold(NaNf),
           m_quantile(NaNf)

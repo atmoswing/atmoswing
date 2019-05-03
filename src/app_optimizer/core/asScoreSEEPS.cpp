@@ -51,9 +51,6 @@ float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const
     wxASSERT(!asIsNaN(m_p1));
     wxASSERT(!asIsNaN(m_p3));
     wxASSERT(!asIsNaN(m_thresHigh));
-    wxASSERT(!asIsNaN(m_quantile));
-    wxASSERT(m_quantile > 0);
-    wxASSERT(m_quantile < 1);
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -78,47 +75,54 @@ float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const
     }
 
     a1f cleanValues = x.head(nbPredict);
+    float value = 0;
 
-    // Get value for quantile
-    float fcstV = asGetValueForQuantile(cleanValues, m_quantile);
-    float obsV = obs;
+    if (m_onMean) {
+        value = cleanValues.mean();
+    } else {
+        // Get value for quantile
+        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(m_quantile > 0);
+        wxASSERT(m_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, m_quantile);
+    }
 
     float score = 0;
 
     // Forecasted 1, observed 1
-    if (fcstV <= m_thresNull && obsV <= m_thresNull) {
+    if (value <= m_thresNull && obs <= m_thresNull) {
         score = 0.0f;
     }
         // Forecasted 2, observed 1
-    else if (fcstV <= m_thresNull && obsV > m_thresNull && obsV <= m_thresHigh) {
+    else if (value <= m_thresNull && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.5 * (1.0 / (1.0 - m_p1));
     }
         // Forecasted 3, observed 1
-    else if (fcstV <= m_thresNull && obsV > m_thresHigh) {
+    else if (value <= m_thresNull && obs > m_thresHigh) {
         score = 0.5 * ((1.0 / m_p3) + (1.0 / 1.0 - m_p1));
     }
         // Forecasted 1, observed 2
-    else if (fcstV > m_thresNull && fcstV <= m_thresHigh && obsV <= m_thresNull) {
+    else if (value > m_thresNull && value <= m_thresHigh && obs <= m_thresNull) {
         score = 0.5 * (1.0 / m_p1);
     }
         // Forecasted 2, observed 2
-    else if (fcstV > m_thresNull && fcstV <= m_thresHigh && obsV > m_thresNull && obsV <= m_thresHigh) {
+    else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.0f;
     }
         // Forecasted 3, observed 2
-    else if (fcstV > m_thresNull && fcstV <= m_thresHigh && obsV > m_thresHigh) {
+    else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresHigh) {
         score = 0.5 * (1.0 / m_p3);
     }
         // Forecasted 1, observed 3
-    else if (fcstV > m_thresHigh && obsV <= m_thresNull) {
+    else if (value > m_thresHigh && obs <= m_thresNull) {
         score = 0.5 * ((1.0 / m_p1) + (1.0 / (1.0 - m_p3)));
     }
         // Forecasted 2, observed 3
-    else if (fcstV > m_thresHigh && obsV > m_thresNull && obsV <= m_thresHigh) {
+    else if (value > m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.5 * (1.0 / (1.0 - m_p3));
     }
         // Forecasted 3, observed 3
-    else if (fcstV > m_thresHigh && obsV > m_thresHigh) {
+    else if (value > m_thresHigh && obs > m_thresHigh) {
         score = 0.0f;
     }
 

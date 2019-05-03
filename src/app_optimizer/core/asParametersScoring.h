@@ -48,6 +48,7 @@ public:
         bool postprocess;
         float postprocessDupliExp;
         wxString postprocessMethod;
+        bool onMean;
         float threshold;
         float quantile;
     } ParamsScore;
@@ -220,6 +221,16 @@ public:
     void SetScoreThreshold(float val)
     {
         m_score.threshold = val;
+    }
+
+    bool GetOnMean() const
+    {
+        return m_score.onMean;
+    }
+
+    void SetOnMean(bool val)
+    {
+        m_score.onMean = val;
     }
 
     float GetScoreQuantile() const

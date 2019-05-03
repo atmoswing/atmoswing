@@ -117,6 +117,16 @@ public:
         m_scoreClimatology = val;
     }
 
+    bool GetOnMean() const
+    {
+        return m_onMean;
+    }
+
+    void SetOnMean(bool val)
+    {
+        m_onMean = val;
+    }
+
     float GetThreshold() const
     {
         return m_threshold;
@@ -156,6 +166,7 @@ protected:
     float m_scaleWorst;
     bool m_usesClimatology;
     bool m_singleValue;
+    bool m_onMean;
     float m_scoreClimatology;
     float m_threshold;
     float m_quantile;

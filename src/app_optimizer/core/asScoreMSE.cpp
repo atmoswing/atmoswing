@@ -39,9 +39,6 @@ float asScoreMSE::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
-    wxASSERT(!asIsNaN(m_quantile));
-    wxASSERT(m_quantile > 0);
-    wxASSERT(m_quantile < 1);
 
     // Check inputs
     if (!CheckObservedValue(obs)) {
@@ -66,11 +63,19 @@ float asScoreMSE::Assess(float obs, const a1f &values, int nbElements) const
     }
 
     a1f cleanValues = x.head(nbPredict);
+    float value = 0;
 
-    // Get value for quantile
-    float xQuantile = asGetValueForQuantile(cleanValues, m_quantile);
+    if (m_onMean) {
+        value = cleanValues.mean();
+    } else {
+        // Get value for quantile
+        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(m_quantile > 0);
+        wxASSERT(m_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, m_quantile);
+    }
 
-    float score = (obs - xQuantile) * (obs - xQuantile);
+    float score = (obs - value) * (obs - value);
 
     return score;
 }
