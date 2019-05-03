@@ -36,13 +36,11 @@ class asTotalScoreTS
         : public asTotalScore
 {
 public:
-    asTotalScoreTS(Period period);
+    explicit asTotalScoreTS(const wxString &periodString);
 
-    asTotalScoreTS(const wxString &periodString);
+    ~asTotalScoreTS() override = default;
 
-    virtual ~asTotalScoreTS();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

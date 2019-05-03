@@ -22,27 +22,24 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASSCORERMSE_H
-#define ASSCORERMSE_H
+#ifndef ASTOTALSCOREMSE_H
+#define ASTOTALSCOREMSE_H
 
 #include <asIncludes.h>
-#include "asScore.h"
+#include <asTotalScore.h>
 
-class asScoreRMSE
-        : public asScore
+class asTotalScoreMSE
+        : public asTotalScore
 {
 public:
-    asScoreRMSE();
+    explicit asTotalScoreMSE(const wxString &periodString);
 
-    ~asScoreRMSE() override = default;
+    ~asTotalScoreMSE() override = default;
 
-    float Assess(float obs, const a1f &values, int nbElements) const override;
-
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 
@@ -50,4 +47,4 @@ private:
 
 };
 
-#endif
+#endif // ASTOTALSCOREMSE_H

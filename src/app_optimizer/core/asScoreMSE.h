@@ -22,26 +22,28 @@
  */
 
 /*
- * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
-#define ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
+#ifndef ASSCORERMSE_H
+#define ASSCORERMSE_H
 
 #include <asIncludes.h>
-#include <asTotalScore.h>
+#include "asScore.h"
 
-class asTotalScoreRankHistogramReliability
-        : public asTotalScore
+class asScoreMSE
+        : public asScore
 {
 public:
-    explicit asTotalScoreRankHistogramReliability(const wxString &periodString);
+    asScoreMSE();
 
-    ~asTotalScoreRankHistogramReliability() override = default;
+    ~asScoreMSE() override = default;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
+    float Assess(float obs, const a1f &values, int nbElements) const override;
 
-    float AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const;
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
 protected:
 
@@ -49,4 +51,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
+#endif

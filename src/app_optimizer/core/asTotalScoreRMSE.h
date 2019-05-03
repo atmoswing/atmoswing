@@ -30,19 +30,17 @@
 #define ASTOTALSCORERMSE_H
 
 #include <asIncludes.h>
-#include <asTotalScore.h>
+#include <asTotalScoreMSE.h>
 
 class asTotalScoreRMSE
-        : public asTotalScore
+        : public asTotalScoreMSE
 {
 public:
-    asTotalScoreRMSE(Period period);
+    explicit asTotalScoreRMSE(const wxString &periodString);
 
-    asTotalScoreRMSE(const wxString &periodString);
+    ~asTotalScoreRMSE() override = default;
 
-    virtual ~asTotalScoreRMSE();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

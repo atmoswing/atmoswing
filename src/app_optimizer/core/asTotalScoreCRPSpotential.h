@@ -36,19 +36,17 @@ class asTotalScoreCRPSpotential
         : public asTotalScore
 {
 public:
-    asTotalScoreCRPSpotential(Period period);
+    explicit asTotalScoreCRPSpotential(const wxString &periodString);
 
-    asTotalScoreCRPSpotential(const wxString &periodString);
+    ~asTotalScoreCRPSpotential() override = default;
 
-    virtual ~asTotalScoreCRPSpotential();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override
     {
         wxLogError(_("The CRPS score needs a 2D array as input !"));
         return NaNf;
     }
 
-    float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

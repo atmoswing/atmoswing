@@ -48,8 +48,6 @@ public:
         Spring, // partial mean on spring only
     };
 
-    explicit asTotalScore(Period period);
-
     explicit asTotalScore(const wxString &periodString);
 
     ~asTotalScore() override;

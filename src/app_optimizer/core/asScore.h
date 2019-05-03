@@ -60,6 +60,7 @@ public:
         PSS, // Pierce skill score
         GSS, // Gilbert skill score
         MAE, // Mean absolute error
+        MSE, // Mean squared error
         RMSE, // Root mean squared error
         BS, // Brier score
         BSS, // Brier skill score

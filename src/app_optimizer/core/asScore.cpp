@@ -27,22 +27,22 @@
  */
 
 #include "asScore.h"
-#include "asScoreCRPSS.h"
+#include "asScoreBS.h"
+#include "asScoreBSS.h"
 #include "asScoreCRPSAR.h"
 #include "asScoreCRPSEP.h"
+#include "asScoreCRPSHersbachDecomp.h"
+#include "asScoreCRPSS.h"
 #include "asScoreCRPSaccurAR.h"
 #include "asScoreCRPSaccurEP.h"
 #include "asScoreCRPSsharpAR.h"
 #include "asScoreCRPSsharpEP.h"
-#include "asScoreCRPSHersbachDecomp.h"
-#include "asScoreDF0.h"
 #include "asScoreContingencyTable.h"
+#include "asScoreDF0.h"
 #include "asScoreMAE.h"
-#include "asScoreRMSE.h"
-#include "asScoreBS.h"
-#include "asScoreBSS.h"
-#include "asScoreSEEPS.h"
+#include "asScoreMSE.h"
 #include "asScoreRankHistogram.h"
+#include "asScoreSEEPS.h"
 
 asScore::asScore()
         : m_score(Undefined),
@@ -166,8 +166,12 @@ asScore *asScore::GetInstance(Score scoreEnum)
             asScore *score = new asScoreMAE();
             return score;
         }
+        case (MSE): {
+            asScore *score = new asScoreMSE();
+            return score;
+        }
         case (RMSE): {
-            asScore *score = new asScoreRMSE();
+            asScore *score = new asScoreMSE();
             return score;
         }
         case (BS): {
@@ -271,8 +275,11 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     } else if (scoreString.CmpNoCase("MAE") == 0) {
         asScore *score = new asScoreMAE();
         return score;
+    } else if (scoreString.CmpNoCase("MSE") == 0) {
+        asScore *score = new asScoreMSE();
+        return score;
     } else if (scoreString.CmpNoCase("RMSE") == 0) {
-        asScore *score = new asScoreRMSE();
+        asScore *score = new asScoreMSE();
         return score;
     } else if (scoreString.CmpNoCase("BS") == 0) {
         asScore *score = new asScoreBS();

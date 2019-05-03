@@ -27,21 +27,10 @@
 
 #include "asTotalScoreRankHistogramReliability.h"
 
-asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
-}
-
-asTotalScoreRankHistogramReliability::~asTotalScoreRankHistogramReliability()
-{
-    //dtor
 }
 
 float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const a1f &scores,

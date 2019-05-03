@@ -39,20 +39,12 @@
 #include "asTotalScoreHSS.h"
 #include "asTotalScorePSS.h"
 #include "asTotalScoreGSS.h"
+#include "asTotalScoreMSE.h"
 #include "asTotalScoreRMSE.h"
 #include "asTotalScoreRankHistogram.h"
 #include "asTotalScoreRankHistogramReliability.h"
 #include "asTotalScoreCRPSreliability.h"
 #include "asTotalScoreCRPSpotential.h"
-
-asTotalScore::asTotalScore(Period period)
-        : m_period(period),
-          m_singleValue(true),
-          m_has2DArrayArgument(false),
-          m_ranksNb(0)
-{
-
-}
 
 asTotalScore::asTotalScore(const wxString &periodString)
         : m_singleValue(true),
@@ -150,6 +142,9 @@ asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxStr
         return score;
     } else if (scoreString.CmpNoCase("MAE") == 0) {
         asTotalScore *score = new asTotalScoreMean(periodString);
+        return score;
+    } else if (scoreString.CmpNoCase("MSE") == 0) {
+        asTotalScore *score = new asTotalScoreMSE(periodString);
         return score;
     } else if (scoreString.CmpNoCase("RMSE") == 0) {
         asTotalScore *score = new asTotalScoreRMSE(periodString);

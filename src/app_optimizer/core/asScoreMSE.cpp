@@ -24,17 +24,18 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#include "asScoreRMSE.h"
+#include "asScoreMSE.h"
 
-asScoreRMSE::asScoreRMSE()
-        : asScore(asScore::RMSE, _("Root mean square error"), _("Root mean square error"), Asc, 0, NaNf)
+asScoreMSE::asScoreMSE()
+        : asScore(asScore::MSE, _("Mean square error"), _("Mean square error"), Asc, 0, NaNf)
 {
 
 }
 
-float asScoreRMSE::Assess(float obs, const a1f &values, int nbElements) const
+float asScoreMSE::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
@@ -57,10 +58,10 @@ float asScoreRMSE::Assess(float obs, const a1f &values, int nbElements) const
     // Remove the NaNs and copy content
     int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
-        wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+        wxLogWarning(_("Only NaNs as inputs in the MSE processing function."));
         return NaNf;
     } else if (nbPredict <= 2) {
-        wxLogWarning(_("Not enough elements to process the CRPS."));
+        wxLogWarning(_("Not enough elements to process the MSE."));
         return NaNf;
     }
 
@@ -74,7 +75,7 @@ float asScoreRMSE::Assess(float obs, const a1f &values, int nbElements) const
     return score;
 }
 
-bool asScoreRMSE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
+bool asScoreMSE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
 {
     return true;
 }

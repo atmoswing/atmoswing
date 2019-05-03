@@ -22,19 +22,18 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#include "asTotalScoreMean.h"
+#include "asTotalScoreMSE.h"
 
-asTotalScoreMean::asTotalScoreMean(const wxString &periodString)
+asTotalScoreMSE::asTotalScoreMSE(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
 }
 
-float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
+float asTotalScoreMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
 {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
@@ -53,7 +52,7 @@ float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const 
                 }
             }
 
-            return (score / divisor);
+            return score / divisor;
         }
 
         case (asTotalScore::SpecificPeriod): {
@@ -72,7 +71,7 @@ float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const 
 
             for (int iTime = indexStart; iTime <= indexEnd; iTime++) {
                 if (iTime < 0) {
-                    wxLogError(_("Error processing the final mean score."));
+                    wxLogError(_("Error processing the final MSE score."));
                     return NaNf;
                 }
                 int indexCurrent = asFindClosest(&targetDates(0), &targetDates(targetDatesLength - 1), dateTime(iTime));
@@ -84,11 +83,11 @@ float asTotalScoreMean::Assess(const a1f &targetDates, const a1f &scores, const 
                 }
             }
 
-            return (score / divisor);
+            return score / divisor;
         }
 
         default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreMean."));
+            asThrowException(_("Period not yet implemented in asTotalScoreMSE."));
         }
     }
 }

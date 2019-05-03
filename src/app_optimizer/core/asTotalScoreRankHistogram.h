@@ -35,15 +35,13 @@ class asTotalScoreRankHistogram
         : public asTotalScore
 {
 public:
-    asTotalScoreRankHistogram(Period period);
+    explicit asTotalScoreRankHistogram(const wxString &periodString);
 
-    asTotalScoreRankHistogram(const wxString &periodString);
+    ~asTotalScoreRankHistogram() override = default;
 
-    virtual ~asTotalScoreRankHistogram();
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
-
-    a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

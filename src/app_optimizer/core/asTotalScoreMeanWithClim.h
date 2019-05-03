@@ -35,13 +35,11 @@ class asTotalScoreMeanWithClim
         : public asTotalScore
 {
 public:
-    asTotalScoreMeanWithClim(Period period);
+    explicit asTotalScoreMeanWithClim(const wxString &periodString);
 
-    asTotalScoreMeanWithClim(const wxString &periodString);
+    ~asTotalScoreMeanWithClim() override = default;
 
-    virtual ~asTotalScoreMeanWithClim();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

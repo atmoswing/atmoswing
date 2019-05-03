@@ -28,21 +28,10 @@
 
 #include "asTotalScoreCRPSpotential.h"
 
-asTotalScoreCRPSpotential::asTotalScoreCRPSpotential(Period period)
-        : asTotalScore(period)
-{
-    m_has2DArrayArgument = true;
-}
-
 asTotalScoreCRPSpotential::asTotalScoreCRPSpotential(const wxString &periodString)
         : asTotalScore(periodString)
 {
     m_has2DArrayArgument = true;
-}
-
-asTotalScoreCRPSpotential::~asTotalScoreCRPSpotential()
-{
-    //dtor
 }
 
 float asTotalScoreCRPSpotential::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const

@@ -60,7 +60,7 @@ float asScoreMAE::Assess(float obs, const a1f &values, int nbElements) const
         wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
         return NaNf;
     } else if (nbPredict <= 2) {
-        wxLogWarning(_("Not enough elements to process the CRPS."));
+        wxLogWarning(_("Not enough elements to process the MAE."));
         return NaNf;
     }
 

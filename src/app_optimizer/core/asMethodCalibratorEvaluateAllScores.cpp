@@ -433,7 +433,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             int scoresSize = anaScores.GetScores().size();
             int scoresSizeValid = anaScoresValid.GetScores().size();
 
-            asTotalScoreRankHistogramReliability rankHistogramReliability(asTotalScore::Total);
+            asTotalScoreRankHistogramReliability rankHistogramReliability("Total");
             rankHistogramReliability.SetRanksNb(params.GetScoreAnalogsNumber() + 1);
             float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, scoresSize);
             float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, scoresSizeValid);

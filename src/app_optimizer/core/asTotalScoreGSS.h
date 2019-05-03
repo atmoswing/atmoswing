@@ -36,13 +36,11 @@ class asTotalScoreGSS
         : public asTotalScore
 {
 public:
-    asTotalScoreGSS(Period period);
+    explicit asTotalScoreGSS(const wxString &periodString);
 
-    asTotalScoreGSS(const wxString &periodString);
+    ~asTotalScoreGSS() override = default;
 
-    virtual ~asTotalScoreGSS();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 

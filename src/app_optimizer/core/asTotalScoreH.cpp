@@ -28,21 +28,10 @@
 
 #include "asTotalScoreH.h"
 
-asTotalScoreH::asTotalScoreH(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScoreH::asTotalScoreH(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
-}
-
-asTotalScoreH::~asTotalScoreH()
-{
-    //dtor
 }
 
 float asTotalScoreH::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
