@@ -46,8 +46,8 @@ asThreadInternetDownload::asThreadInternetDownload(const vwxs &urls, const vwxs 
           m_start(start),
           m_end(wxMin(end, (int) fileNames.size() - 1))
 {
-    wxASSERT((unsigned) m_end < urls.size());
-    wxASSERT((unsigned) m_end < fileNames.size());
+    wxASSERT(m_end < urls.size());
+    wxASSERT(m_end < fileNames.size());
 }
 
 wxThread::ExitCode asThreadInternetDownload::Entry()

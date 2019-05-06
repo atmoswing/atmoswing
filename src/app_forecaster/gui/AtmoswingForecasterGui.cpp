@@ -762,7 +762,7 @@ asWizardBatchForecastsVirtual::asWizardBatchForecastsVirtual( wxWindow* parent, 
 
 	this->Centre( wxBOTH );
 
-	for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )
+	for ( int i = 1; i < m_pages.GetCount(); i++ )
 	{
 		m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );
 		m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );

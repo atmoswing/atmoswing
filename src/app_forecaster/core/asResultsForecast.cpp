@@ -270,7 +270,7 @@ bool asResultsForecast::Save()
     vf analogsValuesRaw(nAnalogsTot * nStations);
 
     int ind = 0;
-    for (unsigned int iTime = 0; iTime < nLeadtime; iTime++) {
+    for (int iTime = 0; iTime < nLeadtime; iTime++) {
         for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
             analogsCriteria[ind] = m_analogsCriteria[iTime][iAnalog];
             analogsDates[ind] = m_analogsDates[iTime][iAnalog];
@@ -279,8 +279,8 @@ bool asResultsForecast::Save()
     }
 
     int indVal = 0;
-    for (unsigned int iStat = 0; iStat < nStations; iStat++) {
-        for (unsigned int iTime = 0; iTime < nLeadtime; iTime++) {
+    for (int iStat = 0; iStat < nStations; iStat++) {
+        for (int iTime = 0; iTime < nLeadtime; iTime++) {
             for (int iAnalog = 0; iAnalog < m_analogsNb[iTime]; iAnalog++) {
                 analogsValuesRaw[indVal] = m_analogsValuesRaw[iTime](iStat, iAnalog);
                 indVal++;
@@ -610,7 +610,7 @@ wxArrayString asResultsForecast::GetStationNamesWxArrayString() const
 wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const
 {
     wxArrayString stationsNames;
-    for (unsigned int i = 0; i < m_stationNames.size(); i++) {
+    for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
         if (!asIsNaN(m_stationHeights[i]) && m_stationHeights[i] != 0) {
             label = wxString::Format("%s (%4.0fm)", m_stationNames[i], m_stationHeights[i]);
@@ -733,7 +733,7 @@ bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const
         return false;
     }
 
-    for (unsigned int i = 0; i < m_predictandStationIds.size(); i++) {
+    for (int i = 0; i < m_predictandStationIds.size(); i++) {
         if (m_predictandStationIds[i] != predictandStationIds[i])
             return false;
     }

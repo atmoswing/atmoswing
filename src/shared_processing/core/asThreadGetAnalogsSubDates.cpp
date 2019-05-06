@@ -87,7 +87,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     int timeArchiveDataSize = timeArchiveData.size();
     int timeTargetDataSize = timeTargetData.size();
     int predictorsNb = m_params->GetPredictorsNb(m_step);
-    unsigned int membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
+    int membersNb = (m_pPredictorsTarget)[0]->GetData()[0].size();
     int analogsNbPrevious = m_params->GetAnalogsNumber(m_step - 1);
     int analogsNb = m_params->GetAnalogsNumber(m_step);
     bool isasc = (m_criteria[0]->GetOrder() == Asc);
@@ -95,7 +95,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     wxASSERT(m_end < m_pTimeTargetSelection->size());
     wxASSERT(timeArchiveDataSize == (int) (m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetDataSize == (int) (m_pPredictorsTarget)[0]->GetData().size());
-    wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
+    wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
     a1f currentAnalogsDates(analogsNbPrevious);
@@ -127,7 +127,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
         dateArrayOneDay.fill(NaNf);
 
         // Loop over the members
-        for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
+        for (int iMem = 0; iMem < membersNb; ++iMem) {
 
             // Extract target data
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
@@ -155,7 +155,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                         m_vArchData[iPtor] = &(m_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
 
                         // Assess the criteria
-                        wxASSERT(m_criteria.size() > (unsigned) iPtor);
+                        wxASSERT(m_criteria.size() > iPtor);
                         tmpscore = m_criteria[iPtor]->Assess(*m_vTargData[iPtor], *m_vArchData[iPtor], m_vRowsNb[iPtor],
                                                              m_vColsNb[iPtor]);
 

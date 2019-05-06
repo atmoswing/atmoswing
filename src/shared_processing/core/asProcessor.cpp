@@ -97,8 +97,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     int timeTargetSelectionSize = (int) timeTargetSelection.size();
     wxASSERT(criteria[0]);
     bool isAsc = (criteria[0]->GetOrder() == Asc);
-    unsigned int predictorsNb = (unsigned int) params->GetPredictorsNb(step);
-    unsigned int membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
+    int predictorsNb = params->GetPredictorsNb(step);
+    int membersNb = predictorsTarget[0]->GetData()[0].size();
 
     wxASSERT(!predictorsArchive.empty());
     wxASSERT((int) predictorsArchive.size() == predictorsNb);
@@ -106,7 +106,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     // Check analogs number. Correct if superior to the time serie
     int analogsNb = params->GetAnalogsNumber(step);
     if (analogsNb > timeArrayArchiveSelection.GetSize() * predictorsArchive[0]->GetMembersNb()) {
-        wxLogError(_("The given analog number is superior to the time serie."));
+        wxLogError(_("The given analog number is superior to the time series."));
         return false;
     }
 
@@ -116,7 +116,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
-    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
         wxASSERT((int) predictorsArchive.size() > iPtor);
         wxASSERT(predictorsArchive[iPtor]);
         wxASSERT(!predictorsArchive[iPtor]->GetData().empty());
@@ -545,10 +545,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 dateArrayOneDay.fill(NaNf);
 
                 // Loop over the members
-                for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
+                for (int iMem = 0; iMem < membersNb; ++iMem) {
 
                     // Extract target data
-                    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                         vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
                     }
 
@@ -577,12 +577,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                         // Process the criteria
                         float thisScore = 0;
-                        for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             // Get data
                             vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
 
                             // Assess the criteria
-                            wxASSERT(criteria.size() > (unsigned) iPtor);
+                            wxASSERT(criteria.size() > iPtor);
                             wxASSERT(vTargData[iPtor]);
                             wxASSERT(vArchData[iPtor]);
                             float tmpScore = criteria[iPtor]->Assess(*vTargData[iPtor], *vArchData[iPtor],
@@ -796,19 +796,19 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
     // Extract some data
     a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
-    auto timeArchiveDataSize = (unsigned int) timeArchiveData.size();
+    auto timeArchiveDataSize = timeArchiveData.size();
     wxASSERT(timeArchiveDataSize > 0);
     a1d timeTargetData = timeArrayTargetData.GetTimeArray();
-    auto timeTargetDataSize = (unsigned int) timeTargetData.size();
+    auto timeTargetDataSize = timeTargetData.size();
     wxASSERT(timeTargetDataSize > 0);
     a1f timeTargetSelection = anaDates.GetTargetDates();
-    auto timeTargetSelectionSize = (unsigned int) timeTargetSelection.size();
+    auto timeTargetSelectionSize = timeTargetSelection.size();
     wxASSERT(timeTargetSelectionSize > 0);
     a2f analogsDates = anaDates.GetAnalogsDates();
     bool isasc = (criteria[0]->GetOrder() == Asc);
-    auto predictorsNb = (unsigned int) params->GetPredictorsNb(step);
+    auto predictorsNb = params->GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
-    auto membersNb = (unsigned int) predictorsTarget[0]->GetData()[0].size();
+    auto membersNb = predictorsTarget[0]->GetData()[0].size();
 
     // Check the analogs number. Correct if superior to the time serie
     int analogsNb = params->GetAnalogsNumber(step);
@@ -943,7 +943,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             dateArrayOneDay.fill(NaNf);
 
             // Loop through every timestep as target data
-            for (unsigned int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
+            for (int iAnalogDate = 0; iAnalogDate < timeTargetSelectionSize; iAnalogDate++) {
                 int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
                                        timeTargetSelection[iAnalogDate], 0.01);
                 wxASSERT_MSG(iTimeTarg >= 0, wxString::Format(_("Looking for %s in betwwen %s and %s."),
@@ -970,10 +970,10 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                 dateArrayOneDay.fill(NaNf);
 
                 // Loop over the members
-                for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
+                for (int iMem = 0; iMem < membersNb; ++iMem) {
 
                     // Extract target data
-                    for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                    for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                         vTargData[iPtor] = &predictorsTarget[iPtor]->GetData()[iTimeTarg][iMem];
                     }
 
@@ -987,12 +987,12 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                         if (iTimeArch != asNOT_FOUND && iTimeArch != asOUT_OF_RANGE) {
                             // Process the criteria
                             float thisscore = 0;
-                            for (unsigned int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                                 // Get data
                                 vArchData[iPtor] = &predictorsArchive[iPtor]->GetData()[iTimeArch][iMem];
 
                                 // Assess the criteria
-                                wxASSERT(criteria.size() > (unsigned) iPtor);
+                                wxASSERT(criteria.size() > iPtor);
                                 wxASSERT(vTargData[iPtor]);
                                 wxASSERT(vArchData[iPtor]);
                                 wxASSERT(timeArchiveData.size() > iTimeArch);
@@ -1105,8 +1105,8 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
     a1d predictandTime = predictand.GetTime();
     vi stations = params->GetPredictandStationIds();
     int stationsNb = (int) stations.size();
-    va1f predictandDataNorm((unsigned long) stationsNb);
-    va1f predictandDataRaw((unsigned long) stationsNb);
+    va1f predictandDataNorm((long) stationsNb);
+    va1f predictandDataRaw((long) stationsNb);
     for (int iStat = 0; iStat < stationsNb; iStat++) {
         predictandDataNorm[iStat] = predictand.GetDataNormalizedStation(stations[iStat]);
         predictandDataRaw[iStat] = predictand.GetDataRawStation(stations[iStat]);

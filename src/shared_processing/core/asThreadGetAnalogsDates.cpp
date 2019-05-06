@@ -89,14 +89,14 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     // Some other variables
     int iTimeTarg, iTimeArch;
     int predictorsNb = m_params->GetPredictorsNb(m_step);
-    auto membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
+    auto membersNb = (m_pPredictorsTarget)[0]->GetData()[0].size();
     int analogsNb = m_params->GetAnalogsNumber(m_step);
     bool isAsc = (m_criteria[0]->GetOrder() == Asc);
 
     wxASSERT(m_end < timeTargetSelection.size());
     wxASSERT(timeArchiveData.size() == (m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetData.size() <= (m_pPredictorsTarget)[0]->GetData().size());
-    wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
+    wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
     a1f scoreArrayOneDay(analogsNb);
@@ -137,7 +137,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             dateArrayOneDay.fill(NaNf);
 
             // Loop over the members
-            for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
+            for (int iMem = 0; iMem < membersNb; ++iMem) {
 
                 // Extract target data
                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
@@ -166,7 +166,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                             m_vArchData[iPtor] = &(m_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
 
                             // Assess the criteria
-                            wxASSERT(m_criteria.size() > (unsigned) iPtor);
+                            wxASSERT(m_criteria.size() > iPtor);
                             float tmpScore = m_criteria[iPtor]->Assess(*m_vTargData[iPtor], *m_vArchData[iPtor],
                                                                        m_vRowsNb[iPtor], m_vColsNb[iPtor]);
 

@@ -131,11 +131,11 @@ double asMethodStandard::GetTimeEndArchive(asParameters *params) const
 void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *params)
 {
     if (m_preloadedArchive.empty()) {
-        m_preloadedArchive.resize((unsigned long) params->GetStepsNb());
-        m_preloadedArchivePointerCopy.resize((unsigned long) params->GetStepsNb());
+        m_preloadedArchive.resize((long) params->GetStepsNb());
+        m_preloadedArchivePointerCopy.resize((long) params->GetStepsNb());
         for (int iStep = 0; iStep < params->GetStepsNb(); iStep++) {
-            m_preloadedArchive[iStep].resize((unsigned long) params->GetPredictorsNb(iStep));
-            m_preloadedArchivePointerCopy[iStep].resize((unsigned long) params->GetPredictorsNb(iStep));
+            m_preloadedArchive[iStep].resize((long) params->GetPredictorsNb(iStep));
+            m_preloadedArchivePointerCopy[iStep].resize((long) params->GetPredictorsNb(iStep));
 
             for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
 
@@ -143,21 +143,21 @@ void asMethodStandard::InitializePreloadedArchiveDataContainers(asParameters *pa
                 vf preloadLevels = params->GetPreloadLevels(iStep, iPtor);
                 vd preloadHours = params->GetPreloadHours(iStep, iPtor);
 
-                unsigned long preloadDataIdsSize = wxMax(preloadDataIds.size(), 1);
-                unsigned long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
-                unsigned long preloadHoursSize = wxMax(preloadHours.size(), 1);
+                long preloadDataIdsSize = wxMax(preloadDataIds.size(), 1);
+                long preloadLevelsSize = wxMax(preloadLevels.size(), 1);
+                long preloadHoursSize = wxMax(preloadHours.size(), 1);
 
                 m_preloadedArchivePointerCopy[iStep][iPtor].resize(preloadDataIdsSize);
                 m_preloadedArchive[iStep][iPtor].resize(preloadDataIdsSize);
 
-                for (unsigned int iDat = 0; iDat < preloadDataIdsSize; iDat++) {
+                for (int iDat = 0; iDat < preloadDataIdsSize; iDat++) {
                     m_preloadedArchivePointerCopy[iStep][iPtor][iDat] = false;
                     m_preloadedArchive[iStep][iPtor][iDat].resize(preloadLevelsSize);
 
                     // Load data for every level and every hour
-                    for (unsigned int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
+                    for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
                         m_preloadedArchive[iStep][iPtor][iDat][iLevel].resize(preloadHoursSize);
-                        for (unsigned int iHour = 0; iHour < preloadHoursSize; iHour++) {
+                        for (int iHour = 0; iHour < preloadHoursSize; iHour++) {
                             m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = nullptr;
                         }
                     }
@@ -367,7 +367,7 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
             if (levels1.size() != levels2.size()) {
                 share = false;
             } else {
-                for (unsigned int i = 0; i < levels1.size(); i++) {
+                for (int i = 0; i < levels1.size(); i++) {
                     if (levels1[i] != levels2[i])
                         share = false;
                 }
@@ -378,7 +378,7 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
             if (hours1.size() != hours2.size()) {
                 share = false;
             } else {
-                for (unsigned int i = 0; i < hours1.size(); i++) {
+                for (int i = 0; i < hours1.size(); i++) {
                     if (hours1[i] != hours2[i])
                         share = false;
                 }
@@ -387,7 +387,7 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
             bool dataIdFound = false;
             vwxs preloadDataIds = params->GetPreloadDataIds(iStep, iPtor);
             vwxs preloadDataIdsPrev = params->GetPreloadDataIds(prev_step, prev_ptor);
-            for (unsigned int i = 0; i < preloadDataIdsPrev.size(); i++) {
+            for (int i = 0; i < preloadDataIdsPrev.size(); i++) {
                 // Vector can be empty in case of preprocessing
                 if (preloadDataIds.size() > iPre && preloadDataIdsPrev.size() > i) {
                     wxASSERT(!preloadDataIds[iPre].IsEmpty());
@@ -420,14 +420,14 @@ bool asMethodStandard::PointersArchiveDataShared(asParameters *params, int iStep
 
         m_preloadedArchivePointerCopy[iStep][iPtor][iPre] = true;
 
-        wxASSERT(m_preloadedArchive[prev_step].size() > (unsigned) prev_ptor);
-        wxASSERT(m_preloadedArchive[prev_step][prev_ptor].size() > (unsigned) prev_dat);
+        wxASSERT(m_preloadedArchive[prev_step].size() > prev_ptor);
+        wxASSERT(m_preloadedArchive[prev_step][prev_ptor].size() > prev_dat);
         wxASSERT(m_preloadedArchive[prev_step][prev_ptor][prev_dat].size() == preloadLevels.size());
 
         // Load data for every level and every hour
-        for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
+        for (int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
             wxASSERT(m_preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel].size() == preloadHours.size());
-            for (unsigned int iHour = 0; iHour < preloadHours.size(); iHour++) {
+            for (int iHour = 0; iHour < preloadHours.size(); iHour++) {
                 // Copy pointer
                 m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour] = m_preloadedArchive[prev_step][prev_ptor][prev_dat][iLevel][iHour];
             }
@@ -458,8 +458,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
     int predictorSize = 0;
 
     // Load data for every level and every hour
-    for (unsigned int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
-        for (unsigned int iHour = 0; iHour < preloadHours.size(); iHour++) {
+    for (int iLevel = 0; iLevel < preloadLevels.size(); iLevel++) {
+        for (int iHour = 0; iHour < preloadHours.size(); iHour++) {
             // Loading the dataset information
             asPredictor *predictor = asPredictor::GetInstance(params->GetPredictorDatasetId(iStep, iPtor),
                                                                       preloadDataIds[iDat], m_predictorDataDir);
@@ -587,8 +587,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
     vd preloadHours = params->GetPreloadHours(iStep, iPtor);
 
     // Check on which variable to loop
-    unsigned long preloadLevelsSize = preloadLevels.size();
-    unsigned long preloadHoursSize = preloadHours.size();
+    long preloadLevelsSize = preloadLevels.size();
+    long preloadHoursSize = preloadHours.size();
     bool loopOnLevels = true;
     bool loopOnHours = true;
 
@@ -616,8 +616,8 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
     wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     // Load data for every level and every hour
-    for (unsigned int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
-        for (unsigned int iHour = 0; iHour < preloadHoursSize; iHour++) {
+    for (int iLevel = 0; iLevel < preloadLevelsSize; iLevel++) {
+        for (int iHour = 0; iHour < preloadHoursSize; iHour++) {
             std::vector<asPredictor *> predictorsPreprocess;
 
             for (int iPre = 0; iPre < preprocessSize; iPre++) {
@@ -904,11 +904,11 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     }
 
     // Get data on the desired domain
-    wxASSERT((unsigned) iStep < m_preloadedArchive.size());
-    wxASSERT((unsigned) iPtor < m_preloadedArchive[iStep].size());
-    wxASSERT((unsigned) iPre < m_preloadedArchive[iStep][iPtor].size());
-    wxASSERT((unsigned) iLevel < m_preloadedArchive[iStep][iPtor][iPre].size());
-    wxASSERT((unsigned) iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size());
+    wxASSERT(iStep < m_preloadedArchive.size());
+    wxASSERT(iPtor < m_preloadedArchive[iStep].size());
+    wxASSERT(iPre < m_preloadedArchive[iStep][iPtor].size());
+    wxASSERT(iLevel < m_preloadedArchive[iStep][iPtor][iPre].size());
+    wxASSERT(iHour < m_preloadedArchive[iStep][iPtor][iPre][iLevel].size());
     if (!m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]) {
         if (!GetRandomLevelValidData(params, iStep, iPtor, iPre, iHour)) {
             if (!GetRandomValidData(params, iStep, iPtor, iPre)) {
@@ -1184,9 +1184,9 @@ void asMethodStandard::DeletePreloadedArchiveData()
     if (!m_preloaded)
         return;
 
-    for (unsigned int i = 0; i < m_preloadedArchive.size(); i++) {
-        for (unsigned int j = 0; j < m_preloadedArchive[i].size(); j++) {
-            for (unsigned int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
+    for (int i = 0; i < m_preloadedArchive.size(); i++) {
+        for (int j = 0; j < m_preloadedArchive[i].size(); j++) {
+            for (int k = 0; k < m_preloadedArchive[i][j].size(); k++) {
                 if (!m_preloadedArchivePointerCopy[i][j][k]) {
                     for (auto &l : m_preloadedArchive[i][j][k]) {
                         for (auto &m : l) {

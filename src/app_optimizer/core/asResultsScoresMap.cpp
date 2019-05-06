@@ -109,7 +109,7 @@ bool asResultsScoresMap::MakeMap()
         m_mapScores.push_back(tmpLatLon);
     }
 
-    for (unsigned int i = 0; i < m_scores.size(); i++) {
+    for (int i = 0; i < m_scores.size(); i++) {
         int indexLon = asFind(&m_mapLon[0], &m_mapLon[m_mapLon.size() - 1], m_lon[i], 0.0001f);
         int indexLat = asFind(&m_mapLat[0], &m_mapLat[m_mapLat.size() - 1], m_lat[i], 0.0001f);
         int indexLevel = asFind(&m_mapLevel[0], &m_mapLevel[m_mapLevel.size() - 1], m_level[i], 0.0001f);
@@ -190,9 +190,9 @@ bool asResultsScoresMap::Save(asParametersCalibration &params)
     vf scores(nLevel * nLat * nLon);
     int ind = 0;
 
-    for (unsigned int iLevel = 0; iLevel < nLevel; iLevel++) {
-        for (unsigned int iLat = 0; iLat < nLat; iLat++) {
-            for (unsigned int iLon = 0; iLon < nLon; iLon++) {
+    for (int iLevel = 0; iLevel < nLevel; iLevel++) {
+        for (int iLat = 0; iLat < nLat; iLat++) {
+            for (int iLon = 0; iLon < nLon; iLon++) {
                 ind = iLon;
                 ind += iLat * nLon;
                 ind += iLevel * nLon * nLat;

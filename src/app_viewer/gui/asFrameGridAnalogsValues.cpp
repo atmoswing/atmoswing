@@ -84,8 +84,8 @@ void asFrameGridAnalogsValues::RebuildChoiceForecast()
                 m_selectedStation);
         int forecastRow = m_forecastManager->GetForecastRowSpecificForStationId(methodRow, stationId);
         int index = m_forecastManager->GetLinearIndex(methodRow, forecastRow);
-        wxString val = " --> " + m_choiceForecast->GetString((unsigned int) index) + " <-- ";
-        m_choiceForecast->SetString((unsigned int) index, val);
+        wxString val = " --> " + m_choiceForecast->GetString(index) + " <-- ";
+        m_choiceForecast->SetString(index, val);
     }
 }
 
@@ -98,7 +98,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent &event)
     // Dates list
     wxArrayString arrayDates = m_forecastManager->GetLeadTimes(m_selectedMethod, m_selectedForecast);
     m_choiceDate->Set(arrayDates);
-    if (arrayDates.size() <= (unsigned) m_selectedDate) {
+    if (arrayDates.size() <= m_selectedDate) {
         m_selectedDate = 0;
     }
     m_choiceDate->Select(m_selectedDate);
@@ -106,7 +106,7 @@ void asFrameGridAnalogsValues::OnChoiceForecastChange(wxCommandEvent &event)
     // Stations list
     wxArrayString arrayStation = m_forecastManager->GetStationNamesWithHeights(m_selectedMethod, m_selectedForecast);
     m_choiceStation->Set(arrayStation);
-    if (arrayStation.size() <= (unsigned) m_selectedStation) {
+    if (arrayStation.size() <= m_selectedStation) {
         m_selectedStation = 0;
     }
     m_choiceStation->Select(m_selectedStation);

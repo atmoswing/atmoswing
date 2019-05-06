@@ -141,7 +141,7 @@ void asBatchForecasts::ClearForecasts()
 
 void asBatchForecasts::AddForecast()
 {
-    unsigned long nb = m_forecastFileNames.size() + 1;
+    long nb = m_forecastFileNames.size() + 1;
     m_forecastFileNames.resize(nb);
 }
 

@@ -1045,7 +1045,7 @@ bool asFrameForecast::OpenLayers(const wxArrayString &names)
     wxBusyCursor wait;
 
     // Open files
-    for (unsigned int i = 0; i < names.GetCount(); i++) {
+    for (int i = 0; i < names.GetCount(); i++) {
         if (!m_layerManager->Open(wxFileName(names.Item(i)))) {
             wxLogError(_("The layer could not be opened."));
             return false;
@@ -1057,7 +1057,7 @@ bool asFrameForecast::OpenLayers(const wxArrayString &names)
     m_critSectionViewerLayerManager.Enter();
 #endif
     m_viewerLayerManager->FreezeBegin();
-    for (unsigned int i = 0; i < names.GetCount(); i++) {
+    for (int i = 0; i < names.GetCount(); i++) {
         vrLayer *layer = m_layerManager->GetLayer(wxFileName(names.Item(i)));
         wxASSERT(layer);
 
@@ -1143,7 +1143,7 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event)
 
         // Remove from viewer manager (TOC and Display)
         vrRenderer *renderer = m_viewerLayerManager->GetRenderer(
-                (const unsigned int &) layerToRemoveIndex.Item((size_t) i));
+                (const int &) layerToRemoveIndex.Item((size_t) i));
         vrLayer *layer = renderer->GetLayer();
         wxASSERT(renderer);
         m_viewerLayerManager->Remove(renderer);
@@ -1444,7 +1444,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names)
 #if defined (__WIN32__)
     m_critSectionViewerLayerManager.Enter();
 #endif
-    for (unsigned int i = 0; i < names.GetCount(); i++) {
+    for (int i = 0; i < names.GetCount(); i++) {
         if (i == 0) {
             wxString dir = names.Item(i);
             wxUniChar dirSep = DS.GetChar(0);
@@ -2017,7 +2017,7 @@ void asFrameForecast::UpdatePanelAnalogDates()
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_forecastViewer->GetMethodSelection(),
                                                                  m_forecastViewer->GetForecastSelection());
     a1f arrayDate = forecast->GetAnalogsDates(m_forecastViewer->GetLeadTimeIndex());
-    a1f arrayCriteria = forecast->GetAnalogsCriteria((unsigned int) m_forecastViewer->GetLeadTimeIndex());
+    a1f arrayCriteria = forecast->GetAnalogsCriteria(m_forecastViewer->GetLeadTimeIndex());
     m_panelSidebarAnalogDates->SetChoices(arrayDate, arrayCriteria);
 }
 

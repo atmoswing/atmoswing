@@ -63,9 +63,9 @@ vi asFileParameters::BuildVectorInt(int min, int max, int step)
         asThrowException(_("Error when building a vector from the parameters file: step=0."));
     }
 
-    unsigned int stepsnb = (unsigned int) 1 + (max - min) / step;
+    int stepsnb = 1 + (max - min) / step;
     vi vect(stepsnb);
-    for (unsigned int i = 0; i < stepsnb; i++) {
+    for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + i * step;
     }
 
@@ -104,7 +104,7 @@ vf asFileParameters::BuildVectorFloat(float min, float max, float step)
     }
 
     auto stepsnb = (int) (1 + (max - min) / step);
-    vf vect((unsigned long) stepsnb);
+    vf vect((long) stepsnb);
     for (int i = 0; i < stepsnb; i++) {
         vect[i] = min + (float) i * step;
     }

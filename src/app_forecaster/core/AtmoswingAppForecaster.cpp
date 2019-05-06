@@ -544,7 +544,7 @@ int AtmoswingAppForecaster::OnRun()
 
             filePaths.Open();
 
-            for (int i = 0; (unsigned) i < filePathsVect.size(); i++) {
+            for (int i = 0; i < filePathsVect.size(); i++) {
                 filePaths.AddLineContent(filePathsVect[i]);
             }
             filePaths.Close();

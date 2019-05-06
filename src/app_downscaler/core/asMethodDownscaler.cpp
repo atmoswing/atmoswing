@@ -184,13 +184,13 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 #ifdef _DEBUG
     int prevTimeSize = 0;
 
-    for (unsigned int i = 0; i < predictorsProj.size(); i++) {
+    for (int i = 0; i < predictorsProj.size(); i++) {
         if (i > 0) {
             wxASSERT(predictorsProj[i]->GetTimeSize() == prevTimeSize);
         }
         prevTimeSize = predictorsProj[i]->GetTimeSize();
     }
-    for (unsigned int i = 0; i < predictorsArch.size(); i++) {
+    for (int i = 0; i < predictorsArch.size(); i++) {
         if (i > 0) {
             wxASSERT(predictorsArch[i]->GetTimeSize() == prevTimeSize);
         }

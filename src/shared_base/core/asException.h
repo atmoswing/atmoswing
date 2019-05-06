@@ -49,17 +49,17 @@ public:
 
     asException() noexcept;
 
-    asException(const wxString &message, const char *filename, unsigned int line);
+    asException(const wxString &message, const char *filename, int line);
 
-    asException(const std::string &message, const char *filename, unsigned int line);
+    asException(const std::string &message, const char *filename, int line);
 
-    asException(const char *message, const char *filename, unsigned int line);
+    asException(const char *message, const char *filename, int line);
 
-    asException(const wxString &message, const char *filename, unsigned int line, asException prevexception);
+    asException(const wxString &message, const char *filename, int line, asException prevexception);
 
-    asException(const std::string &message, const char *filename, unsigned int line, asException prevexception);
+    asException(const std::string &message, const char *filename, int line, asException prevexception);
 
-    asException(const char *message, const char *filename, unsigned int line, asException prevexception);
+    asException(const char *message, const char *filename, int line, asException prevexception);
 
     ~asException() noexcept override = default;
 

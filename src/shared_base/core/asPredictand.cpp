@@ -714,9 +714,9 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                         // Get time value
                         if (filePattern.timeYearBegin != 0 && filePattern.timeMonthBegin != 0 &&
                             filePattern.timeDayBegin != 0) {
-                            if ((unsigned) filePattern.timeYearBegin > vColumns.size() ||
-                                (unsigned) filePattern.timeMonthBegin > vColumns.size() ||
-                                (unsigned) filePattern.timeDayBegin > vColumns.size()) {
+                            if (filePattern.timeYearBegin > vColumns.size() ||
+                                filePattern.timeMonthBegin > vColumns.size() ||
+                                filePattern.timeDayBegin > vColumns.size()) {
                                 wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (date) after the line width."));
                                 return false;
                             }
@@ -729,14 +729,14 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                         }
 
                         if (filePattern.timeHourBegin != 0) {
-                            if ((unsigned) filePattern.timeHourBegin > vColumns.size()) {
+                            if (filePattern.timeHourBegin > vColumns.size()) {
                                 wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (hour) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeHourBegin - 1].ToDouble(&valTimeHour);
                         }
                         if (filePattern.timeMinuteBegin != 0) {
-                            if ((unsigned) filePattern.timeMinuteBegin > vColumns.size()) {
+                            if (filePattern.timeMinuteBegin > vColumns.size()) {
                                 wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (minute) after the line width."));
                                 return false;
                             }

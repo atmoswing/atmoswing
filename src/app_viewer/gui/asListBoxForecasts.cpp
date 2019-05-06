@@ -66,7 +66,7 @@ asListBoxForecasts::asListBoxForecasts(wxWindow *parent, asForecastManager *fore
           m_skipSlctChangeEvent(false)
 {
     CreateImageList();
-    unsigned int indent = GetIndent();
+    int indent = GetIndent();
     if (indent > 16)
         SetIndent(indent - 5);
 }

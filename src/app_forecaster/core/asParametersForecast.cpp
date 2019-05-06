@@ -603,7 +603,7 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, cons
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
@@ -618,7 +618,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, i
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
@@ -629,7 +629,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, i
 
 wxString asParametersForecast::GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
@@ -644,7 +644,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int 
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.push_back(val);
@@ -655,7 +655,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int 
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -670,7 +670,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, 
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.push_back(val);
@@ -681,7 +681,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, 
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -696,7 +696,7 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.push_back(val);

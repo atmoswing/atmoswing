@@ -85,10 +85,10 @@ asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *f
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Read("/ForecastViewer/DisplaySelection", &m_forecastDisplaySelection, 3);
     pConfig->Read("/ForecastViewer/QuantileSelection", &m_quantileSelection, 0);
-    if ((unsigned) m_forecastDisplaySelection >= m_returnPeriods.size()) {
+    if (m_forecastDisplaySelection >= m_returnPeriods.size()) {
         m_forecastDisplaySelection = 1;
     }
-    if ((unsigned) m_quantileSelection >= m_quantiles.size()) {
+    if (m_quantileSelection >= m_quantiles.size()) {
         m_quantileSelection = 0;
     }
 
@@ -207,7 +207,7 @@ void asForecastViewer::Redraw()
         return;
     if (m_methodSelection >= m_forecastManager->GetMethodsNb())
         return;
-    if ((unsigned) m_forecastDisplaySelection >= m_displayForecast.size())
+    if (m_forecastDisplaySelection >= m_displayForecast.size())
         return;
     if (m_quantiles.size() != m_displayQuantiles.size())
         return;

@@ -785,7 +785,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
     copyDataUniques.reserve(pArrEnd - pArrStart + 1);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -794,7 +794,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
     // Copy data to the final container
     a1i resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 
@@ -803,7 +803,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
 
 a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -825,7 +825,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -834,7 +834,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
     // Copy data to the final container
     a1f resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 
@@ -843,7 +843,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
 
 a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -865,7 +865,7 @@ a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const 
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -874,7 +874,7 @@ a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const 
     // Copy data to the final container
     a1d resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 

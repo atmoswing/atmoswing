@@ -629,7 +629,7 @@ bool asParametersDownscaling::SetPredictorProjDataId(int iStep, int iPtor, const
 
 wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         return m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
@@ -644,7 +644,7 @@ bool asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, i
         return false;
     }
 
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
@@ -655,7 +655,7 @@ bool asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, i
 
 wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         return m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
@@ -670,7 +670,7 @@ bool asParametersDownscaling::SetPreprocessProjDataId(int iStep, int iPtor, int 
         return false;
     }
 
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.push_back(val);

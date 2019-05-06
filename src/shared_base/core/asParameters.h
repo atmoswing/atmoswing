@@ -606,7 +606,7 @@ public:
 
     int GetPredictorsNb(int iStep) const
     {
-        wxASSERT((unsigned) iStep < m_steps.size());
+        wxASSERT(iStep < m_steps.size());
         return (int) m_steps[iStep].predictors.size();
     }
 

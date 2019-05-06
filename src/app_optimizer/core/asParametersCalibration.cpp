@@ -808,9 +808,9 @@ void asParametersCalibration::InitValues()
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
-                unsigned long subDataNb = m_stepsVect[i].predictors[j].preprocessDataId.size();
+                long subDataNb = m_stepsVect[i].predictors[j].preprocessDataId.size();
                 wxASSERT(subDataNb > 0);
-                for (unsigned int k = 0; k < subDataNb; k++) {
+                for (int k = 0; k < subDataNb; k++) {
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId.empty());
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessDataId[k].empty());
                     wxASSERT(!m_stepsVect[i].predictors[j].preprocessLevels.empty());
@@ -928,8 +928,8 @@ bool asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val)
 double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
-        unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
+    if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+        long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][0],
                                        &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
@@ -943,7 +943,7 @@ double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPto
 double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
                                    &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
@@ -953,7 +953,7 @@ double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor)
 int asParametersCalibration::GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xPtsNb[0],
                                 &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
@@ -963,7 +963,7 @@ int asParametersCalibration::GetPredictorXptsnbLowerLimit(int iStep, int iPtor) 
 double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
                                    &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
@@ -973,7 +973,7 @@ double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor)
 int asParametersCalibration::GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yPtsNb[0],
                                 &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
@@ -983,7 +983,7 @@ int asParametersCalibration::GetPredictorYptsnbLowerLimit(int iStep, int iPtor) 
 double asParametersCalibration::GetPredictorHoursLowerLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].hours[0],
                                    &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);
@@ -993,8 +993,8 @@ double asParametersCalibration::GetPredictorHoursLowerLimit(int iStep, int iPtor
 double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
-        unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
+    if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+        long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][0],
                                        &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
@@ -1008,7 +1008,7 @@ double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPto
 double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
                                    &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
@@ -1018,7 +1018,7 @@ double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor)
 int asParametersCalibration::GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xPtsNb[0],
                                 &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
@@ -1028,7 +1028,7 @@ int asParametersCalibration::GetPredictorXptsnbUpperLimit(int iStep, int iPtor) 
 double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
                                    &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
@@ -1038,7 +1038,7 @@ double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor)
 int asParametersCalibration::GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yPtsNb[0],
                                 &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
@@ -1048,7 +1048,7 @@ int asParametersCalibration::GetPredictorYptsnbUpperLimit(int iStep, int iPtor) 
 double asParametersCalibration::GetPredictorHoursUpperLimit(int iStep, int iPtor) const
 {
     wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
-    unsigned long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
+    long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].hours[0],
                                    &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);

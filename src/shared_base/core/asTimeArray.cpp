@@ -106,7 +106,7 @@ asTimeArray::asTimeArray(vd &timeArray)
     m_end = timeArray[timeArray.size() - 1];
     m_timeArray.resize(timeArray.size());
 
-    for (unsigned int i = 0; i < timeArray.size(); i++) {
+    for (int i = 0; i < timeArray.size(); i++) {
         m_timeArray[i] = timeArray[i];
     }
 }

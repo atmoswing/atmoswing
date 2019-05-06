@@ -156,7 +156,7 @@ void asFramePlotTimeSeries::InitPlotCtrl()
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
     int length = forecast->GetTargetDatesLength();
     a1f dates = forecast->GetTargetDates();
-    m_leadTimes.resize((unsigned long) length);
+    m_leadTimes.resize((long) length);
     for (int i = 0; i < length; i++) {
         m_leadTimes[i] = dates[i];
     }
@@ -260,7 +260,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
 
             wxString quantilesStr = wxString::Format("%f\t", thisQuantile);
 
-            for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
                 float pcVal = asGetValueForQuantile(analogs, thisQuantile);
 
@@ -279,7 +279,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
         for (int rk = 0; rk < 10; rk++) {
             wxString rankStr = wxString::Format("%d\t", rk + 1);
 
-            for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
                 rankStr.Append(wxString::Format("%f\t", analogs[rk]));
             }
@@ -296,7 +296,7 @@ void asFramePlotTimeSeries::OnExportTXT(wxCommandEvent &event)
         for (int rk = 0; rk < 10; rk++) {
             wxString rankStr = wxString::Format("%d\t", rk + 1);
 
-            for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+            for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
                 a1f dates = forecast->GetAnalogsDates(iLead);
                 rankStr.Append(asTime::GetStringTime(dates[rk], "DD.MM.YYYY") + "\t");
             }
@@ -389,7 +389,7 @@ bool asFramePlotTimeSeries::Plot()
 
     // Check that there is no NaNs
     asResultsForecast *forecast = m_forecastManager->GetForecast(m_selectedMethod, m_selectedForecast);
-    for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+    for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
         if (asHasNaN(&analogs[0], &analogs[analogs.size() - 1])) {
             wxLogError(_("The forecast contains NaNs. Plotting has been canceled."));
@@ -599,7 +599,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs()
 
     // Get the total number of points
     int nbPoints = 0;
-    for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+    for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
         for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
             nbPoints++;
@@ -610,7 +610,7 @@ void asFramePlotTimeSeries::PlotAllAnalogs()
     wxPlotData plotData;
     plotData.Create(nbPoints);
     int counter = 0;
-    for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+    for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
         for (int iAnalog = 0; iAnalog < analogs.size(); iAnalog++) {
             plotData.SetValue(counter, m_leadTimes[iLead], analogs[iAnalog]);
@@ -657,7 +657,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
     for (int iAnalog = pointsNb - 1; iAnalog >= 0; iAnalog--) {
         // Get the total number of points
         int nbPoints = 0;
-        for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
             if (analogs.size() > iAnalog)
                 nbPoints++;
@@ -667,7 +667,7 @@ void asFramePlotTimeSeries::PlotBestAnalogs(int pointsNb)
         wxPlotData plotData;
         plotData.Create(nbPoints);
         int counter = 0;
-        for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
             if (analogs.size() > iAnalog) {
                 plotData.SetValue(counter, m_leadTimes[iLead], analogs[iAnalog]);
@@ -731,7 +731,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
         auto quantileRounded = (int) (asRound(thisQuantile * 100.0));
         plotData.SetFilename(wxString::Format("Quantile %d", quantileRounded));
         int counter = 0;
-        for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
             float pcVal = asGetValueForQuantile(analogs, thisQuantile);
             plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
@@ -767,7 +767,7 @@ void asFramePlotTimeSeries::PlotClassicQuantiles()
 void asFramePlotTimeSeries::PlotPastForecasts()
 {
     for (int past = 0; past < m_forecastManager->GetPastForecastsNb(m_selectedMethod, m_selectedForecast); past++) {
-        if (m_checkListPast->IsChecked((unsigned int) past)) {
+        if (m_checkListPast->IsChecked(past)) {
             PlotPastForecast(past);
         }
     }
@@ -866,7 +866,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
         int counter = 0;
         float bkpVal = 0;
         // Left to right
-        for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+        for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
             a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
             float pcVal = asGetValueForQuantile(analogs, thisQuantileUp);
             plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
@@ -920,7 +920,7 @@ void asFramePlotTimeSeries::PlotAllQuantiles()
     wxPlotData plotData;
     plotData.Create(m_leadTimes.size());
     int counter = 0;
-    for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+    for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
         float pcVal = asGetValueForQuantile(analogs, thisQuantile);
         plotData.SetValue(counter, m_leadTimes[iLead], pcVal);
@@ -963,7 +963,7 @@ void asFramePlotTimeSeries::PlotInterpretation()
     plotData.Create(m_leadTimes.size());
     int counter = 0;
 
-    for (unsigned int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
+    for (int iLead = 0; iLead < m_leadTimes.size(); iLead++) {
         // Process quantiles
         a1f analogs = forecast->GetAnalogsValuesRaw(iLead, m_selectedStation);
         float pc30 = asGetValueForQuantile(analogs, 0.3f);

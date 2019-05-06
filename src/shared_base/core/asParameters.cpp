@@ -741,7 +741,7 @@ bool asParameters::FixAnalogsNb()
 {
     // Check analogs number coherence
     int analogsNb = GetAnalogsNumber(0);
-    for (unsigned int iStep = 1; iStep < m_steps.size(); iStep++) {
+    for (int iStep = 1; iStep < m_steps.size(); iStep++) {
         if (GetAnalogsNumber(iStep) > analogsNb) {
             SetAnalogsNumber(iStep, analogsNb);
         } else {
@@ -778,7 +778,7 @@ void asParameters::SortLevelsAndTime()
                 hour = oldPtors[0].hour;
             }
 
-            for (unsigned int i = 1; i < oldPtors.size(); i++) {
+            for (int i = 1; i < oldPtors.size(); i++) {
                 // Get next level and hour
                 float nextLevel;
                 double nextHour;
@@ -1729,7 +1729,7 @@ void asParameters::ForceUsingGradientsPreprocessing(int iStep, int iPtor)
 
 wxString asParameters::GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         return m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
@@ -1744,7 +1744,7 @@ bool asParameters::SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const 
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
         wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() == iPre);
@@ -1756,7 +1756,7 @@ bool asParameters::SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const 
 
 wxString asParameters::GetPreprocessDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         return m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDataIds in the parameters object."));
@@ -1771,7 +1771,7 @@ bool asParameters::SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxS
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
         wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessDataIds.size() == iPre);
@@ -1783,7 +1783,7 @@ bool asParameters::SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxS
 
 float asParameters::GetPreprocessLevel(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
         return m_steps[iStep].predictors[iPtor].preprocessLevels[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
@@ -1798,7 +1798,7 @@ bool asParameters::SetPreprocessLevel(int iStep, int iPtor, int iPre, float val)
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
         m_steps[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
     } else {
         wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessLevels.size() == iPre);
@@ -1810,7 +1810,7 @@ bool asParameters::SetPreprocessLevel(int iStep, int iPtor, int iPre, float val)
 
 double asParameters::GetPreprocessHour(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
         return m_steps[iStep].predictors[iPtor].preprocessHours[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessHours (std) in the parameters object."));
@@ -1830,7 +1830,7 @@ bool asParameters::SetPreprocessHour(int iStep, int iPtor, int iPre, double val)
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
         m_steps[iStep].predictors[iPtor].preprocessHours[iPre] = val;
     } else {
         wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessHours.size() == iPre);
@@ -1842,7 +1842,7 @@ bool asParameters::SetPreprocessHour(int iStep, int iPtor, int iPre, double val)
 
 int asParameters::GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const
 {
-    if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= iPre + 1) {
         return m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre];
     } else {
         wxLogWarning(_("Trying to access to an element outside of preprocessMembersNb (std) in the parameters object."));
@@ -1857,7 +1857,7 @@ bool asParameters::SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int va
         return false;
     }
 
-    if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= (unsigned) (iPre + 1)) {
+    if (m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() >= iPre + 1) {
         m_steps[iStep].predictors[iPtor].preprocessMembersNb[iPre] = val;
     } else {
         wxASSERT((int) m_steps[iStep].predictors[iPtor].preprocessMembersNb.size() == iPre);

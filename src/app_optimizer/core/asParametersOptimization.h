@@ -122,7 +122,7 @@ public:
 
     double GetPreprocessHoursIteration(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
         return m_stepsIteration[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
@@ -133,10 +133,10 @@ public:
             return false;
         }
 
-        if (m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsIteration[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() == (unsigned) iPre);
+            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() == iPre);
             m_stepsIteration[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
@@ -264,7 +264,7 @@ public:
 
     double GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
         return m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
@@ -275,10 +275,10 @@ public:
             return false;
         }
 
-        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() == (unsigned) iPre);
+            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() == iPre);
             m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
@@ -406,7 +406,7 @@ public:
 
     double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
         return m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
@@ -417,10 +417,10 @@ public:
             return false;
         }
 
-        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() == (unsigned) iPre);
+            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() == iPre);
             m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
@@ -538,48 +538,48 @@ public:
 
     bool IsPreprocessDataIdLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > (unsigned) iPreess);
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > iPreess);
         return m_stepsLocks[iStep].predictors[iPtor].preprocessDataId[iPreess];
     }
 
     void SetPreprocessDataIdLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > (unsigned) (iPreess)) {
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > iPreess) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessDataId[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() == iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.push_back(val);
         }
     }
 
     bool IsPreprocessLevelLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > (unsigned) iPreess);
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > iPreess);
         return m_stepsLocks[iStep].predictors[iPtor].preprocessLevels[iPreess];
     }
 
     void SetPreprocessLevelLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > (unsigned) (iPreess)) {
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > iPreess) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessLevels[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() == iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.push_back(val);
         }
     }
 
     bool IsPreprocessHourLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPreess);
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > iPreess);
         return m_stepsLocks[iStep].predictors[iPtor].preprocessHours[iPreess];
     }
 
     void SetPreprocessHourLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) (iPreess)) {
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > iPreess) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessHours[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() == iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
     }

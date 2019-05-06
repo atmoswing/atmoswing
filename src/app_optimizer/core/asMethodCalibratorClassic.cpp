@@ -177,7 +177,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             return false;
 
         // Extract intermediate results from temporary vectors
-        for (unsigned int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
+        for (int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
             resultsTested.Add(m_parametersTemp[iRes], m_scoresCalibTemp[iRes]);
         }
         resultsTested.Print();

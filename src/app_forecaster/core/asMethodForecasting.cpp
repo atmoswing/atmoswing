@@ -775,7 +775,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
-            wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
+            wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
                          wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
             for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
@@ -905,7 +905,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
 
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
-                wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
+                wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
                              wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                               (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
 
@@ -1242,10 +1242,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
 
             // Check time array for real-time data
             vd listTimeArray = predictorRealtime->GetDataDates();
-            wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
+            wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
                          wxString::Format("size of listTimeArray = %d, size of timeArrayDataTarget = %d",
                                           (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
-            for (unsigned int i = 0; i < (unsigned) timeArrayDataTarget.GetSize(); i++) {
+            for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                 if (listTimeArray[i] != timeArrayDataTarget[i]) {
                     wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
                                i, listTimeArray[i], i, timeArrayDataTarget[i]);
@@ -1359,10 +1359,10 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
 
                 // Check time array for real-time data
                 vd listTimeArray = predictorRealtimePreprocess->GetDataDates();
-                wxASSERT_MSG(listTimeArray.size() >= (unsigned) timeArrayDataTarget.GetSize(),
+                wxASSERT_MSG(listTimeArray.size() >= timeArrayDataTarget.GetSize(),
                              wxString::Format("listTimeArray.size() = %d, timeArrayDataTarget.GetSize() = %d",
                                               (int) listTimeArray.size(), (int) timeArrayDataTarget.GetSize()));
-                for (unsigned int i = 0; i < (unsigned) timeArrayDataTarget.GetSize(); i++) {
+                for (int i = 0; i < timeArrayDataTarget.GetSize(); i++) {
                     if (listTimeArray[i] != timeArrayDataTarget[i]) {
                         wxLogError(_("The real-time predictor time array is not consistent (listTimeArray[%d](%f)!=timeArrayDataTarget[%d](%f))."),
                                    i, listTimeArray[i], i, timeArrayDataTarget[i]);

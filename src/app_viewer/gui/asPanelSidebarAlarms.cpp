@@ -194,7 +194,7 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f 
             gc->SetFont(datesFont, *wxBLACK);
             CreateDatesText(gc, startText, cellWitdh, iLead, dateStr);
 
-            for (int iFcst = 0; (unsigned) iFcst < names.size(); iFcst++) {
+            for (int iFcst = 0; iFcst < names.size(); iFcst++) {
                 if (iLead == 0) {
                     wxString forecastStr = wxString::Format("%d", iFcst + 1);
                     gc->SetFont(numFont, *wxBLACK);

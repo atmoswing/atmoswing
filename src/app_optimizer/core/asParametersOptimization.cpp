@@ -922,7 +922,7 @@ void asParametersOptimization::InitRandomValues()
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         int length = m_stepsVect[i].predictors[j].preprocessDataId[k].size();
                         int row = asRandom(0, length - 1);
-                        wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId[k].size() > (unsigned) row);
+                        wxASSERT(m_stepsVect[i].predictors[j].preprocessDataId[k].size() > row);
 
                         SetPreprocessDataId(i, j, k, m_stepsVect[i].predictors[j].preprocessDataId[k][row]);
                     }
@@ -930,7 +930,7 @@ void asParametersOptimization::InitRandomValues()
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         int length = m_stepsVect[i].predictors[j].preprocessLevels[k].size();
                         int row = asRandom(0, length - 1);
-                        wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels[k].size() > (unsigned) row);
+                        wxASSERT(m_stepsVect[i].predictors[j].preprocessLevels[k].size() > row);
 
                         SetPreprocessLevel(i, j, k, m_stepsVect[i].predictors[j].preprocessLevels[k][row]);
                     }
@@ -945,7 +945,7 @@ void asParametersOptimization::InitRandomValues()
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     int length = m_stepsVect[i].predictors[j].dataId.size();
                     int row = asRandom(0, length - 1);
-                    wxASSERT(m_stepsVect[i].predictors[j].dataId.size() > (unsigned) row);
+                    wxASSERT(m_stepsVect[i].predictors[j].dataId.size() > row);
 
                     SetPredictorDataId(i, j, m_stepsVect[i].predictors[j].dataId[row]);
                 }
@@ -953,7 +953,7 @@ void asParametersOptimization::InitRandomValues()
                 if (!m_stepsLocks[i].predictors[j].level) {
                     int length = m_stepsVect[i].predictors[j].level.size();
                     int row = asRandom(0, length - 1);
-                    wxASSERT(m_stepsVect[i].predictors[j].level.size() > (unsigned) row);
+                    wxASSERT(m_stepsVect[i].predictors[j].level.size() > row);
 
                     SetPredictorLevel(i, j, m_stepsVect[i].predictors[j].level[row]);
                 }
@@ -999,7 +999,7 @@ void asParametersOptimization::InitRandomValues()
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 int length = m_stepsVect[i].predictors[j].criteria.size();
                 int row = asRandom(0, length - 1);
-                wxASSERT(m_stepsVect[i].predictors[j].criteria.size() > (unsigned) row);
+                wxASSERT(m_stepsVect[i].predictors[j].criteria.size() > row);
 
                 SetPredictorCriteria(i, j, m_stepsVect[i].predictors[j].criteria[row]);
             }

@@ -306,7 +306,7 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
@@ -450,7 +450,7 @@ public:
 
     vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const
     {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessDataId in the parameters object."));
@@ -473,7 +473,7 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre] = val;
         } else {
@@ -485,7 +485,7 @@ public:
 
     vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const
     {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
@@ -508,7 +508,7 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
         } else {
@@ -520,9 +520,9 @@ public:
 
     vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const
     {
-        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > iPre);
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessHours (vect) in the parameters object."));

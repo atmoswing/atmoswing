@@ -333,14 +333,14 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
         return false;
     }
 
-    unsigned int iLeft, iRight;
+    int iLeft, iRight;
     wxString strVal;
 
     // Check that the score is similar
-    iLeft = (unsigned int) stringVals.Find("Score");
+    iLeft = stringVals.Find("Score");
     stringVals = stringVals.SubString(iLeft + 7, stringVals.Length());
     iLeft = 0;
-    iRight = (unsigned int) stringVals.Find("\t");
+    iRight = stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);

@@ -464,7 +464,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                             wxString dat = GetPreprocessDataId(i, j, k);
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             int iPre = -1;
-                            for (unsigned int r = 0; r < vect.size(); r++) {
+                            for (int r = 0; r < vect.size(); r++) {
                                 if (vect[r].IsSameAs(dat, false))
                                     iPre = r;
                             }
@@ -480,7 +480,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                             float dat = GetPreprocessLevel(i, j, k);
                             vf vect = GetPreprocessLevelVector(i, j, k);
                             int iPre = -1;
-                            for (unsigned int r = 0; r < vect.size(); r++) {
+                            for (int r = 0; r < vect.size(); r++) {
                                 if (vect[r] == dat)
                                     iPre = r;
                             }
@@ -504,7 +504,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         wxString dat = GetPredictorDataId(i, j);
                         vwxs vect = GetPredictorDataIdVector(i, j);
                         int iPre = -1;
-                        for (unsigned int r = 0; r < vect.size(); r++) {
+                        for (int r = 0; r < vect.size(); r++) {
                             if (vect[r].IsSameAs(dat, false))
                                 iPre = r;
                         }
@@ -520,7 +520,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         float dat = GetPredictorLevel(i, j);
                         vf vect = GetPredictorLevelVector(i, j);
                         int iPre = -1;
-                        for (unsigned int r = 0; r < vect.size(); r++) {
+                        for (int r = 0; r < vect.size(); r++) {
                             if (vect[r] == dat)
                                 iPre = r;
                         }
@@ -582,7 +582,7 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     }
                     vwxs vect = GetPredictorCriteriaVector(i, j);
                     int iPre = -1;
-                    for (unsigned int r = 0; r < vect.size(); r++) {
+                    for (int r = 0; r < vect.size(); r++) {
                         if (vect[r].IsSameAs(dat, false))
                             iPre = r;
                     }
@@ -1002,7 +1002,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             if (val < 0)
                                 val = 0;
-                            if ((unsigned) val >= vect.size())
+                            if (val >= vect.size())
                                 val = vect.size() - 1;
 
                             if (!SetPreprocessDataId(i, j, k, vect[val])) {
@@ -1020,7 +1020,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             vf vect = GetPreprocessLevelVector(i, j, k);
                             if (val < 0)
                                 val = 0;
-                            if ((unsigned) val >= vect.size())
+                            if (val >= vect.size())
                                 val = vect.size() - 1;
 
                             if (!SetPreprocessLevel(i, j, k, vect[val])) {
@@ -1050,7 +1050,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         vwxs vect = GetPredictorDataIdVector(i, j);
                         if (val < 0)
                             val = 0;
-                        if ((unsigned) val >= vect.size())
+                        if (val >= vect.size())
                             val = vect.size() - 1;
 
                         if (!SetPredictorDataId(i, j, vect[val])) {
@@ -1068,7 +1068,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         vf vect = GetPredictorLevelVector(i, j);
                         if (val < 0)
                             val = 0;
-                        if ((unsigned) val >= vect.size())
+                        if (val >= vect.size())
                             val = vect.size() - 1;
 
                         if (!SetPredictorLevel(i, j, vect[val])) {
@@ -1151,7 +1151,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     vwxs vect = GetPredictorCriteriaVector(i, j);
                     if (val < 0)
                         val = 0;
-                    if ((unsigned) val >= vect.size())
+                    if (val >= vect.size())
                         val = vect.size() - 1;
 
                     if (!SetPredictorCriteria(i, j, vect[val])) {
@@ -1179,7 +1179,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
     // Sort the crossing points vector
     asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
-    unsigned int nextpointIndex = 0;
+    int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
@@ -1235,7 +1235,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
     // Sort the crossing points vector
     asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
-    unsigned int nextpointIndex = 0;
+    int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
@@ -1298,7 +1298,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
     // Sort the crossing points vector
     asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
-    unsigned int nextpointIndex = 0;
+    int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
@@ -1362,7 +1362,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
     // Sort the crossing points vector
     asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
-    unsigned int nextpointIndex = 0;
+    int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
@@ -1449,7 +1449,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
     // Sort the crossing points vector
     asSortArray(&crossingPoints[0], &crossingPoints[crossingPoints.size() - 1], Asc);
 
-    unsigned int nextpointIndex = 0;
+    int nextpointIndex = 0;
     int nextpoint = m_chromosomeIndices[crossingPoints[nextpointIndex]];
     int counter = 0;
     int counterSelfAdapt = 0;
@@ -1700,7 +1700,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
 
     // Mutate mutation probability
-    for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
+    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
         if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
             m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
         }
@@ -1736,7 +1736,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
 
     // Mutate mutation probability
-    for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
+    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
         if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
             m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
         }
@@ -1744,7 +1744,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    for (unsigned int i = 0; i < m_chromosomeSelfAdaptationMutationRadius.size(); i++) {
+    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRadius.size(); i++) {
         if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRadius[i]) {
             m_chromosomeSelfAdaptationMutationRadius[i] = asRandom(0.0, 1.0);
         }

@@ -325,7 +325,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Extract composite data from files
-        vvva2f compositeData((unsigned long) compositesNb);
+        vvva2f compositeData((long) compositesNb);
         if (!ExtractFromFiles(dataArea, timeArray, compositeData)) {
             if (m_warnMissingFiles && m_warnMissingLevels) {
                 wxLogWarning(_("Extracting data from files failed."));
@@ -365,7 +365,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Check the data container length
-        if ((unsigned) m_time.size() > m_data.size()) {
+        if (m_time.size() > m_data.size()) {
             wxLogError(_("The date and the data array lengths do not match (time = %d and data = %d)."),
                        (int) m_time.size(), (int) m_data.size());
             wxLogError(_("Time array starts on %s and ends on %s."), asTime::GetStringTime(m_time[0], ISOdateTime),
@@ -1344,7 +1344,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
         vf dataF;
 
         // Resize the arrays to store the new data
-        unsigned int totLength = (unsigned int) m_fInd.memberCount * m_fInd.timeArrayCount *
+        int totLength = m_fInd.memberCount * m_fInd.timeArrayCount *
                                  m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
@@ -1386,7 +1386,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
     // Allocate space into compositeData if not already done
     if (compositeData[0].capacity() == 0) {
-        unsigned int totSize = 0;
+        int totSize = 0;
         for (int iArea = 0; iArea < compositeData.size(); iArea++) {
             totSize += m_fInd.memberCount * m_time.size() * m_fInd.areas[iArea].latCount *
                        (m_fInd.areas[iArea].lonCount + 1); // +1 in case of a border
@@ -1467,7 +1467,7 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
         vf dataF;
 
         // Resize the arrays to store the new data
-        unsigned int totLength = (unsigned int) m_fInd.memberCount * m_fInd.timeArrayCount *
+        int totLength = m_fInd.memberCount * m_fInd.timeArrayCount *
                                  m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
@@ -1486,7 +1486,7 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
 
     // Allocate space into compositeData if not already done
     if (compositeData[0].capacity() == 0) {
-        unsigned int totSize = 0;
+        int totSize = 0;
         for (int iArea = 0; iArea < compositeData.size(); iArea++) {
             totSize += m_fInd.memberCount * m_time.size() * m_fInd.areas[iArea].latCount *
                        (m_fInd.areas[iArea].lonCount + 1); // +1 in case of a border
@@ -1710,8 +1710,8 @@ bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea)
                     xxxxxxxxxxo
                 */
 
-                for (unsigned int i = 0; i < originalData.size(); i++) {
-                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                for (int i = 0; i < originalData.size(); i++) {
+                    for (int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength - 1, xLength);
                         a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
                                                             xLength - 1);
@@ -1751,8 +1751,8 @@ bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea)
                     return false;
                 }
 
-                for (unsigned int i = 0; i < originalData.size(); i++) {
-                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                for (int i = 0; i < originalData.size(); i++) {
+                    for (int j = 0; j < originalData[i].size(); j++) {
                         a2f dat1 = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
                         a2f dat2 = originalData[i][j].block(yStartIndexReal + m_axisLat.size(), xStartIndex, yLength,
                                                             xLength);
@@ -1793,8 +1793,8 @@ bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea)
                     return false;
                 }
 
-                for (unsigned int i = 0; i < originalData.size(); i++) {
-                    for (unsigned int j = 0; j < originalData[i].size(); j++) {
+                for (int i = 0; i < originalData.size(); i++) {
+                    for (int j = 0; j < originalData[i].size(); j++) {
                         m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
                     }
                 }
@@ -1824,8 +1824,8 @@ bool asPredictor::ClipToArea(asAreaCompGrid *desiredArea)
     }
 
     vva2f originalData = m_data;
-    for (unsigned int i = 0; i < originalData.size(); i++) {
-        for (unsigned int j = 0; j < originalData[i].size(); j++) {
+    for (int i = 0; i < originalData.size(); i++) {
+        for (int j = 0; j < originalData[i].size(); j++) {
             m_data[i][j] = originalData[i][j].block(yStartIndexReal, xStartIndex, yLength, xLength);
         }
     }
@@ -1857,20 +1857,20 @@ bool asPredictor::Inline()
 
     wxASSERT(!m_data.empty());
 
-    auto timeSize = (unsigned int) m_data.size();
-    auto membersNb = (unsigned int) m_data[0].size();
-    auto cols = (unsigned int) m_data[0][0].cols();
-    auto rows = (unsigned int) m_data[0][0].rows();
+    int timeSize = m_data.size();
+    int membersNb = m_data[0].size();
+    int cols = m_data[0][0].cols();
+    int rows = m_data[0][0].rows();
 
     a2f inlineData = a2f::Zero(1, cols * rows);
 
     vva2f newData;
-    newData.reserve((unsigned int) (membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
+    newData.reserve((membersNb * m_time.size() * m_lonPtsnb * m_latPtsnb));
     newData.resize(timeSize);
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iRow = 0; iRow < rows; iRow++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iRow = 0; iRow < rows; iRow++) {
                 inlineData.block(0, iRow * cols, 1, cols) = m_data[iTime][iMem].row(iRow);
             }
             newData[iTime].push_back(inlineData);
@@ -1894,16 +1894,16 @@ bool asPredictor::MergeComposites(vvva2f &compositeData, asAreaCompGrid *area)
     if (area && area->GetNbComposites() > 1) {
 
         // Get a container with the final size
-        unsigned long sizeTime = compositeData[0].size();
-        unsigned long membersNb = compositeData[0][0].size();
+        long sizeTime = compositeData[0].size();
+        long membersNb = compositeData[0][0].size();
         m_data = vva2f(sizeTime, va2f(membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
 
-        auto comp0cols = (int)compositeData[0][0][0].cols();
-        auto comp1cols = (int)compositeData[1][0][0].cols();
+        int comp0cols = compositeData[0][0][0].cols();
+        int comp1cols = compositeData[1][0][0].cols();
 
         // Merge the composite data together
-        for (unsigned int iTime = 0; iTime < sizeTime; iTime++) {
-            for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+        for (int iTime = 0; iTime < sizeTime; iTime++) {
+            for (int iMem = 0; iMem < membersNb; iMem++) {
                 // Append the composite areas
                 m_data[iTime][iMem].leftCols(comp0cols) = compositeData[0][iTime][iMem];
                 m_data[iTime][iMem].rightCols(comp1cols) = compositeData[1][iTime][iMem];
@@ -2024,7 +2024,7 @@ bool asPredictor::InterpolateOnGrid(asAreaCompGrid *dataArea, asAreaCompGrid *de
         float valLLcorner, valULcorner, valLRcorner, valURcorner;
 
         // The interpolation loop
-        for (unsigned int iTime = 0; iTime < m_data.size(); iTime++) {
+        for (int iTime = 0; iTime < m_data.size(); iTime++) {
             for (int iMem = 0; iMem < m_data[0].size(); iMem++) {
                 // Loop to extract the data from the array
                 for (int iLat = 0; iLat < finalLengthLat; iLat++) {

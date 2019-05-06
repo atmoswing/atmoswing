@@ -141,7 +141,7 @@ void asMethodCalibrator::RemoveNaNsInTemp()
     std::vector<asParametersCalibration> copyParametersTemp;
     vf copyScoresCalibTemp;
 
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         if (!asIsNaN(m_scoresCalibTemp[i])) {
             copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
             copyParametersTemp.push_back(m_parametersTemp[i]);
@@ -200,10 +200,10 @@ bool asMethodCalibrator::SortScoresAndParametersTemp()
 
     // Sort the parameters sets as the scores
     std::vector<asParametersCalibration> copyParameters;
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         copyParameters.push_back(m_parametersTemp[i]);
     }
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         int index = (int) vIndices(i);
         m_parametersTemp[i] = copyParameters[index];
     }
@@ -274,7 +274,7 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
 bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results)
 {
     // Extract selected parameters & best parameters
-    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+    for (int i = 0; i < m_parameters.size(); i++) {
         results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
     }
 
@@ -290,7 +290,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     float bestScore = m_scoresCalib[0];
     int bestScoreRow = 0;
 
-    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+    for (int i = 0; i < m_parameters.size(); i++) {
         if (m_scoreOrder == Asc) {
             if (m_scoresCalib[i] < bestScore) {
                 bestScore = m_scoresCalib[i];
@@ -536,7 +536,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 #ifdef _DEBUG
     int prevTimeSize = 0;
 
-    for (unsigned int i = 0; i < predictors.size(); i++) {
+    for (int i = 0; i < predictors.size(); i++) {
         if (i > 0) {
             wxASSERT(predictors[i]->GetTimeSize() == prevTimeSize);
         }

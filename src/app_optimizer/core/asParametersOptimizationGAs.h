@@ -127,25 +127,25 @@ private:
 
     float GetSelfAdaptationMutationRateFromChromosome(int index)
     {
-        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > (unsigned) index);
+        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > index);
         return m_chromosomeSelfAdaptationMutationRate[index];
     }
 
     void SetSelfAdaptationMutationRateFromChromosome(int index, float val)
     {
-        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > (unsigned) index);
+        wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() > index);
         m_chromosomeSelfAdaptationMutationRate[index] = val;
     }
 
     float GetSelfAdaptationMutationRadiusFromChromosome(int index)
     {
-        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size() > (unsigned) index);
+        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size() > index);
         return m_chromosomeSelfAdaptationMutationRadius[index];
     }
 
     void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val)
     {
-        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size() > (unsigned) index);
+        wxASSERT(m_chromosomeSelfAdaptationMutationRadius.size() > index);
         m_chromosomeSelfAdaptationMutationRadius[index] = val;
     }
 };

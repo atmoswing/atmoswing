@@ -38,7 +38,7 @@ asException::asException() noexcept
 #endif
 }
 
-asException::asException(const wxString &message, const char *filename, unsigned int line)
+asException::asException(const wxString &message, const char *filename, int line)
         : std::exception(),
           m_message(message),
           m_fileName(wxString(filename, wxConvUTF8)),
@@ -49,7 +49,7 @@ asException::asException(const wxString &message, const char *filename, unsigned
 #endif
 }
 
-asException::asException(const std::string &message, const char *filename, unsigned int line)
+asException::asException(const std::string &message, const char *filename, int line)
         : std::exception(),
           m_message(wxString(message.c_str(), wxConvUTF8)),
           m_fileName(wxString(filename, wxConvUTF8)),
@@ -60,7 +60,7 @@ asException::asException(const std::string &message, const char *filename, unsig
 #endif
 }
 
-asException::asException(const char *message, const char *filename, unsigned int line)
+asException::asException(const char *message, const char *filename, int line)
         : std::exception(),
           m_message(wxString(message, wxConvUTF8)),
           m_fileName(wxString(filename, wxConvUTF8)),
@@ -71,7 +71,7 @@ asException::asException(const char *message, const char *filename, unsigned int
 #endif
 }
 
-asException::asException(const wxString &message, const char *filename, unsigned int line, asException prevexception)
+asException::asException(const wxString &message, const char *filename, int line, asException prevexception)
         : std::exception(),
           m_message(message),
           m_fileName(wxString(filename, wxConvUTF8)),
@@ -90,7 +90,7 @@ asException::asException(const wxString &message, const char *filename, unsigned
 #endif
 }
 
-asException::asException(const std::string &message, const char *filename, unsigned int line, asException prevexception)
+asException::asException(const std::string &message, const char *filename, int line, asException prevexception)
         : std::exception(),
           m_message(wxString(message.c_str(), wxConvUTF8)),
           m_fileName(wxString(filename, wxConvUTF8)),
@@ -109,7 +109,7 @@ asException::asException(const std::string &message, const char *filename, unsig
 #endif
 }
 
-asException::asException(const char *message, const char *filename, unsigned int line, asException prevexception)
+asException::asException(const char *message, const char *filename, int line, asException prevexception)
         : std::exception(),
           m_message(wxString(message, wxConvUTF8)),
           m_fileName(wxString(filename, wxConvUTF8)),
