@@ -93,16 +93,16 @@ public:
 
 protected:
     wxString m_predictorsRealtimeDir;
-    double m_leadTimeStart;
-    double m_leadTimeEnd;
-    double m_leadTimeStep;
-    double m_runHourStart;
-    double m_runUpdate;
+    int m_leadTimeStart;
+    int m_leadTimeEnd;
+    int m_leadTimeStep;
+    int m_runHourStart;
+    int m_runUpdate;
     double m_runDateInUse;
     wxString m_commandDownload;
     bool m_restrictDownloads;
-    double m_restrictHours;
-    double m_restrictTimeStepHours;
+    int m_restrictHours;
+    int m_restrictTimeStepHours;
     vwxs m_fileNames;
     vwxs m_urls;
     vd m_dataDates;

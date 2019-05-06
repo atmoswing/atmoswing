@@ -154,12 +154,12 @@ void asFrameMain::OnInit()
     pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
 
     // Check provided files
-    if (!g_cmdFilename.IsEmpty()) {
-        long strSize = g_cmdFilename.size();
-        long strExt = g_cmdFilename.size() - 4;
-        wxString ext = g_cmdFilename.SubString(strExt - 1, strSize - 1);
+    if (!g_cmdFileName.IsEmpty()) {
+        long strSize = g_cmdFileName.size();
+        long strExt = g_cmdFileName.size() - 4;
+        wxString ext = g_cmdFileName.SubString(strExt - 1, strSize - 1);
         if (ext.IsSameAs(".asfb", false)) {
-            batchFilePath = g_cmdFilename;
+            batchFilePath = g_cmdFileName;
         }
     }
 

@@ -27,4 +27,4 @@
 
 #include "asGlobVarsViewer.h"
 
-wxString g_cmdFilename = wxEmptyString;
+wxString g_cmdFileName = wxEmptyString;

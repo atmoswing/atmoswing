@@ -31,6 +31,6 @@
 #include <wx/colour.h>
 #include "asIncludes.h"
 
-extern wxString g_cmdFilename;
+extern wxString g_cmdFileName;
 
 #endif

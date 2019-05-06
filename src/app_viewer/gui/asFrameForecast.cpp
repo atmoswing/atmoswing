@@ -376,14 +376,14 @@ void asFrameForecast::Init()
 
     // Check provided files
     bool forecastFilesProvided = false;
-    if (!g_cmdFilename.IsEmpty()) {
-        int strSize = g_cmdFilename.size();
-        int strExt = g_cmdFilename.size() - 4;
-        wxString ext = g_cmdFilename.SubString((size_t) (strExt - 1), (size_t) (strSize - 1));
+    if (!g_cmdFileName.IsEmpty()) {
+        int strSize = g_cmdFileName.size();
+        int strExt = g_cmdFileName.size() - 4;
+        wxString ext = g_cmdFileName.SubString((size_t) (strExt - 1), (size_t) (strSize - 1));
         if (ext.IsSameAs(".asff", false)) {
             forecastFilesProvided = true;
         } else if (ext.IsSameAs(".asvw", false)) {
-            workspaceFilePath = g_cmdFilename;
+            workspaceFilePath = g_cmdFileName;
         }
     }
 
@@ -464,7 +464,7 @@ void asFrameForecast::Init()
 
     if (forecastFilesProvided) {
         wxArrayString filePathsVect;
-        filePathsVect.Add(g_cmdFilename);
+        filePathsVect.Add(g_cmdFileName);
         OpenForecast(filePathsVect);
         FitExtentToForecasts();
     }

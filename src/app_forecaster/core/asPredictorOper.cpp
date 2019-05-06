@@ -37,16 +37,16 @@
 
 asPredictorOper::asPredictorOper(const wxString &dataId)
         : asPredictor(dataId),
-          m_leadTimeStart(0.0),
-          m_leadTimeEnd(0.0),
-          m_leadTimeStep(0.0),
-          m_runHourStart(0.0),
-          m_runUpdate(0.0),
+          m_leadTimeStart(0),
+          m_leadTimeEnd(0),
+          m_leadTimeStep(0),
+          m_runHourStart(0),
+          m_runUpdate(0),
           m_runDateInUse(0.0),
           m_commandDownload(),
           m_restrictDownloads(false),
-          m_restrictHours(0.0),
-          m_restrictTimeStepHours(0.0)
+          m_restrictHours(0),
+          m_restrictTimeStepHours(0)
 {
 
 }
@@ -168,9 +168,9 @@ double asPredictorOper::DecrementRunDateInUse()
 void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb)
 {
     m_restrictDownloads = true;
-    m_restrictHours = restrictHours;
-    m_restrictTimeStepHours = restrictTimeStepHours;
-    m_leadTimeEnd = 24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
+    m_restrictHours = (int) restrictHours;
+    m_restrictTimeStepHours = (int) restrictTimeStepHours;
+    m_leadTimeEnd = (int) 24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictHours > -100);
     wxASSERT(m_restrictHours < 100);
@@ -213,16 +213,15 @@ bool asPredictorOper::BuildFilenamesUrls()
         double diff = desiredTime - m_runDateInUse;
         m_leadTimeStart = (int) (diff * 24.0);
         m_leadTimeStep = m_restrictTimeStepHours;
-        m_leadTimeEnd = floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) *
-                                m_leadTimeStep + m_leadTimeStart;
+        m_leadTimeEnd = (int) floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) *
+            m_leadTimeStep + m_leadTimeStart;
     }
 
     wxASSERT(m_leadTimeStep > 0);
     wxASSERT(m_leadTimeEnd >= m_leadTimeStart);
 
     // Change the leadtimes
-    for (int leadtime = m_leadTimeStart;
-         leadtime <= m_leadTimeEnd; leadtime += m_leadTimeStep) {
+    for (int leadtime = m_leadTimeStart; leadtime <= m_leadTimeEnd; leadtime += m_leadTimeStep) {
         int currentLeadtime = leadtime;
         double runDateInUse = m_runDateInUse;
 

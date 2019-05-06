@@ -1206,7 +1206,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
         finalTargetDates[iTargetDatenew] = currentTargetDate;
         int predictandIndex = asFindClosest(&predictandTime[0], &predictandTime[predictandTimeLength - 1],
                                             currentTargetDate + predictandTimeDays, asHIDE_WARNINGS);
-        if (ignoreTargetValues | (predictandIndex == asOUT_OF_RANGE) | (predictandIndex == asNOT_FOUND)) {
+        if (ignoreTargetValues || (predictandIndex == asOUT_OF_RANGE) || (predictandIndex == asNOT_FOUND)) {
             for (int iStat = 0; iStat < (int) stations.size(); iStat++) {
                 finalTargetValuesNorm[iStat](iTargetDatenew) = NaNf;
                 finalTargetValuesRaw[iStat](iTargetDatenew) = NaNf;
@@ -1226,7 +1226,7 @@ bool asProcessor::GetAnalogsValues(asPredictand &predictand, asResultsDates &ana
                 if ((currentAnalogDate >= timeStart) && (currentAnalogDate <= timeEnd)) {
                     predictandIndex = asFindClosest(&predictandTime[0], &predictandTime[predictandTime.size() - 1],
                                                     currentAnalogDate + predictandTimeDays);
-                    if ((predictandIndex == asOUT_OF_RANGE) | (predictandIndex == asNOT_FOUND)) {
+                    if ((predictandIndex == asOUT_OF_RANGE) || (predictandIndex == asNOT_FOUND)) {
                         wxString currDate = asTime::GetStringTime(currentAnalogDate + predictandTimeDays);
                         wxString startDate = asTime::GetStringTime(predictandTime[0]);
                         wxString endDate = asTime::GetStringTime(predictandTime[predictandTime.size() - 1]);
