@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelSidebarAlarms__
-#define __asPanelSidebarAlarms__
+#ifndef AS_PANEL_SIDEBAR_ALARMS_H
+#define AS_PANEL_SIDEBAR_ALARMS_H
 
 #include "asPanelSidebar.h"
 
@@ -98,4 +98,4 @@ private:
     void OnPaint(wxPaintEvent &event);
 };
 
-#endif // __asPanelSidebar__
+#endif

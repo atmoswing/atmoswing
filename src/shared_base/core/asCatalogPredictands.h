@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASCATALOGPREDICTAND_H
-#define ASCATALOGPREDICTAND_H
+#ifndef AS_CATALOG_PREDICTAND_H
+#define AS_CATALOG_PREDICTAND_H
 
 #include <asIncludes.h>
 #include "asPredictand.h"
@@ -200,4 +200,4 @@ private:
 
 };
 
-#endif // ASCATALOGPREDICTAND_H
+#endif

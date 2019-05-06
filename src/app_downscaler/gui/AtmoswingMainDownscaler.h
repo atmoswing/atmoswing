@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ATMOSWINGMAINDOWNSCALER_H
-#define ATMOSWINGMAINDOWNSCALER_H
+#ifndef ATMOSWING_MAIN_DOWNSCALER_H
+#define ATMOSWING_MAIN_DOWNSCALER_H
 
 //#include "version.h"
 #include "asIncludes.h"
@@ -50,4 +50,4 @@ private:
     void SetDefaultOptions();
 };
 
-#endif // ATMOSWINGMAINDOWNSCALER_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSOPTIMIZATIONGAS_H
-#define ASPARAMETERSOPTIMIZATIONGAS_H
+#ifndef AS_PARAMETERS_OPTIMIZATION_GAS_H
+#define AS_PARAMETERS_OPTIMIZATION_GAS_H
 
 #include "asIncludes.h"
 #include <asParametersOptimization.h>
@@ -150,4 +150,4 @@ private:
     }
 };
 
-#endif // asParametersOptimizationGAS_H
+#endif

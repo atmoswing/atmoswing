@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEXML_H
-#define ASFILEXML_H
+#ifndef AS_FILE_XML_H
+#define AS_FILE_XML_H
 
 #include <wx/xml/xml.h>
 

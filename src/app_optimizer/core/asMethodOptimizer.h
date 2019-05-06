@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODOPTIMIZER_H
-#define ASMETHODOPTIMIZER_H
+#ifndef AS_METHOD_OPTIMIZER_H
+#define AS_METHOD_OPTIMIZER_H
 
 #include "asIncludes.h"
 #include <asMethodCalibrator.h>
@@ -80,4 +80,4 @@ private:
 
 };
 
-#endif // ASMETHODOPTIMIZER_H
+#endif

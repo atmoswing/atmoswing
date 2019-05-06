@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFrameMain__
-#define __asFrameMain__
+#ifndef AS_FRAME_MAIN
+#define AS_FRAME_MAIN
 
 #include "AtmoswingForecasterGui.h"
 #include "asIncludes.h"
@@ -118,4 +118,4 @@ DECLARE_EVENT_TABLE()
 
 };
 
-#endif // __asFrameMain__
+#endif

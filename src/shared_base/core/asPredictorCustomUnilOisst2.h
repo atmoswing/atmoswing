@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORNOAAOISST2SUBSET_H
-#define ASPREDICTORNOAAOISST2SUBSET_H
+#ifndef AS_PREDICTOR_CUSTOM_UNIL_OISST2_H
+#define AS_PREDICTOR_CUSTOM_UNIL_OISST2_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // ASPREDICTORNOAAOISST2SUBSET_H
+#endif

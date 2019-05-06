@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASLISTBOXFORECASTDISPLAY_H
-#define ASLISTBOXFORECASTDISPLAY_H
+#ifndef AS_LIST_BOX_FORECAST_DISPLAY_H
+#define AS_LIST_BOX_FORECAST_DISPLAY_H
 
 #include <wx/listbox.h>
 
@@ -56,4 +56,4 @@ private:
 DECLARE_EVENT_TABLE()
 };
 
-#endif // ASLISTBOXFORECASTDISPLAY_H
+#endif

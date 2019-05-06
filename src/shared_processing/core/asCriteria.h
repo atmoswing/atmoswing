@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASPREDICTORCRITERIA_H
-#define ASPREDICTORCRITERIA_H
+#ifndef AS_CRITERIA_H
+#define AS_CRITERIA_H
 
 #include <asIncludes.h>
 

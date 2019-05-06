@@ -26,8 +26,8 @@
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
 
-#ifndef ASSCORECRPSHERSBACHDECOMP_H
-#define ASSCORECRPSHERSBACHDECOMP_H
+#ifndef AS_SCORE_CRPS_HERSBACH_DECOMP_H
+#define AS_SCORE_CRPS_HERSBACH_DECOMP_H
 
 #include <asIncludes.h>
 #include "asScore.h"

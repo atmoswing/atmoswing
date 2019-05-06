@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __asPanelSidebarStationsList__
-#define __asPanelSidebarStationsList__
+#ifndef AS_PANEL_SIDEBAR_STATIONS_LIST_H
+#define AS_PANEL_SIDEBAR_STATIONS_LIST_H
 
 #include "asPanelSidebar.h"
 
@@ -55,4 +55,4 @@ private:
 
 };
 
-#endif // __asPanelSidebarStationsList__
+#endif

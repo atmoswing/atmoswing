@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGLOBENUMS_H_INCLUDED
-#define ASGLOBENUMS_H_INCLUDED
+#ifndef AS_GLOB_ENUMS_H
+#define AS_GLOB_ENUMS_H
 
 #include "wx/wxprec.h"
 
@@ -163,4 +163,4 @@ enum TimeFormat
     guess
 };
 
-#endif // ASGLOBENUMS_H_INCLUDED
+#endif

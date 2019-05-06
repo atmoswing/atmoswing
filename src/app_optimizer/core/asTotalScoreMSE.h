@@ -25,8 +25,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASTOTALSCOREMSE_H
-#define ASTOTALSCOREMSE_H
+#ifndef AS_TOTAL_SCORE_MSE_H
+#define AS_TOTAL_SCORE_MSE_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -47,4 +47,4 @@ private:
 
 };
 
-#endif // ASTOTALSCOREMSE_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelSidebarCaptionForecastDots__
-#define __asPanelSidebarCaptionForecastDots__
+#ifndef AS_PANEL_SIDEBAR_CAPTION_FORECAST_DOTS_H
+#define AS_PANEL_SIDEBAR_CAPTION_FORECAST_DOTS_H
 
 #include "asPanelSidebar.h"
 
@@ -82,4 +82,4 @@ private:
     void OnPaint(wxPaintEvent &event);
 };
 
-#endif // __asPanelSidebarCaptionForecastDots__
+#endif

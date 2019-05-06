@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSOPTIMIZATION_H
-#define ASPARAMETERSOPTIMIZATION_H
+#ifndef AS_PARAMETERS_OPTIMIZATION_H
+#define AS_PARAMETERS_OPTIMIZATION_H
 
 #include "asIncludes.h"
 #include <asParametersScoring.h>
@@ -711,4 +711,4 @@ private:
 
 };
 
-#endif // ASPARAMETERSOPTIMIZATION_H
+#endif

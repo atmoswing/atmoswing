@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASTHREAD_H
-#define ASTHREAD_H
+#ifndef AS_THREAD_H
+#define AS_THREAD_H
 
 #include <wx/thread.h>
 
@@ -66,4 +66,4 @@ private:
 
 };
 
-#endif // ASTHREAD_H
+#endif

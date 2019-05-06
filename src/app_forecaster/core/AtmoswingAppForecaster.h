@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AtmoswingAPPFORECASTER_H
-#define AtmoswingAPPFORECASTER_H
+#ifndef AS_APP_FORECASTER_H
+#define AS_APP_FORECASTER_H
 
 #include <wx/app.h>
 #include <wx/snglinst.h>

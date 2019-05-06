@@ -27,8 +27,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASTIMEARRAY_H
-#define ASTIMEARRAY_H
+#ifndef AS_TIME_ARRAY_H
+#define AS_TIME_ARRAY_H
 
 #include <asIncludes.h>
 #include <asTime.h>

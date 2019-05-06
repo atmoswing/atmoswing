@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTHREADPROCESSORGETANALOGSSUBDATES_H
-#define ASTHREADPROCESSORGETANALOGSSUBDATES_H
+#ifndef AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
+#define AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
 
 #include <asThread.h>
 #include <asParameters.h>
@@ -81,4 +81,4 @@ private:
 
 };
 
-#endif // ASTHREADPROCESSORGETANALOGSSUBDATES_H
+#endif

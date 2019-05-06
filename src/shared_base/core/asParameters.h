@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERS_H
-#define ASPARAMETERS_H
+#ifndef AS_PARAMETERS_H
+#define AS_PARAMETERS_H
 
 #include <wx/xml/xml.h>
 #include <utility>
@@ -660,4 +660,4 @@ private:
 
 };
 
-#endif // ASPARAMETERS_H
+#endif

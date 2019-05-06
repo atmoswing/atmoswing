@@ -25,8 +25,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORCRITERIAS2grads_H
-#define ASPREDICTORCRITERIAS2grads_H
+#ifndef AS_CRITERIA_S2grads_H
+#define AS_CRITERIA_S2grads_H
 
 #include <asIncludes.h>
 #include <asCriteriaS1grads.h>

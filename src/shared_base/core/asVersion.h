@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASVERSION_H
-#define ASVERSION_H
+#ifndef AS_VERSION_H
+#define AS_VERSION_H
 
 #include "wx/string.h"
 
@@ -49,4 +49,4 @@ protected:
 private:
 };
 
-#endif // ASVERSION_H
+#endif

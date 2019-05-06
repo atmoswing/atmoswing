@@ -26,8 +26,8 @@
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
 
-#ifndef ASTOTALSCORECRPSRELIABILITY_H
-#define ASTOTALSCORECRPSRELIABILITY_H
+#ifndef AS_TOTAL_SCORE_CRPS_RELIABILITY_H
+#define AS_TOTAL_SCORE_CRPS_RELIABILITY_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -54,4 +54,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORECRPSRELIABILITY_H
+#endif

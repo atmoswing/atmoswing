@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGLOBVARSFORECASTER_H_INCLUDED
-#define ASGLOBVARSFORECASTER_H_INCLUDED
+#ifndef AS_GLOB_VARS_FORECASTER_H
+#define AS_GLOB_VARS_FORECASTER_H
 
 #include "asIncludes.h"
 
 extern wxString g_cmdFilename;
 
-#endif // ASGLOBVARSFORECASTER_H_INCLUDED
+#endif

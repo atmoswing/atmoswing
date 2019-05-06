@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASRESULTSVALUES_H
-#define ASRESULTSVALUES_H
+#ifndef AS_RESULTS_VALUES_H
+#define AS_RESULTS_VALUES_H
 
 #include <asIncludes.h>
 #include <asResults.h>
@@ -120,4 +120,4 @@ private:
     va2f m_analogsValuesRaw; // Dimensions: stations x time x analogs
 };
 
-#endif // ASRESULTSVALUES_H
+#endif

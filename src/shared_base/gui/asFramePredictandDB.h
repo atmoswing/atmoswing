@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __ASFRAMEPREDICTANDDB__
-#define __ASFRAMEPREDICTANDDB__
+#ifndef AS_FRAME_PREDICTAND_DB_H__
+#define AS_FRAME_PREDICTAND_DB_H__
 
 #include "AtmoswingSharedGui.h"
 #include <asIncludes.h>
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // __ASFRAMEPREDICTANDDB__
+#endif

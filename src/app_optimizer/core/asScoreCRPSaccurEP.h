@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORECRPSaccuracyEP_H
-#define ASSCORECRPSaccuracyEP_H
+#ifndef AS_SCORE_CRPS_ACCURACY_EP_H
+#define AS_SCORE_CRPS_ACCURACY_EP_H
 
 #include <asIncludes.h>
 #include "asScore.h"

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASLISTBOXQUANTILES_H
-#define ASLISTBOXQUANTILES_H
+#ifndef AS_LIST_BOX_QUANTILES_H
+#define AS_LIST_BOX_QUANTILES_H
 
 #include <wx/listbox.h>
 
@@ -56,4 +56,4 @@ private:
 DECLARE_EVENT_TABLE()
 };
 
-#endif // ASLISTBOXQUANTILES_H
+#endif

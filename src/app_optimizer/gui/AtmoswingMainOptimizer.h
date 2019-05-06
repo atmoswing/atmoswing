@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ATMOSWINGMAINOPTIMIZER_H
-#define ATMOSWINGMAINOPTIMIZER_H
+#ifndef AS_MAIN_OPTIMIZER_H
+#define AS_MAIN_OPTIMIZER_H
 
 //#include "version.h"
 #include "asIncludes.h"
@@ -51,4 +51,4 @@ private:
     void SetDefaultOptions();
 };
 
-#endif // ATMOSWINGMAINOPTIMIZER_H
+#endif

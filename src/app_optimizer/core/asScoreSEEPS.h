@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORESEEPS_H
-#define ASSCORESEEPS_H
+#ifndef AS_SCORE_SEEPS_H
+#define AS_SCORE_SEEPS_H
 
 #include <asIncludes.h>
 #include "asScore.h"

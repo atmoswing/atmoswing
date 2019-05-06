@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __asPanelPlot__
-#define __asPanelPlot__
+#ifndef AS_PANEL_PLOT_H
+#define AS_PANEL_PLOT_H
 
 #include "asIncludes.h"
 #include "AtmoswingViewerGui.h"
@@ -61,4 +61,4 @@ DECLARE_EVENT_TABLE()
 
 };
 
-#endif // __asPanelPlot__
+#endif

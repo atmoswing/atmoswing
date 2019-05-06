@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODOPTIMIZERRANDOMSET_H
-#define ASMETHODOPTIMIZERRANDOMSET_H
+#ifndef AS_METHOD_OPTIMIZER_RANDOM_SET_H
+#define AS_METHOD_OPTIMIZER_RANDOM_SET_H
 
 #include <asMethodOptimizer.h>
 
@@ -57,4 +57,4 @@ private:
 
 };
 
-#endif // ASMETHODOPTIMIZERRANDOMSET_H
+#endif

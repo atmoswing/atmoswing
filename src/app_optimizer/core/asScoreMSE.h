@@ -27,8 +27,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASSCORERMSE_H
-#define ASSCORERMSE_H
+#ifndef AS_SCORE_MSE_H
+#define AS_SCORE_MSE_H
 
 #include <asIncludes.h>
 #include "asScore.h"

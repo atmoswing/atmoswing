@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODCALIBRATORCLASSIC_H
-#define ASMETHODCALIBRATORCLASSIC_H
+#ifndef AS_METHOD_CALIBRATOR_CLASSIC_H
+#define AS_METHOD_CALIBRATOR_CLASSIC_H
 
 #include <asMethodCalibrator.h>
 
@@ -109,4 +109,4 @@ private:
 
 };
 
-#endif // ASMETHODCALIBRATORCLASSIC_H
+#endif

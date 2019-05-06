@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFILEPARAMETERSDOWNSCALING_H
-#define ASFILEPARAMETERSDOWNSCALING_H
+#ifndef AS_FILE_PARAMETERS_DOWNSCALING_H
+#define AS_FILE_PARAMETERS_DOWNSCALING_H
 
 #include <asIncludes.h>
 #include <asFileParameters.h>
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // ASFILEPARAMETERSDOWNSCALING_H
+#endif

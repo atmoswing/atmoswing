@@ -25,8 +25,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORNASAMERRA2SUBSET_H
-#define ASPREDICTORNASAMERRA2SUBSET_H
+#ifndef AS_PREDICTOR_NASA_MERRA2_SUBSET_H
+#define AS_PREDICTOR_NASA_MERRA2_SUBSET_H
 
 #include <asIncludes.h>
 #include <asPredictorNasaMerra2.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASPREDICTORNASAMERRA2SUBSET_H
+#endif

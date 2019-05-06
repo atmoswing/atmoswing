@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __asPanelSidebarAnalogDates__
-#define __asPanelSidebarAnalogDates__
+#ifndef AS_PANEL_SIDEBAR_ANALOG_DATES_H
+#define AS_PANEL_SIDEBAR_ANALOG_DATES_H
 
 #include "asPanelSidebar.h"
 
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif // __asPanelSidebarAnalogDates__
+#endif

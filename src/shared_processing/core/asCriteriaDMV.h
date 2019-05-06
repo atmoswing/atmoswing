@@ -25,8 +25,8 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORCRITERIADMV_H
-#define ASPREDICTORCRITERIADMV_H
+#ifndef AS_CRITERIA_DMV_H
+#define AS_CRITERIA_DMV_H
 
 #include <asIncludes.h>
 #include <asCriteria.h>

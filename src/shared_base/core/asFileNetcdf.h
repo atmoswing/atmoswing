@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILENETCDF_H
-#define ASFILENETCDF_H
+#ifndef AS_FILE_NETCDF_H
+#define AS_FILE_NETCDF_H
 
 #include "asIncludes.h"
 #include <asFile.h>
@@ -245,4 +245,4 @@ private:
 
 };
 
-#endif // ASFILENETCDF_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
 
-#ifndef ASTOTALSCORECRPSPOTENTIAL_H
-#define ASTOTALSCORECRPSPOTENTIAL_H
+#ifndef AS_TOTAL_SCORE_CRPS_POTENTIAL_H
+#define AS_TOTAL_SCORE_CRPS_POTENTIAL_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -54,4 +54,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORECRPSPOTENTIAL_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORCRITERIARSE_H
-#define ASPREDICTORCRITERIARSE_H
+#ifndef AS_CRITERIA_RSE_H
+#define AS_CRITERIA_RSE_H
 
 #include <asIncludes.h>
 #include <asCriteria.h>

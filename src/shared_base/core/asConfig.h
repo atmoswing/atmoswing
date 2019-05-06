@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASCONFIG_H
-#define ASCONFIG_H
+#ifndef AS_CONFIG_H
+#define AS_CONFIG_H
 
 #include <asIncludes.h>
 #include "wx/fileconf.h"        // wxFileConfig
@@ -69,4 +69,4 @@ private:
 };
 
 
-#endif // ASCONFIG_H
+#endif

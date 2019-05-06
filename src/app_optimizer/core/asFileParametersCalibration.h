@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEPARAMETERSCALIBRATION_H
-#define ASFILEPARAMETERSCALIBRATION_H
+#ifndef AS_FILE_PARAMETERS_CALIBRATION_H
+#define AS_FILE_PARAMETERS_CALIBRATION_H
 
 #include <asIncludes.h>
 #include <asFileParameters.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASFILEPARAMETERSCALIBRATION_H
+#endif

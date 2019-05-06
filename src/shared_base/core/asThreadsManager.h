@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTHREADSMANAGER_H
-#define ASTHREADSMANAGER_H
+#ifndef AS_THREADS_MANAGER_H
+#define AS_THREADS_MANAGER_H
 
 #include <asIncludes.h>
 
@@ -131,4 +131,4 @@ private:
     int m_priority;
 };
 
-#endif // ASTHREADSMANAGER_H
+#endif

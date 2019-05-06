@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
 
-#ifndef ASRESULTSPARAMETERSARRAY_H
-#define ASRESULTSPARAMETERSARRAY_H
+#ifndef AS_RESULTS_PARAMETERS_ARRAY_H
+#define AS_RESULTS_PARAMETERS_ARRAY_H
 
 #include <asIncludes.h>
 #include <asResults.h>
@@ -71,4 +71,4 @@ private:
     std::vector<a1f> m_scoresValidForScoreOnArray;
 };
 
-#endif // ASRESULTSPARAMETERSARRAY_H
+#endif

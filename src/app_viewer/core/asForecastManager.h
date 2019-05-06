@@ -26,8 +26,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFORECASTMANAGER_H
-#define ASFORECASTMANAGER_H
+#ifndef AS_FORECAST_MANAGER_H
+#define AS_FORECAST_MANAGER_H
 
 #include <asIncludes.h>
 #include <asResultsForecastAggregator.h>
@@ -203,4 +203,4 @@ private:
 
 };
 
-#endif // ASFORECASTMANAGER_H
+#endif

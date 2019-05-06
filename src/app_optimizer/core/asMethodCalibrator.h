@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODCALIBRATOR_H
-#define ASMETHODCALIBRATOR_H
+#ifndef AS_METHOD_CALIBRATOR_H
+#define AS_METHOD_CALIBRATOR_H
 
 #include <asIncludes.h>
 #include <asMethodStandard.h>
@@ -168,4 +168,4 @@ private:
     void LoadScoreOrder(asParametersCalibration &params);
 };
 
-#endif // ASMETHODCALIBRATOR_H
+#endif

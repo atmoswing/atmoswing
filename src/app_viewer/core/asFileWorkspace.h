@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEWORKSPACE_H
-#define ASFILEWORKSPACE_H
+#ifndef AS_FILE_WORKSPACE_H
+#define AS_FILE_WORKSPACE_H
 
 #include <asIncludes.h>
 #include <asFileXml.h>
@@ -48,4 +48,4 @@ protected:
 private:
 };
 
-#endif // ASFILEWORKSPACE_H
+#endif

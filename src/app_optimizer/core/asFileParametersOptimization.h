@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEPARAMETERSOPTIMIZATION_H
-#define ASFILEPARAMETERSOPTIMIZATION_H
+#ifndef AS_FILE_PARAMETERS_OPTIMIZATION_H
+#define AS_FILE_PARAMETERS_OPTIMIZATION_H
 
 #include <asIncludes.h>
 #include <asFileParameters.h>
@@ -49,4 +49,4 @@ protected:
 private:
 };
 
-#endif // ASFILEPARAMETERSOPTIMIZATION_H
+#endif

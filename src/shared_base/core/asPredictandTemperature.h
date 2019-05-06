@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASDATAPREDICTANDTEMPERATURE_H
-#define ASDATAPREDICTANDTEMPERATURE_H
+#ifndef AS_PREDICTAND_TEMPERATURE_H
+#define AS_PREDICTAND_TEMPERATURE_H
 
 #include <asIncludes.h>
 #include <asPredictand.h>
@@ -57,4 +57,4 @@ private:
 
 };
 
-#endif // ASDATAPREDICTANDTEMPERATURE_H
+#endif

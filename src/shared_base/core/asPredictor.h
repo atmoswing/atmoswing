@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTOR_H
-#define ASPREDICTOR_H
+#ifndef AS_PREDICTOR_H
+#define AS_PREDICTOR_H
 
 #include <asIncludes.h>
 #include <asFileGrib.h>
@@ -529,4 +529,4 @@ private:
     bool FillWithNaNs(vvva2f &compositeData) const;
 };
 
-#endif // ASPREDICTOR_H
+#endif

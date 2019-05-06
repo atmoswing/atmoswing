@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASRESULTSDATES_H
-#define ASRESULTSDATES_H
+#ifndef AS_RESULTS_DATES_H
+#define AS_RESULTS_DATES_H
 
 #include <asIncludes.h>
 #include <asResults.h>
@@ -108,4 +108,4 @@ private:
 
 };
 
-#endif // ASRESULTSDATES_H
+#endif

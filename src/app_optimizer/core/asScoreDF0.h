@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCOREDF0_H
-#define ASSCOREDF0_H
+#ifndef AS_SCORE_DF0_H
+#define AS_SCORE_DF0_H
 
 #include <asIncludes.h>
 #include "asScore.h"

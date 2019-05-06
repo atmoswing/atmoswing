@@ -25,8 +25,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORJMAJRA55CSUBSET_H
-#define ASPREDICTORJMAJRA55CSUBSET_H
+#ifndef AS_PREDICTOR_JMA_JRA55C_SUBSET_H
+#define AS_PREDICTOR_JMA_JRA55C_SUBSET_H
 
 #include <asIncludes.h>
 #include <asPredictorJmaJra55Subset.h>
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // ASPREDICTORJMAJRA55CSUBSET_H
+#endif

@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASMETHODDOWNSCALER_H
-#define ASMETHODDOWNSCALER_H
+#ifndef AS_METHOD_DOWNSCALER_H
+#define AS_METHOD_DOWNSCALER_H
 
 #include <asMethodStandard.h>
 #include <utility>
@@ -120,4 +120,4 @@ private:
     double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 };
 
-#endif // ASMETHODDOWNSCALER_H
+#endif

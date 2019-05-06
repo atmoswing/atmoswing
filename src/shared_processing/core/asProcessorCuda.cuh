@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPROCESSORCUDA_H
-#define ASPROCESSORCUDA_H
+#ifndef AS_PROCESSOR_CUDA_H
+#define AS_PROCESSOR_CUDA_H
 
 #define STRUCT_MAX_SIZE 12
 #define USE_STREAMS 0

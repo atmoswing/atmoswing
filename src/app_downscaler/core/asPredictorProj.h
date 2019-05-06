@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORPROJ_H
-#define ASPREDICTORPROJ_H
+#ifndef AS_PREDICTOR_PROJ_H
+#define AS_PREDICTOR_PROJ_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORPROJ_H
+#endif

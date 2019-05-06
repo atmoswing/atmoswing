@@ -25,8 +25,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORNOAA20CR2C_H
-#define ASPREDICTORNOAA20CR2C_H
+#ifndef AS_PREDICTOR_NOAA_20CR2C_H
+#define AS_PREDICTOR_NOAA_20CR2C_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORNOAA20CR2C_H
+#endif

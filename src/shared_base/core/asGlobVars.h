@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGLOBVARS_H_INCLUDED
-#define ASGLOBVARS_H_INCLUDED
+#ifndef AS_GLOB_VARS_H
+#define AS_GLOB_VARS_H
 
 #include "asIncludes.h"
 
@@ -45,4 +45,4 @@ extern const double g_cst_Pi;
 extern const wxString DS;
 extern double g_ppiScaleDc;
 
-#endif // ASGLOBVARS_H_INCLUDED
+#endif

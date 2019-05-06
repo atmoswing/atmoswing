@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASLOGWINDOW_H
-#define ASLOGWINDOW_H
+#ifndef AS_LOG_WINDOW_H
+#define AS_LOG_WINDOW_H
 
 #include <asIncludes.h>
 
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASLOGWINDOW_H
+#endif

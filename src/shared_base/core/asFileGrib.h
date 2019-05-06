@@ -27,8 +27,8 @@
  * Portions Copyright 2018-2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFILEGRIB_H
-#define ASFILEGRIB_H
+#ifndef AS_FILE_GRIB_H
+#define AS_FILE_GRIB_H
 
 #include "asIncludes.h"
 #include <asFile.h>
@@ -108,4 +108,4 @@ private:
     bool CheckGribErrorCode(int ierr) const;
 };
 
-#endif // ASFILEGRIB_H
+#endif

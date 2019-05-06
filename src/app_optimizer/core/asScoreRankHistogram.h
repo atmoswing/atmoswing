@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORERANKHISTOGRAM_H
-#define ASSCORERANKHISTOGRAM_H
+#ifndef AS_SCORE_RANK_HISTOGRAM_H
+#define AS_SCORE_RANK_HISTOGRAM_H
 
 #include <asIncludes.h>
 #include "asScore.h"

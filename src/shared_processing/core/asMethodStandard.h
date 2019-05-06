@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODSTANDARD_H
-#define ASMETHODSTANDARD_H
+#ifndef AS_METHOD_STANDARD_H
+#define AS_METHOD_STANDARD_H
 
 #include <asIncludes.h>
 #include <asPredictand.h>
@@ -142,4 +142,4 @@ protected:
 private:
 };
 
-#endif // ASMETHODSTANDARD_H
+#endif

@@ -25,8 +25,8 @@
  * Portions Copyright 2017-2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORECMWFERA5_H
-#define ASPREDICTORECMWFERA5_H
+#ifndef AS_PREDICTOR_ECMWF_ERA5_H
+#define AS_PREDICTOR_ECMWF_ERA5_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORECMWFERA5_H
+#endif

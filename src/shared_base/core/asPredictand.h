@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASDATAPREDICTAND_H
-#define ASDATAPREDICTAND_H
+#ifndef AS_PREDICTAND_H
+#define AS_PREDICTAND_H
 
 #include <asIncludes.h>
 
@@ -272,4 +272,4 @@ private:
     float ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const;
 };
 
-#endif // ASDATAPREDICTAND_H
+#endif

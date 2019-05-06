@@ -26,8 +26,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFORECASTVIEWER_H
-#define ASFORECASTVIEWER_H
+#ifndef AS_FORECAST_VIEWER_H
+#define AS_FORECAST_VIEWER_H
 
 #include "asIncludes.h"
 #include "vroomgis.h"
@@ -132,4 +132,4 @@ private:
 
 };
 
-#endif // ASFORECASTVIEWER_H
+#endif

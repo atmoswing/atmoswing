@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSCALIBRATION_H
-#define ASPARAMETERSCALIBRATION_H
+#ifndef AS_PARAMETERS_CALIBRATION_H
+#define AS_PARAMETERS_CALIBRATION_H
 
 #include "asIncludes.h"
 #include <asParametersScoring.h>
@@ -158,4 +158,4 @@ private:
     bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 };
 
-#endif // ASPARAMETERSCALIBRATION_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASRESULTSSCORESMAP_H
-#define ASRESULTSSCORESMAP_H
+#ifndef AS_RESULTS_SCORES_MAP_H
+#define AS_RESULTS_SCORES_MAP_H
 
 #include <asIncludes.h>
 #include <asResults.h>
@@ -67,4 +67,4 @@ private:
     vf m_level;
 };
 
-#endif // ASRESULTSSCORESMAP_H
+#endif

@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASPANELSMANAGER_H
-#define ASPANELSMANAGER_H
+#ifndef AS_PANELS_MANAGER_H
+#define AS_PANELS_MANAGER_H
 
 #include "asIncludes.h"
 
@@ -49,4 +49,4 @@ private:
 
 };
 
-#endif // ASPANELSMANAGER_H
+#endif

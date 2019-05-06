@@ -25,8 +25,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORGENERIC_H
-#define ASPREDICTORGENERIC_H
+#ifndef AS_PREDICTOR_GENERIC_H
+#define AS_PREDICTOR_GENERIC_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORGENERIC_H
+#endif

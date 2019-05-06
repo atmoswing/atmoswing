@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTOTALSCORE_H
-#define ASTOTALSCORE_H
+#ifndef AS_TOTAL_SCORE_H
+#define AS_TOTAL_SCORE_H
 
 #include <asIncludes.h>
 
@@ -85,4 +85,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORE_H
+#endif

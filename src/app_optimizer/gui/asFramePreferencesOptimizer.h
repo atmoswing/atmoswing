@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFramePreferencesOptimizer__
-#define __asFramePreferencesOptimizer__
+#ifndef AS_FRAME_PREFERENCES_OPTIMIZER
+#define AS_FRAME_PREFERENCES_OPTIMIZER
 
 #include "AtmoswingOptimizerGui.h"
 #include <asIncludes.h>
@@ -54,4 +54,4 @@ protected:
     void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 };
 
-#endif // __asFramePreferencesOptimizer__
+#endif

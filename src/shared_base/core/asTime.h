@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTIME_H
-#define ASTIME_H
+#ifndef AS_TIME_H
+#define AS_TIME_H
 
 #include <ctime>
 

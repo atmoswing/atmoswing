@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASEXCEPTION_H
-#define ASEXCEPTION_H
+#ifndef AS_EXCEPTION_H
+#define AS_EXCEPTION_H
 
 #define asThrowException(msg) \
     throw asException(msg, __FILE__, __LINE__)

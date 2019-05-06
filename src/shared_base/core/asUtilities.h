@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASUTILITIES_H
-#define ASUTILITIES_H
+#ifndef AS_UTILITIES_H
+#define AS_UTILITIES_H
 
 #include <ctime>
 #include <random>

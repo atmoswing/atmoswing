@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFrameAbout__
-#define __asFrameAbout__
+#ifndef AS_FRAME_ABOUT_H
+#define AS_FRAME_ABOUT_H
 
 #include "AtmoswingSharedGui.h"
 
@@ -43,4 +43,4 @@ public:
 protected:
 };
 
-#endif // __asFrameAbout__
+#endif

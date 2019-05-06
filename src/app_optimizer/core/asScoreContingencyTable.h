@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORECONTINGENCYTABLE_H
-#define ASSCORECONTINGENCYTABLE_H
+#ifndef AS_SCORE_CONTINGENCY_TABLE_H
+#define AS_SCORE_CONTINGENCY_TABLE_H
 
 #include <asIncludes.h>
 #include "asScore.h"
