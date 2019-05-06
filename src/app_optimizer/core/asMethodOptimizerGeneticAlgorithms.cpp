@@ -303,7 +303,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             // Check on the parameters set
             wxASSERT(newParams);
             if (newParams->GetStepsNb() == 0) {
-                wxLogError(_("The new parameters set is not correcty initialized."));
+                wxLogError(_("The new parameters set is not correctly initialized."));
                 return false;
             }
 
