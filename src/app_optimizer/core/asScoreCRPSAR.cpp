@@ -36,11 +36,6 @@ asScoreCRPSAR::asScoreCRPSAR()
 
 }
 
-asScoreCRPSAR::~asScoreCRPSAR()
-{
-    //dtor
-}
-
 float asScoreCRPSAR::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);

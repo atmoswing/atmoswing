@@ -34,11 +34,6 @@ asScoreContingencyTable::asScoreContingencyTable()
 
 }
 
-asScoreContingencyTable::~asScoreContingencyTable()
-{
-    //dtor
-}
-
 float asScoreContingencyTable::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);

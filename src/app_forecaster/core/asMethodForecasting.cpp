@@ -215,7 +215,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                asResultsForecast *results = new asResultsForecast();
+                auto *results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
@@ -256,7 +256,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
             wxLogVerbose(_("Forecast already exists."));
             m_resultsFilePaths.push_back(resultsCheck.GetFilePath());
             if (m_batchForecasts->HasExports()) {
-                asResultsForecast *results = new asResultsForecast();
+                auto *results = new asResultsForecast();
                 results->SetFilePath(resultsCheck.GetFilePath());
                 results->Load();
                 m_aggregator.Add(results);
@@ -950,7 +950,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instanciate an archive predictor object
-            asPredictor *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -963,7 +963,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             }
 
             // Instanciate an realtime predictor object
-            asPredictorOper *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1412,7 +1412,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             params.FixCriteriaIfGradientsPreprocessed(iStep, iPtor);
 
             // Instantiate an archive predictor object
-            asPredictor *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
+            auto *predictorArchive = new asPredictor(*m_storagePredictorsArchivePreprocess[0]);
             if (!predictorArchive) {
                 return false;
             }
@@ -1425,7 +1425,7 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             }
 
             // Instantiate an realtime predictor object
-            asPredictorOper *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
+            auto *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
                 return false;
@@ -1642,22 +1642,22 @@ void asMethodForecasting::Cleanup()
     DeletePreprocessData();
 
     if (!m_storagePredictorsArchive.empty()) {
-        for (unsigned int i = 0; i < m_storagePredictorsArchive.size(); i++) {
-            wxDELETE(m_storagePredictorsArchive[i]);
+        for (auto & predictors : m_storagePredictorsArchive) {
+            wxDELETE(predictors);
         }
         m_storagePredictorsArchive.resize(0);
     }
 
     if (!m_storagePredictorsRealtime.empty()) {
-        for (unsigned int i = 0; i < m_storagePredictorsRealtime.size(); i++) {
-            wxDELETE(m_storagePredictorsRealtime[i]);
+        for (auto & predictors : m_storagePredictorsRealtime) {
+            wxDELETE(predictors);
         }
         m_storagePredictorsRealtime.resize(0);
     }
 
     if (!m_storageCriteria.empty()) {
-        for (unsigned int i = 0; i < m_storageCriteria.size(); i++) {
-            wxDELETE(m_storageCriteria[i]);
+        for (auto & criteria : m_storageCriteria) {
+            wxDELETE(criteria);
         }
         m_storageCriteria.resize(0);
     }
@@ -1667,13 +1667,13 @@ void asMethodForecasting::Cleanup()
 
 void asMethodForecasting::DeletePreprocessData()
 {
-    for (unsigned int i = 0; i < m_storagePredictorsArchivePreprocess.size(); i++) {
-        wxDELETE(m_storagePredictorsArchivePreprocess[i]);
+    for (auto & predictors : m_storagePredictorsArchivePreprocess) {
+        wxDELETE(predictors);
     }
     m_storagePredictorsArchivePreprocess.resize(0);
 
-    for (unsigned int i = 0; i < m_storagePredictorsRealtimePreprocess.size(); i++) {
-        wxDELETE(m_storagePredictorsRealtimePreprocess[i]);
+    for (auto & predictors : m_storagePredictorsRealtimePreprocess) {
+        wxDELETE(predictors);
     }
     m_storagePredictorsRealtimePreprocess.resize(0);
 }

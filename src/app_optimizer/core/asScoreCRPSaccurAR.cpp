@@ -38,11 +38,6 @@ asScoreCRPSaccurAR::asScoreCRPSaccurAR()
 
 }
 
-asScoreCRPSaccurAR::~asScoreCRPSaccurAR()
-{
-    //dtor
-}
-
 float asScoreCRPSaccurAR::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);

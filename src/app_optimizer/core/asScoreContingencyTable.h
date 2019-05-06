@@ -38,11 +38,11 @@ class asScoreContingencyTable
 public:
     asScoreContingencyTable();
 
-    ~asScoreContingencyTable();
+    ~asScoreContingencyTable() override = default;
 
-    float Assess(float observedVal, const a1f &values, int nbElements) const;
+    float Assess(float observedVal, const a1f &values, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
 protected:
 

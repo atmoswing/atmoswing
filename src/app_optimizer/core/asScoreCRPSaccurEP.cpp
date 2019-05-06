@@ -37,11 +37,6 @@ asScoreCRPSaccurEP::asScoreCRPSaccurEP()
 
 }
 
-asScoreCRPSaccurEP::~asScoreCRPSaccurEP()
-{
-    //dtor
-}
-
 float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) const
 {
     wxASSERT(values.size() > 1);

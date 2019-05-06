@@ -45,7 +45,7 @@ class asMethodStandard
 public:
     asMethodStandard();
 
-    virtual ~asMethodStandard();
+    ~asMethodStandard() override;
 
     virtual bool Manager();
 

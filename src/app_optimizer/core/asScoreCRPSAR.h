@@ -38,7 +38,7 @@ class asScoreCRPSAR
 public:
     asScoreCRPSAR();
 
-    ~asScoreCRPSAR() override;
+    ~asScoreCRPSAR() override = default;
 
     float Assess(float obs, const a1f &values, int nbElements) const override;
 
