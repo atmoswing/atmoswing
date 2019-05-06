@@ -155,20 +155,20 @@ void asAreaComp::CreateComposites()
 
 double asAreaComp::GetXmin() const
 {
-    asThrowException("Not allowed on composite area.");
+    asThrowException(_("Not allowed on composite area."));
 }
 
 double asAreaComp::GetXmax() const
 {
-    asThrowException("Not allowed on composite area.");
+    asThrowException(_("Not allowed on composite area."));
 }
 
 double asAreaComp::GetYmin() const
 {
-    asThrowException("Not allowed on composite area.");
+    asThrowException(_("Not allowed on composite area."));
 }
 
 double asAreaComp::GetYmax() const
 {
-    asThrowException("Not allowed on composite area.");
+    asThrowException(_("Not allowed on composite area."));
 }

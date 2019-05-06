@@ -169,14 +169,14 @@ bool asMethodForecasting::Manager()
                 }
             }
         }
-    } catch (asException &e) {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty()) {
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        if (!msg.IsEmpty()) {
 #if wxUSE_GUI
             if (!g_silentMode)
-                wxMessageBox(fullMessage);
+                wxMessageBox(msg);
 #else
-            wxLogError(fullMessage);
+            wxLogError(msg);
 #endif
         }
         return false;
@@ -355,12 +355,12 @@ bool asMethodForecasting::Forecast(asParametersForecast &params)
 
             try {
                 results->Save();
-            } catch (asException &e) {
-                wxString fullMessage = e.GetFullMessage();
-                if (!fullMessage.IsEmpty()) {
+            } catch (std::exception &e) {
+                wxString msg(e.what(), wxConvUTF8);
+                if (!msg.IsEmpty()) {
 #if wxUSE_GUI
                     if (!g_silentMode)
-                        wxMessageBox(fullMessage);
+                        wxMessageBox(msg);
 #endif
                 }
                 wxDELETE(results);

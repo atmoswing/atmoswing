@@ -379,10 +379,10 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught when loading data: %s"), msg);
         return false;
-    } catch (asException &e) {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty()) {
-            wxLogError(fullMessage);
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        if (!msg.IsEmpty()) {
+            wxLogError(msg);
         }
         wxLogError(_("Failed to load data (exception)."));
         return false;

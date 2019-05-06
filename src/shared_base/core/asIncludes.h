@@ -135,6 +135,8 @@
 //---------------------------------
 
 
+#define asThrowException(msg) \
+    throw std::runtime_error(msg.mb_str())
 
 #include "asVersion.h"
 #include "asConfig.h"
@@ -143,7 +145,6 @@
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
 #include "asTypeDefs.h"
-#include "asException.h"
 #include "asUtilities.h"
 #include "asTime.h"
 #include "asThreadsManagerGlobalFunctions.h"

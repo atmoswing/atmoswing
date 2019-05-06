@@ -864,10 +864,10 @@ int AtmoswingAppOptimizer::OnRun()
             wxString msg(ba.what(), wxConvUTF8);
             wxLogError(_("Bad allocation caught: %s"), msg);
             return 1011;
-        } catch (asException &e) {
-            wxString fullMessage = e.GetFullMessage();
-            if (!fullMessage.IsEmpty()) {
-                wxLogError(fullMessage);
+        } catch (std::exception &e) {
+            wxString msg(e.what(), wxConvUTF8);
+            if (!msg.IsEmpty()) {
+                wxLogError(msg);
             }
             wxLogError(_("Failed to process the calibration."));
             return 1010;

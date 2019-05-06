@@ -149,7 +149,7 @@ TEST(Area, ConstructorLimitsException)
     cornerLR.x = 20;
     cornerLR.y = 30;
 
-    ASSERT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
+    ASSERT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
 TEST(Area, ConstructorAlternativeLimitsException)
@@ -160,7 +160,7 @@ TEST(Area, ConstructorAlternativeLimitsException)
     double xWidth = 30;
     double yMin = 30;
     double yWidth = 10;
-    ASSERT_THROW(asArea area(xMin, xWidth, yMin, yWidth), asException);
+    ASSERT_THROW(asArea area(xMin, xWidth, yMin, yWidth), std::exception);
 }
 
 TEST(Area, CheckConsistency)
@@ -207,7 +207,7 @@ TEST(Area, IsRectangleFalse)
     cornerLR.x = 20;
     cornerLR.y = 30;
 
-    EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
+    EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
 TEST(Area, GetBounds)

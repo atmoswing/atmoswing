@@ -93,8 +93,8 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -245,8 +245,8 @@ TEST(MethodCalibrator, Ref1Cuda)
         EXPECT_FALSE(containsNaNs);
         printf(_("        ---> GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
 
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -365,8 +365,8 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -557,8 +557,8 @@ TEST(MethodCalibrator, PreloadingSimple)
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -612,8 +612,8 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -727,8 +727,8 @@ TEST(MethodCalibrator, ComplexPredictorHours)
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator3.GetAnalogsDates(anaDatesPreloadNeg, &paramsPreloadNeg, 0, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 }
@@ -790,8 +790,8 @@ void Ref1Preloading()
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -942,8 +942,8 @@ void Ref1PreloadingSubset()
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyAR");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -1051,8 +1051,8 @@ TEST(MethodCalibrator, SmallerSpatialArea)
         EXPECT_FALSE(containsNaNs);
         ASSERT_TRUE(calibrator4.GetAnalogsDates(anaDatesPreprocPreload, &paramsPreprocPreload, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -1148,8 +1148,8 @@ void Ref2Preloading()
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -1332,8 +1332,8 @@ void Ref2SavingIntermediateResults()
         ASSERT_TRUE(anaScoresCRPS2.GetTargetDates().size() > 0);
         // Create
         ASSERT_TRUE(calibrator.GetAnalogsTotalScore(anaScoreFinal, &params, anaScoresCRPS2, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -1487,8 +1487,8 @@ void Ref2MergeByHalfAndMultiply()
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSsharpness, &params, anaValues, step));
         params.SetScoreName("CRPSaccuracyEP");
         ASSERT_TRUE(calibrator.GetAnalogsScores(anaScoresCRPSaccuracy, &params, anaValues, step));
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 
@@ -1620,8 +1620,8 @@ TEST(MethodCalibrator, PreloadingWithLevelCorrection)
         step++;
         ASSERT_TRUE(calibrator.GetAnalogsSubDates(anaSubDates, &params, anaDates, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-    } catch (asException &e) {
-        wxPrintf(e.GetFullMessage());
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
         return;
     }
 

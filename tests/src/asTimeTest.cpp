@@ -455,7 +455,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", DD_MM_YYYY), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", DD_MM_YYYY), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDD)
@@ -470,7 +470,7 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007", YYYY_MM_DD), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007", YYYY_MM_DD), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmm)
@@ -485,7 +485,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", DD_MM_YYYY_hh_mm), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", DD_MM_YYYY_hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmm)
@@ -500,7 +500,7 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYY_MM_DD_hh_mm), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYY_MM_DD_hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmss)
@@ -515,7 +515,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DD_MM_YYYY_hh_mm_ss), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DD_MM_YYYY_hh_mm_ss), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmss)
@@ -530,14 +530,14 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYY_MM_DD_hh_mm_ss), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYY_MM_DD_hh_mm_ss), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormathhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", hh_mm), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYY)
@@ -560,7 +560,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDD)
@@ -575,7 +575,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("11.2007", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("11.2007", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmm)
@@ -590,7 +590,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmm)
@@ -605,7 +605,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmss)
@@ -620,7 +620,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmss)
@@ -635,14 +635,14 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautohhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushours)
@@ -657,14 +657,14 @@ TEST(Time, GetTimeFromStringFormatautonowplushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2:23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2:23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2.23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2.23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushours)
@@ -679,28 +679,28 @@ TEST(Time, GetTimeFromStringFormatautonowminushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2:23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2:23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2.23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2.23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("2", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("2", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2hours", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2hours", guess), std::exception);
 }
 
 TEST(Time, AddYear1972)
