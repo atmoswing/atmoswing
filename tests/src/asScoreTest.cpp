@@ -1139,7 +1139,7 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
 }
 
-TEST(Score, ProcessPCwithConstantDistribution)
+TEST(Score, ProcessPCwithConstantDistributionOnQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1171,7 +1171,7 @@ TEST(Score, ProcessPCwithConstantDistribution)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessPC)
+TEST(Score, ProcessPConQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1203,7 +1203,7 @@ TEST(Score, ProcessPC)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessTS)
+TEST(Score, ProcessTSonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1235,7 +1235,7 @@ TEST(Score, ProcessTS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBIAS)
+TEST(Score, ProcessBIASonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1267,7 +1267,7 @@ TEST(Score, ProcessBIAS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessFARA)
+TEST(Score, ProcessFARAonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1299,7 +1299,7 @@ TEST(Score, ProcessFARA)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessH)
+TEST(Score, ProcessHonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1331,7 +1331,7 @@ TEST(Score, ProcessH)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessF)
+TEST(Score, ProcessFonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1363,7 +1363,7 @@ TEST(Score, ProcessF)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessHSS)
+TEST(Score, ProcessHSSonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1395,7 +1395,7 @@ TEST(Score, ProcessHSS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessPSS)
+TEST(Score, ProcessPSSonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1427,7 +1427,7 @@ TEST(Score, ProcessPSS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessGSS)
+TEST(Score, ProcessGSSonQuantile)
 {
     // Create data
     a2f vecForecast;
@@ -1459,7 +1459,7 @@ TEST(Score, ProcessGSS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessMAE)
+TEST(Score, ProcessMAEonQuantile)
 {
     // Sizes
     int timeLength = 10;
@@ -1518,7 +1518,125 @@ TEST(Score, ProcessMAE)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessRMSE)
+TEST(Score, ProcessMSEonQuantile)
+{
+    // Sizes
+    int timeLength = 10;
+    int nAnalogs = 20;
+
+    // Resize the containers
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nAnalogs);
+
+    // Not forecasted and no event
+    vecForecast.row(0)
+        << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1)
+        << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2)
+        << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3)
+        << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4)
+        << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5)
+        << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6)
+        << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7)
+        << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8)
+        << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9)
+        << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+
+    vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
+
+    // Instantiate the score
+    asScore *score = asScore::GetInstance("MSE");
+    score->SetQuantile(0.6f);
+
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
+
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
+    }
+
+    asTotalScore *finalScore = asTotalScore::GetInstance("MSE", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Value processed on Excel
+    EXPECT_NEAR(0.358484*0.358484, scoreVal, 0.000001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
+
+TEST(Score, ProcessMSEonMean)
+{
+    // Sizes
+    int timeLength = 10;
+    int nAnalogs = 20;
+
+    // Resize the containers
+    a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
+    a1f vecObs = a1f::Zero(timeLength);
+    a1f singleDay = a1f::Zero(nAnalogs);
+
+    // Not forecasted and no event
+    vecForecast.row(0)
+        << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1)
+        << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2)
+        << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3)
+        << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4)
+        << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5)
+        << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6)
+        << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7)
+        << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8)
+        << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9)
+        << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+
+    vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
+
+    // Instantiate the score
+    asScore *score = asScore::GetInstance("MSE");
+    score->SetOnMean(true);
+
+    a1f results = a1f::Zero(vecObs.size());
+    a1f pseudoDates = a1f::Zero(vecObs.size());
+
+    for (int iTime = 0; iTime < vecObs.size(); iTime++) {
+        pseudoDates[iTime] = iTime;
+        results[iTime] = score->Assess(vecObs[iTime], vecForecast.row(iTime), 20);
+        EXPECT_TRUE(!asIsNaN(results[iTime]));
+    }
+
+    asTotalScore *finalScore = asTotalScore::GetInstance("MSE", "Total");
+    asTimeArray emptyTimeArray = asTimeArray(0, 1, 1, asTimeArray::Simple);
+    float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
+
+    // Value processed on Excel
+    EXPECT_NEAR(0.0914752, scoreVal, 0.000001);
+
+    wxDELETE(score);
+    wxDELETE(finalScore);
+}
+
+TEST(Score, ProcessRMSEonQuantile)
 {
     // Sizes
     int timeLength = 10;
@@ -1577,7 +1695,7 @@ TEST(Score, ProcessRMSE)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBS)
+TEST(Score, ProcessBSonQuantile)
 {
     // Sizes
     int timeLength = 10;
@@ -1637,7 +1755,7 @@ TEST(Score, ProcessBS)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBSS)
+TEST(Score, ProcessBSSonQuantile)
 {
     // Sizes
     int timeLength = 10;
