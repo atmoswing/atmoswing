@@ -136,7 +136,7 @@
 
 
 #define asThrowException(msg) \
-    throw std::runtime_error(msg.mb_str())
+    throw std::runtime_error((const char*)msg.ToUTF8())
 
 #include "asVersion.h"
 #include "asConfig.h"
