@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSSCORING_H
-#define ASPARAMETERSSCORING_H
+#ifndef AS_PARAMETERS_SCORING_H
+#define AS_PARAMETERS_SCORING_H
 
 #include "asIncludes.h"
 #include <asParameters.h>
@@ -48,6 +48,7 @@ public:
         bool postprocess;
         float postprocessDupliExp;
         wxString postprocessMethod;
+        bool onMean;
         float threshold;
         float quantile;
     } ParamsScore;
@@ -57,14 +58,14 @@ public:
     {
         vvwxs preprocessDataId;
         vvf preprocessLevels;
-        vvd preprocessTimeHours;
+        vvd preprocessHours;
         vwxs dataId;
         vf level;
         vd xMin;
         vi xPtsNb;
         vd yMin;
         vi yPtsNb;
-        vd timeHours;
+        vd hours;
         vwxs criteria;
         vf weight;
     } ParamsPredictorVect;
@@ -93,14 +94,14 @@ public:
     {
         vb preprocessDataId;
         vb preprocessLevels;
-        vb preprocessTimeHours;
+        vb preprocessHours;
         bool dataId;
         bool level;
         bool xMin;
         bool xPtsNb;
         bool yMin;
         bool yPtsNb;
-        bool timeHours;
+        bool hours;
         bool weight;
         bool criteria;
     } ParamsPredictorBool;
@@ -222,6 +223,16 @@ public:
         m_score.threshold = val;
     }
 
+    bool GetOnMean() const
+    {
+        return m_score.onMean;
+    }
+
+    void SetOnMean(bool val)
+    {
+        m_score.onMean = val;
+    }
+
     float GetScoreQuantile() const
     {
         return m_score.quantile;
@@ -281,7 +292,7 @@ public:
         return true;
     }
 
-    bool SetPreprocessTimeHoursVector(int iStep, int iPtor, int iPre, vd val)
+    bool SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val)
     {
         if (val.empty()) {
             wxLogError(_("The provided preprocess time (hours) vector is empty."));
@@ -295,11 +306,11 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre].clear();
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            m_stepsVect[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
 
         return true;
@@ -393,12 +404,12 @@ public:
         return true;
     }
 
-    vd GetPredictorTimeHoursVector(int iStep, int iPtor) const
+    vd GetPredictorHourVector(int iStep, int iPtor) const
     {
-        return m_stepsVect[iStep].predictors[iPtor].timeHours;
+        return m_stepsVect[iStep].predictors[iPtor].hours;
     }
 
-    bool SetPredictorTimeHoursVector(int iStep, int iPtor, vd val)
+    bool SetPredictorHoursVector(int iStep, int iPtor, vd val)
     {
         if (val.empty()) {
             wxLogError(_("The provided predictor time (hours) vector is empty."));
@@ -411,7 +422,7 @@ public:
                 }
             }
         }
-        m_stepsVect[iStep].predictors[iPtor].timeHours = val;
+        m_stepsVect[iStep].predictors[iPtor].hours = val;
         return true;
     }
 
@@ -439,7 +450,7 @@ public:
 
     vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const
     {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessDataId in the parameters object."));
@@ -462,7 +473,7 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre] = val;
         } else {
@@ -474,7 +485,7 @@ public:
 
     vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const
     {
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre];
         } else {
             wxLogError(_("Trying to access to an element outside of preprocessLevels in the parameters object."));
@@ -497,7 +508,7 @@ public:
             }
         }
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= (unsigned) (iPre + 1)) {
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
         } else {
@@ -507,14 +518,14 @@ public:
         return true;
     }
 
-    vd GetPreprocessTimeHoursVector(int iStep, int iPtor, int iPre) const
+    vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const
     {
-        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPre);
+        wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > iPre);
 
-        if (m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            return m_stepsVect[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+        if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            return m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre];
         } else {
-            wxLogError(_("Trying to access to an element outside of preprocessTimeHours (vect) in the parameters object."));
+            wxLogError(_("Trying to access to an element outside of preprocessHours (vect) in the parameters object."));
             vd empty;
             return empty;
         }
@@ -601,4 +612,4 @@ private:
     ParamsScore m_score;
 };
 
-#endif // ASPARAMETERSSCORING_H
+#endif

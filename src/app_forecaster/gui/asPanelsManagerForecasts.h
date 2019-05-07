@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPANELSMANAGERFORECASTS_H
-#define ASPANELSMANAGERFORECASTS_H
+#ifndef AS_PANELS_MANAGER_FORECASTS_H
+#define AS_PANELS_MANAGER_FORECASTS_H
 
 #include "asIncludes.h"
 
@@ -70,4 +70,4 @@ private:
 
 };
 
-#endif // ASPANELSMANAGERFORECASTS_H
+#endif

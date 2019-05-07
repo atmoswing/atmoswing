@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef _VRLAYERVECTORSFCSTDOTS_H_
-#define _VRLAYERVECTORSFCSTDOTS_H_
+#ifndef VR_LAYER_VECTORS_FCST_DOTS_H
+#define VR_LAYER_VECTORS_FCST_DOTS_H
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"

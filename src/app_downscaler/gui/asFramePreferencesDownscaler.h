@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef __asFramePreferencesDownscaler__
-#define __asFramePreferencesDownscaler__
+#ifndef AS_FRAME_PREFERENCES_DOWNSCALER
+#define AS_FRAME_PREFERENCES_DOWNSCALER
 
 #include "AtmoswingDownscalerGui.h"
 #include <asIncludes.h>
@@ -53,4 +53,4 @@ protected:
     void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 };
 
-#endif // __asFramePreferencesDownscaler__
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODSTANDARD_H
-#define ASMETHODSTANDARD_H
+#ifndef AS_METHOD_STANDARD_H
+#define AS_METHOD_STANDARD_H
 
 #include <asIncludes.h>
 #include <asPredictand.h>
@@ -45,7 +45,7 @@ class asMethodStandard
 public:
     asMethodStandard();
 
-    virtual ~asMethodStandard();
+    ~asMethodStandard() override;
 
     virtual bool Manager();
 
@@ -74,11 +74,11 @@ public:
 
     bool ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor);
 
-    bool ExtractArchiveDataWithoutPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
-                                                int iPtor, double timeStartData, double timeEndData);
+    bool ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor,
+                            double timeStartData, double timeEndData);
 
-    bool ExtractArchiveDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
-                                             int iPtor, double timeStartData, double timeEndData);
+    bool PreprocessArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor,
+                               double timeStartData, double timeEndData);
 
     bool GetRandomLevelValidData(asParameters *params, int iStep, int iPtor, int iPre, int iHour);
 
@@ -112,6 +112,7 @@ public:
 protected:
     bool m_cancel;
     bool m_preloaded;
+    bool m_warnFailedLoadingData;
     wxString m_paramsFilePath;
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
@@ -141,4 +142,4 @@ protected:
 private:
 };
 
-#endif // ASMETHODSTANDARD_H
+#endif

@@ -41,6 +41,7 @@ lsversion_param\.h
 *.log
 *.tmp
 *.aux.xml
+.buildconfig
 desktop.ini
 CMakeCache.txt
 cmake.check_cache

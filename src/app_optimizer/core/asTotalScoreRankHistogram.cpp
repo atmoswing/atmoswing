@@ -27,21 +27,10 @@
 
 #include "asTotalScoreRankHistogram.h"
 
-asTotalScoreRankHistogram::asTotalScoreRankHistogram(Period period)
-        : asTotalScore(period)
-{
-    m_singleValue = false;
-}
-
 asTotalScoreRankHistogram::asTotalScoreRankHistogram(const wxString &periodString)
         : asTotalScore(periodString)
 {
     m_singleValue = false;
-}
-
-asTotalScoreRankHistogram::~asTotalScoreRankHistogram()
-{
-    //dtor
 }
 
 float asTotalScoreRankHistogram::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
@@ -86,7 +75,7 @@ a1f asTotalScoreRankHistogram::AssessOnArray(const a1f &targetDates, const a1f &
     }
 
     for (int i = 0; i < m_ranksNb; i++) {
-        histogramPercent[i] = static_cast<float>(100 * histogram[i]) / static_cast<float>(countTot);
+        histogramPercent[i] = float(100 * histogram[i]) / float(countTot);
     }
 
     return histogramPercent;

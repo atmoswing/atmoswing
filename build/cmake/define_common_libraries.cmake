@@ -57,6 +57,7 @@ endif ()
 
 # ecCodes
 find_package(eccodes MODULE REQUIRED)
+include_directories(${ECCODES_INCLUDE_DIR})
 include_directories(${ECCODES_INCLUDE_DIRS})
 link_libraries(${ECCODES_LIBRARIES})
 

@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASTHREADSMANAGERGLOBALFUNCTIONS_H
-#define ASTHREADSMANAGERGLOBALFUNCTIONS_H
+#ifndef AS_THREADS_MANAGER_GLOBAL_FUNCTIONS_H
+#define AS_THREADS_MANAGER_GLOBAL_FUNCTIONS_H
 
 #include <asIncludes.h>
 
@@ -38,4 +38,4 @@ asThreadsManager &ThreadsManager();
 
 void DeleteThreadsManager();
 
-#endif // ASTHREADSMANAGERGLOBALFUNCTIONS_H
+#endif

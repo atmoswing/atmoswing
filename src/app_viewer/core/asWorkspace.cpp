@@ -209,7 +209,7 @@ void asWorkspace::ClearLayers()
 
 void asWorkspace::AddLayer()
 {
-    unsigned int nb = (unsigned int) m_layerPaths.size() + 1;
+    int nb = m_layerPaths.size() + 1;
     m_layerPaths.resize(nb);
     m_layerTypes.resize(nb);
     m_layerTransparencies.resize(nb);

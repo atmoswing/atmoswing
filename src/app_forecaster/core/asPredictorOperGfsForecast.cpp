@@ -49,10 +49,11 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_strideAllowed = false;
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
-    m_restrictTimeHours = 0;
+    m_restrictHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";
     m_fStr.hasLevelDim = false;
+    m_fStr.singleTimeStep = true;
     m_parameter = ParameterUndefined;
 }
 

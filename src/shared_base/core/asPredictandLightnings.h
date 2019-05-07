@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASDATAPREDICTANDLIGHTNINGS_H
-#define ASDATAPREDICTANDLIGHTNINGS_H
+#ifndef AS_PREDICTAND_LIGHTNINGS_H
+#define AS_PREDICTAND_LIGHTNINGS_H
 
 #include <asIncludes.h>
 #include <asPredictand.h>
@@ -58,4 +58,4 @@ private:
     bool BuildDataNormalized();
 };
 
-#endif // ASDATAPREDICTANDLIGHTNINGS_H
+#endif

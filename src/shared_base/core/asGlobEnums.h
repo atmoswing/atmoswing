@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGLOBENUMS_H_INCLUDED
-#define ASGLOBENUMS_H_INCLUDED
+#ifndef AS_GLOB_ENUMS_H
+#define AS_GLOB_ENUMS_H
 
 #include "wx/wxprec.h"
 
@@ -148,23 +148,19 @@ enum Order
 
 enum TimeFormat
 {
-    classic,
     ISOdate,
     ISOdateTime,
-    DDMMYYYY,
     YYYYMMDD,
-    full,
-    YYYYMMDDhh,
-    DDMMYYYYhhmm,
-    YYYYMMDDhhmm,
-    DDMMYYYYhhmmss,
-    YYYYMMDDhhmmss,
-    timeOnly,
-    hhmm,
-    nowPlusHours,
-    nowMinusHours,
-    concentrate,
+    YYYY_MM_DD,
+    YYYY_MM_DD_hh,
+    YYYYMMDD_hhmm,
+    YYYY_MM_DD_hh_mm,
+    YYYY_MM_DD_hh_mm_ss,
+    DD_MM_YYYY,
+    DD_MM_YYYY_hh_mm,
+    DD_MM_YYYY_hh_mm_ss,
+    hh_mm,
     guess
 };
 
-#endif // ASGLOBENUMS_H_INCLUDED
+#endif

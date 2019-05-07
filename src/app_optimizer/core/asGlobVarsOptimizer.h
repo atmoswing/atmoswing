@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASGLOBVARSOPTIMIZER_H_INCLUDED
-#define ASGLOBVARSOPTIMIZER_H_INCLUDED
+#ifndef AS_GLOB_VARS_OPTIMIZER_H
+#define AS_GLOB_VARS_OPTIMIZER_H
 
 #include "asIncludes.h"
 
@@ -35,4 +35,4 @@ extern bool g_local;
 extern int g_runNb;
 extern bool g_resumePreviousRun;
 
-#endif // ASGLOBVARSOPTIMIZER_H_INCLUDED
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASDATAPREDICTANDPRECIPITATION_H
-#define ASDATAPREDICTANDPRECIPITATION_H
+#ifndef AS_PREDICTAND_PRECIPITATION_H
+#define AS_PREDICTAND_PRECIPITATION_H
 
 #include <asIncludes.h>
 #include <asPredictand.h>
@@ -99,4 +99,4 @@ private:
 
 };
 
-#endif // ASDATAPREDICTANDPRECIPITATION_H
+#endif

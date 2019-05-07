@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASAREA_H
-#define ASAREA_H
+#ifndef AS_AREA_H
+#define AS_AREA_H
 
 #include <asIncludes.h>
 

@@ -346,7 +346,7 @@ bool asPredictorNcepCfsrSubset::Init()
 
 void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
 {
-    auto firstDay = static_cast<int>(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
+    auto firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
 

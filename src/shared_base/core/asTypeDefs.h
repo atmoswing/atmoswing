@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTYPEDEFS_H_
-#define ASTYPEDEFS_H_
+#ifndef AS_TYPE_DEFS_H
+#define AS_TYPE_DEFS_H
 
 //---------------------------------
 // Structures

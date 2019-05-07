@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelSidebar__
-#define __asPanelSidebar__
+#ifndef AS_PANEL_SIDEBAR_H
+#define AS_PANEL_SIDEBAR_H
 
 #include "AtmoswingViewerGui.h"
 #include "asIncludes.h"
@@ -53,4 +53,4 @@ protected:
 
 };
 
-#endif // __asPanelSidebar__
+#endif

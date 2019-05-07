@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERS_H
-#define ASPARAMETERS_H
+#ifndef AS_PARAMETERS_H
+#define AS_PARAMETERS_H
 
 #include <wx/xml/xml.h>
 #include <utility>
@@ -49,7 +49,7 @@ public:
         bool preload;
         bool standardize;
         vwxs preloadDataIds;
-        vd preloadTimeHours;
+        vd preloadHours;
         vf preloadLevels;
         double preloadXmin;
         int preloadXptsnb;
@@ -60,7 +60,7 @@ public:
         vwxs preprocessDatasetIds;
         vwxs preprocessDataIds;
         vf preprocessLevels;
-        vd preprocessTimeHours;
+        vd preprocessHours;
         vi preprocessMembersNb;
         float level;
         wxString gridType;
@@ -73,7 +73,7 @@ public:
         double yStep;
         double yShift;
         int flatAllowed;
-        double timeHours;
+        double hour;
         int membersNb;
         wxString criteria;
         float weight;
@@ -239,33 +239,37 @@ public:
         return true;
     }
 
-    int GetTimeShiftDays() const
+    double GetTimeShiftDays() const
     {
-        int shift = 0;
+        double margin = 0;
         if (m_timeMinHours < 0) {
-            shift = (int) floor(m_timeMinHours / 24.0);
+            margin = floor(m_timeMinHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
         }
-        return shift;
+        return std::abs(margin);
     }
 
-    int GetTimeSpanDays() const
+    double GetTimeSpanDays() const
     {
-        return ceil(m_timeMaxHours / 24.0) + std::abs(GetTimeShiftDays());
+        double margin = 0;
+        if (m_timeMaxHours > 24 - m_targetTimeStepHours) {
+            margin = ceil(m_timeMaxHours / m_targetTimeStepHours) * m_targetTimeStepHours / 24.0;
+        }
+        return std::abs(margin) + std::abs(GetTimeShiftDays());
     }
 
-    double GetTimeArrayTargetTimeStepHours() const
+    double GetTargetTimeStepHours() const
     {
-        return m_timeArrayTargetTimeStepHours;
+        return m_targetTimeStepHours;
     }
 
-    bool SetTimeArrayTargetTimeStepHours(double val);
+    bool SetTargetTimeStepHours(double val);
 
-    double GetTimeArrayAnalogsTimeStepHours() const
+    double GetAnalogsTimeStepHours() const
     {
-        return m_timeArrayAnalogsTimeStepHours;
+        return m_analogsTimeStepHours;
     }
 
-    bool SetTimeArrayAnalogsTimeStepHours(double val);
+    bool SetAnalogsTimeStepHours(double val);
 
     wxString GetTimeArrayTargetMode() const
     {
@@ -302,19 +306,19 @@ public:
 
     bool SetTimeArrayAnalogsMode(const wxString &val);
 
-    int GetTimeArrayAnalogsExcludeDays() const
+    int GetAnalogsExcludeDays() const
     {
-        return m_timeArrayAnalogsExcludeDays;
+        return m_analogsExcludeDays;
     }
 
-    bool SetTimeArrayAnalogsExcludeDays(int val);
+    bool SetAnalogsExcludeDays(int val);
 
-    int GetTimeArrayAnalogsIntervalDays() const
+    int GetAnalogsIntervalDays() const
     {
-        return m_timeArrayAnalogsIntervalDays;
+        return m_analogsIntervalDays;
     }
 
-    bool SetTimeArrayAnalogsIntervalDays(int val);
+    bool SetAnalogsIntervalDays(int val);
 
     vi GetPredictandStationIds() const
     {
@@ -373,14 +377,14 @@ public:
 
     bool SetPreloadDataIds(int iStep, int iPtor, wxString val);
 
-    vd GetPreloadTimeHours(int iStep, int iPtor) const
+    vd GetPreloadHours(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].preloadTimeHours;
+        return m_steps[iStep].predictors[iPtor].preloadHours;
     }
 
-    bool SetPreloadTimeHours(int iStep, int iPtor, vd val);
+    bool SetPreloadHours(int iStep, int iPtor, vd val);
 
-    bool SetPreloadTimeHours(int iStep, int iPtor, double val);
+    bool SetPreloadHours(int iStep, int iPtor, double val);
 
     vf GetPreloadLevels(int iStep, int iPtor) const
     {
@@ -461,9 +465,11 @@ public:
 
     bool SetPreprocessLevel(int iStep, int iPtor, int iPre, float val);
 
-    double GetPreprocessTimeHours(int iStep, int iPtor, int iPre) const;
+    double GetPreprocessHour(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessTimeHours(int iStep, int iPtor, int iPre, double val);
+    double GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) const;
+
+    bool SetPreprocessHour(int iStep, int iPtor, int iPre, double val);
 
     int GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const;
 
@@ -560,12 +566,17 @@ public:
 
     bool SetPredictorFlatAllowed(int iStep, int iPtor, int val);
 
-    double GetPredictorTimeHours(int iStep, int iPtor) const
+    double GetPredictorHour(int iStep, int iPtor) const
     {
-        return m_steps[iStep].predictors[iPtor].timeHours;
+        return m_steps[iStep].predictors[iPtor].hour;
     }
 
-    bool SetPredictorTimeHours(int iStep, int iPtor, double val);
+    double GetPredictorTimeAsDays(int iStep, int iPtor) const
+    {
+        return m_steps[iStep].predictors[iPtor].hour / 24.0;
+    }
+
+    bool SetPredictorHour(int iStep, int iPtor, double val);
 
     int GetPredictorMembersNb(int iStep, int iPtor) const
     {
@@ -595,7 +606,7 @@ public:
 
     int GetPredictorsNb(int iStep) const
     {
-        wxASSERT((unsigned) iStep < m_steps.size());
+        wxASSERT(iStep < m_steps.size());
         return (int) m_steps[iStep].predictors.size();
     }
 
@@ -612,7 +623,7 @@ protected:
     wxString m_description;
     double m_archiveStart;
     double m_archiveEnd;
-    int m_timeArrayAnalogsIntervalDays;
+    int m_analogsIntervalDays;
     vi m_predictandStationIds;
     double m_timeMinHours;
     double m_timeMaxHours;
@@ -621,13 +632,13 @@ private:
     VectorParamsStep m_steps; // Set as private to force use of setters.
     wxString m_dateProcessed;
     wxString m_timeArrayTargetMode;
-    double m_timeArrayTargetTimeStepHours;
+    double m_targetTimeStepHours;
     wxString m_timeArrayTargetPredictandSerieName;
     float m_timeArrayTargetPredictandMinThreshold;
     float m_timeArrayTargetPredictandMaxThreshold;
     wxString m_timeArrayAnalogsMode;
-    double m_timeArrayAnalogsTimeStepHours;
-    int m_timeArrayAnalogsExcludeDays;
+    double m_analogsTimeStepHours;
+    int m_analogsExcludeDays;
     asPredictand::Parameter m_predictandParameter;
     asPredictand::TemporalResolution m_predictandTemporalResolution;
     asPredictand::SpatialAggregation m_predictandSpatialAggregation;
@@ -649,4 +660,4 @@ private:
 
 };
 
-#endif // ASPARAMETERS_H
+#endif

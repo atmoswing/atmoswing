@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTOROPER_H
-#define ASPREDICTOROPER_H
+#ifndef AS_PREDICTOR_OPER_H
+#define AS_PREDICTOR_OPER_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -54,7 +54,7 @@ public:
 
     bool BuildFilenamesUrls();
 
-    void RestrictTimeArray(double restrictTimeHours, double restrictTimeStepHours, int leadTimeNb);
+    void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
 
     double GetForecastLeadTimeEnd() const
     {
@@ -93,16 +93,16 @@ public:
 
 protected:
     wxString m_predictorsRealtimeDir;
-    double m_leadTimeStart;
-    double m_leadTimeEnd;
-    double m_leadTimeStep;
-    double m_runHourStart;
-    double m_runUpdate;
+    int m_leadTimeStart;
+    int m_leadTimeEnd;
+    int m_leadTimeStep;
+    int m_runHourStart;
+    int m_runUpdate;
     double m_runDateInUse;
     wxString m_commandDownload;
     bool m_restrictDownloads;
-    double m_restrictTimeHours;
-    double m_restrictTimeStepHours;
+    int m_restrictHours;
+    int m_restrictTimeStepHours;
     vwxs m_fileNames;
     vwxs m_urls;
     vd m_dataDates;
@@ -113,4 +113,4 @@ protected:
 
 };
 
-#endif // ASPREDICTOROPER_H
+#endif

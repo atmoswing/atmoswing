@@ -27,21 +27,10 @@
 
 #include "asTotalScoreRankHistogramReliability.h"
 
-asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
-}
-
-asTotalScoreRankHistogramReliability::~asTotalScoreRankHistogramReliability()
-{
-    //dtor
 }
 
 float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const a1f &scores,
@@ -73,9 +62,9 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const
     // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
     // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
     float delta = 0;
-    float delta_rel = static_cast<float>(scores.size() * (m_ranksNb - 1)) / static_cast<float>(m_ranksNb);
+    float delta_rel = float(scores.size() * (m_ranksNb - 1)) / float(m_ranksNb);
     for (int i = 0; i < m_ranksNb; i++) {
-        delta += pow(static_cast<float>(histogram[i]) - static_cast<float>(scores.size()) / static_cast<float>(m_ranksNb), 2.0f);
+        delta += pow(float(histogram[i]) - float(scores.size()) / float(m_ranksNb), 2.0f);
     }
 
     float reliability = delta / delta_rel;
@@ -93,9 +82,9 @@ float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPerc
     // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
     // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
     float delta = 0;
-    float delta_rel = static_cast<float>(scoresSize * (m_ranksNb - 1)) / static_cast<float>(m_ranksNb);
+    float delta_rel = float(scoresSize * (m_ranksNb - 1)) / float(m_ranksNb);
     for (int i = 0; i < m_ranksNb; i++) {
-        delta += pow(static_cast<float>(histogramReal[i]) - static_cast<float>(scoresSize) / static_cast<float>(m_ranksNb), 2.0f);
+        delta += pow(float(histogramReal[i]) - float(scoresSize) / float(m_ranksNb), 2.0f);
     }
 
     float reliability = delta / delta_rel;

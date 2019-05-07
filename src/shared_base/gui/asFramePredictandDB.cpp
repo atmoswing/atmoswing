@@ -287,10 +287,8 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
             default:
                 wxLogError(_("Wrong selection of the data parameter option."));
         }
-    } catch (asException &e) {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty()) {
-            wxLogError(fullMessage);
-        }
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxLogError(_("Exception caught: %s"), msg);
     }
 }

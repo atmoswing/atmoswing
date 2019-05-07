@@ -70,7 +70,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     asResultsParametersArray resultsAll;
     resultsAll.Init(_("all_station_best_parameters"));
 
-    // Create a analogsdate object to save previous analogs dates selection.
+    // Create an object to save previous analogs dates selection.
     asResultsDates anaDatesPrevious;
 
     for (auto stationId : stationsId) {
@@ -89,7 +89,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
         resultsBest.Init(wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId)));
         wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir",
                                                                 asConfig::GetDefaultUserWorkingDir());
-        wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+        wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
         resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time,
                                                    GetPredictandStationIdsList(stationId)));
 
@@ -177,7 +177,7 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             return false;
 
         // Extract intermediate results from temporary vectors
-        for (unsigned int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
+        for (int iRes = 0; iRes < m_parametersTemp.size(); iRes++) {
             resultsTested.Add(m_parametersTemp[iRes], m_scoresCalibTemp[iRes]);
         }
         resultsTested.Print();
@@ -236,12 +236,12 @@ bool asMethodCalibratorClassic::DoPreloadData(asParametersCalibration &params)
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation caught in the data preloading: %s"), msg);
+        wxLogError(_("Bad allocation caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the data preloading: %s"), msg);
+        wxLogError(_("Exception caught during data preloading: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     }
@@ -452,7 +452,7 @@ bool asMethodCalibratorClassic::EvaluateRelevanceMap(const asParametersCalibrati
         resultsTested.Add(param, anaScoreFinal.GetScore());
     }
 
-    wxLogMessage(_("Time to process the relevance map: %.3f min."), static_cast<float>(swMap.Time()) / 60000.0f);
+    wxLogMessage(_("Time to process the relevance map: %.3f min."), float(swMap.Time()) / 60000.0f);
 
     return true;
 }
@@ -515,7 +515,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
 
             // Assess parameters
             asResultsDates anaDates;
-            asResultsDates anaDatesPreviousSubRuns;
+            asResultsDates anaDatesPrev;
             asResultsValues anaValues;
             asResultsScores anaScores;
             asResultsTotalScore anaScoreFinal;
@@ -541,7 +541,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                     return false;
             } else {
                 bool continueLoop = true;
-                anaDatesPreviousSubRuns = anaDatesPrevious;
+                anaDatesPrev = anaDatesPrevious;
                 for (int sub_step = iStep; sub_step < params.GetStepsNb(); sub_step++) {
                     wxLogVerbose(_("Process sub-level %d"), sub_step);
                     bool containsNaNs = false;
@@ -549,7 +549,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                         if (!GetAnalogsDates(anaDates, &params, sub_step, containsNaNs))
                             return false;
                     } else {
-                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPreviousSubRuns, sub_step, containsNaNs))
+                        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrev, sub_step, containsNaNs))
                             return false;
                     }
                     if (containsNaNs) {
@@ -557,7 +557,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
                         isover = false;
                         continue;
                     }
-                    anaDatesPreviousSubRuns = anaDates;
+                    anaDatesPrev = anaDates;
                 }
                 if (continueLoop) {
                     if (!GetAnalogsValues(anaValues, &params, anaDates, params.GetStepsNb() - 1))
@@ -584,7 +584,7 @@ bool asMethodCalibratorClassic::AssessDomainResizing(asParametersCalibration &pa
     }
 
     wxLogMessage(_("Time to process the first resizing procedure: %.3f min."),
-                 static_cast<float>(swEnlarge.Time()) / 60000.0f);
+                 float(swEnlarge.Time()) / 60000.0f);
 
     return true;
 }
@@ -819,7 +819,7 @@ bool asMethodCalibratorClassic::AssessDomainResizingPlus(asParametersCalibration
     }
 
     wxLogMessage(_("Time to process the second resizing procedure: %.3f min"),
-                 static_cast<float>(swResize.Time()) / 60000.0f);
+                 float(swResize.Time()) / 60000.0f);
 
     return true;
 }

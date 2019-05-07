@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2014 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREPROCESSOR_H
-#define ASPREPROCESSOR_H
+#ifndef AS_PREPROCESSOR_H
+#define AS_PREPROCESSOR_H
 
 #include <asIncludes.h>
 
@@ -80,4 +80,4 @@ protected:
 private:
 };
 
-#endif // ASPREPROCESSOR_H
+#endif

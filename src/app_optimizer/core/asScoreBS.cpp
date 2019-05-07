@@ -33,17 +33,17 @@ asScoreBS::asScoreBS()
 {
 }
 
-float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
+float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const
 {
-    wxASSERT(forcastVals.size() > 1);
+    wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_threshold));
 
     // Check inputs
-    if (!CheckObservedValue(observedVal)) {
+    if (!CheckObservedValue(obs)) {
         return NaNf;
     }
-    if (!CheckVectorLength(forcastVals, nbElements)) {
+    if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
@@ -52,7 +52,7 @@ float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElement
     a1f x(nbElements);
 
     // Remove the NaNs and copy content
-    int nbPredict = CleanNans(forcastVals, x, nbElements);
+    int nbPredict = CleanNans(values, x, nbElements);
     if (nbPredict == asNOT_FOUND) {
         wxLogWarning(_("Only NaNs as inputs in the Brier score processing function."));
         return NaNf;
@@ -90,12 +90,12 @@ float asScoreBS::Assess(float observedVal, const a1f &forcastVals, int nbElement
         }
     }
 
-    float probaObservedVal = 0;
-    if (observedVal >= m_threshold) {
-        probaObservedVal = 1;
+    float probaObs = 0;
+    if (obs >= m_threshold) {
+        probaObs = 1;
     }
 
-    return (probaOccurrence - probaObservedVal) * (probaOccurrence - probaObservedVal);
+    return (probaOccurrence - probaObs) * (probaOccurrence - probaObs);
 }
 
 bool asScoreBS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)

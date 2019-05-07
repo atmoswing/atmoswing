@@ -28,80 +28,13 @@
 
 #include "asTotalScoreRMSE.h"
 
-asTotalScoreRMSE::asTotalScoreRMSE(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScoreRMSE::asTotalScoreRMSE(const wxString &periodString)
-        : asTotalScore(periodString)
+        : asTotalScoreMSE(periodString)
 {
 
-}
-
-asTotalScoreRMSE::~asTotalScoreRMSE()
-{
-    //dtor
 }
 
 float asTotalScoreRMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
 {
-    wxASSERT(targetDates.rows() > 1);
-    wxASSERT(scores.rows() > 1);
-
-    switch (m_period) {
-        case (asTotalScore::Total): {
-            int targetDatesLength = targetDates.rows();
-
-            // Loop through the targetDates
-            float score = 0, divisor = 0;
-
-            for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-                if (!asIsNaN(scores(iTime))) {
-                    score += scores(iTime);
-                    divisor++;
-                }
-            }
-
-            score = std::sqrt(score / divisor);
-            return score;
-        }
-
-        case (asTotalScore::SpecificPeriod): {
-            int targetDatesLength = targetDates.rows();
-            int timeArrayLength = timeArray.GetSize();
-
-            // Get first and last common days
-            double firstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
-            double lastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
-            a1d dateTime = timeArray.GetTimeArray();
-            int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
-            int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);
-
-            // Loop through the timeArray
-            float score = 0, divisor = 0;
-
-            for (int iTime = indexStart; iTime <= indexEnd; iTime++) {
-                if (iTime < 0) {
-                    wxLogError(_("Error processing the final RMSE score."));
-                    return NaNf;
-                }
-                int indexCurrent = asFindClosest(&targetDates(0), &targetDates(targetDatesLength - 1), dateTime(iTime));
-                if ((indexCurrent != asNOT_FOUND) & (indexCurrent != asOUT_OF_RANGE)) {
-                    if (!asIsNaN(scores(indexCurrent))) {
-                        score += scores(indexCurrent);
-                        divisor++;
-                    }
-                }
-            }
-
-            score = std::sqrt(score / divisor);
-            return score;
-        }
-
-        default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreRMSE."));
-        }
-    }
+    return std::sqrt(asTotalScoreMSE::Assess(targetDates, scores, timeArray));
 }

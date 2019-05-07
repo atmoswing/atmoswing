@@ -106,7 +106,7 @@ asTimeArray::asTimeArray(vd &timeArray)
     m_end = timeArray[timeArray.size() - 1];
     m_timeArray.resize(timeArray.size());
 
-    for (unsigned int i = 0; i < timeArray.size(); i++) {
+    for (int i = 0; i < timeArray.size(); i++) {
         m_timeArray[i] = timeArray[i];
     }
 }
@@ -386,11 +386,15 @@ bool asTimeArray::BuildArraySeason()
     // Get the beginning of the time array
     Time start = GetTimeStruct(m_start);
     Time end = GetTimeStruct(m_end);
+    int firstHour = 0;
+    if (m_timeStepDays < 1.0) {
+        firstHour = 24 * m_timeStepDays;
+    }
     int lastHour = 24 - 24 * m_timeStepDays;
 
     // Array resizing
-    int totlength = int((end.year - start.year + 1) * (366 / m_timeStepDays));
-    m_timeArray.resize(totlength);
+    int maxLength = int((end.year - start.year + 1) * (366 / m_timeStepDays));
+    m_timeArray.resize(maxLength);
 
     // Build the time array
     int counter = 0;
@@ -400,23 +404,23 @@ bool asTimeArray::BuildArraySeason()
 
         switch (m_mode) {
             case DJF:
-                seasonStart = GetMJD(year-1, 12, 1);
+                seasonStart = GetMJD(year-1, 12, 1, firstHour);
                 if (IsLeapYear(year)) {
-                    seasonEnd = GetMJD(year, 2, 29);
+                    seasonEnd = GetMJD(year, 2, 29, lastHour);
                 } else {
                     seasonEnd = GetMJD(year, 2, 28, lastHour);
                 }
                 break;
             case MAM:
-                seasonStart = GetMJD(year, 3, 1);
+                seasonStart = GetMJD(year, 3, 1, firstHour);
                 seasonEnd = GetMJD(year, 5, 31, lastHour);
                 break;
             case JJA:
-                seasonStart = GetMJD(year, 6, 1);
+                seasonStart = GetMJD(year, 6, 1, firstHour);
                 seasonEnd = GetMJD(year, 8, 31, lastHour);
                 break;
             case SON:
-                seasonStart = GetMJD(year, 9, 1);
+                seasonStart = GetMJD(year, 9, 1, firstHour);
                 seasonEnd = GetMJD(year, 11, 30, lastHour);
                 break;
             case MonthsSelection: {
@@ -432,29 +436,29 @@ bool asTimeArray::BuildArraySeason()
                 wxString monthEnd = m_modeStr.Mid(sep + separator.Length());
 
                 if (monthStart.IsSameAs("January", false)) {
-                    seasonStart = GetMJD(year, 1, 1);
+                    seasonStart = GetMJD(year, 1, 1, firstHour);
                 } else if (monthStart.IsSameAs("February", false)) {
-                    seasonStart = GetMJD(year, 2, 1);
+                    seasonStart = GetMJD(year, 2, 1, firstHour);
                 } else if (monthStart.IsSameAs("March", false)) {
-                    seasonStart = GetMJD(year, 3, 1);
+                    seasonStart = GetMJD(year, 3, 1, firstHour);
                 } else if (monthStart.IsSameAs("April", false)) {
-                    seasonStart = GetMJD(year, 4, 1);
+                    seasonStart = GetMJD(year, 4, 1, firstHour);
                 } else if (monthStart.IsSameAs("May", false)) {
-                    seasonStart = GetMJD(year, 5, 1);
+                    seasonStart = GetMJD(year, 5, 1, firstHour);
                 } else if (monthStart.IsSameAs("June", false)) {
-                    seasonStart = GetMJD(year, 6, 1);
+                    seasonStart = GetMJD(year, 6, 1, firstHour);
                 } else if (monthStart.IsSameAs("July", false)) {
-                    seasonStart = GetMJD(year, 7, 1);
+                    seasonStart = GetMJD(year, 7, 1, firstHour);
                 } else if (monthStart.IsSameAs("August", false)) {
-                    seasonStart = GetMJD(year, 8, 1);
+                    seasonStart = GetMJD(year, 8, 1, firstHour);
                 } else if (monthStart.IsSameAs("September", false)) {
-                    seasonStart = GetMJD(year, 9, 1);
+                    seasonStart = GetMJD(year, 9, 1, firstHour);
                 } else if (monthStart.IsSameAs("October", false)) {
-                    seasonStart = GetMJD(year, 10, 1);
+                    seasonStart = GetMJD(year, 10, 1, firstHour);
                 } else if (monthStart.IsSameAs("November", false)) {
-                    seasonStart = GetMJD(year, 11, 1);
+                    seasonStart = GetMJD(year, 11, 1, firstHour);
                 } else if (monthStart.IsSameAs("December", false)) {
-                    seasonStart = GetMJD(year, 12, 1);
+                    seasonStart = GetMJD(year, 12, 1, firstHour);
                 } else {
                     wxLogError(_("Month '%s' not recognized."), monthStart);
                     return false;
@@ -519,7 +523,7 @@ bool asTimeArray::BuildArraySeason()
 
         double currentDate = seasonStart;
         while (currentDate <= seasonEnd) {
-            wxASSERT(counter < totlength);
+            wxASSERT(counter < maxLength);
 
             if (HasForbiddenYears()) {
                 if (!IsYearForbidden(GetYear(currentDate))) {

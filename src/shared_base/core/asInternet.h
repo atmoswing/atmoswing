@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASINTERNET_H
-#define ASINTERNET_H
+#ifndef AS_INTERNET_H
+#define AS_INTERNET_H
 
 #include <asIncludes.h>
 #include <curl/curl.h>
@@ -62,4 +62,4 @@ private:
 
 };
 
-#endif // ASINTERNET_H
+#endif

@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASMETHODDOWNSCALERSINGLE_H
-#define ASMETHODDOWNSCALERSINGLE_H
+#ifndef AS_METHOD_DOWNSCALER_SINGLE_H
+#define AS_METHOD_DOWNSCALER_SINGLE_H
 
 #include "asMethodDownscaler.h"
 
@@ -46,4 +46,4 @@ private:
 
 };
 
-#endif // ASMETHODDOWNSCALERSINGLE_H
+#endif

@@ -27,8 +27,8 @@
  * Portions Copyright 2018-2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASFILEGRIB_H
-#define ASFILEGRIB_H
+#ifndef AS_FILE_GRIB_H
+#define AS_FILE_GRIB_H
 
 #include "asIncludes.h"
 #include <asFile.h>
@@ -46,7 +46,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(vi gribCode, float level);
+    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
 
     bool SetIndexPositionAnyLevel(vi gribCode);
 
@@ -68,6 +68,10 @@ public:
 
     double GetTimeStepHours() const;
 
+    vd GetRealReferenceDateArray() const;
+
+    vd GetRealReferenceTimeArray() const;
+
     vd GetRealForecastTimeArray() const;
 
 protected:
@@ -81,6 +85,7 @@ private:
     vi m_parameterCode3;
     vi m_levelTypes;
     vwxs m_levelTypesStr;
+    vd m_refDates;
     vd m_refTimes;
     vd m_times;
     vd m_forecastTimes;
@@ -103,4 +108,4 @@ private:
     bool CheckGribErrorCode(int ierr) const;
 };
 
-#endif // ASFILEGRIB_H
+#endif

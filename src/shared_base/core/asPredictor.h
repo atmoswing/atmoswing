@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTOR_H
-#define ASPREDICTOR_H
+#ifndef AS_PREDICTOR_H
+#define AS_PREDICTOR_H
 
 #include <asIncludes.h>
 #include <asFileGrib.h>
@@ -336,6 +336,11 @@ public:
         return wxMax(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
     }
 
+    void SetWarnMissingLevels(bool val)
+    {
+        m_warnMissingLevels = val;
+    }
+
 
 protected:
     struct FileStructure
@@ -347,6 +352,7 @@ protected:
         wxString dimMemberName;
         bool hasLevelDim;
         bool singleLevel;
+        bool singleTimeStep;
         a1d lons;
         a1d lats;
         a1d levels;
@@ -411,6 +417,8 @@ protected:
     bool m_isEnsemble;
     bool m_canBeClipped;
     bool m_parseTimeReference;
+    bool m_warnMissingFiles;
+    bool m_warnMissingLevels;
     wxString m_fileExtension;
     wxString m_preprocessMethod;
     vwxs m_files;
@@ -453,11 +461,13 @@ protected:
 
     bool ParseFileStructure(asFileNetcdf &ncFile);
 
-    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1 = nullptr);
+    bool ParseFileStructure(asFileGrib *gbFile0);
+
+    bool ParseFileStructure(asFileGrib *gbFile0, asFileGrib *gbFile1);
 
     bool CheckFileStructure();
 
-    bool HasDesiredLevel();
+    bool HasDesiredLevel(bool useWarnings = true);
 
     bool MergeComposites(vvva2f &compositeData, asAreaCompGrid *area);
 
@@ -519,4 +529,4 @@ private:
     bool FillWithNaNs(vvva2f &compositeData) const;
 };
 
-#endif // ASPREDICTOR_H
+#endif

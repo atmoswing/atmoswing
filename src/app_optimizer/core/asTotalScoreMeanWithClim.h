@@ -25,8 +25,8 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef ASTOTALSCOREMEANWITHCLIM_H
-#define ASTOTALSCOREMEANWITHCLIM_H
+#ifndef AS_TOTAL_SCORE_MEAN_WITH_CLIM_H
+#define AS_TOTAL_SCORE_MEAN_WITH_CLIM_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -35,13 +35,11 @@ class asTotalScoreMeanWithClim
         : public asTotalScore
 {
 public:
-    asTotalScoreMeanWithClim(Period period);
+    explicit asTotalScoreMeanWithClim(const wxString &periodString);
 
-    asTotalScoreMeanWithClim(const wxString &periodString);
+    ~asTotalScoreMeanWithClim() override = default;
 
-    virtual ~asTotalScoreMeanWithClim();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 
@@ -49,4 +47,4 @@ private:
 
 };
 
-#endif // ASTOTALSCOREMEANWITHCLIM_H
+#endif

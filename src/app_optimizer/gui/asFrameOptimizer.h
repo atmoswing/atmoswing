@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFrameOptimizer__
-#define __asFrameOptimizer__
+#ifndef AS_FRAME_OPTIMIZER
+#define AS_FRAME_OPTIMIZER
 
 #include "AtmoswingOptimizerGui.h"
 #include <asIncludes.h>
@@ -78,4 +78,4 @@ protected:
 
 };
 
-#endif // __asFrameOptimizer__
+#endif

@@ -115,7 +115,7 @@ bool AtmoswingAppForecaster::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     // Check that it is the unique instance
     bool multipleInstances;
@@ -280,16 +280,16 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.GetParamCount() > 0) {
         InitForCmdLineOnly(logLevel);
 
-        g_cmdFilename = parser.GetParam(0);
+        g_cmdFileName = parser.GetParam(0);
 
         // Under Windows when invoking via a document in Explorer, we are passed the short form.
         // So normalize and make the long form.
-        wxFileName fName(g_cmdFilename);
+        wxFileName fName(g_cmdFileName);
         fName.Normalize(wxPATH_NORM_LONG | wxPATH_NORM_DOTS | wxPATH_NORM_TILDE | wxPATH_NORM_ABSOLUTE);
-        g_cmdFilename = fName.GetFullPath();
+        g_cmdFileName = fName.GetFullPath();
 
         wxConfigBase *pConfig = wxFileConfig::Get();
-        pConfig->Write("/BatchForecasts/LastOpened", g_cmdFilename);
+        pConfig->Write("/BatchForecasts/LastOpened", g_cmdFileName);
     }
 
     // Check for a present forecast
@@ -322,7 +322,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-date", &dateForecastStr)) {
         InitForCmdLineOnly(logLevel);
         m_doForecast = true;
-        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYYMMDDhh);
+        m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
         return true;
     }
@@ -544,7 +544,7 @@ int AtmoswingAppForecaster::OnRun()
 
             filePaths.Open();
 
-            for (int i = 0; (unsigned) i < filePathsVect.size(); i++) {
+            for (int i = 0; i < filePathsVect.size(); i++) {
                 filePaths.AddLineContent(filePathsVect[i]);
             }
             filePaths.Close();

@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASFILEASCII_H
-#define ASFILEASCII_H
+#ifndef AS_FILE_ASCII_H
+#define AS_FILE_ASCII_H
 
 #include <iostream>
 #include <fstream>
@@ -78,4 +78,4 @@ private:
 
 };
 
-#endif // ASFILEASCII_H
+#endif

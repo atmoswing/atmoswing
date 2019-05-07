@@ -55,7 +55,7 @@ long vrLayerVectorFcstDots::AddFeature(OGRGeometry *geometry, void *data)
         wxArrayDouble *dataArray = (wxArrayDouble *) data;
         wxASSERT(dataArray->GetCount() == 4);
 
-        for (unsigned int iDat = 0; iDat < dataArray->size(); iDat++) {
+        for (int iDat = 0; iDat < dataArray->size(); iDat++) {
             feature->SetField(iDat, dataArray->Item(iDat));
         }
     }

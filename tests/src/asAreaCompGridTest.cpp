@@ -86,7 +86,7 @@ TEST(AreaCompGrid, CheckConsistencyException)
     double step = 2.5;
     wxString gridType = "Regular";
     asAreaCompGrid *area = nullptr;
-    ASSERT_THROW(area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step), asException);
+    ASSERT_THROW(area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step), std::exception);
     wxDELETE(area);
 }
 

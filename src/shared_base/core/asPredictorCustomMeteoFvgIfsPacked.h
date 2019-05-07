@@ -22,29 +22,27 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
- * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASSCORERMSE_H
-#define ASSCORERMSE_H
+#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_PACKED_H
+#define AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_PACKED_H
 
 #include <asIncludes.h>
-#include "asScore.h"
+#include <asPredictorCustomMeteoFvgIfs.h>
 
-class asScoreRMSE
-        : public asScore
+class asArea;
+
+class asPredictorCustomMeteoFvgIfsPacked
+        : public asPredictorCustomMeteoFvgIfs
 {
 public:
-    asScoreRMSE();
+    explicit asPredictorCustomMeteoFvgIfsPacked(const wxString &dataId);
 
-    ~asScoreRMSE() override = default;
-
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const override;
-
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+    ~asPredictorCustomMeteoFvgIfsPacked() override = default;
 
 protected:
+    void ListFiles(asTimeArray &timeArray) override;
 
 private:
 

@@ -85,7 +85,7 @@ bool asMethodDownscaler::Manager()
     // Downscale
     if (Downscale(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Downscaling over."));
 #endif
@@ -107,18 +107,12 @@ void asMethodDownscaler::ClearAll()
 
 double asMethodDownscaler::GetTimeStartDownscaling(asParametersDownscaling *params) const
 {
-    double timeStartDownscaling = params->GetDownscalingStart();
-    timeStartDownscaling += std::abs(params->GetTimeShiftDays());
-
-    return timeStartDownscaling;
+    return params->GetDownscalingStart() + params->GetTimeShiftDays();
 }
 
 double asMethodDownscaler::GetTimeEndDownscaling(asParametersDownscaling *params) const
 {
-    double timeEndDownscaling = params->GetDownscalingEnd();
-    timeEndDownscaling = wxMin(timeEndDownscaling, timeEndDownscaling - params->GetTimeSpanDays());
-
-    return timeEndDownscaling;
+    return params->GetDownscalingEnd() - params->GetTimeSpanDays();
 }
 
 double asMethodDownscaler::GetEffectiveArchiveDataStart(asParameters *params) const
@@ -140,7 +134,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
-                                 params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+                                 params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     if (!timeArrayArchive.Init()) {
         wxLogError(_("The time array mode for the archive dates is not correctly defined."));
         return false;
@@ -155,7 +149,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 
     // Target date array
     asTimeArray timeArrayTarget(GetTimeStartDownscaling(params), GetTimeEndDownscaling(params),
-                                params->GetTimeArrayTargetTimeStepHours(), params->GetTimeArrayTargetMode());
+                                params->GetTargetTimeStepHours(), params->GetTimeArrayTargetMode());
     if (!timeArrayTarget.Init()) {
         wxLogError(_("The time array mode for the target dates is not correctly defined."));
         return false;
@@ -171,7 +165,7 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 
     // Load the scenario data
     std::vector<asPredictor *> predictorsProj;
-    if (!LoadProjectionData(predictorsProj, params, iStep, GetTimeStartArchive(params), GetTimeEndArchive(params))) {
+    if (!LoadProjectionData(predictorsProj, params, iStep, GetTimeStartDownscaling(params), GetTimeEndDownscaling(params))) {
         wxLogError(_("Failed loading predictor data."));
         Cleanup(predictorsArch);
         Cleanup(predictorsProj);
@@ -183,11 +177,6 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictorsArch.size() > iPtor);
-            wxASSERT(predictorsArch[iPtor]);
-            criterion->SetDataRange(predictorsArch[iPtor]);
-        }
         criteria.push_back(criterion);
     }
 
@@ -195,13 +184,13 @@ bool asMethodDownscaler::GetAnalogsDates(asResultsDates &results, asParametersDo
 #ifdef _DEBUG
     int prevTimeSize = 0;
 
-    for (unsigned int i = 0; i < predictorsProj.size(); i++) {
+    for (int i = 0; i < predictorsProj.size(); i++) {
         if (i > 0) {
             wxASSERT(predictorsProj[i]->GetTimeSize() == prevTimeSize);
         }
         prevTimeSize = predictorsProj[i]->GetTimeSize();
     }
-    for (unsigned int i = 0; i < predictorsArch.size(); i++) {
+    for (int i = 0; i < predictorsArch.size(); i++) {
         if (i > 0) {
             wxASSERT(predictorsArch[i]->GetTimeSize() == prevTimeSize);
         }
@@ -246,9 +235,8 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     // Date array object instantiation for the processor
     wxLogVerbose(_("Creating a date arrays for the processor."));
     double timeStart = params->GetArchiveStart();
-    double timeEnd = params->GetArchiveEnd();
-    timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(), asTimeArray::Simple);
+    double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(), asTimeArray::Simple);
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
 
@@ -265,11 +253,6 @@ bool asMethodDownscaler::GetAnalogsSubDates(asResultsDates &results, asParameter
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size() > iPtor);
-            wxASSERT(predictors[iPtor]);
-            criterion->SetDataRange(predictors[iPtor]);
-        }
         criteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
     }
@@ -375,18 +358,11 @@ bool asMethodDownscaler::LoadProjectionData(std::vector<asPredictor *> &predicto
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation in the scenario data loading: %s"), msg);
-        return false;
-    } catch (asException &e) {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty()) {
-            wxLogError(fullMessage);
-        }
-        wxLogError(_("Failed to load data."));
+        wxLogError(_("Bad allocation during scenario data loading: %s"), msg);
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the scenario data loading: %s"), msg);
+        wxLogError(_("Exception during scenario data loading: %s"), msg);
         return false;
     }
 
@@ -398,11 +374,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
                                                                    int iPtor, double timeStartData,
                                                                    double timeEndData)
 {
-    // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
-    // and the predictor dates are aligned with the target dates, but the dates are not the same.
-    double ptorStart = timeStartData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    double ptorEnd = timeEndData - params->GetTimeShiftDays() + params->GetPredictorTimeHours(iStep, iPtor) / 24.0;
-    asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+    // Date array object instantiation for the data loading.
+    double ptorStart = timeStartData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    double ptorEnd = timeEndData + params->GetPredictorTimeAsDays(iStep, iPtor);
+    asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     timeArray.Init();
 
     // Loading the datasets information
@@ -454,13 +429,10 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
     wxLogVerbose(_("Preprocessing data (%d predictor(s)) while loading."), preprocessSize);
 
     for (int iPre = 0; iPre < preprocessSize; iPre++) {
-        // Date array object instantiation for the data loading. The array has the same length than timeArrayArchive,
-        // and the predictor dates are aligned with the target dates, but the dates are not the same.
-        double ptorStart = timeStartData - static_cast<double>(params->GetTimeShiftDays()) +
-                           params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        double ptorEnd = timeEndData - static_cast<double>(params->GetTimeShiftDays()) +
-                         params->GetPreprocessTimeHours(iStep, iPtor, iPre) / 24.0;
-        asTimeArray timeArray(ptorStart, ptorEnd, params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+        // Date array object instantiation for the data loading.
+        double ptorStart = timeStartData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        double ptorEnd = timeEndData + params->GetPreprocessTimeAsDays(iStep, iPtor, iPre);
+        asTimeArray timeArray(ptorStart, ptorEnd, params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
         timeArray.Init();
 
         // Loading the dataset information

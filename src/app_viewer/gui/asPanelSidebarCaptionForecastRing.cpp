@@ -102,7 +102,7 @@ asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDraw
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
 {
-    auto *bmp = new wxBitmap(static_cast<int>(240 * g_ppiScaleDc), static_cast<int>(182 * g_ppiScaleDc));
+    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(182 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context
@@ -150,7 +150,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
 
 void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax)
 {
-    auto *bmp = new wxBitmap(static_cast<int>(240 * g_ppiScaleDc), static_cast<int>(50 * g_ppiScaleDc));
+    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context

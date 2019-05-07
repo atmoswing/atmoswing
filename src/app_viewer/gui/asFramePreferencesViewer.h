@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFramePreferencesViewer__
-#define __asFramePreferencesViewer__
+#ifndef AS_FRAME_PREFERENCES_VIEWER_H
+#define AS_FRAME_PREFERENCES_VIEWER_H
 
 #include "AtmoswingViewerGui.h"
 #include "asIncludes.h"
@@ -56,4 +56,4 @@ private:
     asWorkspace *m_workspace;
 };
 
-#endif // __asFramePreferencesViewer__
+#endif

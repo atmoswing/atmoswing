@@ -25,8 +25,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORNCEPCFSR2_H
-#define ASPREDICTORNCEPCFSR2_H
+#ifndef AS_PREDICTOR_NCEP_CFSR2_H
+#define AS_PREDICTOR_NCEP_CFSR2_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASPREDICTORNCEPCFSR2_H
+#endif

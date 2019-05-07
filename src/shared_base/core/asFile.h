@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASFILE_H
-#define ASFILE_H
+#ifndef AS_FILE_H
+#define AS_FILE_H
 
 #include "asIncludes.h"
 
@@ -78,4 +78,4 @@ protected:
 private:
 };
 
-#endif // ASFILE_H
+#endif

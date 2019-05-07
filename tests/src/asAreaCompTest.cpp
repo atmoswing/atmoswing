@@ -128,7 +128,7 @@ TEST(AreaComp, IsSquareFalse)
     cornerLR.x = 20;
     cornerLR.y = 30;
 
-    EXPECT_THROW(asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR), asException);
+    EXPECT_THROW(asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
 TEST(AreaComp, GetBounds)

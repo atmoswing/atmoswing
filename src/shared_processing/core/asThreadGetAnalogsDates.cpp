@@ -89,14 +89,14 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     // Some other variables
     int iTimeTarg, iTimeArch;
     int predictorsNb = m_params->GetPredictorsNb(m_step);
-    auto membersNb = (unsigned int) (m_pPredictorsTarget)[0]->GetData()[0].size();
+    auto membersNb = (m_pPredictorsTarget)[0]->GetData()[0].size();
     int analogsNb = m_params->GetAnalogsNumber(m_step);
     bool isAsc = (m_criteria[0]->GetOrder() == Asc);
 
     wxASSERT(m_end < timeTargetSelection.size());
     wxASSERT(timeArchiveData.size() == (m_pPredictorsArchive)[0]->GetData().size());
     wxASSERT(timeTargetData.size() <= (m_pPredictorsTarget)[0]->GetData().size());
-    wxASSERT(membersNb == (unsigned int) (m_pPredictorsArchive)[0]->GetData()[0].size());
+    wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
     a1f scoreArrayOneDay(analogsNb);
@@ -107,8 +107,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
     // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
     // the predictors we are interested in, but which didn't take place at the same time.
     asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),
-                                          m_pTimeArrayArchiveSelection->GetEnd(),
-                                          m_params->GetTimeArrayAnalogsTimeStepHours(),
+                                          m_pTimeArrayArchiveSelection->GetEnd(), m_params->GetAnalogsTimeStepHours(),
                                           m_params->GetTimeArrayAnalogsMode());
     dateArrayArchiveSelection.SetForbiddenYears(m_pTimeArrayArchiveSelection->GetForbiddenYears());
 
@@ -128,8 +127,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             iTimeTargStart = iTimeTarg;
 
             // DateArray object initialization.
-            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetTimeArrayAnalogsIntervalDays(),
-                                           m_params->GetTimeArrayAnalogsExcludeDays());
+            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetAnalogsIntervalDays(),
+                                           m_params->GetAnalogsExcludeDays());
 
             // Counter representing the current index
             int counter = 0;
@@ -138,7 +137,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
             dateArrayOneDay.fill(NaNf);
 
             // Loop over the members
-            for (unsigned int iMem = 0; iMem < membersNb; ++iMem) {
+            for (int iMem = 0; iMem < membersNb; ++iMem) {
 
                 // Extract target data
                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
@@ -167,7 +166,7 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                             m_vArchData[iPtor] = &(m_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
 
                             // Assess the criteria
-                            wxASSERT(m_criteria.size() > (unsigned) iPtor);
+                            wxASSERT(m_criteria.size() > iPtor);
                             float tmpScore = m_criteria[iPtor]->Assess(*m_vTargData[iPtor], *m_vArchData[iPtor],
                                                                        m_vRowsNb[iPtor], m_vColsNb[iPtor]);
 
@@ -204,8 +203,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                 }
             }
 
-            if (counter <= analogsNb) {
-                wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
+            if (counter < analogsNb) {
+                wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asThreadGetAnalogsDates)."));
                 wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             }
 

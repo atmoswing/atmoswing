@@ -367,7 +367,7 @@ TEST(Time, GetStringDateMJD)
 {
     double mjd = 55504.43940972211;
 
-    wxString datestr = asTime::GetStringTime(mjd, classic);
+    wxString datestr = asTime::GetStringTime(mjd, DD_MM_YYYY);
 
     int result = datestr.CompareTo(_T("04.11.2010"));
 
@@ -384,7 +384,7 @@ TEST(Time, GetStringDateTimeStruct)
     date.min = 32;
     date.sec = 45;
 
-    wxString datestr = asTime::GetStringTime(date, classic);
+    wxString datestr = asTime::GetStringTime(date, DD_MM_YYYY);
 
     int result = datestr.CompareTo(_T("04.11.2010"));
 
@@ -395,7 +395,7 @@ TEST(Time, GetStringDateReverseMJD)
 {
     double mjd = 55504.43940972211;
 
-    wxString datestr = asTime::GetStringTime(mjd, YYYYMMDD);
+    wxString datestr = asTime::GetStringTime(mjd, YYYY_MM_DD);
 
     int result = datestr.CompareTo(_T("2010/11/04"));
 
@@ -412,26 +412,9 @@ TEST(Time, GetStringDateReverseTimeStruct)
     date.min = 32;
     date.sec = 45;
 
-    wxString datestr = asTime::GetStringTime(date, YYYYMMDD);
+    wxString datestr = asTime::GetStringTime(date, YYYY_MM_DD);
 
     int result = datestr.CompareTo(_T("2010/11/04"));
-
-    EXPECT_EQ(0, result);
-}
-
-TEST(Time, GetStringTimeTimeStruct)
-{
-    Time date;
-    date.year = 2010;
-    date.month = 11;
-    date.day = 4;
-    date.hour = 3;
-    date.min = 5;
-    date.sec = 5;
-
-    wxString datestr = asTime::GetStringTime(date, timeOnly);
-
-    int result = datestr.CompareTo(_T("03:05"));
 
     EXPECT_EQ(0, result);
 }
@@ -454,7 +437,7 @@ TEST(Time, GetTimeFromStringFormatISOdatetime)
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYY)
 {
-    double conversion = asTime::GetTimeFromString("23.11.2007", DDMMYYYY);
+    double conversion = asTime::GetTimeFromString("23.11.2007", DD_MM_YYYY);
     double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -462,7 +445,7 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYY)
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYSlashes)
 {
-    double conversion = asTime::GetTimeFromString("23/11/2007", DDMMYYYY);
+    double conversion = asTime::GetTimeFromString("23/11/2007", DD_MM_YYYY);
     double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -472,12 +455,12 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", DDMMYYYY), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", DD_MM_YYYY), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDD)
 {
-    double conversion = asTime::GetTimeFromString("2007.11.23", YYYYMMDD);
+    double conversion = asTime::GetTimeFromString("2007.11.23", YYYY_MM_DD);
     double mjd = asTime::GetMJD(2007, 11, 23);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -487,12 +470,12 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007", YYYYMMDD), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007", YYYY_MM_DD), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmm)
 {
-    double conversion = asTime::GetTimeFromString("23.11.2007 13:05", DDMMYYYYhhmm);
+    double conversion = asTime::GetTimeFromString("23.11.2007 13:05", DD_MM_YYYY_hh_mm);
     double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -502,12 +485,12 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", DDMMYYYYhhmm), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", DD_MM_YYYY_hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmm)
 {
-    double conversion = asTime::GetTimeFromString("2007.11.23 13:05", YYYYMMDDhhmm);
+    double conversion = asTime::GetTimeFromString("2007.11.23 13:05", YYYY_MM_DD_hh_mm);
     double mjd = asTime::GetMJD(2007, 11, 23, 13, 5);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -517,12 +500,12 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYYMMDDhhmm), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05", YYYY_MM_DD_hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmss)
 {
-    double conversion = asTime::GetTimeFromString("23.11.2007 13:05:01", DDMMYYYYhhmmss);
+    double conversion = asTime::GetTimeFromString("23.11.2007 13:05:01", DD_MM_YYYY_hh_mm_ss);
     double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -532,12 +515,12 @@ TEST(Time, GetTimeFromStringFormatDDMMYYYYhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DDMMYYYYhhmmss), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", DD_MM_YYYY_hh_mm_ss), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmss)
 {
-    double conversion = asTime::GetTimeFromString("2007.11.23 13:05:01", YYYYMMDDhhmmss);
+    double conversion = asTime::GetTimeFromString("2007.11.23 13:05:01", YYYY_MM_DD_hh_mm_ss);
     double mjd = asTime::GetMJD(2007, 11, 23, 13, 5, 1);
 
     EXPECT_DOUBLE_EQ(mjd, conversion);
@@ -547,72 +530,14 @@ TEST(Time, GetTimeFromStringFormatYYYYMMDDhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYYMMDDhhmmss), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.2007 13:05:01", YYYY_MM_DD_hh_mm_ss), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormathhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", hhmm), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowplushours)
-{
-    double conversion = asTime::GetTimeFromString("+2", nowPlusHours);
-    wxString datestr = asTime::GetStringTime(conversion);
-
-    wxPrintf("UTM time +2 hours is %s\n", datestr);
-}
-
-TEST(Time, GetTimeFromStringFormatnowplushoursException)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("+2:23", nowPlusHours), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowplushoursExceptionDot)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("+2.23", nowPlusHours), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowminushours)
-{
-    double conversion = asTime::GetTimeFromString("-2", nowMinusHours);
-    wxString datestr = asTime::GetStringTime(conversion);
-
-    wxPrintf("UTM time -2 hours is %s\n", datestr);
-}
-
-TEST(Time, GetTimeFromStringFormatnowminushoursException)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("-2:23", nowMinusHours), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowminushoursExceptionDot)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("-2.23", nowMinusHours), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignPlus)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("+2", nowMinusHours), asException);
-}
-
-TEST(Time, GetTimeFromStringFormatnowminushoursExceptionSignNo)
-{
-    wxLogNull logNo;
-
-    ASSERT_THROW(asTime::GetTimeFromString("2", nowMinusHours), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", hh_mm), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYY)
@@ -635,7 +560,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDD)
@@ -650,7 +575,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("11.2007", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("11.2007", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmm)
@@ -665,7 +590,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmm)
@@ -680,7 +605,7 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmss)
@@ -695,7 +620,7 @@ TEST(Time, GetTimeFromStringFormatautoDDMMYYYYhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmss)
@@ -710,14 +635,14 @@ TEST(Time, GetTimeFromStringFormatautoYYYYMMDDhhmmssException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("23.11.07 13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautohhmmException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("13:05:01", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushours)
@@ -732,14 +657,14 @@ TEST(Time, GetTimeFromStringFormatautonowplushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2:23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2:23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowplushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2.23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2.23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushours)
@@ -754,28 +679,28 @@ TEST(Time, GetTimeFromStringFormatautonowminushoursException)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2:23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2:23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionDot)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("-2.23", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("-2.23", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignNo)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("2", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("2", guess), std::exception);
 }
 
 TEST(Time, GetTimeFromStringFormatautonowminushoursExceptionSignPlusText)
 {
     wxLogNull logNo;
 
-    ASSERT_THROW(asTime::GetTimeFromString("+2hours", guess), asException);
+    ASSERT_THROW(asTime::GetTimeFromString("+2hours", guess), std::exception);
 }
 
 TEST(Time, AddYear1972)

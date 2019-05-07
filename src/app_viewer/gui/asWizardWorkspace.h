@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asWizardWorkspace__
-#define __asWizardWorkspace__
+#ifndef AS_WIZARD_WORKSPACE_H
+#define AS_WIZARD_WORKSPACE_H
 
 #include "AtmoswingViewerGui.h"
 #include "asWorkspace.h"
@@ -60,4 +60,4 @@ private:
     asWorkspace m_workspace;
 };
 
-#endif // __asWizardWorkspace__
+#endif

@@ -174,7 +174,7 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -197,7 +197,7 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
                     if (!SetDownscalingEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -205,9 +205,9 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -230,10 +230,10 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
                     if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -288,7 +288,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     if (!SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorTimeHours(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
+                    if (!SetPredictorHour(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam)))
@@ -370,7 +370,7 @@ bool asParametersDownscaling::ParsePreprocessedPredictors(asFileParametersDownsc
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
                     if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
@@ -440,23 +440,23 @@ bool asParametersDownscaling::InputsOK() const
         return false;
     }
 
-    if (GetTimeArrayTargetTimeStepHours() <= 0) {
+    if (GetTargetTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
-    if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
+    if (GetAnalogsTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
-        if (GetTimeArrayAnalogsIntervalDays() <= 0) {
+        if (GetAnalogsIntervalDays() <= 0) {
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
-        if (GetTimeArrayAnalogsExcludeDays() <= 0) {
+        if (GetAnalogsExcludeDays() <= 0) {
             wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
@@ -552,12 +552,12 @@ bool asParametersDownscaling::FixTimeLimits()
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
-                    minHour = wxMin(GetPreprocessTimeHours(i, j, k), minHour);
-                    maxHour = wxMax(GetPreprocessTimeHours(i, j, k), maxHour);
+                    minHour = wxMin(GetPreprocessHour(i, j, k), minHour);
+                    maxHour = wxMax(GetPreprocessHour(i, j, k), maxHour);
                 }
             } else {
-                minHour = wxMin(GetPredictorTimeHours(i, j), minHour);
-                maxHour = wxMax(GetPredictorTimeHours(i, j), maxHour);
+                minHour = wxMin(GetPredictorHour(i, j), minHour);
+                maxHour = wxMax(GetPredictorHour(i, j), maxHour);
             }
         }
     }
@@ -629,7 +629,7 @@ bool asParametersDownscaling::SetPredictorProjDataId(int iStep, int iPtor, const
 
 wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         return m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
@@ -644,7 +644,7 @@ bool asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, i
         return false;
     }
 
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
@@ -655,7 +655,7 @@ bool asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, i
 
 wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         return m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessDatasetIds in the parameters object."));
@@ -670,7 +670,7 @@ bool asParametersDownscaling::SetPreprocessProjDataId(int iStep, int iPtor, int 
         return false;
     }
 
-    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.push_back(val);

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ATMOSWINGINC_H_INCLUDED
-#define ATMOSWINGINC_H_INCLUDED
+#ifndef AS_INC_H
+#define AS_INC_H
 
 
 //---------------------------------
@@ -135,6 +135,8 @@
 //---------------------------------
 
 
+#define asThrowException(msg) \
+    throw std::runtime_error((const char*)msg.ToUTF8())
 
 #include "asVersion.h"
 #include "asConfig.h"
@@ -143,7 +145,6 @@
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
 #include "asTypeDefs.h"
-#include "asException.h"
 #include "asUtilities.h"
 #include "asTime.h"
 #include "asThreadsManagerGlobalFunctions.h"
@@ -171,7 +172,7 @@
     #include "asGlobVarsOptimizer.h"
 #endif
 
-#endif // ATMOSWINGINC_H_INCLUDED
+#endif // AS_INC_H
 
 
 //---------------------------------
@@ -201,3 +202,4 @@ wxDECLARE_EVENT(asEVT_ACTION_ANALOG_DATE_SELECTION_CHANGED, wxCommandEvent);
 wxDECLARE_EVENT(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED, wxCommandEvent);
 wxDECLARE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 wxDECLARE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
+

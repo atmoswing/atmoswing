@@ -25,12 +25,12 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASGLOBVARSDOWNSCALER_H_INCLUDED
-#define ASGLOBVARSDOWNSCALER_H_INCLUDED
+#ifndef AS_GLOB_VARS_DOWNSCALER_H
+#define AS_GLOB_VARS_DOWNSCALER_H
 
 #include "asIncludes.h"
 
 extern bool g_local;
 extern int g_runNb;
 
-#endif // ASGLOBVARSDOWNSCALER_H_INCLUDED
+#endif

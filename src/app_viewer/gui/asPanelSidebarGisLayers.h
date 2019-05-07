@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelSidebarGisLayers__
-#define __asPanelSidebarGisLayers__
+#ifndef AS_PANEL_SIDEBAR_GIS_LAYERS_H
+#define AS_PANEL_SIDEBAR_GIS_LAYERS_H
 
 #include "asPanelSidebar.h"
 
@@ -52,4 +52,4 @@ private:
     vrViewerTOCList *m_tocCtrl;
 };
 
-#endif // __asPanelSidebarGisLayers__
+#endif

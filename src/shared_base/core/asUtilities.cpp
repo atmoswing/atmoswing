@@ -785,7 +785,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
     copyDataUniques.reserve(pArrEnd - pArrStart + 1);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -794,7 +794,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
     // Copy data to the final container
     a1i resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 
@@ -803,7 +803,7 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, const int to
 
 a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const float tolerance)
 {
-    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -825,7 +825,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -834,7 +834,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
     // Copy data to the final container
     a1f resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 
@@ -843,7 +843,7 @@ a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, const fl
 
 a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const double tolerance)
 {
-    auto nbNotNans = (unsigned int) asCountNotNaN(pArrStart, pArrEnd);
+    int nbNotNans = asCountNotNaN(pArrStart, pArrEnd);
     int j = 0;
 
     // Copy data to not alter original array
@@ -865,7 +865,7 @@ a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const 
     copyDataUniques.reserve(nbNotNans);
     copyDataUniques.push_back(copyData[0]); // Add first value
 
-    for (unsigned int i = 1; i < copyData.size(); i++) {
+    for (int i = 1; i < copyData.size(); i++) {
         if ((std::abs(copyData[i] - copyData[i - 1]) > tolerance)) {
             copyDataUniques.push_back(copyData[i]);
         }
@@ -874,7 +874,7 @@ a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, const 
     // Copy data to the final container
     a1d resultArray(copyDataUniques.size());
 
-    for (unsigned int i = 0; i < copyDataUniques.size(); i++) {
+    for (int i = 0; i < copyDataUniques.size(); i++) {
         resultArray[i] = copyDataUniques[i];
     }
 
@@ -923,7 +923,7 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -939,12 +939,12 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetValue - *pLast) <= std::abs(targetValue - *(pLast + 1))) {
             if (std::abs(targetValue - *pLast) <= tolerance) {
-                return static_cast<int>(pLast - pArrStart);
+                return int(pLast - pArrStart);
             } else {
                 // Check that the value is within the array. Do it here to allow a margin for the tolerance
                 if (targetValue > *pArrEnd || targetValue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -955,12 +955,12 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
             }
         } else {
             if (std::abs(targetValue - *(pLast + 1)) <= tolerance) {
-                return static_cast<int>(pLast - pArrStart + 1);
+                return int(pLast - pArrStart + 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance
                 if (targetValue > *pArrEnd || targetValue < *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -973,7 +973,7 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
     } else if (*pLast < *pFirst) {
         // Binary search
         while (pFirst <= pLast) {
-            vlength = static_cast<int>(pLast - pFirst);
+            vlength = int(pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetValue - tolerance > *pMid) {
                 pLast = pMid - 1;
@@ -981,7 +981,7 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -997,12 +997,12 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
         // If the value was not found, return closest value inside tolerance
         if (std::abs(targetValue - *pFirst) <= std::abs(targetValue - *(pFirst - 1))) {
             if (std::abs(targetValue - *pFirst) <= tolerance) {
-                return static_cast<int>(pFirst - pArrStart);
+                return int(pFirst - pArrStart);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetValue < *pArrEnd || targetValue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1013,12 +1013,12 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
             }
         } else {
             if (std::abs(targetValue - *(pFirst - 1)) <= tolerance) {
-                return static_cast<int>(pFirst - pArrStart - 1);
+                return int(pFirst - pArrStart - 1);
             } else {
                 // Check that the value is whithin the array. Do it here to allow a margin for the tolerance.
                 if (targetValue < *pArrEnd || targetValue > *pArrStart) {
                     if (showWarning == asSHOW_WARNINGS) {
-                        wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                        wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
                     }
                     return asOUT_OF_RANGE;
                 }
@@ -1078,7 +1078,7 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
         // Check that the value is whithin the array
         if (targetValue > *pLast || targetValue < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1108,22 +1108,22 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
 
         // If the value was not found, return closest value
         if (std::abs(targetValue - *pLast) <= std::abs(targetValue - *(pLast + 1))) {
-            return static_cast<int>(pLast - pArrStart);
+            return int(pLast - pArrStart);
         } else {
-            return static_cast<int>(pLast - pArrStart + 1);
+            return int(pLast - pArrStart + 1);
         }
     } else if (*pLast < *pFirst) {
         // Check that the value is whithin the array
         if (targetValue < *pLast || targetValue > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = static_cast<int>(pLast - pFirst);
+            vlength = int(pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetValue > *pMid) {
                 pLast = pMid - 1;
@@ -1131,7 +1131,7 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -1146,9 +1146,9 @@ int asFindClosestT(const T *pArrStart, const T *pArrEnd, const T targetValue, co
 
         // If the value was not found, return closest value
         if (std::abs(targetValue - *pFirst) <= std::abs(targetValue - *(pFirst - 1))) {
-            return static_cast<int>(pFirst - pArrStart);
+            return int(pFirst - pArrStart);
         } else {
-            return static_cast<int>(pFirst - pArrStart - 1);
+            return int(pFirst - pArrStart - 1);
         }
     } else {
         if (pLast - pFirst == 0) {
@@ -1206,7 +1206,7 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
         // Check that the value is within the array
         if (targetValue - tolerance > *pLast || targetValue + tolerance < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1221,7 +1221,7 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -1233,19 +1233,19 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
         }
 
         // If the value was not found, return floor value
-        return static_cast<int>(pLast - pArrStart);
+        return int(pLast - pArrStart);
     } else if (*pLast < *pFirst) {
         // Check that the value is within the array
         if (targetValue + tolerance < *pLast || targetValue - tolerance > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
 
         // Binary search
         while (pFirst <= pLast) {
-            vlength = static_cast<int>(pLast - pFirst);
+            vlength = int(pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetValue - tolerance > *pMid) {
                 pLast = pMid - 1;
@@ -1253,7 +1253,7 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -1265,7 +1265,7 @@ int asFindFloorT(const T *pArrStart, const T *pArrEnd, const T targetValue, cons
         }
 
         // If the value was not found, return floor value
-        return static_cast<int>(pFirst - pArrStart);
+        return int(pFirst - pArrStart);
     } else {
         if (pLast - pFirst == 0) {
             if (std::abs(*pFirst - targetValue) <= tolerance) {
@@ -1323,7 +1323,7 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
         // Check that the value is within the array
         if (targetValue - tolerance > *pLast || targetValue + tolerance < *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1338,7 +1338,7 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
                 pLast = pMid - 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -1350,12 +1350,12 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
         }
 
         // If the value was not found, return ceil value
-        return static_cast<int>(pLast - pArrStart + 1);
+        return int(pLast - pArrStart + 1);
     } else if (*pLast < *pFirst) {
         // Check that the value is within the array
         if (targetValue + tolerance < *pLast || targetValue - tolerance > *pFirst) {
             if (showWarning == asSHOW_WARNINGS) {
-                wxLogWarning(_("The value (%f) is out of the array range."), static_cast<float>(targetValue));
+                wxLogWarning(_("The value (%f) is out of the array range."), float(targetValue));
             }
             return asOUT_OF_RANGE;
         }
@@ -1370,7 +1370,7 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
                 pFirst = pMid + 1;
             } else {
                 // Return found index
-                return static_cast<int>(pMid - pArrStart);
+                return int(pMid - pArrStart);
             }
         }
 
@@ -1382,7 +1382,7 @@ int asFindCeilT(const T *pArrStart, const T *pArrEnd, const T targetValue, const
         }
 
         // If the value was not found, return ceil value
-        return static_cast<int>(pFirst - pArrStart - 1);
+        return int(pFirst - pArrStart - 1);
     } else {
         if (pLast - pFirst == 0) {
             if (std::abs(*pFirst - targetValue) <= tolerance) {

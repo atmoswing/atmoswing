@@ -28,21 +28,10 @@
 
 #include "asTotalScoreFAR.h"
 
-asTotalScoreFAR::asTotalScoreFAR(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScoreFAR::asTotalScoreFAR(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
-}
-
-asTotalScoreFAR::~asTotalScoreFAR()
-{
-    //dtor
 }
 
 float asTotalScoreFAR::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
@@ -81,7 +70,7 @@ float asTotalScoreFAR::Assess(const a1f &targetDates, const a1f &scores, const a
 
     if (countTot > 0) {
         if (countA + countB > 0) {
-            score = static_cast<float>(countB) / static_cast<float>(countA + countB);
+            score = float(countB) / float(countA + countB);
         } else {
             score = 0;
         }

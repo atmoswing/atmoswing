@@ -557,11 +557,9 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
         wxString msg(ba.what(), wxConvUTF8);
         wxLogError(_("Bad allocation caught: %s"), msg);
         wxLogError(_("Failed to process the calibration."));
-    } catch (asException &e) {
-        wxString fullMessage = e.GetFullMessage();
-        if (!fullMessage.IsEmpty()) {
-            wxLogError(fullMessage);
-        }
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));
     }
 

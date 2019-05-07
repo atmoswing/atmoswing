@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORNCEPREANALYSIS1_H
-#define ASPREDICTORNCEPREANALYSIS1_H
+#ifndef AS_PREDICTOR_NCEP_R1_H
+#define AS_PREDICTOR_NCEP_R1_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // ASPREDICTORNCEPREANALYSIS1_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelForecast__
-#define __asPanelForecast__
+#ifndef AS_PANEL_FORECAST
+#define AS_PANEL_FORECAST
 
 #include "AtmoswingForecasterGui.h"
 #include "images.h"
@@ -75,4 +75,4 @@ private:
     asPanelsManagerForecasts *m_panelsManager;
 };
 
-#endif // __asPanelForecast__
+#endif

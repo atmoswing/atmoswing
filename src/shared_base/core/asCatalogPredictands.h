@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASCATALOGPREDICTAND_H
-#define ASCATALOGPREDICTAND_H
+#ifndef AS_CATALOG_PREDICTAND_H
+#define AS_CATALOG_PREDICTAND_H
 
 #include <asIncludes.h>
 #include "asPredictand.h"
@@ -174,7 +174,7 @@ public:
 
     int GetStationsNb() const
     {
-        return static_cast<int>(m_stations.size());
+        return int(m_stations.size());
     }
 
 protected:
@@ -200,4 +200,4 @@ private:
 
 };
 
-#endif // ASCATALOGPREDICTAND_H
+#endif

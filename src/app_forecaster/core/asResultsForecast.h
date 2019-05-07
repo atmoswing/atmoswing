@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASRESULTSFORECAST_H
-#define ASRESULTSFORECAST_H
+#ifndef AS_RESULTS_FORECAST_H
+#define AS_RESULTS_FORECAST_H
 
 #include <asIncludes.h>
 #include <asResults.h>
@@ -167,14 +167,14 @@ public:
     wxString GetStationOfficialId(int i) const
     {
         wxASSERT(i >= 0);
-        wxASSERT((unsigned) i < m_stationOfficialIds.size());
+        wxASSERT(i < m_stationOfficialIds.size());
         return m_stationOfficialIds[i];
     }
 
     wxString GetStationName(int i) const
     {
         wxASSERT(i >= 0);
-        wxASSERT((unsigned) i < m_stationNames.size());
+        wxASSERT(i < m_stationNames.size());
         return m_stationNames[i];
     }
 
@@ -308,13 +308,13 @@ public:
         m_targetDates = refDates;
     }
 
-    a1f &GetAnalogsCriteria(unsigned int i)
+    a1f &GetAnalogsCriteria(int i)
     {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(unsigned int i, const a1f &analogsCriteria)
+    void SetAnalogsCriteria(int i, const a1f &analogsCriteria)
     {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
@@ -325,13 +325,13 @@ public:
         }
     }
 
-    a2f &GetAnalogsValuesRaw(unsigned int iLead)
+    a2f &GetAnalogsValuesRaw(int iLead)
     {
         wxASSERT(m_analogsValuesRaw.size() > iLead);
         return m_analogsValuesRaw[iLead];
     }
 
-    a1f GetAnalogsValuesRaw(unsigned int iLead, int iStat) const
+    a1f GetAnalogsValuesRaw(int iLead, int iStat) const
     {
         wxASSERT(m_analogsValuesRaw.size() > iLead);
         wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
@@ -339,7 +339,7 @@ public:
         return vals;
     }
 
-    void SetAnalogsValuesRaw(unsigned int iLead, int iStat, const a1f &analogsValuesRaw)
+    void SetAnalogsValuesRaw(int iLead, int iStat, const a1f &analogsValuesRaw)
     {
         if (m_analogsValuesRaw.size() >= iLead + 1) {
             wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
@@ -359,17 +359,17 @@ public:
 
     int GetAnalogsNumber(int i) const
     {
-        wxASSERT(m_analogsDates.size() > (unsigned) i);
+        wxASSERT(m_analogsDates.size() > i);
         return (int) m_analogsDates[i].size();
     }
 
     a1f &GetAnalogsDates(int i)
     {
-        wxASSERT(m_analogsDates.size() > (unsigned) i);
+        wxASSERT(m_analogsDates.size() > i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(unsigned int i, const a1f &analogsDates)
+    void SetAnalogsDates(int i, const a1f &analogsDates)
     {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;
@@ -419,4 +419,4 @@ private:
     va1f m_analogsDates;
 };
 
-#endif // ASRESULTSFORECAST_H
+#endif

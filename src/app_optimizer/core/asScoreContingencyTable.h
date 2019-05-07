@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORECONTINGENCYTABLE_H
-#define ASSCORECONTINGENCYTABLE_H
+#ifndef AS_SCORE_CONTINGENCY_TABLE_H
+#define AS_SCORE_CONTINGENCY_TABLE_H
 
 #include <asIncludes.h>
 #include "asScore.h"
@@ -38,11 +38,11 @@ class asScoreContingencyTable
 public:
     asScoreContingencyTable();
 
-    ~asScoreContingencyTable();
+    ~asScoreContingencyTable() override = default;
 
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const;
+    float Assess(float observedVal, const a1f &values, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
 protected:
 

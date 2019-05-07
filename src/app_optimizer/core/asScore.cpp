@@ -27,22 +27,22 @@
  */
 
 #include "asScore.h"
-#include "asScoreCRPSS.h"
+#include "asScoreBS.h"
+#include "asScoreBSS.h"
 #include "asScoreCRPSAR.h"
 #include "asScoreCRPSEP.h"
+#include "asScoreCRPSHersbachDecomp.h"
+#include "asScoreCRPSS.h"
 #include "asScoreCRPSaccurAR.h"
 #include "asScoreCRPSaccurEP.h"
 #include "asScoreCRPSsharpAR.h"
 #include "asScoreCRPSsharpEP.h"
-#include "asScoreCRPSHersbachDecomp.h"
-#include "asScoreDF0.h"
 #include "asScoreContingencyTable.h"
+#include "asScoreDF0.h"
 #include "asScoreMAE.h"
-#include "asScoreRMSE.h"
-#include "asScoreBS.h"
-#include "asScoreBSS.h"
-#include "asScoreSEEPS.h"
+#include "asScoreMSE.h"
 #include "asScoreRankHistogram.h"
+#include "asScoreSEEPS.h"
 
 asScore::asScore()
         : m_score(Undefined),
@@ -51,6 +51,7 @@ asScore::asScore()
           m_scaleWorst(NaNf),
           m_usesClimatology(false),
           m_singleValue(true),
+          m_onMean(false),
           m_scoreClimatology(0),
           m_threshold(NaNf),
           m_quantile(NaNf)
@@ -68,6 +69,7 @@ asScore::asScore(Score score, const wxString &name, const wxString &fullname, Or
           m_scaleWorst(scaleWorst),
           m_usesClimatology(usesClimatology),
           m_singleValue(singleValue),
+          m_onMean(false),
           m_scoreClimatology(0),
           m_threshold(NaNf),
           m_quantile(NaNf)
@@ -166,8 +168,12 @@ asScore *asScore::GetInstance(Score scoreEnum)
             asScore *score = new asScoreMAE();
             return score;
         }
+        case (MSE): {
+            asScore *score = new asScoreMSE();
+            return score;
+        }
         case (RMSE): {
-            asScore *score = new asScoreRMSE();
+            asScore *score = new asScoreMSE();
             return score;
         }
         case (BS): {
@@ -271,8 +277,11 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     } else if (scoreString.CmpNoCase("MAE") == 0) {
         asScore *score = new asScoreMAE();
         return score;
+    } else if (scoreString.CmpNoCase("MSE") == 0) {
+        asScore *score = new asScoreMSE();
+        return score;
     } else if (scoreString.CmpNoCase("RMSE") == 0) {
-        asScore *score = new asScoreRMSE();
+        asScore *score = new asScoreMSE();
         return score;
     } else if (scoreString.CmpNoCase("BS") == 0) {
         asScore *score = new asScoreBS();
@@ -296,17 +305,17 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     }
 }
 
-a1f asScore::AssessOnArray(float observedVal, const a1f &forcastVals, int nbElements) const
+a1f asScore::AssessOnArray(float obs, const a1f &values, int nbElements) const
 {
     wxLogError(_("This asScore class has no AssessOnArrays method implemented !"));
 
     return a1f();
 }
 
-bool asScore::CheckObservedValue(float observedVal) const
+bool asScore::CheckObservedValue(float obs) const
 {
     // Check that the observed value is not a NaN
-    if (asIsNaN(observedVal)) {
+    if (asIsNaN(obs)) {
         wxLogVerbose(_("The observed value is a NaN for the score calculation."));
         return false;
     }
@@ -314,13 +323,13 @@ bool asScore::CheckObservedValue(float observedVal) const
     return true;
 }
 
-bool asScore::CheckVectorLength(const a1f &forcastVals, int nbElements) const
+bool asScore::CheckVectorLength(const a1f &values, int nbElements) const
 {
     // Check the element numbers vs vector length
-    wxASSERT_MSG(forcastVals.rows() >= nbElements,
+    wxASSERT_MSG(values.rows() >= nbElements,
                  _("The required elements number is above the vector length in the score calculation."));
     wxASSERT(nbElements > 1);
-    if (forcastVals.rows() < nbElements) {
+    if (values.rows() < nbElements) {
         wxLogError(_("The required elements number is above the vector length in the score calculation."));
         return false;
     }
@@ -328,24 +337,13 @@ bool asScore::CheckVectorLength(const a1f &forcastVals, int nbElements) const
     return true;
 }
 
-int asScore::CleanNans(const a1f &forcastVals, a1f &forcastValsSorted, int nbElements) const
+int asScore::CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const
 {
     // Remove the NaNs and copy content
-    int nbPredict = 0, nbNans = 0;
-    int iVal = 0;
-    while (nbPredict < nbElements) {
-        // Add a check to not overflow the array
-        if (iVal >= nbElements) {
-            if (iVal == forcastVals.rows()) {
-                wxLogWarning(_("Tried to access an element outside of the vector in the score calculation."));
-                wxLogWarning(_("Desired analogs nb (%d), Usable elements nb (%d), NaNs (%d) ."), nbElements, nbPredict,
-                             nbNans);
-                break;
-            }
-        }
-
-        if (!asIsNaN(forcastVals[iVal])) {
-            forcastValsSorted(nbPredict) = forcastVals[iVal];
+    int nbPredict = 0, nbNans = 0, iVal = 0;
+    while (iVal < nbElements) {
+        if (!asIsNaN(valuesIn[iVal])) {
+            valuesOut(nbPredict) = valuesIn[iVal];
             nbPredict++;
         } else {
             nbNans++;

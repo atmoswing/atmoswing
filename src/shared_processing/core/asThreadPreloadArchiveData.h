@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTHREADPRELOADDATA_H
-#define ASTHREADPRELOADDATA_H
+#ifndef AS_THREAD_PRELOAD_DATA_H
+#define AS_THREAD_PRELOAD_DATA_H
 
 #include <asThread.h>
 #include <asIncludes.h>
@@ -52,4 +52,4 @@ private:
     int m_iDat;
 };
 
-#endif // ASTHREADPRELOADDATA_H
+#endif

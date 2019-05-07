@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPROCESSORSCORE_H
-#define ASPROCESSORSCORE_H
+#ifndef AS_PROCESSOR_SCORE_H
+#define AS_PROCESSOR_SCORE_H
 
 #include <asIncludes.h>
 

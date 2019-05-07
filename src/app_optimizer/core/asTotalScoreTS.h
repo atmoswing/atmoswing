@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTOTALSCORETS_H
-#define ASTOTALSCORETS_H
+#ifndef AS_TOTAL_SCORE_TS_H
+#define AS_TOTAL_SCORE_TS_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -36,13 +36,11 @@ class asTotalScoreTS
         : public asTotalScore
 {
 public:
-    asTotalScoreTS(Period period);
+    explicit asTotalScoreTS(const wxString &periodString);
 
-    asTotalScoreTS(const wxString &periodString);
+    ~asTotalScoreTS() override = default;
 
-    virtual ~asTotalScoreTS();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 
@@ -50,4 +48,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORETS_H
+#endif

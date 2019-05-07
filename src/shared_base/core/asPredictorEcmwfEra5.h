@@ -22,15 +22,34 @@
  */
 
 /*
- * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
+ * Portions Copyright 2017-2019 Pascal Horton, University of Bern.
  */
 
-#include "asException.h"
-#include "gtest/gtest.h"
+#ifndef AS_PREDICTOR_ECMWF_ERA5_H
+#define AS_PREDICTOR_ECMWF_ERA5_H
 
+#include <asIncludes.h>
+#include <asPredictor.h>
 
-TEST(Exception, ThrowException)
+class asArea;
+
+class asPredictorEcmwfEra5
+        : public asPredictor
 {
-    wxLogNull logNo;
-    ASSERT_THROW(asThrowException("My exception"), asException);
-}
+public:
+    explicit asPredictorEcmwfEra5(const wxString &dataId);
+
+    ~asPredictorEcmwfEra5() override = default;
+
+    bool Init() override;
+
+protected:
+    void ListFiles(asTimeArray &timeArray) override;
+
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+
+private:
+
+};
+
+#endif

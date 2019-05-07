@@ -26,8 +26,8 @@
  * Portions Copyright 2014 Renaud Marty, DREAL.
  */
 
-#ifndef ASTOTALSCORECRPSPOTENTIAL_H
-#define ASTOTALSCORECRPSPOTENTIAL_H
+#ifndef AS_TOTAL_SCORE_CRPS_POTENTIAL_H
+#define AS_TOTAL_SCORE_CRPS_POTENTIAL_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -36,19 +36,17 @@ class asTotalScoreCRPSpotential
         : public asTotalScore
 {
 public:
-    asTotalScoreCRPSpotential(Period period);
+    explicit asTotalScoreCRPSpotential(const wxString &periodString);
 
-    asTotalScoreCRPSpotential(const wxString &periodString);
+    ~asTotalScoreCRPSpotential() override = default;
 
-    virtual ~asTotalScoreCRPSpotential();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override
     {
         wxLogError(_("The CRPS score needs a 2D array as input !"));
         return NaNf;
     }
 
-    float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const override;
 
 protected:
 
@@ -56,4 +54,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORECRPSPOTENTIAL_H
+#endif

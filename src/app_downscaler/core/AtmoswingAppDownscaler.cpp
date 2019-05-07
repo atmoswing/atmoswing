@@ -124,7 +124,7 @@ bool AtmoswingAppDownscaler::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
     if (g_guiMode) {
@@ -330,13 +330,13 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log().SetLevel(static_cast<int>(logLevel));
+            Log().SetLevel(int(logLevel));
         } else {
             Log().SetLevel(2);
         }
     } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log().SetLevel(static_cast<int>(logLevel));
+        Log().SetLevel(int(logLevel));
     }
 
     // Check for a downscaling params file
@@ -411,6 +411,10 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         wxLogVerbose(_("Given downscaling method: %s"), m_downscalingMethod);
         return true;
+    } else {
+        parser.Usage();
+
+        return false;
     }
 
     return wxAppConsole::OnCmdLineParsed(parser);
@@ -454,12 +458,9 @@ int AtmoswingAppDownscaler::OnRun()
             wxString msg(ba.what(), wxConvUTF8);
             wxLogError(_("Bad allocation caught: %s"), msg);
             return 1011;
-        } catch (asException &e) {
-            wxString fullMessage = e.GetFullMessage();
-            if (!fullMessage.IsEmpty()) {
-                wxLogError(fullMessage);
-            }
-            wxLogError(_("Failed to process the downscaling."));
+        } catch (std::exception &e) {
+            wxString msg(e.what(), wxConvUTF8);
+            wxLogError(_("Exception caught: %s"), msg);
             return 1010;
         }
 

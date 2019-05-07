@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTOROPERIFSFORECAST_H
-#define ASPREDICTOROPERIFSFORECAST_H
+#ifndef AS_PREDICTOR_OPER_IFS_FORECAST_H
+#define AS_PREDICTOR_OPER_IFS_FORECAST_H
 
 #include <asIncludes.h>
 #include <asPredictorEcmwfIfsGrib.h>
@@ -53,4 +53,4 @@ private:
 
 };
 
-#endif // ASPREDICTOROPERIFSFORECAST_H
+#endif

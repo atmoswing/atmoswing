@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
-#define ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
+#ifndef AS_TOTAL_SCORE_RANK_HISTOGRAM_RELIABILITY_H
+#define AS_TOTAL_SCORE_RANK_HISTOGRAM_RELIABILITY_H
 
 #include <asIncludes.h>
 #include <asTotalScore.h>
@@ -35,13 +35,11 @@ class asTotalScoreRankHistogramReliability
         : public asTotalScore
 {
 public:
-    asTotalScoreRankHistogramReliability(Period period);
+    explicit asTotalScoreRankHistogramReliability(const wxString &periodString);
 
-    asTotalScoreRankHistogramReliability(const wxString &periodString);
+    ~asTotalScoreRankHistogramReliability() override = default;
 
-    virtual ~asTotalScoreRankHistogramReliability();
-
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
     float AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const;
 
@@ -51,4 +49,4 @@ private:
 
 };
 
-#endif // ASTOTALSCORERANKHISTOGRAMRELIABILITY_H
+#endif

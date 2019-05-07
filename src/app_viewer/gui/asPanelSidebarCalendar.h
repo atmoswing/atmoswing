@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asPanelSidebarCalendar__
-#define __asPanelSidebarCalendar__
+#ifndef AS_PANEL_SIDEBAR_CALENDAR_H
+#define AS_PANEL_SIDEBAR_CALENDAR_H
 
 #include "asPanelSidebar.h"
 
@@ -54,4 +54,4 @@ private:
     wxBitmapButton *m_bpButtonNow;
 };
 
-#endif // __asPanelSidebar__
+#endif

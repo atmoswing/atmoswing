@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef asThreadViewerLayerManagerZoomIn_H
-#define asThreadViewerLayerManagerZoomIn_H
+#ifndef AS_THREAD_VIEWER_LAYER_MANAGER_ZOOM_IN_H
+#define AS_THREAD_VIEWER_LAYER_MANAGER_ZOOM_IN_H
 
 #include <asThread.h>
 #include <asIncludes.h>
@@ -51,4 +51,4 @@ private:
     vrRealRect m_rect;
 };
 
-#endif // asThreadViewerLayerManagerZoomIn_H
+#endif

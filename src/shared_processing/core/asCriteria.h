@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASPREDICTORCRITERIA_H
-#define ASPREDICTORCRITERIA_H
+#ifndef AS_CRITERIA_H
+#define AS_CRITERIA_H
 
 #include <asIncludes.h>
 
@@ -45,11 +45,6 @@ public:
     ~asCriteria() override;
 
     virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
-
-    bool NeedsDataRange() const
-    {
-        return m_needsDataRange;
-    }
 
     void SetDataRange(const asPredictor *data);
 
@@ -94,9 +89,6 @@ protected:
     wxString m_fullName;
     Order m_order;
     int m_minPointsNb;
-    bool m_needsDataRange;
-    float m_dataMin;
-    float m_dataMax;
     float m_scaleBest;
     float m_scaleWorst;
     bool m_canUseInline;

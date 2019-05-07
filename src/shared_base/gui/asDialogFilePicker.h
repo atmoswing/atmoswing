@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef __asDialogFilePicker__
-#define __asDialogFilePicker__
+#ifndef AS_DIALOG_FILE_PICKER_H
+#define AS_DIALOG_FILE_PICKER_H
 
 #include "AtmoswingSharedGui.h"
 #include <asIncludes.h>
@@ -49,4 +49,4 @@ public:
 
 };
 
-#endif // __asDialogFilePicker__
+#endif

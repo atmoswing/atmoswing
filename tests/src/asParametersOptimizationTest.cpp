@@ -46,13 +46,13 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_EQ(asTime::GetMJD(2008, 12, 31), params.GetArchiveEnd());
     EXPECT_EQ(asTime::GetMJD(1970, 1, 1), params.GetCalibrationStart());
     EXPECT_EQ(asTime::GetMJD(2000, 12, 31), params.GetCalibrationEnd());
-    EXPECT_EQ(24, params.GetTimeArrayAnalogsTimeStepHours());
-    EXPECT_EQ(24, params.GetTimeArrayTargetTimeStepHours());
+    EXPECT_EQ(24, params.GetAnalogsTimeStepHours());
+    EXPECT_EQ(24, params.GetTargetTimeStepHours());
     EXPECT_EQ(1, params.GetTimeArrayAnalogsIntervalDaysIteration());
     EXPECT_EQ(10, params.GetTimeArrayAnalogsIntervalDaysLowerLimit());
     EXPECT_EQ(182, params.GetTimeArrayAnalogsIntervalDaysUpperLimit());
     EXPECT_FALSE(params.IsTimeArrayAnalogsIntervalDaysLocked());
-    EXPECT_EQ(60, params.GetTimeArrayAnalogsExcludeDays());
+    EXPECT_EQ(60, params.GetAnalogsExcludeDays());
     EXPECT_TRUE(params.GetTimeArrayAnalogsMode().IsSameAs("days_interval"));
     EXPECT_TRUE(params.GetTimeArrayTargetMode().IsSameAs("simple"));
 
@@ -65,10 +65,10 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_TRUE(params.GetPredictorDatasetId(0, 0).IsSameAs("NCEP_R-1"));
     EXPECT_TRUE(params.GetPredictorDataId(0, 0).IsSameAs("hgt"));
     EXPECT_EQ(500, params.GetPredictorLevel(0, 0));
-    EXPECT_EQ(6, params.GetPredictorTimeHoursIteration(0, 0));
-    EXPECT_EQ(-48, params.GetPredictorTimeHoursLowerLimit(0, 0));
-    EXPECT_EQ(48, params.GetPredictorTimeHoursUpperLimit(0, 0));
-    EXPECT_FALSE(params.IsPredictorTimeHoursLocked(0, 0));
+    EXPECT_EQ(6, params.GetPredictorHoursIteration(0, 0));
+    EXPECT_EQ(-48, params.GetPredictorHoursLowerLimit(0, 0));
+    EXPECT_EQ(48, params.GetPredictorHoursUpperLimit(0, 0));
+    EXPECT_FALSE(params.IsPredictorHourLocked(0, 0));
     EXPECT_TRUE(params.GetPredictorGridType(0, 0).IsSameAs("regular"));
     EXPECT_EQ(2.5, params.GetPredictorXminIteration(0, 0));
     EXPECT_EQ(300, params.GetPredictorXminLowerLimit(0, 0));
@@ -101,9 +101,9 @@ TEST(ParametersOptimization, LoadFromFile)
     EXPECT_EQ(2, params.GetPreprocessLevelVector(0, 1, 0).size());
     EXPECT_EQ(850, params.GetPreprocessLevelVector(0, 1, 0)[0]);
     EXPECT_EQ(1000, params.GetPreprocessLevelVector(0, 1, 0)[1]);
-    EXPECT_EQ(6, params.GetPreprocessTimeHoursIteration(0, 1, 0));
-    EXPECT_EQ(-6, params.GetPreprocessTimeHoursLowerLimit(0, 1, 0));
-    EXPECT_EQ(24, params.GetPreprocessTimeHoursUpperLimit(0, 1, 0));
+    EXPECT_EQ(6, params.GetPreprocessHoursIteration(0, 1, 0));
+    EXPECT_EQ(-6, params.GetPreprocessHoursLowerLimit(0, 1, 0));
+    EXPECT_EQ(24, params.GetPreprocessHoursUpperLimit(0, 1, 0));
     EXPECT_TRUE(params.GetPredictorGridType(0, 1).IsSameAs("regular"));
     EXPECT_EQ(2.5, params.GetPredictorXminIteration(0, 1));
     EXPECT_EQ(300, params.GetPredictorXminLowerLimit(0, 1));

@@ -86,7 +86,7 @@ bool asMethodCalibrator::Manager()
     // Calibrate
     if (Calibrate(params)) {
         // Display processing time
-        wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+        wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
         wxLogStatus(_("Calibration over."));
 #endif
@@ -141,7 +141,7 @@ void asMethodCalibrator::RemoveNaNsInTemp()
     std::vector<asParametersCalibration> copyParametersTemp;
     vf copyScoresCalibTemp;
 
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         if (!asIsNaN(m_scoresCalibTemp[i])) {
             copyScoresCalibTemp.push_back(m_scoresCalibTemp[i]);
             copyParametersTemp.push_back(m_parametersTemp[i]);
@@ -200,10 +200,10 @@ bool asMethodCalibrator::SortScoresAndParametersTemp()
 
     // Sort the parameters sets as the scores
     std::vector<asParametersCalibration> copyParameters;
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         copyParameters.push_back(m_parametersTemp[i]);
     }
-    for (unsigned int i = 0; i < m_scoresCalibTemp.size(); i++) {
+    for (int i = 0; i < m_scoresCalibTemp.size(); i++) {
         int index = (int) vIndices(i);
         m_parametersTemp[i] = copyParameters[index];
     }
@@ -274,7 +274,7 @@ bool asMethodCalibrator::KeepIfBetter(asParametersCalibration &params, asResults
 bool asMethodCalibrator::SetSelectedParameters(asResultsParametersArray &results)
 {
     // Extract selected parameters & best parameters
-    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+    for (int i = 0; i < m_parameters.size(); i++) {
         results.Add(m_parameters[i], m_scoresCalib[i], m_scoreValid);
     }
 
@@ -290,7 +290,7 @@ bool asMethodCalibrator::SetBestParameters(asResultsParametersArray &results)
     float bestScore = m_scoresCalib[0];
     int bestScoreRow = 0;
 
-    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+    for (int i = 0; i < m_parameters.size(); i++) {
         if (m_scoreOrder == Asc) {
             if (m_scoresCalib[i] < bestScore) {
                 bestScore = m_scoresCalib[i];
@@ -339,18 +339,12 @@ wxString asMethodCalibrator::GetPredictandStationIdsList(vi &stationIds) const
 
 double asMethodCalibrator::GetTimeStartCalibration(asParametersScoring *params) const
 {
-    double timeStartCalibration = params->GetCalibrationStart();
-    timeStartCalibration += std::abs(params->GetTimeShiftDays());
-
-    return timeStartCalibration;
+    return params->GetCalibrationStart() + params->GetTimeShiftDays();
 }
 
 double asMethodCalibrator::GetTimeEndCalibration(asParametersScoring *params) const
 {
-    double timeEndCalibration = params->GetCalibrationEnd();
-    timeEndCalibration = wxMin(timeEndCalibration, timeEndCalibration - params->GetTimeSpanDays());
-
-    return timeEndCalibration;
+    return params->GetCalibrationEnd() - params->GetTimeSpanDays();
 }
 
 double asMethodCalibrator::GetEffectiveArchiveDataStart(asParameters *params) const
@@ -373,7 +367,7 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
 
     // Get start and end dates
     a1d predictandTime = m_predictandDB->GetTime();
-    auto predictandTimeDays = static_cast<float>(params->GetPredictandTimeHours() / 24.0);
+    auto predictandTimeDays = float(params->GetPredictandTimeHours() / 24.0);
     double timeStart, timeEnd;
     timeStart = wxMax(predictandTime[0], params->GetCalibrationStart());
     timeStart = floor(timeStart) + predictandTimeDays;
@@ -428,8 +422,8 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
 
     // Get index step
     double predictandTimeStep = predictandTime[1] - predictandTime[0];
-    double targetTimeStep = params->GetTimeArrayTargetTimeStepHours() / 24.0;
-    int indexStep = static_cast<int>(targetTimeStep / predictandTimeStep);
+    double targetTimeStep = params->GetTargetTimeStepHours() / 24.0;
+    int indexStep = int(targetTimeStep / predictandTimeStep);
 
     // Get vector length
     int dataLength = (indexPredictandTimeEnd - indexPredictandTimeStart) / indexStep + 1;
@@ -460,7 +454,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 
     // Archive date array
     asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
-                                 params->GetTimeArrayAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+                                 params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
     if (params->HasValidationPeriod()) // remove validation years
     {
         timeArrayArchive.SetForbiddenYears(params->GetValidationYearsVector());
@@ -469,7 +463,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 
     // Target date array
     asTimeArray timeArrayTarget(GetTimeStartCalibration(params), GetTimeEndCalibration(params),
-                                params->GetTimeArrayTargetTimeStepHours(), params->GetTimeArrayTargetMode());
+                                params->GetTargetTimeStepHours(), params->GetTimeArrayTargetMode());
 
     // Remove validation years
     if (!m_validationMode && params->HasValidationPeriod())
@@ -504,10 +498,14 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     }
 
     // Data date array
-    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params)); // Always Jan 1st
+    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
     double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
-    asTimeArray timeArrayData(timeStartData, timeEndData, params->GetTimeArrayAnalogsTimeStepHours(),
-                              params->GetTimeArrayTargetMode());
+    wxString timeArrayMode = params->GetTimeArrayAnalogsMode();
+    if (timeArrayMode.IsSameAs("days_interval")) {
+        timeArrayMode = "simple";
+    }
+    asTimeArray timeArrayData(timeStartData, timeEndData, params->GetAnalogsTimeStepHours(),
+                              timeArrayMode);
     timeArrayData.Init();
 
     // Check on the archive length
@@ -531,11 +529,6 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         // Instantiate a score object
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size() > iPtor);
-            wxASSERT(predictors[iPtor]);
-            criterion->SetDataRange(predictors[iPtor]);
-        }
         criteria.push_back(criterion);
     }
 
@@ -543,7 +536,7 @@ bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersSc
 #ifdef _DEBUG
     int prevTimeSize = 0;
 
-    for (unsigned int i = 0; i < predictors.size(); i++) {
+    for (int i = 0; i < predictors.size(); i++) {
         if (i > 0) {
             wxASSERT(predictors[i]->GetTimeSize() == prevTimeSize);
         }
@@ -586,9 +579,8 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     // Date array object instantiation for the processor
     wxLogVerbose(_("Creating a date arrays for the processor."));
     double timeStart = params->GetArchiveStart();
-    double timeEnd = params->GetArchiveEnd();
-    timeEnd = wxMin(timeEnd, timeEnd - params->GetTimeSpanDays()); // Adjust so the predictors search won't overtake the array
-    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetTimeArrayAnalogsTimeStepHours(),
+    double timeEnd = params->GetArchiveEnd() - params->GetTimeSpanDays();
+    asTimeArray timeArrayArchive(timeStart, timeEnd, params->GetAnalogsTimeStepHours(),
                                  params->GetTimeArrayTargetMode());
     timeArrayArchive.Init();
     wxLogVerbose(_("Date arrays created."));
@@ -606,11 +598,6 @@ bool asMethodCalibrator::GetAnalogsSubDates(asResultsDates &results, asParameter
     for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
         wxLogVerbose(_("Creating a criterion object."));
         asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));
-        if (criterion->NeedsDataRange()) {
-            wxASSERT(predictors.size() > iPtor);
-            wxASSERT(predictors[iPtor]);
-            criterion->SetDataRange(predictors[iPtor]);
-        }
         criteria.push_back(criterion);
         wxLogVerbose(_("Criterion object created."));
     }
@@ -670,6 +657,7 @@ bool asMethodCalibrator::GetAnalogsScores(asResultsScores &results, asParameters
     asScore *score = asScore::GetInstance(params->GetScoreName());
     score->SetQuantile(params->GetScoreQuantile());
     score->SetThreshold(params->GetScoreThreshold());
+    score->SetOnMean(params->GetOnMean());
 
     if (score->UsesClimatology() && m_scoreClimatology.empty()) {
         wxLogVerbose(_("Processing the score of the climatology."));
@@ -710,9 +698,9 @@ bool asMethodCalibrator::GetAnalogsTotalScore(asResultsTotalScore &results, asPa
     double timeStart = params->GetCalibrationStart();
     double timeEnd = params->GetCalibrationEnd() + 1;
     while (timeEnd > params->GetCalibrationEnd() + 0.999) {
-        timeEnd -= params->GetTimeArrayTargetTimeStepHours() / 24.0;
+        timeEnd -= params->GetTargetTimeStepHours() / 24.0;
     }
-    asTimeArray timeArray(timeStart, timeEnd, params->GetTimeArrayTargetTimeStepHours(), params->GetScoreTimeArrayMode());
+    asTimeArray timeArray(timeStart, timeEnd, params->GetTargetTimeStepHours(), params->GetScoreTimeArrayMode());
 
     // TODO: Add every options for the Init function (generic version)
     //    timeArray.Init(params->GetScoreTimeArrayDate(), params->GetForecastScoreTimeArrayIntervalDays());
@@ -736,7 +724,7 @@ bool asMethodCalibrator::SubProcessAnalogsNumber(asParametersCalibration &params
     vi analogsNbVect = params.GetAnalogsNumberVector(iStep);
 
     // Cannot be superior to previous analogs nb
-    int rowEnd = static_cast<int>(analogsNbVect.size() - 1);
+    int rowEnd = int(analogsNbVect.size() - 1);
     if (iStep > 0) {
         int prevAnalogsNb = params.GetAnalogsNumber(iStep - 1);
         if (prevAnalogsNb < analogsNbVect[analogsNbVect.size() - 1]) {

@@ -72,7 +72,7 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Create a result object to save the parameters sets
     vi stationId = params.GetPredictandStationIds();
-    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray results_all;
     results_all.Init(wxString::Format(_("station_%s_tested_parameters"),
                                       GetPredictandStationIdsList(stationId).c_str()));
@@ -159,7 +159,7 @@ bool asMethodOptimizerRandomSet::Manager()
                                                                       &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
-                    wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
+                    wxASSERT(m_scoresCalib.size() <= m_paramsNb);
 
                     // Increment iterator
                     IncrementIterator();
@@ -184,7 +184,7 @@ bool asMethodOptimizerRandomSet::Manager()
                                                                       &m_scoreClimatology);
                     ThreadsManager().AddThread(thread);
 
-                    wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
+                    wxASSERT(m_scoresCalib.size() <= m_paramsNb);
 
                     // Increment iterator
                     IncrementIterator();
@@ -194,7 +194,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 ThreadsManager().Wait(threadType);
 
                 // Check results
-                for (unsigned int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
+                for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
                     if (asIsNaN(m_scoresCalib[iCheck])) {
                         wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
                                    (int) m_scoresCalib.size());
@@ -254,7 +254,7 @@ bool asMethodOptimizerRandomSet::Manager()
                 } else {
                     m_scoresCalibTemp.push_back(anaScoreFinal.GetScore());
                 }
-                wxASSERT(m_scoresCalib.size() <= (unsigned) m_paramsNb);
+                wxASSERT(m_scoresCalib.size() <= m_paramsNb);
 
                 // Save all tested parameters in a text file
                 results_all.Add(params, anaScoreFinal.GetScore());
@@ -266,7 +266,7 @@ bool asMethodOptimizerRandomSet::Manager()
     }
 
     // Display processing time
-    wxLogMessage(_("The whole processing took %.3f min to execute"), static_cast<float>(sw.Time()) / 60000.0f);
+    wxLogMessage(_("The whole processing took %.3f min to execute"), float(sw.Time()) / 60000.0f);
 #if wxUSE_GUI
     wxLogStatus(_("Optimization over."));
 #endif
@@ -299,7 +299,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     params.InitRandomValues();
 
     // Create the corresponding number of parameters
-    m_scoresCalib.resize((unsigned long) m_paramsNb);
+    m_scoresCalib.resize((long) m_paramsNb);
     for (int iVar = 0; iVar < m_paramsNb; iVar++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;
@@ -332,7 +332,7 @@ bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &res
     float bestscore = m_scoresCalib[0];
     int bestscorerow = 0;
 
-    for (unsigned int i = 0; i < m_parameters.size(); i++) {
+    for (int i = 0; i < m_parameters.size(); i++) {
         if (m_scoreOrder == Asc) {
             if (m_scoresCalib[i] < bestscore) {
                 bestscore = m_scoresCalib[i];

@@ -57,7 +57,7 @@ void asResultsParametersArray::BuildFileName(const wxString &fileTag)
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
-    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), concentrate);
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
 }
 
@@ -104,7 +104,7 @@ bool asResultsParametersArray::Print() const
     wxString content = wxEmptyString;
 
     // Write every parameter one after the other
-    for (unsigned int iParam = 0; iParam < m_parameters.size(); iParam++) {
+    for (int iParam = 0; iParam < m_parameters.size(); iParam++) {
         content.Append(m_parameters[iParam].Print());
         content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[iParam]));
         content.Append(wxString::Format("Valid\t%e", m_scoresValid[iParam]));
@@ -112,14 +112,14 @@ bool asResultsParametersArray::Print() const
     }
 
     // Write every parameter for scores on array one after the other
-    for (unsigned int iParam = 0; iParam < m_parametersForScoreOnArray.size(); iParam++) {
+    for (int iParam = 0; iParam < m_parametersForScoreOnArray.size(); iParam++) {
         content.Append(m_parametersForScoreOnArray[iParam].Print());
         content.Append("Calib\t");
-        for (unsigned int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {
+        for (int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {
             content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[iParam][iRow]));
         }
         content.Append("Valid\t");
-        for (unsigned int iRow = 0; iRow < m_scoresValidForScoreOnArray[iParam].size(); iRow++) {
+        for (int iRow = 0; iRow < m_scoresValidForScoreOnArray[iParam].size(); iRow++) {
             content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[iParam][iRow]));
         }
         content.Append("\n");

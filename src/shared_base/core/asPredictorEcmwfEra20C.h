@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPREDICTORECMWFERA20C_H
-#define ASPREDICTORECMWFERA20C_H
+#ifndef AS_PREDICTOR_ECMWF_ERA20C_H
+#define AS_PREDICTOR_ECMWF_ERA20C_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORECMWFERA20C_H
+#endif

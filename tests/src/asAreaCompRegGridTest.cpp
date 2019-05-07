@@ -112,7 +112,7 @@ TEST(AreaCompRegGrid, CheckConsistencyException)
     double yMin = 40;
     double yWidth = -10;
     double step = 2.5;
-    ASSERT_THROW(asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step), asException);
+    ASSERT_THROW(asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step), std::exception);
 }
 
 TEST(AreaCompRegGrid, IsRectangleTrue)
@@ -145,7 +145,7 @@ TEST(AreaCompRegGrid, IsRectangleFalse)
     cornerLR.x = 20;
     cornerLR.y = 30;
     double step = 2.5;
-    ASSERT_THROW(asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), asException);
+    ASSERT_THROW(asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), std::exception);
 }
 
 TEST(AreaCompRegGrid, GetBounds)

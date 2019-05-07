@@ -28,21 +28,10 @@
 
 #include "asTotalScorePC.h"
 
-asTotalScorePC::asTotalScorePC(Period period)
-        : asTotalScore(period)
-{
-
-}
-
 asTotalScorePC::asTotalScorePC(const wxString &periodString)
         : asTotalScore(periodString)
 {
 
-}
-
-asTotalScorePC::~asTotalScorePC()
-{
-    //dtor
 }
 
 float asTotalScorePC::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
@@ -80,7 +69,7 @@ float asTotalScorePC::Assess(const a1f &targetDates, const a1f &scores, const as
     float score;
 
     if (countTot > 0) {
-        score = static_cast<float>(countA + countD) / static_cast<float>(countTot);
+        score = float(countA + countD) / float(countTot);
     } else {
         score = NaNf;
     }

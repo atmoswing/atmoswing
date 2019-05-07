@@ -39,25 +39,25 @@ asScoreRankHistogram::~asScoreRankHistogram()
     //dtor
 }
 
-float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, int nbElements) const
+float asScoreRankHistogram::Assess(float obs, const a1f &values, int nbElements) const
 {
-    wxASSERT(forcastVals.size() > 1);
+    wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
     // Check inputs
-    if (!CheckObservedValue(observedVal)) {
+    if (!CheckObservedValue(obs)) {
         return NaNf;
     }
-    if (!CheckVectorLength(forcastVals, nbElements)) {
+    if (!CheckVectorLength(values, nbElements)) {
         wxLogWarning(_("Problems in a vector length."));
         return NaNf;
     }
 
     // Create the container to sort the data
-    a1f x = forcastVals;
+    a1f x = values;
 
     // NaNs are not allowed as it messes up the ranks
-    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(observedVal)) {
+    if (asHasNaN(&x[0], &x[nbElements - 1]) || asIsNaN(obs)) {
         wxLogError(_("NaNs were found in the Rank Histogram processing function. Cannot continue."));
         return NaNf;
     }
@@ -66,13 +66,13 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
     asSortArray(&x[0], &x[nbElements - 1], Asc);
 
     // Get rank
-    if (observedVal < x[0]) {
+    if (obs < x[0]) {
         return 1;
-    } else if (observedVal > x[nbElements - 1]) {
+    } else if (obs > x[nbElements - 1]) {
         return nbElements + 1;
     } else {
         // Check if exact value can be found
-        int indExact = asFind(&x[0], &x[nbElements - 1], observedVal, 0.0, asHIDE_WARNINGS);
+        int indExact = asFind(&x[0], &x[nbElements - 1], obs, 0.0, asHIDE_WARNINGS);
 
         if (indExact != asOUT_OF_RANGE && indExact != asNOT_FOUND) {
             // If the exact value was found in the analogs
@@ -83,13 +83,13 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
 
             // Find first occurrence
             int indFirst = 0;
-            while (indFirst < nbElements && x[indFirst] < observedVal) {
+            while (indFirst < nbElements && x[indFirst] < obs) {
                 indFirst++;
             }
 
             // Count the number of same values
             int m = 1;
-            while (indFirst + m < nbElements && x[indFirst + m] == observedVal) {
+            while (indFirst + m < nbElements && x[indFirst + m] == obs) {
                 m++;
             }
 
@@ -124,7 +124,7 @@ float asScoreRankHistogram::Assess(float observedVal, const a1f &forcastVals, in
 
         } else {
             // Indices for the left
-            int indLeft = asFindFloor(&x[0], &x[nbElements - 1], observedVal);
+            int indLeft = asFindFloor(&x[0], &x[nbElements - 1], obs);
             wxASSERT(indLeft >= 0);
 
             return indLeft + 2; // as the indices are 0-based + element on the left side

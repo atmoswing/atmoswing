@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSOPTIMIZATION_H
-#define ASPARAMETERSOPTIMIZATION_H
+#ifndef AS_PARAMETERS_OPTIMIZATION_H
+#define AS_PARAMETERS_OPTIMIZATION_H
 
 #include "asIncludes.h"
 #include <asParametersScoring.h>
@@ -68,7 +68,7 @@ public:
 
     bool FixTimeLimits();
 
-    void FixTimeHours();
+    void FixHours();
 
     bool FixWeights();
 
@@ -120,40 +120,40 @@ public:
         return true;
     }
 
-    double GetPreprocessTimeHoursIteration(int iStep, int iPtor, int iPre)
+    double GetPreprocessHoursIteration(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPre);
-        return m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
+        return m_stepsIteration[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
-    bool SetPreprocessTimeHoursIteration(int iStep, int iPtor, int iPre, double val)
+    bool SetPreprocessHoursIteration(int iStep, int iPtor, int iPre, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided iteration value for the preprocess time frame is null"));
             return false;
         }
 
-        if (m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+        if (m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            m_stepsIteration[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
-            m_stepsIteration[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            wxASSERT(m_stepsIteration[iStep].predictors[iPtor].preprocessHours.size() == iPre);
+            m_stepsIteration[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
     }
 
-    double GetPredictorTimeHoursIteration(int iStep, int iPtor)
+    double GetPredictorHoursIteration(int iStep, int iPtor)
     {
-        return m_stepsIteration[iStep].predictors[iPtor].timeHours;
+        return m_stepsIteration[iStep].predictors[iPtor].hour;
     }
 
-    bool SetPredictorTimeHoursIteration(int iStep, int iPtor, double val)
+    bool SetPredictorHoursIteration(int iStep, int iPtor, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsIteration[iStep].predictors[iPtor].timeHours = val;
+        m_stepsIteration[iStep].predictors[iPtor].hour = val;
         return true;
     }
 
@@ -262,40 +262,40 @@ public:
         return true;
     }
 
-    double GetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre)
+    double GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPre);
-        return m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+        wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
+        return m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
-    bool SetPreprocessTimeHoursUpperLimit(int iStep, int iPtor, int iPre, double val)
+    bool SetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided upper value value for the preprocess time frame is null"));
             return false;
         }
 
-        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+        if (m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
-            m_stepsUpperLimit[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            wxASSERT(m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.size() == iPre);
+            m_stepsUpperLimit[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
     }
 
-    double GetPredictorTimeHoursUpperLimit(int iStep, int iPtor)
+    double GetPredictorHoursUpperLimit(int iStep, int iPtor)
     {
-        return m_stepsUpperLimit[iStep].predictors[iPtor].timeHours;
+        return m_stepsUpperLimit[iStep].predictors[iPtor].hour;
     }
 
-    bool SetPredictorTimeHoursUpperLimit(int iStep, int iPtor, double val)
+    bool SetPredictorHoursUpperLimit(int iStep, int iPtor, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsUpperLimit[iStep].predictors[iPtor].timeHours = val;
+        m_stepsUpperLimit[iStep].predictors[iPtor].hour = val;
         return true;
     }
 
@@ -404,40 +404,40 @@ public:
         return true;
     }
 
-    double GetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre)
+    double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre)
     {
-        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPre);
-        return m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre];
+        wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() > iPre);
+        return m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours[iPre];
     }
 
-    bool SetPreprocessTimeHoursLowerLimit(int iStep, int iPtor, int iPre, double val)
+    bool SetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided lower value value for the preprocess time frame is null"));
             return false;
         }
 
-        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() >= (unsigned) (iPre + 1)) {
-            m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours[iPre] = val;
+        if (m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
+            m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
-            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPre);
-            m_stepsLowerLimit[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            wxASSERT(m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.size() == iPre);
+            m_stepsLowerLimit[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
         return true;
     }
 
-    double GetPredictorTimeHoursLowerLimit(int iStep, int iPtor)
+    double GetPredictorHoursLowerLimit(int iStep, int iPtor)
     {
-        return m_stepsLowerLimit[iStep].predictors[iPtor].timeHours;
+        return m_stepsLowerLimit[iStep].predictors[iPtor].hour;
     }
 
-    bool SetPredictorTimeHoursLowerLimit(int iStep, int iPtor, double val)
+    bool SetPredictorHoursLowerLimit(int iStep, int iPtor, double val)
     {
         if (asIsNaN(val)) {
             wxLogError(_("The provided value for the time frame is null"));
             return false;
         }
-        m_stepsLowerLimit[iStep].predictors[iPtor].timeHours = val;
+        m_stepsLowerLimit[iStep].predictors[iPtor].hour = val;
         return true;
     }
 
@@ -538,60 +538,60 @@ public:
 
     bool IsPreprocessDataIdLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > (unsigned) iPreess);
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > iPreess);
         return m_stepsLocks[iStep].predictors[iPtor].preprocessDataId[iPreess];
     }
 
     void SetPreprocessDataIdLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > (unsigned) (iPreess)) {
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() > iPreess) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessDataId[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.size() == iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessDataId.push_back(val);
         }
     }
 
     bool IsPreprocessLevelLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > (unsigned) iPreess);
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > iPreess);
         return m_stepsLocks[iStep].predictors[iPtor].preprocessLevels[iPreess];
     }
 
     void SetPreprocessLevelLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > (unsigned) (iPreess)) {
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() > iPreess) {
             m_stepsLocks[iStep].predictors[iPtor].preprocessLevels[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() == (unsigned) iPreess);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.size() == iPreess);
             m_stepsLocks[iStep].predictors[iPtor].preprocessLevels.push_back(val);
         }
     }
 
-    bool IsPreprocessTimeHoursLocked(int iStep, int iPtor, int iPreess)
+    bool IsPreprocessHourLocked(int iStep, int iPtor, int iPreess)
     {
-        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) iPreess);
-        return m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours[iPreess];
+        wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > iPreess);
+        return m_stepsLocks[iStep].predictors[iPtor].preprocessHours[iPreess];
     }
 
-    void SetPreprocessTimeHoursLock(int iStep, int iPtor, int iPreess, bool val)
+    void SetPreprocessHourLock(int iStep, int iPtor, int iPreess, bool val)
     {
-        if (m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() > (unsigned) (iPreess)) {
-            m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours[iPreess] = val;
+        if (m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() > iPreess) {
+            m_stepsLocks[iStep].predictors[iPtor].preprocessHours[iPreess] = val;
         } else {
-            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.size() == (unsigned) iPreess);
-            m_stepsLocks[iStep].predictors[iPtor].preprocessTimeHours.push_back(val);
+            wxASSERT(m_stepsLocks[iStep].predictors[iPtor].preprocessHours.size() == iPreess);
+            m_stepsLocks[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
     }
 
-    bool IsPredictorTimeHoursLocked(int iStep, int iPtor)
+    bool IsPredictorHourLocked(int iStep, int iPtor)
     {
-        return m_stepsLocks[iStep].predictors[iPtor].timeHours;
+        return m_stepsLocks[iStep].predictors[iPtor].hours;
     }
 
-    void SetPredictorTimeHoursLock(int iStep, int iPtor, bool val)
+    void SetPredictorHourLock(int iStep, int iPtor, bool val)
     {
-        m_stepsLocks[iStep].predictors[iPtor].timeHours = val;
+        m_stepsLocks[iStep].predictors[iPtor].hours = val;
     }
 
     bool IsPredictorDataIdLocked(int iStep, int iPtor)
@@ -711,4 +711,4 @@ private:
 
 };
 
-#endif // ASPARAMETERSOPTIMIZATION_H
+#endif

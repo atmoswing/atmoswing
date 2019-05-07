@@ -25,8 +25,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORPROJCORDEX_H
-#define ASPREDICTORPROJCORDEX_H
+#ifndef AS_PREDICTOR_PROJ_CORDEX_H
+#define AS_PREDICTOR_PROJ_CORDEX_H
 
 #include <asIncludes.h>
 #include <asPredictorProj.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORPROJCORDEX_H
+#endif

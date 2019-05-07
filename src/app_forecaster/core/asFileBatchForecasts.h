@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEBATCHFORECASTS_H
-#define ASFILEBATCHFORECASTS_H
+#ifndef AS_FILE_BATCH_FORECASTS_H
+#define AS_FILE_BATCH_FORECASTS_H
 
 #include <asIncludes.h>
 #include <asFileXml.h>
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif // ASFILEBATCHFORECASTS_H
+#endif

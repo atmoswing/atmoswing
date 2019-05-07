@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODFORECASTING_H
-#define ASMETHODFORECASTING_H
+#ifndef AS_METHOD_FORECASTING_H
+#define AS_METHOD_FORECASTING_H
 
 #include <asIncludes.h>
 #include <asMethodStandard.h>
@@ -105,4 +105,4 @@ private:
     std::vector<asCriteria *> m_storageCriteria;
 };
 
-#endif // ASMETHODFORECASTING_H
+#endif

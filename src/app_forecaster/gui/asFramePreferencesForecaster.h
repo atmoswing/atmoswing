@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFramePreferencesForecaster__
-#define __asFramePreferencesForecaster__
+#ifndef AS_FRAME_PREFERENCES_FORECASTER
+#define AS_FRAME_PREFERENCES_FORECASTER
 
 #include "AtmoswingForecasterGui.h"
 #include <asIncludes.h>
@@ -59,4 +59,4 @@ private:
     asBatchForecasts *m_batchForecasts;
 };
 
-#endif // __asFramePreferencesForecaster__
+#endif

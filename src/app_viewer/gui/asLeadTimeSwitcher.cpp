@@ -38,7 +38,7 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace,
           m_forecastManager(forecastManager),
           m_bmp(nullptr),
           m_gdc(nullptr),
-          m_cellWidth(static_cast<int>(40 * g_ppiScaleDc)),
+          m_cellWidth(int(40 * g_ppiScaleDc)),
           m_leadTime(0)
 {
     Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);

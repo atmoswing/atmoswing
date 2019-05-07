@@ -85,7 +85,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             end = ceil(((float) (iThread + 1) * (float) (fileNames.size() - 1) / (float) parallelRequests));
             wxASSERT(!fileNames.empty());
             wxASSERT(end >= start);
-            wxASSERT_MSG((unsigned) end < fileNames.size(),
+            wxASSERT_MSG(end < fileNames.size(),
                          wxString::Format("Size of fileNames = %d, desired end = %d", (int) fileNames.size(), end));
 
             auto *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy,
@@ -139,7 +139,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             // Set a timeout period (in seconds) on the amount of time that the server is allowed to take in order to generate a response message for a command before the session is considered hung.
             curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 10);
 
-            for (unsigned int iFile = 0; iFile < urls.size(); iFile++) {
+            for (int iFile = 0; iFile < urls.size(); iFile++) {
                 wxString fileName = fileNames[iFile];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[iFile];
@@ -203,7 +203,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
                     // Log in case of failure
                     if (CURLE_OK != res) {
-                        wxLogWarning(_("Failed downloading file. Curl error code: %d"), static_cast<int>(res));
+                        wxLogWarning(_("Failed downloading file. Curl error code: %d"), int(res));
                         wxLogWarning(_("Curl error message: %s"), errorbuffer);
                         wxDELETEA(errorbuffer);
                         return asFAILED;

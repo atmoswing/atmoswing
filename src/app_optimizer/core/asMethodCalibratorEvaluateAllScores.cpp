@@ -91,10 +91,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                                 wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep,
                                                  iPtor, iPre));
                     }
-                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
+                    if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("preprocessTimeHours (step %d, predictor %d, preprocess %d), ", iStep,
+                                wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ", iStep,
                                                  iPtor, iPre));
                     }
                 }
@@ -109,9 +109,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 checkSizes = false;
                 errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorTimeHoursVector(iStep, iPtor).size() > 1) {
+            if (params.GetPredictorHourVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(wxString::Format("PredictorHours (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorXminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
@@ -144,9 +144,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                         checkSizes = false;
                         errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
                     }
-                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
+                    if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessTimeHoursV (step %d, predictor %d), ", iStep,
+                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep,
                                                            iPtor));
                     }
                 }
@@ -170,7 +170,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     // Extract the stations IDs
     vvi stationsId = params.GetPredictandStationIdsVector();
 
-    for (unsigned int iStat = 0; iStat < stationsId.size(); iStat++) {
+    for (int iStat = 0; iStat < stationsId.size(); iStat++) {
         ClearAll();
 
         vi stationId = stationsId[iStat];
@@ -286,10 +286,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             quantiles.push_back(0.6f);
             quantiles.push_back(0.9f);
 
-            for (unsigned int iScore = 0; iScore < scoresContingency.size(); iScore++) {
+            for (int iScore = 0; iScore < scoresContingency.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresContingency[iScore]);
-                for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
-                    for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
+                for (int iThres = 0; iThres < thresholds.size(); iThres++) {
+                    for (int iPc = 0; iPc < quantiles.size(); iPc++) {
                         params.SetScoreName(scoresContingency[iScore]);
                         params.SetScoreQuantile(quantiles[iPc]);
                         params.SetScoreThreshold(thresholds[iThres]);
@@ -312,9 +312,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresQuantile.push_back("RMSE"); // RMSE - Root mean squared error
             scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
 
-            for (unsigned int iScore = 0; iScore < scoresQuantile.size(); iScore++) {
+            for (int iScore = 0; iScore < scoresQuantile.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresQuantile[iScore]);
-                for (unsigned int iPc = 0; iPc < quantiles.size(); iPc++) {
+                for (int iPc = 0; iPc < quantiles.size(); iPc++) {
                     params.SetScoreName(scoresQuantile[iScore]);
                     params.SetScoreQuantile(quantiles[iPc]);
                     if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
@@ -334,9 +334,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresThreshold.push_back("BS"); // BS - Brier score
             scoresThreshold.push_back("BSS"); // BSS - Brier skill score
 
-            for (unsigned int iScore = 0; iScore < scoresThreshold.size(); iScore++) {
+            for (int iScore = 0; iScore < scoresThreshold.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresThreshold[iScore]);
-                for (unsigned int iThres = 0; iThres < thresholds.size(); iThres++) {
+                for (int iThres = 0; iThres < thresholds.size(); iThres++) {
                     params.SetScoreName(scoresThreshold[iScore]);
                     params.SetScoreThreshold(thresholds[iThres]);
                     if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
@@ -370,7 +370,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
             scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
 
-            for (unsigned int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
+            for (int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresContinuous[iScore]);
                 params.SetScoreName(scoresContinuous[iScore]);
                 if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
@@ -433,7 +433,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             int scoresSize = anaScores.GetScores().size();
             int scoresSizeValid = anaScoresValid.GetScores().size();
 
-            asTotalScoreRankHistogramReliability rankHistogramReliability(asTotalScore::Total);
+            asTotalScoreRankHistogramReliability rankHistogramReliability("Total");
             rankHistogramReliability.SetRanksNb(params.GetScoreAnalogsNumber() + 1);
             float resultCalib = rankHistogramReliability.AssessOnBootstrap(averageHistoCalib, scoresSize);
             float resultValid = rankHistogramReliability.AssessOnBootstrap(averageHistoValid, scoresSizeValid);

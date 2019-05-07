@@ -25,8 +25,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORECMWFIFSGRIB_H
-#define ASPREDICTORECMWFIFSGRIB_H
+#ifndef AS_PREDICTOR_ECMWF_IFS_GRIB_H
+#define AS_PREDICTOR_ECMWF_IFS_GRIB_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASPREDICTORECMWFIFSGRIB_H
+#endif

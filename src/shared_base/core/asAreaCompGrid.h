@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asAreaCompositeGrid_H
-#define asAreaCompositeGrid_H
+#ifndef AS_AREA_COMPOSITE_GRID_H
+#define AS_AREA_COMPOSITE_GRID_H
 
 #include <asIncludes.h>
 #include <asAreaComp.h>
@@ -137,4 +137,4 @@ private:
     void HandleMissing180(const a1d &lons);
 };
 
-#endif // asAreaCompositeGrid_H
+#endif

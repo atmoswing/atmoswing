@@ -42,6 +42,7 @@ asParametersScoring::asParametersScoring()
     m_score.postprocess = false;
     m_score.postprocessDupliExp = 0;
     m_score.postprocessMethod = wxEmptyString;
+    m_score.onMean = false;
     m_score.threshold = NaNf;
     m_score.quantile = NaNf;
 }
@@ -61,7 +62,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
     predictor.xPtsNb.push_back(0);
     predictor.yMin.push_back(0);
     predictor.yPtsNb.push_back(0);
-    predictor.timeHours.push_back(0);
+    predictor.hours.push_back(0);
     predictor.criteria.push_back("");
     predictor.weight.push_back(1);
 
@@ -128,7 +129,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     }
 
     wxString timeArrayTimeStep;
-    timeArrayTimeStep << GetTimeArrayTargetTimeStepHours();
+    timeArrayTimeStep << GetTargetTimeStepHours();
     nodeTime->AddChild(fileParams.CreateNodeWithValue("time_step", timeArrayTimeStep));
 
     wxXmlNode *nodeTimeArrayTarget = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_target");
@@ -146,8 +147,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     wxXmlNode *nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
     nodeTime->AddChild(nodeTimeArrayAnalogs);
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayAnalogsMode()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetTimeArrayAnalogsIntervalDays()));
-    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetTimeArrayAnalogsExcludeDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("interval_days", GetAnalogsIntervalDays()));
+    nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetAnalogsExcludeDays()));
 
     fileParams.AddChild(nodeTime);
 
@@ -183,14 +184,14 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                     nodePreprocessingData->AddChild(
                             fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("time", GetPreprocessTimeHours(iStep, iPtor, iPre)));
+                            fileParams.CreateNodeWithValue("time", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
                 nodePredictor->AddChild(
                         fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
-                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorTimeHours(iStep, iPtor)));
+                nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHour(iStep, iPtor)));
             }
 
             wxXmlNode *nodeWindow = new wxXmlNode(wxXML_ELEMENT_NODE, "spatial_window");
@@ -332,14 +333,14 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
         return false;
     }
 
-    unsigned int iLeft, iRight;
+    int iLeft, iRight;
     wxString strVal;
 
     // Check that the score is similar
-    iLeft = (unsigned int) stringVals.Find("Score");
+    iLeft = stringVals.Find("Score");
     stringVals = stringVals.SubString(iLeft + 7, stringVals.Length());
     iLeft = 0;
-    iRight = (unsigned int) stringVals.Find("\t");
+    iRight = stringVals.Find("\t");
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);

@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASDIALOGPROGRESSBAR_H
-#define ASDIALOGPROGRESSBAR_H
+#ifndef AS_DIALOG_PROGRESS_BAR_H
+#define AS_DIALOG_PROGRESS_BAR_H
 
 #include <asIncludes.h>
 
@@ -57,4 +57,4 @@ private:
 
 };
 
-#endif // ASDIALOGPROGRESSBAR_H
+#endif

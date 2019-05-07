@@ -56,7 +56,6 @@ if (WIN32)
 
 elseif (APPLE)
 
-    # If mac, use the dynamic library
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
                     gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
@@ -76,10 +75,9 @@ elseif (APPLE)
 
 else ()
 
-    # If linux, use the static library
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                    NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                    NAMES libgdal.a libgdal.so gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
                 PATHS
                     ${GDAL_DIR}/lib
                     ${GDAL_DIR}
@@ -95,7 +93,7 @@ else ()
                 PATH_SUFFIXES gdal)
 
         find_library(GDAL_LIBRARY
-                NAMES libgdal.a gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
+                NAMES libgdal.a libgdal.so gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
 
         find_program(GDAL_CONFIG gdal-config)
 

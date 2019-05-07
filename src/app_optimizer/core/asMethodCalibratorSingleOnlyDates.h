@@ -25,8 +25,8 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef ASMETHODCALIBRATORSINGLEONLYDATES_H
-#define ASMETHODCALIBRATORSINGLEONLYDATES_H
+#ifndef AS_METHOD_CALIBRATOR_SINGLE_ONLY_DATES_H
+#define AS_METHOD_CALIBRATOR_SINGLE_ONLY_DATES_H
 
 #include <asMethodCalibrator.h>
 
@@ -46,4 +46,4 @@ private:
 
 };
 
-#endif // ASMETHODCALIBRATORSINGLEONLYDATES_H
+#endif

@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef asThreadViewerLayerManagerReload_H
-#define asThreadViewerLayerManagerReload_H
+#ifndef AS_THREAD_VIEWER_LAYER_MANAGER_RELOAD_H
+#define AS_THREAD_VIEWER_LAYER_MANAGER_RELOAD_H
 
 #include <asThread.h>
 #include <asIncludes.h>
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif // asThreadViewerLayerManagerReload_H
+#endif

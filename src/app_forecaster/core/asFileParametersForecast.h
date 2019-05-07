@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASFILEPARAMETERSFORECAST_H
-#define ASFILEPARAMETERSFORECAST_H
+#ifndef AS_FILE_PARAMETERS_FORECAST_H
+#define AS_FILE_PARAMETERS_FORECAST_H
 
 #include <asIncludes.h>
 #include <asFileParameters.h>
@@ -49,4 +49,4 @@ protected:
 private:
 };
 
-#endif // ASFILEPARAMETERSFORECAST_H
+#endif

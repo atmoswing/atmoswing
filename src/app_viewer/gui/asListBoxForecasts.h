@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASLISTBOXFORECASTS_H
-#define ASLISTBOXFORECASTS_H
+#ifndef AS_LIST_BOX_FORECASTS_H
+#define AS_LIST_BOX_FORECASTS_H
 
 #include <wx/treectrl.h>
 
@@ -121,4 +121,4 @@ DECLARE_EVENT_TABLE()
 };
 
 
-#endif // ASLISTBOXFORECASTS_H
+#endif

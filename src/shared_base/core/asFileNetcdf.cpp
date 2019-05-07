@@ -477,7 +477,7 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
     auto **cstr = new char *[totSize];
 
     // For each string, allocate memory in the character array and copy
-    for (unsigned long i = 0; i < totSize; i++) {
+    for (long i = 0; i < totSize; i++) {
         wxCharBuffer buffer = (pData + i)->ToUTF8();
         size_t length = strlen(buffer.data());
         cstr[i] = new char[length + 1];
@@ -500,7 +500,7 @@ void asFileNetcdf::PutVarArray(const wxString &varName, const size_t *arrStart, 
         HandleErrorNetcdf();
 
     // Free dynamic memory
-    for (unsigned long i = 0; i < totSize; i++)
+    for (long i = 0; i < totSize; i++)
         delete[] cstr[i];
     delete[] cstr;
 
@@ -1160,7 +1160,7 @@ void asFileNetcdf::GetVar(const wxString &varName, wxString *pValue, const size_
         HandleErrorNetcdf();
 
     // Set in the wxString array
-    for (unsigned int i = 0; i < totSize; i++) {
+    for (int i = 0; i < totSize; i++) {
         wxString val(data[i], wxConvUTF8);
         *(pValue + i) = val;
     }
@@ -1725,7 +1725,7 @@ bool asFileNetcdf::ParseStruct()
     m_struct.uDimIds[0] = unlimDimIds[0];
 
     // Resize array to store the global attributes
-    m_struct.atts.resize((unsigned long) nAtts);
+    m_struct.atts.resize((long) nAtts);
 
     // Get the global attributes
     for (int attId = 0; attId < nAtts; attId++) {
@@ -1804,7 +1804,7 @@ bool asFileNetcdf::ParseStruct()
     }
 
     // Resize arrays to store the variables information
-    m_struct.vars.resize((unsigned long) nVars);
+    m_struct.vars.resize((long) nVars);
 
     // Get information about the variables and get limited variables (1D)
     for (int varId = 0; varId < nVars; varId++) {
@@ -1818,7 +1818,7 @@ bool asFileNetcdf::ParseStruct()
         m_struct.vars[varId].name = wxString(varNameChar, wxConvUTF8);
         m_struct.vars[varId].length = 0;
 
-        m_struct.vars[varId].dimIds.resize((unsigned long) nDimsVar);
+        m_struct.vars[varId].dimIds.resize((long) nDimsVar);
         for (int j = 0; j < nDimsVar; j++) {
             m_struct.vars[varId].dimIds[j] = dimIds[j];
         }
@@ -1831,7 +1831,7 @@ bool asFileNetcdf::ParseStruct()
         }
 
         // Resize array to store the attributes information
-        m_struct.vars[varId].atts.resize((unsigned long) nAttsVar);
+        m_struct.vars[varId].atts.resize((long) nAttsVar);
 
         // Get the attributes information
         for (int attId = 0; attId < nAttsVar; attId++) {

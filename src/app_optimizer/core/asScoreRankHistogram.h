@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASSCORERANKHISTOGRAM_H
-#define ASSCORERANKHISTOGRAM_H
+#ifndef AS_SCORE_RANK_HISTOGRAM_H
+#define AS_SCORE_RANK_HISTOGRAM_H
 
 #include <asIncludes.h>
 #include "asScore.h"
@@ -39,7 +39,7 @@ public:
 
     ~asScoreRankHistogram();
 
-    float Assess(float observedVal, const a1f &forcastVals, int nbElements) const;
+    float Assess(float obs, const a1f &values, int nbElements) const;
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 

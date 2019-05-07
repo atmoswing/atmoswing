@@ -25,14 +25,14 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASVERSION_H
-#define ASVERSION_H
+#ifndef AS_VERSION_H
+#define AS_VERSION_H
 
 #include "wx/string.h"
 
 const int ATMOSWING_MAJOR_VERSION = 2;
-const int ATMOSWING_MINOR_VERSION = 0;
-const int ATMOSWING_PATCH_VERSION = 2;
+const int ATMOSWING_MINOR_VERSION = 1;
+const int ATMOSWING_PATCH_VERSION = 0;
 const extern wxString g_version;
 
 class asVersion
@@ -49,4 +49,4 @@ protected:
 private:
 };
 
-#endif // ASVERSION_H
+#endif

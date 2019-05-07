@@ -304,13 +304,13 @@ TEST(TimeArray, BuildArraySeasonJJA6h)
     asTimeArray timeArray(start, end, timeStep, asTimeArray::JJA);
     timeArray.Init();
 
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 0, 0), timeArray.GetFirst());
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 6, 0), timeArray.GetFirst());
     EXPECT_DOUBLE_EQ(asTime::GetMJD(2008, 8, 31, 18, 0), timeArray.GetLast());
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 6, 0), timeArray[1]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 12, 0), timeArray[2]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 8, 31, 18, 0), timeArray[367]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 0, 0), timeArray[368]);
-    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 6, 0), timeArray[369]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 12, 0), timeArray[1]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 1, 18, 0), timeArray[2]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 8, 31, 18, 0), timeArray[366]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 6, 0), timeArray[367]);
+    EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 12, 0), timeArray[368]);
 }
 
 TEST(TimeArray, BuildArraySeasonDJF24h)

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AtmoswingMAINFORECATSER_H
-#define AtmoswingMAINFORECATSER_H
+#ifndef AS_MAIN_FORECATSER_H
+#define AS_MAIN_FORECATSER_H
 
 #include "asIncludes.h"
 #include "AtmoswingAppForecaster.h"
@@ -50,4 +50,4 @@ private:
     void SetDefaultOptions();
 };
 
-#endif // AtmoswingMAINFORECATSER_H
+#endif

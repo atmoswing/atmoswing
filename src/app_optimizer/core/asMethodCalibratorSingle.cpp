@@ -89,10 +89,10 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                                 wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep,
                                                  iPtor, iPre));
                     }
-                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
+                    if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
                         errorField.Append(
-                                wxString::Format("preprocessTimeHours (step %d, predictor %d, preprocess %d), ", iStep,
+                                wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ", iStep,
                                                  iPtor, iPre));
                     }
                 }
@@ -107,9 +107,9 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                 checkSizes = false;
                 errorField.Append(wxString::Format("PredictorLevel (step %d, predictor %d), ", iStep, iPtor));
             }
-            if (params.GetPredictorTimeHoursVector(iStep, iPtor).size() > 1) {
+            if (params.GetPredictorHourVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
-                errorField.Append(wxString::Format("PredictorTimeHours (step %d, predictor %d), ", iStep, iPtor));
+                errorField.Append(wxString::Format("PredictorHours (step %d, predictor %d), ", iStep, iPtor));
             }
             if (params.GetPredictorXminVector(iStep, iPtor).size() > 1) {
                 checkSizes = false;
@@ -142,9 +142,9 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                         checkSizes = false;
                         errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d), ", iStep, iPtor));
                     }
-                    if (params.GetPreprocessTimeHoursVector(iStep, iPtor, iPre).size() > 1) {
+                    if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessTimeHoursV (step %d, predictor %d), ", iStep,
+                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep,
                                                            iPtor));
                     }
                 }

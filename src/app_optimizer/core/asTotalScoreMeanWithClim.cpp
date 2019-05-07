@@ -27,19 +27,9 @@
 
 #include "asTotalScoreMeanWithClim.h"
 
-asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(Period period)
-        : asTotalScore(period)
-{
-}
-
 asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString &periodString)
         : asTotalScore(periodString)
 {
-}
-
-asTotalScoreMeanWithClim::~asTotalScoreMeanWithClim()
-{
-    //dtor
 }
 
 float asTotalScoreMeanWithClim::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const

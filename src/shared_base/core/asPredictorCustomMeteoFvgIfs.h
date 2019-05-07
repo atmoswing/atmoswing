@@ -25,8 +25,8 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORCUSTOMMETEOFVGIFS_H
-#define ASPREDICTORCUSTOMMETEOFVGIFS_H
+#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
+#define AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
 
 #include <asIncludes.h>
 #include <asPredictorEcmwfIfsGrib.h>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // ASPREDICTORCUSTOMMETEOFVGIFS_H
+#endif

@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFramePlotDistributions__
-#define __asFramePlotDistributions__
+#ifndef AS_FRAME_PLOT_DISTRIBUTIONS_H
+#define AS_FRAME_PLOT_DISTRIBUTIONS_H
 
 #include "AtmoswingViewerGui.h"
 #include "asPanelPlot.h"
@@ -113,4 +113,4 @@ private:
 DECLARE_EVENT_TABLE()
 };
 
-#endif // __asFramePlotDistributions__
+#endif

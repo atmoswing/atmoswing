@@ -93,7 +93,7 @@ asPanelSidebarCaptionForecastDotsDrawing::~asPanelSidebarCaptionForecastDotsDraw
 
 void asPanelSidebarCaptionForecastDotsDrawing::DrawColorbar(double valmax)
 {
-    auto *bmp = new wxBitmap(static_cast<int>(240 * g_ppiScaleDc), static_cast<int>(50 * g_ppiScaleDc));
+    auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
     wxASSERT(bmp);
 
     // Create device context

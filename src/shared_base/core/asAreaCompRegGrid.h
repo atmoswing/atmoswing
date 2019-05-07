@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asAreaCompositeRegularGrid_H
-#define asAreaCompositeRegularGrid_H
+#ifndef AS_AREA_COMPOSITE_REGULAR_GRID_H
+#define AS_AREA_COMPOSITE_REGULAR_GRID_H
 
 #include <asIncludes.h>
 #include <asAreaCompGrid.h>
@@ -65,14 +65,14 @@ public:
     {
         wxASSERT(m_xStep > 0);
         wxASSERT(fmod(m_xStep, m_xStepData) == 0);
-        return static_cast<int>(m_xStep / m_xStepData);
+        return int(m_xStep / m_xStepData);
     }
 
     int GetYstepStride() const
     {
         wxASSERT(m_yStep > 0);
         wxASSERT(fmod(m_yStep, m_yStepData) == 0);
-        return static_cast<int>(m_yStep / m_yStepData);
+        return int(m_yStep / m_yStepData);
     }
 
     void SetSameStepAsData()
@@ -90,4 +90,4 @@ private:
     double m_yStepData;
 };
 
-#endif // asAreaCompositeRegularGrid_H
+#endif

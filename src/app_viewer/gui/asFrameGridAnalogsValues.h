@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFrameGridAnalogsValues__
-#define __asFrameGridAnalogsValues__
+#ifndef AS_FRAME_GRID_ANALOGS_VALUES_H
+#define AS_FRAME_GRID_ANALOGS_VALUES_H
 
 #include "AtmoswingViewerGui.h"
 #include "asIncludes.h"
@@ -66,4 +66,4 @@ private:
     bool UpdateGrid();
 };
 
-#endif // __asFrameGridAnalogsValues__
+#endif

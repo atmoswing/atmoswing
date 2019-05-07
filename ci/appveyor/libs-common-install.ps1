@@ -79,7 +79,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install SQLite
-if(!(Test-Path -Path "$LIB_DIR\include\sqlite.h") -Or $REBUILD_SQLITE) {
+if(!(Test-Path -Path "$LIB_DIR\include\sqlite3.h") -Or $REBUILD_SQLITE) {
   Init-Build "sqlite"
   Download-Lib "sqlite_src" $SQLITE_SRC_URL
   Download-Lib "sqlite_dll" $SQLITE_DLL_URL
@@ -109,6 +109,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj_api.h") -Or $REBUILD_PROJ) {
   cmake -G"Visual Studio 15 2017 Win64" -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
   cmake --build . --config Release > $null
   cmake --build . --config Release --target INSTALL > $null
+  copy "$LIB_DIR\bin\proj*.dll" "$LIB_DIR\bin\proj.dll"
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }

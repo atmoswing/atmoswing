@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __asFramePlotTimeSeries__
-#define __asFramePlotTimeSeries__
+#ifndef AS_FRAME_PLOT_TIMESERIES_H
+#define AS_FRAME_PLOT_TIMESERIES_H
 
 #include "AtmoswingViewerGui.h"
 #include "asPanelPlot.h"
@@ -108,4 +108,4 @@ private:
 DECLARE_EVENT_TABLE()
 };
 
-#endif // __asFramePlotTimeSeries__
+#endif

@@ -176,7 +176,9 @@ void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray)
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
     if (nbFiles == 0) {
-        asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
+        throw std::runtime_error("sdfsdfsdf");
+        //throw "No CMIP5 file found for this pattern : .";
+        //asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
     }
 
     // Sort the list of files

@@ -25,8 +25,8 @@
  * Portions Copyright 2018 Pascal Horton, University of Bern.
  */
 
-#ifndef asAreaCompositeGenGrid_H
-#define asAreaCompositeGenGrid_H
+#ifndef AS_AREA_COMPOSITE_GEN_GRID_H
+#define AS_AREA_COMPOSITE_GEN_GRID_H
 
 #include <asIncludes.h>
 #include <asAreaCompGrid.h>
@@ -64,4 +64,4 @@ private:
 
 };
 
-#endif // asAreaCompositeGenGrid_H
+#endif

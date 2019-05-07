@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef ASPREDICTORECMWFCERA20C_H
-#define ASPREDICTORECMWFCERA20C_H
+#ifndef AS_PREDICTOR_ECMWF_CERA20C_H
+#define AS_PREDICTOR_ECMWF_CERA20C_H
 
 #include <asIncludes.h>
 #include <asPredictor.h>
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ASPREDICTORECMWFCERA20C_H
+#endif

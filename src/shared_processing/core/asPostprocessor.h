@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASPOSTPROCESSOR_H
-#define ASPOSTPROCESSOR_H
+#ifndef AS_POSTPROCESSOR_H
+#define AS_POSTPROCESSOR_H
 
 #include <asIncludes.h>
 
@@ -55,4 +55,4 @@ protected:
 private:
 };
 
-#endif // ASPOSTPROCESSOR_H
+#endif

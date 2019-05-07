@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASMETHODOPTIMIZERGENETICALGORITHMS_H
-#define ASMETHODOPTIMIZERGENETICALGORITHMS_H
+#ifndef AS_METHOD_OPTIMIZER_GENETIC_ALGORITHMS_H
+#define AS_METHOD_OPTIMIZER_GENETIC_ALGORITHMS_H
 
 #include <asMethodOptimizer.h>
 #include <asParametersOptimizationGAs.h>
@@ -130,4 +130,4 @@ private:
 
 };
 
-#endif // ASMETHODOPTIMIZERGENETICALGORITHMS_H
+#endif

@@ -25,12 +25,12 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASGLOBVARSVIEWER_H_INCLUDED
-#define ASGLOBVARSVIEWER_H_INCLUDED
+#ifndef AS_GLOB_VARS_VIEWER_H
+#define AS_GLOB_VARS_VIEWER_H
 
 #include <wx/colour.h>
 #include "asIncludes.h"
 
-extern wxString g_cmdFilename;
+extern wxString g_cmdFileName;
 
-#endif // ASGLOBVARSVIEWER_H_INCLUDED
+#endif

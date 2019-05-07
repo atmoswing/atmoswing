@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASPARAMETERSFORECAST_H
-#define ASPARAMETERSFORECAST_H
+#ifndef AS_PARAMETERS_FORECAST_H
+#define AS_PARAMETERS_FORECAST_H
 
 #include "asIncludes.h"
 #include <asParameters.h>
@@ -198,4 +198,4 @@ private:
     bool ParseAnalogValuesParams(asFileParametersForecast &fileParams, const wxXmlNode *nodeProcess);
 };
 
-#endif // ASPARAMETERSFORECAST_H
+#endif

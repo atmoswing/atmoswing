@@ -50,7 +50,7 @@ void asPanelsManagerForecasts::AddPanel(asPanelForecast *panel)
     panel->SetPanelsManager(this);
 
     // Add to the array
-    unsigned long arraylength = m_arrayPanels.size();
+    long arraylength = m_arrayPanels.size();
     panel->SetId((wxWindowID) arraylength);
     m_arrayPanels.push_back(panel);
 }
@@ -102,7 +102,7 @@ int asPanelsManagerForecasts::GetPanelsNb() const
 
 void asPanelsManagerForecasts::SetForecastLedRunning(int num)
 {
-    if ((unsigned) num < m_arrayPanels.size()) {
+    if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
         if (!led)
             return;
@@ -116,7 +116,7 @@ void asPanelsManagerForecasts::SetForecastLedRunning(int num)
 
 void asPanelsManagerForecasts::SetForecastLedError(int num)
 {
-    if ((unsigned) num < m_arrayPanels.size()) {
+    if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
         if (!led)
             return;
@@ -130,7 +130,7 @@ void asPanelsManagerForecasts::SetForecastLedError(int num)
 
 void asPanelsManagerForecasts::SetForecastLedDone(int num)
 {
-    if ((unsigned) num < m_arrayPanels.size()) {
+    if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
         if (!led)
             return;
@@ -144,7 +144,7 @@ void asPanelsManagerForecasts::SetForecastLedDone(int num)
 
 void asPanelsManagerForecasts::SetForecastLedOff(int num)
 {
-    if ((unsigned) num < m_arrayPanels.size()) {
+    if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
         if (!led)
             return;

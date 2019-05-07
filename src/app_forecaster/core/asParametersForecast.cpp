@@ -173,7 +173,7 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                     if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -192,9 +192,9 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTimeArrayTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
-            if (!SetTimeArrayAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
                 return false;
         } else if (nodeParamBlock->GetName() == "time_array_analogs") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
@@ -203,10 +203,10 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
                     if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsIntervalDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetTimeArrayAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
                         return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
@@ -261,7 +261,7 @@ bool asParametersForecast::ParseAnalogDatesParams(asFileParametersForecast &file
                     if (!SetPredictorLevel(iStep, iPtor, fileParams.GetFloat(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorTimeHours(iStep, iPtor, fileParams.GetDouble(nodeParam)))
+                    if (!SetPredictorHour(iStep, iPtor, fileParams.GetDouble(nodeParam)))
                         return false;
                 } else if (nodeParam->GetName() == "members") {
                     if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
@@ -343,7 +343,7 @@ bool asParametersForecast::ParsePreprocessedPredictors(asFileParametersForecast 
                     if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessTimeHours(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
+                    if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess)))
                         return false;
                 } else if (nodeParamPreprocess->GetName() == "members") {
                     if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
@@ -408,23 +408,23 @@ bool asParametersForecast::InputsOK() const
         return false;
     }
 
-    if (GetTimeArrayTargetTimeStepHours() <= 0) {
+    if (GetTargetTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
-    if (GetTimeArrayAnalogsTimeStepHours() <= 0) {
+    if (GetAnalogsTimeStepHours() <= 0) {
         wxLogError(_("The time step was not provided in the parameters file."));
         return false;
     }
 
     if (GetTimeArrayAnalogsMode().CmpNoCase("interval_days") == 0 ||
         GetTimeArrayAnalogsMode().CmpNoCase("IntervalDays") == 0) {
-        if (GetTimeArrayAnalogsIntervalDays() <= 0) {
+        if (GetAnalogsIntervalDays() <= 0) {
             wxLogError(_("The interval days for the analogs preselection was not provided in the parameters file."));
             return false;
         }
-        if (GetTimeArrayAnalogsExcludeDays() <= 0) {
+        if (GetAnalogsExcludeDays() <= 0) {
             wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
@@ -603,7 +603,7 @@ bool asParametersForecast::SetPredictorRealtimeDataId(int iStep, int iPtor, cons
 
 wxString asParametersForecast::GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
@@ -618,7 +618,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, i
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.push_back(val);
@@ -629,7 +629,7 @@ bool asParametersForecast::SetPreprocessArchiveDatasetId(int iStep, int iPtor, i
 
 wxString asParametersForecast::GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessArchiveDatasetIds in the parameters object."));
@@ -644,7 +644,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int 
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDataIds.push_back(val);
@@ -655,7 +655,7 @@ bool asParametersForecast::SetPreprocessArchiveDataId(int iStep, int iPtor, int 
 
 wxString asParametersForecast::GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -670,7 +670,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, 
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDatasetIds.push_back(val);
@@ -681,7 +681,7 @@ bool asParametersForecast::SetPreprocessRealtimeDatasetId(int iStep, int iPtor, 
 
 wxString asParametersForecast::GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const
 {
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre];
     } else {
         wxLogError(_("Trying to access to an element outside of preprocessRealtimeDatasetIds in the parameters object."));
@@ -696,7 +696,7 @@ bool asParametersForecast::SetPreprocessRealtimeDataId(int iStep, int iPtor, int
         return false;
     }
 
-    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= (unsigned) (iPre + 1)) {
+    if (m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.size() >= iPre + 1) {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds[iPre] = val;
     } else {
         m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeDataIds.push_back(val);

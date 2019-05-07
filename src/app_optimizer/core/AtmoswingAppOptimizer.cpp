@@ -190,7 +190,7 @@ bool AtmoswingAppOptimizer::OnInit()
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
-    g_ppiScaleDc = wxMax(static_cast<double>(ppiDC.x) / 96.0, 1.0);
+    g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
     if (g_guiMode) {
@@ -319,7 +319,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
         if (groupsNb != pConfigRef->GetNumberOfGroups(true)) {
             wxLogError(_("The number of groups (%d) differ from the previous config file (%d)."), groupsNb,
-                       static_cast<int>(pConfigRef->GetNumberOfGroups()));
+                       int(pConfigRef->GetNumberOfGroups()));
             m_forceQuit = true;
         }
 
@@ -761,6 +761,10 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
         return true;
+    } else {
+        parser.Usage();
+
+        return false;
     }
 
     return wxAppConsole::OnCmdLineParsed(parser);
@@ -860,12 +864,9 @@ int AtmoswingAppOptimizer::OnRun()
             wxString msg(ba.what(), wxConvUTF8);
             wxLogError(_("Bad allocation caught: %s"), msg);
             return 1011;
-        } catch (asException &e) {
-            wxString fullMessage = e.GetFullMessage();
-            if (!fullMessage.IsEmpty()) {
-                wxLogError(fullMessage);
-            }
-            wxLogError(_("Failed to process the calibration."));
+        } catch (std::exception &e) {
+            wxString msg(e.what(), wxConvUTF8);
+            wxLogError(_("Exception caught: %s"), msg);
             return 1010;
         }
 

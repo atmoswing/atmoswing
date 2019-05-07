@@ -90,10 +90,10 @@ bool asPreprocessor::PreprocessSimpleGradients(std::vector<asPredictor *> predic
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -121,8 +121,8 @@ bool asPreprocessor::PreprocessSimpleGradients(std::vector<asPredictor *> predic
         xxxxxxxxxxo
     */
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
             tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
                     predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -163,10 +163,10 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -201,8 +201,8 @@ bool asPreprocessor::PreprocessRealGradients(std::vector<asPredictor *> predicto
         xxxxxxxxxxo
     */
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
             tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
                     (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -238,10 +238,10 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(std::vector<as
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -272,8 +272,8 @@ bool asPreprocessor::PreprocessSimpleGradientsWithGaussianWeights(std::vector<as
     a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
     a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
             tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
                     g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -314,10 +314,10 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(std::vector<asPr
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -355,8 +355,8 @@ bool asPreprocessor::PreprocessRealGradientsWithGaussianWeights(std::vector<asPr
     a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
     a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             // Vertical gradients
             tmpgrad.block(0, 0, rowsNb - 1, colsNb) =
                     g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -391,10 +391,10 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 2);
     wxASSERT(colsNb > 2);
@@ -424,8 +424,8 @@ bool asPreprocessor::PreprocessSimpleCurvature(std::vector<asPredictor *> predic
         xxxxxxxxxxo
     */
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
             // Vertical gradients
             tmpgradV = predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -467,10 +467,10 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 2);
     wxASSERT(colsNb > 2);
@@ -507,8 +507,8 @@ bool asPreprocessor::PreprocessRealCurvature(std::vector<asPredictor *> predicto
         xxxxxxxxxxo
     */
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
             // Vertical gradients
             tmpgradV = (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -550,10 +550,10 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 2);
     wxASSERT(colsNb > 2);
@@ -586,8 +586,8 @@ bool asPreprocessor::PreprocessSimpleCurvatureWithGaussianWeights(std::vector<as
     a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
     a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
             // Vertical gradients
             tmpgradV = g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -629,10 +629,10 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 2);
     wxASSERT(colsNb > 2);
@@ -672,8 +672,8 @@ bool asPreprocessor::PreprocessRealCurvatureWithGaussianWeights(std::vector<asPr
     a2f g1 = asCriteria::GetGauss2D(rowsNb, colsNb - 1);
     a2f g2 = asCriteria::GetGauss2D(rowsNb - 1, colsNb);
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
 
             // Vertical gradients
             tmpgradV = g2 * (predictors[0]->GetData()[iTime][iMem].block(1, 0, rowsNb - 1, colsNb) -
@@ -713,10 +713,10 @@ bool asPreprocessor::PreprocessAddition(std::vector<asPredictor *> predictors, a
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -726,9 +726,9 @@ bool asPreprocessor::PreprocessAddition(std::vector<asPredictor *> predictors, a
     // Create container
     vva2f addition(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iPre = 0; iPre < predictors.size(); iPre++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iPre = 0; iPre < predictors.size(); iPre++) {
                 wxASSERT(predictors[iPre]);
                 addition[iTime][iMem] += predictors[iPre]->GetData()[iTime][iMem];
             }
@@ -753,10 +753,10 @@ bool asPreprocessor::PreprocessAverage(std::vector<asPredictor *> predictors, as
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -766,13 +766,13 @@ bool asPreprocessor::PreprocessAverage(std::vector<asPredictor *> predictors, as
     // Create container
     vva2f average(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iPre = 0; iPre < predictors.size(); iPre++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iPre = 0; iPre < predictors.size(); iPre++) {
                 wxASSERT(predictors[iPre]);
                 average[iTime][iMem] += predictors[iPre]->GetData()[iTime][iMem];
             }
-            average[iTime][iMem] /= static_cast<float>(predictors.size());
+            average[iTime][iMem] /= float(predictors.size());
         }
     }
 
@@ -795,10 +795,10 @@ bool asPreprocessor::PreprocessDifference(std::vector<asPredictor *> predictors,
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 1);
     wxASSERT(colsNb > 1);
@@ -808,8 +808,8 @@ bool asPreprocessor::PreprocessDifference(std::vector<asPredictor *> predictors,
     // Create container
     vva2f resdiff(timeSize, va2f(membersNb, a2f::Zero(rowsNb, colsNb)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             resdiff[iTime][iMem] = predictors[0]->GetData()[iTime][iMem] - predictors[1]->GetData()[iTime][iMem];
         }
     }
@@ -832,10 +832,10 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asPredictor *> predict
 
     // Get sizes
     wxASSERT(predictors[0]);
-    auto rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    auto colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    auto timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    auto membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -845,9 +845,9 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asPredictor *> predict
     // Create container
     vva2f multi(timeSize, va2f(membersNb, a2f::Constant(rowsNb, colsNb, 1)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iPre = 0; iPre < predictors.size(); iPre++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iPre = 0; iPre < predictors.size(); iPre++) {
                 wxASSERT(predictors[iPre]);
                 multi[iTime][iMem] *= predictors[iPre]->GetData()[iTime][iMem];
             }
@@ -865,7 +865,7 @@ bool asPreprocessor::PreprocessMultiplication(std::vector<asPredictor *> predict
 bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> predictors, asPredictor *result)
 {
     // More than one predictor
-    unsigned int inputSize = (unsigned int) predictors.size();
+    int inputSize = predictors.size();
     if (inputSize != 4) {
         wxLogError(_("The number of predictors must be equal to 4 in asPreprocessor::PreprocessFormerHumidityIndex"));
         return false;
@@ -882,7 +882,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
     int prevTimeSize = 0;
 #endif // _DEBUG
 
-    for (unsigned int iPre = 0; iPre < predictors.size(); iPre += 2) {
+    for (int iPre = 0; iPre < predictors.size(); iPre += 2) {
         wxASSERT(predictors[iPre]);
         wxASSERT(predictors[iPre + 1]);
 
@@ -922,7 +922,7 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
             asThrowException(_("The predictors sizes make them impossible to merge."));
         }
 
-        va2f tmp((unsigned long) membersNb, a2f(rowsNew, colsNew));
+        va2f tmp((long) membersNb, a2f(rowsNew, colsNew));
 
         for (int iTime = 0; iTime < timeSize; iTime++) {
             for (int iMem = 0; iMem < membersNb; iMem++) {
@@ -942,10 +942,10 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
     }
 
     // Get sizes
-    unsigned int rowsNb = (unsigned int) copyData[0][0][0].rows();
-    unsigned int colsNb = (unsigned int) copyData[0][0][0].cols();
-    unsigned int timeSize = (unsigned int) copyData[0].size();
-    unsigned int membersNb = (unsigned int) copyData[0][0].size();
+    int rowsNb = copyData[0][0][0].rows();
+    int colsNb = copyData[0][0][0].cols();
+    int timeSize = copyData[0].size();
+    int membersNb = copyData[0][0].size();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -955,11 +955,11 @@ bool asPreprocessor::PreprocessFormerHumidityIndex(std::vector<asPredictor *> pr
     // Create container
     vva2f multi(timeSize, va2f(membersNb, a2f::Constant(rowsNb, colsNb, 1)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iRow = 0; iRow < rowsNb; iRow++) {
-                for (unsigned int iCol = 0; iCol < colsNb; iCol++) {
-                    for (unsigned int iPre = 0; iPre < copyData.size(); iPre++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iRow = 0; iRow < rowsNb; iRow++) {
+                for (int iCol = 0; iCol < colsNb; iCol++) {
+                    for (int iPre = 0; iPre < copyData.size(); iPre++) {
                         multi[iTime][iMem](iRow, iCol) *= copyData[iPre][iTime][iMem](iRow, iCol);
                     }
                 }
@@ -991,10 +991,10 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *>
 
     // Handle sizes
     wxASSERT(predictors[0]);
-    unsigned int originalRowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int originalColsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int originalRowsNb = predictors[0]->GetLatPtsnb();
+    int originalColsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(originalRowsNb > 0);
     wxASSERT(originalColsNb > 0);
@@ -1009,9 +1009,9 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *>
     vvva2f copyData = vvva2f(2, vva2f(timeSize, va2f(membersNb, a2f::Zero(newRowsNb, newColsNb))));
 
     // Merge
-    for (unsigned int iHalf = 0; iHalf < 2; iHalf++) {
-        for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-            for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iHalf = 0; iHalf < 2; iHalf++) {
+        for (int iTime = 0; iTime < timeSize; iTime++) {
+            for (int iMem = 0; iMem < membersNb; iMem++) {
 
                 for (int iPre = 0; iPre < inputSize / 2; iPre++) {
                     int iCurr = iHalf * inputSize / 2 + iPre;
@@ -1031,8 +1031,8 @@ bool asPreprocessor::PreprocessMergeByHalfAndMultiply(std::vector<asPredictor *>
     // Create container
     vva2f multi(timeSize, va2f(membersNb, a2f::Zero(newRowsNb, newColsNb)));
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
             for (int iRow = 0; iRow < newRowsNb; iRow++) {
                 for (int iCol = 0; iCol < newColsNb; iCol++) {
                     multi[iTime][iMem](iRow, iCol) = copyData[0][iTime][iMem](iRow, iCol) * copyData[1][iTime][iMem](iRow, iCol);
@@ -1060,7 +1060,7 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictor
     wxASSERT(predictors[0]);
 
 #ifdef _DEBUG
-    for (unsigned int iPre = 0; iPre < predictors.size() - 1; iPre++) {
+    for (int iPre = 0; iPre < predictors.size() - 1; iPre++) {
         wxASSERT(predictors[iPre]->GetData()[0][0].rows() == predictors[iPre + 1]->GetData()[0][0].rows());
         wxASSERT(predictors[iPre]->GetData()[0][0].cols() == predictors[iPre + 1]->GetData()[0][0].cols());
         wxASSERT(predictors[iPre]->GetData().size() == predictors[iPre + 1]->GetData().size());
@@ -1069,10 +1069,10 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictor
 
     // Get sizes
     wxASSERT(predictors[0]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -1084,10 +1084,10 @@ bool asPreprocessor::PreprocessHumidityFlux(std::vector<asPredictor *> predictor
 
     float wind;
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iRow = 0; iRow < rowsNb; iRow++) {
-                for (unsigned int iCol = 0; iCol < colsNb; iCol++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iRow = 0; iRow < rowsNb; iRow++) {
+                for (int iCol = 0; iCol < colsNb; iCol++) {
                     wind = (float) std::sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
                                              predictors[0]->GetData()[iTime][iMem](iRow, iCol) +
                                              predictors[1]->GetData()[iTime][iMem](iRow, iCol) *
@@ -1119,10 +1119,10 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asPredictor *> predictors, 
     // Get sizes
     wxASSERT(predictors[0]);
     wxASSERT(predictors[1]);
-    unsigned int rowsNb = (unsigned int) predictors[0]->GetLatPtsnb();
-    unsigned int colsNb = (unsigned int) predictors[0]->GetLonPtsnb();
-    unsigned int timeSize = (unsigned int) predictors[0]->GetTimeSize();
-    unsigned int membersNb = (unsigned int) predictors[0]->GetMembersNb();
+    int rowsNb = predictors[0]->GetLatPtsnb();
+    int colsNb = predictors[0]->GetLonPtsnb();
+    int timeSize = predictors[0]->GetTimeSize();
+    int membersNb = predictors[0]->GetMembersNb();
 
     wxASSERT(rowsNb > 0);
     wxASSERT(colsNb > 0);
@@ -1134,10 +1134,10 @@ bool asPreprocessor::PreprocessWindSpeed(std::vector<asPredictor *> predictors, 
 
     float wind;
 
-    for (unsigned int iTime = 0; iTime < timeSize; iTime++) {
-        for (unsigned int iMem = 0; iMem < membersNb; iMem++) {
-            for (unsigned int iRow = 0; iRow < rowsNb; iRow++) {
-                for (unsigned int iCol = 0; iCol < colsNb; iCol++) {
+    for (int iTime = 0; iTime < timeSize; iTime++) {
+        for (int iMem = 0; iMem < membersNb; iMem++) {
+            for (int iRow = 0; iRow < rowsNb; iRow++) {
+                for (int iCol = 0; iCol < colsNb; iCol++) {
                     // Get wind value
                     wind = (float) std::sqrt(predictors[0]->GetData()[iTime][iMem](iRow, iCol) *
                                              predictors[0]->GetData()[iTime][iMem](iRow, iCol) +

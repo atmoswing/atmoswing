@@ -28,21 +28,10 @@
 
 #include "asTotalScoreCRPSreliability.h"
 
-asTotalScoreCRPSreliability::asTotalScoreCRPSreliability(Period period)
-        : asTotalScore(period)
-{
-    m_has2DArrayArgument = true;
-}
-
 asTotalScoreCRPSreliability::asTotalScoreCRPSreliability(const wxString &periodString)
         : asTotalScore(periodString)
 {
     m_has2DArrayArgument = true;
-}
-
-asTotalScoreCRPSreliability::~asTotalScoreCRPSreliability()
-{
-    //dtor
 }
 
 float asTotalScoreCRPSreliability::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const

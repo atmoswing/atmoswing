@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef asThreadInternetDownload_H
-#define asThreadInternetDownload_H
+#ifndef AS_THREAD_INTERNET_DOWNLOAD_H
+#define AS_THREAD_INTERNET_DOWNLOAD_H
 
 #include <asThread.h>
 #include <asIncludes.h>
@@ -61,4 +61,4 @@ private:
 
 };
 
-#endif // asThreadInternetDownload_H
+#endif

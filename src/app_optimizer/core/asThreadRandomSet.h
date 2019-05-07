@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ASTHREADMETHODOPTIMIZERRANDOMSET_H
-#define ASTHREADMETHODOPTIMIZERRANDOMSET_H
+#ifndef AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
+#define AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 
 #include <asThread.h>
 #include <asParametersOptimization.h>
@@ -53,4 +53,4 @@ private:
     vf *m_scoreClimatology;
 };
 
-#endif // ASTHREADMETHODOPTIMIZERRANDOMSET_H
+#endif

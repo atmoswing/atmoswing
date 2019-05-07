@@ -25,8 +25,8 @@
  * Portions Copyright 2017 Pascal Horton, University of Bern.
  */
 
-#ifndef __asFrameDownscaler__
-#define __asFrameDownscaler__
+#ifndef AS_FRAME_DOWNSCALER
+#define AS_FRAME_DOWNSCALER
 
 #include "AtmoswingDownscalerGui.h"
 #include <asIncludes.h>
@@ -77,4 +77,4 @@ protected:
 
 };
 
-#endif // __asFrameDownscaler__
+#endif

@@ -51,4 +51,3 @@ TiCPP
   Code repository: http://code.google.com/p/ticpp/source/browse/
   Licence: ZLib license (http://www.zlib.net/zlib_license.html) 
            or MIT License (http://opensource.org/licenses/mit-license.php)
-

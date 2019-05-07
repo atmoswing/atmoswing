@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef ASLOGGLOBALFUNCTIONS_H
-#define ASLOGGLOBALFUNCTIONS_H
+#ifndef AS_LOG_GLOBAL_FUNCTIONS_H
+#define AS_LOG_GLOBAL_FUNCTIONS_H
 
 #include <asLog.h>
 #include <asIncludes.h>
@@ -41,4 +41,4 @@ asLog &Log();
 void DeleteLog();
 
 
-#endif // ASLOGGLOBALFUNCTIONS_H
+#endif

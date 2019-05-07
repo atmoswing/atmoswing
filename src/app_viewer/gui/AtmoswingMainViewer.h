@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef ATMOSWINGMAINVIEWER_H
-#define ATMOSWINGMAINVIEWER_H
+#ifndef AS_MAIN_VIEWER_H
+#define AS_MAIN_VIEWER_H
 
 #include "asIncludes.h"
 #include "AtmoswingAppViewer.h"
@@ -51,4 +51,4 @@ private:
     void OnShowLog(wxCommandEvent &event) override;
 };
 
-#endif // ATMOSWINGMAINVIEWER_H
+#endif

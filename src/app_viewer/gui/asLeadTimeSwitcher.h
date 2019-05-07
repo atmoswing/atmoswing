@@ -25,8 +25,8 @@
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
  */
 
-#ifndef __ASLEADTIMESWITCHER__
-#define __ASLEADTIMESWITCHER__
+#ifndef AS_LEAD_TIME_SWITCHER_H
+#define AS_LEAD_TIME_SWITCHER_H
 
 #include "asIncludes.h"
 #include "asWorkspace.h"
@@ -81,4 +81,4 @@ private:
 
 };
 
-#endif // __ASLEADTIMESWITCHER__
+#endif
