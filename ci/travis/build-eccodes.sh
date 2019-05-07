@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-REBUILD_ECCODES=false
+REBUILD_ECCODES=true
 
 # Build ecCodes
 if [ ! "$(ls -A ${HOME}/.libs/include/eccodes.h)" ] || [ "$REBUILD_ECCODES" = true ]; then
@@ -9,7 +9,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/eccodes.h)" ] || [ "$REBUILD_ECCODES" = tr
   cd eccodes-2.12.0-Source
   mkdir bld
   cd bld
-  cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/.libs -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DCMAKE_PREFIX_PATH="${HOME}/.libs;/usr/lib;/usr/lib/x86_64-linux-gnu" #> /dev/null
+  cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/.libs -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DCMAKE_PREFIX_PATH="${HOME}/.libs;/usr/lib;/usr/lib/x86_64-linux-gnu" -LH #> /dev/null
   make -j6 > /dev/null
   make install > /dev/null
   cd ..
