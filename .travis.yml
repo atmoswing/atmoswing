@@ -20,10 +20,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
+            - sqlite3
+            - libsqlite3-dev
     - env:
       - TARGET=linux-server
       - DEPLOY=true
@@ -39,10 +40,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
+            - sqlite3
+            - libsqlite3-dev
     - env:
         - TARGET=osx-server
         - DEPLOY=true
@@ -63,10 +65,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - sqlite3
+            - libsqlite3-dev
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
@@ -82,10 +85,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - sqlite3
+            - libsqlite3-dev
     - env:
         - TARGET=osx-desktop
         - DEPLOY=true
@@ -105,10 +109,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - sqlite3
+            - libsqlite3-dev
             - lcov
     - env:
         - TARGET=coverity-scan
@@ -132,10 +137,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libproj-dev
             - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
+            - sqlite3
+            - libsqlite3-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing
