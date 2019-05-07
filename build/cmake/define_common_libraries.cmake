@@ -26,6 +26,7 @@ link_libraries(${PNG_LIBRARIES})
 find_package(Jasper REQUIRED)
 include_directories(${JASPER_INCLUDE_DIR})
 link_libraries(${JASPER_LIBRARIES})
+link_libraries(${JASPER_LIBRARY_RELEASE})
 
 # Jpeg
 include_directories(${JPEG_INCLUDE_DIR})
