@@ -289,8 +289,6 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
         }
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        if (!msg.IsEmpty()) {
-            wxLogError(msg);
-        }
+        wxLogError(_("Exception caught: %s"), msg);
     }
 }

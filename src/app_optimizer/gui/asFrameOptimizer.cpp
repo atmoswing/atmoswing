@@ -559,9 +559,7 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
         wxLogError(_("Failed to process the calibration."));
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        if (!msg.IsEmpty()) {
-            wxLogError(msg);
-        }
+        wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to process the optimization."));
     }
 

@@ -537,7 +537,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             } catch (std::bad_alloc &ba) {
 
                 wxString msg(ba.what(), wxConvUTF8);
-                wxLogError(_("Bad allocation in the data preloading: %s"), msg);
+                wxLogError(_("Bad allocation caught during data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
@@ -545,7 +545,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             } catch (std::exception &e) {
 
                 wxString msg(e.what(), wxConvUTF8);
-                wxLogError(_("Exception in the data preloading: %s"), msg);
+                wxLogError(_("Exception caught during data preloading: %s"), msg);
                 wxDELETE(area);
                 wxDELETE(predictor);
                 return false;
@@ -756,7 +756,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
             } catch (std::exception &e) {
 
                 wxString msg(e.what(), wxConvUTF8);
-                wxLogError(_("Exception in the data preprocessing: %s"), msg);
+                wxLogError(_("Exception caught during data preprocessing: %s"), msg);
                 wxDELETE(predictor);
                 Cleanup(predictorsPreprocess);
                 return false;
@@ -805,18 +805,11 @@ bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, a
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation in the data loading: %s"), msg);
+        wxLogError(_("Bad allocation caught during data loading: %s"), msg);
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        if (!msg.IsEmpty()) {
-            wxLogError(msg);
-        }
-        wxLogError(_("Failed to load data."));
-        return false;
-    } catch (std::exception &e) {
-        wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the data loading: %s"), msg);
+        wxLogError(_("Exception caught during data loading: %s"), msg);
         return false;
     }
 

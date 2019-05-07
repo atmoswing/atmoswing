@@ -186,12 +186,12 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation caught in GAs: %s"), msg.c_str());
+        wxLogError(_("Bad allocation caught in GAs: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the GAs: %s"), msg.c_str());
+        wxLogError(_("Exception caught in the GAs: %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     }
@@ -260,12 +260,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
         }
     } catch (std::bad_alloc &ba) {
         wxString msg(ba.what(), wxConvUTF8);
-        wxLogError(_("Bad allocation caught in the data preloading (in GAs): %s"), msg.c_str());
+        wxLogError(_("Bad allocation caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        wxLogError(_("Exception in the data preloading (in GAs): %s"), msg.c_str());
+        wxLogError(_("Exception caught during data preloading (in GAs): %s"), msg);
         DeletePreloadedArchiveData();
         return false;
     }

@@ -460,10 +460,7 @@ int AtmoswingAppDownscaler::OnRun()
             return 1011;
         } catch (std::exception &e) {
             wxString msg(e.what(), wxConvUTF8);
-            if (!msg.IsEmpty()) {
-                wxLogError(msg);
-            }
-            wxLogError(_("Failed to process the downscaling."));
+            wxLogError(_("Exception caught: %s"), msg);
             return 1010;
         }
 

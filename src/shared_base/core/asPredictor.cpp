@@ -381,9 +381,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         return false;
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        if (!msg.IsEmpty()) {
-            wxLogError(msg);
-        }
+        wxLogError(_("Exception caught: %s"), msg);
         wxLogError(_("Failed to load data (exception)."));
         return false;
     }
