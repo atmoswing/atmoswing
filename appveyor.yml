@@ -27,8 +27,8 @@ build_script:
   - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/build-$env:apptype.ps1" }
 
 test_script:
-  - cd C:\projects\atmoswing\bin\tests
-  - Release\atmoswing-tests.exe
+  - cd C:\projects\atmoswing\bin\tests\Release
+  - .\atmoswing-tests.exe
 
 after_test:
   - cd C:\projects\atmoswing\bin
