@@ -296,17 +296,17 @@ TEST(PredictorCustomMeteoFvg, LoadPacked)
     Extracted:
     NaN
     */
-    EXPECT_TRUE(isnan(hgt[8][0](0, 0)));
-    EXPECT_TRUE(isnan(hgt[8][0](0, 1)));
-    EXPECT_TRUE(isnan(hgt[8][0](3, 5)));
+    EXPECT_TRUE(std::isnan(hgt[8][0](0, 0)));
+    EXPECT_TRUE(std::isnan(hgt[8][0](0, 1)));
+    EXPECT_TRUE(std::isnan(hgt[8][0](3, 5)));
 
     /* Values time step 11 (horizontal=Lon, vertical=Lat)
     Extracted:
     NaN
     */
-    EXPECT_TRUE(isnan(hgt[11][0](0, 0)));
-    EXPECT_TRUE(isnan(hgt[11][0](0, 1)));
-    EXPECT_TRUE(isnan(hgt[11][0](3, 5)));
+    EXPECT_TRUE(std::isnan(hgt[11][0](0, 0)));
+    EXPECT_TRUE(std::isnan(hgt[11][0](0, 1)));
+    EXPECT_TRUE(std::isnan(hgt[11][0](3, 5)));
 
     /* Values time step 12 (horizontal=Lon, vertical=Lat)
     Extracted:
@@ -396,17 +396,17 @@ TEST(PredictorCustomMeteoFvg, LoadPackedPartial)
     Extracted:
     NaN
     */
-    EXPECT_TRUE(isnan(hgt[4][0](0, 0)));
-    EXPECT_TRUE(isnan(hgt[4][0](0, 1)));
-    EXPECT_TRUE(isnan(hgt[4][0](3, 5)));
+    EXPECT_TRUE(std::isnan(hgt[4][0](0, 0)));
+    EXPECT_TRUE(std::isnan(hgt[4][0](0, 1)));
+    EXPECT_TRUE(std::isnan(hgt[4][0](3, 5)));
 
     /* Values time step 7 (horizontal=Lon, vertical=Lat)
     Extracted:
     NaN
     */
-    EXPECT_TRUE(isnan(hgt[7][0](0, 0)));
-    EXPECT_TRUE(isnan(hgt[7][0](0, 1)));
-    EXPECT_TRUE(isnan(hgt[7][0](3, 5)));
+    EXPECT_TRUE(std::isnan(hgt[7][0](0, 0)));
+    EXPECT_TRUE(std::isnan(hgt[7][0](0, 1)));
+    EXPECT_TRUE(std::isnan(hgt[7][0](3, 5)));
 
     /* Values time step 8 (horizontal=Lon, vertical=Lat)
     Extracted:
