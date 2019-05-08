@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-brew install proj
+brew upgrade proj
 brew install jasper
 
 # Build libraries
