@@ -6,4 +6,4 @@ cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER
 make -j6
 
 cd tests
-open ./atmoswing-tests.app
+ctest -V
