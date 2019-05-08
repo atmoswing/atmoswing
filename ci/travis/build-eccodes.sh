@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-REBUILD_ECCODES=true
+REBUILD_ECCODES=false
 
 # Build ecCodes
 if [ ! "$(ls -A ${HOME}/.libs/include/eccodes.h)" ] || [ "$REBUILD_ECCODES" = true ]; then
