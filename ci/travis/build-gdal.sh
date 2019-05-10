@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-REBUILD_GDAL=true
+REBUILD_GDAL=false
 GDAL_VERSION=3.0.0
 
 # Build GDAL2
