@@ -28,7 +28,7 @@ build_script:
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
-  - .\Release\atmoswing-tests.exe
+  - ctest -V
 
 after_test:
   - cd C:\projects\atmoswing\bin
@@ -41,6 +41,7 @@ after_test:
   - copy bin\*win64.msi .\
 
 on_failure:
+  - cd C:\projects\atmoswing\bin
   - appveyor PushArtifact CMakeFiles/CMakeOutput.log
 
 artifacts:
