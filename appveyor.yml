@@ -28,7 +28,7 @@ build_script:
 
 test_script:
   - cd C:\projects\atmoswing\bin\tests
-  #- ctest -V
+  - ctest -V
 
 after_test:
   - cd C:\projects\atmoswing\bin
