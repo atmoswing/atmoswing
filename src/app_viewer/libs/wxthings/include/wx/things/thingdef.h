@@ -58,4 +58,7 @@
 #define WX_DECLARE_OBJARRAY_WITH_DECL(T, name, expmode) WX_DECLARE_USER_EXPORTED_OBJARRAY(T, name, WXDLLIMPEXP_THINGS)
 #endif
 
+// Disable wxUSE_POPUPWIN as not working
+#undef wxUSE_POPUPWIN
+
 #endif  // __WX_THINGDEF_H__
