@@ -91,11 +91,6 @@ matrix:
             - sqlite3
             - libsqlite3-dev
     - env:
-        - TARGET=osx-desktop
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode10
-    - env:
         - TARGET=coverage-scan
         - DEPLOY=false
       os: linux
