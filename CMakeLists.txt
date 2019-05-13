@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12.2) # Bug with VS 2012 and CUDA in previous versions
+cmake_policy(SET CMP0043 NEW)
+cmake_policy(SET CMP0074 NEW)
 
 # Project name
 if (UNIX)
