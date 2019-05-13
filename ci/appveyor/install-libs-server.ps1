@@ -1,15 +1,15 @@
 . $PSScriptRoot\libs-common-definitions.ps1
 
 # Options
-$VS_VER="Visual Studio 15 2017 Win64"
-$CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.0-win64-x64.zip"
+$VS_VER="Visual Studio $VS_VER_NB $VS_VER_YR Win64"
+$CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.3-win64-x64.zip"
 $TARGET_CPU="x64"
 $WX_TARGET_CPU="X64"
 $GDAL_WIN64=1
 
 # Setup VS environment
 # https://stackoverflow.com/questions/2124753/how-can-i-use-powershell-with-the-visual-studio-command-prompt
-pushd 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build'    
+pushd "C:\Program Files (x86)\Microsoft Visual Studio\$VS_VER_YR\Community\VC\Auxiliary\Build"
 cmd /c "vcvars64.bat&set" |
 foreach {
   if ($_ -match "=") {
@@ -17,7 +17,7 @@ foreach {
   }
 }
 popd
-Write-Host "`nVisual Studio 2017 Command Prompt variables set." -ForegroundColor Yellow
+Write-Host "`nVisual Studio $VS_VER_YR Command Prompt variables set." -ForegroundColor Yellow
 
 set CL=/MP
 

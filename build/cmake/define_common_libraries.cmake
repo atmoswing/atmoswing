@@ -47,8 +47,8 @@ link_libraries(${NETCDF_LIBRARIES})
 if (BUILD_VIEWER)
 
     # GDAL
-    if (GDAL_ROOT)
-        set(ENV{GDAL_ROOT} ${GDAL_ROOT})
+    if (GDAL_PATH)
+        set(ENV{GDAL_ROOT} ${GDAL_PATH})
     endif ()
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
