@@ -28,11 +28,11 @@ $REBUILD_JPEG=$false
 $REBUILD_PNG=$false
 $REBUILD_JASPER=$false
 $REBUILD_CURL=$false
-$REBUILD_PROJ=$true
+$REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
 $REBUILD_GDAL=$false
-$REBUILD_ECCODES=$false
+$REBUILD_ECCODES=$true
 $REBUILD_SQLITE=$false
 
 # Libraries URL
@@ -46,7 +46,7 @@ $PROJ_URL="https://github.com/OSGeo/proj.4/archive/6.0.0.zip"
 $HDF5_URL="https://github.com/atmoswing/large-files/raw/master/libraries/CMake-hdf5-1.10.1.zip"
 $NETCDF_URL="https://github.com/Unidata/netcdf-c/archive/v4.7.0.zip"
 $GDAL_URL="http://download.osgeo.org/gdal/3.0.0/gdal300.zip"
-$ECCODES_URL="https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.12.5-Source.tar.gz"
+$ECCODES_URL="https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.12.0-Source.tar.gz"
 $SQLITE_SRC_URL="https://www.sqlite.org/2019/sqlite-amalgamation-3270200.zip"
 $SQLITE_DLL_URL="https://www.sqlite.org/2019/sqlite-dll-win64-x64-3270200.zip"
 $SQLITE_TOOLS_URL="https://www.sqlite.org/2019/sqlite-tools-win32-x86-3270200.zip"
