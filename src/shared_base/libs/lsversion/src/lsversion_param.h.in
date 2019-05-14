@@ -89,5 +89,28 @@ email                : lucien.schreiber at crealp dot vs dot ch
     #include <Eigen/Core>
 #endif
 
+// PNG
+#cmakedefine PNG_INCLUDE_DIRS
+#ifdef PNG_INCLUDE_DIRS
+    #include <png.h>
+#endif
+
+// JPEG
+#cmakedefine JPEG_INCLUDE_DIR
+#ifdef JPEG_INCLUDE_DIR
+    #include <jpeglib.h>
+#endif
+
+// JASPER
+#cmakedefine JASPER_INCLUDE_DIR
+#ifdef JASPER_INCLUDE_DIR
+    #include <jasper/jas_config.h>
+#endif
+
+// ECCODES
+#cmakedefine ECCODES_LIBRARIES
+#ifdef ECCODES_LIBRARIES
+    #include <eccodes_version.h>
+#endif
 
 #endif

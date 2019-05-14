@@ -159,43 +159,99 @@ wxString lsVersion::GetEigenNumber()
 }
 
 
+wxString lsVersion::GetPNGNumber()
+{
+    wxString myTxt = wxEmptyString;
+#ifdef PNG_INCLUDE_DIRS
+    myTxt = wxString(PNG_LIBPNG_VER_STRING);
+#endif
+    return myTxt;
+}
+
+
+wxString lsVersion::GetJpegNumber()
+{
+    wxString myTxt = wxEmptyString;
+#ifdef JPEG_INCLUDE_DIR
+    myTxt = wxString::Format("%d.%d", JPEG_LIB_VERSION_MAJOR, JPEG_LIB_VERSION_MINOR);
+#endif
+    return myTxt;
+}
+
+
+wxString lsVersion::GetJasperNumber()
+{
+    wxString myTxt = wxEmptyString;
+#ifdef JASPER_INCLUDE_DIR
+    myTxt = wxString(JAS_VERSION);
+#endif
+    return myTxt;
+}
+
+
+wxString lsVersion::GetEcCodesNumber()
+{
+    wxString myTxt = wxEmptyString;
+#ifdef ECCODES_LIBRARIES
+    myTxt = wxString(ECCODES_VERSION_STR);
+#endif
+    return myTxt;
+}
+
+
 wxString lsVersion::GetAllModules()
 {
     wxString myModules = wxEmptyString;
 
     if (GetGDALNumber() != wxEmptyString) {
-        myModules.Append(_T("GDAL: ") + GetGDALNumber() + _T("\n"));
+        myModules.Append("GDAL: " + GetGDALNumber() + "\n");
     }
 
     if (GetGEOSNumber() != wxEmptyString) {
-        myModules.Append(_T("GEOS: ") + GetGEOSNumber() + _T("\n"));
+        myModules.Append("GEOS: " + GetGEOSNumber() + "\n");
     }
 
     if (GetCurlNumber() != wxEmptyString) {
-        myModules.Append(_T("libCurl: ") + GetCurlNumber() + _T("\n"));
+        myModules.Append("libCurl: " + GetCurlNumber() + "\n");
     }
 
     if (GetSQLiteNumber() != wxEmptyString) {
-        myModules.Append(_T("SQLite: ") + GetSQLiteNumber() + _T("\n"));
+        myModules.Append("SQLite: " + GetSQLiteNumber() + "\n");
     }
 
     if (GetMySQLNumber() != wxEmptyString) {
-        myModules.Append(_T("MySQL: ") + GetMySQLNumber() + _T("\n"));
+        myModules.Append("MySQL: " + GetMySQLNumber() + "\n");
     }
 
     if (GetNetCDFNumber() != wxEmptyString) {
-        myModules.Append(_T("NetCDF: ") + GetNetCDFNumber().BeforeFirst(' ') + _T("\n"));
+        myModules.Append("NetCDF: " + GetNetCDFNumber().BeforeFirst(' ') + "\n");
     }
 
     if (GetProjNumber() != wxEmptyString) {
-        myModules.Append(_T("Proj4: ") + GetProjNumber() + _T("\n"));
+        myModules.Append("Proj4: " + GetProjNumber() + "\n");
     }
 
     if (GetEigenNumber() != wxEmptyString) {
-        myModules.Append(_T("Eigen: ") + GetEigenNumber() + _T("\n"));
+        myModules.Append("Eigen: " + GetEigenNumber() + "\n");
     }
 
-    myModules.Append(_T("wxWidgets: ") + GetwxWidgetsNumber() + _T("\n"));
+    if (GetPNGNumber() != wxEmptyString) {
+        myModules.Append("PNG: " + GetPNGNumber() + "\n");
+    }
+
+    if (GetJpegNumber() != wxEmptyString) {
+        myModules.Append("JPEG: " + GetJpegNumber() + "\n");
+    }
+
+    if (GetJasperNumber() != wxEmptyString) {
+        myModules.Append("Jasper: " + GetJasperNumber() + "\n");
+    }
+
+    if (GetEcCodesNumber() != wxEmptyString) {
+        myModules.Append("ecCodes: " + GetEcCodesNumber() + "\n");
+    }
+
+    myModules.Append("wxWidgets: " + GetwxWidgetsNumber() + "\n");
 
     myModules.Append(wxGetOsDescription());
 
