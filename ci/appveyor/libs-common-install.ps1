@@ -111,7 +111,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
   cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
   cmake --build . --config Release > $null
   cmake --build . --config Release --target INSTALL > $null
-  copy "$LIB_DIR\bin\proj*.dll" "$LIB_DIR\bin\proj.dll"
+  #copy "$LIB_DIR\bin\proj*.dll" "$LIB_DIR\bin\proj.dll"
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }

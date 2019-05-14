@@ -178,7 +178,7 @@ if (WIN32)
     add_custom_command(TARGET asbase POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
             "${PROJ_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}/proj.dll")
+            "${CMAKE_BINARY_DIR}")
     install(FILES ${PROJ_DLL_NAME} DESTINATION bin)
 
     # SQLite

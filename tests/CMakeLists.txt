@@ -150,13 +150,17 @@ endif ()
 if (WIN32)
     file (TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/*.dll" ALL_DLL_PATH_ORIGIN)
     file (TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/tests" ALL_DLL_PATH_DESTINATION)
-    if (NOT PNG_DLL_NAME)
-        message(SEND_ERROR "PNG DLL not found in ${DLL_DIRS}.")
-    endif ()
     add_custom_command(TARGET atmoswing-tests POST_BUILD
             COMMAND copy
             ${ALL_DLL_PATH_ORIGIN}
             ${ALL_DLL_PATH_DESTINATION})
+
+    if (BUILD_VIEWER)
+        add_custom_command(TARGET atmoswing-tests POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${GDAL_DLL_NAME}"
+                "${ALL_DLL_PATH_DESTINATION}")
+    endif ()
 endif ()
 
 
