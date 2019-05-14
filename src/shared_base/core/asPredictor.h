@@ -160,8 +160,8 @@ public:
 
     void SetDirectoryPath(wxString directoryPath)
     {
-        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
-            directoryPath.Append(wxFileName::GetPathSeparators());
+        if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+            directoryPath.Append(wxFileName::GetPathSeparator());
         }
 
         m_directoryPath = directoryPath;
@@ -170,8 +170,8 @@ public:
     wxString GetDirectoryPath() const
     {
         wxString directoryPath = m_directoryPath;
-        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
-            directoryPath.Append(wxFileName::GetPathSeparators());
+        if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+            directoryPath.Append(wxFileName::GetPathSeparator());
         }
 
         return directoryPath;
@@ -180,13 +180,13 @@ public:
     wxString GetFullDirectoryPath() const
     {
         wxString directoryPath = m_directoryPath;
-        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
-            directoryPath.Append(wxFileName::GetPathSeparators());
+        if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+            directoryPath.Append(wxFileName::GetPathSeparator());
         }
 
         directoryPath += m_product;
-        if ((directoryPath.Last() != wxFileName::GetPathSeparators())) {
-            directoryPath.Append(wxFileName::GetPathSeparators());
+        if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+            directoryPath.Append(wxFileName::GetPathSeparator());
         }
 
         return directoryPath;

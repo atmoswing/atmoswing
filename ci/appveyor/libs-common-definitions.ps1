@@ -13,7 +13,7 @@ if ($env:APPVEYOR) {
   $MSC_VER=1920
   $VS_VER_NB="16"
   $VS_VER_YR="2019"
-  $CMAKE_GENERATOR="-A x64"
+  $CMAKE_GENERATOR="-Ax64"
   $TMP_DIR="$env:UserProfile\Downloads\tmp"
   $LIB_DIR="$env:UserProfile\AtmoSwing-libs\vs-$VS_VER_YR"
   $CMAKE_DIR="C:\Program Files\CMake\bin"
