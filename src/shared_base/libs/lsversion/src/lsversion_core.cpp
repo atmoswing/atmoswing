@@ -141,23 +141,10 @@ wxString lsVersion::GetProjNumber()
 {
     wxString myProj = wxEmptyString;
 #ifdef PROJ_LIBRARY
-    myProj = wxString::Format("%d", PJ_VERSION);
+    myProj = wxString::Format("%d.%d.%d", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 #elif defined PROJ4_INCLUDE_DIR
-    myProj = wxString::Format("%d", PJ_VERSION);
+    myProj = wxString::Format("%d.%d.%d", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 #endif
-    // Adding points
-    if (!myProj.IsEmpty()) {
-        wxString myProjDots = wxEmptyString;
-        for (unsigned int i = 0; i < myProj.Length(); i++) {
-            if (i != myProj.Length() - 1) {
-                myProjDots.Append(myProj.Mid(i, 1) + ".");
-            } else {
-                myProjDots.Append(myProj.Mid(i, 1));
-            }
-        }
-        myProj = myProjDots;
-    }
-
     return myProj;
 }
 

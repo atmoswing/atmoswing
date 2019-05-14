@@ -5,7 +5,7 @@ project(lsVersion)
 #OPTIONS - PARAMETERS 
 set(USE_VERSION 1 CACHE BOOL "Use lsVersion?")
 if (USE_VERSION)
-    set(lsVERSION_ENABLED 1)
+    add_definitions(-DUSE_LSVERSION)
     set(lsVERSION_SOFT_NAME ${CMAKE_PROJECT_NAME})
 
     #FINDING OUR PATH
