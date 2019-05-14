@@ -58,8 +58,9 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 add_library(asbase STATIC ${src_shared_base})
 
 # lsVersion
-add_subdirectory(libs/lsversion)
-
+if (USE_GUI)
+    add_subdirectory(libs/lsversion)
+endif (USE_GUI)
 
 ##### DECLARE EXECUTABLE
 

@@ -173,7 +173,7 @@ wxString lsVersion::GetJpegNumber()
 {
     wxString myTxt = wxEmptyString;
 #ifdef JPEG_INCLUDE_DIR
-    myTxt = wxString::Format("%d.%d", JPEG_LIB_VERSION_MAJOR, JPEG_LIB_VERSION_MINOR);
+    // myTxt = wxString::Format("%d.%d", JPEG_LIB_VERSION_MAJOR, JPEG_LIB_VERSION_MINOR);
 #endif
     return myTxt;
 }
