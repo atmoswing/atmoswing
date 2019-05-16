@@ -77,7 +77,7 @@ public:
     double operator[](unsigned int i)
     {
         wxASSERT(m_initialized);
-        wxASSERT(i < GetSize());
+        wxASSERT(i < (unsigned)GetSize());
         return m_timeArray[i];
     }
 

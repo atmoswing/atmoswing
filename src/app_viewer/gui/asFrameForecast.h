@@ -156,12 +156,6 @@ private:
 
     void UpdateLeadTimeSwitch();
 
-    void LaunchForecastingNow(wxCommandEvent &event);
-
-    void LaunchForecastingPast(wxCommandEvent &event);
-
-    void OpenFrameForecaster(wxCommandEvent &event);
-
     void OpenFramePlots(wxCommandEvent &event);
 
     void OpenFrameGrid(wxCommandEvent &event);
@@ -199,8 +193,6 @@ private:
     void OnMoveLayer(wxCommandEvent &event) override;
 
     void OnChangeLeadTime(wxCommandEvent &event);
-
-    void OnForecastProcessTerminate(wxProcessEvent &event);
 
     void OnToolSelect(wxCommandEvent &event);
 

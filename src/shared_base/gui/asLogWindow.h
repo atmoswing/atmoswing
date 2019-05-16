@@ -37,7 +37,7 @@ class asLogWindow
 {
 public:
     explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
-                bool passToOld = false);
+                bool passToOld = true);
 
     ~asLogWindow() override = default;
 

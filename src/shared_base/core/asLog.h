@@ -52,6 +52,8 @@ public:
 
     void CreateFile(const wxString &fileName);
 
+    void CreateFileAtPath(const wxString &fullPath);
+
     void CreateFileOnly(const wxString &fileName);
 
     void CreateFileOnlyAtPath(const wxString &fullPath);
@@ -65,6 +67,15 @@ private:
     wxFFile *m_logFile;
     wxLogChain *m_logChain;
 };
+
+#if wxUSE_GUI
+class asLogGui
+        : public wxLogGui
+{
+protected:
+    virtual void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) wxOVERRIDE;
+};
+#endif
 
 
 extern asLog *g_pLog;

@@ -167,17 +167,14 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
     long logLevel = -1;
     if (parser.Found("l", &logLevelStr)) {
         if (logLevelStr.ToLong(&logLevel)) {
-            if (logLevel == 0) {
-                Log()->SetLevel(0);
-            } else if (logLevel == 1) {
-                Log()->SetLevel(1);
-            } else if (logLevel == 2) {
-                Log()->SetLevel(2);
+            // Check and apply
+            if (logLevel >= 1 && logLevel <= 3) {
+                Log()->SetLevel(int(logLevel));
             } else {
-                Log()->SetLevel(3);
+                Log()->SetLevel(2);
             }
         } else {
-            Log()->SetLevel(3);
+            Log()->SetLevel(2);
         }
 
     }

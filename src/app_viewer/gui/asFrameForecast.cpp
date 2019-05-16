@@ -51,7 +51,6 @@
 
 
 BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
-    EVT_END_PROCESS(wxID_ANY, asFrameForecast::OnForecastProcessTerminate)
     EVT_CLOSE(asFrameForecast::OnClose)
     EVT_KEY_DOWN(asFrameForecast::OnKeyDown)
     EVT_KEY_UP(asFrameForecast::OnKeyUp)
@@ -128,8 +127,6 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     // Toolbar
     m_toolBar->AddTool(asID_OPEN, wxT("Open"), *_img_open, *_img_open, wxITEM_NORMAL, _("Open forecast"),
                        _("Open a forecast"), nullptr);
-    m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run last forecast"),
-                       _("Run last forecast"), nullptr);
     m_toolBar->AddTool(asID_SELECT, wxT("Select"), *_img_map_select, *_img_map_select, wxITEM_NORMAL, _("Select"),
                        _("Select data on the map"), nullptr);
     m_toolBar->AddTool(asID_ZOOM_IN, wxT("Zoom in"), *_img_map_zoom_in, *_img_map_zoom_in, wxITEM_NORMAL, _("Zoom in"),
@@ -230,13 +227,8 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     m_displayCtrl->Connect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), nullptr, this);
     this->Connect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameForecast::OpenFramePreferences));
-    this->Connect(asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecast::OpenFrameForecaster));
     this->Connect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OpenFramePlots));
     this->Connect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OpenFrameGrid));
-    this->Connect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::LaunchForecastingNow));
-    this->Connect(asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED,
-                  wxCommandEventHandler(asFrameForecast::LaunchForecastingPast));
     this->Connect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OnOpenForecast));
     this->Connect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                   wxCommandEventHandler(asFrameForecast::OpenFramePredictandDB));
@@ -319,16 +311,10 @@ asFrameForecast::~asFrameForecast()
     m_displayCtrl->Disconnect(wxEVT_KEY_UP, wxKeyEventHandler(asFrameForecast::OnKeyUp), nullptr, this);
     this->Disconnect(asID_PREFERENCES, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::OpenFramePreferences));
-    this->Disconnect(asID_FRAME_FORECASTER, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecast::OpenFrameForecaster));
     this->Disconnect(asID_FRAME_PLOTS, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::OpenFramePlots));
     this->Disconnect(asID_FRAME_GRID, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::OpenFrameGrid));
-    this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecast::LaunchForecastingNow));
-    this->Disconnect(asID_RUN_PREVIOUS, wxEVT_COMMAND_TOOL_CLICKED,
-                     wxCommandEventHandler(asFrameForecast::LaunchForecastingPast));
     this->Disconnect(asID_OPEN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameForecast::OnOpenForecast));
     this->Disconnect(asID_DB_CREATE, wxEVT_COMMAND_TOOL_CLICKED,
                      wxCommandEventHandler(asFrameForecast::OpenFramePredictandDB));
@@ -776,134 +762,6 @@ void asFrameForecast::UpdateLeadTimeSwitch()
     m_sizerTop->Fit(m_panelTop);
     m_sizerContent->Layout();
 
-}
-
-void asFrameForecast::LaunchForecastingNow(wxCommandEvent &event)
-{
-    m_toolBar->EnableTool(asID_RUN, false);
-    m_toolBar->EnableTool(asID_RUN_PREVIOUS, false);
-
-    // Get forecaster path
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
-
-    if (forecasterPath.IsEmpty()) {
-        wxLogError(_("Please set the path to the forecaster in the preferences."));
-        return;
-    }
-
-    // Set option
-    wxString options = wxString::Format(" -fn -ll 2 -lt file");
-    forecasterPath.Append(options);
-    wxLogVerbose(_("Sending command: %s"), forecasterPath);
-
-    // Create a process
-    if (m_processForecast != nullptr) {
-        wxLogError(_("There is already a running forecast process. Please wait."));
-        return;
-    }
-    m_processForecast = new wxProcess(this);
-
-    // Redirect output fluxes
-    //m_processForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
-
-    // Execute
-    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_processForecast);
-
-    if (processId == 0) // if wxEXEC_ASYNC
-    {
-        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
-        wxDELETE(m_processForecast);
-        return;
-    }
-
-    m_launchedPresentForecast = true;
-}
-
-void asFrameForecast::LaunchForecastingPast(wxCommandEvent &event)
-{
-    m_toolBar->EnableTool(asID_RUN, false);
-    m_toolBar->EnableTool(asID_RUN_PREVIOUS, false);
-
-    // Get forecaster path
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
-
-    if (forecasterPath.IsEmpty()) {
-        wxLogError(_("Please set the path to the forecaster in the preferences."));
-        return;
-    }
-
-    // Set option
-    int nbPrevDays = m_workspace.GetTimeSeriesPlotPastDaysNb();
-    wxString options = wxString::Format(" -fp %d -ll 2 -lt file", nbPrevDays);
-    forecasterPath.Append(options);
-    wxLogVerbose(_("Sending command: %s"), forecasterPath);
-
-    // Create a process
-    if (m_processForecast != nullptr) {
-        wxLogError(_("There is already a running forecast process. Please wait."));
-        return;
-    }
-    m_processForecast = new wxProcess(this);
-
-    // Redirect output fluxes
-    //m_processForecast->Redirect(); // CAUTION redirect causes the downloads to hang after a few ones!
-
-    // Execute
-    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC, m_processForecast);
-
-    if (processId == 0) // if wxEXEC_ASYNC
-    {
-        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
-        wxDELETE(m_processForecast);
-        return;
-    }
-}
-
-void asFrameForecast::OnForecastProcessTerminate(wxProcessEvent &event)
-{
-    m_toolBar->EnableTool(asID_RUN, true);
-    m_toolBar->EnableTool(asID_RUN_PREVIOUS, true);
-
-    wxLogVerbose("The forecast processing is over.");
-
-    if (m_launchedPresentForecast) {
-        if (m_forecastManager->GetMethodsNb() > 0) {
-            wxMessageDialog dlg(this, "The forecast processing is over. Do you want to load the results? "
-                                      "This may close all files currently opened.", "Open new forecast?",
-                                wxCENTER | wxNO_DEFAULT | wxYES_NO | wxCANCEL | wxICON_INFORMATION);
-
-            if (dlg.ShowModal() == wxID_YES) {
-                OpenForecastsFromTmpList();
-            }
-        } else {
-            OpenForecastsFromTmpList();
-        }
-    } else {
-        wxMessageBox(_("The forecast processing is over."));
-    }
-
-    wxDELETE(m_processForecast);
-}
-
-void asFrameForecast::OpenFrameForecaster(wxCommandEvent &event)
-{
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString forecasterPath = pConfig->Read("/Paths/ForecasterPath", asConfig::GetSoftDir() + "atmoswing-forecaster");
-
-    if (forecasterPath.IsEmpty()) {
-        wxLogError(_("Please set the path to the forecaster in the preferences."));
-        return;
-    }
-
-    // Execute
-    long processId = wxExecute(forecasterPath, wxEXEC_ASYNC);
-
-    if (processId == 0) // if wxEXEC_ASYNC
-    {
-        wxLogError(_("The forecaster could not be executed. Please check the path in the preferences."));
-    }
 }
 
 void asFrameForecast::OpenFramePlots(wxCommandEvent &event)

@@ -74,8 +74,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
                                                          "\n \t\t\t\t\t - 1: errors"
                                                          "\n \t\t\t\t\t - 2: warnings"
-                                                         "\n \t\t\t\t\t - 3: verbose"
-                                                         "\n \t\t\t\t\t - 4: debug"},
+                                                         "\n \t\t\t\t\t - 3: verbose"},
 
     {wxCMD_LINE_NONE}};
 
@@ -183,9 +182,19 @@ bool AtmoswingAppDownscaler::InitLog()
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
 
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFileAtPath(fullPath);
+#else
         Log()->CreateFileOnlyAtPath(fullPath);
+#endif
     } else {
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFile("AtmoSwingDownscaler.log");
+#else
         Log()->CreateFileOnly("AtmoSwingDownscaler.log");
+#endif
     }
 
     return true;
@@ -330,7 +339,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
 
         // Check and apply
-        if (logLevel >= 1 && logLevel <= 4) {
+        if (logLevel >= 1 && logLevel <= 3) {
             Log()->SetLevel(int(logLevel));
         } else {
             Log()->SetLevel(2);

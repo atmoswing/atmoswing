@@ -129,8 +129,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
                                                          "\n \t\t\t\t\t - 1: errors"
                                                          "\n \t\t\t\t\t - 2: warnings"
-                                                         "\n \t\t\t\t\t - 3: verbose"
-                                                         "\n \t\t\t\t\t - 4: debug"},
+                                                         "\n \t\t\t\t\t - 3: verbose"},
 
     {wxCMD_LINE_NONE}};
 
@@ -257,9 +256,19 @@ bool AtmoswingAppOptimizer::InitLog()
             }
         }
 
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFileAtPath(fullPath);
+#else
         Log()->CreateFileOnlyAtPath(fullPath);
+#endif
     } else {
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFile("AtmoSwingOptimizer.log");
+#else
         Log()->CreateFileOnly("AtmoSwingOptimizer.log");
+#endif
     }
 
     return true;

@@ -183,7 +183,7 @@ wxString lsVersion::GetJasperNumber()
 {
     wxString myTxt = wxEmptyString;
 #ifdef JASPER_INCLUDE_DIR
-    myTxt = wxString(JAS_VERSION);
+    // myTxt = wxString(JAS_VERSION);
 #endif
     return myTxt;
 }
