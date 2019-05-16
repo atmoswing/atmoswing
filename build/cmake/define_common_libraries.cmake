@@ -26,13 +26,14 @@ link_libraries(${PNG_LIBRARIES})
 find_package(Jasper REQUIRED)
 include_directories(${JASPER_INCLUDE_DIR})
 link_libraries(${JASPER_LIBRARIES})
+link_libraries(${JASPER_LIBRARY_RELEASE})
 
 # Jpeg
 include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
 # Proj4
-find_package(PROJ4 REQUIRED)
+find_package(PROJ4 6 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 link_libraries(${PROJ4_LIBRARIES})
 
@@ -46,8 +47,8 @@ link_libraries(${NETCDF_LIBRARIES})
 if (BUILD_VIEWER)
 
     # GDAL
-    if (GDAL_ROOT)
-        set(ENV{GDAL_ROOT} ${GDAL_ROOT})
+    if (GDAL_PATH)
+        set(ENV{GDAL_ROOT} ${GDAL_PATH})
     endif ()
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})

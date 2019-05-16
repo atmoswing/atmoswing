@@ -588,7 +588,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 } // Select the last available.
 
                 wxLogWarning(_("Previous intermediate results were found and will be loaded."));
-                wxPrintf(_("Previous intermediate results were found and will be loaded.\n"));
+                asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
                 wxString filePath = resultsDir;
                 filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
                 asFileAscii prevResults(filePath, asFile::ReadOnly);
@@ -706,7 +706,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 prevResults.Close();
 
                 wxLogMessage(_("%d former results have been reloaded."), results_generations.GetCount());
-                wxPrintf(_("%d former results have been reloaded.\n"), results_generations.GetCount());
+                asLog::PrintToConsole(wxString::Format(_("%d former results have been reloaded.\n"), results_generations.GetCount()));
 
                 // Check that it is consistent with the population size
                 if (vectParams.size() % m_popSize != 0) {

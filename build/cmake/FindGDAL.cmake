@@ -19,8 +19,8 @@
 #     GDAL_LIBRARY - A variable pointing to the GDAL library
 #     GDAL_INCLUDE_DIR - Where to find the headers
 
-if (NOT GDAL_DIR AND GDAL_ROOT)
-    SET(GDAL_DIR ${GDAL_ROOT})
+if (NOT GDAL_DIR AND GDAL_PATH)
+    SET(GDAL_DIR ${GDAL_PATH})
 elseif (NOT GDAL_DIR AND ENV{GDAL_ROOT})
     SET(GDAL_DIR ENV{GDAL_ROOT})
 endif ()
@@ -31,8 +31,6 @@ find_path(GDAL_INCLUDE_DIR
         HINTS
             ${CMAKE_PREFIX_PATH}
             ${GDAL_DIR}
-            ENV GDAL_DIR
-            ENV GDAL_ROOT
         PATH_SUFFIXES
             include
             include/gdal
@@ -47,8 +45,6 @@ if (WIN32)
             HINTS
                 ${CMAKE_PREFIX_PATH}
                 ${GDAL_DIR}
-                ENV GDAL_DIR
-                ENV GDAL_ROOT
             PATH_SUFFIXES
                 lib
                 lib64
@@ -58,7 +54,7 @@ elseif (APPLE)
 
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                    gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                    gdal NAMES gdal1 gdal2 gdal3
                 PATHS
                     ${GDAL_DIR}/lib
                     ${GDAL_DIR}
@@ -70,14 +66,14 @@ elseif (APPLE)
                 PATH_SUFFIXES gdal)
 
         find_library(GDAL_LIBRARY
-                gdal NAMES gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
+                gdal NAMES gdal1 gdal2 gdal3)
     endif ()
 
 else ()
 
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                    NAMES libgdal.a libgdal.so gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0
+                    NAMES libgdal.a libgdal.so gdal1 gdal2 gdal3
                 PATHS
                     ${GDAL_DIR}/lib
                     ${GDAL_DIR}
@@ -93,7 +89,7 @@ else ()
                 PATH_SUFFIXES gdal)
 
         find_library(GDAL_LIBRARY
-                NAMES libgdal.a libgdal.so gdal1 gdal1.6.0 gdal1.7.0 gdal1.8.0 gdal1.9.0)
+                NAMES libgdal.a libgdal.so gdal1 gdal2 gdal3)
 
         find_program(GDAL_CONFIG gdal-config)
 

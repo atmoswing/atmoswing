@@ -91,11 +91,6 @@ matrix:
             - sqlite3
             - libsqlite3-dev
     - env:
-        - TARGET=osx-desktop
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode10
-    - env:
         - TARGET=coverage-scan
         - DEPLOY=false
       os: linux
@@ -161,7 +156,7 @@ install:
   - travis_wait 40 timeout 2200 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
-  - travis_wait 40 timeout 2200 ci/travis/run-${TARGET}.sh || true
+  - travis_wait 30 ci/travis/run-${TARGET}.sh
 after_success:
   - if [[ "$DEPLOY" != true ]]; then exit 0; fi
   - chmod +x ci/travis/after-success-${TRAVIS_OS_NAME}.sh

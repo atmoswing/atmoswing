@@ -30,6 +30,22 @@
 
 #include <wx/ffile.h>
 
+// Global log functions
+asLog *g_pLog = new asLog();
+
+asLog *Log()
+{
+    return g_pLog;
+}
+
+void DeleteLog()
+{
+    if (g_pLog) {
+        wxLog::FlushActive();
+    }
+    wxDELETE(g_pLog);
+    delete wxLog::SetActiveTarget(nullptr);
+}
 
 asLog::asLog()
         : m_logFile(nullptr),
@@ -40,6 +56,11 @@ asLog::asLog()
 asLog::~asLog()
 {
     delete wxLog::SetActiveTarget(nullptr); // Instead of deleting m_logChain
+    ClearCurrentTarget();
+}
+
+void asLog::ClearCurrentTarget()
+{
     if (m_logFile) {
         m_logFile->Close();
         m_logFile->Detach();
@@ -47,43 +68,39 @@ asLog::~asLog()
     }
 }
 
-bool asLog::CreateFile(const wxString &fileName)
+void asLog::CreateFile(const wxString &fileName)
 {
     // Create the log file
-    wxDELETE(m_logFile);
+    ClearCurrentTarget();
     wxString logpath = asConfig::GetLogDir();
-    logpath.Append(DS);
+    logpath.Append(wxFileName::GetPathSeparator());
     logpath.Append(fileName);
     m_logFile = new wxFFile(logpath, "w");
-    auto pLogFile = new wxLogStderr(m_logFile->fp());
-    m_logChain = new wxLogChain(pLogFile);
 
-    return true;
+    if (m_logChain) {
+        m_logChain->SetLog(new wxLogStderr(m_logFile->fp()));
+    } else {
+        m_logChain = new wxLogChain(new wxLogStderr(m_logFile->fp()));
+    }
 }
 
-bool asLog::CreateFileOnly(const wxString &fileName)
+void asLog::CreateFileOnly(const wxString &fileName)
 {
     // Create the log file
-    wxDELETE(m_logFile);
-    wxString logpath = asConfig::GetLogDir();
-    logpath.Append(DS);
-    logpath.Append(fileName);
-    m_logFile = new wxFFile(logpath, "w");
-    auto pLogFile = new wxLogStderr(m_logFile->fp());
-    wxLog::SetActiveTarget(pLogFile);
-
-    return true;
+    ClearCurrentTarget();
+    wxString logPath = asConfig::GetLogDir();
+    logPath.Append(wxFileName::GetPathSeparator());
+    logPath.Append(fileName);
+    m_logFile = new wxFFile(logPath, "w");
+    delete wxLog::SetActiveTarget(new wxLogStderr(m_logFile->fp()));
 }
 
-bool asLog::CreateFileOnlyAtPath(const wxString &fullPath)
+void asLog::CreateFileOnlyAtPath(const wxString &fullPath)
 {
     // Create the log file
-    wxDELETE(m_logFile);
+    ClearCurrentTarget();
     m_logFile = new wxFFile(fullPath, "w");
-    auto pLogFile = new wxLogStderr(m_logFile->fp());
-    wxLog::SetActiveTarget(pLogFile);
-
-    return true;
+    delete wxLog::SetActiveTarget(new wxLogStderr(m_logFile->fp()));
 }
 
 void asLog::SetLevel(int val)
@@ -105,5 +122,13 @@ void asLog::SetLevel(int val)
             break;
         default:
             wxLog::SetLogLevel(wxLOG_Message);
+    }
+}
+
+void asLog::PrintToConsole(const wxString &msg)
+{
+    wxMessageOutput *msgOut = wxMessageOutput::Get();
+    if (msgOut) {
+        msgOut->Printf(msg);
     }
 }

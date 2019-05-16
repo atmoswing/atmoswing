@@ -65,7 +65,7 @@ set(SEARCH_VROOMGIS_LIBS:BOOL ON)
 set(SEARCH_GDAL:BOOL ON)
 set(SEARCH_GEOS:BOOL OFF)
 set(VROOMGIS_PATH:STRING vroomgis/src)
-set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_ROOT})
+set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_PATH})
 configure_file(${CMAKE_SOURCE_DIR}/build/cmake/GetVroomgis.txt ${CMAKE_BINARY_DIR}/vroomgis/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
 execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
@@ -138,7 +138,7 @@ install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 if (WIN32)
 
     find_file(GDAL_DLL_NAME
-            NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll gdal204.dll gdal205.dll
+            NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll gdal204.dll gdal205.dll gdal300.dll gdal301.dll gdal302.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)

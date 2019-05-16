@@ -48,18 +48,29 @@ public:
 
     ~asLog() override;
 
-    bool CreateFile(const wxString &fileName);
+    void ClearCurrentTarget();
 
-    bool CreateFileOnly(const wxString &fileName);
+    void CreateFile(const wxString &fileName);
 
-    bool CreateFileOnlyAtPath(const wxString &fullPath);
+    void CreateFileOnly(const wxString &fileName);
+
+    void CreateFileOnlyAtPath(const wxString &fullPath);
 
     void SetLevel(int val);
+
+    static void PrintToConsole(const wxString &msg);
 
 protected:
 private:
     wxFFile *m_logFile;
     wxLogChain *m_logChain;
 };
+
+
+extern asLog *g_pLog;
+
+asLog *Log();
+
+void DeleteLog();
 
 #endif

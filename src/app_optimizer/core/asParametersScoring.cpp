@@ -344,8 +344,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     strVal = stringVals.SubString(iLeft, iRight - 1);
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
-        wxPrintf(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
-                                  GetScoreName(), strVal));
+        asLog::PrintToConsole(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
+                                               GetScoreName(), strVal));
         return false;
     }
 

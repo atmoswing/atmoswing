@@ -58,8 +58,9 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 add_library(asbase STATIC ${src_shared_base})
 
 # lsVersion
-add_subdirectory(libs/lsversion)
-
+if (USE_GUI)
+    add_subdirectory(libs/lsversion)
+endif (USE_GUI)
 
 ##### DECLARE EXECUTABLE
 
@@ -178,7 +179,23 @@ if (WIN32)
     add_custom_command(TARGET asbase POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
             "${PROJ_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}/proj.dll")
+            "${CMAKE_BINARY_DIR}")
     install(FILES ${PROJ_DLL_NAME} DESTINATION bin)
+
+    # SQLite
+    find_file(SQLITE_DLL_NAME
+            sqlite.dll NAMES sqlite3.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT SQLITE_DLL_NAME)
+        message(SEND_ERROR "SQLITE DLL not found.")
+    endif ()
+    message(STATUS "SQLITE DLL: ${SQLITE_DLL_NAME}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            "${SQLITE_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${SQLITE_DLL_NAME} DESTINATION bin)
 
 endif (WIN32)

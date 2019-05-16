@@ -54,7 +54,7 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoSwingOptimizer.log");
+    Log()->CreateFile("AtmoSwingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;

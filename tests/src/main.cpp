@@ -36,65 +36,71 @@
 
 int main(int argc, char **argv)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-
-    // Override some globals
-    g_unitTesting = true;
-    g_silentMode = true;
-    g_guiMode = false;
-
-    // Initialize the library because wxApp is not called
-    wxInitialize();
-
-    // Set the log
-    Log().CreateFile("AtmoSwingTests.log");
-    Log().SetLevel(2);
-
-    // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
-                                             asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
-    wxFileConfig::Set(pConfig);
-
-    // Check path
-    wxString filePath = wxFileName::GetCwd();
-    wxString filePath1 = filePath;
-    filePath1.Append("/tests/files");
-    if (wxFileName::DirExists(filePath1)) {
-        filePath.Append("/tests");
-        wxSetWorkingDirectory(filePath);
-    } else {
-        wxString filePath2 = filePath;
-        filePath2.Append("/../tests/files");
-        if (wxFileName::DirExists(filePath2)) {
-            filePath.Append("/../tests");
-            wxSetWorkingDirectory(filePath);
-        } else {
-            wxString filePath3 = filePath;
-            filePath3.Append("/../../tests/files");
-            if (wxFileName::DirExists(filePath3)) {
-                filePath.Append("/../../tests");
-                wxSetWorkingDirectory(filePath);
-            } else {
-                wxPrintf("Cannot find the files directory\n");
-                wxPrintf("Original working directory: %s\n", filePath);
-                return 0;
-            }
-        }
-    }
-
     int resultTest = -2;
 
-    try {
-        resultTest = RUN_ALL_TESTS();
-    } catch (const std::exception &e) {
-        wxPrintf(e.what());
-    }
+    wxPrintf("Tests starting.\n");
+    wxPrintf("Present directory: %s\n", wxFileName::GetCwd());
 
-    // Cleanup
-    wxUninitialize();
-    DeleteThreadsManager();
-    DeleteLog();
-    delete wxFileConfig::Set((wxFileConfig *) nullptr);
+    try {
+        ::testing::InitGoogleTest(&argc, argv);
+
+        // Override some globals
+        g_unitTesting = true;
+        g_silentMode = true;
+        g_guiMode = false;
+
+        // Initialize the library because wxApp is not called
+        wxInitialize();
+
+        // Set the log
+        Log().CreateFile("AtmoSwingTests.log");
+        Log().SetLevel(2);
+
+        // Set the local config object
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
+                                                 asConfig::GetTempDir() + "AtmoSwing.ini", wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig::Set(pConfig);
+
+        // Check path
+        wxString filePath = wxFileName::GetCwd();
+        wxString filePath1 = filePath;
+        filePath1.Append("/tests/files");
+        if (wxFileName::DirExists(filePath1)) {
+            filePath.Append("/tests");
+            wxSetWorkingDirectory(filePath);
+        } else {
+            wxString filePath2 = filePath;
+            filePath2.Append("/../tests/files");
+            if (wxFileName::DirExists(filePath2)) {
+                filePath.Append("/../tests");
+                wxSetWorkingDirectory(filePath);
+            } else {
+                wxString filePath3 = filePath;
+                filePath3.Append("/../../tests/files");
+                if (wxFileName::DirExists(filePath3)) {
+                    filePath.Append("/../../tests");
+                    wxSetWorkingDirectory(filePath);
+                } else {
+                    wxPrintf("Cannot find the files directory\n");
+                    wxPrintf("Original working directory: %s\n", filePath);
+                    return 0;
+                }
+            }
+        }
+        wxPrintf("Updated working directory: %s\n", wxFileName::GetCwd());
+
+        resultTest = RUN_ALL_TESTS();
+
+        // Cleanup
+        wxUninitialize();
+        DeleteThreadsManager();
+        DeleteLog();
+        delete wxFileConfig::Set((wxFileConfig *) nullptr);
+
+    } catch (std::exception &e) {
+        wxString msg(e.what(), wxConvUTF8);
+        wxPrintf(_("Exception caught: %s\n"), msg);
+    }
 
     return resultTest;
 }

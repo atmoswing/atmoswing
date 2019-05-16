@@ -144,8 +144,10 @@ bool AtmoswingAppForecaster::OnInit()
     asInternet::Init();
 
     // Call default behaviour (mandatory for command-line mode)
-    if (!wxApp::OnInit()) // When false, we are in CL mode
-        return false;
+    if (!wxApp::OnInit()) { // When false, we are in CL mode
+        g_guiMode = false;
+        return true;
+    }
 
 #if wxUSE_GUI
     // Following for GUI only
@@ -177,8 +179,8 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
     if (logLevel < 0) {
         logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
-    Log().CreateFileOnly("AtmoSwingForecaster.log");
-    Log().SetLevel((int) logLevel);
+    Log()->CreateFileOnly("AtmoSwingForecaster.log");
+    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -206,16 +208,21 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
 
         return false;
     }
 
     // Check if the user asked to configure
     if (parser.Found("config")) {
+
+#if wxUSE_GUI
+        asLog::PrintToConsole(_("This configuration mode is only available when AtmoSwing is built as a console "
+                                "application. Please use the GUI instead.\n"));
+#else
         InitForCmdLineOnly(2);
         m_doConfig = true;
-
+#endif
         return false;
     }
 
@@ -225,19 +232,19 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("log-level", &logLevelStr)) {
         if (logLevelStr.ToLong(&logLevel)) {
             if (logLevel == 0) {
-                Log().SetLevel(0);
+                Log()->SetLevel(0);
             } else if (logLevel == 1) {
-                Log().SetLevel(1);
+                Log()->SetLevel(1);
             } else if (logLevel == 2) {
-                Log().SetLevel(2);
+                Log()->SetLevel(2);
             } else if (logLevel == 3) {
-                Log().SetLevel(3);
+                Log()->SetLevel(3);
             } else {
-                Log().SetLevel(2);
-                wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr);
+                Log()->SetLevel(2);
+                asLog::PrintToConsole(wxString::Format(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr));
             }
         } else {
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
         }
 
     }
@@ -298,7 +305,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         m_doForecast = true;
         m_forecastDate = asTime::NowMJD();
 
-        return true;
+        return false;
     }
 
     // Check for a past forecast option
@@ -306,25 +313,29 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-past", &numberOfDaysStr)) {
         long numberOfDays;
         if (!numberOfDaysStr.ToLong(&numberOfDays)) {
-            wxPrintf(_("The value provided for 'forecast-past' could not be interpreted.\n"));
+            asLog::PrintToConsole(_("The value provided for 'forecast-past' could not be interpreted.\n"));
             return false;
         }
 
         InitForCmdLineOnly(logLevel);
         m_doForecastPast = true;
-        m_forecastPastDays = (int) numberOfDays;
+        m_forecastPastDays = (int)numberOfDays;
 
-        return true;
+        return false;
     }
 
     // Check for a forecast date option
     wxString dateForecastStr = wxEmptyString;
     if (parser.Found("forecast-date", &dateForecastStr)) {
         InitForCmdLineOnly(logLevel);
+        if (dateForecastStr.Len() != 10) {
+            asLog::PrintToConsole(_("Wrong date format.\n"));
+            return false;
+        }
         m_doForecast = true;
         m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
-        return true;
+        return false;
     }
 
     // Finally, if no option is given in CL mode, display help.
@@ -339,195 +350,255 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
 int AtmoswingAppForecaster::OnRun()
 {
-    if (!g_guiMode) {
-        if (m_doConfig) {
+    if (g_guiMode) {
+        return wxApp::OnRun();
+    }
 
-#if wxUSE_GUI
-            wxPrintf(_("This configuration mode is only available when AtmoSwing is built as a console application. Please use the GUI instead.\n"));
-            return 1;
-#else
+    if (m_doConfig) {
 
-            asBatchForecasts batchForecasts;
+        asBatchForecasts batchForecasts;
 
-            // Load batch file if exists
-            wxConfigBase *pConfig = wxFileConfig::Get();
-            wxString batchFilePath = wxEmptyString;
-            pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        // Load batch file if exists
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
 
-            if (!batchFilePath.IsEmpty()) {
-                if (batchForecasts.Load(batchFilePath)) {
-                    std::cout << _("An existing batch file was found and has been loaded.\n");
-                } else {
-                    batchFilePath = wxEmptyString;
-                }
-            }
-
-            // User inputs
-            std::string stdinVal;
-            wxString wxinVal;
-
-            // Batch file path
-            std::cout << _("Please provide a path to save the batch file.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath() << "\n";
-            std::cout << _("New value: ");
-            std::getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetFilePath(wxinVal);
-            }
-            std::cout << "\n";
-
-            // Check if exists and load
-            if (wxFile::Exists(batchForecasts.GetFilePath())) {
-                std::cout << _("The batch file exists and will be loaded.\n");
-
-                if (batchForecasts.Load(batchForecasts.GetFilePath())) {
-                    std::cout << _("Failed opening the batch file.\n");
-                }
-            }
-
-            // Directory to save the forecasts
-            std::cout << _("Please provide a directory to save the forecasts.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory() << "\n";
-            std::cout << _("New value: ");
-            std::getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetForecastsOutputDirectory(wxinVal);
-            }
-            std::cout << "\n";
-
-            // Exports
-            std::cout << _("Do you want to export synthetic xml files of the forecasts ?\n");
-            wxString currVal;
-            if (batchForecasts.ExportSyntheticXml()) {
-                currVal = "Y";
+        if (!batchFilePath.IsEmpty()) {
+            if (batchForecasts.Load(batchFilePath)) {
+                std::cout << _("An existing batch file was found and has been loaded.\n");
             } else {
-                currVal = "N";
+                batchFilePath = wxEmptyString;
             }
-            std::cout << _("Current value (enter to keep): ") << currVal << "\n";
-            bool acceptValue = false;
-            while (!acceptValue) {
-                std::cout << _("New value (Y/N): ");
-                std::getline(std::cin, stdinVal);
-                wxinVal = wxString(stdinVal);
-                if (!wxinVal.IsEmpty()) {
-                    if (wxinVal.IsSameAs("Y", false)) {
-                        batchForecasts.SetExportSyntheticXml(true);
-                        acceptValue = true;
-                    } else if (wxinVal.IsSameAs("N", false)) {
-                        batchForecasts.SetExportSyntheticXml(false);
-                        acceptValue = true;
-                    } else {
-                        std::cout << _("The provided value is not allowed. Please enter Y or N.\n");
-                    }
-                }
-            }
-            std::cout << "\n";
-
-            // Directory to save the exports
-            if (batchForecasts.HasExports()) {
-                std::cout << _("Please provide a directory to save the exports.\n");
-                std::cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory() << "\n";
-                std::cout << _("New value: ");
-                std::getline(std::cin, stdinVal);
-                wxinVal = wxString(stdinVal);
-                if (!wxinVal.IsEmpty()) {
-                    batchForecasts.SetExportsOutputDirectory(wxinVal);
-                }
-                std::cout << "\n";
-            }
-
-            // Directory containing the parameters files
-            std::cout << _("Please provide the directory containing the parameters files.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory() << "\n";
-            std::cout << _("New value: ");
-            std::getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetParametersFileDirectory(wxinVal);
-            }
-            std::cout << "\n";
-
-            // Directory containing the archive predictors
-            std::cout << _("Please provide the directory containing the archive predictors.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory() << "\n";
-            std::cout << _("New value: ");
-            std::getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
-            }
-            std::cout << "\n";
-
-            // Directory to save the downloaded predictors
-            std::cout << _("Please provide a directory to save the downloaded predictors.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() <<
-            "\n";
-            std::cout << _("New value: ");
-            getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
-            }
-            std::cout << "\n";
-
-            // Directory containing the predictand database
-            std::cout << _("Please provide the directory containing the predictand database.\n");
-            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory() << "\n";
-            std::cout << _("New value: ");
-            std::getline(std::cin, stdinVal);
-            wxinVal = wxString(stdinVal);
-            if (!wxinVal.IsEmpty()) {
-                batchForecasts.SetPredictandDBDirectory(wxinVal);
-            }
-            std::cout << "\n";
-
-            batchForecasts.Save();
-            std::cout << _("Batch file created successfully.\n");
-
-            pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
-
-            // Check if any forecast exist
-            if (batchForecasts.GetForecastsNb() == 0) {
-                std::cout <<
-                _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
-            }
-
-#endif
         }
 
-        if (m_doForecast) {
-            // Log message
-            wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
-            wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-            wxPrintf("Forecast started for the %s UTC\n", forecastDateStr);
+        // User inputs
+        std::string stdinVal;
+        wxString wxinVal;
 
-            // Open last batch file
-            wxConfigBase *pConfig = wxFileConfig::Get();
-            wxString batchFilePath = wxEmptyString;
-            pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        // Batch file path
+        std::cout << _("Please provide a path to save the batch file.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetFilePath() << "\n";
+        std::cout << _("New value: ");
+        std::getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetFilePath(wxinVal);
+        }
+        std::cout << "\n";
 
-            asBatchForecasts batchForecasts;
+        // Check if exists and load
+        if (wxFile::Exists(batchForecasts.GetFilePath())) {
+            std::cout << _("The batch file exists and will be loaded.\n");
 
-            if (!batchFilePath.IsEmpty()) {
-                if (!batchForecasts.Load(batchFilePath)) {
-                    wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    wxPrintf(_("Failed to open the batch file %s\n"), batchFilePath);
-                    return 1;
+            if (batchForecasts.Load(batchForecasts.GetFilePath())) {
+                std::cout << _("Failed opening the batch file.\n");
+            }
+        }
+
+        // Directory to save the forecasts
+        std::cout << _("Please provide a directory to save the forecasts.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetForecastsOutputDirectory() << "\n";
+        std::cout << _("New value: ");
+        std::getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetForecastsOutputDirectory(wxinVal);
+        }
+        std::cout << "\n";
+
+        // Exports
+        std::cout << _("Do you want to export synthetic xml files of the forecasts ?\n");
+        wxString currVal;
+        if (batchForecasts.ExportSyntheticXml()) {
+            currVal = "Y";
+        } else {
+            currVal = "N";
+        }
+        std::cout << _("Current value (enter to keep): ") << currVal << "\n";
+        bool acceptValue = false;
+        while (!acceptValue) {
+            std::cout << _("New value (Y/N): ");
+            std::getline(std::cin, stdinVal);
+            wxinVal = wxString(stdinVal);
+            if (!wxinVal.IsEmpty()) {
+                if (wxinVal.IsSameAs("Y", false)) {
+                    batchForecasts.SetExportSyntheticXml(true);
+                    acceptValue = true;
+                } else if (wxinVal.IsSameAs("N", false)) {
+                    batchForecasts.SetExportSyntheticXml(false);
+                    acceptValue = true;
+                } else {
+                    std::cout << _("The provided value is not allowed. Please enter Y or N.\n");
                 }
-            } else {
-                wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
+            }
+        }
+        std::cout << "\n";
+
+        // Directory to save the exports
+        if (batchForecasts.HasExports()) {
+            std::cout << _("Please provide a directory to save the exports.\n");
+            std::cout << _("Current value (enter to keep): ") << batchForecasts.GetExportsOutputDirectory() << "\n";
+            std::cout << _("New value: ");
+            std::getline(std::cin, stdinVal);
+            wxinVal = wxString(stdinVal);
+            if (!wxinVal.IsEmpty()) {
+                batchForecasts.SetExportsOutputDirectory(wxinVal);
+            }
+            std::cout << "\n";
+        }
+
+        // Directory containing the parameters files
+        std::cout << _("Please provide the directory containing the parameters files.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetParametersFileDirectory() << "\n";
+        std::cout << _("New value: ");
+        std::getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetParametersFileDirectory(wxinVal);
+        }
+        std::cout << "\n";
+
+        // Directory containing the archive predictors
+        std::cout << _("Please provide the directory containing the archive predictors.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsArchiveDirectory() << "\n";
+        std::cout << _("New value: ");
+        std::getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetPredictorsArchiveDirectory(wxinVal);
+        }
+        std::cout << "\n";
+
+        // Directory to save the downloaded predictors
+        std::cout << _("Please provide a directory to save the downloaded predictors.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() <<
+        "\n";
+        std::cout << _("New value: ");
+        getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetPredictorsRealtimeDirectory(wxinVal);
+        }
+        std::cout << "\n";
+
+        // Directory containing the predictand database
+        std::cout << _("Please provide the directory containing the predictand database.\n");
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictandDBDirectory() << "\n";
+        std::cout << _("New value: ");
+        std::getline(std::cin, stdinVal);
+        wxinVal = wxString(stdinVal);
+        if (!wxinVal.IsEmpty()) {
+            batchForecasts.SetPredictandDBDirectory(wxinVal);
+        }
+        std::cout << "\n";
+
+        batchForecasts.Save();
+        std::cout << _("Batch file created successfully.\n");
+
+        pConfig->Write("/BatchForecasts/LastOpened", batchForecasts.GetFilePath());
+
+        // Check if any forecast exist
+        if (batchForecasts.GetForecastsNb() == 0) {
+            std::cout <<
+            _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
+        }
+    }
+
+    if (m_doForecast) {
+        // Log message
+        wxString forecastDateStr = asTime::GetStringTime(m_forecastDate, "DD.MM.YYYY hh:mm");
+        wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
+        asLog::PrintToConsole(wxString::Format("Forecast started for the %s UTC\n", forecastDateStr));
+
+        // Open last batch file
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        asBatchForecasts batchForecasts;
+
+        if (!batchFilePath.IsEmpty()) {
+            if (!batchForecasts.Load(batchFilePath)) {
+                wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
+                asLog::PrintToConsole(wxString::Format(_("Failed to open the batch file %s\n"), batchFilePath));
                 return 1;
             }
+        } else {
+            wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            asLog::PrintToConsole(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
+            return 1;
+        }
+
+        // Launch forecasting
+        asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
+        forecaster.SetForecastDate(m_forecastDate);
+        if (!forecaster.Manager()) {
+            wxLogError(_("Failed processing the forecast."));
+            asLog::PrintToConsole(_("Failed processing the forecast.\n"));
+            return 1;
+        }
+        double realForecastDate = forecaster.GetForecastDate();
+
+        // Log message
+        wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
+        wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
+        asLog::PrintToConsole(wxString::Format("Forecast processed for the date %s UTC\n", realForecastDateStr));
+
+        // Write the resulting files path into a temp file.
+        wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
+        asFileAscii filePaths(tempFile, asFile::Replace);
+        vwxs filePathsVect = forecaster.GetResultsFilePaths();
+
+        filePaths.Open();
+
+        for (const auto &file : filePathsVect) {
+            filePaths.AddLineContent(file);
+        }
+        filePaths.Close();
+    }
+
+    if (m_doForecastPast) {
+        asLog::PrintToConsole(wxString::Format("Forecast started for the last %d days\n", m_forecastPastDays));
+
+        // Open last batch file
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        wxString batchFilePath = wxEmptyString;
+        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+
+        asBatchForecasts batchForecasts;
+
+        if (!batchFilePath.IsEmpty()) {
+            if (!batchForecasts.Load(batchFilePath)) {
+                wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
+                asLog::PrintToConsole(wxString::Format(_("Failed to open the batch file %s\n"), batchFilePath));
+                return 1;
+            }
+        } else {
+            wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
+            asLog::PrintToConsole(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
+            return 1;
+        }
+
+        double now = asTime::NowMJD();
+        double startDate = floor(now) + 23.0 / 24.0;
+        double endDate = floor(now) - m_forecastPastDays;
+        double increment = 1.0 / 24.0;
+
+        for (double date = startDate; date >= endDate; date -= increment) {
+            if (now < date) // ulterior to present
+                continue;
+
+            // Log message
+            wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
+            wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
+            asLog::PrintToConsole(wxString::Format("Forecast started for the %s UTC\n", forecastDateStr));
 
             // Launch forecasting
             asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
-            forecaster.SetForecastDate(m_forecastDate);
+            forecaster.SetForecastDate(date);
             if (!forecaster.Manager()) {
                 wxLogError(_("Failed processing the forecast."));
-                wxPrintf(_("Failed processing the forecast.\n"));
+                asLog::PrintToConsole(wxString::Format(_("Failed processing the forecast.\n")));
                 return 1;
             }
             double realForecastDate = forecaster.GetForecastDate();
@@ -535,81 +606,14 @@ int AtmoswingAppForecaster::OnRun()
             // Log message
             wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
             wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-            wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
+            asLog::PrintToConsole(wxString::Format("Forecast processed for the date %s UTC\n", realForecastDateStr));
 
-            // Write the resulting files path into a temp file.
-            wxString tempFile = asConfig::GetTempDir() + "AtmoSwingForecastFilePaths.txt";
-            asFileAscii filePaths(tempFile, asFile::Replace);
-            vwxs filePathsVect = forecaster.GetResultsFilePaths();
-
-            filePaths.Open();
-
-            for (int i = 0; i < filePathsVect.size(); i++) {
-                filePaths.AddLineContent(filePathsVect[i]);
-            }
-            filePaths.Close();
+            // Apply real forecast date to increment
+            date = realForecastDate;
         }
-
-        if (m_doForecastPast) {
-            wxPrintf("Forecast started for the last %d days\n", m_forecastPastDays);
-
-            // Open last batch file
-            wxConfigBase *pConfig = wxFileConfig::Get();
-            wxString batchFilePath = wxEmptyString;
-            pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
-
-            asBatchForecasts batchForecasts;
-
-            if (!batchFilePath.IsEmpty()) {
-                if (!batchForecasts.Load(batchFilePath)) {
-                    wxLogWarning(_("Failed to open the batch file ") + batchFilePath);
-                    wxPrintf(_("Failed to open the batch file %s\n"), batchFilePath);
-                    return 1;
-                }
-            } else {
-                wxLogError(_("Please run 'atmoswing-forecaster -c' first in order to configure."));
-                wxPrintf(_("Please run 'atmoswing-forecaster -c' first in order to configure.\n"));
-                return 1;
-            }
-
-            double now = asTime::NowMJD();
-            double startDate = floor(now) + 23.0 / 24.0;
-            double endDate = floor(now) - m_forecastPastDays;
-            double increment = 1.0 / 24.0;
-
-            for (double date = startDate; date >= endDate; date -= increment) {
-                if (now < date) // ulterior to present
-                    continue;
-
-                // Log message
-                wxString forecastDateStr = asTime::GetStringTime(date, "DD.MM.YYYY hh:mm");
-                wxLogMessage(_("Forecast started for the %s UTC"), forecastDateStr);
-                wxPrintf("Forecast started for the %s UTC\n", forecastDateStr);
-
-                // Launch forecasting
-                asMethodForecasting forecaster = asMethodForecasting(&batchForecasts);
-                forecaster.SetForecastDate(date);
-                if (!forecaster.Manager()) {
-                    wxLogError(_("Failed processing the forecast."));
-                    wxPrintf(_("Failed processing the forecast.\n"));
-                    return 1;
-                }
-                double realForecastDate = forecaster.GetForecastDate();
-
-                // Log message
-                wxString realForecastDateStr = asTime::GetStringTime(realForecastDate, "DD.MM.YYYY hh:mm");
-                wxLogMessage(_("Forecast processed for the date %s UTC"), realForecastDateStr);
-                wxPrintf("Forecast processed for the date %s UTC\n", realForecastDateStr);
-
-                // Apply real forecast date to increment
-                date = realForecastDate;
-            }
-        }
-
-        return 0;
     }
 
-    return wxApp::OnRun();
+    return 0;
 }
 
 int AtmoswingAppForecaster::OnExit()

@@ -980,7 +980,7 @@ void asFrameForecast::OpenFrameAbout(wxCommandEvent &event)
 
 void asFrameForecast::OnLogLevel1(wxCommandEvent &event)
 {
-    Log().SetLevel(1);
+    Log()->SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
@@ -992,7 +992,7 @@ void asFrameForecast::OnLogLevel1(wxCommandEvent &event)
 
 void asFrameForecast::OnLogLevel2(wxCommandEvent &event)
 {
-    Log().SetLevel(2);
+    Log()->SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
@@ -1004,7 +1004,7 @@ void asFrameForecast::OnLogLevel2(wxCommandEvent &event)
 
 void asFrameForecast::OnLogLevel3(wxCommandEvent &event)
 {
-    Log().SetLevel(3);
+    Log()->SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(true);
@@ -1024,19 +1024,19 @@ void asFrameForecast::DisplayLogLevelMenu()
     switch (logLevel) {
         case 1:
             m_menuLogLevel->FindItemByPosition(0)->Check(true);
-            Log().SetLevel(1);
+            Log()->SetLevel(1);
             break;
         case 2:
             m_menuLogLevel->FindItemByPosition(1)->Check(true);
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
             break;
         case 3:
             m_menuLogLevel->FindItemByPosition(2)->Check(true);
-            Log().SetLevel(3);
+            Log()->SetLevel(3);
             break;
         default:
             m_menuLogLevel->FindItemByPosition(1)->Check(true);
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
     }
 }
 

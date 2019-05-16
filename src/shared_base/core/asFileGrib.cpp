@@ -59,7 +59,6 @@ bool asFileGrib::Open()
     if (!Find())
         return false;
 
-    // Let GDAL open the dataset
     if (!OpenDataset())
         return false;
 
@@ -84,7 +83,7 @@ bool asFileGrib::OpenDataset()
     wxString filePath = m_fileName.GetFullPath();
 
     // Open file
-    m_filtPtr = fopen(filePath.mb_str(), "r");
+    m_filtPtr = fopen(filePath.mb_str(), "rb");
 
     if (!m_filtPtr) // Failed
     {

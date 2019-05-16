@@ -72,6 +72,11 @@ external/
 **/eigen-prefix/
 **/googletest-prefix/
 **/eccodes-prefix/
+**/.vs/
 *.resolve
 *.base
 *.info
+*.db
+*.db-wal
+*.db-shm
+*.opendb

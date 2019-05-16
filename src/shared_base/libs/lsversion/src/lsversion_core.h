@@ -25,7 +25,7 @@
 #include <wx/wx.h>
 #endif
 
-#ifdef lsVERSION_ENABLED
+#ifdef USE_LSVERSION
     #include "lsversion_param.h"
 #endif
 
@@ -59,6 +59,14 @@ public:
     static wxString GetProjNumber();
 
     static wxString GetEigenNumber();
+
+    static wxString GetPNGNumber();
+
+    static wxString GetJpegNumber();
+
+    static wxString GetJasperNumber();
+
+    static wxString GetEcCodesNumber();
 
     static wxString GetAllModules();
 };
