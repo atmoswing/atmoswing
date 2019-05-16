@@ -116,10 +116,6 @@ void asLog::SetLevel(int val)
             wxLog::SetVerbose();
             wxLog::SetLogLevel(wxLOG_Info);
             break;
-        case 4 :
-            wxLog::SetVerbose();
-            wxLog::SetLogLevel(wxLOG_Progress);
-            break;
         default:
             wxLog::SetLogLevel(wxLOG_Message);
     }

@@ -67,8 +67,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
                                                "\n \t\t\t\t\t - 1: errors"
                                                "\n \t\t\t\t\t - 2: warnings"
-                                               "\n \t\t\t\t\t - 3: verbose"
-                                               "\n \t\t\t\t\t - 4: debug"},
+                                               "\n \t\t\t\t\t - 3: verbose"},
     {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
     {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
     {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
@@ -231,17 +230,11 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     long logLevel = -1;
     if (parser.Found("log-level", &logLevelStr)) {
         if (logLevelStr.ToLong(&logLevel)) {
-            if (logLevel == 0) {
-                Log()->SetLevel(0);
-            } else if (logLevel == 1) {
-                Log()->SetLevel(1);
-            } else if (logLevel == 2) {
-                Log()->SetLevel(2);
-            } else if (logLevel == 3) {
-                Log()->SetLevel(3);
+            // Check and apply
+            if (logLevel >= 1 && logLevel <= 3) {
+                Log()->SetLevel(int(logLevel));
             } else {
                 Log()->SetLevel(2);
-                asLog::PrintToConsole(wxString::Format(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr));
             }
         } else {
             Log()->SetLevel(2);
