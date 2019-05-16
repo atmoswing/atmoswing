@@ -141,7 +141,6 @@
 #include "asVersion.h"
 #include "asConfig.h"
 #include "asLog.h"
-#include "asLogGlobalFunctions.h"
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
 #include "asTypeDefs.h"
