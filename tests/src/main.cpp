@@ -53,8 +53,8 @@ int main(int argc, char **argv)
         wxInitialize();
 
         // Set the log
-        Log().CreateFile("AtmoSwingTests.log");
-        Log().SetLevel(2);
+        Log()->CreateFile("AtmoSwingTests.log");
+        Log()->SetLevel(2);
 
         // Set the local config object
         wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwing.ini",
