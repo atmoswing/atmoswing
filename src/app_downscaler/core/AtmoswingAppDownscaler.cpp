@@ -182,9 +182,19 @@ bool AtmoswingAppDownscaler::InitLog()
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
 
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFileAtPath(fullPath);
+#else
         Log()->CreateFileOnlyAtPath(fullPath);
+#endif
     } else {
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFile("AtmoSwingDownscaler.log");
+#else
         Log()->CreateFileOnly("AtmoSwingDownscaler.log");
+#endif
     }
 
     return true;

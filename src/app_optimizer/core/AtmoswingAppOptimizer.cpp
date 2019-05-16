@@ -256,9 +256,19 @@ bool AtmoswingAppOptimizer::InitLog()
             }
         }
 
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFileAtPath(fullPath);
+#else
         Log()->CreateFileOnlyAtPath(fullPath);
+#endif
     } else {
+#if wxUSE_GUI
+        delete wxLog::SetActiveTarget(new asLogGui());
+        Log()->CreateFile("AtmoSwingOptimizer.log");
+#else
         Log()->CreateFileOnly("AtmoSwingOptimizer.log");
+#endif
     }
 
     return true;

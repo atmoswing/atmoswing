@@ -84,6 +84,19 @@ void asLog::CreateFile(const wxString &fileName)
     }
 }
 
+void asLog::CreateFileAtPath(const wxString &fullPath)
+{
+    // Create the log file
+    ClearCurrentTarget();
+    m_logFile = new wxFFile(fullPath, "w");
+
+    if (m_logChain) {
+        m_logChain->SetLog(new wxLogStderr(m_logFile->fp()));
+    } else {
+        m_logChain = new wxLogChain(new wxLogStderr(m_logFile->fp()));
+    }
+}
+
 void asLog::CreateFileOnly(const wxString &fileName)
 {
     // Create the log file
@@ -123,8 +136,19 @@ void asLog::SetLevel(int val)
 
 void asLog::PrintToConsole(const wxString &msg)
 {
-    wxMessageOutput *msgOut = wxMessageOutput::Get();
-    if (msgOut) {
-        msgOut->Printf(msg);
+    if (!g_guiMode) {
+		wxMessageOutput *msgOut = wxMessageOutput::Get();
+		if (msgOut) {
+			msgOut->Printf(msg);
+		}
+	}
+}
+
+#if wxUSE_GUI
+void asLogGui::DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info)
+{
+    if (level <= wxLOG_Error) {
+        wxLogGui::DoLogRecord(level, msg, info);
     }
 }
+#endif

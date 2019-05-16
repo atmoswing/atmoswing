@@ -239,8 +239,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         } else {
             Log()->SetLevel(2);
         }
-
     }
+#if wxUSE_GUI
+    delete wxLog::SetActiveTarget(new asLogGui());
+#endif
 
     // Proxy activated
     wxString proxy;
