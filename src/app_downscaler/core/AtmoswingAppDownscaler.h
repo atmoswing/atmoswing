@@ -80,7 +80,7 @@ private:
     wxString m_predictorsArchiveDir;
     wxString m_predictorsScenarioDir;
     vi m_predictandStationIds;
-    bool m_forceQuit;
+    bool m_doProcessing;
 #if wxUSE_GUI
     wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
