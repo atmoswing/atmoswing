@@ -53,7 +53,7 @@ AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoSwingDownscaler.log");
+    Log()->CreateFile("AtmoSwingDownscaler.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;

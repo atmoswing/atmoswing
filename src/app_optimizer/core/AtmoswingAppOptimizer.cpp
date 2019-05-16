@@ -257,9 +257,9 @@ bool AtmoswingAppOptimizer::InitLog()
             }
         }
 
-        Log().CreateFileOnlyAtPath(fullPath);
+        Log()->CreateFileOnlyAtPath(fullPath);
     } else {
-        Log().CreateFileOnly("AtmoSwingOptimizer.log");
+        Log()->CreateFileOnly("AtmoSwingOptimizer.log");
     }
 
     return true;
@@ -391,7 +391,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date));
 
         return false; // We don't want to continue
     }
@@ -463,19 +463,19 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
         if (!logLevelStr.ToLong(&logLevel)) {
-            wxPrintf(_("The value provided for 'log-level' could not be interpreted.\n"));
+            asLog::PrintToConsole(_("The value provided for 'log-level' could not be interpreted.\n"));
             return false;
         }
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log().SetLevel((int) logLevel);
+            Log()->SetLevel((int) logLevel);
         } else {
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
         }
     } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log().SetLevel((int) logLevel);
+        Log()->SetLevel((int) logLevel);
     }
 
     // Check for a calibration params file
@@ -575,7 +575,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("ga-config", &option)) {
         long gaConfig = -1;
         if (!option.ToLong(&gaConfig)) {
-            wxPrintf(_("The value provided for 'ga-config' could not be interpreted.\n"));
+            asLog::PrintToConsole(_("The value provided for 'ga-config' could not be interpreted.\n"));
             return false;
         }
 
@@ -858,7 +858,7 @@ int AtmoswingAppOptimizer::OnRun()
                 calibrator.SetPredictorDataDir(m_predictorsDir);
                 calibrator.Manager();
             } else {
-                wxPrintf("Wrong calibration method selection (%s).\n", m_calibMethod);
+                asLog::PrintToConsole(wxString::Format("Wrong calibration method selection (%s).\n", m_calibMethod));
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);

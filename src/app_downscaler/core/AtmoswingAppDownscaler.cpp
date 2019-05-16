@@ -183,9 +183,9 @@ bool AtmoswingAppDownscaler::InitLog()
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
 
-        Log().CreateFileOnlyAtPath(fullPath);
+        Log()->CreateFileOnlyAtPath(fullPath);
     } else {
-        Log().CreateFileOnly("AtmoSwingDownscaler.log");
+        Log()->CreateFileOnly("AtmoSwingDownscaler.log");
     }
 
     return true;
@@ -258,7 +258,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("version")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date));
 
         return false; // We don't want to continue
     }
@@ -286,7 +286,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 
             // Check if path already exists
             if (wxFileName::Exists(localPath)) {
-                wxPrintf(_("A directory with the same name already exists.\n"));
+                asLog::PrintToConsole(_("A directory with the same name already exists.\n"));
                 wxLogError(_("A directory with the same name already exists."));
                 return false;
             } else {
@@ -324,19 +324,19 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("log-level", &logLevelStr)) {
         long logLevel = -1;
         if (!logLevelStr.ToLong(&logLevel)) {
-            wxPrintf(_("The value provided for 'log-level' could not be interpreted.\n"));
+            asLog::PrintToConsole(_("The value provided for 'log-level' could not be interpreted.\n"));
             return false;
         }
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log().SetLevel(int(logLevel));
+            Log()->SetLevel(int(logLevel));
         } else {
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
         }
     } else {
         long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log().SetLevel(int(logLevel));
+        Log()->SetLevel(int(logLevel));
     }
 
     // Check for a downscaling params file
@@ -452,7 +452,7 @@ int AtmoswingAppDownscaler::OnRun()
                 downscaler.SetPredictorDataDir(m_predictorsArchiveDir);
                 downscaler.Manager();
             } else {
-                wxPrintf("Wrong downscaling method selection (%s).\n", m_downscalingMethod);
+                asLog::PrintToConsole(wxString::Format("Wrong downscaling method selection (%s).\n", m_downscalingMethod));
             }
         } catch (std::bad_alloc &ba) {
             wxString msg(ba.what(), wxConvUTF8);

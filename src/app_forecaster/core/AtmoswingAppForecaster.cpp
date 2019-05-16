@@ -177,8 +177,8 @@ bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
     if (logLevel < 0) {
         logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
-    Log().CreateFileOnly("AtmoSwingForecaster.log");
-    Log().SetLevel((int) logLevel);
+    Log()->CreateFileOnly("AtmoSwingForecaster.log");
+    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -225,19 +225,19 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("log-level", &logLevelStr)) {
         if (logLevelStr.ToLong(&logLevel)) {
             if (logLevel == 0) {
-                Log().SetLevel(0);
+                Log()->SetLevel(0);
             } else if (logLevel == 1) {
-                Log().SetLevel(1);
+                Log()->SetLevel(1);
             } else if (logLevel == 2) {
-                Log().SetLevel(2);
+                Log()->SetLevel(2);
             } else if (logLevel == 3) {
-                Log().SetLevel(3);
+                Log()->SetLevel(3);
             } else {
-                Log().SetLevel(2);
-                wxPrintf(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr);
+                Log()->SetLevel(2);
+                asLog::PrintToConsole(wxString::Format(_("The given log level (%s) does not correspond to any possible option (0-3).\n"), logLevelStr));
             }
         } else {
-            Log().SetLevel(2);
+            Log()->SetLevel(2);
         }
 
     }

@@ -130,8 +130,8 @@ bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
     if (logLevel < 0) {
         logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     }
-    Log().CreateFile("AtmoSwingViewer.log");
-    Log().SetLevel((int) logLevel);
+    Log()->CreateFile("AtmoSwingViewer.log");
+    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -157,7 +157,7 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked for the version
     if (parser.Found("v")) {
         wxString date(wxString::FromAscii(__DATE__));
-        wxPrintf("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date);
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, (const wxChar *) date));
 
         return false;
     }
@@ -168,16 +168,16 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("l", &logLevelStr)) {
         if (logLevelStr.ToLong(&logLevel)) {
             if (logLevel == 0) {
-                Log().SetLevel(0);
+                Log()->SetLevel(0);
             } else if (logLevel == 1) {
-                Log().SetLevel(1);
+                Log()->SetLevel(1);
             } else if (logLevel == 2) {
-                Log().SetLevel(2);
+                Log()->SetLevel(2);
             } else {
-                Log().SetLevel(3);
+                Log()->SetLevel(3);
             }
         } else {
-            Log().SetLevel(3);
+            Log()->SetLevel(3);
         }
 
     }

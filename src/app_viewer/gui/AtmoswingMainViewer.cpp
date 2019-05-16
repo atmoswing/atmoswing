@@ -51,7 +51,7 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
     bool displayLogWindow;
     pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
-    Log().CreateFile("AtmoSwingViewer.log");
+    Log()->CreateFile("AtmoSwingViewer.log");
 }
 
 void AtmoswingFrameViewer::OnClose(wxCloseEvent &event)
