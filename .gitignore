@@ -58,6 +58,7 @@ atmoswing-optimizer
 atmoswing-downscaler
 bin/
 bin-vs/
+bin-vs-2019/
 *.rej
 .idea/*
 Test Results *
