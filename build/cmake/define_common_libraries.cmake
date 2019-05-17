@@ -58,6 +58,7 @@ if (BUILD_VIEWER)
     find_package(SQLite3 REQUIRED)
     include_directories(${SQLITE3_INCLUDE_DIR})
     link_libraries(${SQLITE3_LIBRARY})
+
 endif ()
 
 # ecCodes

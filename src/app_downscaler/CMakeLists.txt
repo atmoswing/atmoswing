@@ -68,7 +68,6 @@ endif (USE_CPPCHECK)
 ##### DEFINITIONS
 
 # Global definitions
-
 if (USE_GUI)
     set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; wxUSE_GUI=1")
     set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
@@ -82,9 +81,6 @@ endif (USE_GUI)
 
 target_link_libraries(atmoswing-downscaler asbase)
 target_link_libraries(atmoswing-downscaler asprocessing)
-if (USE_WXHGVERSION)
-    target_link_libraries(atmoswing-downscaler ${WXHGVERSION_NAME})
-endif (USE_WXHGVERSION)
 if (USE_VLD)
     target_link_libraries(atmoswing-downscaler ${VLD_LIBRARIES})
 endif (USE_VLD)

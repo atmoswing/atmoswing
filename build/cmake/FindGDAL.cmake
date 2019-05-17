@@ -73,7 +73,7 @@ else ()
 
     if (GDAL_DIR)
         find_library(GDAL_LIBRARY
-                    NAMES libgdal.a libgdal.so gdal1 gdal2 gdal3
+                    NAMES libgdal.so libgdal gdal gdal2 gdal3
                 PATHS
                     ${GDAL_DIR}/lib
                     ${GDAL_DIR}
@@ -89,7 +89,7 @@ else ()
                 PATH_SUFFIXES gdal)
 
         find_library(GDAL_LIBRARY
-                NAMES libgdal.a libgdal.so gdal1 gdal2 gdal3)
+                NAMES libgdal.so libgdal gdal gdal2 gdal3)
 
         find_program(GDAL_CONFIG gdal-config)
 
