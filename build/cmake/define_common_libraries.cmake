@@ -54,6 +54,10 @@ if (BUILD_VIEWER)
     include_directories(${GDAL_INCLUDE_DIRS})
     link_libraries(${GDAL_LIBRARIES})
 
+    # SQLite 3
+    find_package(SQLite3 REQUIRED)
+    include_directories(${SQLITE3_INCLUDE_DIR})
+    link_libraries(${SQLITE3_LIBRARY})
 endif ()
 
 # ecCodes
