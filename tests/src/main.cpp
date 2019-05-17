@@ -38,9 +38,6 @@ int main(int argc, char **argv)
 {
     int resultTest = -2;
 
-    wxPrintf("Tests starting.\n");
-    wxPrintf("Present directory: %s\n", wxFileName::GetCwd());
-
     try {
         ::testing::InitGoogleTest(&argc, argv);
 
@@ -87,7 +84,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-        wxPrintf("Updated working directory: %s\n", wxFileName::GetCwd());
 
         resultTest = RUN_ALL_TESTS();
 
