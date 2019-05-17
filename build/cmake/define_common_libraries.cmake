@@ -33,7 +33,7 @@ include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
 # Proj4
-find_package(PROJ4 6 REQUIRED)
+find_package(PROJ4 4.9 REQUIRED)
 include_directories(${PROJ4_INCLUDE_DIR})
 link_libraries(${PROJ4_LIBRARIES})
 
@@ -53,6 +53,11 @@ if (BUILD_VIEWER)
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
     link_libraries(${GDAL_LIBRARIES})
+
+    # SQLite 3
+    find_package(SQLite3 REQUIRED)
+    include_directories(${SQLITE3_INCLUDE_DIR})
+    link_libraries(${SQLITE3_LIBRARY})
 
 endif ()
 

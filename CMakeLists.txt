@@ -6,6 +6,9 @@ endif ()
 if (POLICY CMP0074)
     cmake_policy(SET CMP0074 NEW)
 endif ()
+if (POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+endif ()
 
 # Project name
 if (UNIX)
@@ -85,6 +88,10 @@ if (BUILD_VIEWER)
 else (BUILD_VIEWER)
     option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
 endif (BUILD_VIEWER)
+
+# Disable testing tree
+set(BUILD_TESTING OFF)
+mark_as_advanced(BUILD_TESTING)
 
 # External projects
 include(ExternalProject)

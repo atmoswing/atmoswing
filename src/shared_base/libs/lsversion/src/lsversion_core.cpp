@@ -140,10 +140,25 @@ wxString lsVersion::GetNetCDFNumber()
 wxString lsVersion::GetProjNumber()
 {
     wxString myProj = wxEmptyString;
-#ifdef PROJ_LIBRARY
-    myProj = wxString::Format("%d.%d.%d", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
-#elif defined PROJ4_INCLUDE_DIR
-    myProj = wxString::Format("%d.%d.%d", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+#ifdef PROJ4_INCLUDE_DIR
+    #ifdef PJ_VERSION
+        myProj = wxString::Format("%d", PJ_VERSION);
+        // Adding points
+        if (!myProj.IsEmpty()) {
+            wxString myProjDots = wxEmptyString;
+            for (unsigned int i = 0; i < myProj.Length(); i++) {
+                if (i != myProj.Length() - 1) {
+                    myProjDots.Append(myProj.Mid(i, 1) + ".");
+                } else {
+                    myProjDots.Append(myProj.Mid(i, 1));
+                }
+            }
+            myProj = myProjDots;
+        }
+    #endif
+    #ifdef PROJ_VERSION_MAJOR
+        myProj = wxString::Format("%d.%d.%d", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+    #endif
 #endif
     return myProj;
 }
@@ -173,7 +188,24 @@ wxString lsVersion::GetJpegNumber()
 {
     wxString myTxt = wxEmptyString;
 #ifdef JPEG_INCLUDE_DIR
-    // myTxt = wxString::Format("%d.%d", JPEG_LIB_VERSION_MAJOR, JPEG_LIB_VERSION_MINOR);
+    #ifdef JPEG_LIB_VERSION
+        myTxt = wxString::Format("%d", JPEG_LIB_VERSION);
+        // Adding points
+        if (!myTxt.IsEmpty()) {
+            wxString myTxtDots = wxEmptyString;
+            for (unsigned int i = 0; i < myTxt.Length(); i++) {
+                if (i != myTxt.Length() - 1) {
+                    myTxtDots.Append(myTxt.Mid(i, 1) + ".");
+                } else {
+                    myTxtDots.Append(myTxt.Mid(i, 1));
+                }
+            }
+            myTxt = myTxtDots;
+        }
+    #endif
+    #ifdef JPEG_LIB_VERSION_MAJOR
+        myTxt = wxString::Format("%d.%d", JPEG_LIB_VERSION_MAJOR, JPEG_LIB_VERSION_MINOR);
+    #endif
 #endif
     return myTxt;
 }

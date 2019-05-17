@@ -9,7 +9,8 @@ if(PROJ4_INCLUDE_DIR)
   set(PROJ4_FIND_QUIETLY TRUE)
 endif(PROJ4_INCLUDE_DIR)
 
-find_path(PROJ4_INCLUDE_DIR "proj_api.h"
+find_path(PROJ4_INCLUDE_DIR
+        NAMES proj.h proj_api.h
         PATHS
           ${CMAKE_PREFIX_PATH}
           $ENV{EXTERNLIBS}
@@ -18,19 +19,14 @@ find_path(PROJ4_INCLUDE_DIR "proj_api.h"
           /Library/Frameworks
           /usr/local
           /usr
-          /sw # Fink
-          /opt/local # DarwinPorts
-          /opt/csw # Blastwave
           /opt
         PATH_SUFFIXES
           include
-        DOC "PROJ4 - Headers"
+        DOC "PROJ4 - Headers path"
         )
 
-set(PROJ4_NAMES Proj4 proj proj_4_9 proj_6_0)
-set(PROJ4_DBG_NAMES Proj4D projD proj_4_9_D proj_6_0_D)
-
-find_library(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
+find_file(PROJ4_HEADER
+        NAMES proj.h proj_api.h
         PATHS
           ${CMAKE_PREFIX_PATH}
           $ENV{EXTERNLIBS}
@@ -39,9 +35,22 @@ find_library(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
           /Library/Frameworks
           /usr/local
           /usr
-          /sw
-          /opt/local
-          /opt/csw
+          /opt
+        PATH_SUFFIXES
+          include
+        DOC "PROJ4 - Headers file"
+        )
+
+find_library(PROJ4_LIBRARY
+        NAMES Proj4 proj proj_4_9 proj_6_0 proj_6_1
+        PATHS
+          ${CMAKE_PREFIX_PATH}
+          $ENV{EXTERNLIBS}
+          $ENV{EXTERNLIBS}/proj4
+          ~/Library/Frameworks
+          /Library/Frameworks
+          /usr/local
+          /usr
           /opt
         PATH_SUFFIXES
           lib
@@ -51,32 +60,17 @@ find_library(PROJ4_LIBRARY NAMES ${PROJ4_NAMES}
 
 include(FindPackageHandleStandardArgs)
 
-#[[if(MSVC)
-  # VisualStudio needs a debug version
-  find_library(PROJ4_LIBRARY_DEBUG NAMES ${PROJ4_DBG_NAMES}
-    PATHS
-    $ENV{EXTERNLIBS}/proj4/lib
-    DOC "PROJ4 - Library (Debug)"
-  )
-  
-  if(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
-    set(PROJ4_LIBRARIES optimized ${PROJ4_LIBRARY} debug ${PROJ4_LIBRARY_DEBUG})
-  endif(PROJ4_LIBRARY_DEBUG AND PROJ4_LIBRARY)
+set(PROJ4_LIBRARIES ${PROJ4_LIBRARY})
 
-  find_package_handle_standard_args(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
+find_package_handle_standard_args(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
 
-  mark_as_advanced(PROJ4_LIBRARY PROJ4_LIBRARY_DEBUG PROJ4_INCLUDE_DIR)
-  
-else(MSVC)]]
-  # rest of the world
-  set(PROJ4_LIBRARIES ${PROJ4_LIBRARY})
-
-  find_package_handle_standard_args(PROJ4 DEFAULT_MSG PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
-  
-  mark_as_advanced(PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
-  
-#[[endif(MSVC)]]
+mark_as_advanced(PROJ4_LIBRARY PROJ4_INCLUDE_DIR)
 
 if(PROJ4_FOUND)
   set(PROJ4_INCLUDE_DIRS ${PROJ4_INCLUDE_DIR})
+  set(PROJ4_HEADER_NAME PROJ4_HEADER_NAME-NOTFOUND)
+  string(LENGTH ${PROJ4_INCLUDE_DIR} INCLUDE_PATH_LENGTH)
+  MATH(EXPR INCLUDE_PATH_LENGTH "${INCLUDE_PATH_LENGTH}+1")
+  string(SUBSTRING ${PROJ4_HEADER} ${INCLUDE_PATH_LENGTH} -1 PROJ4_HEADER_NAME)
+  message(STATUS "Proj header file: ${PROJ4_HEADER_NAME}")
 endif(PROJ4_FOUND)
