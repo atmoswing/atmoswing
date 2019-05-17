@@ -86,6 +86,10 @@ else (BUILD_VIEWER)
     option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
+# Disable testing tree
+set(BUILD_TESTING OFF)
+mark_as_advanced(BUILD_TESTING)
+
 # External projects
 include(ExternalProject)
 set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)

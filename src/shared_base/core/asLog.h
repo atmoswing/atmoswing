@@ -73,7 +73,7 @@ class asLogGui
         : public wxLogGui
 {
 protected:
-    virtual void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) wxOVERRIDE;
+    void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
 };
 #endif
 

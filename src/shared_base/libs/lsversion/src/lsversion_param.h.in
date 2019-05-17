@@ -74,13 +74,9 @@ email                : lucien.schreiber at crealp dot vs dot ch
 #endif
 
 // PROJ
-#cmakedefine PROJ_LIBRARY
-#ifdef PROJ_LIBRARY
-    #include <proj.h>
-#endif
 #cmakedefine PROJ4_INCLUDE_DIR
 #ifdef PROJ4_INCLUDE_DIR
-    #include <proj.h>
+    #include <${PROJ4_HEADER_NAME}>
 #endif
 
 // EIGEN
