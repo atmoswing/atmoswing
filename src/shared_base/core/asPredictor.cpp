@@ -195,7 +195,7 @@ bool asPredictor::SetData(vva2f &val)
 bool asPredictor::CheckFilesPresence()
 {
     if (m_files.empty()) {
-        wxLogError(_("Empty files list."));
+        wxLogError(_("Empty files list for %s (%s)."), m_dataId, m_datasetName);
         return false;
     }
 
@@ -284,7 +284,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         // List files and check availability
         ListFiles(timeArray);
         if (!CheckFilesPresence()) {
-            wxLogError(_("Files not found."));
+            wxLogError(_("Files not found for %s (%s)."), m_dataId, m_datasetName);
             return false;
         }
 
