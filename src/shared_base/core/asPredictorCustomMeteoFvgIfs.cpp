@@ -85,13 +85,13 @@ bool asPredictorCustomMeteoFvgIfs::Init()
 
     } else if (m_product.IsSameAs("datader", false)) {
 
-        if (m_dataId.Contains("thetaE")) {
-            m_parameter = PotentialTemperature;
-            m_gribCode = {0, 3, 113, 100};
-            m_unit = W_m2;
-        } else if (m_dataId.Contains("thetaES")) {
+        if (m_dataId.Contains("thetaES")) {
             m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 114, 100};
+            m_unit = W_m2;
+        } else if (m_dataId.Contains("thetaE")) {
+            m_parameter = PotentialTemperature;
+            m_gribCode = {0, 3, 113, 100};
             m_unit = W_m2;
         } else if (m_dataId.Contains("vflux")) {
             m_parameter = MomentumFlux;
