@@ -107,8 +107,7 @@ void asFramePreferencesViewer::LoadPreferences()
      */
 
     // Log
-    long defaultlogLevel = 1;
-    long logLevel = pConfig->Read("/General/LogLevel", defaultlogLevel);
+    long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevel == 1) {
         m_radioBtnLogLevel1->SetValue(true);
     } else if (logLevel == 2) {
@@ -118,31 +117,21 @@ void asFramePreferencesViewer::LoadPreferences()
     } else {
         m_radioBtnLogLevel1->SetValue(true);
     }
-    bool displayLogWindowViewer;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindowViewer, false);
-    m_checkBoxDisplayLogWindow->SetValue(displayLogWindowViewer);
+    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Proxy
-    bool checkBoxProxy;
-    pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
-    m_checkBoxProxy->SetValue(checkBoxProxy);
-    wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_textCtrlProxyAddress->SetValue(proxyAddress);
-    wxString proxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_textCtrlProxyPort->SetValue(proxyPort);
-    wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_textCtrlProxyUser->SetValue(proxyUser);
-    wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_textCtrlProxyPasswd->SetValue(proxyPasswd);
+    m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
+    m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
+    m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
+    m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
+    m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
 
     /*
      * Advanced
      */
 
     // Advanced options
-    bool multiViewer;
-    pConfig->Read("/General/MultiInstances", &multiViewer, false);
-    m_checkBoxMultiInstancesViewer->SetValue(multiViewer);
+    m_checkBoxMultiInstancesViewer->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();

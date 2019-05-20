@@ -212,16 +212,16 @@ void asMethodCalibratorClassic::GetPlusOptions()
     if (m_plus) {
         ThreadsManager().CritSectionConfig().Enter();
         wxConfigBase *pConfig = wxConfigBase::Get();
-        pConfig->Read("/Optimizer/ClassicPlus/StepsLatPertinenceMap", &m_stepsLatPertinenceMap, 2);
+        pConfig->Read("/ClassicPlus/StepsLatPertinenceMap", &m_stepsLatPertinenceMap, 2);
         if (m_stepsLatPertinenceMap < 1)
             m_stepsLatPertinenceMap = 1;
-        pConfig->Read("/Optimizer/ClassicPlus/StepsLonPertinenceMap", &m_stepsLonPertinenceMap, 2);
+        pConfig->Read("/ClassicPlus/StepsLonPertinenceMap", &m_stepsLonPertinenceMap, 2);
         if (m_stepsLonPertinenceMap < 1)
             m_stepsLonPertinenceMap = 1;
-        pConfig->Read("/Optimizer/ClassicPlus/ResizingIterations", &m_resizingIterations, 1);
+        pConfig->Read("/ClassicPlus/ResizingIterations", &m_resizingIterations, 1);
         if (m_resizingIterations < 1)
             m_resizingIterations = 1;
-        pConfig->Read("/Optimizer/ClassicPlus/ProceedSequentially", &m_proceedSequentially, true);
+        pConfig->Read("/ClassicPlus/ProceedSequentially", &m_proceedSequentially, true);
         ThreadsManager().CritSectionConfig().Leave();
     }
 }

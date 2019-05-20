@@ -165,7 +165,6 @@ bool AtmoswingAppOptimizer::OnInit()
     wxString appName = "AtmoSwing Optimizer";
     wxApp::SetAppName(appName);
 
-    g_guiMode = true;
     g_local = false;
     m_calibParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
@@ -174,55 +173,50 @@ bool AtmoswingAppOptimizer::OnInit()
     m_calibMethod = wxEmptyString;
     m_doProcessing = false;
 #if wxUSE_GUI
+    g_guiMode = true;
     m_singleInstanceChecker = nullptr;
+#else
+    g_guiMode = false;
 #endif
 
-    // Call default behaviour (mandatory for command-line mode)
+    // Call default behaviour
     if (!wxApp::OnInit()) {
-        g_guiMode = false;
-        return true;
+        return false;
     }
 
-
 #if wxUSE_GUI
-
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
-    if (g_guiMode) {
-        // Check that it is the unique instance
-        bool multipleInstances = false;
 
-        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
-
-        if (!multipleInstances) {
-            const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
-            m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if (m_singleInstanceChecker->IsAnotherRunning()) {
-                wxMessageBox(_("Program already running, aborting."));
-                return false;
-            }
+    // Check that it is the unique instance
+    if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
+        const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
+        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (m_singleInstanceChecker->IsAnotherRunning()) {
+            wxMessageBox(_("Program already running, aborting."));
+            return false;
         }
+    }
 
-        // Following for GUI only
-        wxInitAllImageHandlers();
+    // Following for GUI only
+    wxInitAllImageHandlers();
 
-        // Initialize images
-        initialize_images(g_ppiScaleDc);
+    // Initialize images
+    initialize_images(g_ppiScaleDc);
 
-        // Create frame
-        AtmoswingFrameOptimizer *frame = new AtmoswingFrameOptimizer(0L);
-        frame->OnInit();
+    // Create frame
+    AtmoswingFrameOptimizer *frame = new AtmoswingFrameOptimizer(0L);
+    frame->OnInit();
 
 #ifdef __WXMSW__
-        frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon)); // To Set App Icon
 #endif
-        frame->Show();
-        SetTopWindow(frame);
-    }
+    frame->Show();
+    SetTopWindow(frame);
 #endif
 
     return true;
@@ -264,8 +258,7 @@ bool AtmoswingAppOptimizer::InitLog()
 #endif
     } else {
 #if wxUSE_GUI
-        delete wxLog::SetActiveTarget(new asLogGui());
-        Log()->CreateFile("AtmoSwingOptimizer.log");
+        // Will be set later
 #else
         Log()->CreateFileOnly("AtmoSwingOptimizer.log");
 #endif
@@ -274,7 +267,7 @@ bool AtmoswingAppOptimizer::InitLog()
     return true;
 }
 
-bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+bool AtmoswingAppOptimizer::SetUseAsCmdLine()
 {
     g_guiMode = false;
     g_unitTesting = false;
@@ -282,6 +275,11 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     g_verboseMode = false;
     g_responsive = false;
 
+    return true;
+}
+
+bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+{
     // Warn the user if reloading previous results
     if (g_resumePreviousRun) {
         wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
@@ -306,9 +304,9 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Processing/AllowMultithreading", true);
         if (m_calibMethod.IsSameAs("ga", false)) {
             pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
-            pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+            pConfig->Write("/GAs/AllowElitismForTheBest", true);
         }
-        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
+        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
             pConfig->Write("/Processing/ParallelEvaluations", true);
         }
 
@@ -385,26 +383,14 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
 
 bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
+    // Check if runs with GUI or CL
+    if (parser.Found("calibration-method")) {
+        SetUseAsCmdLine();
+    }
 
     /*
      * General options
      */
-
-    // Check if the user asked for command-line help
-    if (parser.Found("help")) {
-        parser.Usage();
-
-        return false;
-    }
-
-    // Check if the user asked for the version
-    if (parser.Found("version")) {
-        wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
-
-        return false; // We don't want to continue
-    }
 
     // Check for a run number
     wxString runNbStr = wxEmptyString;
@@ -468,6 +454,21 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Initialize log
     InitLog();
 
+    // Check if the user asked for command-line help
+    if (parser.Found("help")) {
+        parser.Usage();
+
+        return true;
+    }
+
+    // Check if the user asked for the version
+    if (parser.Found("version")) {
+        wxString date(wxString::FromAscii(__DATE__));
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+
+        return true;
+    }
+
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
@@ -484,8 +485,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     } else {
-        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log()->SetLevel((int) logLevel);
+        Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     }
 
     // Check for a calibration params file
@@ -533,7 +533,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Skip validation option
     wxString optionValid = wxEmptyString;
     if (parser.Found("skip-valid", &optionValid)) {
-        wxFileConfig::Get()->Write("/Optimizer/SkipValidation", optionValid);
+        wxFileConfig::Get()->Write("/SkipValidation", optionValid);
     }
 
     // Station ID
@@ -556,29 +556,29 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Classic+ calibration
     if (parser.Found("cp-resizing-iteration", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ResizingIterations", option);
+        wxFileConfig::Get()->Write("/ClassicPlus/ResizingIterations", option);
     }
 
     if (parser.Found("cp-lat-step", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLatPertinenceMap", option);
+        wxFileConfig::Get()->Write("/ClassicPlus/StepsLatPertinenceMap", option);
     }
 
     if (parser.Found("cp-lon-step", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/StepsLonPertinenceMap", option);
+        wxFileConfig::Get()->Write("/ClassicPlus/StepsLonPertinenceMap", option);
     }
 
     if (parser.Found("cp-proceed-sequentially", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/ClassicPlus/ProceedSequentially", option);
+        wxFileConfig::Get()->Write("/ClassicPlus/ProceedSequentially", option);
     }
 
     // Variables exploration
     if (parser.Found("ve-step", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/VariablesExplo/Step", option);
+        wxFileConfig::Get()->Write("/VariablesExplo/Step", option);
     }
 
     // Monte Carlo
     if (parser.Found("mc-runs-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/MonteCarlo/RandomNb", option);
+        wxFileConfig::Get()->Write("/MonteCarlo/RandomNb", option);
     }
 
     // Genetic algorithms
@@ -589,40 +589,40 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
             return false;
         }
 
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", 30);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", 500);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", 0.5);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 0);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 2);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", 7);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", 2);
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", 1);
+        wxFileConfig::Get()->Write("/GAs/ConvergenceStepsNb", 30);
+        wxFileConfig::Get()->Write("/GAs/PopulationSize", 500);
+        wxFileConfig::Get()->Write("/GAs/RatioIntermediateGeneration", 0.5);
+        wxFileConfig::Get()->Write("/GAs/NaturalSelectionOperator", 0);
+        wxFileConfig::Get()->Write("/GAs/CouplesSelectionOperator", 2);
+        wxFileConfig::Get()->Write("/GAs/CrossoverOperator", 7);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBinaryLikePointsNb", 2);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBinaryLikeShareBeta", 1);
 
         switch (gaConfig) {
             case 1:
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 8);
+                wxFileConfig::Get()->Write("/GAs/MutationOperator", 8);
                 break;
             case 2:
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 9);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationOperator", 9);
+                wxFileConfig::Get()->Write("/GAs/MutationsMultiScaleProbability", 0.1);
                 break;
             case 3:
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.1);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 50);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformProbability", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMaxGensNbVar", 50);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMinRate", 0.1);
                 break;
             case 4:
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.1);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 100);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformProbability", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMaxGensNbVar", 100);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMinRate", 0.1);
                 break;
             case 5:
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", 4);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", 0.2);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", 100);
-                wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", 0.1);
+                wxFileConfig::Get()->Write("/GAs/MutationOperator", 4);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformProbability", 0.2);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMaxGensNbVar", 100);
+                wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMinRate", 0.1);
                 break;
             default:
                 asLog::PrintToConsole(_("The value provided for 'ga-config' does not match any option.\n"));
@@ -631,135 +631,135 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     }
 
     if (parser.Found("ga-ope-nat-sel", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", option);
+        wxFileConfig::Get()->Write("/GAs/NaturalSelectionOperator", option);
     }
 
     if (parser.Found("ga-ope-coup-sel", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", option);
+        wxFileConfig::Get()->Write("/GAs/CouplesSelectionOperator", option);
     }
 
     if (parser.Found("ga-ope-cross", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverOperator", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverOperator", option);
     }
 
     if (parser.Found("ga-ope-mut", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationOperator", option);
+        wxFileConfig::Get()->Write("/GAs/MutationOperator", option);
     }
 
     if (parser.Found("ga-pop-size", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/PopulationSize", option);
+        wxFileConfig::Get()->Write("/GAs/PopulationSize", option);
     }
 
     if (parser.Found("ga-conv-steps", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", option);
+        wxFileConfig::Get()->Write("/GAs/ConvergenceStepsNb", option);
     }
 
     if (parser.Found("ga-interm-gen", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", option);
+        wxFileConfig::Get()->Write("/GAs/RatioIntermediateGeneration", option);
     }
 
     if (parser.Found("ga-nat-sel-tour-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability", option);
+        wxFileConfig::Get()->Write("/GAs/NaturalSelectionTournamentProbability", option);
     }
 
     if (parser.Found("ga-coup-sel-tour-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb", option);
+        wxFileConfig::Get()->Write("/GAs/CouplesSelectionTournamentNb", option);
     }
 
     if (parser.Found("ga-cross-mult-pt-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverMultiplePointsNb", option);
     }
 
     if (parser.Found("ga-cross-blen-pt-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBlendingPointsNb", option);
     }
 
     if (parser.Found("ga-cross-blen-share-b", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBlendingShareBeta", option);
     }
 
     if (parser.Found("ga-cross-lin-pt-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverLinearPointsNb", option);
     }
 
     if (parser.Found("ga-cross-heur-pt-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverHeuristicPointsNb", option);
     }
 
     if (parser.Found("ga-cross-heur-share-b", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverHeuristicShareBeta", option);
     }
 
     if (parser.Found("ga-cross-bin-pt-nb", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBinaryLikePointsNb", option);
     }
 
     if (parser.Found("ga-cross-bin-share-b", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", option);
+        wxFileConfig::Get()->Write("/GAs/CrossoverBinaryLikeShareBeta", option);
     }
 
     if (parser.Found("ga-mut-unif-cst-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsUniformConstantProbability", option);
     }
 
     if (parser.Found("ga-mut-norm-cst-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalConstantProbability", option);
     }
 
     if (parser.Found("ga-mut-norm-cst-dev", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalConstantStdDevRatioRange", option);
     }
 
     if (parser.Found("ga-mut-unif-var-gens", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsUniformVariableMaxGensNbVar", option);
     }
 
     if (parser.Found("ga-mut-unif-var-p-strt", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsUniformVariableProbabilityStart", option);
     }
 
     if (parser.Found("ga-mut-unif-var-p-end", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsUniformVariableProbabilityEnd", option);
     }
 
     if (parser.Found("ga-mut-norm-var-gens-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableMaxGensNbVarProb", option);
     }
 
     if (parser.Found("ga-mut-norm-var-gens-d", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", option);
     }
 
     if (parser.Found("ga-mut-norm-var-p-strt", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableProbabilityStart", option);
     }
 
     if (parser.Found("ga-mut-norm-var-p-end", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableProbabilityEnd", option);
     }
 
     if (parser.Found("ga-mut-norm-var-d-strt", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableStdDevStart", option);
     }
 
     if (parser.Found("ga-mut-norm-var-d-end", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNormalVariableStdDevEnd", option);
     }
 
     if (parser.Found("ga-mut-non-uni-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNonUniformProbability", option);
     }
 
     if (parser.Found("ga-mut-non-uni-gens", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMaxGensNbVar", option);
     }
 
     if (parser.Found("ga-mut-non-uni-min-r", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsNonUniformMinRate", option);
     }
 
     if (parser.Found("ga-mut-multi-scale-p", &option)) {
-        wxFileConfig::Get()->Write("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", option);
+        wxFileConfig::Get()->Write("/GAs/MutationsMultiScaleProbability", option);
     }
 
     /*
@@ -774,7 +774,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         m_doProcessing = true;
         wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
-        return false;
+
+        return true;
     }
 
     // Finally, if no option is given in CL mode, display help.

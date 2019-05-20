@@ -98,7 +98,6 @@ bool AtmoswingAppDownscaler::OnInit()
     wxString appName = "AtmoSwing Downscaler";
     wxApp::SetAppName(appName);
 
-    g_guiMode = true;
     g_local = false;
     m_downscalingParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
@@ -108,55 +107,50 @@ bool AtmoswingAppDownscaler::OnInit()
     m_downscalingMethod = wxEmptyString;
     m_doProcessing = false;
 #if wxUSE_GUI
+    g_guiMode = true;
     m_singleInstanceChecker = nullptr;
+#else
+    g_guiMode = false;
 #endif
 
-    // Call default behaviour (mandatory for command-line mode)
+    // Call default behaviour
     if (!wxApp::OnInit()) {
-        g_guiMode = false;
-        return true;
+        return false;
     }
 
-
 #if wxUSE_GUI
-
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
-    if (g_guiMode) {
-        // Check that it is the unique instance
-        bool multipleInstances = false;
 
-        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
-
-        if (!multipleInstances) {
-            const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
-            m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if (m_singleInstanceChecker->IsAnotherRunning()) {
-                wxMessageBox(_("Program already running, aborting."));
-                return false;
-            }
+    // Check that it is the unique instance
+    if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
+        const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
+        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (m_singleInstanceChecker->IsAnotherRunning()) {
+            wxMessageBox(_("Program already running, aborting."));
+            return false;
         }
+    }
 
-        // Following for GUI only
-        wxInitAllImageHandlers();
+    // Following for GUI only
+    wxInitAllImageHandlers();
 
-        // Initialize images
-        initialize_images(g_ppiScaleDc);
+    // Initialize images
+    initialize_images(g_ppiScaleDc);
 
-        // Create frame
-        AtmoswingFrameDownscaler *frame = new AtmoswingFrameDownscaler(0L);
-        frame->OnInit();
+    // Create frame
+    AtmoswingFrameDownscaler *frame = new AtmoswingFrameDownscaler(0L);
+    frame->OnInit();
 
 #ifdef __WXMSW__
-        frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon)); // To Set App Icon
 #endif
-        frame->Show();
-        SetTopWindow(frame);
-    }
+    frame->Show();
+    SetTopWindow(frame);
 #endif
 
     return true;
@@ -190,8 +184,7 @@ bool AtmoswingAppDownscaler::InitLog()
 #endif
     } else {
 #if wxUSE_GUI
-        delete wxLog::SetActiveTarget(new asLogGui());
-        Log()->CreateFile("AtmoSwingDownscaler.log");
+        // Will be set later
 #else
         Log()->CreateFileOnly("AtmoSwingDownscaler.log");
 #endif
@@ -200,7 +193,7 @@ bool AtmoswingAppDownscaler::InitLog()
     return true;
 }
 
-bool AtmoswingAppDownscaler::InitForCmdLineOnly()
+bool AtmoswingAppDownscaler::SetUseAsCmdLine()
 {
     g_guiMode = false;
     g_unitTesting = false;
@@ -208,6 +201,11 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
     g_verboseMode = false;
     g_responsive = false;
 
+    return true;
+}
+
+bool AtmoswingAppDownscaler::InitForCmdLineOnly()
+{
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
@@ -224,12 +222,8 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
-        if (m_downscalingMethod.IsSameAs("ga", false)) {
-            pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
-            pConfig->Write("/Downscaler/GeneticAlgorithms/AllowElitismForTheBest", true);
-        }
-        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
-            pConfig->Write("/Downscaler/ParallelEvaluations", true);
+        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
+            pConfig->Write("/ParallelEvaluations", true);
         }
 
         pConfig->Flush();
@@ -252,26 +246,14 @@ void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser)
 
 bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
+    // Check if runs with GUI or CL
+    if (parser.Found("downscaling-method")) {
+        SetUseAsCmdLine();
+    }
 
     /*
      * General options
      */
-
-    // Check if the user asked for command-line help
-    if (parser.Found("help")) {
-        parser.Usage();
-
-        return false;
-    }
-
-    // Check if the user asked for the version
-    if (parser.Found("version")) {
-        wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
-
-        return false; // We don't want to continue
-    }
 
     // Check for a run number
     wxString runNbStr = wxEmptyString;
@@ -329,6 +311,21 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Initialize log
     InitLog();
 
+    // Check if the user asked for command-line help
+    if (parser.Found("help")) {
+        parser.Usage();
+
+        return true;
+    }
+
+    // Check if the user asked for the version
+    if (parser.Found("version")) {
+        wxString date(wxString::FromAscii(__DATE__));
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+
+        return true;
+    }
+
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
     if (parser.Found("log-level", &logLevelStr)) {
@@ -345,8 +342,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     } else {
-        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log()->SetLevel(int(logLevel));
+        Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     }
 
     // Check for a downscaling params file
@@ -421,7 +417,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         m_doProcessing = true;
         wxLogVerbose(_("Given downscaling method: %s"), m_downscalingMethod);
-        return false;
+        return true;
     }
 
     // Finally, if no option is given in CL mode, display help.

@@ -173,41 +173,22 @@ void asFramePlotTimeSeries::InitPlotCtrl()
 
     // Open layers defined in the preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    bool doPlotAllQuantiles;
-    pConfig->Read("/PlotsTimeSeries/DoPlotAllQuantiles", &doPlotAllQuantiles, false);
-    if (doPlotAllQuantiles)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotAllQuantiles", false))
         m_checkListToc->Check(AllQuantiles);
-    bool doPlotAllAnalogs;
-    pConfig->Read("/PlotsTimeSeries/DoPlotAllAnalogs", &doPlotAllAnalogs, true);
-    if (doPlotAllAnalogs)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotAllAnalogs", true))
         m_checkListToc->Check(AllAnalogs);
-    bool doPlotBestAnalogs10;
-    pConfig->Read("/PlotsTimeSeries/DoPlotBestAnalogs10", &doPlotBestAnalogs10, true);
-    if (doPlotBestAnalogs10)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotBestAnalogs10", true))
         m_checkListToc->Check(BestAnalogs10);
-    bool doPlotBestAnalogs5;
-    pConfig->Read("/PlotsTimeSeries/DoPlotBestAnalogs5", &doPlotBestAnalogs5, false);
-    if (doPlotBestAnalogs5)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotBestAnalogs5", false))
         m_checkListToc->Check(BestAnalogs5);
-    bool doPlotAllReturnPeriods;
-    pConfig->Read("/PlotsTimeSeries/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
-    if (doPlotAllReturnPeriods)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotAllReturnPeriods", false))
         m_checkListToc->Check(AllReturnPeriods);
-    bool doPlotClassicReturnPeriod;
-    pConfig->Read("/PlotsTimeSeries/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
-    if (doPlotClassicReturnPeriod)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotClassicReturnPeriod", true))
         m_checkListToc->Check(ClassicReturnPeriod);
-    bool doPlotClassicQuantiles;
-    pConfig->Read("/PlotsTimeSeries/DoPlotClassicQuantiles", &doPlotClassicQuantiles, true);
-    if (doPlotClassicQuantiles)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotClassicQuantiles", true))
         m_checkListToc->Check(ClassicQuantiles);
-    bool doPlotPreviousForecasts;
-    pConfig->Read("/PlotsTimeSeries/DoPlotPreviousForecasts", &doPlotPreviousForecasts, true);
-    if (doPlotPreviousForecasts)
+    if (pConfig->ReadBool("/PlotsTimeSeries/DoPlotPreviousForecasts", true))
         m_checkListToc->Check(PreviousForecasts);
-    //bool doPlotInterpretation;
-    //pConfig->Read("/PlotsTimeSeries/DoPlotInterpretation", &doPlotInterpretation, true);
-    //if (doPlotInterpretation) m_checkListToc->Check(Interpretation);
 }
 
 void asFramePlotTimeSeries::OnTocSelectionChange(wxCommandEvent &event)

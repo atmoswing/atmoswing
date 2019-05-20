@@ -395,7 +395,7 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 {
     // Get preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long maxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", (long) 5);
+    long maxPrevStepsNb = pConfig->ReadLong("/Internet/MaxPreviousStepsNb", 5);
 
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 #if wxUSE_GUI

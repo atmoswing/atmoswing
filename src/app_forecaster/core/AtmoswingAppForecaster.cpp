@@ -95,7 +95,6 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
-    g_guiMode = true;
     m_doConfig = false;
     m_doForecast = false;
     m_doForecastPast = false;
@@ -110,6 +109,7 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileConfig::Set(pConfig);
 
 #if wxUSE_GUI
+    g_guiMode = true;
 
     // Set PPI
     wxMemoryDC dcTestPpi;
@@ -117,10 +117,7 @@ bool AtmoswingAppForecaster::OnInit()
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     // Check that it is the unique instance
-    bool multipleInstances;
-    pConfig->Read("/General/MultiInstances", &multipleInstances, false);
-
-    if (!multipleInstances) {
+    if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
@@ -142,10 +139,9 @@ bool AtmoswingAppForecaster::OnInit()
     // Init cURL
     asInternet::Init();
 
-    // Call default behaviour (mandatory for command-line mode)
-    if (!wxApp::OnInit()) { // When false, we are in CL mode
-        g_guiMode = false;
-        return true;
+    // Call default behaviour
+    if (!wxApp::OnInit()) {
+        return false;
     }
 
 #if wxUSE_GUI
@@ -169,17 +165,23 @@ bool AtmoswingAppForecaster::OnInit()
     return true;
 }
 
-bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
+bool AtmoswingAppForecaster::InitLog()
 {
+
+#if wxUSE_GUI
+    // Will be set later
+#else
+    Log()->CreateFileOnly("AtmoSwingForecaster.log");
+#endif
+
+    return true;
+}
+
+bool AtmoswingAppForecaster::SetUseAsCmdLine()
+{
+    g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
-
-    // Set log level
-    if (logLevel < 0) {
-        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-    }
-    Log()->CreateFileOnly("AtmoSwingForecaster.log");
-    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -195,13 +197,19 @@ void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser)
 
 bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
+    // Check if runs with GUI or CL
+    if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
+        SetUseAsCmdLine();
+    }
+
+    // Initialize log
+    InitLog();
 
     // Check if the user asked for command-line help
     if (parser.Found("help")) {
         parser.Usage();
 
-        return false;
+        return true;
     }
 
     // Check if the user asked for the version
@@ -209,26 +217,22 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         wxString date(wxString::FromAscii(__DATE__));
         asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
 
-        return false;
+        return true;
     }
 
     // Check if the user asked to configure
     if (parser.Found("config")) {
 
-#if wxUSE_GUI
-        asLog::PrintToConsole(_("This configuration mode is only available when AtmoSwing is built as a console "
-                                "application. Please use the GUI instead.\n"));
-#else
-        InitForCmdLineOnly(2);
+#ifndef wxUSE_GUI
         m_doConfig = true;
 #endif
-        return false;
+        return true;
     }
 
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
-    long logLevel = -1;
     if (parser.Found("log-level", &logLevelStr)) {
+        long logLevel = -1;
         if (logLevelStr.ToLong(&logLevel)) {
             // Check and apply
             if (logLevel >= 1 && logLevel <= 3) {
@@ -240,9 +244,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     }
-#if wxUSE_GUI
-    delete wxLog::SetActiveTarget(new asLogGui());
-#endif
 
     // Proxy activated
     wxString proxy;
@@ -280,7 +281,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for input files
     if (parser.GetParamCount() > 0) {
-        InitForCmdLineOnly(logLevel);
 
         g_cmdFileName = parser.GetParam(0);
 
@@ -296,11 +296,10 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a present forecast
     if (parser.Found("forecast-now")) {
-        InitForCmdLineOnly(logLevel);
         m_doForecast = true;
         m_forecastDate = asTime::NowMJD();
 
-        return false;
+        return true;
     }
 
     // Check for a past forecast option
@@ -312,17 +311,15 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             return false;
         }
 
-        InitForCmdLineOnly(logLevel);
         m_doForecastPast = true;
         m_forecastPastDays = (int)numberOfDays;
 
-        return false;
+        return true;
     }
 
     // Check for a forecast date option
     wxString dateForecastStr = wxEmptyString;
     if (parser.Found("forecast-date", &dateForecastStr)) {
-        InitForCmdLineOnly(logLevel);
         if (dateForecastStr.Len() != 10) {
             asLog::PrintToConsole(_("Wrong date format.\n"));
             return false;
@@ -330,7 +327,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         m_doForecast = true;
         m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
-        return false;
+        return true;
     }
 
     // Finally, if no option is given in CL mode, display help.
@@ -355,8 +352,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Load batch file if exists
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         if (!batchFilePath.IsEmpty()) {
             if (batchForecasts.Load(batchFilePath)) {
@@ -507,8 +503,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Open last batch file
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
 
@@ -557,8 +552,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Open last batch file
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
 

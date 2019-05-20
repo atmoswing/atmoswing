@@ -82,10 +82,8 @@ bool AtmoswingAppViewer::OnInit()
 
     // Check that it is the unique instance
     m_singleInstanceChecker = nullptr;
-    bool multipleInstances;
-    pConfig->Read("/General/MultiInstances", &multipleInstances, false);
 
-    if (!multipleInstances) {
+    if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = wxString::Format(wxT("atmoswing-viewer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
@@ -117,21 +115,6 @@ bool AtmoswingAppViewer::OnInit()
 #endif
     frame->Show();
     SetTopWindow(frame);
-
-    return true;
-}
-
-bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
-{
-    g_unitTesting = false;
-    g_silentMode = true;
-
-    // Set log level
-    if (logLevel < 0) {
-        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-    }
-    Log()->CreateFile("AtmoSwingViewer.log");
-    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -181,7 +164,6 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for input files
     if (parser.GetParamCount() > 0) {
-        InitForCmdLineOnly(logLevel);
 
         g_cmdFileName = parser.GetParam(0);
 

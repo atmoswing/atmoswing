@@ -32,7 +32,7 @@ $REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
 $REBUILD_GDAL=$false
-$REBUILD_ECCODES=$false
+$REBUILD_ECCODES=$true
 $REBUILD_SQLITE=$false
 
 # Libraries URL
