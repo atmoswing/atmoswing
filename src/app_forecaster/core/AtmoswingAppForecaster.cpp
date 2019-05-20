@@ -142,10 +142,9 @@ bool AtmoswingAppForecaster::OnInit()
     // Init cURL
     asInternet::Init();
 
-    // Call default behaviour (mandatory for command-line mode)
-    if (!wxApp::OnInit()) { // When false, we are in CL mode
-        g_guiMode = false;
-        return true;
+    // Call default behaviour
+    if (!wxApp::OnInit()) {
+        return false;
     }
 
 #if wxUSE_GUI
@@ -201,7 +200,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("help")) {
         parser.Usage();
 
-        return false;
+        return true;
     }
 
     // Check if the user asked for the version
@@ -209,7 +208,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         wxString date(wxString::FromAscii(__DATE__));
         asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
 
-        return false;
+        return true;
     }
 
     // Check if the user asked to configure
@@ -222,7 +221,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         InitForCmdLineOnly(2);
         m_doConfig = true;
 #endif
-        return false;
+        return true;
     }
 
     // Check for a log level option
@@ -300,7 +299,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         m_doForecast = true;
         m_forecastDate = asTime::NowMJD();
 
-        return false;
+        return true;
     }
 
     // Check for a past forecast option
@@ -316,7 +315,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         m_doForecastPast = true;
         m_forecastPastDays = (int)numberOfDays;
 
-        return false;
+        return true;
     }
 
     // Check for a forecast date option
@@ -330,7 +329,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
         m_doForecast = true;
         m_forecastDate = asTime::GetTimeFromString(dateForecastStr, YYYY_MM_DD_hh);
 
-        return false;
+        return true;
     }
 
     // Finally, if no option is given in CL mode, display help.

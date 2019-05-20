@@ -177,15 +177,12 @@ bool AtmoswingAppOptimizer::OnInit()
     m_singleInstanceChecker = nullptr;
 #endif
 
-    // Call default behaviour (mandatory for command-line mode)
+    // Call default behaviour
     if (!wxApp::OnInit()) {
-        g_guiMode = false;
-        return true;
+        return false;
     }
 
-
 #if wxUSE_GUI
-
     // Set PPI
     wxMemoryDC dcTestPpi;
     wxSize ppiDC = dcTestPpi.GetPPI();
@@ -395,7 +392,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("help")) {
         parser.Usage();
 
-        return false;
+        return true;
     }
 
     // Check if the user asked for the version
@@ -403,7 +400,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         wxString date(wxString::FromAscii(__DATE__));
         asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
 
-        return false; // We don't want to continue
+        return true;
     }
 
     // Check for a run number
@@ -774,7 +771,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         }
         m_doProcessing = true;
         wxLogVerbose(_("Given calibration method: %s"), m_calibMethod);
-        return false;
+
+        return true;
     }
 
     // Finally, if no option is given in CL mode, display help.
