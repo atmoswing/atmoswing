@@ -168,18 +168,11 @@ bool AtmoswingAppForecaster::OnInit()
     return true;
 }
 
-bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
+bool AtmoswingAppForecaster::SetUseAsCmdLine()
 {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
-
-    // Set log level
-    if (logLevel < 0) {
-        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-    }
-    Log()->CreateFileOnly("AtmoSwingForecaster.log");
-    Log()->SetLevel((int) logLevel);
 
     return true;
 }
@@ -195,7 +188,10 @@ void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser)
 
 bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
+    // Check if runs with GUI or CL
+    if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
+        SetUseAsCmdLine();
+    }
 
     // Check if the user asked for command-line help
     if (parser.Found("help")) {
@@ -215,11 +211,7 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check if the user asked to configure
     if (parser.Found("config")) {
 
-#if wxUSE_GUI
-        asLog::PrintToConsole(_("This configuration mode is only available when AtmoSwing is built as a console "
-                                "application. Please use the GUI instead.\n"));
-#else
-        InitForCmdLineOnly(2);
+#ifndef wxUSE_GUI
         m_doConfig = true;
 #endif
         return true;
@@ -227,8 +219,8 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;
-    long logLevel = -1;
     if (parser.Found("log-level", &logLevelStr)) {
+        long logLevel = -1;
         if (logLevelStr.ToLong(&logLevel)) {
             // Check and apply
             if (logLevel >= 1 && logLevel <= 3) {
@@ -240,9 +232,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     }
-#if wxUSE_GUI
-    delete wxLog::SetActiveTarget(new asLogGui());
-#endif
 
     // Proxy activated
     wxString proxy;
@@ -280,7 +269,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for input files
     if (parser.GetParamCount() > 0) {
-        InitForCmdLineOnly(logLevel);
 
         g_cmdFileName = parser.GetParam(0);
 
@@ -296,7 +284,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for a present forecast
     if (parser.Found("forecast-now")) {
-        InitForCmdLineOnly(logLevel);
         m_doForecast = true;
         m_forecastDate = asTime::NowMJD();
 
@@ -312,7 +299,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
             return false;
         }
 
-        InitForCmdLineOnly(logLevel);
         m_doForecastPast = true;
         m_forecastPastDays = (int)numberOfDays;
 
@@ -322,7 +308,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a forecast date option
     wxString dateForecastStr = wxEmptyString;
     if (parser.Found("forecast-date", &dateForecastStr)) {
-        InitForCmdLineOnly(logLevel);
         if (dateForecastStr.Len() != 10) {
             asLog::PrintToConsole(_("Wrong date format.\n"));
             return false;

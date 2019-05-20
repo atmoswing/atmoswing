@@ -272,7 +272,7 @@ bool AtmoswingAppOptimizer::InitLog()
     return true;
 }
 
-bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+bool AtmoswingAppOptimizer::SetUseAsCmdLine()
 {
     g_guiMode = false;
     g_unitTesting = false;
@@ -280,6 +280,11 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     g_verboseMode = false;
     g_responsive = false;
 
+    return true;
+}
+
+bool AtmoswingAppOptimizer::InitForCmdLineOnly()
+{
     // Warn the user if reloading previous results
     if (g_resumePreviousRun) {
         wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
@@ -383,26 +388,14 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
 
 bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 {
-    // From http://wiki.wxwidgets.org/Command-Line_Arguments
+    // Check if runs with GUI or CL
+    if (parser.Found("calibration-method")) {
+        SetUseAsCmdLine();
+    }
 
     /*
      * General options
      */
-
-    // Check if the user asked for command-line help
-    if (parser.Found("help")) {
-        parser.Usage();
-
-        return true;
-    }
-
-    // Check if the user asked for the version
-    if (parser.Found("version")) {
-        wxString date(wxString::FromAscii(__DATE__));
-        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
-
-        return true;
-    }
 
     // Check for a run number
     wxString runNbStr = wxEmptyString;
@@ -465,6 +458,21 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Initialize log
     InitLog();
+
+    // Check if the user asked for command-line help
+    if (parser.Found("help")) {
+        parser.Usage();
+
+        return true;
+    }
+
+    // Check if the user asked for the version
+    if (parser.Found("version")) {
+        wxString date(wxString::FromAscii(__DATE__));
+        asLog::PrintToConsole(wxString::Format("AtmoSwing version %s, %s\n", g_version, date));
+
+        return true;
+    }
 
     // Check for a log level option
     wxString logLevelStr = wxEmptyString;

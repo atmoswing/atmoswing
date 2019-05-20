@@ -64,6 +64,8 @@ public:
 
     bool InitLog();
 
+    bool SetUseAsCmdLine();
+
     bool InitForCmdLineOnly();
 
     virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
