@@ -95,7 +95,6 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileName userDir = wxFileName::DirName(asConfig::GetUserDataDir());
     userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
-    g_guiMode = true;
     m_doConfig = false;
     m_doForecast = false;
     m_doForecastPast = false;
@@ -110,6 +109,7 @@ bool AtmoswingAppForecaster::OnInit()
     wxFileConfig::Set(pConfig);
 
 #if wxUSE_GUI
+    g_guiMode = true;
 
     // Set PPI
     wxMemoryDC dcTestPpi;
@@ -170,6 +170,7 @@ bool AtmoswingAppForecaster::OnInit()
 
 bool AtmoswingAppForecaster::InitForCmdLineOnly(long logLevel)
 {
+    g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
 

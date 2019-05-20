@@ -98,7 +98,6 @@ bool AtmoswingAppDownscaler::OnInit()
     wxString appName = "AtmoSwing Downscaler";
     wxApp::SetAppName(appName);
 
-    g_guiMode = true;
     g_local = false;
     m_downscalingParamsFile = wxEmptyString;
     m_predictandDB = wxEmptyString;
@@ -108,7 +107,10 @@ bool AtmoswingAppDownscaler::OnInit()
     m_downscalingMethod = wxEmptyString;
     m_doProcessing = false;
 #if wxUSE_GUI
+    g_guiMode = true;
     m_singleInstanceChecker = nullptr;
+#else
+    g_guiMode = false;
 #endif
 
     // Call default behaviour
@@ -123,37 +125,36 @@ bool AtmoswingAppDownscaler::OnInit()
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     m_singleInstanceChecker = nullptr;
-    if (g_guiMode) {
-        // Check that it is the unique instance
-        bool multipleInstances = false;
 
-        wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
+    // Check that it is the unique instance
+    bool multipleInstances = false;
 
-        if (!multipleInstances) {
-            const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
-            m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
-            if (m_singleInstanceChecker->IsAnotherRunning()) {
-                wxMessageBox(_("Program already running, aborting."));
-                return false;
-            }
+    wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
+
+    if (!multipleInstances) {
+        const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
+        m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
+        if (m_singleInstanceChecker->IsAnotherRunning()) {
+            wxMessageBox(_("Program already running, aborting."));
+            return false;
         }
+    }
 
-        // Following for GUI only
-        wxInitAllImageHandlers();
+    // Following for GUI only
+    wxInitAllImageHandlers();
 
-        // Initialize images
-        initialize_images(g_ppiScaleDc);
+    // Initialize images
+    initialize_images(g_ppiScaleDc);
 
-        // Create frame
-        AtmoswingFrameDownscaler *frame = new AtmoswingFrameDownscaler(0L);
-        frame->OnInit();
+    // Create frame
+    AtmoswingFrameDownscaler *frame = new AtmoswingFrameDownscaler(0L);
+    frame->OnInit();
 
 #ifdef __WXMSW__
-        frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon)); // To Set App Icon
 #endif
-        frame->Show();
-        SetTopWindow(frame);
-    }
+    frame->Show();
+    SetTopWindow(frame);
 #endif
 
     return true;
