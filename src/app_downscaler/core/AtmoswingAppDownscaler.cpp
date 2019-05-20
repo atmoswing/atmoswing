@@ -188,8 +188,7 @@ bool AtmoswingAppDownscaler::InitLog()
 #endif
     } else {
 #if wxUSE_GUI
-        delete wxLog::SetActiveTarget(new asLogGui());
-        Log()->CreateFile("AtmoSwingDownscaler.log");
+        // Will be set later
 #else
         Log()->CreateFileOnly("AtmoSwingDownscaler.log");
 #endif

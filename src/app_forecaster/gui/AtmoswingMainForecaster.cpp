@@ -51,9 +51,8 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     SetDefaultOptions();
 
     // Create log window and file
-    bool displayLogWindow;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    delete wxLog::SetActiveTarget(new asLogGui());
+    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingForecaster.log");
 
     // Restore frame position and size

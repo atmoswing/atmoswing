@@ -121,21 +121,6 @@ bool AtmoswingAppViewer::OnInit()
     return true;
 }
 
-bool AtmoswingAppViewer::InitForCmdLineOnly(long logLevel)
-{
-    g_unitTesting = false;
-    g_silentMode = true;
-
-    // Set log level
-    if (logLevel < 0) {
-        logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-    }
-    Log()->CreateFile("AtmoSwingViewer.log");
-    Log()->SetLevel((int) logLevel);
-
-    return true;
-}
-
 void AtmoswingAppViewer::OnInitCmdLine(wxCmdLineParser &parser)
 {
     // From http://wiki.wxwidgets.org/Command-Line_Arguments
@@ -181,7 +166,6 @@ bool AtmoswingAppViewer::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for input files
     if (parser.GetParamCount() > 0) {
-        InitForCmdLineOnly(logLevel);
 
         g_cmdFileName = parser.GetParam(0);
 

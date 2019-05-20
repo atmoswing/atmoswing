@@ -168,6 +168,18 @@ bool AtmoswingAppForecaster::OnInit()
     return true;
 }
 
+bool AtmoswingAppForecaster::InitLog()
+{
+
+#if wxUSE_GUI
+    // Will be set later
+#else
+    Log()->CreateFileOnly("AtmoSwingForecaster.log");
+#endif
+
+    return true;
+}
+
 bool AtmoswingAppForecaster::SetUseAsCmdLine()
 {
     g_guiMode = false;
@@ -192,6 +204,9 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
         SetUseAsCmdLine();
     }
+
+    // Initialize log
+    InitLog();
 
     // Check if the user asked for command-line help
     if (parser.Found("help")) {

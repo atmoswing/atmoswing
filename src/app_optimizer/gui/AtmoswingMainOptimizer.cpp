@@ -51,16 +51,16 @@ AtmoswingFrameOptimizer::AtmoswingFrameOptimizer(wxFrame *frame)
     SetDefaultOptions();
 
     // Create log window and file
-    bool displayLogWindow;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, true);
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), displayLogWindow);
+    delete wxLog::SetActiveTarget(new asLogGui());
+    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingOptimizer.log");
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = pConfig->Read("/MainFrame/x", 50), y = pConfig->Read("/MainFrame/y", 50), w = pConfig->Read("/MainFrame/w",
-                                                                                                        minWidth), h = pConfig->Read(
-            "/MainFrame/h", minHeight);
+    int x = pConfig->Read("/MainFrame/x", 50);
+    int y = pConfig->Read("/MainFrame/y", 50);
+    int w = pConfig->Read("/MainFrame/w", minWidth);
+    int h = pConfig->Read("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;

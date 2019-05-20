@@ -54,6 +54,8 @@ public:
 
     void OnInitCmdLine(wxCmdLineParser &parser) override;
 
+    bool InitLog();
+
     bool SetUseAsCmdLine();
 
     bool OnCmdLineParsed(wxCmdLineParser &parser) override;
