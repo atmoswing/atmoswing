@@ -852,7 +852,7 @@ bool asMethodCalibrator::SaveDetails(asParametersCalibration *params)
 
 bool asMethodCalibrator::Validate(asParametersCalibration *params)
 {
-    if (wxFileConfig::Get()->ReadBool("/Optimizer/SkipValidation", false)) {
+    if (wxFileConfig::Get()->ReadBool("/SkipValidation", false)) {
         return true;
     }
 

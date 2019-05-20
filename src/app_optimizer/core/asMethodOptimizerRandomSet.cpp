@@ -292,7 +292,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Read("/Optimizer/MonteCarlo/RandomNb", &m_paramsNb, 1000);
+    pConfig->Read("/MonteCarlo/RandomNb", &m_paramsNb, 1000);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Get the number of runs

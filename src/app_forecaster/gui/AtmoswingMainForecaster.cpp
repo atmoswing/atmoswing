@@ -61,7 +61,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     int x = (int)pConfig->ReadLong("/MainFrame/x", 50),
         y = (int)pConfig->ReadLong("/MainFrame/y", 50),
         w = (int)pConfig->ReadLong("/MainFrame/w",  minWidth),
-        h = (int)pConfig->ReadLong( "/MainFrame/h", minHeight);
+        h = (int)pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;

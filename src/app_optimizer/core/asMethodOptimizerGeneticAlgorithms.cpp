@@ -165,13 +165,13 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    m_popSize = pConfig->ReadLong("/Optimizer/GeneticAlgorithms/PopulationSize", 50);
+    m_popSize = pConfig->ReadLong("/GAs/PopulationSize", 50);
     m_paramsNb = m_popSize;
-    m_allowElitismForTheBest = pConfig->ReadBool("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
-    m_naturalSelectionType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 0l);
-    m_couplesSelectionType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 0l);
-    m_crossoverType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/CrossoverOperator", 0l);
-    m_mutationsModeType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
+    m_allowElitismForTheBest = pConfig->ReadBool("/GAs/AllowElitismForTheBest", true);
+    m_naturalSelectionType = (int) pConfig->ReadLong("/GAs/NaturalSelectionOperator", 0l);
+    m_couplesSelectionType = (int) pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
+    m_crossoverType = (int) pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
+    m_mutationsModeType = (int) pConfig->ReadLong("/GAs/MutationOperator", 0l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology
@@ -882,7 +882,7 @@ bool asMethodOptimizerGeneticAlgorithms::CheckConvergence(bool &stop)
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     int convergenceStepsNb;
-    pConfig->Read("/Optimizer/GeneticAlgorithms/ConvergenceStepsNb", &convergenceStepsNb, 20);
+    pConfig->Read("/GAs/ConvergenceStepsNb", &convergenceStepsNb, 20);
     ThreadsManager().CritSectionConfig().Leave();
 
     stop = true;
@@ -1005,7 +1005,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     double ratioIntermediateGeneration;
-    pConfig->Read("/Optimizer/GeneticAlgorithms/RatioIntermediateGeneration", &ratioIntermediateGeneration, 0.5);
+    pConfig->Read("/GAs/RatioIntermediateGeneration", &ratioIntermediateGeneration, 0.5);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Get intermediate generation size
@@ -1026,7 +1026,7 @@ bool asMethodOptimizerGeneticAlgorithms::NaturalSelection()
             wxLogVerbose(_("Natural selection: tournament"));
 
             double tournamentSelectionProbability;
-            pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionTournamentProbability",
+            pConfig->Read("/GAs/NaturalSelectionTournamentProbability",
                           &tournamentSelectionProbability, 0.9);
 
             for (int i = 0; i < intermediateGenerationSize; i++) {
@@ -1227,7 +1227,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 int couplesSelectionTournamentNb;
                 ThreadsManager().CritSectionConfig().Enter();
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionTournamentNb",
+                pConfig->Read("/GAs/CouplesSelectionTournamentNb",
                               &couplesSelectionTournamentNb, 3);
                 ThreadsManager().CritSectionConfig().Leave();
                 if (couplesSelectionTournamentNb < 2) {
@@ -1393,7 +1393,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 int crossoverNbPoints;
                 ThreadsManager().CritSectionConfig().Enter();
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverMultiplePointsNb", &crossoverNbPoints, 3);
+                pConfig->Read("/GAs/CrossoverMultiplePointsNb", &crossoverNbPoints, 3);
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
@@ -1508,11 +1508,11 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 int crossoverNbPoints;
                 ThreadsManager().CritSectionConfig().Enter();
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBlendingPointsNb", &crossoverNbPoints, 2);
+                pConfig->Read("/GAs/CrossoverBlendingPointsNb", &crossoverNbPoints, 2);
 
                 // Get option to share beta or to generate a new one at every step
                 bool shareBeta;
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBlendingShareBeta", &shareBeta, true);
+                pConfig->Read("/GAs/CrossoverBlendingShareBeta", &shareBeta, true);
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
@@ -1568,7 +1568,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 int crossoverNbPoints;
                 ThreadsManager().CritSectionConfig().Enter();
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverLinearPointsNb", &crossoverNbPoints, 2);
+                pConfig->Read("/GAs/CrossoverLinearPointsNb", &crossoverNbPoints, 2);
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
@@ -1640,11 +1640,11 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 int crossoverNbPoints;
                 ThreadsManager().CritSectionConfig().Enter();
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverHeuristicPointsNb", &crossoverNbPoints, 2);
+                pConfig->Read("/GAs/CrossoverHeuristicPointsNb", &crossoverNbPoints, 2);
 
                 // Get option to share beta or to generate a new one at every step
                 bool shareBeta;
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverHeuristicShareBeta", &shareBeta, true);
+                pConfig->Read("/GAs/CrossoverHeuristicShareBeta", &shareBeta, true);
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
@@ -1700,11 +1700,11 @@ bool asMethodOptimizerGeneticAlgorithms::Mating()
                 // Get nb of points
                 ThreadsManager().CritSectionConfig().Enter();
                 int crossoverNbPoints;
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikePointsNb", &crossoverNbPoints, 2);
+                pConfig->Read("/GAs/CrossoverBinaryLikePointsNb", &crossoverNbPoints, 2);
 
                 // Get option to share beta or to generate a new one at every step
                 bool shareBeta;
-                pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverBinaryLikeShareBeta", &shareBeta, true);
+                pConfig->Read("/GAs/CrossoverBinaryLikeShareBeta", &shareBeta, true);
                 ThreadsManager().CritSectionConfig().Leave();
 
                 // Get points
@@ -1841,7 +1841,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
         case (RandomUniformConstant): {
             double mutationsProbability;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformConstantProbability", &mutationsProbability,
+            pConfig->Read("/GAs/MutationsUniformConstantProbability", &mutationsProbability,
                           0.2);
             ThreadsManager().CritSectionConfig().Leave();
 
@@ -1864,9 +1864,9 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             int nbGenMax;
             double probStart, probEnd;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableMaxGensNbVar", &nbGenMax, 50);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityStart", &probStart, 0.5);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsUniformVariableProbabilityEnd", &probEnd, 0.01);
+            pConfig->Read("/GAs/MutationsUniformVariableMaxGensNbVar", &nbGenMax, 50);
+            pConfig->Read("/GAs/MutationsUniformVariableProbabilityStart", &probStart, 0.5);
+            pConfig->Read("/GAs/MutationsUniformVariableProbabilityEnd", &probEnd, 0.01);
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double) nbGenMax;
@@ -1891,9 +1891,9 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             double mutationsProbability;
             double stdDevRatioRange;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalConstantProbability", &mutationsProbability,
+            pConfig->Read("/GAs/MutationsNormalConstantProbability", &mutationsProbability,
                           0.2);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalConstantStdDevRatioRange", &stdDevRatioRange,
+            pConfig->Read("/GAs/MutationsNormalConstantStdDevRatioRange", &stdDevRatioRange,
                           0.10);
             ThreadsManager().CritSectionConfig().Leave();
 
@@ -1917,13 +1917,13 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             double probStart, probEnd;
             double stdDevStart, stdDevEnd;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarProb", &nbGenMaxProb, 50);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableMaxGensNbVarStdDev", &nbGenMaxStdDev,
+            pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarProb", &nbGenMaxProb, 50);
+            pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", &nbGenMaxStdDev,
                           50);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityStart", &probStart, 0.5);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableProbabilityEnd", &probEnd, 0.05);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevStart", &stdDevStart, 0.5);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNormalVariableStdDevEnd", &stdDevEnd, 0.01);
+            pConfig->Read("/GAs/MutationsNormalVariableProbabilityStart", &probStart, 0.5);
+            pConfig->Read("/GAs/MutationsNormalVariableProbabilityEnd", &probEnd, 0.05);
+            pConfig->Read("/GAs/MutationsNormalVariableStdDevStart", &stdDevStart, 0.5);
+            pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", &stdDevEnd, 0.01);
             ThreadsManager().CritSectionConfig().Leave();
 
             double probIncrease = (probStart - probEnd) / (double) nbGenMaxProb;
@@ -1951,9 +1951,9 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
             int nbGenMax;
             double mutationsProbability, minRate;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformProbability", &mutationsProbability, 0.2);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMaxGensNbVar", &nbGenMax, 50);
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsNonUniformMinRate", &minRate, 0.20);
+            pConfig->Read("/GAs/MutationsNonUniformProbability", &mutationsProbability, 0.2);
+            pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", &nbGenMax, 50);
+            pConfig->Read("/GAs/MutationsNonUniformMinRate", &minRate, 0.20);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {
@@ -2039,7 +2039,7 @@ bool asMethodOptimizerGeneticAlgorithms::Mutation()
         case (MultiScale): {
             double mutationsProbability;
             ThreadsManager().CritSectionConfig().Enter();
-            pConfig->Read("/Optimizer/GeneticAlgorithms/MutationsMultiScaleProbability", &mutationsProbability, 0.2);
+            pConfig->Read("/GAs/MutationsMultiScaleProbability", &mutationsProbability, 0.2);
             ThreadsManager().CritSectionConfig().Leave();
 
             for (int iInd = 0; iInd < m_parameters.size(); iInd++) {

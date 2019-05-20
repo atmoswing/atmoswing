@@ -210,14 +210,14 @@ void asFrameDownscaler::Cancel(wxCommandEvent &event)
 void asFrameDownscaler::LoadOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    m_choiceMethod->SetSelection(pConfig->ReadLong("/Downscaler/MethodSelection", 0l));
-    m_filePickerParameters->SetPath(pConfig->Read("/Downscaler/ParametersFilePath", wxEmptyString));
+    m_choiceMethod->SetSelection(pConfig->ReadLong("/MethodSelection", 0l));
+    m_filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
     m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
     m_dirPickerArchivePredictor->SetPath(pConfig->Read("/Paths/ArchivePredictorsDir", wxEmptyString));
     m_dirPickerScenarioPredictor->SetPath(pConfig->Read("/Paths/ScenarioPredictorsDir", wxEmptyString));
     m_dirPickerDownscalingResults->SetPath(pConfig->Read("/Paths/DownscalerResultsDir",
                                                          asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
-    m_checkBoxParallelEvaluations->SetValue(pConfig->ReadBool("/Downscaler/ParallelEvaluations", false));
+    m_checkBoxParallelEvaluations->SetValue(pConfig->ReadBool("/ParallelEvaluations", false));
 }
 
 void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event)
@@ -231,9 +231,9 @@ void asFrameDownscaler::SaveOptions() const
 
     wxConfigBase *pConfig = wxFileConfig::Get();
     auto methodSelection = (long) m_choiceMethod->GetSelection();
-    pConfig->Write("/Downscaler/MethodSelection", methodSelection);
+    pConfig->Write("/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
-    pConfig->Write("/Downscaler/ParametersFilePath", parametersFilePath);
+    pConfig->Write("/ParametersFilePath", parametersFilePath);
     wxString predictandDBFilePath = m_filePickerPredictand->GetPath();
     pConfig->Write("/Paths/PredictandDBFilePath", predictandDBFilePath);
     wxString archivePredictorDir = m_dirPickerArchivePredictor->GetPath();
@@ -243,7 +243,7 @@ void asFrameDownscaler::SaveOptions() const
     wxString downscalerResultsDir = m_dirPickerDownscalingResults->GetPath();
     pConfig->Write("/Paths/DownscalerResultsDir", downscalerResultsDir);
     bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
-    pConfig->Write("/Downscaler/ParallelEvaluations", parallelEvaluations);
+    pConfig->Write("/ParallelEvaluations", parallelEvaluations);
 
     pConfig->Flush();
 }

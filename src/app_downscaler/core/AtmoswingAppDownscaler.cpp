@@ -222,12 +222,8 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
-        if (m_downscalingMethod.IsSameAs("ga", false)) {
-            pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
-            pConfig->Write("/Downscaler/GeneticAlgorithms/AllowElitismForTheBest", true);
-        }
-        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
-            pConfig->Write("/Downscaler/ParallelEvaluations", true);
+        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
+            pConfig->Write("/ParallelEvaluations", true);
         }
 
         pConfig->Flush();
