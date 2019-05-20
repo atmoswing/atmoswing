@@ -144,6 +144,11 @@ bool AtmoswingAppForecaster::OnInit()
         return false;
     }
 
+    // Skip frame initialization if needed.
+    if (!g_guiMode) {
+        return true;
+    }
+
 #if wxUSE_GUI
     // Following for GUI only
     wxInitAllImageHandlers();
@@ -169,7 +174,10 @@ bool AtmoswingAppForecaster::InitLog()
 {
 
 #if wxUSE_GUI
-    // Will be set later
+    if (!g_guiMode) {
+        Log()->CreateFileOnly("AtmoSwingForecaster.log");
+    }
+    // GUI mode: will be set later
 #else
     Log()->CreateFileOnly("AtmoSwingForecaster.log");
 #endif

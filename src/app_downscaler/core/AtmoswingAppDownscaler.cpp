@@ -118,6 +118,11 @@ bool AtmoswingAppDownscaler::OnInit()
         return false;
     }
 
+    // Skip frame initialization if needed.
+    if (!g_guiMode) {
+        return true;
+    }
+
 #if wxUSE_GUI
     // Set PPI
     wxMemoryDC dcTestPpi;
@@ -177,14 +182,21 @@ bool AtmoswingAppDownscaler::InitLog()
         fullPath.Append("AtmoSwingDownscaler.log");
 
 #if wxUSE_GUI
-        delete wxLog::SetActiveTarget(new asLogGui());
-        Log()->CreateFileAtPath(fullPath);
+        if (!g_guiMode) {
+            Log()->CreateFileOnly("AtmoSwingDownscaler.log");
+        } else {
+            delete wxLog::SetActiveTarget(new asLogGui());
+            Log()->CreateFileAtPath(fullPath);
+        }
 #else
         Log()->CreateFileOnlyAtPath(fullPath);
 #endif
     } else {
 #if wxUSE_GUI
-        // Will be set later
+        if (!g_guiMode) {
+            Log()->CreateFileOnly("AtmoSwingDownscaler.log");
+        }
+        // GUI mode: will be set later
 #else
         Log()->CreateFileOnly("AtmoSwingDownscaler.log");
 #endif

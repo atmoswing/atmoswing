@@ -184,6 +184,11 @@ bool AtmoswingAppOptimizer::OnInit()
         return false;
     }
 
+    // Skip frame initialization if needed.
+    if (!g_guiMode) {
+        return true;
+    }
+
 #if wxUSE_GUI
     // Set PPI
     wxMemoryDC dcTestPpi;
@@ -251,14 +256,21 @@ bool AtmoswingAppOptimizer::InitLog()
         }
 
 #if wxUSE_GUI
-        delete wxLog::SetActiveTarget(new asLogGui());
-        Log()->CreateFileAtPath(fullPath);
+        if (!g_guiMode) {
+            Log()->CreateFileOnly(fullPath);
+        } else {
+            delete wxLog::SetActiveTarget(new asLogGui());
+            Log()->CreateFileAtPath(fullPath);
+        }
 #else
         Log()->CreateFileOnlyAtPath(fullPath);
 #endif
     } else {
 #if wxUSE_GUI
-        // Will be set later
+        if (!g_guiMode) {
+            Log()->CreateFileOnly("AtmoSwingOptimizer.log");
+        }
+        // GUI mode: will be set later
 #else
         Log()->CreateFileOnly("AtmoSwingOptimizer.log");
 #endif

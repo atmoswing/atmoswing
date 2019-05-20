@@ -136,12 +136,14 @@ void asLog::SetLevel(int val)
 
 void asLog::PrintToConsole(const wxString &msg)
 {
+#ifndef __WIN32__
     if (!g_guiMode) {
 		wxMessageOutput *msgOut = wxMessageOutput::Get();
 		if (msgOut) {
 			msgOut->Printf(msg);
 		}
 	}
+#endif
 }
 
 #if wxUSE_GUI
