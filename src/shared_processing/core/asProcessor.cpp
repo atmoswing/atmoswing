@@ -59,14 +59,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long defaultMethod = (long) asMULTITHREADS;
-    int method = (int) (pConfig->Read("/Processing/Method", defaultMethod));
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
-    bool parallelEvaluations;
-    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, true);
-    bool allowDuplicateDates;
-    pConfig->Read("/Processing/AllowDuplicateDates", &allowDuplicateDates, true);
+    int method = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
+    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
+    bool parallelEvaluations = pConfig->ReadBool("/Processing/ParallelEvaluations", true);
+    bool allowDuplicateDates = pConfig->ReadBool("/Processing/AllowDuplicateDates", true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
@@ -763,12 +759,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     // Get the processing method
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long defaultMethod = (long) asMULTITHREADS;
-    int method = (int) (pConfig->Read("/Processing/Method", defaultMethod));
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
-    bool parallelEvaluations;
-    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, true);
+    int method = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
+    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
+    bool parallelEvaluations = pConfig->ReadBool("/Processing/ParallelEvaluations", true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {

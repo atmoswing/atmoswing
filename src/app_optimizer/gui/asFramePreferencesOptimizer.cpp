@@ -68,8 +68,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
      */
 
     // Log
-    long defaultLogLevel = 1; // = selection +1
-    long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
+    long logLevel = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevel == 1) {
         m_radioBtnLogLevel1->SetValue(true);
     } else if (logLevel == 2) {
@@ -79,23 +78,19 @@ void asFramePreferencesOptimizer::LoadPreferences()
     } else {
         m_radioBtnLogLevel1->SetValue(true);
     }
-    bool displayLogWindow;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
-    m_checkBoxDisplayLogWindow->SetValue(displayLogWindow);
+    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Paths
     wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    wxString predictandDBDir = pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands");
-    m_dirPickerPredictandDB->SetPath(predictandDBDir);
-    wxString archivePredictorsDir = pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors");
-    m_dirPickerArchivePredictors->SetPath(archivePredictorsDir);
+    m_dirPickerPredictandDB->SetPath(pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
+    m_dirPickerArchivePredictors->SetPath(pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
 
     /*
      * Advanced
      */
 
     // GUI options
-    long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
+    long guiOptions = pConfig->ReadLong("/General/GuiOptions", 1l);
     m_radioBoxGui->SetSelection((int) guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -108,27 +103,21 @@ void asFramePreferencesOptimizer::LoadPreferences()
     }
 
     // Advanced options
-    bool responsive;
-    pConfig->Read("/General/Responsive", &responsive, true);
-    m_checkBoxResponsiveness->SetValue(responsive);
-    g_responsive = responsive;
+    g_responsive = pConfig->ReadBool("/General/Responsive", true);
+    m_checkBoxResponsiveness->SetValue(g_responsive);
 
     // Multithreading
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1)
         maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", wxString::Format("%d", maxThreads));
     m_textCtrlThreadsNb->SetValue(processingMaxThreadNb);
-    long processingThreadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
-    m_sliderThreadsPriority->SetValue((int) processingThreadsPriority);
+    m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
-    auto defaultMethod = (long) asMULTITHREADS;
-    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    long processingMethod = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
         if (processingMethod == (long) asMULTITHREADS) {

@@ -54,13 +54,14 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     delete wxLog::SetActiveTarget(new asLogGui());
     m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingForecaster.log");
+    Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = (int)pConfig->Read("/MainFrame/x", 50),
-        y = (int)pConfig->Read("/MainFrame/y", 50),
-        w = (int)pConfig->Read("/MainFrame/w",  minWidth),
-        h = (int)pConfig->Read( "/MainFrame/h", minHeight);
+    int x = (int)pConfig->ReadLong("/MainFrame/x", 50),
+        y = (int)pConfig->ReadLong("/MainFrame/y", 50),
+        w = (int)pConfig->ReadLong("/MainFrame/w",  minWidth),
+        h = (int)pConfig->ReadLong( "/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;
@@ -87,7 +88,7 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
     Fit();
 
     // Get the GUI mode -> silent or not
-    long guiOptions = pConfig->Read("/General/GuiOptions", 0l);
+    long guiOptions = pConfig->ReadLong("/General/GuiOptions", 0l);
     if (guiOptions == 0l) {
         g_silentMode = true;
     } else {
@@ -105,46 +106,25 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     wxConfigBase *pConfig = wxFileConfig::Get();
 
     // General
-    long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
-    pConfig->Write("/General/GuiOptions", guiOptions);
-    bool responsive;
-    pConfig->Read("/General/Responsive", &responsive, true);
-    pConfig->Write("/General/Responsive", responsive);
-    long defaultLogLevel = 1; // = selection +1
-    long logLevel = pConfig->Read("/General/LogLevel", defaultLogLevel);
-    pConfig->Write("/General/LogLevel", logLevel);
-    bool displayLogWindow;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindow, false);
-    pConfig->Write("/General/DisplayLogWindow", displayLogWindow);
+    pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
+    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", true));
+    pConfig->Write("/General/LogLevel", pConfig->Read("/General/LogLevel", 1));
+    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Internet
-    int maxPrevStepsNb = 5;
-    wxString maxPrevStepsNbStr = wxString::Format("%d", maxPrevStepsNb);
-    wxString internetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
-    pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
-    int maxParallelRequests = 5;
-    wxString maxParallelRequestsStr = wxString::Format("%d", maxParallelRequests);
-    wxString internetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
-    pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
-    bool restrictDownloads;
-    pConfig->Read("/Internet/RestrictDownloads", &restrictDownloads, true);
-    pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
-    bool checkBoxProxy;
-    pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
-    pConfig->Write("/Internet/UsesProxy", checkBoxProxy);
+    pConfig->Write("/Internet/MaxPreviousStepsNb", pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
+    pConfig->Write("/Internet/ParallelRequestsNb", pConfig->Read("/Internet/ParallelRequestsNb", "5"));
+    pConfig->Write("/Internet/RestrictDownloads", pConfig->ReadBool("/Internet/RestrictDownloads", true));
+    pConfig->Write("/Internet/UsesProxy", pConfig->ReadBool("/Internet/UsesProxy", false));
 
     // Processing
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1)
         maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
-    auto defaultMethod = (long) asMULTITHREADS;
-    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    pConfig->Write("/Processing/MaxThreadNb", pConfig->Read("/Processing/MaxThreadNb", wxString::Format("%d", maxThreads)));
+    long processingMethod = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
     if (!allowMultithreading) {
         processingMethod = (long) asMULTITHREADS;
     }

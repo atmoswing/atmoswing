@@ -127,11 +127,7 @@ bool AtmoswingAppDownscaler::OnInit()
     m_singleInstanceChecker = nullptr;
 
     // Check that it is the unique instance
-    bool multipleInstances = false;
-
-    wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
-
-    if (!multipleInstances) {
+    if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = wxString::Format(wxT("atmoswing-downscaler-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
@@ -350,8 +346,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     } else {
-        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log()->SetLevel(int(logLevel));
+        Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     }
 
     // Check for a downscaling params file

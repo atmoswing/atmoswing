@@ -240,9 +240,10 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     // Restore frame position and size
     wxConfigBase *pConfig = wxFileConfig::Get();
     int minHeight = 450, minWidth = 800;
-    int x = pConfig->Read("/MainFrame/x", 50), y = pConfig->Read("/MainFrame/y", 50), w = pConfig->Read("/MainFrame/w",
-                                                                                                        minWidth), h = pConfig->Read(
-            "/MainFrame/h", minHeight);
+    int x = pConfig->ReadLong("/MainFrame/x", 50);
+    int y = pConfig->ReadLong("/MainFrame/y", 50);
+    int w = pConfig->ReadLong("/MainFrame/w", minWidth);
+    int h = pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
     if (x < screen.x - 10)
         x = screen.x;
@@ -268,9 +269,7 @@ asFrameForecast::asFrameForecast(wxWindow *parent, wxWindowID id)
     Move(x, y);
     SetClientSize(w, h);
 
-    bool doMaximize;
-    pConfig->Read("/MainFrame/Maximize", &doMaximize);
-    Maximize(doMaximize);
+    Maximize(pConfig->ReadBool("/MainFrame/Maximize", false));
 
     Layout();
 
@@ -357,8 +356,7 @@ void asFrameForecast::Init()
 
     // Open last workspace
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString workspaceFilePath = wxEmptyString;
-    pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+    wxString workspaceFilePath = pConfig->Read("/Workspace/LastOpened", wxEmptyString);
 
     // Check provided files
     bool forecastFilesProvided = false;
@@ -406,39 +404,31 @@ void asFrameForecast::Init()
     m_panelSidebarForecasts->GetQuantilesCtrl()->Select(m_forecastViewer->GetQuantileSelection());
 
     // Reduce some panels
-    bool display = true;
-    pConfig->Read("/SidebarPanelsDisplay/Forecasts", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/Forecasts", true)) {
         m_panelSidebarForecasts->ReducePanel();
         m_panelSidebarForecasts->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/StationsList", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/StationsList", true)) {
         m_panelSidebarStationsList->ReducePanel();
         m_panelSidebarStationsList->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/Alarms", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/Alarms", true)) {
         m_panelSidebarAlarms->ReducePanel();
         m_panelSidebarAlarms->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/GisLayers", &display, false);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/GisLayers", false)) {
         m_panelSidebarGisLayers->ReducePanel();
         m_panelSidebarGisLayers->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/AnalogDates", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/AnalogDates", true)) {
         m_panelSidebarAnalogDates->ReducePanel();
         m_panelSidebarAnalogDates->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastDots", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/CaptionForecastDots", true)) {
         m_panelSidebarCaptionForecastDots->ReducePanel();
         m_panelSidebarCaptionForecastDots->Layout();
     }
-    pConfig->Read("/SidebarPanelsDisplay/CaptionForecastRing", &display, true);
-    if (!display) {
+    if (!pConfig->ReadBool("/SidebarPanelsDisplay/CaptionForecastRing", true)) {
         m_panelSidebarCaptionForecastRing->ReducePanel();
         m_panelSidebarCaptionForecastRing->Layout();
     }
@@ -610,8 +600,7 @@ void asFrameForecast::OnNewWorkspace(wxCommandEvent &event)
 
     // Open last workspace
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString workspaceFilePath = wxEmptyString;
-    pConfig->Read("/Workspace/LastOpened", &workspaceFilePath);
+    wxString workspaceFilePath = pConfig->Read("/Workspace/LastOpened", wxEmptyString);
 
     if (!workspaceFilePath.IsEmpty()) {
         if (!m_workspace.Load(workspaceFilePath)) {
@@ -875,11 +864,10 @@ void asFrameForecast::OnLogLevel3(wxCommandEvent &event)
 void asFrameForecast::DisplayLogLevelMenu()
 {
     // Set log level in the menu
-    int logLevel = (int) wxFileConfig::Get()->Read("/General/LogLevel", 1l);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
-    switch (logLevel) {
+    switch (wxFileConfig::Get()->ReadLong("/General/LogLevel", 1l)) {
         case 1:
             m_menuLogLevel->FindItemByPosition(0)->Check(true);
             Log()->SetLevel(1);

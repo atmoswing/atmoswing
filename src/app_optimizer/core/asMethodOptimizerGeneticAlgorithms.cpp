@@ -165,13 +165,13 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
 {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Read("/Optimizer/GeneticAlgorithms/PopulationSize", &m_popSize, 50);
+    m_popSize = pConfig->ReadLong("/Optimizer/GeneticAlgorithms/PopulationSize", 50);
     m_paramsNb = m_popSize;
-    pConfig->Read("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", &m_allowElitismForTheBest, true);
-    m_naturalSelectionType = (int) pConfig->Read("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 0l);
-    m_couplesSelectionType = (int) pConfig->Read("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 0l);
-    m_crossoverType = (int) pConfig->Read("/Optimizer/GeneticAlgorithms/CrossoverOperator", 0l);
-    m_mutationsModeType = (int) pConfig->Read("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
+    m_allowElitismForTheBest = pConfig->ReadBool("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
+    m_naturalSelectionType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/NaturalSelectionOperator", 0l);
+    m_couplesSelectionType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/CouplesSelectionOperator", 0l);
+    m_crossoverType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/CrossoverOperator", 0l);
+    m_mutationsModeType = (int) pConfig->ReadLong("/Optimizer/GeneticAlgorithms/MutationOperator", 0l);
     ThreadsManager().CritSectionConfig().Leave();
 
     // Reset the score of the climatology

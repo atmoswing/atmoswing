@@ -226,41 +226,23 @@ void asFramePlotDistributions::InitPredictandsPlotCtrl()
 
     // Open layers defined in the preferences
     wxConfigBase *pConfig = wxFileConfig::Get();
-    bool doPlotAllAnalogsPoints;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", &doPlotAllAnalogsPoints, false);
-    if (doPlotAllAnalogsPoints)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllAnalogsPoints", false))
         m_checkListTocPredictands->Check(AllAnalogsPoints);
-    bool doPlotAllAnalogsCurve;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", &doPlotAllAnalogsCurve, true);
-    if (doPlotAllAnalogsCurve)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllAnalogsCurve", true))
         m_checkListTocPredictands->Check(AllAnalogsCurve);
-    bool doPlotBestAnalogs10Points;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", &doPlotBestAnalogs10Points, false);
-    if (doPlotBestAnalogs10Points)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Points", false))
         m_checkListTocPredictands->Check(BestAnalogs10Points);
-    bool doPlotBestAnalogs10Curve;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", &doPlotBestAnalogs10Curve, true);
-    if (doPlotBestAnalogs10Curve)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs10Curve", true))
         m_checkListTocPredictands->Check(BestAnalogs10Curve);
-    bool doPlotBestAnalogs5Points;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", &doPlotBestAnalogs5Points, true);
-    if (doPlotBestAnalogs5Points)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Points", true))
         m_checkListTocPredictands->Check(BestAnalogs5Points);
-    bool doPlotBestAnalogs5Curve;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", &doPlotBestAnalogs5Curve, false);
-    if (doPlotBestAnalogs5Curve)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotBestAnalogs5Curve", false))
         m_checkListTocPredictands->Check(BestAnalogs5Curve);
-    bool doPlotAllReturnPeriods;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", &doPlotAllReturnPeriods, false);
-    if (doPlotAllReturnPeriods)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotAllReturnPeriods", false))
         m_checkListTocPredictands->Check(AllReturnPeriods);
-    bool doPlotClassicReturnPeriod;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", &doPlotClassicReturnPeriod, true);
-    if (doPlotClassicReturnPeriod)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotClassicReturnPeriod", true))
         m_checkListTocPredictands->Check(ClassicReturnPeriod);
-    bool doPlotClassicQuantiles;
-    pConfig->Read("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", &doPlotClassicQuantiles, true);
-    if (doPlotClassicQuantiles)
+    if (pConfig->ReadBool("/PlotsDistributionsPredictands/DoPlotClassicQuantiles", true))
         m_checkListTocPredictands->Check(ClassicQuantiles);
 }
 

@@ -41,14 +41,10 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
     m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
     m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
 
-    wxString catalogPath = pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString);
-    m_filePickerCatalogPath->SetPath(catalogPath);
-    wxString predictandDataDir = pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString);
-    m_dirPickerDataDir->SetPath(predictandDataDir);
-    wxString destinationDir = pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString);
-    m_dirPickerDestinationDir->SetPath(destinationDir);
-    wxString patternsDir = pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString);
-    m_dirPickerPatternsDir->SetPath(patternsDir);
+    m_filePickerCatalogPath->SetPath(pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString));
+    m_dirPickerDataDir->SetPath(pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString));
+    m_dirPickerDestinationDir->SetPath(pConfig->Read("/PredictandDBToolbox/DestinationDir", wxEmptyString));
+    m_dirPickerPatternsDir->SetPath(pConfig->Read("/PredictandDBToolbox/PatternsDir", wxEmptyString));
 
     // Icon
 #ifdef __WXMSW__

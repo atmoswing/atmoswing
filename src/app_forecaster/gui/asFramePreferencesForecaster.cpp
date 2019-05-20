@@ -89,8 +89,7 @@ void asFramePreferencesForecaster::LoadPreferences()
      */
 
     // Log
-    long defaultLogLevelForecaster = 1; // = selection +1
-    long logLevelForecaster = pConfig->Read("/General/LogLevel", defaultLogLevelForecaster);
+    long logLevelForecaster = pConfig->ReadLong("/General/LogLevel", 1);
     if (logLevelForecaster == 1) {
         m_radioBtnLogLevel1->SetValue(true);
     } else if (logLevelForecaster == 2) {
@@ -100,29 +99,21 @@ void asFramePreferencesForecaster::LoadPreferences()
     } else {
         m_radioBtnLogLevel1->SetValue(true);
     }
-    bool displayLogWindowForecaster;
-    pConfig->Read("/General/DisplayLogWindow", &displayLogWindowForecaster, false);
-    m_checkBoxDisplayLogWindow->SetValue(displayLogWindowForecaster);
+    m_checkBoxDisplayLogWindow->SetValue(pConfig->ReadBool("/General/DisplayLogWindow", false));
 
     // Proxy
-    bool checkBoxProxy;
-    pConfig->Read("/Internet/UsesProxy", &checkBoxProxy, false);
-    m_checkBoxProxy->SetValue(checkBoxProxy);
-    wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    m_textCtrlProxyAddress->SetValue(proxyAddress);
-    wxString proxyPort = pConfig->Read("/Internet/ProxyPort", wxEmptyString);
-    m_textCtrlProxyPort->SetValue(proxyPort);
-    wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
-    m_textCtrlProxyUser->SetValue(proxyUser);
-    wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
-    m_textCtrlProxyPasswd->SetValue(proxyPasswd);
+    m_checkBoxProxy->SetValue(pConfig->ReadBool("/Internet/UsesProxy", false));
+    m_textCtrlProxyAddress->SetValue(pConfig->Read("/Internet/ProxyAddress", wxEmptyString));
+    m_textCtrlProxyPort->SetValue(pConfig->Read("/Internet/ProxyPort", wxEmptyString));
+    m_textCtrlProxyUser->SetValue(pConfig->Read("/Internet/ProxyUser", wxEmptyString));
+    m_textCtrlProxyPasswd->SetValue(pConfig->Read("/Internet/ProxyPasswd", wxEmptyString));
 
     /*
      * Advanced
      */
 
     // GUI options
-    long guiOptions = pConfig->Read("/General/GuiOptions", 1l);
+    long guiOptions = pConfig->ReadLong("/General/GuiOptions", 1l);
     m_radioBoxGui->SetSelection((int) guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -135,43 +126,26 @@ void asFramePreferencesForecaster::LoadPreferences()
     }
 
     // Downloads
-    int maxPrevStepsNb = 5;
-    wxString maxPrevStepsNbStr = wxString::Format("%d", maxPrevStepsNb);
-    wxString internetMaxPrevStepsNb = pConfig->Read("/Internet/MaxPreviousStepsNb", maxPrevStepsNbStr);
-    m_textCtrlMaxPrevStepsNb->SetValue(internetMaxPrevStepsNb);
-    int maxParallelRequests = 5;
-    wxString maxParallelRequestsStr = wxString::Format("%d", maxParallelRequests);
-    wxString internetParallelRequestsNb = pConfig->Read("/Internet/ParallelRequestsNb", maxParallelRequestsStr);
-    m_textCtrlMaxRequestsNb->SetValue(internetParallelRequestsNb);
-    bool restrictDownloads;
-    pConfig->Read("/Internet/RestrictDownloads", &restrictDownloads, true);
-    m_checkBoxRestrictDownloads->SetValue(restrictDownloads);
+    m_textCtrlMaxPrevStepsNb->SetValue(pConfig->Read("/Internet/MaxPreviousStepsNb", "5"));
+    m_textCtrlMaxRequestsNb->SetValue(pConfig->Read("/Internet/ParallelRequestsNb", "5"));
+    m_checkBoxRestrictDownloads->SetValue(pConfig->ReadBool("/Internet/RestrictDownloads", true));
 
     // Advanced options
-    bool responsive;
-    pConfig->Read("/General/Responsive", &responsive, true);
-    m_checkBoxResponsiveness->SetValue(responsive);
-    g_responsive = responsive;
-    bool multiForecaster;
-    pConfig->Read("/General/MultiInstances", &multiForecaster, false);
-    m_checkBoxMultiInstancesForecaster->SetValue(multiForecaster);
+    g_responsive = pConfig->ReadBool("/General/Responsive", true);
+    m_checkBoxResponsiveness->SetValue(g_responsive);
+    m_checkBoxMultiInstancesForecaster->SetValue(pConfig->ReadBool("/General/MultiInstances", false));
 
     // Multithreading
-    bool allowMultithreading;
-    pConfig->Read("/Processing/AllowMultithreading", &allowMultithreading, true);
+    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1)
         maxThreads = 2;
-    wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    wxString maxThreadNb = pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr);
-    m_textCtrlThreadsNb->SetValue(maxThreadNb);
-    long threadsPriority = pConfig->Read("/Processing/ThreadsPriority", 95l);
-    m_sliderThreadsPriority->SetValue((int) threadsPriority);
+    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/MaxThreadNb", wxString::Format("%d", maxThreads)));
+    m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
-    auto defaultMethod = (long) asMULTITHREADS;
-    long processingMethod = pConfig->Read("/Processing/Method", defaultMethod);
+    long processingMethod = pConfig->ReadLong("/Processing/Method", (long) asMULTITHREADS);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
         if (processingMethod == (long) asMULTITHREADS) {

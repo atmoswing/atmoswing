@@ -58,19 +58,16 @@ size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stre
 int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir)
 {
     // Proxy
-    bool usesProxy;
     wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Read("/Internet/UsesProxy", &usesProxy, false);
+    bool usesProxy = pConfig->ReadBool("/Internet/UsesProxy", false);
     wxString proxyAddress = pConfig->Read("/Internet/ProxyAddress", wxEmptyString);
-    long proxyPort;
-    pConfig->Read("/Internet/ProxyPort", &proxyPort);
+    long proxyPort = pConfig->ReadLong("/Internet/ProxyPort", 8080);
     wxString proxyUser = pConfig->Read("/Internet/ProxyUser", wxEmptyString);
     wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
 
     // Get the number of connections
     //int threadsNb = wxMin(ThreadsManager().GetAvailableThreadsNb(), (int)fileNames.size());
-    long parallelRequests = 5;
-    pConfig->Read("/Internet/ParallelRequestsNb", &parallelRequests, 5l);
+    long parallelRequests = pConfig->ReadLong("/Internet/ParallelRequestsNb", 5l);
 
     if (parallelRequests > 1) {
         // Must initialize libcurl before any threads are started

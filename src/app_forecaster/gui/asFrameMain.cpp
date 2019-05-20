@@ -150,8 +150,7 @@ void asFrameMain::OnInit()
 
     // Open last batch file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    wxString batchFilePath = wxEmptyString;
-    pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+    wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
     // Check provided files
     if (!g_cmdFileName.IsEmpty()) {
@@ -450,11 +449,10 @@ void asFrameMain::OnStatusMethodUpdate(wxCommandEvent &event)
 void asFrameMain::DisplayLogLevelMenu()
 {
     // Set log level in the menu
-    int logLevel = (int) wxFileConfig::Get()->Read("/General/LogLevel", 2l);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
     m_menuLogLevel->FindItemByPosition(2)->Check(false);
-    switch (logLevel) {
+    switch (wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l)) {
         case 1:
             m_menuLogLevel->FindItemByPosition(0)->Check(true);
             Log()->SetLevel(1);

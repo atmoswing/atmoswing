@@ -193,11 +193,7 @@ bool AtmoswingAppOptimizer::OnInit()
     m_singleInstanceChecker = nullptr;
 
     // Check that it is the unique instance
-    bool multipleInstances = false;
-
-    wxFileConfig::Get()->Read("/General/MultiInstances", &multipleInstances, false);
-
-    if (!multipleInstances) {
+    if (!wxFileConfig::Get()->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = wxString::Format(wxT("atmoswing-optimizer-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
@@ -310,7 +306,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
             pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
             pConfig->Write("/Optimizer/GeneticAlgorithms/AllowElitismForTheBest", true);
         }
-        if (pConfig->ReadDouble("/Processing/MaxThreadNb", 1) > 1) {
+        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
             pConfig->Write("/Processing/ParallelEvaluations", true);
         }
 
@@ -489,8 +485,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
             Log()->SetLevel(2);
         }
     } else {
-        long logLevel = wxFileConfig::Get()->Read("/General/LogLevel", 2l);
-        Log()->SetLevel((int) logLevel);
+        Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     }
 
     // Check for a calibration params file

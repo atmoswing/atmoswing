@@ -176,7 +176,7 @@ void asFrameDownscaler::DisplayLogLevelMenu()
 {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
-    int logLevel = int(wxFileConfig::Get()->Read("/General/LogLevel", 2l));
+    int logLevel = int(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     ThreadsManager().CritSectionConfig().Leave();
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -210,22 +210,14 @@ void asFrameDownscaler::Cancel(wxCommandEvent &event)
 void asFrameDownscaler::LoadOptions()
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
-    long methodSelection = pConfig->Read("/Downscaler/MethodSelection", 0l);
-    m_choiceMethod->SetSelection(int(methodSelection));
-    wxString parametersFilePath = pConfig->Read("/Downscaler/ParametersFilePath", wxEmptyString);
-    m_filePickerParameters->SetPath(parametersFilePath);
-    wxString predictandDBFilePath = pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString);
-    m_filePickerPredictand->SetPath(predictandDBFilePath);
-    wxString predictorArchiveDir = pConfig->Read("/Paths/ArchivePredictorsDir", wxEmptyString);
-    m_dirPickerArchivePredictor->SetPath(predictorArchiveDir);
-    wxString predictorScenarioDir = pConfig->Read("/Paths/ScenarioPredictorsDir", wxEmptyString);
-    m_dirPickerScenarioPredictor->SetPath(predictorScenarioDir);
-    wxString downscalerResultsDir = pConfig->Read("/Paths/DownscalerResultsDir",
-                                                 asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler");
-    m_dirPickerDownscalingResults->SetPath(downscalerResultsDir);
-    bool parallelEvaluations;
-    pConfig->Read("/Downscaler/ParallelEvaluations", &parallelEvaluations, false);
-    m_checkBoxParallelEvaluations->SetValue(parallelEvaluations);
+    m_choiceMethod->SetSelection(pConfig->ReadLong("/Downscaler/MethodSelection", 0l));
+    m_filePickerParameters->SetPath(pConfig->Read("/Downscaler/ParametersFilePath", wxEmptyString));
+    m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
+    m_dirPickerArchivePredictor->SetPath(pConfig->Read("/Paths/ArchivePredictorsDir", wxEmptyString));
+    m_dirPickerScenarioPredictor->SetPath(pConfig->Read("/Paths/ScenarioPredictorsDir", wxEmptyString));
+    m_dirPickerDownscalingResults->SetPath(pConfig->Read("/Paths/DownscalerResultsDir",
+                                                         asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
+    m_checkBoxParallelEvaluations->SetValue(pConfig->ReadBool("/Downscaler/ParallelEvaluations", false));
 }
 
 void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event)

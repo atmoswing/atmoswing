@@ -117,10 +117,7 @@ bool AtmoswingAppForecaster::OnInit()
     g_ppiScaleDc = wxMax(double(ppiDC.x) / 96.0, 1.0);
 
     // Check that it is the unique instance
-    bool multipleInstances;
-    pConfig->Read("/General/MultiInstances", &multipleInstances, false);
-
-    if (!multipleInstances) {
+    if (!pConfig->ReadBool("/General/MultiInstances", false)) {
         const wxString instanceName = wxString::Format(wxT("AtmoSwingForecaster-%s"), wxGetUserId());
         m_singleInstanceChecker = new wxSingleInstanceChecker(instanceName);
         if (m_singleInstanceChecker->IsAnotherRunning()) {
@@ -355,8 +352,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Load batch file if exists
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         if (!batchFilePath.IsEmpty()) {
             if (batchForecasts.Load(batchFilePath)) {
@@ -507,8 +503,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Open last batch file
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
 
@@ -557,8 +552,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Open last batch file
         wxConfigBase *pConfig = wxFileConfig::Get();
-        wxString batchFilePath = wxEmptyString;
-        pConfig->Read("/BatchForecasts/LastOpened", &batchFilePath);
+        wxString batchFilePath = pConfig->Read("/BatchForecasts/LastOpened", wxEmptyString);
 
         asBatchForecasts batchForecasts;
 
