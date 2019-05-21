@@ -69,5 +69,5 @@ if (PROJ4_FOUND)
     message(FATAL_ERROR "The path to Proj header file and the include directory do not match:\n
             PROJ4_HEADER=${PROJ4_HEADER} and \n
             PROJ4_INCLUDE_DIR=${PROJ4_INCLUDE_DIR}")
-  endif (PROJ4_HEADER_SAME_PATH)
+  endif ()
 endif (PROJ4_FOUND)
