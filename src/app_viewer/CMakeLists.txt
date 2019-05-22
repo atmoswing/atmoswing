@@ -133,6 +133,7 @@ install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 # Dlls
 if (WIN32)
 
+    # GDAL DLL
     find_file(GDAL_DLL_NAME
             NAMES gdal200.dll gdal201.dll gdal202.dll gdal203.dll gdal204.dll gdal205.dll gdal300.dll gdal301.dll gdal302.dll
             HINTS ${CMAKE_PREFIX_PATH}
@@ -149,3 +150,19 @@ if (WIN32)
     install(FILES ${GDAL_DLL_NAME} DESTINATION bin)
 
 endif (WIN32)
+
+# GDAL data
+find_path(GDAL_DATA_PATH
+        NAMES ellipsoid.csv compdcs.csv gdal_datum.csv gt_datum.csv
+        HINTS ${CMAKE_PREFIX_PATH}
+        PATH_SUFFIXES data
+        NO_DEFAULT_PATH)
+if (NOT GDAL_DATA_PATH)
+    message(SEND_ERROR "GDAL data not found.")
+endif ()
+message(STATUS "GDAL data: ${GDAL_DATA_PATH}")
+add_custom_command(TARGET atmoswing-viewer POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${GDAL_DATA_PATH}"
+        "${CMAKE_BINARY_DIR}/data")
+install(DIRECTORY ${GDAL_DATA_PATH} DESTINATION data)

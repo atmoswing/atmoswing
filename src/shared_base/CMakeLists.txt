@@ -199,3 +199,36 @@ if (WIN32)
     install(FILES ${SQLITE_DLL_NAME} DESTINATION bin)
 
 endif (WIN32)
+
+
+# Proj share
+find_path(PROJ_SHARE_PATH
+        NAMES epsg ntv1_can.dat esri.extra proj.db
+        HINTS ${CMAKE_PREFIX_PATH}
+        PATH_SUFFIXES share share/proj
+        NO_DEFAULT_PATH)
+if (NOT PROJ_SHARE_PATH)
+    message(SEND_ERROR "PROJ share not found.")
+endif ()
+message(STATUS "PROJ share: ${PROJ_SHARE_PATH}")
+add_custom_command(TARGET asbase POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJ_SHARE_PATH}"
+        "${CMAKE_BINARY_DIR}/share/proj")
+install(DIRECTORY ${PROJ_SHARE_PATH} DESTINATION share)
+
+# ecCodes share
+find_path(ECCODES_SHARE_PATH
+        NAMES definitions
+        HINTS ${CMAKE_PREFIX_PATH}
+        PATH_SUFFIXES share share/eccodes
+        NO_DEFAULT_PATH)
+if (NOT ECCODES_SHARE_PATH)
+    message(SEND_ERROR "ecCodes share not found.")
+endif ()
+message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
+add_custom_command(TARGET asbase POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${ECCODES_SHARE_PATH}"
+        "${CMAKE_BINARY_DIR}/share/eccodes")
+install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
