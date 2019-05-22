@@ -149,20 +149,20 @@ if (WIN32)
             "${CMAKE_BINARY_DIR}")
     install(FILES ${GDAL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
-endif (WIN32)
+    # GDAL data
+    find_path(GDAL_DATA_PATH
+            NAMES ellipsoid.csv compdcs.csv gdal_datum.csv gt_datum.csv
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES data
+            NO_DEFAULT_PATH)
+    if (NOT GDAL_DATA_PATH)
+        message(SEND_ERROR "GDAL data not found.")
+    endif ()
+    message(STATUS "GDAL data: ${GDAL_DATA_PATH}")
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${GDAL_DATA_PATH}"
+            "${CMAKE_BINARY_DIR}/data")
+    install(DIRECTORY ${GDAL_DATA_PATH}/ DESTINATION share/gdal)
 
-# GDAL data
-find_path(GDAL_DATA_PATH
-        NAMES ellipsoid.csv compdcs.csv gdal_datum.csv gt_datum.csv
-        HINTS ${CMAKE_PREFIX_PATH}
-        PATH_SUFFIXES data
-        NO_DEFAULT_PATH)
-if (NOT GDAL_DATA_PATH)
-    message(SEND_ERROR "GDAL data not found.")
-endif ()
-message(STATUS "GDAL data: ${GDAL_DATA_PATH}")
-add_custom_command(TARGET atmoswing-viewer POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${GDAL_DATA_PATH}"
-        "${CMAKE_BINARY_DIR}/data")
-install(DIRECTORY ${GDAL_DATA_PATH}/ DESTINATION share/gdal)
+endif (WIN32)
