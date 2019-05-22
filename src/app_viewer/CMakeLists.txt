@@ -147,7 +147,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${GDAL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${GDAL_DLL_NAME} DESTINATION bin)
+    install(FILES ${GDAL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
 endif (WIN32)
 
@@ -165,4 +165,4 @@ add_custom_command(TARGET atmoswing-viewer POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${GDAL_DATA_PATH}"
         "${CMAKE_BINARY_DIR}/data")
-install(DIRECTORY ${GDAL_DATA_PATH} DESTINATION data)
+install(DIRECTORY ${GDAL_DATA_PATH}/ DESTINATION share/gdal)

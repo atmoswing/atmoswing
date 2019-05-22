@@ -5,6 +5,7 @@ syntax: glob
 **/Debug/*
 **/Release/*
 **/RelWithDebInfo/*
+**/gdalwmscache/*
 */Win32/*
 */ALL_BUILD.*
 */ZERO_CHECK.*

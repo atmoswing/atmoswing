@@ -52,7 +52,7 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
     int baseMapSlct = m_choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = wxStandardPaths::Get().GetDataDir();
-    wmsDir = wmsDir + DS + "data" + DS + "wms" + DS + "basemaps" + DS;
+    wmsDir = wmsDir + DS + "share" + DS + "atmoswing" + DS + "wms" + DS + "basemaps" + DS;
     switch (baseMapSlct) {
         case 0: // Custom layers
 
@@ -79,12 +79,16 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
             wxLogError(_("Incorrect base map selection."));
     }
 
-    if (!baseMapPath.IsEmpty()) {
-        m_workspace.AddLayer();
-        m_workspace.SetLayerPath(0, baseMapPath);
-        m_workspace.SetLayerTransparency(0, 0);
-        m_workspace.SetLayerType(0, "wms");
-        m_workspace.SetLayerVisibility(0, true);
+    if (wxFileExists(baseMapPath)) {
+        if (!baseMapPath.IsEmpty()) {
+            m_workspace.AddLayer();
+            m_workspace.SetLayerPath(0, baseMapPath);
+            m_workspace.SetLayerTransparency(0, 0);
+            m_workspace.SetLayerType(0, "wms");
+            m_workspace.SetLayerVisibility(0, true);
+        }
+    } else {
+        wxLogError(_("Cannot find file %s"), baseMapPath);
     }
 
     m_workspace.Save();

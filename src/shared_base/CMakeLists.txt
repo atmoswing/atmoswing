@@ -99,8 +99,9 @@ endif (USE_VERSION)
 if (WIN32)
 
     # Pack the Visual C++ Redistributable for Visual Studio
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${INSTALL_DIR_BIN})
     include(InstallRequiredSystemLibraries)
-    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
+    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_DIR_BIN})
 
     # Png
     find_file(PNG_DLL_NAME
@@ -116,7 +117,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${PNG_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${PNG_DLL_NAME} DESTINATION bin)
+    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # NetCDF
     find_file(NETCDF_DLL_NAME
@@ -132,7 +133,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${NETCDF_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${NETCDF_DLL_NAME} DESTINATION bin)
+    install(FILES ${NETCDF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # Zlib
     find_file(ZLIB_DLL_NAME
@@ -148,7 +149,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${ZLIB_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${ZLIB_DLL_NAME} DESTINATION bin)
+    install(FILES ${ZLIB_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # cURL
     find_file(CURL_DLL_NAME
@@ -164,7 +165,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CURL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${CURL_DLL_NAME} DESTINATION bin)
+    install(FILES ${CURL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # Proj
     find_file(PROJ_DLL_NAME
@@ -180,7 +181,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy
             "${PROJ_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${PROJ_DLL_NAME} DESTINATION bin)
+    install(FILES ${PROJ_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # SQLite
     find_file(SQLITE_DLL_NAME
@@ -196,7 +197,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy
             "${SQLITE_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${SQLITE_DLL_NAME} DESTINATION bin)
+    install(FILES ${SQLITE_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
 endif (WIN32)
 

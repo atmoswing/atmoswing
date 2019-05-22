@@ -1,6 +1,6 @@
 
-install(FILES license.txt notice.txt DESTINATION ${INSTALL_DIR_SHARE})
-install(DIRECTORY data DESTINATION ${INSTALL_DIR_SHARE})
+install(FILES ${CMAKE_SOURCE_DIR}/license.txt ${CMAKE_SOURCE_DIR}/notice.txt DESTINATION share/atmoswing)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION share/atmoswing)
 
 # COMMON PROPERTIES
 
