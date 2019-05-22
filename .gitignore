@@ -1,6 +1,6 @@
 syntax: glob
+_CPack_Packages/*
 */CMakeFiles/*
-*/_CPack_Packages/*
 */ipch/*
 **/Debug/*
 **/Release/*
