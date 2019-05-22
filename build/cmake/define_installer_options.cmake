@@ -131,7 +131,7 @@ if (UNIX AND NOT APPLE)
                 )
         if (DEBIAN_DISTRO_RELEASE)
             string(REGEX REPLACE "[.]" "" DEBIAN_DISTRO_RELEASE ${DEBIAN_DISTRO_RELEASE})
-            message("DEBIAN_DISTRO_RELEASE : ${DEBIAN_DISTRO_RELEASE}")
+            message(STATUS "DEBIAN_DISTRO_RELEASE : ${DEBIAN_DISTRO_RELEASE}")
         endif ()
     endif ()
 
