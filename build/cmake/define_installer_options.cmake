@@ -136,7 +136,7 @@ if (UNIX AND NOT APPLE)
     endif ()
 
     # Dependencies
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl, libcurl3, libjasper1, libodbc1, libodbcinstq4-1")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl, libcurl3, libjasper1, libodbc1, libodbcinstq4-1, proj-data, proj-bin, libcurl3, sqlite3, libsqlite3")
 
     if(DEBIAN_DISTRO_RELEASE VERSION_EQUAL "1404")
         set(CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}, libnetcdfc7, libproj0, libgeos-c1")
