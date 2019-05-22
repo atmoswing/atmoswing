@@ -40,11 +40,11 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   cd "$TMP_DIR\wxwidgets\build\msw"
   nmake -f makefile.vc BUILD=release MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=$WX_TARGET_CPU USE_GUI=0 > $null
   nmake -f makefile.vc BUILD=debug MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=$WX_TARGET_CPU USE_GUI=0 > $null
-  move "$TMP_DIR\wxwidgets\include" "$LIB_DIR\include"
+  Copy-Item "$TMP_DIR\wxwidgets\include\*" -Destination "$LIB_DIR\include" -Recurse
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\baseu\wx\setup.h" "$LIB_DIR\include\wx\setup.h"
   move "$LIB_DIR\include\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h_old"
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\baseu\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h"
-  move "$TMP_DIR\wxwidgets\lib" "$LIB_DIR\lib"
+  Copy-Item "$TMP_DIR\wxwidgets\lib\*" -Destination "$LIB_DIR\lib" -Recurse
 }
 $env:WXWIN = "$LIB_DIR"
 
