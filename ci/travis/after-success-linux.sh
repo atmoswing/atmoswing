@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+export LD_LIBRARY_PATH=$HOME/.libs/lib:$LD_LIBRARY_PATH
 cd "$HOME/atmoswing"
 cpack -C release -G DEB
 ls -lha
