@@ -83,7 +83,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 break;
 			}
             int start = end + 1;
-            end = wxMin(start + ceil((float)fileNames.size() / (float)parallelRequests) - 1, fileNames.size() - 1);
+            end = wxMin(start + ceil((float)fileNames.size() / (float)parallelRequests) - 1, (int)fileNames.size() - 1);
             wxASSERT(!fileNames.empty());
             wxASSERT(end >= start);
             wxASSERT_MSG(end < fileNames.size(),
@@ -124,13 +124,13 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
         if (curl) {
 #if wxUSE_GUI
             // The progress bar
-            wxString dialogmessage = _("Downloading predictors.\n");
-            asDialogProgressBar progressBar(dialogmessage, urls.size());
+            wxString msg = _("Downloading predictors.\n");
+            asDialogProgressBar progressBar(msg, urls.size());
 #endif
 
             // Set a buffer for the error messages
-            auto *errorbuffer = new char[CURL_ERROR_SIZE];
-            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorbuffer);
+            auto *errorBfr = new char[CURL_ERROR_SIZE];
+            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBfr);
             // Some servers don't like requests that are made without a user-agent field, so we provide one
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
             // Fail if the HTTP code returned is equal to or larger than 400
@@ -151,19 +151,18 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 if (!currentFilePath.DirExists()) {
                     if (!currentFilePath.Mkdir(0777, wxPATH_MKDIR_FULL)) {
                         wxLogError(_("The directory to save real-time predictors data cannot be created."));
-                        wxDELETEA(errorbuffer);
+                        wxDELETEA(errorBfr);
                         return asFAILED;
                     }
                 }
 
 #if wxUSE_GUI
                 // Update the progress bar
-                wxString updatedialogmessage = wxString::Format(_("Downloading file %s\n"), fileName) +
-                                               wxString::Format(_("Downloading: %d / %d files"), iFile + 1,
-                                                                (int) urls.size());
-                if (!progressBar.Update(iFile, updatedialogmessage)) {
+                wxString updateMsg = wxString::Format(_("Downloading file %s\n"), fileName) +
+                                     wxString::Format(_("Downloading: %d / %d files"), iFile + 1, (int) urls.size());
+                if (!progressBar.Update(iFile, updateMsg)) {
                     wxLogVerbose(_("The download has been canceled by the user."));
-                    wxDELETEA(errorbuffer);
+                    wxDELETEA(errorBfr);
                     return asCANCELLED;
                 }
 #endif
@@ -171,7 +170,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 // Download only if not already done
                 if (!wxFileName::FileExists(filePath)) {
                     // Instantiate the file structure
-                    struct HttpFile file = {filePath.mb_str(), // Name to store the file as if succesful
+                    struct HttpFile file = {filePath.mb_str(), // Name to store the file as if successful
                                             nullptr};
 
                     // Define the URL
@@ -205,8 +204,8 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     // Log in case of failure
                     if (CURLE_OK != res) {
                         wxLogWarning(_("Failed downloading file. Curl error code: %d"), int(res));
-                        wxLogWarning(_("Curl error message: %s"), errorbuffer);
-                        wxDELETEA(errorbuffer);
+                        wxLogWarning(_("Curl error message: %s"), errorBfr);
+                        wxDELETEA(errorBfr);
                         return asFAILED;
                     } else {
                         wxLogVerbose(_("File %d/%d downloaded successfully."), iFile + 1, (int) urls.size());
@@ -220,7 +219,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
             // Always cleanup
             curl_easy_cleanup(curl);
-            wxDELETEA(errorbuffer);
+            wxDELETEA(errorBfr);
         }
     }
 
