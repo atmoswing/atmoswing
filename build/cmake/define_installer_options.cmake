@@ -138,6 +138,7 @@ if (UNIX AND NOT APPLE)
 
     # Dependencies (check versions on https://pkgs.org/)
     # Autogenerate dependency information (see https://www.guyrutenberg.com/2012/07/19/auto-detect-dependencies-when-building-debs-using-cmake/)
+    set(CMAKE_BUILD_RPATH ${CMAKE_PREFIX_PATH})
     set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 endif (UNIX AND NOT APPLE)
