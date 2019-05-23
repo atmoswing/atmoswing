@@ -102,8 +102,11 @@ link_directories(${EXTERNAL_DIR}/lib)
 link_directories(${EXTERNAL_DIR}/lib64)
 
 # Installer
-set(INSTALL_DIR_BIN bin)
-set(INSTALL_DIR_SHARE share/atmoswing)
+if (WIN32)
+    set(INSTALL_DIR_BIN .)
+else (WIN32)
+    set(INSTALL_DIR_BIN bin)
+endif (WIN32)
 
 
 ##### FIND ANALYSIS TOOLS

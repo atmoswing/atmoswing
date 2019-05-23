@@ -32,7 +32,7 @@ $REBUILD_PROJ=$false
 $REBUILD_HDF5=$false
 $REBUILD_NETCDF=$false
 $REBUILD_GDAL=$false
-$REBUILD_ECCODES=$true
+$REBUILD_ECCODES=$false
 $REBUILD_SQLITE=$false
 
 # Libraries URL
@@ -66,6 +66,15 @@ function Download-Lib($name, $url)
 # All external dependencies are installed in the defined directory
 if(!(Test-Path -Path $LIB_DIR)) {
   mkdir $LIB_DIR > $null
+}
+if(!(Test-Path -Path $LIB_DIR/bin)) {
+  mkdir $LIB_DIR/bin > $null
+}
+if(!(Test-Path -Path $LIB_DIR/include)) {
+  mkdir $LIB_DIR/include > $null
+}
+if(!(Test-Path -Path $LIB_DIR/lib)) {
+  mkdir $LIB_DIR/lib > $null
 }
 if(!(Test-Path -Path $TMP_DIR)) {
   mkdir $TMP_DIR > $null

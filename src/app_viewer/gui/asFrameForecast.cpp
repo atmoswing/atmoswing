@@ -1094,20 +1094,23 @@ bool asFrameForecast::OpenRecentForecasts()
     wxDir::GetAllFiles(fullPath.GetFullPath(), &files);
 
     // Identify the most recent forecasts
-    long mostRecentDate = 0;
+    double mostRecentDate = 0;
     vi mostRecentRows;
     for (int i = 0; i < (int) files.GetCount(); i++) {
         wxFileName fileName(files[i]);
-        wxString fileDate = fileName.GetFullName().SubString(0, 9);
-        if (!fileDate.IsNumber()) {
+        wxString fileDate = fileName.GetFullName().BeforeFirst('.');
+
+        if (fileDate.Len() != 13 && fileDate.Len() != 10) {
             wxLogWarning(_("A file with an unconventional name was found in the forecasts directory."));
             continue;
         }
 
-        long date;
-        if (!fileDate.ToLong(&date)) {
+        double date = 0;
+        try {
+            date = asTime::GetTimeFromString(fileDate, YYYY_MM_DD_hh);
+        } catch (std::exception &e) {
             wxLogWarning(_("Error when parsing the date."));
-            return false;
+            continue;
         }
 
         if (date > mostRecentDate) {

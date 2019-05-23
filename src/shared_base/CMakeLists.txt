@@ -99,8 +99,9 @@ endif (USE_VERSION)
 if (WIN32)
 
     # Pack the Visual C++ Redistributable for Visual Studio
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${INSTALL_DIR_BIN})
     include(InstallRequiredSystemLibraries)
-    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin)
+    install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_DIR_BIN})
 
     # Png
     find_file(PNG_DLL_NAME
@@ -116,7 +117,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${PNG_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${PNG_DLL_NAME} DESTINATION bin)
+    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # NetCDF
     find_file(NETCDF_DLL_NAME
@@ -132,7 +133,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${NETCDF_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${NETCDF_DLL_NAME} DESTINATION bin)
+    install(FILES ${NETCDF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # Zlib
     find_file(ZLIB_DLL_NAME
@@ -148,7 +149,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${ZLIB_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${ZLIB_DLL_NAME} DESTINATION bin)
+    install(FILES ${ZLIB_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # cURL
     find_file(CURL_DLL_NAME
@@ -164,7 +165,7 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CURL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${CURL_DLL_NAME} DESTINATION bin)
+    install(FILES ${CURL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # Proj
     find_file(PROJ_DLL_NAME
@@ -180,7 +181,23 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy
             "${PROJ_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${PROJ_DLL_NAME} DESTINATION bin)
+    install(FILES ${PROJ_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
+    # Proj share
+    find_path(PROJ_SHARE_PATH
+            NAMES epsg ntv1_can.dat esri.extra proj.db
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES share share/proj
+            NO_DEFAULT_PATH)
+    if (NOT PROJ_SHARE_PATH)
+        message(SEND_ERROR "PROJ share not found.")
+    endif ()
+    message(STATUS "PROJ share: ${PROJ_SHARE_PATH}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${PROJ_SHARE_PATH}"
+            "${CMAKE_BINARY_DIR}/share/proj")
+    install(DIRECTORY ${PROJ_SHARE_PATH} DESTINATION share)
 
     # SQLite
     find_file(SQLITE_DLL_NAME
@@ -196,6 +213,22 @@ if (WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy
             "${SQLITE_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
-    install(FILES ${SQLITE_DLL_NAME} DESTINATION bin)
+    install(FILES ${SQLITE_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
+    # ecCodes share
+    find_path(ECCODES_SHARE_PATH
+            NAMES definitions
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES share share/eccodes
+            NO_DEFAULT_PATH)
+    if (NOT ECCODES_SHARE_PATH)
+        message(SEND_ERROR "ecCodes share not found.")
+    endif ()
+    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${ECCODES_SHARE_PATH}"
+            "${CMAKE_BINARY_DIR}/share/eccodes")
+    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
 
 endif (WIN32)

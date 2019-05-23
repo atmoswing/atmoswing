@@ -106,10 +106,7 @@ int asPredictorOper::Download()
 {
     wxASSERT(!m_predictorsRealtimeDir.IsEmpty());
 
-    // Internet (cURL)
-    asInternet internet;
-
-    return internet.Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
+    return asInternet::Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
 }
 
 bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray)

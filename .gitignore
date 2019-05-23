@@ -1,10 +1,11 @@
 syntax: glob
+_CPack_Packages/*
 */CMakeFiles/*
-*/_CPack_Packages/*
 */ipch/*
 **/Debug/*
 **/Release/*
 **/RelWithDebInfo/*
+**/gdalwmscache/*
 */Win32/*
 */ALL_BUILD.*
 */ZERO_CHECK.*
@@ -58,6 +59,7 @@ atmoswing-optimizer
 atmoswing-downscaler
 bin/
 bin-vs/
+bin-vs-2019/
 *.rej
 .idea/*
 Test Results *
