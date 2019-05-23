@@ -67,6 +67,15 @@ function Download-Lib($name, $url)
 if(!(Test-Path -Path $LIB_DIR)) {
   mkdir $LIB_DIR > $null
 }
+if(!(Test-Path -Path $LIB_DIR/bin)) {
+  mkdir $LIB_DIR/bin > $null
+}
+if(!(Test-Path -Path $LIB_DIR/include)) {
+  mkdir $LIB_DIR/include > $null
+}
+if(!(Test-Path -Path $LIB_DIR/lib)) {
+  mkdir $LIB_DIR/lib > $null
+}
 if(!(Test-Path -Path $TMP_DIR)) {
   mkdir $TMP_DIR > $null
 }
