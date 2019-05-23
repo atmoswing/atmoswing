@@ -78,7 +78,8 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
         parallelRequests = wxMin(parallelRequests, (int) fileNames.size());
         int threadType = -1;
         for (int iThread = 0; iThread < parallelRequests; iThread++) {
-            if (end >= fileNames.size() - 1) {
+            int nbFiles = fileNames.size();
+            if (end >= nbFiles - 1) {
                 break;
 			}
             int start = end + 1;
