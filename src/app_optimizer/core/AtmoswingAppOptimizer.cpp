@@ -257,7 +257,7 @@ bool AtmoswingAppOptimizer::InitLog()
 
 #if wxUSE_GUI
         if (!g_guiMode) {
-            Log()->CreateFileOnly(fullPath);
+            Log()->CreateFileOnlyAtPath(fullPath);
         } else {
             delete wxLog::SetActiveTarget(new asLogGui());
             Log()->CreateFileAtPath(fullPath);
