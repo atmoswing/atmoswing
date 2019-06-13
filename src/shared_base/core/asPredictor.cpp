@@ -30,6 +30,7 @@
 #include "asPredictor.h"
 
 #include <wx/dir.h>
+#include <wx/ffile.h>
 #include <asTimeArray.h>
 #include <asAreaCompRegGrid.h>
 #include <asAreaCompGenGrid.h>
@@ -61,11 +62,13 @@ asPredictor::asPredictor(const wxString &dataId)
         : m_initialized(false),
           m_standardize(false),
           m_axesChecked(false),
+          m_wasDumped(false),
           m_dataId(dataId),
           m_parameter(ParameterUndefined),
           m_unit(UnitUndefined),
           m_strideAllowed(false),
           m_level(0),
+          m_membersNb(1),
           m_latPtsnb(0),
           m_lonPtsnb(0),
           m_isLatLon(true),
@@ -185,11 +188,153 @@ bool asPredictor::SetData(vva2f &val)
 
     m_latPtsnb = (int) val[0][0].rows();
     m_lonPtsnb = (int) val[0][0].cols();
+    m_membersNb = (int) val[0].size();
     m_data.clear();
     m_data.reserve(m_time.size() * val[0].size() * m_latPtsnb * m_lonPtsnb);
     m_data = val;
 
     return true;
+}
+
+bool asPredictor::DumpData()
+{
+    wxASSERT(m_time.size() > 0);
+    wxASSERT(!m_data.empty());
+
+    wxString filePath = GetDumpFileName();
+
+    wxFFile file(filePath, "wb");
+
+    if (!file.IsOpened()) {
+        wxLogError(_("Failed creating the file %s"), filePath);
+        return false;
+    }
+
+    file.Write(&m_latPtsnb, sizeof(int));
+    file.Write(&m_lonPtsnb, sizeof(int));
+
+    int nLats = m_axisLat.size();
+    int nLons = m_axisLon.size();
+
+    file.Write(&nLats, sizeof(int));
+    file.Write(&nLons, sizeof(int));
+
+    file.Write(&m_axisLat[0], nLats * sizeof(double));
+    file.Write(&m_axisLon[0], nLons * sizeof(double));
+
+    size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
+    if (file.Write(&m_data[0][0](0, 0), size) != size) {
+        wxLogError(_("Failed writing the file %s"), filePath);
+        return false;
+    }
+
+    if (!file.Close()) {
+        wxLogError(_("Failed closing the file %s"), filePath);
+        return false;
+    }
+
+    m_wasDumped = true;
+
+    m_data.clear();
+
+    return true;
+}
+
+bool asPredictor::LoadDumpedData()
+{
+    wxASSERT(m_time.size() > 0);
+    wxASSERT(m_data.empty());
+
+    wxString filePath = GetDumpFileName();
+
+    wxFFile file(filePath, "rb");
+
+    if (!file.IsOpened()) {
+        wxLogError(_("Failed opening the file %s"), filePath);
+        return false;
+    }
+
+    file.Read(&m_latPtsnb, sizeof(int));
+    file.Read(&m_lonPtsnb, sizeof(int));
+
+    int nLats, nLons;
+    file.Read(&nLats, sizeof(int));
+    file.Read(&nLons, sizeof(int));
+
+    m_axisLat.resize(nLats);
+    m_axisLon.resize(nLons);
+
+    file.Read(&m_axisLat[0], nLats * sizeof(double));
+    file.Read(&m_axisLon[0], nLons * sizeof(double));
+
+    m_data.resize(m_time.size(), std::vector<a2f, Eigen::aligned_allocator<a2f>>(m_membersNb, a2f(m_latPtsnb, m_lonPtsnb)));
+    size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
+
+    a2f data(m_time.size() * m_membersNb * m_latPtsnb, m_lonPtsnb);
+    file.Read(&data(0, 0), size);
+
+    for (int t = 0; t < m_data.size(); ++t) {
+        for (int m = 0; m < m_membersNb; ++m) {
+            int l = t * m_membersNb * m_latPtsnb + m * m_latPtsnb;
+            m_data[t][m] = data.block(l, 0, m_latPtsnb, m_lonPtsnb);
+        }
+    }
+
+    if (!file.Close()) {
+        wxLogError(_("Failed closing the file %s"), filePath);
+        return false;
+    }
+
+    wxASSERT(!m_data.empty());
+
+    m_wasDumped = false;
+
+    return true;
+}
+
+bool asPredictor::DumpFileExists() const
+{
+    return wxFileExists(GetDumpFileName());
+}
+
+wxString asPredictor::GetDumpFileName() const
+{
+    wxString fileName(m_datasetId + '-' + m_dataId + '-');
+    fileName << CreateHash();
+    fileName << ".tmp";
+
+    wxString dir = asConfig::GetUserDataDir() + "Temp";
+
+    wxString filePath = dir + DS + fileName;
+    if (!wxDir::Exists(dir)) {
+        wxDir::Make(dir);
+    }
+
+    return filePath;
+}
+
+size_t asPredictor::CreateHash() const
+{
+    wxString hash;
+    hash << m_standardize;
+    hash << m_parameter;
+    hash << m_product;
+    hash << m_unit;
+    hash << m_strideAllowed;
+    hash << m_level;
+    hash << m_time[0];
+    hash << m_time[m_time.size() - 1];
+    hash << m_time.size();
+    hash << m_membersNb;
+    hash << m_isLatLon;
+    hash << m_isPreprocessed;
+    hash << m_isEnsemble;
+    hash << m_canBeClipped;
+    hash << m_preprocessMethod;
+
+    std::size_t h = std::hash<std::string>{}(std::string(hash.mb_str()));
+
+    return h;
 }
 
 bool asPredictor::CheckFilesPresence()
@@ -385,6 +530,8 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         wxLogError(_("Failed to load data (exception)."));
         return false;
     }
+
+    m_membersNb = (int) m_data[0].size();
 
     return true;
 }
@@ -1343,7 +1490,7 @@ bool asPredictor::GetDataFromFile(asFileNetcdf &ncFile, vvva2f &compositeData)
 
         // Resize the arrays to store the new data
         int totLength = m_fInd.memberCount * m_fInd.timeArrayCount *
-                                 m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
+                        m_fInd.areas[iArea].latCount * m_fInd.areas[iArea].lonCount;
         wxASSERT(totLength > 0);
         dataF.resize(totLength);
 
