@@ -147,11 +147,7 @@ void asPredictorCustomMeteoFvgIfs::ListFiles(asTimeArray &timeArray)
 {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        if (wxDirExists(GetDirectoryPath())) {
-            m_product = wxEmptyString;
-        } else {
-            asThrowException(_("Cannot find predictor directory for FVG data."));
-        }
+        asThrowException(wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure

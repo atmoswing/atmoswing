@@ -355,9 +355,19 @@ public:
         m_level = val;
     }
 
-    void SetTimeArray(a1d time)
+    void SetTimeArray(const a1d &time)
     {
         m_time = time;
+    }
+
+    void SetWasDumped(bool val)
+    {
+        m_wasDumped = val;
+    }
+
+    bool WasDumped() const
+    {
+        return m_wasDumped;
     }
 
 

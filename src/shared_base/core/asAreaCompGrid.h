@@ -113,8 +113,8 @@ protected:
     bool m_isRegular;
     bool m_isInitialized;
     bool m_allowResizeFromData;
-    std::vector<a1d> m_compositeXaxes;
-    std::vector<a1d> m_compositeYaxes;
+    va1d m_compositeXaxes;
+    va1d m_compositeYaxes;
     int m_xPtsNb;
     int m_yPtsNb;
 

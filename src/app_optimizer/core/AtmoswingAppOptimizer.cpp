@@ -73,8 +73,9 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
     {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
     {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
-    {wxCMD_LINE_OPTION, NULL, "skip-valid",              "Skip the validation calculation"},
-    {wxCMD_LINE_OPTION, NULL, "no-duplicate-dates",      "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
+    {wxCMD_LINE_SWITCH, NULL, "skip-valid",              "Skip the validation calculation"},
+    {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates",      "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
+    {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data",     "Dump predictor data to binary files to reduce RAM usage"},
     {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
                                                          "\n \t\t\t\t\t - single: single assessment"
                                                          "\n \t\t\t\t\t - classic: classic calibration"
@@ -88,7 +89,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration",   "Classic plus: resizing iteration"},
     {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
     {wxCMD_LINE_OPTION, NULL, "cp-lon-step",             "Classic plus: steps in longitudes for the relevance map"},
-    {wxCMD_LINE_OPTION, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
+    {wxCMD_LINE_SWITCH, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
     {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step to process"},
     {wxCMD_LINE_OPTION, NULL, "mc-runs-nb",              "Monte Carlo: number of runs"},
     {wxCMD_LINE_OPTION, NULL, "ga-config",               "GAs: predefined configuration of options (1-5)"},
@@ -557,6 +558,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Flag to disable the duplicate dates
     if (parser.Found("no-duplicate-dates")) {
         wxFileConfig::Get()->Write("/Processing/AllowDuplicateDates", false);
+    }
+
+    // Memory option
+    if (parser.Found("dump-predictor-data")) {
+        wxFileConfig::Get()->Write("/General/DumpPredictorData", true);
     }
 
 

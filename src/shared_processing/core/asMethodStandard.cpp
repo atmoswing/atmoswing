@@ -57,7 +57,9 @@ asMethodStandard::asMethodStandard()
           m_warnFailedLoadingData(true),
           m_predictandDB(nullptr)
 {
-
+    ThreadsManager().CritSectionConfig().Enter();
+    m_dumpPredictorData = wxFileConfig::Get()->ReadBool("/General/DumpPredictorData", false);
+    ThreadsManager().CritSectionConfig().Leave();
 }
 
 asMethodStandard::~asMethodStandard()
@@ -517,6 +519,16 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 predictor->SetStandardize(true);
             }
 
+            if (m_dumpPredictorData) {
+                predictor->SetLevel(preloadLevels[iLevel]);
+                predictor->SetTimeArray(timeArray.GetTimeArray());
+                if (predictor->DumpFileExists()) {
+                    predictor->SetWasDumped(true);
+                    m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    continue;
+                }
+            }
+
             // Data loading
             wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[iDat], (int) preloadLevels[iLevel],
                          preloadHours[iHour]);
@@ -559,6 +571,12 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 return false;
             } else {
                 predictorSize = predictor->GetData().size();
+            }
+
+            if (m_dumpPredictorData) {
+                if (!predictor->DumpData()) {
+                    return false;
+                }
             }
 
             m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
@@ -774,6 +792,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
 bool asMethodStandard::LoadArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
                                        double timeStartData, double timeEndData)
 {
+
     try {
         // Loop through every predictor
         for (int iPtor = 0; iPtor < params->GetPredictorsNb(iStep); iPtor++) {
@@ -922,6 +941,16 @@ bool asMethodStandard::ExtractPreloadedArchiveData(std::vector<asPredictor *> &p
     // Copy the data
     wxASSERT(m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
     auto *desiredPredictor = new asPredictor(*m_preloadedArchive[iStep][iPtor][iPre][iLevel][iHour]);
+
+    // Load dumped data
+    if (m_dumpPredictorData) {
+        if (desiredPredictor->WasDumped()) {
+            if (!desiredPredictor->LoadDumpedData()) {
+                wxLogError(_("Failed loading dumped data."));
+                return false;
+            }
+        }
+    }
 
     // Check minimum number of points
     asCriteria *criterion = asCriteria::GetInstance(params->GetPredictorCriteria(iStep, iPtor));

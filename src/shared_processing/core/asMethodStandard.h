@@ -113,6 +113,7 @@ protected:
     bool m_cancel;
     bool m_preloaded;
     bool m_warnFailedLoadingData;
+    bool m_dumpPredictorData;
     wxString m_paramsFilePath;
     wxString m_predictandDBFilePath;
     wxString m_predictorDataDir;
