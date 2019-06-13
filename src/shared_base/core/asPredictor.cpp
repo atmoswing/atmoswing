@@ -223,7 +223,17 @@ bool asPredictor::DumpData()
     file.Write(&m_axisLon[0], nLons * sizeof(double));
 
     size_t size = m_time.size() * m_membersNb * m_latPtsnb * m_lonPtsnb * sizeof(float);
-    if (file.Write(&m_data[0][0](0, 0), size) != size) {
+
+    a2f data(m_time.size() * m_membersNb * m_latPtsnb, m_lonPtsnb);
+
+    for (int t = 0; t < m_data.size(); ++t) {
+        for (int m = 0; m < m_membersNb; ++m) {
+            int l = t * m_membersNb * m_latPtsnb + m * m_latPtsnb;
+            data.block(l, 0, m_latPtsnb, m_lonPtsnb) = m_data[t][m];
+        }
+    }
+
+    if (file.Write(&data(0, 0), size) != size) {
         wxLogError(_("Failed writing the file %s"), filePath);
         return false;
     }
