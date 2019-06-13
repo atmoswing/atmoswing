@@ -107,7 +107,6 @@ wxString asConfig::GetUserDataDir()
     wxStandardPathsBase &stdPth = wxStandardPaths::Get();
     stdPth.UseAppInfo(0);
     wxString userDataDir = stdPth.GetUserDataDir();
-    ThreadsManager().CritSectionConfig().Leave();
 
 #if defined(__WXMSW__)
     userDataDir.Append(DS+"AtmoSwing");
@@ -118,6 +117,7 @@ wxString asConfig::GetUserDataDir()
 #endif
 
     stdPth.UseAppInfo(1);
+    ThreadsManager().CritSectionConfig().Leave();
     userDataDir.Append(DS);
     return userDataDir;
 }
