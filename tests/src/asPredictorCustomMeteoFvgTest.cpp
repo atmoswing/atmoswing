@@ -80,6 +80,54 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDay)
     wxDELETE(predictor);
 }
 
+TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff)
+{
+    asTimeArray dates(asTime::GetMJD(2011, 7, 18, 12), asTime::GetMJD(2011, 7, 18, 12), 6, "Simple");
+    dates.Init();
+
+    double xMin = -2;
+    int xPtsNb = 6;
+    double yMin = 45;
+    int yPtsNb = 4;
+    double step = 0.25;
+    float level = 500;
+    wxString gridType = "Regular";
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+    wxString predictorDataDir = wxFileName::GetCwd();
+    predictorDataDir.Append("/files/data-custom-meteo-fvg/");
+
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS", "vertdiff/MB500925", predictorDataDir);
+    wxASSERT(predictor);
+
+    // Load
+    ASSERT_TRUE(predictor->Load(area, dates, level));
+
+    vva2f dat = predictor->GetData();
+    // dat[time][mem](lat,lon)
+
+    /* Values time step 0 (horizontal=Lon, vertical=Lat)
+    Extracted:
+    17.5	16.9	16.1	15.9	15.7	15.7
+    17.8	17.5	17.0	16.8	16.8	16.5
+    16.6	17.1	17.9	18.0	18.0	17.2
+    18.7	18.8	18.3	18.9	18.7	18.7
+    */
+    EXPECT_NEAR(17.5, dat[0][0](0, 0), 0.5);
+    EXPECT_NEAR(16.9, dat[0][0](0, 1), 0.5);
+    EXPECT_NEAR(16.1, dat[0][0](0, 2), 0.5);
+    EXPECT_NEAR(15.9, dat[0][0](0, 3), 0.5);
+    EXPECT_NEAR(15.7, dat[0][0](0, 4), 0.5);
+    EXPECT_NEAR(15.7, dat[0][0](0, 5), 0.5);
+    EXPECT_NEAR(17.8, dat[0][0](1, 0), 0.5);
+    EXPECT_NEAR(16.6, dat[0][0](2, 0), 0.5);
+    EXPECT_NEAR(18.7, dat[0][0](3, 0), 0.5);
+    EXPECT_NEAR(18.7, dat[0][0](3, 5), 0.5);
+
+    wxDELETE(area);
+    wxDELETE(predictor);
+}
+
 TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep)
 {
     asTimeArray dates(asTime::GetMJD(2011, 7, 18, 12), asTime::GetMJD(2011, 7, 18, 12), 6, "Simple");
