@@ -580,6 +580,69 @@ TEST(MethodCalibrator, PreloadingSimple)
     }
 }
 
+TEST(MethodCalibrator, PreloadingWithDumping)
+{
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+    pConfig->Write("/General/DumpPredictorData", true);
+
+    wxString dataFileDir = wxFileName::GetCwd();
+    dataFileDir.Append("/files/");
+    wxString patternFileDir = wxFileName::GetCwd();
+    patternFileDir.Append("/files/");
+
+    // Get parameters
+    asParametersCalibration paramsStd;
+    asParametersCalibration paramsPreload;
+    wxString paramsFilePathStd = wxFileName::GetCwd();
+    wxString paramsFilePathPreload = wxFileName::GetCwd();
+    paramsFilePathStd.Append("/files/parameters_calibration_compare_no_preload.xml");
+    paramsFilePathPreload.Append("/files/parameters_calibration_compare_preload.xml");
+    ASSERT_TRUE(paramsStd.LoadFromFile(paramsFilePathStd));
+    ASSERT_TRUE(paramsPreload.LoadFromFile(paramsFilePathPreload));
+
+    // Proceed to the calculations
+    asMethodCalibratorSingle calibrator1;
+    wxString predictorFilePath = wxFileName::GetCwd();
+    predictorFilePath.Append("/files/data-ncep-r1/others/");
+    calibrator1.SetPredictorDataDir(predictorFilePath);
+    calibrator1.SetPredictandDB(nullptr);
+    asMethodCalibratorSingle calibrator2 = calibrator1;
+    asResultsDates anaDatesStd;
+    asResultsDates anaDatesPreload;
+
+    try {
+        int step = 0;
+        bool containsNaNs = false;
+        ASSERT_TRUE(calibrator1.GetAnalogsDates(anaDatesStd, &paramsStd, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+        ASSERT_TRUE(calibrator2.GetAnalogsDates(anaDatesPreload, &paramsPreload, step, containsNaNs));
+        EXPECT_FALSE(containsNaNs);
+    } catch (std::exception &e) {
+        wxPrintf(e.what());
+        return;
+    }
+
+    a2f datesStd = anaDatesStd.GetAnalogsDates();
+    a2f datesPreload = anaDatesPreload.GetAnalogsDates();
+    a2f criteriaStd = anaDatesStd.GetAnalogsCriteria();
+    a2f criteriaPreload = anaDatesPreload.GetAnalogsCriteria();
+
+    EXPECT_EQ(datesStd.cols(), datesPreload.cols());
+    EXPECT_EQ(datesStd.rows(), datesPreload.rows());
+    EXPECT_EQ(criteriaStd.cols(), criteriaPreload.cols());
+    EXPECT_EQ(criteriaStd.rows(), criteriaPreload.rows());
+
+    for (int i = 0; i < datesStd.rows(); i++) {
+        for (int j = 0; j < datesStd.cols(); j++) {
+            EXPECT_EQ(datesStd.coeff(i, j), datesPreload.coeff(i, j));
+            EXPECT_EQ(criteriaStd.coeff(i, j), criteriaPreload.coeff(i, j));
+        }
+    }
+
+    pConfig->Write("/General/DumpPredictorData", false);
+}
+
 TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
