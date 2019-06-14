@@ -647,6 +647,7 @@ TEST(MethodCalibrator, PreloadingWithPreprocessing)
 {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asSTANDARD);
+    pConfig->Write("/General/DumpPredictorData", false);
 
     // Get parameters
     asParametersCalibration paramsStd;

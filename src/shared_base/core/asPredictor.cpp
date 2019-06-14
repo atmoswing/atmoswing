@@ -317,7 +317,7 @@ wxString asPredictor::GetDumpFileName() const
 
     wxString filePath = dir + DS + fileName;
     if (!wxDir::Exists(dir)) {
-        wxDir::Make(dir);
+        wxDir::Make(dir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
     }
 
     return filePath;
