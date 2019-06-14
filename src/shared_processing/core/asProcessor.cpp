@@ -175,8 +175,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // To minimize the data copy, we only allow 1 dataset
             if (predictorsArchive[0] != predictorsTarget[0]) {
-                wxLogError(_("The CUDA implementation is only available in calibration (prefect prog)."),
-                           criteria[0]->GetName());
+                wxLogError(_("The CUDA implementation is only available in calibration (prefect prog)."));
                 return false;
             }
 
