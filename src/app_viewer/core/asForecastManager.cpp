@@ -247,32 +247,41 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
             currentDirPath.Append(DS);
 
             double currentTimeHour = floor(currentTime) + (double)hr / 24.0;
-            wxString nowstr = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
+            wxString nowstrV1 = asTime::GetStringTime(currentTimeHour, "YYYYMMDDhh");
+            wxString nowstrV3 = asTime::GetStringTime(currentTimeHour, "YYYY-MM-DD_hh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
                                     m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
-            wxString filename = wxString::Format("%s.%s.asff", nowstr, forecastname);
-            wxString fullPath = currentDirPath + filename;
-            wxString filenameOld = wxString::Format("%s.%s.fcst", nowstr, forecastname);
-            wxString fullPathOld = currentDirPath + filenameOld;
+            wxString filenameV3 = wxString::Format("%s.%s.asff", nowstrV3, forecastname);
+            wxString fullPathV3 = currentDirPath + filenameV3;
+            wxString filenameV2 = wxString::Format("%s.%s.asff", nowstrV1, forecastname);
+            wxString fullPathV2 = currentDirPath + filenameV2;
+            wxString filenameV1 = wxString::Format("%s.%s.fcst", nowstrV1, forecastname);
+            wxString fullPathV1 = currentDirPath + filenameV1;
 
-            if (wxFileName::FileExists(fullPath)) {
-                OpenPastForecast(methodRow, forecastRow, fullPath);
-            } else if (wxFileName::FileExists(fullPathOld)) {
-                OpenPastForecast(methodRow, forecastRow, fullPathOld);
+            if (wxFileName::FileExists(fullPathV3)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV3);
+            } else if (wxFileName::FileExists(fullPathV2)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV2);
+            } else if (wxFileName::FileExists(fullPathV1)) {
+                OpenPastForecast(methodRow, forecastRow, fullPathV1);
             } else {
-                // Load from temporarly stored directories
+                // Load from temporary stored directories
                 for (int iDir = 0; iDir < m_directoriesPastForecasts.Count(); iDir++) {
                     currentDirPath = m_directoriesPastForecasts.Item(iDir);
                     currentDirPath.Append(directory);
                     currentDirPath.Append(DS);
-                    fullPath = currentDirPath + filename;
-                    fullPathOld = currentDirPath + filenameOld;
+                    fullPathV3 = currentDirPath + filenameV3;
+                    fullPathV2 = currentDirPath + filenameV2;
+                    fullPathV1 = currentDirPath + filenameV1;
 
-                    if (wxFileName::FileExists(fullPath)) {
-                        OpenPastForecast(methodRow, forecastRow, fullPath);
+                    if (wxFileName::FileExists(fullPathV3)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV3);
                         goto quitloop;
-                    } else if (wxFileName::FileExists(fullPathOld)) {
-                        OpenPastForecast(methodRow, forecastRow, fullPathOld);
+                    } else if (wxFileName::FileExists(fullPathV2)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV2);
+                        goto quitloop;
+                    } else if (wxFileName::FileExists(fullPathV1)) {
+                        OpenPastForecast(methodRow, forecastRow, fullPathV1);
                         goto quitloop;
                     }
                 }

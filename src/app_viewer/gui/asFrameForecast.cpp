@@ -1173,8 +1173,10 @@ void asFrameForecast::SwitchForecast(double increment)
                                                             m_forecastViewer->GetForecastSelection());
     wxFileName forecastFileName(forecastsPath);
     wxString fileName = forecastFileName.GetName();
-    wxString partialFileName = fileName.SubString(10, fileName.size() - 1);
-    wxString patternFileName = "%d%02d%02d%02d";
+    wxString partialFileNameV2 = fileName.SubString(10, fileName.size() - 1);
+    wxString partialFileNameV3 = fileName.SubString(13, fileName.size() - 1);
+    wxString patternFileNameV2 = "%d%02d%02d%02d";
+    wxString patternFileNameV3 = "%d-%02d-%02d_%02d";
     wxString prefixFileName = wxEmptyString;
 
     forecastFileName.RemoveLastDir();
@@ -1192,43 +1194,55 @@ void asFrameForecast::SwitchForecast(double increment)
 
     // Look for former files
     wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
-    wxFileName fullPath(basePath);
-    wxFileName fullPathOld;
+    wxFileName fullPathV3(basePath);
+    wxFileName fullPathV1, fullPathV2;
     for (int i = 0; i < 100; i++) {
         date += increment;
-        fullPath = wxFileName(basePath);
-        fullPath.AppendDir(wxString::Format("%d", asTime::GetYear(date)));
-        fullPath.AppendDir(wxString::Format("%02d", asTime::GetMonth(date)));
-        fullPath.AppendDir(wxString::Format("%02d", asTime::GetDay(date)));
-        prefixFileName = wxString::Format(patternFileName, asTime::GetYear(date), asTime::GetMonth(date),
-                                          asTime::GetDay(date), asTime::GetHour(date));
-        fullPath.SetName(prefixFileName + partialFileName);
-        fullPathOld = fullPath;
-        fullPath.SetExt("asff");
-        fullPathOld.SetExt("fcst");
+        fullPathV3 = wxFileName(basePath);
+        fullPathV3.AppendDir(wxString::Format("%d", asTime::GetYear(date)));
+        fullPathV3.AppendDir(wxString::Format("%02d", asTime::GetMonth(date)));
+        fullPathV3.AppendDir(wxString::Format("%02d", asTime::GetDay(date)));
 
-        if (fullPath.Exists())
+        fullPathV2 = fullPathV3;
+
+        prefixFileName = wxString::Format(patternFileNameV3, asTime::GetYear(date), asTime::GetMonth(date),
+                                          asTime::GetDay(date), asTime::GetHour(date));
+        fullPathV3.SetName(prefixFileName + partialFileNameV3);
+        fullPathV3.SetExt("asff");
+
+        if (fullPathV3.Exists())
             break;
-        if (fullPathOld.Exists())
+
+        prefixFileName = wxString::Format(patternFileNameV2, asTime::GetYear(date), asTime::GetMonth(date),
+                                                     asTime::GetDay(date), asTime::GetHour(date));
+        fullPathV2.SetName(prefixFileName + partialFileNameV2);
+        fullPathV2.SetExt("asff");
+
+        if (fullPathV2.Exists())
+            break;
+
+        fullPathV1 = fullPathV2;
+        fullPathV1.SetExt("fcst");
+
+        if (fullPathV1.Exists())
             break;
 
         if (i == 99) {
-            wxLogError(_("No previous/next forecast was found under %s"), fullPath.GetFullPath());
+            wxLogError(_("No previous/next forecast was found under %s"), fullPathV2.GetPath());
             return;
         }
     }
 
     // List the files in the directory
     wxArrayString files;
-    wxDir::GetAllFiles(fullPath.GetPath(), &files);
+    wxDir::GetAllFiles(fullPathV3.GetPath(), &files);
 
     // Identify the corresponding forecasts
     wxArrayString accurateFiles;
     for (int i = 0; i < (int) files.GetCount(); i++) {
         wxFileName fileNameCheck(files[i]);
-        wxString fileDate = fileNameCheck.GetFullName().SubString(0, 9);
 
-        if (fileDate.IsSameAs(prefixFileName)) {
+        if (fileNameCheck.GetFullName().Contains(prefixFileName)) {
             accurateFiles.Add(files[i]);
         }
     }
@@ -1754,7 +1768,7 @@ void asFrameForecast::DrawPlotStation(int stationRow)
     }
 
     auto *framePlotStation = new asFramePlotTimeSeries(this, methodRow, forecastRow, stationRow,
-                                                                        m_forecastManager);
+                                                       m_forecastManager);
 
     if (g_ppiScaleDc > 1) {
         wxSize frameSize = framePlotStation->GetSize();
