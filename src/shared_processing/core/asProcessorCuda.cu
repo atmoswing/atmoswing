@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
 // Disable some MSVC warnings
@@ -31,15 +32,211 @@
 #pragma warning( disable : 4267 ) // C4267: conversion from 'size_t' to 'int', possible loss of data
 #endif
 
-
 #include "asProcessorCuda.cuh"
-
 #include <stdio.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
+#include <helper_cuda.h>
+
+// The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
+// efficiency and facilitates coalescing.
+static const int blockSize = 1024;
 
 
+bool asProcessorCuda::SelectBestDevice()
+{
+    cudaError_t cudaStatus;
+
+    // Count the devices
+    int devicesCount = 0;
+    cudaStatus = cudaGetDeviceCount(&devicesCount);
+    if (cudaStatus != cudaSuccess) {
+        if (cudaStatus == cudaErrorNoDevice) {
+            fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+            return false;
+        } else if (cudaStatus == cudaErrorInsufficientDriver) {
+            fprintf(stderr, "cudaGetDeviceCount failed! No driver can be loaded to determine if any device exists.\n");
+            return false;
+        }
+
+        fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+        return false;
+    }
+
+    // Get some info on the devices
+    int bestDevice = 0;
+    int memSize = 0;
+    struct cudaDeviceProp deviceProp;
+    for (int i_dev = 0; i_dev < devicesCount; i_dev++) {
+        checkCudaErrors(cudaGetDeviceProperties(&deviceProp, i_dev));
+
+        // Compare memory
+        if (deviceProp.totalGlobalMem > memSize) {
+            memSize = deviceProp.totalGlobalMem;
+            bestDevice = i_dev;
+        }
+    }
+
+    // Select the best device
+    checkCudaErrors(cudaSetDevice(bestDevice));
+
+    return true;
+}
+
+// From https://riptutorial.com/cuda/example/22456/single-block-parallel-reduction-for-commutative-operator
+__global__
+void sumSingleBlock(int n, const float *a, float *out)
+{
+    int idx = threadIdx.x;
+    float sum = 0;
+    for (int i = idx; i < n; i += blockSize)
+        sum += a[i];
+    __shared__ float r[blockSize];
+    r[idx] = sum;
+    __syncthreads();
+    for (int size = blockSize / 2; size > 0; size /= 2) {
+        if (idx < size)
+            r[idx] += r[idx + size];
+        __syncthreads();
+    }
+    if (idx == 0)
+        *out = r[0];
+}
+
+__global__
+void sumAbsSingleBlock(int n, const float *a, float *out)
+{
+    int idx = threadIdx.x;
+    float sum = 0;
+    for (int i = idx; i < n; i += blockSize)
+        sum += fabs(a[i]);
+    __shared__ float r[blockSize];
+    r[idx] = sum;
+    __syncthreads();
+    for (int size = blockSize / 2; size > 0; size /= 2) {
+        if (idx < size)
+            r[idx] += fabs(r[idx + size]);
+        __syncthreads();
+    }
+    if (idx == 0)
+        *out = r[0];
+}
+
+// From https://devblogs.nvidia.com/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
+__global__
+void diff(int n, float *x, float *y, float *r)
+{
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    for (int i = index; i < n; i += stride) {
+        r[i] = x[i] - y[i];
+    }
+}
+
+__global__
+void maxAbs(int n, float *x, float *y, float *r)
+{
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    for (int i = index; i < n; i += stride) {
+        r[i] = fabs(x[i]);
+        if (fabs(y[i]) > r[i]) {
+            r[i] = fabs(y[i]);
+        }
+    }
+}
+
+void asProcessorCuda::MallocCudaData(float *data, int n)
+{
+    checkCudaErrors(cudaMallocManaged(&data, n * sizeof(float)));
+}
+
+void asProcessorCuda::FreeCudaData(float *data)
+{
+    checkCudaErrors(cudaFree(data));
+}
+
+bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb) 
+{
+    int n = rowsNb * colsNb;
+
+
+
+    int blocksNb = (n + blockSize - 1) / blockSize;
+
+
+
+
+    float *rDat, *eDat, *resDiff, *resMax, *dividend, *divisor;
+
+    checkCudaErrors(cudaMallocManaged(&eDat, n * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&resDiff, n * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&resMax, n * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&dividend, sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&divisor, sizeof(float)));
+
+
+    for (int i = 0; i < n; i++) {
+        rDat[i] = refData[i];
+        eDat[i] = evalData[i];
+    }
+
+    bool m_checkNaNs = false;
+
+
+    // Note here that the actual gradient data do not fill the entire data blocks,
+    // but the rest being 0-filled, we can simplify the sum calculation !
+
+    if (!m_checkNaNs) {
+
+        diff<<<blocksNb, blockSize>>>(n, rDat, eDat, resDiff);
+        maxAbs<<<blocksNb, blockSize>>>(n, rDat, eDat, resMax);
+
+        // Wait for GPU to finish before accessing on host
+        checkCudaErrors(cudaDeviceSynchronize());
+
+        sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
+        sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
+
+        // Wait for GPU to finish before accessing on host
+        checkCudaErrors(cudaDeviceSynchronize());
+
+        //dividend = ((refData - evalData).abs()).sum();
+        //divisor = (refData.abs().max(evalData.abs())).sum();
+
+    } else {
+        /*
+        a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
+        a2f evalDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(evalData, 0);
+
+        dividend = ((refDataCorr - evalDataCorr).abs()).sum();
+        divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();*/
+    }
+
+    float critVal = 100.0f * (*dividend / *divisor);
+
+    if (*divisor == 0) {
+        if (*dividend == 0) {
+            critVal = 0;
+        } else {
+            critVal = 200;
+        }
+    }
+
+    *out = critVal;
+
+
+    checkCudaErrors(cudaFree(eDat));
+    checkCudaErrors(cudaFree(resDiff));
+    checkCudaErrors(cudaFree(resMax));
+    checkCudaErrors(cudaFree(dividend));
+    checkCudaErrors(cudaFree(divisor));
+
+    return true;
+}
+
+/*
 __global__
 void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
                                  const int *indicesArch, const int *indexStart,
@@ -178,8 +375,8 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 
 #endif
 }
-
-
+*/
+/*
 bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
                                       std::vector<int> &indicesTarg,
                                       std::vector <std::vector<int>> &indicesArch,
@@ -188,13 +385,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
                                       std::vector<int> &colsNb, std::vector<int> &rowsNb,
                                       std::vector<float> &weights)
 {
-    // Error var
-    cudaError_t cudaStatus;
-    bool hasError = false;
-
-    if (!SelectBestDevice()) {
-        return false;
-    }
 
     // Get the data structure
     cudaPredictorsDataPropStruct struc;
@@ -359,54 +549,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     cudaFree(arrIndicesArch);
     cudaFree(arrIndexStart);
 
-    return !hasError;
+    return false;
 }
+*/
 
-
-bool asProcessorCuda::SelectBestDevice()
-{
-    cudaError_t cudaStatus;
-
-    // Count the devices
-    int devicesCount = 0;
-    cudaStatus = cudaGetDeviceCount(&devicesCount);
-    if (cudaStatus != cudaSuccess) {
-        if (cudaStatus == cudaErrorNoDevice) {
-            fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
-            return false;
-        } else if (cudaStatus == cudaErrorInsufficientDriver) {
-            fprintf(stderr, "cudaGetDeviceCount failed! No driver can be loaded to determine if any device exists.\n");
-            return false;
-        }
-
-        fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
-        return false;
-    }
-
-    // Get some info on the devices
-    int bestDevice = 0;
-    int memSize = 0;
-    struct cudaDeviceProp deviceProp;
-    for (int i_dev = 0; i_dev < devicesCount; i_dev++) {
-        cudaStatus = cudaGetDeviceProperties(&deviceProp, i_dev);
-        if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "cudaGetDeviceProperties failed!\n");
-            return false;
-        }
-
-        // Compare memory
-        if (deviceProp.totalGlobalMem > memSize) {
-            memSize = deviceProp.totalGlobalMem;
-            bestDevice = i_dev;
-        }
-    }
-
-    // Select the best device
-    cudaStatus = cudaSetDevice(bestDevice);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaSetDevice failed!\n");
-        return false;
-    }
-
-    return true;
-}

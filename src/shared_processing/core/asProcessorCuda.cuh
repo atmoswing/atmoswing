@@ -23,6 +23,7 @@
 
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
 #ifndef AS_PROCESSOR_CUDA_H
@@ -33,22 +34,17 @@
 
 #include <vector>
 
-#if USE_THRUST == 0
-struct cudaPredictorsDataPropStruct
-{
-    int ptorsNb;
-    int rowsNb[STRUCT_MAX_SIZE];
-    int colsNb[STRUCT_MAX_SIZE];
-    int ptsNb[STRUCT_MAX_SIZE];
-    int totPtsNb;
-    int indexStart[STRUCT_MAX_SIZE];
-    float weights[STRUCT_MAX_SIZE];
-};
-#endif
-
 class asProcessorCuda
 {
 public:
+    static bool SelectBestDevice();
+
+    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb);
+
+    static void MallocCudaData(float *data, int n);
+
+    static void FreeCudaData(float *data);
+/*
     static bool ProcessCriteria(std::vector <std::vector<float *>> &data,
                                 std::vector<int> &indicesTarg,
                                 std::vector <std::vector<int>> &indicesArch,
@@ -56,9 +52,7 @@ public:
                                 std::vector<int> &nbArchCandidates,
                                 std::vector<int> &colsNb, std::vector<int> &rowsNb,
                                 std::vector<float> &weights);
-
-    static bool SelectBestDevice();
-
+    */
 protected:
 
 private:
