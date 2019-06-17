@@ -125,7 +125,7 @@ void sumAbsSingleBlock(int n, const float *a, float *out)
 
 // From https://devblogs.nvidia.com/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
 __global__
-void diff(int n, float *x, float *y, float *r)
+void diff(int n, const float *x, const float *y, float *r)
 {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
@@ -135,7 +135,7 @@ void diff(int n, float *x, float *y, float *r)
 }
 
 __global__
-void maxAbs(int n, float *x, float *y, float *r)
+void maxAbs(int n, const float *x, const float *y, float *r)
 {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
@@ -157,7 +157,7 @@ void asProcessorCuda::FreeCudaData(float *data)
     checkCudaErrors(cudaFree(data));
 }
 
-bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb) 
+bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor)
 {
     int n = rowsNb * colsNb;
 
@@ -165,22 +165,6 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
 
     int blocksNb = (n + blockSize - 1) / blockSize;
 
-
-
-
-    float *rDat, *eDat, *resDiff, *resMax, *dividend, *divisor;
-
-    checkCudaErrors(cudaMallocManaged(&eDat, n * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&resDiff, n * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&resMax, n * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&dividend, sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&divisor, sizeof(float)));
-
-
-    for (int i = 0; i < n; i++) {
-        rDat[i] = refData[i];
-        eDat[i] = evalData[i];
-    }
 
     bool m_checkNaNs = false;
 
@@ -190,8 +174,8 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
 
     if (!m_checkNaNs) {
 
-        diff<<<blocksNb, blockSize>>>(n, rDat, eDat, resDiff);
-        maxAbs<<<blocksNb, blockSize>>>(n, rDat, eDat, resMax);
+        diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
+        maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
 
         // Wait for GPU to finish before accessing on host
         checkCudaErrors(cudaDeviceSynchronize());
@@ -226,12 +210,6 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
 
     *out = critVal;
 
-
-    checkCudaErrors(cudaFree(eDat));
-    checkCudaErrors(cudaFree(resDiff));
-    checkCudaErrors(cudaFree(resMax));
-    checkCudaErrors(cudaFree(dividend));
-    checkCudaErrors(cudaFree(divisor));
 
     return true;
 }

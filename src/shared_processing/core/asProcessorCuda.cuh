@@ -39,7 +39,7 @@ class asProcessorCuda
 public:
     static bool SelectBestDevice();
 
-    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb);
+    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor);
 
     static void MallocCudaData(float *data, int n);
 
