@@ -107,8 +107,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     }
 
     // Matrices containers
-    vpa2f vTargData = vpa2f(predictorsNb);
-    vpa2f vArchData = vpa2f(predictorsNb);
     a1i vRowsNb(predictorsNb);
     a1i vColsNb(predictorsNb);
 
@@ -140,10 +138,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     a2f finalAnalogsCriteria(timeTargetSelectionSize, analogsNb);
     a2f finalAnalogsDates(timeTargetSelectionSize, analogsNb);
 
-    // The progress bar
-    wxString dialogmessage = _("Processing the data comparison.\n");
 #if wxUSE_GUI
-    asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
+    // The progress bar
+    asDialogProgressBar ProgressBar(_("Processing the data comparison."), timeTargetSelectionSize);
 #endif
 
     switch (method) {
@@ -429,8 +426,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                                                               &timeArrayArchiveSelection,
                                                                               &timeArrayTargetData,
                                                                               &timeArrayTargetSelection, criteria,
-                                                                              params, step, vTargData, vArchData,
-                                                                              vRowsNb, vColsNb, start, end,
+                                                                              params, step, vRowsNb, vColsNb, start, end,
                                                                               &finalAnalogsCriteria, &finalAnalogsDates,
                                                                               flag, allowDuplicateDates, success);
                 threadType = thread->GetType();
@@ -471,6 +467,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
         }
 
         case (asSTANDARD): {
+
+            vpa2f vTargData = vpa2f(predictorsNb);
+            vpa2f vArchData = vpa2f(predictorsNb);
+
             // Extract some data
             a1d timeArchiveData = timeArrayArchiveData.GetTimeArray();
             wxASSERT(timeArchiveData.size() > 0);
@@ -842,8 +842,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
 #if wxUSE_GUI
     // The progress bar
-    wxString dialogmessage = _("Processing the data comparison.\n");
-    asDialogProgressBar ProgressBar(dialogmessage, timeTargetSelectionSize);
+    asDialogProgressBar ProgressBar(_("Processing the data comparison."), timeTargetSelectionSize);
 #endif
 
     switch (method) {
