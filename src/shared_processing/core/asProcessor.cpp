@@ -24,6 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
 #include "asProcessor.h"
@@ -203,8 +204,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             int iTimeTargStart = 0;
 
             // Allocating CUDA memory
-            float *refDataCuda = nullptr;
-            asProcessorCuda::MallocCudaData(refDataCuda, ptorDataLength);
+            float *refDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength);
 
             // Loop through every timestep as target data
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
@@ -230,18 +230,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 scoreArrayOneDay.fill(NaNf);
                 dateArrayOneDay.fill(NaNf);
 
-                float *archDataCuda = nullptr;
-                asProcessorCuda::MallocCudaData(archDataCuda, ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resLargeTmp1 = nullptr;
-                asProcessorCuda::MallocCudaData(resLargeTmp1, ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resLargeTmp2 = nullptr;
-                asProcessorCuda::MallocCudaData(resLargeTmp2, ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resSmallTmp1 = nullptr;
-                asProcessorCuda::MallocCudaData(resSmallTmp1, predictorsNb * dateArrayArchiveSelection.GetSize());
-                float *resSmallTmp2 = nullptr;
-                asProcessorCuda::MallocCudaData(resSmallTmp2, predictorsNb * dateArrayArchiveSelection.GetSize());
-                float *res = nullptr;
-                asProcessorCuda::MallocCudaData(res, predictorsNb * dateArrayArchiveSelection.GetSize());
+                float *archDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
+                float *resLargeTmp1 = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
+                float *resLargeTmp2 = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
+                float *resSmallTmp1 = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
+                float *resSmallTmp2 = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
+                float *res = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
 
                 // Loop over the members
                 for (int iMem = 0; iMem < membersNb; ++iMem) {

@@ -147,9 +147,12 @@ void maxAbs(int n, const float *x, const float *y, float *r)
     }
 }
 
-void asProcessorCuda::MallocCudaData(float *data, int n)
+float *asProcessorCuda::MallocCudaData(int n)
 {
+    float *data;
     checkCudaErrors(cudaMallocManaged(&data, n * sizeof(float)));
+
+    return data;
 }
 
 void asProcessorCuda::FreeCudaData(float *data)

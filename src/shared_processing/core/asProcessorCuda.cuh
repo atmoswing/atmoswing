@@ -29,10 +29,10 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#define STRUCT_MAX_SIZE 12
-#define USE_STREAMS 0
+//#define STRUCT_MAX_SIZE 12
+//#define USE_STREAMS 0
 
-#include <vector>
+//#include <vector>
 
 class asProcessorCuda
 {
@@ -41,7 +41,7 @@ public:
 
     static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor);
 
-    static void MallocCudaData(float *data, int n);
+    static float *MallocCudaData(int n);
 
     static void FreeCudaData(float *data);
 /*
