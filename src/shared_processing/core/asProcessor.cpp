@@ -258,7 +258,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int archPtsCounter = 0;
                     int ptorArrCounter = 0;
 
-                    // Loop through the date array for candidate data: start on GPU
+                    // Loop through the date array for candidate data: prepare data
                     for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
 
                         int iTimeArchRelative = FindNextDate(dateArrayArchiveSelection, timeArchiveData,
@@ -280,8 +280,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                         dates[iDateArch] = (float) timeArchiveData[iTimeArch];
 
-                        // Process the criteria
-                        int ptorStart = 0;
                         for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                             int archPtsStart = archPtsCounter;
                             // Get data
@@ -289,6 +287,20 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                 archDataCuda[archPtsCounter] = *(predictorsArchive[iPtor]->GetData()[iTimeArch][iMem].data() + i);
                                 archPtsCounter++;
                             }
+                        }
+                    }
+
+                    archPtsCounter = 0;
+                    ptorArrCounter = 0;
+
+                    // Loop through the date array for candidate data: start on GPU
+                    for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
+
+                        // Process the criteria
+                        int ptorStart = 0;
+                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                            int archPtsStart = archPtsCounter;
+                            archPtsCounter += vPtorPts[iPtor];
 
                             asProcessorCuda::ProcessS1grads(res + ptorArrCounter, refDataCuda + ptorStart,
                                                             archDataCuda + archPtsStart, vRowsNb[iPtor], vColsNb[iPtor],
@@ -300,6 +312,47 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         }
                     }
 
+                    asProcessorCuda::DeviceSynchronize();
+
+#ifndef CUDA_COMPUTE_CAPABILITY_35
+
+                    archPtsCounter = 0;
+                    ptorArrCounter = 0;
+
+                    // Reduction on GPU
+                    for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
+
+                        // Process the criteria
+                        int ptorStart = 0;
+                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                            int archPtsStart = archPtsCounter;
+                            archPtsCounter += vPtorPts[iPtor];
+
+                            asProcessorCuda::S1gradsReduction1(res + ptorArrCounter, vRowsNb[iPtor], vColsNb[iPtor],
+                                                            resLargeTmp1 + archPtsStart, resLargeTmp2 + archPtsStart,
+                                                            resSmallTmp1 + ptorArrCounter, resSmallTmp2 + ptorArrCounter);
+
+                            ptorStart += vPtorPts[iPtor];
+                            ptorArrCounter++;
+                        }
+                    }
+
+                    asProcessorCuda::DeviceSynchronize();
+
+                    ptorArrCounter = 0;
+
+                    // Final reduction
+                    for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
+
+                        // Process the criteria
+                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                            asProcessorCuda::S1gradsReduction2(res + ptorArrCounter, resSmallTmp1 + ptorArrCounter,
+                                                               resSmallTmp2 + ptorArrCounter);
+                            ptorArrCounter++;
+                        }
+                    }
+#endif
+
                     ptorArrCounter = 0;
 
                     // Loop through the date array for candidate data: process results
@@ -308,6 +361,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         // Process the criteria
                         float thisScore = 0;
                         for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+
                             float critValue = *(res + ptorArrCounter);
                             // Weight and add the score
                             thisScore += critValue * params->GetPredictorWeight(step, iPtor);
@@ -361,6 +415,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Clearing CUDA memory
             asProcessorCuda::FreeCudaData(refDataCuda);
+
+            // cudaDeviceReset must be called before exiting in order for profiling and
+            // tracing tools such as Nsight and Visual Profiler to show complete traces.
+            asProcessorCuda::DeviceReset();
 
             break;
 

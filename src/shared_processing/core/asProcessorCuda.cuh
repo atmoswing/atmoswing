@@ -39,11 +39,19 @@ class asProcessorCuda
 public:
     static bool SelectBestDevice();
 
-    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor);
-
     static float *MallocCudaData(int n);
 
     static void FreeCudaData(float *data);
+
+    static void DeviceSynchronize();
+
+    static void DeviceReset();
+
+    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor);
+
+    static bool S1gradsReduction1(float *out, int rowsNb, int colsNb, const float *resDiff, const float *resMax, float *dividend, float *divisor);
+
+    static bool S1gradsReduction2(float *out, const float *dividend, const float *divisor);
 /*
     static bool ProcessCriteria(std::vector <std::vector<float *>> &data,
                                 std::vector<int> &indicesTarg,

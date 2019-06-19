@@ -44,46 +44,6 @@
 static const int blockSize = 1024;
 
 
-bool asProcessorCuda::SelectBestDevice()
-{
-    cudaError_t cudaStatus;
-
-    // Count the devices
-    int devicesCount = 0;
-    cudaStatus = cudaGetDeviceCount(&devicesCount);
-    if (cudaStatus != cudaSuccess) {
-        if (cudaStatus == cudaErrorNoDevice) {
-            fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
-            return false;
-        } else if (cudaStatus == cudaErrorInsufficientDriver) {
-            fprintf(stderr, "cudaGetDeviceCount failed! No driver can be loaded to determine if any device exists.\n");
-            return false;
-        }
-
-        fprintf(stderr, "cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
-        return false;
-    }
-
-    // Get some info on the devices
-    int bestDevice = 0;
-    int memSize = 0;
-    struct cudaDeviceProp deviceProp;
-    for (int i_dev = 0; i_dev < devicesCount; i_dev++) {
-        checkCudaErrors(cudaGetDeviceProperties(&deviceProp, i_dev));
-
-        // Compare memory
-        if (deviceProp.totalGlobalMem > memSize) {
-            memSize = deviceProp.totalGlobalMem;
-            bestDevice = i_dev;
-        }
-    }
-
-    // Select the best device
-    checkCudaErrors(cudaSetDevice(bestDevice));
-
-    return true;
-}
-
 // From https://riptutorial.com/cuda/example/22456/single-block-parallel-reduction-for-commutative-operator
 __global__
 void sumSingleBlock(int n, const float *a, float *out)
@@ -127,9 +87,9 @@ void sumAbsSingleBlock(int n, const float *a, float *out)
 __global__
 void diff(int n, const float *x, const float *y, float *r)
 {
-    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
-    for (int i = index; i < n; i += stride) {
+    for (int i = idx; i < n; i += stride) {
         r[i] = x[i] - y[i];
     }
 }
@@ -137,14 +97,87 @@ void diff(int n, const float *x, const float *y, float *r)
 __global__
 void maxAbs(int n, const float *x, const float *y, float *r)
 {
-    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
-    for (int i = index; i < n; i += stride) {
+    for (int i = idx; i < n; i += stride) {
         r[i] = fabs(x[i]);
         if (fabs(y[i]) > r[i]) {
             r[i] = fabs(y[i]);
         }
     }
+}
+
+#ifdef CUDA_COMPUTE_CAPABILITY_35
+__global__
+void criteriaS1grads(int n, int blocksNb, const float *refData, const float *evalData, float *resDiff, float *resMax,
+                     float *dividend, float *divisor, float *out)
+{
+    diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
+    maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
+
+    if(blockIdx.x * blockDim.x == 0) { // So that it is only launched once
+        cudaDeviceSynchronize();
+
+        sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
+        sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
+
+        cudaDeviceSynchronize();
+
+        *out = 100.0f * (*dividend / *divisor);
+
+        if (*divisor == 0) {
+            if (*dividend == 0) {
+                *out = 0;
+            } else {
+                *out = 200;
+            }
+        }
+    }
+}
+#endif
+
+bool asProcessorCuda::SelectBestDevice()
+{
+    cudaError_t cudaStatus;
+    bool showDeviceName = false;
+
+    // Count the devices
+    int devicesCount = 0;
+    cudaStatus = cudaGetDeviceCount(&devicesCount);
+    if (cudaStatus != cudaSuccess) {
+        if (cudaStatus == cudaErrorNoDevice) {
+            printf("cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+            return false;
+        } else if (cudaStatus == cudaErrorInsufficientDriver) {
+            printf("cudaGetDeviceCount failed! No driver can be loaded to determine if any device exists.\n");
+            return false;
+        }
+
+        printf("cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+        return false;
+    }
+
+    // Get some info on the devices
+    int bestDevice = 0;
+    int memSize = 0;
+    struct cudaDeviceProp deviceProps;
+    for (int i_dev = 0; i_dev < devicesCount; i_dev++) {
+        checkCudaErrors(cudaGetDeviceProperties(&deviceProps, i_dev));
+        if (showDeviceName) {
+            printf("CUDA device [%s]\n", deviceProps.name);
+        }
+
+        // Compare memory
+        if (deviceProps.totalGlobalMem > memSize) {
+            memSize = deviceProps.totalGlobalMem;
+            bestDevice = i_dev;
+        }
+    }
+
+    // Select the best device
+    checkCudaErrors(cudaSetDevice(bestDevice));
+
+    return true;
 }
 
 float *asProcessorCuda::MallocCudaData(int n)
@@ -160,11 +193,21 @@ void asProcessorCuda::FreeCudaData(float *data)
     checkCudaErrors(cudaFree(data));
 }
 
+void asProcessorCuda::DeviceSynchronize()
+{
+    checkCudaErrors(cudaDeviceSynchronize());
+}
+
+void asProcessorCuda::DeviceReset()
+{
+    cudaDeviceReset();
+}
+
 bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor)
 {
     int n = rowsNb * colsNb;
 
-
+ 
 
     int blocksNb = (n + blockSize - 1) / blockSize;
 
@@ -176,21 +219,13 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     // but the rest being 0-filled, we can simplify the sum calculation !
 
     if (!m_checkNaNs) {
-
+#ifdef CUDA_COMPUTE_CAPABILITY_35
+        criteriaS1grads<<<blocksNb, blockSize>>>(n, blocksNb, refData, evalData, resDiff, resMax, dividend, divisor, out);
+#else
         diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
         maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
 
-        // Wait for GPU to finish before accessing on host
-        checkCudaErrors(cudaDeviceSynchronize());
-
-        sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
-        sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
-
-        // Wait for GPU to finish before accessing on host
-        checkCudaErrors(cudaDeviceSynchronize());
-
-        //dividend = ((refData - evalData).abs()).sum();
-        //divisor = (refData.abs().max(evalData.abs())).sum();
+#endif
 
     } else {
         /*
@@ -201,18 +236,34 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
         divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();*/
     }
 
-    float critVal = 100.0f * (*dividend / *divisor);
+
+
+
+
+    return true;
+}
+
+bool asProcessorCuda::S1gradsReduction1(float *out, int rowsNb, int colsNb, const float *resDiff, const float *resMax, float *dividend, float *divisor)
+{
+    int n = rowsNb * colsNb;
+
+    sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
+    sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
+
+    return true;
+}
+
+bool asProcessorCuda::S1gradsReduction2(float *out, const float *dividend, const float *divisor)
+{
+    *out = 100.0f * (*dividend / *divisor);
 
     if (*divisor == 0) {
         if (*dividend == 0) {
-            critVal = 0;
+            *out = 0;
         } else {
-            critVal = 200;
+            *out = 200;
         }
     }
-
-    *out = critVal;
-
 
     return true;
 }
