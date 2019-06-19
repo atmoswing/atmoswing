@@ -44,6 +44,7 @@ include(define_common_libraries)
 
 # CUDA
 if (USE_CUDA)
+    option(CUDA_COMPUTE_CAPABILITY_35 "CUDA compute capability >= 3.5 ?" ON)
     find_package(CUDA 9.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
     #set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_30;-use_fast_math)
@@ -52,6 +53,9 @@ if (USE_CUDA)
     set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
     cuda_add_library(ascuda STATIC ${src_cuda})
     add_definitions(-DUSE_CUDA)
+    if(CUDA_COMPUTE_CAPABILITY_35)
+        add_definitions(-DCUDA_COMPUTE_CAPABILITY_35)
+    endif()
 else (USE_CUDA)
     # unset for wxhgversion
     unset(CUDA_INCLUDE_DIRS CACHE)
