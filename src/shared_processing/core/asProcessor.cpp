@@ -240,13 +240,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 // Loop over the members
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
 
-
-
-
-
-
                     // Get a new container for results
-                    //a2f criteriaValues = a2f::Ones(dateArrayArchiveSelection.GetSize(), predictorsNb) * NaNf;
                     vf dates(dateArrayArchiveSelection.GetSize());
 
                     // Extract target data
@@ -292,14 +286,15 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                             int archPtsStart = archPtsCounter;
                             // Get data
                             for (int i = 0; i < vPtorPts[iPtor]; i++) {
-                                archDataCuda[archPtsCounter] = *(predictorsArchive[iPtor]->GetData()[iTimeTarg][iMem].data() + i);
+                                archDataCuda[archPtsCounter] = *(predictorsArchive[iPtor]->GetData()[iTimeArch][iMem].data() + i);
                                 archPtsCounter++;
                             }
 
-                            asProcessorCuda::ProcessS1grads(res + ptorArrCounter, refDataCuda,
+                            asProcessorCuda::ProcessS1grads(res + ptorArrCounter, refDataCuda + ptorStart,
                                                             archDataCuda + archPtsStart, vRowsNb[iPtor], vColsNb[iPtor],
                                                             resLargeTmp1 + archPtsStart, resLargeTmp2 + archPtsStart,
                                                             resSmallTmp1 + ptorArrCounter, resSmallTmp2 + ptorArrCounter);
+
                             ptorStart += vPtorPts[iPtor];
                             ptorArrCounter++;
                         }
