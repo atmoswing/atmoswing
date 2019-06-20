@@ -73,12 +73,13 @@ void asPredictorCustomMeteoFvgIfsPacked::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (size_t i = 0; i < listFiles.Count(); ++i) {
-        wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
+        wxRegEx reDates("\\d{4,}.grib", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
             continue;
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
+        datesSrt = datesSrt.Left(datesSrt.Length() - 5);
         double fileYear = 0;
         datesSrt.ToDouble(&fileYear);
 
