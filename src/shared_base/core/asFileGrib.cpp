@@ -281,7 +281,7 @@ bool asFileGrib::CheckGribErrorCode(int ierr) const
         return true;
     }
 
-    wxLogError(_("Grib error: %s"), codes_get_error_message(ierr));
+    wxLogError(_("Grib error (file %s): %s"), m_fileName.GetFullName(), codes_get_error_message(ierr));
 
     return false;
 }
