@@ -450,7 +450,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         }
 
         // Check the level availability
-        if (m_fileType == asFile::Netcdf && !HasDesiredLevel(m_warnMissingLevels)) {
+        if (!HasDesiredLevel(m_warnMissingLevels)) {
             if (m_warnMissingLevels) {
                 wxLogError(_("Failing to get the desired level."));
             } else {
@@ -606,23 +606,17 @@ bool asPredictor::EnquireFileStructure(asTimeArray &timeArray)
 
     switch (m_fileType) {
         case (asFile::Netcdf) : {
-            if (!EnquireNetcdfFileStructure()) {
-                return false;
-            }
-            break;
+            return EnquireNetcdfFileStructure();
         }
         case (asFile::Grib) : {
-            if (!EnquireGribFileStructure(timeArray)) {
-                return false;
-            }
-            break;
+            return EnquireGribFileStructure(timeArray);
         }
         default: {
             wxLogError(_("Predictor file type not correctly defined."));
         }
     }
 
-    return true;
+    return false;
 }
 
 bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeArray, vvva2f &compositeData)
@@ -630,17 +624,13 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
     switch (m_fileType) {
         case (asFile::Netcdf) : {
             for (const auto &fileName : m_files) {
-                if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData)) {
-                    return false;
-                }
+                return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
             }
             break;
         }
         case (asFile::Grib) : {
             for (const auto &fileName : m_files) {
-                if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
-                    return false;
-                }
+                return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
             }
             break;
         }
@@ -649,7 +639,7 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
         }
     }
 
-    return true;
+    return false;
 }
 
 bool asPredictor::EnquireNetcdfFileStructure()
