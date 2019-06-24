@@ -624,22 +624,27 @@ bool asPredictor::ExtractFromFiles(asAreaCompGrid *&dataArea, asTimeArray &timeA
     switch (m_fileType) {
         case (asFile::Netcdf) : {
             for (const auto &fileName : m_files) {
-                return ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData);
+                if (!ExtractFromNetcdfFile(fileName, dataArea, timeArray, compositeData)) {
+                    return false;
+                }
             }
             break;
         }
         case (asFile::Grib) : {
             for (const auto &fileName : m_files) {
-                return ExtractFromGribFile(fileName, dataArea, timeArray, compositeData);
+                if (!ExtractFromGribFile(fileName, dataArea, timeArray, compositeData)) {
+                    return false;
+                }
             }
             break;
         }
         default: {
             wxLogError(_("Predictor file type not correctly defined."));
+            return false;
         }
     }
 
-    return false;
+    return true;
 }
 
 bool asPredictor::EnquireNetcdfFileStructure()
