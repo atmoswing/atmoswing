@@ -68,7 +68,7 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-            return NaNf;
+            return m_scaleWorst;
         } else {
             return m_scaleWorst;
         }
