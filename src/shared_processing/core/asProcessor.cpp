@@ -203,8 +203,19 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Reset the index start target
             int iTimeTargStart = 0;
 
+            // Get time length for allocation
+            dateArrayArchiveSelection.Init(timeTargetSelection[0], params->GetAnalogsIntervalDays(),
+                                           params->GetAnalogsExcludeDays());
+            int timeSize = dateArrayArchiveSelection.GetSize() * 1.1;
+
             // Allocating CUDA memory
             float *refDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength);
+            float *archDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
+            float *resLargeTmp1 = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
+            float *resLargeTmp2 = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
+            float *resSmallTmp1 = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
+            float *resSmallTmp2 = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
+            float *res = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
 
             // Loop through every timestep as target data
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
@@ -229,13 +240,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                 scoreArrayOneDay.fill(NaNf);
                 dateArrayOneDay.fill(NaNf);
-
-                float *archDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resLargeTmp1 = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resLargeTmp2 = asProcessorCuda::MallocCudaData(ptorDataLength * dateArrayArchiveSelection.GetSize());
-                float *resSmallTmp1 = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
-                float *resSmallTmp2 = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
-                float *res = asProcessorCuda::MallocCudaData(predictorsNb * dateArrayArchiveSelection.GetSize());
 
                 // Loop over the members
                 for (int iMem = 0; iMem < membersNb; ++iMem) {
@@ -403,18 +407,16 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 // Copy results
                 finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.transpose();
                 finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.transpose();
-
-                // Clearing CUDA memory
-                asProcessorCuda::FreeCudaData(archDataCuda);
-                asProcessorCuda::FreeCudaData(resLargeTmp1);
-                asProcessorCuda::FreeCudaData(resLargeTmp2);
-                asProcessorCuda::FreeCudaData(resSmallTmp1);
-                asProcessorCuda::FreeCudaData(resSmallTmp2);
-                asProcessorCuda::FreeCudaData(res);
             }
 
             // Clearing CUDA memory
             asProcessorCuda::FreeCudaData(refDataCuda);
+            asProcessorCuda::FreeCudaData(archDataCuda);
+            asProcessorCuda::FreeCudaData(resLargeTmp1);
+            asProcessorCuda::FreeCudaData(resLargeTmp2);
+            asProcessorCuda::FreeCudaData(resSmallTmp1);
+            asProcessorCuda::FreeCudaData(resSmallTmp2);
+            asProcessorCuda::FreeCudaData(res);
 
             // cudaDeviceReset must be called before exiting in order for profiling and
             // tracing tools such as Nsight and Visual Profiler to show complete traces.
