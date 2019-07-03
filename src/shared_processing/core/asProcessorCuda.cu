@@ -107,7 +107,27 @@ void maxAbs(int n, const float *x, const float *y, float *r)
     }
 }
 
-#ifdef CUDA_COMPUTE_CAPABILITY_35
+__global__
+void diffAndMax(int n, const float *x, const float *y, float *diff, float *amax)
+{
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    for (int i = idx; i < n; i += stride) {
+        float xi = x[i];
+        float yi = y[i];
+
+        float diffi = xi - yi;
+        float amaxi = fabs(xi);
+        if (fabs(yi) > amaxi) {
+            amaxi = fabs(yi);
+        }
+
+        diff[i] = diffi;
+        amax[i] = amaxi;
+    }
+}
+
+/*
 __global__
 void criteriaS1grads(int n, int blocksNb, const float *refData, const float *evalData, float *resDiff, float *resMax,
                      float *dividend, float *divisor, float *out)
@@ -134,7 +154,7 @@ void criteriaS1grads(int n, int blocksNb, const float *refData, const float *eva
         }
     }
 }
-#endif
+*/
 
 bool asProcessorCuda::SelectBestDevice()
 {
@@ -222,8 +242,10 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
 /*
         criteriaS1grads<<<blocksNb, blockSize>>>(n, blocksNb, refData, evalData, resDiff, resMax, dividend, divisor, out);
 */
-        diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
-        maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
+        //diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
+        //maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
+
+        diffAndMax<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff, resMax);
 
 
 
