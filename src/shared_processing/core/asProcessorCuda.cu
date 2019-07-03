@@ -219,13 +219,13 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     // but the rest being 0-filled, we can simplify the sum calculation !
 
     if (!m_checkNaNs) {
-#ifdef CUDA_COMPUTE_CAPABILITY_35
+/*
         criteriaS1grads<<<blocksNb, blockSize>>>(n, blocksNb, refData, evalData, resDiff, resMax, dividend, divisor, out);
-#else
+*/
         diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
         maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
 
-#endif
+
 
     } else {
         /*
