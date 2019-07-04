@@ -243,60 +243,19 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
         divisor = (refDataCorr.abs().max(evalDataCorr.abs())).sum();*/
     }
 
-
-
-
-
     return true;
 }
 
 
 __global__
-void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
-                                 const int *indicesArch, const int *indexStart,
-                                 const cudaPredictorsDataPropStruct dataProp, const int n_targ,
-                                 const int n_cand, const int offset)
+void allPredictorsCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
+                                  const int *indicesArch, const cudaPredictorsDataPropStruct dataProp,
+                                  const int n_cand, const int offset)
 {
 
 #if USE_STREAMS
     int i_cand = offset + threadIdx.x + blockIdx.x * blockDim.x;
     if (i_cand < n_cand) {
-        // Find the target index
-        float meanNbCand = float(n_cand) / float(n_targ);
-        int i_targ = floorf(float(i_cand) / meanNbCand);
-
-        if (i_targ < 0) {
-            i_targ = 0;
-        }
-
-        if (i_targ >= n_targ) {
-            i_targ = n_targ - 1;
-        }
-
-        // Check and correct
-        if (i_cand < indexStart[i_targ]) {
-            while (i_cand < indexStart[i_targ]) {
-                i_targ--;
-
-                if (i_targ < 0) {
-                    printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
-                    criteria[i_cand] = -9999;
-                    return;
-                }
-            }
-        }
-        if (i_cand >= indexStart[i_targ + 1]) // safe
-        {
-            while (i_cand >= indexStart[i_targ + 1]) {
-                i_targ++;
-
-                if (i_targ >= n_targ) {
-                    printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
-                    criteria[i_cand] = -9999;
-                    return;
-                }
-            }
-        }
 
         float criterion = 0;
 
@@ -324,49 +283,14 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 
 #else
 
-    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
 
-    for (int i_cand = index; i_cand < n_cand; i_cand += stride) {
-
-        // Find the target index
-        float meanNbCand = float(n_cand) / float(n_targ);
-        int i_targ = (int)floorf(float(i_cand) / meanNbCand);
-
-        if (i_targ < 0) {
-            i_targ = 0;
-        }
-
-        if (i_targ >= n_targ) {
-            i_targ = n_targ - 1;
-        }
-
-        // Check and correct
-        if (i_cand < indexStart[i_targ]) {
-            while (i_cand < indexStart[i_targ]) {
-                i_targ--;
-                if (i_targ < 0) {
-                    printf("Device error: The target index is < 0 : i_targ = %d.\n", i_targ);
-                    criteria[i_cand] = 9999;
-                    return;
-                }
-            }
-        }
-        if (i_cand >= indexStart[i_targ + 1]) // safe
-        {
-            while (i_cand >= indexStart[i_targ + 1]) {
-                i_targ++;
-                if (i_targ >= n_targ) {
-                    printf("Device error: The target index is >= n_targ : i_targ = %d (n_targ = %d)\n", i_targ, n_targ);
-                    criteria[i_cand] = 9999;
-                    return;
-                }
-            }
-        }
+    for (int i = idx; i < n_cand; i += stride) {
 
         float criterion = 0;
-        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
-        int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
+        int targIndexBase = indicesTarg[i] * dataProp.totPtsNb;
+        int archIndexBase = indicesArch[i] * dataProp.totPtsNb;
 
         for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
             float dividend = 0, divisor = 0;
@@ -384,7 +308,7 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
             criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
         }
 
-        criteria[i_cand] = criterion;
+        criteria[i] = criterion;
     }
 
 #endif
@@ -418,27 +342,26 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 
     // Sizes
-    int nbArchCandidatesSum = 0;
+    int nbCandidatesSum = 0;
     std::vector<int> indexStart(nbCandidates.size() + 1);
     for (int i = 0; i < nbCandidates.size(); i++) {
-        indexStart[i] = nbArchCandidatesSum;
-        nbArchCandidatesSum += nbCandidates[i];
+        indexStart[i] = nbCandidatesSum;
+        nbCandidatesSum += nbCandidates[i];
     }
-    indexStart[nbCandidates.size()] = nbArchCandidatesSum;
+    indexStart[nbCandidates.size()] = nbCandidatesSum;
 
     // Blocks of threads
     int n_targ = nbCandidates.size();
-    int n_cand = nbArchCandidatesSum;
+    int n_cand = nbCandidatesSum;
     // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
-    const int threadsPerBlock = 512; // no need to change
-    int blocksNb = (n_cand + threadsPerBlock - 1) / threadsPerBlock;
+    int blocksNb = (n_cand + blockSize - 1) / blockSize;
 
 
 #if USE_STREAMS
     // Create streams
     const int nStreams = 4; // no need to change
-    // rowsNbPerStream must be dividable by nStreams and threadsPerBlock
-    int rowsNbPerStream = ceil(float(nbArchCandidatesSum) / float(nStreams * threadsPerBlock)) * threadsPerBlock;
+    // rowsNbPerStream must be dividable by nStreams and blockSize
+    int rowsNbPerStream = ceil(float(nbCandidatesSum) / float(nStreams * blockSize)) * blockSize;
     // Streams
     cudaStream_t stream[nStreams];
     for (int i = 0; i < nStreams; i++) {
@@ -448,14 +371,13 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     // Data pointers
     float *arrData, *arrCriteria;
-    int *arrIndicesTarg, *arrIndicesArch, *arrIndexStart;
+    int *arrIndicesTarg, *arrIndicesArch;
 
     // Alloc space for data
     checkCudaErrors(cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&arrCriteria, nbArchCandidatesSum * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbCandidates.size() * sizeof(int)));
-    checkCudaErrors(cudaMallocManaged(&arrIndicesArch, nbArchCandidatesSum * sizeof(int)));
-    checkCudaErrors(cudaMallocManaged(&arrIndexStart, (nbCandidates.size() + 1) * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrCriteria, nbCandidatesSum * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbCandidatesSum * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrIndicesArch, nbCandidatesSum * sizeof(int)));
 
     // Copy data in the new arrays
     for (int iDay = 0; iDay < data.size(); iDay++) {
@@ -466,29 +388,22 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         }
     }
 
-    for (int i = 0; i < nbCandidates.size(); i++) {
+    for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
             arrIndicesArch[indexStart[i] + j] = indicesArch[i][j];
+            arrIndicesTarg[indexStart[i] + j] = indicesTarg[i];
         }
-    }
-
-    for (int i = 0; i < indicesTarg.size(); i++) {
-        arrIndicesTarg[i] = indicesTarg[i];
-    }
-
-    for (int i = 0; i < indexStart.size(); i++) {
-        arrIndexStart[i] = indexStart[i];
     }
 
     // Launch kernel on GPU
 #if USE_STREAMS
     for (int i = 0; i < nStreams; i++) {
         int offset = i * rowsNbPerStream;
-        blocksNb = rowsNbPerStream / threadsPerBlock;
-        gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, offset);
+        blocksNb = rowsNbPerStream / blockSize;
+        gpuPredictorCriteriaS1grads<<<blocksNb, blockSize, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, offset);
     }
 #else
-    gpuPredictorCriteriaS1grads<<<blocksNb, threadsPerBlock>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, arrIndexStart, struc, n_targ, n_cand, 0);
+    allPredictorsCriteriaS1grads<<<blocksNb, blockSize>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, 0);
 #endif
 
     // Check for any errors launching the kernel
@@ -517,7 +432,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     cudaFree(arrCriteria);
     cudaFree(arrIndicesTarg);
     cudaFree(arrIndicesArch);
-    cudaFree(arrIndexStart);
 
     return false;
 }
