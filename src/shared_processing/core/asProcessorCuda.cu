@@ -390,19 +390,16 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 #endif
 }
 
-
-bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
-                                      std::vector<int> &indicesTarg,
-                                      std::vector <std::vector<int>> &indicesArch,
-                                      std::vector <std::vector<float>> &resultingCriteria,
-                                      std::vector<int> &nbArchCandidates,
-                                      std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                      std::vector<float> &weights)
+bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
+                                      std::vector<std::vector<int>> &indicesArch,
+                                      std::vector<std::vector<float>> &resultingCriteria,
+                                      std::vector<int> &nbCandidates, std::vector<int> &colsNb,
+                                      std::vector<int> &rowsNb, std::vector<float> &weights)
 {
 
     // Get the data structure
     cudaPredictorsDataPropStruct struc;
-    struc.ptorsNb = (int) weights.size();
+    struc.ptorsNb = (int)weights.size();
     if (struc.ptorsNb > STRUCT_MAX_SIZE) {
         printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
                STRUCT_MAX_SIZE);
@@ -422,15 +419,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
 
     // Sizes
     int nbArchCandidatesSum = 0;
-    std::vector<int> indexStart(nbArchCandidates.size() + 1);
-    for (int i = 0; i < nbArchCandidates.size(); i++) {
+    std::vector<int> indexStart(nbCandidates.size() + 1);
+    for (int i = 0; i < nbCandidates.size(); i++) {
         indexStart[i] = nbArchCandidatesSum;
-        nbArchCandidatesSum += nbArchCandidates[i];
+        nbArchCandidatesSum += nbCandidates[i];
     }
-    indexStart[nbArchCandidates.size()] = nbArchCandidatesSum;
+    indexStart[nbCandidates.size()] = nbArchCandidatesSum;
 
     // Blocks of threads
-    int n_targ = nbArchCandidates.size();
+    int n_targ = nbCandidates.size();
     int n_cand = nbArchCandidatesSum;
     // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
     const int threadsPerBlock = 512; // no need to change
@@ -456,9 +453,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     // Alloc space for data
     checkCudaErrors(cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float)));
     checkCudaErrors(cudaMallocManaged(&arrCriteria, nbArchCandidatesSum * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbArchCandidates.size() * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbCandidates.size() * sizeof(int)));
     checkCudaErrors(cudaMallocManaged(&arrIndicesArch, nbArchCandidatesSum * sizeof(int)));
-    checkCudaErrors(cudaMallocManaged(&arrIndexStart, (nbArchCandidates.size() + 1) * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrIndexStart, (nbCandidates.size() + 1) * sizeof(int)));
 
     // Copy data in the new arrays
     for (int iDay = 0; iDay < data.size(); iDay++) {
@@ -469,8 +466,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
         }
     }
 
-    for (int i = 0; i < nbArchCandidates.size(); i++) {
-        for (int j = 0; j < nbArchCandidates[i]; j++) {
+    for (int i = 0; i < nbCandidates.size(); i++) {
+        for (int j = 0; j < nbCandidates[i]; j++) {
             arrIndicesArch[indexStart[i] + j] = indicesArch[i][j];
         }
     }
@@ -499,10 +496,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     checkCudaErrors(cudaDeviceSynchronize());
 
     // Set the criteria values in the vector container
-    for (int i = 0; i < nbArchCandidates.size(); i++) {
-        std::vector<float> tmpCrit(nbArchCandidates[i]);
+    for (int i = 0; i < nbCandidates.size(); i++) {
+        std::vector<float> tmpCrit(nbCandidates[i]);
 
-        for (int j = 0; j < nbArchCandidates[i]; j++) {
+        for (int j = 0; j < nbCandidates[i]; j++) {
             tmpCrit[j] = arrCriteria[indexStart[i] + j];
         }
         resultingCriteria[i] = tmpCrit;

@@ -154,12 +154,13 @@ a1i asExtractUniqueValues(const int *pArrStart, const int *pArrEnd, int toleranc
 
 a1f asExtractUniqueValues(const float *pArrStart, const float *pArrEnd, float tolerance = 0.000001);
 
-a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd,
-                               double tolerance = 0.000000001);
+a1d asExtractUniqueValues(const double *pArrStart, const double *pArrEnd, double tolerance = 0.000000001);
 
-int asFind(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0, int showWarning = asSHOW_WARNINGS);
+int asFind(const int *pArrStart, const int *pArrEnd, int targetValue, int tolerance = 0,
+           int showWarning = asSHOW_WARNINGS);
 
-int asFind(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0.0, int showWarning = asSHOW_WARNINGS);
+int asFind(const float *pArrStart, const float *pArrEnd, float targetValue, float tolerance = 0.0,
+           int showWarning = asSHOW_WARNINGS);
 
 int asFind(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0.0,
            int showWarning = asSHOW_WARNINGS);
@@ -213,7 +214,7 @@ bool asArraysInsert(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStar
 bool asArraysInsert(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order,
                     double valRef, double valOther);
 
-template<class T>
+template <class T>
 bool asArraysInsertT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order, T valRef,
                      T valOther);
 
@@ -226,14 +227,11 @@ bool asSortArray(double *pArrRefStart, double *pArrRefEnd, Order order);
 template<class T>
 bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, Order order);
 
-bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd,
-                       Order order);
+bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order);
 
-bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd,
-                       Order order);
+bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart, float *pArrOtherEnd, Order order);
 
-bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd,
-                       Order order);
+bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order);
 
 template<class T>
 bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order);
