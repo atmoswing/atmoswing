@@ -210,7 +210,7 @@ TEST(MethodCalibrator, Ref1Cuda)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
-    wxString paramsFile = "parameters_calibration_R1_shorter.xml";
+    wxString paramsFile = "parameters_calibration_R1_full.xml";
 
     // Get parameters
     wxString paramsFilePath = wxFileName::GetCwd();
@@ -233,17 +233,17 @@ TEST(MethodCalibrator, Ref1Cuda)
 
         // CPU
         wxStopWatch sw1;
-        pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+        pConfig->Write("/Processing/Method", (int) asSTANDARD);
         ASSERT_TRUE(calibratorCPU.GetAnalogsDates(anaDatesCPU, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        printf(_("        ---> CPU (multithreaded) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
+        printf(_("             ---> CPU (standard) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
 
         // GPU
         wxStopWatch sw2;
         pConfig->Write("/Processing/Method", (int) asCUDA);
         ASSERT_TRUE(calibratorGPU.GetAnalogsDates(anaDatesGPU, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        printf(_("        ---> GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
+        printf(_("             ---> GPU time: %.3f sec\n"), float(sw2.Time()) / 1000.0f);
 
     } catch (std::exception &e) {
         wxPrintf(e.what());
