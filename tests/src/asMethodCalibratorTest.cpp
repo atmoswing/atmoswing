@@ -233,10 +233,10 @@ TEST(MethodCalibrator, Ref1Cuda)
 
         // CPU
         wxStopWatch sw1;
-        pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+        pConfig->Write("/Processing/Method", (int) asSTANDARD);
         ASSERT_TRUE(calibratorCPU.GetAnalogsDates(anaDatesCPU, &params, step, containsNaNs));
         EXPECT_FALSE(containsNaNs);
-        printf(_("             ---> CPU (multithreaded) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
+        printf(_("             ---> CPU (standard) time: %.3f sec\n"), float(sw1.Time()) / 1000.0f);
 
         // GPU
         wxStopWatch sw2;
