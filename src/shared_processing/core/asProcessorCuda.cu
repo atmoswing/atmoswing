@@ -251,7 +251,6 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
 }
 
 
-/*
 __global__
 void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
                                  const int *indicesArch, const int *indexStart,
@@ -390,8 +389,8 @@ void gpuPredictorCriteriaS1grads(float *criteria, const float *data, const int *
 
 #endif
 }
-*/
-/*
+
+
 bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
                                       std::vector<int> &indicesTarg,
                                       std::vector <std::vector<int>> &indicesArch,
@@ -455,40 +454,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     int *arrIndicesTarg, *arrIndicesArch, *arrIndexStart;
 
     // Alloc space for data
-    cudaStatus = cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocManaged failed for the data!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMallocManaged(&arrCriteria, nbArchCandidatesSum * sizeof(float));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocManaged failed for arrCriteria!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMallocManaged(&arrIndicesTarg, nbArchCandidates.size() * sizeof(int));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocManaged failed for arrIndicesTarg!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMallocManaged(&arrIndicesArch, nbArchCandidatesSum * sizeof(int));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocManaged failed for arrIndicesArch!\n");
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaMallocManaged(&arrIndexStart, (nbArchCandidates.size() + 1) * sizeof(int));
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "cudaMallocManaged failed for arrIndexStart!\n");
-        hasError = true;
-        goto cleanup;
-    }
+    checkCudaErrors(cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&arrCriteria, nbArchCandidatesSum * sizeof(float)));
+    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbArchCandidates.size() * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrIndicesArch, nbArchCandidatesSum * sizeof(int)));
+    checkCudaErrors(cudaMallocManaged(&arrIndexStart, (nbArchCandidates.size() + 1) * sizeof(int)));
 
     // Copy data in the new arrays
     for (int iDay = 0; iDay < data.size(); iDay++) {
@@ -525,19 +495,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
 #endif
 
     // Check for any errors launching the kernel
-    cudaStatus = cudaGetLastError();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "Kernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-        hasError = true;
-        goto cleanup;
-    }
-
-    cudaStatus = cudaDeviceSynchronize();
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "Device synchronization failed: %s\n", cudaGetErrorString(cudaStatus));
-        hasError = true;
-        goto cleanup;
-    }
+    checkCudaErrors(cudaGetLastError());
+    checkCudaErrors(cudaDeviceSynchronize());
 
     // Set the criteria values in the vector container
     for (int i = 0; i < nbArchCandidates.size(); i++) {
@@ -550,7 +509,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
     }
 
     // Cleanup
-    cleanup:
 
 #if USE_STREAMS
     for (int i = 0; i< nStreams; i++) {
@@ -566,5 +524,4 @@ bool asProcessorCuda::ProcessCriteria(std::vector <std::vector<float *>> &data,
 
     return false;
 }
-*/
 

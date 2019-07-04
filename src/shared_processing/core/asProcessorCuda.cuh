@@ -29,10 +29,21 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-//#define STRUCT_MAX_SIZE 12
-//#define USE_STREAMS 0
+#define STRUCT_MAX_SIZE 12
+#define USE_STREAMS 0
 
-//#include <vector>
+#include <vector>
+
+struct cudaPredictorsDataPropStruct
+{
+    int ptorsNb;
+    int rowsNb[STRUCT_MAX_SIZE];
+    int colsNb[STRUCT_MAX_SIZE];
+    int ptsNb[STRUCT_MAX_SIZE];
+    int totPtsNb;
+    int indexStart[STRUCT_MAX_SIZE];
+    float weights[STRUCT_MAX_SIZE];
+};
 
 class asProcessorCuda
 {
@@ -48,7 +59,7 @@ public:
     static void DeviceReset();
 
     static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb);
-/*
+
     static bool ProcessCriteria(std::vector <std::vector<float *>> &data,
                                 std::vector<int> &indicesTarg,
                                 std::vector <std::vector<int>> &indicesArch,
@@ -56,7 +67,7 @@ public:
                                 std::vector<int> &nbArchCandidates,
                                 std::vector<int> &colsNb, std::vector<int> &rowsNb,
                                 std::vector<float> &weights);
-    */
+
 protected:
 
 private:

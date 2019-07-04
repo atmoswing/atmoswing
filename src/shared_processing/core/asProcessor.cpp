@@ -49,6 +49,7 @@
     #include <asProcessorCuda.cuh>
     //#include <cuda_runtime_api.h>
     //#include <cuda.h>
+    //#define CUDA_V1
 #endif
 
 bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
@@ -149,6 +150,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 #ifdef USE_CUDA
         case (asCUDA): {
 
+#ifdef CUDA_V1
             if (!asProcessorCuda::SelectBestDevice()) {
                 return false;
             }
@@ -380,8 +382,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             break;
 
+#else
 
-            /*
             // Check criteria compatibility
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 if (!criteria[iPtor]->GetName().IsSameAs(criteria[0]->GetName())) {
@@ -621,11 +623,11 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                 // cudaDeviceReset must be called before exiting in order for profiling and
                 // tracing tools such as Nsight and Visual Profiler to show complete traces.
-                cudaDeviceReset();
+                asProcessorCuda::DeviceReset();
 
                 break;
             }
-*/
+#endif
             // Else we continue on asMULTITHREADS
         }
 #endif
