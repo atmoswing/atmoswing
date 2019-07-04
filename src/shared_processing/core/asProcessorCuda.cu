@@ -273,7 +273,7 @@ void allPredictorsCriteriaS1grads(float *criteria, const float *data, const int 
 
             switch (dataProp.criteria[iPtor]) {
                 case S1grads:
-                    criteriaS1grads< < <blocksNb, blockSize> > >(dataProp.ptsNb[iPtor], &data[targIndex], &data[archIndex], &r);
+                    criteriaS1grads<<<blocksNb, blockSize>>>(dataProp.ptsNb[iPtor], &data[targIndex], &data[archIndex], &r);
                 default:
                     printf("Incorrect criteria provided.");
             }
@@ -353,7 +353,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         gpuPredictorCriteriaS1grads<<<blocksNb, blockSize, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, offset);
     }
 #else
-    allPredictorsCriteriaS1grads< < <blocksNb, blockSize> > >(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, 0);
+    allPredictorsCriteriaS1grads<<<blocksNb, blockSize>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, 0);
 #endif
 
     // Check for any errors launching the kernel
