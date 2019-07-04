@@ -204,18 +204,19 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             int iTimeTargStart = 0;
 
             // Get time length for allocation
-            dateArrayArchiveSelection.Init(timeTargetSelection[0], params->GetAnalogsIntervalDays(),
-                                           params->GetAnalogsExcludeDays());
-            int timeSize = dateArrayArchiveSelection.GetSize() * 1.1;
+            int maxTimeSize = 0;
+            for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
+                dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], params->GetAnalogsIntervalDays(),
+                                               params->GetAnalogsExcludeDays());
+                if (dateArrayArchiveSelection.GetSize() > maxTimeSize) {
+                    maxTimeSize = dateArrayArchiveSelection.GetSize();
+                }
+            }
 
             // Allocating CUDA memory
             float *refDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength);
-            float *archDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
-            float *resLargeTmp1 = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
-            float *resLargeTmp2 = asProcessorCuda::MallocCudaData(ptorDataLength * timeSize);
-            float *resSmallTmp1 = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
-            float *resSmallTmp2 = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
-            float *res = asProcessorCuda::MallocCudaData(predictorsNb * timeSize);
+            float *archDataCuda = asProcessorCuda::MallocCudaData(ptorDataLength * maxTimeSize);
+            float *res = asProcessorCuda::MallocCudaData(predictorsNb * maxTimeSize);
 
             // Loop through every timestep as target data
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
@@ -307,9 +308,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                             archPtsCounter += vPtorPts[iPtor];
 
                             asProcessorCuda::ProcessS1grads(res + ptorArrCounter, refDataCuda + ptorStart,
-                                                            archDataCuda + archPtsStart, vRowsNb[iPtor], vColsNb[iPtor],
-                                                            resLargeTmp1 + archPtsStart, resLargeTmp2 + archPtsStart,
-                                                            resSmallTmp1 + ptorArrCounter, resSmallTmp2 + ptorArrCounter);
+                                                            archDataCuda + archPtsStart, vRowsNb[iPtor], vColsNb[iPtor]);
 
                             ptorStart += vPtorPts[iPtor];
                             ptorArrCounter++;
@@ -317,45 +316,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     }
 
                     asProcessorCuda::DeviceSynchronize();
-
-#ifndef CUDA_COMPUTE_CAPABILITY_35
-
-                    archPtsCounter = 0;
-                    ptorArrCounter = 0;
-
-                    // Reduction on GPU
-                    for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-
-                        // Process the criteria
-                        int ptorStart = 0;
-                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                            int archPtsStart = archPtsCounter;
-                            archPtsCounter += vPtorPts[iPtor];
-
-                            asProcessorCuda::S1gradsReduction1(res + ptorArrCounter, vRowsNb[iPtor], vColsNb[iPtor],
-                                                            resLargeTmp1 + archPtsStart, resLargeTmp2 + archPtsStart,
-                                                            resSmallTmp1 + ptorArrCounter, resSmallTmp2 + ptorArrCounter);
-
-                            ptorStart += vPtorPts[iPtor];
-                            ptorArrCounter++;
-                        }
-                    }
-
-                    asProcessorCuda::DeviceSynchronize();
-
-                    ptorArrCounter = 0;
-
-                    // Final reduction
-                    for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-
-                        // Process the criteria
-                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                            asProcessorCuda::S1gradsReduction2(res + ptorArrCounter, resSmallTmp1 + ptorArrCounter,
-                                                               resSmallTmp2 + ptorArrCounter);
-                            ptorArrCounter++;
-                        }
-                    }
-#endif
 
                     ptorArrCounter = 0;
 
@@ -412,10 +372,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Clearing CUDA memory
             asProcessorCuda::FreeCudaData(refDataCuda);
             asProcessorCuda::FreeCudaData(archDataCuda);
-            asProcessorCuda::FreeCudaData(resLargeTmp1);
-            asProcessorCuda::FreeCudaData(resLargeTmp2);
-            asProcessorCuda::FreeCudaData(resSmallTmp1);
-            asProcessorCuda::FreeCudaData(resSmallTmp2);
             asProcessorCuda::FreeCudaData(res);
 
             // cudaDeviceReset must be called before exiting in order for profiling and

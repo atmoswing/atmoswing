@@ -64,25 +64,6 @@ void sumSingleBlock(int n, const float *a, float *out)
         *out = r[0];
 }
 
-__global__
-void sumAbsSingleBlock(int n, const float *a, float *out)
-{
-    int idx = threadIdx.x;
-    float sum = 0;
-    for (int i = idx; i < n; i += blockSize)
-        sum += fabs(a[i]);
-    __shared__ float r[blockSize];
-    r[idx] = sum;
-    __syncthreads();
-    for (int size = blockSize / 2; size > 0; size /= 2) {
-        if (idx < size)
-            r[idx] += fabs(r[idx + size]);
-        __syncthreads();
-    }
-    if (idx == 0)
-        *out = r[0];
-}
-
 // From https://devblogs.nvidia.com/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/
 __global__
 void diff(int n, const float *x, const float *y, float *r)
@@ -108,10 +89,14 @@ void maxAbs(int n, const float *x, const float *y, float *r)
 }
 
 __global__
-void diffAndMax(int n, const float *x, const float *y, float *diff, float *amax)
+void criteriaS1grads(int n, const float *x, const float *y, float *out)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
+
+    __shared__ float diff[blockSize];
+    __shared__ float amax[blockSize];
+
     for (int i = idx; i < n; i += stride) {
         float xi = x[i];
         float yi = y[i];
@@ -125,28 +110,33 @@ void diffAndMax(int n, const float *x, const float *y, float *diff, float *amax)
         diff[i] = diffi;
         amax[i] = amaxi;
     }
-}
+    __syncthreads();
 
-/*
-__global__
-void criteriaS1grads(int n, int blocksNb, const float *refData, const float *evalData, float *resDiff, float *resMax,
-                     float *dividend, float *divisor, float *out)
-{
-    diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
-    maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
+    float sumDiff = 0;
+    float sumMax = 0;
+    for (int i = idx; i < n; i += blockSize) {
+        sumDiff += fabs(diff[i]);
+        sumMax += amax[i];
+    }
 
-    if(blockIdx.x * blockDim.x == 0) { // So that it is only launched once
-        cudaDeviceSynchronize();
+    __shared__ float rDiff[blockSize];
+    __shared__ float rMax[blockSize];
+    rDiff[idx] = sumDiff;
+    rMax[idx] = sumMax;
+    __syncthreads();
 
-        sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
-        sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
+    for (int size = blockSize / 2; size > 0; size /= 2) {
+        if (idx < size) {
+            rDiff[idx] +=rDiff[idx + size];
+            rMax[idx] +=rMax[idx + size];
+        }
+        __syncthreads();
+    }
+    if (idx == 0) {
+        *out = 100.0f * (rDiff[0] / rMax[0]);
 
-        cudaDeviceSynchronize();
-
-        *out = 100.0f * (*dividend / *divisor);
-
-        if (*divisor == 0) {
-            if (*dividend == 0) {
+        if (rMax[0] == 0) {
+            if (rDiff[0] == 0) {
                 *out = 0;
             } else {
                 *out = 200;
@@ -154,7 +144,6 @@ void criteriaS1grads(int n, int blocksNb, const float *refData, const float *eva
         }
     }
 }
-*/
 
 bool asProcessorCuda::SelectBestDevice()
 {
@@ -223,13 +212,18 @@ void asProcessorCuda::DeviceReset()
     cudaDeviceReset();
 }
 
-bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb, float *resDiff, float *resMax, float *dividend, float *divisor)
+bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb)
 {
     int n = rowsNb * colsNb;
 
  
 
     int blocksNb = (n + blockSize - 1) / blockSize;
+
+    if (blocksNb > 1) {
+        printf("blocksNb > 1\n");
+        return false;
+    }
 
 
     bool m_checkNaNs = false;
@@ -239,16 +233,7 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     // but the rest being 0-filled, we can simplify the sum calculation !
 
     if (!m_checkNaNs) {
-/*
-        criteriaS1grads<<<blocksNb, blockSize>>>(n, blocksNb, refData, evalData, resDiff, resMax, dividend, divisor, out);
-*/
-        //diff<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff);
-        //maxAbs<<<blocksNb, blockSize>>>(n, refData, evalData, resMax);
-
-        diffAndMax<<<blocksNb, blockSize>>>(n, refData, evalData, resDiff, resMax);
-
-
-
+        criteriaS1grads<<<blocksNb, blockSize>>>(n, refData, evalData, out);
     } else {
         /*
         a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
@@ -265,30 +250,6 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     return true;
 }
 
-bool asProcessorCuda::S1gradsReduction1(float *out, int rowsNb, int colsNb, const float *resDiff, const float *resMax, float *dividend, float *divisor)
-{
-    int n = rowsNb * colsNb;
-
-    sumAbsSingleBlock<<<1, blockSize>>>(n, resDiff, dividend);
-    sumSingleBlock<<<1, blockSize>>>(n, resMax, divisor);
-
-    return true;
-}
-
-bool asProcessorCuda::S1gradsReduction2(float *out, const float *dividend, const float *divisor)
-{
-    *out = 100.0f * (*dividend / *divisor);
-
-    if (*divisor == 0) {
-        if (*dividend == 0) {
-            *out = 0;
-        } else {
-            *out = 200;
-        }
-    }
-
-    return true;
-}
 
 /*
 __global__
