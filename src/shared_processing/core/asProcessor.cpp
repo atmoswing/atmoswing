@@ -384,27 +384,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
 #else
 
-            // Check criteria compatibility
-            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                if (!criteria[iPtor]->GetName().IsSameAs(criteria[0]->GetName())) {
-                    wxLogError(_("For CUDA implementation, every predictors in the same analogy level must share the same criterion."));
-                    return false;
-                }
-            }
-
             // Check no members
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 if (predictorsArchive[iPtor]->GetMembersNb() > 1) {
                     wxLogError(_("No support for ensemble datasets in CUDA yet."));
                     return false;
                 }
-            }
-
-            if (criteria[0]->GetName().IsSameAs("S1grads")) {
-                // ok
-            } else {
-                wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[0]->GetName());
-                return false;
             }
 
             // To minimize the data copy, we only allow 1 dataset
@@ -540,10 +525,37 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 resultingDates[iDateTarg] = currentDates;
             }
 
+            // Get the data structure
+            cudaPredictorsDataPropStruct struc;
+            struc.ptorsNb = (int)weights.size();
+            if (struc.ptorsNb > STRUCT_MAX_SIZE) {
+                printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
+                       STRUCT_MAX_SIZE);
+                return false;
+            }
+
+            struc.totPtsNb = 0;
+
+            for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
+                struc.rowsNb[iPtor] = rowsNb[iPtor];
+                struc.colsNb[iPtor] = colsNb[iPtor];
+                struc.weights[iPtor] = weights[iPtor];
+                struc.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
+                struc.indexStart[iPtor] = struc.totPtsNb;
+                struc.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
+
+                if (criteria[iPtor]->GetName().IsSameAs("S1grads")) {
+                    struc.criteria[iPtor] = S1grads;
+                } else {
+                    wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
+                    return false;
+                }
+            }
+
             // Then we process on GPU
 
             if (asProcessorCuda::ProcessCriteria(vvpData, indicesTarg, indicesArch, resultingCriteria,
-                                                 nbCandidates, colsNb, rowsNb, weights)) {
+                                                 nbCandidates, struc)) {
 
                 // If succeeded, we work on the outputs
                 for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {

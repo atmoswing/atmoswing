@@ -252,94 +252,46 @@ void allPredictorsCriteriaS1grads(float *criteria, const float *data, const int 
                                   const int *indicesArch, const cudaPredictorsDataPropStruct dataProp,
                                   const int n_cand, const int offset)
 {
-
-#if USE_STREAMS
-    int i_cand = offset + threadIdx.x + blockIdx.x * blockDim.x;
-    if (i_cand < n_cand) {
-
-        float criterion = 0;
-
-        int targIndexBase = indicesTarg[i_targ] * dataProp.totPtsNb;
-        int archIndexBase = indicesArch[i_cand] * dataProp.totPtsNb;
-
-        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-            float dividend = 0, divisor = 0;
-            int targIndex = targIndexBase + dataProp.indexStart[iPtor];
-            int archIndex = archIndexBase + dataProp.indexStart[iPtor];
-
-            for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
-                dividend += fabsf(data[targIndex] - data[archIndex]);
-                divisor += fmaxf(fabsf(data[targIndex]), fabsf(data[archIndex]));
-
-                targIndex++;
-                archIndex++;
-            }
-
-            criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
-        }
-
-        criteria[i_cand] = criterion;
-    }
-
-#else
-
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    int idx = blockIdx.x * blockDim.x + threadIdx.x + offset;
     int stride = blockDim.x * gridDim.x;
 
-    for (int i = idx; i < n_cand; i += stride) {
+    for (int iCand = idx; iCand < n_cand; iCand += stride) {
 
-        float criterion = 0;
-        int targIndexBase = indicesTarg[i] * dataProp.totPtsNb;
-        int archIndexBase = indicesArch[i] * dataProp.totPtsNb;
+        float criterion;
+        int targIndexBase = indicesTarg[iCand] * dataProp.totPtsNb;
+        int archIndexBase = indicesArch[iCand] * dataProp.totPtsNb;
 
         for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-            float dividend = 0, divisor = 0;
             int targIndex = targIndexBase + dataProp.indexStart[iPtor];
             int archIndex = archIndexBase + dataProp.indexStart[iPtor];
 
-            for (int i = 0; i < dataProp.ptsNb[iPtor]; i++) {
-                dividend += fabsf(data[targIndex] - data[archIndex]);
-                divisor += fmaxf(fabsf(data[targIndex]), fabsf(data[archIndex]));
 
-                targIndex++;
-                archIndex++;
+
+            int blocksNb = 1;
+
+            __shared__ float r;
+
+            switch (dataProp.criteria[iPtor]) {
+                case S1grads:
+                    criteriaS1grads<<<blocksNb, blockSize>>>(dataProp.ptsNb[iPtor], &data[targIndex], &data[archIndex], &r);
+                default:
+                    printf("Incorrect criteria provided.");
             }
+            cudaDeviceSynchronize();
 
-            criterion += dataProp.weights[iPtor] * 100.0f * (dividend / divisor);
+            criterion += dataProp.weights[iPtor] * r;
         }
 
-        criteria[i] = criterion;
+        criteria[iCand] = criterion;
     }
 
-#endif
 }
 
 bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
                                       std::vector<std::vector<int>> &indicesArch,
                                       std::vector<std::vector<float>> &resultingCriteria,
-                                      std::vector<int> &nbCandidates, std::vector<int> &colsNb,
-                                      std::vector<int> &rowsNb, std::vector<float> &weights)
+                                      std::vector<int> &nbCandidates, const cudaPredictorsDataPropStruct &struc)
 {
-
-    // Get the data structure
-    cudaPredictorsDataPropStruct struc;
-    struc.ptorsNb = (int)weights.size();
-    if (struc.ptorsNb > STRUCT_MAX_SIZE) {
-        printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
-               STRUCT_MAX_SIZE);
-        return false;
-    }
-
-    struc.totPtsNb = 0;
-
-    for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
-        struc.rowsNb[iPtor] = rowsNb[iPtor];
-        struc.colsNb[iPtor] = colsNb[iPtor];
-        struc.weights[iPtor] = weights[iPtor];
-        struc.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
-        struc.indexStart[iPtor] = struc.totPtsNb;
-        struc.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
-    }
 
     // Sizes
     int nbCandidatesSum = 0;
@@ -351,9 +303,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     indexStart[nbCandidates.size()] = nbCandidatesSum;
 
     // Blocks of threads
-    int n_targ = nbCandidates.size();
     int n_cand = nbCandidatesSum;
-    // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing efficiency and facilitates coalescing.
     int blocksNb = (n_cand + blockSize - 1) / blockSize;
 
 
