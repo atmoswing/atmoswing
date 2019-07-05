@@ -29,8 +29,6 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#define USE_STREAMS 0
-
 #include <vector>
 
 enum CudaCriteria
@@ -49,6 +47,12 @@ enum CudaCriteria
 class asProcessorCuda
 {
 public:
+    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
+                                std::vector<std::vector<int>> &indicesArch,
+                                std::vector<std::vector<float>> &resultingCriteria, std::vector<int> &nbCandidates,
+                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights,
+                                std::vector<CudaCriteria> &criteria);
+
     static bool SelectBestDevice();
 
     static float *MallocCudaData(int n);
@@ -58,14 +62,6 @@ public:
     static void DeviceSynchronize();
 
     static void DeviceReset();
-
-    static bool ProcessS1grads(float *out, const float *refData, const float *evalData, int rowsNb, int colsNb);
-
-    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
-                                std::vector<std::vector<int>> &indicesArch,
-                                std::vector<std::vector<float>> &resultingCriteria, std::vector<int> &nbCandidates,
-                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights,
-                                std::vector<CudaCriteria> &criteria);
 
 protected:
 
