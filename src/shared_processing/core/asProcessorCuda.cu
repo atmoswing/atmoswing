@@ -89,7 +89,7 @@ void maxAbs(int n, const float *x, const float *y, float *r)
 }
 
 __global__
-void criteriaS1grads(int n, const float *x, const float *y, float *out)
+void criteriaS1grads(int n, const float *x, const float *y, const float w, float *out)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
@@ -133,15 +133,14 @@ void criteriaS1grads(int n, const float *x, const float *y, float *out)
         __syncthreads();
     }
     if (idx == 0) {
-        *out = 100.0f * (rDiff[0] / rMax[0]);
+        float res = 0;
 
         if (rMax[0] == 0) {
-            if (rDiff[0] == 0) {
-                *out = 0;
-            } else {
-                *out = 200;
-            }
+            res = 200;
+        } else {
+            res = 100.0f * (rDiff[0] / rMax[0]);
         }
+        *out += res * w;
     }
 }
 
@@ -233,7 +232,7 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     // but the rest being 0-filled, we can simplify the sum calculation !
 
     if (!m_checkNaNs) {
-        criteriaS1grads<<<blocksNb, blockSize>>>(n, refData, evalData, out);
+        criteriaS1grads<<<blocksNb, blockSize>>>(n, refData, evalData, 1.0, out);
     } else {
         /*
         a2f refDataCorr = (!evalData.isNaN() && !refData.isNaN()).select(refData, 0);
@@ -246,72 +245,34 @@ bool asProcessorCuda::ProcessS1grads(float *out, const float *refData, const flo
     return true;
 }
 
-
-__global__
-void allPredictorsCriteriaS1grads(float *criteria, const float *data, const int *indicesTarg,
-                                  const int *indicesArch, const cudaPredictorsDataPropStruct dataProp,
-                                  const int n_cand, const int offset)
-{
-    int idx = blockIdx.x * blockDim.x + threadIdx.x + offset;
-    int stride = blockDim.x * gridDim.x;
-
-    for (int iCand = idx; iCand < n_cand; iCand += stride) {
-
-        float criterion;
-        int targIndexBase = indicesTarg[iCand] * dataProp.totPtsNb;
-        int archIndexBase = indicesArch[iCand] * dataProp.totPtsNb;
-
-        for (int iPtor = 0; iPtor < dataProp.ptorsNb; iPtor++) {
-            int targIndex = targIndexBase + dataProp.indexStart[iPtor];
-            int archIndex = archIndexBase + dataProp.indexStart[iPtor];
-
-
-
-            int blocksNb = 1;
-
-            __shared__ float r;
-
-            switch (dataProp.criteria[iPtor]) {
-                case S1grads:
-                    criteriaS1grads<<<blocksNb, blockSize>>>(dataProp.ptsNb[iPtor], &data[targIndex], &data[archIndex], &r);
-                default:
-                    printf("Incorrect criteria provided.");
-            }
-            cudaDeviceSynchronize();
-
-            criterion += dataProp.weights[iPtor] * r;
-        }
-
-        criteria[iCand] = criterion;
-    }
-
-}
-
 bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
                                       std::vector<std::vector<int>> &indicesArch,
                                       std::vector<std::vector<float>> &resultingCriteria,
-                                      std::vector<int> &nbCandidates, const cudaPredictorsDataPropStruct &struc)
+                                      std::vector<int> &nbCandidates, std::vector<int> &colsNb,
+                                      std::vector<int> &rowsNb, std::vector<float> &weights,
+                                      std::vector<CudaCriteria> &criteria)
 {
+    int ptorsNb = weights.size();
 
     // Sizes
-    int nbCandidatesSum = 0;
+    int N = 0;
     std::vector<int> indexStart(nbCandidates.size() + 1);
     for (int i = 0; i < nbCandidates.size(); i++) {
-        indexStart[i] = nbCandidatesSum;
-        nbCandidatesSum += nbCandidates[i];
+        indexStart[i] = N;
+        N += nbCandidates[i];
     }
-    indexStart[nbCandidates.size()] = nbCandidatesSum;
+    indexStart[nbCandidates.size()] = N;
 
     // Blocks of threads
-    int n_cand = nbCandidatesSum;
-    int blocksNb = (n_cand + blockSize - 1) / blockSize;
+    //int n_cand = N;
+    //int blocksNb = (n_cand + blockSize - 1) / blockSize;
 
 
 #if USE_STREAMS
     // Create streams
     const int nStreams = 4; // no need to change
     // rowsNbPerStream must be dividable by nStreams and blockSize
-    int rowsNbPerStream = ceil(float(nbCandidatesSum) / float(nStreams * blockSize)) * blockSize;
+    int rowsNbPerStream = ceil(float(N) / float(nStreams * blockSize)) * blockSize;
     // Streams
     cudaStream_t stream[nStreams];
     for (int i = 0; i < nStreams; i++) {
@@ -319,24 +280,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 #endif
 
-    // Data pointers
-    float *arrData, *arrCriteria;
-    int *arrIndicesTarg, *arrIndicesArch;
-
-    // Alloc space for data
-    checkCudaErrors(cudaMallocManaged(&arrData, data.size() * struc.totPtsNb * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&arrCriteria, nbCandidatesSum * sizeof(float)));
-    checkCudaErrors(cudaMallocManaged(&arrIndicesTarg, nbCandidatesSum * sizeof(int)));
-    checkCudaErrors(cudaMallocManaged(&arrIndicesArch, nbCandidatesSum * sizeof(int)));
-
-    // Copy data in the new arrays
-    for (int iDay = 0; iDay < data.size(); iDay++) {
-        for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
-            for (int iPt = 0; iPt < struc.ptsNb[iPtor]; iPt++) {
-                arrData[iDay * struc.totPtsNb + struc.indexStart[iPtor] + iPt] = data[iDay][iPtor][iPt];
-            }
-        }
-    }
+    std::vector<int> arrIndicesTarg(N);
+    std::vector<int> arrIndicesArch(N);
 
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
@@ -345,44 +290,105 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         }
     }
 
-    // Launch kernel on GPU
-#if USE_STREAMS
-    for (int i = 0; i < nStreams; i++) {
-        int offset = i * rowsNbPerStream;
-        blocksNb = rowsNbPerStream / blockSize;
-        gpuPredictorCriteriaS1grads<<<blocksNb, blockSize, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, offset);
+    // Alloc space for results
+    float *hRes, *dRes;
+    hRes = (float*)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **) &dRes, N * sizeof(float)));
+
+    for (int i = 0; i < N; ++i) {
+        hRes[i] = 0;
     }
+
+    // Copy the resulting array to the device
+    checkCudaErrors(cudaMemcpy(dRes, hRes, N * sizeof(float), cudaMemcpyHostToDevice));
+
+    for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
+
+        int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
+        float weight = weights[iPtor];
+        int dataSize = data[iPtor].size() * ptsNb;
+
+        // Alloc space for data
+        float *hData, *dData;
+        hData = (float*)malloc(dataSize * sizeof(float));
+        checkCudaErrors(cudaMalloc((void **) &dData, dataSize * sizeof(float)));
+
+
+        // Copy data in the new arrays
+        for (int iDay = 0; iDay < data[iPtor].size(); iDay++) {
+            for (int iPt = 0; iPt < ptsNb; iPt++) {
+                hData[iDay * ptsNb + iPt] = data[iPtor][iDay][iPt];
+            }
+        }
+
+        // Copy the data to the device
+        checkCudaErrors(cudaMemcpy(dData, hData, dataSize * sizeof(float), cudaMemcpyHostToDevice));
+
+        // Launch kernel on GPU
+#if USE_STREAMS
+        for (int i = 0; i < nStreams; i++) {
+            int offset = i * rowsNbPerStream;
+            blocksNb = rowsNbPerStream / blockSize;
+            gpuPredictorCriteriaS1grads<<<blocksNb, blockSize, 0, stream[i]>>>(arrCriteria, arrData, arrIndicesTarg,
+                                                                               arrIndicesArch, struc, n_cand, offset);
+        }
 #else
-    allPredictorsCriteriaS1grads<<<blocksNb, blockSize>>>(arrCriteria, arrData, arrIndicesTarg, arrIndicesArch, struc, n_cand, 0);
+
+        int blocksNb = (ptsNb + blockSize - 1) / blockSize;
+
+        if (blocksNb > 1) {
+            printf("blocksNb > 1\n");
+            return false;
+        }
+
+        for (int iCand = 0; iCand < N; iCand += 1) {
+
+            int targIndex = arrIndicesTarg[iCand] * ptsNb;
+            int archIndex = arrIndicesArch[iCand] * ptsNb;
+
+            switch (criteria[iPtor]) {
+                case S1grads:
+                    criteriaS1grads<<<blocksNb, blockSize>>>(ptsNb, dData + targIndex, dData + archIndex, weight, dRes + iCand);
+                    break;
+                default:
+                    printf("Criteria not yet implemented on GPU.");
+                    return false;
+            }
+
+            // Check for any errors launching the kernel
+            //checkCudaErrors(cudaGetLastError());
+        }
+
 #endif
 
-    // Check for any errors launching the kernel
-    checkCudaErrors(cudaGetLastError());
-    checkCudaErrors(cudaDeviceSynchronize());
+        checkCudaErrors(cudaDeviceSynchronize());
+
+#if USE_STREAMS
+        for (int i = 0; i < nStreams; i++) {
+            cudaStreamDestroy(stream[i]);
+        }
+#endif
+
+        free(hData);
+        checkCudaErrors(cudaFree(dData));
+    }
+
+    // Copy the resulting array to the device
+    checkCudaErrors(cudaMemcpy(hRes, dRes, N * sizeof(float), cudaMemcpyDeviceToHost));
 
     // Set the criteria values in the vector container
     for (int i = 0; i < nbCandidates.size(); i++) {
         std::vector<float> tmpCrit(nbCandidates[i]);
 
         for (int j = 0; j < nbCandidates[i]; j++) {
-            tmpCrit[j] = arrCriteria[indexStart[i] + j];
+            tmpCrit[j] = hRes[indexStart[i] + j];
         }
         resultingCriteria[i] = tmpCrit;
     }
 
-    // Cleanup
+    free(hRes);
+    checkCudaErrors(cudaFree(dRes));
 
-#if USE_STREAMS
-    for (int i = 0; i< nStreams; i++) {
-        cudaStreamDestroy(stream[i]);
-    }
-#endif
-
-    cudaFree(arrData);
-    cudaFree(arrCriteria);
-    cudaFree(arrIndicesTarg);
-    cudaFree(arrIndicesArch);
-
-    return false;
+    return true;
 }
 

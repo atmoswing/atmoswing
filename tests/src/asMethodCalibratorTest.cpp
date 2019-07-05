@@ -210,7 +210,7 @@ TEST(MethodCalibrator, Ref1Cuda)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
-    wxString paramsFile = "parameters_calibration_R1_full.xml";
+    wxString paramsFile = "parameters_calibration_R1_shorter.xml";
 
     // Get parameters
     wxString paramsFilePath = wxFileName::GetCwd();

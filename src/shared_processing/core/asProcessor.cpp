@@ -405,15 +405,15 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             if (!CheckTargetTimeArray(predictorsTarget, timeTargetData)) return false;
 
             // Storage for data pointers
-            std::vector<float *> vpData(predictorsNb);
-            std::vector<std::vector<float *> > vvpData(timeArchiveData.size());
+            std::vector<float *> vpData(timeArchiveData.size());
+            std::vector<std::vector<float *> > vvpData(predictorsNb);
 
             // Copy predictor data pointers
-            for (int iTime = 0; iTime < timeArchiveData.size(); iTime++) {
-                for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                    vpData[iPtor] = predictorsArchive[iPtor]->GetData()[iTime][0].data();
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                for (int iTime = 0; iTime < timeArchiveData.size(); iTime++) {
+                    vpData[iTime] = predictorsArchive[iPtor]->GetData()[iTime][0].data();
                 }
-                vvpData[iTime] = vpData;
+                vvpData[iPtor] = vpData;
             }
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it
@@ -445,11 +445,18 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             vf weights(predictorsNb);
             vi colsNb(predictorsNb);
             vi rowsNb(predictorsNb);
+            std::vector<CudaCriteria> crit(predictorsNb);
 
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 weights[iPtor] = params->GetPredictorWeight(step, iPtor);
                 colsNb[iPtor] = vColsNb[iPtor];
                 rowsNb[iPtor] = vRowsNb[iPtor];
+                if (criteria[iPtor]->GetName().IsSameAs("S1grads")) {
+                    crit[iPtor] = S1grads;
+                } else {
+                    wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
+                    return false;
+                }
             }
 
             // Reset the index start target
@@ -525,37 +532,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 resultingDates[iDateTarg] = currentDates;
             }
 
-            // Get the data structure
-            cudaPredictorsDataPropStruct struc;
-            struc.ptorsNb = (int)weights.size();
-            if (struc.ptorsNb > STRUCT_MAX_SIZE) {
-                printf("The number of predictors is > %d. Please adapt the source code in asProcessorCuda::ProcessCriteria.\n",
-                       STRUCT_MAX_SIZE);
-                return false;
-            }
-
-            struc.totPtsNb = 0;
-
-            for (int iPtor = 0; iPtor < struc.ptorsNb; iPtor++) {
-                struc.rowsNb[iPtor] = rowsNb[iPtor];
-                struc.colsNb[iPtor] = colsNb[iPtor];
-                struc.weights[iPtor] = weights[iPtor];
-                struc.ptsNb[iPtor] = colsNb[iPtor] * rowsNb[iPtor];
-                struc.indexStart[iPtor] = struc.totPtsNb;
-                struc.totPtsNb += colsNb[iPtor] * rowsNb[iPtor];
-
-                if (criteria[iPtor]->GetName().IsSameAs("S1grads")) {
-                    struc.criteria[iPtor] = S1grads;
-                } else {
-                    wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
-                    return false;
-                }
-            }
-
             // Then we process on GPU
-
             if (asProcessorCuda::ProcessCriteria(vvpData, indicesTarg, indicesArch, resultingCriteria,
-                                                 nbCandidates, struc)) {
+                                                 nbCandidates, colsNb, rowsNb, weights, crit)) {
 
                 // If succeeded, we work on the outputs
                 for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
@@ -603,7 +582,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 break;
             }
 #endif
-            // Else we continue on asMULTITHREADS
+            break;
         }
 #endif
 
