@@ -44,7 +44,7 @@
 static const int blockSize = 1024;
 
 __global__
-void criteriaS1grads(int n, const float *x, const float *y, const float w, float *out)
+void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 {
     // Only on a single block for now
     int idx = threadIdx.x;
