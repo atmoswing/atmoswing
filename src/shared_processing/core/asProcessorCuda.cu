@@ -97,6 +97,21 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
     }
 }
 
+__global__
+void processS1grads(int n, const float *data, const int *idxTarg, const int *idxArch, float w, int ptsNb, float *out)
+{
+    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+
+    int ptsN = ptsNb;
+
+    if(idx < n){
+        int targIndex = idxTarg[idx] * ptsN;
+        int archIndex = idxArch[idx] * ptsN;
+
+        criteriaS1grads << < 1, blockSize >> >(ptsN, data + targIndex, data + archIndex, w, out + idx);
+    }
+}
+
 bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
                                       std::vector<std::vector<int>> &indicesArch,
                                       std::vector<std::vector<float>> &resultingCriteria,
@@ -115,19 +130,28 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
     indexStart[nbCandidates.size()] = candNb;
 
-    std::vector<int> arrIndicesTarg(candNb);
-    std::vector<int> arrIndicesArch(candNb);
+    // Alloc space for indices
+    int *hIdxTarg, *dIdxTarg;
+    hIdxTarg = (int *) malloc(candNb * sizeof(int));
+    checkCudaErrors(cudaMalloc((void **) &dIdxTarg, candNb * sizeof(int)));
+    int *hIdxArch, *dIdxArch;
+    hIdxArch = (int *) malloc(candNb * sizeof(int));
+    checkCudaErrors(cudaMalloc((void **) &dIdxArch, candNb * sizeof(int)));
 
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
-            arrIndicesArch[indexStart[i] + j] = indicesArch[i][j];
-            arrIndicesTarg[indexStart[i] + j] = indicesTarg[i];
+            hIdxArch[indexStart[i] + j] = indicesArch[i][j];
+            hIdxTarg[indexStart[i] + j] = indicesTarg[i];
         }
     }
 
+    // Copy to device
+    checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(int), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(int), cudaMemcpyHostToDevice));
+
     // Alloc space for results
     float *hRes, *dRes;
-    hRes = (float*)malloc(candNb * sizeof(float));
+    hRes = (float *) malloc(candNb * sizeof(float));
     checkCudaErrors(cudaMalloc((void **) &dRes, candNb * sizeof(float)));
 
     for (int i = 0; i < candNb; ++i) {
@@ -145,7 +169,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         // Alloc space for data
         float *hData, *dData;
-        hData = (float*)malloc(dataSize * sizeof(float));
+        hData = (float *) malloc(dataSize * sizeof(float));
         checkCudaErrors(cudaMalloc((void **) &dData, dataSize * sizeof(float)));
 
 
@@ -159,31 +183,26 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         // Copy the data to the device
         checkCudaErrors(cudaMemcpy(dData, hData, dataSize * sizeof(float), cudaMemcpyHostToDevice));
 
-        // Launch kernel on GPU
-        int blocksNb = (ptsNb + blockSize - 1) / blockSize;
-
-        if (blocksNb > 1) {
-            printf("blocksNb > 1\n");
+        // Reduction only allowed on 1 block yet
+        if ((ptsNb + blockSize - 1) / blockSize > 1) {
+            printf("Using more than 1 gpu block (too much data)\n");
             return false;
         }
 
-        for (int iCand = 0; iCand < candNb; iCand += 1) {
+        // Launch kernel on GPU
+        int blocksNb = (candNb + blockSize - 1) / blockSize;
 
-            int targIndex = arrIndicesTarg[iCand] * ptsNb;
-            int archIndex = arrIndicesArch[iCand] * ptsNb;
-
-            switch (criteria[iPtor]) {
+        switch (criteria[iPtor]) {
             case S1grads:
-                criteriaS1grads<<<blocksNb, blockSize>>>(ptsNb, dData + targIndex, dData + archIndex, weight, dRes + iCand);
+                processS1grads << < blocksNb, blockSize >> > (candNb, dData, dIdxTarg, dIdxArch, weight, ptsNb, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
                 return false;
-            }
-
-            // Check for any errors launching the kernel
-            checkCudaErrors(cudaGetLastError());
         }
+
+        // Check for any errors launching the kernel
+        checkCudaErrors(cudaGetLastError());
 
         checkCudaErrors(cudaDeviceSynchronize());
 
@@ -206,6 +225,10 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     free(hRes);
     checkCudaErrors(cudaFree(dRes));
+    free(hIdxTarg);
+    checkCudaErrors(cudaFree(dIdxTarg));
+    free(hIdxArch);
+    checkCudaErrors(cudaFree(dIdxArch));
 
     return true;
 }
