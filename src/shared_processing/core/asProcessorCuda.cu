@@ -101,7 +101,7 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 __global__
 void processS1grads(long long n, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
-    const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z  + blockIdx.y * gridDim.x + blockIdx.x;
+    const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const unsigned long long threadId = blockId * blockDim.x + threadIdx.x;
 
     if (threadId < n) {
@@ -175,7 +175,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     // Sizes
     long candNb = 0;
-    std::vector<int> indexStart(nbCandidates.size() + 1);
+    std::vector<long> indexStart(nbCandidates.size() + 1);
     for (int i = 0; i < nbCandidates.size(); i++) {
         indexStart[i] = candNb;
         candNb += nbCandidates[i];
@@ -184,11 +184,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     // Alloc space for indices
     long *hIdxTarg, *dIdxTarg;
-    hIdxTarg = (long *) malloc(candNb * sizeof(long));
-    checkCudaErrors(cudaMalloc((void **) &dIdxTarg, candNb * sizeof(long)));
+    hIdxTarg = (long *)malloc(candNb * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **)&dIdxTarg, candNb * sizeof(long)));
     long *hIdxArch, *dIdxArch;
-    hIdxArch = (long *) malloc(candNb * sizeof(long));
-    checkCudaErrors(cudaMalloc((void **) &dIdxArch, candNb * sizeof(long)));
+    hIdxArch = (long *)malloc(candNb * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **)&dIdxArch, candNb * sizeof(long)));
 
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
@@ -203,8 +203,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     // Alloc space for results
     float *hRes, *dRes;
-    hRes = (float *) malloc(candNb * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **) &dRes, candNb * sizeof(float)));
+    hRes = (float *)malloc(candNb * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **)&dRes, candNb * sizeof(float)));
 
     for (int i = 0; i < candNb; ++i) {
         hRes[i] = 0;
@@ -221,9 +221,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         // Alloc space for data
         float *hData, *dData;
-        hData = (float *) malloc(dataSize * sizeof(float));
-        checkCudaErrors(cudaMalloc((void **) &dData, dataSize * sizeof(float)));
-
+        hData = (float *)malloc(dataSize * sizeof(float));
+        checkCudaErrors(cudaMalloc((void **)&dData, dataSize * sizeof(float)));
 
         // Copy data in the new arrays
         for (int iDay = 0; iDay < data[iPtor].size(); iDay++) {
@@ -249,7 +248,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         switch (criteria[iPtor]) {
             case S1grads:
-                processS1grads <<< blocksNb3D, blockSize >>> (n, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
+                processS1grads<<<blocksNb3D, blockSize>>>(n, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
