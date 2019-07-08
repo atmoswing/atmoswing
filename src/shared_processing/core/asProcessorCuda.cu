@@ -34,6 +34,7 @@
 
 #include "asProcessorCuda.cuh"
 #include <stdio.h>
+#include <cmath>
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
@@ -98,18 +99,68 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 }
 
 __global__
-void processS1grads(int n, const float *data, const int *idxTarg, const int *idxArch, float w, int ptsNb, float *out)
+void processS1grads(long long n, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z  + blockIdx.y * gridDim.x + blockIdx.x;
+    const unsigned long long threadId = blockId * blockDim.x + threadIdx.x;
 
-    int ptsN = ptsNb;
+    if (threadId < n) {
+        int nPts = ptsNb;
+        long iCand = blockId;
+        int iPt = threadIdx.x;
 
-    if(idx < n){
-        int targIndex = idxTarg[idx] * ptsN;
-        int archIndex = idxArch[idx] * ptsN;
+        __shared__ float diff[blockSize];
+        __shared__ float amax[blockSize];
 
-        criteriaS1grads << < 1, blockSize >> >(ptsNb, data + targIndex, data + archIndex, w, out + idx);
-        cudaDeviceSynchronize();
+        // Process differences and get abs max
+        if (iPt < nPts) {
+
+            // Lookup data block
+            long targIndex = idxTarg[iCand] * nPts;
+            long archIndex = idxArch[iCand] * nPts;
+
+            // Lookup data value
+            float xi = data[targIndex + iPt];
+            float yi = data[archIndex + iPt];
+
+            float diffi = xi - yi;
+            float amaxi = fabs(xi);
+            if (fabs(yi) > amaxi) {
+                amaxi = fabs(yi);
+            }
+
+            diff[iPt] = fabs(diffi);
+            amax[iPt] = amaxi;
+        }
+        __syncthreads();
+
+        // Set rest of the block to 0
+        if (iPt >= nPts) {
+            diff[iPt] = 0;
+            amax[iPt] = 0;
+        }
+        __syncthreads();
+
+        // Process sum reduction
+        for (int size = blockSize / 2; size > 0; size /= 2) {
+            if (iPt < size) {
+                diff[iPt] += diff[iPt + size];
+                amax[iPt] += amax[iPt + size];
+            }
+            __syncthreads();
+        }
+
+        // Process final score
+        if (iPt == 0) {
+            float res = 0;
+
+            if (amax[0] == 0) {
+                res = 200;
+            } else {
+                res = 100.0f * (diff[0] / amax[0]);
+            }
+            *(out + iCand) += res * w;
+        }
     }
 }
 
@@ -132,12 +183,12 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     indexStart[nbCandidates.size()] = candNb;
 
     // Alloc space for indices
-    int *hIdxTarg, *dIdxTarg;
-    hIdxTarg = (int *) malloc(candNb * sizeof(int));
-    checkCudaErrors(cudaMalloc((void **) &dIdxTarg, candNb * sizeof(int)));
-    int *hIdxArch, *dIdxArch;
-    hIdxArch = (int *) malloc(candNb * sizeof(int));
-    checkCudaErrors(cudaMalloc((void **) &dIdxArch, candNb * sizeof(int)));
+    long *hIdxTarg, *dIdxTarg;
+    hIdxTarg = (long *) malloc(candNb * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **) &dIdxTarg, candNb * sizeof(long)));
+    long *hIdxArch, *dIdxArch;
+    hIdxArch = (long *) malloc(candNb * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **) &dIdxArch, candNb * sizeof(long)));
 
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
@@ -147,8 +198,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 
     // Copy to device
-    checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(int), cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(int), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(long), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(long), cudaMemcpyHostToDevice));
 
     // Alloc space for results
     float *hRes, *dRes;
@@ -186,16 +237,19 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         // Reduction only allowed on 1 block yet
         if ((ptsNb + blockSize - 1) / blockSize > 1) {
-            printf("Using more than 1 gpu block (too much data)\n");
+            printf("Using more than 1 gpu block (too much data points)\n");
             return false;
         }
 
         // Launch kernel on GPU
-        int blocksNb = (candNb + blockSize - 1) / blockSize;
+        long long n = candNb * blockSize; // force using 1 block per candidate date
+        int blocksNb = ceil(std::cbrt(candNb));
+
+        dim3 blocksNb3D(blocksNb, blocksNb, blocksNb);
 
         switch (criteria[iPtor]) {
             case S1grads:
-                processS1grads << < blocksNb, blockSize >> > (candNb, dData, dIdxTarg, dIdxArch, weight, ptsNb, dRes);
+                processS1grads <<< blocksNb3D, blockSize >>> (n, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
