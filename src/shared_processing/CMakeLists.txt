@@ -44,6 +44,7 @@ include(define_common_libraries)
 
 # CUDA
 if (USE_CUDA)
+    set(CUDA_SEPARABLE_COMPILATION ON)
     find_package(CUDA 9.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_35 -rdc=true)
