@@ -108,7 +108,8 @@ void processS1grads(int n, const float *data, const int *idxTarg, const int *idx
         int targIndex = idxTarg[idx] * ptsN;
         int archIndex = idxArch[idx] * ptsN;
 
-        criteriaS1grads << < 1, blockSize >> >(ptsN, data + targIndex, data + archIndex, w, out + idx);
+        criteriaS1grads << < 1, blockSize >> >(ptsNb, data + targIndex, data + archIndex, w, out + idx);
+        cudaDeviceSynchronize();
     }
 }
 
