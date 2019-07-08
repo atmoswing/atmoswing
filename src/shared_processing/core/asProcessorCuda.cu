@@ -174,7 +174,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     int ptorsNb = weights.size();
 
     // Sizes
-    int candNb = 0;
+    long candNb = 0;
     std::vector<int> indexStart(nbCandidates.size() + 1);
     for (int i = 0; i < nbCandidates.size(); i++) {
         indexStart[i] = candNb;
@@ -217,7 +217,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
         float weight = weights[iPtor];
-        int dataSize = data[iPtor].size() * ptsNb;
+        long dataSize = data[iPtor].size() * ptsNb;
 
         // Alloc space for data
         float *hData, *dData;
