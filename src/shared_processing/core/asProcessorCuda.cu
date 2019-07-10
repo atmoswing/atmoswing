@@ -44,6 +44,16 @@
 // efficiency and facilitates coalescing.
 static const int maxBlockSize = 1024;
 
+__device__ void warpReduce(volatile float *sdata, int tid)
+{
+    sdata[tid] += sdata[tid + 32];
+    sdata[tid] += sdata[tid + 16];
+    sdata[tid] += sdata[tid + 8];
+    sdata[tid] += sdata[tid + 4];
+    sdata[tid] += sdata[tid + 2];
+    sdata[tid] += sdata[tid + 1];
+}
+
 __global__
 void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 {
@@ -143,12 +153,16 @@ void processS1grads(int bs, long candNb, int ptsNb, const float *data, const lon
         __syncthreads();
 
         // Process sum reduction
-        for (int size = bs / 2; size > 0; size /= 2) {
-            if (iPt < size) {
-                diff[iPt] += diff[iPt + size];
-                amax[iPt] += amax[iPt + size];
+        for (unsigned int s = bs / 2; s > 32; s /= 2) {
+            if (iPt < s) {
+                diff[iPt] += diff[iPt + s];
+                amax[iPt] += amax[iPt + s];
             }
             __syncthreads();
+        }
+        if (iPt < 32) {
+            warpReduce(diff, iPt);
+            warpReduce(amax, iPt);
         }
 
         // Process final score
@@ -210,16 +224,27 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     // Init resulting array to 0s
     checkCudaErrors(cudaMemset(dRes, 0, candNb * sizeof(float)));
 
+    // Get max predictor size
+    long maxDataSize = 0;
+    for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
+        int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
+        long dataSize = data[iPtor].size() * ptsNb;
+        if (dataSize > maxDataSize) {
+            maxDataSize = dataSize;
+        }
+    }
+
+    // Alloc space for data
+    float *hData, *dData;
+    hData = (float *)malloc(maxDataSize * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **)&dData, maxDataSize * sizeof(float)));
+
+    // Loop over all predictors
     for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
 
         int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
         float weight = weights[iPtor];
         long dataSize = data[iPtor].size() * ptsNb;
-
-        // Alloc space for data
-        float *hData, *dData;
-        hData = (float *)malloc(dataSize * sizeof(float));
-        checkCudaErrors(cudaMalloc((void **)&dData, dataSize * sizeof(float)));
 
         // Copy data in the new arrays
         for (int iDay = 0; iDay < data[iPtor].size(); iDay++) {
@@ -239,8 +264,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         // Define block size and blocks nb
         int blockSize = (int)pow(2, ceil(log(ptsNb) / log(2)));
-        int blocksNb = ceil(std::cbrt(candNb));
-        dim3 blocksNb3D(blocksNb, blocksNb, blocksNb);
+        int blocksNbXY = ceil(std::cbrt(candNb));
+        int blocksNbZ = ceil((double)candNb / (blocksNbXY * blocksNbXY));
+        dim3 blocksNb3D(blocksNbXY, blocksNbXY, blocksNbZ);
 
         // Launch kernel
         switch (criteria[iPtor]) {
@@ -256,9 +282,6 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         checkCudaErrors(cudaGetLastError());
 
         checkCudaErrors(cudaDeviceSynchronize());
-
-        free(hData);
-        checkCudaErrors(cudaFree(dData));
     }
 
     // Copy the resulting array to the device
@@ -274,6 +297,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         resultingCriteria[i] = tmpCrit;
     }
 
+    free(hData);
+    checkCudaErrors(cudaFree(dData));
     free(hRes);
     checkCudaErrors(cudaFree(dRes));
     free(hIdxTarg);
