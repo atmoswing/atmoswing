@@ -99,7 +99,7 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 }
 
 __global__
-void processS1grads(long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
+void processS1grads(int bs, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
     const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
 
@@ -108,8 +108,10 @@ void processS1grads(long candNb, int ptsNb, const float *data, const long *idxTa
         long iCand = blockId;
         int iPt = threadIdx.x;
 
-        __shared__ float diff[maxBlockSize];
-        __shared__ float amax[maxBlockSize];
+        extern __shared__ float mem[];
+
+        float *diff = mem;
+        float *amax = &diff[bs];
 
         // Process differences and get abs max
         if (iPt < nPts) {
@@ -141,7 +143,7 @@ void processS1grads(long candNb, int ptsNb, const float *data, const long *idxTa
         __syncthreads();
 
         // Process sum reduction
-        for (int size = maxBlockSize / 2; size > 0; size /= 2) {
+        for (int size = bs / 2; size > 0; size /= 2) {
             if (iPt < size) {
                 diff[iPt] += diff[iPt + size];
                 amax[iPt] += amax[iPt + size];
@@ -239,14 +241,15 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
             return false;
         }
 
-        // Launch kernel on GPU
+        // Define block size and blocks nb
+        int blockSize = (int)pow(2, ceil(log(ptsNb) / log(2)));
         int blocksNb = ceil(std::cbrt(candNb));
-
         dim3 blocksNb3D(blocksNb, blocksNb, blocksNb);
 
+        // Launch kernel
         switch (criteria[iPtor]) {
             case S1grads:
-                processS1grads<<<blocksNb3D, maxBlockSize>>>(candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
+                processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(blockSize, candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
