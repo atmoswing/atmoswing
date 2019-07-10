@@ -44,14 +44,20 @@
 // efficiency and facilitates coalescing.
 static const int maxBlockSize = 1024;
 
-__device__ void warpReduce(volatile float *sdata, int tid)
+__device__ void warpReduce(volatile float *shared, int tid, int blockSize)
 {
-    sdata[tid] += sdata[tid + 32];
-    sdata[tid] += sdata[tid + 16];
-    sdata[tid] += sdata[tid + 8];
-    sdata[tid] += sdata[tid + 4];
-    sdata[tid] += sdata[tid + 2];
-    sdata[tid] += sdata[tid + 1];
+    if (blockSize >= 64)
+        shared[tid] += shared[tid + 32];
+    if (blockSize >= 32)
+        shared[tid] += shared[tid + 16];
+    if (blockSize >= 16)
+        shared[tid] += shared[tid + 8];
+    if (blockSize >= 8)
+        shared[tid] += shared[tid + 4];
+    if (blockSize >= 4)
+        shared[tid] += shared[tid + 2];
+    if (blockSize >= 2)
+        shared[tid] += shared[tid + 1];
 }
 
 __global__
@@ -161,8 +167,8 @@ void processS1grads(int bs, long candNb, int ptsNb, const float *data, const lon
             __syncthreads();
         }
         if (iPt < 32) {
-            warpReduce(diff, iPt);
-            warpReduce(amax, iPt);
+            warpReduce(diff, iPt, bs);
+            warpReduce(amax, iPt, bs);
         }
 
         // Process final score
