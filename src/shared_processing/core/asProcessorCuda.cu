@@ -45,16 +45,6 @@
 static const int maxBlockSize = 1024;
 
 __global__
-void initArrayToZeros(float *x, const long candNb, long offset)
-{
-    int idx = offset + blockDim.x * blockIdx.x + threadIdx.x;
-
-    if (idx < candNb) {
-        x[idx] = 0;
-    }
-}
-
-__global__
 void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 {
     // Only on a single block for now
@@ -214,15 +204,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
     // Alloc space for results
     float *hRes, *dRes;
-    hRes = (float *)malloc(candNbStreams * sizeof(float));
-    checkCudaErrors(cudaMalloc((void **)&dRes, candNbStreams * sizeof(float)));
+    hRes = (float *)malloc(candNb * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **)&dRes, candNb * sizeof(float)));
 
     // Init resulting array to 0s
-    for (int i = 0; i < nStreams; ++i) {
-        long offset = i * streamSize;
-        int blocksNbRes = ceil((double)streamSize/maxBlockSize);
-        initArrayToZeros<<<blocksNbRes, maxBlockSize, 0, stream[i]>>>(dRes, candNb, offset);
-    }
+    checkCudaErrors(cudaMemset(dRes, 0, candNb * sizeof(float)));
 
     for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
 
