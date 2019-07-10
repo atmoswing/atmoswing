@@ -42,7 +42,7 @@
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int blockSize = 1024;
+static const int maxBlockSize = 1024;
 
 __global__
 void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
@@ -50,8 +50,8 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
     // Only on a single block for now
     int idx = threadIdx.x;
 
-    __shared__ float diff[blockSize];
-    __shared__ float amax[blockSize];
+    __shared__ float diff[maxBlockSize];
+    __shared__ float amax[maxBlockSize];
 
     // Process differences and get abs max
     if (idx < n) {
@@ -77,7 +77,7 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
     __syncthreads();
 
     // Process sum reduction
-    for (int size = blockSize / 2; size > 0; size /= 2) {
+    for (int size = maxBlockSize / 2; size > 0; size /= 2) {
         if (idx < size) {
             diff[idx] += diff[idx + size];
             amax[idx] += amax[idx + size];
@@ -99,18 +99,17 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 }
 
 __global__
-void processS1grads(long long n, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
+void processS1grads(long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
     const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
-    const unsigned long long threadId = blockId * blockDim.x + threadIdx.x;
 
-    if (threadId < n) {
+    if (blockId < candNb) {
         int nPts = ptsNb;
         long iCand = blockId;
         int iPt = threadIdx.x;
 
-        __shared__ float diff[blockSize];
-        __shared__ float amax[blockSize];
+        __shared__ float diff[maxBlockSize];
+        __shared__ float amax[maxBlockSize];
 
         // Process differences and get abs max
         if (iPt < nPts) {
@@ -142,7 +141,7 @@ void processS1grads(long long n, int ptsNb, const float *data, const long *idxTa
         __syncthreads();
 
         // Process sum reduction
-        for (int size = blockSize / 2; size > 0; size /= 2) {
+        for (int size = maxBlockSize / 2; size > 0; size /= 2) {
             if (iPt < size) {
                 diff[iPt] += diff[iPt + size];
                 amax[iPt] += amax[iPt + size];
@@ -235,20 +234,19 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         checkCudaErrors(cudaMemcpy(dData, hData, dataSize * sizeof(float), cudaMemcpyHostToDevice));
 
         // Reduction only allowed on 1 block yet
-        if ((ptsNb + blockSize - 1) / blockSize > 1) {
+        if (ptsNb > maxBlockSize) {
             printf("Using more than 1 gpu block (too much data points)\n");
             return false;
         }
 
         // Launch kernel on GPU
-        long long n = candNb * blockSize; // force using 1 block per candidate date
         int blocksNb = ceil(std::cbrt(candNb));
 
         dim3 blocksNb3D(blocksNb, blocksNb, blocksNb);
 
         switch (criteria[iPtor]) {
             case S1grads:
-                processS1grads<<<blocksNb3D, blockSize>>>(n, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
+                processS1grads<<<blocksNb3D, maxBlockSize>>>(candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
