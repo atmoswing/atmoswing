@@ -109,9 +109,10 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 }
 
 __global__
-void processS1grads(int bs, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
+void processS1grads(int bs, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch,
+                    float w, float *out, long offset)
 {
-    const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const unsigned long blockId = offset + gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
 
     if (blockId < candNb) {
         int nPts = ptsNb;
@@ -193,13 +194,22 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
     indexStart[nbCandidates.size()] = candNb;
 
+    // Streams
+    const int nStreams = 4;
+    long candNbStreams = nStreams * (long)ceil((double)candNb / nStreams);
+    const int streamSize = candNbStreams / nStreams;
+    cudaStream_t stream[nStreams];
+    for (int i = 0; i < nStreams; ++i) {
+        checkCudaErrors(cudaStreamCreate(&stream[i]));
+    }
+
     // Alloc space for indices
     long *hIdxTarg, *dIdxTarg;
-    hIdxTarg = (long *)malloc(candNb * sizeof(long));
-    checkCudaErrors(cudaMalloc((void **)&dIdxTarg, candNb * sizeof(long)));
+    hIdxTarg = (long *)malloc(candNbStreams * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **)&dIdxTarg, candNbStreams * sizeof(long)));
     long *hIdxArch, *dIdxArch;
-    hIdxArch = (long *)malloc(candNb * sizeof(long));
-    checkCudaErrors(cudaMalloc((void **)&dIdxArch, candNb * sizeof(long)));
+    hIdxArch = (long *)malloc(candNbStreams * sizeof(long));
+    checkCudaErrors(cudaMalloc((void **)&dIdxArch, candNbStreams * sizeof(long)));
 
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
@@ -209,8 +219,13 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 
     // Copy to device
-    checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(long), cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(long), cudaMemcpyHostToDevice));
+    for (int i = 0; i < nStreams; ++i) {
+        long offset = i * streamSize;
+        checkCudaErrors(cudaMemcpyAsync(&dIdxTarg[offset], &hIdxTarg[offset], streamSize * sizeof(long),
+                                        cudaMemcpyHostToDevice, stream[i]));
+        checkCudaErrors(cudaMemcpyAsync(&dIdxArch[offset], &hIdxArch[offset], streamSize * sizeof(long),
+                                        cudaMemcpyHostToDevice, stream[i]));
+    }
 
     // Alloc space for results
     float *hRes, *dRes;
@@ -228,7 +243,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 
         int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
         float weight = weights[iPtor];
-        long dataSize = data[iPtor].size() * ptsNb;
+        long dataSize = nStreams * (long)ceil((double)data[iPtor].size() * ptsNb / nStreams);
+        const int streamSizeData = dataSize / nStreams;
 
         // Alloc space for data
         float *hData, *dData;
@@ -243,7 +259,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         }
 
         // Copy the data to the device
-        checkCudaErrors(cudaMemcpy(dData, hData, dataSize * sizeof(float), cudaMemcpyHostToDevice));
+        for (int i = 0; i < nStreams; ++i) {
+            long offset = i * streamSizeData;
+            checkCudaErrors(cudaMemcpyAsync(&dData[offset], &hData[offset], streamSizeData * sizeof(float),
+                                            cudaMemcpyHostToDevice, stream[i]));
+        }
 
         // Reduction only allowed on 1 block yet
         if (ptsNb > maxBlockSize) {
@@ -254,16 +274,22 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         // Define block size and blocks nb
         int blockSize = (int)pow(2, ceil(log(ptsNb) / log(2)));
         int blocksNb = ceil(std::cbrt(candNb));
-        dim3 blocksNb3D(blocksNb, blocksNb, blocksNb);
+        int zBlocksNb = ceil((double)candNb/(blocksNb*blocksNb*nStreams));
+        dim3 blocksNb3D(blocksNb, blocksNb, zBlocksNb);
 
         // Launch kernel
-        switch (criteria[iPtor]) {
-            case S1grads:
-                processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(blockSize, candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
-                break;
-            default:
-                printf("Criteria not yet implemented on GPU.");
-                return false;
+        for (int i = 0; i < nStreams; ++i) {
+            long offset = i * blocksNb * blocksNb * zBlocksNb;
+
+            switch (criteria[iPtor]) {
+                case S1grads:
+                    processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float), stream[i]>>>
+                        (blockSize, candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes, offset);
+                    break;
+                default:
+                    printf("Criteria not yet implemented on GPU.");
+                    return false;
+            }
         }
 
         // Check for any errors launching the kernel
@@ -276,7 +302,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 
     // Copy the resulting array to the device
-    checkCudaErrors(cudaMemcpy(hRes, dRes, candNb * sizeof(float), cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy(hRes, dRes, candNbStreams * sizeof(float), cudaMemcpyDeviceToHost));
 
     // Set the criteria values in the vector container
     for (int i = 0; i < nbCandidates.size(); i++) {
@@ -294,6 +320,9 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     checkCudaErrors(cudaFree(dIdxTarg));
     free(hIdxArch);
     checkCudaErrors(cudaFree(dIdxArch));
+    for (int i = 0; i < nStreams; ++i) {
+        checkCudaErrors(cudaStreamDestroy(stream[i]));
+    }
 
     return true;
 }
