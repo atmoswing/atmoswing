@@ -335,12 +335,6 @@ size_t asPredictor::CreateHash() const
     hash << m_time[0];
     hash << m_time[m_time.size() - 1];
     hash << m_time.size();
-    hash << m_axisLat[0];
-    hash << m_axisLat[m_axisLat.size() - 1];
-    hash << m_latPtsnb;
-    hash << m_axisLon[0];
-    hash << m_axisLon[m_axisLon.size() - 1];
-    hash << m_lonPtsnb;
     hash << m_membersNb;
     hash << m_isLatLon;
     hash << m_isPreprocessed;
