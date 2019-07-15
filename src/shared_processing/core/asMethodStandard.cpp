@@ -59,6 +59,7 @@ asMethodStandard::asMethodStandard()
 {
     ThreadsManager().CritSectionConfig().Enter();
     m_dumpPredictorData = wxFileConfig::Get()->ReadBool("/General/DumpPredictorData", false);
+    m_loadFromDumpedData = wxFileConfig::Get()->ReadBool("/General/LoadDumpedData", false);
     ThreadsManager().CritSectionConfig().Leave();
 }
 
@@ -529,6 +530,19 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 }
             }
 
+            if (m_loadFromDumpedData) {
+                predictor->SetLevel(preloadLevels[iLevel]);
+                predictor->SetTimeArray(timeArray.GetTimeArray());
+                if (predictor->DumpFileExists()) {
+                    if (!predictor->LoadDumpedData()) {
+                        wxLogError(_("Failed loading dumped data."));
+                        return false;
+                    }
+                    m_preloadedArchive[iStep][iPtor][iDat][iLevel][iHour] = predictor;
+                    continue;
+                }
+            }
+
             // Data loading
             wxLogVerbose(_("Loading %s data for level %d, %gh."), preloadDataIds[iDat], (int) preloadLevels[iLevel],
                          preloadHours[iHour]);
@@ -573,7 +587,7 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 predictorSize = predictor->GetData().size();
             }
 
-            if (m_dumpPredictorData) {
+            if (m_dumpPredictorData || m_loadFromDumpedData) {
                 if (!predictor->DumpData()) {
                     return false;
                 }

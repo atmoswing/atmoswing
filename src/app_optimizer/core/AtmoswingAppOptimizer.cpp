@@ -76,6 +76,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_SWITCH, NULL, "skip-valid",              "Skip the validation calculation"},
     {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates",      "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
     {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data",     "Dump predictor data to binary files to reduce RAM usage"},
+    {wxCMD_LINE_SWITCH, NULL, "load-from-dumped-data",   "Load dumped predictor data into RAM (faster load)"},
     {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
                                                          "\n \t\t\t\t\t - single: single assessment"
                                                          "\n \t\t\t\t\t - classic: classic calibration"
@@ -563,6 +564,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Memory option
     if (parser.Found("dump-predictor-data")) {
         wxFileConfig::Get()->Write("/General/DumpPredictorData", true);
+    }
+
+    // Load from dumped memory files
+    if (parser.Found("load-from-dumped-data")) {
+        wxFileConfig::Get()->Write("/General/LoadDumpedData", true);
     }
 
 
