@@ -1689,6 +1689,17 @@ bool asPredictor::GetDataFromFile(asFileGrib &gbFile, vvva2f &compositeData)
 
 bool asPredictor::TransformData(vvva2f &compositeData)
 {
+
+    if (wxFileConfig::Get()->ReadBool("/General/ReplaceNans", false)) {
+        for (auto &area : compositeData) {
+            for (int iTime = 0; iTime < area.size(); iTime++) {
+                for (int iMem = 0; iMem < area[0].size(); iMem++) {
+                    area[iTime][iMem] = (!area[iTime][iMem].isNaN()).select(area[iTime][iMem], -9999);
+                }
+            }
+        }
+    }
+
     // See http://www.ecmwf.int/en/faq/geopotential-defined-units-m2/s2-both-pressure-levels-and-surface-orography-how-can-height
     if (m_parameter == Geopotential) {
         for (auto &area : compositeData) {
