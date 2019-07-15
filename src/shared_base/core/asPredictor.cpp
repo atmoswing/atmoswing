@@ -1694,7 +1694,9 @@ bool asPredictor::TransformData(vvva2f &compositeData)
         for (auto &area : compositeData) {
             for (int iTime = 0; iTime < area.size(); iTime++) {
                 for (int iMem = 0; iMem < area[0].size(); iMem++) {
-                    area[iTime][iMem] = (!area[iTime][iMem].isNaN()).select(area[iTime][iMem], -9999);
+                    if (area[iTime][iMem].hasNaN()) {
+                        area[iTime][iMem] = (!area[iTime][iMem].isNaN()).select(area[iTime][iMem], -9999);
+                    }
                 }
             }
         }
