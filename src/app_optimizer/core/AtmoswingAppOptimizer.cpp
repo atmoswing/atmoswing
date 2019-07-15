@@ -78,6 +78,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data",     "Dump predictor data to binary files to reduce RAM usage"},
     {wxCMD_LINE_SWITCH, NULL, "load-from-dumped-data",   "Load dumped predictor data into RAM (faster load)"},
     {wxCMD_LINE_SWITCH, NULL, "replace-nans",            "Option to replace NaNs with -9999 (faster processing)"},
+    {wxCMD_LINE_SWITCH, NULL, "skip-nans-check",         "Do not check for NaNs (faster processing)"},
     {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
                                                          "\n \t\t\t\t\t - single: single assessment"
                                                          "\n \t\t\t\t\t - classic: classic calibration"
@@ -575,6 +576,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     // Replace NaNs with another value
     if (parser.Found("replace-nans")) {
         wxFileConfig::Get()->Write("/General/ReplaceNans", true);
+        wxFileConfig::Get()->Write("/General/SkipNansCheck", true);
+    }
+
+    if (parser.Found("skip-nans-check")) {
+        wxFileConfig::Get()->Write("/General/SkipNansCheck", true);
     }
 
 
