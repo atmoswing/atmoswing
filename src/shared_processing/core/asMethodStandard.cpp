@@ -588,8 +588,11 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             }
 
             if (m_dumpPredictorData || m_loadFromDumpedData) {
-                if (!predictor->DumpData()) {
+                if (!predictor->SaveDumpFile()) {
                     return false;
+                }
+                if (m_dumpPredictorData) {
+                    predictor->DumpData();
                 }
             }
 

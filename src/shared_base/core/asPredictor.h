@@ -124,7 +124,9 @@ public:
 
     bool Inline();
 
-    bool DumpData();
+    void DumpData();
+
+    bool SaveDumpFile();
 
     bool LoadDumpedData();
 

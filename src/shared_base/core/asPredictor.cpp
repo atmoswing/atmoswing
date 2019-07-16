@@ -196,7 +196,13 @@ bool asPredictor::SetData(vva2f &val)
     return true;
 }
 
-bool asPredictor::DumpData()
+void asPredictor::DumpData()
+{
+    m_wasDumped = true;
+    m_data.clear();
+}
+
+bool asPredictor::SaveDumpFile()
 {
     wxASSERT(m_time.size() > 0);
     wxASSERT(!m_data.empty());
@@ -242,10 +248,6 @@ bool asPredictor::DumpData()
         wxLogError(_("Failed closing the file %s"), filePath);
         return false;
     }
-
-    m_wasDumped = true;
-
-    m_data.clear();
 
     return true;
 }
