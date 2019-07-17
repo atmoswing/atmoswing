@@ -124,6 +124,14 @@ public:
 
     bool Inline();
 
+    void DumpData();
+
+    bool SaveDumpFile();
+
+    bool LoadDumpedData();
+
+    bool DumpFileExists() const;
+
     bool SetData(vva2f &val);
 
     float GetMinValue() const;
@@ -269,6 +277,7 @@ public:
 
         m_fInd.memberStart = 0;
         m_fInd.memberCount = 1;
+        m_membersNb = 1;
     }
 
     void SelectMember(int memberNum)
@@ -280,6 +289,7 @@ public:
         // memberNum is 1-based, netcdf index is 0-based
         m_fInd.memberStart = memberNum - 1;
         m_fInd.memberCount = 1;
+        m_membersNb = 1;
     }
 
     void SelectMembers(int memberNb)
@@ -291,11 +301,12 @@ public:
         // memberNum is 1-based, netcdf index is 0-based
         m_fInd.memberStart = 0;
         m_fInd.memberCount = memberNb;
+        m_membersNb = memberNb;
     }
 
     int GetMembersNb()
     {
-        return wxMax(m_fInd.memberCount, 1);
+        return wxMax(m_membersNb, 1);
     }
 
     a1d GetLatAxis() const
@@ -339,6 +350,26 @@ public:
     void SetWarnMissingLevels(bool val)
     {
         m_warnMissingLevels = val;
+    }
+
+    void SetLevel(float val)
+    {
+        m_level = val;
+    }
+
+    void SetTimeArray(const a1d &time)
+    {
+        m_time = time;
+    }
+
+    void SetWasDumped(bool val)
+    {
+        m_wasDumped = val;
+    }
+
+    bool WasDumped() const
+    {
+        return m_wasDumped;
     }
 
 
@@ -391,6 +422,7 @@ protected:
     bool m_initialized;
     bool m_standardize;
     bool m_axesChecked;
+    bool m_wasDumped;
     wxString m_dataId;
     wxString m_datasetId;
     wxString m_datasetName;
@@ -408,6 +440,7 @@ protected:
     float m_level;
     a1d m_time;
     vva2f m_data;
+    int m_membersNb;
     int m_latPtsnb;
     int m_lonPtsnb;
     a1d m_axisLat;
@@ -527,6 +560,10 @@ private:
     bool ExtractTimeAxis(asFileNetcdf &ncFile);
 
     bool FillWithNaNs(vvva2f &compositeData) const;
+
+    size_t CreateHash() const;
+
+    wxString GetDumpFileName() const;
 };
 
 #endif

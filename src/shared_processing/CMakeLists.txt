@@ -44,13 +44,16 @@ include(define_common_libraries)
 
 # CUDA
 if (USE_CUDA)
+    set(CUDA_SEPARABLE_COMPILATION ON)
     find_package(CUDA 9.0 REQUIRED)
     include_directories(${CUDA_INCLUDE_DIRS})
-    #set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_30;-use_fast_math)
+    #set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-arch=sm_35 -rdc=true)
     set(CUDA_NVCC_FLAGS_RELEASE ${CUDA_NVCC_FLAGS_RELEASE};-O3)
     set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
     set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
     cuda_add_library(ascuda STATIC ${src_cuda})
+    target_link_libraries(ascuda ${CUDA_cudadevrt_LIBRARY})
+    target_link_libraries(ascuda ${CUDA_cudart_static_LIBRARY})
     add_definitions(-DUSE_CUDA)
 else (USE_CUDA)
     # unset for wxhgversion

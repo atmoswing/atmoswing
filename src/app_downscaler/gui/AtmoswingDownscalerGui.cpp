@@ -62,14 +62,14 @@ asFrameDownscalerVirtual::asFrameDownscalerVirtual( wxWindow* parent, wxWindowID
 	m_filePickerPredictand = new wxFilePickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a file"), _("*.nc"), wxDefaultPosition, wxSize( -1,-1 ), wxFLP_DEFAULT_STYLE );
 	bSizer5->Add( m_filePickerPredictand, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextArchivePredictorDir = new wxStaticText( m_panelControls, wxID_ANY, _("Select the arhive predictors directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextArchivePredictorDir = new wxStaticText( m_panelControls, wxID_ANY, _("Select the archive predictors directory"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextArchivePredictorDir->Wrap( -1 );
 	bSizer5->Add( m_staticTextArchivePredictorDir, 0, wxALL, 5 );
 
 	m_dirPickerArchivePredictor = new wxDirPickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	bSizer5->Add( m_dirPickerArchivePredictor, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_staticTextScenarioPredictorDir = new wxStaticText( m_panelControls, wxID_ANY, _("Select the scenario predictors directory"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticTextScenarioPredictorDir = new wxStaticText( m_panelControls, wxID_ANY, _("Select the predictors directory for the target period"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticTextScenarioPredictorDir->Wrap( -1 );
 	bSizer5->Add( m_staticTextScenarioPredictorDir, 0, wxALL, 5 );
 

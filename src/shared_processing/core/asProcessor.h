@@ -78,6 +78,11 @@ public:
 protected:
 
 private:
+
+    static bool CheckArchiveTimeArray(const std::vector<asPredictor *>& predictorsArchive, const a1d& timeArchiveData);
+
+    static bool CheckTargetTimeArray(const std::vector<asPredictor *>& predictorsTarget, const a1d& timeTargetData);
+
 };
 
 #endif
