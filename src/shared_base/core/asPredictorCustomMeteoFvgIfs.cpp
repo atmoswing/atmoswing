@@ -56,6 +56,10 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_parameter = GeopotentialHeight;
             m_gribCode = {0, 128, 156, 100};
             m_unit = m;
+        } else if (m_dataId.Contains("2t_sfc")) {
+            m_parameter = AirTemperature;
+            m_gribCode = {0, 128, 167, 1};
+            m_unit = degK;
         } else if (m_dataId.Contains("t")) {
             m_parameter = AirTemperature;
             m_gribCode = {0, 128, 130, 100};
@@ -68,14 +72,26 @@ bool asPredictorCustomMeteoFvgIfs::Init()
             m_parameter = RelativeHumidity;
             m_gribCode = {0, 128, 157, 100};
             m_unit = percent;
+        } else if (m_dataId.Contains("10u_sfc")) {
+            m_parameter = Uwind;
+            m_gribCode = {0, 128, 165, 1};
+            m_unit = m_s;
         } else if (m_dataId.Contains("u")) {
             m_parameter = Uwind;
             m_gribCode = {0, 128, 131, 100};
+            m_unit = m_s;
+        } else if (m_dataId.Contains("10v_sfc")) {
+            m_parameter = Vwind;
+            m_gribCode = {0, 128, 166, 1};
             m_unit = m_s;
         } else if (m_dataId.Contains("v")) {
             m_parameter = Vwind;
             m_gribCode = {0, 128, 132, 100};
             m_unit = m_s;
+        } else if (m_dataId.Contains("cp_sfc")) {
+            m_parameter = Precipitation;
+            m_gribCode = {0, 128, 143, 1};
+            m_unit = m;
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
             return false;
