@@ -2,3 +2,5 @@ Language: Cpp
 TabWidth: 4
 IndentWidth: 4
 ColumnLimit: 120
+BreakBeforeBraces: Linux
+IndentCaseLabels: true

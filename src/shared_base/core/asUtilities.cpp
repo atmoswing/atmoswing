@@ -915,7 +915,7 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
     if (*pLast > *pFirst) {
         // Binary search
         while (pFirst <= pLast) {
-            vlength = (int) (pLast - pFirst);
+            vlength = (int)(pLast - pFirst);
             pMid = pFirst + vlength / 2;
             if (targetValue - tolerance > *pMid) {
                 pFirst = pMid + 1;
@@ -929,9 +929,9 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pLast - pArrStart < 0) {
-            pLast = (T *) pArrStart;
+            pLast = (T *)pArrStart;
         } else if (pLast - pArrEnd > 0) {
-            pLast = (T *) pArrEnd - 1;
+            pLast = (T *)pArrEnd - 1;
         } else if (pLast - pArrEnd == 0) {
             pLast -= 1;
         }
@@ -987,9 +987,9 @@ int asFindT(const T *pArrStart, const T *pArrEnd, const T targetValue, const T t
 
         // Check the pointers
         if (pFirst - pArrStart < 0) {
-            pFirst = (T *) pArrStart + 1;
+            pFirst = (T *)pArrStart + 1;
         } else if (pFirst - pArrEnd > 0) {
-            pFirst = (T *) pArrEnd;
+            pFirst = (T *)pArrEnd;
         } else if (pFirst - pArrStart == 0) {
             pFirst += 1;
         }

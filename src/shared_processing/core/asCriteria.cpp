@@ -115,6 +115,11 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
 
 void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)
 {
+    if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
+        m_checkNaNs = false;
+        return;
+    }
+
     if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
         m_checkNaNs = false;
     }

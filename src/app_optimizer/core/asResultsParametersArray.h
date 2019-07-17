@@ -67,8 +67,8 @@ private:
     vf m_scoresCalib;
     vf m_scoresValid;
     std::vector<asParametersScoring> m_parametersForScoreOnArray;
-    std::vector<a1f> m_scoresCalibForScoreOnArray;
-    std::vector<a1f> m_scoresValidForScoreOnArray;
+    va1f m_scoresCalibForScoreOnArray;
+    va1f m_scoresValidForScoreOnArray;
 };
 
 #endif

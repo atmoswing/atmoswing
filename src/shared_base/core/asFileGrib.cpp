@@ -281,7 +281,7 @@ bool asFileGrib::CheckGribErrorCode(int ierr) const
         return true;
     }
 
-    wxLogError(_("Grib error: %s"), codes_get_error_message(ierr));
+    wxLogError(_("Grib error (file %s): %s"), m_fileName.GetFullName(), codes_get_error_message(ierr));
 
     return false;
 }
@@ -645,7 +645,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             double *values = NULL;
             size_t valuesLenth = 0;
             CODES_CHECK(codes_get_size(h, "values", &valuesLenth), 0);
-            values = (double *) malloc(valuesLenth * sizeof(double));
+            values = new double[valuesLenth + 1];
             CODES_CHECK(codes_get_double_array(h, "values", values, &valuesLenth), 0);
 
             if (nLats > 0 && m_yAxes[m_index][0] > m_yAxes[m_index][1]) {
@@ -672,7 +672,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
                 }
             }
 
-            free(values);
+            delete[](values);
             codes_handle_delete(h);
         }
 
@@ -680,6 +680,8 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
             wxLogError(_("GRIB message not found for the given constraints."));
             return false;
         }
+
+        codes_index_delete(index);
 
         iTime++;
     }

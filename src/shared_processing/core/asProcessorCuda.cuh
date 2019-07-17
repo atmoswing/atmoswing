@@ -23,41 +23,45 @@
 
 /*
  * Portions Copyright 2014-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#define STRUCT_MAX_SIZE 12
-#define USE_STREAMS 0
-
 #include <vector>
 
-#if USE_THRUST == 0
-struct cudaPredictorsDataPropStruct
+enum CudaCriteria
 {
-    int ptorsNb;
-    int rowsNb[STRUCT_MAX_SIZE];
-    int colsNb[STRUCT_MAX_SIZE];
-    int ptsNb[STRUCT_MAX_SIZE];
-    int totPtsNb;
-    int indexStart[STRUCT_MAX_SIZE];
-    float weights[STRUCT_MAX_SIZE];
+    S0grads = 0,
+    S1grads = 1,
+    S2grads = 2,
+    MD = 3,
+    RMSE = 4,
+    RSE = 5,
+    SAD = 6,
+    DMV = 7,
+    DSD = 8,
 };
-#endif
 
 class asProcessorCuda
 {
 public:
-    static bool ProcessCriteria(std::vector <std::vector<float *>> &data,
-                                std::vector<int> &indicesTarg,
-                                std::vector <std::vector<int>> &indicesArch,
-                                std::vector <std::vector<float>> &resultingCriteria,
-                                std::vector<int> &nbArchCandidates,
-                                std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                std::vector<float> &weights);
+    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
+                                std::vector<std::vector<int>> &indicesArch,
+                                std::vector<std::vector<float>> &resultingCriteria, std::vector<int> &nbCandidates,
+                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights,
+                                std::vector<CudaCriteria> &criteria);
 
     static bool SelectBestDevice();
+
+    static float *MallocCudaData(int n);
+
+    static void FreeCudaData(float *data);
+
+    static void DeviceSynchronize();
+
+    static void DeviceReset();
 
 protected:
 

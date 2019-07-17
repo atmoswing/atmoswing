@@ -49,10 +49,6 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
     // Extract the stations IDs
     vvi stationsId = params.GetPredictandStationIdsVector();
 
-    // Preload data
-    if (!DoPreloadData(params))
-        return false;
-
     // Preloading data is necessary
     for (int iStep = 0; iStep < params.GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
@@ -62,6 +58,10 @@ bool asMethodCalibratorClassic::Calibrate(asParametersCalibration &params)
             }
         }
     }
+
+    // Preload data
+    if (!DoPreloadData(params))
+        return false;
 
     // Copy of the original parameters set.
     m_originalParams = params;

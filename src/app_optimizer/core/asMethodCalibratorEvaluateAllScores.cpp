@@ -397,8 +397,8 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             params.SetScoreName("RankHistogram");
             m_parameters[0] = params;
 
-            std::vector<a1f> histoCalib;
-            std::vector<a1f> histoValid;
+            va1f histoCalib;
+            va1f histoValid;
 
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
                 if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))

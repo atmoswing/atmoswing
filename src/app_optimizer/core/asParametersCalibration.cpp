@@ -438,6 +438,8 @@ bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams
                 return false;
         } else if (nodeParamBlock->GetName() == "threshold") {
             SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
+        } else if (nodeParamBlock->GetName() == "on_mean") {
+            SetOnMean(fileParams.GetBool(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array") {
@@ -793,13 +795,14 @@ bool asParametersCalibration::FixTimeLimits()
 void asParametersCalibration::InitValues()
 {
     wxASSERT(!m_predictandStationIdsVect.empty());
-    wxASSERT(!m_timeArrayAnalogsIntervalDaysVect.empty());
     wxASSERT(!m_scoreVect.name.empty());
     wxASSERT(!m_scoreVect.timeArrayMode.empty());
 
     // Initialize the parameters values with the first values of the vectors
     m_predictandStationIds = m_predictandStationIdsVect[0];
-    m_analogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
+    if (!m_timeArrayAnalogsIntervalDaysVect.empty()) {
+        m_analogsIntervalDays = m_timeArrayAnalogsIntervalDaysVect[0];
+    }
     SetScoreName(m_scoreVect.name[0]);
     SetScoreTimeArrayMode(m_scoreVect.timeArrayMode[0]);
 

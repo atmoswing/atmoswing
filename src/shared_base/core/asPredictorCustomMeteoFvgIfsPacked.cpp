@@ -63,7 +63,7 @@ void asPredictorCustomMeteoFvgIfsPacked::ListFiles(asTimeArray &timeArray)
     if (nbFiles == 0) {
         nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_dataId + ".*.grib");
         if (nbFiles == 0) {
-            asThrowException(_("No file found for the FVG packed archive."));
+            asThrowException(wxString::Format(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
         }
     }
 
@@ -73,12 +73,13 @@ void asPredictorCustomMeteoFvgIfsPacked::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (size_t i = 0; i < listFiles.Count(); ++i) {
-        wxRegEx reDates("\\d{4,}", wxRE_ADVANCED);
+        wxRegEx reDates("\\d{4,}.grib", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
             continue;
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
+        datesSrt = datesSrt.Left(datesSrt.Length() - 5);
         double fileYear = 0;
         datesSrt.ToDouble(&fileYear);
 
