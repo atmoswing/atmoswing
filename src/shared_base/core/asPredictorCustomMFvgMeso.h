@@ -25,21 +25,21 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
-#define AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
+#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_MESO_H
+#define AS_PREDICTOR_CUSTOM_METEO_FVG_MESO_H
 
 #include <asIncludes.h>
-#include <asPredictorEcmwfIfsGrib.h>
+#include <asPredictorCustomMFvgSynop.h>
 
 class asArea;
 
-class asPredictorCustomMeteoFvgIfs
-        : public asPredictorEcmwfIfsGrib
+class asPredictorCustomMFvgMeso
+        : public asPredictorCustomMFvgSynop
 {
 public:
-    explicit asPredictorCustomMeteoFvgIfs(const wxString &dataId);
+    explicit asPredictorCustomMFvgMeso(const wxString &dataId);
 
-    ~asPredictorCustomMeteoFvgIfs() override = default;
+    ~asPredictorCustomMFvgMeso() override = default;
 
     bool Init() override;
 

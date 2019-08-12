@@ -54,8 +54,10 @@
 #include <asPredictorCustomUnilNR1.h>
 #include <asPredictorCustomUnilOisst2.h>
 #include <asPredictorCustomLtheNR1.h>
-#include <asPredictorCustomMeteoFvgIfs.h>
-#include <asPredictorCustomMeteoFvgIfsPacked.h>
+#include <asPredictorCustomMFvgMeso.h>
+#include <asPredictorCustomMFvgMesoPacked.h>
+#include <asPredictorCustomMFvgSynop.h>
+#include <asPredictorCustomMFvgSynopPacked.h>
 
 
 asPredictor::asPredictor(const wxString &dataId)
@@ -155,10 +157,14 @@ asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString 
         predictor = new asPredictorCustomUnilOisst2(dataId);
     } else if (datasetId.IsSameAs("Custom_LTHE_NR1", false)) {
         predictor = new asPredictorCustomLtheNR1(dataId);
-    } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS", false)) {
-        predictor = new asPredictorCustomMeteoFvgIfs(dataId);
-    } else if (datasetId.IsSameAs("Custom_MeteoFVG_IFS_packed", false)) {
-        predictor = new asPredictorCustomMeteoFvgIfsPacked(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_synop", false)) {
+        predictor = new asPredictorCustomMFvgSynop(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_meso", false)) {
+        predictor = new asPredictorCustomMFvgMeso(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_synop_packed", false)) {
+        predictor = new asPredictorCustomMFvgSynopPacked(dataId);
+    } else if (datasetId.IsSameAs("Custom_MeteoFVG_meso_packed", false)) {
+        predictor = new asPredictorCustomMFvgMesoPacked(dataId);
     } else {
         wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
         return nullptr;

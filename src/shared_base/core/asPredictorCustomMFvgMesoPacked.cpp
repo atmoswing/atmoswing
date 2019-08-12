@@ -25,7 +25,7 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#include "asPredictorCustomMeteoFvgIfsPacked.h"
+#include "asPredictorCustomMFvgMesoPacked.h"
 
 #include <asTimeArray.h>
 #include <asAreaCompGrid.h>
@@ -33,11 +33,11 @@
 #include <wx/regex.h>
 
 
-asPredictorCustomMeteoFvgIfsPacked::asPredictorCustomMeteoFvgIfsPacked(const wxString &dataId)
-        : asPredictorCustomMeteoFvgIfs(dataId)
+asPredictorCustomMFvgMesoPacked::asPredictorCustomMFvgMesoPacked(const wxString &dataId)
+        : asPredictorCustomMFvgMeso(dataId)
 {
     // Set the basic properties.
-    m_datasetId = "Custom_MeteoFVG_ECMWF_IFS_GRIB_Packed";
+    m_datasetId = "Custom_MeteoFVG_Meso_Packed";
     m_provider = "ECMWF";
     m_transformedBy = "Meteo FVG";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
@@ -46,7 +46,7 @@ asPredictorCustomMeteoFvgIfsPacked::asPredictorCustomMeteoFvgIfsPacked(const wxS
     m_warnMissingFiles = true;
 }
 
-void asPredictorCustomMeteoFvgIfsPacked::ListFiles(asTimeArray &timeArray)
+void asPredictorCustomMFvgMesoPacked::ListFiles(asTimeArray &timeArray)
 {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".grib";

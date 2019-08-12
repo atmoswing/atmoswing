@@ -25,21 +25,21 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_PACKED_H
-#define AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_PACKED_H
+#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_SYNOP_PACKED_H
+#define AS_PREDICTOR_CUSTOM_METEO_FVG_SYNOP_PACKED_H
 
 #include <asIncludes.h>
-#include <asPredictorCustomMeteoFvgIfs.h>
+#include <asPredictorCustomMFvgSynop.h>
 
 class asArea;
 
-class asPredictorCustomMeteoFvgIfsPacked
-        : public asPredictorCustomMeteoFvgIfs
+class asPredictorCustomMFvgSynopPacked
+        : public asPredictorCustomMFvgSynop
 {
 public:
-    explicit asPredictorCustomMeteoFvgIfsPacked(const wxString &dataId);
+    explicit asPredictorCustomMFvgSynopPacked(const wxString &dataId);
 
-    ~asPredictorCustomMeteoFvgIfsPacked() override = default;
+    ~asPredictorCustomMFvgSynopPacked() override = default;
 
 protected:
     void ListFiles(asTimeArray &timeArray) override;
