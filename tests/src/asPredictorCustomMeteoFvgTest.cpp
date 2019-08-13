@@ -49,7 +49,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDay)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS", "gh_500", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -97,7 +97,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS", "vertdiff/MB500925", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB500925", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -145,7 +145,7 @@ TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS", "gh_500", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -193,7 +193,7 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArray)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS", "gh_500", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -277,7 +277,7 @@ TEST(PredictorCustomMeteoFvg, LoadPacked)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS_packed", "gh_500", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load
@@ -413,7 +413,7 @@ TEST(PredictorCustomMeteoFvg, LoadPackedPartial)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-custom-meteo-fvg-packed/");
 
-    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_IFS_packed", "gh_500", predictorDataDir);
+    asPredictor *predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop_packed", "gh_500", predictorDataDir);
     wxASSERT(predictor);
 
     // Load

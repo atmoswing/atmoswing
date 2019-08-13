@@ -70,11 +70,11 @@ bool asPredictorCustomMFvgMeso::Init()
             m_unit = m;
         } else if (m_dataId.Contains("msl_sfc")) {
             m_parameter = Pressure;
-            m_gribCode = {0, 128, 143, 1};
+            m_gribCode = {0, 128, 151, 1};
             m_unit = Pa;
         } else if (m_dataId.Contains("tp_sfc")) {
             m_parameter = AirTemperature;
-            m_gribCode = {0, 128, 130, 100};
+            m_gribCode = {0, 128, 228, 1};
             m_unit = degK;
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
