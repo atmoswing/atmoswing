@@ -1046,6 +1046,89 @@ wxString asParameters::Print() const
     return content;
 }
 
+bool asParameters::IsSameAs(const asParameters &params) const
+{
+    if (!GetPredictandStationIdsString().IsSameAs(params.GetPredictandStationIdsString()))
+        return false;
+
+    if (GetAnalogsIntervalDays() != params.GetAnalogsIntervalDays())
+        return false;
+
+    if (GetAnalogsExcludeDays() != params.GetAnalogsExcludeDays())
+        return false;
+
+    for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
+        if (GetAnalogsNumber(iStep) != params.GetAnalogsNumber(iStep))
+            return false;
+
+        for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
+
+            if (NeedsPreprocessing(iStep, iPtor) != params.NeedsPreprocessing(iStep, iPtor))
+                return false;
+
+            if (NeedsPreprocessing(iStep, iPtor)) {
+                if (!GetPreprocessMethod(iStep, iPtor).IsSameAs(params.GetPreprocessMethod(iStep, iPtor)))
+                    return false;
+
+                for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
+                    if (!GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDatasetId(iStep, iPtor, iPre)))
+                        return false;
+
+                    if (!GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDataId(iStep, iPtor, iPre)))
+                        return false;
+
+                    if (GetPreprocessLevel(iStep, iPtor, iPre) != params.GetPreprocessLevel(iStep, iPtor, iPre))
+                        return false;
+
+                    if (GetPreprocessHour(iStep, iPtor, iPre) != params.GetPreprocessHour(iStep, iPtor, iPre))
+                        return false;
+                }
+            } else {
+                if (!GetPredictorDatasetId(iStep, iPtor).IsSameAs(params.GetPredictorDatasetId(iStep, iPtor)))
+                    return false;
+
+                if (!GetPredictorDataId(iStep, iPtor).IsSameAs(params.GetPredictorDataId(iStep, iPtor)))
+                    return false;
+
+                if (GetPredictorLevel(iStep, iPtor) != params.GetPredictorLevel(iStep, iPtor))
+                    return false;
+
+                if (GetPredictorHour(iStep, iPtor) != params.GetPredictorHour(iStep, iPtor))
+                    return false;
+            }
+
+            if (!GetPredictorGridType(iStep, iPtor).IsSameAs(params.GetPredictorGridType(iStep, iPtor)))
+                return false;
+
+            if (GetPredictorXmin(iStep, iPtor) != params.GetPredictorXmin(iStep, iPtor))
+                return false;
+
+            if (GetPredictorXptsnb(iStep, iPtor) != params.GetPredictorXptsnb(iStep, iPtor))
+                return false;
+
+            if (GetPredictorXstep(iStep, iPtor) != params.GetPredictorXstep(iStep, iPtor))
+                return false;
+
+            if (GetPredictorYmin(iStep, iPtor) != params.GetPredictorYmin(iStep, iPtor))
+                return false;
+
+            if (GetPredictorYptsnb(iStep, iPtor) != params.GetPredictorYptsnb(iStep, iPtor))
+                return false;
+
+            if (GetPredictorYstep(iStep, iPtor) != params.GetPredictorYstep(iStep, iPtor))
+                return false;
+
+            if (GetPredictorWeight(iStep, iPtor) != params.GetPredictorWeight(iStep, iPtor))
+                return false;
+
+            if (!GetPredictorCriteria(iStep, iPtor).IsSameAs(params.GetPredictorCriteria(iStep, iPtor)))
+                return false;
+        }
+    }
+
+    return true;
+}
+
 bool asParameters::PrintAndSaveTemp(const wxString &filePath) const
 {
     wxString saveFilePath;
