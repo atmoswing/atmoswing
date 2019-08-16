@@ -86,7 +86,7 @@ protected:
 private:
     std::vector<asParametersOptimizationGAs> m_parameters;
     std::vector<asParametersOptimizationGAs> m_parametersTemp;
-    asParametersOptimizationGAs m_originalParams;
+    asResultsParametersArray m_resGenerations;
     int m_generationNb;
     int m_assessmentCounter;
     int m_popSize;
@@ -108,7 +108,7 @@ private:
 
     bool SetBestParameters(asResultsParametersArray &results) override;
 
-    bool ResumePreviousRun(asParametersOptimizationGAs &params, asResultsParametersArray &results_generations);
+    bool ResumePreviousRun(asParametersOptimizationGAs &params);
 
     void InitParameters(asParametersOptimizationGAs &params);
 

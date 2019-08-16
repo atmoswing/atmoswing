@@ -75,11 +75,23 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
     m_scoresValid.push_back(scoreValid);
 }
 
-void asResultsParametersArray::Add(asParametersScoring &params, a1f scoreCalib, a1f scoreValid)
+void asResultsParametersArray::Add(asParametersScoring &params, const a1f& scoreCalib, const a1f& scoreValid)
 {
     m_parametersForScoreOnArray.push_back(params);
     m_scoresCalibForScoreOnArray.push_back(scoreCalib);
     m_scoresValidForScoreOnArray.push_back(scoreValid);
+}
+
+bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, float &score)
+{
+    for (int i = 0; i < m_parameters.size(); ++i) {
+        if (params.IsSameAs(m_parameters[i])) {
+            score = m_scoresCalib[i];
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void asResultsParametersArray::Clear()

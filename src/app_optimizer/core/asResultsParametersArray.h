@@ -48,7 +48,9 @@ public:
 
     void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring &params, a1f scoreCalib, a1f scoreValid);
+    void Add(asParametersScoring &params, const a1f& scoreCalib, const a1f& scoreValid);
+
+    bool HasBeenAssessed(asParametersScoring &params, float &score);
 
     void Clear();
 
