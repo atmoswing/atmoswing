@@ -45,11 +45,11 @@ matrix:
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
-    - env:
-        - TARGET=osx-server
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode10
+#    - env:
+#        - TARGET=osx-server
+#        - DEPLOY=true
+#      os: osx
+#      osx_image: xcode10
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
