@@ -806,20 +806,49 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
     while (m_iterator < m_paramsNb) {
 
-        if (asIsNaN(m_scoresCalib[m_iterator])) {
-
-            // Look for similar parameters sets that were already assessed
-            if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-                continue;
-            }
-
-            m_assessmentCounter++;
-
-            return &m_parameters[m_iterator];
-
-        } else {
+        // Parameters did not change
+        if (!asIsNaN(m_scoresCalib[m_iterator])) {
             m_iterator++;
+            continue;
         }
+
+        // Look for similar parameters sets that were already assessed
+        if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
+            m_iterator++;
+            continue;
+        }
+
+        // Look for close parameters sets that were already assessed
+        float scoreCloseParams;
+        if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
+            switch (m_scoreOrder) {
+                case (Asc): {
+                    if (scoreCloseParams > m_resGenerations.GetMedianScores()) {
+                        m_scoresCalib[m_iterator] = scoreCloseParams;
+                        wxLogMessage(_("The parameters were not assessed as quite similar parameters did not perform well."));
+                        m_iterator++;
+                        continue;
+                    }
+                    break;
+                }
+                case (Desc): {
+                    if (scoreCloseParams < m_resGenerations.GetMedianScores()) {
+                        m_scoresCalib[m_iterator] = scoreCloseParams;
+                        wxLogMessage(_("The parameters were not assessed as quite similar parameters did not perform well."));
+                        m_iterator++;
+                        continue;
+                    }
+                    break;
+                }
+                default: {
+                    wxLogError(_("The given natural selection method couldn't be found."));
+                }
+            }
+        }
+
+        m_assessmentCounter++;
+
+        return &m_parameters[m_iterator];
     }
 
     wxASSERT(m_iterator == m_paramsNb);

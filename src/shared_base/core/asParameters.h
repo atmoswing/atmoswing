@@ -129,6 +129,8 @@ public:
 
     bool IsSameAs(const asParameters &params) const;
 
+    bool IsCloseTo(const asParameters &params) const;
+
     bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString) const;
 
     virtual bool GetValuesFromString(wxString stringVals); // We copy the string as we'll modify it.

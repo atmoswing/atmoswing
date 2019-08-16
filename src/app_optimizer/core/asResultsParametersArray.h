@@ -50,7 +50,11 @@ public:
 
     void Add(asParametersScoring &params, const a1f& scoreCalib, const a1f& scoreValid);
 
+    void ProcessMedianScores();
+
     bool HasBeenAssessed(asParametersScoring &params, float &score);
+
+    bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
 
     void Clear();
 
@@ -59,6 +63,11 @@ public:
     int GetCount() const
     {
         return int(m_parameters.size());
+    }
+
+    float GetMedianScores() const
+    {
+        return m_medianScores;
     }
 
 protected:
@@ -71,6 +80,7 @@ private:
     std::vector<asParametersScoring> m_parametersForScoreOnArray;
     va1f m_scoresCalibForScoreOnArray;
     va1f m_scoresValidForScoreOnArray;
+    float m_medianScores;
 };
 
 #endif

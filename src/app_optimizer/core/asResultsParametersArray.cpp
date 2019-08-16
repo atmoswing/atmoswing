@@ -32,7 +32,8 @@
 
 
 asResultsParametersArray::asResultsParametersArray()
-        : asResults()
+        : asResults(),
+          m_medianScores(NaNf)
 {
 
 }
@@ -66,6 +67,8 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
     m_parameters.push_back(params);
     m_scoresCalib.push_back(scoreCalib);
     m_scoresValid.push_back(NaNf);
+
+    ProcessMedianScores();
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib, float scoreValid)
@@ -73,6 +76,8 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
     m_parameters.push_back(params);
     m_scoresCalib.push_back(scoreCalib);
     m_scoresValid.push_back(scoreValid);
+
+    ProcessMedianScores();
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, const a1f& scoreCalib, const a1f& scoreValid)
@@ -82,10 +87,44 @@ void asResultsParametersArray::Add(asParametersScoring &params, const a1f& score
     m_scoresValidForScoreOnArray.push_back(scoreValid);
 }
 
+void asResultsParametersArray::ProcessMedianScores()
+{
+    if (m_scoresCalib.size() % 2 == 0) {
+        const auto median_it1 = m_scoresCalib.begin() + m_scoresCalib.size() / 2 - 1;
+        const auto median_it2 = m_scoresCalib.begin() + m_scoresCalib.size() / 2;
+
+        std::nth_element(m_scoresCalib.begin(), median_it1 , m_scoresCalib.end());
+        const auto e1 = *median_it1;
+
+        std::nth_element(m_scoresCalib.begin(), median_it2 , m_scoresCalib.end());
+        const auto e2 = *median_it2;
+
+        m_medianScores = (e1 + e2) / 2;
+
+    } else {
+        const auto median_it = m_scoresCalib.begin() + m_scoresCalib.size() / 2;
+        std::nth_element(m_scoresCalib.begin(), median_it , m_scoresCalib.end());
+
+        m_medianScores = *median_it;
+    }
+}
+
 bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, float &score)
 {
     for (int i = 0; i < m_parameters.size(); ++i) {
         if (params.IsSameAs(m_parameters[i])) {
+            score = m_scoresCalib[i];
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool asResultsParametersArray::HasCloseOneBeenAssessed(asParametersScoring &params, float &score)
+{
+    for (int i = 0; i < m_parameters.size(); ++i) {
+        if (params.IsCloseTo(m_parameters[i])) {
             score = m_scoresCalib[i];
             return true;
         }
