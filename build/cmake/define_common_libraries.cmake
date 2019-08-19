@@ -1,4 +1,12 @@
 
+# Intel MKL
+if (USE_MKL)
+    find_package(MKL REQUIRED)
+    include_directories(${MKL_INCLUDE_DIRS})
+    link_libraries(${MKL_LIBRARIES})
+    add_definitions(-DEIGEN_USE_MKL_ALL)
+endif (USE_MKL)
+
 # WxWidgets (adv lib nedded for the caldendar widget)
 mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
 mark_as_advanced(wxWidgets_with_GUI)

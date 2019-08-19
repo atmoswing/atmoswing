@@ -55,6 +55,9 @@ else (WIN32)
     set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 endif (WIN32)
 
+# Using the Intel MKL
+option(USE_MKL "Do you want to use Intel MKL ?" OFF)
+
 # Libraries version
 set(EIGEN_VERSION 3.3.7)
 
