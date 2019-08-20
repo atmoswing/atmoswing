@@ -24,7 +24,7 @@
 # linux
 if(UNIX AND NOT APPLE)
     if(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-        set(MKL_ARCH_DIR "em64t")
+        set(MKL_ARCH_DIR "intel64")
     else()
         set(MKL_ARCH_DIR "32")
     endif()
