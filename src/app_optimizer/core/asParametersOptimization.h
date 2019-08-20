@@ -225,7 +225,7 @@ public:
     bool SetPredictorWeightIteration(int iStep, int iPtor, float val)
     {
         if (asIsNaN(val)) {
-            wxLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the weight iteration is null"));
             return false;
         }
         m_stepsIteration[iStep].predictors[iPtor].weight = val;
@@ -367,7 +367,7 @@ public:
     bool SetPredictorWeightUpperLimit(int iStep, int iPtor, float val)
     {
         if (asIsNaN(val)) {
-            wxLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the weight upper limit is null"));
             return false;
         }
         m_stepsUpperLimit[iStep].predictors[iPtor].weight = val;
@@ -509,7 +509,7 @@ public:
     bool SetPredictorWeightLowerLimit(int iStep, int iPtor, float val)
     {
         if (asIsNaN(val)) {
-            wxLogError(_("The provided value for the predictor weight is null"));
+            wxLogError(_("The provided value for the weight lower limit is null"));
             return false;
         }
         m_stepsLowerLimit[iStep].predictors[iPtor].weight = val;
