@@ -1282,6 +1282,16 @@ bool asParametersOptimization::FixWeights()
             totWeightLocked = 0;
         }
 
+        // Reset weights when sum is null
+        if (totWeightManageable == 0) {
+            for (int j = 0; j < GetPredictorsNb(i); j++) {
+                if (!IsPredictorWeightLocked(i, j)) {
+                    SetPredictorWeight(i, j, 1);
+                    totWeightManageable += 1;
+                }
+            }
+        }
+
         // For every weights but the last
         float newSum = 0;
         for (int j = 0; j < GetPredictorsNb(i) - 1; j++) {
