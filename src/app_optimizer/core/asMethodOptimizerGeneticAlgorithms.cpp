@@ -814,6 +814,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         // Look for similar parameters sets that were already assessed
         if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
+            wxLogMessage(_("The parameters were already assessed."));
             m_iterator++;
             continue;
         }
