@@ -40,6 +40,8 @@
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
         : asMethodOptimizer(),
+          m_nbSameParams(0),
+          m_nbCloseParams(0),
           m_generationNb(0),
           m_assessmentCounter(0),
           m_popSize(0),
@@ -47,9 +49,7 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
           m_couplesSelectionType(0),
           m_crossoverType(0),
           m_mutationsModeType(0),
-          m_allowElitismForTheBest(true),
-          m_nbSameParams(0),
-          m_nbCloseParams(0)
+          m_allowElitismForTheBest(true)
 {
     m_warnFailedLoadingData = false;
 }
