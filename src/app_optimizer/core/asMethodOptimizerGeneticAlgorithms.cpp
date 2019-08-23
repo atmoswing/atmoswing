@@ -851,6 +851,8 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         m_assessmentCounter++;
 
+        wxLogMessage(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
+
         return &m_parameters[m_iterator];
     }
 
