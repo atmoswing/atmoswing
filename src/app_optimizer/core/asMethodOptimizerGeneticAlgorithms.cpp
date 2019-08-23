@@ -47,7 +47,9 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
           m_couplesSelectionType(0),
           m_crossoverType(0),
           m_mutationsModeType(0),
-          m_allowElitismForTheBest(true)
+          m_allowElitismForTheBest(true),
+          m_nbSameParams(0),
+          m_nbCloseParams(0)
 {
     m_warnFailedLoadingData = false;
 }
@@ -814,7 +816,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         // Look for similar parameters sets that were already assessed
         if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-            wxLogMessage(_("The parameters were already assessed."));
+            m_nbSameParams++;
             m_iterator++;
             continue;
         }
@@ -826,7 +828,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
                 case (Asc): {
                     if (scoreCloseParams > m_resGenerations.GetMedianScores()) {
                         m_scoresCalib[m_iterator] = scoreCloseParams;
-                        wxLogMessage(_("The parameters were not assessed as quite similar parameters did not perform well."));
+                        m_nbCloseParams++;
                         m_iterator++;
                         continue;
                     }
@@ -835,7 +837,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
                 case (Desc): {
                     if (scoreCloseParams < m_resGenerations.GetMedianScores()) {
                         m_scoresCalib[m_iterator] = scoreCloseParams;
-                        wxLogMessage(_("The parameters were not assessed as quite similar parameters did not perform well."));
+                        m_nbCloseParams++;
                         m_iterator++;
                         continue;
                     }
@@ -850,6 +852,15 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
         m_assessmentCounter++;
 
         return &m_parameters[m_iterator];
+    }
+
+    if (m_nbSameParams > 0) {
+        wxLogMessage(_("%d evaluations skipped (parameters were already assessed)."), m_nbSameParams);
+        m_nbSameParams = 0;
+    }
+    if (m_nbCloseParams > 0) {
+        wxLogMessage(_("%d evaluations skipped (similar parameters did not perform well)."), m_nbCloseParams);
+        m_nbCloseParams = 0;
     }
 
     wxASSERT(m_iterator == m_paramsNb);
