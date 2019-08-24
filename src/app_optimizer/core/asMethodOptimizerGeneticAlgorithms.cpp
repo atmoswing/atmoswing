@@ -816,9 +816,6 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         // Look for similar parameters sets that were already assessed
         if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-
-            wxLogMessage(_("m_scoresCalib[%d] = %f."), m_iterator, m_scoresCalib[m_iterator]);
-
             m_nbSameParams++;
             m_iterator++;
             continue;
@@ -870,14 +867,10 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
     wxASSERT(m_iterator == m_paramsNb);
 
-    wxLogMessage(_("m_iterator = %d, m_paramsNb = %d"), m_iterator, m_paramsNb);
-
     m_optimizerStage = asCHECK_CONVERGENCE;
     if (!Optimize()) {
         wxLogError(_("The parameters could not be optimized"));
     }
-
-    wxLogMessage(_("Optimized"));
 
     return nullptr;
 }
@@ -885,26 +878,51 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 bool asMethodOptimizerGeneticAlgorithms::Optimize()
 {
     if (m_optimizerStage == asCHECK_CONVERGENCE) {
+
+        wxLogMessage(_("Debug step 1"));
+
         // Different operators consider that the scores are sorted !
         SortScoresAndParameters();
 
+        wxLogMessage(_("Debug step 2"));
+
         // Check if we should end
         bool stopIterations = true;
-        if (!CheckConvergence(stopIterations))
+        if (!CheckConvergence(stopIterations)) {
+
+            wxLogMessage(_("Debug step 3"));
+
             return false;
+        }
+
+        wxLogMessage(_("Debug step 4"));
+
         if (stopIterations) {
+
+            wxLogMessage(_("Debug step 5"));
+
             m_isOver = true;
             wxLogVerbose(_("Optimization process over."));
             return true;
         }
 
         // Proceed to a new generation
-        if (!NaturalSelection())
+        wxLogMessage(_("Debug step 6"));
+        if (!NaturalSelection()) {
+            wxLogMessage(_("Debug step 7"));
             return false;
-        if (!Mating())
+        }
+        wxLogMessage(_("Debug step 8"));
+        if (!Mating()) {
+            wxLogMessage(_("Debug step 9"));
             return false;
-        if (!Mutation())
+        }
+        wxLogMessage(_("Debug step 10"));
+        if (!Mutation()) {
+            wxLogMessage(_("Debug step 11"));
             return false;
+        }
+        wxLogMessage(_("Debug step 12"));
 
         m_iterator = 0;
         m_optimizerStage = asREASSESSMENT;
