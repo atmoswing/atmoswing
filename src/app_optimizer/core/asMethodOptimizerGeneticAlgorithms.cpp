@@ -816,6 +816,9 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         // Look for similar parameters sets that were already assessed
         if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
+
+            wxLogMessage(_("m_scoresCalib[%d] = %f."), m_iterator, m_scoresCalib[m_iterator]);
+
             m_nbSameParams++;
             m_iterator++;
             continue;
@@ -867,10 +870,14 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
     wxASSERT(m_iterator == m_paramsNb);
 
+    wxLogMessage(_("m_iterator = %d, m_paramsNb = %d"), m_iterator, m_paramsNb);
+
     m_optimizerStage = asCHECK_CONVERGENCE;
     if (!Optimize()) {
         wxLogError(_("The parameters could not be optimized"));
     }
+
+    wxLogMessage(_("Optimized"));
 
     return nullptr;
 }
