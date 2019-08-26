@@ -60,7 +60,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
     wxConfigBase *pConfig = wxFileConfig::Get();
     int method = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
-    bool parallelEvaluations = pConfig->ReadBool("/Processing/ParallelEvaluations", true);
     bool allowDuplicateDates = pConfig->ReadBool("/Processing/AllowDuplicateDates", true);
 
     // Check options compatibility
@@ -391,8 +390,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             ThreadsManager().Wait(threadType);
 
             // Flush logs
-            if (!parallelEvaluations)
-                wxLog::FlushActive();
+            wxLog::FlushActive();
 
             for (auto &containsNaN : vContainsNaNs) {
                 if (*containsNaN) {
@@ -726,7 +724,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     wxConfigBase *pConfig = wxFileConfig::Get();
     int method = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
-    bool parallelEvaluations = pConfig->ReadBool("/Processing/ParallelEvaluations", true);
 
     // Check options compatibility
     if (!allowMultithreading && method == asMULTITHREADS) {
@@ -861,8 +858,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             ThreadsManager().Wait(threadType);
 
             // Flush logs
-            if (!parallelEvaluations)
-                wxLog::FlushActive();
+            wxLog::FlushActive();
 
             for (auto &containsNaN : vContainsNaNs) {
                 if (*containsNaN) {

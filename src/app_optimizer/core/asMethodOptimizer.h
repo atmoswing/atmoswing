@@ -45,9 +45,6 @@ public:
     bool Manager() override = 0;
 
 protected:
-    bool m_isOver;
-    bool m_skipNext;
-    int m_optimizerStage;
     int m_paramsNb;
     int m_iterator;
 
@@ -64,16 +61,6 @@ protected:
     void IncrementIterator()
     {
         m_iterator++;
-    }
-
-    bool IsOver() const
-    {
-        return m_isOver;
-    }
-
-    bool SkipNext() const
-    {
-        return m_skipNext;
     }
 
 private:

@@ -221,7 +221,6 @@ void asFrameOptimizer::LoadOptions()
     m_dirPickerPredictor->SetPath(pConfig->Read("/Paths/PredictorDir", wxEmptyString));
     m_dirPickerCalibrationResults->SetPath(pConfig->Read("/Paths/ResultsDir",
                                                          asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
-    m_checkBoxParallelEvaluations->SetValue(pConfig->ReadBool("/Processing/ParallelEvaluations", false));
 
     // Classic+ calibration
     m_textCtrlClassicPlusResizingIterations->SetValue(pConfig->Read("/ClassicPlus/ResizingIterations", "1"));
@@ -294,8 +293,6 @@ void asFrameOptimizer::SaveOptions() const
     pConfig->Write("/Paths/PredictorDir", predictorDir);
     wxString optimizerResultsDir = m_dirPickerCalibrationResults->GetPath();
     pConfig->Write("/Paths/ResultsDir", optimizerResultsDir);
-    bool parallelEvaluations = m_checkBoxParallelEvaluations->GetValue();
-    pConfig->Write("/Processing/ParallelEvaluations", parallelEvaluations);
 
     // Classic+ calibration
     wxString classicPlusResizingIterations = m_textCtrlClassicPlusResizingIterations->GetValue();

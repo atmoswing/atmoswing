@@ -89,14 +89,6 @@ enum
     asMULTITHREADS = 0, asSTANDARD = 1, asCUDA = 2,
 };
 
-// Optimization stages
-enum
-{
-    asINITIALIZATION,
-    asREASSESSMENT,
-    asCHECK_CONVERGENCE
-};
-
 // Windows ID
 #if wxUSE_GUI
 enum

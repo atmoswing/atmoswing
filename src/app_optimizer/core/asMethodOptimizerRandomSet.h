@@ -49,12 +49,8 @@ protected:
 
     bool SetBestParameters(asResultsParametersArray &results) override;
 
-    virtual bool Optimize(asParametersOptimization &params);
-
 private:
     std::vector<asParametersOptimization> m_parameters;
-    asParametersOptimization m_originalParams;
-
 };
 
 #endif

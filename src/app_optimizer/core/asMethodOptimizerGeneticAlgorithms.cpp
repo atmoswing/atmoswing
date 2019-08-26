@@ -180,7 +180,6 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
     m_scoreClimatology.clear();
 
     try {
-        m_isOver = false;
         ClearAll();
         if (!ManageOneRun()) {
             DeletePreloadedArchiveData();
@@ -206,22 +205,12 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
 
 bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 {
-    // Get the processing method
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    bool parallelEvaluations;
-    pConfig->Read("/Processing/ParallelEvaluations", &parallelEvaluations, true);
-    ThreadsManager().CritSectionConfig().Leave();
-
     // Parameter to print the results every x generation
     int printResultsEveryNbGenerations = 5;
 
     // Reset some data members
     m_iterator = 0;
     m_assessmentCounter = 0;
-    m_optimizerStage = asINITIALIZATION;
-    m_skipNext = false;
-    m_isOver = false;
     m_generationNb = 1;
 
     // Seeds the random generator
@@ -245,7 +234,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"),
                                             GetPredictandStationIdsList(stationId).c_str()));
     m_resGenerations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
-    wxString resXmlFilePath = pConfig->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                            GetPredictandStationIdsList(stationId).c_str()));
     int counterPrint = 0;
@@ -292,34 +281,35 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Watch
     wxStopWatch sw;
 
-    // Optimizer
-    while (!IsOver()) {
-        // Get a parameters set
-        asParametersOptimizationGAs *newParams = GetNextParameters();
+    int threadType = asThread::MethodOptimizerGeneticAlgorithms;
 
-        if (!SkipNext() && !IsOver()) {
-            // Check on the parameters set
-            wxASSERT(newParams);
-            if (newParams->GetStepsNb() == 0) {
-                wxLogError(_("The new parameters set is not correctly initialized."));
+    // Optimizer
+    while (true) {
+
+        // Add threads when they become available
+        while (m_iterator < m_paramsNb) {
+#ifndef UNIT_TESTING
+            if (g_responsive)
+                wxGetApp().Yield();
+#endif
+            if (m_cancel) {
                 return false;
             }
 
-            if (parallelEvaluations) {
-#ifndef UNIT_TESTING
-                if (g_responsive)
-                    wxGetApp().Yield();
-#endif
-                if (m_cancel)
-                    return false;
+            wxLog::FlushActive();
 
-                vf scoreClim = m_scoreClimatology;
+            ThreadsManager().WaitForFreeThread(threadType);
 
-                // Push the first parameters set
-                auto *firstThread = new asThreadGeneticAlgorithms(this, newParams, &m_scoresCalib[m_iterator],
-                                                                  &m_scoreClimatology);
-                int threadType = firstThread->GetType();
-                ThreadsManager().AddThread(firstThread);
+            // Get a parameters set
+            asParametersOptimizationGAs *nextParams = GetNextParameters();
+
+            vf scoreClim = m_scoreClimatology;
+
+            if (nextParams) {
+                // Add it to the threads
+                auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
+                                                             &m_scoreClimatology);
+                ThreadsManager().AddThread(thread);
 
                 // Wait until done to get the score of the climatology
                 if (scoreClim.empty()) {
@@ -333,204 +323,85 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     if (m_cancel)
                         return false;
                 }
-
-                // Increment iterator
-                IncrementIterator();
-
-                // Get available threads nb
-                int threadsNb = ThreadsManager().GetAvailableThreadsNb();
-                threadsNb = wxMin(threadsNb, m_paramsNb - m_iterator);
-
-                // Fill up the thread array
-                for (int iThread = 0; iThread < threadsNb; iThread++) {
-                    // Get a parameters set
-                    asParametersOptimizationGAs *nextParams = GetNextParameters();
-                    if (SkipNext()) {
-                        break;
-                    }
-
-                    wxASSERT(nextParams);
-                    if (nextParams->GetStepsNb() == 0) {
-                        wxLogError(_("The new parameters set is not correctly initialized in the thread array filling (iterator %d/%d)."),
-                                   m_iterator, m_paramsNb);
-                        return false;
-                    }
-
-                    // Add it to the threads
-                    auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
-                                                                 &m_scoreClimatology);
-                    ThreadsManager().AddThread(thread);
-
-                    wxASSERT(m_scoresCalib.size() <= m_paramsNb);
-
-                    // Increment iterator
-                    IncrementIterator();
-
-                    if (m_iterator == m_paramsNb) {
-                        break;
-                    }
-                }
-
-                // Continue adding when threads become available
-                while (m_iterator < m_paramsNb) {
-#ifndef UNIT_TESTING
-                    if (g_responsive)
-                        wxGetApp().Yield();
-#endif
-                    if (m_cancel) {
-                        return false;
-
-                    }
-
-                    if (SkipNext()) {
-                        break;
-                    }
-
-                    wxLog::FlushActive();
-
-                    ThreadsManager().WaitForFreeThread(threadType);
-
-                    // Get a parameters set
-                    asParametersOptimizationGAs *nextParams = GetNextParameters();
-                    if (SkipNext()) {
-                        break;
-                    }
-
-                    wxASSERT(nextParams);
-                    if (nextParams->GetStepsNb() == 0) {
-                        wxLogError(_("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."),
-                                   m_iterator, m_paramsNb);
-                        return false;
-                    }
-
-                    // Add it to the threads
-                    auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
-                                                                 &m_scoreClimatology);
-                    ThreadsManager().AddThread(thread);
-
-                    wxASSERT(m_scoresCalib.size() <= m_paramsNb);
-
-                    // Increment iterator
-                    IncrementIterator();
-                }
-
-                // Wait until all done
-                ThreadsManager().Wait(threadType);
-
-                wxLog::FlushActive();
-
-                // Check results
-                bool checkOK = true;
-                for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
-                    if (asIsNaN(m_scoresCalib[iCheck])) {
-                        wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
-                                   (int) m_scoresCalib.size());
-                        wxString paramsContent = m_parameters[iCheck].Print();
-                        wxLogError(_("Parameters #%d: %s"), (int) iCheck + 1, paramsContent.c_str());
-                        checkOK = false;
-                    }
-                }
-
-                if (!checkOK)
-                    return false;
-
-                wxLog::FlushActive();
-            } else {
-#ifndef UNIT_TESTING
-                if (g_responsive)
-                    wxGetApp().Yield();
-#endif
-                if (m_cancel)
-                    return false;
-
-                // Create results objects
-                asResultsDates anaDates;
-                asResultsDates anaDatesPrevious;
-                asResultsValues anaValues;
-                asResultsScores anaScores;
-                asResultsTotalScore anaScoreFinal;
-
-                // Process every step one after the other
-                int stepsNb = newParams->GetStepsNb();
-                for (int iStep = 0; iStep < stepsNb; iStep++) {
-                    bool containsNaNs = false;
-                    if (iStep == 0) {
-                        if (!GetAnalogsDates(anaDates, newParams, iStep, containsNaNs))
-                            return false;
-                        anaDatesPrevious = anaDates;
-                    } else {
-                        if (!GetAnalogsSubDates(anaDates, newParams, anaDatesPrevious, iStep, containsNaNs))
-                            return false;
-                        anaDatesPrevious = anaDates;
-                    }
-                    if (containsNaNs) {
-                        wxLogError(_("The dates selection contains NaNs"));
-                        return false;
-                    }
-                }
-                if (!GetAnalogsValues(anaValues, newParams, anaDates, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsScores(anaScores, newParams, anaValues, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, newParams, anaScores, stepsNb - 1))
-                    return false;
-
-                // Store the result
-                if (((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT)) &&
-                    m_iterator < m_paramsNb) {
-                    m_scoresCalib[m_iterator] = anaScoreFinal.GetScore();
-                } else {
-                    wxLogError(_("This should not happen (in ManageOneRun)..."));
-                }
-                wxASSERT(m_scoresCalib.size() <= m_paramsNb);
-
-                // Increment iterator
-                IncrementIterator();
             }
 
-            if (m_iterator == m_paramsNb) {
-                // Elitism after mutation must occur after evaluation
-                ElitismAfterMutation();
+            wxASSERT(m_scoresCalib.size() <= m_paramsNb);
 
-                // Save the full generation
-                for (int i = 0; i < m_parameters.size(); i++) {
-                    m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
-                }
+            // Increment iterator
+            IncrementIterator();
+        }
 
-                // Print results every x generation
-                if (counterPrint > printResultsEveryNbGenerations - 1) {
-                    m_resGenerations.Print();
-                    counterPrint = 0;
-                }
-                counterPrint++;
+        // Wait until all done
+        ThreadsManager().Wait(threadType);
 
-                // Display stats
-                float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
-                float bestScore = 0;
-                switch (m_scoreOrder) {
-                    case (Asc): {
-                        bestScore = asMinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
-                        break;
-                    }
-                    case (Desc): {
-                        bestScore = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
-                        break;
-                    }
-                    default: {
-                        wxLogError(_("The given natural selection method couldn't be found."));
-                        return false;
-                    }
-                }
-                m_bestScores.push_back(bestScore);
-                m_meanScores.push_back(meanScore);
+        wxLog::FlushActive();
 
-                wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
+        // Check results
+        for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
+            if (asIsNaN(m_scoresCalib[iCheck])) {
+                wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
+                           (int) m_scoresCalib.size());
+                wxString paramsContent = m_parameters[iCheck].Print();
+                wxLogError(_("Parameters #%d: %s"), (int) iCheck + 1, paramsContent.c_str());
+                return false;
             }
         }
 
-        if (IsOver()) {
+        wxLog::FlushActive();
+
+        wxASSERT(m_iterator == m_paramsNb);
+
+        // Different operators consider that the scores are sorted !
+        SortScoresAndParameters();
+
+        // Elitism after mutation must occur after evaluation
+        ElitismAfterMutation();
+
+        // Save the full generation
+        for (int i = 0; i < m_parameters.size(); i++) {
+            m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+        }
+
+        // Print results every x generation
+        if (counterPrint > printResultsEveryNbGenerations - 1) {
+            m_resGenerations.Print();
+            counterPrint = 0;
+        }
+        counterPrint++;
+
+        // Display stats
+        float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+        float bestScore = 0;
+        switch (m_scoreOrder) {
+            case (Asc): {
+                bestScore = asMinArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                break;
+            }
+            case (Desc): {
+                bestScore = asMaxArray(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
+                break;
+            }
+            default: {
+                wxLogError(_("The given natural selection method couldn't be found."));
+                return false;
+            }
+        }
+        m_bestScores.push_back(bestScore);
+        m_meanScores.push_back(meanScore);
+
+        wxLogMessage(_("Mean %g, best %g"), meanScore, bestScore);
+
+        // Check if we should end
+        if (HasConverged()) {
+            wxLogVerbose(_("Optimization process over."));
             for (int i = 0; i < m_parameters.size(); i++) {
                 resFinalPopulation.Add(m_parameters[i], m_scoresCalib[i]);
+            }
+            break;
+        } else {
+            if (!Optimize()) {
+                wxLogError(_("The parameters could not be optimized"));
+                return false;
             }
         }
     }
@@ -754,7 +625,6 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     m_meanScores[iGen] = mean / float(m_popSize);
                 }
 
-                m_optimizerStage = asREASSESSMENT;
                 m_iterator = m_paramsNb;
                 m_generationNb = genNb;
             }
@@ -815,9 +685,6 @@ void asMethodOptimizerGeneticAlgorithms::InitParameters(asParametersOptimization
 
 asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParameters()
 {
-    m_skipNext = false;
-
-    wxASSERT((m_optimizerStage == asINITIALIZATION) | (m_optimizerStage == asREASSESSMENT));
     wxASSERT(m_iterator <= m_paramsNb);
 
     while (m_iterator < m_paramsNb) {
@@ -865,7 +732,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         m_assessmentCounter++;
 
-        wxLogVerbose(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
+        wxLogMessage(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
 
         return &m_parameters[m_iterator];
     }
@@ -879,62 +746,31 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
         m_nbCloseParams = 0;
     }
 
-    wxASSERT(m_iterator == m_paramsNb);
-
-    m_optimizerStage = asCHECK_CONVERGENCE;
-    if (!Optimize()) {
-        wxLogError(_("The parameters could not be optimized"));
-    }
-
     return nullptr;
 }
 
 bool asMethodOptimizerGeneticAlgorithms::Optimize()
 {
-    if (m_optimizerStage == asCHECK_CONVERGENCE) {
-
-        // Different operators consider that the scores are sorted !
-        SortScoresAndParameters();
-
-        // Check if we should end
-        bool stopIterations = true;
-        if (!CheckConvergence(stopIterations)) {
-            return false;
-        }
-
-        if (stopIterations) {
-            m_isOver = true;
-            wxLogVerbose(_("Optimization process over."));
-            return true;
-        }
-
-        // Proceed to a new generation
-        if (!NaturalSelection()) {
-            return false;
-        }
-        if (!Mating()) {
-            return false;
-        }
-        if (!Mutation()) {
-            return false;
-        }
-
-        m_iterator = 0;
-        m_optimizerStage = asREASSESSMENT;
-        m_skipNext = true;
-        m_generationNb++;
-
-        wxLogMessage(_("Generation number %d"), m_generationNb);
-
-        return true;
-    } else {
-        wxLogError(_("Optimization stage undefined"));
+    // Proceed to a new generation
+    if (!NaturalSelection()) {
+        return false;
+    }
+    if (!Mating()) {
+        return false;
+    }
+    if (!Mutation()) {
+        return false;
     }
 
-    return false;
+    m_iterator = 0;
+    m_generationNb++;
+
+    wxLogMessage(_("Generation number %d"), m_generationNb);
+
+    return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::CheckConvergence(bool &stop)
+bool asMethodOptimizerGeneticAlgorithms::HasConverged()
 {
     // NB: The parameters and scores are already sorted !
 
@@ -944,20 +780,16 @@ bool asMethodOptimizerGeneticAlgorithms::CheckConvergence(bool &stop)
     pConfig->Read("/GAs/ConvergenceStepsNb", &convergenceStepsNb, 20);
     ThreadsManager().CritSectionConfig().Leave();
 
-    stop = true;
-
     // Check if enough generations
     if (m_bestScores.size() < convergenceStepsNb) {
-        stop = false;
-        return true;
+        return false;
     }
 
     // Check the best convergenceStepsNb scores
     for (int i = m_bestScores.size() - 1; i > m_bestScores.size() - convergenceStepsNb; i--) // Checked
     {
         if (m_bestScores[i] != m_bestScores[i - 1]) {
-            stop = false;
-            return true;
+            return false;
         }
     }
 
@@ -966,9 +798,6 @@ bool asMethodOptimizerGeneticAlgorithms::CheckConvergence(bool &stop)
 
 bool asMethodOptimizerGeneticAlgorithms::ElitismAfterMutation()
 {
-    // Different operators consider that the scores are sorted !
-    SortScoresAndParameters();
-
     // Apply elitism: If the best has been degraded during previous mutations, replace a random individual by the previous best.
     if (m_allowElitismForTheBest && !m_parametersTemp.empty()) {
         switch (m_scoreOrder) {

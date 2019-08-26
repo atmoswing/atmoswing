@@ -30,9 +30,6 @@
 
 asMethodOptimizer::asMethodOptimizer()
         : asMethodCalibrator(),
-          m_isOver(false),
-          m_skipNext(false),
-          m_optimizerStage(asINITIALIZATION),
           m_paramsNb(0),
           m_iterator(0)
 {

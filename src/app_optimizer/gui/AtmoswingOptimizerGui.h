@@ -18,13 +18,13 @@
 #include <wx/settings.h>
 #include <wx/choice.h>
 #include <wx/filepicker.h>
-#include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/textctrl.h>
+#include <wx/checkbox.h>
 #include <wx/statbox.h>
 #include <wx/notebook.h>
 #include <wx/button.h>
@@ -60,7 +60,6 @@ class asFrameOptimizerVirtual : public wxFrame
 		wxDirPickerCtrl* m_dirPickerPredictor;
 		wxStaticText* m_staticTextCalibrationResultsDir;
 		wxDirPickerCtrl* m_dirPickerCalibrationResults;
-		wxCheckBox* m_checkBoxParallelEvaluations;
 		wxStaticText* m_staticTextStateLabel;
 		wxStaticText* m_staticTextState;
 		wxPanel* m_panelOptions;

@@ -322,9 +322,6 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
             pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
             pConfig->Write("/GAs/AllowElitismForTheBest", true);
         }
-        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
-            pConfig->Write("/Processing/ParallelEvaluations", true);
-        }
 
         pConfig->Flush();
 

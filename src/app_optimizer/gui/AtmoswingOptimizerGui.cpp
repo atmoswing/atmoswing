@@ -73,9 +73,6 @@ asFrameOptimizerVirtual::asFrameOptimizerVirtual( wxWindow* parent, wxWindowID i
 	m_dirPickerCalibrationResults = new wxDirPickerCtrl( m_panelControls, wxID_ANY, wxEmptyString, _("Select a folder"), wxDefaultPosition, wxDefaultSize, wxDIRP_DEFAULT_STYLE );
 	bSizer5->Add( m_dirPickerCalibrationResults, 0, wxEXPAND|wxBOTTOM|wxRIGHT|wxLEFT, 5 );
 
-	m_checkBoxParallelEvaluations = new wxCheckBox( m_panelControls, wxID_ANY, _("Parallel evaluations when possible (competes with multithreading in the processor)"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer5->Add( m_checkBoxParallelEvaluations, 0, wxALL, 5 );
-
 	wxBoxSizer* bSizer23;
 	bSizer23 = new wxBoxSizer( wxHORIZONTAL );
 

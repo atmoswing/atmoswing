@@ -118,7 +118,7 @@ private:
 
     bool Optimize();
 
-    bool CheckConvergence(bool &stop);
+    bool HasConverged();
 
     bool ElitismAfterSelection();
 
