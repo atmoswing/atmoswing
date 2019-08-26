@@ -345,6 +345,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 for (int iThread = 0; iThread < threadsNb; iThread++) {
                     // Get a parameters set
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
+                    if (SkipNext()) {
+                        break;
+                    }
+
                     wxASSERT(nextParams);
                     if (nextParams->GetStepsNb() == 0) {
                         wxLogError(_("The new parameters set is not correctly initialized in the thread array filling (iterator %d/%d)."),
@@ -373,8 +377,14 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                     if (g_responsive)
                         wxGetApp().Yield();
 #endif
-                    if (m_cancel)
+                    if (m_cancel) {
                         return false;
+
+                    }
+
+                    if (SkipNext()) {
+                        break;
+                    }
 
                     wxLog::FlushActive();
 
@@ -382,6 +392,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
                     // Get a parameters set
                     asParametersOptimizationGAs *nextParams = GetNextParameters();
+                    if (SkipNext()) {
+                        break;
+                    }
+
                     wxASSERT(nextParams);
                     if (nextParams->GetStepsNb() == 0) {
                         wxLogError(_("The new parameters set is not correctly initialized in the continuous adding (iterator %d/%d)."),
@@ -851,7 +865,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
 
         m_assessmentCounter++;
 
-        wxLogMessage(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
+        wxLogVerbose(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
 
         return &m_parameters[m_iterator];
     }
