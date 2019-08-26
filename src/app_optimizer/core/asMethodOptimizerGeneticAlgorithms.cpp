@@ -282,6 +282,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     wxStopWatch sw;
 
     int threadType = asThread::MethodOptimizerGeneticAlgorithms;
+    bool firstRun = true;
 
     // Optimizer
     while (true) {
@@ -303,8 +304,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             // Get a parameters set
             asParametersOptimizationGAs *nextParams = GetNextParameters();
 
-            vf scoreClim = m_scoreClimatology;
-
             if (nextParams) {
                 // Add it to the threads
                 auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
@@ -312,8 +311,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 ThreadsManager().AddThread(thread);
 
                 // Wait until done to get the score of the climatology
-                if (scoreClim.empty()) {
+                if (firstRun) {
                     ThreadsManager().Wait(threadType);
+                    firstRun = false;
 
 #ifndef UNIT_TESTING
                     if (g_responsive)
