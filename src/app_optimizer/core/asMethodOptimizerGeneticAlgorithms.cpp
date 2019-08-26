@@ -351,6 +351,15 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
         wxASSERT(m_iterator == m_paramsNb);
 
+        if (m_nbSameParams > 0) {
+            wxLogMessage(_("%d evaluations skipped (parameters were already assessed)."), m_nbSameParams);
+            m_nbSameParams = 0;
+        }
+        if (m_nbCloseParams > 0) {
+            wxLogMessage(_("%d evaluations skipped (similar parameters did not perform well)."), m_nbCloseParams);
+            m_nbCloseParams = 0;
+        }
+
         // Different operators consider that the scores are sorted !
         SortScoresAndParameters();
 
@@ -735,15 +744,6 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
         wxLogVerbose(_("m_parameters[%d] = %s"), m_iterator, m_parameters[m_iterator].Print());
 
         return &m_parameters[m_iterator];
-    }
-
-    if (m_nbSameParams > 0) {
-        wxLogMessage(_("%d evaluations skipped (parameters were already assessed)."), m_nbSameParams);
-        m_nbSameParams = 0;
-    }
-    if (m_nbCloseParams > 0) {
-        wxLogMessage(_("%d evaluations skipped (similar parameters did not perform well)."), m_nbCloseParams);
-        m_nbCloseParams = 0;
     }
 
     return nullptr;
