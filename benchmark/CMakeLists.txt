@@ -119,3 +119,8 @@ if (WIN32)
                 "${ALL_DLL_PATH_DESTINATION}")
     endif ()
 endif ()
+
+
+##### Get data file
+
+file(DOWNLOAD https://bitbucket.org/phorton/atmoswing-benchmark-files/downloads/z.nc ${CMAKE_BINARY_DIR}/benchmark/z.nc SHOW_PROGRESS)
