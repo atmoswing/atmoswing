@@ -31,9 +31,15 @@
 #include "gtest/gtest.h"
 #include "benchmark/benchmark.h"
 
-class MyFixture : public benchmark::Fixture {
-public:
-    void SetUp(const ::benchmark::State& state) {
+asMethodCalibratorSingle *g_calibrator;
+asParametersCalibration *g_params;
+
+int main(int argc, char **argv)
+{
+    try {
+        wxPrintf(_("Initializing benchmarks...\n"));
+
+        ::benchmark::Initialize(&argc, argv);
 
         // Override some globals
         g_unitTesting = true;
@@ -44,11 +50,12 @@ public:
         wxInitialize();
 
         // Set the log
+        Log()->CreateFile("AtmoSwingBench.log");
         Log()->SetLevel(2);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, wxFileName::GetCwd() + "AtmoSwingBenchmark.ini",
-                                                 wxFileName::GetCwd() + "AtmoSwingBenchmark.ini", wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingBench.ini",
+                                                 asConfig::GetTempDir() + "AtmoSwingBench.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
 
         // Check path
@@ -73,85 +80,73 @@ public:
                 } else {
                     wxPrintf("Cannot find the files directory\n");
                     wxPrintf("Original working directory: %s\n", filePath);
+                    return 0;
                 }
             }
         }
-    }
 
-    void TearDown(const ::benchmark::State& state) {
+        // Calibrator
+        g_calibrator = new asMethodCalibratorSingle();
+        g_calibrator->SetPredictorDataDir(BENCHMARK_DATA_DIR);
+
+        // Get parameters
+        wxString paramsFilePath = wxFileName::GetCwd();
+        paramsFilePath.Append("/files/");
+        paramsFilePath.Append("parameters_bench_1.xml");
+        g_params = new asParametersCalibration();
+        g_params->LoadFromFile(paramsFilePath);
+
+        wxPrintf(_("Preloading data...\n"));
+
+        // Preload data
+        asResultsDates anaDates;
+        bool containsNaNs = false;
+        g_calibrator->GetAnalogsDates(anaDates, g_params, 0, containsNaNs);
+
+        wxPrintf(_("Starting real work...\n"));
+
+        ::benchmark::RunSpecifiedBenchmarks();
+
         // Cleanup
         wxUninitialize();
         DeleteThreadsManager();
         DeleteLog();
         delete wxFileConfig::Set((wxFileConfig *) nullptr);
-    }
-};
+        wxDELETE(g_calibrator);
+        wxDELETE(g_params);
 
-void Ref1()
-{
-    // Get parameters
-    wxString paramsFilePath = wxFileName::GetCwd();
-    paramsFilePath.Append("/files/");
-    paramsFilePath.Append("parameters_bench_1.xml");
-    asParametersCalibration params;
-    ASSERT_TRUE(params.LoadFromFile(paramsFilePath));
-
-            // Set the local config object
-    wxFileConfig *pConfig =
-        new wxFileConfig("AtmoSwing", wxEmptyString, wxFileName::GetCwd() + "AtmoSwingBenchmark.ini",
-                         wxFileName::GetCwd() + "AtmoSwingBenchmark.ini", wxCONFIG_USE_LOCAL_FILE);
-    wxFileConfig::Set(pConfig);
-
-    // Proceed to the calculations
-    asMethodCalibratorSingle calibrator;
-    asResultsDates anaDates;
-
-    try {
-        int step = 0;
-        bool containsNaNs = false;
-        calibrator.SetPredictorDataDir(BENCHMARK_DATA_DIR);
-        ASSERT_TRUE(calibrator.GetAnalogsDates(anaDates, &params, step, containsNaNs));
-        EXPECT_FALSE(containsNaNs);
     } catch (std::exception &e) {
-        wxPrintf(e.what());
-        return;
+        wxString msg(e.what(), wxConvUTF8);
+        wxPrintf(_("Exception caught: %s\n"), msg);
     }
+
+    return 0;
 }
 
-BENCHMARK_F(MyFixture, FooTest)(benchmark::State& state) {
-    for (auto _ : state)
-        std::string empty_string;
-}
-
-BENCHMARK_DEFINE_F(MyFixture, BarTest)(benchmark::State& state) {
-    for (auto _ : state)
-        Ref1();
-}
-/* BarTest is NOT registered */
-BENCHMARK_REGISTER_F(MyFixture, BarTest);
-/* BarTest is now registered */
-
-
-/*
-static void setup()
-{
-
-}
 
 static void BM_StringCreation(benchmark::State& state) {
-    for (auto _ : state)
-        std::string empty_string;
+
+    for (auto _ : state) {
+        int step = 0;
+        bool containsNaNs = false;
+        asResultsDates anaDates;
+
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, g_params, step, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
 }
-// Register the function as a benchmark
 BENCHMARK(BM_StringCreation);
 
-// Define another benchmark
 static void BM_StringCopy(benchmark::State& state) {
     std::string x = "hello";
     for (auto _ : state)
         std::string copy(x);
 }
 BENCHMARK(BM_StringCopy);
-*/
-//BENCHMARK_MAIN();
+
 
