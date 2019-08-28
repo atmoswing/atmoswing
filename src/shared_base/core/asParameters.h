@@ -101,6 +101,8 @@ public:
 
     void AddPredictor(int iStep);
 
+    void RemovePredictor(int iStep, int iPtor);
+
     virtual bool LoadFromFile(const wxString &filePath = wxEmptyString);
 
     bool FixAnalogsNb();

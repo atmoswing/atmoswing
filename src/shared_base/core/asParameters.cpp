@@ -135,6 +135,13 @@ void asParameters::AddPredictor(int iStep)
     m_steps[iStep].predictors.push_back(predictor);
 }
 
+void asParameters::RemovePredictor(int iStep, int iPtor)
+{
+    wxASSERT(m_steps.size() > iStep);
+    wxASSERT(m_steps[iStep].size() > iPtor);
+    m_steps[iStep].predictors.erase(m_steps[iStep].predictors.begin() + iPtor);
+}
+
 bool asParameters::LoadFromFile(const wxString &filePath)
 {
     wxLogVerbose(_("Loading parameters file."));

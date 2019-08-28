@@ -57,6 +57,9 @@ int main(int argc, char **argv)
         wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingBench.ini",
                                                  asConfig::GetTempDir() + "AtmoSwingBench.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
+        pConfig->Write("/Processing/AllowMultithreading", true);
+        pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
+        pConfig->Write("/Processing/MaxThreadNb", 8);
 
         // Check path
         wxString filePath = wxFileName::GetCwd();
@@ -124,15 +127,26 @@ int main(int argc, char **argv)
 }
 
 
-static void BM_StringCreation(benchmark::State& state) {
+static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
+{
+    int step = 0;
+    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
+    int nbX = int(state.range(0) / nbY);
+    asParametersCalibration params = *g_params;
+    params.RemovePredictor(step, 1);
+    params.SetPredictorXptsnb(step, 0, nbX);
+    params.SetPredictorYptsnb(step, 0, nbY);
+
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
 
     for (auto _ : state) {
-        int step = 0;
         bool containsNaNs = false;
         asResultsDates anaDates;
 
         try {
-            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, g_params, step, containsNaNs));
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
             EXPECT_FALSE(containsNaNs);
         } catch (std::exception &e) {
             wxPrintf(e.what());
@@ -140,13 +154,62 @@ static void BM_StringCreation(benchmark::State& state) {
         }
     }
 }
-BENCHMARK(BM_StringCreation);
+BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
 
-static void BM_StringCopy(benchmark::State& state) {
-    std::string x = "hello";
-    for (auto _ : state)
-        std::string copy(x);
+static void BM_1Ptor_S1_Standard(benchmark::State &state)
+{
+    int step = 0;
+    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
+    int nbX = int(state.range(0) / nbY);
+    asParametersCalibration params = *g_params;
+    params.RemovePredictor(step, 1);
+    params.SetPredictorXptsnb(step, 0, nbX);
+    params.SetPredictorYptsnb(step, 0, nbY);
+
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+
+    for (auto _ : state) {
+        bool containsNaNs = false;
+        asResultsDates anaDates;
+
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
 }
-BENCHMARK(BM_StringCopy);
+BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
 
+#ifdef USE_CUDA
+static void BM_1Ptor_S1_Cuda(benchmark::State &state)
+{
+    int step = 0;
+    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
+    int nbX = int(state.range(0) / nbY);
+    asParametersCalibration params = *g_params;
+    params.RemovePredictor(step, 1);
+    params.SetPredictorXptsnb(step, 0, nbX);
+    params.SetPredictorYptsnb(step, 0, nbY);
 
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asCUDA);
+
+    for (auto _ : state) {
+        bool containsNaNs = false;
+        asResultsDates anaDates;
+
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
+}
+BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
+#endif
