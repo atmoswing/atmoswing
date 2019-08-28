@@ -43,7 +43,7 @@ endif ()
 ExternalProject_Add(googlebenchmark
         GIT_REPOSITORY https://github.com/google/benchmark
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
+        CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBENCHMARK_DOWNLOAD_DEPENDENCIES=1 -Dgtest_force_shared_crt=ON
         BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
 
@@ -83,8 +83,8 @@ add_dependencies(atmoswing-benchmark asprocessing)
 target_link_libraries(atmoswing-benchmark asbase)
 target_link_libraries(atmoswing-benchmark asprocessing)
 if(WIN32)
-    target_link_libraries(atmoswing-benchmark debug benchmarkd debug benchmark_maind)
-    target_link_libraries(atmoswing-benchmark optimized benchmark optimized benchmark_main)
+    target_link_libraries(atmoswing-benchmark debug benchmarkd debug benchmark_maind Shlwapi)
+    target_link_libraries(atmoswing-benchmark optimized benchmark optimized benchmark_main Shlwapi)
 else()
     target_link_libraries(atmoswing-benchmark benchmark benchmark_main)
 endif()
@@ -123,4 +123,6 @@ endif ()
 
 ##### Get data file
 
-file(DOWNLOAD https://bitbucket.org/phorton/atmoswing-benchmark-files/downloads/z.nc ${CMAKE_BINARY_DIR}/benchmark/z.nc SHOW_PROGRESS)
+if (NOT EXISTS "${CMAKE_BINARY_DIR}/benchmark/z.nc")
+    file(DOWNLOAD https://bitbucket.org/phorton/atmoswing-benchmark-files/downloads/z.nc ${CMAKE_BINARY_DIR}/benchmark/z.nc SHOW_PROGRESS)
+endif ()
