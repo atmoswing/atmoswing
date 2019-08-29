@@ -445,6 +445,77 @@ va1f asMethodCalibrator::GetClimatologyData(asParametersScoring *params)
     return climatologyData;
 }
 
+bool asMethodCalibrator::PreloadDataOnly(asParametersScoring *params)
+{
+    // Archive date array
+    asTimeArray timeArrayArchive(GetTimeStartArchive(params), GetTimeEndArchive(params),
+                                 params->GetAnalogsTimeStepHours(), params->GetTimeArrayAnalogsMode());
+    if (params->HasValidationPeriod()) // remove validation years
+    {
+        timeArrayArchive.SetForbiddenYears(params->GetValidationYearsVector());
+    }
+    timeArrayArchive.Init();
+
+    // Target date array
+    asTimeArray timeArrayTarget(GetTimeStartCalibration(params), GetTimeEndCalibration(params),
+                                params->GetTargetTimeStepHours(), params->GetTimeArrayTargetMode());
+
+    // Remove validation years
+    if (!m_validationMode && params->HasValidationPeriod())
+    {
+        timeArrayTarget.SetForbiddenYears(params->GetValidationYearsVector());
+    }
+
+    if (params->GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
+        params->GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
+        vi stations = params->GetPredictandStationIds();
+        if (stations.size() > 1) {
+            wxLogError(_("You cannot use predictand thresholds with the multivariate approach."));
+            return false;
+        }
+
+        if (!timeArrayTarget.Init(*m_predictandDB, params->GetTimeArrayTargetPredictandSerieName(), stations[0],
+                                  params->GetTimeArrayTargetPredictandMinThreshold(),
+                                  params->GetTimeArrayTargetPredictandMaxThreshold())) {
+            wxLogError(_("The time array mode for the target dates is not correctly defined."));
+            return false;
+        }
+    } else {
+        if (!timeArrayTarget.Init()) {
+            wxLogError(_("The time array mode for the target dates is not correctly defined."));
+            return false;
+        }
+    }
+
+    // If in validation mode, only keep validation years
+    if (m_validationMode) {
+        timeArrayTarget.KeepOnlyYears(params->GetValidationYearsVector());
+    }
+
+    // Data date array
+    double timeStartData = wxMin(GetTimeStartCalibration(params), GetTimeStartArchive(params));
+    double timeEndData = wxMax(GetTimeEndCalibration(params), GetTimeEndArchive(params));
+    wxString timeArrayMode = params->GetTimeArrayAnalogsMode();
+    if (timeArrayMode.IsSameAs("days_interval")) {
+        timeArrayMode = "simple";
+    }
+    asTimeArray timeArrayData(timeStartData, timeEndData, params->GetAnalogsTimeStepHours(),
+                              timeArrayMode);
+    timeArrayData.Init();
+
+    // Load the predictor data
+    std::vector<asPredictor *> predictors;
+    if (!LoadArchiveData(predictors, params, 0, timeStartData, timeEndData)) {
+        wxLogError(_("Failed loading predictor data."));
+        Cleanup(predictors);
+        return false;
+    }
+
+    Cleanup(predictors);
+
+    return true;
+}
+
 bool asMethodCalibrator::GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep,
                                          bool &containsNaNs)
 {

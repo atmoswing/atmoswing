@@ -26,7 +26,6 @@
  */
 
 #include "asGlobVars.h"
-#include "asProcessor.h"
 #include "asMethodCalibratorSingle.h"
 #include "gtest/gtest.h"
 #include "benchmark/benchmark.h"
@@ -37,8 +36,6 @@ asParametersCalibration *g_params;
 int main(int argc, char **argv)
 {
     try {
-        wxPrintf(_("Initializing benchmarks...\n"));
-
         ::benchmark::Initialize(&argc, argv);
 
         // Override some globals
@@ -54,8 +51,8 @@ int main(int argc, char **argv)
         Log()->SetLevel(2);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingBench.ini",
-                                                 asConfig::GetTempDir() + "AtmoSwingBench.ini", wxCONFIG_USE_LOCAL_FILE);
+        auto *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetTempDir() + "AtmoSwingBench.ini",
+                                         asConfig::GetTempDir() + "AtmoSwingBench.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
         pConfig->Write("/Processing/AllowMultithreading", true);
         pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
@@ -99,14 +96,8 @@ int main(int argc, char **argv)
         g_params = new asParametersCalibration();
         g_params->LoadFromFile(paramsFilePath);
 
-        wxPrintf(_("Preloading data...\n"));
-
         // Preload data
-        asResultsDates anaDates;
-        bool containsNaNs = false;
-        g_calibrator->GetAnalogsDates(anaDates, g_params, 0, containsNaNs);
-
-        wxPrintf(_("Starting real work...\n"));
+        g_calibrator->PreloadDataOnly(g_params);
 
         ::benchmark::RunSpecifiedBenchmarks();
 
