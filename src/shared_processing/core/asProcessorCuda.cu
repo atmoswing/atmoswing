@@ -44,7 +44,8 @@
 // efficiency and facilitates coalescing.
 static const int maxBlockSize = 1024;
 
-__device__ void warpReduce(volatile float *shared, int tid, int blockSize)
+__device__
+void warpReduce(volatile float *shared, int tid, int blockSize)
 {
     if (blockSize >= 64)
         shared[tid] += shared[tid + 32];
@@ -115,11 +116,12 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 }
 
 __global__
-void processS1grads(int bs, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
+void processS1grads(int blockSize, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
-    const unsigned long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
 
     if (blockId < candNb) {
+        int bs = blockSize;
         int nPts = ptsNb;
         long iCand = blockId;
         int iPt = threadIdx.x;
@@ -132,13 +134,9 @@ void processS1grads(int bs, long candNb, int ptsNb, const float *data, const lon
         // Process differences and get abs max
         if (iPt < nPts) {
 
-            // Lookup data block
-            long targIndex = idxTarg[iCand] * nPts;
-            long archIndex = idxArch[iCand] * nPts;
-
             // Lookup data value
-            float xi = data[targIndex + iPt];
-            float yi = data[archIndex + iPt];
+            float xi = data[idxTarg[iCand] * nPts + iPt];
+            float yi = data[idxArch[iCand] * nPts + iPt];
 
             float diffi = xi - yi;
             float amaxi = fabs(xi);
