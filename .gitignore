@@ -83,3 +83,5 @@ external/
 *.db-shm
 *.opendb
 benchmark/z.nc
+
+benchmark/atmoswing-benchmark
