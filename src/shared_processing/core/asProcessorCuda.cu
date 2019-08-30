@@ -40,11 +40,11 @@
 #include <device_launch_parameters.h>
 #include <helper_cuda.h>
 
-#define _TIME_CUDA false
+#define _TIME_CUDA true
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int maxBlockSize = 1024;
+static const int blockSize = 256; // must be 64 <= blockSize <= 1024
 
 __device__
 void warpReduce64(volatile float *shared, int tid)
@@ -68,71 +68,78 @@ void warpReduce32(volatile float *shared, int tid)
 }
 
 __global__
-void processS1grads(int blockSize, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
+void processS1grads(long candNb, int ptsNbtot, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
     const long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
 
     if (blockId < candNb) {
-        int bs = blockSize;
-        int nPts = ptsNb;
         long iCand = blockId;
-        int iPt = threadIdx.x;
+        int tid = threadIdx.x;
 
         extern __shared__ float mem[];
 
         float *diff = mem;
-        float *amax = &diff[bs];
+        float *amax = &diff[blockSize];
 
-        // Process differences and get abs max
-        if (iPt < nPts) {
+        float rdiff = 0;
+        float rmax = 0;
 
-            // Lookup data value
-            float xi = data[idxTarg[iCand] * nPts + iPt];
-            float yi = data[idxArch[iCand] * nPts + iPt];
-
-            float diffi = xi - yi;
-            float amaxi = fabs(xi);
-            if (fabs(yi) > amaxi) {
-                amaxi = fabs(yi);
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            int iPt = tid;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+                iPt += i * blockSize;
             }
 
-            diff[iPt] = fabs(diffi);
-            amax[iPt] = amaxi;
-        } else {
-            // Set rest of the block to 0
-            diff[iPt] = 0;
-            amax[iPt] = 0;
-        }
-        __syncthreads();
+            // Process differences and get abs max
+            if (tid < nPts) {
 
-        // Process sum reduction
-        for (unsigned int stride = bs / 2; stride > 32; stride /= 2) {
-            if (iPt < stride) {
-                diff[iPt] += diff[iPt + stride];
-                amax[iPt] += amax[iPt + stride];
+                // Lookup data value
+                float xi = data[idxTarg[iCand] * ptsNbtot + iPt];
+                float yi = data[idxArch[iCand] * ptsNbtot + iPt];
+
+                float diffi = xi - yi;
+                float amaxi = fabs(xi);
+                if (fabs(yi) > amaxi) {
+                    amaxi = fabs(yi);
+                }
+
+                diff[tid] = fabs(diffi);
+                amax[tid] = amaxi;
+            } else {
+                // Set rest of the block to 0
+                diff[tid] = 0;
+                amax[tid] = 0;
             }
             __syncthreads();
-        }
-        if (bs >= 64) {
-            if (iPt < 32) {
-                warpReduce64(diff, iPt);
-                warpReduce64(amax, iPt);
+
+            // Process sum reduction
+            for (unsigned int stride = blockSize / 2; stride > 32; stride /= 2) {
+                if (tid < stride) {
+                    diff[tid] += diff[tid + stride];
+                    amax[tid] += amax[tid + stride];
+                }
+                __syncthreads();
             }
-        } else {
-            if (iPt < 16) {
-                warpReduce32(diff, iPt);
-                warpReduce32(amax, iPt);
+            if (tid < 32) {
+                warpReduce64(diff, tid);
+                warpReduce64(amax, tid);
             }
+
+            rdiff += diff[0];
+            rmax += amax[0];
         }
 
         // Process final score
-        if (iPt == 0) {
+        if (threadIdx.x == 0) {
             float res = 0;
 
-            if (amax[0] == 0) {
+            if (rmax == 0) {
                 res = 200;
             } else {
-                res = 100.0f * (diff[0] / amax[0]);
+                res = 100.0f * (rdiff / rmax);
             }
             *(out + iCand) += res * w;
         }
@@ -295,14 +302,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         printf("time to copy data:                       %f\n", milliseconds);
 #endif
 
-        // Reduction only allowed on 1 block yet
-        if (ptsNb > maxBlockSize) {
-            printf("Using more than 1 gpu block (too much data points)\n");
-            return false;
-        }
-
         // Define block size (must be multiple of 32) and blocks nb
-        int blockSize = (int)ceil(ptsNb / 32.0) * 32;
         int blocksNbXY = ceil(std::cbrt(candNb));
         int blocksNbZ = ceil((double)candNb / (blocksNbXY * blocksNbXY));
         dim3 blocksNb3D(blocksNbXY, blocksNbXY, blocksNbZ);
@@ -314,7 +314,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         switch (criteria[iPtor]) {
             case S1grads:
                 // 3rd <<< >>> argument is for the dynamically allocated shared memory
-                processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(blockSize, candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
+                processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
