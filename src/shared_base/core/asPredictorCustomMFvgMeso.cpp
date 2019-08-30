@@ -77,8 +77,10 @@ bool asPredictorCustomMFvgMeso::Init()
             m_gribCode = {0, 128, 228, 1};
             m_unit = degK;
         } else {
-            wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
-            return false;
+            if (m_parameter == ParameterUndefined) {
+                wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+                return false;
+            }
         }
 
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
