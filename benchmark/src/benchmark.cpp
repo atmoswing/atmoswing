@@ -33,6 +33,8 @@
 asMethodCalibratorSingle *g_calibrator;
 asParametersCalibration *g_params;
 
+const int maxPointsNb = 2400;
+
 int main(int argc, char **argv)
 {
     try {
@@ -145,7 +147,7 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
+BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
 #endif
 
 static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
@@ -175,7 +177,7 @@ static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
+BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
 
 static void BM_1Ptor_S1_Standard(benchmark::State &state)
 {
@@ -203,4 +205,4 @@ static void BM_1Ptor_S1_Standard(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, 2400);
+BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);

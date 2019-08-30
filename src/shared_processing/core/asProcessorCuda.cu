@@ -45,22 +45,27 @@
 static const int maxBlockSize = 1024;
 
 __device__
-void warpReduce(volatile float *shared, int tid, int blockSize)
+void warpReduce64(volatile float *shared, int tid)
 {
-    if (blockSize >= 64)
-        shared[tid] += shared[tid + 32];
-    if (blockSize >= 32)
-        shared[tid] += shared[tid + 16];
-    if (blockSize >= 16)
-        shared[tid] += shared[tid + 8];
-    if (blockSize >= 8)
-        shared[tid] += shared[tid + 4];
-    if (blockSize >= 4)
-        shared[tid] += shared[tid + 2];
-    if (blockSize >= 2)
-        shared[tid] += shared[tid + 1];
+    shared[tid] += shared[tid + 32];
+    shared[tid] += shared[tid + 16];
+    shared[tid] += shared[tid + 8];
+    shared[tid] += shared[tid + 4];
+    shared[tid] += shared[tid + 2];
+    shared[tid] += shared[tid + 1];
 }
 
+__device__
+void warpReduce32(volatile float *shared, int tid)
+{
+    shared[tid] += shared[tid + 16];
+    shared[tid] += shared[tid + 8];
+    shared[tid] += shared[tid + 4];
+    shared[tid] += shared[tid + 2];
+    shared[tid] += shared[tid + 1];
+}
+
+/*
 __global__
 void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
 {
@@ -114,6 +119,7 @@ void criteriaS1grads(int n, const float *x, const float *y, float w, float *out)
         *out += res * w;
     }
 }
+*/
 
 __global__
 void processS1grads(int blockSize, long candNb, int ptsNb, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
@@ -157,16 +163,23 @@ void processS1grads(int blockSize, long candNb, int ptsNb, const float *data, co
         __syncthreads();
 
         // Process sum reduction
-        for (unsigned int s = bs / 2; s > 32; s /= 2) {
-            if (iPt < s) {
-                diff[iPt] += diff[iPt + s];
-                amax[iPt] += amax[iPt + s];
+        for (unsigned int stride = bs / 2; stride > 32; stride /= 2) {
+            if (iPt < stride) {
+                diff[iPt] += diff[iPt + stride];
+                amax[iPt] += amax[iPt + stride];
             }
             __syncthreads();
         }
-        if (iPt < 32) {
-            warpReduce(diff, iPt, bs);
-            warpReduce(amax, iPt, bs);
+        if (bs >= 64) {
+            if (iPt < 32) {
+                warpReduce64(diff, iPt);
+                warpReduce64(amax, iPt);
+            }
+        } else {
+            if (iPt < 16) {
+                warpReduce32(diff, iPt);
+                warpReduce32(amax, iPt);
+            }
         }
 
         // Process final score
@@ -266,8 +279,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
             return false;
         }
 
-        // Define block size and blocks nb
-        int blockSize = (int)pow(2, ceil(log(ptsNb) / log(2)));
+        // Define block size (must be multiple of 32) and blocks nb
+        int blockSize = (int)ceil(ptsNb / 32.0) * 32;
         int blocksNbXY = ceil(std::cbrt(candNb));
         int blocksNbZ = ceil((double)candNb / (blocksNbXY * blocksNbXY));
         dim3 blocksNb3D(blocksNbXY, blocksNbXY, blocksNbZ);
@@ -275,6 +288,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         // Launch kernel
         switch (criteria[iPtor]) {
             case S1grads:
+                // 3rd <<< >>> argument is for the dynamically allocated shared memory
                 processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(blockSize, candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
