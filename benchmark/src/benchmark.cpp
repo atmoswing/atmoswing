@@ -150,6 +150,34 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
 BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
 #endif
 
+static void BM_1Ptor_S1_Standard(benchmark::State &state)
+{
+    int step = 0;
+    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
+    int nbX = int(state.range(0) / nbY);
+    asParametersCalibration params = *g_params;
+    params.RemovePredictor(step, 1);
+    params.SetPredictorXptsnb(step, 0, nbX);
+    params.SetPredictorYptsnb(step, 0, nbY);
+
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+
+    for (auto _ : state) {
+        bool containsNaNs = false;
+        asResultsDates anaDates;
+
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
+}
+BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
+
 static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
 {
     int step = 0;
@@ -178,31 +206,3 @@ static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
     }
 }
 BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
-
-static void BM_1Ptor_S1_Standard(benchmark::State &state)
-{
-    int step = 0;
-    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
-    int nbX = int(state.range(0) / nbY);
-    asParametersCalibration params = *g_params;
-    params.RemovePredictor(step, 1);
-    params.SetPredictorXptsnb(step, 0, nbX);
-    params.SetPredictorYptsnb(step, 0, nbY);
-
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asSTANDARD);
-
-    for (auto _ : state) {
-        bool containsNaNs = false;
-        asResultsDates anaDates;
-
-        try {
-            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
-            EXPECT_FALSE(containsNaNs);
-        } catch (std::exception &e) {
-            wxPrintf(e.what());
-            return;
-        }
-    }
-}
-BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
