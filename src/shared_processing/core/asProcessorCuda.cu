@@ -205,6 +205,11 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 {
     int ptorsNb = weights.size();
 
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    float milliseconds = 0.0f;
+
     // Sizes
     long candNb = 0;
     std::vector<long> indexStart(nbCandidates.size() + 1);
@@ -215,31 +220,56 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     indexStart[nbCandidates.size()] = candNb;
 
     // Alloc space for indices
+    cudaEventRecord(start);
     long *hIdxTarg, *dIdxTarg;
     hIdxTarg = (long *)malloc(candNb * sizeof(long));
     checkCudaErrors(cudaMalloc((void **)&dIdxTarg, candNb * sizeof(long)));
     long *hIdxArch, *dIdxArch;
     hIdxArch = (long *)malloc(candNb * sizeof(long));
     checkCudaErrors(cudaMalloc((void **)&dIdxArch, candNb * sizeof(long)));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to allocate IdxTarg and IdxArch:    %f\n", milliseconds);
 
+    cudaEventRecord(start);
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
             hIdxArch[indexStart[i] + j] = indicesArch[i][j];
             hIdxTarg[indexStart[i] + j] = indicesTarg[i];
         }
     }
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to initialize IdxTarg and IdxArch:  %f\n", milliseconds);
 
     // Copy to device
+    cudaEventRecord(start);
     checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(long), cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(long), cudaMemcpyHostToDevice));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to copy IdxTarg and IdxArch:        %f\n", milliseconds);
 
     // Alloc space for results
+    cudaEventRecord(start);
     float *hRes, *dRes;
     hRes = (float *)malloc(candNb * sizeof(float));
     checkCudaErrors(cudaMalloc((void **)&dRes, candNb * sizeof(float)));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to allocate dRes:                   %f\n", milliseconds);
 
     // Init resulting array to 0s
+    cudaEventRecord(start);
     checkCudaErrors(cudaMemset(dRes, 0, candNb * sizeof(float)));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to memset dRes:                     %f\n", milliseconds);
 
     // Get max predictor size
     long maxDataSize = 0;
@@ -252,9 +282,14 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     }
 
     // Alloc space for data
+    cudaEventRecord(start);
     float *hData, *dData;
     hData = (float *)malloc(maxDataSize * sizeof(float));
     checkCudaErrors(cudaMalloc((void **)&dData, maxDataSize * sizeof(float)));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to allocate dData:                  %f\n", milliseconds);
 
     // Loop over all predictors
     for (int iPtor = 0; iPtor < ptorsNb; iPtor++) {
@@ -264,14 +299,24 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         long dataSize = data[iPtor].size() * ptsNb;
 
         // Copy data in the new arrays
+        cudaEventRecord(start);
         for (int iDay = 0; iDay < data[iPtor].size(); iDay++) {
             for (int iPt = 0; iPt < ptsNb; iPt++) {
                 hData[iDay * ptsNb + iPt] = data[iPtor][iDay][iPt];
             }
         }
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+        cudaEventElapsedTime(&milliseconds, start, stop);
+        printf("time to initialize hData:                %f\n", milliseconds);
 
         // Copy the data to the device
+        cudaEventRecord(start);
         checkCudaErrors(cudaMemcpy(dData, hData, dataSize * sizeof(float), cudaMemcpyHostToDevice));
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+        cudaEventElapsedTime(&milliseconds, start, stop);
+        printf("time to copy data:                       %f\n", milliseconds);
 
         // Reduction only allowed on 1 block yet
         if (ptsNb > maxBlockSize) {
@@ -286,6 +331,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         dim3 blocksNb3D(blocksNbXY, blocksNbXY, blocksNbZ);
 
         // Launch kernel
+        cudaEventRecord(start);
         switch (criteria[iPtor]) {
             case S1grads:
                 // 3rd <<< >>> argument is for the dynamically allocated shared memory
@@ -300,10 +346,19 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
         checkCudaErrors(cudaGetLastError());
 
         checkCudaErrors(cudaDeviceSynchronize());
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+        cudaEventElapsedTime(&milliseconds, start, stop);
+        printf("time for kernel:                         %f\n", milliseconds);
     }
 
     // Copy the resulting array to the device
+    cudaEventRecord(start);
     checkCudaErrors(cudaMemcpy(hRes, dRes, candNb * sizeof(float), cudaMemcpyDeviceToHost));
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    printf("time to copy results:                    %f\n", milliseconds);
 
     // Set the criteria values in the vector container
     for (int i = 0; i < nbCandidates.size(); i++) {
