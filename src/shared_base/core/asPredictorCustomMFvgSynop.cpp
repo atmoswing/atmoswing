@@ -77,7 +77,8 @@ bool asPredictorCustomMFvgSynop::Init()
             m_gribCode = {0, 128, 132, 100};
             m_unit = m_s;
         } else {
-            if (m_datasetId.IsSameAs("Custom_MeteoFVG_Meso", false)) {
+            if (m_datasetId.IsSameAs("Custom_MeteoFVG_meso", false) ||
+                m_datasetId.IsSameAs("Custom_MeteoFVG_meso_packed", false)) {
                 return true;
             }
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
