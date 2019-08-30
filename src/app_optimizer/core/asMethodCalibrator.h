@@ -60,6 +60,8 @@ public:
 
     ~asMethodCalibrator() override;
 
+    bool PreloadDataOnly(asParametersScoring *params);
+
     bool GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep, bool &containsNaNs);
 
     bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring *params, asResultsDates &anaDates, int iStep,
