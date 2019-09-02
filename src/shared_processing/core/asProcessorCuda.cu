@@ -71,13 +71,13 @@ __global__
 void processS1grads(long candNb, int ptsNbtot, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
     const long blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
 
     if (blockId < candNb) {
-        long iCand = blockId;
-        int tid = threadIdx.x;
+        long iTarg = idxTarg[blockId];
+        long iArch = idxArch[blockId];
 
         extern __shared__ float mem[];
-
         float *diff = mem;
         float *amax = &diff[blockSize];
 
@@ -87,18 +87,15 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            int iPt = tid;
             if (i == nLoops-1) {
                 nPts = ptsNbtot - (i * blockSize);
-                iPt += i * blockSize;
             }
 
             // Process differences and get abs max
-            if (tid < nPts) {
-
+            if (threadId < nPts) {
                 // Lookup data value
-                float xi = data[idxTarg[iCand] * ptsNbtot + iPt];
-                float yi = data[idxArch[iCand] * ptsNbtot + iPt];
+                float xi = data[iTarg * ptsNbtot + i * blockSize + threadId];
+                float yi = data[iArch * ptsNbtot + i * blockSize + threadId];
 
                 float diffi = xi - yi;
                 float amaxi = fabs(xi);
@@ -106,34 +103,35 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
                     amaxi = fabs(yi);
                 }
 
-                diff[tid] = fabs(diffi);
-                amax[tid] = amaxi;
+                diff[threadId] = fabs(diffi);
+                amax[threadId] = amaxi;
             } else {
                 // Set rest of the block to 0
-                diff[tid] = 0;
-                amax[tid] = 0;
+                diff[threadId] = 0;
+                amax[threadId] = 0;
             }
             __syncthreads();
 
             // Process sum reduction
             for (unsigned int stride = blockSize / 2; stride > 32; stride /= 2) {
-                if (tid < stride) {
-                    diff[tid] += diff[tid + stride];
-                    amax[tid] += amax[tid + stride];
+                if (threadId < stride) {
+                    diff[threadId] += diff[threadId + stride];
+                    amax[threadId] += amax[threadId + stride];
                 }
                 __syncthreads();
             }
-            if (tid < 32) {
-                warpReduce64(diff, tid);
-                warpReduce64(amax, tid);
+            if (threadId < 32) {
+                warpReduce64(diff, threadId);
+                warpReduce64(amax, threadId);
             }
+            __syncthreads();
 
             rdiff += diff[0];
             rmax += amax[0];
         }
 
         // Process final score
-        if (threadIdx.x == 0) {
+        if (threadId == 0) {
             float res = 0;
 
             if (rmax == 0) {
@@ -141,7 +139,7 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
             } else {
                 res = 100.0f * (rdiff / rmax);
             }
-            *(out + iCand) += res * w;
+            *(out + blockId) += res * w;
         }
     }
 }
