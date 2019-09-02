@@ -46,25 +46,12 @@
 // efficiency and facilitates coalescing.
 static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 
-__device__
-void warpReduce64(volatile float *shared, int tid)
+__inline__ __device__
+float warpReduceSum(float val)
 {
-    shared[tid] += shared[tid + 32];
-    shared[tid] += shared[tid + 16];
-    shared[tid] += shared[tid + 8];
-    shared[tid] += shared[tid + 4];
-    shared[tid] += shared[tid + 2];
-    shared[tid] += shared[tid + 1];
-}
-
-__device__
-void warpReduce32(volatile float *shared, int tid)
-{
-    shared[tid] += shared[tid + 16];
-    shared[tid] += shared[tid + 8];
-    shared[tid] += shared[tid + 4];
-    shared[tid] += shared[tid + 2];
-    shared[tid] += shared[tid + 1];
+    for (int offset = 32 / 2; offset > 0; offset /= 2)
+        val += __shfl_down(val, offset, 32);
+    return val;
 }
 
 __global__
@@ -107,36 +94,38 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
             __syncthreads();
 
             // Process sum reduction
-            for (unsigned int stride = blockSize / 2; stride > 32; stride /= 2) {
+            for (unsigned int stride = blockSize / 2; stride >= 32; stride /= 2) {
                 if (threadId < stride) {
                     diff[threadId] += diff[threadId + stride];
                     amax[threadId] += amax[threadId + stride];
                 }
                 __syncthreads();
             }
+
+            float ldiff = diff[threadId];
+            float lamax = amax[threadId];
+            __syncthreads();
+
             if (threadId < 32) {
-                warpReduce64(diff, threadId);
-                warpReduce64(amax, threadId);
+                ldiff = warpReduceSum(ldiff);
+                lamax = warpReduceSum(lamax);
             }
             __syncthreads();
 
             if (threadId == 0) {
-                rdiff += diff[0];
-                rmax += amax[0];
+                rdiff += ldiff;
+                rmax += lamax;
             }
         }
         __syncthreads();
 
         // Process final score
         if (threadId == 0) {
-            float res = 0;
-
             if (rmax == 0) {
-                res = 200;
+                *(out + blockId) += 200.0f * w;
             } else {
-                res = 100.0f * (rdiff / rmax);
+                *(out + blockId) += 100.0f * (rdiff / rmax) * w;
             }
-            *(out + blockId) += res * w;
         }
     }
 }
