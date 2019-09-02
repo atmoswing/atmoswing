@@ -44,7 +44,7 @@
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int blockSize = 256; // must be 64 <= blockSize <= 1024
+static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 
 __device__
 void warpReduce64(volatile float *shared, int tid)
