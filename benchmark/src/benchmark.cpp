@@ -35,7 +35,7 @@
 asMethodCalibratorSingle *g_calibrator;
 asParametersCalibration *g_params;
 
-const int maxPointsNb = 2400;
+const int maxPointsNb = 2048;
 
 int main(int argc, char **argv)
 {
