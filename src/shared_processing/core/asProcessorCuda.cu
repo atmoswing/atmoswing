@@ -97,14 +97,8 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
                 float xi = data[iTarg * ptsNbtot + i * blockSize + threadId];
                 float yi = data[iArch * ptsNbtot + i * blockSize + threadId];
 
-                float diffi = xi - yi;
-                float amaxi = fabs(xi);
-                if (fabs(yi) > amaxi) {
-                    amaxi = fabs(yi);
-                }
-
-                diff[threadId] = fabs(diffi);
-                amax[threadId] = amaxi;
+                diff[threadId] = fabsf(xi - yi);
+                amax[threadId] = fmaxf(fabsf(xi), fabsf(yi));
             } else {
                 // Set rest of the block to 0
                 diff[threadId] = 0;
