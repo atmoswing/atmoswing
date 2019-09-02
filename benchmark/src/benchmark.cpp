@@ -168,7 +168,7 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
     for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
         EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
         for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
-            EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), 0.00002);
+            EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), 0.00003);
             if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.00001) {
                 EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
             }
