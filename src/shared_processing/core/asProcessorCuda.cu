@@ -124,12 +124,14 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
                 warpReduce64(diff, threadId);
                 warpReduce64(amax, threadId);
             }
+            __syncthreads();
 
             if (threadId == 0) {
                 rdiff += diff[0];
                 rmax += amax[0];
             }
         }
+        __syncthreads();
 
         // Process final score
         if (threadId == 0) {
