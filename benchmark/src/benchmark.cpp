@@ -30,6 +30,8 @@
 #include "gtest/gtest.h"
 #include "benchmark/benchmark.h"
 
+#define _CHECK_CUDA_RESULTS true
+
 asMethodCalibratorSingle *g_calibrator;
 asParametersCalibration *g_params;
 
@@ -134,10 +136,10 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asCUDA);
 
-    for (auto _ : state) {
-        bool containsNaNs = false;
-        asResultsDates anaDates;
+    bool containsNaNs = false;
+    asResultsDates anaDates;
 
+    for (auto _ : state) {
         try {
             ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
             EXPECT_FALSE(containsNaNs);
@@ -146,6 +148,33 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
             return;
         }
     }
+
+#if _CHECK_CUDA_RESULTS
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+
+    asResultsDates anaDatesRef;
+    ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDatesRef, &params, step, containsNaNs));
+
+    // Extract data
+    a1f resultsTargetDatesCPU(anaDatesRef.GetTargetDates());
+    a2f resultsCriteriaCPU(anaDatesRef.GetAnalogsCriteria());
+    a2f resultsAnalogDatesCPU(anaDatesRef.GetAnalogsDates());
+    a1f resultsTargetDatesGPU(anaDates.GetTargetDates());
+    a2f resultsCriteriaGPU(anaDates.GetAnalogsCriteria());
+    a2f resultsAnalogDatesGPU(anaDates.GetAnalogsDates());
+
+    // Check results
+    for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
+        EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
+        for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
+            EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), 0.00002);
+            if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.00001) {
+                EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
+            }
+        }
+    }
+#endif
 }
 BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
 #endif
@@ -163,10 +192,10 @@ static void BM_1Ptor_S1_Standard(benchmark::State &state)
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asSTANDARD);
 
-    for (auto _ : state) {
-        bool containsNaNs = false;
-        asResultsDates anaDates;
+    bool containsNaNs = false;
+    asResultsDates anaDates;
 
+    for (auto _ : state) {
         try {
             ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
             EXPECT_FALSE(containsNaNs);
@@ -192,10 +221,10 @@ static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
 
-    for (auto _ : state) {
-        bool containsNaNs = false;
-        asResultsDates anaDates;
+    bool containsNaNs = false;
+    asResultsDates anaDates;
 
+    for (auto _ : state) {
         try {
             ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
             EXPECT_FALSE(containsNaNs);
