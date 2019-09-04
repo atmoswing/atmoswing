@@ -44,7 +44,7 @@
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int blockSize = 32; // must be 32 <= blockSize <= 1024
+static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 
 // From https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
 __inline__ __device__
@@ -113,8 +113,8 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
             __syncthreads();
 
             // Process sum reduction
-            diff = warpReduceSum(diff);
-            amax = warpReduceSum(amax);
+            diff = blockReduceSum(diff);
+            amax = blockReduceSum(amax);
             __syncthreads();
 
             if (threadId == 0) {
