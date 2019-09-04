@@ -55,30 +55,6 @@ float warpReduceSum(float val)
     return val;
 }
 
-// From https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
-__inline__ __device__
-float blockReduceSum(float val)
-{
-    static __shared__ float shared[32]; // Shared mem for 32 partial sums
-    int lane = threadIdx.x % warpSize;
-    int wid = threadIdx.x / warpSize;
-
-    val = warpReduceSum(val); // Each warp performs partial reduction
-
-    if (lane == 0)
-        shared[wid] = val; // Write reduced value to shared memory
-
-    __syncthreads(); // Wait for all partial reductions
-
-    // Read from shared memory only if that warp existed
-    val = (threadIdx.x < blockDim.x / warpSize) ? shared[lane] : 0;
-
-    if (wid == 0)
-        val = warpReduceSum(val); // Final reduce within first warp
-
-    return val;
-}
-
 __global__
 void processS1grads(long candNb, int ptsNbtot, const float *data, const long *idxTarg, const long *idxArch, float w, float *out)
 {
@@ -89,8 +65,10 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
         long iTarg = idxTarg[blockId];
         long iArch = idxArch[blockId];
 
-        float diff = 0;
-        float amax = 0;
+        extern __shared__ float mem[];
+        float *diff = mem;
+        float *amax = &diff[blockSize];
+
         float rdiff = 0;
         float rmax = 0;
 
@@ -107,19 +85,37 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
                 float xi = data[iTarg * ptsNbtot + i * blockSize + threadId];
                 float yi = data[iArch * ptsNbtot + i * blockSize + threadId];
 
-                diff = fabsf(xi - yi);
-                amax = fmaxf(fabsf(xi), fabsf(yi));
+                diff[threadId] = fabsf(xi - yi);
+                amax[threadId] = fmaxf(fabsf(xi), fabsf(yi));
+            } else {
+                // Set rest of the block to 0
+                diff[threadId] = 0;
+                amax[threadId] = 0;
             }
             __syncthreads();
 
             // Process sum reduction
-            diff = blockReduceSum(diff);
-            amax = blockReduceSum(amax);
+            for (unsigned int stride = blockSize / 2; stride >= warpSize; stride /= 2) {
+                if (threadId < stride) {
+                    diff[threadId] += diff[threadId + stride];
+                    amax[threadId] += amax[threadId + stride];
+                }
+                __syncthreads();
+            }
+
+            float ldiff = diff[threadId];
+            float lamax = amax[threadId];
+            __syncthreads();
+
+            if (threadId < warpSize) {
+                ldiff = warpReduceSum(ldiff);
+                lamax = warpReduceSum(lamax);
+            }
             __syncthreads();
 
             if (threadId == 0) {
-                rdiff += diff;
-                rmax += amax;
+                rdiff += ldiff;
+                rmax += lamax;
             }
         }
         __syncthreads();
@@ -302,7 +298,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 #endif
         switch (criteria[iPtor]) {
             case S1grads:
-                processS1grads<<<blocksNb3D, blockSize>>>(candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
+                // 3rd <<< >>> argument is for the dynamically allocated shared memory
+                processS1grads<<<blocksNb3D, blockSize, 2*blockSize*sizeof(float)>>>(candNb, ptsNb, dData, dIdxTarg, dIdxArch, weight, dRes);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
