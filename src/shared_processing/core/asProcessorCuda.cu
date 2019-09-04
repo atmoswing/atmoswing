@@ -50,8 +50,8 @@ static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 __inline__ __device__
 float warpReduceSum(float val)
 {
-    for (int offset = warpSize / 2; offset > 0; offset /= 2)
-        val += __shfl_down(val, offset, warpSize);
+    for (int offset = 32 / 2; offset > 0; offset /= 2)
+        val += __shfl_down(val, offset, 32);
     return val;
 }
 
@@ -95,7 +95,7 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
             __syncthreads();
 
             // Process sum reduction
-            for (unsigned int stride = blockSize / 2; stride >= warpSize; stride /= 2) {
+            for (unsigned int stride = blockSize / 2; stride >= 32; stride /= 2) {
                 if (threadId < stride) {
                     diff[threadId] += diff[threadId + stride];
                     amax[threadId] += amax[threadId + stride];
@@ -107,7 +107,7 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
             float lamax = amax[threadId];
             __syncthreads();
 
-            if (threadId < warpSize) {
+            if (threadId < 32) {
                 ldiff = warpReduceSum(ldiff);
                 lamax = warpReduceSum(lamax);
             }
