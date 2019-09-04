@@ -133,8 +133,8 @@ void processS1grads(long candNb, int ptsNbtot, const float *data, const long *id
     }
 }
 
-bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
-                                      std::vector<std::vector<int>> &indicesArch,
+bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, long *indicesTarg,
+                                      long *indicesArch,
                                       std::vector<std::vector<float>> &resultingCriteria,
                                       std::vector<int> &nbCandidates, std::vector<int> &colsNb,
                                       std::vector<int> &rowsNb, std::vector<float> &weights,
@@ -162,11 +162,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 #if _TIME_CUDA
     cudaEventRecord(start);
 #endif
-    long *hIdxTarg, *dIdxTarg;
-    hIdxTarg = (long *)malloc(candNb * sizeof(long));
+    long *dIdxTarg, *dIdxArch;
     checkCudaErrors(cudaMalloc((void **)&dIdxTarg, candNb * sizeof(long)));
-    long *hIdxArch, *dIdxArch;
-    hIdxArch = (long *)malloc(candNb * sizeof(long));
     checkCudaErrors(cudaMalloc((void **)&dIdxArch, candNb * sizeof(long)));
 #if _TIME_CUDA
     cudaEventRecord(stop);
@@ -178,12 +175,13 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 #if _TIME_CUDA
     cudaEventRecord(start);
 #endif
+    /*
     for (int i = 0; i < indicesTarg.size(); i++) {
         for (int j = 0; j < nbCandidates[i]; j++) {
             hIdxArch[indexStart[i] + j] = indicesArch[i][j];
             hIdxTarg[indexStart[i] + j] = indicesTarg[i];
         }
-    }
+    }*/
 #if _TIME_CUDA
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
@@ -195,8 +193,8 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
 #if _TIME_CUDA
     cudaEventRecord(start);
 #endif
-    checkCudaErrors(cudaMemcpy(dIdxTarg, hIdxTarg, candNb * sizeof(long), cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMemcpy(dIdxArch, hIdxArch, candNb * sizeof(long), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(dIdxTarg, indicesTarg, candNb * sizeof(long), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(dIdxArch, indicesArch, candNb * sizeof(long), cudaMemcpyHostToDevice));
 #if _TIME_CUDA
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
@@ -346,9 +344,7 @@ bool asProcessorCuda::ProcessCriteria(std::vector<std::vector<float *>> &data, s
     checkCudaErrors(cudaFree(dData));
     free(hRes);
     checkCudaErrors(cudaFree(dRes));
-    free(hIdxTarg);
     checkCudaErrors(cudaFree(dIdxTarg));
-    free(hIdxArch);
     checkCudaErrors(cudaFree(dIdxArch));
 
     return true;

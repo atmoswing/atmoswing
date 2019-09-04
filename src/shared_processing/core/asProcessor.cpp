@@ -200,8 +200,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Containers for the indices
             vi nbCandidates(timeTargetSelectionSize);
-            vi indicesTarg(timeTargetSelectionSize);
-            std::vector<vi> indicesArch(timeTargetSelectionSize);
+            long *indicesTarg;
+            //indicesTarg = (long *)malloc(timeTargetSelectionSize * sizeof(long));
+            indicesTarg = (long *)malloc(timeTargetSelectionSize * 120 * 30 * 1.2 * sizeof(long)); // TODO: needs to be fixed if kept
+            long *indicesArch;
+            indicesArch = (long *)malloc(timeTargetSelectionSize * 120 * 30 * 1.2 * sizeof(long)); // TODO: needs to be fixed if kept
+            long iArchArray = 0;
 
             // Constant data
             vf weights(predictorsNb);
@@ -217,6 +221,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     crit[iPtor] = S1grads;
                 } else {
                     wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
+                    free(indicesTarg);
+                    free(indicesArch);
                     return false;
                 }
             }
@@ -239,7 +245,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 iTimeTargStart = iTimeTarg;
 
                 // Keep the index
-                indicesTarg[iDateTarg] = iTimeTarg;
+                //indicesTarg[iDateTarg] = iTimeTarg;
 
                 // DateArray initialization
                 dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], params->GetAnalogsIntervalDays(),
@@ -253,7 +259,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 int iTimeArchRelative = 0;
 
                 // Get a new container for variable vectors
-                vi currentIndices(dateArrayArchiveSelection.GetSize());
                 vf currentDates(dateArrayArchiveSelection.GetSize());
 
                 // Loop through the dateArrayArchiveSelection for candidate data
@@ -284,13 +289,14 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                     // Store the index and the date
                     currentDates[counter] = (float) timeArchiveData[iTimeArch];
-                    currentIndices[counter] = iTimeArch;
+                    indicesArch[iArchArray] = iTimeArch;
+                    indicesTarg[iArchArray] = iTimeTarg;
                     counter++;
+                    iArchArray++;
                 }
 
                 // Keep the indices
                 nbCandidates[iDateTarg] = counter;
-                indicesArch[iDateTarg] = currentIndices;
                 resultingDates[iDateTarg] = currentDates;
             }
 
@@ -343,6 +349,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                 break;
             }
+            free(indicesTarg);
+            free(indicesArch);
+
             break;
         }
 #endif

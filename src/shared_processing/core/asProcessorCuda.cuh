@@ -47,8 +47,8 @@ enum CudaCriteria
 class asProcessorCuda
 {
 public:
-    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, std::vector<int> &indicesTarg,
-                                std::vector<std::vector<int>> &indicesArch,
+    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, long *indicesTarg,
+                                long *indicesArch,
                                 std::vector<std::vector<float>> &resultingCriteria, std::vector<int> &nbCandidates,
                                 std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights,
                                 std::vector<CudaCriteria> &criteria);
