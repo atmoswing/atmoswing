@@ -53,6 +53,7 @@ float warpReduceSum(float val)
 {
     for (int offset = 32 / 2; offset > 0; offset /= 2)
         val += __shfl_down_sync(FULL_MASK, val, offset);
+
     return val;
 }
 

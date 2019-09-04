@@ -176,7 +176,7 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
     }
 #endif
 }
-BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
+BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);
 #endif
 
 static void BM_1Ptor_S1_Standard(benchmark::State &state)
@@ -205,7 +205,7 @@ static void BM_1Ptor_S1_Standard(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
+BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);
 
 static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
 {
@@ -234,4 +234,4 @@ static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
         }
     }
 }
-BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(4, maxPointsNb);
+BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);
