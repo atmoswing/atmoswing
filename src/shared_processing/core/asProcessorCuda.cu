@@ -40,6 +40,7 @@
 #include <device_launch_parameters.h>
 #include <helper_cuda.h>
 
+#define FULL_MASK 0xffffffff
 #define _TIME_CUDA true
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
@@ -51,7 +52,7 @@ __inline__ __device__
 float warpReduceSum(float val)
 {
     for (int offset = 32 / 2; offset > 0; offset /= 2)
-        val += __shfl_down(val, offset, 32);
+        val += __shfl_down_sync(FULL_MASK, val, offset);
     return val;
 }
 
