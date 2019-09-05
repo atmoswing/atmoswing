@@ -47,17 +47,31 @@ enum CudaCriteria
 class asProcessorCuda
 {
 public:
-    static bool ProcessCriteria(std::vector<std::vector<float *>> &data, long *indicesTarg,
-                                long *indicesArch,
-                                std::vector<std::vector<float>> &resultingCriteria, std::vector<int> &nbCandidates,
-                                std::vector<int> &colsNb, std::vector<int> &rowsNb, std::vector<float> &weights,
-                                std::vector<CudaCriteria> &criteria);
+    static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg, const int *indicesArch,
+                                float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
+                                std::vector<float> &weights, std::vector<CudaCriteria> &criteria);
 
     static bool SelectBestDevice();
 
-    static float *MallocCudaData(int n);
+    static void CudaMalloc(int *&data, int length);
 
-    static void FreeCudaData(float *data);
+    static void CudaMalloc(float *&data, long length);
+
+    static void CudaMemset0(float *&data, long length);
+
+    static void CudaMemCopyToDevice(int *&devData, int *&hostData, int length);
+
+    static void CudaMemCopyToDevice(float *&devData, float *&hostData, long length);
+
+    static void CudaMemCopyFromDevice(int *&hostData, int *&devData, int length);
+
+    static void CudaMemCopyFromDevice(float *&hostData, float *&devData, long length);
+
+    static void CudaFree(int *data);
+
+    static void CudaFree(float *data);
+
+    static void CudaGetLastError();
 
     static void DeviceSynchronize();
 
