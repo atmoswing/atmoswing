@@ -301,3 +301,258 @@ void asProcessorCuda::DeviceReset()
     cudaDeviceReset();
 }
 
+void asProcessorCuda::CudaLaunchHostFuncStoring(CudaCallbackParams *cbParams, int streamId)
+{
+    checkCudaErrors(cudaStreamAddCallback(g_streams[streamId], postprocessCallback, cbParams, 0));
+}
+
+void CUDART_CB asProcessorCuda::postprocessCallback(cudaStream_t stream, cudaError_t status, void *data)
+{
+    // Check status of GPU after stream operations are done
+    checkCudaErrors(status);
+
+    auto *cbParams = (CudaCallbackParams*) data;
+
+    int analogsNb = cbParams->analogsNb;
+    int offset = cbParams->offset;
+
+    // Sort and store results
+    int counter = 0;
+
+    // Containers for daily results
+    Eigen::Array<float, Eigen::Dynamic, 1> scoreArrayOneDay(analogsNb);
+    Eigen::Array<float, Eigen::Dynamic, 1> dateArrayOneDay(analogsNb);
+    scoreArrayOneDay.fill(std::numeric_limits<float>::quiet_NaN());
+    dateArrayOneDay.fill(std::numeric_limits<float>::quiet_NaN());
+
+    for (int iDateArch = 0; iDateArch < cbParams->nbCand; iDateArch++) {
+        float analogDate = cbParams->currentDates[offset + iDateArch];
+        float score = cbParams->hRes[offset + iDateArch];
+
+        // Check if the array is already full
+        if (counter > analogsNb - 1) {
+            if (score < scoreArrayOneDay[analogsNb - 1]) {
+                ArraysInsert<float>(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                               &dateArrayOneDay[analogsNb - 1], cbParams->isAsc, score, analogDate);
+            }
+        } else if (counter < analogsNb - 1) {
+            // Add score and date to the vectors
+            scoreArrayOneDay[counter] = score;
+            dateArrayOneDay[counter] = analogDate;
+        } else if (counter == analogsNb - 1) {
+            // Add score and date to the vectors
+            scoreArrayOneDay[counter] = score;
+            dateArrayOneDay[counter] = analogDate;
+
+            // Sort both scores and dates arrays
+            SortArrays<float>(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                              &dateArrayOneDay[analogsNb - 1], cbParams->isAsc);
+        }
+
+        counter++;
+    }
+
+    if (counter < analogsNb) {
+        printf("There is not enough available data to satisfy the number of analogs.");
+    }
+
+    for (int i = 0; i < analogsNb; ++i) {
+        *(cbParams->finalAnalogsCriteria + i) = scoreArrayOneDay(i);
+        *(cbParams->finalAnalogsDates + i) = dateArrayOneDay(i);
+    }
+
+    delete(cbParams);
+}
+
+template<class T>
+void asProcessorCuda::ArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc,
+                                   const T valRef, const T valOther)
+{
+    // Check the other array length
+    auto vlength = (int) (pArrRefEnd - pArrRefStart);
+
+    // Index where to insert the new element
+    int iNext = 0;
+
+    // Check order
+    if (isAsc) {
+        iNext = FindCeil<float>(pArrRefStart, pArrRefEnd, valRef);
+        if (iNext == -1) {
+            iNext = 0;
+        }
+    } else {
+        iNext = FindCeil<float>(pArrRefStart, pArrRefEnd, valRef);
+        if (iNext == -1) {
+            iNext = 0;
+        }
+    }
+
+    // Swap next elements
+    for (int i = vlength - 1; i >= iNext; i--) // Minus 1 because we overwrite the last element by the previous one
+    {
+        pArrRefStart[i + 1] = pArrRefStart[i];
+        pArrOtherStart[i + 1] = pArrOtherStart[i];
+    }
+
+    // Insert new element
+    pArrRefStart[iNext] = valRef;
+    pArrOtherStart[iNext] = valOther;
+}
+
+template<class T>
+int asProcessorCuda::FindCeil(const T *pArrStart, const T *pArrEnd, const T targetValue)
+{
+    T *pFirst = nullptr, *pMid = nullptr, *pLast = nullptr;
+    int vlength;
+
+    // Initialize first and last variables.
+    pFirst = (T *) pArrStart;
+    pLast = (T *) pArrEnd;
+
+    double tolerance = 0;
+
+    // Check array order
+    if (*pLast > *pFirst) {
+        // Check that the value is within the array
+        if (targetValue - tolerance > *pLast || targetValue + tolerance < *pFirst) {
+            return -1;
+        }
+
+        // Binary search
+        while (pFirst <= pLast) {
+            vlength = (int) (pLast - pFirst);
+            pMid = pFirst + vlength / 2;
+            if (targetValue - tolerance > *pMid) {
+                pFirst = pMid + 1;
+            } else if (targetValue + tolerance < *pMid) {
+                pLast = pMid - 1;
+            } else {
+                // Return found index
+                return int(pMid - pArrStart);
+            }
+        }
+
+        // Check the pointers
+        if (pLast - pArrStart < 0) {
+            pLast = (T *) pArrStart;
+        } else if (pLast - pArrEnd > 0) {
+            pLast = (T *) pArrEnd;
+        }
+
+        // If the value was not found, return ceil value
+        return int(pLast - pArrStart + 1);
+    } else if (*pLast < *pFirst) {
+        // Check that the value is within the array
+        if (targetValue + tolerance < *pLast || targetValue - tolerance > *pFirst) {
+            return -1;
+        }
+
+        // Binary search
+        while (pFirst <= pLast) {
+            vlength = (int) (pLast - pFirst);
+            pMid = pFirst + vlength / 2;
+            if (targetValue - tolerance > *pMid) {
+                pLast = pMid - 1;
+            } else if (targetValue + tolerance < *pMid) {
+                pFirst = pMid + 1;
+            } else {
+                // Return found index
+                return int(pMid - pArrStart);
+            }
+        }
+
+        // Check the pointers
+        if (pFirst - pArrStart < 0) {
+            pFirst = (T *) pArrStart;
+        } else if (pFirst - pArrEnd > 0) {
+            pFirst = (T *) pArrEnd;
+        }
+
+        // If the value was not found, return ceil value
+        return int(pFirst - pArrStart - 1);
+    } else {
+        if (pLast - pFirst == 0) {
+            if (std::abs(*pFirst - targetValue) <= tolerance) {
+                return 0; // Value corresponds
+            } else {
+                return -1;
+            }
+        }
+
+        if (std::abs(*pFirst - targetValue) <= tolerance) {
+            return 0; // Value corresponds
+        } else {
+            return -1;
+        }
+    }
+}
+
+template<class T>
+bool asProcessorCuda::SortArrays(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc)
+{
+    // Check the other array length
+    auto vlength = (int) (pArrRefEnd - pArrRefStart);
+    auto ovlength = (int) (pArrOtherEnd - pArrOtherStart);
+
+    if (vlength > 0 && vlength == ovlength) {
+        int low = 0, high = vlength;
+        QuickSortMulti<T>(pArrRefStart, pArrOtherStart, low, high, isAsc);
+    } else if (vlength != ovlength) {
+        printf("The dimension of the two arrays are not equal.");
+        return false;
+    } else if (vlength == 0) {
+        return true;
+    } else {
+        printf("The array has a negative size...");
+        return false;
+    }
+    return true;
+}
+
+template<class T>
+void asProcessorCuda::QuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, bool isAsc)
+{
+    int L, R;
+    T pivot, tmp;
+
+    R = high;
+    L = low;
+
+    pivot = pArrRef[(low + high) / 2];
+
+    do {
+        if (isAsc) {
+            while (pArrRef[L] < pivot)
+                L++;
+            while (pArrRef[R] > pivot)
+                R--;
+        } else {
+            while (pArrRef[L] > pivot)
+                L++;
+            while (pArrRef[R] < pivot)
+                R--;
+        }
+
+        if (R >= L) {
+            if (R != L) {
+                // Reference array
+                tmp = pArrRef[R];
+                pArrRef[R] = pArrRef[L];
+                pArrRef[L] = tmp;
+                // Other array
+                tmp = pArrOther[R];
+                pArrOther[R] = pArrOther[L];
+                pArrOther[L] = tmp;
+            }
+
+            R--;
+            L++;
+        }
+    } while (L <= R);
+
+    if (low < R)
+        QuickSortMulti<T>(pArrRef, pArrOther, low, R, isAsc);
+    if (L < high)
+        QuickSortMulti<T>(pArrRef, pArrOther, L, high, isAsc);
+
+}

@@ -45,6 +45,8 @@ class asPredictor;
 
 class asPredictand;
 
+class CudaCallbackParams;
+
 
 class asProcessor
         : public wxObject
@@ -74,6 +76,7 @@ public:
     static int FindNextDate(asTimeArray &dateArray, a1d &timeData, int iTimeStart, int iDate);
 
     static int FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int iDate);
+
 
 protected:
 

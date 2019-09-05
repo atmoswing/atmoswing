@@ -29,6 +29,15 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
+#define EIGEN_DEFAULT_TO_ROW_MAJOR
+#ifndef EIGEN_NO_DEBUG
+#   define EIGEN_NO_DEBUG
+#endif
+
+// Modules and Header files: http://eigen.tuxfamily.org/dox-3.0/QuickRefPage.html#QuickRef_Headers
+#include <Eigen/StdVector>
+#include <Eigen/Core>
+
 #include <vector>
 #include <cuda.h>
 #include <helper_cuda.h>
@@ -48,6 +57,17 @@ enum CudaCriteria
     SAD = 6,
     DMV = 7,
     DSD = 8,
+};
+
+struct CudaCallbackParams {
+    float *finalAnalogsCriteria;
+    float *finalAnalogsDates;
+    float *hRes;
+    std::vector<float> currentDates;
+    int analogsNb;
+    int nbCand;
+    bool isAsc;
+    int offset;
 };
 
 class asProcessorCuda
@@ -97,7 +117,25 @@ public:
 
     static void DeviceReset();
 
+    static void CudaLaunchHostFuncStoring(CudaCallbackParams *cbParams, int streamId);
+
+    static void CUDART_CB postprocessCallback(cudaStream_t stream, cudaError_t status, void *data);
+
+
 protected:
+
+    template <class T>
+    static void ArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc, T valRef,
+                             T valOther);
+
+    template <class T>
+    static int FindCeil(const T *pArrStart, const T *pArrEnd, T targetValue);
+
+    template <class T>
+    static bool SortArrays(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc);
+
+    template<class T>
+    static void QuickSortMulti(T *pArrRef, T *pArrOther, int low, int high, bool isAsc);
 
 private:
 

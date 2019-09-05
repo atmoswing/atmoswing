@@ -225,10 +225,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 datesArchiveSlt.SetForbiddenYears(timeArrayArchiveSelection.GetForbiddenYears());
             }
 
-            // Containers for daily results
-            a1f scoreArrayOneDay(analogsNb);
-            a1f dateArrayOneDay(analogsNb);
-
             // Get typical number of candidates
             datesArchiveSlt.Init(timeTargetSelection[0], params->GetAnalogsIntervalDays(),
                                            params->GetAnalogsExcludeDays());
@@ -327,55 +323,25 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 // Check for any errors launching the kernel
                 asProcessorCuda::CudaGetLastError();
 
-                //asProcessorCuda::StreamSynchronize(streamId);
-
-                asProcessorCuda::DeviceSynchronize();
-
-
                 // Copy the resulting array from the device
                 asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCand, streamId);
 
+                // Prepare for callback
+                auto *cbParams = new CudaCallbackParams;
+                cbParams->finalAnalogsCriteria = finalAnalogsCriteria.row(iDateTarg).data();
+                cbParams->finalAnalogsDates = finalAnalogsDates.row(iDateTarg).data();
+                cbParams->hRes = hRes;
+                cbParams->currentDates = currentDates;
+                cbParams->analogsNb = analogsNb;
+                cbParams->nbCand = nbCand;
+                cbParams->isAsc = isAsc;
+                cbParams->offset = offset;
 
-
-                //asProcessorCuda::StreamSynchronize(streamId);
-                asProcessorCuda::CudaGetLastError();
-                asProcessorCuda::DeviceSynchronize();
-
-
-
-                // Sort and store results
-                int resCounter = 0;
-                scoreArrayOneDay.fill(NaNf);
-                dateArrayOneDay.fill(NaNf);
-
-                for (int iDateArch = 0; iDateArch < nbCand; iDateArch++) {
-#ifdef _DEBUG
-                    if (asIsNaN(hRes[offset + iDateArch])) {
-                            containsNaNs = true;
-                            wxLogWarning(_("NaNs were found in the criteria values."));
-                            wxLogWarning(_("Target date: %s, archive date: %s."),
-                                         asTime::GetStringTime(timeTargetSelection[iDateTarg]),
-                                         asTime::GetStringTime(dateArrayOneDay[iDateArch]));
-                        }
-#endif
-
-                    InsertInArrays(isAsc, analogsNb, currentDates[offset + iDateArch], hRes[offset + iDateArch],
-                                   resCounter, scoreArrayOneDay, dateArrayOneDay);
-
-                    resCounter++;
-                }
-
-                if (resCounter < analogsNb) {
-                    wxLogWarning(_("There is not enough available data to satisfy the number of analogs."));
-                    wxLogWarning(_("Analogs number (%d) > resCounter (%d), date array size (%d) with "
-                              "%d days intervals."),
-                            analogsNb, resCounter, datesArchiveSlt.GetSize(),
-                            params->GetAnalogsIntervalDays());
-                }
-
-                finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
-                finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
+                asProcessorCuda::CudaLaunchHostFuncStoring(cbParams, streamId);
             }
+
+            asProcessorCuda::DeviceSynchronize();
+
 
 
             free(hData);
