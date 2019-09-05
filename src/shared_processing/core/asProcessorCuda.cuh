@@ -44,7 +44,7 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-const int nStreams = 2;
+const int nStreams = 20;
 
 enum CudaCriteria
 {

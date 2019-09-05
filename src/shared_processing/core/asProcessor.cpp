@@ -342,8 +342,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             asProcessorCuda::DeviceSynchronize();
 
-
-
             free(hData);
             asProcessorCuda::CudaFree(dData);
             free(hRes);
