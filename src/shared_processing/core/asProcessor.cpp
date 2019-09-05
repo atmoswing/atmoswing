@@ -207,7 +207,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 for (int iTime = 0; iTime < timeArchData.size(); iTime++) {
                     float *pData = predictorsArchive[iPtor]->GetData()[iTime][0].data();
                     for (int iPt = 0; iPt < ptsNb; iPt++) {
-                        float val = pData[iPt];
                         hData[ptorStart[iPtor] + iTime * ptsNb + iPt] = pData[iPt];
                         pStart++;
                     }
