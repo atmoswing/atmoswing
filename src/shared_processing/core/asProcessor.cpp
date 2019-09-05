@@ -234,22 +234,28 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                            params->GetAnalogsExcludeDays());
 
             // Alloc space for indices
-            int nCandidates = int(datesArchiveSlt.GetSize() * 1.2); // 1.2 as margin
+            int maxCandNb = int(datesArchiveSlt.GetSize() * 1.2); // 1.2 as margin
             int *indicesArch;
-            indicesArch = (int *)malloc(nCandidates * sizeof(int));
+            indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
             int *dIdxArch = nullptr;
-            asProcessorCuda::CudaMalloc(dIdxArch, nCandidates);
+            asProcessorCuda::CudaMalloc(dIdxArch, nStreams * maxCandNb);
 
             // Alloc space for results
             float *hRes, *dRes = nullptr;
-            hRes = (float *)malloc(nCandidates * sizeof(float));
-            asProcessorCuda::CudaMalloc(dRes, nCandidates);
+            hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
+            asProcessorCuda::CudaMalloc(dRes, nStreams * maxCandNb);
 
             // Reset the index start target
             int iTimeTargStart = 0;
 
+            // Init streams
+            asProcessorCuda::InitStreams();
+
             // Extract indices
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
+
+                int streamId = iDateTarg % nStreams;
+                int offset = streamId * maxCandNb;
 
                 int iTimeTargRelative = FindNextDate(timeTargetSelection, timeTargData, iTimeTargStart, iDateTarg);
 
@@ -274,10 +280,11 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 int iTimeArchRelative = 0;
 
                 // Get a new container for variable vectors
-                vf currentDates(datesArchiveSlt.GetSize());
+                vf currentDates(nStreams * maxCandNb);
 
                 // Loop through the datesArchiveSlt for candidate data
                 for (int iDateArch = 0; iDateArch < datesArchiveSlt.GetSize(); iDateArch++) {
+
                     // Check if the next data is the following. If not, search for it in the array.
                     if (timeArchData.size() > iTimeArchStart + 1 &&
                         std::abs(datesArchiveSlt[iDateArch] - timeArchData[iTimeArchStart + 1]) < 0.01) {
@@ -303,26 +310,38 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     iTimeArchStart = iTimeArch;
 
                     // Store the index and the date
-                    currentDates[counter] = (float)timeArchData[iTimeArch];
-                    indicesArch[counter] = iTimeArch;
+                    currentDates[offset + counter] = (float)timeArchData[iTimeArch];
+                    indicesArch[offset + counter] = iTimeArch;
                     counter++;
                 }
                 int nbCand = counter;
 
                 // Copy to device
-                asProcessorCuda::CudaMemCopyToDevice(dIdxArch, indicesArch, nbCand);
+                asProcessorCuda::CudaMemCopyToDeviceAsync(&dIdxArch[offset], &indicesArch[offset], nbCand, streamId);
 
                 // Doing the work on GPU
-                asProcessorCuda::CudaMemset0(dRes, nCandidates);
-                asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand, colsNb, rowsNb,
-                                                 weights, crit);
+                asProcessorCuda::CudaMemset0Async(&dRes[offset], maxCandNb, streamId);
+                asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand,
+                                                 colsNb, rowsNb, weights, crit, streamId, offset);
 
                 // Check for any errors launching the kernel
                 asProcessorCuda::CudaGetLastError();
+
+                //asProcessorCuda::StreamSynchronize(streamId);
+
                 asProcessorCuda::DeviceSynchronize();
 
+
                 // Copy the resulting array from the device
-                asProcessorCuda::CudaMemCopyFromDevice(hRes, dRes, nbCand);
+                asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCand, streamId);
+
+
+
+                //asProcessorCuda::StreamSynchronize(streamId);
+                asProcessorCuda::CudaGetLastError();
+                asProcessorCuda::DeviceSynchronize();
+
+
 
                 // Sort and store results
                 int resCounter = 0;
@@ -331,7 +350,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                 for (int iDateArch = 0; iDateArch < nbCand; iDateArch++) {
 #ifdef _DEBUG
-                    if (asIsNaN(hRes[iDateArch])) {
+                    if (asIsNaN(hRes[offset + iDateArch])) {
                             containsNaNs = true;
                             wxLogWarning(_("NaNs were found in the criteria values."));
                             wxLogWarning(_("Target date: %s, archive date: %s."),
@@ -340,7 +359,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                         }
 #endif
 
-                    InsertInArrays(isAsc, analogsNb, currentDates[iDateArch], hRes[iDateArch],
+                    InsertInArrays(isAsc, analogsNb, currentDates[offset + iDateArch], hRes[offset + iDateArch],
                                    resCounter, scoreArrayOneDay, dateArrayOneDay);
 
                     resCounter++;
@@ -365,6 +384,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             asProcessorCuda::CudaFree(dRes);
             free(indicesArch);
             asProcessorCuda::CudaFree(dIdxArch);
+
+            asProcessorCuda::DestroyStreams();
 
             // cudaDeviceReset must be called before exiting in order for profiling and
             // tracing tools such as Nsight and Visual Profiler to show complete traces.
