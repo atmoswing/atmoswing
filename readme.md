@@ -31,6 +31,12 @@ This repository contains 3 separate tools:
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
+## Documentation ##
+
+AtmoSwing documentation can be found here: https://atmoswing.readthedocs.io/en/latest/
+
+The repository of the documentation is https://github.com/atmoswing/user-manual
+
 ## Download AtmoSwing ##
 
 You can download the releases under: https://github.com/atmoswing/atmoswing/releases
