@@ -45,12 +45,6 @@ static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 
 cudaStream_t *g_streams = new cudaStream_t[nStreams];
 
-#if _TIME_CUDA
-cudaEvent_t start, stop;
-cudaEventCreate(&start);
-cudaEventCreate(&stop);
-#endif
-
 // From https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
 __inline__ __device__
 float warpReduceSum(float val)
@@ -305,24 +299,6 @@ void asProcessorCuda::StreamSynchronize(int streamId)
 void asProcessorCuda::DeviceReset()
 {
     cudaDeviceReset();
-}
-
-void asProcessorCuda::StartTimer()
-{
-#if _TIME_CUDA
-    cudaEventRecord(start);
-#endif
-}
-
-void asProcessorCuda::EndTimer(const std::string &task)
-{
-#if _TIME_CUDA
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-    float milliseconds = 0.0f;
-    cudaEventElapsedTime(&milliseconds, start, stop);
-    printf("time to %s: %f\n", task.c_str(), milliseconds);
-#endif
 }
 
 void asProcessorCuda::CudaLaunchHostFuncStoring(CudaCallbackParams *cbParams, int streamId)

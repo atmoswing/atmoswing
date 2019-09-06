@@ -117,10 +117,6 @@ public:
 
     static void DeviceReset();
 
-    static void StartTimer();
-
-    static void EndTimer(const std::string &task);
-
     static void CudaLaunchHostFuncStoring(CudaCallbackParams *cbParams, int streamId);
 
     static void CUDART_CB postprocessCallback(cudaStream_t stream, cudaError_t status, void *data);
