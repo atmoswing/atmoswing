@@ -146,6 +146,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 #ifdef USE_CUDA
         case (asCUDA): {
 
+            asProcessorCuda::StartTimer();
+
             // Check no members
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 if (predictorsArchive[iPtor]->GetMembersNb() > 1) {
@@ -247,8 +249,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Init streams
             asProcessorCuda::InitStreams();
 
+            asProcessorCuda::EndTimer("setting up everything before the loop");
+
             // Extract indices
             for (int iDateTarg = 0; iDateTarg < timeTargetSelectionSize; iDateTarg++) {
+
+                asProcessorCuda::StartTimer();
 
                 int streamId = iDateTarg % nStreams;
                 int offset = streamId * maxCandNb;
@@ -315,6 +321,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 // Copy to device
                 asProcessorCuda::CudaMemCopyToDeviceAsync(&dIdxArch[offset], &indicesArch[offset], nbCand, streamId);
 
+                asProcessorCuda::EndTimer("preparing the candidate dates array");
+                asProcessorCuda::StartTimer();
+
                 // Doing the work on GPU
                 asProcessorCuda::CudaMemset0Async(&dRes[offset], maxCandNb, streamId);
                 asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand,
@@ -322,6 +331,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
                 // Check for any errors launching the kernel
                 asProcessorCuda::CudaGetLastError();
+
+                asProcessorCuda::EndTimer("running kernel");
+                asProcessorCuda::StartTimer();
 
                 // Copy the resulting array from the device
                 asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCand, streamId);
@@ -338,6 +350,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 cbParams->offset = offset;
 
                 asProcessorCuda::CudaLaunchHostFuncStoring(cbParams, streamId);
+
+                asProcessorCuda::EndTimer("starting callback function");
             }
 
             asProcessorCuda::DeviceSynchronize();
