@@ -45,7 +45,7 @@ class asPredictor;
 
 class asPredictand;
 
-class CudaCallbackParams;
+struct CudaCallbackParams;
 
 
 class asProcessor
