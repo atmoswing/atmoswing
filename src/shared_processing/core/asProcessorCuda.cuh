@@ -63,7 +63,7 @@ struct CudaCallbackParams {
     float *finalAnalogsCriteria;
     float *finalAnalogsDates;
     float *hRes;
-    std::vector<float> currentDates;
+    float *currentDates;
     int analogsNb;
     int nbCand;
     bool isAsc;

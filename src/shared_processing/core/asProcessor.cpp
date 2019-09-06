@@ -236,6 +236,10 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             int *dIdxArch = nullptr;
             asProcessorCuda::CudaMalloc(dIdxArch, nStreams * maxCandNb);
 
+            // Get a new container for variable vectors
+            float *currentDates;
+            currentDates = (float *)malloc( nStreams * maxCandNb * sizeof(float));
+
             // Alloc space for results
             float *hRes, *dRes = nullptr;
             hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
@@ -274,9 +278,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 // Reset the index start target
                 int iTimeArchStart = 0;
                 int iTimeArchRelative = 0;
-
-                // Get a new container for variable vectors
-                vf currentDates(nStreams * maxCandNb);
 
                 // Loop through the datesArchiveSlt for candidate data
                 for (int iDateArch = 0; iDateArch < datesArchiveSlt.GetSize(); iDateArch++) {
@@ -348,6 +349,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             asProcessorCuda::CudaFree(dRes);
             free(indicesArch);
             asProcessorCuda::CudaFree(dIdxArch);
+            free(currentDates);
 
             asProcessorCuda::DestroyStreams();
 
