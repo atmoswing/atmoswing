@@ -59,17 +59,6 @@ enum CudaCriteria
     DSD = 8,
 };
 
-struct CudaCallbackParams {
-    float *finalAnalogsCriteria;
-    float *finalAnalogsDates;
-    float *hRes;
-    float *currentDates;
-    int analogsNb;
-    int nbCand;
-    bool isAsc;
-    int offset;
-};
-
 class asProcessorCuda
 {
 public:
@@ -117,25 +106,7 @@ public:
 
     static void DeviceReset();
 
-    static void CudaLaunchHostFuncStoring(CudaCallbackParams *cbParams, int streamId);
-
-    static void CUDART_CB postprocessCallback(cudaStream_t stream, cudaError_t status, void *data);
-
-
 protected:
-
-    template <class T>
-    static void ArraysInsert(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc, T valRef,
-                             T valOther);
-
-    template <class T>
-    static int FindCeil(const T *pArrStart, const T *pArrEnd, T targetValue);
-
-    template <class T>
-    static bool SortArrays(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, bool isAsc);
-
-    template<class T>
-    static void QuickSortMulti(T *pArrRef, T *pArrOther, int low, int high, bool isAsc);
 
 private:
 
