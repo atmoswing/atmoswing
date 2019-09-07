@@ -29,15 +29,6 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#define EIGEN_DEFAULT_TO_ROW_MAJOR
-#ifndef EIGEN_NO_DEBUG
-#   define EIGEN_NO_DEBUG
-#endif
-
-// Modules and Header files: http://eigen.tuxfamily.org/dox-3.0/QuickRefPage.html#QuickRef_Headers
-#include <Eigen/StdVector>
-#include <Eigen/Core>
-
 #include <vector>
 #include <cuda.h>
 #include <helper_cuda.h>
