@@ -343,7 +343,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 }
 
                 // Postprocess the results
-                if (i > nStreams/2) {
+                if (i >= nStreams/2) {
 
                     int iDateTarg = i - nStreams/2;
                     int streamId = iDateTarg % nStreams;
