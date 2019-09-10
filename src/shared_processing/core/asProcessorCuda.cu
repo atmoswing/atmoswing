@@ -37,7 +37,6 @@
 #include <cmath>
 
 #define FULL_MASK 0xffffffff
-#define _TIME_CUDA true
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
