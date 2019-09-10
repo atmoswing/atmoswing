@@ -333,12 +333,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand, colsNb,
                                                      rowsNb, weights, crit, streamId, offset);
 
-                    // Check for any errors launching the kernel
-                    asProcessorCuda::CudaGetLastError();
-
-                    // Copy the resulting array from the device
-                    asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCand, streamId);
-
                     nbCandidates[streamId] = nbCand;
                 }
 
@@ -348,6 +342,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int iDateTarg = i - nStreams/2;
                     int streamId = iDateTarg % nStreams;
                     int offset = streamId * maxCandNb;
+
+                    // Check for any error from the kernel
+                    asProcessorCuda::CudaGetLastError();
+
+                    // Copy the resulting array from the device
+                    asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId], streamId);
 
                     asProcessorCuda::StreamSynchronize(streamId);
 
