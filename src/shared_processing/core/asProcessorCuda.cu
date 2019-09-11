@@ -133,6 +133,469 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
     }
 }
 
+__global__
+void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                    float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float sdiff[blockSize/32];
+
+        float rdiff = 0;
+        float diff = 0;
+
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+
+                diff = xi - yi;
+            } else {
+                diff = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            diff = warpReduceSum(diff);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                sdiff[idx] = diff;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rdiff += diff;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rdiff += sdiff[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            out[offset + blockId] += (rdiff / float(ptsNbtot)) * w;
+        }
+    }
+}
+
+__global__
+void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+               float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float sdiff[blockSize/32];
+
+        float rdiff = 0;
+        float diff = 0;
+
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+
+                diff = xi - yi;
+                diff = diff * diff;
+            } else {
+                diff = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            diff = warpReduceSum(diff);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                sdiff[idx] = diff;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rdiff += diff;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rdiff += sdiff[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            out[offset + blockId] += std::sqrt(rdiff / float(ptsNbtot)) * w;
+        }
+    }
+}
+
+__global__
+void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                 float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float sdiff[blockSize/32];
+
+        float rdiff = 0;
+        float diff = 0;
+
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+
+                diff = xi - yi;
+                diff = diff * diff;
+            } else {
+                diff = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            diff = warpReduceSum(diff);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                sdiff[idx] = diff;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rdiff += diff;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rdiff += sdiff[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            out[offset + blockId] += std::sqrt(rdiff) * w;
+        }
+    }
+}
+
+__global__
+void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float sdiff[blockSize/32];
+
+        float rdiff = 0;
+        float diff = 0;
+
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+
+                diff = fabsf(xi - yi);
+            } else {
+                diff = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            diff = warpReduceSum(diff);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                sdiff[idx] = diff;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rdiff += diff;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rdiff += sdiff[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            out[offset + blockId] += rdiff * w;
+        }
+    }
+}
+
+__global__
+void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                    float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float mem[2 * blockSize/32];
+        float *ssumX = mem;
+        float *ssumY = &ssumX[blockSize/32];
+
+        float rsumX = 0;
+        float rsumY = 0;
+
+        float sumX = 0;
+        float sumY = 0;
+
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                sumX = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                sumY = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+            } else {
+                sumX = 0;
+                sumY = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            sumX = warpReduceSum(sumX);
+            sumY = warpReduceSum(sumY);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                ssumX[idx] = sumX;
+                ssumY[idx] = sumY;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rsumX += sumX;
+                rsumY += sumY;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rsumX += ssumX[j];
+                    rsumY += ssumY[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            out[offset + blockId] += std::fabs(rsumX / float(ptsNbtot) - rsumY / float(ptsNbtot)) * w;
+        }
+    }
+}
+
+__global__
+void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                float w, float *out, int offset)
+{
+    const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
+    const int threadId = threadIdx.x;
+
+    if (blockId < candNb) {
+        int iTarg = idxTarg;
+        int iArch = idxArch[offset + blockId];
+
+        __shared__ float mem[2 * blockSize/32 + 2];
+        float *smemX = mem;
+        float *smemY = &smemX[blockSize/32];
+        float *meanX = &smemY[blockSize/32];
+        float *meanY = &meanX[1];
+
+        float rvarX = 0;
+        float rvarY = 0;
+
+        float varX = 0;
+        float varY = 0;
+
+        // First loop: process the mean
+        int nLoops = ceil(double(ptsNbtot) / blockSize);
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                varX = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
+                varY = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
+            } else {
+                varX = 0;
+                varY = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            varX = warpReduceSum(varX);
+            varY = warpReduceSum(varY);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                smemX[idx] = varX;
+                smemY[idx] = varY;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rvarX += varX;
+                rvarY += varY;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rvarX += smemX[j];
+                    rvarY += smemY[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process the mean
+        if (threadId == 0) {
+            *meanX = rvarX / float(ptsNbtot);
+            *meanY = rvarY / float(ptsNbtot);
+        }
+        __syncthreads();
+
+        // Second loop: process the std dev
+        rvarX = 0;
+        rvarY = 0;
+        for (int i = 0; i < nLoops; ++i) {
+            int nPts = blockSize;
+            if (i == nLoops-1) {
+                nPts = ptsNbtot - (i * blockSize);
+            }
+
+            // Process differences and get abs max
+            if (threadId < nPts) {
+                // Lookup data value
+                varX = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId] - *meanX;
+                varY = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId] - *meanY;
+                varX *= varX;
+                varY *= varY;
+            } else {
+                varX = 0;
+                varY = 0;
+            }
+            __syncthreads();
+
+            // Reduction
+            varX = warpReduceSum(varX);
+            varY = warpReduceSum(varY);
+
+            __syncthreads();
+
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                smemX[idx] = varX;
+                smemY[idx] = varY;
+            }
+            __syncthreads();
+
+            // Final sum
+            if (threadId == 0) {
+                rvarX += varX;
+                rvarY += varY;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rvarX += smemX[j];
+                    rvarY += smemY[j];
+                }
+            }
+        }
+        __syncthreads();
+
+        // Process final score
+        if (threadId == 0) {
+            float refStdDev = std::sqrt(rvarX / float(ptsNbtot - 1));
+            float evalStdDev = std::sqrt(rvarY / float(ptsNbtot - 1));
+
+            out[offset + blockId] += std::fabs(refStdDev - evalStdDev) * w;
+        }
+    }
+}
+
 bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indexTarg, const int *indicesArch,
                                       float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
                                       std::vector<float> &weights, std::vector<CudaCriteria> &criteria, int streamId, int offset)
@@ -147,9 +610,34 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
 
         // Launch kernel
         switch (criteria[iPtor]) {
+            case S0:
             case S1grads:
-                // 3rd <<< >>> argument is for the dynamically allocated shared memory
+            case S2grads:
                 processS1grads<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case MD:
+                processMD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case RMSE:
+                processRMSE<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case RSE:
+                processRSE<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case SAD:
+                processSAD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case DMV:
+                processDMV<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                break;
+            case DSD:
+                processDSD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:

@@ -39,7 +39,7 @@ const int nStreams = 4; // must be a multiple of 2!
 
 enum CudaCriteria
 {
-    S0grads = 0,
+    S0 = 0,
     S1grads = 1,
     S2grads = 2,
     MD = 3,
