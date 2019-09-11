@@ -65,7 +65,7 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        extern __shared__ float mem[];
+        __shared__ float mem[2 * blockSize/32];
         float *sdiff = mem;
         float *smax = &sdiff[blockSize/32];
 
@@ -149,7 +149,7 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
         switch (criteria[iPtor]) {
             case S1grads:
                 // 3rd <<< >>> argument is for the dynamically allocated shared memory
-                processS1grads<<<blocksNb3D, blockSize, 2 * blockSize/32 * sizeof(float), g_streams[streamId]>>>(
+                processS1grads<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:
