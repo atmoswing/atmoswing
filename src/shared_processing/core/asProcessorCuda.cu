@@ -123,9 +123,9 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
         // Process final score
         if (threadId == 0) {
             if (rmax == 0) {
-                *(out + offset + blockId) += 200.0f * w;
+                out[offset + blockId] += 200.0f * w;
             } else {
-                *(out + offset + blockId) += 100.0f * (rdiff / rmax) * w;
+                out[offset + blockId] += 100.0f * (rdiff / rmax) * w;
             }
         }
     }
