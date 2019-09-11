@@ -66,11 +66,14 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
         int iArch = idxArch[offset + blockId];
 
         extern __shared__ float mem[];
-        float *diff = mem;
-        float *amax = &diff[blockSize];
+        float *sdiff = mem;
+        float *smax = &sdiff[blockSize/32];
 
         float rdiff = 0;
         float rmax = 0;
+
+        float diff = 0;
+        float amax = 0;
 
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
@@ -85,37 +88,36 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
                 float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
                 float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
 
-                diff[threadId] = fabsf(xi - yi);
-                amax[threadId] = fmaxf(fabsf(xi), fabsf(yi));
+                diff = fabsf(xi - yi);
+                amax = fmaxf(fabsf(xi), fabsf(yi));
             } else {
-                // Set rest of the block to 0
-                diff[threadId] = 0;
-                amax[threadId] = 0;
+                diff = 0;
+                amax = 0;
             }
             __syncthreads();
 
-            // Process sum reduction
-            for (unsigned int stride = blockSize / 2; stride >= 32; stride /= 2) {
-                if (threadId < stride) {
-                    diff[threadId] += diff[threadId + stride];
-                    amax[threadId] += amax[threadId + stride];
-                }
-                __syncthreads();
-            }
+            // Reduction
+            diff = warpReduceSum(diff);
+            amax = warpReduceSum(amax);
 
-            float ldiff = diff[threadId];
-            float lamax = amax[threadId];
             __syncthreads();
 
-            if (threadId < 32) {
-                ldiff = warpReduceSum(ldiff);
-                lamax = warpReduceSum(lamax);
+            // Store in shared memory
+            if (threadId > 0 && threadId % 32 == 0) {
+                int idx = threadId/32;
+                sdiff[idx] = diff;
+                smax[idx] = amax;
             }
             __syncthreads();
 
+            // Final sum
             if (threadId == 0) {
-                rdiff += ldiff;
-                rmax += lamax;
+                rdiff += diff;
+                rmax += amax;
+                for (int j = 1; j < blockSize/32; ++j) {
+                    rdiff += sdiff[j];
+                    rmax += smax[j];
+                }
             }
         }
         __syncthreads();
