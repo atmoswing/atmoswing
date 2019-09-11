@@ -149,8 +149,8 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
         switch (criteria[iPtor]) {
             case S1grads:
                 // 3rd <<< >>> argument is for the dynamically allocated shared memory
-                processS1grads<<<blocksNb3D, blockSize, 2 * blockSize * sizeof(float), g_streams[streamId]>>>
-                     (dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processS1grads<<<blocksNb3D, blockSize, 2 * blockSize/32 * sizeof(float), g_streams[streamId]>>>(
+                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
