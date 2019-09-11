@@ -40,7 +40,7 @@
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int blockSize = 64; // must be 64 <= blockSize <= 1024
+static const int blockSize = 32; // must be 32 <= blockSize <= 1024
 
 cudaStream_t *g_streams = new cudaStream_t[nStreams];
 
@@ -64,10 +64,6 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
     if (blockId < candNb) {
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
-
-        extern __shared__ float mem[];
-        float *sdiff = mem;
-        float *smax = &sdiff[blockSize/32];
 
         float rdiff = 0;
         float rmax = 0;
@@ -99,25 +95,12 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
             // Reduction
             diff = warpReduceSum(diff);
             amax = warpReduceSum(amax);
-
-            __syncthreads();
-
-            // Store in shared memory
-            if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
-                sdiff[idx] = diff;
-                smax[idx] = amax;
-            }
             __syncthreads();
 
             // Final sum
             if (threadId == 0) {
                 rdiff += diff;
                 rmax += amax;
-                for (int j = 1; j < blockSize/32; ++j) {
-                    rdiff += sdiff[j];
-                    rmax += smax[j];
-                }
             }
         }
         __syncthreads();
@@ -149,7 +132,7 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
         switch (criteria[iPtor]) {
             case S1grads:
                 // 3rd <<< >>> argument is for the dynamically allocated shared memory
-                processS1grads<<<blocksNb3D, blockSize, 2 * blockSize * sizeof(float), g_streams[streamId]>>>
+                processS1grads<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>
                      (dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:
