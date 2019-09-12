@@ -103,29 +103,40 @@ int asThreadsManager::GetRunningThreadsNb(int type)
 // Safe: Critical section defined within
 int asThreadsManager::GetFreeDevice(int devicesNb)
 {
+    if (devicesNb == 1) {
+        return 0;
+    }
+
     m_critSectionManager.Enter();
 
+    int deviceOccupancy = 0;
+    int selectedDevice = 0;
+
     for (int device = 0; device < devicesNb; ++device) {
-        bool deviceFree = true;
+        int counter = 0;
         for (auto &thread : m_threads) {
             if (thread != nullptr) {
                 if (thread->IsRunning()) {
                     if (thread->GetDevice() == device) {
-                        deviceFree = false;
-                        break;
+                        counter++;
                     }
                 }
             }
         }
-        if (deviceFree) {
+        if (counter == 0) {
             m_critSectionManager.Leave();
             return device;
+        }
+        if (device == 0) {
+            deviceOccupancy = counter;
+        } else if (counter < deviceOccupancy) {
+            selectedDevice = device;
         }
     }
 
     m_critSectionManager.Leave();
 
-    return 0;
+    return selectedDevice;
 }
 
 // Safe: Critical section defined in GetRunningThreadsNb
