@@ -210,7 +210,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Alloc space for predictor data
             float *hData, *dData = nullptr;
             hData = (float *)malloc(totDataSize * sizeof(float));
-            asProcessorCuda::CudaMalloc(dData, totDataSize);
+            checkCudaErrors(cudaMalloc((void **)&dData, totDataSize * sizeof(float)));
 
             // Copy predictor data to the host array
             vl ptorStart(predictorsNb);
@@ -231,7 +231,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             wxASSERT(totDataSize == pStart);
 
             // Copy the data to the device
-            asProcessorCuda::CudaMemCopyToDevice(dData, hData, totDataSize);
+            checkCudaErrors(cudaMemcpy(dData, hData, totDataSize * sizeof(float), cudaMemcpyHostToDevice));
 
             // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it
             // picks the predictors we are interested in, but which didn't take place at the same time.
@@ -251,10 +251,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Alloc space for indices
             int maxCandNb = int(datesArchiveSlt.GetSize() * 1.2); // 1.2 as margin
-            int *indicesArch;
+            int *indicesArch, *dIdxArch = nullptr;
             indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
-            int *dIdxArch = nullptr;
-            asProcessorCuda::CudaMalloc(dIdxArch, nStreams * maxCandNb);
+            checkCudaErrors(cudaMalloc((void **)&dIdxArch, nStreams * maxCandNb * sizeof(int)));
 
             // Get a new container for variable vectors
             float *currentDates;
@@ -263,7 +262,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Alloc space for results
             float *hRes, *dRes = nullptr;
             hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
-            asProcessorCuda::CudaMalloc(dRes, nStreams * maxCandNb);
+            checkCudaErrors(cudaMalloc((void **)&dRes, nStreams * maxCandNb * sizeof(float)));
 
             // Number of candidates per stream
             vi nbCandidates(nStreams);
@@ -272,7 +271,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             int iTimeTargStart = 0;
 
             // Init streams
-            asProcessorCuda::InitStreams();
+            cudaStream_t streams[nStreams];
+            for (auto & stream : streams)
+                checkCudaErrors(cudaStreamCreate(&stream));
 
             // Extract indices
             for (int i = 0; i < timeTargetSelectionSize + nStreams/2; i++) {
@@ -341,13 +342,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int nbCand = counter;
 
                     // Copy to device
-                    asProcessorCuda::CudaMemCopyToDeviceAsync(&dIdxArch[offset], &indicesArch[offset], nbCand,
-                                                              streamId);
+                    checkCudaErrors(cudaMemcpyAsync(&dIdxArch[offset], &indicesArch[offset], nbCand * sizeof(int), cudaMemcpyHostToDevice, streams[streamId]));
 
                     // Doing the work on GPU
-                    asProcessorCuda::CudaMemset0Async(&dRes[offset], maxCandNb, streamId);
+                    checkCudaErrors(cudaMemsetAsync(&dRes[offset], 0, maxCandNb * sizeof(float), streams[streamId]));
                     asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand, colsNb,
-                                                     rowsNb, weights, crit, streamId, offset);
+                                                     rowsNb, weights, crit, streams[streamId], offset);
 
                     nbCandidates[streamId] = nbCand;
                 }
@@ -360,12 +360,12 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                     int offset = streamId * maxCandNb;
 
                     // Check for any error from the kernel
-                    asProcessorCuda::CudaGetLastError();
+                    checkCudaErrors(cudaGetLastError());
 
                     // Copy the resulting array from the device
-                    asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId], streamId);
+                    checkCudaErrors(cudaMemcpyAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId] * sizeof(float), cudaMemcpyDeviceToHost, streams[streamId]));
 
-                    asProcessorCuda::StreamSynchronize(streamId);
+                    checkCudaErrors(cudaStreamSynchronize(streams[streamId]));
 
                     // Sort and store results
                     int resCounter = 0;
@@ -402,19 +402,20 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 }
             }
 
-            asProcessorCuda::DeviceSynchronize();
+            checkCudaErrors(cudaDeviceSynchronize());
 
             free(hData);
-            asProcessorCuda::CudaFree(dData);
+            checkCudaErrors(cudaFree(dData));
             free(hRes);
-            asProcessorCuda::CudaFree(dRes);
+            checkCudaErrors(cudaFree(dRes));
             free(indicesArch);
-            asProcessorCuda::CudaFree(dIdxArch);
+            checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
-            asProcessorCuda::DestroyStreams();
+            for (int i = 0; i < nStreams; i++)
+                cudaStreamDestroy(streams[i]);
 
-            asProcessorCuda::DeviceReset();
+            cudaDeviceReset();
 
             break;
         }
@@ -950,7 +951,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             // Alloc space for predictor data
             float *hData, *dData = nullptr;
             hData = (float *)malloc(totDataSize * sizeof(float));
-            asProcessorCuda::CudaMalloc(dData, totDataSize);
+            checkCudaErrors(cudaMalloc((void **)&dData, totDataSize * sizeof(float)));
 
             // Copy predictor data to the host array
             vl ptorStart(predictorsNb);
@@ -971,7 +972,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             wxASSERT(totDataSize == pStart);
 
             // Copy the data to the device
-            asProcessorCuda::CudaMemCopyToDevice(dData, hData, totDataSize);
+            checkCudaErrors(cudaMemcpy(dData, hData, totDataSize * sizeof(float), cudaMemcpyHostToDevice));
 
             // Containers for daily results
             a1f scoreArrayOneDay(analogsNb);
@@ -979,10 +980,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
             // Alloc space for indices
             int maxCandNb = int(analogsDates.cols());
-            int *indicesArch;
+            int *indicesArch, *dIdxArch = nullptr;;
             indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
-            int *dIdxArch = nullptr;
-            asProcessorCuda::CudaMalloc(dIdxArch, nStreams * maxCandNb);
+            checkCudaErrors(cudaMalloc((void **)&dIdxArch, nStreams * maxCandNb * sizeof(int)));
 
             // Get a new container for variable vectors
             float *currentDates;
@@ -991,13 +991,15 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             // Alloc space for results
             float *hRes, *dRes = nullptr;
             hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
-            asProcessorCuda::CudaMalloc(dRes, nStreams * maxCandNb);
+            checkCudaErrors(cudaMalloc((void **)&dRes, nStreams * maxCandNb * sizeof(float)));
 
             // Number of candidates per stream
             vi nbCandidates(nStreams);
 
             // Init streams
-            asProcessorCuda::InitStreams();
+            cudaStream_t streams[nStreams];
+            for (auto & stream : streams)
+                checkCudaErrors(cudaStreamCreate(&stream));
 
             // Loop through every timestep as target data
             for (int i = 0; i < timeTargetSelectionSize + nStreams/2; i++) {
@@ -1042,13 +1044,12 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     int nbCand = analogsNbPrevious;
 
                     // Copy to device
-                    asProcessorCuda::CudaMemCopyToDeviceAsync(&dIdxArch[offset], &indicesArch[offset], nbCand,
-                                                              streamId);
+                    checkCudaErrors(cudaMemcpyAsync(&dIdxArch[offset], &indicesArch[offset], nbCand * sizeof(int), cudaMemcpyHostToDevice, streams[streamId]));
 
                     // Doing the work on GPU
-                    asProcessorCuda::CudaMemset0Async(&dRes[offset], maxCandNb, streamId);
+                    checkCudaErrors(cudaMemsetAsync(&dRes[offset], 0, maxCandNb * sizeof(float), streams[streamId]));
                     asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand, colsNb,
-                                                     rowsNb, weights, crit, streamId, offset);
+                                                     rowsNb, weights, crit, streams[streamId], offset);
 
                     nbCandidates[streamId] = nbCand;
 
@@ -1062,12 +1063,12 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     int offset = streamId * maxCandNb;
 
                     // Check for any error from the kernel
-                    asProcessorCuda::CudaGetLastError();
+                    checkCudaErrors(cudaGetLastError());
 
                     // Copy the resulting array from the device
-                    asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId], streamId);
+                    checkCudaErrors(cudaMemcpyAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId] * sizeof(float), cudaMemcpyDeviceToHost, streams[streamId]));
 
-                    asProcessorCuda::StreamSynchronize(streamId);
+                    checkCudaErrors(cudaStreamSynchronize(streams[streamId]));
 
                     // Sort and store results
                     int resCounter = 0;
@@ -1096,19 +1097,20 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                 }
             }
 
-            asProcessorCuda::DeviceSynchronize();
+            checkCudaErrors(cudaDeviceSynchronize());
 
             free(hData);
-            asProcessorCuda::CudaFree(dData);
+            checkCudaErrors(cudaFree(dData));
             free(hRes);
-            asProcessorCuda::CudaFree(dRes);
+            checkCudaErrors(cudaFree(dRes));
             free(indicesArch);
-            asProcessorCuda::CudaFree(dIdxArch);
+            checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
-            asProcessorCuda::DestroyStreams();
+            for (int i = 0; i < nStreams; i++)
+                cudaStreamDestroy(streams[i]);
 
-            asProcessorCuda::DeviceReset();
+            cudaDeviceReset();
 
             break;
         }

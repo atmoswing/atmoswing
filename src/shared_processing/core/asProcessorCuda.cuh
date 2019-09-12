@@ -31,8 +31,9 @@
 
 #include <vector>
 #include <cuda.h>
-#include <helper_cuda.h>
+#include <driver_types.h>
 #include <cuda_runtime.h>
+#include <helper_cuda.h>
 #include <device_launch_parameters.h>
 
 const int nStreams = 4; // must be a multiple of 2!
@@ -55,47 +56,9 @@ class asProcessorCuda
 public:
     static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg, const int *indicesArch,
                                 float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                std::vector<float> &weights, std::vector<CudaCriteria> &criteria, int streamId, int offset);
+                                std::vector<float> &weights, std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset);
 
     static bool SelectBestDevice();
-
-    static void InitStreams();
-
-    static void DestroyStreams();
-
-    static void CudaMalloc(int *&data, int length);
-
-    static void CudaMalloc(float *&data, long length);
-
-    static void CudaMemset0(float *data, long length);
-
-    static void CudaMemset0Async(float *data, long length, int streamId);
-
-    static void CudaMemCopyToDevice(int *devData, int *hostData, int length);
-
-    static void CudaMemCopyToDeviceAsync(int *devData, int *hostData, int length, int streamId);
-
-    static void CudaMemCopyToDevice(float *devData, float *hostData, long length);
-
-    static void CudaMemCopyFromDevice(int *hostData, int *devData, int length);
-
-    static void CudaMemCopyFromDeviceAsync(int *hostData, int *devData, int length, int streamId);
-
-    static void CudaMemCopyFromDevice(float *hostData, float *devData, long length);
-
-    static void CudaMemCopyFromDeviceAsync(float *hostData, float *devData, long length, int streamId);
-
-    static void CudaFree(int *data);
-
-    static void CudaFree(float *data);
-
-    static void CudaGetLastError();
-
-    static void DeviceSynchronize();
-
-    static void StreamSynchronize(int streamId);
-
-    static void DeviceReset();
 
 protected:
 
@@ -103,7 +66,5 @@ private:
 
 };
 
-
-extern cudaStream_t *g_streams;
 
 #endif

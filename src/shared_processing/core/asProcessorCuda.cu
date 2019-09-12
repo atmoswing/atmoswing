@@ -42,8 +42,6 @@
 // efficiency and facilitates coalescing.
 static const int blockSize = 64; // must be 64 <= blockSize <= 1024
 
-cudaStream_t *g_streams = new cudaStream_t[nStreams];
-
 // From https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
 __inline__ __device__
 float warpReduceSum(float val)
@@ -598,7 +596,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
 bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indexTarg, const int *indicesArch,
                                       float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                      std::vector<float> &weights, std::vector<CudaCriteria> &criteria, int streamId, int offset)
+                                      std::vector<float> &weights, std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset)
 {
     for (int iPtor = 0; iPtor < ptorStart.size(); iPtor++) {
         int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
@@ -613,31 +611,31 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
             case S0:
             case S1grads:
             case S2grads:
-                processS1grads<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processS1grads<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case MD:
-                processMD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processMD<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case RMSE:
-                processRMSE<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processRMSE<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case RSE:
-                processRSE<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processRSE<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case SAD:
-                processSAD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processSAD<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case DMV:
-                processDMV<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processDMV<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case DSD:
-                processDSD<<<blocksNb3D, blockSize, 0, g_streams[streamId]>>>(
+                processDSD<<<blocksNb3D, blockSize, 0, stream>>>(
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:
@@ -693,99 +691,3 @@ bool asProcessorCuda::SelectBestDevice()
     return true;
 }
 
-void asProcessorCuda::InitStreams()
-{
-    for (int i = 0; i < nStreams; i++)
-        cudaStreamCreate(&(g_streams[i]));
-}
-
-void asProcessorCuda::DestroyStreams()
-{
-    for (int i = 0; i < nStreams; i++)
-        cudaStreamDestroy(g_streams[i]);
-}
-
-void asProcessorCuda::CudaMalloc(int *&data, int length)
-{
-    checkCudaErrors(cudaMalloc((void **)&data, length * sizeof(int)));
-}
-
-void asProcessorCuda::CudaMalloc(float *&data, long length)
-{
-    checkCudaErrors(cudaMalloc((void **)&data, length * sizeof(float)));
-}
-
-void asProcessorCuda::CudaMemset0(float *data, long length)
-{
-    checkCudaErrors(cudaMemset(data, 0, length * sizeof(float)));
-}
-
-void asProcessorCuda::CudaMemset0Async(float *data, long length, int streamId)
-{
-    checkCudaErrors(cudaMemsetAsync(data, 0, length * sizeof(float), g_streams[streamId]));
-}
-
-void asProcessorCuda::CudaMemCopyToDevice(int *devData, int *hostData, int length)
-{
-    checkCudaErrors(cudaMemcpy(devData, hostData, length * sizeof(int), cudaMemcpyHostToDevice));
-}
-
-void asProcessorCuda::CudaMemCopyToDeviceAsync(int *devData, int *hostData, int length, int streamId)
-{
-    checkCudaErrors(cudaMemcpyAsync(devData, hostData, length * sizeof(int), cudaMemcpyHostToDevice, g_streams[streamId]));
-}
-
-void asProcessorCuda::CudaMemCopyToDevice(float *devData, float *hostData, long length)
-{
-    checkCudaErrors(cudaMemcpy(devData, hostData, length * sizeof(float), cudaMemcpyHostToDevice));
-}
-
-void asProcessorCuda::CudaMemCopyFromDevice(int *hostData, int *devData, int length)
-{
-    checkCudaErrors(cudaMemcpy(hostData, devData, length * sizeof(int), cudaMemcpyDeviceToHost));
-}
-
-void asProcessorCuda::CudaMemCopyFromDeviceAsync(int *hostData, int *devData, int length, int streamId)
-{
-    checkCudaErrors(cudaMemcpyAsync(hostData, devData, length * sizeof(int), cudaMemcpyDeviceToHost, g_streams[streamId]));
-}
-
-void asProcessorCuda::CudaMemCopyFromDevice(float *hostData, float *devData, long length)
-{
-    checkCudaErrors(cudaMemcpy(hostData, devData, length * sizeof(float), cudaMemcpyDeviceToHost));
-}
-
-void asProcessorCuda::CudaMemCopyFromDeviceAsync(float *hostData, float *devData, long length, int streamId)
-{
-    checkCudaErrors(cudaMemcpyAsync(hostData, devData, length * sizeof(float), cudaMemcpyDeviceToHost, g_streams[streamId]));
-}
-
-void asProcessorCuda::CudaFree(int *data)
-{
-    checkCudaErrors(cudaFree(data));
-}
-
-void asProcessorCuda::CudaFree(float *data)
-{
-    checkCudaErrors(cudaFree(data));
-}
-
-void asProcessorCuda::CudaGetLastError()
-{
-    checkCudaErrors(cudaGetLastError());
-}
-
-void asProcessorCuda::DeviceSynchronize()
-{
-    checkCudaErrors(cudaDeviceSynchronize());
-}
-
-void asProcessorCuda::StreamSynchronize(int streamId)
-{
-    checkCudaErrors(cudaStreamSynchronize(g_streams[streamId]));
-}
-
-void asProcessorCuda::DeviceReset()
-{
-    cudaDeviceReset();
-}
