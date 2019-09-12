@@ -162,7 +162,7 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
                 float xi = data[ptorStart + iTarg * ptsNbtot + i * blockSize + threadId];
                 float yi = data[ptorStart + iArch * ptsNbtot + i * blockSize + threadId];
 
-                diff = xi - yi;
+                diff = fabsf(xi - yi);
             } else {
                 diff = 0;
             }

@@ -123,6 +123,8 @@ int main(int argc, char **argv)
 
 void CustomArguments(benchmark::internal::Benchmark *b);
 
+void CustomArgumentsWarmup(benchmark::internal::Benchmark *b);
+
 void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef);
 
 asParametersCalibration GetParameters(int nSteps, int nPtors, int nPts, const wxString &criteria);
@@ -177,6 +179,7 @@ void BM_Cuda(benchmark::State &state, ExtraArgs&&... extra_args)
 #endif
 }
 
+BENCHMARK_CAPTURE(BM_Cuda, warmum, "S1")->Unit(benchmark::kMillisecond)->Apply(CustomArgumentsWarmup);
 BENCHMARK_CAPTURE(BM_Cuda, S1, "S1")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
 BENCHMARK_CAPTURE(BM_Cuda, RMSE, "RMSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
 BENCHMARK_CAPTURE(BM_Cuda, S0, "S0")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
@@ -284,11 +287,16 @@ void CustomArguments(benchmark::internal::Benchmark *b)
 {
     for (int level = 1; level <= 2; ++level) {
         for (int ptors = 1; ptors <= 4; ++ptors) {
-            for (int pts = 2; pts <= maxPointsNb; pts *= 2) {
+            for (int pts = 4; pts <= maxPointsNb; pts *= 2) {
                 b->Args({level, ptors, pts});
             }
         }
     }
+}
+
+void CustomArgumentsWarmup(benchmark::internal::Benchmark *b)
+{
+    b->Args({1, 1, 4});
 }
 
 void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef)
