@@ -171,7 +171,7 @@ void BM_Cuda(benchmark::State &state, ExtraArgs&&... extra_args)
 
     if (nSteps == 2) {
         asResultsDates anaDatesRef2;
-        ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDatesRef2, &params, 0, containsNaNs));
+        ASSERT_TRUE(g_calibrator->GetAnalogsSubDates(anaDatesRef2, &params, anaDatesRef1, 1, containsNaNs));
         CompareResults(anaDates2, anaDatesRef2);
     }
 #endif

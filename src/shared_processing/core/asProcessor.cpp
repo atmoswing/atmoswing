@@ -178,6 +178,22 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 rowsNb[iPtor] = vRowsNb[iPtor];
                 if (criteria[iPtor]->GetName().IsSameAs("S1grads")) {
                     crit[iPtor] = S1grads;
+                } else if (criteria[iPtor]->GetName().IsSameAs("S0")) {
+                    crit[iPtor] = S0;
+                } else if (criteria[iPtor]->GetName().IsSameAs("S2grads")) {
+                    crit[iPtor] = S2grads;
+                } else if (criteria[iPtor]->GetName().IsSameAs("RMSE")) {
+                    crit[iPtor] = RMSE;
+                } else if (criteria[iPtor]->GetName().IsSameAs("MD")) {
+                    crit[iPtor] = MD;
+                } else if (criteria[iPtor]->GetName().IsSameAs("RSE")) {
+                    crit[iPtor] = RSE;
+                } else if (criteria[iPtor]->GetName().IsSameAs("SAD")) {
+                    crit[iPtor] = SAD;
+                } else if (criteria[iPtor]->GetName().IsSameAs("DMV")) {
+                    crit[iPtor] = DMV;
+                } else if (criteria[iPtor]->GetName().IsSameAs("DSD")) {
+                    crit[iPtor] = DSD;
                 } else {
                     wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
                     return false;
@@ -817,7 +833,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
     auto timeTargetSelectionSize = timeTargetSelection.size();
     wxASSERT(timeTargetSelectionSize > 0);
     a2f analogsDates = anaDates.GetAnalogsDates();
-    bool isasc = (criteria[0]->GetOrder() == Asc);
+    bool isAsc = (criteria[0]->GetOrder() == Asc);
     auto predictorsNb = params->GetPredictorsNb(step);
     wxASSERT(predictorsNb > 0);
     auto membersNb = predictorsTarget[0]->GetData()[0].size();
@@ -847,7 +863,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
         }
 
         // Check criteria ordering
-        if (isasc != (criteria[iPtor]->GetOrder() == Asc)) {
+        if (isAsc != (criteria[iPtor]->GetOrder() == Asc)) {
             wxLogError(_("You cannot combine criteria that are ascendant and descendant."));
             return false;
         }
@@ -869,6 +885,235 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 #endif
 
     switch (method) {
+
+#ifdef USE_CUDA
+        case (asCUDA): {
+
+            // Check no members
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                if (predictorsArchive[iPtor]->GetMembersNb() > 1) {
+                    wxLogError(_("No support for ensemble datasets in CUDA yet."));
+                    return false;
+                }
+            }
+
+            // To minimize the data copy, we only allow 1 dataset
+            if (predictorsArchive[0] != predictorsTarget[0]) {
+                wxLogError(_("The CUDA implementation is only available in calibration (prefect prog)."));
+                return false;
+            }
+
+            // Extract time arrays
+            a1d timeArchData = timeArrayArchiveData.GetTimeArray();
+
+            // Constant data
+            vf weights(predictorsNb);
+            vi colsNb(predictorsNb);
+            vi rowsNb(predictorsNb);
+            std::vector<CudaCriteria> crit(predictorsNb);
+
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                weights[iPtor] = params->GetPredictorWeight(step, iPtor);
+                colsNb[iPtor] = vColsNb[iPtor];
+                rowsNb[iPtor] = vRowsNb[iPtor];
+                if (criteria[iPtor]->GetName().IsSameAs("S1grads")) {
+                    crit[iPtor] = S1grads;
+                } else if (criteria[iPtor]->GetName().IsSameAs("S0")) {
+                    crit[iPtor] = S0;
+                } else if (criteria[iPtor]->GetName().IsSameAs("S2grads")) {
+                    crit[iPtor] = S2grads;
+                } else if (criteria[iPtor]->GetName().IsSameAs("RMSE")) {
+                    crit[iPtor] = RMSE;
+                } else if (criteria[iPtor]->GetName().IsSameAs("MD")) {
+                    crit[iPtor] = MD;
+                } else if (criteria[iPtor]->GetName().IsSameAs("RSE")) {
+                    crit[iPtor] = RSE;
+                } else if (criteria[iPtor]->GetName().IsSameAs("SAD")) {
+                    crit[iPtor] = SAD;
+                } else if (criteria[iPtor]->GetName().IsSameAs("DMV")) {
+                    crit[iPtor] = DMV;
+                } else if (criteria[iPtor]->GetName().IsSameAs("DSD")) {
+                    crit[iPtor] = DSD;
+                } else {
+                    wxLogError(_("The %s criteria is not yet implemented for CUDA."), criteria[iPtor]->GetName());
+                    return false;
+                }
+            }
+
+            // Get max predictor size
+            long totDataSize = 0;
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                int ptsNb = vColsNb[iPtor] * vRowsNb[iPtor];
+                totDataSize += timeArchData.size() * ptsNb;
+            }
+
+            // Alloc space for predictor data
+            float *hData, *dData = nullptr;
+            hData = (float *)malloc(totDataSize * sizeof(float));
+            asProcessorCuda::CudaMalloc(dData, totDataSize);
+
+            // Copy predictor data to the host array
+            vl ptorStart(predictorsNb);
+            long pStart = 0;
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+                ptorStart[iPtor] = pStart;
+                int ptsNb = vColsNb[iPtor] * vRowsNb[iPtor];
+
+                // Copy data in the new arrays
+                for (int iTime = 0; iTime < timeArchData.size(); iTime++) {
+                    float *pData = predictorsArchive[iPtor]->GetData()[iTime][0].data();
+                    for (int iPt = 0; iPt < ptsNb; iPt++) {
+                        hData[ptorStart[iPtor] + iTime * ptsNb + iPt] = pData[iPt];
+                        pStart++;
+                    }
+                }
+            }
+            wxASSERT(totDataSize == pStart);
+
+            // Copy the data to the device
+            asProcessorCuda::CudaMemCopyToDevice(dData, hData, totDataSize);
+
+            // Containers for daily results
+            a1f scoreArrayOneDay(analogsNb);
+            a1f dateArrayOneDay(analogsNb);
+
+            // Alloc space for indices
+            int maxCandNb = int(analogsDates.cols());
+            int *indicesArch;
+            indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
+            int *dIdxArch = nullptr;
+            asProcessorCuda::CudaMalloc(dIdxArch, nStreams * maxCandNb);
+
+            // Get a new container for variable vectors
+            float *currentDates;
+            currentDates = (float *)malloc( nStreams * maxCandNb * sizeof(float));
+
+            // Alloc space for results
+            float *hRes, *dRes = nullptr;
+            hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
+            asProcessorCuda::CudaMalloc(dRes, nStreams * maxCandNb);
+
+            // Number of candidates per stream
+            vi nbCandidates(nStreams);
+
+            // Init streams
+            asProcessorCuda::InitStreams();
+
+            // Loop through every timestep as target data
+            for (int i = 0; i < timeTargetSelectionSize + nStreams/2; i++) {
+
+                // Prepare date arrays and start on kernel
+                if (i < timeTargetSelectionSize) {
+
+                    int iDateTarg = i;
+                    int streamId = iDateTarg % nStreams;
+                    int offset = streamId * maxCandNb;
+
+                    int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
+                                           timeTargetSelection[i], 0.01);
+                    wxASSERT_MSG(iTimeTarg >= 0,
+                                 wxString::Format(
+                                     _("Looking for %s in betwwen %s and %s."),
+                                     asTime::GetStringTime(timeTargetSelection[i], "DD.MM.YYYY hh:mm"),
+                                     asTime::GetStringTime(timeTargetData[0], "DD.MM.YYYY hh:mm"),
+                                     asTime::GetStringTime(timeTargetData[timeTargetDataSize - 1], "DD.MM.YYYY hh:mm")));
+
+                    // Get dates
+                    currentAnalogsDates = analogsDates.row(i);
+
+                    // Loop through the previous analogs for candidate data
+                    for (int iPrevAnalog = 0; iPrevAnalog < analogsNbPrevious; iPrevAnalog++) {
+                        // Find row in the predictor time array
+                        int iTimeArch = asFind(&timeArchiveData[0], &timeArchiveData[timeArchiveDataSize - 1],
+                                               currentAnalogsDates[iPrevAnalog], 0.01);
+
+                        // Check if a row was found
+                        if (iTimeArch == asNOT_FOUND || iTimeArch == asOUT_OF_RANGE) {
+                            wxLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
+
+                            return false;
+                        }
+
+                        // Store the index and the date
+                        currentDates[offset + iPrevAnalog] = (float)timeArchData[iTimeArch];
+                        indicesArch[offset + iPrevAnalog] = iTimeArch;
+                    }
+
+                    int nbCand = analogsNbPrevious;
+
+                    // Copy to device
+                    asProcessorCuda::CudaMemCopyToDeviceAsync(&dIdxArch[offset], &indicesArch[offset], nbCand,
+                                                              streamId);
+
+                    // Doing the work on GPU
+                    asProcessorCuda::CudaMemset0Async(&dRes[offset], maxCandNb, streamId);
+                    asProcessorCuda::ProcessCriteria(dData, ptorStart, iTimeTarg, dIdxArch, dRes, nbCand, colsNb,
+                                                     rowsNb, weights, crit, streamId, offset);
+
+                    nbCandidates[streamId] = nbCand;
+
+                }
+
+                // Postprocess the results
+                if (i >= nStreams/2) {
+
+                    int iDateTarg = i - nStreams/2;
+                    int streamId = iDateTarg % nStreams;
+                    int offset = streamId * maxCandNb;
+
+                    // Check for any error from the kernel
+                    asProcessorCuda::CudaGetLastError();
+
+                    // Copy the resulting array from the device
+                    asProcessorCuda::CudaMemCopyFromDeviceAsync(&hRes[offset], &dRes[offset], nbCandidates[streamId], streamId);
+
+                    asProcessorCuda::StreamSynchronize(streamId);
+
+                    // Sort and store results
+                    int resCounter = 0;
+                    scoreArrayOneDay.fill(NaNf);
+                    dateArrayOneDay.fill(NaNf);
+
+                    for (int iDateArch = 0; iDateArch < nbCandidates[streamId]; iDateArch++) {
+#ifdef _DEBUG
+                        if (asIsNaN(hRes[offset + iDateArch])) {
+                            containsNaNs = true;
+                            wxLogWarning(_("NaNs were found in the criteria values."));
+                            wxLogWarning(_("Target date: %s, archive date: %s."),
+                                         asTime::GetStringTime(timeTargetSelection[iDateTarg]),
+                                         asTime::GetStringTime(dateArrayOneDay[iDateArch]));
+                        }
+#endif
+
+                        InsertInArrays(isAsc, analogsNb, currentDates[offset + iDateArch], hRes[offset + iDateArch],
+                                       resCounter, scoreArrayOneDay, dateArrayOneDay);
+
+                        resCounter++;
+                    }
+
+                    finalAnalogsCriteria.row(iDateTarg) = scoreArrayOneDay.head(analogsNb).transpose();
+                    finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
+                }
+            }
+
+            asProcessorCuda::DeviceSynchronize();
+
+            free(hData);
+            asProcessorCuda::CudaFree(dData);
+            free(hRes);
+            asProcessorCuda::CudaFree(dRes);
+            free(indicesArch);
+            asProcessorCuda::CudaFree(dIdxArch);
+            free(currentDates);
+
+            asProcessorCuda::DestroyStreams();
+
+            asProcessorCuda::DeviceReset();
+
+            break;
+        }
+#endif
+
         case (asMULTITHREADS): {
 
             // Get threads number
@@ -1030,7 +1275,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
                             // Check if the array is already full
                             if (counter > analogsNb - 1) {
-                                if (isasc) {
+                                if (isAsc) {
                                     if (thisscore < scoreArrayOneDay[analogsNb - 1]) {
                                         asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                        &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc,
@@ -1053,7 +1298,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                                 dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
 
                                 // Sort both scores and dates arrays
-                                if (isasc) {
+                                if (isAsc) {
                                     asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                         &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc);
                                 } else {
