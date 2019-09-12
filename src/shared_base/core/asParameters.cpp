@@ -65,6 +65,12 @@ void asParameters::AddStep()
     m_steps.push_back(step);
 }
 
+void asParameters::RemoveStep(int iStep)
+{
+    wxASSERT(m_steps.size() > iStep);
+    m_steps.erase(m_steps.begin() + iStep);
+}
+
 void asParameters::AddPredictor()
 {
     AddPredictor(m_steps[m_steps.size() - 1]);

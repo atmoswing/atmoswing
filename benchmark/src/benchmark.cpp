@@ -60,7 +60,7 @@ int main(int argc, char **argv)
         wxFileConfig::Set(pConfig);
         pConfig->Write("/Processing/AllowMultithreading", true);
         pConfig->Write("/Processing/Method", (int)asMULTITHREADS);
-        pConfig->Write("/Processing/MaxThreadNb", 8);
+        pConfig->Write("/Processing/MaxThreadNb", 3);
 
         // Check path
         wxString filePath = wxFileName::GetCwd();
@@ -121,28 +121,40 @@ int main(int argc, char **argv)
     return 0;
 }
 
+void CustomArguments(benchmark::internal::Benchmark *b);
+
+void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef);
+
+asParametersCalibration GetParameters(int nSteps, int nPtors, int nPts, const wxString &criteria);
 
 #ifdef USE_CUDA
-static void BM_1Ptor_S1_Cuda(benchmark::State &state)
+template <class ...ExtraArgs>
+void BM_Cuda(benchmark::State &state, ExtraArgs&&... extra_args)
 {
-    int step = 0;
-    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
-    int nbX = int(state.range(0) / nbY);
-    asParametersCalibration params = *g_params;
-    params.RemovePredictor(step, 1);
-    params.SetPredictorXptsnb(step, 0, nbX);
-    params.SetPredictorYptsnb(step, 0, nbY);
+    std::tuple<ExtraArgs...> argsTuple{extra_args...};
+    wxString criteria(std::get<0>(argsTuple));
+
+    int nSteps = state.range(0);
+    int nPtors = state.range(1);
+    int nPts = state.range(2);
+
+    asParametersCalibration params = GetParameters(nSteps, nPtors, nPts, criteria);
 
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/Method", (int) asCUDA);
 
     bool containsNaNs = false;
-    asResultsDates anaDates;
+    asResultsDates anaDates1;
+    asResultsDates anaDates2;
 
     for (auto _ : state) {
         try {
-            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates1, &params, 0, containsNaNs));
             EXPECT_FALSE(containsNaNs);
+            if (nSteps == 2) {
+                ASSERT_TRUE(g_calibrator->GetAnalogsSubDates(anaDates2, &params, anaDates1, 1, containsNaNs));
+                EXPECT_FALSE(containsNaNs);
+            }
         } catch (std::exception &e) {
             wxPrintf(e.what());
             return;
@@ -153,9 +165,134 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
     pConfig->Write("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
 
-    asResultsDates anaDatesRef;
-    ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDatesRef, &params, step, containsNaNs));
+    asResultsDates anaDatesRef1;
+    ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDatesRef1, &params, 0, containsNaNs));
+    CompareResults(anaDates1, anaDatesRef1);
 
+    if (nSteps == 2) {
+        asResultsDates anaDatesRef2;
+        ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDatesRef2, &params, 0, containsNaNs));
+        CompareResults(anaDates2, anaDatesRef2);
+    }
+#endif
+}
+
+BENCHMARK_CAPTURE(BM_Cuda, S1, "S1")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, RMSE, "RMSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, S0, "S0")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, S2, "S2")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, MD, "MD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, RSE, "RSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, SAD, "SAD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, DMV, "DMV")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Cuda, DSD, "DSD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+
+#endif
+
+template <class ...ExtraArgs>
+void BM_Standard(benchmark::State &state, ExtraArgs&&... extra_args)
+{
+    std::tuple<ExtraArgs...> argsTuple{extra_args...};
+    wxString criteria(std::get<0>(argsTuple));
+
+    int nSteps = state.range(0);
+    int nPtors = state.range(1);
+    int nPts = state.range(2);
+
+    asParametersCalibration params = GetParameters(nSteps, nPtors, nPts, criteria);
+
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+
+    bool containsNaNs = false;
+    asResultsDates anaDates1;
+    asResultsDates anaDates2;
+
+    for (auto _ : state) {
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates1, &params, 0, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+            if (nSteps == 2) {
+                ASSERT_TRUE(g_calibrator->GetAnalogsSubDates(anaDates2, &params, anaDates1, 1, containsNaNs));
+                EXPECT_FALSE(containsNaNs);
+            }
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
+}
+
+BENCHMARK_CAPTURE(BM_Standard, S1, "S1")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, RMSE, "RMSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, S0, "S0")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, S2, "S2")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, MD, "MD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, RSE, "RSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, SAD, "SAD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, DMV, "DMV")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Standard, DSD, "DSD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+
+
+template <class ...ExtraArgs>
+void BM_Multithreaded(benchmark::State &state, ExtraArgs&&... extra_args)
+{
+    std::tuple<ExtraArgs...> argsTuple{extra_args...};
+    wxString criteria(std::get<0>(argsTuple));
+
+    int nSteps = state.range(0);
+    int nPtors = state.range(1);
+    int nPts = state.range(2);
+
+    asParametersCalibration params = GetParameters(nSteps, nPtors, nPts, criteria);
+
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    pConfig->Write("/Processing/AllowMultithreading", true);
+    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
+
+    bool containsNaNs = false;
+    asResultsDates anaDates1;
+    asResultsDates anaDates2;
+
+    for (auto _ : state) {
+        try {
+            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates1, &params, 0, containsNaNs));
+            EXPECT_FALSE(containsNaNs);
+            if (nSteps == 2) {
+                ASSERT_TRUE(g_calibrator->GetAnalogsSubDates(anaDates2, &params, anaDates1, 1, containsNaNs));
+                EXPECT_FALSE(containsNaNs);
+            }
+        } catch (std::exception &e) {
+            wxPrintf(e.what());
+            return;
+        }
+    }
+}
+
+BENCHMARK_CAPTURE(BM_Multithreaded, S1, "S1")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, RMSE, "RMSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, S0, "S0")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, S2, "S2")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, MD, "MD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, RSE, "RSE")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, SAD, "SAD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, DMV, "DMV")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+BENCHMARK_CAPTURE(BM_Multithreaded, DSD, "DSD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+
+
+void CustomArguments(benchmark::internal::Benchmark *b)
+{
+    for (int level = 1; level <= 2; ++level) {
+        for (int ptors = 1; ptors <= 4; ++ptors) {
+            for (int pts = 2; pts <= maxPointsNb; pts *= 2) {
+                b->Args({level, ptors, pts});
+            }
+        }
+    }
+}
+
+void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef)
+{
     // Extract data
     a1f resultsTargetDatesCPU(anaDatesRef.GetTargetDates());
     a2f resultsCriteriaCPU(anaDatesRef.GetAnalogsCriteria());
@@ -174,64 +311,28 @@ static void BM_1Ptor_S1_Cuda(benchmark::State &state)
             }
         }
     }
-#endif
 }
-BENCHMARK(BM_1Ptor_S1_Cuda)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);
-#endif
 
-static void BM_1Ptor_S1_Standard(benchmark::State &state)
+asParametersCalibration GetParameters(int nSteps, int nPtors, int nPts, const wxString &criteria)
 {
-    int step = 0;
-    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
-    int nbX = int(state.range(0) / nbY);
     asParametersCalibration params = *g_params;
-    params.RemovePredictor(step, 1);
-    params.SetPredictorXptsnb(step, 0, nbX);
-    params.SetPredictorYptsnb(step, 0, nbY);
 
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/Method", (int) asSTANDARD);
+    int nbY = wxMin((int) std::sqrt(nPts), 40);
+    int nbX = int(nPts / nbY);
 
-    bool containsNaNs = false;
-    asResultsDates anaDates;
+    if (nSteps == 1) {
+        params.RemoveStep(1);
+    }
 
-    for (auto _ : state) {
-        try {
-            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
-            EXPECT_FALSE(containsNaNs);
-        } catch (std::exception &e) {
-            wxPrintf(e.what());
-            return;
+    for (int st = 0; st < nSteps; ++st) {
+        for (int pt = 3; pt >= nPtors; --pt) {
+            params.RemovePredictor(st, pt);
+        }
+        for (int pt = 0; pt < nPtors; ++pt) {
+            params.SetPredictorXptsnb(st, pt, nbX);
+            params.SetPredictorYptsnb(st, pt, nbY);
+            params.SetPredictorCriteria(st, pt, criteria);
         }
     }
+    return params;
 }
-BENCHMARK(BM_1Ptor_S1_Standard)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);
-
-static void BM_1Ptor_S1_Multithreaded(benchmark::State &state)
-{
-    int step = 0;
-    int nbY = wxMin((int) std::sqrt(state.range(0)), 40);
-    int nbX = int(state.range(0) / nbY);
-    asParametersCalibration params = *g_params;
-    params.RemovePredictor(step, 1);
-    params.SetPredictorXptsnb(step, 0, nbX);
-    params.SetPredictorYptsnb(step, 0, nbY);
-
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/Method", (int) asMULTITHREADS);
-
-    bool containsNaNs = false;
-    asResultsDates anaDates;
-
-    for (auto _ : state) {
-        try {
-            ASSERT_TRUE(g_calibrator->GetAnalogsDates(anaDates, &params, step, containsNaNs));
-            EXPECT_FALSE(containsNaNs);
-        } catch (std::exception &e) {
-            wxPrintf(e.what());
-            return;
-        }
-    }
-}
-BENCHMARK(BM_1Ptor_S1_Multithreaded)->Unit(benchmark::kMillisecond)->RangeMultiplier(2)->Range(2, maxPointsNb);

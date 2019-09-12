@@ -95,6 +95,8 @@ public:
 
     virtual void AddStep();
 
+    void RemoveStep(int iStep);
+
     void AddPredictor(); // To the last step
 
     void AddPredictor(ParamsStep &step);
