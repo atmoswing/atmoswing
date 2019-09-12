@@ -30,7 +30,7 @@
 #include "gtest/gtest.h"
 #include "benchmark/benchmark.h"
 
-#define _CHECK_CUDA_RESULTS false
+#define _CHECK_CUDA_RESULTS true
 
 asMethodCalibratorSingle *g_calibrator;
 asParametersCalibration *g_params;
@@ -313,8 +313,8 @@ void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef)
     for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
         EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
         for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
-            EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), 0.0001);
-            if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.0001) {
+            EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), 0.0002);
+            if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > 0.0002) {
                 EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
             }
         }
