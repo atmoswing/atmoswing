@@ -65,6 +65,8 @@ public:
 
     int GetRunningThreadsNb(int type = -1);
 
+    int GetFreeDevice(int devicesNb);
+
     int GetAvailableThreadsNb();
 
     bool Cancelled()

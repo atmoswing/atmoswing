@@ -68,7 +68,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
     {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
     {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
-    {wxCMD_LINE_OPTION, "n",  "gpus-nb",                 "Number of gpus to use"},
+    {wxCMD_LINE_OPTION, "g",  "gpus-nb",                 "Number of gpus to use"},
     {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
     {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
     {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},

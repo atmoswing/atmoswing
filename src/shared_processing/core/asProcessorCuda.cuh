@@ -60,6 +60,10 @@ public:
 
     static bool SelectBestDevice();
 
+    static int GetDeviceCount();
+
+    static void SetDevice(int device);
+
 protected:
 
 private:

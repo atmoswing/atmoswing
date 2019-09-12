@@ -30,7 +30,7 @@
 #include "gtest/gtest.h"
 #include "benchmark/benchmark.h"
 
-#define _CHECK_CUDA_RESULTS true
+#define _CHECK_CUDA_RESULTS false
 
 asMethodCalibratorSingle *g_calibrator;
 asParametersCalibration *g_params;

@@ -33,10 +33,13 @@
 #include <asThreadGeneticAlgorithms.h>
 
 #ifndef UNIT_TESTING
-
-#include <AtmoswingAppOptimizer.h>
-
+    #include <AtmoswingAppOptimizer.h>
 #endif
+
+#ifdef USE_CUDA
+    #include <asProcessorCuda.cuh>
+#endif
+
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
         : asMethodOptimizer(),
@@ -284,6 +287,20 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     int threadType = asThread::MethodOptimizerGeneticAlgorithms;
     bool firstRun = true;
 
+#ifdef USE_CUDA
+    // Number of GPUs
+    int method = (int)wxFileConfig::Get()->Read("/Processing/Method", (long)asMULTITHREADS);
+    int gpusNb = 0;
+    if (method == asCUDA) {
+        gpusNb = (int)wxFileConfig::Get()->ReadLong("/Processing/GpusNb", 1);
+        int devicesFound = asProcessorCuda::GetDeviceCount();
+        if (gpusNb > devicesFound) {
+            wxLogWarning(_("%d GPUs provided, but only %d found."), gpusNb, devicesFound);
+            gpusNb = devicesFound;
+        }
+    }
+#endif
+
     // Optimizer
     while (true) {
 
@@ -301,6 +318,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
             ThreadsManager().WaitForFreeThread(threadType);
 
+            int device = 0;
+            if (method == asCUDA) {
+                device = ThreadsManager().GetFreeDevice(gpusNb);
+            }
+
             // Get a parameters set
             asParametersOptimizationGAs *nextParams = GetNextParameters();
 
@@ -308,6 +330,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 // Add it to the threads
                 auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
                                                              &m_scoreClimatology);
+                if (method == asCUDA) {
+                    thread->SetDevice(device);
+                }
                 ThreadsManager().AddThread(thread);
 
                 // Wait until done to get the score of the climatology

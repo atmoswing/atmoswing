@@ -59,8 +59,19 @@ public:
         return m_type;
     }
 
+    int GetDevice() const
+    {
+        return m_device;
+    }
+
+    void SetDevice(int val)
+    {
+        m_device = val;
+    }
+
 protected:
     asThread::Type m_type;
+    int m_device;
 
 private:
 

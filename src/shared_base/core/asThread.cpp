@@ -30,7 +30,8 @@
 
 asThread::asThread(Type type)
         : wxThread(wxTHREAD_DETACHED),
-          m_type(type)
+          m_type(type),
+          m_device(0)
 {
 }
 

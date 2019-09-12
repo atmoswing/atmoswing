@@ -691,3 +691,31 @@ bool asProcessorCuda::SelectBestDevice()
     return true;
 }
 
+int asProcessorCuda::GetDeviceCount()
+{
+    cudaError_t cudaStatus;
+
+    // Count the devices
+    int devicesCount = 0;
+    cudaStatus = cudaGetDeviceCount(&devicesCount);
+    if (cudaStatus != cudaSuccess) {
+        if (cudaStatus == cudaErrorNoDevice) {
+            printf("cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+            return 0;
+        } else if (cudaStatus == cudaErrorInsufficientDriver) {
+            printf("cudaGetDeviceCount failed! No driver can be loaded to determine if any device exists.\n");
+            return 0;
+        }
+
+        printf("cudaGetDeviceCount failed! Do you have a CUDA-capable GPU installed?\n");
+        return 0;
+    }
+
+    return devicesCount;
+}
+
+void asProcessorCuda::SetDevice(int device)
+{
+    checkCudaErrors(cudaSetDevice(device));
+}
+

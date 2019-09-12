@@ -28,6 +28,10 @@
 
 #include "asThreadGeneticAlgorithms.h"
 
+#ifdef USE_CUDA
+    #include <asProcessorCuda.cuh>
+#endif
+
 asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
                                                      asParametersOptimization *params, float *finalScoreCalib,
                                                      vf *scoreClimatology)
@@ -64,10 +68,9 @@ wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
     // Process every step one after the other
     int stepsNb = m_params->GetStepsNb();
 
-    if (stepsNb == 0) {
-        wxLogError(_("The number of processing steps is null in asThreadGeneticAlgorithms."));
-        return NULL;
-    }
+#ifdef USE_CUDA
+    asProcessorCuda::SetDevice(m_device);
+#endif
 
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
