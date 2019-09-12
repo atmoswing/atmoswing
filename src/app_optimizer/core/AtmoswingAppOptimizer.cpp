@@ -68,6 +68,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] =
     {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
     {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
     {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
+    {wxCMD_LINE_OPTION, "n",  "gpus-nb",                 "Number of gpus to use"},
     {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
     {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
     {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
@@ -315,9 +316,12 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
         pConfig->Write("/Paths/ResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
+        pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
+        if (pConfig->ReadLong("/Processing/GpusNb", 0) > 0) {
+            pConfig->Write("/Processing/Method", (long) asCUDA);
+        }
         if (m_calibMethod.IsSameAs("ga", false)) {
             pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
             pConfig->Write("/GAs/AllowElitismForTheBest", true);
@@ -501,10 +505,16 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
     }
 
-    // Check for a calibration params file
+    // Number of threads
     wxString threadsNb = wxEmptyString;
     if (parser.Found("threads-nb", &threadsNb)) {
-        wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
+        wxFileConfig::Get()->Write("/Processing/ThreadsNb", threadsNb);
+    }
+
+    // Number of gpus
+    wxString gpusNb = wxEmptyString;
+    if (parser.Found("gpus-nb", &gpusNb)) {
+        wxFileConfig::Get()->Write("/Processing/GpusNb", gpusNb);
     }
 
     // Check for a calibration params file

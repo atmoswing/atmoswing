@@ -112,7 +112,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1)
         maxThreads = 2;
-    wxString processingMaxThreadNb = pConfig->Read("/Processing/MaxThreadNb", wxString::Format("%d", maxThreads));
+    wxString processingMaxThreadNb = pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads));
     m_textCtrlThreadsNb->SetValue(processingMaxThreadNb);
     m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
@@ -195,7 +195,7 @@ void asFramePreferencesOptimizer::SavePreferences() const
     wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
     if (!processingMaxThreadNb.IsNumber())
         processingMaxThreadNb = "2";
-    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
     auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 

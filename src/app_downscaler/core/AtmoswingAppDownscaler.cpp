@@ -234,7 +234,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
-        if (pConfig->ReadLong("/Processing/MaxThreadNb", 1) > 1) {
+        if (pConfig->ReadLong("/Processing/ThreadsNb", 1) > 1) {
             pConfig->Write("/ParallelEvaluations", true);
         }
 
@@ -360,7 +360,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     // Check for a downscaling params file
     wxString threadsNb = wxEmptyString;
     if (parser.Found("threads-nb", &threadsNb)) {
-        wxFileConfig::Get()->Write("/Processing/MaxThreadNb", threadsNb);
+        wxFileConfig::Get()->Write("/Processing/ThreadsNb", threadsNb);
     }
 
     // Check for a downscaling params file

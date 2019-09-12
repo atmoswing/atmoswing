@@ -117,7 +117,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
     if (maxThreads == -1)
         maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
-    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/MaxThreadNb", maxThreadsStr));
+    m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", maxThreadsStr));
     m_sliderThreadsPriority->SetValue((int) pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
@@ -201,7 +201,7 @@ void asFramePreferencesDownscaler::SavePreferences() const
     wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
     if (!processingMaxThreadNb.IsNumber())
         processingMaxThreadNb = "2";
-    pConfig->Write("/Processing/MaxThreadNb", processingMaxThreadNb);
+    pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
     auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 

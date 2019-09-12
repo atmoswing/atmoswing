@@ -123,7 +123,7 @@ void AtmoswingFrameDownscaler::SetDefaultOptions()
     int maxThreads = wxThread::GetCPUCount();
     if (maxThreads == -1)
         maxThreads = 2;
-    pConfig->Write("/Processing/MaxThreadNb", pConfig->Read("/Processing/MaxThreadNb",
+    pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb",
                                                             wxString::Format("%d", maxThreads)));
     long processingMethod = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
     if (!allowMultithreading) {
