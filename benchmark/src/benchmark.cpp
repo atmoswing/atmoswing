@@ -313,7 +313,7 @@ void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef)
     for (int i = 0; i < resultsCriteriaCPU.rows(); ++i) {
         EXPECT_FLOAT_EQ(resultsTargetDatesCPU(i), resultsTargetDatesGPU(i));
         for (int j = 0; j < resultsCriteriaCPU.cols(); ++j) {
-            float precision = resultsCriteriaCPU(i, j) * 0.000001;
+            float precision = resultsCriteriaCPU(i, j) * 0.00001;
             EXPECT_NEAR(resultsCriteriaCPU(i, j), resultsCriteriaGPU(i, j), precision);
             if (abs(resultsCriteriaCPU(i, j) - resultsCriteriaGPU(i, j)) > precision) {
                 EXPECT_FLOAT_EQ(resultsAnalogDatesCPU(i, j), resultsAnalogDatesGPU(i, j));
