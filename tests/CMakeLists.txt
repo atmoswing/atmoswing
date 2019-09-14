@@ -59,6 +59,14 @@ list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_optimizer/core/Atmoswing
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.h")
 list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/AtmoswingAppDownscaler.cpp")
 
+# CUDA library
+if (USE_CUDA)
+    file(GLOB_RECURSE src_tests_cu src/*.cu)
+    file(GLOB_RECURSE src_tests_cuh src/*.cuh)
+    list(APPEND src_tests_cuda ${src_tests_cu})
+    list(APPEND src_tests_cuda ${src_tests_cuh})
+    list(APPEND tests ${src_tests_cuh})
+endif (USE_CUDA)
 
 # Remove eventual duplicates
 list(REMOVE_DUPLICATES src_tests)
@@ -90,6 +98,24 @@ ExternalProject_Add(googletest
         CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
         BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
+
+# CUDA
+if (USE_CUDA)
+    set(CUDA_SEPARABLE_COMPILATION ON)
+    find_package(CUDA 9.0 REQUIRED)
+    include_directories(${CUDA_INCLUDE_DIRS})
+    set(CUDA_NVCC_FLAGS_RELEASE ${CUDA_NVCC_FLAGS_RELEASE};-O3)
+    set(CUDA_NVCC_FLAGS_DEBUG ${CUDA_NVCC_FLAGS_DEBUG};-G)
+    set(CUDA_NVCC_FLAGS_RELWITHDEBINFO ${CUDA_NVCC_FLAGS_RELWITHDEBINFO};-lineinfo)
+    cuda_add_library(astestscuda STATIC ${src_tests_cuda})
+    target_link_libraries(astestscuda ${CUDA_cudadevrt_LIBRARY})
+    target_link_libraries(astestscuda ${CUDA_cudart_static_LIBRARY})
+    add_definitions(-DUSE_CUDA)
+else (USE_CUDA)
+    # unset for wxhgversion
+    unset(CUDA_INCLUDE_DIRS CACHE)
+    unset(CUDA_CUDA_LIBRARY CACHE)
+endif (USE_CUDA)
 
 ##### DECLARE EXECUTABLE
 
@@ -140,8 +166,10 @@ if (USE_VLD)
 endif ()
 if (USE_CUDA)
     add_dependencies(atmoswing-tests ascuda)
-    target_link_libraries(ascuda ${CUDA_LIBRARIES})
+    add_dependencies(atmoswing-tests astestscuda)
+    target_link_libraries(astestscuda ${CUDA_LIBRARIES})
     target_link_libraries(atmoswing-tests ascuda)
+    target_link_libraries(atmoswing-tests astestscuda)
     add_definitions(-DUSE_CUDA)
 endif ()
 
