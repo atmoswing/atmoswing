@@ -318,10 +318,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 
             ThreadsManager().WaitForFreeThread(threadType);
 
+#ifdef USE_CUDA
             int device = 0;
             if (method == asCUDA) {
                 device = ThreadsManager().GetFreeDevice(gpusNb);
             }
+#endif
 
             // Get a parameters set
             asParametersOptimizationGAs *nextParams = GetNextParameters();
@@ -330,9 +332,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                 // Add it to the threads
                 auto *thread = new asThreadGeneticAlgorithms(this, nextParams, &m_scoresCalib[m_iterator],
                                                              &m_scoreClimatology);
+#ifdef USE_CUDA
                 if (method == asCUDA) {
                     thread->SetDevice(device);
                 }
+#endif
                 ThreadsManager().AddThread(thread);
 
                 // Wait until done to get the score of the climatology
