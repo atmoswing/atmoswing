@@ -125,6 +125,8 @@ void CustomArguments(benchmark::internal::Benchmark *b);
 
 void CustomArgumentsWarmup(benchmark::internal::Benchmark *b);
 
+void CustomArgumentsIrregularPtsNb(benchmark::internal::Benchmark *b);
+
 void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef);
 
 asParametersCalibration GetParameters(int nSteps, int nPtors, int nPts, const wxString &criteria);
@@ -189,6 +191,9 @@ BENCHMARK_CAPTURE(BM_Cuda, RSE, "RSE")->Unit(benchmark::kMillisecond)->Apply(Cus
 BENCHMARK_CAPTURE(BM_Cuda, SAD, "SAD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
 BENCHMARK_CAPTURE(BM_Cuda, DMV, "DMV")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
 BENCHMARK_CAPTURE(BM_Cuda, DSD, "DSD")->Unit(benchmark::kMillisecond)->Apply(CustomArguments);
+
+BENCHMARK_CAPTURE(BM_Cuda, debug, "DMV")->Unit(benchmark::kMillisecond)->Apply(CustomArgumentsIrregularPtsNb);
+
 
 #endif
 
@@ -297,6 +302,11 @@ void CustomArguments(benchmark::internal::Benchmark *b)
 void CustomArgumentsWarmup(benchmark::internal::Benchmark *b)
 {
     b->Args({1, 1, 4});
+}
+
+void CustomArgumentsIrregularPtsNb(benchmark::internal::Benchmark *b)
+{
+    b->Args({1, 1, 266});
 }
 
 void CompareResults(asResultsDates &anaDates, asResultsDates &anaDatesRef)

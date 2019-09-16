@@ -412,8 +412,8 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
-            for (int i = 0; i < nStreams; i++)
-                cudaStreamDestroy(streams[i]);
+            for (auto & stream : streams)
+                cudaStreamDestroy(stream);
 
             cudaDeviceReset();
 
@@ -1107,8 +1107,8 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
-            for (int i = 0; i < nStreams; i++)
-                cudaStreamDestroy(streams[i]);
+            for (auto & stream : streams)
+                cudaStreamDestroy(stream);
 
             cudaDeviceReset();
 

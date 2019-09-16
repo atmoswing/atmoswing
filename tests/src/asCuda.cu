@@ -36,6 +36,15 @@ void add(int n, float *x, float *y)
         y[i] = x[i] + y[i];
 }
 
+__global__
+void addStreams(int n, float *x, float *y, int offset)
+{
+    int index = offset + blockIdx.x * blockDim.x + threadIdx.x;
+    int stride = blockDim.x * gridDim.x;
+    for (int i = index; i < n; i += stride)
+        y[i] = x[i] + y[i];
+}
+
 bool CudaProcessSum()
 {
     checkCudaErrors(cudaSetDevice(0));
@@ -64,13 +73,77 @@ bool CudaProcessSum()
 
     checkCudaErrors(cudaDeviceSynchronize());
 
-    checkCudaErrors(cudaMemcpy(&hy, &dy, N * sizeof(float), cudaMemcpyDeviceToHost));
+    checkCudaErrors(cudaMemcpy(hy, dy, N * sizeof(float), cudaMemcpyDeviceToHost));
 
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
     for (int i = 0; i < N; i++)
         maxError = fmax(maxError, fabs(hy[i] - 3.0f));
-    std::cout << "Max error: " << maxError << std::endl;
+    if (maxError > 0) {
+        std::cout << "Max error: " << maxError << std::endl;
+    }
+
+    // Free memory
+    free(hx);
+    checkCudaErrors(cudaFree(dx));
+    free(hy);
+    checkCudaErrors(cudaFree(dy));
+
+    return 0;
+}
+
+bool CudaProcessSumWithStreams()
+{
+    checkCudaErrors(cudaSetDevice(0));
+
+    const int nStreams = 8;
+    cudaStream_t streams[nStreams];
+    float *data[nStreams];
+
+    int N = 1 << 20;
+
+    int streamSize = N/nStreams;
+
+    float *hx, *dx = nullptr;
+    hx = (float *)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **)&dx, N * sizeof(float)));
+
+    float *hy, *dy = nullptr;
+    hy = (float *)malloc(N * sizeof(float));
+    checkCudaErrors(cudaMalloc((void **)&dy, N * sizeof(float)));
+
+    // initialize x and y arrays on the host
+    for (int i = 0; i < N; i++) {
+        hx[i] = 1.0f;
+        hy[i] = 2.0f;
+    }
+
+    for (int i = 0; i < nStreams; i++) {
+        cudaStreamCreate(&streams[i]);
+
+        int offset = i * streamSize;
+
+        checkCudaErrors(cudaMemcpyAsync(&dx[offset], &hx[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
+        checkCudaErrors(cudaMemcpyAsync(&dy[offset], &hy[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
+
+        int numBlocks = (streamSize + blockSize - 1) / blockSize;
+        addStreams<<<numBlocks, blockSize, 0, streams[i]>>>(N, dx, dy, offset);
+
+        checkCudaErrors(cudaMemcpyAsync(&hy[offset], &dy[offset], streamSize * sizeof(float), cudaMemcpyDeviceToHost, streams[i]));
+    }
+
+    checkCudaErrors(cudaDeviceSynchronize());
+
+    for (auto & stream : streams)
+        cudaStreamDestroy(stream);
+
+    // Check for errors (all values should be 3.0f)
+    float maxError = 0.0f;
+    for (int i = 0; i < N; i++)
+        maxError = fmax(maxError, fabs(hy[i] - 3.0f));
+    if (maxError > 0) {
+        std::cout << "Max error: " << maxError << std::endl;
+    }
 
     // Free memory
     free(hx);

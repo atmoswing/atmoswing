@@ -36,3 +36,5 @@
 static const int blockSize = 64;
 
 bool CudaProcessSum();
+
+bool CudaProcessSumWithStreams();
