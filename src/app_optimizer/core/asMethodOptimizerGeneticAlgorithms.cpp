@@ -450,6 +450,11 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     wxLogStatus(_("Optimization over."));
 #endif
 
+    // Clear device
+#ifdef USE_CUDA
+    cudaDeviceReset();
+#endif
+
     // Validate
     SaveDetails(m_parameters[0]);
     Validate(m_parameters[0]);

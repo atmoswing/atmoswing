@@ -415,8 +415,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             for (auto & stream : streams)
                 cudaStreamDestroy(stream);
 
-            cudaDeviceReset();
-
             break;
         }
 #endif
@@ -1109,8 +1107,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
             for (auto & stream : streams)
                 cudaStreamDestroy(stream);
-
-            cudaDeviceReset();
 
             break;
         }
