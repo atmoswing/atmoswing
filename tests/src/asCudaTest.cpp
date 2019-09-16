@@ -79,8 +79,6 @@ TEST(Cuda, UseInSingleThread)
 
 TEST(Cuda, UseInTwoThreads)
 {
-    wxCriticalSection threadCS;
-
     auto *thread1 = new asThreadTestCuda("simple");
     auto *thread2 = new asThreadTestCuda("simple");
 
@@ -91,8 +89,6 @@ TEST(Cuda, UseInTwoThreads)
 
 TEST(Cuda, UseInManyThreads)
 {
-    wxCriticalSection threadCS;
-
     for (int i = 0; i < 100; ++i) {
         auto thread = new asThreadTestCuda("simple");
         ThreadsManager().AddThread(thread);
@@ -103,8 +99,6 @@ TEST(Cuda, UseInManyThreads)
 
 TEST(Cuda, UseInManyThreadsWithStreams)
 {
-    wxCriticalSection threadCS;
-
     for (int i = 0; i < 100; ++i) {
         auto thread = new asThreadTestCuda("streams");
         ThreadsManager().AddThread(thread);

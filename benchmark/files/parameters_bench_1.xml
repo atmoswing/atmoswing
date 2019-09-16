@@ -31,6 +31,7 @@
     <analogs_number>70</analogs_number>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -47,6 +48,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -63,6 +65,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -79,6 +82,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -98,6 +102,7 @@
     <analogs_number>30</analogs_number>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -114,6 +119,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -130,6 +136,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
@@ -146,6 +153,7 @@
     </predictor>
     <predictor>
       <preload>1</preload>
+      <standardize>1</standardize>
       <dataset_id>GenericNetcdf</dataset_id>
       <data_id>z</data_id>
       <level>500</level>
