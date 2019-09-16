@@ -252,7 +252,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
             // Alloc space for indices
             int maxCandNb = int(datesArchiveSlt.GetSize() * 1.2); // 1.2 as margin
             int *indicesArch, *dIdxArch = nullptr;
-            indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
+            checkCudaErrors(cudaMallocHost((void **)&indicesArch, nStreams * maxCandNb * sizeof(int)));
             checkCudaErrors(cudaMalloc((void **)&dIdxArch, nStreams * maxCandNb * sizeof(int)));
 
             // Get a new container for variable vectors
@@ -261,7 +261,7 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             // Alloc space for results
             float *hRes, *dRes = nullptr;
-            hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
+            checkCudaErrors(cudaMallocHost((void **)&hRes, nStreams * maxCandNb * sizeof(float)));
             checkCudaErrors(cudaMalloc((void **)&dRes, nStreams * maxCandNb * sizeof(float)));
 
             // Number of candidates per stream
@@ -406,9 +406,9 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
 
             free(hData);
             checkCudaErrors(cudaFree(dData));
-            free(hRes);
+            checkCudaErrors(cudaFreeHost(hRes));
             checkCudaErrors(cudaFree(dRes));
-            free(indicesArch);
+            checkCudaErrors(cudaFreeHost(indicesArch));
             checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
@@ -445,14 +445,11 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 end = ceil(((float) (iThread + 1) * (float) (timeTargetSelectionSize - 1) / (float) threadsNb));
                 wxASSERT(end >= start);
 
-                asThreadGetAnalogsDates *thread = new asThreadGetAnalogsDates(predictorsArchive, predictorsTarget,
-                                                                              &timeArrayArchiveData,
-                                                                              &timeArrayArchiveSelection,
-                                                                              &timeArrayTargetData,
-                                                                              &timeArrayTargetSelection, criteria,
-                                                                              params, step, vRowsNb, vColsNb, start, end,
-                                                                              &finalAnalogsCriteria, &finalAnalogsDates,
-                                                                              flag, allowDuplicateDates, success);
+                auto *thread = new asThreadGetAnalogsDates(
+                    predictorsArchive, predictorsTarget, &timeArrayArchiveData, &timeArrayArchiveSelection,
+                    &timeArrayTargetData, &timeArrayTargetSelection, criteria, params, step, vRowsNb, vColsNb, start,
+                    end, &finalAnalogsCriteria, &finalAnalogsDates, flag, allowDuplicateDates, success);
+
                 threadType = thread->GetType();
 
                 ThreadsManager().AddThread(thread);
@@ -979,7 +976,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
             // Alloc space for indices
             int maxCandNb = int(analogsDates.cols());
             int *indicesArch, *dIdxArch = nullptr;;
-            indicesArch = (int *)malloc( nStreams * maxCandNb * sizeof(int));
+            checkCudaErrors(cudaMallocHost((void **)&indicesArch, nStreams * maxCandNb * sizeof(int)));
             checkCudaErrors(cudaMalloc((void **)&dIdxArch, nStreams * maxCandNb * sizeof(int)));
 
             // Get a new container for variable vectors
@@ -988,7 +985,7 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
             // Alloc space for results
             float *hRes, *dRes = nullptr;
-            hRes = (float *)malloc(nStreams * maxCandNb * sizeof(float));
+            checkCudaErrors(cudaMallocHost((void **)&hRes, nStreams * maxCandNb * sizeof(float)));
             checkCudaErrors(cudaMalloc((void **)&dRes, nStreams * maxCandNb * sizeof(float)));
 
             // Number of candidates per stream
@@ -1099,9 +1096,9 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
 
             free(hData);
             checkCudaErrors(cudaFree(dData));
-            free(hRes);
+            checkCudaErrors(cudaFreeHost(hRes));
             checkCudaErrors(cudaFree(dRes));
-            free(indicesArch);
+            checkCudaErrors(cudaFreeHost(indicesArch));
             checkCudaErrors(cudaFree(dIdxArch));
             free(currentDates);
 
