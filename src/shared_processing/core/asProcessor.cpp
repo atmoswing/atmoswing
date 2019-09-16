@@ -402,8 +402,6 @@ bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                 }
             }
 
-            checkCudaErrors(cudaDeviceSynchronize());
-
             free(hData);
             checkCudaErrors(cudaFree(dData));
             checkCudaErrors(cudaFreeHost(hRes));
@@ -1091,8 +1089,6 @@ bool asProcessor::GetAnalogsSubDates(std::vector<asPredictor *> predictorsArchiv
                     finalAnalogsDates.row(iDateTarg) = dateArrayOneDay.head(analogsNb).transpose();
                 }
             }
-
-            checkCudaErrors(cudaDeviceSynchronize());
 
             free(hData);
             checkCudaErrors(cudaFree(dData));
