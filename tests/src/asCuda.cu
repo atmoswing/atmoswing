@@ -78,7 +78,7 @@ bool CudaProcessSum()
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
     for (int i = 0; i < N; i++)
-        maxError = fmax(maxError, fabs(hy[i] - 3.0f));
+        maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
     if (maxError > 0) {
         std::cout << "Max error: " << maxError << std::endl;
     }
@@ -98,7 +98,6 @@ bool CudaProcessSumWithStreams()
 
     const int nStreams = 8;
     cudaStream_t streams[nStreams];
-    float *data[nStreams];
 
     int N = 1 << 20;
 
@@ -140,7 +139,7 @@ bool CudaProcessSumWithStreams()
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
     for (int i = 0; i < N; i++)
-        maxError = fmax(maxError, fabs(hy[i] - 3.0f));
+        maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
     if (maxError > 0) {
         std::cout << "Max error: " << maxError << std::endl;
     }
