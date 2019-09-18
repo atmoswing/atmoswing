@@ -136,6 +136,8 @@ bool asPredictorCustomMFvgSynop::Init()
             m_gribCode = {0, 3, 114, 100};
         } else if (m_dataId.IsSameAs("MB700925", false)) {
             m_gribCode = {0, 3, 114, 100};
+        } else if (m_dataId.IsSameAs("MB850500", false)) {
+            m_gribCode = {0, 3, 114, 100};
         } else {
             wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
             return false;
