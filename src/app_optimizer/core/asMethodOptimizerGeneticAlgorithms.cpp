@@ -208,9 +208,6 @@ bool asMethodOptimizerGeneticAlgorithms::Manager()
 
 bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
 {
-    // Parameter to print the results every x generation
-    int printResultsEveryNbGenerations = 5;
-
     // Reset some data members
     m_iterator = 0;
     m_assessmentCounter = 0;
@@ -240,7 +237,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                            GetPredictandStationIdsList(stationId).c_str()));
-    int counterPrint = 0;
 
     // Initialize parameters before loading data.
     InitParameters(params);
@@ -400,12 +396,8 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
         }
 
-        // Print results every x generation
-        if (counterPrint > printResultsEveryNbGenerations - 1) {
-            m_resGenerations.Print();
-            counterPrint = 0;
-        }
-        counterPrint++;
+        // Print results
+        m_resGenerations.Print();
 
         // Display stats
         float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
