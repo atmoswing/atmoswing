@@ -1811,8 +1811,8 @@ TEST(Utilities, RandomUniformDistributionToFile)
         return;
 
     wxString header;
-    header = _("RandomUniformDistribution processed ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
-    fileRes.AddLineContent(header);
+    header = _("RandomUniformDistribution\n");
+    fileRes.AddLine(header);
 
     wxString content = wxEmptyString;
 
@@ -1829,7 +1829,7 @@ TEST(Utilities, RandomUniformDistributionToFile)
         content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
     }
 
-    fileRes.AddLineContent(content);
+    fileRes.AddLine(content);
 
     fileRes.Close();
 }
@@ -1850,8 +1850,8 @@ TEST(Utilities, RandomNormalDistributionToFile)
         return;
 
     wxString header;
-    header = _("RandomNormalDistribution processed ") + asTime::GetStringTime(asTime::NowMJD(asLOCAL));
-    fileRes.AddLineContent(header);
+    header = _("RandomNormalDistribution\n");
+    fileRes.AddLine(header);
 
     wxString content = wxEmptyString;
 
@@ -1868,7 +1868,7 @@ TEST(Utilities, RandomNormalDistributionToFile)
         content.Append(wxString::Format("\t%g\t%g\t%g\t%g\n", result5, result6, result7, result8));
     }
 
-    fileRes.AddLineContent(content);
+    fileRes.AddLine(content);
 
     fileRes.Close();
 }

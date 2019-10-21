@@ -50,13 +50,9 @@ public:
 
     bool Close() override;
 
-    void AddLineContent(const wxString &lineContent = wxEmptyString);
+    void AddLine(const wxString &lineContent = wxEmptyString);
 
-    const wxString GetLineContent();
-
-    const wxString GetFullContent();
-
-    const wxString GetFullContentWhithoutReturns();
+    wxString GetNextLine();
 
     int GetInt();
 

@@ -628,7 +628,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
     // Parse every line until the end of the file
     while (!datFile.EndOfFile()) {
         // Get current line
-        wxString lineContent = datFile.GetLineContent();
+        wxString lineContent = datFile.GetNextLine();
 
         // Check the line width
         if (lineContent.Len() >= maxCharWidth) {

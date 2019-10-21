@@ -76,14 +76,11 @@ bool asFileText::Close()
     return true;
 }
 
-void asFileText::AddLineContent(const wxString &lineContent)
+void asFileText::AddLine(const wxString &lineContent)
 {
     wxASSERT(m_opened);
 
-    wxString lineContentCopy = lineContent;
-    lineContentCopy.Append("\n");
-
-    m_file << lineContentCopy.mb_str();
+    m_file << lineContent.mb_str();
 
     // Check the state flags
     if (m_file.fail())
@@ -91,7 +88,7 @@ void asFileText::AddLineContent(const wxString &lineContent)
                                           m_fileName.GetFullPath()));
 }
 
-const wxString asFileText::GetLineContent()
+wxString asFileText::GetNextLine()
 {
     wxASSERT(m_opened);
 
@@ -112,46 +109,6 @@ const wxString asFileText::GetLineContent()
     wxString lineContent = wxString(tmpLineContent.c_str(), wxConvUTF8);
 
     return lineContent;
-}
-
-const wxString asFileText::GetFullContent()
-{
-    wxASSERT(m_opened);
-
-    std::string tmpContent;
-    std::string apptmpContent;
-
-    while (!m_file.eof()) {
-        getline(m_file, tmpContent);
-        apptmpContent.append(tmpContent);
-
-        // Check the state flags
-        if ((!m_file.eof()) && (m_file.fail()))
-            asThrowException(wxString::Format(_("An error occured while trying to read in file %s"),
-                                              m_fileName.GetFullPath()));
-    }
-
-    return wxString(apptmpContent.c_str(), wxConvUTF8);
-}
-
-const wxString asFileText::GetFullContentWhithoutReturns()
-{
-    wxASSERT(m_opened);
-
-    std::string tmpContent;
-    std::string apptmpContent;
-
-    while (!m_file.eof()) {
-        getline(m_file, tmpContent);
-        apptmpContent.append(tmpContent);
-    }
-
-    // Check the state flags
-    if ((!m_file.eof()) && (m_file.fail()))
-        asThrowException(wxString::Format(_("An error occured while trying to read in file %s"),
-                                          m_fileName.GetFullPath()));
-
-    return wxString(apptmpContent.c_str(), wxConvUTF8);
 }
 
 int asFileText::GetInt()
@@ -187,7 +144,7 @@ bool asFileText::SkipLines(int linesNb)
 
     for (int iLine = 0; iLine < linesNb; iLine++) {
         if (!m_file.eof()) {
-            GetLineContent();
+            GetNextLine();
         } else {
             wxLogError(_("Reached the end of the file while skipping lines."));
             return false;
