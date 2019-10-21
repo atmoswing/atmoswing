@@ -30,11 +30,10 @@
 #define AS_FILE_DAT_H
 
 #include "asIncludes.h"
-#include <asFileAscii.h>
-
+#include <asFileText.h>
 
 class asFileDat
-        : public asFileAscii
+        : public asFileText
 {
 public:
     struct Pattern

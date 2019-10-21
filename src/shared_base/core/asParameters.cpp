@@ -28,10 +28,9 @@
 
 #include "asParameters.h"
 
-#include "asFileAscii.h"
-#include <wx/tokenzr.h>
 #include "asFileParameters.h"
-
+#include "asFileText.h"
+#include <wx/tokenzr.h>
 
 asParameters::asParameters()
         : m_archiveStart(NaNd),
@@ -1235,7 +1234,7 @@ bool asParameters::PrintAndSaveTemp(const wxString &filePath) const
         saveFilePath = filePath;
     }
 
-    asFileAscii fileRes(saveFilePath, asFileAscii::Replace);
+    asFileText fileRes(saveFilePath, asFileText::Replace);
     if (!fileRes.Open())
         return false;
 

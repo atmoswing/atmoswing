@@ -28,8 +28,8 @@
 
 #include "asFramePlotTimeSeries.h"
 
+#include "asFileText.h"
 #include "asForecastManager.h"
-#include "asFileAscii.h"
 
 BEGIN_EVENT_TABLE(asFramePlotTimeSeries, wxFrame)
     EVT_CLOSE(asFramePlotTimeSeries::OnClose)

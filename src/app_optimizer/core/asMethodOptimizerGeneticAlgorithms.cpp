@@ -28,9 +28,9 @@
 
 #include "asMethodOptimizerGeneticAlgorithms.h"
 
-#include <wx/dir.h>
-#include "asFileAscii.h"
+#include "asFileText.h"
 #include <asThreadGeneticAlgorithms.h>
+#include <wx/dir.h>
 
 #ifndef UNIT_TESTING
     #include <AtmoswingAppOptimizer.h>

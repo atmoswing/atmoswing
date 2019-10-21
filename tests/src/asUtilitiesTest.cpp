@@ -26,10 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <asUtilities.h>
-#include <asFileAscii.h>
 #include "gtest/gtest.h"
-
+#include <asFileText.h>
+#include <asUtilities.h>
 
 TEST(Utilities, IsRoundFloatTrue)
 {
@@ -1807,7 +1806,7 @@ TEST(Utilities, RandomUniformDistributionToFile)
     wxString tmpFile = wxFileName::CreateTempFileName("test_unidist");
     tmpFile.Append(".txt");
 
-    asFileAscii fileRes(tmpFile, asFileAscii::Replace);
+    asFileText fileRes(tmpFile, asFileText::Replace);
     if (!fileRes.Open())
         return;
 
@@ -1846,7 +1845,7 @@ TEST(Utilities, RandomNormalDistributionToFile)
     wxString tmpFile = wxFileName::CreateTempFileName("test_normdist");
     tmpFile.Append(".txt");
 
-    asFileAscii fileRes(tmpFile, asFileAscii::Replace);
+    asFileText fileRes(tmpFile, asFileText::Replace);
     if (!fileRes.Open())
         return;
 

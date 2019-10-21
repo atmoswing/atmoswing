@@ -28,8 +28,7 @@
 
 #include "asResultsParametersArray.h"
 
-#include <asFileAscii.h>
-
+#include <asFileText.h>
 
 asResultsParametersArray::asResultsParametersArray()
         : asResults(),
@@ -144,7 +143,7 @@ void asResultsParametersArray::Clear()
 bool asResultsParametersArray::Print() const
 {
     // Create a file
-    asFileAscii fileRes(m_filePath, asFileAscii::Replace);
+    asFileText fileRes(m_filePath, asFileText::Replace);
     if (!fileRes.Open())
         return false;
 

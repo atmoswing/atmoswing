@@ -38,17 +38,16 @@
 #include "asThreadViewerLayerManagerZoomOut.h"
 #endif
 
+#include "asFileText.h"
 #include "asFrameAbout.h"
-#include "asFramePreferencesViewer.h"
-#include "asFramePlotTimeSeries.h"
-#include "asFramePlotDistributions.h"
 #include "asFrameGridAnalogsValues.h"
-#include "asFileAscii.h"
+#include "asFramePlotDistributions.h"
+#include "asFramePlotTimeSeries.h"
+#include "asFramePreferencesViewer.h"
 #include "asWizardWorkspace.h"
 #include "images.h"
-#include <wx/dir.h>
 #include "vrlayervector.h"
-
+#include <wx/dir.h>
 
 BEGIN_EVENT_TABLE(asFrameForecast, wxFrame)
     EVT_CLOSE(asFrameForecast::OnClose)

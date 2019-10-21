@@ -26,19 +26,18 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <wx/filename.h>
+#include "gtest/gtest.h"
+#include <asFileText.h>
 #include <asScore.h>
 #include <asTotalScore.h>
-#include <asFileAscii.h>
-#include "gtest/gtest.h"
-
+#include <wx/filename.h>
 
 TEST(Score, ProcessCRPSapproxRectangle)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -89,7 +88,7 @@ TEST(Score, ProcessCRPSexactPrimitive)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -140,7 +139,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -191,7 +190,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -242,7 +241,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -293,7 +292,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -344,7 +343,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -397,7 +396,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -450,7 +449,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -503,7 +502,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -556,7 +555,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -609,7 +608,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -662,7 +661,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -714,7 +713,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -766,7 +765,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -818,7 +817,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -870,7 +869,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -922,7 +921,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers

@@ -32,7 +32,7 @@
 
 
 asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode)
-        : asFileAscii(fileName, fileMode)
+        : asFileText(fileName, fileMode)
 {
 
 }

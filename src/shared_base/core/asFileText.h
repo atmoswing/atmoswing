@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#ifndef AS_FILE_ASCII_H
-#define AS_FILE_ASCII_H
+#ifndef AS_FILE_TEXT_H
+#define AS_FILE_TEXT_H
 
 #include <iostream>
 #include <fstream>
@@ -34,8 +34,7 @@
 #include <asIncludes.h>
 #include <asFile.h>
 
-class asFileAscii
-        : public asFile
+class asFileText : public asFile
 {
 public:
     enum FileStructType
@@ -43,9 +42,9 @@ public:
         ConstantWidth, TabsDelimited
     };
 
-    asFileAscii(const wxString &fileName, const asFile::FileMode &fileMode);
+    asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
 
-    ~asFileAscii() override = default;
+    ~asFileText() override = default;
 
     bool Open() override;
 
@@ -74,7 +73,7 @@ public:
 protected:
 
 private:
-    std::fstream m_file;
+    std::fstream m_file; // Not using wxTextFile because it's not optimized for files > 1Mb
 
 };
 

@@ -47,7 +47,7 @@ public:
     {
         Netcdf,
         Grib,
-        Ascii
+        Text
     };
 
     explicit asFile(const wxString &fileName, const FileMode &fileMode = asFile::ReadOnly);

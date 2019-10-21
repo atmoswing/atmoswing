@@ -26,18 +26,17 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <wx/filename.h>
-#include <wx/dir.h>
+#include "asFileText.h"
+#include "asMethodCalibratorSingle.h"
 #include "asPredictandPrecipitation.h"
 #include "asProcessor.h"
-#include "asMethodCalibratorSingle.h"
 #include "asResultsDates.h"
-#include "asResultsValues.h"
 #include "asResultsScores.h"
 #include "asResultsTotalScore.h"
-#include "asFileAscii.h"
+#include "asResultsValues.h"
 #include "gtest/gtest.h"
-
+#include <wx/dir.h>
+#include <wx/filename.h>
 
 void Ref1(const wxString &paramsFile, bool shortVersion)
 {
@@ -119,7 +118,7 @@ void Ref1(const wxString &paramsFile, bool shortVersion)
         resultFilePath.Append("/files/score_06.txt");
         nbtests = 20;
     }
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Resize the containers
@@ -395,7 +394,7 @@ void Ref2(const wxString &paramsFile, bool shortVersion)
         resultFilePath.Append("/files/score_07.txt");
         nbtests = 4;
     }
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Resize the containers
@@ -873,7 +872,7 @@ void Ref1Preloading()
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_06.txt");
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -1230,7 +1229,7 @@ void Ref2Preloading()
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -1412,7 +1411,7 @@ void Ref2SavingIntermediateResults()
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers
@@ -1569,7 +1568,7 @@ void Ref2MergeByHalfAndMultiply()
     // Open a result file from Grenoble
     wxString resultFilePath = wxFileName::GetCwd();
     resultFilePath.Append("/files/score_07.txt");
-    asFileAscii file(resultFilePath, asFile::ReadOnly);
+    asFileText file(resultFilePath, asFile::ReadOnly);
     file.Open();
 
     // Test numbers

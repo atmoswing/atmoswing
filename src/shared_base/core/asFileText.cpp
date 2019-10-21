@@ -25,15 +25,15 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
-#include "asFileAscii.h"
+#include "asFileText.h"
 
-asFileAscii::asFileAscii(const wxString &fileName, const FileMode &fileMode)
+asFileText::asFileText(const wxString &fileName, const FileMode &fileMode)
         : asFile(fileName, fileMode)
 {
 
 }
 
-bool asFileAscii::Open()
+bool asFileText::Open()
 {
     if (!Find())
         return false;
@@ -68,7 +68,7 @@ bool asFileAscii::Open()
     return true;
 }
 
-bool asFileAscii::Close()
+bool asFileText::Close()
 {
     wxASSERT(m_opened);
 
@@ -76,7 +76,7 @@ bool asFileAscii::Close()
     return true;
 }
 
-void asFileAscii::AddLineContent(const wxString &lineContent)
+void asFileText::AddLineContent(const wxString &lineContent)
 {
     wxASSERT(m_opened);
 
@@ -91,7 +91,7 @@ void asFileAscii::AddLineContent(const wxString &lineContent)
                                           m_fileName.GetFullPath()));
 }
 
-const wxString asFileAscii::GetLineContent()
+const wxString asFileText::GetLineContent()
 {
     wxASSERT(m_opened);
 
@@ -114,7 +114,7 @@ const wxString asFileAscii::GetLineContent()
     return lineContent;
 }
 
-const wxString asFileAscii::GetFullContent()
+const wxString asFileText::GetFullContent()
 {
     wxASSERT(m_opened);
 
@@ -134,7 +134,7 @@ const wxString asFileAscii::GetFullContent()
     return wxString(apptmpContent.c_str(), wxConvUTF8);
 }
 
-const wxString asFileAscii::GetFullContentWhithoutReturns()
+const wxString asFileText::GetFullContentWhithoutReturns()
 {
     wxASSERT(m_opened);
 
@@ -154,7 +154,7 @@ const wxString asFileAscii::GetFullContentWhithoutReturns()
     return wxString(apptmpContent.c_str(), wxConvUTF8);
 }
 
-int asFileAscii::GetInt()
+int asFileText::GetInt()
 {
     wxASSERT(m_opened);
 
@@ -163,7 +163,7 @@ int asFileAscii::GetInt()
     return tmp;
 }
 
-float asFileAscii::GetFloat()
+float asFileText::GetFloat()
 {
     wxASSERT(m_opened);
 
@@ -172,7 +172,7 @@ float asFileAscii::GetFloat()
     return tmp;
 }
 
-double asFileAscii::GetDouble()
+double asFileText::GetDouble()
 {
     wxASSERT(m_opened);
 
@@ -181,7 +181,7 @@ double asFileAscii::GetDouble()
     return tmp;
 }
 
-bool asFileAscii::SkipLines(int linesNb)
+bool asFileText::SkipLines(int linesNb)
 {
     wxASSERT(m_opened);
 
@@ -197,7 +197,7 @@ bool asFileAscii::SkipLines(int linesNb)
     return true;
 }
 
-bool asFileAscii::SkipElements(int elementNb)
+bool asFileText::SkipElements(int elementNb)
 {
     wxASSERT(m_opened);
 
@@ -215,7 +215,7 @@ bool asFileAscii::SkipElements(int elementNb)
     return true;
 }
 
-bool asFileAscii::EndOfFile() const
+bool asFileText::EndOfFile() const
 {
     wxASSERT(m_opened);
 

@@ -27,21 +27,20 @@
  */
 
 #include "wx/filename.h"
-#include <asCriteria.h>
+#include "gtest/gtest.h"
 #include <asAreaCompRegGrid.h>
+#include <asCriteria.h>
+#include <asFileText.h>
 #include <asPredictor.h>
 #include <asPreprocessor.h>
-#include <asFileAscii.h>
 #include <asTimeArray.h>
-#include "gtest/gtest.h"
-
 
 TEST(Criteria, S1)
 {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_S1.txt"));
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Create the containers
@@ -312,7 +311,7 @@ TEST(Criteria, RSE)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Create the containers
@@ -488,7 +487,7 @@ TEST(Criteria, RMSE)
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
-    asFileAscii file(filepath, asFile::ReadOnly);
+    asFileText file(filepath, asFile::ReadOnly);
     file.Open();
 
     // Create the containers
