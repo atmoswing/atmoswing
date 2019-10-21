@@ -314,12 +314,12 @@ wxString asParametersScoring::Print() const
     // Create content string
     wxString content = asParameters::Print();
 
-    content.Append(wxString::Format("|||| Score \t%s\t", GetScoreName()));
+    content.Append(wxString::Format("|||| Score\t%s\t", GetScoreName()));
     if (!asIsNaN(GetScoreQuantile())) {
-        content.Append(wxString::Format("quantile \t%f\t", GetScoreQuantile()));
+        content.Append(wxString::Format("quantile\t%f\t", GetScoreQuantile()));
     }
     if (!asIsNaN(GetScoreThreshold())) {
-        content.Append(wxString::Format("threshold \t%f\t", GetScoreThreshold()));
+        content.Append(wxString::Format("threshold\t%f\t", GetScoreThreshold()));
     }
     content.Append(wxString::Format("TimeArray\t%s\t", GetScoreTimeArrayMode()));
 
@@ -333,15 +333,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
         return false;
     }
 
-    int iLeft, iRight;
-    wxString strVal;
-
     // Check that the score is similar
-    iLeft = stringVals.Find("Score");
-    stringVals = stringVals.SubString(iLeft + 7, stringVals.Length());
-    iLeft = 0;
-    iRight = stringVals.Find("\t");
-    strVal = stringVals.SubString(iLeft, iRight - 1);
+    wxString strVal = asExtractParamValueAndCut(stringVals, "Score");
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
         asLog::PrintToConsole(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),

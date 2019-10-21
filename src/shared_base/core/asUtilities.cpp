@@ -1734,3 +1734,52 @@ void asQuickSortMulti(T *pArrRef, T *pArrOther, const int low, const int high, c
         asQuickSortMulti<T>(pArrRef, pArrOther, L, high, order);
 
 }
+
+vf asExtractVectorFrom(const wxString &data)
+{
+    wxString subStr = data;
+    vf res;
+
+    // Extract content
+    wxChar separator = ',';
+    while (subStr.Find(separator) != wxNOT_FOUND) {
+        wxString strBefore = subStr.BeforeFirst(separator);
+        subStr = subStr.AfterFirst(separator);
+        res.push_back((float)wxAtof(strBefore));
+    }
+    if (!subStr.IsEmpty()) {
+        res.push_back((float)wxAtof(subStr));
+    }
+
+    return res;
+}
+
+wxString asVectorToString(const vf &data)
+{
+    wxString str;
+    for (size_t i = 0; i < data.size(); ++i) {
+        if (i != 0)
+            str << ",";
+        str << data[i];
+    }
+
+    return str;
+}
+
+wxString asExtractParamValueAndCut(wxString &str, const wxString &tag)
+{
+    size_t iLeft, iRight;
+    wxString subStr;
+
+    iLeft = str.find(tag);
+    iRight = str.find("\t", iLeft + tag.Len() + 1);
+    if (iLeft < 0 || iRight < 0) {
+        wxLogError(_("Error when parsing the parameters file"));
+        return wxEmptyString;
+    }
+    subStr = str.SubString(iLeft + tag.Len() + 1, (size_t) iRight - 1);
+
+    str = str.SubString((size_t) iRight, str.Len());
+
+    return subStr;
+}

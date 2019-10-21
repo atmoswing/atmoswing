@@ -40,19 +40,18 @@
     #include <asProcessorCuda.cuh>
 #endif
 
-
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
-        : asMethodOptimizer(),
-          m_nbSameParams(0),
-          m_nbCloseParams(0),
-          m_generationNb(0),
-          m_assessmentCounter(0),
-          m_popSize(0),
-          m_naturalSelectionType(0),
-          m_couplesSelectionType(0),
-          m_crossoverType(0),
-          m_mutationsModeType(0),
-          m_allowElitismForTheBest(true)
+    : asMethodOptimizer(),
+      m_nbSameParams(0),
+      m_nbCloseParams(0),
+      m_generationNb(0),
+      m_assessmentCounter(0),
+      m_popSize(0),
+      m_naturalSelectionType(0),
+      m_couplesSelectionType(0),
+      m_crossoverType(0),
+      m_mutationsModeType(0),
+      m_allowElitismForTheBest(true)
 {
     m_warnFailedLoadingData = false;
 }
@@ -113,7 +112,7 @@ bool asMethodOptimizerGeneticAlgorithms::SortScoresAndParametersTemp()
     // Sort according to the score
     a1f vIndices = a1f::LinSpaced(Eigen::Sequential, m_scoresCalibTemp.size(), 0, m_scoresCalibTemp.size() - 1);
     asSortArrays(&m_scoresCalibTemp[0], &m_scoresCalibTemp[m_scoresCalibTemp.size() - 1], &vIndices[0],
-                        &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
+                 &vIndices[m_scoresCalibTemp.size() - 1], m_scoreOrder);
 
     // Sort the parameters sets as the scores
     std::vector<asParametersOptimizationGAs> copyParameters;
@@ -237,6 +236,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                            GetPredictandStationIdsList(stationId).c_str()));
+    wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    operatorsFilePath.Append(wxString::Format("/%s_station_%s_operators.txt", time.c_str(),
+        GetPredictandStationIdsList(stationId).c_str()));
 
     // Initialize parameters before loading data.
     InitParameters(params);
@@ -260,9 +262,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     }
 
     // Reload previous results
-    if (!ResumePreviousRun(params)) {
+    if (!ResumePreviousRun(params, operatorsFilePath)) {
         wxLogError(_("Failed to resume previous runs"));
         return false;
+    }
+
+    // Create operators file if needed
+    if (!wxFileExists(operatorsFilePath)) {
+        asFileText fileOperators(operatorsFilePath, asFileText::Replace);
+        if (!fileOperators.Open()) {
+            wxLogError(_("Could not create the operators file."));
+            return false;
+        }
+        fileOperators.Close();
     }
 
     // Get a score object to extract the score order
@@ -396,6 +408,9 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
             m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
         }
 
+        // Save operators status
+        SaveOperators(operatorsFilePath);
+
         // Print results
         m_resGenerations.Print();
 
@@ -472,12 +487,13 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
                                                        asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
     statsFilePath.Append(wxString::Format("%s_stats.txt", time.c_str()));
-    asFileAscii stats(statsFilePath, asFile::New);
+    asFileText stats(statsFilePath, asFile::New);
 
     return true;
 }
 
-bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params)
+bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizationGAs &params,
+                                                           const wxString &operatorsFilePath)
 {
     if (g_resumePreviousRun) {
         wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
@@ -508,7 +524,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
                 wxString filePath = resultsDir;
                 filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
-                asFileAscii prevResults(filePath, asFile::ReadOnly);
+                asFileText prevResults(filePath, asFile::ReadOnly);
                 if (!prevResults.Open()) {
                     wxLogError(_("Couldn't open the file %s."), filePath.c_str());
                     return false;
@@ -516,7 +532,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 prevResults.SkipLines(1);
 
                 // Check that the content match the current parameters
-                wxString fileLine = prevResults.GetLineContent();
+                wxString fileLine = prevResults.GetNextLine();
                 wxString firstLineCopy = fileLine;
                 wxString currentParamsPrint = params.Print();
                 int indexInFile, indexInParams;
@@ -610,7 +626,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     wxString strScore = fileLine.SubString(indexScoreCalib + 6, indexScoreValid - 2);
                     double scoreVal;
                     strScore.ToDouble(&scoreVal);
-                    float prevScoresCalib = float(scoreVal);
+                    auto prevScoresCalib = float(scoreVal);
 
                     // Add to the new array
                     m_resGenerations.Add(prevParams, prevScoresCalib);
@@ -618,7 +634,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     vectScores.push_back(prevScoresCalib);
 
                     // Get next line
-                    fileLine = prevResults.GetLineContent();
+                    fileLine = prevResults.GetNextLine();
                 } while (!prevResults.EndOfFile());
                 prevResults.Close();
 
@@ -634,9 +650,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                 // Restore the last generation
                 int genNb = vectParams.size() / m_popSize;
+                int iLastGen = (genNb - 1) * m_popSize;
                 for (int iVar = 0; iVar < m_popSize; iVar++) {
-                    int iLastGen = (genNb - 1) * m_popSize;
-
                     wxASSERT(vectParams.size() > iLastGen);
                     wxASSERT(vectScores.size() > iLastGen);
                     m_parameters[iVar] = vectParams[iLastGen];
@@ -662,9 +677,193 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
                 m_iterator = m_paramsNb;
                 m_generationNb = genNb;
+
+                // Restore operators
+                wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
+                                                                   GetPredictandStationIdsList(stationId).c_str());
+                if (dir.HasFiles(operatorsFilePattern)) {
+                    wxString operatorsFileName;
+                    dir.GetFirst(&operatorsFileName, operatorsFilePattern, wxDIR_FILES);
+                    while (dir.GetNext(&operatorsFileName)) {
+                    } // Select the last available.
+
+                    wxLogWarning(_("Previous operators were found and will be loaded."));
+                    asLog::PrintToConsole(_("Previous operators were found and will be loaded.\n"));
+                    wxString operFilePath = resultsDir;
+                    operFilePath.Append(wxString::Format("/%s", operatorsFileName.c_str()));
+
+                    // Copy file to the new target
+                    wxCopyFile(operFilePath, operatorsFilePath);
+
+                    // Open file
+                    asFileText prevOperators(operFilePath, asFile::ReadOnly);
+                    if (!prevOperators.Open()) {
+                        wxLogError(_("Couldn't open the file %s."), operFilePath.c_str());
+                        return false;
+                    }
+
+                    // Extract file content
+                    wxString fileLineOper = prevOperators.GetNextLine();
+                    vwxs operFileContent;
+                    do {
+                        if (fileLineOper.IsEmpty())
+                            break;
+                        operFileContent.push_back(fileLineOper);
+                        fileLineOper = prevOperators.GetNextLine();
+                    } while (!prevOperators.EndOfFile());
+                    prevOperators.Close();
+
+                    // Restore last generation
+                    iLastGen = (genNb - 1) * m_popSize;
+                    for (int iVar = 0; iVar < m_popSize; iVar++) {
+
+                        wxASSERT(operFileContent.size() > iLastGen);
+                        if (operFileContent.size() <= iLastGen) {
+                            wxLogError(_("Cannot restore operators values."));
+                            return false;
+                        }
+                        fileLineOper = operFileContent[iLastGen];
+
+                        switch (m_mutationsModeType) {
+                            case (RandomUniformConstant):
+                            case (RandomUniformVariable):
+                            case (RandomNormalConstant):
+                            case (RandomNormalVariable):
+                            case (MultiScale):
+                            case (NoMutation):
+                            case (NonUniform): {
+                                // Nothing to do
+                                break;
+                            }
+
+                            case (SelfAdaptationRate): {
+                                int indexMutationRate = fileLineOper.Find("MutationRate");
+                                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 13);
+                                double mutationRate;
+                                strMutationRate.ToDouble(&mutationRate);
+                                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                                break;
+                            }
+
+                            case (SelfAdaptationRadius): {
+                                int indexMutationRate = fileLineOper.Find("MutationRate");
+                                int indexMutationRadius = fileLineOper.Find("MutationRadius");
+                                wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 13, indexMutationRadius - 2);
+                                double mutationRate;
+                                strMutationRate.ToDouble(&mutationRate);
+                                m_parameters[iVar].SetAdaptMutationRate((float)mutationRate);
+                                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 15);
+                                double mutationRadius;
+                                strMutationRadius.ToDouble(&mutationRadius);
+                                m_parameters[iVar].SetAdaptMutationRadius((float)mutationRadius);
+                                break;
+                            }
+
+                            case (SelfAdaptationRateChromosome): {
+                                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
+                                wxString strMutationRate = fileLineOper.Mid(indexMutationRate + 23);
+                                vf mutationRate = asExtractVectorFrom(strMutationRate);
+                                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                                break;
+                            }
+
+                            case (SelfAdaptationRadiusChromosome): {
+                                int indexMutationRate = fileLineOper.Find("ChromosomeMutationRate");
+                                int indexMutationRadius = fileLineOper.Find("ChromosomeMutationRadius");
+                                wxString strMutationRate = fileLineOper.SubString(indexMutationRate + 23, indexMutationRadius - 2);
+                                vf mutationRate = asExtractVectorFrom(strMutationRate);
+                                m_parameters[iVar].SetChromosomeMutationRate(mutationRate);
+                                wxString strMutationRadius = fileLineOper.Mid(indexMutationRadius + 25);
+                                vf mutationRadius = asExtractVectorFrom(strMutationRadius);
+                                m_parameters[iVar].SetChromosomeMutationRadius(mutationRadius);
+                                break;
+                            }
+
+                            default: {
+                                wxLogError(_("The mutation method was not found when saving operators."));
+                            }
+                        }
+
+                        iLastGen++;
+                    }
+
+                }
             }
         }
     }
+    return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath)
+{
+    // Create a file
+    asFileText fileRes(filePath, asFileText::Append);
+    if (!fileRes.Open())
+        return false;
+
+    wxString content = wxEmptyString;
+
+    // Write every parameter one after the other
+    for (auto &parameter : m_parameters) {
+
+        switch (m_mutationsModeType) {
+            case (RandomUniformConstant):
+            case (RandomUniformVariable):
+            case (RandomNormalConstant):
+            case (RandomNormalVariable):
+            case (MultiScale):
+            case (NoMutation):
+            case (NonUniform): {
+                // Nothing to do
+                content.Append("-");
+                break;
+            }
+
+            case (SelfAdaptationRate): {
+                content.Append("MutationRate\t");
+                content << parameter.GetAdaptMutationRate();
+                break;
+            }
+
+            case (SelfAdaptationRadius): {
+                content.Append("MutationRate\t");
+                content << parameter.GetAdaptMutationRate();
+                content.Append("\t");
+                content.Append("MutationRadius\t");
+                content << parameter.GetAdaptMutationRadius();
+                break;
+            }
+
+            case (SelfAdaptationRateChromosome): {
+                content.Append("ChromosomeMutationRate\t");
+                vf chromRates = parameter.GetChromosomeMutationRate();
+                content << asVectorToString(chromRates);
+                break;
+            }
+
+            case (SelfAdaptationRadiusChromosome): {
+                content.Append("ChromosomeMutationRate\t");
+                vf chromRates = parameter.GetChromosomeMutationRate();
+                content << asVectorToString(chromRates);
+                content.Append("\t");
+                content.Append("ChromosomeMutationRadius\t");
+                vf chromRadius = parameter.GetChromosomeMutationRadius();
+                content << asVectorToString(chromRadius);
+                break;
+            }
+
+            default: {
+                wxLogError(_("The mutation method was not found when saving operators."));
+            }
+        }
+
+        content.Append("\n");
+    }
+
+    fileRes.AddLine(content);
+
+    fileRes.Close();
+
     return true;
 }
 

@@ -110,7 +110,9 @@ private:
 
     bool SetBestParameters(asResultsParametersArray &results) override;
 
-    bool ResumePreviousRun(asParametersOptimizationGAs &params);
+    bool ResumePreviousRun(asParametersOptimizationGAs &params, const wxString &operatorsFilePath);
+
+    bool SaveOperators(const wxString &filePath);
 
     void InitParameters(asParametersOptimizationGAs &params);
 
@@ -129,7 +131,6 @@ private:
     bool Mating();
 
     bool Mutation();
-
 };
 
 #endif

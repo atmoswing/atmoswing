@@ -242,4 +242,10 @@ void asQuickSort(T *pArr, int low, int high, Order order);
 template<class T>
 void asQuickSortMulti(T *pArr, T *pArrOther, int low, int high, Order order);
 
+vf asExtractVectorFrom(const wxString &data);
+
+wxString asVectorToString(const vf &data);
+
+wxString asExtractParamValueAndCut(wxString &str, const wxString &tag);
+
 #endif

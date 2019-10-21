@@ -30,26 +30,24 @@
 
 #include <asFileParametersOptimization.h>
 
-
 asParametersOptimizationGAs::asParametersOptimizationGAs()
-        : asParametersOptimization(),
-          m_individualSelfAdaptationMutationRate(0),
-          m_individualSelfAdaptationMutationRadius(0),
-          m_hasChromosomeSelfAdaptationMutationRate(false),
-          m_hasChromosomeSelfAdaptationMutationRadius(false),
-          m_timeArrayAnalogsIntervalDaysIteration(0),
-          m_timeArrayAnalogsIntervalDaysUpperLimit(0),
-          m_timeArrayAnalogsIntervalDaysLowerLimit(0),
-          m_timeArrayAnalogsIntervalDaysLocks(true),
-          m_allParametersCount(0),
-          m_parametersListOver(false)
+    : asParametersOptimization(),
+      m_adaptMutationRate(0),
+      m_adaptMutationRadius(0),
+      m_hasChromosomeMutationRate(false),
+      m_hasChromosomeMutationRadius(false),
+      m_timeArrayAnalogsIntervalDaysIteration(0),
+      m_timeArrayAnalogsIntervalDaysUpperLimit(0),
+      m_timeArrayAnalogsIntervalDaysLowerLimit(0),
+      m_timeArrayAnalogsIntervalDaysLocks(true),
+      m_allParametersCount(0),
+      m_parametersListOver(false)
 {
-
 }
 
 asParametersOptimizationGAs::~asParametersOptimizationGAs()
 {
-    //dtor
+    // dtor
 }
 
 void asParametersOptimizationGAs::BuildChromosomes()
@@ -141,36 +139,36 @@ void asParametersOptimizationGAs::BuildChromosomes()
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRate()
 {
-    m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
+    m_adaptMutationRate = asRandom(0.0, 1.0);
 }
 
 void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRadius()
 {
-    m_individualSelfAdaptationMutationRadius = asRandom(0.0, 1.0);
+    m_adaptMutationRadius = asRandom(0.0, 1.0);
 }
 
 void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
 {
     int length = GetChromosomeLength();
-    m_chromosomeSelfAdaptationMutationRate.resize(length);
+    m_chromosomeMutationRate.resize(length);
 
     for (int i = 0; i < length; i++) {
-        m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
+        m_chromosomeMutationRate[i] = asRandom(0.0, 1.0);
     }
 
-    m_hasChromosomeSelfAdaptationMutationRate = true;
+    m_hasChromosomeMutationRate = true;
 }
 
 void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
 {
     int length = GetChromosomeLength();
-    m_chromosomeSelfAdaptationMutationRadius.resize(length);
+    m_chromosomeMutationRadius.resize(length);
 
     for (int i = 0; i < length; i++) {
-        m_chromosomeSelfAdaptationMutationRadius[i] = asRandom(0.0, 1.0);
+        m_chromosomeMutationRadius[i] = asRandom(0.0, 1.0);
     }
 
-    m_hasChromosomeSelfAdaptationMutationRadius = true;
+    m_hasChromosomeMutationRadius = true;
 }
 
 bool asParametersOptimizationGAs::IsParamLocked(int index)
@@ -1206,14 +1204,14 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_hasChromosomeSelfAdaptationMutationRate) {
+                if (m_hasChromosomeMutationRate) {
                     float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt,
                                                                 otherParam.GetSelfAdaptationMutationRateFromChromosome(
                                                                         counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                 }
-                if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                if (m_hasChromosomeMutationRadius) {
                     float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
                                                                   otherParam.GetSelfAdaptationMutationRadiusFromChromosome(
@@ -1267,7 +1265,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_hasChromosomeSelfAdaptationMutationRate) {
+                if (m_hasChromosomeMutationRate) {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float newMutRate1 = beta * mutRate1 + (1.0 - beta) * mutRate2;
@@ -1275,7 +1273,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                if (m_hasChromosomeMutationRadius) {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float newMutRadius1 = beta * mutRadius1 + (1.0 - beta) * mutRadius2;
@@ -1330,7 +1328,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_hasChromosomeSelfAdaptationMutationRate) {
+                if (m_hasChromosomeMutationRate) {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float newMutRate1 = beta * (mutRate1 - mutRate2) + mutRate1;
@@ -1338,7 +1336,7 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                if (m_hasChromosomeMutationRadius) {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float newMutRadius1 = beta * (mutRadius1 - mutRadius2) + mutRadius1;
@@ -1384,7 +1382,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                 otherParam.SetParameterValue(counter, newval2);
 
                 // Apply to self-adaptation
-                if (m_hasChromosomeSelfAdaptationMutationRate) {
+                if (m_hasChromosomeMutationRate) {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float newMutRate1 = mutRate1 - beta * (mutRate1 - mutRate2);
@@ -1392,7 +1390,7 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                     SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                 }
-                if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                if (m_hasChromosomeMutationRadius) {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float newMutRadius1 = mutRadius1 - beta * (mutRadius1 - mutRadius2);
@@ -1418,14 +1416,14 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                     otherParam.SetParameterValue(counter, newval2);
 
                     // Apply to self-adaptation
-                    if (m_hasChromosomeSelfAdaptationMutationRate) {
+                    if (m_hasChromosomeMutationRate) {
                         float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                         SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt,
                                                                     otherParam.GetSelfAdaptationMutationRateFromChromosome(
                                                                             counterSelfAdapt));
                         otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                     }
-                    if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                    if (m_hasChromosomeMutationRadius) {
                         float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                         SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
                                                                       otherParam.GetSelfAdaptationMutationRadiusFromChromosome(
@@ -1478,7 +1476,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
                 thirdParam.SetParameterValue(counter, newval3);
 
                 // Apply to self-adaptation
-                if (m_hasChromosomeSelfAdaptationMutationRate) {
+                if (m_hasChromosomeMutationRate) {
                     float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                     float newMutRate1 = 0.5 * mutRate1 + 0.5 * mutRate2;
@@ -1488,7 +1486,7 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
                     thirdParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate3);
                 }
-                if (m_hasChromosomeSelfAdaptationMutationRadius) {
+                if (m_hasChromosomeMutationRadius) {
                     float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                     float newMutRadius1 = 0.5 * mutRadius1 + 0.5 * mutRadius2;
@@ -1526,7 +1524,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
             otherParam.SetParameterValue(counter, newval2);
 
             // Apply to self-adaptation
-            if (m_hasChromosomeSelfAdaptationMutationRate) {
+            if (m_hasChromosomeMutationRate) {
                 float mutRate1 = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                 float mutRate2 = otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
                 float newMutRate1 = mutRate1 - beta * (mutRate1 - mutRate2);
@@ -1534,7 +1532,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
                 SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate1);
                 otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, newMutRate2);
             }
-            if (m_hasChromosomeSelfAdaptationMutationRadius) {
+            if (m_hasChromosomeMutationRadius) {
                 float mutRadius1 = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                 float mutRadius2 = otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
                 float newMutRadius1 = mutRadius1 - beta * (mutRadius1 - mutRadius2);
@@ -1639,32 +1637,32 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
 void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
-        m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
+        m_adaptMutationRate = asRandom(0.0, 1.0);
     }
 
     // Mutate data
-    MutateUniformDistribution(m_individualSelfAdaptationMutationRate, hasMutated);
+    MutateUniformDistribution(m_adaptMutationRate, hasMutated);
 
 }
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 {
     // Mutate mutation probability
-    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
-        m_individualSelfAdaptationMutationRate = asRandom(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
+        m_adaptMutationRate = asRandom(0.0, 1.0);
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRadius) {
-        m_individualSelfAdaptationMutationRadius = asRandom(0.0, 1.0);
+    if (asRandom(0.0, 1.0) < m_adaptMutationRadius) {
+        m_adaptMutationRadius = asRandom(0.0, 1.0);
     }
 
     // Mutate data
     int counter = 0;
     do {
         if (!IsParamLocked(counter)) {
-            if (asRandom(0.0, 1.0) < m_individualSelfAdaptationMutationRate) {
+            if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
                 if (GetParamType(counter) < 3) {
                     double r1 = asRandom(0.0, 1.0);
                     double r2 = asRandom(0.0, 1.0);
@@ -1674,9 +1672,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
                     double newVal;
 
                     if (r1 < 0.5) {
-                        newVal = actVal + (upperLimit - actVal) * r2 * m_individualSelfAdaptationMutationRadius;
+                        newVal = actVal + (upperLimit - actVal) * r2 * m_adaptMutationRadius;
                     } else {
-                        newVal = actVal - (actVal - lowerLimit) * r2 * m_individualSelfAdaptationMutationRadius;
+                        newVal = actVal - (actVal - lowerLimit) * r2 * m_adaptMutationRadius;
                     }
 
                     SetParameterValue(counter, newVal);
@@ -1696,13 +1694,13 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated)
 {
-    wxASSERT(!m_chromosomeSelfAdaptationMutationRate.empty());
-    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
+    wxASSERT(!m_chromosomeMutationRate.empty());
+    wxASSERT(m_chromosomeMutationRate.size() == GetChromosomeLength());
 
     // Mutate mutation probability
-    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
-        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
-            m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
+    for (int i = 0; i < m_chromosomeMutationRate.size(); i++) {
+        if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[i]) {
+            m_chromosomeMutationRate[i] = asRandom(0.0, 1.0);
         }
 
     }
@@ -1712,9 +1710,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     int counterSelfAdapt = 0;
     do {
         if (!IsParamLocked(counter)) {
-            wxASSERT(counterSelfAdapt < m_chromosomeSelfAdaptationMutationRate.size());
+            wxASSERT(counterSelfAdapt < m_chromosomeMutationRate.size());
 
-            if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
+            if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[counterSelfAdapt]) {
                 // Uniform distribution in the case of parameters as a list
                 double newVal = asRandom(GetParameterLowerLimit(counter), GetParameterUpperLimit(counter),
                                          GetParameterIteration(counter));
@@ -1730,23 +1728,23 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
 
 void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated)
 {
-    wxASSERT(!m_chromosomeSelfAdaptationMutationRate.empty());
-    wxASSERT(!m_chromosomeSelfAdaptationMutationRadius.empty());
-    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == m_chromosomeSelfAdaptationMutationRadius.size());
-    wxASSERT(m_chromosomeSelfAdaptationMutationRate.size() == GetChromosomeLength());
+    wxASSERT(!m_chromosomeMutationRate.empty());
+    wxASSERT(!m_chromosomeMutationRadius.empty());
+    wxASSERT(m_chromosomeMutationRate.size() == m_chromosomeMutationRadius.size());
+    wxASSERT(m_chromosomeMutationRate.size() == GetChromosomeLength());
 
     // Mutate mutation probability
-    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRate.size(); i++) {
-        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[i]) {
-            m_chromosomeSelfAdaptationMutationRate[i] = asRandom(0.0, 1.0);
+    for (int i = 0; i < m_chromosomeMutationRate.size(); i++) {
+        if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[i]) {
+            m_chromosomeMutationRate[i] = asRandom(0.0, 1.0);
         }
 
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
-    for (int i = 0; i < m_chromosomeSelfAdaptationMutationRadius.size(); i++) {
-        if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRadius[i]) {
-            m_chromosomeSelfAdaptationMutationRadius[i] = asRandom(0.0, 1.0);
+    for (int i = 0; i < m_chromosomeMutationRadius.size(); i++) {
+        if (asRandom(0.0, 1.0) < m_chromosomeMutationRadius[i]) {
+            m_chromosomeMutationRadius[i] = asRandom(0.0, 1.0);
         }
 
     }
@@ -1756,9 +1754,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     int counterSelfAdapt = 0;
     do {
         if (!IsParamLocked(counter)) {
-            wxASSERT(counterSelfAdapt < m_chromosomeSelfAdaptationMutationRate.size());
+            wxASSERT(counterSelfAdapt < m_chromosomeMutationRate.size());
 
-            if (asRandom(0.0, 1.0) < m_chromosomeSelfAdaptationMutationRate[counterSelfAdapt]) {
+            if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[counterSelfAdapt]) {
                 if (GetParamType(counter) < 3) {
                     double r1 = asRandom(0.0, 1.0);
                     double r2 = asRandom(0.0, 1.0);
@@ -1768,11 +1766,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
                     double newVal;
 
                     if (r1 < 0.5) {
-                        newVal = actVal + (upperLimit - actVal) * r2 *
-                                          m_chromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
+                        newVal = actVal + (upperLimit - actVal) * r2 * m_chromosomeMutationRadius[counterSelfAdapt];
                     } else {
-                        newVal = actVal - (actVal - lowerLimit) * r2 *
-                                          m_chromosomeSelfAdaptationMutationRadius[counterSelfAdapt];
+                        newVal = actVal - (actVal - lowerLimit) * r2 * m_chromosomeMutationRadius[counterSelfAdapt];
                     }
 
                     SetParameterValue(counter, newVal);
