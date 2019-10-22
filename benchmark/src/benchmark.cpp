@@ -242,10 +242,13 @@ void BM_CudaThreads(benchmark::State &state, ExtraArgs&&... extra_args)
 
     for (auto _ : state) {
         try {
-            for (int i = 0; i < 20; ++i) {
+            for (int i = 0; i < 9; ++i) {
+                //wxPrintf("Enter loop (i = %d)\n", i);
                 ThreadsManager().WaitForFreeThread(asThread::Undefined);
+                //wxPrintf("Create thread (i = %d)\n", i);
                 auto thread = new asThreadBenchCuda(params);
                 ThreadsManager().AddThread(thread);
+                //wxPrintf("Thread added (i = %d)\n", i);
             }
 
             ThreadsManager().Wait(asThread::Undefined);

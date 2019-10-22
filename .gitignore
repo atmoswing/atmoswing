@@ -82,6 +82,6 @@ external/
 *.db-wal
 *.db-shm
 *.opendb
+*.nvvp
 benchmark/z.nc
-
 benchmark/atmoswing-benchmark
