@@ -446,10 +446,12 @@ wxThread::ExitCode asThreadBenchCuda::Entry()
 
     cudaSetDevice(0);
 
+    //wxPrintf("Calculations starting in thread\n");
     EXPECT_TRUE(g_calibrator->GetAnalogsDates(anaDates1, &m_params, 0, containsNaNs));
     EXPECT_FALSE(containsNaNs);
     EXPECT_TRUE(g_calibrator->GetAnalogsSubDates(anaDates2, &m_params, anaDates1, 1, containsNaNs));
     EXPECT_FALSE(containsNaNs);
+    //wxPrintf("Calculations ending in thread\n");
 
     return 0;
 }
