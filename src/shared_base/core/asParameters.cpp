@@ -1302,6 +1302,15 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                     }
                 }
             } else {
+                strVal = asExtractParamValueAndCut(stringVals, "Ptor");
+                stringVals = stringVals.AfterFirst('\t');
+                strVal = stringVals.AfterFirst(' ');
+                strVal = strVal.BeforeFirst('\t');
+                if (!SetPredictorDataId(iStep, iPtor, strVal)) {
+                    wxLogError(errMsg);
+                    return false;
+                }
+
                 strVal = asExtractParamValueAndCut(stringVals, "Level");
                 if (!strVal.ToDouble(&dVal)) {
                     wxLogError(errMsg);
@@ -1389,6 +1398,19 @@ bool asParameters::GetValuesFromString(wxString stringVals)
                 return false;
             }
             if (!SetPredictorWeight(iStep, iPtor, dVal)) {
+                wxLogError(errMsg);
+                return false;
+            }
+
+            stringVals = stringVals.AfterFirst('\t');
+            strVal = stringVals.BeforeFirst('\t');
+            if (!SetPreprocessMethod(iStep, iPtor, strVal)) {
+                wxLogError(errMsg);
+                return false;
+            }
+
+            strVal = asExtractParamValueAndCut(stringVals, "Criteria");
+            if (!SetPredictorCriteria(iStep, iPtor, strVal)) {
                 wxLogError(errMsg);
                 return false;
             }
