@@ -585,29 +585,6 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     currentParamsPrint.Replace("Level", wxEmptyString, false);
                 }
 
-                // Compare number of S1 criteria on gradients
-                while (true) {
-                    indexInFile = firstLineCopy.Find("S1grads");
-                    indexInParams = currentParamsPrint.Find("S1grads");
-                    if (indexInFile == wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
-                        break;
-                    } else if (indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) {
-                        wxLogWarning(_("Not enough S1grads were found in the parameters file. Looking for S1 instead."));
-                        // S1 allowed due to subsequent forcing of gradients processing.
-                        indexInParams = currentParamsPrint.Find("S1");
-                        if (indexInParams == wxNOT_FOUND) {
-                            wxLogError(_("Not enough S1grads were found in the parameters file."));
-                            return false;
-                        }
-                    } else if (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND) {
-                        wxLogError(_("Not enough S1grads were found in the previous runs."));
-                        return false;
-                    }
-
-                    firstLineCopy.Replace("S1grads", wxEmptyString, false);
-                    currentParamsPrint.Replace("S1grads", wxEmptyString, false);
-                }
-
                 // Parse the parameters data
                 std::vector<asParametersOptimizationGAs> vectParams;
                 std::vector<float> vectScores;
