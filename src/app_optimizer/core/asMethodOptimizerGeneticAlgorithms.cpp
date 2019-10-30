@@ -918,7 +918,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
         if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
             switch (m_scoreOrder) {
                 case (Asc): {
-                    if (scoreCloseParams > m_resGenerations.GetMedianScores()) {
+                    if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
                         m_scoresCalib[m_iterator] = scoreCloseParams;
                         m_nbCloseParams++;
                         m_iterator++;
@@ -927,7 +927,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
                     break;
                 }
                 case (Desc): {
-                    if (scoreCloseParams < m_resGenerations.GetMedianScores()) {
+                    if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
                         m_scoresCalib[m_iterator] = scoreCloseParams;
                         m_nbCloseParams++;
                         m_iterator++;

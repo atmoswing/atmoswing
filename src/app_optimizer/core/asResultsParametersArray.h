@@ -65,9 +65,9 @@ public:
         return int(m_parameters.size());
     }
 
-    float GetMedianScores() const
+    float GetMedianScore() const
     {
-        return m_medianScores;
+        return m_medianScore;
     }
 
 protected:
@@ -80,7 +80,7 @@ private:
     std::vector<asParametersScoring> m_parametersForScoreOnArray;
     va1f m_scoresCalibForScoreOnArray;
     va1f m_scoresValidForScoreOnArray;
-    float m_medianScores;
+    float m_medianScore;
 };
 
 #endif

@@ -32,7 +32,7 @@
 
 asResultsParametersArray::asResultsParametersArray()
         : asResults(),
-          m_medianScores(NaNf)
+          m_medianScore(NaNf)
 {
 
 }
@@ -88,24 +88,14 @@ void asResultsParametersArray::Add(asParametersScoring &params, const a1f& score
 
 void asResultsParametersArray::ProcessMedianScores()
 {
-    if (m_scoresCalib.size() % 2 == 0) {
-        const auto median_it1 = m_scoresCalib.begin() + m_scoresCalib.size() / 2 - 1;
-        const auto median_it2 = m_scoresCalib.begin() + m_scoresCalib.size() / 2;
+    vf scores = m_scoresCalib;
 
-        std::nth_element(m_scoresCalib.begin(), median_it1 , m_scoresCalib.end());
-        const auto e1 = *median_it1;
+    // Does not need to be super precise, so no need to handle even numbers.
+    unsigned long mid = scores.size() / 2;
+    auto median_it = scores.begin() + mid;
+    std::nth_element(scores.begin(), median_it , scores.end());
 
-        std::nth_element(m_scoresCalib.begin(), median_it2 , m_scoresCalib.end());
-        const auto e2 = *median_it2;
-
-        m_medianScores = (e1 + e2) / 2;
-
-    } else {
-        const auto median_it = m_scoresCalib.begin() + m_scoresCalib.size() / 2;
-        std::nth_element(m_scoresCalib.begin(), median_it , m_scoresCalib.end());
-
-        m_medianScores = *median_it;
-    }
+    m_medianScore = scores[mid];
 }
 
 bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, float &score)
