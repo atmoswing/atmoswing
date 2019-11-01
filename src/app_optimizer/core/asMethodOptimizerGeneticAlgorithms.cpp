@@ -518,13 +518,11 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 wxArrayString filesGen;
                 wxDir::GetAllFiles(resultsDir, &filesGen, generationsFilePattern, wxDIR_FILES);
                 filesGen.Sort();
-                wxString generationsFileName = filesGen.Last();
+                wxString filePath = filesGen.Last();
                 filesGen.Clear();
 
                 wxLogWarning(_("Previous intermediate results were found and will be loaded."));
                 asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
-                wxString filePath = resultsDir;
-                filePath.Append(wxString::Format("/%s", generationsFileName.c_str()));
                 asFileText prevResults(filePath, asFile::ReadOnly);
                 if (!prevResults.Open()) {
                     wxLogError(_("Couldn't open the file %s."), filePath.c_str());
@@ -663,13 +661,11 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                     wxArrayString filesOper;
                     wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
                     filesOper.Sort();
-                    wxString operatorsFileName = filesOper.Last();
+                    wxString operFilePath = filesOper.Last();
                     filesOper.Clear();
 
                     wxLogWarning(_("Previous operators were found and will be loaded."));
                     asLog::PrintToConsole(_("Previous operators were found and will be loaded.\n"));
-                    wxString operFilePath = resultsDir;
-                    operFilePath.Append(wxString::Format("/%s", operatorsFileName.c_str()));
 
                     // Copy file to the new target
                     wxCopyFile(operFilePath, operatorsFilePath);
