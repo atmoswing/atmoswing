@@ -515,10 +515,11 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             wxString generationsFilePattern = wxString::Format("*_station_%s_generations.txt",
                                                                GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(generationsFilePattern)) {
-                wxString generationsFileName;
-                dir.GetFirst(&generationsFileName, generationsFilePattern, wxDIR_FILES);
-                while (dir.GetNext(&generationsFileName)) {
-                } // Select the last available.
+                wxArrayString filesGen;
+                wxDir::GetAllFiles(resultsDir, &filesGen, generationsFilePattern, wxDIR_FILES);
+                filesGen.Sort();
+                wxString generationsFileName = filesGen.Last();
+                filesGen.Clear();
 
                 wxLogWarning(_("Previous intermediate results were found and will be loaded."));
                 asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
@@ -659,10 +660,11 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                 wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
                                                                    GetPredictandStationIdsList(stationId).c_str());
                 if (dir.HasFiles(operatorsFilePattern)) {
-                    wxString operatorsFileName;
-                    dir.GetFirst(&operatorsFileName, operatorsFilePattern, wxDIR_FILES);
-                    while (dir.GetNext(&operatorsFileName)) {
-                    } // Select the last available.
+                    wxArrayString filesOper;
+                    wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
+                    filesOper.Sort();
+                    wxString operatorsFileName = filesOper.Last();
+                    filesOper.Clear();
 
                     wxLogWarning(_("Previous operators were found and will be loaded."));
                     asLog::PrintToConsole(_("Previous operators were found and will be loaded.\n"));
