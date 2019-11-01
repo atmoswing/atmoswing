@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REBUILD_GDAL=false
-GDAL_VERSION=3.0.0
+GDAL_VERSION=3.0.1
 
 # Build GDAL2
 if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; then
@@ -9,7 +9,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; 
   tar -xzf gdal.tar.gz
   cd gdal-${GDAL_VERSION}
   ./configure --prefix=${HOME}/.libs --with-proj=/usr/local --with-sqlite3=no --with-python=no --with-pg=no --with-grass=no --with-jasper=/usr --with-curl=/usr --with-jpeg=internal --with-png=internal --silent
-  make -j6 #> /dev/null
+  make -j6 > /dev/null
   make install
   cd ..
   printf 'GDAL has been built.\n'

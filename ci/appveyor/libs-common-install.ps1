@@ -104,7 +104,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
   Init-Build "proj"
   Download-Lib "proj" $PROJ_URL
   7z x proj.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\proj.4-*" "$TMP_DIR\proj"
+  move "$TMP_DIR\PROJ-6*" "$TMP_DIR\proj"
   cd "$TMP_DIR\proj"
   mkdir build
   cd build
