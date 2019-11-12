@@ -112,6 +112,8 @@ private:
 
     bool ResumePreviousRun(asParametersOptimizationGAs &params, const wxString &operatorsFilePath);
 
+    bool HasPreviousRunConverged(asParametersOptimizationGAs &params);
+
     bool SaveOperators(const wxString &filePath);
 
     void InitParameters(asParametersOptimizationGAs &params);

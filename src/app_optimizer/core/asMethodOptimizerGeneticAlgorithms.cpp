@@ -243,6 +243,12 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun()
     // Initialize parameters before loading data.
     InitParameters(params);
 
+    // Check if previously finished
+    if (HasPreviousRunConverged(params)) {
+        wxLogError(_("Optimization has already converged."));
+        return true;
+    }
+
     // Preload data
     try {
         if (!PreloadArchiveData(&params)) {
@@ -508,7 +514,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
                                                          GetPredictandStationIdsList(stationId).c_str());
             if (dir.HasFiles(finalFilePattern)) {
                 wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
-                return true;
+                return false;
             }
 
             // Look for intermediate results to load
@@ -766,7 +772,29 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             }
         }
     }
+
     return true;
+}
+
+bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOptimizationGAs &params)
+{
+    wxString resultsDir = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    wxDir dir(resultsDir);
+
+    if (!dir.IsOpened()) {
+        wxLogVerbose(_("The directory %s could not be opened."), resultsDir.c_str());
+    } else {
+        // Check if the resulting file is already present
+        vi stationId = params.GetPredictandStationIds();
+        wxString finalFilePattern = wxString::Format("*_station_%s_best_individual.txt",
+                                                     GetPredictandStationIdsList(stationId).c_str());
+        if (dir.HasFiles(finalFilePattern)) {
+            wxLogMessage(_("The directory %s already contains the resulting file."), resultsDir.c_str());
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath)
