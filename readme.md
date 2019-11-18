@@ -59,6 +59,13 @@ If you want to contribute to the software development, you can fork this reposit
 
 Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
 
+AtmoSwing will follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) (not the case so far) with a few differences (mainly based on [wxWidgets Coding Guidelines](https://www.wxwidgets.org/develop/coding-guidelines)):
+* Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
+* Use ``camelCase`` for the variables.
+* Use ``m_`` prefix for member variables.
+* Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
+* Use Set/Get prefixes for accessors
+
 ## Credits ##
 
 [![University of Lausanne](https://raw.githubusercontent.com/atmoswing/atmoswing/master/art/misc/logo-Unil.png)](http://unil.ch/iste) 
