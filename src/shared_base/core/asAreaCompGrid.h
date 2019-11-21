@@ -29,8 +29,8 @@
 #ifndef AS_AREA_COMPOSITE_GRID_H
 #define AS_AREA_COMPOSITE_GRID_H
 
-#include <asAreaComp.h>
-#include <asIncludes.h>
+#include "asAreaComp.h"
+#include "asIncludes.h"
 
 class asParameters;
 

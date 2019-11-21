@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_PROJ_CMIP5_H
 #define AS_PREDICTOR_PROJ_CMIP5_H
 
-#include <asIncludes.h>
-#include <asPredictorProj.h>
+#include "asIncludes.h"
+#include "asPredictorProj.h"
 
 class asArea;
 

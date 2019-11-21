@@ -29,7 +29,7 @@
 #ifndef AS_FILE_NETCDF_H
 #define AS_FILE_NETCDF_H
 
-#include <asFile.h>
+#include "asFile.h"
 
 #include "asIncludes.h"
 #include "netcdf.h"

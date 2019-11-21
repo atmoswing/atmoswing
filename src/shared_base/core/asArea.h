@@ -29,7 +29,7 @@
 #ifndef AS_AREA_H
 #define AS_AREA_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asArea : public wxObject {
  public:

@@ -28,8 +28,8 @@
 
 #include "asPredictorNcepReanalysis2.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorNcepReanalysis2::asPredictorNcepReanalysis2(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.

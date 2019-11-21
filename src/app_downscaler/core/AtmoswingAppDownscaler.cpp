@@ -46,8 +46,8 @@
 
 IMPLEMENT_APP(AtmoswingAppDownscaler)
 
-#include <asFileText.h>
-#include <asMethodDownscalerClassic.h>
+#include "asFileText.h"
+#include "asMethodDownscalerClassic.h"
 
 #if wxUSE_GUI
 

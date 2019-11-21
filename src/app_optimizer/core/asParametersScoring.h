@@ -29,7 +29,7 @@
 #ifndef AS_PARAMETERS_SCORING_H
 #define AS_PARAMETERS_SCORING_H
 
-#include <asParameters.h>
+#include "asParameters.h"
 
 #include "asIncludes.h"
 

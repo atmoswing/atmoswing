@@ -27,8 +27,8 @@
 
 #include "asPredictorNasaMerra2Subset.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString &dataId) : asPredictorNasaMerra2(dataId) {
   // Set the basic properties.

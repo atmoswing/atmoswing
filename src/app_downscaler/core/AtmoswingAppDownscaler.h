@@ -28,7 +28,7 @@
 #ifndef ATMOSWINGAPPDOWNSCALER_H
 #define ATMOSWINGAPPDOWNSCALER_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 #include <wx/app.h>
 #include <wx/cmdline.h>
 #include <wx/snglinst.h>

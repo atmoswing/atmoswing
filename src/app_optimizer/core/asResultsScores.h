@@ -29,8 +29,8 @@
 #ifndef AS_RESULTS_SCORES_H
 #define AS_RESULTS_SCORES_H
 
-#include <asIncludes.h>
-#include <asResults.h>
+#include "asIncludes.h"
+#include "asResults.h"
 
 class asParametersScoring;
 

@@ -29,9 +29,9 @@
 #ifndef AS_TIME_H
 #define AS_TIME_H
 
-#include <asIncludes.h>
-
 #include <ctime>
+
+#include "asIncludes.h"
 
 class asTime : public wxObject {
  public:

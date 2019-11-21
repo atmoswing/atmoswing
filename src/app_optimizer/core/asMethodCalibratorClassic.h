@@ -29,7 +29,7 @@
 #ifndef AS_METHOD_CALIBRATOR_CLASSIC_H
 #define AS_METHOD_CALIBRATOR_CLASSIC_H
 
-#include <asMethodCalibrator.h>
+#include "asMethodCalibrator.h"
 
 class asMethodCalibratorClassic : public asMethodCalibrator {
  public:

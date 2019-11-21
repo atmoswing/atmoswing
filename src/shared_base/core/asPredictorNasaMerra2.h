@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_NASA_MERRA2_H
 #define AS_PREDICTOR_NASA_MERRA2_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

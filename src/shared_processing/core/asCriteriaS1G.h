@@ -29,8 +29,8 @@
 #ifndef AS_CRITERIA_S1G_H
 #define AS_CRITERIA_S1G_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaS1G : public asCriteria {
  public:

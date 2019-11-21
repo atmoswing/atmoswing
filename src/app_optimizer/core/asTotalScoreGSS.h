@@ -29,8 +29,8 @@
 #ifndef AS_TOTAL_SCORE_GSS_H
 #define AS_TOTAL_SCORE_GSS_H
 
-#include <asIncludes.h>
-#include <asTotalScore.h>
+#include "asIncludes.h"
+#include "asTotalScore.h"
 
 class asTotalScoreGSS : public asTotalScore {
  public:

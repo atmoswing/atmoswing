@@ -27,8 +27,8 @@
 
 #include "asPredictorEcmwfEra5.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 #include <wx/dir.h>
 #include <wx/regex.h>
 

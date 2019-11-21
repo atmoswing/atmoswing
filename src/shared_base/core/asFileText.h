@@ -28,8 +28,8 @@
 #ifndef AS_FILE_TEXT_H
 #define AS_FILE_TEXT_H
 
-#include <asFile.h>
-#include <asIncludes.h>
+#include "asFile.h"
+#include "asIncludes.h"
 
 #include <fstream>
 #include <iostream>

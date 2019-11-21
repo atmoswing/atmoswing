@@ -29,8 +29,8 @@
 #ifndef AS_METHOD_STANDARD_H
 #define AS_METHOD_STANDARD_H
 
-#include <asIncludes.h>
-#include <asPredictand.h>
+#include "asIncludes.h"
+#include "asPredictand.h"
 
 class asPredictor;
 class asPredictor;

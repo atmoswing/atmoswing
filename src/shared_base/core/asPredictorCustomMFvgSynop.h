@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_SYNOP_H
 #define AS_PREDICTOR_CUSTOM_METEO_FVG_SYNOP_H
 
-#include <asIncludes.h>
-#include <asPredictorEcmwfIfsGrib.h>
+#include "asIncludes.h"
+#include "asPredictorEcmwfIfsGrib.h"
 
 class asArea;
 

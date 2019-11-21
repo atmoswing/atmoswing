@@ -29,8 +29,8 @@
 #ifndef AS_PREDICTOR_NCEP_R1_H
 #define AS_PREDICTOR_NCEP_R1_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

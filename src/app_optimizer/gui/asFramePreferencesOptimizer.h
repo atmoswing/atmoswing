@@ -29,7 +29,7 @@
 #ifndef AS_FRAME_PREFERENCES_OPTIMIZER
 #define AS_FRAME_PREFERENCES_OPTIMIZER
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "AtmoswingOptimizerGui.h"
 

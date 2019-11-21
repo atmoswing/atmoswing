@@ -27,8 +27,8 @@
 
 #include "asPredictorNcepCfsrSubset.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString &dataId) : asPredictor(dataId) {
   // Downloaded from

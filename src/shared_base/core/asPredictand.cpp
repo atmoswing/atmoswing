@@ -28,13 +28,13 @@
 
 #include "asPredictand.h"
 
-#include <asCatalogPredictands.h>
-#include <asFileDat.h>
-#include <asFileNetcdf.h>
-#include <asPredictandLightnings.h>
-#include <asPredictandPrecipitation.h>
-#include <asPredictandTemperature.h>
-#include <asTimeArray.h>
+#include "asCatalogPredictands.h"
+#include "asFileDat.h"
+#include "asFileNetcdf.h"
+#include "asPredictandLightnings.h"
+#include "asPredictandPrecipitation.h"
+#include "asPredictandTemperature.h"
+#include "asTimeArray.h"
 
 asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation)

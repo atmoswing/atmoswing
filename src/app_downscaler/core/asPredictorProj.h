@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_PROJ_H
 #define AS_PREDICTOR_PROJ_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

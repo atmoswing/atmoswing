@@ -29,8 +29,8 @@
 #ifndef AS_RESULTS_VALUES_H
 #define AS_RESULTS_VALUES_H
 
-#include <asIncludes.h>
-#include <asResults.h>
+#include "asIncludes.h"
+#include "asResults.h"
 
 class asResultsValues : public asResults {
  public:

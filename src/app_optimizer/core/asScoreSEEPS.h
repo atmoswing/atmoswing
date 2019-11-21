@@ -29,7 +29,7 @@
 #ifndef AS_SCORE_SEEPS_H
 #define AS_SCORE_SEEPS_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "asScore.h"
 

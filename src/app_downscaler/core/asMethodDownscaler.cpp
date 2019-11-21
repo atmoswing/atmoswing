@@ -27,15 +27,15 @@
 
 #include "asMethodDownscaler.h"
 
-#include <asAreaCompGrid.h>
-#include <asCriteria.h>
-#include <asIncludes.h>
-#include <asParametersDownscaling.h>
-#include <asPreprocessor.h>
-#include <asProcessor.h>
-#include <asResultsDates.h>
-#include <asResultsValues.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asCriteria.h"
+#include "asIncludes.h"
+#include "asParametersDownscaling.h"
+#include "asPreprocessor.h"
+#include "asProcessor.h"
+#include "asResultsDates.h"
+#include "asResultsValues.h"
+#include "asTimeArray.h"
 
 #include "asPredictorProj.h"
 

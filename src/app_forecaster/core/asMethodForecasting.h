@@ -29,14 +29,14 @@
 #ifndef AS_METHOD_FORECASTING_H
 #define AS_METHOD_FORECASTING_H
 
-#include <asBatchForecasts.h>
-#include <asCriteria.h>
-#include <asIncludes.h>
-#include <asMethodStandard.h>
-#include <asParametersForecast.h>
-#include <asPredictor.h>
-#include <asPredictorOper.h>
-#include <asResultsForecastAggregator.h>
+#include "asBatchForecasts.h"
+#include "asCriteria.h"
+#include "asIncludes.h"
+#include "asMethodStandard.h"
+#include "asParametersForecast.h"
+#include "asPredictor.h"
+#include "asPredictorOper.h"
+#include "asResultsForecastAggregator.h"
 
 class asResultsDates;
 

@@ -39,7 +39,7 @@
 
 IMPLEMENT_APP(AtmoswingAppViewer);
 
-#include <asInternet.h>
+#include "asInternet.h"
 
 #include "images.h"
 #include "vroomgis_bmp.h"

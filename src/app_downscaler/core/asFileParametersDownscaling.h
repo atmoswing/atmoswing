@@ -28,8 +28,8 @@
 #ifndef AS_FILE_PARAMETERS_DOWNSCALING_H
 #define AS_FILE_PARAMETERS_DOWNSCALING_H
 
-#include <asFileParameters.h>
-#include <asIncludes.h>
+#include "asFileParameters.h"
+#include "asIncludes.h"
 
 class asFileParametersDownscaling : public asFileParameters {
  public:

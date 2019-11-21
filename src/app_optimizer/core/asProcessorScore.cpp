@@ -28,15 +28,15 @@
 
 #include "asProcessorScore.h"
 
-#include <asParametersCalibration.h>
-#include <asPostprocessor.h>
-#include <asResultsScores.h>
-#include <asResultsScoresMap.h>
-#include <asResultsTotalScore.h>
-#include <asResultsValues.h>
-#include <asScore.h>
-#include <asTotalScore.h>
-//#include <asDialogProgressBar.h>
+#include "asParametersCalibration.h"
+#include "asPostprocessor.h"
+#include "asResultsScores.h"
+#include "asResultsScoresMap.h"
+#include "asResultsTotalScore.h"
+#include "asResultsValues.h"
+#include "asScore.h"
+#include "asTotalScore.h"
+//#include "asDialogProgressBar.h"
 
 #ifndef UNIT_TESTING
 

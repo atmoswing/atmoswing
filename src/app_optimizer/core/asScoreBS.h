@@ -29,7 +29,7 @@
 #ifndef AS_SCORE_BS_H
 #define AS_SCORE_BS_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "asScore.h"
 

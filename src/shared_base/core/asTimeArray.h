@@ -30,8 +30,8 @@
 #ifndef AS_TIME_ARRAY_H
 #define AS_TIME_ARRAY_H
 
-#include <asIncludes.h>
-#include <asTime.h>
+#include "asIncludes.h"
+#include "asTime.h"
 
 class asPredictand;
 

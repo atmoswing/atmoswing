@@ -29,8 +29,8 @@
 #ifndef AS_FILE_BATCH_FORECASTS_H
 #define AS_FILE_BATCH_FORECASTS_H
 
-#include <asFileXml.h>
-#include <asIncludes.h>
+#include "asFileXml.h"
+#include "asIncludes.h"
 
 class asFileBatchForecasts : public asFileXml {
  public:

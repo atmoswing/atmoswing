@@ -29,8 +29,8 @@
 #ifndef AS_PREDICTAND_TEMPERATURE_H
 #define AS_PREDICTAND_TEMPERATURE_H
 
-#include <asIncludes.h>
-#include <asPredictand.h>
+#include "asIncludes.h"
+#include "asPredictand.h"
 
 class asPredictandTemperature : public asPredictand {
  public:

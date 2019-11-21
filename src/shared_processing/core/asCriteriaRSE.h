@@ -29,8 +29,8 @@
 #ifndef AS_CRITERIA_RSE_H
 #define AS_CRITERIA_RSE_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaRSE : public asCriteria {
  public:

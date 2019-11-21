@@ -29,7 +29,7 @@
 #ifndef AS_METHOD_CALIBRATOR_CLASSIC_PLUS_VAR_EXPLO_H
 #define AS_METHOD_CALIBRATOR_CLASSIC_PLUS_VAR_EXPLO_H
 
-#include <asMethodCalibratorClassic.h>
+#include "asMethodCalibratorClassic.h"
 
 class asMethodCalibratorClassicVarExplo : public asMethodCalibratorClassic {
  public:

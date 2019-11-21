@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <asFileText.h>
-#include <asUtilities.h>
+#include "asFileText.h"
+#include "asUtilities.h"
 
 #include "gtest/gtest.h"
 

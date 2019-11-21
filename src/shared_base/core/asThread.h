@@ -28,7 +28,7 @@
 #ifndef AS_THREAD_H
 #define AS_THREAD_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 #include <wx/thread.h>
 
 class asThread : public wxThread {

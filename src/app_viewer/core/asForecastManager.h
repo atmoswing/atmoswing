@@ -29,8 +29,8 @@
 #ifndef AS_FORECAST_MANAGER_H
 #define AS_FORECAST_MANAGER_H
 
-#include <asIncludes.h>
-#include <asResultsForecastAggregator.h>
+#include "asIncludes.h"
+#include "asResultsForecastAggregator.h"
 
 #include "asWorkspace.h"
 

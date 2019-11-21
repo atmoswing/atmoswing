@@ -28,7 +28,7 @@
 
 #include "asListBoxForecasts.h"
 
-#include <asForecastViewer.h>
+#include "asForecastViewer.h"
 
 #include "images.h"
 

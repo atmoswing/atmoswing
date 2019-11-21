@@ -29,7 +29,7 @@
 #ifndef AS_PREDICTAND_H
 #define AS_PREDICTAND_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asCatalogPredictands;
 

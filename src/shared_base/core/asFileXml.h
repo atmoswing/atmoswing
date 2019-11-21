@@ -29,7 +29,7 @@
 #ifndef AS_FILE_XML_H
 #define AS_FILE_XML_H
 
-#include <asFile.h>
+#include "asFile.h"
 #include <wx/xml/xml.h>
 
 #include "asIncludes.h"

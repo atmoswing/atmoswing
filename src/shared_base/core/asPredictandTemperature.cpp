@@ -28,9 +28,9 @@
 
 #include "asPredictandTemperature.h"
 
-#include <asCatalogPredictands.h>
-#include <asFileNetcdf.h>
-#include <asTimeArray.h>
+#include "asCatalogPredictands.h"
+#include "asFileNetcdf.h"
+#include "asTimeArray.h"
 
 asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                  SpatialAggregation dataSpatialAggregation)

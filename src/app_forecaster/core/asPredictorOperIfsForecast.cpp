@@ -28,8 +28,8 @@
 
 #include "asPredictorOperIfsForecast.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorOperIfsForecast::asPredictorOperIfsForecast(const wxString &dataId) : asPredictorOper(dataId) {
   // Set the basic properties.

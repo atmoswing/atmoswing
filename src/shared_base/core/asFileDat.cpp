@@ -28,7 +28,7 @@
 
 #include "asFileDat.h"
 
-#include <asFileXml.h>
+#include "asFileXml.h"
 
 asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode) : asFileText(fileName, fileMode) {}
 

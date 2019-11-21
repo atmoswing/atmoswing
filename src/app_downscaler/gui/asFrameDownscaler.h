@@ -28,7 +28,7 @@
 #ifndef AS_FRAME_DOWNSCALER
 #define AS_FRAME_DOWNSCALER
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "AtmoswingDownscalerGui.h"
 #include "asLogWindow.h"

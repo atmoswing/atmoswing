@@ -28,7 +28,7 @@
 #ifndef AS_PARAMETERS_DOWNSCALING_H
 #define AS_PARAMETERS_DOWNSCALING_H
 
-#include <asParameters.h>
+#include "asParameters.h"
 
 #include "asIncludes.h"
 

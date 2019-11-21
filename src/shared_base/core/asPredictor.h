@@ -29,9 +29,9 @@
 #ifndef AS_PREDICTOR_H
 #define AS_PREDICTOR_H
 
-#include <asFileGrib.h>
-#include <asFileNetcdf.h>
-#include <asIncludes.h>
+#include "asFileGrib.h"
+#include "asFileNetcdf.h"
+#include "asIncludes.h"
 
 class asTimeArray;
 

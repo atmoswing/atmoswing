@@ -29,8 +29,8 @@
 #ifndef AS_FILE_PARAMETERS_OPTIMIZATION_H
 #define AS_FILE_PARAMETERS_OPTIMIZATION_H
 
-#include <asFileParameters.h>
-#include <asIncludes.h>
+#include "asFileParameters.h"
+#include "asIncludes.h"
 
 class asFileParametersOptimization : public asFileParameters {
  public:

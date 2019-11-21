@@ -29,9 +29,9 @@
 #ifndef AS_RESULTS_PARAMETERS_ARRAY_H
 #define AS_RESULTS_PARAMETERS_ARRAY_H
 
-#include <asIncludes.h>
-#include <asParametersScoring.h>
-#include <asResults.h>
+#include "asIncludes.h"
+#include "asParametersScoring.h"
+#include "asResults.h"
 
 class asResultsParametersArray : public asResults {
  public:

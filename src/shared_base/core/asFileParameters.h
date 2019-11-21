@@ -29,8 +29,8 @@
 #ifndef AS_FILE_PARAMETERS_H
 #define AS_FILE_PARAMETERS_H
 
-#include <asFileXml.h>
-#include <asIncludes.h>
+#include "asFileXml.h"
+#include "asIncludes.h"
 
 class asFileParameters : public asFileXml {
  public:

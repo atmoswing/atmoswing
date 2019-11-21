@@ -28,7 +28,7 @@
 
 #include "asResultsParametersArray.h"
 
-#include <asFileText.h>
+#include "asFileText.h"
 
 asResultsParametersArray::asResultsParametersArray() : asResults(), m_medianScore(NaNf) {}
 

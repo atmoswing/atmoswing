@@ -29,7 +29,7 @@
 #ifndef AS_SCORE_H
 #define AS_SCORE_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asScore : public wxObject {
  public:

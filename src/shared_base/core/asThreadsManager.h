@@ -29,7 +29,7 @@
 #ifndef AS_THREADS_MANAGER_H
 #define AS_THREADS_MANAGER_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asThread;
 

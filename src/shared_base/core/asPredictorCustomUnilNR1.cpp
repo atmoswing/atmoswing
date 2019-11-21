@@ -28,8 +28,8 @@
 
 #include "asPredictorCustomUnilNR1.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.

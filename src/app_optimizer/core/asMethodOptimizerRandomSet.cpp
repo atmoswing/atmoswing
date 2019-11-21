@@ -28,7 +28,7 @@
 
 #include "asMethodOptimizerRandomSet.h"
 
-#include <asThreadRandomSet.h>
+#include "asThreadRandomSet.h"
 
 #ifndef UNIT_TESTING
 

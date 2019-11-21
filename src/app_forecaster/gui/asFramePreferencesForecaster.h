@@ -29,8 +29,8 @@
 #ifndef AS_FRAME_PREFERENCES_FORECASTER
 #define AS_FRAME_PREFERENCES_FORECASTER
 
-#include <asBatchForecasts.h>
-#include <asIncludes.h>
+#include "asBatchForecasts.h"
+#include "asIncludes.h"
 
 #include "AtmoswingForecasterGui.h"
 

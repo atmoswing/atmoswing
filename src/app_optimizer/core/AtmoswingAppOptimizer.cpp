@@ -52,8 +52,8 @@
 
 IMPLEMENT_APP(AtmoswingAppOptimizer)
 
-#include <asFileText.h>
-#include <asMethodCalibratorSingle.h>
+#include "asFileText.h"
+#include "asMethodCalibratorSingle.h"
 
 #if wxUSE_GUI
 

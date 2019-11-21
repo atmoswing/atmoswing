@@ -28,7 +28,7 @@
 
 #include "asInternet.h"
 
-#include <asThreadInternetDownload.h>
+#include "asThreadInternetDownload.h"
 
 void asInternet::Init() {
   // Init cURL

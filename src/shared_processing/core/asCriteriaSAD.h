@@ -29,8 +29,8 @@
 #ifndef AS_CRITERIA_SAD_H
 #define AS_CRITERIA_SAD_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaSAD : public asCriteria {
  public:

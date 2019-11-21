@@ -26,9 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include <asFileText.h>
-#include <asScore.h>
-#include <asTotalScore.h>
+#include "asFileText.h"
+#include "asScore.h"
+#include "asTotalScore.h"
 #include <wx/filename.h>
 
 #include "gtest/gtest.h"

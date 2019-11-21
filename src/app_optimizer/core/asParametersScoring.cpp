@@ -28,7 +28,7 @@
 
 #include "asParametersScoring.h"
 
-#include <asFileParametersCalibration.h>
+#include "asFileParametersCalibration.h"
 
 asParametersScoring::asParametersScoring() : asParameters(), m_calibrationStart(NaNd), m_calibrationEnd(NaNd) {
   m_score.name = wxEmptyString;

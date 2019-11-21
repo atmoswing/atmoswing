@@ -28,7 +28,7 @@
 #ifndef AS_METHOD_CALIBRATOR_SINGLE_ONLY_DATES_H
 #define AS_METHOD_CALIBRATOR_SINGLE_ONLY_DATES_H
 
-#include <asMethodCalibrator.h>
+#include "asMethodCalibrator.h"
 
 class asMethodCalibratorSingleOnlyDates : public asMethodCalibrator {
  public:

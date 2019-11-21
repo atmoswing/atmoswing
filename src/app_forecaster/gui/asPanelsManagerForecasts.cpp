@@ -28,7 +28,7 @@
 
 #include "asPanelsManagerForecasts.h"
 
-#include <asPanelForecast.h>
+#include "asPanelForecast.h"
 
 asPanelsManagerForecasts::asPanelsManagerForecasts() : asPanelsManager() {}
 

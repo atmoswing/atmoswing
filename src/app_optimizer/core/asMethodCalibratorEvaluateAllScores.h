@@ -29,7 +29,7 @@
 #ifndef AS_METHOD_CALIBRATOR_EVALUATE_ALL_SCORES_H
 #define AS_METHOD_CALIBRATOR_EVALUATE_ALL_SCORES_H
 
-#include <asMethodCalibrator.h>
+#include "asMethodCalibrator.h"
 
 class asMethodCalibratorEvaluateAllScores : public asMethodCalibrator {
  public:

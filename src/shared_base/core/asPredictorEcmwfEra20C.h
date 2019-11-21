@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_ECMWF_ERA20C_H
 #define AS_PREDICTOR_ECMWF_ERA20C_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

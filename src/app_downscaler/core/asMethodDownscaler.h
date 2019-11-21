@@ -28,7 +28,7 @@
 #ifndef AS_METHOD_DOWNSCALER_H
 #define AS_METHOD_DOWNSCALER_H
 
-#include <asMethodStandard.h>
+#include "asMethodStandard.h"
 
 #include <utility>
 

@@ -28,7 +28,7 @@
 #ifndef AS_POSTPROCESSOR_H
 #define AS_POSTPROCESSOR_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asParametersScoring;
 

@@ -29,7 +29,7 @@
 #ifndef AS_PROCESSOR_SCORE_H
 #define AS_PROCESSOR_SCORE_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asTimeArray;
 

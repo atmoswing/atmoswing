@@ -29,8 +29,8 @@
 #ifndef AS_AREA_COMPOSITE_H
 #define AS_AREA_COMPOSITE_H
 
-#include <asArea.h>
-#include <asIncludes.h>
+#include "asArea.h"
+#include "asIncludes.h"
 
 class asAreaComp : public asArea {
  public:

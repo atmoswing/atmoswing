@@ -28,10 +28,10 @@
 
 #include "asThreadGetAnalogsDates.h"
 
-#include <asCriteria.h>
-#include <asPredictor.h>
-#include <asProcessor.h>
-#include <asTimeArray.h>
+#include "asCriteria.h"
+#include "asPredictor.h"
+#include "asProcessor.h"
+#include "asTimeArray.h"
 
 #include <utility>
 

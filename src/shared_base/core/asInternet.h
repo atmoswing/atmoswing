@@ -29,7 +29,7 @@
 #ifndef AS_INTERNET_H
 #define AS_INTERNET_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 #include <curl/curl.h>
 
 class asInternet : public wxObject {

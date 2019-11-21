@@ -29,8 +29,8 @@
 #ifndef AS_TOTAL_SCORE_RMSE_H
 #define AS_TOTAL_SCORE_RMSE_H
 
-#include <asIncludes.h>
-#include <asTotalScoreMSE.h>
+#include "asIncludes.h"
+#include "asTotalScoreMSE.h"
 
 class asTotalScoreRMSE : public asTotalScoreMSE {
  public:

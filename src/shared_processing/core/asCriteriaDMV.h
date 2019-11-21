@@ -28,8 +28,8 @@
 #ifndef AS_CRITERIA_DMV_H
 #define AS_CRITERIA_DMV_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaDMV : public asCriteria {
  public:

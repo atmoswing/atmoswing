@@ -29,10 +29,10 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 #define AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 
-#include <asIncludes.h>
-#include <asMethodOptimizerRandomSet.h>
-#include <asParametersOptimization.h>
-#include <asThread.h>
+#include "asIncludes.h"
+#include "asMethodOptimizerRandomSet.h"
+#include "asParametersOptimization.h"
+#include "asThread.h"
 
 class asThreadRandomSet : public asThread {
  public:

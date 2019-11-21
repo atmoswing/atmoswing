@@ -27,8 +27,8 @@
 
 #include "asPredictorEcmwfEra20C.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.

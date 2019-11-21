@@ -28,7 +28,7 @@
 
 #include "asCatalogPredictands.h"
 
-#include <asFileXml.h>
+#include "asFileXml.h"
 
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
     : wxObject(),

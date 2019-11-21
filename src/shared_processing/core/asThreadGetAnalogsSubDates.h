@@ -29,9 +29,9 @@
 #ifndef AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
 #define AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
 
-#include <asIncludes.h>
-#include <asParameters.h>
-#include <asThread.h>
+#include "asIncludes.h"
+#include "asParameters.h"
+#include "asThread.h"
 
 class asPredictor;
 

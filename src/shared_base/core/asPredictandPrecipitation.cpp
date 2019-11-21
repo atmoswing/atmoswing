@@ -28,9 +28,9 @@
 
 #include "asPredictandPrecipitation.h"
 
-#include <asCatalogPredictands.h>
-#include <asFileNetcdf.h>
-#include <asTimeArray.h>
+#include "asCatalogPredictands.h"
+#include "asFileNetcdf.h"
+#include "asTimeArray.h"
 
 asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                      SpatialAggregation dataSpatialAggregation)

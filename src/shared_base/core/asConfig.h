@@ -29,7 +29,7 @@
 #ifndef AS_CONFIG_H
 #define AS_CONFIG_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "wx/fileconf.h"  // wxFileConfig
 

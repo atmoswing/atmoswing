@@ -29,7 +29,7 @@
 #ifndef AS_METHOD_OPTIMIZER_RANDOM_SET_H
 #define AS_METHOD_OPTIMIZER_RANDOM_SET_H
 
-#include <asMethodOptimizer.h>
+#include "asMethodOptimizer.h"
 
 class asMethodOptimizerRandomSet : public asMethodOptimizer {
  public:

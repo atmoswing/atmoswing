@@ -29,8 +29,8 @@
 #ifndef AS_PREDICTOR_OPER_IFS_FORECAST_H
 #define AS_PREDICTOR_OPER_IFS_FORECAST_H
 
-#include <asIncludes.h>
-#include <asPredictorEcmwfIfsGrib.h>
+#include "asIncludes.h"
+#include "asPredictorEcmwfIfsGrib.h"
 
 #include "asPredictorOper.h"
 

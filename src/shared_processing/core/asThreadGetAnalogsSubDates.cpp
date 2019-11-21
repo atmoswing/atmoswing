@@ -28,9 +28,9 @@
 
 #include "asThreadGetAnalogsSubDates.h"
 
-#include <asCriteria.h>
-#include <asPredictor.h>
-#include <asTimeArray.h>
+#include "asCriteria.h"
+#include "asPredictor.h"
+#include "asTimeArray.h"
 
 #include <utility>
 

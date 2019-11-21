@@ -28,8 +28,8 @@
 #ifndef AS_WORKSPACE_H
 #define AS_WORKSPACE_H
 
-#include <asFileWorkspace.h>
-#include <asIncludes.h>
+#include "asFileWorkspace.h"
+#include "asIncludes.h"
 
 #if wxUSE_GUI
 

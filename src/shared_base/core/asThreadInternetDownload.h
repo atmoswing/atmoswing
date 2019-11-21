@@ -29,9 +29,9 @@
 #ifndef AS_THREAD_INTERNET_DOWNLOAD_H
 #define AS_THREAD_INTERNET_DOWNLOAD_H
 
-#include <asIncludes.h>
-#include <asInternet.h>
-#include <asThread.h>
+#include "asIncludes.h"
+#include "asInternet.h"
+#include "asThread.h"
 
 class asThreadInternetDownload : public asThread {
  public:

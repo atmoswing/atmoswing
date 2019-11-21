@@ -29,8 +29,8 @@
 #ifndef AS_CRITERIA_MD_H
 #define AS_CRITERIA_MD_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaMD : public asCriteria {
  public:

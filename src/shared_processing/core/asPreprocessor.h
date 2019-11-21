@@ -29,7 +29,7 @@
 #ifndef AS_PREPROCESSOR_H
 #define AS_PREPROCESSOR_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asPredictor;
 

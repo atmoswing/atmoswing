@@ -28,8 +28,8 @@
 #ifndef AS_BATCH_FORECASTS_H
 #define AS_BATCH_FORECASTS_H
 
-#include <asFileBatchForecasts.h>
-#include <asIncludes.h>
+#include "asFileBatchForecasts.h"
+#include "asIncludes.h"
 
 class asBatchForecasts : public wxObject {
  public:

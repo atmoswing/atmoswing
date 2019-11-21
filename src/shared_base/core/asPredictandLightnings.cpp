@@ -28,9 +28,9 @@
 
 #include "asPredictandLightnings.h"
 
-#include <asCatalogPredictands.h>
-#include <asFileNetcdf.h>
-#include <asTimeArray.h>
+#include "asCatalogPredictands.h"
+#include "asFileNetcdf.h"
+#include "asTimeArray.h"
 
 asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                SpatialAggregation dataSpatialAggregation)

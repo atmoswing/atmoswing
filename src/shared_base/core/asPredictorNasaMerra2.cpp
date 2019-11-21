@@ -27,8 +27,8 @@
 
 #include "asPredictorNasaMerra2.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString &dataId) : asPredictor(dataId) {
   // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl

@@ -28,7 +28,7 @@
 
 #include "asMethodOptimizerGeneticAlgorithms.h"
 
-#include <asThreadGeneticAlgorithms.h>
+#include "asThreadGeneticAlgorithms.h"
 #include <wx/dir.h>
 
 #include "asFileText.h"

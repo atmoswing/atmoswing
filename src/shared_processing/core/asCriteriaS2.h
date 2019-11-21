@@ -28,8 +28,8 @@
 #ifndef AS_CRITERIA_S2_H
 #define AS_CRITERIA_S2_H
 
-#include <asCriteria.h>
-#include <asIncludes.h>
+#include "asCriteria.h"
+#include "asIncludes.h"
 
 class asCriteriaS2 : public asCriteria {
  public:

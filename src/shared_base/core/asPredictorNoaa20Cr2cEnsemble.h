@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_NOAA_20CR2C_ENSEMBLE_H
 #define AS_PREDICTOR_NOAA_20CR2C_ENSEMBLE_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

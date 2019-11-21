@@ -28,8 +28,8 @@
 #ifndef AS_PREDICTOR_JMA_JRA55_SUBSET_H
 #define AS_PREDICTOR_JMA_JRA55_SUBSET_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 

@@ -29,15 +29,15 @@
 
 #include "asProcessor.h"
 
-#include <asCriteria.h>
-#include <asParameters.h>
-#include <asPredictor.h>
-#include <asPreprocessor.h>
-#include <asResultsDates.h>
-#include <asResultsValues.h>
-#include <asThreadGetAnalogsDates.h>
-#include <asThreadGetAnalogsSubDates.h>
-#include <asTimeArray.h>
+#include "asCriteria.h"
+#include "asParameters.h"
+#include "asPredictor.h"
+#include "asPreprocessor.h"
+#include "asResultsDates.h"
+#include "asResultsValues.h"
+#include "asThreadGetAnalogsDates.h"
+#include "asThreadGetAnalogsSubDates.h"
+#include "asTimeArray.h"
 
 #ifdef APP_FORECASTER
 #include <AtmoswingAppForecaster.h>

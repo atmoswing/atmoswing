@@ -29,8 +29,8 @@
 #ifndef AS_PREDICTAND_PRECIPITATION_H
 #define AS_PREDICTAND_PRECIPITATION_H
 
-#include <asIncludes.h>
-#include <asPredictand.h>
+#include "asIncludes.h"
+#include "asPredictand.h"
 
 class asPredictandPrecipitation : public asPredictand {
  public:

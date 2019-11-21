@@ -29,8 +29,8 @@
 #ifndef AS_AREA_COMPOSITE_REGULAR_GRID_H
 #define AS_AREA_COMPOSITE_REGULAR_GRID_H
 
-#include <asAreaCompGrid.h>
-#include <asIncludes.h>
+#include "asAreaCompGrid.h"
+#include "asIncludes.h"
 
 class asAreaCompRegGrid : public asAreaCompGrid {
  public:

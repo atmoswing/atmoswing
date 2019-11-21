@@ -29,7 +29,7 @@
 #ifndef AS_PARAMETERS_OPTIMIZATION_GAS_H
 #define AS_PARAMETERS_OPTIMIZATION_GAS_H
 
-#include <asParametersOptimization.h>
+#include "asParametersOptimization.h"
 
 #include "asIncludes.h"
 

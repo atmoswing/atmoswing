@@ -29,7 +29,7 @@
 #ifndef AS_PANELS_MANAGER_FORECASTS_H
 #define AS_PANELS_MANAGER_FORECASTS_H
 
-#include <asPanelsManager.h>
+#include "asPanelsManager.h"
 
 #include "asIncludes.h"
 

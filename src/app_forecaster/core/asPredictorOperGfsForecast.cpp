@@ -28,8 +28,8 @@
 
 #include "asPredictorOperGfsForecast.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) : asPredictorOper(dataId) {
   // Set the basic properties.

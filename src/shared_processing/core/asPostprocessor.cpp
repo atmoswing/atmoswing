@@ -26,7 +26,7 @@
  */
 
 /*
-#include <asParametersScoring.h>
+#include "asParametersScoring.h"
 
 
 a1f asPostprocessor::Postprocess(const a1f &analogsValues, const a1f &analogsCriteria, asParametersScoring &params)

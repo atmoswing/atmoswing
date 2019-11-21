@@ -29,8 +29,8 @@
 #ifndef AS_METHOD_OPTIMIZER_GENETIC_ALGORITHMS_H
 #define AS_METHOD_OPTIMIZER_GENETIC_ALGORITHMS_H
 
-#include <asMethodOptimizer.h>
-#include <asParametersOptimizationGAs.h>
+#include "asMethodOptimizer.h"
+#include "asParametersOptimizationGAs.h"
 
 class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
  public:

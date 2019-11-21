@@ -29,8 +29,8 @@
 #ifndef AS_PREDICTOR_CUSTOM_LTHE_NR1_H
 #define AS_PREDICTOR_CUSTOM_LTHE_NR1_H
 
-#include <asIncludes.h>
-#include <asPredictorCustomUnilNR1.h>
+#include "asIncludes.h"
+#include "asPredictorCustomUnilNR1.h"
 
 class asArea;
 

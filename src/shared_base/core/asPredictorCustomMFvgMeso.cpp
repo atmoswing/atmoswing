@@ -27,8 +27,8 @@
 
 #include "asPredictorCustomMFvgMeso.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorCustomMFvgMeso::asPredictorCustomMFvgMeso(const wxString &dataId) : asPredictorCustomMFvgSynop(dataId) {
   // Set the basic properties.

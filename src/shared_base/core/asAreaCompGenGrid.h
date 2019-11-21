@@ -28,8 +28,8 @@
 #ifndef AS_AREA_COMPOSITE_GEN_GRID_H
 #define AS_AREA_COMPOSITE_GEN_GRID_H
 
-#include <asAreaCompGrid.h>
-#include <asIncludes.h>
+#include "asAreaCompGrid.h"
+#include "asIncludes.h"
 
 class asAreaCompGenGrid : public asAreaCompGrid {
  public:

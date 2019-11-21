@@ -29,9 +29,9 @@
 #ifndef AS_RESULTS_FORECAST_H
 #define AS_RESULTS_FORECAST_H
 
-#include <asIncludes.h>
-#include <asParametersForecast.h>
-#include <asResults.h>
+#include "asIncludes.h"
+#include "asParametersForecast.h"
+#include "asResults.h"
 
 class asResultsForecast : public asResults {
  public:

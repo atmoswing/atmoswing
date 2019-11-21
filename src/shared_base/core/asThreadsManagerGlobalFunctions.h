@@ -28,7 +28,7 @@
 #ifndef AS_THREADS_MANAGER_GLOBAL_FUNCTIONS_H
 #define AS_THREADS_MANAGER_GLOBAL_FUNCTIONS_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asThreadsManager;
 

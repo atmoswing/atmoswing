@@ -28,8 +28,8 @@
 
 #include "asResultsScoresMap.h"
 
-#include <asFileNetcdf.h>
-#include <asParametersCalibration.h>
+#include "asFileNetcdf.h"
+#include "asParametersCalibration.h"
 
 asResultsScoresMap::asResultsScoresMap() : asResults() {
   m_scores.reserve(100);

@@ -29,7 +29,7 @@
 #ifndef AS_METHOD_CALIBRATOR_SINGLE_ONLY_VALUES_H
 #define AS_METHOD_CALIBRATOR_SINGLE_ONLY_VALUES_H
 
-#include <asMethodCalibrator.h>
+#include "asMethodCalibrator.h"
 
 class asMethodCalibratorSingleOnlyValues : public asMethodCalibrator {
  public:

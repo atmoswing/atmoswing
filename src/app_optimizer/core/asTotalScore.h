@@ -29,8 +29,8 @@
 #ifndef AS_TOTAL_SCORE_H
 #define AS_TOTAL_SCORE_H
 
-#include <asIncludes.h>
-#include <asTimeArray.h>
+#include "asIncludes.h"
+#include "asTimeArray.h"
 
 class asTotalScore : public wxObject {
  public:

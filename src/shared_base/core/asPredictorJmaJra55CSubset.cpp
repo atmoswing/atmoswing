@@ -27,8 +27,8 @@
 
 #include "asPredictorJmaJra55CSubset.h"
 
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorJmaJra55CSubset::asPredictorJmaJra55CSubset(const wxString &dataId) : asPredictorJmaJra55Subset(dataId) {
   // Set the basic properties.

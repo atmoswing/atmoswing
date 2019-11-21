@@ -29,7 +29,7 @@
 
 #include "asTimeArray.h"
 
-#include <asPredictand.h>
+#include "asPredictand.h"
 #include <math.h>
 
 asTimeArray::asTimeArray(double start, double end, double timeStepHours, Mode mode)

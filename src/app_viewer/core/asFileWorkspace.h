@@ -28,8 +28,8 @@
 #ifndef AS_FILE_WORKSPACE_H
 #define AS_FILE_WORKSPACE_H
 
-#include <asFileXml.h>
-#include <asIncludes.h>
+#include "asFileXml.h"
+#include "asIncludes.h"
 
 class asFileWorkspace : public asFileXml {
  public:
