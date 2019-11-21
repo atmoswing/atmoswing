@@ -1,9 +1,12 @@
 Language: Cpp
+BasedOnStyle: Google
 TabWidth: 4
 IndentWidth: 4
 ColumnLimit: 120
-BreakBeforeBraces: Linux
-IndentCaseLabels: true
-AlignAfterOpenBracket: Align
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
-AllowShortFunctionsOnASingleLine: None
+AllowAllConstructorInitializersOnNextLine: false
+AllowShortFunctionsOnASingleLine: Empty
+
+
