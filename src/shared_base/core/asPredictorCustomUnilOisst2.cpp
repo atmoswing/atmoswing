@@ -28,13 +28,10 @@
 
 #include "asPredictorCustomUnilOisst2.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorCustomUnilOisst2::asPredictorCustomUnilOisst2(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorCustomUnilOisst2::asPredictorCustomUnilOisst2(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_Unil_OISST_v2";
     m_provider = "NOAA";
@@ -50,8 +47,7 @@ asPredictorCustomUnilOisst2::asPredictorCustomUnilOisst2(const wxString &dataId)
     m_fStr.hasLevelDim = false;
 }
 
-bool asPredictorCustomUnilOisst2::Init()
-{
+bool asPredictorCustomUnilOisst2::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("sst", false)) {
         m_parameter = SeaSurfaceTemperature;
@@ -72,15 +68,15 @@ bool asPredictorCustomUnilOisst2::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The provided data ID (%s) does not match any possible option in dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -90,18 +86,16 @@ bool asPredictorCustomUnilOisst2::Init()
     return true;
 }
 
-void asPredictorCustomUnilOisst2::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomUnilOisst2::ListFiles(asTimeArray &timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorCustomUnilOisst2::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    if (timeValue < 500 * 365) { // New format
-        timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorCustomUnilOisst2::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);               // hours to days
+    if (timeValue < 500 * 365) {                  // New format
+        timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                      // Old format
+        timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 
     return timeValue;

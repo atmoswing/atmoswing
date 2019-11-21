@@ -36,26 +36,17 @@
 
 #endif
 
-asMethodOptimizerRandomSet::asMethodOptimizerRandomSet()
-        : asMethodOptimizer()
-{
+asMethodOptimizerRandomSet::asMethodOptimizerRandomSet() : asMethodOptimizer() {}
 
-}
+asMethodOptimizerRandomSet::~asMethodOptimizerRandomSet() {}
 
-asMethodOptimizerRandomSet::~asMethodOptimizerRandomSet()
-{
-    //dtor
-}
-
-bool asMethodOptimizerRandomSet::Manager()
-{
+bool asMethodOptimizerRandomSet::Manager() {
     // Seeds the random generator
     asInitRandom();
 
     // Load parameters
     asParametersOptimization params;
-    if (!params.LoadFromFile(m_paramsFilePath))
-        return false;
+    if (!params.LoadFromFile(m_paramsFilePath)) return false;
     if (!m_predictandStationIds.empty()) {
         params.SetPredictandStationIds(m_predictandStationIds);
     }
@@ -67,11 +58,11 @@ bool asMethodOptimizerRandomSet::Manager()
     vi stationId = params.GetPredictandStationIds();
     wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
     asResultsParametersArray results_all;
-    results_all.Init(wxString::Format(_("station_%s_tested_parameters"),
-                                      GetPredictandStationIdsList(stationId).c_str()));
+    results_all.Init(
+        wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     asResultsParametersArray results_best;
-    results_best.Init(wxString::Format(_("station_%s_best_parameters"),
-                                       GetPredictandStationIdsList(stationId).c_str()));
+    results_best.Init(
+        wxString::Format(_("station_%s_best_parameters"), GetPredictandStationIdsList(stationId).c_str()));
     wxString resultsXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     resultsXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                                GetPredictandStationIdsList(stationId).c_str()));
@@ -93,8 +84,7 @@ bool asMethodOptimizerRandomSet::Manager()
 
     // Load the Predictand DB
     wxLogVerbose(_("Loading the Predictand DB."));
-    if (!LoadPredictandDB(m_predictandDBFilePath))
-        return false;
+    if (!LoadPredictandDB(m_predictandDBFilePath)) return false;
     wxLogVerbose(_("Predictand DB loaded."));
 
     // Watch
@@ -106,8 +96,7 @@ bool asMethodOptimizerRandomSet::Manager()
     // Add threads when they become available
     while (m_iterator < m_paramsNb) {
 #ifndef UNIT_TESTING
-        if (g_responsive)
-            wxGetApp().Yield();
+        if (g_responsive) wxGetApp().Yield();
 #endif
         if (m_cancel) {
             return false;
@@ -131,12 +120,10 @@ bool asMethodOptimizerRandomSet::Manager()
                 firstRun = false;
 
 #ifndef UNIT_TESTING
-                if (g_responsive)
-                    wxGetApp().Yield();
+                if (g_responsive) wxGetApp().Yield();
 #endif
 
-                if (m_cancel)
-                    return false;
+                if (m_cancel) return false;
             }
         }
 
@@ -154,8 +141,8 @@ bool asMethodOptimizerRandomSet::Manager()
     // Check results
     for (int iCheck = 0; iCheck < m_scoresCalib.size(); iCheck++) {
         if (asIsNaN(m_scoresCalib[iCheck])) {
-            wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int) iCheck + 1,
-                       (int) m_scoresCalib.size());
+            wxLogError(_("NaN found in the scores (element %d on %d in m_scoresCalib)."), (int)iCheck + 1,
+                       (int)m_scoresCalib.size());
             return false;
         }
     }
@@ -176,15 +163,12 @@ bool asMethodOptimizerRandomSet::Manager()
 #endif
 
     // Print parameters in a text file
-    if (!results_all.Print())
-        return false;
+    if (!results_all.Print()) return false;
     SetBestParameters(results_best);
-    if (!results_best.Print())
-        return false;
+    if (!results_best.Print()) return false;
 
     // Generate xml file with the best parameters set
-    if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath))
-        return false;
+    if (!m_parameters[0].GenerateSimpleParametersFile(resultsXmlFilePath)) return false;
 
     // Delete preloaded data
     DeletePreloadedArchiveData();
@@ -192,8 +176,7 @@ bool asMethodOptimizerRandomSet::Manager()
     return true;
 }
 
-void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params)
-{
+void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params) {
     ThreadsManager().CritSectionConfig().Enter();
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Read("/MonteCarlo/RandomNb", &m_paramsNb, 1000);
@@ -203,7 +186,7 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     params.InitRandomValues();
 
     // Create the corresponding number of parameters
-    m_scoresCalib.resize((long) m_paramsNb);
+    m_scoresCalib.resize((long)m_paramsNb);
     for (int iVar = 0; iVar < m_paramsNb; iVar++) {
         asParametersOptimization paramsCopy;
         paramsCopy = params;
@@ -212,13 +195,11 @@ void asMethodOptimizerRandomSet::InitParameters(asParametersOptimization &params
     }
 }
 
-asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters()
-{
+asParametersOptimization *asMethodOptimizerRandomSet::GetNextParameters() {
     return &m_parameters[m_iterator];
 }
 
-bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &results)
-{
+bool asMethodOptimizerRandomSet::SetBestParameters(asResultsParametersArray &results) {
     wxASSERT(!m_parameters.empty());
     wxASSERT(!m_scoresCalib.empty());
 

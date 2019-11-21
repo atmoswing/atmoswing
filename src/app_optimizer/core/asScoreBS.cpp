@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,13 +28,9 @@
 
 #include "asScoreBS.h"
 
-asScoreBS::asScoreBS()
-        : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf)
-{
-}
+asScoreBS::asScoreBS() : asScore(asScore::BS, _("Brier score"), _("Brier score"), Asc, 0, NaNf) {}
 
-float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_threshold));
@@ -98,7 +94,6 @@ float asScoreBS::Assess(float obs, const a1f &values, int nbElements) const
     return (probaOccurrence - probaObs) * (probaOccurrence - probaObs);
 }
 
-bool asScoreBS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreBS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }

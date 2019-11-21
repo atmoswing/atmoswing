@@ -28,13 +28,10 @@
 
 #include "asPredictorCustomLtheNR1.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorCustomLtheNR1::asPredictorCustomLtheNR1(const wxString &dataId)
-        : asPredictorCustomUnilNR1(dataId)
-{
+asPredictorCustomLtheNR1::asPredictorCustomLtheNR1(const wxString &dataId) : asPredictorCustomUnilNR1(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_LTHE_NR1";
     m_provider = "NCEP/NCAR";
@@ -51,8 +48,7 @@ asPredictorCustomLtheNR1::asPredictorCustomLtheNR1(const wxString &dataId)
     m_fStr.hasLevelDim = true;
 }
 
-bool asPredictorCustomLtheNR1::Init()
-{
+bool asPredictorCustomLtheNR1::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("hgt_500hPa", false)) {
         m_parameter = GeopotentialHeight;
@@ -85,15 +81,15 @@ bool asPredictorCustomLtheNR1::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -103,18 +99,16 @@ bool asPredictorCustomLtheNR1::Init()
     return true;
 }
 
-void asPredictorCustomLtheNR1::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomLtheNR1::ListFiles(asTimeArray &timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorCustomLtheNR1::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    if (timeValue < 500 * 365) { // New format
-        timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorCustomLtheNR1::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);               // hours to days
+    if (timeValue < 500 * 365) {                  // New format
+        timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                      // Old format
+        timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 
     return timeValue;

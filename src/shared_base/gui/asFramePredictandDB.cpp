@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,19 +27,17 @@
 
 #include "asFramePredictandDB.h"
 
+#include "asPredictandLightnings.h"
 #include "asPredictandPrecipitation.h"
 #include "asPredictandTemperature.h"
-#include "asPredictandLightnings.h"
 
-asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
-        : asFramePredictandDBVirtual(parent, id)
-{
+asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id) : asFramePredictandDBVirtual(parent, id) {
     // Set the defaults
     wxConfigBase *pConfig = wxFileConfig::Get();
-    m_choiceDataParam->SetSelection((int) 0);
+    m_choiceDataParam->SetSelection((int)0);
 
     m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-    m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
+    m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
 
     m_filePickerCatalogPath->SetPath(pConfig->Read("/PredictandDBToolbox/CatalogPath", wxEmptyString));
     m_dirPickerDataDir->SetPath(pConfig->Read("/PredictandDBToolbox/PredictandDataDir", wxEmptyString));
@@ -52,8 +50,7 @@ asFramePredictandDB::asFramePredictandDB(wxWindow *parent, wxWindowID id)
 #endif
 }
 
-void asFramePredictandDB::OnClose(wxCloseEvent&)
-{
+void asFramePredictandDB::OnClose(wxCloseEvent &) {
     wxBusyCursor wait;
 
     // Save as defaults
@@ -71,13 +68,11 @@ void asFramePredictandDB::OnClose(wxCloseEvent&)
     pConfig->Flush();
 }
 
-void asFramePredictandDB::CloseFrame(wxCommandEvent &event)
-{
+void asFramePredictandDB::CloseFrame(wxCommandEvent &event) {
     Close();
 }
 
-void asFramePredictandDB::FixFrameSize()
-{
+void asFramePredictandDB::FixFrameSize() {
     int w = -1;
     int h = -1;
     GetSize(&w, &h);
@@ -94,27 +89,28 @@ void asFramePredictandDB::FixFrameSize()
     SetMaxSize(wxSize(w, h));
 }
 
-void asFramePredictandDB::OnDataSelection(wxCommandEvent &event)
-{
+void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
     Freeze();
 
     m_sizerProcessing->Clear();
     wxDELETE(m_panelProcessing);
 
     switch (m_choiceDataParam->GetSelection()) {
-        case 0: // precipitation
+        case 0:  // precipitation
         {
-            m_panelProcessing = new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-            m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
+            m_panelProcessing =
+                new asPanelProcessingPrecipitation(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
-        case 2: // lightnings
+        case 2:  // lightnings
         {
-            m_panelProcessing = new asPanelProcessingLightnings(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-            m_sizerProcessing->Add( m_panelProcessing, 1, wxALL|wxEXPAND, 5 );
+            m_panelProcessing =
+                new asPanelProcessingLightnings(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+            m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
-        default: // other
+        default:  // other
         {
             // Nothing to do
             break;
@@ -125,8 +121,7 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent &event)
     Thaw();
 }
 
-void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
-{
+void asFramePredictandDB::BuildDatabase(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     try {
@@ -159,32 +154,32 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 wxLogError(_("Wrong selection of the temporal resolution option."));
                 break;
             }
-            case 0: // 24 hours
+            case 0:  // 24 hours
             {
                 temporalResol = asPredictand::Daily;
                 break;
             }
-            case 1: // 6 hours
+            case 1:  // 6 hours
             {
                 temporalResol = asPredictand::SixHourly;
                 break;
             }
-            case 2: // Moving temporal window (1-hourly)
+            case 2:  // Moving temporal window (1-hourly)
             {
                 temporalResol = asPredictand::OneHourlyMTW;
                 break;
             }
-            case 3: // Moving temporal window (3-hourly)
+            case 3:  // Moving temporal window (3-hourly)
             {
                 temporalResol = asPredictand::ThreeHourlyMTW;
                 break;
             }
-            case 4: // Moving temporal window (6-hourly)
+            case 4:  // Moving temporal window (6-hourly)
             {
                 temporalResol = asPredictand::SixHourlyMTW;
                 break;
             }
-            case 5: // Moving temporal window (12-hourly)
+            case 5:  // Moving temporal window (12-hourly)
             {
                 temporalResol = asPredictand::TwelveHourlyMTW;
                 break;
@@ -200,22 +195,22 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 wxLogError(_("Wrong selection of the spatial aggregation option."));
                 break;
             }
-            case 0: // Station
+            case 0:  // Station
             {
                 spatialAggr = asPredictand::Station;
                 break;
             }
-            case 1: // Groupment
+            case 1:  // Groupment
             {
                 spatialAggr = asPredictand::Groupment;
                 break;
             }
-            case 2: // Catchment
+            case 2:  // Catchment
             {
                 spatialAggr = asPredictand::Catchment;
                 break;
             }
-            case 3: // Region
+            case 3:  // Region
             {
                 spatialAggr = asPredictand::Region;
                 break;
@@ -230,10 +225,10 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 wxLogError(_("Wrong selection of the data parameter option."));
                 break;
             }
-            case 0: // Precipitation
+            case 0:  // Precipitation
             {
                 wxASSERT(m_panelProcessing);
-                auto *panel = dynamic_cast<asPanelProcessingPrecipitation *> (m_panelProcessing);
+                auto *panel = dynamic_cast<asPanelProcessingPrecipitation *>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxReturnPeriod);
                 wxASSERT(panel->m_textCtrlReturnPeriod);
                 wxASSERT(panel->m_checkBoxSqrt);
@@ -256,17 +251,17 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
-            case 1: // Temperature
+            case 1:  // Temperature
             {
                 // Instantiate a predictand object
                 asPredictandTemperature predictand(asPredictand::AirTemperature, temporalResol, spatialAggr);
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
-            case 2: // Lightnings
+            case 2:  // Lightnings
             {
                 wxASSERT(m_panelProcessing);
-                auto *panel = dynamic_cast<asPanelProcessingLightnings *> (m_panelProcessing);
+                auto *panel = dynamic_cast<asPanelProcessingLightnings *>(m_panelProcessing);
                 wxASSERT(panel->m_checkBoxLog);
 
                 // Instantiate a predictand object
@@ -275,7 +270,7 @@ void asFramePredictandDB::BuildDatabase(wxCommandEvent &event)
                 predictand.BuildPredictandDB(catalogFilePath, pathDataDir, pathPatternsDir, pathDestinationDir);
                 break;
             }
-            case 3: // Other
+            case 3:  // Other
             {
                 wxLogError(_("Generic predictand database not yet implemented."));
                 break;

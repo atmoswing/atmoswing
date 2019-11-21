@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,47 +32,36 @@
 
 #include "images.h"
 
-
 BEGIN_EVENT_TABLE(asListBoxForecasts, wxTreeCtrl)
-    EVT_TREE_SEL_CHANGED(wxID_ANY, asListBoxForecasts::OnForecastSlctChange)
+EVT_TREE_SEL_CHANGED(wxID_ANY, asListBoxForecasts::OnForecastSlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECTION_CHANGED, wxCommandEvent);
 
-
 asForecastTreeItemData::asForecastTreeItemData(int methodRow, int forecastRow)
-        : wxTreeItemData(),
-          m_methodRow(methodRow),
-          m_forecastRow(forecastRow)
-{
-
-}
-
+    : wxTreeItemData(),
+      m_methodRow(methodRow),
+      m_forecastRow(forecastRow) {}
 
 asMessageForecastChoice::asMessageForecastChoice(int methodRow, int forecastRow)
-        : wxObject(),
-          m_methodRow(methodRow),
-          m_forecastRow(forecastRow)
-{
-}
-
+    : wxObject(),
+      m_methodRow(methodRow),
+      m_forecastRow(forecastRow) {}
 
 asListBoxForecasts::asListBoxForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id,
                                        const wxPoint &pos, const wxSize &size)
-        : wxTreeCtrl(parent, id, pos, size,
-                     wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_FULL_ROW_HIGHLIGHT |
-                     wxTR_NO_LINES | wxNO_BORDER, wxDefaultValidator),
-          m_forecastManager(forecastManager),
-          m_skipSlctChangeEvent(false)
-{
+    : wxTreeCtrl(parent, id, pos, size,
+                 wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_FULL_ROW_HIGHLIGHT | wxTR_NO_LINES |
+                     wxNO_BORDER,
+                 wxDefaultValidator),
+      m_forecastManager(forecastManager),
+      m_skipSlctChangeEvent(false) {
     CreateImageList();
     int indent = GetIndent();
-    if (indent > 16)
-        SetIndent(indent - 5);
+    if (indent > 16) SetIndent(indent - 5);
 }
 
-void asListBoxForecasts::CreateImageList()
-{
+void asListBoxForecasts::CreateImageList() {
     int size = 16 * g_ppiScaleDc;
 
     // Make an image list containing small icons
@@ -88,8 +77,7 @@ void asListBoxForecasts::CreateImageList()
     AssignImageList(images);
 }
 
-void asListBoxForecasts::Update()
-{
+void asListBoxForecasts::Update() {
     Clear();
 
     if (!GetRootItem().IsOk()) {
@@ -131,22 +119,20 @@ void asListBoxForecasts::Update()
                 auto *itemForecast = new asForecastTreeItemData(methodRow, forecastRow);
 
                 wxString name = forecast->GetSpecificTagDisplay();
-                if (name.IsEmpty())
-                    name = forecast->GetMethodIdDisplay();
+                if (name.IsEmpty()) name = forecast->GetMethodIdDisplay();
                 AppendItem(parentItemId, name, -1, -1, itemForecast);
             }
         }
     }
 }
 
-void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent &event)
-{
+void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent &event) {
     wxBusyCursor wait;
 
     wxTreeItemId itemId = event.GetItem();
 
     if (!m_skipSlctChangeEvent && itemId.IsOk()) {
-        auto *item = (asForecastTreeItemData *) GetItemData(itemId);
+        auto *item = (asForecastTreeItemData *)GetItemData(itemId);
 
         int methodRow = item->GetMethodRow();
         int forecastRow = item->GetForecastRow();
@@ -162,15 +148,13 @@ void asListBoxForecasts::OnForecastSlctChange(wxTreeEvent &event)
     }
 }
 
-void asListBoxForecasts::Clear()
-{
+void asListBoxForecasts::Clear() {
     m_skipSlctChangeEvent = true;
     DeleteAllItems();
     m_skipSlctChangeEvent = false;
 }
 
-void asListBoxForecasts::SetSelection(int methodRow, int forecastRow)
-{
+void asListBoxForecasts::SetSelection(int methodRow, int forecastRow) {
     m_skipSlctChangeEvent = true;
 
     // Look for the correct entry in the treectrl
@@ -203,8 +187,7 @@ void asListBoxForecasts::SetSelection(int methodRow, int forecastRow)
     m_skipSlctChangeEvent = false;
 }
 
-void asListBoxForecasts::SelectFirst()
-{
+void asListBoxForecasts::SelectFirst() {
     wxTreeItemId itemId = GetFirstVisibleItem();
     if (itemId.IsOk()) {
         SelectItem(itemId);

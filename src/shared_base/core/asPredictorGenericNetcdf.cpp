@@ -27,15 +27,12 @@
 
 #include "asPredictorGenericNetcdf.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-
-asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "GenericNetcdf";
     m_provider = "";
@@ -51,8 +48,7 @@ asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorGenericNetcdf::Init()
-{
+bool asPredictorGenericNetcdf::Init() {
     m_parameter = ParameterUndefined;
     m_parameterName = "Undefined";
     m_fileVarName = m_dataId;
@@ -61,8 +57,8 @@ bool asPredictorGenericNetcdf::Init()
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -72,8 +68,7 @@ bool asPredictorGenericNetcdf::Init()
     return true;
 }
 
-void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
 
@@ -122,8 +117,6 @@ void asPredictorGenericNetcdf::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorGenericNetcdf::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorGenericNetcdf::ConvertToMjd(double timeValue, double refValue) const {
     return timeValue;
 }
-

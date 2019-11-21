@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,18 +28,15 @@
 #ifndef AS_PARAMETERS_DOWNSCALING_H
 #define AS_PARAMETERS_DOWNSCALING_H
 
-#include "asIncludes.h"
 #include <asParameters.h>
+
+#include "asIncludes.h"
 
 class asFileParametersDownscaling;
 
-
-class asParametersDownscaling
-        : public asParameters
-{
-public:
-    typedef struct
-    {
+class asParametersDownscaling : public asParameters {
+   public:
+    typedef struct {
         wxString datasetId;
         wxString dataId;
         int membersNb;
@@ -50,8 +47,7 @@ public:
 
     typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
 
-    typedef struct
-    {
+    typedef struct {
         VectorParamsPredictorsProj predictors;
     } ParamsStepProj;
 
@@ -73,42 +69,35 @@ public:
 
     void InitValues();
 
-    void SetModel(const wxString &model)
-    {
+    void SetModel(const wxString &model) {
         m_model = model;
     }
 
-    wxString GetModel() const
-    {
+    wxString GetModel() const {
         return m_model;
     }
 
-    void SetScenario(const wxString &scenario)
-    {
+    void SetScenario(const wxString &scenario) {
         m_scenario = scenario;
     }
 
-    wxString GetScenario() const
-    {
+    wxString GetScenario() const {
         return m_scenario;
     }
 
-    vvi GetPredictandStationIdsVector() const
-    {
+    vvi GetPredictandStationIdsVector() const {
         return m_predictandStationIdsVect;
     }
 
     bool SetPredictandStationIdsVector(vvi val);
 
-    wxString GetPredictorProjDatasetId(int iStep, int iPtor) const
-    {
+    wxString GetPredictorProjDatasetId(int iStep, int iPtor) const {
         return m_stepsProj[iStep].predictors[iPtor].datasetId;
     }
 
     bool SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPredictorProjDataId(int iStep, int iPtor) const
-    {
+    wxString GetPredictorProjDataId(int iStep, int iPtor) const {
         return m_stepsProj[iStep].predictors[iPtor].dataId;
     }
 
@@ -122,65 +111,55 @@ public:
 
     bool SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    void SetPredictorProjMembersNb(int iStep, int iPtor, int val)
-    {
+    void SetPredictorProjMembersNb(int iStep, int iPtor, int val) {
         m_stepsProj[iStep].predictors[iPtor].membersNb = val;
     }
 
-    int GetPredictorProjMembersNb(int iStep, int iPtor) const
-    {
+    int GetPredictorProjMembersNb(int iStep, int iPtor) const {
         return m_stepsProj[iStep].predictors[iPtor].membersNb;
     }
 
-    void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val)
-    {
+    void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val) {
         m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb = val;
     }
 
-    int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const
-    {
+    int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const {
         return m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
     }
 
-    bool SetDownscalingYearStart(int val)
-    {
+    bool SetDownscalingYearStart(int val) {
         m_downscalingStart = asTime::GetMJD(val, 1, 1);
         return true;
     }
 
-    bool SetDownscalingYearEnd(int val)
-    {
+    bool SetDownscalingYearEnd(int val) {
         m_downscalingEnd = asTime::GetMJD(val, 12, 31);
         return true;
     }
 
-    double GetDownscalingStart() const
-    {
+    double GetDownscalingStart() const {
         return m_downscalingStart;
     }
 
-    bool SetDownscalingStart(wxString val)
-    {
+    bool SetDownscalingStart(wxString val) {
         m_downscalingStart = asTime::GetTimeFromString(val);
         return true;
     }
 
-    double GetDownscalingEnd() const
-    {
+    double GetDownscalingEnd() const {
         return m_downscalingEnd;
     }
 
-    bool SetDownscalingEnd(wxString val)
-    {
+    bool SetDownscalingEnd(wxString val) {
         m_downscalingEnd = asTime::GetTimeFromString(val);
         return true;
     }
 
-protected:
+   protected:
     double m_downscalingStart;
     double m_downscalingEnd;
 
-private:
+   private:
     wxString m_model;
     wxString m_scenario;
     vvi m_predictandStationIdsVect;
@@ -196,7 +175,6 @@ private:
                                      const wxXmlNode *nodeParam);
 
     bool ParseAnalogValuesParams(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
-
 };
 
 #endif

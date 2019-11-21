@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,14 +28,14 @@
  */
 
 #include "asFileGrib.h"
+
 #include "eccodes.h"
 
 asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
-        : asFile(fileName, fileMode),
-          m_filtPtr(nullptr),
-          m_version(0),
-          m_index(asNOT_FOUND)
-{
+    : asFile(fileName, fileMode),
+      m_filtPtr(nullptr),
+      m_version(0),
+      m_index(asNOT_FOUND) {
     switch (fileMode) {
         case (ReadOnly):
             // OK
@@ -44,31 +44,26 @@ asFileGrib::asFileGrib(const wxString &fileName, const FileMode &fileMode)
         case (Replace):
         case (New):
         case (Append):
-        default :
+        default:
             asThrowException(_("Grib files edition is not implemented."));
     }
 }
 
-asFileGrib::~asFileGrib()
-{
+asFileGrib::~asFileGrib() {
     Close();
 }
 
-bool asFileGrib::Open()
-{
-    if (!Find())
-        return false;
+bool asFileGrib::Open() {
+    if (!Find()) return false;
 
-    if (!OpenDataset())
-        return false;
+    if (!OpenDataset()) return false;
 
     m_opened = true;
 
     return true;
 }
 
-bool asFileGrib::Close()
-{
+bool asFileGrib::Close() {
     if (m_filtPtr) {
         fclose(m_filtPtr);
         m_filtPtr = nullptr;
@@ -77,15 +72,14 @@ bool asFileGrib::Close()
     return true;
 }
 
-bool asFileGrib::OpenDataset()
-{
+bool asFileGrib::OpenDataset() {
     // Filepath
     wxString filePath = m_fileName.GetFullPath();
 
     // Open file
     m_filtPtr = fopen(filePath.mb_str(), "rb");
 
-    if (!m_filtPtr) // Failed
+    if (!m_filtPtr)  // Failed
     {
         wxLogError(_("The opening of the grib file failed."));
         wxFAIL;
@@ -96,8 +90,7 @@ bool asFileGrib::OpenDataset()
     return ParseStructure();
 }
 
-bool asFileGrib::ParseStructure()
-{
+bool asFileGrib::ParseStructure() {
     int err = 0;
     codes_handle *h;
 
@@ -129,14 +122,13 @@ bool asFileGrib::ParseStructure()
     return CheckGribErrorCode(err);
 }
 
-void asFileGrib::ExtractTime(codes_handle *h)
-{
+void asFileGrib::ExtractTime(codes_handle *h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/2/
 
     // Get reference date
     size_t dataDateLength = 20;
     char *buffer1 = NULL;
-    buffer1 = (char *) malloc(dataDateLength * sizeof(char));
+    buffer1 = (char *)malloc(dataDateLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataDate", &buffer1[0], &dataDateLength), 0);
     wxString dataDate(buffer1, wxConvUTF8);
     free(buffer1);
@@ -145,7 +137,7 @@ void asFileGrib::ExtractTime(codes_handle *h)
 
     size_t dataTimeLength = 20;
     char *buffer2 = NULL;
-    buffer2 = (char *) malloc(dataTimeLength * sizeof(char));
+    buffer2 = (char *)malloc(dataTimeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "dataTime", &buffer2[0], &dataTimeLength), 0);
     wxString dataTime(buffer2, wxConvUTF8);
     free(buffer2);
@@ -177,18 +169,17 @@ void asFileGrib::ExtractTime(codes_handle *h)
         asThrowException(_("Error reading grib file: unlisted time unit."));
     }
 
-    double time = refDate + refTime/24 + forecastTime;
+    double time = refDate + refTime / 24 + forecastTime;
     m_times.push_back(time);
 }
 
-void asFileGrib::ExtractLevel(codes_handle *h)
-{
+void asFileGrib::ExtractLevel(codes_handle *h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/3/
 
     // Get level type
     size_t typeLength = 255;
     char *typeVal = NULL;
-    typeVal = (char *) malloc(typeLength * sizeof(char));
+    typeVal = (char *)malloc(typeLength * sizeof(char));
     CODES_CHECK(codes_get_string(h, "typeOfLevel", &typeVal[0], &typeLength), 0);
     wxString type(typeVal, wxConvUTF8);
     free(typeVal);
@@ -205,7 +196,7 @@ void asFileGrib::ExtractLevel(codes_handle *h)
     } else {
         asThrowException(_("Error reading grib file: type of level not found."));
     }
-    m_levelTypes.push_back((int) typeCode);
+    m_levelTypes.push_back((int)typeCode);
 
     // Get level value
     double level;
@@ -216,8 +207,7 @@ void asFileGrib::ExtractLevel(codes_handle *h)
     m_levels.push_back(level);
 }
 
-void asFileGrib::ExtractAxes(codes_handle *h)
-{
+void asFileGrib::ExtractAxes(codes_handle *h) {
     // Keys: https://apps.ecmwf.int/codes/grib/format/edition-independent/1/
     long latsNb;
     CODES_CHECK(codes_get_long(h, "Nj", &latsNb), 0);
@@ -242,23 +232,22 @@ void asFileGrib::ExtractAxes(codes_handle *h)
     m_yAxes.push_back(latAxis);
 }
 
-void asFileGrib::ExtractGribCode(codes_handle *h)
-{
+void asFileGrib::ExtractGribCode(codes_handle *h) {
     if (m_version == 2) {
         // Get discipline
         long discipline;
         CODES_CHECK(codes_get_long(h, "discipline", &discipline), 0);
-        m_parameterCode1.push_back((int) discipline);
+        m_parameterCode1.push_back((int)discipline);
 
         // Get category
         long category;
         CODES_CHECK(codes_get_long(h, "parameterCategory", &category), 0);
-        m_parameterCode2.push_back((int) category);
+        m_parameterCode2.push_back((int)category);
 
         // Get parameter number
         long number;
         CODES_CHECK(codes_get_long(h, "parameterNumber", &number), 0);
-        m_parameterCode3.push_back((int) number);
+        m_parameterCode3.push_back((int)number);
 
     } else if (m_version == 1) {
         m_parameterCode1.push_back(0);
@@ -266,17 +255,16 @@ void asFileGrib::ExtractGribCode(codes_handle *h)
         // Get category
         long category;
         CODES_CHECK(codes_get_long(h, "table2Version", &category), 0);
-        m_parameterCode2.push_back((int) category);
+        m_parameterCode2.push_back((int)category);
 
         // Get parameter number
         long number;
         CODES_CHECK(codes_get_long(h, "indicatorOfParameter", &number), 0);
-        m_parameterCode3.push_back((int) number);
+        m_parameterCode3.push_back((int)number);
     }
 }
 
-bool asFileGrib::CheckGribErrorCode(int ierr) const
-{
+bool asFileGrib::CheckGribErrorCode(int ierr) const {
     if (ierr == CODES_SUCCESS) {
         return true;
     }
@@ -286,8 +274,7 @@ bool asFileGrib::CheckGribErrorCode(int ierr) const
     return false;
 }
 
-bool asFileGrib::GetXaxis(a1d &uaxis) const
-{
+bool asFileGrib::GetXaxis(a1d &uaxis) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
     wxASSERT(m_xAxes.size() > m_index);
@@ -297,8 +284,7 @@ bool asFileGrib::GetXaxis(a1d &uaxis) const
     return true;
 }
 
-bool asFileGrib::GetYaxis(a1d &vaxis) const
-{
+bool asFileGrib::GetYaxis(a1d &vaxis) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
     wxASSERT(m_yAxes.size() > m_index);
@@ -308,8 +294,7 @@ bool asFileGrib::GetYaxis(a1d &vaxis) const
     return true;
 }
 
-bool asFileGrib::GetLevels(a1d &levels) const
-{
+bool asFileGrib::GetLevels(a1d &levels) const {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
@@ -331,8 +316,7 @@ bool asFileGrib::GetLevels(a1d &levels) const
     return true;
 }
 
-vd asFileGrib::GetRealTimeArray() const
-{
+vd asFileGrib::GetRealTimeArray() const {
     wxASSERT(m_opened);
 
     // Get independent time entries
@@ -349,15 +333,13 @@ vd asFileGrib::GetRealTimeArray() const
     return realTimeArray;
 }
 
-double asFileGrib::GetTimeStart() const
-{
+double asFileGrib::GetTimeStart() const {
     wxASSERT(m_opened);
 
     return GetRealTimeArray()[0];
 }
 
-double asFileGrib::GetTimeEnd() const
-{
+double asFileGrib::GetTimeEnd() const {
     wxASSERT(m_opened);
 
     vd realTimeArray = GetRealTimeArray();
@@ -365,15 +347,13 @@ double asFileGrib::GetTimeEnd() const
     return realTimeArray[realTimeArray.size() - 1];
 }
 
-int asFileGrib::GetTimeLength() const
-{
+int asFileGrib::GetTimeLength() const {
     wxASSERT(m_opened);
 
     return GetRealTimeArray().size();
 }
 
-double asFileGrib::GetTimeStepHours() const
-{
+double asFileGrib::GetTimeStepHours() const {
     wxASSERT(m_opened);
 
     vd realTimeArray = GetRealTimeArray();
@@ -385,8 +365,7 @@ double asFileGrib::GetTimeStepHours() const
     return 24 * (realTimeArray[1] - realTimeArray[0]);
 }
 
-vd asFileGrib::GetRealReferenceDateArray() const
-{
+vd asFileGrib::GetRealReferenceDateArray() const {
     wxASSERT(m_opened);
     wxASSERT(m_forecastTimes.size() == m_refDates.size());
 
@@ -404,8 +383,7 @@ vd asFileGrib::GetRealReferenceDateArray() const
     return refDateArray;
 }
 
-vd asFileGrib::GetRealReferenceTimeArray() const
-{
+vd asFileGrib::GetRealReferenceTimeArray() const {
     wxASSERT(m_opened);
     wxASSERT(m_forecastTimes.size() == m_refTimes.size());
 
@@ -423,8 +401,7 @@ vd asFileGrib::GetRealReferenceTimeArray() const
     return refTimeArray;
 }
 
-vd asFileGrib::GetRealForecastTimeArray() const
-{
+vd asFileGrib::GetRealForecastTimeArray() const {
     wxASSERT(m_opened);
 
     // Get independent time entries
@@ -441,33 +418,31 @@ vd asFileGrib::GetRealForecastTimeArray() const
     return forecastTimeArray;
 }
 
-bool asFileGrib::SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings)
-{
+bool asFileGrib::SetIndexPosition(const vi &gribCode, const float level, const bool useWarnings) {
     wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
     m_index = asNOT_FOUND;
     for (int i = 0; i < m_parameterCode3.size(); ++i) {
         if (m_parameterCode1[i] == gribCode[0] && m_parameterCode2[i] == gribCode[1] &&
-            m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] &&
-            m_levels[i] == level) {
-
+            m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3] && m_levels[i] == level) {
             m_index = i;
             return true;
         }
     }
 
     if (useWarnings) {
-        wxLogWarning(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+        wxLogWarning(_("The desired parameter / level (%.0f) was not found in the file %s."), level,
+                     m_fileName.GetFullName());
     } else {
-        wxLogVerbose(_("The desired parameter / level (%.0f) was not found in the file %s."), level, m_fileName.GetFullName());
+        wxLogVerbose(_("The desired parameter / level (%.0f) was not found in the file %s."), level,
+                     m_fileName.GetFullName());
     }
 
     return false;
 }
 
-bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode)
-{
+bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode) {
     wxASSERT(gribCode.size() == 4);
 
     // Find corresponding data
@@ -475,7 +450,6 @@ bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode)
     for (int i = 0; i < m_parameterCode3.size(); ++i) {
         if (m_parameterCode1[i] == gribCode[0] && m_parameterCode2[i] == gribCode[1] &&
             m_parameterCode3[i] == gribCode[2] && m_levelTypes[i] == gribCode[3]) {
-
             m_index = i;
             return true;
         }
@@ -486,8 +460,7 @@ bool asFileGrib::SetIndexPositionAnyLevel(const vi gribCode)
     return false;
 }
 
-bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue)
-{
+bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], float *pValue) {
     wxASSERT(m_opened);
     wxASSERT(m_index != asNOT_FOUND);
 
@@ -505,21 +478,20 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
     int iLonEnd = IndexStart[1] + IndexCount[1] - 1;
     int iLatStart = IndexStart[2];
     int iLatEnd = IndexStart[2] + IndexCount[2] - 1;
-    auto nLons = (int) m_xAxes[m_index].size();
-    auto nLats = (int) m_yAxes[m_index].size();
+    auto nLons = (int)m_xAxes[m_index].size();
+    auto nLats = (int)m_yAxes[m_index].size();
 
     int finalIndex = 0;
     vd fullTimeArray(IndexCount[0]);
 
     // Handle holes
     if (IndexCount[0] > 1) {
-
         // Find smallest time step
         double timeStep = 999;
-        for (int i = 0; i < timeArray.size()-1; ++i) {
-            if (timeArray[i+1] - timeArray[i] < timeStep) {
-                if (timeArray[i+1] - timeArray[i] > 0) {
-                    timeStep = timeArray[i+1] - timeArray[i];
+        for (int i = 0; i < timeArray.size() - 1; ++i) {
+            if (timeArray[i + 1] - timeArray[i] < timeStep) {
+                if (timeArray[i + 1] - timeArray[i] > 0) {
+                    timeStep = timeArray[i + 1] - timeArray[i];
                 }
             }
         }
@@ -537,12 +509,12 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
     int iTime = iTimeStart;
 
-    for (auto& date : fullTimeArray) {
+    for (auto &date : fullTimeArray) {
         wxASSERT(iTime < timeArray.size());
 
         if (date < timeArray[iTime]) {
             // Fill with NaNs
-            for (int i = 0; i < IndexCount[1]*IndexCount[2]; ++i) {
+            for (int i = 0; i < IndexCount[1] * IndexCount[2]; ++i) {
                 pValue[finalIndex] = NaNf;
                 finalIndex++;
             }
@@ -551,7 +523,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
 
         wxString refDate = asTime::GetStringTime(referenceDateArray[iTime], YYYYMMDD);
         char refDateChar[9];
-        strncpy(refDateChar, (const char*)refDate.mb_str(wxConvUTF8), 9);
+        strncpy(refDateChar, (const char *)refDate.mb_str(wxConvUTF8), 9);
         double refTime = referenceTimeArray[iTime];
         double forecastTime = forecastTimeArray[iTime];
 
@@ -561,7 +533,8 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
         int count = 0;
 
         if (m_version == 2) {
-            index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep", &err);
+            index = codes_index_new(0, "discipline,parameterCategory,parameterNumber,level,dataDate,dataTime,endStep",
+                                    &err);
         } else if (m_version == 1) {
             index = codes_index_new(0, "table2Version,indicatorOfParameter,level,dataDate,dataTime,endStep", &err);
         }
@@ -653,7 +626,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
                     if (iLat >= iLatStart && iLat <= iLatEnd) {
                         for (int iLon = 0; iLon < nLons; iLon++) {
                             if (iLon >= iLonStart && iLon <= iLonEnd) {
-                                pValue[finalIndex] = (float) values[iLat * nLons + iLon];
+                                pValue[finalIndex] = (float)values[iLat * nLons + iLon];
                                 finalIndex++;
                             }
                         }
@@ -664,7 +637,7 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
                     if (iLat >= iLatStart && iLat <= iLatEnd) {
                         for (int iLon = 0; iLon < nLons; iLon++) {
                             if (iLon >= iLonStart && iLon <= iLonEnd) {
-                                pValue[finalIndex] = (float) values[iLat * nLons + iLon];
+                                pValue[finalIndex] = (float)values[iLat * nLons + iLon];
                                 finalIndex++;
                             }
                         }

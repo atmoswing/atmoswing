@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,14 +29,10 @@
 #include "asScoreDF0.h"
 
 asScoreDF0::asScoreDF0()
-        : asScore(asScore::DF0, _("Difference of F(0)"),
-                  _("Absolute difference of the frequency of null precipitations."), Asc, 0, NaNf)
-{
+    : asScore(asScore::DF0, _("Difference of F(0)"), _("Absolute difference of the frequency of null precipitations."),
+              Asc, 0, NaNf) {}
 
-}
-
-float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -79,7 +75,7 @@ float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const
 
     // Find FxObs, fix xObs and integrate beyond limits
     float FxObs;
-    if (xObs > 0.0) // If precipitation
+    if (xObs > 0.0)  // If precipitation
     {
         FxObs = 1;
     } else {
@@ -94,7 +90,6 @@ float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const
     return std::abs((1.0f - F(indexLastZero)) - FxObs);
 }
 
-bool asScoreDF0::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreDF0::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }

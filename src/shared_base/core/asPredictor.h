@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,9 @@
 #ifndef AS_PREDICTOR_H
 #define AS_PREDICTOR_H
 
-#include <asIncludes.h>
 #include <asFileGrib.h>
 #include <asFileNetcdf.h>
+#include <asIncludes.h>
 
 class asTimeArray;
 
@@ -39,13 +39,9 @@ class asGeo;
 
 class asAreaCompGrid;
 
-
-class asPredictor
-        : public wxObject
-{
-public:
-    enum Parameter
-    {
+class asPredictor : public wxObject {
+   public:
+    enum Parameter {
         ParameterUndefined,
         AirTemperature,
         PotentialTemperature,
@@ -91,10 +87,35 @@ public:
         Other
     };
 
-    enum Unit
-    {
-        UnitUndefined, unitary, nb, mm, m, gpm, km, percent, fraction, degC, degK, Pa, Pa_s, g_kg, kg_kg, m_s, W_m2,
-        kg_m2, kg_m2_s, N_m2, m2_s2, m2_s, degKm2_kg_s, mm_d, J_kg, degK_m, per_s, J_m2
+    enum Unit {
+        UnitUndefined,
+        unitary,
+        nb,
+        mm,
+        m,
+        gpm,
+        km,
+        percent,
+        fraction,
+        degC,
+        degK,
+        Pa,
+        Pa_s,
+        g_kg,
+        kg_kg,
+        m_s,
+        W_m2,
+        kg_m2,
+        kg_m2_s,
+        N_m2,
+        m2_s2,
+        m2_s,
+        degKm2_kg_s,
+        mm_d,
+        J_kg,
+        degK_m,
+        per_s,
+        J_m2
     };
 
     explicit asPredictor(const wxString &dataId);
@@ -140,9 +161,8 @@ public:
 
     bool HasNaN() const;
 
-    vva2f &GetData()
-    {
-        wxASSERT((int) m_data.size() >= (int) m_time.size());
+    vva2f &GetData() {
+        wxASSERT((int)m_data.size() >= (int)m_time.size());
         wxASSERT(m_data.size() >= 1);
         wxASSERT(m_data[0].size() >= 1);
         wxASSERT(m_data[0][0].cols() > 0);
@@ -151,23 +171,19 @@ public:
         return m_data;
     }
 
-    wxString GetDataId() const
-    {
+    wxString GetDataId() const {
         return m_dataId;
     }
 
-    wxString GetProduct() const
-    {
+    wxString GetProduct() const {
         return m_product;
     }
 
-    Parameter GetParameter() const
-    {
+    Parameter GetParameter() const {
         return m_parameter;
     }
 
-    void SetDirectoryPath(wxString directoryPath)
-    {
+    void SetDirectoryPath(wxString directoryPath) {
         if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
             directoryPath.Append(wxFileName::GetPathSeparator());
         }
@@ -175,8 +191,7 @@ public:
         m_directoryPath = directoryPath;
     }
 
-    wxString GetDirectoryPath() const
-    {
+    wxString GetDirectoryPath() const {
         wxString directoryPath = m_directoryPath;
         if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
             directoryPath.Append(wxFileName::GetPathSeparator());
@@ -185,8 +200,7 @@ public:
         return directoryPath;
     }
 
-    wxString GetFullDirectoryPath() const
-    {
+    wxString GetFullDirectoryPath() const {
         wxString directoryPath = m_directoryPath;
         if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
             directoryPath.Append(wxFileName::GetPathSeparator());
@@ -200,77 +214,63 @@ public:
         return directoryPath;
     }
 
-    int GetTimeSize() const
-    {
-        return (int) m_time.size();
+    int GetTimeSize() const {
+        return (int)m_time.size();
     }
 
-    int GetMembersNb() const
-    {
+    int GetMembersNb() const {
         wxASSERT(!m_data.empty());
 
-        return (int) m_data[0].size();
+        return (int)m_data[0].size();
     }
 
-    int GetLatPtsnb() const
-    {
+    int GetLatPtsnb() const {
         return m_latPtsnb;
     }
 
-    int GetLonPtsnb() const
-    {
+    int GetLonPtsnb() const {
         return m_lonPtsnb;
     }
 
-    void SetStandardize(bool val = true)
-    {
+    void SetStandardize(bool val = true) {
         m_standardize = val;
     }
 
     static bool IsLatLon(const wxString &datasetId);
 
-    bool IsLatLon() const
-    {
+    bool IsLatLon() const {
         return m_isLatLon;
     }
 
-    bool IsPreprocessed() const
-    {
+    bool IsPreprocessed() const {
         return m_isPreprocessed;
     }
 
-    void SetIsPreprocessed(bool val)
-    {
+    void SetIsPreprocessed(bool val) {
         m_isPreprocessed = val;
     }
 
-    bool IsEnsemble() const
-    {
+    bool IsEnsemble() const {
         return m_isEnsemble;
     }
 
-    bool CanBeClipped() const
-    {
+    bool CanBeClipped() const {
         return m_canBeClipped;
     }
 
-    void SetCanBeClipped(bool val)
-    {
+    void SetCanBeClipped(bool val) {
         m_canBeClipped = val;
     }
 
-    wxString GetPreprocessMethod() const
-    {
+    wxString GetPreprocessMethod() const {
         return m_preprocessMethod;
     }
 
-    void SetPreprocessMethod(const wxString &val)
-    {
+    void SetPreprocessMethod(const wxString &val) {
         m_preprocessMethod = val;
     }
 
-    void SelectFirstMember()
-    {
+    void SelectFirstMember() {
         if (!m_isEnsemble) {
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
@@ -280,8 +280,7 @@ public:
         m_membersNb = 1;
     }
 
-    void SelectMember(int memberNum)
-    {
+    void SelectMember(int memberNum) {
         if (!m_isEnsemble) {
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
@@ -292,8 +291,7 @@ public:
         m_membersNb = 1;
     }
 
-    void SelectMembers(int memberNb)
-    {
+    void SelectMembers(int memberNb) {
         if (!m_isEnsemble) {
             asThrowException(_("Dataset is not an ensemble, you cannot select a member."));
         }
@@ -304,78 +302,64 @@ public:
         m_membersNb = memberNb;
     }
 
-    int GetMembersNb()
-    {
+    int GetMembersNb() {
         return wxMax(m_membersNb, 1);
     }
 
-    a1d GetLatAxis() const
-    {
+    a1d GetLatAxis() const {
         return m_axisLat;
     }
 
-    a1d GetLonAxis() const
-    {
+    a1d GetLonAxis() const {
         return m_axisLon;
     }
 
-    double GetXmin() const
-    {
+    double GetXmin() const {
         wxASSERT(m_axisLon.size() > 0);
 
         return m_axisLon[0];
     }
 
-    double GetYmin() const
-    {
+    double GetYmin() const {
         wxASSERT(m_axisLat.size() > 0);
 
         return wxMin(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
     }
 
-    double GetXmax() const
-    {
+    double GetXmax() const {
         wxASSERT(m_axisLon.size() > 0);
 
         return m_axisLon[m_axisLon.size() - 1];
     }
 
-    double GetYmax() const
-    {
+    double GetYmax() const {
         wxASSERT(m_axisLat.size() > 0);
 
         return wxMax(m_axisLat[m_axisLat.size() - 1], m_axisLat[0]);
     }
 
-    void SetWarnMissingLevels(bool val)
-    {
+    void SetWarnMissingLevels(bool val) {
         m_warnMissingLevels = val;
     }
 
-    void SetLevel(float val)
-    {
+    void SetLevel(float val) {
         m_level = val;
     }
 
-    void SetTimeArray(const a1d &time)
-    {
+    void SetTimeArray(const a1d &time) {
         m_time = time;
     }
 
-    void SetWasDumped(bool val)
-    {
+    void SetWasDumped(bool val) {
         m_wasDumped = val;
     }
 
-    bool WasDumped() const
-    {
+    bool WasDumped() const {
         return m_wasDumped;
     }
 
-
-protected:
-    struct FileStructure
-    {
+   protected:
+    struct FileStructure {
         wxString dimLatName;
         wxString dimLonName;
         wxString dimTimeName;
@@ -394,15 +378,13 @@ protected:
         double firstHour;
         size_t timeLength;
     };
-    struct FileIndexesArea
-    {
+    struct FileIndexesArea {
         int lonStart;
         int lonCount;
         int latStart;
         int latCount;
     };
-    struct FileIndexes
-    {
+    struct FileIndexes {
         std::vector<FileIndexesArea> areas;
         int lonStep;
         int latStep;
@@ -550,7 +532,7 @@ protected:
 
     bool IsPrecipitationRate() const;
 
-private:
+   private:
     wxString m_directoryPath;
 
     bool ExtractSpatialAxes(asFileNetcdf &ncFile);

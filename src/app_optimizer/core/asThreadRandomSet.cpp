@@ -30,22 +30,15 @@
 
 asThreadRandomSet::asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params,
                                      float *finalScoreCalib, vf *scoreClimatology)
-        : asThread(asThread::MethodOptimizerRandomSet),
-          m_optimizer(optimizer),
-          m_params(params),
-          m_finalScoreCalib(finalScoreCalib),
-          m_scoreClimatology(scoreClimatology)
-{
+    : asThread(asThread::MethodOptimizerRandomSet),
+      m_optimizer(optimizer),
+      m_params(params),
+      m_finalScoreCalib(finalScoreCalib),
+      m_scoreClimatology(scoreClimatology) {}
 
-}
+asThreadRandomSet::~asThreadRandomSet() {}
 
-asThreadRandomSet::~asThreadRandomSet()
-{
-    //dtor
-}
-
-wxThread::ExitCode asThreadRandomSet::Entry()
-{
+wxThread::ExitCode asThreadRandomSet::Entry() {
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsDates anaDates;
     asResultsDates anaDatesPrevious;

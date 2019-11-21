@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,6 +26,9 @@
  */
 
 #include "asCriteria.h"
+
+#include "asCriteriaDMV.h"
+#include "asCriteriaDSD.h"
 #include "asCriteriaMD.h"
 #include "asCriteriaRMSE.h"
 #include "asCriteriaRSE.h"
@@ -36,35 +39,28 @@
 #include "asCriteriaS2.h"
 #include "asCriteriaS2grads.h"
 #include "asCriteriaSAD.h"
-#include "asCriteriaDSD.h"
-#include "asCriteriaDMV.h"
 #include "asPredictor.h"
 
-
 asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order order)
-        : m_name(name),
-          m_fullName(fullname),
-          m_order(order),
-          m_minPointsNb(1),
-          m_scaleBest(0),
-          m_scaleWorst(Inff),
-          m_canUseInline(false),
-          m_checkNaNs(true)
-{
-
-}
+    : m_name(name),
+      m_fullName(fullname),
+      m_order(order),
+      m_minPointsNb(1),
+      m_scaleBest(0),
+      m_scaleWorst(Inff),
+      m_canUseInline(false),
+      m_checkNaNs(true) {}
 
 asCriteria::~asCriteria() = default;
 
-asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
-{
+asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
     if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
         // Teweles-Wobus
         asCriteria *criteria = new asCriteriaS1();
         return criteria;
     } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
         // Teweles-Wobus with Gaussian weights
-		asCriteria *criteria = new asCriteriaS1G();
+        asCriteria *criteria = new asCriteriaS1G();
         return criteria;
     } else if (criteriaString.CmpNoCase("S1grads") == 0) {
         // Teweles-Wobus on gradients
@@ -113,8 +109,7 @@ asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
     }
 }
 
-void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)
-{
+void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2) {
     if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
         m_checkNaNs = false;
         return;
@@ -125,8 +120,7 @@ void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)
     }
 }
 
-a2f asCriteria::GetGauss2D(int nY, int nX)
-{
+a2f asCriteria::GetGauss2D(int nY, int nX) {
     float A = 1.0;
     auto x0 = (nX + 1.0f) / 2.0f;
     auto y0 = (nY + 1.0f) / 2.0f;

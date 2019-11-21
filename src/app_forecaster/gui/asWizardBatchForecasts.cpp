@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,20 +26,16 @@
  */
 
 #include "asWizardBatchForecasts.h"
-#include "asFramePreferencesForecaster.h"
 
+#include "asFramePreferencesForecaster.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_BATCHFORECASTS, wxCommandEvent);
 
 asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id)
-        : asWizardBatchForecastsVirtual(parent, id),
-          m_batchForecasts(batchForecasts)
-{
+    : asWizardBatchForecastsVirtual(parent, id),
+      m_batchForecasts(batchForecasts) {}
 
-}
-
-void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event)
-{
+void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event) {
     wxString filePath = m_filePickerBatchFile->GetPath();
     m_batchForecasts->SetFilePath(filePath);
     m_batchForecasts->Save();
@@ -55,8 +51,7 @@ void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event)
     frame->Show();
 }
 
-void asWizardBatchForecasts::OnLoadExistingBatchForecasts(wxCommandEvent &event)
-{
+void asWizardBatchForecasts::OnLoadExistingBatchForecasts(wxCommandEvent &event) {
     wxCommandEvent eventOpen(asEVT_ACTION_OPEN_BATCHFORECASTS);
     GetParent()->ProcessWindowEvent(eventOpen);
     Close();

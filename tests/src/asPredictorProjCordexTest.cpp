@@ -26,18 +26,18 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictorProj.h"
+
 #include "asAreaCompGenGrid.h"
+#include "asPredictorProj.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorProjCordex, LoadEasy)
-{
+TEST(PredictorProjCordex, LoadEasy) {
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
+    asPredictorProj *predictor =
+        asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
 
     double xMin = 100;
     double xWidth = 100;
@@ -74,8 +74,7 @@ TEST(PredictorProjCordex, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCordex, LoadOver2Files)
-{
+TEST(PredictorProjCordex, LoadOver2Files) {
     double xMin = 100;
     double xWidth = 100;
     double yMin = 250;
@@ -91,7 +90,8 @@ TEST(PredictorProjCordex, LoadOver2Files)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
+    asPredictorProj *predictor =
+        asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
@@ -155,8 +155,7 @@ TEST(PredictorProjCordex, LoadOver2Files)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCordex, LoadAnotherModel)
-{
+TEST(PredictorProjCordex, LoadAnotherModel) {
     double xMin = -28.15;
     double xWidth = 0.1;
     double yMin = -19.52;
@@ -172,7 +171,8 @@ TEST(PredictorProjCordex, LoadAnotherModel)
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-cordex/");
 
-    asPredictorProj *predictor = asPredictorProj::GetInstance("CORDEX", "ICHEC-EC-EARTH", "rcp85", "psl", predictorDataDir);
+    asPredictorProj *predictor =
+        asPredictorProj::GetInstance("CORDEX", "ICHEC-EC-EARTH", "rcp85", "psl", predictorDataDir);
 
     ASSERT_TRUE(predictor != nullptr);
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);

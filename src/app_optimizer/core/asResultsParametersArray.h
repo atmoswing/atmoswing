@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,14 +30,11 @@
 #define AS_RESULTS_PARAMETERS_ARRAY_H
 
 #include <asIncludes.h>
-#include <asResults.h>
 #include <asParametersScoring.h>
+#include <asResults.h>
 
-
-class asResultsParametersArray
-        : public asResults
-{
-public:
+class asResultsParametersArray : public asResults {
+   public:
     asResultsParametersArray();
 
     virtual ~asResultsParametersArray();
@@ -48,7 +45,7 @@ public:
 
     void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring &params, const a1f& scoreCalib, const a1f& scoreValid);
+    void Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid);
 
     void ProcessMedianScores();
 
@@ -60,20 +57,18 @@ public:
 
     bool Print() const;
 
-    int GetCount() const
-    {
+    int GetCount() const {
         return int(m_parameters.size());
     }
 
-    float GetMedianScore() const
-    {
+    float GetMedianScore() const {
         return m_medianScore;
     }
 
-protected:
+   protected:
     void BuildFileName(const wxString &fileTag);
 
-private:
+   private:
     std::vector<asParametersScoring> m_parameters;
     vf m_scoresCalib;
     vf m_scoresValid;

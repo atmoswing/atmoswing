@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,8 +32,7 @@
 
 asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id,
                                                  const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebar(parent, id, pos, size, style)
-{
+    : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Forecasts"));
 
     // Forecasts controls
@@ -52,8 +51,8 @@ asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow *parent, asForecastMan
 
     wxSize displaySize = wxSize();
     displaySize.SetHeight(130 * g_ppiScaleDc);
-    m_forecastDisplayCtrl = new asListBoxForecastDisplay(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr,
-                                                         wxNO_BORDER);
+    m_forecastDisplayCtrl =
+        new asListBoxForecastDisplay(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr, wxNO_BORDER);
     subSizer->Add(m_forecastDisplayCtrl, 1, wxEXPAND, 5);
 
     m_quantilesCtrl = new asListBoxQuantiles(this, wxID_ANY, wxDefaultPosition, displaySize, 0, nullptr, wxNO_BORDER);
@@ -65,12 +64,10 @@ asPanelSidebarForecasts::asPanelSidebarForecasts(wxWindow *parent, asForecastMan
     m_sizerContent->Fit(this);
 }
 
-void asPanelSidebarForecasts::ClearForecasts()
-{
+void asPanelSidebarForecasts::ClearForecasts() {
     m_forecastsCtrl->Clear();
 }
 
-void asPanelSidebarForecasts::Update()
-{
+void asPanelSidebarForecasts::Update() {
     m_forecastsCtrl->Update();
 }

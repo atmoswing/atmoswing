@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepCfsrSubsetRegular, LoadEasy)
-{
+TEST(PredictorNcepCfsrSubsetRegular, LoadEasy) {
     double xMin = 10;
     double xWidth = 5;
     double yMin = 35;
@@ -113,8 +112,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadComposite)
-{
+TEST(PredictorNcepCfsrSubsetRegular, LoadComposite) {
     double xMin = -3;
     double xWidth = 5;
     double yMin = 35;
@@ -178,8 +176,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeft)
-{
+TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 5;
     double yMin = 35;
@@ -239,8 +236,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeftOn720) {
     double xMin = 360;
     double xWidth = 5;
     double yMin = 35;
@@ -300,8 +296,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderRight)
-{
+TEST(PredictorNcepCfsrSubsetRegular, LoadBorderRight) {
     double xMin = -3;
     double xWidth = 3;
     double yMin = 35;

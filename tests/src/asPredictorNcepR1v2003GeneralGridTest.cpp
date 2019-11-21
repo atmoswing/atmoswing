@@ -27,14 +27,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepR1v2003General, LoadEasy)
-{
+TEST(PredictorNcepR1v2003General, LoadEasy) {
     double xMin = 10;
     int xPtsNb = 5;
     double yMin = 35;
@@ -120,8 +119,7 @@ TEST(PredictorNcepR1v2003General, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadComposite)
-{
+TEST(PredictorNcepR1v2003General, LoadComposite) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -215,8 +213,7 @@ TEST(PredictorNcepR1v2003General, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadBorderLeft)
-{
+TEST(PredictorNcepR1v2003General, LoadBorderLeft) {
     double xMin = 0;
     int xPtsNb = 3;
     double yMin = 35;
@@ -282,8 +279,7 @@ TEST(PredictorNcepR1v2003General, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepR1v2003General, LoadBorderLeftOn720) {
     double xMin = 360;
     int xPtsNb = 3;
     double yMin = 35;
@@ -349,8 +345,7 @@ TEST(PredictorNcepR1v2003General, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadBorderRight)
-{
+TEST(PredictorNcepR1v2003General, LoadBorderRight) {
     double xMin = 350;
     int xPtsNb = 5;
     double yMin = 35;
@@ -422,8 +417,7 @@ TEST(PredictorNcepR1v2003General, LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadCompositeStepLon)
-{
+TEST(PredictorNcepR1v2003General, LoadCompositeStepLon) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -493,8 +487,7 @@ TEST(PredictorNcepR1v2003General, LoadCompositeStepLon)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadCompositeStepLonMoved)
-{
+TEST(PredictorNcepR1v2003General, LoadCompositeStepLonMoved) {
     double xMin = -7.5;
     int xPtsNb = 5;
     double yMin = 35;
@@ -549,8 +542,7 @@ TEST(PredictorNcepR1v2003General, LoadCompositeStepLonMoved)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLat)
-{
+TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLat) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -614,8 +606,7 @@ TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLat)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLatTime)
-{
+TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLatTime) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -668,8 +659,7 @@ TEST(PredictorNcepR1v2003General, LoadCompositeStepLonLatTime)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR1v2003General, SetData)
-{
+TEST(PredictorNcepR1v2003General, SetData) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -685,7 +675,6 @@ TEST(PredictorNcepR1v2003General, SetData)
     double timeStep = 24;
     asTimeArray timearray(start, end, timeStep, asTimeArray::Simple);
     timearray.Init();
-
 
     wxString predictorDataDir = wxFileName::GetCwd();
     predictorDataDir.Append("/files/data-ncep-r1/v2003/");

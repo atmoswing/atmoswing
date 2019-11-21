@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,22 +30,15 @@
 
 #include <asFileXml.h>
 
+asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode) : asFileText(fileName, fileMode) {}
 
-asFileDat::asFileDat(const wxString &fileName, const FileMode &fileMode)
-        : asFileText(fileName, fileMode)
-{
-
-}
-
-bool asFileDat::Close()
-{
+bool asFileDat::Close() {
     wxASSERT(m_opened);
 
     return true;
 }
 
-void asFileDat::InitPattern(asFileDat::Pattern &pattern)
-{
+void asFileDat::InitPattern(asFileDat::Pattern &pattern) {
     pattern.headerLines = 0;
     pattern.parseTime = false;
     pattern.timeYearBegin = 0;
@@ -62,8 +55,7 @@ void asFileDat::InitPattern(asFileDat::Pattern &pattern)
     pattern.dataEnd = 0;
 }
 
-asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxString &directory)
-{
+asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxString &directory) {
     asFileDat::Pattern pattern;
 
     InitPattern(pattern);
@@ -122,7 +114,6 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
 
                 wxXmlNode *nodeTime = nodeParam->GetChildren();
                 while (nodeTime) {
-
                     charStartStr = nodeTime->GetAttribute(attributeStart);
                     charStartStr.ToLong(&charStart);
                     charEndStr = nodeTime->GetAttribute(attributeEnd);
@@ -156,7 +147,6 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
 
                 wxXmlNode *nodeData = nodeParam->GetChildren();
                 while (nodeData) {
-
                     charStartStr = nodeData->GetAttribute(attributeStart);
                     charStartStr.ToLong(&charStart);
                     charEndStr = nodeData->GetAttribute(attributeEnd);
@@ -185,8 +175,7 @@ asFileDat::Pattern asFileDat::GetPattern(const wxString &fileName, const wxStrin
     return pattern;
 }
 
-asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTypeStr)
-{
+asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTypeStr) {
     if (structTypeStr.CmpNoCase("tabs_delimited") == 0) {
         return asFileDat::TabsDelimited;
     } else if (structTypeStr.CmpNoCase("constant_width") == 0) {
@@ -196,8 +185,7 @@ asFileDat::FileStructType asFileDat::StringToStructType(const wxString &structTy
     }
 }
 
-int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &pattern)
-{
+int asFileDat::GetPatternLineMaxCharWidth(const asFileDat::Pattern &pattern) {
     int maxwidth = 0;
 
     maxwidth = wxMax(maxwidth, pattern.timeYearEnd);

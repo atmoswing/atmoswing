@@ -16,12 +16,12 @@
 #endif
 
 #include "wx/clntdata.h"
-#include "wx/things/genergdi.h"
 #include "wx/plotctrl/plotdefs.h"
+#include "wx/things/genergdi.h"
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCurve;
 
-#ifdef GetYValue   // Visual Studio 7 defines this
+#ifdef GetYValue  // Visual Studio 7 defines this
 #undef GetYValue
 #endif
 
@@ -42,14 +42,12 @@ extern double LinearInterpolateX(double x0, double y0, double x1, double y1, dou
 // defines wxArrayDouble for use as necessary
 #if !wxCHECK_VERSION(2, 7, 1)
 WX_DEFINE_USER_EXPORTED_ARRAY_DOUBLE(double, wxArrayDouble, class WXDLLIMPEXP_PLOTCTRL);
-#endif // !wxCHECK_VERSION(2, 7, 1)
+#endif  // !wxCHECK_VERSION(2, 7, 1)
 
 // wxNullPlotBounds = wxRect2DDouble(0,0,0,0)
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxRect2DDouble) wxNullPlotBounds;
 
-
-enum wxPlotSymbol_Type
-{
+enum wxPlotSymbol_Type {
     wxPLOTSYMBOL_CIRCLE,
     wxPLOTSYMBOL_ELLIPSE,
     wxPLOTSYMBOL_RECTANGLE,
@@ -58,20 +56,17 @@ enum wxPlotSymbol_Type
     wxPLOTSYMBOL_MAXTYPE
 };
 
-enum wxPlotPen_Type
-{
-    wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE
-};
+enum wxPlotPen_Type { wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE };
 
-#define wxPLOTCURVE_OPTION_FILENAME      wxT("File.Name")
-#define wxPLOTCURVE_OPTION_EOLMODE       wxT("EOL.Mode")
-#define wxPLOTCURVE_OPTION_MODIFIED      wxT("Modified")
-#define wxPLOTCURVE_OPTION_HEADER        wxT("Header")
+#define wxPLOTCURVE_OPTION_FILENAME wxT("File.Name")
+#define wxPLOTCURVE_OPTION_EOLMODE wxT("EOL.Mode")
+#define wxPLOTCURVE_OPTION_MODIFIED wxT("Modified")
+#define wxPLOTCURVE_OPTION_HEADER wxT("Header")
 #define wxPLOTCURVE_OPTION_DATASEPARATOR wxT("Data.Separator")
 
 #define wxPLOTCURVE_DATASEPARATOR_SPACE wxT(" ")
 #define wxPLOTCURVE_DATASEPARATOR_COMMA wxT(",")
-#define wxPLOTCURVE_DATASEPARATOR_TAB   wxT("\t")
+#define wxPLOTCURVE_DATASEPARATOR_TAB wxT("\t")
 
 //----------------------------------------------------------------------------
 // wxPlotCurveRefData - the wxObject::m_refData used for wxPlotCurves
@@ -81,21 +76,17 @@ enum wxPlotPen_Type
 //     attach arbitrary data to it
 //----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData
-        : public wxObjectRefData, public wxClientDataContainer
-{
-public:
+class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public wxClientDataContainer {
+   public:
     wxPlotCurveRefData();
 
     wxPlotCurveRefData(const wxPlotCurveRefData &data);
 
-    virtual ~wxPlotCurveRefData()
-    {
-    }
+    virtual ~wxPlotCurveRefData() {}
 
     void Copy(const wxPlotCurveRefData &source);
 
-    wxRect2DDouble m_boundingRect; // bounds the curve or part to draw
+    wxRect2DDouble m_boundingRect;  // bounds the curve or part to draw
     // if width or height <= 0 then no bounds
 
     wxArrayGenericPen m_pens;
@@ -116,22 +107,17 @@ public:
 // A uncreated wxPlotCurve for reference
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotCurve) wxNullPlotCurve;
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotCurve
-        : public wxObject
-{
-public:
+class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
+   public:
     // see the remmed out code in this function if you subclass it
     wxPlotCurve();
 
-    virtual ~wxPlotCurve()
-    {
-    }
+    virtual ~wxPlotCurve() {}
 
     // Make a clone of this curve, same as increasing the ref count, but
     // the new object is created on the heap. See wxPlotFunction, wxPlotData
     // Note: Cannot be pure virtual because of the wxArray of wxPlotCurves.
-    virtual wxPlotCurve *Clone() const
-    {
+    virtual wxPlotCurve *Clone() const {
         return new wxPlotCurve;
     }
 
@@ -139,8 +125,7 @@ public:
     virtual bool Ok() const;
 
     // This *is* the output of the curve y = f(x)
-    virtual double GetY(double WXUNUSED(x)) const
-    {
+    virtual double GetY(double WXUNUSED(x)) const {
         return 0.0;
     }
 
@@ -172,7 +157,6 @@ public:
     wxBrush GetBrush() const;
 
     void SetBrush(const wxBrush &brush);
-
 
     //-------------------------------------------------------------------------
     // Get/Set Option names/values
@@ -225,30 +209,26 @@ public:
 
     //-------------------------------------------------------------------------
     // operators
-    bool operator==(const wxPlotCurve &plotCurve) const
-    {
+    bool operator==(const wxPlotCurve &plotCurve) const {
         return m_refData == plotCurve.m_refData;
     }
 
-    bool operator!=(const wxPlotCurve &plotCurve) const
-    {
+    bool operator!=(const wxPlotCurve &plotCurve) const {
         return m_refData != plotCurve.m_refData;
     }
 
-    wxPlotCurve &operator=(const wxPlotCurve &plotCurve)
-    {
-        if ((*this) != plotCurve)
-            Ref(plotCurve);
+    wxPlotCurve &operator=(const wxPlotCurve &plotCurve) {
+        if ((*this) != plotCurve) Ref(plotCurve);
         return *this;
     }
 
-private :
+   private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
     virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-DECLARE_DYNAMIC_CLASS(wxPlotCurve);
+    DECLARE_DYNAMIC_CLASS(wxPlotCurve);
 };
 
-#endif // _WX_PLOTCURVE_H_
+#endif  // _WX_PLOTCURVE_H_

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,8 +30,7 @@
 
 asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                        int flatAllowed, bool isLatLon)
-        : asArea()
-{
+    : asArea() {
     // Set the members
     m_cornerUL = cornerUL;
     m_cornerUR = cornerUR;
@@ -46,8 +45,7 @@ asAreaComp::asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &corn
 }
 
 asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed, bool isLatLon)
-        : asArea()
-{
+    : asArea() {
     // Set the members
     m_cornerUL = {xMin, yMin + yWidth};
     m_cornerUR = {xMin + xWidth, yMin + yWidth};
@@ -61,21 +59,14 @@ asAreaComp::asAreaComp(double xMin, double xWidth, double yMin, double yWidth, i
     CreateComposites();
 }
 
-asAreaComp::asAreaComp()
-        : asArea()
-{
+asAreaComp::asAreaComp() : asArea() {}
 
-}
-
-void asAreaComp::Init()
-{
+void asAreaComp::Init() {
     DoCheckPoints();
-    if (!CheckConsistency())
-        asThrowException(_("Unable to build a consistent area with the given coordinates."));
+    if (!CheckConsistency()) asThrowException(_("Unable to build a consistent area with the given coordinates."));
 }
 
-bool asAreaComp::DoCheckPoints()
-{
+bool asAreaComp::DoCheckPoints() {
     // Check the points and proceed to changes if necessary
     CheckPoint(m_cornerUL, asEDIT_ALLOWED);
     CheckPoint(m_cornerUR, asEDIT_ALLOWED);
@@ -84,8 +75,7 @@ bool asAreaComp::DoCheckPoints()
     return true;
 }
 
-bool asAreaComp::CheckConsistency()
-{
+bool asAreaComp::CheckConsistency() {
     // Area is a single point
     if (m_flatAllowed == asFLAT_FORBIDDEN) {
         if ((m_cornerUL.x == m_cornerUR.x) || (m_cornerLL.x == m_cornerLR.x) || (m_cornerLL.y == m_cornerUL.y) ||
@@ -106,14 +96,15 @@ bool asAreaComp::CheckConsistency()
     if ((m_cornerUL.x > m_cornerUR.x) || (m_cornerLL.x > m_cornerLR.x) || (m_cornerLL.y > m_cornerUL.y) ||
         (m_cornerLR.y > m_cornerUR.y)) {
         // Do not proceed to change
-        wxLogVerbose(_("The given coordinates are not increasing. This is a normal behavior if the area is on the coordinates edge."));
+        wxLogVerbose(
+            _("The given coordinates are not increasing. This is a normal behavior if the area is on the coordinates "
+              "edge."));
     }
 
     return true;
 }
 
-void asAreaComp::CreateComposites()
-{
+void asAreaComp::CreateComposites() {
     m_composites.clear();
 
     if ((m_cornerUL.x <= m_cornerUR.x) && (m_cornerLL.x <= m_cornerLR.x) && (m_cornerLL.y <= m_cornerUL.y) &&
@@ -153,22 +144,18 @@ void asAreaComp::CreateComposites()
     }
 }
 
-double asAreaComp::GetXmin() const
-{
+double asAreaComp::GetXmin() const {
     asThrowException(_("Not allowed on composite area."));
 }
 
-double asAreaComp::GetXmax() const
-{
+double asAreaComp::GetXmax() const {
     asThrowException(_("Not allowed on composite area."));
 }
 
-double asAreaComp::GetYmin() const
-{
+double asAreaComp::GetYmin() const {
     asThrowException(_("Not allowed on composite area."));
 }
 
-double asAreaComp::GetYmax() const
-{
+double asAreaComp::GetYmax() const {
     asThrowException(_("Not allowed on composite area."));
 }

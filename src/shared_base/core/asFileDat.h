@@ -29,15 +29,13 @@
 #ifndef AS_FILE_DAT_H
 #define AS_FILE_DAT_H
 
-#include "asIncludes.h"
 #include <asFileText.h>
 
-class asFileDat
-        : public asFileText
-{
-public:
-    struct Pattern
-    {
+#include "asIncludes.h"
+
+class asFileDat : public asFileText {
+   public:
+    struct Pattern {
         wxString id;
         wxString name;
         FileStructType structType;
@@ -67,9 +65,8 @@ public:
 
     static int GetPatternLineMaxCharWidth(const Pattern &pattern);
 
-protected:
-
-private:
+   protected:
+   private:
     static void InitPattern(Pattern &pattern);
 
     static FileStructType StringToStructType(const wxString &structTypeStr);

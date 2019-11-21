@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -41,13 +41,9 @@
 // Symbolic constants
 //---------------------------------
 
-enum
-{
-    asSHOW_WARNINGS, asHIDE_WARNINGS
-};
+enum { asSHOW_WARNINGS, asHIDE_WARNINGS };
 
-enum
-{
+enum {
     asOUT_OF_RANGE = -2,
     asNOT_FOUND = -1,
     asFAILED = 0,
@@ -58,41 +54,26 @@ enum
     asSUCCESS = 1
 };
 
-enum
-{
-    asEDIT_FORBIDDEN, asEDIT_ALLOWED
-};
+enum { asEDIT_FORBIDDEN, asEDIT_ALLOWED };
 
-enum
-{
-    asFLAT_FORBIDDEN, asFLAT_ALLOWED
-};
+enum { asFLAT_FORBIDDEN, asFLAT_ALLOWED };
 
-enum
-{
-    asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD
-};
+enum { asUSE_NORMAL_METHOD, asUSE_ALTERNATE_METHOD };
 
-enum
-{
-    asUTM, asLOCAL
-};
+enum { asUTM, asLOCAL };
 
-enum
-{
-    asSAMPLE, asENTIRE_POPULATION
-};
+enum { asSAMPLE, asENTIRE_POPULATION };
 
 // Processor methods
-enum
-{
-    asMULTITHREADS = 0, asSTANDARD = 1, asCUDA = 2,
+enum {
+    asMULTITHREADS = 0,
+    asSTANDARD = 1,
+    asCUDA = 2,
 };
 
 // Windows ID
 #if wxUSE_GUI
-enum
-{
+enum {
     asWINDOW_MAIN = 101,
     asWINDOW_PREFERENCES,
     asWINDOW_PREDICTANDDB,
@@ -103,8 +84,7 @@ enum
 };
 
 // Menus & Controls ID
-enum
-{
+enum {
     asID_PREFERENCES = wxID_HIGHEST + 1,
     asID_OPEN,
     asID_RUN,
@@ -127,19 +107,16 @@ enum
 };
 #endif
 
-
 //---------------------------------
 // Enumerations
 //---------------------------------
 
-enum Order
-{
-    Asc,    // Ascendant
-    Desc,   // Descendant
+enum Order {
+    Asc,   // Ascendant
+    Desc,  // Descendant
 };
 
-enum TimeFormat
-{
+enum TimeFormat {
     ISOdate,
     ISOdateTime,
     YYYYMMDD,

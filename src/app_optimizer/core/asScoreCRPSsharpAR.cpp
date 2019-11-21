@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,23 +27,18 @@
  */
 
 #include "asScoreCRPSsharpAR.h"
+
 #include "asScoreCRPSAR.h"
 
 asScoreCRPSsharpAR::asScoreCRPSsharpAR()
-        : asScore(asScore::CRPSsharpnessAR, _("CRPS Accuracy Approx Rectangle"),
-                  _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0,
-                  NaNf)
-{
+    : asScore(asScore::CRPSsharpnessAR, _("CRPS Accuracy Approx Rectangle"),
+              _("Continuous Ranked Probability Score Accuracy approximation with the rectangle method"), Asc, 0, NaNf) {
 
 }
 
-asScoreCRPSsharpAR::~asScoreCRPSsharpAR()
-{
-    //dtor
-}
+asScoreCRPSsharpAR::~asScoreCRPSsharpAR() {}
 
-float asScoreCRPSsharpAR::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreCRPSsharpAR::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -69,7 +64,7 @@ float asScoreCRPSsharpAR::Assess(float obs, const a1f &values, int nbElements) c
     asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Indices for the left and right part (according to the median) of the distribution
-    float mid = ((float) nbPredict - 1) / (float) 2;
+    float mid = ((float)nbPredict - 1) / (float)2;
     int indLeftEnd = floor(mid);
     int indRightStart = ceil(mid);
 
@@ -86,8 +81,6 @@ float asScoreCRPSsharpAR::Assess(float obs, const a1f &values, int nbElements) c
     return CRPSsharpness;
 }
 
-bool asScoreCRPSsharpAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreCRPSsharpAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }
-

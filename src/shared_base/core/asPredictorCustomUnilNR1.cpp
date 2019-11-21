@@ -28,13 +28,10 @@
 
 #include "asPredictorCustomUnilNR1.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_Unil_NR1";
     m_provider = "NCEP/NCAR";
@@ -50,8 +47,7 @@ asPredictorCustomUnilNR1::asPredictorCustomUnilNR1(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorCustomUnilNR1::Init()
-{
+bool asPredictorCustomUnilNR1::Init() {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotentialHeight()) {
         m_fStr.hasLevelDim = true;
@@ -134,18 +130,16 @@ bool asPredictorCustomUnilNR1::Init()
     return true;
 }
 
-void asPredictorCustomUnilNR1::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomUnilNR1::ListFiles(asTimeArray &timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorCustomUnilNR1::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    if (timeValue < 500 * 365) { // New format
-        timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorCustomUnilNR1::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);               // hours to days
+    if (timeValue < 500 * 365) {                  // New format
+        timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                      // Old format
+        timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 
     return timeValue;

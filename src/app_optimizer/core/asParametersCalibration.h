@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,17 +29,14 @@
 #ifndef AS_PARAMETERS_CALIBRATION_H
 #define AS_PARAMETERS_CALIBRATION_H
 
-#include "asIncludes.h"
 #include <asParametersScoring.h>
+
+#include "asIncludes.h"
 
 class asFileParametersCalibration;
 
-
-class asParametersCalibration
-        : public asParametersScoring
-{
-public:
-
+class asParametersCalibration : public asParametersScoring {
+   public:
     asParametersCalibration();
 
     virtual ~asParametersCalibration();
@@ -58,51 +55,43 @@ public:
 
     void InitValues();
 
-    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
-    {
-        return (int) GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
+    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const {
+        return (int)GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
     }
 
-    vvi GetPredictandStationIdsVector() const
-    {
+    vvi GetPredictandStationIdsVector() const {
         return m_predictandStationIdsVect;
     }
 
     bool SetPredictandStationIdsVector(vvi val);
 
-    vi GetTimeArrayAnalogsIntervalDaysVector() const
-    {
+    vi GetTimeArrayAnalogsIntervalDaysVector() const {
         return m_timeArrayAnalogsIntervalDaysVect;
     }
 
     bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
 
-    vwxs GetScoreNameVector() const
-    {
+    vwxs GetScoreNameVector() const {
         return m_scoreVect.name;
     }
 
     bool SetScoreNameVector(vwxs val);
 
-    vwxs GetScoreTimeArrayModeVector() const
-    {
+    vwxs GetScoreTimeArrayModeVector() const {
         return m_scoreVect.timeArrayMode;
     }
 
     bool SetScoreTimeArrayModeVector(vwxs val);
 
-    vd GetScoreTimeArrayDateVector() const
-    {
+    vd GetScoreTimeArrayDateVector() const {
         return m_scoreVect.timeArrayDate;
     }
 
-    vi GetScoreTimeArrayIntervalDaysVector() const
-    {
+    vi GetScoreTimeArrayIntervalDaysVector() const {
         return m_scoreVect.timeArrayIntervalDays;
     }
 
-    vf GetScorePostprocessDupliExpVector() const
-    {
+    vf GetScorePostprocessDupliExpVector() const {
         return m_scoreVect.postprocessDupliExp;
     }
 
@@ -134,10 +123,8 @@ public:
 
     int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
-protected:
-
-
-private:
+   protected:
+   private:
     vvi m_predictandStationIdsVect;
     vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsScoreVect m_scoreVect;

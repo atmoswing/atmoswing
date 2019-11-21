@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,19 +29,17 @@
 #ifndef AS_FRAME_MAIN
 #define AS_FRAME_MAIN
 
+#include <wx/awx/led.h>
+
 #include "AtmoswingForecasterGui.h"
+#include "asBatchForecasts.h"
 #include "asIncludes.h"
 #include "asLogWindow.h"
 #include "asMethodForecasting.h"
 #include "asPanelsManagerForecasts.h"
-#include "asBatchForecasts.h"
-#include <wx/awx/led.h>
 
-class asFrameMain
-        : public asFrameMainVirtual
-{
-
-public:
+class asFrameMain : public asFrameMainVirtual {
+   public:
     explicit asFrameMain(wxWindow *parent);
 
     ~asFrameMain() override;
@@ -52,7 +50,7 @@ public:
 
     void SetForecastDate(double date);
 
-protected:
+   protected:
     asLogWindow *m_logWindow;
     asMethodForecasting *m_forecaster;
     awxLed *m_ledDownloading;
@@ -111,11 +109,10 @@ protected:
 
     void IncrementOverallProgress();
 
-private:
+   private:
     asPanelsManagerForecasts *m_panelsManager;
 
-DECLARE_EVENT_TABLE()
-
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

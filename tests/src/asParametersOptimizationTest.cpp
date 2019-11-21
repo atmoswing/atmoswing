@@ -31,9 +31,7 @@
 #include "asParametersOptimization.h"
 #include "gtest/gtest.h"
 
-
-TEST(ParametersOptimization, LoadFromFile)
-{
+TEST(ParametersOptimization, LoadFromFile) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_optimization.xml");
 

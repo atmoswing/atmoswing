@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,9 @@
 #ifndef AS_THREAD_PROCESSOR_GET_ANALOGS_DATES_H
 #define AS_THREAD_PROCESSOR_GET_ANALOGS_DATES_H
 
-#include <asThread.h>
-#include <asParameters.h>
 #include <asIncludes.h>
+#include <asParameters.h>
+#include <asThread.h>
 
 class asPredictor;
 
@@ -39,25 +39,21 @@ class asCriteria;
 
 class asTimeArray;
 
-
-class asThreadGetAnalogsDates
-        : public asThread
-{
-public:
+class asThreadGetAnalogsDates : public asThread {
+   public:
     asThreadGetAnalogsDates(std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
                             asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayArchiveSelection,
                             asTimeArray *timeArrayTargetData, asTimeArray *timeArrayTargetSelection,
-                            std::vector<asCriteria *> criteria, asParameters *params, int step,
-                            a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria,
-                            a2f *finalAnalogsDates, bool *containsNaNs, bool allowDuplicateDates, bool *success);
+                            std::vector<asCriteria *> criteria, asParameters *params, int step, a1i &vRowsNb,
+                            a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
+                            bool *containsNaNs, bool allowDuplicateDates, bool *success);
 
     virtual ~asThreadGetAnalogsDates();
 
     virtual ExitCode Entry();
 
-protected:
-
-private:
+   protected:
+   private:
     std::vector<asPredictor *> m_pPredictorsArchive;
     std::vector<asPredictor *> m_pPredictorsTarget;
     asTimeArray *m_pTimeArrayArchiveData;
@@ -78,7 +74,6 @@ private:
     bool *m_pContainsNaNs;
     bool m_allowDuplicateDates;
     bool *m_success;
-
 };
 
 #endif

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,22 +30,17 @@
 #define AS_TOTAL_SCORE_H
 
 #include <asIncludes.h>
-
 #include <asTimeArray.h>
 
-class asTotalScore
-        : public wxObject
-{
-public:
-
-    enum Period //!< Enumaration of forcast score combinations
-    {
-        Total, // total mean
-        SpecificPeriod, // partial mean
-        Summer, // partial mean on summer only
-        Fall, // partial mean on fall only
-        Winter, // partial mean on winter only
-        Spring, // partial mean on spring only
+class asTotalScore : public wxObject {
+   public:
+    enum Period        //!< Enumaration of forcast score combinations
+    { Total,           // total mean
+      SpecificPeriod,  // partial mean
+      Summer,          // partial mean on summer only
+      Fall,            // partial mean on fall only
+      Winter,          // partial mean on winter only
+      Spring,          // partial mean on spring only
     };
 
     explicit asTotalScore(const wxString &periodString);
@@ -60,29 +55,25 @@ public:
 
     virtual a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
 
-    bool SingleValue() const
-    {
+    bool SingleValue() const {
         return m_singleValue;
     }
 
-    bool Has2DArrayArgument() const
-    {
+    bool Has2DArrayArgument() const {
         return m_has2DArrayArgument;
     }
 
-    void SetRanksNb(int val)
-    {
+    void SetRanksNb(int val) {
         m_ranksNb = val;
     }
 
-protected:
+   protected:
     Period m_period;
     bool m_singleValue;
     bool m_has2DArrayArgument;
     int m_ranksNb;
 
-private:
-
+   private:
 };
 
 #endif

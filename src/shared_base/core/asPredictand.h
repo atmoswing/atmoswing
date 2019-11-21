@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -35,26 +35,13 @@ class asCatalogPredictands;
 
 class asFileNetcdf;
 
+class asPredictand : public wxObject {
+   public:
+    enum Parameter { Precipitation, AirTemperature, Lightnings, Wind };
 
-class asPredictand
-        : public wxObject
-{
-public:
-    enum Parameter
-    {
-        Precipitation,
-        AirTemperature,
-        Lightnings,
-        Wind
-    };
+    enum Unit { nb, mm, m, in, percent, degC, degK };
 
-    enum Unit
-    {
-        nb, mm, m, in, percent, degC, degK
-    };
-
-    enum TemporalResolution
-    {
+    enum TemporalResolution {
         Daily,
         SixHourly,
         Hourly,
@@ -67,13 +54,9 @@ public:
         Weekly
     };
 
-    enum SpatialAggregation
-    {
-        Station, Groupment, Catchment, Region
-    };
+    enum SpatialAggregation { Station, Groupment, Catchment, Region };
 
-    asPredictand(Parameter parameter, TemporalResolution temporalResolution,
-                 SpatialAggregation spatialAggregation);
+    asPredictand(Parameter parameter, TemporalResolution temporalResolution, SpatialAggregation spatialAggregation);
 
     ~asPredictand() override = default;
 
@@ -103,102 +86,84 @@ public:
 
     virtual bool Save(const wxString &filePath) const = 0;
 
-    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                   const wxString &patternDir, const wxString &destinationDir) = 0;
+    virtual bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir, const wxString &patternDir,
+                                   const wxString &destinationDir) = 0;
 
-    virtual a1f GetReferenceAxis() const
-    {
+    virtual a1f GetReferenceAxis() const {
         a1f nodata(1);
         nodata << NaNf;
         return nodata;
     }
 
-    virtual float GetReferenceValue(int iStat, double duration, float reference) const
-    {
+    virtual float GetReferenceValue(int iStat, double duration, float reference) const {
         return NaNf;
     }
 
-    virtual a2f GetReferenceValuesArray() const
-    {
+    virtual a2f GetReferenceValuesArray() const {
         a1f nodata(1);
         nodata << NaNf;
         return nodata;
     }
 
-    wxString GetDatasetId() const
-    {
+    wxString GetDatasetId() const {
         return m_datasetId;
     }
 
-    Parameter GetDataParameter() const
-    {
+    Parameter GetDataParameter() const {
         return m_parameter;
     }
 
-    TemporalResolution GetDataTemporalResolution() const
-    {
+    TemporalResolution GetDataTemporalResolution() const {
         return m_temporalResolution;
     }
 
-    SpatialAggregation GetDataSpatialAggregation() const
-    {
+    SpatialAggregation GetDataSpatialAggregation() const {
         return m_spatialAggregation;
     }
 
-    void SetHasReferenceValues(bool val)
-    {
+    void SetHasReferenceValues(bool val) {
         m_hasReferenceValues = val;
         m_hasNormalizedData = val;
     }
 
-    int GetStationsNb() const
-    {
+    int GetStationsNb() const {
         return m_stationsNb;
     }
 
-    int GetTimeLength() const
-    {
+    int GetTimeLength() const {
         return m_timeLength;
     }
 
-    vwxs &GetStationNamesArray()
-    {
+    vwxs &GetStationNamesArray() {
         return m_stationNames;
     }
 
-    vwxs &GetStationOfficialIdsArray()
-    {
+    vwxs &GetStationOfficialIdsArray() {
         return m_stationOfficialIds;
     }
 
-    a1f &GetStationHeightsArray()
-    {
+    a1f &GetStationHeightsArray() {
         return m_stationHeights;
     }
 
-    a1i &GetStationsIdArray()
-    {
+    a1i &GetStationsIdArray() {
         return m_stationIds;
     }
 
-    a1d &GetStationXCoordsArray()
-    {
+    a1d &GetStationXCoordsArray() {
         return m_stationXCoords;
     }
 
-    a1d &GetStationYCoordsArray()
-    {
+    a1d &GetStationYCoordsArray() {
         return m_stationYCoords;
     }
 
-    a1f GetDataRawStation(int predictandStationId) const
-    {
+    a1f GetDataRawStation(int predictandStationId) const {
         int indexStation = GetStationIndex(predictandStationId);
         return m_dataRaw.col(indexStation);
     }
 
-    a1f GetDataNormalizedStation(int predictandStationId) const
-    {
+    a1f GetDataNormalizedStation(int predictandStationId) const {
         int indexStation = GetStationIndex(predictandStationId);
         if (m_hasNormalizedData) {
             return m_dataNormalized.col(indexStation);
@@ -207,14 +172,13 @@ public:
         }
     }
 
-    a1d &GetTime()
-    {
+    a1d &GetTime() {
         return m_time;
     }
 
     int GetStationIndex(int stationId) const;
 
-protected:
+   protected:
     // Single value
     float m_fileVersion;
     Parameter m_parameter;
@@ -264,11 +228,9 @@ protected:
     bool SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex);
 
     bool GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                        const wxString &directory = wxEmptyString,
-                        const wxString &patternDir = wxEmptyString);
+                        const wxString &directory = wxEmptyString, const wxString &patternDir = wxEmptyString);
 
-private:
-
+   private:
     float ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const;
 };
 

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,14 +26,14 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "gtest/gtest.h"
 #include <asFileText.h>
 #include <asScore.h>
 #include <asTotalScore.h>
 #include <wx/filename.h>
 
-TEST(Score, ProcessCRPSapproxRectangle)
-{
+#include "gtest/gtest.h"
+
+TEST(Score, ProcessCRPSapproxRectangle) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -60,11 +60,11 @@ TEST(Score, ProcessCRPSapproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -72,7 +72,7 @@ TEST(Score, ProcessCRPSapproxRectangle)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.00001);
+        float precision = wxMax(target / 1000, (float)0.00001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -83,8 +83,7 @@ TEST(Score, ProcessCRPSapproxRectangle)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSexactPrimitive)
-{
+TEST(Score, ProcessCRPSexactPrimitive) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -111,11 +110,11 @@ TEST(Score, ProcessCRPSexactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -123,7 +122,7 @@ TEST(Score, ProcessCRPSexactPrimitive)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 500, (float) 0.00002);
+        float precision = wxMax(target / 500, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -134,8 +133,7 @@ TEST(Score, ProcessCRPSexactPrimitive)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSapproxRectangle1983)
-{
+TEST(Score, ProcessCRPSapproxRectangle1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -162,11 +160,11 @@ TEST(Score, ProcessCRPSapproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -174,7 +172,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.00002);
+        float precision = wxMax(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -185,8 +183,7 @@ TEST(Score, ProcessCRPSapproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSexactPrimitive1983)
-{
+TEST(Score, ProcessCRPSexactPrimitive1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -213,11 +210,11 @@ TEST(Score, ProcessCRPSexactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -225,7 +222,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float) 0.00005);
+        float precision = wxMax(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -236,8 +233,7 @@ TEST(Score, ProcessCRPSexactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
-{
+TEST(Score, ProcessCRPSapproxRectangle30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -264,11 +260,11 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -276,7 +272,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.00002);
+        float precision = wxMax(target / 1000, (float)0.00002);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -287,8 +283,7 @@ TEST(Score, ProcessCRPSapproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
-{
+TEST(Score, ProcessCRPSexactPrimitive30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -315,11 +310,11 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -327,7 +322,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
         file.SkipLines(2);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float) 0.0001);
+        float precision = wxMax(target / 100, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -338,8 +333,7 @@ TEST(Score, ProcessCRPSexactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessApproxRectangle)
-{
+TEST(Score, ProcessCRPSsharpnessApproxRectangle) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -366,11 +360,11 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -380,7 +374,8 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 1000,
-                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.001);  // The tolerance was increased as the median in not interpolated in the
+                                                // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -391,8 +386,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessExactPrimitive)
-{
+TEST(Score, ProcessCRPSsharpnessExactPrimitive) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -419,11 +413,11 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -433,7 +427,8 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 500,
-                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.001);  // The tolerance was increased as the median in not interpolated in the
+                                                // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -444,8 +439,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
-{
+TEST(Score, ProcessCRPSsharpnessApproxRectangle1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -472,11 +466,11 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -486,7 +480,8 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 1000,
-                                (float) 0.0002); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.0002);  // The tolerance was increased as the median in not interpolated in the
+                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -497,8 +492,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
-{
+TEST(Score, ProcessCRPSsharpnessExactPrimitive1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -525,11 +519,11 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -539,7 +533,8 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 100,
-                                (float) 0.0005); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.0005);  // The tolerance was increased as the median in not interpolated in the
+                                                 // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -550,8 +545,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
-{
+TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -578,11 +572,11 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -592,7 +586,8 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 1000,
-                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.001);  // The tolerance was increased as the median in not interpolated in the
+                                                // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -603,8 +598,7 @@ TEST(Score, ProcessCRPSsharpnessApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
-{
+TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -631,11 +625,11 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -645,7 +639,8 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
         float target = file.GetFloat();
 
         float precision = wxMax(target / 100,
-                                (float) 0.001); // The tolerance was increased as the median in not interpolated in the Grenoble score processing.
+                                (float)0.001);  // The tolerance was increased as the median in not interpolated in the
+                                                // Grenoble score processing.
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -656,8 +651,7 @@ TEST(Score, ProcessCRPSsharpnessExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyApproxRectangle)
-{
+TEST(Score, ProcessCRPSaccuracyApproxRectangle) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -684,11 +678,11 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -697,7 +691,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.0003);
+        float precision = wxMax(target / 1000, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -708,8 +702,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyExactPrimitive)
-{
+TEST(Score, ProcessCRPSaccuracyExactPrimitive) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_01.txt");
@@ -736,11 +729,11 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -749,7 +742,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 500, (float) 0.0003);
+        float precision = wxMax(target / 500, (float)0.0003);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -760,8 +753,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
-{
+TEST(Score, ProcessCRPSaccuracyApproxRectangle1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -788,11 +780,11 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -801,7 +793,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.0001);
+        float precision = wxMax(target / 1000, (float)0.0001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -812,8 +804,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
-{
+TEST(Score, ProcessCRPSaccuracyExactPrimitive1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_02.txt");
@@ -840,11 +831,11 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -853,7 +844,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float) 0.00005);
+        float precision = wxMax(target / 100, (float)0.00005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -864,8 +855,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
-{
+TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -892,11 +882,11 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -905,7 +895,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 1000, (float) 0.0005);
+        float precision = wxMax(target / 1000, (float)0.0005);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -916,8 +906,7 @@ TEST(Score, ProcessCRPSaccuracyApproxRectangle30Analogs1983)
     wxDELETE(score);
 }
 
-TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
-{
+TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/score_03.txt");
@@ -944,11 +933,11 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
 
         // Load data
         file.SkipElements(3);
-        float obs = (float) sqrt(file.GetFloat() / P10);
+        float obs = (float)sqrt(file.GetFloat() / P10);
         file.SkipLines(2);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
             file.SkipElements(4);
-            values[iAnalog] = (float) sqrt(file.GetFloat() / P10);
+            values[iAnalog] = (float)sqrt(file.GetFloat() / P10);
             file.SkipLines(1);
         }
 
@@ -957,7 +946,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
         file.SkipElements(1);
         float target = file.GetFloat();
 
-        float precision = wxMax(target / 100, (float) 0.001);
+        float precision = wxMax(target / 100, (float)0.001);
         EXPECT_NEAR(target, result, precision);
 
         // Go to header
@@ -968,8 +957,7 @@ TEST(Score, ProcessCRPSaccuracyExactPrimitive30Analogs1983)
     wxDELETE(score);
 }
 
-void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
-{
+void InitConstantDistribution(a2f &vecForecast, a1f &vecObs) {
     // Time
     int timeLength = 410;
 
@@ -981,9 +969,9 @@ void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
-        vecObs[iTime] = (float) asRandom(0.0, 0.4999999);
+        vecObs[iTime] = (float)asRandom(0.0, 0.4999999);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            singleDay[iAnalog] = (float) asRandom(0.0, 0.4999999);
+            singleDay[iAnalog] = (float)asRandom(0.0, 0.4999999);
         }
         asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
@@ -1070,8 +1058,7 @@ void InitConstantDistribution(a2f &vecForecast, a1f &vecObs)
     vecObs[373] = 0.69f;
 }
 
-void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
-{
+void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs) {
     // Data from Wilks (2006)
 
     // Time
@@ -1085,9 +1072,9 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Not forecasted and no event
     for (int iTime = 0; iTime < timeLength; iTime++) {
-        vecObs[iTime] = (float) asRandom(0.0, 0.5999999);
+        vecObs[iTime] = (float)asRandom(0.0, 0.5999999);
         for (int iAnalog = 0; iAnalog < nAnalogs; iAnalog++) {
-            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
+            singleDay[iAnalog] = (float)asRandom(0.0, 0.5999999);
         }
         asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
@@ -1095,13 +1082,13 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Add 28 events forecasted and observed
     a1i indicesA(28);
-    indicesA
-            << 11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701, 1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
+    indicesA << 11, 21, 31, 41, 51, 161, 171, 181, 191, 301, 311, 321, 1131, 1141, 1151, 1161, 1171, 1681, 1691, 1701,
+        1711, 1721, 2231, 2241, 2251, 2261, 2271, 2281;
     for (int i = 0; i < indicesA.size(); i++) {
         int iTime = indicesA[i];
-        vecObs[iTime] = (float) asRandom(0.6, 1.0);
+        vecObs[iTime] = (float)asRandom(0.6, 1.0);
         for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
-            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
+            singleDay[iAnalog] = (float)asRandom(0.0, 0.5999999);
         }
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
             singleDay[iAnalog] = asRandom(0.6, 1.0);
@@ -1112,16 +1099,18 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Add 17 events forecasted but not observed
     a1i indicesB(72);
-    indicesB
-            << 12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942, 952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132, 2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
+    indicesB << 12, 22, 32, 42, 52, 62, 72, 82, 92, 102, 112, 122, 132, 142, 152, 162, 372, 382, 392, 402, 412, 422,
+        432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 832, 842, 852, 862, 872, 882, 892, 902, 912, 922, 932, 942,
+        952, 962, 972, 982, 1492, 1502, 1512, 1522, 1532, 1542, 1552, 1562, 1572, 1582, 1592, 1602, 1612, 1622, 2132,
+        2142, 2152, 2162, 2172, 2182, 2192, 2202, 2212, 2222;
     for (int i = 0; i < indicesB.size(); i++) {
         int iTime = indicesB[i];
-        vecObs[iTime] = (float) asRandom(0.0, 0.5999999);
+        vecObs[iTime] = (float)asRandom(0.0, 0.5999999);
         for (int iAnalog = 0; iAnalog < 20; iAnalog++) {
-            singleDay[iAnalog] = (float) asRandom(0.0, 0.5999999);
+            singleDay[iAnalog] = (float)asRandom(0.0, 0.5999999);
         }
         for (int iAnalog = 20; iAnalog < 50; iAnalog++) {
-            singleDay[iAnalog] = (float) asRandom(0.6, 1.0);
+            singleDay[iAnalog] = (float)asRandom(0.6, 1.0);
         }
         asSortArray(&singleDay[0], &singleDay[nAnalogs - 1], Asc);
         vecForecast.row(iTime) = singleDay;
@@ -1129,17 +1118,15 @@ void InitRealisticDistribution(a2f &vecForecast, a1f &vecObs)
 
     // Add 9 events not forecasted but observed
     a1i indicesC(23);
-    indicesC
-            << 13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213, 1223, 1233;
+    indicesC << 13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 223, 233, 243, 653, 663, 673, 1183, 1193, 1203, 1213,
+        1223, 1233;
     for (int i = 0; i < indicesC.size(); i++) {
         int iTime = indicesC[i];
-        vecObs[iTime] = (float) asRandom(0.6, 1.0);
+        vecObs[iTime] = (float)asRandom(0.6, 1.0);
     }
-
 }
 
-TEST(Score, ProcessPCwithConstantDistributionOnQuantile)
-{
+TEST(Score, ProcessPCwithConstantDistributionOnQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1170,8 +1157,7 @@ TEST(Score, ProcessPCwithConstantDistributionOnQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessPConQuantile)
-{
+TEST(Score, ProcessPConQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1202,8 +1188,7 @@ TEST(Score, ProcessPConQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessTSonQuantile)
-{
+TEST(Score, ProcessTSonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1234,8 +1219,7 @@ TEST(Score, ProcessTSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBIASonQuantile)
-{
+TEST(Score, ProcessBIASonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1266,8 +1250,7 @@ TEST(Score, ProcessBIASonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessFARAonQuantile)
-{
+TEST(Score, ProcessFARAonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1298,8 +1281,7 @@ TEST(Score, ProcessFARAonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessHonQuantile)
-{
+TEST(Score, ProcessHonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1330,8 +1312,7 @@ TEST(Score, ProcessHonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessFonQuantile)
-{
+TEST(Score, ProcessFonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1362,8 +1343,7 @@ TEST(Score, ProcessFonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessHSSonQuantile)
-{
+TEST(Score, ProcessHSSonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1394,8 +1374,7 @@ TEST(Score, ProcessHSSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessPSSonQuantile)
-{
+TEST(Score, ProcessPSSonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1426,8 +1405,7 @@ TEST(Score, ProcessPSSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessGSSonQuantile)
-{
+TEST(Score, ProcessGSSonQuantile) {
     // Create data
     a2f vecForecast;
     a1f vecObs;
@@ -1458,8 +1436,7 @@ TEST(Score, ProcessGSSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessMAEonQuantile)
-{
+TEST(Score, ProcessMAEonQuantile) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1470,26 +1447,36 @@ TEST(Score, ProcessMAEonQuantile)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-            << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-            << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-            << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-            << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-            << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-            << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-            << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-            << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-            << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-            << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1517,8 +1504,7 @@ TEST(Score, ProcessMAEonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessMSEonQuantile)
-{
+TEST(Score, ProcessMSEonQuantile) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1529,26 +1515,36 @@ TEST(Score, ProcessMSEonQuantile)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-        << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-        << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-        << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-        << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-        << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-        << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-        << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-        << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-        << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-        << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1570,14 +1566,13 @@ TEST(Score, ProcessMSEonQuantile)
     float scoreVal = finalScore->Assess(pseudoDates, results, emptyTimeArray);
 
     // Value processed on Excel
-    EXPECT_NEAR(0.358484*0.358484, scoreVal, 0.000001);
+    EXPECT_NEAR(0.358484 * 0.358484, scoreVal, 0.000001);
 
     wxDELETE(score);
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessMSEonMean)
-{
+TEST(Score, ProcessMSEonMean) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1588,26 +1583,36 @@ TEST(Score, ProcessMSEonMean)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-        << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-        << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-        << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-        << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-        << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-        << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-        << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-        << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-        << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-        << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1635,8 +1640,7 @@ TEST(Score, ProcessMSEonMean)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessRMSEonQuantile)
-{
+TEST(Score, ProcessRMSEonQuantile) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1647,26 +1651,36 @@ TEST(Score, ProcessRMSEonQuantile)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-            << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-            << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-            << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-            << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-            << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-            << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-            << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-            << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-            << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-            << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1694,8 +1708,7 @@ TEST(Score, ProcessRMSEonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBSonQuantile)
-{
+TEST(Score, ProcessBSonQuantile) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1706,26 +1719,36 @@ TEST(Score, ProcessBSonQuantile)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-            << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-            << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-            << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-            << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-            << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-            << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-            << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-            << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-            << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-            << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1754,8 +1777,7 @@ TEST(Score, ProcessBSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessBSSonQuantile)
-{
+TEST(Score, ProcessBSSonQuantile) {
     // Sizes
     int timeLength = 10;
     int nAnalogs = 20;
@@ -1766,26 +1788,36 @@ TEST(Score, ProcessBSSonQuantile)
     a1f singleDay = a1f::Zero(nAnalogs);
 
     // Not forecasted and no event
-    vecForecast.row(0)
-            << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f, 0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f, 0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
-    vecForecast.row(1)
-            << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f, 0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f, 0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
-    vecForecast.row(2)
-            << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f, 0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f, 0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
-    vecForecast.row(3)
-            << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f, 0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f, 0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
-    vecForecast.row(4)
-            << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f, 0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f, 0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
-    vecForecast.row(5)
-            << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f, 0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f, 0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
-    vecForecast.row(6)
-            << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f, 0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f, 0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
-    vecForecast.row(7)
-            << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f, 0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f, 0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
-    vecForecast.row(8)
-            << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f, 0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f, 0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
-    vecForecast.row(9)
-            << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f, 0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f, 0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
+    vecForecast.row(0) << 0.02f, 0.092646306f, 0.139052338f, 0.197637696f, 0.229360704f, 0.259909806f, 0.298701546f,
+        0.390238317f, 0.407640012f, 0.452575894f, 0.512074354f, 0.512345829f, 0.58075933f, 0.647425783f, 0.654962539f,
+        0.686593503f, 0.729810476f, 0.755282455f, 0.799893526f, 0.827401513f;
+    vecForecast.row(1) << 0.02f, 0.058561017f, 0.127939716f, 0.171685632f, 0.265536249f, 0.286160135f, 0.315265848f,
+        0.373659704f, 0.3741501f, 0.458286985f, 0.506647511f, 0.52196153f, 0.610837661f, 0.648162317f, 0.651138364f,
+        0.742684806f, 0.80394142f, 0.827924274f, 0.88050801f, 0.883691337f;
+    vecForecast.row(2) << 0.02f, 0.057409007f, 0.124060844f, 0.12989179f, 0.194506231f, 0.238944812f, 0.262222184f,
+        0.274957116f, 0.276758707f, 0.299777457f, 0.308798466f, 0.335768931f, 0.407246414f, 0.482673721f, 0.530500548f,
+        0.552122915f, 0.636896541f, 0.703442086f, 0.756793177f, 0.801346686f;
+    vecForecast.row(3) << 0.02f, 0.092411597f, 0.117131378f, 0.15816281f, 0.215819448f, 0.24559958f, 0.250436984f,
+        0.315896104f, 0.357809806f, 0.41176128f, 0.428890994f, 0.502444147f, 0.510156521f, 0.531216004f, 0.627005158f,
+        0.679551953f, 0.719490245f, 0.752477718f, 0.758531907f, 0.842848077f;
+    vecForecast.row(4) << 0.02f, 0.025565194f, 0.124927271f, 0.163237889f, 0.182254672f, 0.183216729f, 0.229018135f,
+        0.309541163f, 0.397108137f, 0.464487554f, 0.545250143f, 0.62989469f, 0.727740022f, 0.739352757f, 0.820597597f,
+        0.914068845f, 0.956546342f, 0.996502564f, 1.024902501f, 1.038549464f;
+    vecForecast.row(5) << 0.02f, 0.083376876f, 0.140626298f, 0.206117695f, 0.218892839f, 0.234828446f, 0.328446981f,
+        0.370601439f, 0.417945902f, 0.452067833f, 0.525719917f, 0.612793799f, 0.648267108f, 0.692725339f, 0.694307008f,
+        0.696266998f, 0.794462364f, 0.861882906f, 0.910444299f, 0.98822941f;
+    vecForecast.row(6) << 0.02f, 0.064229562f, 0.09309693f, 0.126129382f, 0.22445095f, 0.252971047f, 0.348992863f,
+        0.42909501f, 0.519460404f, 0.550894836f, 0.643772657f, 0.670622479f, 0.688459436f, 0.761704166f, 0.843085811f,
+        0.942577325f, 1.001365175f, 1.013441683f, 1.041955139f, 1.058193308f;
+    vecForecast.row(7) << 0.02f, 0.026738614f, 0.095937412f, 0.142691197f, 0.215824523f, 0.265994552f, 0.320279392f,
+        0.416087902f, 0.432058177f, 0.449941177f, 0.466638011f, 0.491397644f, 0.569040335f, 0.614604226f, 0.657455658f,
+        0.754066417f, 0.826451172f, 0.899028592f, 0.964815104f, 1.012976654f;
+    vecForecast.row(8) << 0.02f, 0.085296508f, 0.183380599f, 0.243443873f, 0.273040713f, 0.273055653f, 0.325655881f,
+        0.370962958f, 0.376225608f, 0.458607287f, 0.486447729f, 0.580692959f, 0.596512866f, 0.615277217f, 0.702622102f,
+        0.789096489f, 0.794578027f, 0.824465809f, 0.907287888f, 0.953155395f;
+    vecForecast.row(9) << 0.02f, 0.064684235f, 0.094707249f, 0.131646633f, 0.173289652f, 0.216579839f, 0.241963985f,
+        0.313384425f, 0.321065805f, 0.361266365f, 0.364172913f, 0.367698584f, 0.438098064f, 0.523397878f, 0.590133347f,
+        0.661338069f, 0.733570663f, 0.8022949f, 0.821953293f, 0.886632874f;
 
     vecObs << 0.3f, 0.6f, 0.7f, 0.9f, 0.3f, 0.2f, 0.1f, 0.3f, 0.1f, 0.4f;
 
@@ -1816,8 +1848,7 @@ TEST(Score, ProcessBSSonQuantile)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessRankHistogram)
-{
+TEST(Score, ProcessRankHistogram) {
     // Sizes
     int timeLength = 20;
     int nAnalogs = 30;
@@ -1826,49 +1857,49 @@ TEST(Score, ProcessRankHistogram)
     a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
-    vecForecast.row(0)
-            << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
-    vecForecast.row(1)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
-    vecForecast.row(2)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
-    vecForecast.row(3)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
-    vecForecast.row(4)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
-    vecForecast.row(5)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
-    vecForecast.row(6)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
-    vecForecast.row(7)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
-    vecForecast.row(8)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
-    vecForecast.row(9)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
-    vecForecast.row(10)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
-    vecForecast.row(11)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
-    vecForecast.row(12)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
-    vecForecast.row(13)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
-    vecForecast.row(14)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
-    vecForecast.row(15)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
-    vecForecast.row(16)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
-    vecForecast.row(17)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
-    vecForecast.row(18)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
-    vecForecast.row(19)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f,
+        0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f,
+        1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f,
+        1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f,
+        1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f,
+        2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f,
+        1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f,
+        0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f,
+        1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
 
-    vecObs
-            << 0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+    vecObs << 0.0f, 6.3f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f,
+        1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("RankHistogram");
@@ -1884,9 +1915,9 @@ TEST(Score, ProcessRankHistogram)
     }
 
     // Values processed on Excel
-    bool isTrue = (results[0] >= 1 && results[0] < 5); // Contains random value
+    bool isTrue = (results[0] >= 1 && results[0] < 5);  // Contains random value
     EXPECT_EQ(true, isTrue);
-    isTrue = (results[1] >= 26 && results[1] <= 28); // Contains random value
+    isTrue = (results[1] >= 26 && results[1] <= 28);  // Contains random value
     EXPECT_EQ(true, isTrue);
     EXPECT_EQ(29, results[2]);
     EXPECT_EQ(24, results[3]);
@@ -1930,8 +1961,7 @@ TEST(Score, ProcessRankHistogram)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessRankHistogramReliability)
-{
+TEST(Score, ProcessRankHistogramReliability) {
     wxLogNull logNo;
 
     // Sizes
@@ -1942,49 +1972,49 @@ TEST(Score, ProcessRankHistogramReliability)
     a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
-    vecForecast.row(0)
-            << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
-    vecForecast.row(1)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f, 1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
-    vecForecast.row(2)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
-    vecForecast.row(3)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
-    vecForecast.row(4)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f, 1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
-    vecForecast.row(5)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f, 1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
-    vecForecast.row(6)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f, 2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
-    vecForecast.row(7)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
-    vecForecast.row(8)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
-    vecForecast.row(9)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
-    vecForecast.row(10)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
-    vecForecast.row(11)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
-    vecForecast.row(12)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
-    vecForecast.row(13)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f, 1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
-    vecForecast.row(14)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f, 0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
-    vecForecast.row(15)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f, 1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
-    vecForecast.row(16)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
-    vecForecast.row(17)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
-    vecForecast.row(18)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
-    vecForecast.row(19)
-            << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
+    vecForecast.row(0) << 0.0f, 0.0f, 0.0f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f,
+        0.1f, 0.4f, 0.7f, 0.8f, 1.0f, 1.3f, 1.7f, 3.3f, 4.9f, 4.9f, 6.0f, 6.0f, 8.6f, 9.2f, 9.5f;
+    vecForecast.row(1) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.8f,
+        1.2f, 1.3f, 1.6f, 2.6f, 3.4f, 5.1f, 5.3f, 5.6f, 5.6f, 5.7f, 6.3f, 6.3f, 7.4f, 7.7f, 8.5f;
+    vecForecast.row(2) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.3f, 0.8f, 1.7f, 2.1f, 2.1f, 2.5f, 3.3f, 4.1f, 4.5f, 4.6f, 5.0f, 6.4f, 7.5f, 8.6f;
+    vecForecast.row(3) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.1f, 0.5f, 1.3f, 2.9f, 3.0f, 3.1f, 3.9f, 4.1f, 5.1f, 5.6f, 6.1f, 7.3f, 9.3f;
+    vecForecast.row(4) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.9f,
+        1.8f, 2.1f, 3.5f, 6.2f, 7.0f, 7.1f, 7.4f, 8.1f, 8.6f, 8.6f, 9.1f, 9.2f, 9.8f, 9.9f, 10.0f;
+    vecForecast.row(5) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.3f, 0.6f, 0.7f, 0.8f,
+        1.9f, 3.4f, 4.1f, 4.3f, 5.1f, 5.2f, 5.6f, 5.8f, 6.4f, 6.5f, 6.9f, 7.8f, 9.2f, 9.5f, 9.6f;
+    vecForecast.row(6) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.2f, 0.5f, 0.6f, 1.6f,
+        2.4f, 2.4f, 3.6f, 4.1f, 4.2f, 5.0f, 5.2f, 5.7f, 5.9f, 5.9f, 6.5f, 7.5f, 7.7f, 8.4f, 9.3f;
+    vecForecast.row(7) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        1.3f, 1.6f, 3.1f, 5.3f, 6.2f, 6.6f, 7.3f, 7.6f, 8.1f, 8.7f, 8.9f, 9.1f, 9.1f, 9.6f, 9.7f;
+    vecForecast.row(8) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 2.6f, 3.0f, 3.3f, 3.8f, 5.9f, 6.5f, 6.7f, 6.9f, 7.6f, 9.2f;
+    vecForecast.row(9) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.1f, 3.7f, 4.2f, 5.1f, 5.7f, 6.5f, 8.6f, 8.8f, 9.2f, 9.4f;
+    vecForecast.row(10) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.3f, 1.4f, 3.2f, 3.8f, 5.0f, 5.5f, 6.0f, 6.2f, 6.2f, 7.4f, 8.1f, 8.2f, 8.4f, 9.9f;
+    vecForecast.row(11) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.7f, 1.8f, 4.4f, 4.9f, 5.1f, 5.9f, 6.2f, 7.8f, 8.3f, 8.6f, 8.8f, 9.2f, 9.3f;
+    vecForecast.row(12) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.3f, 0.9f, 1.0f, 2.9f, 3.3f, 3.7f, 3.8f, 3.9f, 5.7f, 5.9f, 6.1f, 6.2f, 8.1f, 9.0f;
+    vecForecast.row(13) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 0.9f,
+        1.2f, 1.3f, 1.5f, 2.2f, 5.1f, 6.0f, 6.5f, 6.5f, 6.9f, 7.6f, 8.0f, 8.9f, 8.9f, 9.4f, 9.7f;
+    vecForecast.row(14) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.5f,
+        0.6f, 0.7f, 1.3f, 1.8f, 2.9f, 3.2f, 4.0f, 4.5f, 5.8f, 6.0f, 6.1f, 6.5f, 7.1f, 7.8f, 8.5f;
+    vecForecast.row(15) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.2f, 0.2f, 0.9f,
+        1.0f, 2.8f, 3.2f, 3.6f, 4.7f, 5.1f, 6.2f, 6.6f, 6.8f, 7.0f, 7.5f, 8.7f, 8.9f, 8.9f, 10.0f;
+    vecForecast.row(16) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        1.2f, 1.6f, 2.0f, 2.6f, 2.7f, 3.3f, 3.3f, 4.6f, 4.9f, 5.6f, 5.7f, 6.6f, 7.9f, 8.0f, 9.7f;
+    vecForecast.row(17) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        2.2f, 2.4f, 3.8f, 5.4f, 5.8f, 6.3f, 7.5f, 7.6f, 8.7f, 8.9f, 9.2f, 9.5f, 9.5f, 9.8f, 10.0f;
+    vecForecast.row(18) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.1f, 0.2f, 0.5f, 0.5f, 1.9f, 2.3f, 4.4f, 4.9f, 5.3f, 5.4f, 6.5f, 6.9f, 7.7f, 7.8f, 7.9f;
+    vecForecast.row(19) << 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 0.0f, 0.6f, 1.2f, 2.0f, 2.3f, 5.1f, 5.1f, 5.1f, 6.6f, 8.3f, 8.8f, 9.4f;
 
-    vecObs
-            << 0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f, 1.0f, 1.5f, 3.0f;
+    vecObs << 0.3f, 6.4f, 7.1f, 3.6f, 8.4f, 9.8f, 0.7f, 0.2f, 3.7f, 4.5f, 8.3f, 0.1f, 5.0f, 0.1f, 5.7f, 0.7f, 7.6f,
+        1.0f, 1.5f, 3.0f;
 
     // Instantiate the score
     asScore *score = asScore::GetInstance("RankHistogramReliability");
@@ -2011,8 +2041,7 @@ TEST(Score, ProcessRankHistogramReliability)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessCRPSreliability)
-{
+TEST(Score, ProcessCRPSreliability) {
     // Sizes
     int timeLength = 15;
     int nAnalogs = 21;
@@ -2021,36 +2050,36 @@ TEST(Score, ProcessCRPSreliability)
     a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
-    vecForecast.row(0)
-            << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
-    vecForecast.row(1)
-            << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
-    vecForecast.row(2)
-            << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
-    vecForecast.row(3)
-            << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
-    vecForecast.row(4)
-            << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
-    vecForecast.row(5)
-            << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
-    vecForecast.row(6)
-            << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
-    vecForecast.row(7)
-            << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
-    vecForecast.row(8)
-            << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
-    vecForecast.row(9)
-            << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
-    vecForecast.row(10)
-            << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
-    vecForecast.row(11)
-            << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
-    vecForecast.row(12)
-            << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
-    vecForecast.row(13)
-            << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
-    vecForecast.row(14)
-            << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f,
+        0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f,
+        1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f,
+        5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f,
+        6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f,
+        8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+        1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f,
+        -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f,
+        -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f,
+        -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f,
+        -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f,
+        -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f,
+        -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f,
+        -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f,
+        5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
 
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 
@@ -2078,8 +2107,7 @@ TEST(Score, ProcessCRPSreliability)
     wxDELETE(finalScore);
 }
 
-TEST(Score, ProcessCRPSpotential)
-{
+TEST(Score, ProcessCRPSpotential) {
     // Sizes
     int timeLength = 15;
     int nAnalogs = 21;
@@ -2088,36 +2116,36 @@ TEST(Score, ProcessCRPSpotential)
     a2f vecForecast = a2f::Zero(timeLength, nAnalogs);
     a1f vecObs = a1f::Zero(timeLength);
 
-    vecForecast.row(0)
-            << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
-    vecForecast.row(1)
-            << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f, 1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
-    vecForecast.row(2)
-            << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f, 5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
-    vecForecast.row(3)
-            << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f, 6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
-    vecForecast.row(4)
-            << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f, 8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
-    vecForecast.row(5)
-            << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
-    vecForecast.row(6)
-            << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
-    vecForecast.row(7)
-            << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f, -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
-    vecForecast.row(8)
-            << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
-    vecForecast.row(9)
-            << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f, -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
-    vecForecast.row(10)
-            << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f, -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
-    vecForecast.row(11)
-            << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
-    vecForecast.row(12)
-            << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f, -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
-    vecForecast.row(13)
-            << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f, -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
-    vecForecast.row(14)
-            << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f, 5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
+    vecForecast.row(0) << 1.0f, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 2.0f, 2.0f,
+        0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 1.0f;
+    vecForecast.row(1) << -2.0f, -1.0f, -2.0f, 1.0f, 0.0f, 0.0f, 0.0f, -2.0f, -2.0f, -3.0f, 0.0f, 1.0f, 2.0f, 1.0f,
+        1.0f, -2.0f, -3.0f, 1.0f, -1.0f, 0.0f, 2.0f;
+    vecForecast.row(2) << 5.0f, 5.0f, 4.0f, 4.0f, 3.0f, 7.0f, 3.0f, 6.0f, 6.0f, 4.0f, 5.0f, 4.0f, 7.0f, 6.0f, 6.0f,
+        5.0f, 5.0f, 5.0f, 4.0f, 6.0f, 4.0f;
+    vecForecast.row(3) << 6.0f, 6.0f, 9.0f, 4.0f, 5.0f, 5.0f, 5.0f, 9.0f, 4.0f, 7.0f, 8.0f, 5.0f, 6.0f, 2.0f, 5.0f,
+        6.0f, 7.0f, 5.0f, 7.0f, 6.0f, 5.0f;
+    vecForecast.row(4) << 7.0f, 7.0f, 8.0f, 8.0f, 8.0f, 7.0f, 7.0f, 8.0f, 8.0f, 7.0f, 8.0f, 7.0f, 8.0f, 7.0f, 7.0f,
+        8.0f, 9.0f, 8.0f, 8.0f, 7.0f, 8.0f;
+    vecForecast.row(5) << 1.0f, 0.0f, 1.0f, 2.0f, 1.0f, 2.0f, 2.0f, 0.0f, 0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 2.0f, 2.0f,
+        1.0f, 1.0f, 3.0f, 0.0f, 2.0f, 2.0f;
+    vecForecast.row(6) << -2.0f, -2.0f, -1.0f, 2.0f, 0.0f, 1.0f, 0.0f, 0.0f, -2.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f;
+    vecForecast.row(7) << -5.0f, -2.0f, -4.0f, -2.0f, -2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -4.0f, -4.0f, -1.0f, -1.0f,
+        -1.0f, -2.0f, -2.0f, -5.0f, -2.0f, -2.0f, -3.0f, -1.0f;
+    vecForecast.row(8) << -6.0f, -6.0f, -5.0f, -3.0f, -3.0f, -4.0f, -5.0f, -5.0f, -6.0f, -6.0f, -6.0f, -3.0f, -3.0f,
+        -4.0f, -4.0f, -4.0f, -5.0f, -3.0f, -6.0f, -4.0f, -3.0f;
+    vecForecast.row(9) << -4.0f, -2.0f, -5.0f, -4.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -3.0f, -3.0f,
+        -4.0f, -4.0f, -4.0f, -3.0f, -5.0f, -3.0f, -3.0f, -4.0f;
+    vecForecast.row(10) << -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -4.0f, -5.0f, -6.0f, -5.0f, -4.0f, -4.0f, -4.0f, -5.0f,
+        -5.0f, -4.0f, -6.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f;
+    vecForecast.row(11) << -4.0f, -3.0f, -4.0f, -5.0f, -7.0f, -5.0f, -6.0f, -5.0f, -7.0f, -4.0f, -4.0f, -6.0f, -5.0f,
+        -5.0f, -5.0f, -4.0f, -3.0f, -5.0f, -4.0f, -4.0f, -5.0f;
+    vecForecast.row(12) << -6.0f, -6.0f, -5.0f, -5.0f, -6.0f, -5.0f, -7.0f, -6.0f, -8.0f, -7.0f, -7.0f, -7.0f, -5.0f,
+        -5.0f, -6.0f, -6.0f, -8.0f, -6.0f, -6.0f, -5.0f, -5.0f;
+    vecForecast.row(13) << -1.0f, -1.0f, -4.0f, -2.0f, -4.0f, -2.0f, -4.0f, -1.0f, -1.0f, 0.0f, -1.0f, -2.0f, -3.0f,
+        -3.0f, -3.0f, -1.0f, -2.0f, -3.0f, -1.0f, -2.0f, -4.0f;
+    vecForecast.row(14) << 6.0f, 6.0f, 6.0f, 3.0f, 0.0f, 3.0f, 0.0f, 6.0f, 3.0f, 7.0f, 8.0f, 1.0f, 4.0f, 1.0f, 2.0f,
+        5.0f, 6.0f, 4.0f, 5.0f, 7.0f, 2.0f;
 
     vecObs << 2.0f, 2.0f, 7.0f, 11.0f, 10.0f, 2.0f, -1.0f, -2.0f, -3.0f, -4.0f, -6.0f, -7.0f, -5.0f, 0.0f, 2.0f;
 

@@ -29,22 +29,21 @@
 #ifndef AS_THREAD_PRELOAD_DATA_H
 #define AS_THREAD_PRELOAD_DATA_H
 
-#include <asThread.h>
 #include <asIncludes.h>
+#include <asThread.h>
+
 #include "asMethodStandard.h"
 
-class asThreadPreloadArchiveData
-        : public asThread
-{
-public:
+class asThreadPreloadArchiveData : public asThread {
+   public:
     asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep, int iPtor, int i);
 
     virtual ~asThreadPreloadArchiveData();
 
     ExitCode Entry();
 
-protected:
-private:
+   protected:
+   private:
     asMethodStandard *m_method;
     asParameters *m_params;
     int m_iStep;

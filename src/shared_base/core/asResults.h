@@ -34,34 +34,27 @@
 
 class asFileNetcdf;
 
-
-class asResults
-        : public wxObject
-{
-public:
+class asResults : public wxObject {
+   public:
     asResults();
 
     ~asResults() override = default;
 
     wxString GetPredictandStationIdsList() const;
 
-    void SetCurrentStep(int val)
-    {
+    void SetCurrentStep(int val) {
         m_currentStep = val;
     }
 
-    wxString GetFilePath() const
-    {
+    wxString GetFilePath() const {
         return m_filePath;
     }
 
-    void SetFilePath(const wxString &val)
-    {
+    void SetFilePath(const wxString &val) {
         m_filePath = val;
     }
 
-    void SetSubFolder(const wxString &val)
-    {
+    void SetSubFolder(const wxString &val) {
         m_subFolder = val;
     }
 
@@ -71,7 +64,7 @@ public:
 
     virtual bool Load();
 
-protected:
+   protected:
     int m_fileVersionMajor;
     int m_fileVersionMinor;
     int m_currentStep;
@@ -110,8 +103,7 @@ protected:
 
     bool DefScoresMapAttributes(asFileNetcdf &ncFile) const;
 
-private:
-
+   private:
 };
 
 #endif

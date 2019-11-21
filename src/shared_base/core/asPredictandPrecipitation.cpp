@@ -28,17 +28,15 @@
 
 #include "asPredictandPrecipitation.h"
 
+#include <asCatalogPredictands.h>
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
-#include <asCatalogPredictands.h>
-
 
 asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                      SpatialAggregation dataSpatialAggregation)
-        : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation),
-          m_returnPeriodNormalization(10),
-          m_isSqrt(false)
-{
+    : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation),
+      m_returnPeriodNormalization(10),
+      m_isSqrt(false) {
     m_hasNormalizedData = true;
     m_hasReferenceValues = true;
 
@@ -49,13 +47,11 @@ asPredictandPrecipitation::asPredictandPrecipitation(Parameter dataParameter, Te
     }
 }
 
-bool asPredictandPrecipitation::InitContainers()
-{
+bool asPredictandPrecipitation::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandPrecipitation::Load(const wxString &filePath)
-{
+bool asPredictandPrecipitation::Load(const wxString &filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -100,22 +96,20 @@ bool asPredictandPrecipitation::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandPrecipitation::Save(const wxString &destinationDir) const
-{
+bool asPredictandPrecipitation::Save(const wxString &destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(predictandDBFilePath, asFileNetcdf::Replace);
-    if (!ncFile.Open())
-        return false;
+    if (!ncFile.Open()) return false;
 
     // Set common definitions
     SetCommonDefinitions(ncFile);
 
     if (m_hasNormalizedData) {
         // Define specific dimensions.
-        ncFile.DefDim("return_periods", (int) m_returnPeriods.size());
+        ncFile.DefDim("return_periods", (int)m_returnPeriods.size());
 
         // The dimensions name array is used to pass the dimensions to the variable.
         vstds dimNames2D;
@@ -186,41 +180,33 @@ bool asPredictandPrecipitation::Save(const wxString &destinationDir) const
 }
 
 bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                                  const wxString &patternDir, const wxString &destinationDir)
-{
+                                                  const wxString &patternDir, const wxString &destinationDir) {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
     }
 
     // Initialize the members
-    if (!InitMembers(catalogFilePath))
-        return false;
+    if (!InitMembers(catalogFilePath)) return false;
 
     // Resize matrices
-    if (!InitContainers())
-        return false;
+    if (!InitContainers()) return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, dataDir, patternDir))
-        return false;
+    if (!ParseData(catalogFilePath, dataDir, patternDir)) return false;
 
     if (m_hasNormalizedData) {
         // Make the Gumbel adjustment
-        if (!MakeGumbelAdjustment())
-            return false;
+        if (!MakeGumbelAdjustment()) return false;
 
         // Process the normalized Precipitation
-        if (!BuildDataNormalized())
-            return false;
+        if (!BuildDataNormalized()) return false;
 
         // Process daily precipitations for all return periods
-        if (!BuildDailyPrecipitationsForAllReturnPeriods())
-            return false;
+        if (!BuildDailyPrecipitationsForAllReturnPeriods()) return false;
     }
 
     if (!destinationDir.IsEmpty()) {
-        if (!Save(destinationDir))
-            return false;
+        if (!Save(destinationDir)) return false;
     }
 
     if (!g_unitTesting) {
@@ -236,8 +222,7 @@ bool asPredictandPrecipitation::BuildPredictandDB(const wxString &catalogFilePat
     return true;
 }
 
-bool asPredictandPrecipitation::MakeGumbelAdjustment()
-{
+bool asPredictandPrecipitation::MakeGumbelAdjustment() {
     // Duration of the Precipitation
     a1d duration;
     if (m_timeStepDays == 1) {
@@ -245,8 +230,8 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment()
         duration << 1, 2, 3, 4, 5, 7, 10;
     } else if (m_timeStepDays <= 1.0 / 24.0) {
         duration.resize(14);
-        duration << 1.0 / 24.0, 2.0 / 24.0, 3.0 / 24.0, 4.0 / 24.0, 5.0 / 24.0, 6.0 / 24.0, 12.0 /
-                                                                                            24.0, 1, 2, 3, 4, 5, 7, 10;
+        duration << 1.0 / 24.0, 2.0 / 24.0, 3.0 / 24.0, 4.0 / 24.0, 5.0 / 24.0, 6.0 / 24.0, 12.0 / 24.0, 1, 2, 3, 4, 5,
+            7, 10;
     } else if (m_timeStepDays <= 2.0 / 24.0) {
         duration.resize(13);
         duration << 2.0 / 24.0, 3.0 / 24.0, 4.0 / 24.0, 5.0 / 24.0, 6.0 / 24.0, 12.0 / 24.0, 1, 2, 3, 4, 5, 7, 10;
@@ -302,19 +287,21 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment()
             // Check the length of the data
             int dataLength = asCountNotNaN(&currentAnnualMax(0), &currentAnnualMax(arrayEnd));
             if (dataLength < 20) {
-                wxLogError(_("Caution, a time serie is shorter than 20 years. It is too short to process a Gumbel adjustment."));
+                wxLogError(_(
+                    "Caution, a time serie is shorter than 20 years. It is too short to process a Gumbel adjustment."));
                 return false;
             } else if (dataLength < 30) {
-                wxLogWarning(_("Caution, a time serie is shorter than 30 years. It is a bit short to process a Gumbel adjustment."));
+                wxLogWarning(
+                    _("Caution, a time serie is shorter than 30 years. It is a bit short to process a Gumbel "
+                      "adjustment."));
             }
 
-            if (!asSortArray(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), Asc))
-                return false;
+            if (!asSortArray(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), Asc)) return false;
             float mean = asMean(&currentAnnualMax(0), &currentAnnualMax(arrayEnd));
             float stdev = asStDev(&currentAnnualMax(0), &currentAnnualMax(arrayEnd), asSAMPLE);
 
             float b = b_cst * stdev;
-            float a = mean - b * g_cst_Euler; // EUCON: Euler-Mascheroni constant in math.h
+            float a = mean - b * g_cst_Euler;  // EUCON: Euler-Mascheroni constant in math.h
 
             m_gumbelDuration(iStat, iDuration) = duration[iDuration];
             m_gumbelParamA(iStat, iDuration) = a;
@@ -328,26 +315,24 @@ bool asPredictandPrecipitation::MakeGumbelAdjustment()
     return true;
 }
 
-float asPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const
-{
-    float F = 1 - (1 / returnPeriod); // Probability of not overtaking
-    float u = -log(-log(F)); // Gumbel variable
+float asPredictandPrecipitation::GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const {
+    float F = 1 - (1 / returnPeriod);  // Probability of not overtaking
+    float u = -log(-log(F));           // Gumbel variable
     a1f durations = m_gumbelDuration.row(iStat);
     int iDuration = asFind(&durations(0), &durations(durations.size() - 1), duration, 0.00001f);
     return m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
 }
 
-bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods()
-{
-    float duration = 1; // day
+bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods() {
+    float duration = 1;  // day
     m_returnPeriods.resize(10);
     m_returnPeriods << 2, 2.33f, 5, 10, 20, 50, 100, 200, 300, 500;
     m_dailyPrecipitationsForReturnPeriods.resize(m_stationsNb, m_returnPeriods.size());
 
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         for (int iRetPeriod = 0; iRetPeriod < m_returnPeriods.size(); iRetPeriod++) {
-            float F = 1 - (1 / m_returnPeriods[iRetPeriod]); // Probability of not overtaking
-            float u = -log(-log(F)); // Gumbel variable
+            float F = 1 - (1 / m_returnPeriods[iRetPeriod]);  // Probability of not overtaking
+            float u = -log(-log(F));                          // Gumbel variable
             int iDuration = asFind(&m_gumbelDuration(iStat, 0), &m_gumbelDuration(iStat, m_gumbelDuration.cols() - 1),
                                    duration, 0.00001f);
             float val = m_gumbelParamB(iStat, iDuration) * u + m_gumbelParamA(iStat, iDuration);
@@ -360,8 +345,7 @@ bool asPredictandPrecipitation::BuildDailyPrecipitationsForAllReturnPeriods()
     return true;
 }
 
-bool asPredictandPrecipitation::BuildDataNormalized()
-{
+bool asPredictandPrecipitation::BuildDataNormalized() {
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         float prt = 1.0;
         if (m_returnPeriodNormalization != 0) {

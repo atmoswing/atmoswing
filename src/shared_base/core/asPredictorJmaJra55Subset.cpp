@@ -27,14 +27,11 @@
 
 #include "asPredictorJmaJra55Subset.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 
-
-asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "JMA_JRA_55_subset";
     m_provider = "JMA";
@@ -47,11 +44,11 @@ asPredictorJmaJra55Subset::asPredictorJmaJra55Subset(const wxString &dataId)
     m_monthlyFiles = true;
 }
 
-bool asPredictorJmaJra55Subset::Init()
-{
+bool asPredictorJmaJra55Subset::Init() {
     CheckLevelTypeIsDefined();
 
-    // Get data: http://rda.ucar.edu/datasets/ds628.0/index.html#!cgi-bin/datasets/getSubset?dsnum=628.0&listAction=customize&_da=y
+    // Get data:
+    // http://rda.ucar.edu/datasets/ds628.0/index.html#!cgi-bin/datasets/getSubset?dsnum=628.0&listAction=customize&_da=y
 
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel() || m_product.IsSameAs("anl_p125", false)) {
@@ -210,8 +207,7 @@ bool asPredictorJmaJra55Subset::Init()
     return true;
 }
 
-void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         int firstMonth = 1;
         int lastMonth = 12;
@@ -231,8 +227,8 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray)
                 if (nbFiles == 0) {
                     asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
                 } else if (nbFiles > 1) {
-                    asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
-                                                      filePattern));
+                    asThrowException(
+                        wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
                 }
 
                 m_files.push_back(wxString(listFiles.Item(0)));
@@ -245,8 +241,8 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray)
             if (nbFiles == 0) {
                 asThrowException(wxString::Format(_("No JRA-55 file found for this pattern : %s."), filePattern));
             } else if (nbFiles > 1) {
-                asThrowException(wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."),
-                                                  filePattern));
+                asThrowException(
+                    wxString::Format(_("Multiple JRA-55 files found for this pattern : %s."), filePattern));
             }
 
             m_files.push_back(wxString(listFiles.Item(0)));
@@ -254,10 +250,9 @@ void asPredictorJmaJra55Subset::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorJmaJra55Subset::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+double asPredictorJmaJra55Subset::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }

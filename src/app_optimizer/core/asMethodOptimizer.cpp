@@ -28,22 +28,14 @@
 
 #include "asMethodOptimizer.h"
 
-asMethodOptimizer::asMethodOptimizer()
-        : asMethodCalibrator(),
-          m_paramsNb(0),
-          m_iterator(0)
-{
+asMethodOptimizer::asMethodOptimizer() : asMethodCalibrator(), m_paramsNb(0), m_iterator(0) {
     // Seeds the random generator
     asInitRandom();
 }
 
-asMethodOptimizer::~asMethodOptimizer()
-{
-    //dtor
-}
+asMethodOptimizer::~asMethodOptimizer() {}
 
-bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
-{
+bool asMethodOptimizer::SaveDetails(asParametersOptimization &params) {
     asResultsDates anaDatesPrevious;
     asResultsDates anaDates;
     asResultsValues anaValues;
@@ -55,24 +47,19 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                return false;
+            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                return false;
+            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
         }
         if (containsNaNs) {
             wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }
-    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
-        return false;
-    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-        return false;
-    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-        return false;
+    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1)) return false;
+    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
 
     anaDates.SetSubFolder("calibration");
     anaDates.Save();
@@ -84,8 +71,7 @@ bool asMethodOptimizer::SaveDetails(asParametersOptimization &params)
     return true;
 }
 
-bool asMethodOptimizer::Validate(asParametersOptimization &params)
-{
+bool asMethodOptimizer::Validate(asParametersOptimization &params) {
     if (!params.HasValidationPeriod()) {
         wxLogWarning("The parameters have no validation period !");
         return true;
@@ -104,24 +90,19 @@ bool asMethodOptimizer::Validate(asParametersOptimization &params)
     for (int iStep = 0; iStep < stepsNb; iStep++) {
         bool containsNaNs = false;
         if (iStep == 0) {
-            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                return false;
+            if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
         } else {
             anaDatesPrevious = anaDates;
-            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                return false;
+            if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
         }
         if (containsNaNs) {
             wxLogError(_("The dates selection contains NaNs"));
             return false;
         }
     }
-    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
-        return false;
-    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-        return false;
-    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-        return false;
+    if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1)) return false;
+    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
 
     anaDates.SetSubFolder("validation");
     anaDates.Save();

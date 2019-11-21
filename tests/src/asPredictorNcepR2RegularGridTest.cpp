@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepR2Regular, LoadEasy)
-{
+TEST(PredictorNcepR2Regular, LoadEasy) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 35;
@@ -117,8 +116,7 @@ TEST(PredictorNcepR2Regular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, GetMinMaxValues)
-{
+TEST(PredictorNcepR2Regular, GetMinMaxValues) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 35;
@@ -146,8 +144,7 @@ TEST(PredictorNcepR2Regular, GetMinMaxValues)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadComposite)
-{
+TEST(PredictorNcepR2Regular, LoadComposite) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;
@@ -239,8 +236,7 @@ TEST(PredictorNcepR2Regular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadBorderLeft)
-{
+TEST(PredictorNcepR2Regular, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 5;
     double yMin = 35;
@@ -304,8 +300,7 @@ TEST(PredictorNcepR2Regular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepR2Regular, LoadBorderLeftOn720) {
     double xMin = 360;
     double xWidth = 5;
     double yMin = 35;
@@ -369,8 +364,7 @@ TEST(PredictorNcepR2Regular, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadBorderRight)
-{
+TEST(PredictorNcepR2Regular, LoadBorderRight) {
     double xMin = 350;
     double xWidth = 10;
     double yMin = 35;
@@ -440,8 +434,7 @@ TEST(PredictorNcepR2Regular, LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadCompositeStepLon)
-{
+TEST(PredictorNcepR2Regular, LoadCompositeStepLon) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;
@@ -513,8 +506,7 @@ TEST(PredictorNcepR2Regular, LoadCompositeStepLon)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadCompositeStepLonMoved)
-{
+TEST(PredictorNcepR2Regular, LoadCompositeStepLonMoved) {
     double xMin = -7.5;
     double xWidth = 10;
     double yMin = 35;
@@ -567,8 +559,7 @@ TEST(PredictorNcepR2Regular, LoadCompositeStepLonMoved)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadCompositeStepLonLat)
-{
+TEST(PredictorNcepR2Regular, LoadCompositeStepLonLat) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;
@@ -630,8 +621,7 @@ TEST(PredictorNcepR2Regular, LoadCompositeStepLonLat)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Regular, LoadCompositeStepLonLatTime)
-{
+TEST(PredictorNcepR2Regular, LoadCompositeStepLonLatTime) {
     double xMin = -10;
     double xWidth = 15;
     double yMin = 35;

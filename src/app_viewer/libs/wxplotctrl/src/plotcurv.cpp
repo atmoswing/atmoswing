@@ -24,7 +24,7 @@
 #include "wx/bitmap.h"
 #include "wx/dcmemory.h"
 
-#endif // WX_PRECOMP
+#endif  // WX_PRECOMP
 
 #include "wx/plotctrl/plotcurv.h"
 
@@ -35,15 +35,13 @@ const wxPlotCurve wxNullPlotCurve;
 //----------------------------------------------------------------------------
 // Interpolate
 //----------------------------------------------------------------------------
-double LinearInterpolateX(double x0, double y0, double x1, double y1, double y)
-{
-    //wxCHECK_MSG( (y1 - y0) != 0.0, 0.0, wxT("Divide by zero, LinearInterpolateX()") );
+double LinearInterpolateX(double x0, double y0, double x1, double y1, double y) {
+    // wxCHECK_MSG( (y1 - y0) != 0.0, 0.0, wxT("Divide by zero, LinearInterpolateX()") );
     return ((y - y0) * (x1 - x0) / (y1 - y0) + x0);
 }
 
-double LinearInterpolateY(double x0, double y0, double x1, double y1, double x)
-{
-    //wxCHECK_MSG( (x1 - x0) != 0.0, 0.0, wxT("Divide by zero, LinearInterpolateY()") );
+double LinearInterpolateY(double x0, double y0, double x1, double y1, double x) {
+    // wxCHECK_MSG( (x1 - x0) != 0.0, 0.0, wxT("Divide by zero, LinearInterpolateY()") );
     double m = (y1 - y0) / (x1 - x0);
     return (m * x + (y0 - m * x0));
 }
@@ -54,8 +52,7 @@ double LinearInterpolateY(double x0, double y0, double x1, double y1, double x)
 
 wxArrayGenericPen wxPlotCurveRefData::sm_defaultPens;
 
-void InitPlotCurveDefaultPens()
-{
+void InitPlotCurveDefaultPens() {
     static bool s_init_default_pens = false;
     if (!s_init_default_pens) {
         s_init_default_pens = true;
@@ -65,64 +62,52 @@ void InitPlotCurveDefaultPens()
     }
 }
 
-wxPlotCurveRefData::wxPlotCurveRefData()
-        : wxObjectRefData()
-{
+wxPlotCurveRefData::wxPlotCurveRefData() : wxObjectRefData() {
     InitPlotCurveDefaultPens();
     m_pens = sm_defaultPens;
 }
 
-wxPlotCurveRefData::wxPlotCurveRefData(const wxPlotCurveRefData &data)
-        : wxObjectRefData()
-{
+wxPlotCurveRefData::wxPlotCurveRefData(const wxPlotCurveRefData &data) : wxObjectRefData() {
     Copy(data);
 }
 
-void wxPlotCurveRefData::Copy(const wxPlotCurveRefData &source)
-{
+void wxPlotCurveRefData::Copy(const wxPlotCurveRefData &source) {
     m_boundingRect = source.m_boundingRect;
     m_pens = source.m_pens;
     m_optionNames = source.m_optionNames;
     m_optionValues = source.m_optionValues;
 }
 
-#define M_PLOTCURVEDATA ((wxPlotCurveRefData*)m_refData)
+#define M_PLOTCURVEDATA ((wxPlotCurveRefData *)m_refData)
 
 //-----------------------------------------------------------------------------
 // wxPlotCurve
 //-----------------------------------------------------------------------------
 IMPLEMENT_DYNAMIC_CLASS(wxPlotCurve, wxObject);
 
-wxObjectRefData *wxPlotCurve::CreateRefData() const
-{
+wxObjectRefData *wxPlotCurve::CreateRefData() const {
     return new wxPlotCurveRefData;
 }
 
-wxObjectRefData *wxPlotCurve::CloneRefData(const wxObjectRefData *data) const
-{
-    return new wxPlotCurveRefData(*(const wxPlotCurveRefData *) data);
+wxObjectRefData *wxPlotCurve::CloneRefData(const wxObjectRefData *data) const {
+    return new wxPlotCurveRefData(*(const wxPlotCurveRefData *)data);
 }
 
-wxPlotCurve::wxPlotCurve()
-        : wxObject()
-{
+wxPlotCurve::wxPlotCurve() : wxObject() {
     // Note: You must do this in your constructor in order to use the the curve
     // m_refData = new wxPlotCurveRefData (or wxMySubclassedPlotCurveRefData)
 }
 
-bool wxPlotCurve::Ok() const
-{
+bool wxPlotCurve::Ok() const {
     return (M_PLOTCURVEDATA != NULL);
 }
 
-wxRect2DDouble wxPlotCurve::GetBoundingRect() const
-{
+wxRect2DDouble wxPlotCurve::GetBoundingRect() const {
     wxCHECK_MSG(Ok(), wxNullPlotBounds, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_boundingRect;
 }
 
-void wxPlotCurve::SetBoundingRect(const wxRect2DDouble &rect)
-{
+void wxPlotCurve::SetBoundingRect(const wxRect2DDouble &rect) {
     wxCHECK_RET(Ok(), wxT("invalid plotcurve"));
     M_PLOTCURVEDATA->m_boundingRect = rect;
 }
@@ -131,81 +116,69 @@ void wxPlotCurve::SetBoundingRect(const wxRect2DDouble &rect)
 // Get/Set Pen
 //----------------------------------------------------------------------------
 
-wxGenericPen wxPlotCurve::GetPen(wxPlotPen_Type colour_type) const
-{
+wxGenericPen wxPlotCurve::GetPen(wxPlotPen_Type colour_type) const {
     wxCHECK_MSG(Ok(), wxGenericPen(), wxT("invalid plotcurve"));
-    wxCHECK_MSG((colour_type >= 0) && (colour_type < (int) M_PLOTCURVEDATA->m_pens.GetCount()), wxGenericPen(),
+    wxCHECK_MSG((colour_type >= 0) && (colour_type < (int)M_PLOTCURVEDATA->m_pens.GetCount()), wxGenericPen(),
                 wxT("invalid plot colour"));
 
     return M_PLOTCURVEDATA->m_pens[colour_type];
 }
 
-void wxPlotCurve::SetPen(wxPlotPen_Type colour_type, const wxGenericPen &pen)
-{
+void wxPlotCurve::SetPen(wxPlotPen_Type colour_type, const wxGenericPen &pen) {
     wxCHECK_RET(Ok(), wxT("invalid plotcurve"));
-    wxCHECK_RET((colour_type >= 0) && (colour_type < (int) M_PLOTCURVEDATA->m_pens.GetCount()),
+    wxCHECK_RET((colour_type >= 0) && (colour_type < (int)M_PLOTCURVEDATA->m_pens.GetCount()),
                 wxT("invalid plot colour"));
 
     M_PLOTCURVEDATA->m_pens[colour_type] = pen;
 }
 
-wxGenericPen wxPlotCurve::GetDefaultPen(wxPlotPen_Type colour_type)
-{
+wxGenericPen wxPlotCurve::GetDefaultPen(wxPlotPen_Type colour_type) {
     InitPlotCurveDefaultPens();
     wxCHECK_MSG((colour_type >= 0) && (colour_type < int(wxPlotCurveRefData::sm_defaultPens.GetCount())),
                 wxGenericPen(), wxT("invalid plot colour"));
     return wxPlotCurveRefData::sm_defaultPens[colour_type];
 }
 
-void wxPlotCurve::SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen &pen)
-{
+void wxPlotCurve::SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen &pen) {
     InitPlotCurveDefaultPens();
     wxCHECK_RET((colour_type >= 0) && (colour_type < int(wxPlotCurveRefData::sm_defaultPens.GetCount())),
                 wxT("invalid plot colour"));
     wxPlotCurveRefData::sm_defaultPens[colour_type] = pen;
 }
 
-wxBrush wxPlotCurve::GetBrush() const
-{
+wxBrush wxPlotCurve::GetBrush() const {
     return M_PLOTCURVEDATA->m_brush;
 }
 
-void wxPlotCurve::SetBrush(const wxBrush &brush)
-{
+void wxPlotCurve::SetBrush(const wxBrush &brush) {
     M_PLOTCURVEDATA->m_brush = brush;
 }
-
 
 // ----------------------------------------------------------------------------
 // Get/Set Option names/values
 // ----------------------------------------------------------------------------
 
-size_t wxPlotCurve::GetOptionCount() const
-{
+size_t wxPlotCurve::GetOptionCount() const {
     wxCHECK_MSG(M_PLOTCURVEDATA, 0, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionNames.GetCount();
 }
 
-int wxPlotCurve::HasOption(const wxString &name) const
-{
+int wxPlotCurve::HasOption(const wxString &name) const {
     wxCHECK_MSG(M_PLOTCURVEDATA, wxNOT_FOUND, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionNames.Index(name);
 }
 
-wxString wxPlotCurve::GetOptionName(size_t i) const
-{
+wxString wxPlotCurve::GetOptionName(size_t i) const {
     wxCHECK_MSG(M_PLOTCURVEDATA && (i < GetOptionCount()), wxEmptyString, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionNames[i];
 }
 
-wxString wxPlotCurve::GetOptionValue(size_t i) const
-{
+wxString wxPlotCurve::GetOptionValue(size_t i) const {
     wxCHECK_MSG(M_PLOTCURVEDATA && (i < GetOptionCount()), wxEmptyString, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionValues[i];
 }
 
-int wxPlotCurve::SetOption(const wxString &name, const wxString &value, bool update)
-{
+int wxPlotCurve::SetOption(const wxString &name, const wxString &value, bool update) {
     wxCHECK_MSG(M_PLOTCURVEDATA, -1, wxT("invalid plotcurve"));
     int n = M_PLOTCURVEDATA->m_optionNames.Index(name);
     if (n == wxNOT_FOUND) {
@@ -218,75 +191,63 @@ int wxPlotCurve::SetOption(const wxString &name, const wxString &value, bool upd
     return n;
 }
 
-int wxPlotCurve::SetOption(const wxString &name, int option, bool update)
-{
+int wxPlotCurve::SetOption(const wxString &name, int option, bool update) {
     return SetOption(name, wxString::Format(wxT("%d"), option), update);
 }
 
-wxString wxPlotCurve::GetOption(const wxString &name) const
-{
+wxString wxPlotCurve::GetOption(const wxString &name) const {
     wxCHECK_MSG(M_PLOTCURVEDATA, wxEmptyString, wxT("invalid plotcurve"));
     int n = M_PLOTCURVEDATA->m_optionNames.Index(name);
 
-    if (n == wxNOT_FOUND)
-        return wxEmptyString;
+    if (n == wxNOT_FOUND) return wxEmptyString;
 
     return M_PLOTCURVEDATA->m_optionValues[n];
 }
 
-int wxPlotCurve::GetOption(const wxString &name, wxString &value) const
-{
+int wxPlotCurve::GetOption(const wxString &name, wxString &value) const {
     wxCHECK_MSG(M_PLOTCURVEDATA, wxNOT_FOUND, wxT("invalid plotcurve"));
 
     int n = M_PLOTCURVEDATA->m_optionNames.Index(name);
 
-    if (n == wxNOT_FOUND)
-        return wxNOT_FOUND;
+    if (n == wxNOT_FOUND) return wxNOT_FOUND;
 
     value = M_PLOTCURVEDATA->m_optionValues[n];
     return n;
 }
 
-int wxPlotCurve::GetOptionInt(const wxString &name) const
-{
+int wxPlotCurve::GetOptionInt(const wxString &name) const {
     wxCHECK_MSG(M_PLOTCURVEDATA, 0, wxT("invalid plotcurve"));
     return wxAtoi(GetOption(name));
 }
 
-wxArrayString wxPlotCurve::GetOptionNames() const
-{
+wxArrayString wxPlotCurve::GetOptionNames() const {
     wxCHECK_MSG(M_PLOTCURVEDATA, wxArrayString(), wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionNames;
 }
 
-wxArrayString wxPlotCurve::GetOptionValues() const
-{
+wxArrayString wxPlotCurve::GetOptionValues() const {
     wxCHECK_MSG(M_PLOTCURVEDATA, wxArrayString(), wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->m_optionValues;
 }
 
 //-------------------------------------------------------------------------
 
-void wxPlotCurve::SetClientObject(wxClientData *data)
-{
+void wxPlotCurve::SetClientObject(wxClientData *data) {
     wxCHECK_RET(M_PLOTCURVEDATA, wxT("invalid plotcurve"));
     M_PLOTCURVEDATA->SetClientObject(data);
 }
 
-wxClientData *wxPlotCurve::GetClientObject() const
-{
+wxClientData *wxPlotCurve::GetClientObject() const {
     wxCHECK_MSG(M_PLOTCURVEDATA, NULL, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->GetClientObject();
 }
 
-void wxPlotCurve::SetClientData(void *data)
-{
+void wxPlotCurve::SetClientData(void *data) {
     wxCHECK_RET(M_PLOTCURVEDATA, wxT("invalid plotcurve"));
     M_PLOTCURVEDATA->SetClientData(data);
 }
 
-void *wxPlotCurve::GetClientData() const
-{
+void *wxPlotCurve::GetClientData() const {
     wxCHECK_MSG(M_PLOTCURVEDATA, NULL, wxT("invalid plotcurve"));
     return M_PLOTCURVEDATA->GetClientData();
 }

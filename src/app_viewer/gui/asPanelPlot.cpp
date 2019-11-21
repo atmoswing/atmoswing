@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,54 +26,53 @@
  */
 
 #include "asPanelPlot.h"
-#include "wx/plotctrl/plotprnt.h"
+
 #include <wx/dcsvg.h>
+
+#include "wx/plotctrl/plotprnt.h"
 
 extern wxString wxPlotCtrl_GetEventName(wxEventType eventType);
 
-
 BEGIN_EVENT_TABLE(asPanelPlot, wxPanel)
-    EVT_PLOTCTRL_ADD_CURVE          (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_DELETING_CURVE     (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_DELETED_CURVE      (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_ADD_CURVE(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_DELETING_CURVE(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_DELETED_CURVE(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_CURVE_SEL_CHANGING (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_CURVE_SEL_CHANGED  (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_CURVE_SEL_CHANGING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_CURVE_SEL_CHANGED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_MOUSE_MOTION       (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_CLICKED            (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_DOUBLECLICKED      (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_POINT_CLICKED      (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_POINT_DOUBLECLICKED(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_MOUSE_MOTION(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_CLICKED(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_DOUBLECLICKED(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_POINT_CLICKED(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_POINT_DOUBLECLICKED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_AREA_SEL_CREATING  (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_AREA_SEL_CHANGING  (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_AREA_SEL_CREATED   (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_AREA_SEL_CREATING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_AREA_SEL_CHANGING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_AREA_SEL_CREATED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_VIEW_CHANGING      (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_VIEW_CHANGED       (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_VIEW_CHANGING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_VIEW_CHANGED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_CURSOR_CHANGING    (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_CURSOR_CHANGED     (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_CURSOR_CHANGING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_CURSOR_CHANGED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_ERROR              (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_ERROR(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_BEGIN_TITLE_EDIT   (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_END_TITLE_EDIT     (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_BEGIN_X_LABEL_EDIT (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_END_X_LABEL_EDIT   (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_END_Y_LABEL_EDIT   (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_BEGIN_TITLE_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_END_TITLE_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_BEGIN_X_LABEL_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_END_X_LABEL_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_BEGIN_Y_LABEL_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_END_Y_LABEL_EDIT(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
-    EVT_PLOTCTRL_MOUSE_FUNC_CHANGING (wxID_ANY, asPanelPlot::OnPlotCtrl)
-    EVT_PLOTCTRL_MOUSE_FUNC_CHANGED  (wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_MOUSE_FUNC_CHANGING(wxID_ANY, asPanelPlot::OnPlotCtrl)
+EVT_PLOTCTRL_MOUSE_FUNC_CHANGED(wxID_ANY, asPanelPlot::OnPlotCtrl)
 
 END_EVENT_TABLE()
 
-
 asPanelPlot::asPanelPlot(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : wxPanel(parent, id, pos, size, style)
-{
+    : wxPanel(parent, id, pos, size, style) {
     wxBoxSizer *bSizer;
     bSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -117,11 +116,9 @@ asPanelPlot::asPanelPlot(wxWindow *parent, wxWindowID id, const wxPoint &pos, co
     bSizer->Fit(this);
 }
 
-void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event)
-{
+void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event) {
     // Check that the pointer is set
-    if (!m_plotCtrl)
-        return;
+    if (!m_plotCtrl) return;
 
     // Get event type
     wxEventType eventType = event.GetEventType();
@@ -185,22 +182,19 @@ void asPanelPlot::OnPlotCtrl(wxPlotCtrlEvent &event)
     event.Skip();
 }
 
-void asPanelPlot::Print()
-{
+void asPanelPlot::Print() {
     wxPlotPrintout plotPrint(m_plotCtrl, wxT("AtmoSwing Printout"));
 
     plotPrint.ShowPrintDialog();
 }
 
-void asPanelPlot::PrintPreview()
-{
+void asPanelPlot::PrintPreview() {
     wxPlotPrintout plotPrint(m_plotCtrl, wxT("AtmoSwing Printout"));
 
     plotPrint.ShowPrintPreviewDialog(wxT("AtmoSwing Print Preview"));
 }
 
-void asPanelPlot::ExportSVG()
-{
+void asPanelPlot::ExportSVG() {
     wxFileDialog dialog(this, wxT("Save SVG file as"), wxEmptyString, "AtmoSwing_timeseries",
                         wxT("SVG vector picture files (*.svg)|*.svg"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
@@ -217,5 +211,4 @@ void asPanelPlot::ExportSVG()
             return;
         }
     }
-
 }

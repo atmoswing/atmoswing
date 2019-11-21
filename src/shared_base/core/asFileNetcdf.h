@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,22 +29,16 @@
 #ifndef AS_FILE_NETCDF_H
 #define AS_FILE_NETCDF_H
 
-#include "asIncludes.h"
 #include <asFile.h>
+
+#include "asIncludes.h"
 #include "netcdf.h"
 
+class asFileNetcdf : public asFile {
+   public:
+    enum Type { Byte, Char, Short, Int, Float, Double, String };
 
-class asFileNetcdf
-        : public asFile
-{
-public:
-    enum Type
-    {
-        Byte, Char, Short, Int, Float, Double, String
-    };
-
-    enum Format
-    {
+    enum Format {
         Classic = NC_FORMAT_CLASSIC,
         Format64bit = NC_FORMAT_64BIT,
         Netcdf4 = NC_FORMAT_NETCDF4,
@@ -162,43 +156,35 @@ public:
 
     nc_type GetVarType(const wxString &varName);
 
-    size_t GetVarsNb() const
-    {
+    size_t GetVarsNb() const {
         return m_struct.vars.size();
     }
 
-    size_t GetDimsNb() const
-    {
+    size_t GetDimsNb() const {
         return m_struct.dims.size();
     }
 
-    size_t GetGlobAttsNb() const
-    {
+    size_t GetGlobAttsNb() const {
         return m_struct.atts.size();
     }
 
-    size_t GetVarAttsNb(int varId) const
-    {
+    size_t GetVarAttsNb(int varId) const {
         return m_struct.vars[varId].atts.size();
     }
 
-    size_t GetVarDimsNb(int varId) const
-    {
+    size_t GetVarDimsNb(int varId) const {
         return m_struct.vars[varId].dimIds.size();
     }
 
-protected:
-
-private:
-    struct NcDimStruct
-    {
+   protected:
+   private:
+    struct NcDimStruct {
         int id;
         wxString name;
         size_t length;
     };
 
-    struct NcAttStruct
-    {
+    struct NcAttStruct {
         int id;
         wxString name;
         nc_type type;
@@ -206,8 +192,7 @@ private:
         void *pValue;
     };
 
-    struct NcVarStruct
-    {
+    struct NcVarStruct {
         int id;
         wxString name;
         size_t length;
@@ -216,8 +201,7 @@ private:
         std::vector<NcAttStruct> atts;
     };
 
-    struct NcStruct
-    {
+    struct NcStruct {
         int nUDims;
         vi uDimIds;
         asFileNetcdf::Format format;
@@ -242,7 +226,6 @@ private:
     bool ParseStruct();
 
     size_t GetVarLength(int &varId) const;
-
 };
 
 #endif

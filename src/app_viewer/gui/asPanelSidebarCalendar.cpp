@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,13 +32,12 @@
 
 asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size,
                                                long style)
-        : asPanelSidebar(parent, id, pos, size, style)
-{
+    : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Day of the forecast"));
 
-    m_calendarForecastDate = new wxCalendarCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
-                                                wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS |
-                                                wxCAL_SHOW_SURROUNDING_WEEKS);
+    m_calendarForecastDate =
+        new wxCalendarCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
+                           wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
     m_sizerContent->Add(m_calendarForecastDate, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
     wxBoxSizer *bSizer35;
@@ -65,19 +64,16 @@ asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, 
                            wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
-asPanelSidebarCalendar::~asPanelSidebarCalendar()
-{
+asPanelSidebarCalendar::~asPanelSidebarCalendar() {
     m_bpButtonNow->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
                               wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
-void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent &event)
-{
+void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent &event) {
     SetPresentDate();
 }
 
-void asPanelSidebarCalendar::SetPresentDate()
-{
+void asPanelSidebarCalendar::SetPresentDate() {
     // Set the present date in the calendar and the hour field
     wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
     Time nowStruct = asTime::NowTimeStruct(asUTM);
@@ -85,4 +81,3 @@ void asPanelSidebarCalendar::SetPresentDate()
     m_calendarForecastDate->SetDate(nowWx);
     m_textCtrlForecastHour->SetValue(hourStr);
 }
-

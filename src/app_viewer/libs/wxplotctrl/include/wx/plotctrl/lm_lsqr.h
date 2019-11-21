@@ -84,13 +84,11 @@ extern void SetLM_LeastSquareProgressHandlerTicks(int iterations);
 //
 //=============================================================================
 
-class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare
-{
-public:
+class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
+   public:
     LM_LeastSquare();
 
-    virtual ~LM_LeastSquare()
-    {
+    virtual ~LM_LeastSquare() {
         Destroy();
     }
 
@@ -100,8 +98,7 @@ public:
     bool Create(const wxPlotData &plotData, const wxPlotFunction &plotFunc);
 
     // Has this been sucessfully created and is ready to be Fit()
-    bool Ok() const
-    {
+    bool Ok() const {
         return m_ok;
     }
 
@@ -111,57 +108,48 @@ public:
     int Fit(const double *initial_vals = NULL, int init_count = 0);
 
     // returns true if this is currently fitting
-    bool IsFitting() const
-    {
+    bool IsFitting() const {
         return m_fitting;
     }
 
     // abort a currently running fit, this may take a cycle or two so check
     //   IsFitting to determine when it is done.
-    void AbortFitting()
-    {
+    void AbortFitting() {
         m_abort_fitting = true;
     }
 
     // was the last fit aborted, reset when Create or Fit is called again
-    bool GetAbortFitting() const
-    {
+    bool GetAbortFitting() const {
         return m_abort_fitting;
     }
 
     // If you don't cal Fit(some_vars, count) then the variables are all
     // initialized with this value, default = 0.1
-    double GetInitValue() const
-    {
+    double GetInitValue() const {
         return m_init_value;
     }
 
-    void SetInitValue(double init_val)
-    {
+    void SetInitValue(double init_val) {
         m_init_value = init_val;
     }
 
     // Get the number of evaluations performed to find best fit
-    int GetNumberIterations() const
-    {
+    int GetNumberIterations() const {
         return m_nfev;
     }
 
     // Get the euclidean norm of errors between data and function points
-    double GetEuclideanNorm() const
-    {
+    double GetEuclideanNorm() const {
         return m_fnorm;
     }
 
     // Get the number of variables, i.e. (plotFunc.GetNumberVars() - 1, x is excluded)
-    int GetNumberVariables() const
-    {
+    int GetNumberVariables() const {
         return m_n;
     }
 
     // Get the evaluated variables, size is (plotFunc.GetNumberVars() - 1, x is excluded)
-    double *GetVariables() const
-    {
+    double *GetVariables() const {
         return m_x;
     }
 
@@ -171,8 +159,8 @@ public:
     // Get an informational message about the results
     wxString GetResultMessage() const;
 
-protected:
-    void ReInit();   // only after a call to destroy - reset the vars
+   protected:
+    void ReInit();  // only after a call to destroy - reset the vars
     void Destroy();
 
     wxPlotData *m_plotData;
@@ -206,32 +194,32 @@ protected:
     void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int *iflag, double epsfcn,
                 double wa[]);
 
-    int m_n;       // # of variables of plotFunc
-    int m_m;       // # of functions = points in plotData
-    int m_info;    // index of info message strings
-    double m_fnorm;   // euclidean norm of errors
-    double m_eps;     // resolution of arithmetic
-    double m_dwarf;   // smallest nonzero number
-    int m_nfev;    // # iterations completed
-    unsigned long m_nan; // # if times function evaluation had a NaN
-    double m_ftol;    // relative error in the sum of the squares, if less done
-    double m_xtol;    // relative error between two iterations, if less done
-    double m_gtol;    // cosine of the angle between fvec and any column of the jacobian, if less done
-    double m_epsfcn;  // step length for the forward-difference approximation
-    double m_factor;  // initial step bound
-    double *m_vars;   // variables + 1, where last is var 'x' for wxPlotFunction
-    double *m_x;      // variables (size m_n)
-    double *m_fvec;   // output of evaluated functions (size m_m)
-    double *m_diag;   // multiplicative scale factors for the variables, see m_mode
-    int m_mode;    // =1 the vars scaled internally. if 2, scaling specified by m_diag.
-    double *m_fjac;   // output m by n array
-    int m_ldfjac;  // the leading dimension of the array fjac >= m_m
-    double *m_qtf;    // output array the first n elements of the vector (q transpose)*fvec
-    int *m_ipvt;   // integer output array of length n
-    int m_maxfev;  // maximum number of iterations to try
+    int m_n;              // # of variables of plotFunc
+    int m_m;              // # of functions = points in plotData
+    int m_info;           // index of info message strings
+    double m_fnorm;       // euclidean norm of errors
+    double m_eps;         // resolution of arithmetic
+    double m_dwarf;       // smallest nonzero number
+    int m_nfev;           // # iterations completed
+    unsigned long m_nan;  // # if times function evaluation had a NaN
+    double m_ftol;        // relative error in the sum of the squares, if less done
+    double m_xtol;        // relative error between two iterations, if less done
+    double m_gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
+    double m_epsfcn;      // step length for the forward-difference approximation
+    double m_factor;      // initial step bound
+    double *m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
+    double *m_x;          // variables (size m_n)
+    double *m_fvec;       // output of evaluated functions (size m_m)
+    double *m_diag;       // multiplicative scale factors for the variables, see m_mode
+    int m_mode;           // =1 the vars scaled internally. if 2, scaling specified by m_diag.
+    double *m_fjac;       // output m by n array
+    int m_ldfjac;         // the leading dimension of the array fjac >= m_m
+    double *m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
+    int *m_ipvt;          // integer output array of length n
+    int m_maxfev;         // maximum number of iterations to try
 
-private:
+   private:
     void Init();
 };
 
-#endif // _LM_LEASTSQUARE_H_
+#endif  // _LM_LEASTSQUARE_H_

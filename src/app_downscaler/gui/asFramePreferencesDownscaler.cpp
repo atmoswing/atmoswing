@@ -28,8 +28,7 @@
 #include "asFramePreferencesDownscaler.h"
 
 asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id)
-        : asFramePreferencesDownscalerVirtual(parent, id)
-{
+    : asFramePreferencesDownscalerVirtual(parent, id) {
     LoadPreferences();
     Fit();
 
@@ -39,18 +38,15 @@ asFramePreferencesDownscaler::asFramePreferencesDownscaler(wxWindow *parent, wxW
 #endif
 }
 
-void asFramePreferencesDownscaler::CloseFrame(wxCommandEvent &event)
-{
+void asFramePreferencesDownscaler::CloseFrame(wxCommandEvent &event) {
     Close();
 }
 
-void asFramePreferencesDownscaler::Update()
-{
+void asFramePreferencesDownscaler::Update() {
     LoadPreferences();
 }
 
-void asFramePreferencesDownscaler::LoadPreferences()
-{
+void asFramePreferencesDownscaler::LoadPreferences() {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig;
@@ -114,23 +110,22 @@ void asFramePreferencesDownscaler::LoadPreferences()
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads == -1)
-        maxThreads = 2;
+    if (maxThreads == -1) maxThreads = 2;
     wxString maxThreadsStr = wxString::Format("%d", maxThreads);
     m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", maxThreadsStr));
-    m_sliderThreadsPriority->SetValue((int) pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
+    m_sliderThreadsPriority->SetValue((int)pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
-    long processingMethod = pConfig->ReadLong("/Processing/Method", (long) asMULTITHREADS);
+    long processingMethod = pConfig->ReadLong("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
-        if (processingMethod == (long) asMULTITHREADS) {
-            processingMethod = (long) asSTANDARD;
+        if (processingMethod == (long)asMULTITHREADS) {
+            processingMethod = (long)asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int) processingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int)processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -141,8 +136,7 @@ void asFramePreferencesDownscaler::LoadPreferences()
     m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini");
 }
 
-void asFramePreferencesDownscaler::SavePreferences() const
-{
+void asFramePreferencesDownscaler::SavePreferences() const {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig;
@@ -178,7 +172,7 @@ void asFramePreferencesDownscaler::SavePreferences() const
      */
 
     // GUI options
-    auto guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long)m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -199,26 +193,23 @@ void asFramePreferencesDownscaler::SavePreferences() const
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
-    if (!processingMaxThreadNb.IsNumber())
-        processingMaxThreadNb = "2";
+    if (!processingMaxThreadNb.IsNumber()) processingMaxThreadNb = "2";
     pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
-    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long)m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
-    if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
-        processingMethod = (long) asSTANDARD;
+    auto processingMethod = (long)m_radioBoxProcessingMethods->GetSelection();
+    if (!allowMultithreading && processingMethod == (long)asMULTITHREADS) {
+        processingMethod = (long)asSTANDARD;
     }
     pConfig->Write("/Processing/Method", processingMethod);
-
 
     GetParent()->Update();
     pConfig->Flush();
 }
 
-void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent &event)
-{
+void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -229,13 +220,11 @@ void asFramePreferencesDownscaler::OnChangeMultithreadingCheckBox(wxCommandEvent
     }
 }
 
-void asFramePreferencesDownscaler::SaveAndClose(wxCommandEvent &event)
-{
+void asFramePreferencesDownscaler::SaveAndClose(wxCommandEvent &event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesDownscaler::ApplyChanges(wxCommandEvent &event)
-{
+void asFramePreferencesDownscaler::ApplyChanges(wxCommandEvent &event) {
     SavePreferences();
 }

@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNoaa20Cr2cRegular, LoadEasy)
-{
+TEST(PredictorNoaa20Cr2cRegular, LoadEasy) {
     double xMin = 10;
     double xWidth = 8;
     double yMin = 70;
@@ -89,8 +88,7 @@ TEST(PredictorNoaa20Cr2cRegular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cRegular, LoadComposite)
-{
+TEST(PredictorNoaa20Cr2cRegular, LoadComposite) {
     double xMin = -8;
     double xWidth = 12;
     double yMin = 70;
@@ -150,8 +148,7 @@ TEST(PredictorNoaa20Cr2cRegular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cRegular, LoadBorderLeft)
-{
+TEST(PredictorNoaa20Cr2cRegular, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 4;
     double yMin = 70;
@@ -203,8 +200,7 @@ TEST(PredictorNoaa20Cr2cRegular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cRegular, LoadBorderRight)
-{
+TEST(PredictorNoaa20Cr2cRegular, LoadBorderRight) {
     double xMin = 352;
     double xWidth = 8;
     double yMin = 70;

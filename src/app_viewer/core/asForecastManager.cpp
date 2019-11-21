@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,31 +32,24 @@ wxDEFINE_EVENT(asEVT_ACTION_FORECAST_CLEAR, wxCommandEvent);
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_NEW_ADDED, wxCommandEvent);
 
 asForecastManager::asForecastManager(wxWindow *parent, asWorkspace *workspace)
-        : m_parent(parent),
-          m_workspace(workspace),
-          m_aggregator(new asResultsForecastAggregator()),
-          m_leadTimeOrigin(0)
-{
+    : m_parent(parent),
+      m_workspace(workspace),
+      m_aggregator(new asResultsForecastAggregator()),
+      m_leadTimeOrigin(0) {}
 
-}
-
-asForecastManager::~asForecastManager()
-{
+asForecastManager::~asForecastManager() {
     wxDELETE(m_aggregator);
 }
 
-bool asForecastManager::HasForecasts() const
-{
+bool asForecastManager::HasForecasts() const {
     return (m_aggregator->GetMethodsNb() > 0);
 }
 
-void asForecastManager::AddDirectoryPastForecasts(const wxString &dir)
-{
+void asForecastManager::AddDirectoryPastForecasts(const wxString &dir) {
     m_directoriesPastForecasts.Add(dir);
 }
 
-int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const
-{
+int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -71,8 +64,7 @@ int asForecastManager::GetLinearIndex(int methodRow, int forecastRow) const
     return 0;
 }
 
-int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const
-{
+int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -87,8 +79,7 @@ int asForecastManager::GetMethodRowFromLinearIndex(int linearIndex) const
     return 0;
 }
 
-int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const
-{
+int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const {
     int counter = 0;
     for (int i = 0; i < m_aggregator->GetMethodsNb(); i++) {
         for (int j = 0; j < m_aggregator->GetForecastsNb(i); j++) {
@@ -103,13 +94,11 @@ int asForecastManager::GetForecastRowFromLinearIndex(int linearIndex) const
     return 0;
 }
 
-void asForecastManager::ClearArrays()
-{
+void asForecastManager::ClearArrays() {
     m_aggregator->ClearArrays();
 }
 
-void asForecastManager::ClearForecasts()
-{
+void asForecastManager::ClearForecasts() {
     ClearArrays();
     m_directoriesPastForecasts.Clear();
 
@@ -121,8 +110,7 @@ void asForecastManager::ClearForecasts()
 #endif
 }
 
-bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
-{
+bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -175,8 +163,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh)
     return true;
 }
 
-bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath)
-{
+bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const wxString &filePath) {
     // Check existance
     if (!wxFileName::FileExists(filePath)) {
         wxLogError(_("The file %s could not be found."), filePath);
@@ -213,13 +200,11 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     return true;
 }
 
-void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
-{
+void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
     // Check if already loaded
     wxASSERT(m_aggregator->GetMethodsNb() > methodRow);
     wxASSERT(m_aggregator->GetPastMethodsNb() > methodRow);
-    if (m_aggregator->GetPastForecastsNb(methodRow, forecastRow) > 0)
-        return;
+    if (m_aggregator->GetPastForecastsNb(methodRow, forecastRow) > 0) return;
 
     // Get the number of days to load
     int nbPastDays = m_workspace->GetTimeSeriesPlotPastDaysNb();
@@ -286,13 +271,12 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow)
                     }
                 }
             }
-            quitloop:;
+        quitloop:;
         }
     }
 }
 
-void asForecastManager::LoadPastForecast(int methodRow)
-{
+void asForecastManager::LoadPastForecast(int methodRow) {
     for (int i = 0; i < GetForecastsNb(methodRow); i++) {
         LoadPastForecast(methodRow, i);
     }

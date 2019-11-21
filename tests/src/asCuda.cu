@@ -27,26 +27,19 @@
 
 #include "asCuda.cuh"
 
-__global__
-void add(int n, float *x, float *y)
-{
+__global__ void add(int n, float *x, float *y) {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
-    for (int i = index; i < n; i += stride)
-        y[i] = x[i] + y[i];
+    for (int i = index; i < n; i += stride) y[i] = x[i] + y[i];
 }
 
-__global__
-void addStreams(int n, float *x, float *y, int offset)
-{
+__global__ void addStreams(int n, float *x, float *y, int offset) {
     int index = offset + blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
-    for (int i = index; i < n; i += stride)
-        y[i] = x[i] + y[i];
+    for (int i = index; i < n; i += stride) y[i] = x[i] + y[i];
 }
 
-bool CudaProcessSum()
-{
+bool CudaProcessSum() {
     checkCudaErrors(cudaSetDevice(0));
 
     int N = 1 << 20;
@@ -77,8 +70,7 @@ bool CudaProcessSum()
 
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
-    for (int i = 0; i < N; i++)
-        maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
+    for (int i = 0; i < N; i++) maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
     if (maxError > 0) {
         std::cout << "Max error: " << maxError << std::endl;
     }
@@ -92,8 +84,7 @@ bool CudaProcessSum()
     return 0;
 }
 
-bool CudaProcessSumWithStreams()
-{
+bool CudaProcessSumWithStreams() {
     checkCudaErrors(cudaSetDevice(0));
 
     const int nStreams = 8;
@@ -101,7 +92,7 @@ bool CudaProcessSumWithStreams()
 
     int N = 1 << 20;
 
-    int streamSize = N/nStreams;
+    int streamSize = N / nStreams;
 
     float *hx, *dx = nullptr;
     hx = (float *)malloc(N * sizeof(float));
@@ -122,24 +113,25 @@ bool CudaProcessSumWithStreams()
 
         int offset = i * streamSize;
 
-        checkCudaErrors(cudaMemcpyAsync(&dx[offset], &hx[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
-        checkCudaErrors(cudaMemcpyAsync(&dy[offset], &hy[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
+        checkCudaErrors(
+            cudaMemcpyAsync(&dx[offset], &hx[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
+        checkCudaErrors(
+            cudaMemcpyAsync(&dy[offset], &hy[offset], streamSize * sizeof(float), cudaMemcpyHostToDevice, streams[i]));
 
         int numBlocks = (streamSize + blockSize - 1) / blockSize;
         addStreams<<<numBlocks, blockSize, 0, streams[i]>>>(N, dx, dy, offset);
 
-        checkCudaErrors(cudaMemcpyAsync(&hy[offset], &dy[offset], streamSize * sizeof(float), cudaMemcpyDeviceToHost, streams[i]));
+        checkCudaErrors(
+            cudaMemcpyAsync(&hy[offset], &dy[offset], streamSize * sizeof(float), cudaMemcpyDeviceToHost, streams[i]));
     }
 
     checkCudaErrors(cudaDeviceSynchronize());
 
-    for (auto & stream : streams)
-        cudaStreamDestroy(stream);
+    for (auto &stream : streams) cudaStreamDestroy(stream);
 
     // Check for errors (all values should be 3.0f)
     float maxError = 0.0f;
-    for (int i = 0; i < N; i++)
-        maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
+    for (int i = 0; i < N; i++) maxError = fmax(maxError, std::fabs(hy[i] - 3.0f));
     if (maxError > 0) {
         std::cout << "Max error: " << maxError << std::endl;
     }

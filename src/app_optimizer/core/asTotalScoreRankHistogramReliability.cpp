@@ -28,14 +28,10 @@
 #include "asTotalScoreRankHistogramReliability.h"
 
 asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(const wxString &periodString)
-        : asTotalScore(periodString)
-{
-
-}
+    : asTotalScore(periodString) {}
 
 float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const a1f &scores,
-                                                   const asTimeArray &timeArray) const
-{
+                                                   const asTimeArray &timeArray) const {
     wxLogWarning(_("Calling asTotalScoreRankHistogramReliability::Assess means it doesn't do bootstraping."));
 
     wxASSERT(targetDates.rows() > 1);
@@ -47,7 +43,7 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const
     switch (m_period) {
         case (asTotalScore::Total): {
             for (int i = 0; i < scores.size(); i++) {
-                int rank = (int) asRound(scores[i]);
+                int rank = (int)asRound(scores[i]);
                 wxASSERT(rank <= m_ranksNb);
                 histogram[rank - 1]++;
             }
@@ -72,8 +68,7 @@ float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const
     return reliability;
 }
 
-float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const
-{
+float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const {
     wxASSERT(m_ranksNb > 1);
 
     a1f histogramReal;

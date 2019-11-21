@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,18 +29,17 @@
 #ifndef AS_FRAME_PREFERENCES_FORECASTER
 #define AS_FRAME_PREFERENCES_FORECASTER
 
-#include "AtmoswingForecasterGui.h"
-#include <asIncludes.h>
 #include <asBatchForecasts.h>
+#include <asIncludes.h>
 
-class asFramePreferencesForecaster
-        : public asFramePreferencesForecasterVirtual
-{
-public:
+#include "AtmoswingForecasterGui.h"
+
+class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual {
+   public:
     asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
                                  wxWindowID id = asWINDOW_PREFERENCES);
 
-protected:
+   protected:
     void CloseFrame(wxCommandEvent &event) override;
 
     void Update() override;
@@ -55,7 +54,7 @@ protected:
 
     void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 
-private:
+   private:
     asBatchForecasts *m_batchForecasts;
 };
 

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,26 +28,21 @@
 
 #include "asListBoxQuantiles.h"
 
-#include "asIncludes.h"
 #include <asForecastViewer.h>
 
+#include "asIncludes.h"
 
 BEGIN_EVENT_TABLE(asListBoxQuantiles, wxListBox)
-    EVT_LISTBOX(wxID_ANY, asListBoxQuantiles::OnQuantileSlctChange)
+EVT_LISTBOX(wxID_ANY, asListBoxQuantiles::OnQuantileSlctChange)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED, wxCommandEvent);
 
-
 asListBoxQuantiles::asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, int n,
                                        const wxString choices[], long style)
-        : wxListBox(parent, id, pos, size, n, choices, style)
-{
-    //ctor
-}
+    : wxListBox(parent, id, pos, size, n, choices, style) {}
 
-void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent &event)
-{
+void asListBoxQuantiles::OnQuantileSlctChange(wxCommandEvent &event) {
     wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_QUANTILE_SELECTION_CHANGED);
     eventSlct.SetInt(event.GetInt());
     GetParent()->ProcessWindowEvent(eventSlct);

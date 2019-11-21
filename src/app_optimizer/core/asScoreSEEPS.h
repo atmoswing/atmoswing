@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,12 +30,11 @@
 #define AS_SCORE_SEEPS_H
 
 #include <asIncludes.h>
+
 #include "asScore.h"
 
-class asScoreSEEPS
-        : public asScore
-{
-public:
+class asScoreSEEPS : public asScore {
+   public:
     asScoreSEEPS();
 
     ~asScoreSEEPS() override;
@@ -44,34 +43,28 @@ public:
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climData) override;
 
-    void SetP1(float val)
-    {
+    void SetP1(float val) {
         m_p1 = val;
     }
 
-    void SetP3(float val)
-    {
+    void SetP3(float val) {
         m_p3 = val;
     }
 
-    void SetThresNull(float val)
-    {
+    void SetThresNull(float val) {
         m_thresNull = val;
     }
 
-    void SetThresHigh(float val)
-    {
+    void SetThresHigh(float val) {
         m_thresHigh = val;
     }
 
-protected:
-
-private:
+   protected:
+   private:
     float m_p1;
     float m_p3;
     float m_thresNull;
     float m_thresHigh;
-
 };
 
 #endif

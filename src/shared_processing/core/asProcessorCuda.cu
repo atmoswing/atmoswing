@@ -28,34 +28,31 @@
 
 // Disable some MSVC warnings
 #ifdef _MSC_VER
-#pragma warning( disable : 4244 ) // C4244: conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
-#pragma warning( disable : 4267 ) // C4267: conversion from 'size_t' to 'int', possible loss of data
+#pragma warning(disable : 4244)  // C4244: conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+#pragma warning(disable : 4267)  // C4267: conversion from 'size_t' to 'int', possible loss of data
 #endif
 
-#include "asProcessorCuda.cuh"
 #include <stdio.h>
+
 #include <cmath>
+
+#include "asProcessorCuda.cuh"
 
 #define FULL_MASK 0xffffffff
 
 // The number of threads per block should be a multiple of 32 threads, because this provides optimal computing
 // efficiency and facilitates coalescing.
-static const int blockSize = 64; // must be 64 <= blockSize <= 1024
+static const int blockSize = 64;  // must be 64 <= blockSize <= 1024
 
 // From https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
-__inline__ __device__
-float warpReduceSum(float val)
-{
-    for (int offset = 32 / 2; offset > 0; offset /= 2)
-        val += __shfl_down_sync(FULL_MASK, val, offset);
+__inline__ __device__ float warpReduceSum(float val) {
+    for (int offset = 32 / 2; offset > 0; offset /= 2) val += __shfl_down_sync(FULL_MASK, val, offset);
 
     return val;
 }
 
-__global__
-void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-    float w, float *out, int offset)
-{
+__global__ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg,
+                               const int *idxArch, float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -63,9 +60,9 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float mem[2 * blockSize/32];
+        __shared__ float mem[2 * blockSize / 32];
         float *sdiff = mem;
-        float *smax = &sdiff[blockSize/32];
+        float *smax = &sdiff[blockSize / 32];
 
         float rdiff = 0;
         float rmax = 0;
@@ -76,7 +73,7 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -102,7 +99,7 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 sdiff[idx] = diff;
                 smax[idx] = amax;
             }
@@ -112,7 +109,7 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
             if (threadId == 0) {
                 rdiff += diff;
                 rmax += amax;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rdiff += sdiff[j];
                     rmax += smax[j];
                 }
@@ -131,10 +128,8 @@ void processS1grads(const float *data, long ptorStart, int candNb, int ptsNbtot,
     }
 }
 
-__global__
-void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-                    float w, float *out, int offset)
-{
+__global__ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                          float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -142,7 +137,7 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float sdiff[blockSize/32];
+        __shared__ float sdiff[blockSize / 32];
 
         float rdiff = 0;
         float diff = 0;
@@ -150,7 +145,7 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -173,7 +168,7 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 sdiff[idx] = diff;
             }
             __syncthreads();
@@ -181,7 +176,7 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
             // Final sum
             if (threadId == 0) {
                 rdiff += diff;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rdiff += sdiff[j];
                 }
             }
@@ -195,10 +190,8 @@ void processMD(const float *data, long ptorStart, int candNb, int ptsNbtot, int 
     }
 }
 
-__global__
-void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-               float w, float *out, int offset)
-{
+__global__ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg,
+                            const int *idxArch, float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -206,7 +199,7 @@ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, in
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float sdiff[blockSize/32];
+        __shared__ float sdiff[blockSize / 32];
 
         float rdiff = 0;
         float diff = 0;
@@ -214,7 +207,7 @@ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, in
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -238,7 +231,7 @@ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, in
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 sdiff[idx] = diff;
             }
             __syncthreads();
@@ -246,7 +239,7 @@ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, in
             // Final sum
             if (threadId == 0) {
                 rdiff += diff;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rdiff += sdiff[j];
                 }
             }
@@ -260,10 +253,8 @@ void processRMSE(const float *data, long ptorStart, int candNb, int ptsNbtot, in
     }
 }
 
-__global__
-void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-                 float w, float *out, int offset)
-{
+__global__ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                           float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -271,7 +262,7 @@ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float sdiff[blockSize/32];
+        __shared__ float sdiff[blockSize / 32];
 
         float rdiff = 0;
         float diff = 0;
@@ -279,7 +270,7 @@ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -303,7 +294,7 @@ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 sdiff[idx] = diff;
             }
             __syncthreads();
@@ -311,7 +302,7 @@ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int
             // Final sum
             if (threadId == 0) {
                 rdiff += diff;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rdiff += sdiff[j];
                 }
             }
@@ -325,10 +316,8 @@ void processRSE(const float *data, long ptorStart, int candNb, int ptsNbtot, int
     }
 }
 
-__global__
-void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-                float w, float *out, int offset)
-{
+__global__ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                           float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -336,7 +325,7 @@ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float sdiff[blockSize/32];
+        __shared__ float sdiff[blockSize / 32];
 
         float rdiff = 0;
         float diff = 0;
@@ -344,7 +333,7 @@ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -367,7 +356,7 @@ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 sdiff[idx] = diff;
             }
             __syncthreads();
@@ -375,7 +364,7 @@ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
             // Final sum
             if (threadId == 0) {
                 rdiff += diff;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rdiff += sdiff[j];
                 }
             }
@@ -389,10 +378,8 @@ void processSAD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
     }
 }
 
-__global__
-void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-                    float w, float *out, int offset)
-{
+__global__ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                           float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -400,9 +387,9 @@ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float mem[2 * blockSize/32];
+        __shared__ float mem[2 * blockSize / 32];
         float *ssumX = mem;
-        float *ssumY = &ssumX[blockSize/32];
+        float *ssumY = &ssumX[blockSize / 32];
 
         float rsumX = 0;
         float rsumY = 0;
@@ -413,7 +400,7 @@ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -436,7 +423,7 @@ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 ssumX[idx] = sumX;
                 ssumY[idx] = sumY;
             }
@@ -446,7 +433,7 @@ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int
             if (threadId == 0) {
                 rsumX += sumX;
                 rsumY += sumY;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rsumX += ssumX[j];
                     rsumY += ssumY[j];
                 }
@@ -461,10 +448,8 @@ void processDMV(const float *data, long ptorStart, int candNb, int ptsNbtot, int
     }
 }
 
-__global__
-void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
-                float w, float *out, int offset)
-{
+__global__ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int idxTarg, const int *idxArch,
+                           float w, float *out, int offset) {
     const int blockId = gridDim.x * gridDim.y * blockIdx.z + blockIdx.y * gridDim.x + blockIdx.x;
     const int threadId = threadIdx.x;
 
@@ -472,10 +457,10 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int iTarg = idxTarg;
         int iArch = idxArch[offset + blockId];
 
-        __shared__ float mem[2 * blockSize/32 + 2];
+        __shared__ float mem[2 * blockSize / 32 + 2];
         float *smemX = mem;
-        float *smemY = &smemX[blockSize/32];
-        float *meanX = &smemY[blockSize/32];
+        float *smemY = &smemX[blockSize / 32];
+        float *meanX = &smemY[blockSize / 32];
         float *meanY = &meanX[1];
 
         float rvarX = 0;
@@ -488,7 +473,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         int nLoops = ceil(double(ptsNbtot) / blockSize);
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -511,7 +496,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 smemX[idx] = varX;
                 smemY[idx] = varY;
             }
@@ -521,7 +506,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
             if (threadId == 0) {
                 rvarX += varX;
                 rvarY += varY;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rvarX += smemX[j];
                     rvarY += smemY[j];
                 }
@@ -541,7 +526,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
         rvarY = 0;
         for (int i = 0; i < nLoops; ++i) {
             int nPts = blockSize;
-            if (i == nLoops-1) {
+            if (i == nLoops - 1) {
                 nPts = ptsNbtot - (i * blockSize);
             }
 
@@ -566,7 +551,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
 
             // Store in shared memory
             if (threadId > 0 && threadId % 32 == 0) {
-                int idx = threadId/32;
+                int idx = threadId / 32;
                 smemX[idx] = varX;
                 smemY[idx] = varY;
             }
@@ -576,7 +561,7 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
             if (threadId == 0) {
                 rvarX += varX;
                 rvarY += varY;
-                for (int j = 1; j < blockSize/32; ++j) {
+                for (int j = 1; j < blockSize / 32; ++j) {
                     rvarX += smemX[j];
                     rvarY += smemY[j];
                 }
@@ -594,10 +579,10 @@ void processDSD(const float *data, long ptorStart, int candNb, int ptsNbtot, int
     }
 }
 
-bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indexTarg, const int *indicesArch,
-                                      float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                      std::vector<float> &weights, std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset)
-{
+bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indexTarg,
+                                      const int *indicesArch, float *dRes, int nbCandidates, std::vector<int> &colsNb,
+                                      std::vector<int> &rowsNb, std::vector<float> &weights,
+                                      std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset) {
     for (int iPtor = 0; iPtor < ptorStart.size(); iPtor++) {
         int ptsNb = colsNb[iPtor] * rowsNb[iPtor];
 
@@ -615,28 +600,28 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
                     dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case MD:
-                processMD<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processMD<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg,
+                                                                indicesArch, weights[iPtor], dRes, offset);
                 break;
             case RMSE:
-                processRMSE<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processRMSE<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                  indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case RSE:
-                processRSE<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processRSE<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                 indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case SAD:
-                processSAD<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processSAD<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                 indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case DMV:
-                processDMV<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processDMV<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                 indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             case DSD:
-                processDSD<<<blocksNb3D, blockSize, 0, stream>>>(
-                    dData, ptorStart[iPtor], nbCandidates, ptsNb, indexTarg, indicesArch, weights[iPtor], dRes, offset);
+                processDSD<<<blocksNb3D, blockSize, 0, stream>>>(dData, ptorStart[iPtor], nbCandidates, ptsNb,
+                                                                 indexTarg, indicesArch, weights[iPtor], dRes, offset);
                 break;
             default:
                 printf("Criteria not yet implemented on GPU.");
@@ -647,8 +632,7 @@ bool asProcessorCuda::ProcessCriteria(const float *dData, std::vector<long> ptor
     return true;
 }
 
-bool asProcessorCuda::SelectBestDevice()
-{
+bool asProcessorCuda::SelectBestDevice() {
     cudaError_t cudaStatus;
     bool showDeviceName = false;
 
@@ -691,8 +675,7 @@ bool asProcessorCuda::SelectBestDevice()
     return true;
 }
 
-int asProcessorCuda::GetDeviceCount()
-{
+int asProcessorCuda::GetDeviceCount() {
     cudaError_t cudaStatus;
 
     // Count the devices
@@ -714,8 +697,6 @@ int asProcessorCuda::GetDeviceCount()
     return devicesCount;
 }
 
-void asProcessorCuda::SetDevice(int device)
-{
+void asProcessorCuda::SetDevice(int device) {
     checkCudaErrors(cudaSetDevice(device));
 }
-

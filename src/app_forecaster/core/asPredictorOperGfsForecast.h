@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,25 +30,21 @@
 #define AS_PREDICTOR_OPER_GFS_FORECAST_H
 
 #include <asIncludes.h>
+
 #include "asPredictorOper.h"
 
 class asArea;
 
-class asPredictorOperGfsForecast
-        : public asPredictorOper
-{
-public:
+class asPredictorOperGfsForecast : public asPredictorOper {
+   public:
     asPredictorOperGfsForecast(const wxString &dataId);
 
     virtual ~asPredictorOperGfsForecast();
 
     bool Init();
 
-protected:
-
-
-private:
-
+   protected:
+   private:
 };
 
 #endif

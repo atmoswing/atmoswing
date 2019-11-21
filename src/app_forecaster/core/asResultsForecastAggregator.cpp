@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,34 +26,26 @@
  */
 
 #include "asResultsForecastAggregator.h"
+
 #include "asFileXml.h"
 
+asResultsForecastAggregator::asResultsForecastAggregator() : wxObject() {}
 
-asResultsForecastAggregator::asResultsForecastAggregator()
-        : wxObject()
-{
-
-}
-
-asResultsForecastAggregator::~asResultsForecastAggregator()
-{
+asResultsForecastAggregator::~asResultsForecastAggregator() {
     ClearArrays();
 }
 
-bool asResultsForecastAggregator::Add(asResultsForecast *forecast)
-{
+bool asResultsForecastAggregator::Add(asResultsForecast *forecast) {
     bool createNewMethodRow = true;
 
-    for (int methodRow = 0; methodRow < (int) m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
         wxASSERT(!m_forecasts[methodRow].empty());
         asResultsForecast *refForecast = m_forecasts[methodRow][0];
 
         bool compatible = true;
 
-        if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false))
-            compatible = false;
-        if (refForecast->GetPredictandParameter() != forecast->GetPredictandParameter())
-            compatible = false;
+        if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false)) compatible = false;
+        if (refForecast->GetPredictandParameter() != forecast->GetPredictandParameter()) compatible = false;
         if (refForecast->GetPredictandTemporalResolution() != forecast->GetPredictandTemporalResolution())
             compatible = false;
         if (refForecast->GetPredictandSpatialAggregation() != forecast->GetPredictandSpatialAggregation())
@@ -67,7 +59,7 @@ bool asResultsForecastAggregator::Add(asResultsForecast *forecast)
             // Detailed checks
             if (forecast->IsCompatibleWith(refForecast)) {
                 // Check that it is not the exact same forecast
-                for (int forecastRow = 0; forecastRow < (int) m_forecasts[methodRow].size(); forecastRow++) {
+                for (int forecastRow = 0; forecastRow < (int)m_forecasts[methodRow].size(); forecastRow++) {
                     asResultsForecast *otherForecast = m_forecasts[methodRow][forecastRow];
                     if (forecast->IsSameAs(otherForecast)) {
                         wxLogVerbose(_("This forecast has already been loaded."));
@@ -98,31 +90,25 @@ bool asResultsForecastAggregator::Add(asResultsForecast *forecast)
     return true;
 }
 
-bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsForecast *forecast)
-{
+bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow, asResultsForecast *forecast) {
     bool compatible = true;
 
-    wxASSERT((int) m_forecasts.size() > methodRow);
-    wxASSERT((int) m_pastForecasts.size() > methodRow);
-    wxASSERT((int) m_forecasts[methodRow].size() > forecastRow);
-    wxASSERT((int) m_pastForecasts[methodRow].size() > forecastRow);
+    wxASSERT((int)m_forecasts.size() > methodRow);
+    wxASSERT((int)m_pastForecasts.size() > methodRow);
+    wxASSERT((int)m_forecasts[methodRow].size() > forecastRow);
+    wxASSERT((int)m_pastForecasts[methodRow].size() > forecastRow);
 
     asResultsForecast *refForecast = m_forecasts[methodRow][forecastRow];
 
-    if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false))
-        compatible = false;
-    if (!refForecast->GetSpecificTag().IsSameAs(forecast->GetSpecificTag(), false))
-        compatible = false;
-    if (refForecast->GetPredictandParameter() != forecast->GetPredictandParameter())
-        compatible = false;
+    if (!refForecast->GetMethodId().IsSameAs(forecast->GetMethodId(), false)) compatible = false;
+    if (!refForecast->GetSpecificTag().IsSameAs(forecast->GetSpecificTag(), false)) compatible = false;
+    if (refForecast->GetPredictandParameter() != forecast->GetPredictandParameter()) compatible = false;
     if (refForecast->GetPredictandTemporalResolution() != forecast->GetPredictandTemporalResolution())
         compatible = false;
     if (refForecast->GetPredictandSpatialAggregation() != forecast->GetPredictandSpatialAggregation())
         compatible = false;
-    if (!refForecast->GetPredictandDatasetId().IsSameAs(forecast->GetPredictandDatasetId(), false))
-        compatible = false;
-    if (!refForecast->GetPredictandDatabase().IsSameAs(forecast->GetPredictandDatabase(), false))
-        compatible = false;
+    if (!refForecast->GetPredictandDatasetId().IsSameAs(forecast->GetPredictandDatasetId(), false)) compatible = false;
+    if (!refForecast->GetPredictandDatabase().IsSameAs(forecast->GetPredictandDatabase(), false)) compatible = false;
 
     if (compatible) {
         m_pastForecasts[methodRow][forecastRow].push_back(forecast);
@@ -136,8 +122,7 @@ bool asResultsForecastAggregator::AddPastForecast(int methodRow, int forecastRow
     return true;
 }
 
-void asResultsForecastAggregator::ClearArrays()
-{
+void asResultsForecastAggregator::ClearArrays() {
     for (int i = 0; i < m_forecasts.size(); i++) {
         for (int j = 0; j < m_forecasts[i].size(); j++) {
             wxDELETE(m_forecasts[i][j]);
@@ -155,55 +140,46 @@ void asResultsForecastAggregator::ClearArrays()
     m_pastForecasts.clear();
 }
 
-int asResultsForecastAggregator::GetMethodsNb() const
-{
-    return (int) m_forecasts.size();
+int asResultsForecastAggregator::GetMethodsNb() const {
+    return (int)m_forecasts.size();
 }
 
-int asResultsForecastAggregator::GetForecastsNb(int methodRow) const
-{
-    wxASSERT((int) m_forecasts.size() > methodRow);
-    return (int) m_forecasts[methodRow].size();
+int asResultsForecastAggregator::GetForecastsNb(int methodRow) const {
+    wxASSERT((int)m_forecasts.size() > methodRow);
+    return (int)m_forecasts[methodRow].size();
 }
 
-int asResultsForecastAggregator::GetPastMethodsNb() const
-{
-    return (int) m_pastForecasts.size();
+int asResultsForecastAggregator::GetPastMethodsNb() const {
+    return (int)m_pastForecasts.size();
 }
 
-int asResultsForecastAggregator::GetPastForecastsNb(int methodRow) const
-{
-    wxASSERT((int) m_pastForecasts.size() > methodRow);
-    return (int) m_pastForecasts[methodRow].size();
+int asResultsForecastAggregator::GetPastForecastsNb(int methodRow) const {
+    wxASSERT((int)m_pastForecasts.size() > methodRow);
+    return (int)m_pastForecasts[methodRow].size();
 }
 
-int asResultsForecastAggregator::GetPastForecastsNb(int methodRow, int forecastRow) const
-{
+int asResultsForecastAggregator::GetPastForecastsNb(int methodRow, int forecastRow) const {
     wxASSERT(m_pastForecasts.size() > methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > forecastRow);
-    return (int) m_pastForecasts[methodRow][forecastRow].size();
+    return (int)m_pastForecasts[methodRow][forecastRow].size();
 }
 
-asResultsForecast *asResultsForecastAggregator::GetForecast(int methodRow, int forecastRow) const
-{
+asResultsForecast *asResultsForecastAggregator::GetForecast(int methodRow, int forecastRow) const {
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
     return m_forecasts[methodRow][forecastRow];
 }
 
-asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const
-{
+asResultsForecast *asResultsForecastAggregator::GetPastForecast(int methodRow, int forecastRow, int leadTimeRow) const {
     wxASSERT(m_pastForecasts.size() > methodRow);
     wxASSERT(m_pastForecasts[methodRow].size() > forecastRow);
     return m_pastForecasts[methodRow][forecastRow][leadTimeRow];
 }
 
-wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecastRow) const
-{
+wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecastRow) const {
     wxString name = wxEmptyString;
 
-    if (m_forecasts.empty())
-        return wxEmptyString;
+    if (m_forecasts.empty()) return wxEmptyString;
 
     wxASSERT(m_forecasts.size() > methodRow);
 
@@ -225,12 +201,10 @@ wxString asResultsForecastAggregator::GetForecastName(int methodRow, int forecas
     return name;
 }
 
-wxString asResultsForecastAggregator::GetMethodName(int methodRow) const
-{
+wxString asResultsForecastAggregator::GetMethodName(int methodRow) const {
     wxString name = wxEmptyString;
 
-    if (m_forecasts.empty())
-        return wxEmptyString;
+    if (m_forecasts.empty()) return wxEmptyString;
 
     wxASSERT(m_forecasts.size() > methodRow);
 
@@ -247,8 +221,7 @@ wxString asResultsForecastAggregator::GetMethodName(int methodRow) const
     return name;
 }
 
-vwxs asResultsForecastAggregator::GetAllMethodNames() const
-{
+vwxs asResultsForecastAggregator::GetAllMethodNames() const {
     vwxs names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -266,8 +239,7 @@ vwxs asResultsForecastAggregator::GetAllMethodNames() const
     return names;
 }
 
-vwxs asResultsForecastAggregator::GetAllForecastNames() const
-{
+vwxs asResultsForecastAggregator::GetAllForecastNames() const {
     vwxs names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -294,8 +266,7 @@ vwxs asResultsForecastAggregator::GetAllForecastNames() const
     return names;
 }
 
-wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const
-{
+wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const {
     wxArrayString names;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -322,8 +293,7 @@ wxArrayString asResultsForecastAggregator::GetAllForecastNamesWxArray() const
     return names;
 }
 
-wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow) const
-{
+wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow) const {
     if (forecastRow < 0) {
         forecastRow = 0;
     }
@@ -331,8 +301,7 @@ wxString asResultsForecastAggregator::GetFilePath(int methodRow, int forecastRow
     return m_forecasts[methodRow][forecastRow]->GetFilePath();
 }
 
-a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const
-{
+a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const {
     double firstDate = 9999999999, lastDate = 0;
 
     wxASSERT(methodRow >= 0);
@@ -353,13 +322,11 @@ a1f asResultsForecastAggregator::GetTargetDates(int methodRow) const
     return dates;
 }
 
-a1f asResultsForecastAggregator::GetTargetDates(int methodRow, int forecastRow) const
-{
+a1f asResultsForecastAggregator::GetTargetDates(int methodRow, int forecastRow) const {
     return m_forecasts[methodRow][forecastRow]->GetTargetDates();
 }
 
-a1f asResultsForecastAggregator::GetFullTargetDates() const
-{
+a1f asResultsForecastAggregator::GetFullTargetDates() const {
     double firstDate = 9999999999, lastDate = 0;
 
     for (int methodRow = 0; methodRow < m_forecasts.size(); methodRow++) {
@@ -380,10 +347,8 @@ a1f asResultsForecastAggregator::GetFullTargetDates() const
     return dates;
 }
 
-int asResultsForecastAggregator::GetForecastRowSpecificForStationId(int methodRow, int stationId) const
-{
-    if (GetForecastsNb(methodRow) == 1)
-        return 0;
+int asResultsForecastAggregator::GetForecastRowSpecificForStationId(int methodRow, int stationId) const {
+    if (GetForecastsNb(methodRow) == 1) return 0;
 
     // Pick up the most relevant forecast for the station
     for (int i = 0; i < GetForecastsNb(methodRow); i++) {
@@ -398,10 +363,8 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationId(int methodRo
     return 0;
 }
 
-int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const
-{
-    if (GetForecastsNb(methodRow) == 1)
-        return 0;
+int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodRow, int stationRow) const {
+    if (GetForecastsNb(methodRow) == 1) return 0;
 
     // Pick up the most relevant forecast for the station
     for (int i = 0; i < GetForecastsNb(methodRow); i++) {
@@ -417,12 +380,10 @@ int asResultsForecastAggregator::GetForecastRowSpecificForStationRow(int methodR
     return 0;
 }
 
-wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int forecastRow) const
-{
+wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int forecastRow) const {
     wxArrayString stationNames;
 
-    if (m_forecasts.empty())
-        return stationNames;
+    if (m_forecasts.empty()) return stationNames;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -432,12 +393,10 @@ wxArrayString asResultsForecastAggregator::GetStationNames(int methodRow, int fo
     return stationNames;
 }
 
-wxString asResultsForecastAggregator::GetStationName(int methodRow, int forecastRow, int stationRow) const
-{
+wxString asResultsForecastAggregator::GetStationName(int methodRow, int forecastRow, int stationRow) const {
     wxString stationName;
 
-    if (m_forecasts.empty())
-        return wxEmptyString;
+    if (m_forecasts.empty()) return wxEmptyString;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -447,12 +406,10 @@ wxString asResultsForecastAggregator::GetStationName(int methodRow, int forecast
     return stationName;
 }
 
-wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int methodRow, int forecastRow) const
-{
+wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int methodRow, int forecastRow) const {
     wxArrayString stationNames;
 
-    if (m_forecasts.empty())
-        return stationNames;
+    if (m_forecasts.empty()) return stationNames;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -462,12 +419,10 @@ wxArrayString asResultsForecastAggregator::GetStationNamesWithHeights(int method
     return stationNames;
 }
 
-wxString asResultsForecastAggregator::GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const
-{
+wxString asResultsForecastAggregator::GetStationNameWithHeight(int methodRow, int forecastRow, int stationRow) const {
     wxString stationName;
 
-    if (m_forecasts.empty())
-        return wxEmptyString;
+    if (m_forecasts.empty()) return wxEmptyString;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -477,10 +432,8 @@ wxString asResultsForecastAggregator::GetStationNameWithHeight(int methodRow, in
     return stationName;
 }
 
-int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRow) const
-{
-    if (m_forecasts.empty())
-        return 0;
+int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRow) const {
+    if (m_forecasts.empty()) return 0;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -492,15 +445,13 @@ int asResultsForecastAggregator::GetLeadTimeLength(int methodRow, int forecastRo
     return length;
 }
 
-int asResultsForecastAggregator::GetLeadTimeLengthMax() const
-{
-    if (m_forecasts.empty())
-        return 0;
+int asResultsForecastAggregator::GetLeadTimeLengthMax() const {
+    if (m_forecasts.empty()) return 0;
 
     int length = 0;
 
-    for (int i = 0; i < (int) m_forecasts.size(); i++) {
-        for (int j = 0; j < (int) m_forecasts[i].size(); j++) {
+    for (int i = 0; i < (int)m_forecasts.size(); i++) {
+        for (int j = 0; j < (int)m_forecasts[i].size(); j++) {
             length = wxMax(length, m_forecasts[i][j]->GetTargetDatesLength());
         }
     }
@@ -508,12 +459,10 @@ int asResultsForecastAggregator::GetLeadTimeLengthMax() const
     return length;
 }
 
-wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow) const
-{
+wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forecastRow) const {
     wxArrayString leadTimes;
 
-    if (m_forecasts.empty())
-        return leadTimes;
+    if (m_forecasts.empty()) return leadTimes;
 
     wxASSERT(m_forecasts.size() > methodRow);
     wxASSERT(m_forecasts[methodRow].size() > forecastRow);
@@ -528,26 +477,22 @@ wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forec
 }
 
 a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, int returnPeriodRef,
-                                                    float quantileThreshold) const
-{
+                                                    float quantileThreshold) const {
     wxASSERT(returnPeriodRef >= 2);
     wxASSERT(quantileThreshold > 0);
     wxASSERT(quantileThreshold < 1);
-    if (returnPeriodRef < 2)
-        returnPeriodRef = 2;
-    if (quantileThreshold <= 0)
-        quantileThreshold = (float) 0.9;
-    if (quantileThreshold > 1)
-        quantileThreshold = (float) 0.9;
+    if (returnPeriodRef < 2) returnPeriodRef = 2;
+    if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
+    if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
-    wxASSERT((int) m_forecasts.size() > methodRow);
+    wxASSERT((int)m_forecasts.size() > methodRow);
 
     a1f maxValues = a1f::Ones(dates.size());
     maxValues *= NaNf;
 
     bool singleMethod = (GetForecastsNb(methodRow) == 1);
 
-    for (int forecastRow = 0; forecastRow < (int) m_forecasts[methodRow].size(); forecastRow++) {
+    for (int forecastRow = 0; forecastRow < (int)m_forecasts[methodRow].size(); forecastRow++) {
         asResultsForecast *forecast = m_forecasts[methodRow][forecastRow];
 
         // Get return period index
@@ -586,7 +531,7 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
             relevantStations = forecast->GetPredictandStationIds();
         }
 
-        for (int iStat = 0; iStat < (int) relevantStations.size(); iStat++) {
+        for (int iStat = 0; iStat < (int)relevantStations.size(); iStat++) {
             int indexStation = forecast->GetStationRowFromId(relevantStations[iStat]);
 
             // Get values for return period
@@ -629,11 +574,10 @@ a1f asResultsForecastAggregator::GetMethodMaxValues(a1f &dates, int methodRow, i
     return maxValues;
 }
 
-a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const
-{
+a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPeriodRef, float quantileThreshold) const {
     a2f allMax(dates.size(), m_forecasts.size());
 
-    for (int methodRow = 0; methodRow < (int) m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
         allMax.col(methodRow) = GetMethodMaxValues(dates, methodRow, returnPeriodRef, quantileThreshold);
     }
 
@@ -643,14 +587,13 @@ a1f asResultsForecastAggregator::GetOverallMaxValues(a1f &dates, int returnPerio
     return values;
 }
 
-bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) const
-{
+bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) const {
     // Quantile values
     a1f quantiles(3);
     quantiles << 20, 60, 90;
 
     // Create 1 file per method
-    for (int methodRow = 0; methodRow < (int) m_forecasts.size(); methodRow++) {
+    for (int methodRow = 0; methodRow < (int)m_forecasts.size(); methodRow++) {
         // Filename
         wxString filePath = dirPath;
         filePath.Append(DS);
@@ -666,8 +609,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
 
         // Create file
         asFileXml fileExport(filePath, asFile::Replace);
-        if (!fileExport.Open())
-            return false;
+        if (!fileExport.Open()) return false;
 
         // General attributes
         fileExport.GetRoot()->AddAttribute("created", asTime::GetStringTime(asTime::NowMJD(), "DD.MM.YYYY"));
@@ -677,7 +619,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         nodeMethod->AddChild(fileExport.CreateNodeWithValue("id", m_forecasts[methodRow][0]->GetMethodId()));
         nodeMethod->AddChild(fileExport.CreateNodeWithValue("name", m_forecasts[methodRow][0]->GetMethodIdDisplay()));
         nodeMethod->AddChild(
-                fileExport.CreateNodeWithValue("description", m_forecasts[methodRow][0]->GetDescription()));
+            fileExport.CreateNodeWithValue("description", m_forecasts[methodRow][0]->GetDescription()));
         fileExport.AddChild(nodeMethod);
 
         // Reference axis
@@ -686,7 +628,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             wxXmlNode *nodeReferenceAxis = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_axis");
             for (int i = 0; i < refAxis.size(); i++) {
                 nodeReferenceAxis->AddChild(
-                        fileExport.CreateNodeWithValue("reference", wxString::Format("%.2f", refAxis[i])));
+                    fileExport.CreateNodeWithValue("reference", wxString::Format("%.2f", refAxis[i])));
             }
             fileExport.AddChild(nodeReferenceAxis);
         }
@@ -697,9 +639,9 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         for (int i = 0; i < targetDates.size(); i++) {
             wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
             nodeTargetDate->AddChild(
-                    fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY")));
+                fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY")));
             nodeTargetDate->AddChild(
-                    fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
+                fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
             nodeTargetDates->AddChild(nodeTargetDate);
         }
         fileExport.AddChild(nodeTargetDates);
@@ -708,7 +650,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         wxXmlNode *nodeQuantiles = new wxXmlNode(wxXML_ELEMENT_NODE, "quantile_names");
         for (int i = 0; i < quantiles.size(); i++) {
             nodeQuantiles->AddChild(
-                    fileExport.CreateNodeWithValue("quantile", wxString::Format("%d", (int) quantiles[i])));
+                fileExport.CreateNodeWithValue("quantile", wxString::Format("%d", (int)quantiles[i])));
         }
         fileExport.AddChild(nodeQuantiles);
 
@@ -731,14 +673,14 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
             nodeStation->AddChild(fileExport.CreateNodeWithValue("y", forecast->GetStationYCoord(i)));
             nodeStation->AddChild(fileExport.CreateNodeWithValue("height", forecast->GetStationHeight(i)));
             nodeStation->AddChild(
-                    fileExport.CreateNodeWithValue("specific_parameters", forecast->GetSpecificTagDisplay()));
+                fileExport.CreateNodeWithValue("specific_parameters", forecast->GetSpecificTagDisplay()));
 
             // Set reference values
             if (forecast->HasReferenceValues()) {
                 wxXmlNode *nodeReferenceValues = new wxXmlNode(wxXML_ELEMENT_NODE, "reference_values");
                 for (int j = 0; j < referenceValues.cols(); j++) {
                     nodeReferenceValues->AddChild(
-                            fileExport.CreateNodeWithValue("value", wxString::Format("%.2f", referenceValues(i, j))));
+                        fileExport.CreateNodeWithValue("value", wxString::Format("%.2f", referenceValues(i, j))));
                 }
                 nodeStation->AddChild(nodeReferenceValues);
             }
@@ -755,12 +697,12 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, analogValues.size()); k++) {
                     wxXmlNode *nodeAnalog = new wxXmlNode(wxXML_ELEMENT_NODE, "analog");
-                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k],
-                                                                                                      "DD.MM.YYYY")));
                     nodeAnalog->AddChild(
-                            fileExport.CreateNodeWithValue("value", wxString::Format("%.1f", analogValues[k])));
+                        fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY")));
                     nodeAnalog->AddChild(
-                            fileExport.CreateNodeWithValue("criteria", wxString::Format("%.1f", analogCriteria[k])));
+                        fileExport.CreateNodeWithValue("value", wxString::Format("%.1f", analogValues[k])));
+                    nodeAnalog->AddChild(
+                        fileExport.CreateNodeWithValue("criteria", wxString::Format("%.1f", analogCriteria[k])));
 
                     nodeTargetDate->AddChild(nodeAnalog);
                 }
@@ -777,7 +719,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
                 for (int k = 0; k < wxMin(10, quantiles.size()); k++) {
                     float pcVal = asGetValueForQuantile(analogValues, quantiles[k] / 100);
                     nodeTargetDate->AddChild(
-                            fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
+                        fileExport.CreateNodeWithValue("quantile", wxString::Format("%.1f", pcVal)));
                 }
                 nodeAnalogsQuantiles->AddChild(nodeTargetDate);
             }

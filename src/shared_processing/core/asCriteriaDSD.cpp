@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,17 +27,14 @@
 
 #include "asCriteriaDSD.h"
 
-asCriteriaDSD::asCriteriaDSD()
-        : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc)
-{
+asCriteriaDSD::asCriteriaDSD() : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {
     m_minPointsNb = 2;
     m_canUseInline = true;
 }
 
 asCriteriaDSD::~asCriteriaDSD() = default;
 
-float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
-{
+float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() == rowsNb);
@@ -46,14 +43,12 @@ float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
     wxASSERT(evalData.cols() == colsNb);
 
     if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-
-        float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float) (refData.size() - 1));
-        float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float) (evalData.size() - 1));
+        float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float)(refData.size() - 1));
+        float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float)(evalData.size() - 1));
 
         return std::fabs(refStdDev - evalStdDev);
 
     } else {
-
         int size = (!evalData.isNaN() && !refData.isNaN()).count();
         if (size <= 1) {
             wxLogVerbose(_("Not enough data to process the DSD score."));
@@ -66,10 +61,9 @@ float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb,
         a2f refDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(refData - refMean, 0);
         a2f evalDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(evalData - evalMean, 0);
 
-        float refStdDev = std::sqrt((refDataDiff).square().sum() / (float) (size - 1));
-        float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float) (size - 1));
+        float refStdDev = std::sqrt((refDataDiff).square().sum() / (float)(size - 1));
+        float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float)(size - 1));
 
         return std::fabs(refStdDev - evalStdDev);
     }
-
 }

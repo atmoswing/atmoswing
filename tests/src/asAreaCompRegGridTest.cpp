@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,7 @@
 #include "asAreaCompRegGrid.h"
 #include "gtest/gtest.h"
 
-
-TEST(AreaCompRegGrid, ConstructorOneArea)
-{
+TEST(AreaCompRegGrid, ConstructorOneArea) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -47,8 +45,7 @@ TEST(AreaCompRegGrid, ConstructorOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaCompRegGrid, ConstructorTwoAreas)
-{
+TEST(AreaCompRegGrid, ConstructorTwoAreas) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -10;
     cornerUL.y = 40;
@@ -64,8 +61,7 @@ TEST(AreaCompRegGrid, ConstructorTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaCompRegGrid, ConstructorAlternativeOneArea)
-{
+TEST(AreaCompRegGrid, ConstructorAlternativeOneArea) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 30;
@@ -76,8 +72,7 @@ TEST(AreaCompRegGrid, ConstructorAlternativeOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaCompRegGrid, ConstructorAlternativeTwoAreas)
-{
+TEST(AreaCompRegGrid, ConstructorAlternativeTwoAreas) {
     double xMin = -10;
     double xWidth = 30;
     double yMin = 30;
@@ -88,8 +83,7 @@ TEST(AreaCompRegGrid, ConstructorAlternativeTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaCompRegGrid, CheckConsistency)
-{
+TEST(AreaCompRegGrid, CheckConsistency) {
     double xMin = -5;
     double xWidth = 25;
     double yMin = 30;
@@ -103,8 +97,7 @@ TEST(AreaCompRegGrid, CheckConsistency)
     EXPECT_DOUBLE_EQ(20, area.GetCornerLR().x);
 }
 
-TEST(AreaCompRegGrid, CheckConsistencyException)
-{
+TEST(AreaCompRegGrid, CheckConsistencyException) {
     wxLogNull logNo;
 
     double xMin = 10;
@@ -115,8 +108,7 @@ TEST(AreaCompRegGrid, CheckConsistencyException)
     ASSERT_THROW(asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step), std::exception);
 }
 
-TEST(AreaCompRegGrid, IsRectangleTrue)
-{
+TEST(AreaCompRegGrid, IsRectangleTrue) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -131,8 +123,7 @@ TEST(AreaCompRegGrid, IsRectangleTrue)
     EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(AreaCompRegGrid, IsRectangleFalse)
-{
+TEST(AreaCompRegGrid, IsRectangleFalse) {
     wxLogNull logNo;
 
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -148,8 +139,7 @@ TEST(AreaCompRegGrid, IsRectangleFalse)
     ASSERT_THROW(asAreaCompRegGrid area(cornerUL, cornerUR, cornerLL, cornerLR, step, step), std::exception);
 }
 
-TEST(AreaCompRegGrid, GetBounds)
-{
+TEST(AreaCompRegGrid, GetBounds) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -168,8 +158,7 @@ TEST(AreaCompRegGrid, GetBounds)
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaCompRegGrid, GetBoundsSplitted)
-{
+TEST(AreaCompRegGrid, GetBoundsSplitted) {
     double xMin = -10;
     double xWidth = 30;
     double yMin = 30;
@@ -185,8 +174,7 @@ TEST(AreaCompRegGrid, GetBoundsSplitted)
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaCompRegGrid, GetCornersSplitted)
-{
+TEST(AreaCompRegGrid, GetCornersSplitted) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
     cornerUL.y = 40;
@@ -218,8 +206,7 @@ TEST(AreaCompRegGrid, GetCornersSplitted)
     EXPECT_DOUBLE_EQ(30, area.GetComposite(1).GetCornerLR().y);
 }
 
-TEST(AreaCompRegGrid, GetAxes)
-{
+TEST(AreaCompRegGrid, GetAxes) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
     cornerUL.y = 40;
@@ -268,8 +255,7 @@ TEST(AreaCompRegGrid, GetAxes)
     EXPECT_DOUBLE_EQ(40, vaxis1(4));
 }
 
-TEST(AreaCompRegGrid, GetUYaxisCompositeSize)
-{
+TEST(AreaCompRegGrid, GetUYaxisCompositeSize) {
     double xMin = -40;
     double xWidth = 50;
     double yMin = 30;
@@ -287,8 +273,7 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSize)
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
 }
 
-TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLon)
-{
+TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLon) {
     double xMin = -40;
     double xWidth = 50;
     double yMin = 30;
@@ -307,8 +292,7 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLon)
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
 }
 
-TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLonMoved)
-{
+TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLonMoved) {
     double xMin = -7.5;
     double xWidth = 15;
     double yMin = 30;
@@ -327,8 +311,7 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeSizeStepLonMoved)
     EXPECT_EQ(5, area.GetYaxisCompositePtsnb(1));
 }
 
-TEST(AreaCompRegGrid, GetUYaxisCompositeLimits)
-{
+TEST(AreaCompRegGrid, GetUYaxisCompositeLimits) {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
@@ -351,8 +334,7 @@ TEST(AreaCompRegGrid, GetUYaxisCompositeLimits)
     EXPECT_DOUBLE_EQ(40, area.GetYaxisCompositeEnd(1));
 }
 
-TEST(AreaCompRegGrid, GetUYaxisCompositeLimitsMoved)
-{
+TEST(AreaCompRegGrid, GetUYaxisCompositeLimitsMoved) {
     double xMin = -7.5;
     double xWidth = 15;
     double yMin = 30;

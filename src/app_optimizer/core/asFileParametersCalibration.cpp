@@ -29,32 +29,20 @@
 #include "asFileParametersCalibration.h"
 
 asFileParametersCalibration::asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode)
-        : asFileParameters(fileName, fileMode)
-{
-    // FindAndOpen() processed by asFileXml
-}
+    : asFileParameters(fileName, fileMode) {} // FindAndOpen() processed by asFileXml
 
-asFileParametersCalibration::~asFileParametersCalibration()
-{
-    //dtor
-}
+asFileParametersCalibration::~asFileParametersCalibration() {}
 
-bool asFileParametersCalibration::EditRootElement()
-{
-    if (!GetRoot())
-        return false;
+bool asFileParametersCalibration::EditRootElement() {
+    if (!GetRoot()) return false;
     GetRoot()->AddAttribute("target", "optimizer");
     return true;
 }
 
-bool asFileParametersCalibration::CheckRootElement() const
-{
-    if (!GetRoot())
-        return false;
-    if (!IsAnAtmoSwingFile())
-        return false;
-    if (!FileVersionIsOrAbove(1.0))
-        return false;
+bool asFileParametersCalibration::CheckRootElement() const {
+    if (!GetRoot()) return false;
+    if (!IsAnAtmoSwingFile()) return false;
+    if (!FileVersionIsOrAbove(1.0)) return false;
 
     if (!GetRoot()->GetAttribute("target").IsSameAs("optimizer", false) &
         !GetRoot()->GetAttribute("target").IsSameAs("calibrator", false)) {

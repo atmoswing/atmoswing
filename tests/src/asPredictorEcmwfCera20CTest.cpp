@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorEcmwfCera20CRegular, Load1stMember)
-{
+TEST(PredictorEcmwfCera20CRegular, Load1stMember) {
     double xMin = 3;
     double xWidth = 8;
     double yMin = 75;
@@ -98,8 +97,7 @@ TEST(PredictorEcmwfCera20CRegular, Load1stMember)
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, Load3rdMember)
-{
+TEST(PredictorEcmwfCera20CRegular, Load3rdMember) {
     double xMin = 3;
     double xWidth = 8;
     double yMin = 75;
@@ -164,8 +162,7 @@ TEST(PredictorEcmwfCera20CRegular, Load3rdMember)
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, Load3Members)
-{
+TEST(PredictorEcmwfCera20CRegular, Load3Members) {
     double xMin = 3;
     double xWidth = 8;
     double yMin = 75;
@@ -271,8 +268,7 @@ TEST(PredictorEcmwfCera20CRegular, Load3Members)
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadComposite)
-{
+TEST(PredictorEcmwfCera20CRegular, LoadComposite) {
     double xMin = -4;
     double xWidth = 8;
     double yMin = 75;
@@ -339,8 +335,7 @@ TEST(PredictorEcmwfCera20CRegular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadBorderLeft)
-{
+TEST(PredictorEcmwfCera20CRegular, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 4;
     double yMin = 75;
@@ -404,8 +399,7 @@ TEST(PredictorEcmwfCera20CRegular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadBorderRight)
-{
+TEST(PredictorEcmwfCera20CRegular, LoadBorderRight) {
     double xMin = -4;
     double xWidth = 4;
     double yMin = 75;

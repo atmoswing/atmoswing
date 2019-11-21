@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,23 +26,16 @@
  */
 
 #include "asMethodDownscalerClassic.h"
+
+#include "asParametersDownscaling.h"
 #include "asResultsDates.h"
 #include "asResultsValues.h"
-#include "asParametersDownscaling.h"
 
-asMethodDownscalerClassic::asMethodDownscalerClassic()
-        : asMethodDownscaler()
-{
+asMethodDownscalerClassic::asMethodDownscalerClassic() : asMethodDownscaler() {}
 
-}
+asMethodDownscalerClassic::~asMethodDownscalerClassic() {}
 
-asMethodDownscalerClassic::~asMethodDownscalerClassic()
-{
-
-}
-
-bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params)
-{
+bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params) {
     // Extract the stations IDs
     vvi stationsId = params.GetPredictandStationIdsVector();
 
@@ -64,18 +57,15 @@ bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params)
         for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
                 wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
-            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
-                return false;
+            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep)) return false;
 
             // Keep the analogs dates of the best parameters set
             anaDatesPrevious = anaDates;

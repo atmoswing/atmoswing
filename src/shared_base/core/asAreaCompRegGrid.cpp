@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,14 +27,14 @@
  */
 
 #include "asAreaCompRegGrid.h"
+
 #include <cmath>
 
 asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                                      double xStep, double yStep, int flatAllowed, bool isLatLon)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
-          m_xStep(xStep),
-          m_yStep(yStep)
-{
+    : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon),
+      m_xStep(xStep),
+      m_yStep(yStep) {
     m_isRegular = true;
     m_xStepData = 0;
     m_yStepData = 0;
@@ -42,20 +42,18 @@ asAreaCompRegGrid::asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, c
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
                                      int flatAllowed, bool isLatLon)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
-          m_xStep(xStep),
-          m_yStep(yStep)
-{
+    : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon),
+      m_xStep(xStep),
+      m_yStep(yStep) {
     m_isRegular = true;
     m_xStepData = 0;
     m_yStepData = 0;
 }
 
 asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
-        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon),
-          m_xStep(0),
-          m_yStep(0)
-{
+    : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon),
+      m_xStep(0),
+      m_yStep(0) {
     m_isRegular = true;
     m_xPtsNb = xPtsNb;
     m_yPtsNb = yPtsNb;
@@ -63,27 +61,21 @@ asAreaCompRegGrid::asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int y
     m_yStepData = 0;
 }
 
-bool asAreaCompRegGrid::GridsOverlay(asAreaCompGrid *otherArea) const
-{
-    if (!otherArea->IsRegular())
-        return false;
+bool asAreaCompRegGrid::GridsOverlay(asAreaCompGrid *otherArea) const {
+    if (!otherArea->IsRegular()) return false;
 
     auto *otherAreaRegular(dynamic_cast<asAreaCompRegGrid *>(otherArea));
 
-    if (!otherAreaRegular)
-        return false;
+    if (!otherAreaRegular) return false;
 
-    if (GetXstep() != otherAreaRegular->GetXstep())
-        return false;
+    if (GetXstep() != otherAreaRegular->GetXstep()) return false;
 
-    if (GetYstep() != otherAreaRegular->GetYstep())
-        return false;
+    if (GetYstep() != otherAreaRegular->GetYstep()) return false;
 
     return true;
 }
 
-bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed, bool getLarger)
-{
+bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed, bool getLarger) {
     wxASSERT(lons.size() > 1);
     wxASSERT(lats.size() > 1);
 
@@ -115,11 +107,10 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
 
     if (m_xStep != m_xStepData) {
         if (std::fmod(m_xStep, m_xStepData) == 0) {
-
-            auto xFactor = (int) (m_xStep / m_xStepData);
+            auto xFactor = (int)(m_xStep / m_xStepData);
 
             a1d lonsC0 = m_compositeXaxes[0];
-            auto sizeC0new = (int) ((lonsC0.rows() - 1) / xFactor) + 1;
+            auto sizeC0new = (int)((lonsC0.rows() - 1) / xFactor) + 1;
             m_compositeXaxes[0].resize(sizeC0new);
 
             for (int i = 0; i < sizeC0new; ++i) {
@@ -141,7 +132,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
                 }
                 wxASSERT(indexXmin >= 0);
 
-                auto sizeC1new = (int) ((lonsC1.rows() - indexXmin + 1) / xFactor);
+                auto sizeC1new = (int)((lonsC1.rows() - indexXmin + 1) / xFactor);
                 m_compositeXaxes[1].resize(sizeC1new);
 
                 for (int i = 0; i < sizeC1new; ++i) {
@@ -150,10 +141,9 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
             }
 
         } else {
-
             double xMin = m_composites[0].GetXmin();
             double xMax = m_composites[0].GetXmax();
-            auto xSize = (int) std::floor((xMax - xMin) / m_xStep) + 1;
+            auto xSize = (int)std::floor((xMax - xMin) / m_xStep) + 1;
             m_compositeXaxes[0].resize(xSize);
 
             wxASSERT(xMin < xMax);
@@ -179,7 +169,7 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
                     return false;
                 }
 
-                xSize = (int) std::floor((xMax - nextXval) / m_xStep) + 1;
+                xSize = (int)std::floor((xMax - nextXval) / m_xStep) + 1;
                 m_compositeXaxes[1].resize(xSize);
 
                 wxASSERT(nextXval <= xMax);
@@ -195,11 +185,10 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
 
     if (m_yStep != m_yStepData) {
         if (std::fmod(m_yStep, m_yStepData) == 0) {
-
-            auto yFactor = (int) (m_yStep / m_yStepData);
+            auto yFactor = (int)(m_yStep / m_yStepData);
 
             a1d latsC0 = m_compositeYaxes[0];
-            auto sizeC0new = (int) ((latsC0.rows() - 1) / yFactor) + 1;
+            auto sizeC0new = (int)((latsC0.rows() - 1) / yFactor) + 1;
             m_compositeYaxes[0].resize(sizeC0new);
 
             for (int i = 0; i < sizeC0new; ++i) {
@@ -211,10 +200,9 @@ bool asAreaCompRegGrid::InitializeAxes(const a1d &lons, const a1d &lats, bool st
             }
 
         } else {
-
             double yMin = m_composites[0].GetYmin();
             double yMax = m_composites[0].GetYmax();
-            auto ySize = (int) std::floor((yMax - yMin) / m_yStep) + 1;
+            auto ySize = (int)std::floor((yMax - yMin) / m_yStep) + 1;
             m_compositeYaxes[0].resize(ySize);
 
             wxASSERT(yMin < yMax);

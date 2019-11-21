@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,62 +31,48 @@
 
 #include <wx/treectrl.h>
 
-#include "asIncludes.h"
 #include "asForecastManager.h"
+#include "asIncludes.h"
 
 class asForecastViewer;
 
-
-class asForecastTreeItemData
-        : public wxTreeItemData
-{
-public:
+class asForecastTreeItemData : public wxTreeItemData {
+   public:
     asForecastTreeItemData(int methodRow, int forecastRow);
 
-    int GetMethodRow() const
-    {
+    int GetMethodRow() const {
         return m_methodRow;
     }
 
-    int GetForecastRow() const
-    {
+    int GetForecastRow() const {
         return m_forecastRow;
     }
 
-private:
+   private:
     int m_methodRow;
     int m_forecastRow;
 };
 
-
-class asMessageForecastChoice
-        : public wxObject
-{
-public:
+class asMessageForecastChoice : public wxObject {
+   public:
     asMessageForecastChoice(int methodRow, int forecastRow);
 
-    int GetMethodRow() const
-    {
+    int GetMethodRow() const {
         return m_methodRow;
     }
 
-    int GetForecastRow() const
-    {
+    int GetForecastRow() const {
         return m_forecastRow;
     }
 
-private:
+   private:
     int m_methodRow;
     int m_forecastRow;
 };
 
-
-class asListBoxForecasts
-        : public wxTreeCtrl
-{
-public:
-    enum
-    {
+class asListBoxForecasts : public wxTreeCtrl {
+   public:
+    enum {
         TreeCtrlIcon_Precipitation,
         TreeCtrlIcon_Temperature,
         TreeCtrlIcon_Lightnings,
@@ -109,16 +95,14 @@ public:
 
     void SelectFirst();
 
-protected:
-
-private:
+   protected:
+   private:
     asForecastManager *m_forecastManager;
     bool m_skipSlctChangeEvent;
 
     void OnForecastSlctChange(wxTreeEvent &event);
 
-DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
-
 
 #endif

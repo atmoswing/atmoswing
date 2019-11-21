@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,46 +30,40 @@
 
 #include <asFileXml.h>
 
-
 asCatalogPredictands::asCatalogPredictands(const wxString &filePath)
-        : wxObject(),
-          m_catalogFilePath(filePath),
-          m_setId(wxEmptyString),
-          m_name(wxEmptyString),
-          m_description(wxEmptyString),
-          m_start(0),
-          m_end(0),
-          m_timeZoneHours(0),
-          m_timeStepHours(0),
-          m_firstTimeStepHour(0),
-          m_dataPath(wxEmptyString),
-          m_coordSys(wxEmptyString),
-          m_parameter(asPredictand::Precipitation),
-          m_unit(asPredictand::mm),
-          m_temporalResolution(asPredictand::Daily),
-          m_spatialAggregation(asPredictand::Station)
-{
+    : wxObject(),
+      m_catalogFilePath(filePath),
+      m_setId(wxEmptyString),
+      m_name(wxEmptyString),
+      m_description(wxEmptyString),
+      m_start(0),
+      m_end(0),
+      m_timeZoneHours(0),
+      m_timeStepHours(0),
+      m_firstTimeStepHour(0),
+      m_dataPath(wxEmptyString),
+      m_coordSys(wxEmptyString),
+      m_parameter(asPredictand::Precipitation),
+      m_unit(asPredictand::mm),
+      m_temporalResolution(asPredictand::Daily),
+      m_spatialAggregation(asPredictand::Station) {
     // Get the xml file path
     if (m_catalogFilePath.IsEmpty()) {
         wxLogError(_("No path was given for the predictand catalog."));
     }
 }
 
-bool asCatalogPredictands::Load()
-{
+bool asCatalogPredictands::Load() {
     // Load xml file
     asFileXml xmlFile(m_catalogFilePath, asFile::ReadOnly);
-    if (!xmlFile.Open())
-        return false;
+    if (!xmlFile.Open()) return false;
 
-    if (!xmlFile.CheckRootElement())
-        return false;
+    if (!xmlFile.CheckRootElement()) return false;
 
     // Get data
     wxXmlNode *nodeDataset = xmlFile.GetRoot()->GetChildren();
     while (nodeDataset) {
         if (nodeDataset->GetName() == "dataset") {
-
             wxXmlNode *nodeProp = nodeDataset->GetChildren();
             while (nodeProp) {
                 if (nodeProp->GetName() == "id") {
@@ -114,7 +108,7 @@ bool asCatalogPredictands::Load()
                                     wxString idStr = asFileXml::GetString(nodeDetail);
                                     long id;
                                     idStr.ToLong(&id);
-                                    station.id = (int) id;
+                                    station.id = (int)id;
                                 } else if (nodeDetail->GetName() == "name") {
                                     station.name = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "x_coordinate") {
@@ -131,15 +125,17 @@ bool asCatalogPredictands::Load()
                                     wxString heightStr = asFileXml::GetString(nodeDetail);
                                     double height;
                                     heightStr.ToDouble(&height);
-                                    station.height = (float) height;
+                                    station.height = (float)height;
                                 } else if (nodeDetail->GetName() == "file_name") {
                                     station.fileName = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "file_pattern") {
                                     station.filePattern = asFileXml::GetString(nodeDetail);
                                 } else if (nodeDetail->GetName() == "start") {
-                                    station.startDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.startDate =
+                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
                                 } else if (nodeDetail->GetName() == "end") {
-                                    station.endDate = asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
+                                    station.endDate =
+                                        asTime::GetTimeFromString(asFileXml::GetString(nodeDetail), guess);
                                 } else {
                                     xmlFile.UnknownNode(nodeDetail);
                                 }

@@ -28,27 +28,24 @@
 
 #include "asFrameOptimizer.h"
 
-#include "wx/fileconf.h"
-
-#include "asMethodCalibratorClassic.h"
-#include "asMethodCalibratorClassicVarExplo.h"
-#include "asMethodCalibratorSingle.h"
-#include "asMethodOptimizerRandomSet.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
-#include "asMethodCalibratorEvaluateAllScores.h"
-#include "asMethodCalibratorSingleOnlyValues.h"
-#include "asMethodCalibratorSingleOnlyDates.h"
-#include "images.h"
-#include "asFramePreferencesOptimizer.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
-
+#include "asFramePreferencesOptimizer.h"
+#include "asMethodCalibratorClassic.h"
+#include "asMethodCalibratorClassicVarExplo.h"
+#include "asMethodCalibratorEvaluateAllScores.h"
+#include "asMethodCalibratorSingle.h"
+#include "asMethodCalibratorSingleOnlyDates.h"
+#include "asMethodCalibratorSingleOnlyValues.h"
+#include "asMethodOptimizerGeneticAlgorithms.h"
+#include "asMethodOptimizerRandomSet.h"
+#include "images.h"
+#include "wx/fileconf.h"
 
 asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
-        : asFrameOptimizerVirtual(parent),
-          m_logWindow(nullptr),
-          m_methodCalibrator(nullptr)
-{
+    : asFrameOptimizerVirtual(parent),
+      m_logWindow(nullptr),
+      m_methodCalibrator(nullptr) {
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run optimizer"),
                        _("Run optimizer now"), nullptr);
@@ -72,8 +69,7 @@ asFrameOptimizer::asFrameOptimizer(wxWindow *parent)
 #endif
 }
 
-asFrameOptimizer::~asFrameOptimizer()
-{
+asFrameOptimizer::~asFrameOptimizer() {
     // Disconnect events
     this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Launch));
     this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameOptimizer::Cancel));
@@ -83,8 +79,7 @@ asFrameOptimizer::~asFrameOptimizer()
                      wxCommandEventHandler(asFrameOptimizer::OpenFramePredictandDB));
 }
 
-void asFrameOptimizer::OnInit()
-{
+void asFrameOptimizer::OnInit() {
     wxBusyCursor wait;
 
     // Set the defaults
@@ -92,13 +87,11 @@ void asFrameOptimizer::OnInit()
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::Update()
-{
+void asFrameOptimizer::Update() {
     DisplayLogLevelMenu();
 }
 
-void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent &event)
-{
+void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFramePredictandDB(this);
@@ -106,8 +99,7 @@ void asFrameOptimizer::OpenFramePredictandDB(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
-{
+void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFramePreferencesOptimizer(this);
@@ -115,8 +107,7 @@ void asFrameOptimizer::OpenFramePreferences(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
-{
+void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFrameAbout(this);
@@ -124,16 +115,14 @@ void asFrameOptimizer::OpenFrameAbout(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameOptimizer::OnShowLog(wxCommandEvent &event)
-{
+void asFrameOptimizer::OnShowLog(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
-void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event)
-{
+void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event) {
     Log()->SetLevel(1);
     m_menuLogLevel->FindItemByPosition(0)->Check(true);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -142,12 +131,10 @@ void asFrameOptimizer::OnLogLevel1(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event)
-{
+void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event) {
     Log()->SetLevel(2);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(true);
@@ -156,12 +143,10 @@ void asFrameOptimizer::OnLogLevel2(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event)
-{
+void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event) {
     Log()->SetLevel(3);
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -170,15 +155,13 @@ void asFrameOptimizer::OnLogLevel3(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameOptimizer::DisplayLogLevelMenu()
-{
+void asFrameOptimizer::DisplayLogLevelMenu() {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
-    int logLevel = (int) wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l);
+    int logLevel = (int)wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     m_menuLogLevel->FindItemByPosition(0)->Check(false);
     m_menuLogLevel->FindItemByPosition(1)->Check(false);
@@ -202,15 +185,13 @@ void asFrameOptimizer::DisplayLogLevelMenu()
     }
 }
 
-void asFrameOptimizer::Cancel(wxCommandEvent &event)
-{
+void asFrameOptimizer::Cancel(wxCommandEvent &event) {
     if (m_methodCalibrator) {
         m_methodCalibrator->Cancel();
     }
 }
 
-void asFrameOptimizer::LoadOptions()
-{
+void asFrameOptimizer::LoadOptions() {
     wxBusyCursor wait;
 
     // General stuff
@@ -219,8 +200,8 @@ void asFrameOptimizer::LoadOptions()
     m_filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
     m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
     m_dirPickerPredictor->SetPath(pConfig->Read("/Paths/PredictorDir", wxEmptyString));
-    m_dirPickerCalibrationResults->SetPath(pConfig->Read("/Paths/ResultsDir",
-                                                         asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
+    m_dirPickerCalibrationResults->SetPath(
+        pConfig->Read("/Paths/ResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Optimizer"));
 
     // Classic+ calibration
     m_textCtrlClassicPlusResizingIterations->SetValue(pConfig->Read("/ClassicPlus/ResizingIterations", "1"));
@@ -244,7 +225,8 @@ void asFrameOptimizer::LoadOptions()
     m_textCtrlGAsConvergenceNb->SetValue(pConfig->Read("/GAs/ConvergenceStepsNb", "20"));
     m_textCtrlGAsRatioIntermGen->SetValue(pConfig->Read("/GAs/RatioIntermediateGeneration", "0.5"));
     m_checkBoxGAsAllowElitism->SetValue(pConfig->ReadBool("/GAs/AllowElitismForTheBest", true));
-    m_textCtrlGAsNaturalSlctTournamentProb->SetValue(pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
+    m_textCtrlGAsNaturalSlctTournamentProb->SetValue(
+        pConfig->Read("/GAs/NaturalSelectionTournamentProbability", "0.9"));
     m_textCtrlGAsCouplesSlctTournamentNb->SetValue(pConfig->Read("/GAs/CouplesSelectionTournamentNb", "3"));
     m_textCtrlGAsCrossoverMultipleNbPts->SetValue(pConfig->Read("/GAs/CrossoverMultiplePointsNb", "3"));
     m_textCtrlGAsCrossoverBlendingNbPts->SetValue(pConfig->Read("/GAs/CrossoverBlendingPointsNb", "2"));
@@ -256,34 +238,41 @@ void asFrameOptimizer::LoadOptions()
     m_checkBoxGAsCrossoverBinLikeShareBeta->SetValue(pConfig->ReadBool("/GAs/CrossoverBinaryLikeShareBeta", true));
     m_textCtrlGAsMutationsUniformCstProb->SetValue(pConfig->Read("/GAs/MutationsUniformConstantProbability", "0.2"));
     m_textCtrlGAsMutationsNormalCstProb->SetValue(pConfig->Read("/GAs/MutationsNormalConstantProbability", "0.2"));
-    m_textCtrlGAsMutationsNormalCstStdDev->SetValue(pConfig->Read("/GAs/MutationsNormalConstantStdDevRatioRange", "0.10"));
-    m_textCtrlGAsMutationsUniformVarMaxGensNb->SetValue(pConfig->Read("/GAs/MutationsUniformVariableMaxGensNbVar", "50"));
-    m_textCtrlGAsMutationsUniformVarProbStart->SetValue(pConfig->Read("/GAs/MutationsUniformVariableProbabilityStart", "0.5"));
-    m_textCtrlGAsMutationsUniformVarProbEnd->SetValue(pConfig->Read("/GAs/MutationsUniformVariableProbabilityEnd", "0.01"));
-    m_textCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarProb", "50"));
-    m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", "50"));
-    m_textCtrlGAsMutationsNormalVarProbStart->SetValue(pConfig->Read("/GAs/MutationsNormalVariableProbabilityStart", "0.5"));
-    m_textCtrlGAsMutationsNormalVarProbEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableProbabilityEnd", "0.05"));
-    m_textCtrlGAsMutationsNormalVarStdDevStart->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevStart", "0.5"));
+    m_textCtrlGAsMutationsNormalCstStdDev->SetValue(
+        pConfig->Read("/GAs/MutationsNormalConstantStdDevRatioRange", "0.10"));
+    m_textCtrlGAsMutationsUniformVarMaxGensNb->SetValue(
+        pConfig->Read("/GAs/MutationsUniformVariableMaxGensNbVar", "50"));
+    m_textCtrlGAsMutationsUniformVarProbStart->SetValue(
+        pConfig->Read("/GAs/MutationsUniformVariableProbabilityStart", "0.5"));
+    m_textCtrlGAsMutationsUniformVarProbEnd->SetValue(
+        pConfig->Read("/GAs/MutationsUniformVariableProbabilityEnd", "0.01"));
+    m_textCtrlGAsMutationsNormalVarMaxGensNbProb->SetValue(
+        pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarProb", "50"));
+    m_textCtrlGAsMutationsNormalVarMaxGensNbStdDev->SetValue(
+        pConfig->Read("/GAs/MutationsNormalVariableMaxGensNbVarStdDev", "50"));
+    m_textCtrlGAsMutationsNormalVarProbStart->SetValue(
+        pConfig->Read("/GAs/MutationsNormalVariableProbabilityStart", "0.5"));
+    m_textCtrlGAsMutationsNormalVarProbEnd->SetValue(
+        pConfig->Read("/GAs/MutationsNormalVariableProbabilityEnd", "0.05"));
+    m_textCtrlGAsMutationsNormalVarStdDevStart->SetValue(
+        pConfig->Read("/GAs/MutationsNormalVariableStdDevStart", "0.5"));
     m_textCtrlGAsMutationsNormalVarStdDevEnd->SetValue(pConfig->Read("/GAs/MutationsNormalVariableStdDevEnd", "0.01"));
-    m_textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability","0.2"));
+    m_textCtrlGAsMutationsNonUniformProb->SetValue(pConfig->Read("/GAs/MutationsNonUniformProbability", "0.2"));
     m_textCtrlGAsMutationsNonUniformGensNb->SetValue(pConfig->Read("/GAs/MutationsNonUniformMaxGensNbVar", "50"));
     m_textCtrlGAsMutationsNonUniformMinRate->SetValue(pConfig->Read("/GAs/MutationsNonUniformMinRate", "0.20"));
     m_textCtrlGAsMutationsMultiScaleProb->SetValue(pConfig->Read("/GAs/MutationsMultiScaleProbability", "0.20"));
 }
 
-void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event)
-{
+void asFrameOptimizer::OnSaveDefault(wxCommandEvent &event) {
     SaveOptions();
 }
 
-void asFrameOptimizer::SaveOptions() const
-{
+void asFrameOptimizer::SaveOptions() const {
     wxBusyCursor wait;
 
     // General stuff
     wxConfigBase *pConfig = wxFileConfig::Get();
-    auto methodSelection = (long) m_choiceMethod->GetSelection();
+    auto methodSelection = (long)m_choiceMethod->GetSelection();
     pConfig->Write("/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
     pConfig->Write("/ParametersFilePath", parametersFilePath);
@@ -394,8 +383,7 @@ void asFrameOptimizer::OnIdle( wxCommandEvent& event )
     m_staticTextState->SetLabel(state);
 }
 */
-void asFrameOptimizer::Launch(wxCommandEvent &event)
-{
+void asFrameOptimizer::Launch(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     SaveOptions();
@@ -406,47 +394,47 @@ void asFrameOptimizer::Launch(wxCommandEvent &event)
                 wxLogError(_("Wrong method selection."));
                 break;
             }
-            case 0: // Single
+            case 0:  // Single
             {
                 m_methodCalibrator = new asMethodCalibratorSingle();
                 break;
             }
-            case 1: // Classic
+            case 1:  // Classic
             {
                 m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
-            case 2: // Classic+
+            case 2:  // Classic+
             {
                 m_methodCalibrator = new asMethodCalibratorClassic();
                 break;
             }
-            case 3: // Variables exploration with classic+
+            case 3:  // Variables exploration with classic+
             {
                 m_methodCalibrator = new asMethodCalibratorClassicVarExplo();
                 break;
             }
-            case 4: // Random sets
+            case 4:  // Random sets
             {
                 m_methodCalibrator = new asMethodOptimizerRandomSet();
                 break;
             }
-            case 5: // Genetic algorithms
+            case 5:  // Genetic algorithms
             {
                 m_methodCalibrator = new asMethodOptimizerGeneticAlgorithms();
                 break;
             }
-            case 6: // Scores evaluation
+            case 6:  // Scores evaluation
             {
                 m_methodCalibrator = new asMethodCalibratorEvaluateAllScores();
                 break;
             }
-            case 7: // Only predictand values
+            case 7:  // Only predictand values
             {
                 m_methodCalibrator = new asMethodCalibratorSingleOnlyValues();
                 break;
             }
-            case 8: // Only analog dates
+            case 8:  // Only analog dates
             {
                 m_methodCalibrator = new asMethodCalibratorSingleOnlyDates();
                 break;

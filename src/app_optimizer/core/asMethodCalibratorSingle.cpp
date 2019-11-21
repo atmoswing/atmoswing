@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,19 +28,11 @@
 
 #include "asMethodCalibratorSingle.h"
 
-asMethodCalibratorSingle::asMethodCalibratorSingle()
-        : asMethodCalibrator()
-{
+asMethodCalibratorSingle::asMethodCalibratorSingle() : asMethodCalibrator() {}
 
-}
+asMethodCalibratorSingle::~asMethodCalibratorSingle() {}
 
-asMethodCalibratorSingle::~asMethodCalibratorSingle()
-{
-
-}
-
-bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
-{
+bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params) {
     // Check that we really handle a single case
     bool checkSizes = true;
     wxString errorField = wxEmptyString;
@@ -79,21 +71,18 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                 for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                     if (params.GetPreprocessDataIdVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                 }
             }
@@ -144,8 +133,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep,
-                                                           iPtor));
+                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep, iPtor));
                     }
                 }
             }
@@ -153,9 +141,9 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
     }
 
     if (!checkSizes) {
-        errorField = errorField.Remove(errorField.Length() - 3, 2); // Removes the last coma
+        errorField = errorField.Remove(errorField.Length() - 3, 2);  // Removes the last coma
         wxString errorMessage =
-                _("The following parameters are not compatible with the single assessment: ") + errorField;
+            _("The following parameters are not compatible with the single assessment: ") + errorField;
         wxLogError(errorMessage);
         return false;
     }
@@ -185,7 +173,7 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         // Create result objects to save the parameters sets
         asResultsParametersArray results_tested;
         results_tested.Init(
-                wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
+            wxString::Format(_("station_%s_tested_parameters"), GetPredictandStationIdsList(stationId)));
 
         // Set the next station ID
         params.SetPredictandStationIds(stationId);
@@ -195,22 +183,17 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
         for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
             } else {
-                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
                 wxLogError(_("The dates selection contains NaNs"));
                 return false;
             }
-            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep))
-                return false;
-            if (!GetAnalogsScores(anaScores, &params, anaValues, iStep))
-                return false;
-            if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, iStep))
-                return false;
+            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep)) return false;
+            if (!GetAnalogsScores(anaScores, &params, anaValues, iStep)) return false;
+            if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, iStep)) return false;
 
             // Store the result
             results_tested.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
@@ -225,10 +208,8 @@ bool asMethodCalibratorSingle::Calibrate(asParametersCalibration &params)
 
         // Keep the best parameters set
         results_all.Add(params, anaScoreFinal.GetScore(), m_scoreValid);
-        if (!results_all.Print())
-            return false;
-        if (!results_tested.Print())
-            return false;
+        if (!results_all.Print()) return false;
+        if (!results_tested.Print()) return false;
     }
 
     return true;

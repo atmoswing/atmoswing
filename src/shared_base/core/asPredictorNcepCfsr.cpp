@@ -27,13 +27,10 @@
 
 #include "asPredictorNcepCfsr.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_CFSR";
     m_provider = "NCEP";
@@ -42,8 +39,7 @@ asPredictorNcepCfsr::asPredictorNcepCfsr(const wxString &dataId)
     m_strideAllowed = false;
 }
 
-bool asPredictorNcepCfsr::Init()
-{
+bool asPredictorNcepCfsr::Init() {
     CheckLevelTypeIsDefined();
 
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)
@@ -118,8 +114,7 @@ bool asPredictorNcepCfsr::Init()
     return true;
 }
 
-void asPredictorNcepCfsr::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNcepCfsr::ListFiles(asTimeArray &timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     for (int i = 0; i < tArray.size(); i++) {

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,18 +27,15 @@
  */
 
 #include "asScoreCRPSaccurEP.h"
+
 #include "asScoreCRPSEP.h"
 #include "asScoreCRPSsharpEP.h"
 
 asScoreCRPSaccurEP::asScoreCRPSaccurEP()
-        : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
-                  _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf)
-{
+    : asScore(asScore::CRPSaccuracyEP, _("CRPS Accuracy Exact Primitive"),
+              _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf) {}
 
-}
-
-float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -59,7 +56,6 @@ float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) c
     return CRPS - CRPSsharpness;
 }
 
-bool asScoreCRPSaccurEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreCRPSaccurEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }

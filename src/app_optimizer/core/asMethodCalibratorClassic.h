@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,24 +31,20 @@
 
 #include <asMethodCalibrator.h>
 
-
-class asMethodCalibratorClassic
-        : public asMethodCalibrator
-{
-public:
+class asMethodCalibratorClassic : public asMethodCalibrator {
+   public:
     asMethodCalibratorClassic();
 
     ~asMethodCalibratorClassic() override;
 
-    void SetAsCalibrationPlus(bool val = true)
-    {
+    void SetAsCalibrationPlus(bool val = true) {
         m_plus = val;
     }
 
-protected:
+   protected:
     bool Calibrate(asParametersCalibration &params) override;
 
-private:
+   private:
     bool m_plus;
     int m_stepsLatPertinenceMap;
     int m_stepsLonPertinenceMap;
@@ -83,17 +79,17 @@ private:
     void GetSpatialAxes(const asParametersCalibration &params, int iStep, const ParamExploration &explo, a1d &xAxis,
                         a1d &yAxis) const;
 
-    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis,
-                  int iStep, int iPtor, int multipleFactor = 1) const;
+    void MoveWest(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis, int iStep,
+                  int iPtor, int multipleFactor = 1) const;
 
-    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis,
-                   int iStep, int iPtor, int multipleFactor = 1) const;
+    void MoveSouth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis, int iStep,
+                   int iPtor, int multipleFactor = 1) const;
 
-    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis,
-                  int iStep, int iPtor, int multipleFactor = 1) const;
+    void MoveEast(asParametersCalibration &params, const ParamExploration &explo, const a1d &xAxis, int iStep,
+                  int iPtor, int multipleFactor = 1) const;
 
-    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis,
-                   int iStep, int iPtor, int multipleFactor = 1) const;
+    void MoveNorth(asParametersCalibration &params, const ParamExploration &explo, const a1d &yAxis, int iStep,
+                   int iPtor, int multipleFactor = 1) const;
 
     void WidenEast(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
                    int multipleFactor = 1) const;
@@ -106,7 +102,6 @@ private:
 
     void ReduceNorth(asParametersCalibration &params, const ParamExploration &explo, int iStep, int iPtor,
                      int multipleFactor = 1) const;
-
 };
 
 #endif

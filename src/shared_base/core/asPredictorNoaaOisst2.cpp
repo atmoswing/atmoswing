@@ -28,13 +28,10 @@
 
 #include "asPredictorNoaaOisst2.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NOAA_OISST_v2";
     m_provider = "NOAA";
@@ -49,8 +46,7 @@ asPredictorNoaaOisst2::asPredictorNoaaOisst2(const wxString &dataId)
     m_fStr.hasLevelDim = false;
 }
 
-bool asPredictorNoaaOisst2::Init()
-{
+bool asPredictorNoaaOisst2::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("sst", false)) {
         m_parameter = SeaSurfaceTemperature;
@@ -71,13 +67,15 @@ bool asPredictorNoaaOisst2::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId, m_datasetName);
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -87,18 +85,16 @@ bool asPredictorNoaaOisst2::Init()
     return true;
 }
 
-void asPredictorNoaaOisst2::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNoaaOisst2::ListFiles(asTimeArray &timeArray) {
     for (double date = timeArray.GetFirst(); date <= timeArray.GetLast(); date++) {
         // Build the file path (ex: %d/AVHRR/sst4-path-eot.%4d%02d%02d.nc)
-        m_files.push_back(GetFullDirectoryPath() +
-                          wxString::Format(m_fileNamePattern, asTime::GetYear(date), asTime::GetYear(date),
-                                           asTime::GetMonth(date), asTime::GetDay(date)));
+        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, asTime::GetYear(date),
+                                                                    asTime::GetYear(date), asTime::GetMonth(date),
+                                                                    asTime::GetDay(date)));
     }
 }
 
-double asPredictorNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorNoaaOisst2::ConvertToMjd(double timeValue, double refValue) const {
     timeValue += asTime::GetMJD(1978, 1, 1);
 
     return timeValue;

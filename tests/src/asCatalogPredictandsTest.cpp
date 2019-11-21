@@ -27,12 +27,11 @@
  */
 
 #include <wx/filename.h>
+
 #include "asCatalogPredictands.h"
 #include "gtest/gtest.h"
 
-
-TEST(CatalogPredictand, LoadCatalogProp)
-{
+TEST(CatalogPredictand, LoadCatalogProp) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 
@@ -44,7 +43,7 @@ TEST(CatalogPredictand, LoadCatalogProp)
     samestr = catalog.GetName().CompareTo(_T("MeteoSwiss daily rainfall measurements for the Rhone catchment"));
     EXPECT_EQ(0, samestr);
     samestr = catalog.GetDescription().CompareTo(
-            _T("Precipitation measurements made by MeteoSwiss at a daily timestep for the Rhone catchment"));
+        _T("Precipitation measurements made by MeteoSwiss at a daily timestep for the Rhone catchment"));
     EXPECT_EQ(0, samestr);
     asPredictand::Parameter paramval = catalog.GetParameter();
     asPredictand::Parameter paramref = asPredictand::Precipitation;
@@ -68,8 +67,7 @@ TEST(CatalogPredictand, LoadCatalogProp)
     EXPECT_EQ(0, samestr);
 }
 
-TEST(CatalogPredictand, LoadDataProp)
-{
+TEST(CatalogPredictand, LoadDataProp) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/catalog_precipitation_MCH.xml");
 

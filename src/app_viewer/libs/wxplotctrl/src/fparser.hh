@@ -19,19 +19,17 @@
 #pragma hdrstop
 #endif
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #ifdef FUNCTIONPARSER_SUPPORT_DEBUG_OUTPUT
 #include <iostream>
 #endif
 
-class FunctionParser
-{
-public:
-    enum ParseErrorType
-    {
+class FunctionParser {
+   public:
+    enum ParseErrorType {
         SYNTAX_ERROR = 0,
         MISM_PARENTH,
         MISSING_PARENTH,
@@ -50,15 +48,13 @@ public:
 
     const char *ErrorMsg() const;
 
-    inline ParseErrorType GetParseErrorType() const
-    {
+    inline ParseErrorType GetParseErrorType() const {
         return parseErrorType;
     }
 
     double Eval(const double *Vars);
 
-    inline int EvalError() const
-    {
+    inline int EvalError() const {
         return evalErrorType;
     }
 
@@ -72,13 +68,11 @@ public:
 
     void Optimize();
 
-    int GetNumberVariables() const
-    {
+    int GetNumberVariables() const {
         return data->varAmount;
     }
 
-    bool GetUseDegrees() const
-    {
+    bool GetUseDegrees() const {
         return data->useDegreeConversion;
     }
 
@@ -94,23 +88,19 @@ public:
 
 #ifdef FUNCTIONPARSER_SUPPORT_DEBUG_OUTPUT
     // For debugging purposes only:
-    void PrintByteCode(std::ostream& dest) const;
+    void PrintByteCode(std::ostream &dest) const;
 #endif
 
-
-
     //========================================================================
-private:
+   private:
     //========================================================================
-
 
     // Private data:
     // ------------
     ParseErrorType parseErrorType;
     int evalErrorType;
 
-    struct Data
-    {
+    struct Data {
         unsigned referenceCounter;
 
         int varAmount;
@@ -124,16 +114,11 @@ private:
 
         VarMap_t FuncPtrNames;
 
-        struct FuncPtrData
-        {
+        struct FuncPtrData {
             FunctionPtr ptr;
             unsigned params;
 
-            FuncPtrData(FunctionPtr p, unsigned par)
-                    : ptr(p),
-                      params(par)
-            {
-            }
+            FuncPtrData(FunctionPtr p, unsigned par) : ptr(p), params(par) {}
         };
 
         std::vector<FuncPtrData> FuncPtrs;
@@ -154,7 +139,7 @@ private:
 
         Data(const Data &);
 
-        Data &operator=(const Data &); // not implemented on purpose
+        Data &operator=(const Data &);  // not implemented on purpose
     };
 
     Data *data;
@@ -165,11 +150,9 @@ private:
     std::vector<unsigned> *tempByteCode;
     std::vector<double> *tempImmed;
 
-
     // Private methods:
     // ---------------
     void copyOnWrite();
-
 
     bool checkRecursiveLinking(const FunctionParser *) const;
 
@@ -213,8 +196,7 @@ private:
 
     int CompileOr(const char *, int);
 
-    int CompileExpression(const char *, int, bool= false);
-
+    int CompileExpression(const char *, int, bool = false);
 
     void MakeTree(void *) const;
 };

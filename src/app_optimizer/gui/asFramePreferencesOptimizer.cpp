@@ -29,8 +29,7 @@
 #include "asFramePreferencesOptimizer.h"
 
 asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id)
-        : asFramePreferencesOptimizerVirtual(parent, id)
-{
+    : asFramePreferencesOptimizerVirtual(parent, id) {
     LoadPreferences();
     Fit();
 
@@ -40,18 +39,15 @@ asFramePreferencesOptimizer::asFramePreferencesOptimizer(wxWindow *parent, wxWin
 #endif
 }
 
-void asFramePreferencesOptimizer::CloseFrame(wxCommandEvent &event)
-{
+void asFramePreferencesOptimizer::CloseFrame(wxCommandEvent &event) {
     Close();
 }
 
-void asFramePreferencesOptimizer::Update()
-{
+void asFramePreferencesOptimizer::Update() {
     LoadPreferences();
 }
 
-void asFramePreferencesOptimizer::LoadPreferences()
-{
+void asFramePreferencesOptimizer::LoadPreferences() {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -91,7 +87,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
 
     // GUI options
     long guiOptions = pConfig->ReadLong("/General/GuiOptions", 1l);
-    m_radioBoxGui->SetSelection((int) guiOptions);
+    m_radioBoxGui->SetSelection((int)guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
     } else {
@@ -110,23 +106,22 @@ void asFramePreferencesOptimizer::LoadPreferences()
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads == -1)
-        maxThreads = 2;
+    if (maxThreads == -1) maxThreads = 2;
     wxString processingMaxThreadNb = pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads));
     m_textCtrlThreadsNb->SetValue(processingMaxThreadNb);
     m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
-    long processingMethod = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
+    long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
-        if (processingMethod == (long) asMULTITHREADS) {
-            processingMethod = (long) asSTANDARD;
+        if (processingMethod == (long)asMULTITHREADS) {
+            processingMethod = (long)asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int) processingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int)processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -137,8 +132,7 @@ void asFramePreferencesOptimizer::LoadPreferences()
     m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini");
 }
 
-void asFramePreferencesOptimizer::SavePreferences() const
-{
+void asFramePreferencesOptimizer::SavePreferences() const {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig;
@@ -172,7 +166,7 @@ void asFramePreferencesOptimizer::SavePreferences() const
      */
 
     // GUI options
-    auto guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long)m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -193,26 +187,23 @@ void asFramePreferencesOptimizer::SavePreferences() const
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
-    if (!processingMaxThreadNb.IsNumber())
-        processingMaxThreadNb = "2";
+    if (!processingMaxThreadNb.IsNumber()) processingMaxThreadNb = "2";
     pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
-    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long)m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
-    if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
-        processingMethod = (long) asSTANDARD;
+    auto processingMethod = (long)m_radioBoxProcessingMethods->GetSelection();
+    if (!allowMultithreading && processingMethod == (long)asMULTITHREADS) {
+        processingMethod = (long)asSTANDARD;
     }
     pConfig->Write("/Processing/Method", processingMethod);
-
 
     GetParent()->Update();
     pConfig->Flush();
 }
 
-void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent &event)
-{
+void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -223,13 +214,11 @@ void asFramePreferencesOptimizer::OnChangeMultithreadingCheckBox(wxCommandEvent 
     }
 }
 
-void asFramePreferencesOptimizer::SaveAndClose(wxCommandEvent &event)
-{
+void asFramePreferencesOptimizer::SaveAndClose(wxCommandEvent &event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesOptimizer::ApplyChanges(wxCommandEvent &event)
-{
+void asFramePreferencesOptimizer::ApplyChanges(wxCommandEvent &event) {
     SavePreferences();
 }

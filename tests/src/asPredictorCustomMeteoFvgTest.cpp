@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorCustomMeteoFvg, LoadSingleDay)
-{
+TEST(PredictorCustomMeteoFvg, LoadSingleDay) {
     asTimeArray dates(asTime::GetMJD(2011, 7, 18, 06), asTime::GetMJD(2011, 7, 18, 06), 6, "Simple");
     dates.Init();
 
@@ -80,8 +79,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDay)
     wxDELETE(predictor);
 }
 
-TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff)
-{
+TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff) {
     asTimeArray dates(asTime::GetMJD(2011, 7, 18, 12), asTime::GetMJD(2011, 7, 18, 12), 6, "Simple");
     dates.Init();
 
@@ -128,8 +126,7 @@ TEST(PredictorCustomMeteoFvg, LoadSingleDayVertdiff)
     wxDELETE(predictor);
 }
 
-TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep)
-{
+TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep) {
     asTimeArray dates(asTime::GetMJD(2011, 7, 18, 12), asTime::GetMJD(2011, 7, 18, 12), 6, "Simple");
     dates.Init();
 
@@ -176,8 +173,7 @@ TEST(PredictorCustomMeteoFvg, LoadSecondTimeStep)
     wxDELETE(predictor);
 }
 
-TEST(PredictorCustomMeteoFvg, LoadFullTimeArray)
-{
+TEST(PredictorCustomMeteoFvg, LoadFullTimeArray) {
     asTimeArray dates(asTime::GetMJD(2011, 7, 18, 6), asTime::GetMJD(2011, 7, 19, 24), 6, "Simple");
     dates.Init();
 
@@ -260,8 +256,7 @@ TEST(PredictorCustomMeteoFvg, LoadFullTimeArray)
     wxDELETE(predictor);
 }
 
-TEST(PredictorCustomMeteoFvg, LoadPacked)
-{
+TEST(PredictorCustomMeteoFvg, LoadPacked) {
     asTimeArray dates(asTime::GetMJD(2015, 5, 26, 6), asTime::GetMJD(2015, 5, 30, 24), 6, "Simple");
     dates.Init();
 
@@ -396,8 +391,7 @@ TEST(PredictorCustomMeteoFvg, LoadPacked)
     wxDELETE(predictor);
 }
 
-TEST(PredictorCustomMeteoFvg, LoadPackedPartial)
-{
+TEST(PredictorCustomMeteoFvg, LoadPackedPartial) {
     asTimeArray dates(asTime::GetMJD(2015, 5, 27, 6), asTime::GetMJD(2015, 5, 29, 6), 6, "Simple");
     dates.Init();
 

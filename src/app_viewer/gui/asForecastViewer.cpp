@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,15 +30,13 @@
 
 #include "asForecastManager.h"
 #include "asFrameForecast.h"
-#include "vrLayerVectorFcstRing.h"
 #include "vrLayerVectorFcstDots.h"
-
+#include "vrLayerVectorFcstRing.h"
 
 wxDEFINE_EVENT(asEVT_ACTION_FORECAST_SELECT_FIRST, wxCommandEvent);
 
 asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager,
-                                   vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager)
-{
+                                   vrLayerManager *layerManager, vrViewerLayerManager *viewerLayerManager) {
     m_parent = parent;
     m_forecastManager = forecastManager;
     m_layerManager = layerManager;
@@ -69,12 +67,12 @@ asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *f
     m_returnPeriods.push_back(300);
     m_returnPeriods.push_back(500);
 
-    //m_displayQuantiles.Add(_("interpretation"));
+    // m_displayQuantiles.Add(_("interpretation"));
     m_displayQuantiles.Add(_("q90"));
     m_displayQuantiles.Add(_("q60"));
     m_displayQuantiles.Add(_("q20"));
 
-    //m_quantiles.push_back(-1);
+    // m_quantiles.push_back(-1);
     m_quantiles.push_back(0.9f);
     m_quantiles.push_back(0.6f);
     m_quantiles.push_back(0.2f);
@@ -95,37 +93,32 @@ asForecastViewer::asForecastViewer(asFrameForecast *parent, asForecastManager *f
     m_opened = false;
 }
 
-asForecastViewer::~asForecastViewer()
-{
+asForecastViewer::~asForecastViewer() {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/ForecastViewer/DisplaySelection", m_forecastDisplaySelection);
     pConfig->Write("/ForecastViewer/QuantileSelection", m_quantileSelection);
 }
 
-void asForecastViewer::FixForecastSelection()
-{
+void asForecastViewer::FixForecastSelection() {
     if (m_methodSelection < 0) {
         wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_SELECT_FIRST);
         m_parent->ProcessWindowEvent(eventSlct);
     }
 }
 
-void asForecastViewer::ResetForecastSelection()
-{
+void asForecastViewer::ResetForecastSelection() {
     m_methodSelection = -1;
     m_forecastSelection = -1;
 }
 
-void asForecastViewer::SetForecast(int methodRow, int forecastRow)
-{
+void asForecastViewer::SetForecast(int methodRow, int forecastRow) {
     m_methodSelection = methodRow;
     m_forecastSelection = forecastRow;
 
     Redraw();
 }
 
-float asForecastViewer::GetSelectedTargetDate()
-{
+float asForecastViewer::GetSelectedTargetDate() {
     a1f targetDates;
 
     if (m_methodSelection < 0) {
@@ -145,8 +138,7 @@ float asForecastViewer::GetSelectedTargetDate()
     return targetDates[m_leadTimeIndex];
 }
 
-void asForecastViewer::SetLeadTimeDate(float date)
-{
+void asForecastViewer::SetLeadTimeDate(float date) {
     if (date > 0 && (m_methodSelection > 0)) {
         a1f targetDates;
 
@@ -163,35 +155,30 @@ void asForecastViewer::SetLeadTimeDate(float date)
     }
 }
 
-void asForecastViewer::SetForecastDisplay(int i)
-{
+void asForecastViewer::SetForecastDisplay(int i) {
     m_forecastDisplaySelection = i;
 
-    wxString display = m_displayForecast.Item((size_t) m_forecastDisplaySelection);
+    wxString display = m_displayForecast.Item((size_t)m_forecastDisplaySelection);
     wxLogVerbose(_("Selected display : %s."), display);
 
     Redraw();
 }
 
-void asForecastViewer::SetQuantile(int i)
-{
+void asForecastViewer::SetQuantile(int i) {
     m_quantileSelection = i;
 
-    wxString quantile = m_displayQuantiles.Item((size_t) m_quantileSelection);
+    wxString quantile = m_displayQuantiles.Item((size_t)m_quantileSelection);
     wxLogVerbose(_("Selected quantile : %s."), quantile);
 
     Redraw();
 }
 
-void asForecastViewer::LoadPastForecast()
-{
+void asForecastViewer::LoadPastForecast() {
     wxBusyCursor wait;
 
     // Check that elements are selected
-    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1))
-        return;
-    if (m_methodSelection >= m_forecastManager->GetMethodsNb())
-        return;
+    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1)) return;
+    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) return;
 
     if (m_forecastSelection > 0) {
         m_forecastManager->LoadPastForecast(m_methodSelection, m_forecastSelection);
@@ -200,19 +187,13 @@ void asForecastViewer::LoadPastForecast()
     }
 }
 
-void asForecastViewer::Redraw()
-{
+void asForecastViewer::Redraw() {
     // Check that elements are selected
-    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1))
-        return;
-    if (m_methodSelection >= m_forecastManager->GetMethodsNb())
-        return;
-    if (m_forecastDisplaySelection >= m_displayForecast.size())
-        return;
-    if (m_quantiles.size() != m_displayQuantiles.size())
-        return;
-    if (m_returnPeriods.size() != m_displayForecast.size())
-        return;
+    if ((m_methodSelection == -1) || (m_forecastDisplaySelection == -1) || (m_quantileSelection == -1)) return;
+    if (m_methodSelection >= m_forecastManager->GetMethodsNb()) return;
+    if (m_forecastDisplaySelection >= m_displayForecast.size()) return;
+    if (m_quantiles.size() != m_displayQuantiles.size()) return;
+    if (m_returnPeriods.size() != m_displayForecast.size()) return;
 
     // Get data
     std::vector<asResultsForecast *> forecasts;
@@ -261,8 +242,8 @@ void asForecastViewer::Redraw()
     if (forecasts[0]->HasReferenceValues() && returnPeriod != 0) {
         a1f forecastReferenceAxis = forecasts[0]->GetReferenceAxis();
 
-        indexReferenceAxis = asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1],
-                                    returnPeriod);
+        indexReferenceAxis =
+            asFind(&forecastReferenceAxis[0], &forecastReferenceAxis[forecastReferenceAxis.size() - 1], returnPeriod);
         if ((indexReferenceAxis == asNOT_FOUND) || (indexReferenceAxis == asOUT_OF_RANGE)) {
             wxLogError(_("The desired reference value is not available in the forecast file."));
             m_viewerLayerManager->FreezeEnd();
@@ -296,7 +277,7 @@ void asForecastViewer::Redraw()
         }
 
         // Set the maximum value
-        if (m_forecastDisplaySelection == 0) // Only if the value option is selected, and not the ratio
+        if (m_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
         {
             layerSpecific->SetMaxValue(colorbarMaxValue);
             layerOther->SetMaxValue(colorbarMaxValue);
@@ -364,9 +345,9 @@ void asForecastViewer::Redraw()
 
             // Field container
             wxArrayDouble data;
-            data.Add((double) iStat);
-            data.Add((double) currentId);
-            data.Add((double) leadTimeSize);
+            data.Add((double)iStat);
+            data.Add((double)currentId);
+            data.Add((double)leadTimeSize);
 
             // For normalization by the return period
             double factor = 1;
@@ -459,7 +440,7 @@ void asForecastViewer::Redraw()
         }
 
         // Set the maximum value
-        if (m_forecastDisplaySelection == 0) // Only if the value option is selected, and not the ratio
+        if (m_forecastDisplaySelection == 0)  // Only if the value option is selected, and not the ratio
         {
             layerSpecific->SetMaxValue(colorbarMaxValue);
             layerOther->SetMaxValue(colorbarMaxValue);
@@ -520,8 +501,8 @@ void asForecastViewer::Redraw()
 
             // Field container
             wxArrayDouble data;
-            data.Add((double) iStat);
-            data.Add((double) currentId);
+            data.Add((double)iStat);
+            data.Add((double)currentId);
 
             // For normalization by the return period
             double factor = 1;
@@ -542,15 +523,15 @@ void asForecastViewer::Redraw()
             a1f values = forecast->GetAnalogsValuesRaw(m_leadTimeIndex, iStat);
 
             if (asHasNaN(&values[0], &values[values.size() - 1])) {
-                data.Add(NaNd); // 1st real value
-                data.Add(NaNd); // 2nd normalized
+                data.Add(NaNd);  // 1st real value
+                data.Add(NaNd);  // 2nd normalized
             } else {
                 if (quantile >= 0) {
                     double forecastVal = asGetValueForQuantile(values, quantile);
                     wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
-                    data.Add(forecastVal); // 1st real value
+                    data.Add(forecastVal);  // 1st real value
                     forecastVal *= factor;
-                    data.Add(forecastVal); // 2nd normalized
+                    data.Add(forecastVal);  // 2nd normalized
                 } else {
                     // Interpretatio
                     double forecastVal = 0;
@@ -567,9 +548,9 @@ void asForecastViewer::Redraw()
                     }
 
                     wxASSERT_MSG(forecastVal >= 0, wxString::Format("Forecast value = %g", forecastVal));
-                    data.Add(forecastVal); // 1st real value
+                    data.Add(forecastVal);  // 1st real value
                     forecastVal *= factor;
-                    data.Add(forecastVal); // 2nd normalized
+                    data.Add(forecastVal);  // 2nd normalized
                 }
             }
 
@@ -602,9 +583,8 @@ void asForecastViewer::Redraw()
     }
 }
 
-void asForecastViewer::ChangeLeadTime(int val)
-{
-    if (m_leadTimeIndex == val) // Already selected
+void asForecastViewer::ChangeLeadTime(int val) {
+    if (m_leadTimeIndex == val)  // Already selected
         return;
 
     m_leadTimeIndex = val;

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,33 +30,26 @@
 
 #include <asPanelForecast.h>
 
-asPanelsManagerForecasts::asPanelsManagerForecasts()
-        : asPanelsManager()
-{
-    //ctor
-}
+asPanelsManagerForecasts::asPanelsManagerForecasts() : asPanelsManager() {}
 
-asPanelsManagerForecasts::~asPanelsManagerForecasts()
-{
+asPanelsManagerForecasts::~asPanelsManagerForecasts() {
     // Destroy panels
     for (auto &panel : m_arrayPanels) {
         panel->Destroy();
     }
 }
 
-void asPanelsManagerForecasts::AddPanel(asPanelForecast *panel)
-{
+void asPanelsManagerForecasts::AddPanel(asPanelForecast *panel) {
     // Set a pointer to the PanelsManager
     panel->SetPanelsManager(this);
 
     // Add to the array
     long arraylength = m_arrayPanels.size();
-    panel->SetId((wxWindowID) arraylength);
+    panel->SetId((wxWindowID)arraylength);
     m_arrayPanels.push_back(panel);
 }
 
-void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel)
-{
+void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel) {
     wxWindow *parent = panel->GetParent();
 
     int id = panel->GetId();
@@ -78,8 +71,7 @@ void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel)
     LayoutFrame(parent);
 }
 
-void asPanelsManagerForecasts::Clear()
-{
+void asPanelsManagerForecasts::Clear() {
     // Destroy panels
     for (auto &arrayPanel : m_arrayPanels) {
         wxASSERT(arrayPanel);
@@ -88,24 +80,20 @@ void asPanelsManagerForecasts::Clear()
     m_arrayPanels.clear();
 }
 
-asPanelForecast *asPanelsManagerForecasts::GetPanel(int i) const
-{
-    wxASSERT(i < (int) m_arrayPanels.size());
+asPanelForecast *asPanelsManagerForecasts::GetPanel(int i) const {
+    wxASSERT(i < (int)m_arrayPanels.size());
     return m_arrayPanels[i];
 }
 
-int asPanelsManagerForecasts::GetPanelsNb() const
-{
-    auto nb = (int) m_arrayPanels.size();
+int asPanelsManagerForecasts::GetPanelsNb() const {
+    auto nb = (int)m_arrayPanels.size();
     return nb;
 }
 
-void asPanelsManagerForecasts::SetForecastLedRunning(int num)
-{
+void asPanelsManagerForecasts::SetForecastLedRunning(int num) {
     if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led)
-            return;
+        if (!led) return;
 
         led->SetColour(awxLED_YELLOW);
         led->SetState(awxLED_ON);
@@ -114,12 +102,10 @@ void asPanelsManagerForecasts::SetForecastLedRunning(int num)
     }
 }
 
-void asPanelsManagerForecasts::SetForecastLedError(int num)
-{
+void asPanelsManagerForecasts::SetForecastLedError(int num) {
     if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led)
-            return;
+        if (!led) return;
 
         led->SetColour(awxLED_RED);
         led->SetState(awxLED_ON);
@@ -128,12 +114,10 @@ void asPanelsManagerForecasts::SetForecastLedError(int num)
     }
 }
 
-void asPanelsManagerForecasts::SetForecastLedDone(int num)
-{
+void asPanelsManagerForecasts::SetForecastLedDone(int num) {
     if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led)
-            return;
+        if (!led) return;
 
         led->SetColour(awxLED_GREEN);
         led->SetState(awxLED_ON);
@@ -142,12 +126,10 @@ void asPanelsManagerForecasts::SetForecastLedDone(int num)
     }
 }
 
-void asPanelsManagerForecasts::SetForecastLedOff(int num)
-{
+void asPanelsManagerForecasts::SetForecastLedOff(int num) {
     if (num < m_arrayPanels.size()) {
         awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led)
-            return;
+        if (!led) return;
 
         led->SetState(awxLED_OFF);
         led->Update();
@@ -155,12 +137,10 @@ void asPanelsManagerForecasts::SetForecastLedOff(int num)
     }
 }
 
-void asPanelsManagerForecasts::SetForecastsAllLedsOff()
-{
+void asPanelsManagerForecasts::SetForecastsAllLedsOff() {
     for (auto &panel : m_arrayPanels) {
         awxLed *led = panel->GetLed();
-        if (!led)
-            return;
+        if (!led) return;
 
         led->SetState(awxLED_OFF);
         led->Update();

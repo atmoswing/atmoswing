@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,33 +26,28 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-
 #include "vrLayerVectorFcstRing.h"
+
 #include "vrlabel.h"
 #include "vrrender.h"
 
-
-vrLayerVectorFcstRing::vrLayerVectorFcstRing()
-{
+vrLayerVectorFcstRing::vrLayerVectorFcstRing() {
     wxASSERT(!m_dataset);
     wxASSERT(!m_layer);
     m_driverType = vrDRIVER_VECTOR_MEMORY;
     m_valueMax = 1;
 }
 
-vrLayerVectorFcstRing::~vrLayerVectorFcstRing()
-{
-}
+vrLayerVectorFcstRing::~vrLayerVectorFcstRing() {}
 
-long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data)
-{
+long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data) {
     wxASSERT(m_layer);
     OGRFeature *feature = OGRFeature::CreateFeature(m_layer->GetLayerDefn());
     wxASSERT(m_layer);
     feature->SetGeometry(geometry);
 
     if (data != nullptr) {
-        wxArrayDouble *dataArray = (wxArrayDouble *) data;
+        wxArrayDouble *dataArray = (wxArrayDouble *)data;
         wxASSERT(dataArray->GetCount() >= 3);
 
         for (int iDat = 0; iDat < dataArray->size(); iDat++) {
@@ -74,11 +69,10 @@ long vrLayerVectorFcstRing::AddFeature(OGRGeometry *geometry, void *data)
 
 void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry,
                                        const wxRect2DDouble &coord, const vrRender *render, vrLabel *label,
-                                       double pxsize)
-{
+                                       double pxsize) {
     // Set the defaut pen
     wxASSERT(render->GetType() == vrRENDER_VECTOR);
-    vrRenderVector *renderVector = (vrRenderVector *) render;
+    vrRenderVector *renderVector = (vrRenderVector *)render;
     wxPen defaultPen(renderVector->GetColorPen(), renderVector->GetSize());
     wxPen selPen(*wxGREEN, 3);
 
@@ -93,12 +87,12 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
         wxRect2DDouble extWndRect(0, 0, extWidth, extHeight);
 
         // Get geometries
-        OGRPoint *geom = (OGRPoint *) geometry;
+        OGRPoint *geom = (OGRPoint *)geometry;
 
         wxPoint point = _GetPointFromReal(wxPoint2DDouble(geom->getX(), geom->getY()), coord.GetLeftTop(), pxsize);
 
         // Get lead time size
-        int leadTimeSize = (int) feature->GetFieldAsDouble(2);
+        int leadTimeSize = (int)feature->GetFieldAsDouble(2);
         wxASSERT(leadTimeSize > 0);
 
         // Create graphics path
@@ -135,7 +129,6 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
             // Get value to set color
             value = feature->GetFieldAsDouble(iLead + 3);
             _Paint(gc, path, value);
-
         }
 
         // Create a mark at the center
@@ -151,18 +144,16 @@ void vrLayerVectorFcstRing::_DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometr
     } else {
         wxLogError(_("Drawing of the symbol failed."));
     }
-
 }
 
-void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath &path, const wxPoint &center, int segmentsTotNb, int segmentNb)
-{
+void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath &path, const wxPoint &center, int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 25 * g_ppiScaleDc;
     const wxDouble radiusIn = 10 * g_ppiScaleDc;
 
-    wxDouble segmentStart = -0.5 * M_PI + ((double) segmentNb / (double) segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double) (segmentNb + 1) / (double) segmentsTotNb) * (1.5 * M_PI);
-    wxDouble centerX = (wxDouble) center.x;
-    wxDouble centerY = (wxDouble) center.y;
+    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble centerX = (wxDouble)center.x;
+    wxDouble centerY = (wxDouble)center.y;
 
     // Get starting point
     double dX = cos(segmentStart) * radiusOut;
@@ -186,35 +177,31 @@ void vrLayerVectorFcstRing::_CreatePath(wxGraphicsPath &path, const wxPoint &cen
     path.CloseSubpath();
 }
 
-void vrLayerVectorFcstRing::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value)
-{
+void vrLayerVectorFcstRing::_Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value) {
     // wxColour colour(255,0,0); -> red
     // wxColour colour(0,0,255); -> blue
     // wxColour colour(0,255,0); -> green
 
     wxColour colour;
 
-    if (asIsNaN(value)) // NaN -> gray
+    if (asIsNaN(value))  // NaN -> gray
     {
         colour.Set(150, 150, 150);
-    } else if (value == 0) // No rain -> white
+    } else if (value == 0)  // No rain -> white
     {
         colour.Set(255, 255, 255);
-    } else if (value / m_valueMax <= 0.5) // light green to yellow
+    } else if (value / m_valueMax <= 0.5)  // light green to yellow
     {
         int baseVal = 200;
         int valColour = ((value / (0.5 * m_valueMax))) * baseVal;
         int valColourCompl = ((value / (0.5 * m_valueMax))) * (255 - baseVal);
-        if (valColour > baseVal)
-            valColour = baseVal;
-        if (valColourCompl + baseVal > 255)
-            valColourCompl = 255 - baseVal;
+        if (valColour > baseVal) valColour = baseVal;
+        if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
         colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
-    } else // Yellow to red
+    } else  // Yellow to red
     {
         int valColour = ((value - 0.5 * m_valueMax) / (0.5 * m_valueMax)) * 255;
-        if (valColour > 255)
-            valColour = 255;
+        if (valColour > 255) valColour = 255;
         colour.Set(255, (255 - valColour), 0);
     }
 

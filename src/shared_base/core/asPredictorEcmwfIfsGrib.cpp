@@ -27,13 +27,10 @@
 
 #include "asPredictorEcmwfIfsGrib.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_IFS_GRIB";
     m_provider = "ECMWF";
@@ -48,8 +45,7 @@ asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
     m_parameter = ParameterUndefined;
 }
 
-bool asPredictorEcmwfIfsGrib::Init()
-{
+bool asPredictorEcmwfIfsGrib::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("z", false)) {
         m_parameter = Geopotential;
@@ -102,7 +98,7 @@ bool asPredictorEcmwfIfsGrib::Init()
         m_unit = W_m2;
         m_fStr.hasLevelDim = true;
     } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater; // Total column water
+        m_parameter = PrecipitableWater;  // Total column water
         m_gribCode = {0, 128, 136, 200};
         m_unit = mm;
     } else {
@@ -116,11 +112,9 @@ bool asPredictorEcmwfIfsGrib::Init()
     return true;
 }
 
-double asPredictorEcmwfIfsGrib::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorEcmwfIfsGrib::ConvertToMjd(double timeValue, double refValue) const {
     wxASSERT(refValue > 30000);
     wxASSERT(refValue < 70000);
 
-    return refValue + (timeValue / 24.0); // hours to days
+    return refValue + (timeValue / 24.0);  // hours to days
 }
-

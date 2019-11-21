@@ -28,30 +28,21 @@
 
 #include "asParametersCalibration.h"
 
-#include <asFileParametersCalibration.h>
 #include <asAreaCompGrid.h>
+#include <asFileParametersCalibration.h>
 
-asParametersCalibration::asParametersCalibration()
-        : asParametersScoring()
-{
-    //ctor
-}
+asParametersCalibration::asParametersCalibration() : asParametersScoring() {}
 
-asParametersCalibration::~asParametersCalibration()
-{
-    //dtor
-}
+asParametersCalibration::~asParametersCalibration() {}
 
-void asParametersCalibration::AddStep()
-{
+void asParametersCalibration::AddStep() {
     asParameters::AddStep();
     ParamsStepVect stepVect;
     stepVect.analogsNumber.push_back(0);
     m_stepsVect.push_back(stepVect);
 }
 
-bool asParametersCalibration::LoadFromFile(const wxString &filePath)
-{
+bool asParametersCalibration::LoadFromFile(const wxString &filePath) {
     wxLogVerbose(_("Loading parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -60,37 +51,29 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     }
 
     asFileParametersCalibration fileParams(filePath, asFile::ReadOnly);
-    if (!fileParams.Open())
-        return false;
+    if (!fileParams.Open()) return false;
 
-    if (!fileParams.CheckRootElement())
-        return false;
+    if (!fileParams.CheckRootElement()) return false;
 
     int iStep = 0;
     wxXmlNode *nodeProcess = fileParams.GetRoot()->GetChildren();
     while (nodeProcess) {
-
         if (nodeProcess->GetName() == "description") {
-            if (!ParseDescription(fileParams, nodeProcess))
-                return false;
+            if (!ParseDescription(fileParams, nodeProcess)) return false;
 
         } else if (nodeProcess->GetName() == "time_properties") {
-            if (!ParseTimeProperties(fileParams, nodeProcess))
-                return false;
+            if (!ParseTimeProperties(fileParams, nodeProcess)) return false;
 
         } else if (nodeProcess->GetName() == "analog_dates") {
             AddStep();
-            if (!ParseAnalogDatesParams(fileParams, iStep, nodeProcess))
-                return false;
+            if (!ParseAnalogDatesParams(fileParams, iStep, nodeProcess)) return false;
             iStep++;
 
         } else if (nodeProcess->GetName() == "analog_values") {
-            if (!ParseAnalogValuesParams(fileParams, nodeProcess))
-                return false;
+            if (!ParseAnalogValuesParams(fileParams, nodeProcess)) return false;
 
         } else if (nodeProcess->GetName() == "evaluation") {
-            if (!ParseScore(fileParams, nodeProcess))
-                return false;
+            if (!ParseScore(fileParams, nodeProcess)) return false;
 
         } else {
             fileParams.UnknownNode(nodeProcess);
@@ -100,16 +83,13 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     }
 
     // Set properties
-    if (!PreprocessingDataIdsOk())
-        return false;
-    if (!PreprocessingPropertiesOk())
-        return false;
+    if (!PreprocessingDataIdsOk()) return false;
+    if (!PreprocessingPropertiesOk()) return false;
     SetSpatialWindowProperties();
     SetPreloadingProperties();
 
     // Check inputs and init parameters
-    if (!InputsOK())
-        return false;
+    if (!InputsOK()) return false;
     InitValues();
 
     // Fixes
@@ -122,8 +102,7 @@ bool asParametersCalibration::LoadFromFile(const wxString &filePath)
     return true;
 }
 
-bool asParametersCalibration::ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
-{
+bool asParametersCalibration::ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess) {
     wxXmlNode *nodeParam = nodeProcess->GetChildren();
     while (nodeParam) {
         if (nodeParam->GetName() == "method_id") {
@@ -145,28 +124,23 @@ bool asParametersCalibration::ParseDescription(asFileParametersCalibration &file
     return true;
 }
 
-bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
-{
+bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &fileParams,
+                                                  const wxXmlNode *nodeProcess) {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "archive_period") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
-                    if (!SetArchiveYearStart(fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetArchiveYearStart(fileParams.GetInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "end_year") {
-                    if (!SetArchiveYearEnd(fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetArchiveYearEnd(fileParams.GetInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "start") {
-                    if (!SetArchiveStart(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetArchiveStart(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "end") {
-                    if (!SetArchiveEnd(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetArchiveEnd(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam)))
-                        return false;
+                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -176,20 +150,15 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
-                    if (!SetCalibrationYearStart(fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetCalibrationYearStart(fileParams.GetInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "end_year") {
-                    if (!SetCalibrationYearEnd(fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetCalibrationYearEnd(fileParams.GetInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "start") {
-                    if (!SetCalibrationStart(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetCalibrationStart(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "end") {
-                    if (!SetCalibrationEnd(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetCalibrationEnd(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam)))
-                        return false;
+                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -200,8 +169,7 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             int yStart = 0, yEnd = 0;
             while (nodeParam) {
                 if (nodeParam->GetName() == "years") {
-                    if (!SetValidationYearsVector(fileParams.GetVectorInt(nodeParam)))
-                        return false;
+                    if (!SetValidationYearsVector(fileParams.GetVectorInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "start_year") {
                     yStart = fileParams.GetInt(nodeParam);
                 } else if (nodeParam->GetName() == "end_year") {
@@ -213,29 +181,22 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             }
             if (yStart > 0 && yEnd > 0) {
                 vi vect = asFileParameters::BuildVectorInt(yStart, yEnd, 1);
-                if (!SetValidationYearsVector(vect))
-                    return false;
+                if (!SetValidationYearsVector(vect)) return false;
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
-                return false;
-            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock)))
-                return false;
+            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
+            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayTargetMode(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayTargetMode(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "predictand_serie_name") {
-                    if (!SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "predictand_min_threshold") {
-                    if (!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFloat(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayTargetPredictandMinThreshold(fileParams.GetFloat(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "predictand_max_threshold") {
-                    if (!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFloat(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayTargetPredictandMaxThreshold(fileParams.GetFloat(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -245,14 +206,11 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetTimeArrayAnalogsIntervalDaysVector(fileParams.GetVectorInt(nodeParam)))
-                        return false;
+                    if (!SetTimeArrayAnalogsIntervalDaysVector(fileParams.GetVectorInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -267,14 +225,12 @@ bool asParametersCalibration::ParseTimeProperties(asFileParametersCalibration &f
 }
 
 bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep,
-                                                     const wxXmlNode *nodeProcess)
-{
+                                                     const wxXmlNode *nodeProcess) {
     int iPtor = 0;
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
-            if (!SetAnalogsNumberVector(iStep, fileParams.GetVectorInt(nodeParamBlock)))
-                return false;
+            if (!SetAnalogsNumberVector(iStep, fileParams.GetVectorInt(nodeParamBlock))) return false;
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
             AddPredictorVect(m_stepsVect[iStep]);
@@ -288,23 +244,17 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                     SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
-                    if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam))
-                        return false;
+                    if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam)) return false;
                 } else if (nodeParam->GetName() == "dataset_id") {
-                    if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam)))
-                        return false;
+                    if (!SetPredictorDatasetId(iStep, iPtor, fileParams.GetString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "data_id") {
-                    if (!SetPredictorDataIdVector(iStep, iPtor, fileParams.GetVectorString(nodeParam)))
-                        return false;
+                    if (!SetPredictorDataIdVector(iStep, iPtor, fileParams.GetVectorString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "level") {
-                    if (!SetPredictorLevelVector(iStep, iPtor, fileParams.GetVectorFloat(nodeParam)))
-                        return false;
+                    if (!SetPredictorLevelVector(iStep, iPtor, fileParams.GetVectorFloat(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorHoursVector(iStep, iPtor, fileParams.GetVectorDouble(nodeParam)))
-                        return false;
+                    if (!SetPredictorHoursVector(iStep, iPtor, fileParams.GetVectorDouble(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "members") {
-                    if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam)))
-                        return false;
+                    if (!SetPredictorMembersNb(iStep, iPtor, fileParams.GetInt(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "spatial_window") {
                     wxXmlNode *nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
@@ -318,8 +268,7 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorXptsnbVector(iStep, iPtor, fileParams.GetVectorInt(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "x_step") {
-                            if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
-                                return false;
+                            if (!SetPredictorXstep(iStep, iPtor, fileParams.GetDouble(nodeWindow))) return false;
                         } else if (nodeWindow->GetName() == "y_min") {
                             if (!SetPredictorYminVector(iStep, iPtor, fileParams.GetVectorDouble(nodeWindow)))
                                 return false;
@@ -327,19 +276,16 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
                             if (!SetPredictorYptsnbVector(iStep, iPtor, fileParams.GetVectorInt(nodeWindow)))
                                 return false;
                         } else if (nodeWindow->GetName() == "y_step") {
-                            if (!SetPredictorYstep(iStep, iPtor, fileParams.GetDouble(nodeWindow)))
-                                return false;
+                            if (!SetPredictorYstep(iStep, iPtor, fileParams.GetDouble(nodeWindow))) return false;
                         } else {
                             fileParams.UnknownNode(nodeWindow);
                         }
                         nodeWindow = nodeWindow->GetNext();
                     }
                 } else if (nodeParam->GetName() == "criteria") {
-                    if (!SetPredictorCriteriaVector(iStep, iPtor, fileParams.GetVectorString(nodeParam)))
-                        return false;
+                    if (!SetPredictorCriteriaVector(iStep, iPtor, fileParams.GetVectorString(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "weight") {
-                    if (!SetPredictorWeightVector(iStep, iPtor, fileParams.GetVectorFloat(nodeParam)))
-                        return false;
+                    if (!SetPredictorWeightVector(iStep, iPtor, fileParams.GetVectorFloat(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -355,20 +301,17 @@ bool asParametersCalibration::ParseAnalogDatesParams(asFileParametersCalibration
 }
 
 bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
-                                                          const wxXmlNode *nodeParam)
-{
+                                                          const wxXmlNode *nodeParam) {
     int iPre = 0;
     wxXmlNode *nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
-            if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess)))
-                return false;
+            if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess))) return false;
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
             wxXmlNode *nodeParamPre = nodePreprocess->GetChildren();
             while (nodeParamPre) {
                 if (nodeParamPre->GetName() == "dataset_id") {
-                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPre)))
-                        return false;
+                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPre))) return false;
                 } else if (nodeParamPre->GetName() == "data_id") {
                     if (!SetPreprocessDataIdVector(iStep, iPtor, iPre, fileParams.GetVectorString(nodeParamPre)))
                         return false;
@@ -385,8 +328,7 @@ bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibr
                     if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetVectorDouble(nodeParamPre)[0]))
                         return false;
                 } else if (nodeParamPre->GetName() == "members") {
-                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPre)))
-                        return false;
+                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPre))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParamPre);
                 }
@@ -403,19 +345,16 @@ bool asParametersCalibration::ParsePreprocessedPredictors(asFileParametersCalibr
 }
 
 bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibration &fileParams,
-                                                      const wxXmlNode *nodeProcess)
-{
+                                                      const wxXmlNode *nodeProcess) {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "predictand") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
-                    if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam)))
-                        return false;
+                    if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam)))
-                        return false;
+                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam))) return false;
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -429,13 +368,11 @@ bool asParametersCalibration::ParseAnalogValuesParams(asFileParametersCalibratio
     return true;
 }
 
-bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess)
-{
+bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess) {
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "score") {
-            if (!SetScoreNameVector(fileParams.GetVectorString(nodeParamBlock)))
-                return false;
+            if (!SetScoreNameVector(fileParams.GetVectorString(nodeParamBlock))) return false;
         } else if (nodeParamBlock->GetName() == "threshold") {
             SetScoreThreshold(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "on_mean") {
@@ -443,8 +380,7 @@ bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams
         } else if (nodeParamBlock->GetName() == "quantile") {
             SetScoreQuantile(fileParams.GetFloat(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array") {
-            if (!SetScoreTimeArrayModeVector(fileParams.GetVectorString(nodeParamBlock)))
-                return false;
+            if (!SetScoreTimeArrayModeVector(fileParams.GetVectorString(nodeParamBlock))) return false;
         } else if (nodeParamBlock->GetName() == "postprocessing") {
             wxLogError(_("The postptocessing is not yet fully implemented."));
         } else {
@@ -455,28 +391,23 @@ bool asParametersCalibration::ParseScore(asFileParametersCalibration &fileParams
     return true;
 }
 
-bool asParametersCalibration::SetSpatialWindowProperties()
-{
+bool asParametersCalibration::SetSpatialWindowProperties() {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             if (GetPredictorXstep(iStep, iPtor) == 0) {
                 SetPredictorXshift(iStep, iPtor, 0);
             } else {
                 double xShift = std::fmod(GetPredictorXminVector(iStep, iPtor)[0], GetPredictorXstep(iStep, iPtor));
-                if (xShift < 0)
-                    xShift += GetPredictorXstep(iStep, iPtor);
-                if (!SetPredictorXshift(iStep, iPtor, xShift))
-                    return false;
+                if (xShift < 0) xShift += GetPredictorXstep(iStep, iPtor);
+                if (!SetPredictorXshift(iStep, iPtor, xShift)) return false;
             }
 
             if (GetPredictorYstep(iStep, iPtor) == 0) {
                 SetPredictorYshift(iStep, iPtor, 0);
             } else {
                 double yShift = std::fmod(GetPredictorYminVector(iStep, iPtor)[0], GetPredictorYstep(iStep, iPtor));
-                if (yShift < 0)
-                    yShift += GetPredictorYstep(iStep, iPtor);
-                if (!SetPredictorYshift(iStep, iPtor, yShift))
-                    return false;
+                if (yShift < 0) yShift += GetPredictorYstep(iStep, iPtor);
+                if (!SetPredictorYshift(iStep, iPtor, yShift)) return false;
             }
 
             vi xPtsNbs = GetPredictorXptsnbVector(iStep, iPtor);
@@ -491,25 +422,26 @@ bool asParametersCalibration::SetSpatialWindowProperties()
     return true;
 }
 
-bool asParametersCalibration::SetPreloadingProperties()
-{
+bool asParametersCalibration::SetPreloadingProperties() {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             // Set maximum extent
             if (NeedsPreloading(iStep, iPtor)) {
-                if (!SetPreloadXmin(iStep, iPtor, GetPredictorXminVector(iStep, iPtor)[0]))
+                if (!SetPreloadXmin(iStep, iPtor, GetPredictorXminVector(iStep, iPtor)[0])) return false;
+                if (!SetPreloadYmin(iStep, iPtor, GetPredictorYminVector(iStep, iPtor)[0])) return false;
+                if (!SetPreloadXptsnb(
+                        iStep, iPtor,
+                        (int)GetPredictorXminVector(iStep, iPtor).size() - 1 +
+                            GetPredictorXptsnbVector(iStep, iPtor)[GetPredictorXptsnbVector(iStep, iPtor).size() - 1]))
                     return false;
-                if (!SetPreloadYmin(iStep, iPtor, GetPredictorYminVector(iStep, iPtor)[0]))
-                    return false;
-                if (!SetPreloadXptsnb(iStep, iPtor, (int) GetPredictorXminVector(iStep, iPtor).size() - 1 +
-                        GetPredictorXptsnbVector(iStep, iPtor)[GetPredictorXptsnbVector(iStep, iPtor).size() - 1]))
-                    return false;
-                if (!SetPreloadYptsnb(iStep, iPtor, (int) GetPredictorYminVector(iStep, iPtor).size() - 1 +
-                        GetPredictorYptsnbVector(iStep, iPtor)[GetPredictorYptsnbVector(iStep, iPtor).size() - 1]))
+                if (!SetPreloadYptsnb(
+                        iStep, iPtor,
+                        (int)GetPredictorYminVector(iStep, iPtor).size() - 1 +
+                            GetPredictorYptsnbVector(iStep, iPtor)[GetPredictorYptsnbVector(iStep, iPtor).size() - 1]))
                     return false;
             }
 
-            // Change predictor properties when preprocessing 
+            // Change predictor properties when preprocessing
             if (NeedsPreprocessing(iStep, iPtor)) {
                 if (GetPreprocessSize(iStep, iPtor) == 1) {
                     SetPredictorDatasetId(iStep, iPtor, GetPreprocessDatasetId(iStep, iPtor, 0));
@@ -526,12 +458,9 @@ bool asParametersCalibration::SetPreloadingProperties()
 
             // Set levels and time for preloading
             if (NeedsPreloading(iStep, iPtor) && !NeedsPreprocessing(iStep, iPtor)) {
-                if (!SetPreloadDataIds(iStep, iPtor, GetPredictorDataIdVector(iStep, iPtor)))
-                    return false;
-                if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevelVector(iStep, iPtor)))
-                    return false;
-                if (!SetPreloadHours(iStep, iPtor, GetPredictorHourVector(iStep, iPtor)))
-                    return false;
+                if (!SetPreloadDataIds(iStep, iPtor, GetPredictorDataIdVector(iStep, iPtor))) return false;
+                if (!SetPreloadLevels(iStep, iPtor, GetPredictorLevelVector(iStep, iPtor))) return false;
+                if (!SetPreloadHours(iStep, iPtor, GetPredictorHourVector(iStep, iPtor))) return false;
             } else if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
                 // Check the preprocessing method
                 wxString method = GetPreprocessMethod(iStep, iPtor);
@@ -558,10 +487,8 @@ bool asParametersCalibration::SetPreloadingProperties()
                     wxLogWarning(_("The %s preprocessing method is not yet handled with the preload option."), method);
                 }
 
-                if (!SetPreloadLevels(iStep, iPtor, preprocLevels))
-                    return false;
-                if (!SetPreloadHours(iStep, iPtor, preprocHours))
-                    return false;
+                if (!SetPreloadLevels(iStep, iPtor, preprocLevels)) return false;
+                if (!SetPreloadHours(iStep, iPtor, preprocHours)) return false;
             }
         }
     }
@@ -570,8 +497,7 @@ bool asParametersCalibration::SetPreloadingProperties()
 }
 
 void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels,
-                                                             vd &preprocHours) const
-{
+                                                             vd &preprocHours) const {
     for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); ++iPre) {
         vf preprocLevelsTmp = GetPreprocessLevelVector(iStep, iPtor, iPre);
         for (int i = 0; i < preprocLevelsTmp.size(); ++i) {
@@ -600,8 +526,7 @@ void asParametersCalibration::GetAllPreprocessTimesAndLevels(int iStep, int iPto
     }
 }
 
-bool asParametersCalibration::InputsOK() const
-{
+bool asParametersCalibration::InputsOK() const {
     // Time properties
     if (asIsNaN(GetArchiveStart())) {
         wxLogError(_("The beginning of the archive period was not provided in the parameters file."));
@@ -641,7 +566,9 @@ bool asParametersCalibration::InputsOK() const
     if (GetTimeArrayTargetMode().CmpNoCase("predictand_thresholds") == 0 ||
         GetTimeArrayTargetMode().CmpNoCase("PredictandThresholds") == 0) {
         if (GetTimeArrayTargetPredictandSerieName().IsEmpty()) {
-            wxLogError(_("The predictand time series (for the threshold preselection) was not provided in the parameters file."));
+            wxLogError(
+                _("The predictand time series (for the threshold preselection) was not provided in the parameters "
+                  "file."));
             return false;
         }
         if (GetTimeArrayTargetPredictandMinThreshold() == GetTimeArrayTargetPredictandMaxThreshold()) {
@@ -657,7 +584,8 @@ bool asParametersCalibration::InputsOK() const
             return false;
         }
         if (GetAnalogsExcludeDays() <= 0) {
-            wxLogError(_("The number of days to exclude around the target date was not provided in the parameters file."));
+            wxLogError(
+                _("The number of days to exclude around the target date was not provided in the parameters file."));
             return false;
         }
     }
@@ -665,37 +593,42 @@ bool asParametersCalibration::InputsOK() const
     // Analog dates
     for (int i = 0; i < GetStepsNb(); i++) {
         if (GetAnalogsNumberVector(i).empty()) {
-            wxLogError(wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."),
-                                        i));
+            wxLogError(
+                wxString::Format(_("The number of analogs (step %d) was not provided in the parameters file."), i));
             return false;
         }
 
         for (int j = 0; j < GetPredictorsNb(i); j++) {
             if (NeedsPreprocessing(i, j)) {
                 if (GetPreprocessMethod(i, j).IsEmpty()) {
-                    wxLogError(_("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
-                               i, j);
+                    wxLogError(
+                        _("The preprocessing method (step %d, predictor %d) was not provided in the parameters file."),
+                        i, j);
                     return false;
                 }
 
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (GetPreprocessDatasetId(i, j, k).IsEmpty()) {
-                        wxLogError(_("The dataset for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                        wxLogError(_("The dataset for preprocessing (step %d, predictor %d) was not provided in the "
+                                     "parameters file."),
                                    i, j);
                         return false;
                     }
                     if (GetPreprocessDataIdVector(i, j, k).empty()) {
-                        wxLogError(_("The data for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                        wxLogError(_("The data for preprocessing (step %d, predictor %d) was not provided in the "
+                                     "parameters file."),
                                    i, j);
                         return false;
                     }
                     if (GetPreprocessLevelVector(i, j, k).empty()) {
-                        wxLogError(_("The level for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                        wxLogError(_("The level for preprocessing (step %d, predictor %d) was not provided in the "
+                                     "parameters file."),
                                    i, j);
                         return false;
                     }
                     if (GetPreprocessHourVector(i, j, k).empty()) {
-                        wxLogError(_("The time for preprocessing (step %d, predictor %d) was not provided in the parameters file."),
+                        wxLogError(_("The time for preprocessing (step %d, predictor %d) was not provided in the "
+                                     "parameters file."),
                                    i, j);
                         return false;
                     }
@@ -769,8 +702,7 @@ bool asParametersCalibration::InputsOK() const
     return true;
 }
 
-bool asParametersCalibration::FixTimeLimits()
-{
+bool asParametersCalibration::FixTimeLimits() {
     double minHour = 200.0, maxHour = -50.0;
     for (int i = 0; i < GetStepsNb(); i++) {
         for (int j = 0; j < GetPredictorsNb(i); j++) {
@@ -792,8 +724,7 @@ bool asParametersCalibration::FixTimeLimits()
     return true;
 }
 
-void asParametersCalibration::InitValues()
-{
+void asParametersCalibration::InitValues() {
     wxASSERT(!m_predictandStationIdsVect.empty());
     wxASSERT(!m_scoreVect.name.empty());
     wxASSERT(!m_scoreVect.timeArrayMode.empty());
@@ -837,7 +768,6 @@ void asParametersCalibration::InitValues()
             SetPredictorCriteria(i, j, m_stepsVect[i].predictors[j].criteria[0]);
             SetPredictorWeight(i, j, m_stepsVect[i].predictors[j].weight[0]);
         }
-
     }
 
     // Fixes and checks
@@ -846,8 +776,7 @@ void asParametersCalibration::InitValues()
     FixAnalogsNb();
 }
 
-bool asParametersCalibration::SetPredictandStationIdsVector(vvi val)
-{
+bool asParametersCalibration::SetPredictandStationIdsVector(vvi val) {
     if (val.size() < 1) {
         wxLogError(_("The provided predictand ID vector is empty."));
         return false;
@@ -857,8 +786,8 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val)
             return false;
         }
 
-        for (int i = 0; i < (int) val.size(); i++) {
-            for (int j = 0; j < (int) val[i].size(); j++) {
+        for (int i = 0; i < (int)val.size(); i++) {
+            for (int j = 0; j < (int)val[i].size(); j++) {
                 if (asIsNaN(val[i][j])) {
                     wxLogError(_("There are NaN values in the provided predictand ID vector."));
                     return false;
@@ -872,13 +801,12 @@ bool asParametersCalibration::SetPredictandStationIdsVector(vvi val)
     return true;
 }
 
-bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val)
-{
+bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val) {
     if (val.size() < 1) {
         wxLogError(_("The provided 'interval days' vector is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
+        for (int i = 0; i < (int)val.size(); i++) {
             if (asIsNaN(val[i])) {
                 wxLogError(_("There are NaN values in the provided 'interval days' vector."));
                 return false;
@@ -889,13 +817,12 @@ bool asParametersCalibration::SetTimeArrayAnalogsIntervalDaysVector(vi val)
     return true;
 }
 
-bool asParametersCalibration::SetScoreNameVector(vwxs val)
-{
+bool asParametersCalibration::SetScoreNameVector(vwxs val) {
     if (val.size() < 1) {
         wxLogError(_("The provided scores vector is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
+        for (int i = 0; i < (int)val.size(); i++) {
             if (val[i].IsEmpty()) {
                 wxLogError(_("There are NaN values in the provided scores vector."));
                 return false;
@@ -911,13 +838,12 @@ bool asParametersCalibration::SetScoreNameVector(vwxs val)
     return true;
 }
 
-bool asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val)
-{
+bool asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val) {
     if (val.size() < 1) {
         wxLogError(_("The provided time array mode vector for the score is empty."));
         return false;
     } else {
-        for (int i = 0; i < (int) val.size(); i++) {
+        for (int i = 0; i < (int)val.size(); i++) {
             if (val[i].IsEmpty()) {
                 wxLogError(_("There are NaN values in the provided time array mode vector for the score."));
                 return false;
@@ -928,148 +854,134 @@ bool asParametersCalibration::SetScoreTimeArrayModeVector(vwxs val)
     return true;
 }
 
-double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
         long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][0],
-                                       &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
+                                &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
         return val;
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessHours (lower limit) in the parameters object."));
+        wxLogError(
+            _("Trying to access to an element outside of preprocessHours (lower limit) in the parameters object."));
         return NaNd;
     }
 }
 
-double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorXminLowerLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastrow >= 0);
-    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
+    double val =
+        asMinArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+int asParametersCalibration::GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].xPtsNb[0],
-                                &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
+                         &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorYminLowerLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastrow >= 0);
-    double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
+    double val =
+        asMinArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+int asParametersCalibration::GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].yPtsNb[0],
-                                &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
+                         &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorHoursLowerLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorHoursLowerLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMinArray(&m_stepsVect[iStep].predictors[iPtor].hours[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);
+                            &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
         long lastrow = m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].size() - 1;
         wxASSERT(lastrow >= 0);
         double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][0],
-                                       &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
+                                &m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre][lastrow]);
         return val;
     } else {
-        wxLogError(_("Trying to access to an element outside of preprocessHours (upper limit) in the parameters object."));
+        wxLogError(
+            _("Trying to access to an element outside of preprocessHours (upper limit) in the parameters object."));
         return NaNd;
     }
 }
 
-double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorXminUpperLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].xMin.size() - 1;
     wxASSERT(lastrow >= 0);
-    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
+    double val =
+        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xMin[0], &m_stepsVect[iStep].predictors[iPtor].xMin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+int asParametersCalibration::GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].xPtsNb[0],
-                                &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
+                         &m_stepsVect[iStep].predictors[iPtor].xPtsNb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorYminUpperLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].yMin.size() - 1;
     wxASSERT(lastrow >= 0);
-    double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
+    double val =
+        asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yMin[0], &m_stepsVect[iStep].predictors[iPtor].yMin[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+int asParametersCalibration::GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() - 1;
     wxASSERT(lastrow >= 0);
     int val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].yPtsNb[0],
-                                &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
+                         &m_stepsVect[iStep].predictors[iPtor].yPtsNb[lastrow]);
     return val;
 }
 
-double asParametersCalibration::GetPredictorHoursUpperLimit(int iStep, int iPtor) const
-{
-    wxASSERT((int) m_stepsVect[iStep].predictors.size() > iPtor);
+double asParametersCalibration::GetPredictorHoursUpperLimit(int iStep, int iPtor) const {
+    wxASSERT((int)m_stepsVect[iStep].predictors.size() > iPtor);
     long lastrow = m_stepsVect[iStep].predictors[iPtor].hours.size() - 1;
     wxASSERT(lastrow >= 0);
     double val = asMaxArray(&m_stepsVect[iStep].predictors[iPtor].hours[0],
-                                   &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);
+                            &m_stepsVect[iStep].predictors[iPtor].hours[lastrow]);
     return val;
 }
 
-int asParametersCalibration::GetPredictorXptsnbIteration(int iStep, int iPtor) const
-{
-    if (m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() < 2)
-        return 0;
+int asParametersCalibration::GetPredictorXptsnbIteration(int iStep, int iPtor) const {
+    if (m_stepsVect[iStep].predictors[iPtor].xPtsNb.size() < 2) return 0;
 
     return m_stepsVect[iStep].predictors[iPtor].xPtsNb[1] - m_stepsVect[iStep].predictors[iPtor].xPtsNb[0];
 }
 
-int asParametersCalibration::GetPredictorYptsnbIteration(int iStep, int iPtor) const
-{
-    if (m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() < 2)
-        return 0;
+int asParametersCalibration::GetPredictorYptsnbIteration(int iStep, int iPtor) const {
+    if (m_stepsVect[iStep].predictors[iPtor].yPtsNb.size() < 2) return 0;
 
     return m_stepsVect[iStep].predictors[iPtor].yPtsNb[1] - m_stepsVect[iStep].predictors[iPtor].yPtsNb[0];
 }

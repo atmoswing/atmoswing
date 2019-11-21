@@ -28,13 +28,10 @@
 
 #include "asPredictorNcepReanalysis2.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNcepReanalysis2::asPredictorNcepReanalysis2(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNcepReanalysis2::asPredictorNcepReanalysis2(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_Reanalysis_v2";
     m_provider = "NCEP/DOE";
@@ -49,8 +46,7 @@ asPredictorNcepReanalysis2::asPredictorNcepReanalysis2(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorNcepReanalysis2::Init()
-{
+bool asPredictorNcepReanalysis2::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
@@ -119,10 +115,8 @@ bool asPredictorNcepReanalysis2::Init()
             return false;
         }
 
-    } else if (IsSurfaceFluxesLevel() ||
-               m_product.IsSameAs("surface_gauss", false) ||
-               m_product.IsSameAs("gaussian_grid", false) ||
-               m_product.IsSameAs("gauss", false)) {
+    } else if (IsSurfaceFluxesLevel() || m_product.IsSameAs("surface_gauss", false) ||
+               m_product.IsSameAs("gaussian_grid", false) || m_product.IsSameAs("gauss", false)) {
         m_fStr.hasLevelDim = false;
         if (IsAirTemperature()) {
             m_fStr.hasLevelDim = true;
@@ -336,17 +330,15 @@ bool asPredictorNcepReanalysis2::Init()
     return true;
 }
 
-void asPredictorNcepReanalysis2::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNcepReanalysis2::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-double asPredictorNcepReanalysis2::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+double asPredictorNcepReanalysis2::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }

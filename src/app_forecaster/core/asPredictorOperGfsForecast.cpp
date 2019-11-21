@@ -28,13 +28,10 @@
 
 #include "asPredictorOperGfsForecast.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
-        : asPredictorOper(dataId)
-{
+asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) : asPredictorOper(dataId) {
     // Set the basic properties.
     m_datasetId = "NWS_GFS_Forecast";
     m_provider = "NWS";
@@ -42,7 +39,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_datasetName = "Global Forecast System";
     m_fileType = asFile::Grib;
     m_leadTimeStart = 0;
-    m_leadTimeEnd = 240; // After 240h, available in another temporal resolution
+    m_leadTimeEnd = 240;  // After 240h, available in another temporal resolution
     m_leadTimeStep = 6;
     m_runHourStart = 0;
     m_runUpdate = 6;
@@ -57,13 +54,9 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId)
     m_parameter = ParameterUndefined;
 }
 
-asPredictorOperGfsForecast::~asPredictorOperGfsForecast()
-{
+asPredictorOperGfsForecast::~asPredictorOperGfsForecast() {}
 
-}
-
-bool asPredictorOperGfsForecast::Init()
-{
+bool asPredictorOperGfsForecast::Init() {
     wxConfigBase *pConfig = wxFileConfig::Get();
 
     // Last element in grib code: level type (http://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_table4-5.shtml)

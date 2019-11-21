@@ -27,13 +27,10 @@
 
 #include "asPredictorNoaa20Cr2c.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNoaa20Cr2c::asPredictorNoaa20Cr2c(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNoaa20Cr2c::asPredictorNoaa20Cr2c(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NOAA_20CR_v2c";
     m_provider = "NOAA";
@@ -47,8 +44,7 @@ asPredictorNoaa20Cr2c::asPredictorNoaa20Cr2c(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorNoaa20Cr2c::Init()
-{
+bool asPredictorNoaa20Cr2c::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
@@ -97,8 +93,7 @@ bool asPredictorNoaa20Cr2c::Init()
         }
         m_fileNamePattern = m_fileVarName + ".%d.nc";
 
-    } else if (IsSurfaceLevel() ||
-               m_product.IsSameAs("monolevel", false)) {
+    } else if (IsSurfaceLevel() || m_product.IsSameAs("monolevel", false)) {
         m_fStr.hasLevelDim = false;
         if (IsPrecipitableWater()) {
             m_parameter = PrecipitableWater;
@@ -117,10 +112,8 @@ bool asPredictorNoaa20Cr2c::Init()
             return false;
         }
 
-    } else if (IsSurfaceFluxesLevel() ||
-               m_product.IsSameAs("surface_gauss", false) ||
-               m_product.IsSameAs("gauss", false) ||
-               m_product.IsSameAs("gaussian", false)) {
+    } else if (IsSurfaceFluxesLevel() || m_product.IsSameAs("surface_gauss", false) ||
+               m_product.IsSameAs("gauss", false) || m_product.IsSameAs("gaussian", false)) {
         m_fStr.hasLevelDim = false;
         if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
@@ -158,17 +151,15 @@ bool asPredictorNoaa20Cr2c::Init()
     return true;
 }
 
-void asPredictorNoaa20Cr2c::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNoaa20Cr2c::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-double asPredictorNoaa20Cr2c::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
+double asPredictorNoaa20Cr2c::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }

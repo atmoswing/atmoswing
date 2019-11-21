@@ -32,10 +32,8 @@
 #include <asIncludes.h>
 #include <asPredictor.h>
 
-class asPredictorOper
-        : public asPredictor
-{
-public:
+class asPredictorOper : public asPredictor {
+   public:
     explicit asPredictorOper(const wxString &dataId);
 
     ~asPredictorOper() override = default;
@@ -56,42 +54,35 @@ public:
 
     void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
 
-    double GetForecastLeadTimeEnd() const
-    {
+    double GetForecastLeadTimeEnd() const {
         return m_leadTimeEnd;
     }
 
-    double GetRunDateInUse() const
-    {
+    double GetRunDateInUse() const {
         return m_runDateInUse;
     }
 
-    vwxs GetUrls() const
-    {
+    vwxs GetUrls() const {
         return m_urls;
     }
 
-    vwxs GetFileNames() const
-    {
+    vwxs GetFileNames() const {
         return m_fileNames;
     }
 
-    void SetFileNames(const vwxs &val)
-    {
+    void SetFileNames(const vwxs &val) {
         m_fileNames = val;
     }
 
-    vd GetDataDates() const
-    {
+    vd GetDataDates() const {
         return m_dataDates;
     }
 
-    void SetPredictorsRealtimeDirectory(const wxString &dir)
-    {
+    void SetPredictorsRealtimeDirectory(const wxString &dir) {
         m_predictorsRealtimeDir = dir;
     }
 
-protected:
+   protected:
     wxString m_predictorsRealtimeDir;
     int m_leadTimeStart;
     int m_leadTimeEnd;
@@ -110,7 +101,6 @@ protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     bool CheckTimeArray(asTimeArray &timeArray) override;
-
 };
 
 #endif

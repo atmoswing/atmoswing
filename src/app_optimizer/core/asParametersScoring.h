@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,18 +29,15 @@
 #ifndef AS_PARAMETERS_SCORING_H
 #define AS_PARAMETERS_SCORING_H
 
-#include "asIncludes.h"
 #include <asParameters.h>
+
+#include "asIncludes.h"
 
 class asFileParameters;
 
-class asParametersScoring
-        : public asParameters
-{
-public:
-
-    typedef struct
-    {
+class asParametersScoring : public asParameters {
+   public:
+    typedef struct {
         wxString name;
         wxString timeArrayMode;
         double timeArrayDate;
@@ -54,8 +51,7 @@ public:
     } ParamsScore;
 
     /** Vectors */
-    typedef struct
-    {
+    typedef struct {
         vvwxs preprocessDataId;
         vvf preprocessLevels;
         vvd preprocessHours;
@@ -72,16 +68,14 @@ public:
 
     typedef std::vector<ParamsPredictorVect> VectorParamsPredictorsVect;
 
-    typedef struct
-    {
+    typedef struct {
         vi analogsNumber;
         VectorParamsPredictorsVect predictors;
     } ParamsStepVect;
 
     typedef std::vector<ParamsStepVect> VectorParamsStepVect;
 
-    typedef struct
-    {
+    typedef struct {
         vwxs name;
         vwxs timeArrayMode;
         vd timeArrayDate;
@@ -90,8 +84,7 @@ public:
     } ParamsScoreVect;
 
     /** Booleans */
-    typedef struct
-    {
+    typedef struct {
         vb preprocessDataId;
         vb preprocessLevels;
         vb preprocessHours;
@@ -108,8 +101,7 @@ public:
 
     typedef std::vector<ParamsPredictorBool> VectorParamsPredictorsBool;
 
-    typedef struct
-    {
+    typedef struct {
         bool analogsNumber;
         VectorParamsPredictorsBool predictors;
     } ParamsStepBool;
@@ -130,54 +122,45 @@ public:
 
     wxString Print() const override;
 
-    virtual int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
-    {
+    virtual int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const {
         return 1;
     }
 
-    bool GetValuesFromString(wxString stringVals) override; // We copy the string as we'll modify it.
+    bool GetValuesFromString(wxString stringVals) override;  // We copy the string as we'll modify it.
 
-    bool SetCalibrationYearStart(int val)
-    {
+    bool SetCalibrationYearStart(int val) {
         m_calibrationStart = asTime::GetMJD(val, 1, 1);
         return true;
     }
 
-    bool SetCalibrationYearEnd(int val)
-    {
+    bool SetCalibrationYearEnd(int val) {
         m_calibrationEnd = asTime::GetMJD(val, 12, 31);
         return true;
     }
 
-    double GetCalibrationStart() const
-    {
+    double GetCalibrationStart() const {
         return m_calibrationStart;
     }
 
-    bool SetCalibrationStart(const wxString &val)
-    {
+    bool SetCalibrationStart(const wxString &val) {
         m_calibrationStart = asTime::GetTimeFromString(val);
         return true;
     }
 
-    double GetCalibrationEnd() const
-    {
+    double GetCalibrationEnd() const {
         return m_calibrationEnd;
     }
 
-    bool SetCalibrationEnd(const wxString &val)
-    {
+    bool SetCalibrationEnd(const wxString &val) {
         m_calibrationEnd = asTime::GetTimeFromString(val);
         return true;
     }
 
-    vi GetValidationYearsVector() const
-    {
+    vi GetValidationYearsVector() const {
         return m_validationYears;
     }
 
-    bool SetValidationYearsVector(vi val)
-    {
+    bool SetValidationYearsVector(vi val) {
         if (val.empty()) {
             wxLogError(_("The provided validation years vector is empty."));
             return false;
@@ -193,18 +176,15 @@ public:
         return true;
     }
 
-    bool HasValidationPeriod() const
-    {
+    bool HasValidationPeriod() const {
         return !m_validationYears.empty();
     }
 
-    wxString GetScoreName() const
-    {
+    wxString GetScoreName() const {
         return m_score.name;
     }
 
-    bool SetScoreName(const wxString &val)
-    {
+    bool SetScoreName(const wxString &val) {
         if (val.IsEmpty()) {
             wxLogError(_("The provided score is null"));
             return false;
@@ -213,48 +193,39 @@ public:
         return true;
     }
 
-    float GetScoreThreshold() const
-    {
+    float GetScoreThreshold() const {
         return m_score.threshold;
     }
 
-    void SetScoreThreshold(float val)
-    {
+    void SetScoreThreshold(float val) {
         m_score.threshold = val;
     }
 
-    bool GetOnMean() const
-    {
+    bool GetOnMean() const {
         return m_score.onMean;
     }
 
-    void SetOnMean(bool val)
-    {
+    void SetOnMean(bool val) {
         m_score.onMean = val;
     }
 
-    float GetScoreQuantile() const
-    {
+    float GetScoreQuantile() const {
         return m_score.quantile;
     }
 
-    void SetScoreQuantile(float val)
-    {
+    void SetScoreQuantile(float val) {
         m_score.quantile = val;
     }
 
-    int GetScoreAnalogsNumber() const
-    {
+    int GetScoreAnalogsNumber() const {
         return GetAnalogsNumber(GetStepsNb() - 1);
     }
 
-    wxString GetScoreTimeArrayMode() const
-    {
+    wxString GetScoreTimeArrayMode() const {
         return m_score.timeArrayMode;
     }
 
-    bool SetScoreTimeArrayMode(const wxString &val)
-    {
+    bool SetScoreTimeArrayMode(const wxString &val) {
         if (val.IsEmpty()) {
             wxLogError(_("The provided time array mode for the score is null"));
             return false;
@@ -263,20 +234,17 @@ public:
         return true;
     }
 
-    bool ScoreNeedsPostprocessing() const
-    {
+    bool ScoreNeedsPostprocessing() const {
         return m_score.postprocess;
     }
 
     /* Vector elements */
 
-    vi GetAnalogsNumberVector(int iStep) const
-    {
+    vi GetAnalogsNumberVector(int iStep) const {
         return m_stepsVect[iStep].analogsNumber;
     }
 
-    bool SetAnalogsNumberVector(int iStep, vi val)
-    {
+    bool SetAnalogsNumberVector(int iStep, vi val) {
         if (val.empty()) {
             wxLogError(_("The provided analogs number vector is empty."));
             return false;
@@ -292,8 +260,7 @@ public:
         return true;
     }
 
-    bool SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val)
-    {
+    bool SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val) {
         if (val.empty()) {
             wxLogError(_("The provided preprocess time (hours) vector is empty."));
             return false;
@@ -316,13 +283,11 @@ public:
         return true;
     }
 
-    vd GetPredictorXminVector(int iStep, int iPtor) const
-    {
+    vd GetPredictorXminVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].xMin;
     }
 
-    bool SetPredictorXminVector(int iStep, int iPtor, vd val)
-    {
+    bool SetPredictorXminVector(int iStep, int iPtor, vd val) {
         if (val.empty()) {
             wxLogError(_("The provided xMin vector is empty."));
             return false;
@@ -338,13 +303,11 @@ public:
         return true;
     }
 
-    vi GetPredictorXptsnbVector(int iStep, int iPtor) const
-    {
+    vi GetPredictorXptsnbVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].xPtsNb;
     }
 
-    bool SetPredictorXptsnbVector(int iStep, int iPtor, vi val)
-    {
+    bool SetPredictorXptsnbVector(int iStep, int iPtor, vi val) {
         if (val.empty()) {
             wxLogError(_("The provided xPtsNb vector is empty."));
             return false;
@@ -360,13 +323,11 @@ public:
         return true;
     }
 
-    vd GetPredictorYminVector(int iStep, int iPtor) const
-    {
+    vd GetPredictorYminVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].yMin;
     }
 
-    bool SetPredictorYminVector(int iStep, int iPtor, vd val)
-    {
+    bool SetPredictorYminVector(int iStep, int iPtor, vd val) {
         if (val.empty()) {
             wxLogError(_("The provided yMin vector is empty."));
             return false;
@@ -382,13 +343,11 @@ public:
         return true;
     }
 
-    vi GetPredictorYptsnbVector(int iStep, int iPtor) const
-    {
+    vi GetPredictorYptsnbVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].yPtsNb;
     }
 
-    bool SetPredictorYptsnbVector(int iStep, int iPtor, vi val)
-    {
+    bool SetPredictorYptsnbVector(int iStep, int iPtor, vi val) {
         if (val.empty()) {
             wxLogError(_("The provided yPtsNb vector is empty."));
             return false;
@@ -404,13 +363,11 @@ public:
         return true;
     }
 
-    vd GetPredictorHourVector(int iStep, int iPtor) const
-    {
+    vd GetPredictorHourVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].hours;
     }
 
-    bool SetPredictorHoursVector(int iStep, int iPtor, vd val)
-    {
+    bool SetPredictorHoursVector(int iStep, int iPtor, vd val) {
         if (val.empty()) {
             wxLogError(_("The provided predictor time (hours) vector is empty."));
             return false;
@@ -426,13 +383,11 @@ public:
         return true;
     }
 
-    vf GetPredictorWeightVector(int iStep, int iPtor) const
-    {
+    vf GetPredictorWeightVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].weight;
     }
 
-    bool SetPredictorWeightVector(int iStep, int iPtor, vf val)
-    {
+    bool SetPredictorWeightVector(int iStep, int iPtor, vf val) {
         if (val.empty()) {
             wxLogError(_("The provided predictor weights vector is empty."));
             return false;
@@ -448,8 +403,7 @@ public:
         return true;
     }
 
-    vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const
-    {
+    vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const {
         if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre];
         } else {
@@ -459,8 +413,7 @@ public:
         }
     }
 
-    bool SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val)
-    {
+    bool SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val) {
         if (val.empty()) {
             wxLogError(_("The provided preprocess data ID vector is empty."));
             return false;
@@ -483,8 +436,7 @@ public:
         return true;
     }
 
-    vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const
-    {
+    vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const {
         if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             return m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre];
         } else {
@@ -494,8 +446,7 @@ public:
         }
     }
 
-    bool SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val)
-    {
+    bool SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val) {
         if (val.empty()) {
             wxLogError(_("The provided preprocess levels vector is empty."));
             return false;
@@ -518,8 +469,7 @@ public:
         return true;
     }
 
-    vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const
-    {
+    vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const {
         wxASSERT(m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() > iPre);
 
         if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
@@ -531,18 +481,15 @@ public:
         }
     }
 
-    vwxs GetPredictorDataIdVector(int iStep, int iPtor) const
-    {
+    vwxs GetPredictorDataIdVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].dataId;
     }
 
-    int GetPredictorDataIdNb(int iStep, int iPtor) const override
-    {
+    int GetPredictorDataIdNb(int iStep, int iPtor) const override {
         return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
-    bool SetPredictorDataIdVector(int iStep, int iPtor, vwxs val)
-    {
+    bool SetPredictorDataIdVector(int iStep, int iPtor, vwxs val) {
         if (val.empty()) {
             wxLogError(_("The provided data ID vector is empty."));
             return false;
@@ -558,13 +505,11 @@ public:
         return true;
     }
 
-    vf GetPredictorLevelVector(int iStep, int iPtor) const
-    {
+    vf GetPredictorLevelVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].level;
     }
 
-    bool SetPredictorLevelVector(int iStep, int iPtor, vf val)
-    {
+    bool SetPredictorLevelVector(int iStep, int iPtor, vf val) {
         if (val.empty()) {
             wxLogError(_("The provided predictor levels vector is empty."));
             return false;
@@ -580,13 +525,11 @@ public:
         return true;
     }
 
-    vwxs GetPredictorCriteriaVector(int iStep, int iPtor) const
-    {
+    vwxs GetPredictorCriteriaVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].criteria;
     }
 
-    bool SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val)
-    {
+    bool SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val) {
         if (val.empty()) {
             wxLogError(_("The provided predictor criteria vector is empty."));
             return false;
@@ -602,13 +545,13 @@ public:
         return true;
     }
 
-protected:
+   protected:
     double m_calibrationStart;
     double m_calibrationEnd;
     vi m_validationYears;
     VectorParamsStepVect m_stepsVect;
 
-private:
+   private:
     ParamsScore m_score;
 };
 

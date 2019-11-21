@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,14 +32,11 @@
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif  //__BORLANDC__
 
 #include "AtmoswingMainViewer.h"
 
-
-AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
-        : asFrameForecast(frame)
-{
+AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame) : asFrameForecast(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
@@ -49,23 +46,20 @@ AtmoswingFrameViewer::AtmoswingFrameViewer(wxFrame *frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+    m_logWindow =
+        new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingViewer.log");
 }
 
-void AtmoswingFrameViewer::OnClose(wxCloseEvent &event)
-{
+void AtmoswingFrameViewer::OnClose(wxCloseEvent &event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnQuit(wxCommandEvent &event)
-{
+void AtmoswingFrameViewer::OnQuit(wxCommandEvent &event) {
     Close(true);
 }
 
-void AtmoswingFrameViewer::OnShowLog(wxCommandEvent &event)
-{
+void AtmoswingFrameViewer::OnShowLog(wxCommandEvent &event) {
     wxASSERT(m_logWindow);
     m_logWindow->Show();
 }
-

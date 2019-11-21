@@ -1,8 +1,8 @@
 /***************************************************************************
-				lsversion_core.h
-                    
+                lsversion_core.h
+
                              -------------------
-    copyright            : (C) 2010 CREALP Lucien Schreiber 
+    copyright            : (C) 2010 CREALP Lucien Schreiber
     email                : lucien.schreiber at crealp dot vs dot ch
  ***************************************************************************/
 
@@ -26,12 +26,11 @@
 #endif
 
 #ifdef USE_LSVERSION
-    #include "lsversion_param.h"
+#include "lsversion_param.h"
 #endif
 
-class lsVersion
-{
-public:
+class lsVersion {
+   public:
     static wxString GetSoftName();
 
     static wxString GetSoftGIT();
@@ -72,4 +71,3 @@ public:
 };
 
 #endif
-

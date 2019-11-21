@@ -30,9 +30,7 @@
 #include "asParametersCalibration.h"
 #include "gtest/gtest.h"
 
-
-TEST(Parameters, ParametersLoadFromFile)
-{
+TEST(Parameters, ParametersLoadFromFile) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_read.xml");
 
@@ -85,8 +83,7 @@ TEST(Parameters, ParametersLoadFromFile)
     EXPECT_EQ(40, params.GetPredictandStationIds()[0]);
 }
 
-TEST(Parameters, ParametersLoadFromFileMultipleIds)
-{
+TEST(Parameters, ParametersLoadFromFileMultipleIds) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_multiple_station_ids.xml");
 
@@ -95,7 +92,7 @@ TEST(Parameters, ParametersLoadFromFileMultipleIds)
 
     vi stations = params.GetPredictandStationIds();
 
-    EXPECT_EQ(5, (int) stations.size());
+    EXPECT_EQ(5, (int)stations.size());
     EXPECT_EQ(40, stations[0]);
     EXPECT_EQ(41, stations[1]);
     EXPECT_EQ(42, stations[2]);
@@ -103,8 +100,7 @@ TEST(Parameters, ParametersLoadFromFileMultipleIds)
     EXPECT_EQ(44, stations[4]);
 }
 
-TEST(Parameters, GenerateSimpleParametersFileCalibration)
-{
+TEST(Parameters, GenerateSimpleParametersFileCalibration) {
     // Get original parameters
     wxString paramsFilePath = wxFileName::GetCwd();
     paramsFilePath.Append("/files/");
@@ -117,8 +113,7 @@ TEST(Parameters, GenerateSimpleParametersFileCalibration)
     EXPECT_TRUE(params.GenerateSimpleParametersFile(tmpPath));
 }
 
-TEST(Parameters, SortLevelsAndTime)
-{
+TEST(Parameters, SortLevelsAndTime) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_sort_level_time.xml");
 
@@ -224,8 +219,7 @@ TEST(Parameters, SortLevelsAndTime)
     EXPECT_EQ(18, params.GetPredictorHour(s, p));
 }
 
-TEST(Parameters, IsSameAs)
-{
+TEST(Parameters, IsSameAs) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_read.xml");
 
@@ -309,8 +303,7 @@ TEST(Parameters, IsSameAs)
     EXPECT_FALSE(params1.IsSameAs(params2));
 }
 
-TEST(Parameters, IsSameAsWithMultipleIds)
-{
+TEST(Parameters, IsSameAsWithMultipleIds) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_standard_multiple_station_ids.xml");
 

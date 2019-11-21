@@ -32,7 +32,7 @@
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif  //__BORLANDC__
 
 #include "AtmoswingAppForecaster.h"
 
@@ -55,37 +55,37 @@ IMPLEMENT_APP(AtmoswingAppForecaster)
 
 #endif
 
-static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-{
-    {wxCMD_LINE_SWITCH, "h",  "help",          "This help text"},
-    {wxCMD_LINE_SWITCH, "c",  "config",        "Configure the forecaster"},
-    {wxCMD_LINE_SWITCH, "v",  "version",       "Show version number and quit"},
-    {wxCMD_LINE_OPTION, "f",  "batch-file",    "Batch file to use for the forecast (full path)"},
-    {wxCMD_LINE_SWITCH, "n",  "forecast-now",  "Run forecast for the latest available data"},
-    {wxCMD_LINE_OPTION, "p",  "forecast-past", "Run forecast for the given number of past days"},
-    {wxCMD_LINE_OPTION, "d",  "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
-    {wxCMD_LINE_OPTION, "l",  "log-level",     "Set a log level"
-                                               "\n \t\t\t\t\t - 1: errors"
-                                               "\n \t\t\t\t\t - 2: warnings"
-                                               "\n \t\t\t\t\t - 3: verbose"},
-    {wxCMD_LINE_OPTION, NULL, "proxy",         "HOST[:PORT] Use proxy on given port"},
-    {wxCMD_LINE_OPTION, NULL, "proxy-user",    "USER[:PASSWORD] Proxy user and password"},
-    {wxCMD_LINE_PARAM,  NULL, NULL,            "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
+    {wxCMD_LINE_SWITCH, "h", "help", "This help text"},
+    {wxCMD_LINE_SWITCH, "c", "config", "Configure the forecaster"},
+    {wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit"},
+    {wxCMD_LINE_OPTION, "f", "batch-file", "Batch file to use for the forecast (full path)"},
+    {wxCMD_LINE_SWITCH, "n", "forecast-now", "Run forecast for the latest available data"},
+    {wxCMD_LINE_OPTION, "p", "forecast-past", "Run forecast for the given number of past days"},
+    {wxCMD_LINE_OPTION, "d", "forecast-date", "YYYYMMDDHH Run forecast for a specified date"},
+    {wxCMD_LINE_OPTION, "l", "log-level",
+     "Set a log level"
+     "\n \t\t\t\t\t - 1: errors"
+     "\n \t\t\t\t\t - 2: warnings"
+     "\n \t\t\t\t\t - 3: verbose"},
+    {wxCMD_LINE_OPTION, NULL, "proxy", "HOST[:PORT] Use proxy on given port"},
+    {wxCMD_LINE_OPTION, NULL, "proxy-user", "USER[:PASSWORD] Proxy user and password"},
+    {wxCMD_LINE_PARAM, NULL, NULL, "batch file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
     {wxCMD_LINE_NONE}};
 
-static const wxString cmdLineLogo = wxT("\n"\
-"_________________________________________\n"\
-"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
-"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
-"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
-"_________________________________________\n"\
-"\n");
+static const wxString cmdLineLogo =
+    wxT("\n"
+        "_________________________________________\n"
+        "____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"
+        "|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"
+        "|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"
+        "_________________________________________\n"
+        "\n");
 
-bool AtmoswingAppForecaster::OnInit()
-{
+bool AtmoswingAppForecaster::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 #endif
 
@@ -102,10 +102,9 @@ bool AtmoswingAppForecaster::OnInit()
     m_forecastPastDays = 0;
 
     // Set the local config object
-    wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString,
-                                             asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
-                                             asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
-                                             wxCONFIG_USE_LOCAL_FILE);
+    wxFileConfig *pConfig =
+        new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini",
+                         asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini", wxCONFIG_USE_LOCAL_FILE);
     wxFileConfig::Set(pConfig);
 
 #if wxUSE_GUI
@@ -124,7 +123,7 @@ bool AtmoswingAppForecaster::OnInit()
             wxMessageBox(_("Program already running, aborting."));
 
             // Cleanup
-            delete wxFileConfig::Set((wxFileConfig *) nullptr);
+            delete wxFileConfig::Set((wxFileConfig *)nullptr);
             DeleteThreadsManager();
             DeleteLog();
             delete m_singleInstanceChecker;
@@ -161,7 +160,7 @@ bool AtmoswingAppForecaster::OnInit()
     frame->OnInit();
 
 #ifdef __WXMSW__
-    frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon));  // To Set App Icon
 #endif
     frame->Show();
     SetTopWindow(frame);
@@ -170,9 +169,7 @@ bool AtmoswingAppForecaster::OnInit()
     return true;
 }
 
-bool AtmoswingAppForecaster::InitLog()
-{
-
+bool AtmoswingAppForecaster::InitLog() {
 #if wxUSE_GUI
     if (!g_guiMode) {
         Log()->CreateFileOnly("AtmoSwingForecaster.log");
@@ -185,8 +182,7 @@ bool AtmoswingAppForecaster::InitLog()
     return true;
 }
 
-bool AtmoswingAppForecaster::SetUseAsCmdLine()
-{
+bool AtmoswingAppForecaster::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -194,8 +190,7 @@ bool AtmoswingAppForecaster::SetUseAsCmdLine()
     return true;
 }
 
-void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser)
-{
+void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser) {
     parser.SetDesc(g_cmdLineDesc);
     parser.SetLogo(cmdLineLogo);
 
@@ -203,8 +198,7 @@ void AtmoswingAppForecaster::OnInitCmdLine(wxCmdLineParser &parser)
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
-{
+bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Check if runs with GUI or CL
     if (parser.Found("forecast-date") || parser.Found("forecast-past") || parser.Found("forecast-now")) {
         SetUseAsCmdLine();
@@ -230,7 +224,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check if the user asked to configure
     if (parser.Found("config")) {
-
 #ifndef wxUSE_GUI
         m_doConfig = true;
 #endif
@@ -289,7 +282,6 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
 
     // Check for input files
     if (parser.GetParamCount() > 0) {
-
         g_cmdFileName = parser.GetParam(0);
 
         // Under Windows when invoking via a document in Explorer, we are passed the short form.
@@ -348,14 +340,12 @@ bool AtmoswingAppForecaster::OnCmdLineParsed(wxCmdLineParser &parser)
     return true;
 }
 
-int AtmoswingAppForecaster::OnRun()
-{
+int AtmoswingAppForecaster::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
 
     if (m_doConfig) {
-
         asBatchForecasts batchForecasts;
 
         // Load batch file if exists
@@ -470,8 +460,7 @@ int AtmoswingAppForecaster::OnRun()
 
         // Directory to save the downloaded predictors
         std::cout << _("Please provide a directory to save the downloaded predictors.\n");
-        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() <<
-        "\n";
+        std::cout << _("Current value (enter to keep): ") << batchForecasts.GetPredictorsRealtimeDirectory() << "\n";
         std::cout << _("New value: ");
         getline(std::cin, stdinVal);
         wxinVal = wxString(stdinVal);
@@ -498,8 +487,9 @@ int AtmoswingAppForecaster::OnRun()
 
         // Check if any forecast exist
         if (batchForecasts.GetForecastsNb() == 0) {
-            std::cout <<
-            _("Warning: there is no forecast listed in the batch file. Please create the batch file on a version with the graphical interface or edit the generated file manually.\n");
+            std::cout << _(
+                "Warning: there is no forecast listed in the batch file. Please create the batch file on a version "
+                "with the graphical interface or edit the generated file manually.\n");
         }
     }
 
@@ -582,7 +572,7 @@ int AtmoswingAppForecaster::OnRun()
         double increment = 1.0 / 24.0;
 
         for (double date = startDate; date >= endDate; date -= increment) {
-            if (now < date) // ulterior to present
+            if (now < date)  // ulterior to present
                 continue;
 
             // Log message
@@ -613,8 +603,7 @@ int AtmoswingAppForecaster::OnRun()
     return 0;
 }
 
-int AtmoswingAppForecaster::OnExit()
-{
+int AtmoswingAppForecaster::OnExit() {
 #if wxUSE_GUI
     // Instance checker
     delete m_singleInstanceChecker;
@@ -624,7 +613,7 @@ int AtmoswingAppForecaster::OnExit()
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) nullptr);
+    delete wxFileConfig::Set((wxFileConfig *)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();
@@ -635,4 +624,3 @@ int AtmoswingAppForecaster::OnExit()
 
     return 1;
 }
-

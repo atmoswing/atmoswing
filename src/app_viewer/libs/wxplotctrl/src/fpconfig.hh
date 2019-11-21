@@ -17,7 +17,6 @@
 */
 //#define NO_ASINH wxplotctrl - we provide our own asin/cos/tanh in fparser.cpp
 
-
 /*
  Uncomment the following line to disable the eval() function if it could
  be too dangerous in the target application.
@@ -28,12 +27,10 @@
 */
 //#define DISABLE_EVAL
 
-
 /*
  Maximum recursion level for eval() calls:
 */
 #define EVAL_MAX_REC_LEVEL 1000
-
 
 /*
  Comment out the following lines out if you are not going to use the
@@ -45,7 +42,6 @@
 #ifndef NO_SUPPORT_OPTIMIZER
 #define SUPPORT_OPTIMIZER
 #endif
-
 
 /*
  Epsilon value used with the comparison operators (must be non-negative):

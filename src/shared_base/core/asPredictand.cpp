@@ -31,32 +31,27 @@
 #include <asCatalogPredictands.h>
 #include <asFileDat.h>
 #include <asFileNetcdf.h>
-#include <asTimeArray.h>
-#include <asPredictandPrecipitation.h>
 #include <asPredictandLightnings.h>
+#include <asPredictandPrecipitation.h>
 #include <asPredictandTemperature.h>
-
+#include <asTimeArray.h>
 
 asPredictand::asPredictand(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation)
-        : m_fileVersion(1.4f),
-          m_parameter(dataParameter),
-          m_temporalResolution(dataTemporalResolution),
-          m_spatialAggregation(dataSpatialAggregation),
-          m_timeStepDays(0.0),
-          m_timeLength(0),
-          m_stationsNb(0),
-          m_dateProcessed(0.0),
-          m_dateStart(0.0),
-          m_dateEnd(0.0),
-          m_hasNormalizedData(false),
-          m_hasReferenceValues(false)
-{
+    : m_fileVersion(1.4f),
+      m_parameter(dataParameter),
+      m_temporalResolution(dataTemporalResolution),
+      m_spatialAggregation(dataSpatialAggregation),
+      m_timeStepDays(0.0),
+      m_timeLength(0),
+      m_stationsNb(0),
+      m_dateProcessed(0.0),
+      m_dateStart(0.0),
+      m_dateEnd(0.0),
+      m_hasNormalizedData(false),
+      m_hasReferenceValues(false) {}
 
-}
-
-asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &parameterStr)
-{
+asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &parameterStr) {
     if (parameterStr.CmpNoCase("Precipitation") == 0) {
         return Precipitation;
     } else if (parameterStr.CmpNoCase("AirTemperature") == 0) {
@@ -71,8 +66,7 @@ asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &para
     return Precipitation;
 }
 
-wxString asPredictand::ParameterEnumToString(asPredictand::Parameter parameter)
-{
+wxString asPredictand::ParameterEnumToString(asPredictand::Parameter parameter) {
     switch (parameter) {
         case (Precipitation):
             return "Precipitation";
@@ -88,9 +82,7 @@ wxString asPredictand::ParameterEnumToString(asPredictand::Parameter parameter)
     return wxEmptyString;
 }
 
-asPredictand::Unit asPredictand::StringToUnitEnum(const wxString &unitStr)
-{
-
+asPredictand::Unit asPredictand::StringToUnitEnum(const wxString &unitStr) {
     if (unitStr.CmpNoCase("nb") == 0 || unitStr.CmpNoCase("number") == 0) {
         return nb;
     } else if (unitStr.CmpNoCase("mm") == 0) {
@@ -111,9 +103,7 @@ asPredictand::Unit asPredictand::StringToUnitEnum(const wxString &unitStr)
     return mm;
 }
 
-asPredictand::TemporalResolution asPredictand::StringToTemporalResolutionEnum(const wxString &temporalResolution)
-{
-
+asPredictand::TemporalResolution asPredictand::StringToTemporalResolutionEnum(const wxString &temporalResolution) {
     if (temporalResolution.CmpNoCase("Daily") == 0) {
         return Daily;
     } else if (temporalResolution.CmpNoCase("1 day") == 0) {
@@ -147,14 +137,13 @@ asPredictand::TemporalResolution asPredictand::StringToTemporalResolutionEnum(co
     } else if (temporalResolution.CmpNoCase("1 week") == 0) {
         return Weekly;
     } else {
-        asThrowException(wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"),
-                                          temporalResolution));
+        asThrowException(
+            wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"), temporalResolution));
     }
     return Daily;
 }
 
-wxString asPredictand::TemporalResolutionEnumToString(asPredictand::TemporalResolution temporalResolution)
-{
+wxString asPredictand::TemporalResolutionEnumToString(asPredictand::TemporalResolution temporalResolution) {
     switch (temporalResolution) {
         case (Daily):
             return "Daily";
@@ -182,9 +171,7 @@ wxString asPredictand::TemporalResolutionEnumToString(asPredictand::TemporalReso
     return wxEmptyString;
 }
 
-asPredictand::SpatialAggregation asPredictand::StringToSpatialAggregationEnum(const wxString &spatialAggregation)
-{
-
+asPredictand::SpatialAggregation asPredictand::StringToSpatialAggregationEnum(const wxString &spatialAggregation) {
     if (spatialAggregation.CmpNoCase("Station") == 0) {
         return Station;
     } else if (spatialAggregation.CmpNoCase("Groupment") == 0) {
@@ -199,8 +186,7 @@ asPredictand::SpatialAggregation asPredictand::StringToSpatialAggregationEnum(co
     return Station;
 }
 
-wxString asPredictand::SpatialAggregationEnumToString(asPredictand::SpatialAggregation spatialAggregation)
-{
+wxString asPredictand::SpatialAggregationEnumToString(asPredictand::SpatialAggregation spatialAggregation) {
     switch (spatialAggregation) {
         case (Station):
             return "Station";
@@ -217,8 +203,7 @@ wxString asPredictand::SpatialAggregationEnumToString(asPredictand::SpatialAggre
 }
 
 asPredictand *asPredictand::GetInstance(const wxString &parameterStr, const wxString &temporalResolutionStr,
-                                        const wxString &spatialAggregationStr)
-{
+                                        const wxString &spatialAggregationStr) {
     Parameter parameter = StringToParameterEnum(parameterStr);
     TemporalResolution temporalResolution = StringToTemporalResolutionEnum(temporalResolutionStr);
     SpatialAggregation spatialAggregation = StringToSpatialAggregationEnum(spatialAggregationStr);
@@ -228,8 +213,7 @@ asPredictand *asPredictand::GetInstance(const wxString &parameterStr, const wxSt
 }
 
 asPredictand *asPredictand::GetInstance(Parameter parameter, TemporalResolution temporalResolution,
-                                        SpatialAggregation spatialAggregation)
-{
+                                        SpatialAggregation spatialAggregation) {
     switch (parameter) {
         case (Precipitation): {
             asPredictand *db = new asPredictandPrecipitation(parameter, temporalResolution, spatialAggregation);
@@ -249,8 +233,7 @@ asPredictand *asPredictand::GetInstance(Parameter parameter, TemporalResolution 
     }
 }
 
-asPredictand *asPredictand::GetInstance(const wxString &filePath)
-{
+asPredictand *asPredictand::GetInstance(const wxString &filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -264,14 +247,16 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asIsNaN(version) || version <= 1.0) {
-        wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        wxLogError(
+            _("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please "
+              "generate the file with the actual version."));
         return nullptr;
     }
 
     // Get basic information
-    Parameter dataParameter = (Parameter) ncFile.GetAttInt("data_parameter");
-    TemporalResolution dataTemporalResolution = (TemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
-    SpatialAggregation dataSpatialAggregation = (SpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
+    Parameter dataParameter = (Parameter)ncFile.GetAttInt("data_parameter");
+    TemporalResolution dataTemporalResolution = (TemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+    SpatialAggregation dataSpatialAggregation = (SpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
 
     // Close the netCDF file
     ncFile.Close();
@@ -281,34 +266,30 @@ asPredictand *asPredictand::GetInstance(const wxString &filePath)
     return db;
 }
 
-wxString asPredictand::GetDBFilePathSaving(const wxString &destinationDir) const
-{
+wxString asPredictand::GetDBFilePathSaving(const wxString &destinationDir) const {
     wxString dataParameterStr = ParameterEnumToString(m_parameter);
     wxString dataTemporalResolutionStr = asPredictand::TemporalResolutionEnumToString(m_temporalResolution);
     wxString dataSpatialAggregationStr = asPredictand::SpatialAggregationEnumToString(m_spatialAggregation);
-    wxString fileName = dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
+    wxString fileName =
+        dataParameterStr + "-" + dataTemporalResolutionStr + "-" + dataSpatialAggregationStr + "-" + m_datasetId;
 
     wxString predictandDBFilePath = destinationDir + DS + fileName + ".nc";
 
     return predictandDBFilePath;
 }
 
-bool asPredictand::InitMembers(const wxString &catalogFilePath)
-{
+bool asPredictand::InitMembers(const wxString &catalogFilePath) {
     // Starting and ending date of the DB, to be overwritten
     m_dateStart = asTime::GetMJD(2100, 1, 1);
     m_dateEnd = asTime::GetMJD(1800, 1, 1);
 
     // Get the catalog information
     asCatalogPredictands catalog(catalogFilePath);
-    if (!catalog.Load())
-        return false;
+    if (!catalog.Load()) return false;
 
     // Get first and last date
-    if (catalog.GetStart() < m_dateStart)
-        m_dateStart = catalog.GetStart();
-    if (catalog.GetEnd() > m_dateEnd)
-        m_dateEnd = catalog.GetEnd();
+    if (catalog.GetStart() < m_dateStart) m_dateStart = catalog.GetStart();
+    if (catalog.GetEnd() > m_dateEnd) m_dateEnd = catalog.GetEnd();
 
     // Get dataset ID
     m_datasetId = catalog.GetSetId();
@@ -330,8 +311,7 @@ bool asPredictand::InitMembers(const wxString &catalogFilePath)
     return true;
 }
 
-bool asPredictand::InitBaseContainers()
-{
+bool asPredictand::InitBaseContainers() {
     if (m_stationsNb < 1) {
         wxLogError(_("The stations number is inferior to 1."));
         return false;
@@ -359,19 +339,20 @@ bool asPredictand::InitBaseContainers()
     return true;
 }
 
-bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
-{
+bool asPredictand::LoadCommonData(asFileNetcdf &ncFile) {
     // Check version
     float version = ncFile.GetAttFloat("version");
     if (asIsNaN(version) || version <= 1.1) {
-        wxLogError(_("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please generate the file with the actual version."));
+        wxLogError(
+            _("The predictand DB file was made with an older version of AtmoSwing that is no longer supported. Please "
+              "generate the file with the actual version."));
         return false;
     }
 
     // Get global attributes
-    m_parameter = (Parameter) ncFile.GetAttInt("data_parameter");
-    m_temporalResolution = (TemporalResolution) ncFile.GetAttInt("data_temporal_resolution");
-    m_spatialAggregation = (SpatialAggregation) ncFile.GetAttInt("data_spatial_aggregation");
+    m_parameter = (Parameter)ncFile.GetAttInt("data_parameter");
+    m_temporalResolution = (TemporalResolution)ncFile.GetAttInt("data_temporal_resolution");
+    m_spatialAggregation = (SpatialAggregation)ncFile.GetAttInt("data_spatial_aggregation");
     m_datasetId = ncFile.GetAttString("dataset_id");
     m_hasNormalizedData = ncFile.HasVariable("data_normalized");
     m_hasReferenceValues = m_hasNormalizedData;
@@ -434,8 +415,7 @@ bool asPredictand::LoadCommonData(asFileNetcdf &ncFile)
     return true;
 }
 
-void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
-{
+void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const {
     // Define dimensions. Time is the unlimited dimension.
     ncFile.DefDim("stations", m_stationsNb);
     ncFile.DefDim("time");
@@ -451,11 +431,11 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
 
     // Put general attributes
     ncFile.PutAtt("version", &m_fileVersion);
-    auto dataParameter = (int) m_parameter;
+    auto dataParameter = (int)m_parameter;
     ncFile.PutAtt("data_parameter", &dataParameter);
-    auto dataTemporalResolution = (int) m_temporalResolution;
+    auto dataTemporalResolution = (int)m_temporalResolution;
     ncFile.PutAtt("data_temporal_resolution", &dataTemporalResolution);
-    auto dataSpatialAggregation = (int) m_spatialAggregation;
+    auto dataSpatialAggregation = (int)m_spatialAggregation;
     ncFile.PutAtt("data_spatial_aggregation", &dataSpatialAggregation);
     ncFile.PutAtt("dataset_id", m_datasetId);
 
@@ -510,11 +490,9 @@ void asPredictand::SetCommonDefinitions(asFileNetcdf &ncFile) const
     // Put attributes for data
     ncFile.PutAtt("long_name", "Data", "data");
     ncFile.PutAtt("var_desc", "Data (whithout any treatment)", "data");
-
 }
 
-bool asPredictand::SaveCommonData(asFileNetcdf &ncFile) const
-{
+bool asPredictand::SaveCommonData(asFileNetcdf &ncFile) const {
     // Provide sizes for variables
     size_t startTime[] = {0};
     size_t countTime[] = {size_t(m_timeLength)};
@@ -539,8 +517,7 @@ bool asPredictand::SaveCommonData(asFileNetcdf &ncFile) const
     return true;
 }
 
-bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex)
-{
+bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_t stationIndex) {
     m_stationNames[stationIndex] = currentData.GetStationName(stationIndex);
     m_stationIds(stationIndex) = currentData.GetStationId(stationIndex);
     m_stationOfficialIds[stationIndex] = currentData.GetStationOfficialId(stationIndex);
@@ -553,9 +530,7 @@ bool asPredictand::SetStationProperties(asCatalogPredictands &currentData, size_
     return true;
 }
 
-bool asPredictand::ParseData(const wxString &catalogFile, const wxString &directory,
-                             const wxString &patternDir)
-{
+bool asPredictand::ParseData(const wxString &catalogFile, const wxString &directory, const wxString &patternDir) {
 #if wxUSE_GUI
     // The progress bar
     asDialogProgressBar ProgressBar(_("Loading data from files.\n"), m_stationsNb);
@@ -569,8 +544,8 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
     for (int iStat = 0; iStat < catalog.GetStationsNb(); iStat++) {
 #if wxUSE_GUI
         // Update the progress bar.
-        wxString fileNameMessage = wxString::Format(_("Loading data from files.\nFile: %s"),
-                                                    catalog.GetStationFilename(iStat));
+        wxString fileNameMessage =
+            wxString::Format(_("Loading data from files.\nFile: %s"), catalog.GetStationFilename(iStat));
         if (!ProgressBar.Update(iStat, fileNameMessage)) {
             wxLogError(_("The process has been canceled by the user."));
             return false;
@@ -578,12 +553,10 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
 #endif
 
         // Get station information
-        if (!SetStationProperties(catalog, iStat))
-            return false;
+        if (!SetStationProperties(catalog, iStat)) return false;
 
         // Get file content
-        if (!GetFileContent(catalog, iStat, directory, patternDir))
-            return false;
+        if (!GetFileContent(catalog, iStat, directory, patternDir)) return false;
     }
 
 #if wxUSE_GUI
@@ -593,9 +566,8 @@ bool asPredictand::ParseData(const wxString &catalogFile, const wxString &direct
     return true;
 }
 
-bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
-                                  const wxString &directory, const wxString &patternDir)
-{
+bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stationIndex, const wxString &directory,
+                                  const wxString &patternDir) {
     // Load file
     wxString fileFullPath;
     if (!directory.IsEmpty()) {
@@ -604,8 +576,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
         fileFullPath = currentData.GetDataPath() + currentData.GetStationFilename(stationIndex);
     }
     asFileDat datFile(fileFullPath, asFile::ReadOnly);
-    if (!datFile.Open())
-        return false;
+    if (!datFile.Open()) return false;
 
     // Get the parsing format
     wxString stationFilePattern = currentData.GetStationFilepattern(stationIndex);
@@ -649,33 +620,38 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                         if (filePattern.timeYearBegin != 0 && filePattern.timeYearEnd != 0 &&
                             filePattern.timeMonthBegin != 0 && filePattern.timeMonthEnd != 0 &&
                             filePattern.timeDayBegin != 0 && filePattern.timeDayEnd != 0) {
-                            lineContent.Mid(filePattern.timeYearBegin - 1,
-                                            filePattern.timeYearEnd - filePattern.timeYearBegin + 1).ToDouble(
-                                    &valTimeYear);
-                            lineContent.Mid(filePattern.timeMonthBegin - 1,
-                                            filePattern.timeMonthEnd - filePattern.timeMonthBegin + 1).ToDouble(
-                                    &valTimeMonth);
-                            lineContent.Mid(filePattern.timeDayBegin - 1,
-                                            filePattern.timeDayEnd - filePattern.timeDayBegin + 1).ToDouble(
-                                    &valTimeDay);
+                            lineContent
+                                .Mid(filePattern.timeYearBegin - 1,
+                                     filePattern.timeYearEnd - filePattern.timeYearBegin + 1)
+                                .ToDouble(&valTimeYear);
+                            lineContent
+                                .Mid(filePattern.timeMonthBegin - 1,
+                                     filePattern.timeMonthEnd - filePattern.timeMonthBegin + 1)
+                                .ToDouble(&valTimeMonth);
+                            lineContent
+                                .Mid(filePattern.timeDayBegin - 1,
+                                     filePattern.timeDayEnd - filePattern.timeDayBegin + 1)
+                                .ToDouble(&valTimeDay);
                         } else {
                             wxLogError(_("The data file pattern is not correctly defined."));
                             return false;
                         }
 
                         if (filePattern.timeHourBegin != 0 && filePattern.timeHourEnd != 0) {
-                            lineContent.Mid(filePattern.timeHourBegin - 1,
-                                            filePattern.timeHourEnd - filePattern.timeHourBegin + 1).ToDouble(
-                                    &valTimeHour);
+                            lineContent
+                                .Mid(filePattern.timeHourBegin - 1,
+                                     filePattern.timeHourEnd - filePattern.timeHourBegin + 1)
+                                .ToDouble(&valTimeHour);
                         }
                         if (filePattern.timeMinuteBegin != 0 && filePattern.timeMinuteEnd != 0) {
-                            lineContent.Mid(filePattern.timeMinuteBegin - 1,
-                                            filePattern.timeMinuteEnd - filePattern.timeMinuteBegin + 1).ToDouble(
-                                    &valTimeMinute);
+                            lineContent
+                                .Mid(filePattern.timeMinuteBegin - 1,
+                                     filePattern.timeMinuteEnd - filePattern.timeMinuteBegin + 1)
+                                .ToDouble(&valTimeMinute);
                         }
 
-                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
-                                                         valTimeMinute, 0);
+                        double dateData =
+                            asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
                         // Find matching date
                         while (dateData - m_time(timeIndex) > 0.0001) {
@@ -684,8 +660,8 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                     }
 
                     // Get predictand value
-                    wxString dataStr = lineContent.Mid(filePattern.dataBegin - 1,
-                                                       filePattern.dataEnd - filePattern.dataBegin + 1);
+                    wxString dataStr =
+                        lineContent.Mid(filePattern.dataBegin - 1, filePattern.dataEnd - filePattern.dataBegin + 1);
 
                     // Put value in the matrix
                     m_dataRaw(timeIndex, stationIndex) = ParseAndCheckDataValue(currentData, dataStr);
@@ -717,7 +693,9 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
                             if (filePattern.timeYearBegin > vColumns.size() ||
                                 filePattern.timeMonthBegin > vColumns.size() ||
                                 filePattern.timeDayBegin > vColumns.size()) {
-                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (date) after the line width."));
+                                wxLogError(
+                                    _("The data file pattern is not correctly defined. Trying to access an element "
+                                      "(date) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeYearBegin - 1].ToDouble(&valTimeYear);
@@ -730,21 +708,25 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
 
                         if (filePattern.timeHourBegin != 0) {
                             if (filePattern.timeHourBegin > vColumns.size()) {
-                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (hour) after the line width."));
+                                wxLogError(
+                                    _("The data file pattern is not correctly defined. Trying to access an element "
+                                      "(hour) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeHourBegin - 1].ToDouble(&valTimeHour);
                         }
                         if (filePattern.timeMinuteBegin != 0) {
                             if (filePattern.timeMinuteBegin > vColumns.size()) {
-                                wxLogError(_("The data file pattern is not correctly defined. Trying to access an element (minute) after the line width."));
+                                wxLogError(
+                                    _("The data file pattern is not correctly defined. Trying to access an element "
+                                      "(minute) after the line width."));
                                 return false;
                             }
                             vColumns[filePattern.timeMinuteBegin - 1].ToDouble(&valTimeMinute);
                         }
 
-                        double dateData = asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour,
-                                                         valTimeMinute, 0);
+                        double dateData =
+                            asTime::GetMJD(valTimeYear, valTimeMonth, valTimeDay, valTimeHour, valTimeMinute, 0);
 
                         // Find matching date
                         while (dateData - m_time(timeIndex) > 0.0001) {
@@ -790,8 +772,7 @@ bool asPredictand::GetFileContent(asCatalogPredictands &currentData, size_t stat
     return true;
 }
 
-float asPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const
-{
+float asPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const {
     // Trim
     dataStr = dataStr.Trim();
     dataStr = dataStr.Trim(true);
@@ -807,11 +788,10 @@ float asPredictand::ParseAndCheckDataValue(asCatalogPredictands &currentData, wx
     double dataRaw = 0;
     dataStr.ToDouble(&dataRaw);
 
-    return (float) dataRaw;
+    return (float)dataRaw;
 }
 
-a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
-{
+a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const {
     // Flag to check the need of aggregation (timeStepDays>m_timeStepDays)
     bool aggregate = false;
     int indexTimeSpanUp = 0;
@@ -821,7 +801,9 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
         aggregate = false;
     } else if (timeStepDays > m_timeStepDays) {
         if (std::fmod(timeStepDays, m_timeStepDays) > 0.0000001) {
-            wxLogError(_("The timestep for the extraction of the predictands maximums has to be a multiple of the data timestep."));
+            wxLogError(
+                _("The timestep for the extraction of the predictands maximums has to be a multiple of the data "
+                  "timestep."));
             a2f emptyMatrix;
             emptyMatrix << NaNf;
             return emptyMatrix;
@@ -834,7 +816,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
         indexTimeSpanUp = floor((timeStepDays / m_timeStepDays) / 2);
         indexTimeSpanDown = ceil((timeStepDays / m_timeStepDays) / 2) - 1;
     } else {
-        wxLogError(_("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
+        wxLogError(
+            _("The timestep for the extraction of the predictands maximums cannot be lower than the data timestep."));
         a2f emptyMatrix;
         emptyMatrix << NaNf;
         return emptyMatrix;
@@ -867,8 +850,8 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
             int nansNb = 0;
 
             // Find begining and end of the year
-            int rowstart = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1),
-                                       asHIDE_WARNINGS);
+            int rowstart =
+                asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 1, 1), asHIDE_WARNINGS);
             int rowend = asFindFloor(&m_time[0], &m_time[m_timeLength - 1], asTime::GetMJD(iYear, 12, 31, 59, 59),
                                      asHIDE_WARNINGS);
             if ((rowend == asOUT_OF_RANGE) | (rowend == asNOT_FOUND)) {
@@ -896,7 +879,7 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
                 // Correction for both extremes
                 rowstart = wxMax(rowstart - indexTimeSpanDown, 0);
                 rowstart += indexTimeSpanDown;
-                rowend = wxMin(rowend + indexTimeSpanUp, (int) m_dataRaw.rows() - 1);
+                rowend = wxMin(rowend + indexTimeSpanUp, (int)m_dataRaw.rows() - 1);
                 rowend -= indexTimeSpanUp;
 
                 // Loop within the new limits
@@ -929,7 +912,6 @@ a2f asPredictand::GetAnnualMax(double timeStepDays, int nansNbMax) const
     return maxMatrix;
 }
 
-int asPredictand::GetStationIndex(int stationId) const
-{
+int asPredictand::GetStationIndex(int stationId) const {
     return asFind(&m_stationIds[0], &m_stationIds[m_stationsNb - 1], stationId);
 }

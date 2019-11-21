@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,18 +30,11 @@
 
 #include "asFileNetcdf.h"
 
+asResultsValues::asResultsValues() : asResults() {}
 
-asResultsValues::asResultsValues()
-        : asResults()
-{
-}
+asResultsValues::~asResultsValues() {}
 
-asResultsValues::~asResultsValues()
-{
-}
-
-void asResultsValues::Init(asParameters *params)
-{
+void asResultsValues::Init(asParameters *params) {
     m_predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results
@@ -53,8 +46,7 @@ void asResultsValues::Init(asParameters *params)
     m_analogsValuesRaw.resize(0);
 }
 
-void asResultsValues::BuildFileName()
-{
+void asResultsValues::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
@@ -67,13 +59,12 @@ void asResultsValues::BuildFileName()
     m_filePath.Append(".nc");
 }
 
-bool asResultsValues::Save()
-{
+bool asResultsValues::Save() {
     BuildFileName();
 
     // Get the elements size
-    size_t nTime = (size_t) m_analogsCriteria.rows();
-    size_t nAnalogs = (size_t) m_analogsCriteria.cols();
+    size_t nTime = (size_t)m_analogsCriteria.rows();
+    size_t nAnalogs = (size_t)m_analogsCriteria.cols();
     size_t nStations = m_predictandStationIds.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -158,12 +149,10 @@ bool asResultsValues::Save()
     return true;
 }
 
-bool asResultsValues::Load()
-{
+bool asResultsValues::Load() {
     BuildFileName();
 
-    if (!Exists())
-        return false;
+    if (!Exists()) return false;
 
     ThreadsManager().CritSectionNetCDF().Enter();
 

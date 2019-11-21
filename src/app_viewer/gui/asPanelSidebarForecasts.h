@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,18 +29,15 @@
 #ifndef AS_PANEL_SIDEBAR_FORECASTS_H
 #define AS_PANEL_SIDEBAR_FORECASTS_H
 
+#include "asForecastManager.h"
+#include "asIncludes.h"
+#include "asListBoxForecastDisplay.h"
+#include "asListBoxForecasts.h"
+#include "asListBoxQuantiles.h"
 #include "asPanelSidebar.h"
 
-#include "asIncludes.h"
-#include "asListBoxForecasts.h"
-#include "asListBoxForecastDisplay.h"
-#include "asListBoxQuantiles.h"
-#include "asForecastManager.h"
-
-class asPanelSidebarForecasts
-        : public asPanelSidebar
-{
-public:
+class asPanelSidebarForecasts : public asPanelSidebar {
+   public:
     asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                             long style = wxTAB_TRAVERSAL);
@@ -51,22 +48,19 @@ public:
 
     void Update() override;
 
-    asListBoxForecasts *GetForecastsCtrl() const
-    {
+    asListBoxForecasts *GetForecastsCtrl() const {
         return m_forecastsCtrl;
     }
 
-    asListBoxQuantiles *GetQuantilesCtrl() const
-    {
+    asListBoxQuantiles *GetQuantilesCtrl() const {
         return m_quantilesCtrl;
     }
 
-    asListBoxForecastDisplay *GetForecastDisplayCtrl() const
-    {
+    asListBoxForecastDisplay *GetForecastDisplayCtrl() const {
         return m_forecastDisplayCtrl;
     }
 
-private:
+   private:
     asListBoxForecasts *m_forecastsCtrl;
     asListBoxQuantiles *m_quantilesCtrl;
     asListBoxForecastDisplay *m_forecastDisplayCtrl;

@@ -27,11 +27,7 @@
 
 #include "asBatchForecasts.h"
 
-asBatchForecasts::asBatchForecasts()
-        : wxObject(),
-          m_hasChanged(false),
-          m_exportSyntheticXml(false)
-{
+asBatchForecasts::asBatchForecasts() : wxObject(), m_hasChanged(false), m_exportSyntheticXml(false) {
     wxString baseDir = asConfig::GetDocumentsDir() + "AtmoSwing" + DS;
     m_filePath = baseDir + "Parameters" + DS + "BatchForecasts.asfb";
     m_forecastsOutputDirectory = baseDir + "Forecasts";
@@ -42,8 +38,7 @@ asBatchForecasts::asBatchForecasts()
     m_predictandDBDirectory = baseDir + "Data" + DS + "Predictands";
 }
 
-bool asBatchForecasts::Load(const wxString &filePath)
-{
+bool asBatchForecasts::Load(const wxString &filePath) {
     ClearForecasts();
 
     // Open the file
@@ -97,15 +92,12 @@ bool asBatchForecasts::Load(const wxString &filePath)
     return true;
 }
 
-bool asBatchForecasts::Save() const
-{
+bool asBatchForecasts::Save() const {
     // Open the file
     asFileBatchForecasts fileBatch(m_filePath, asFile::Replace);
-    if (!fileBatch.Open())
-        return false;
+    if (!fileBatch.Open()) return false;
 
-    if (!fileBatch.EditRootElement())
-        return false;
+    if (!fileBatch.EditRootElement()) return false;
 
     // Get general data
     fileBatch.AddChild(fileBatch.CreateNodeWithValue("forecasts_output_directory", m_forecastsOutputDirectory));
@@ -128,24 +120,20 @@ bool asBatchForecasts::Save() const
     return true;
 }
 
-int asBatchForecasts::GetForecastsNb() const
-{
-    auto forecastsNb = (int) m_forecastFileNames.size();
+int asBatchForecasts::GetForecastsNb() const {
+    auto forecastsNb = (int)m_forecastFileNames.size();
     return forecastsNb;
 }
 
-void asBatchForecasts::ClearForecasts()
-{
+void asBatchForecasts::ClearForecasts() {
     m_forecastFileNames.clear();
 }
 
-void asBatchForecasts::AddForecast()
-{
+void asBatchForecasts::AddForecast() {
     long nb = m_forecastFileNames.size() + 1;
     m_forecastFileNames.resize(nb);
 }
 
-bool asBatchForecasts::HasExports() const
-{
+bool asBatchForecasts::HasExports() const {
     return m_exportSyntheticXml;
 }

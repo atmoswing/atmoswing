@@ -29,9 +29,9 @@
 #ifndef AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
 #define AS_THREAD_PROCESSOR_GET_ANALOGS_SUB_DATES_H
 
-#include <asThread.h>
-#include <asParameters.h>
 #include <asIncludes.h>
+#include <asParameters.h>
+#include <asThread.h>
 
 class asPredictor;
 
@@ -39,11 +39,8 @@ class asCriteria;
 
 class asTimeArray;
 
-
-class asThreadGetAnalogsSubDates
-        : public asThread
-{
-public:
+class asThreadGetAnalogsSubDates : public asThread {
+   public:
     asThreadGetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
                                std::vector<asPredictor *> predictorsTarget, asTimeArray *timeArrayArchiveData,
                                asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
@@ -56,9 +53,8 @@ public:
 
     virtual ExitCode Entry();
 
-protected:
-
-private:
+   protected:
+   private:
     std::vector<asPredictor *> m_pPredictorsArchive;
     std::vector<asPredictor *> m_pPredictorsTarget;
     asTimeArray *m_pTimeArrayArchiveData;
@@ -78,7 +74,6 @@ private:
     a2f *m_pPreviousAnalogsDates;
     bool *m_pContainsNaNs;
     bool *m_success;
-
 };
 
 #endif

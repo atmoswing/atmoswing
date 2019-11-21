@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,26 +28,22 @@
 
 #include "asPredictandLightnings.h"
 
+#include <asCatalogPredictands.h>
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
-#include <asCatalogPredictands.h>
-
 
 asPredictandLightnings::asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                SpatialAggregation dataSpatialAggregation)
-        : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
-{
+    : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
 }
 
-bool asPredictandLightnings::InitContainers()
-{
+bool asPredictandLightnings::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandLightnings::Load(const wxString &filePath)
-{
+bool asPredictandLightnings::Load(const wxString &filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -75,21 +71,18 @@ bool asPredictandLightnings::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandLightnings::Save(const wxString &destinationDir) const
-{
+bool asPredictandLightnings::Save(const wxString &destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(predictandDBFilePath, asFileNetcdf::Replace);
-    if (!ncFile.Open())
-        return false;
+    if (!ncFile.Open()) return false;
 
     // Set common definitions
     SetCommonDefinitions(ncFile);
 
     if (m_hasNormalizedData) {
-
         // Define dimensions
         vstds dimNames2D;
         dimNames2D.push_back("time");
@@ -126,32 +119,26 @@ bool asPredictandLightnings::Save(const wxString &destinationDir) const
 }
 
 bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                               const wxString &patternDir, const wxString &destinationDir)
-{
+                                               const wxString &patternDir, const wxString &destinationDir) {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
     }
 
     // Initialize the members
-    if (!InitMembers(catalogFilePath))
-        return false;
+    if (!InitMembers(catalogFilePath)) return false;
 
     // Resize matrices
-    if (!InitContainers())
-        return false;
+    if (!InitContainers()) return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, dataDir, patternDir))
-        return false;
+    if (!ParseData(catalogFilePath, dataDir, patternDir)) return false;
 
     if (m_hasNormalizedData) {
-        if (!BuildDataNormalized())
-            return false;
+        if (!BuildDataNormalized()) return false;
     }
 
     if (!destinationDir.IsEmpty()) {
-        if (!Save(destinationDir))
-            return false;
+        if (!Save(destinationDir)) return false;
     }
 
     if (!g_unitTesting) {
@@ -167,8 +154,7 @@ bool asPredictandLightnings::BuildPredictandDB(const wxString &catalogFilePath, 
     return true;
 }
 
-bool asPredictandLightnings::BuildDataNormalized()
-{
+bool asPredictandLightnings::BuildDataNormalized() {
     for (int iStat = 0; iStat < m_stationsNb; iStat++) {
         for (int iTime = 0; iTime < m_timeLength; iTime++) {
             m_dataNormalized(iTime, iStat) = log10(m_dataRaw(iTime, iStat) + 1);

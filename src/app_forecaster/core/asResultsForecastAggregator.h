@@ -29,12 +29,11 @@
 #define AS_RESULTS_FORECAST_AGGREGATOR_H
 
 #include <asIncludes.h>
+
 #include "asResultsForecast.h"
 
-class asResultsForecastAggregator
-        : public wxObject
-{
-public:
+class asResultsForecastAggregator : public wxObject {
+   public:
     asResultsForecastAggregator();
 
     virtual ~asResultsForecastAggregator();
@@ -101,12 +100,10 @@ public:
 
     bool ExportSyntheticXml(const wxString &dirPath) const;
 
-protected:
-
-private:
+   protected:
+   private:
     std::vector<std::vector<asResultsForecast *> > m_forecasts;
     std::vector<std::vector<std::vector<asResultsForecast *> > > m_pastForecasts;
-
 };
 
 #endif

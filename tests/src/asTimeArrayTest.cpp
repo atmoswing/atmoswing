@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,9 +28,7 @@
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(TimeArray, BuildArraySimple)
-{
+TEST(TimeArray, BuildArraySimple) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
     double timeStep = 6;
@@ -43,34 +41,33 @@ TEST(TimeArray, BuildArraySimple)
     EXPECT_DOUBLE_EQ(timeStep / 24, timeArray.GetTimeStepDays());
 
     EXPECT_DOUBLE_EQ(start, timeArray[0]);
-    EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, timeArray[1]);
-    EXPECT_DOUBLE_EQ(start + (double) 2 * 6 / 24, timeArray[2]);
-    EXPECT_DOUBLE_EQ(start + (double) 3 * 6 / 24, timeArray[3]);
-    EXPECT_DOUBLE_EQ(start + (double) 4 * 6 / 24, timeArray[4]);
-    EXPECT_DOUBLE_EQ(start + (double) 5 * 6 / 24, timeArray[5]);
-    EXPECT_DOUBLE_EQ(start + (double) 10 * 6 / 24, timeArray[10]);
-    EXPECT_DOUBLE_EQ(start + (double) 100 * 6 / 24, timeArray[100]);
-    EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, timeArray[1000]);
-    EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, timeArray[10000]);
+    EXPECT_DOUBLE_EQ(start + (double)1 * 6 / 24, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double)2 * 6 / 24, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double)3 * 6 / 24, timeArray[3]);
+    EXPECT_DOUBLE_EQ(start + (double)4 * 6 / 24, timeArray[4]);
+    EXPECT_DOUBLE_EQ(start + (double)5 * 6 / 24, timeArray[5]);
+    EXPECT_DOUBLE_EQ(start + (double)10 * 6 / 24, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double)100 * 6 / 24, timeArray[100]);
+    EXPECT_DOUBLE_EQ(start + (double)1000 * 6 / 24, timeArray[1000]);
+    EXPECT_DOUBLE_EQ(start + (double)10000 * 6 / 24, timeArray[10000]);
 
     a1d datetimeArray = timeArray.GetTimeArray();
 
     EXPECT_DOUBLE_EQ(start, datetimeArray(0));
-    EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, datetimeArray(1));
-    EXPECT_DOUBLE_EQ(start + (double) 2 * 6 / 24, datetimeArray(2));
-    EXPECT_DOUBLE_EQ(start + (double) 3 * 6 / 24, datetimeArray(3));
-    EXPECT_DOUBLE_EQ(start + (double) 4 * 6 / 24, datetimeArray(4));
-    EXPECT_DOUBLE_EQ(start + (double) 5 * 6 / 24, datetimeArray(5));
-    EXPECT_DOUBLE_EQ(start + (double) 10 * 6 / 24, datetimeArray(10));
-    EXPECT_DOUBLE_EQ(start + (double) 100 * 6 / 24, datetimeArray(100));
-    EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, datetimeArray(1000));
-    EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, datetimeArray(10000));
+    EXPECT_DOUBLE_EQ(start + (double)1 * 6 / 24, datetimeArray(1));
+    EXPECT_DOUBLE_EQ(start + (double)2 * 6 / 24, datetimeArray(2));
+    EXPECT_DOUBLE_EQ(start + (double)3 * 6 / 24, datetimeArray(3));
+    EXPECT_DOUBLE_EQ(start + (double)4 * 6 / 24, datetimeArray(4));
+    EXPECT_DOUBLE_EQ(start + (double)5 * 6 / 24, datetimeArray(5));
+    EXPECT_DOUBLE_EQ(start + (double)10 * 6 / 24, datetimeArray(10));
+    EXPECT_DOUBLE_EQ(start + (double)100 * 6 / 24, datetimeArray(100));
+    EXPECT_DOUBLE_EQ(start + (double)1000 * 6 / 24, datetimeArray(1000));
+    EXPECT_DOUBLE_EQ(start + (double)10000 * 6 / 24, datetimeArray(10000));
 
     EXPECT_EQ(4 * 21550 + 1, datetimeArray.rows());
 }
 
-TEST(TimeArray, BuildArraySimpleGeneric)
-{
+TEST(TimeArray, BuildArraySimpleGeneric) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
     double timeStep = 6;
@@ -84,34 +81,33 @@ TEST(TimeArray, BuildArraySimpleGeneric)
     EXPECT_DOUBLE_EQ(timeStep / 24, timeArray.GetTimeStepDays());
 
     EXPECT_DOUBLE_EQ(start, timeArray[0]);
-    EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, timeArray[1]);
-    EXPECT_DOUBLE_EQ(start + (double) 2 * 6 / 24, timeArray[2]);
-    EXPECT_DOUBLE_EQ(start + (double) 3 * 6 / 24, timeArray[3]);
-    EXPECT_DOUBLE_EQ(start + (double) 4 * 6 / 24, timeArray[4]);
-    EXPECT_DOUBLE_EQ(start + (double) 5 * 6 / 24, timeArray[5]);
-    EXPECT_DOUBLE_EQ(start + (double) 10 * 6 / 24, timeArray[10]);
-    EXPECT_DOUBLE_EQ(start + (double) 100 * 6 / 24, timeArray[100]);
-    EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, timeArray[1000]);
-    EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, timeArray[10000]);
+    EXPECT_DOUBLE_EQ(start + (double)1 * 6 / 24, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double)2 * 6 / 24, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double)3 * 6 / 24, timeArray[3]);
+    EXPECT_DOUBLE_EQ(start + (double)4 * 6 / 24, timeArray[4]);
+    EXPECT_DOUBLE_EQ(start + (double)5 * 6 / 24, timeArray[5]);
+    EXPECT_DOUBLE_EQ(start + (double)10 * 6 / 24, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double)100 * 6 / 24, timeArray[100]);
+    EXPECT_DOUBLE_EQ(start + (double)1000 * 6 / 24, timeArray[1000]);
+    EXPECT_DOUBLE_EQ(start + (double)10000 * 6 / 24, timeArray[10000]);
 
     a1d datetimeArray = timeArray.GetTimeArray();
 
     EXPECT_DOUBLE_EQ(start, datetimeArray(0));
-    EXPECT_DOUBLE_EQ(start + (double) 1 * 6 / 24, datetimeArray(1));
-    EXPECT_DOUBLE_EQ(start + (double) 2 * 6 / 24, datetimeArray(2));
-    EXPECT_DOUBLE_EQ(start + (double) 3 * 6 / 24, datetimeArray(3));
-    EXPECT_DOUBLE_EQ(start + (double) 4 * 6 / 24, datetimeArray(4));
-    EXPECT_DOUBLE_EQ(start + (double) 5 * 6 / 24, datetimeArray(5));
-    EXPECT_DOUBLE_EQ(start + (double) 10 * 6 / 24, datetimeArray(10));
-    EXPECT_DOUBLE_EQ(start + (double) 100 * 6 / 24, datetimeArray(100));
-    EXPECT_DOUBLE_EQ(start + (double) 1000 * 6 / 24, datetimeArray(1000));
-    EXPECT_DOUBLE_EQ(start + (double) 10000 * 6 / 24, datetimeArray(10000));
+    EXPECT_DOUBLE_EQ(start + (double)1 * 6 / 24, datetimeArray(1));
+    EXPECT_DOUBLE_EQ(start + (double)2 * 6 / 24, datetimeArray(2));
+    EXPECT_DOUBLE_EQ(start + (double)3 * 6 / 24, datetimeArray(3));
+    EXPECT_DOUBLE_EQ(start + (double)4 * 6 / 24, datetimeArray(4));
+    EXPECT_DOUBLE_EQ(start + (double)5 * 6 / 24, datetimeArray(5));
+    EXPECT_DOUBLE_EQ(start + (double)10 * 6 / 24, datetimeArray(10));
+    EXPECT_DOUBLE_EQ(start + (double)100 * 6 / 24, datetimeArray(100));
+    EXPECT_DOUBLE_EQ(start + (double)1000 * 6 / 24, datetimeArray(1000));
+    EXPECT_DOUBLE_EQ(start + (double)10000 * 6 / 24, datetimeArray(10000));
 
     EXPECT_EQ(4 * 21550 + 1, datetimeArray.rows());
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalNormal)
-{
+TEST(TimeArray, BuildArrayDaysIntervalNormal) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -133,8 +129,7 @@ TEST(TimeArray, BuildArrayDaysIntervalNormal)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 4, 2, 6, 0), timeArray[482]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
-{
+TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -157,8 +152,7 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalGeneric)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 4, 2, 6, 0), timeArray[482]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalNormalMidday)
-{
+TEST(TimeArray, BuildArrayDaysIntervalNormalMidday) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -180,8 +174,7 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalMidday)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 4, 2, 18, 0), timeArray[482]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound)
-{
+TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -205,8 +198,7 @@ TEST(TimeArray, BuildArrayDaysIntervalNormalMiddayNotRound)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 4, 2, 16, 31), timeArray[482]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalStartSplitted)
-{
+TEST(TimeArray, BuildArrayDaysIntervalStartSplitted) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -231,8 +223,7 @@ TEST(TimeArray, BuildArrayDaysIntervalStartSplitted)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 1, 1, 0, 0), timeArray[366 + 115]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalEndSplitted)
-{
+TEST(TimeArray, BuildArrayDaysIntervalEndSplitted) {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
     double timeStep = 6;
@@ -254,8 +245,7 @@ TEST(TimeArray, BuildArrayDaysIntervalEndSplitted)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 10, 2, 18, 0), timeArray[482]);
 }
 
-TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
-{
+TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -280,8 +270,7 @@ TEST(TimeArray, BuildArrayDaysIntervalExclusionPeriod)
     EXPECT_FALSE(foundyear);
 }
 
-TEST(TimeArray, BuildArraySeasonDJF6h)
-{
+TEST(TimeArray, BuildArraySeasonDJF6h) {
     double start = asTime::GetMJD(1950, 1, 1, 0);
     double end = asTime::GetMJD(2008, 12, 31, 18);
     double timeStep = 6;
@@ -295,8 +284,7 @@ TEST(TimeArray, BuildArraySeasonDJF6h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 12, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArraySeasonJJA6h)
-{
+TEST(TimeArray, BuildArraySeasonJJA6h) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 6;
@@ -313,8 +301,7 @@ TEST(TimeArray, BuildArraySeasonJJA6h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1951, 6, 1, 12, 0), timeArray[368]);
 }
 
-TEST(TimeArray, BuildArraySeasonDJF24h)
-{
+TEST(TimeArray, BuildArraySeasonDJF24h) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -328,8 +315,7 @@ TEST(TimeArray, BuildArraySeasonDJF24h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArraySeasonMAM24h)
-{
+TEST(TimeArray, BuildArraySeasonMAM24h) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -343,8 +329,7 @@ TEST(TimeArray, BuildArraySeasonMAM24h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 3, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArraySeasonJJA24h)
-{
+TEST(TimeArray, BuildArraySeasonJJA24h) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -358,8 +343,7 @@ TEST(TimeArray, BuildArraySeasonJJA24h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArraySeasonSON24h)
-{
+TEST(TimeArray, BuildArraySeasonSON24h) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -373,8 +357,7 @@ TEST(TimeArray, BuildArraySeasonSON24h)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 9, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayAprilToSeptember)
-{
+TEST(TimeArray, BuildArrayAprilToSeptember) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -388,8 +371,7 @@ TEST(TimeArray, BuildArrayAprilToSeptember)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayAprilToSeptember2)
-{
+TEST(TimeArray, BuildArrayAprilToSeptember2) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -403,8 +385,7 @@ TEST(TimeArray, BuildArrayAprilToSeptember2)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 4, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayJanuaryToDecember)
-{
+TEST(TimeArray, BuildArrayJanuaryToDecember) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -418,8 +399,7 @@ TEST(TimeArray, BuildArrayJanuaryToDecember)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayJuneToJuly)
-{
+TEST(TimeArray, BuildArrayJuneToJuly) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -433,8 +413,7 @@ TEST(TimeArray, BuildArrayJuneToJuly)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 6, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayJuneToMarch)
-{
+TEST(TimeArray, BuildArrayJuneToMarch) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -448,8 +427,7 @@ TEST(TimeArray, BuildArrayJuneToMarch)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayJuneToJanuary)
-{
+TEST(TimeArray, BuildArrayJuneToJanuary) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -463,8 +441,7 @@ TEST(TimeArray, BuildArrayJuneToJanuary)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, BuildArrayDecemberToJanuary)
-{
+TEST(TimeArray, BuildArrayDecemberToJanuary) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2008, 12, 31);
     double timeStep = 24;
@@ -478,8 +455,7 @@ TEST(TimeArray, BuildArrayDecemberToJanuary)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 3, 0, 0), timeArray[2]);
 }
 
-TEST(TimeArray, GetFirstDayHour)
-{
+TEST(TimeArray, GetFirstDayHour) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
     double timeStep = 6;
@@ -489,8 +465,7 @@ TEST(TimeArray, GetFirstDayHour)
     EXPECT_FLOAT_EQ(12.5, timeArray.GetStartingHour());
 }
 
-TEST(TimeArray, GetLastDayHour)
-{
+TEST(TimeArray, GetLastDayHour) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
     double timeStep = 6;
@@ -500,8 +475,7 @@ TEST(TimeArray, GetLastDayHour)
     EXPECT_FLOAT_EQ(18.5, timeArray.GetEndingHour());
 }
 
-TEST(TimeArray, GetFirstDayYear)
-{
+TEST(TimeArray, GetFirstDayYear) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
     double timeStep = 6;
@@ -511,8 +485,7 @@ TEST(TimeArray, GetFirstDayYear)
     EXPECT_EQ(1950, timeArray.GetStartingYear());
 }
 
-TEST(TimeArray, GetLastDayYear)
-{
+TEST(TimeArray, GetLastDayYear) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(2008, 12, 31, 18, 30);
     double timeStep = 6;
@@ -522,8 +495,7 @@ TEST(TimeArray, GetLastDayYear)
     EXPECT_EQ(2008, timeArray.GetEndingYear());
 }
 
-TEST(TimeArray, GetSize)
-{
+TEST(TimeArray, GetSize) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -533,8 +505,7 @@ TEST(TimeArray, GetSize)
     EXPECT_EQ(6, timeArray.GetSize());
 }
 
-TEST(TimeArray, OperatorOverloading)
-{
+TEST(TimeArray, OperatorOverloading) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -549,8 +520,7 @@ TEST(TimeArray, OperatorOverloading)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 18, 30), timeArray[5]);
 }
 
-TEST(TimeArray, GetFirst)
-{
+TEST(TimeArray, GetFirst) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -560,8 +530,7 @@ TEST(TimeArray, GetFirst)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 1, 12, 30), timeArray.GetFirst());
 }
 
-TEST(TimeArray, GetLast)
-{
+TEST(TimeArray, GetLast) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -571,8 +540,7 @@ TEST(TimeArray, GetLast)
     EXPECT_DOUBLE_EQ(asTime::GetMJD(1950, 1, 2, 18, 30), timeArray.GetLast());
 }
 
-TEST(TimeArray, GetIndexFirstAfter)
-{
+TEST(TimeArray, GetIndexFirstAfter) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -582,8 +550,7 @@ TEST(TimeArray, GetIndexFirstAfter)
     EXPECT_DOUBLE_EQ(2, timeArray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 19, 30), 6));
 }
 
-TEST(TimeArray, GetIndexFirstAfterEqual)
-{
+TEST(TimeArray, GetIndexFirstAfterEqual) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -593,8 +560,7 @@ TEST(TimeArray, GetIndexFirstAfterEqual)
     EXPECT_DOUBLE_EQ(1, timeArray.GetIndexFirstAfter(asTime::GetMJD(1950, 1, 1, 18, 30), 6));
 }
 
-TEST(TimeArray, GetIndexFirstBefore)
-{
+TEST(TimeArray, GetIndexFirstBefore) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -604,8 +570,7 @@ TEST(TimeArray, GetIndexFirstBefore)
     EXPECT_DOUBLE_EQ(2, timeArray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 05, 30), 6));
 }
 
-TEST(TimeArray, GetIndexFirstBeforeEqual)
-{
+TEST(TimeArray, GetIndexFirstBeforeEqual) {
     double start = asTime::GetMJD(1950, 1, 1, 12, 30);
     double end = asTime::GetMJD(1950, 1, 2, 18, 30);
     double timeStep = 6;
@@ -615,8 +580,7 @@ TEST(TimeArray, GetIndexFirstBeforeEqual)
     EXPECT_DOUBLE_EQ(3, timeArray.GetIndexFirstBefore(asTime::GetMJD(1950, 1, 2, 06, 30), 6));
 }
 
-TEST(TimeArray, PopFirst)
-{
+TEST(TimeArray, PopFirst) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
     double timeStep = 24;
@@ -629,16 +593,15 @@ TEST(TimeArray, PopFirst)
     EXPECT_DOUBLE_EQ(end, timeArray.GetEnd());
 
     EXPECT_DOUBLE_EQ(start + 1, timeArray[0]);
-    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[1]);
-    EXPECT_DOUBLE_EQ(start + (double) 3, timeArray[2]);
-    EXPECT_DOUBLE_EQ(start + (double) 11, timeArray[10]);
-    EXPECT_DOUBLE_EQ(start + (double) 101, timeArray[100]);
+    EXPECT_DOUBLE_EQ(start + (double)2, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double)3, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double)11, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double)101, timeArray[100]);
 
     EXPECT_EQ(21550, timeArray.GetSize());
 }
 
-TEST(TimeArray, PopLast)
-{
+TEST(TimeArray, PopLast) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
     double timeStep = 24;
@@ -651,16 +614,15 @@ TEST(TimeArray, PopLast)
     EXPECT_DOUBLE_EQ(end - 1, timeArray.GetEnd());
 
     EXPECT_DOUBLE_EQ(start, timeArray[0]);
-    EXPECT_DOUBLE_EQ(start + (double) 1, timeArray[1]);
-    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[2]);
-    EXPECT_DOUBLE_EQ(start + (double) 10, timeArray[10]);
-    EXPECT_DOUBLE_EQ(start + (double) 100, timeArray[100]);
+    EXPECT_DOUBLE_EQ(start + (double)1, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double)2, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double)10, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double)100, timeArray[100]);
 
     EXPECT_EQ(21550, timeArray.GetSize());
 }
 
-TEST(TimeArray, PopMiddle)
-{
+TEST(TimeArray, PopMiddle) {
     double start = asTime::GetMJD(1950, 1, 1);
     double end = asTime::GetMJD(2009, 1, 1);
     double timeStep = 24;
@@ -673,10 +635,10 @@ TEST(TimeArray, PopMiddle)
     EXPECT_DOUBLE_EQ(end, timeArray.GetEnd());
 
     EXPECT_DOUBLE_EQ(start, timeArray[0]);
-    EXPECT_DOUBLE_EQ(start + (double) 1, timeArray[1]);
-    EXPECT_DOUBLE_EQ(start + (double) 2, timeArray[2]);
-    EXPECT_DOUBLE_EQ(start + (double) 11, timeArray[10]);
-    EXPECT_DOUBLE_EQ(start + (double) 101, timeArray[100]);
+    EXPECT_DOUBLE_EQ(start + (double)1, timeArray[1]);
+    EXPECT_DOUBLE_EQ(start + (double)2, timeArray[2]);
+    EXPECT_DOUBLE_EQ(start + (double)11, timeArray[10]);
+    EXPECT_DOUBLE_EQ(start + (double)101, timeArray[100]);
 
     EXPECT_EQ(21550, timeArray.GetSize());
 }

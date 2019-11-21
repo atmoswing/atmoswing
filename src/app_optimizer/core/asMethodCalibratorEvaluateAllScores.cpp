@@ -27,22 +27,15 @@
  */
 
 #include "asMethodCalibratorEvaluateAllScores.h"
+
 #include "asTotalScore.h"
 #include "asTotalScoreRankHistogramReliability.h"
 
-asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores()
-        : asMethodCalibrator()
-{
+asMethodCalibratorEvaluateAllScores::asMethodCalibratorEvaluateAllScores() : asMethodCalibrator() {}
 
-}
+asMethodCalibratorEvaluateAllScores::~asMethodCalibratorEvaluateAllScores() {}
 
-asMethodCalibratorEvaluateAllScores::~asMethodCalibratorEvaluateAllScores()
-{
-
-}
-
-bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &params)
-{
+bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &params) {
     // Check that we really handle a EvaluateAllScores case
     bool checkSizes = true;
     wxString errorField = wxEmptyString;
@@ -81,21 +74,18 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 for (int iPre = 0; iPre < params.GetPreprocessSize(iStep, iPtor); iPre++) {
                     if (params.GetPreprocessDataIdVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("preprocessDataId (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessLevelVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("PreprocessLevel (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(
-                                wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ", iStep,
-                                                 iPtor, iPre));
+                        errorField.Append(wxString::Format("preprocessHours (step %d, predictor %d, preprocess %d), ",
+                                                           iStep, iPtor, iPre));
                     }
                 }
             }
@@ -146,8 +136,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                     }
                     if (params.GetPreprocessHourVector(iStep, iPtor, iPre).size() > 1) {
                         checkSizes = false;
-                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep,
-                                                           iPtor));
+                        errorField.Append(wxString::Format("PreprocessHoursV (step %d, predictor %d), ", iStep, iPtor));
                     }
                 }
             }
@@ -155,9 +144,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
     }
 
     if (!checkSizes) {
-        errorField = errorField.Remove(errorField.Length() - 3, 2); // Removes the last coma
+        errorField = errorField.Remove(errorField.Length() - 3, 2);  // Removes the last coma
         wxString errorMessage =
-                _("The following parameters are not compatible with the EvaluateAllScores assessment: ") + errorField;
+            _("The following parameters are not compatible with the EvaluateAllScores assessment: ") + errorField;
         wxLogError(errorMessage);
         return false;
     }
@@ -189,8 +178,8 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         // Reset the score of the climatology
         m_scoreClimatology.clear();
 
-        /* 
-         * On the calibration period 
+        /*
+         * On the calibration period
          */
 
         // Create results objects
@@ -204,12 +193,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         for (int iStep = 0; iStep < stepsNb; iStep++) {
             bool containsNaNs = false;
             if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
             } else {
                 anaDatesPrevious = anaDates;
-                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs))
-                    return false;
+                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
             }
             if (containsNaNs) {
                 wxLogError(_("The dates selection contains NaNs"));
@@ -219,11 +206,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         m_parameters.push_back(params);
         wxASSERT(m_parameters.size() == 1);
 
-        if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1))
-            return false;
+        if (!GetAnalogsValues(anaValues, &params, anaDates, stepsNb - 1)) return false;
 
-        /* 
-         * On the validation period 
+        /*
+         * On the validation period
          */
 
         asResultsDates anaDatesValid;
@@ -233,7 +219,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
         asResultsTotalScore anaScoreFinalValid;
 
         // Get validation data
-        if (params.HasValidationPeriod()) // Validate
+        if (params.HasValidationPeriod())  // Validate
         {
             m_validationMode = true;
 
@@ -241,8 +227,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             for (int iStep = 0; iStep < stepsNb; iStep++) {
                 bool containsNaNs = false;
                 if (iStep == 0) {
-                    if (!GetAnalogsDates(anaDatesValid, &params, iStep, containsNaNs))
-                        return false;
+                    if (!GetAnalogsDates(anaDatesValid, &params, iStep, containsNaNs)) return false;
                 } else {
                     anaDatesPreviousValid = anaDatesValid;
                     if (!GetAnalogsSubDates(anaDatesValid, &params, anaDatesPreviousValid, iStep, containsNaNs))
@@ -254,32 +239,31 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                 }
             }
 
-            if (!GetAnalogsValues(anaValuesValid, &params, anaDatesValid, stepsNb - 1))
-                return false;
+            if (!GetAnalogsValues(anaValuesValid, &params, anaDatesValid, stepsNb - 1)) return false;
 
             m_validationMode = false;
         }
 
-        /* 
-         * Scores based on the contingency table 
+        /*
+         * Scores based on the contingency table
          */
 
         if (processContingencyScores) {
             vwxs scoresContingency;
-            scoresContingency.push_back("PC"); // PC - Proportion correct
-            scoresContingency.push_back("TS"); // TS - Threat score
-            scoresContingency.push_back("BIAS"); // BIAS - Bias
-            scoresContingency.push_back("FARA"); // FARA - False alarm ratio
-            scoresContingency.push_back("H"); // H - Hit rate
-            scoresContingency.push_back("F"); // F - False alarm rate
-            scoresContingency.push_back("HSS"); // HSS - Heidke skill score
-            scoresContingency.push_back("PSS"); // PSS - Pierce skill score
-            scoresContingency.push_back("GSS"); // GSS - Gilbert skill score
+            scoresContingency.push_back("PC");    // PC - Proportion correct
+            scoresContingency.push_back("TS");    // TS - Threat score
+            scoresContingency.push_back("BIAS");  // BIAS - Bias
+            scoresContingency.push_back("FARA");  // FARA - False alarm ratio
+            scoresContingency.push_back("H");     // H - Hit rate
+            scoresContingency.push_back("F");     // F - False alarm rate
+            scoresContingency.push_back("HSS");   // HSS - Heidke skill score
+            scoresContingency.push_back("PSS");   // PSS - Pierce skill score
+            scoresContingency.push_back("GSS");   // GSS - Gilbert skill score
 
             vf thresholds;
             thresholds.push_back(0.0001f);
-            thresholds.push_back(0.5f); // 1/2 of P10 (if data are normalized)
-            thresholds.push_back(1);  // P10 (if data are normalized)
+            thresholds.push_back(0.5f);  // 1/2 of P10 (if data are normalized)
+            thresholds.push_back(1);     // P10 (if data are normalized)
 
             vf quantiles;
             quantiles.push_back(0.2f);
@@ -293,12 +277,9 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
                         params.SetScoreName(scoresContingency[iScore]);
                         params.SetScoreQuantile(quantiles[iPc]);
                         params.SetScoreThreshold(thresholds[iThres]);
-                        if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-                            return false;
-                        if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-                            return false;
-                        if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
-                            return false;
+                        if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+                        if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
+                        if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
                         if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
                             return false;
                         results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
@@ -308,86 +289,74 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             }
 
             vwxs scoresQuantile;
-            scoresQuantile.push_back("MAE"); // MAE - Mean absolute error
-            scoresQuantile.push_back("RMSE"); // RMSE - Root mean squared error
-            scoresQuantile.push_back("SEEPS"); // SEEPS - Stable equitable error in probability space
+            scoresQuantile.push_back("MAE");    // MAE - Mean absolute error
+            scoresQuantile.push_back("RMSE");   // RMSE - Root mean squared error
+            scoresQuantile.push_back("SEEPS");  // SEEPS - Stable equitable error in probability space
 
             for (int iScore = 0; iScore < scoresQuantile.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresQuantile[iScore]);
                 for (int iPc = 0; iPc < quantiles.size(); iPc++) {
                     params.SetScoreName(scoresQuantile[iScore]);
                     params.SetScoreQuantile(quantiles[iPc]);
-                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
-                        return false;
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
+                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
                 }
             }
 
             vwxs scoresThreshold;
-            scoresThreshold.push_back("BS"); // BS - Brier score
-            scoresThreshold.push_back("BSS"); // BSS - Brier skill score
+            scoresThreshold.push_back("BS");   // BS - Brier score
+            scoresThreshold.push_back("BSS");  // BSS - Brier skill score
 
             for (int iScore = 0; iScore < scoresThreshold.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresThreshold[iScore]);
                 for (int iThres = 0; iThres < thresholds.size(); iThres++) {
                     params.SetScoreName(scoresThreshold[iScore]);
                     params.SetScoreThreshold(thresholds[iThres]);
-                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
-                        return false;
-                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
-                        return false;
+                    if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+                    if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
+                    if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
+                    if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                     results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                     m_scoreClimatology.clear();
                 }
             }
         }
 
-        /* 
-         * Continuous scores 
+        /*
+         * Continuous scores
          */
 
         if (processContinuousScores) {
             vwxs scoresContinuous;
-            scoresContinuous.push_back("DF0"); // DF0 - absolute difference of the frequency of null precipitations
-            scoresContinuous.push_back("CRPS"); // CRPSAR - approximation with the rectangle method
+            scoresContinuous.push_back("DF0");   // DF0 - absolute difference of the frequency of null precipitations
+            scoresContinuous.push_back("CRPS");  // CRPSAR - approximation with the rectangle method
             scoresContinuous.push_back(
-                    "CRPSS"); // CRPSS - CRPS skill score using the approximation with the rectangle method
+                "CRPSS");  // CRPSS - CRPS skill score using the approximation with the rectangle method
             scoresContinuous.push_back(
-                    "CRPSaccuracyAR"); // CRPS accuracy, approximation with the rectangle method (Bontron, 2004)
+                "CRPSaccuracyAR");  // CRPS accuracy, approximation with the rectangle method (Bontron, 2004)
             scoresContinuous.push_back(
-                    "CRPSsharpnessAR"); // CRPS sharpness, approximation with the rectangle method (Bontron, 2004)
-            scoresContinuous.push_back("CRPSreliability"); // reliability of the CRPS (Hersbach, 2000)
-            scoresContinuous.push_back("CRPSpotential"); // CRPS potential (Hersbach, 2000)
+                "CRPSsharpnessAR");  // CRPS sharpness, approximation with the rectangle method (Bontron, 2004)
+            scoresContinuous.push_back("CRPSreliability");  // reliability of the CRPS (Hersbach, 2000)
+            scoresContinuous.push_back("CRPSpotential");    // CRPS potential (Hersbach, 2000)
 
             for (int iScore = 0; iScore < scoresContinuous.size(); iScore++) {
                 wxLogMessage(_("Processing %s"), scoresContinuous[iScore]);
                 params.SetScoreName(scoresContinuous[iScore]);
-                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
-                    return false;
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
+                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
                 results.Add(params, anaScoreFinal.GetScore(), anaScoreFinalValid.GetScore());
                 m_scoreClimatology.clear();
             }
         }
 
-        /* 
-         * The Verification Rank Histogram (Talagrand Diagram) 
+        /*
+         * The Verification Rank Histogram (Talagrand Diagram)
          */
 
         if (processRankHistogramScores) {
@@ -401,14 +370,10 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             va1f histoValid;
 
             for (int iBoot = 0; iBoot < boostrapNb; iBoot++) {
-                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1))
-                    return false;
-                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1))
-                    return false;
+                if (!GetAnalogsScores(anaScores, &params, anaValues, stepsNb - 1)) return false;
+                if (!GetAnalogsTotalScore(anaScoreFinal, &params, anaScores, stepsNb - 1)) return false;
+                if (!GetAnalogsScores(anaScoresValid, &params, anaValuesValid, stepsNb - 1)) return false;
+                if (!GetAnalogsTotalScore(anaScoreFinalValid, &params, anaScoresValid, stepsNb - 1)) return false;
 
                 // Store every assessment
                 histoCalib.push_back(anaScoreFinal.GetScoreArray());
@@ -442,9 +407,7 @@ bool asMethodCalibratorEvaluateAllScores::Calibrate(asParametersCalibration &par
             m_scoreClimatology.clear();
         }
 
-        if (!results.Print())
-            return false;
-
+        if (!results.Print()) return false;
     }
 
     return true;

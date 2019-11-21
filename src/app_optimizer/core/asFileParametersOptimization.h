@@ -29,13 +29,11 @@
 #ifndef AS_FILE_PARAMETERS_OPTIMIZATION_H
 #define AS_FILE_PARAMETERS_OPTIMIZATION_H
 
-#include <asIncludes.h>
 #include <asFileParameters.h>
+#include <asIncludes.h>
 
-class asFileParametersOptimization
-        : public asFileParameters
-{
-public:
+class asFileParametersOptimization : public asFileParameters {
+   public:
     asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersOptimization();
@@ -44,9 +42,8 @@ public:
 
     bool CheckRootElement() const;
 
-protected:
-
-private:
+   protected:
+   private:
 };
 
 #endif

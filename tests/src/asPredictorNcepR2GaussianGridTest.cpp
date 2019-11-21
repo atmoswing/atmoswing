@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepR2Gaussian, LoadEasy)
-{
+TEST(PredictorNcepR2Gaussian, LoadEasy) {
     double xMin = 7.5;
     int xPtsNb = 5;
     double yMin = 29.523;
@@ -118,8 +117,7 @@ TEST(PredictorNcepR2Gaussian, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Gaussian, LoadComposite)
-{
+TEST(PredictorNcepR2Gaussian, LoadComposite) {
     double xMin = -7.5;
     int xPtsNb = 7;
     double yMin = 29.523;
@@ -196,8 +194,7 @@ TEST(PredictorNcepR2Gaussian, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Gaussian, LoadBorderLeft)
-{
+TEST(PredictorNcepR2Gaussian, LoadBorderLeft) {
     double xMin = 0;
     int xPtsNb = 3;
     double yMin = 29.523;
@@ -262,8 +259,7 @@ TEST(PredictorNcepR2Gaussian, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Gaussian, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepR2Gaussian, LoadBorderLeftOn720) {
     double xMin = 360;
     int xPtsNb = 3;
     double yMin = 29.523;
@@ -328,8 +324,7 @@ TEST(PredictorNcepR2Gaussian, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2Gaussian, LoadBorderRight)
-{
+TEST(PredictorNcepR2Gaussian, LoadBorderRight) {
     double xMin = 352.5;
     int xPtsNb = 5;
     double yMin = 29.523;

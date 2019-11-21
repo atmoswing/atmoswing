@@ -27,13 +27,10 @@
 
 #include "asPredictorCustomMFvgSynop.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString &dataId)
-        : asPredictorEcmwfIfsGrib(dataId)
-{
+asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString &dataId) : asPredictorEcmwfIfsGrib(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Synop";
     m_provider = "ECMWF";
@@ -44,14 +41,12 @@ asPredictorCustomMFvgSynop::asPredictorCustomMFvgSynop(const wxString &dataId)
     m_warnMissingFiles = false;
 }
 
-bool asPredictorCustomMFvgSynop::Init()
-{
+bool asPredictorCustomMFvgSynop::Init() {
     if (m_product.IsEmpty()) {
         m_product = "data";
     }
 
     if (m_product.IsSameAs("data", false)) {
-
         if (m_dataId.Contains("gh")) {
             m_parameter = GeopotentialHeight;
             m_gribCode = {0, 128, 156, 100};
@@ -88,7 +83,6 @@ bool asPredictorCustomMFvgSynop::Init()
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
 
     } else if (m_product.IsSameAs("datader", false)) {
-
         if (m_dataId.Contains("thetaES")) {
             m_parameter = PotentialTemperature;
             m_gribCode = {0, 3, 114, 100};
@@ -117,7 +111,6 @@ bool asPredictorCustomMFvgSynop::Init()
         m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
 
     } else if (m_product.IsSameAs("vertdiff", false)) {
-
         m_parameter = Other;
 
         if (m_dataId.IsSameAs("DP500925", false)) {
@@ -149,11 +142,11 @@ bool asPredictorCustomMFvgSynop::Init()
     return true;
 }
 
-void asPredictorCustomMFvgSynop::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomMFvgSynop::ListFiles(asTimeArray &timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        asThrowException(wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
+        asThrowException(
+            wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure

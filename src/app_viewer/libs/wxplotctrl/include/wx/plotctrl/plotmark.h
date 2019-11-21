@@ -34,46 +34,39 @@ WX_DECLARE_OBJARRAY_WITH_DECL(wxPlotMarker, wxArrayPlotMarker, class WXDLLIMPEXP
 //      wxPlotMarker marker; marker.CreateXXX(...)
 //-----------------------------------------------------------------------------
 
-enum wxPlotMarkerType
-{
-    wxPLOTMARKER_NONE,      // invalid, don't draw it
-    wxPLOTMARKER_POINT,     // single pixel point, only position & pen used
-    //   size, brush, bitmap unused
-            wxPLOTMARKER_LINE,      // line from upper left to lower right of rect
-    //   rect may be inverted to draw at any angle
-    //   size, brush, bitmap unused
-            wxPLOTMARKER_HORIZ_LINE, // horizontal line, full width
-    //   only vert position and pen used
-    //   size, brush, bitmap unused
-            wxPLOTMARKER_VERT_LINE, // vertical line, full height
-    //   only horiz position and pen used
-    //   size, brush, bitmap unused
-            wxPLOTMARKER_CROSS,     // vertical and horizontal line, full height & width
-    //   position used for center of cross
-    //   size, brush, bitmap unused
-            wxPLOTMARKER_RECT,      // rectangle - see GetPlotRect() conditions
-    //   pen draws outline and brush fills (if set)
-    //   bitmap unused
-    //   rect drawn centered on position
-    //   size is size of the rect
-            wxPLOTMARKER_ELLIPSE,   // ellipse   - see GetPlotRect() conditions
-    wxPLOTMARKER_BITMAP     // the bitmap is drawn at the position
+enum wxPlotMarkerType {
+    wxPLOTMARKER_NONE,        // invalid, don't draw it
+    wxPLOTMARKER_POINT,       // single pixel point, only position & pen used
+                              //   size, brush, bitmap unused
+    wxPLOTMARKER_LINE,        // line from upper left to lower right of rect
+                              //   rect may be inverted to draw at any angle
+                              //   size, brush, bitmap unused
+    wxPLOTMARKER_HORIZ_LINE,  // horizontal line, full width
+                              //   only vert position and pen used
+                              //   size, brush, bitmap unused
+    wxPLOTMARKER_VERT_LINE,   // vertical line, full height
+                              //   only horiz position and pen used
+                              //   size, brush, bitmap unused
+    wxPLOTMARKER_CROSS,       // vertical and horizontal line, full height & width
+                              //   position used for center of cross
+                              //   size, brush, bitmap unused
+    wxPLOTMARKER_RECT,        // rectangle - see GetPlotRect() conditions
+                              //   pen draws outline and brush fills (if set)
+                              //   bitmap unused
+                              //   rect drawn centered on position
+                              //   size is size of the rect
+    wxPLOTMARKER_ELLIPSE,     // ellipse   - see GetPlotRect() conditions
+    wxPLOTMARKER_BITMAP       // the bitmap is drawn at the position
 };
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotMarker
-        : public wxObject
-{
-public:
-    wxPlotMarker()
-            : wxObject()
-    {
-    }
+class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
+   public:
+    wxPlotMarker() : wxObject() {}
 
     // Create a full marker (see CreateXXX functions)
     wxPlotMarker(int marker_type, const wxRect2DDouble &rect, const wxSize &size, const wxGenericPen &pen,
                  const wxGenericBrush &brush = wxNullGenericBrush, const wxBitmap &bitmap = wxNullBitmap)
-            : wxObject()
-    {
+        : wxObject() {
         Create(marker_type, rect, size, pen, brush, bitmap);
     }
 
@@ -81,25 +74,19 @@ public:
     //   in pixels
     wxPlotMarker(int marker_type, const wxPoint2DDouble &pt, const wxSize &size, const wxGenericPen &pen,
                  const wxGenericBrush &brush = wxNullGenericBrush)
-            : wxObject()
-    {
+        : wxObject() {
         Create(marker_type, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
     // Create a bitmap marker
-    wxPlotMarker(const wxPoint2DDouble &pt, const wxBitmap &bitmap)
-            : wxObject()
-    {
+    wxPlotMarker(const wxPoint2DDouble &pt, const wxBitmap &bitmap) : wxObject() {
         CreateBitmapMarker(pt, bitmap);
     }
 
-    virtual ~wxPlotMarker()
-    {
-    }
+    virtual ~wxPlotMarker() {}
 
     // is the marker created
-    bool Ok() const
-    {
+    bool Ok() const {
         return m_refData != NULL;
     }
 
@@ -111,46 +98,39 @@ public:
     // Simplified methods (use these), note what elements are used.
 
     // Create a wxPLOTMARKER_POINT
-    void CreatePointMarker(const wxPoint2DDouble &pt, const wxGenericPen &pen)
-    {
+    void CreatePointMarker(const wxPoint2DDouble &pt, const wxGenericPen &pen) {
         Create(wxPLOTMARKER_POINT, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_LINE
-    void CreateLineMarker(const wxRect2DDouble &rect, const wxGenericPen &pen)
-    {
+    void CreateLineMarker(const wxRect2DDouble &rect, const wxGenericPen &pen) {
         Create(wxPLOTMARKER_LINE, rect, wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_HORIZ_LINE
-    void CreateHorizLineMarker(double y, const wxGenericPen &pen)
-    {
+    void CreateHorizLineMarker(double y, const wxGenericPen &pen) {
         Create(wxPLOTMARKER_HORIZ_LINE, wxRect2DDouble(0, y, -1, 0), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_VERT_LINE
-    void CreateVertLineMarker(double x, const wxGenericPen &pen)
-    {
+    void CreateVertLineMarker(double x, const wxGenericPen &pen) {
         Create(wxPLOTMARKER_VERT_LINE, wxRect2DDouble(x, 0, 0, -1), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_CROSS
-    void CreateCrossMarker(const wxPoint2DDouble &pt, const wxGenericPen &pen)
-    {
+    void CreateCrossMarker(const wxPoint2DDouble &pt, const wxGenericPen &pen) {
         Create(wxPLOTMARKER_CROSS, wxRect2DDouble(pt.m_x, pt.m_y, -1, -1), wxSize(-1, -1), pen);
     }
 
     // Create a wxPLOTMARKER_RECT
     void CreateRectMarker(const wxRect2DDouble &rect, const wxGenericPen &pen,
-                          const wxGenericBrush &brush = wxNullGenericBrush)
-    {
+                          const wxGenericBrush &brush = wxNullGenericBrush) {
         Create(wxPLOTMARKER_RECT, rect, wxSize(-1, -1), pen, brush);
     }
 
     // Create a wxPLOTMARKER_RECT
     void CreateRectMarker(const wxPoint2DDouble &pt, const wxSize &size, const wxGenericPen &pen,
-                          const wxGenericBrush &brush = wxNullGenericBrush)
-    {
+                          const wxGenericBrush &brush = wxNullGenericBrush) {
         Create(wxPLOTMARKER_RECT, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
@@ -161,14 +141,12 @@ public:
 
     // Create a wxPLOTMARKER_ELLIPSE
     void CreateEllipseMarker(const wxPoint2DDouble &pt, const wxSize &size, const wxGenericPen &pen,
-                             const wxGenericBrush &brush = wxNullGenericBrush)
-    {
+                             const wxGenericBrush &brush = wxNullGenericBrush) {
         Create(wxPLOTMARKER_ELLIPSE, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), size, pen, brush);
     }
 
     // Create a wxPLOTMARKER_BITMAP
-    void CreateBitmapMarker(const wxPoint2DDouble &pt, const wxBitmap &bitmap)
-    {
+    void CreateBitmapMarker(const wxPoint2DDouble &pt, const wxBitmap &bitmap) {
         Create(wxPLOTMARKER_BITMAP, wxRect2DDouble(pt.m_x, pt.m_y, 0, 0), wxSize(-1, -1), wxNullGenericPen,
                wxNullGenericBrush, bitmap);
     }
@@ -225,30 +203,26 @@ public:
     void SetBitmap(const wxBitmap &bitmap);
 
     // operators
-    bool operator==(const wxPlotMarker &pm) const
-    {
+    bool operator==(const wxPlotMarker &pm) const {
         return m_refData == pm.m_refData;
     }
 
-    bool operator!=(const wxPlotMarker &pm) const
-    {
+    bool operator!=(const wxPlotMarker &pm) const {
         return m_refData != pm.m_refData;
     }
 
-    wxPlotMarker &operator=(const wxPlotMarker &pm)
-    {
-        if ((*this) != pm)
-            Ref(pm);
+    wxPlotMarker &operator=(const wxPlotMarker &pm) {
+        if ((*this) != pm) Ref(pm);
         return *this;
     }
 
-private:
+   private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
     virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-DECLARE_DYNAMIC_CLASS(wxPlotMarker);
+    DECLARE_DYNAMIC_CLASS(wxPlotMarker);
 };
 
-#endif // _WX_PLOTMARK_H_
+#endif  // _WX_PLOTMARK_H_

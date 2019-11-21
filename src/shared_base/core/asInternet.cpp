@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,33 +30,27 @@
 
 #include <asThreadInternetDownload.h>
 
-
-void asInternet::Init()
-{
+void asInternet::Init() {
     // Init cURL
     curl_global_init(CURL_GLOBAL_ALL);
 }
 
-void asInternet::Cleanup()
-{
+void asInternet::Cleanup() {
     // Cleanup cURL
     curl_global_cleanup();
 }
 
-size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream)
-{
-    auto *out = (struct HttpFile *) stream;
+size_t asInternet::WriteFile(void *buffer, size_t size, size_t nmemb, void *stream) {
+    auto *out = (struct HttpFile *)stream;
     if (!out->stream) {
         // Open file for writing
         out->stream = fopen(out->fileName, "wb");
-        if (!out->stream)
-            return 1; // failure, can't open file to write
+        if (!out->stream) return 1;  // failure, can't open file to write
     }
     return fwrite(buffer, size, nmemb, out->stream);
 }
 
-int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir)
-{
+int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir) {
     // Proxy
     wxConfigBase *pConfig = wxFileConfig::Get();
     bool usesProxy = pConfig->ReadBool("/Internet/UsesProxy", false);
@@ -66,7 +60,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
     wxString proxyPasswd = pConfig->Read("/Internet/ProxyPasswd", wxEmptyString);
 
     // Get the number of connections
-    //int threadsNb = wxMin(ThreadsManager().GetAvailableThreadsNb(), (int)fileNames.size());
+    // int threadsNb = wxMin(ThreadsManager().GetAvailableThreadsNb(), (int)fileNames.size());
     long parallelRequests = pConfig->ReadLong("/Internet/ParallelRequestsNb", 5l);
 
     if (parallelRequests > 1) {
@@ -75,23 +69,22 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 
         // Create threads
         int end = -1;
-        parallelRequests = wxMin(parallelRequests, (int) fileNames.size());
+        parallelRequests = wxMin(parallelRequests, (int)fileNames.size());
         int threadType = -1;
         for (int iThread = 0; iThread < parallelRequests; iThread++) {
             int nbFiles = fileNames.size();
             if (end >= nbFiles - 1) {
                 break;
-			}
+            }
             int start = end + 1;
             end = wxMin(start + ceil((float)fileNames.size() / (float)parallelRequests) - 1, (int)fileNames.size() - 1);
             wxASSERT(!fileNames.empty());
             wxASSERT(end >= start);
             wxASSERT_MSG(end < fileNames.size(),
-                         wxString::Format("Size of fileNames = %d, desired end = %d", (int) fileNames.size(), end));
+                         wxString::Format("Size of fileNames = %d, desired end = %d", (int)fileNames.size(), end));
 
-            auto *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy,
-                                                                            proxyAddress, proxyPort, proxyUser,
-                                                                            proxyPasswd, start, end);
+            auto *thread = new asThreadInternetDownload(urls, fileNames, destinationDir, usesProxy, proxyAddress,
+                                                        proxyPort, proxyUser, proxyPasswd, start, end);
             threadType = thread->GetType();
             ThreadsManager().AddThread(thread);
         }
@@ -135,16 +128,18 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
             // Fail if the HTTP code returned is equal to or larger than 400
             curl_easy_setopt(curl, CURLOPT_FAILONERROR, true);
-            // Maximum time in seconds that we allow the connection to the server to take. This only limits the connection phase.
+            // Maximum time in seconds that we allow the connection to the server to take. This only limits the
+            // connection phase.
             curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
-            // Set a timeout period (in seconds) on the amount of time that the server is allowed to take in order to generate a response message for a command before the session is considered hung.
+            // Set a timeout period (in seconds) on the amount of time that the server is allowed to take in order to
+            // generate a response message for a command before the session is considered hung.
             curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 10);
 
             for (int iFile = 0; iFile < urls.size(); iFile++) {
                 wxString fileName = fileNames[iFile];
                 wxString filePath = destinationDir + DS + fileName;
                 wxString url = urls[iFile];
-                wxLogVerbose(_("Downloading file %s."), filePath); // Do not log the URL, it bugs !
+                wxLogVerbose(_("Downloading file %s."), filePath);  // Do not log the URL, it bugs !
 
                 // Use of a wxFileName object to create the directory.
                 wxFileName currentFilePath = wxFileName(filePath);
@@ -159,7 +154,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
 #if wxUSE_GUI
                 // Update the progress bar
                 wxString updateMsg = wxString::Format(_("Downloading file %s\n"), fileName) +
-                                     wxString::Format(_("Downloading: %d / %d files"), iFile + 1, (int) urls.size());
+                                     wxString::Format(_("Downloading: %d / %d files"), iFile + 1, (int)urls.size());
                 if (!progressBar.Update(iFile, updateMsg)) {
                     wxLogVerbose(_("The download has been canceled by the user."));
                     wxDELETEA(errorBfr);
@@ -170,11 +165,11 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                 // Download only if not already done
                 if (!wxFileName::FileExists(filePath)) {
                     // Instantiate the file structure
-                    struct HttpFile file = {filePath.mb_str(), // Name to store the file as if successful
+                    struct HttpFile file = {filePath.mb_str(),  // Name to store the file as if successful
                                             nullptr};
 
                     // Define the URL
-                    curl_easy_setopt(curl, CURLOPT_URL, (const char *) url.mb_str(wxConvUTF8));
+                    curl_easy_setopt(curl, CURLOPT_URL, (const char *)url.mb_str(wxConvUTF8));
                     // Define our callback to get called when there's data to be written
                     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFile);
                     // Set a pointer to our struct to pass to the callback
@@ -183,14 +178,14 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     // If a proxy is used
                     if (usesProxy) {
                         if (!proxyAddress.IsEmpty()) {
-                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char *) proxyAddress.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXY, (const char *)proxyAddress.mb_str(wxConvUTF8));
                         }
                         if (proxyPort > 0) {
                             curl_easy_setopt(curl, CURLOPT_PROXYPORT, proxyPort);
                         }
                         if (!proxyUser.IsEmpty()) {
                             wxString proxyLogin = proxyUser + ":" + proxyPasswd;
-                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *) proxyLogin.mb_str(wxConvUTF8));
+                            curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, (const char *)proxyLogin.mb_str(wxConvUTF8));
                         }
                     }
 
@@ -198,8 +193,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                     res = curl_easy_perform(curl);
 
                     // Close the local file
-                    if (file.stream)
-                        fclose(file.stream);
+                    if (file.stream) fclose(file.stream);
 
                     // Log in case of failure
                     if (CURLE_OK != res) {
@@ -208,7 +202,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
                         wxDELETEA(errorBfr);
                         return asFAILED;
                     } else {
-                        wxLogVerbose(_("File %d/%d downloaded successfully."), iFile + 1, (int) urls.size());
+                        wxLogVerbose(_("File %d/%d downloaded successfully."), iFile + 1, (int)urls.size());
                     }
                 }
             }

@@ -27,9 +27,7 @@
 
 #include "asCriteriaS2grads.h"
 
-asCriteriaS2grads::asCriteriaS2grads()
-        : asCriteriaS1grads()
-{
+asCriteriaS2grads::asCriteriaS2grads() : asCriteriaS1grads() {
     m_minPointsNb = 3;
     m_scaleWorst = 200;
     m_scaleWorst = Inff;

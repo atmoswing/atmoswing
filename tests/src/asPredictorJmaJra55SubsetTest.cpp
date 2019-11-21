@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorJmaJra55SubsetRegular, LoadEasy)
-{
+TEST(PredictorJmaJra55SubsetRegular, LoadEasy) {
     double xMin = 360;
     double xWidth = 10;
     double xStep = 1.250;
@@ -97,8 +96,7 @@ TEST(PredictorJmaJra55SubsetRegular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorJmaJra55SubsetRegular, Around360)
-{
+TEST(PredictorJmaJra55SubsetRegular, Around360) {
     double xMin = 355;
     double xWidth = 10;
     double xStep = 1.250;

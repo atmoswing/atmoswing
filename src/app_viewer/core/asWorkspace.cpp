@@ -28,21 +28,17 @@
 #include "asWorkspace.h"
 
 asWorkspace::asWorkspace()
-        : wxObject(),
-          m_hasChanged(false),
-          m_filePath(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw"),
-          m_coordinateSys("EPSG:3857"),
-          m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
-          m_colorbarMaxValue(50.0),
-          m_timeSeriesPlotPastDaysNb(3),
-          m_alarmsPanelReturnPeriod(10),
-          m_alarmsPanelQuantile(0.9f)
-{
+    : wxObject(),
+      m_hasChanged(false),
+      m_filePath(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Workspace.asvw"),
+      m_coordinateSys("EPSG:3857"),
+      m_forecastsDirectory(asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Forecasts"),
+      m_colorbarMaxValue(50.0),
+      m_timeSeriesPlotPastDaysNb(3),
+      m_alarmsPanelReturnPeriod(10),
+      m_alarmsPanelQuantile(0.9f) {}
 
-}
-
-bool asWorkspace::Load(const wxString &filePath)
-{
+bool asWorkspace::Load(const wxString &filePath) {
     ClearLayers();
 
     // Open the file
@@ -103,7 +99,7 @@ bool asWorkspace::Load(const wxString &filePath)
                             wxFromString(fillColorStr, &fillColor);
                             m_layerFillColors.push_back(fillColor);
                         } else if (nodeLayerData->GetName() == "brush_style") {
-                            auto brushStyle = (wxBrushStyle) asFileWorkspace::GetInt(nodeLayerData);
+                            auto brushStyle = (wxBrushStyle)asFileWorkspace::GetInt(nodeLayerData);
                             m_layerBrushStyles.push_back(brushStyle);
 #endif
                         } else {
@@ -121,12 +117,11 @@ bool asWorkspace::Load(const wxString &filePath)
 
             if (m_layerPaths.size() != m_layerTypes.size() || m_layerPaths.size() != m_layerTransparencies.size() ||
                 m_layerPaths.size() != m_layerVisibilities.size() || m_layerPaths.size() != m_layerLineWidths.size()
-                #if wxUSE_GUI
-                || m_layerPaths.size() != m_layerLineColors.size()
-                || m_layerPaths.size() != m_layerFillColors.size()
-                || m_layerPaths.size() != m_layerBrushStyles.size()
+#if wxUSE_GUI
+                || m_layerPaths.size() != m_layerLineColors.size() || m_layerPaths.size() != m_layerFillColors.size() ||
+                m_layerPaths.size() != m_layerBrushStyles.size()
 #endif
-                    ) {
+            ) {
                 wxLogError(_("The number of elements in the layers is not consistent in the workspace file."));
                 return false;
             }
@@ -141,22 +136,19 @@ bool asWorkspace::Load(const wxString &filePath)
     return true;
 }
 
-bool asWorkspace::Save() const
-{
+bool asWorkspace::Save() const {
     // Open the file
     asFileWorkspace fileWorkspace(m_filePath, asFile::Replace);
-    if (!fileWorkspace.Open())
-        return false;
+    if (!fileWorkspace.Open()) return false;
 
-    if (!fileWorkspace.EditRootElement())
-        return false;
+    if (!fileWorkspace.EditRootElement()) return false;
 
     // General data
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("coordinate_system", m_coordinateSys));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("forecast_directory", m_forecastsDirectory));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("colorbar_max_value", m_colorbarMaxValue));
     fileWorkspace.AddChild(
-            fileWorkspace.CreateNodeWithValue("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
+        fileWorkspace.CreateNodeWithValue("plot_time_series_past_days_nb", m_timeSeriesPlotPastDaysNb));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_return_period", m_alarmsPanelReturnPeriod));
     fileWorkspace.AddChild(fileWorkspace.CreateNodeWithValue("panel_alarms_quantile", m_alarmsPanelQuantile));
 
@@ -187,14 +179,12 @@ bool asWorkspace::Save() const
     return true;
 }
 
-int asWorkspace::GetLayersNb() const
-{
-    auto layersNb = (int) m_layerPaths.size();
+int asWorkspace::GetLayersNb() const {
+    auto layersNb = (int)m_layerPaths.size();
     return layersNb;
 }
 
-void asWorkspace::ClearLayers()
-{
+void asWorkspace::ClearLayers() {
     m_layerPaths.clear();
     m_layerTypes.clear();
     m_layerTransparencies.clear();
@@ -207,8 +197,7 @@ void asWorkspace::ClearLayers()
 #endif
 }
 
-void asWorkspace::AddLayer()
-{
+void asWorkspace::AddLayer() {
     int nb = m_layerPaths.size() + 1;
     m_layerPaths.resize(nb);
     m_layerTypes.resize(nb);

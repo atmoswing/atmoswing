@@ -29,6 +29,7 @@
 #define AS_METHOD_DOWNSCALER_H
 
 #include <asMethodStandard.h>
+
 #include <utility>
 
 class asResultsDates;
@@ -37,47 +38,41 @@ class asResultsValues;
 class asPredictorProj;
 class asCriteria;
 
-
-class asMethodDownscaler
-        : public asMethodStandard
-{
-public:
+class asMethodDownscaler : public asMethodStandard {
+   public:
     asMethodDownscaler();
 
     ~asMethodDownscaler() override;
 
     bool GetAnalogsDates(asResultsDates &results, asParametersDownscaling *params, int iStep, bool &containsNaNs);
 
-    bool GetAnalogsSubDates(asResultsDates &results, asParametersDownscaling *params, asResultsDates &anaDates, int iStep,
-                            bool &containsNaNs);
+    bool GetAnalogsSubDates(asResultsDates &results, asParametersDownscaling *params, asResultsDates &anaDates,
+                            int iStep, bool &containsNaNs);
 
-    bool GetAnalogsValues(asResultsValues &results, asParametersDownscaling *params, asResultsDates &anaDates, int iStep);
+    bool GetAnalogsValues(asResultsValues &results, asParametersDownscaling *params, asResultsDates &anaDates,
+                          int iStep);
 
     void ClearAll();
 
     bool Manager() override;
 
-    bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const
-    {
+    bool IsArchivePointerCopy(int iStep, int iPtor, int iPre) const {
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-    bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const
-    {
+    bool IsProjectionPointerCopy(int iStep, int iPtor, int iPre) const {
         return m_preloadedProjectionPointerCopy[iStep][iPtor][iPre];
     }
 
-    void SetPredictandStationIds(vi val)
-    {
+    void SetPredictandStationIds(vi val) {
         m_predictandStationIds = val;
     }
 
-    void SetPredictorProjectionDataDir(const wxString &val)
-    {
+    void SetPredictorProjectionDataDir(const wxString &val) {
         m_predictorProjectionDataDir = val;
     }
 
-protected:
+   protected:
     wxString m_predictorProjectionDataDir;
     vi m_predictandStationIds;
     std::vector<asParametersDownscaling> m_parameters;
@@ -91,9 +86,8 @@ protected:
                                                    asParametersDownscaling *params, int iStep, int iPtor,
                                                    double timeStartData, double timeEndData);
 
-    bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors,
-                                                asParametersDownscaling *params, int iStep, int iPtor,
-                                                double timeStartData, double timeEndData);
+    bool ExtractProjectionDataWithPreprocessing(std::vector<asPredictor *> &predictors, asParametersDownscaling *params,
+                                                int iStep, int iPtor, double timeStartData, double timeEndData);
 
     bool Preprocess(std::vector<asPredictorProj *> predictors, const wxString &method, asPredictor *result);
 
@@ -105,7 +99,7 @@ protected:
 
     void Cleanup(std::vector<asCriteria *> criteria) override;
 
-private:
+   private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
     std::vector<vvb> m_preloadedArchivePointerCopy;

@@ -28,9 +28,7 @@
 #include "asFileXml.h"
 #include "gtest/gtest.h"
 
-
-TEST(FileXml, SaveAndLoadXmlFileWxStyle)
-{
+TEST(FileXml, SaveAndLoadXmlFileWxStyle) {
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest1");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file.xml";
@@ -94,8 +92,7 @@ TEST(FileXml, SaveAndLoadXmlFileWxStyle)
     asRemoveDir(tmpDir);
 }
 
-TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
-{
+TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle) {
     wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest2");
     wxFileName::Mkdir(tmpDir);
     wxString filePath = tmpDir + wxFileName::GetPathSeparator() + "file2.xml";
@@ -144,8 +141,7 @@ TEST(FileXml, SaveAndLoadXmlFileAtmoSwingStyle)
     asRemoveDir(tmpDir);
 }
 
-TEST(FileXml, LoadSimpleXmlFile)
-{
+TEST(FileXml, LoadSimpleXmlFile) {
     wxString filePath = wxFileName::GetCwd();
     filePath.Append("/files/file_xml.xml");
     asFileXml fileXml(filePath, asFile::ReadOnly);
@@ -153,8 +149,7 @@ TEST(FileXml, LoadSimpleXmlFile)
     EXPECT_TRUE(fileXml.Open());
 }
 
-TEST(FileXml, LoadSimpleXmlFileWithErrors)
-{
+TEST(FileXml, LoadSimpleXmlFileWithErrors) {
     wxLogNull logNo;
 
     wxString filePath = wxFileName::GetCwd();

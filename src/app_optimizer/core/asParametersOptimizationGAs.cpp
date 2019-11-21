@@ -41,17 +41,11 @@ asParametersOptimizationGAs::asParametersOptimizationGAs()
       m_timeArrayAnalogsIntervalDaysLowerLimit(0),
       m_timeArrayAnalogsIntervalDaysLocks(true),
       m_allParametersCount(0),
-      m_parametersListOver(false)
-{
-}
+      m_parametersListOver(false) {}
 
-asParametersOptimizationGAs::~asParametersOptimizationGAs()
-{
-    // dtor
-}
+asParametersOptimizationGAs::~asParametersOptimizationGAs() {}
 
-void asParametersOptimizationGAs::BuildChromosomes()
-{
+void asParametersOptimizationGAs::BuildChromosomes() {
     int counter = 0;
     vi indices;
 
@@ -137,18 +131,15 @@ void asParametersOptimizationGAs::BuildChromosomes()
     m_allParametersCount = counter;
 }
 
-void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRate()
-{
+void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRate() {
     m_adaptMutationRate = asRandom(0.0, 1.0);
 }
 
-void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRadius()
-{
+void asParametersOptimizationGAs::InitIndividualSelfAdaptationMutationRadius() {
     m_adaptMutationRadius = asRandom(0.0, 1.0);
 }
 
-void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
-{
+void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate() {
     int length = GetChromosomeLength();
     m_chromosomeMutationRate.resize(length);
 
@@ -159,8 +150,7 @@ void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRate()
     m_hasChromosomeMutationRate = true;
 }
 
-void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
-{
+void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius() {
     int length = GetChromosomeLength();
     m_chromosomeMutationRadius.resize(length);
 
@@ -171,28 +161,22 @@ void asParametersOptimizationGAs::InitChromosomeSelfAdaptationMutationRadius()
     m_hasChromosomeMutationRadius = true;
 }
 
-bool asParametersOptimizationGAs::IsParamLocked(int index)
-{
+bool asParametersOptimizationGAs::IsParamLocked(int index) {
     int counter = 0;
     m_parametersListOver = false;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
-        if (counter == index)
-            return false;
+        if (counter == index) return false;
     } else {
-        if (counter == index)
-            return true;
+        if (counter == index) return true;
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         if (!m_stepsLocks[i].analogsNumber) {
-            if (counter == index)
-                return false;
+            if (counter == index) return false;
         } else {
-            if (counter == index)
-                return true;
+            if (counter == index) return true;
         }
         counter++;
 
@@ -200,112 +184,88 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
             if (NeedsPreprocessing(i, j)) {
                 for (int k = 0; k < GetPreprocessSize(i, j); k++) {
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
-                        if (counter == index)
-                            return false;
+                        if (counter == index) return false;
                     } else {
-                        if (counter == index)
-                            return true;
+                        if (counter == index) return true;
                     }
                     counter++;
 
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
-                        if (counter == index)
-                            return false;
+                        if (counter == index) return false;
                     } else {
-                        if (counter == index)
-                            return true;
+                        if (counter == index) return true;
                     }
                     counter++;
 
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
-                        if (counter == index)
-                            return false;
+                        if (counter == index) return false;
                     } else {
-                        if (counter == index)
-                            return true;
+                        if (counter == index) return true;
                     }
                     counter++;
                 }
             } else {
                 if (!m_stepsLocks[i].predictors[j].dataId) {
-                    if (counter == index)
-                        return false;
+                    if (counter == index) return false;
                 } else {
-                    if (counter == index)
-                        return true;
+                    if (counter == index) return true;
                 }
                 counter++;
 
                 if (!m_stepsLocks[i].predictors[j].level) {
-                    if (counter == index)
-                        return false;
+                    if (counter == index) return false;
                 } else {
-                    if (counter == index)
-                        return true;
+                    if (counter == index) return true;
                 }
                 counter++;
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
-                    if (counter == index)
-                        return false;
+                    if (counter == index) return false;
                 } else {
-                    if (counter == index)
-                        return true;
+                    if (counter == index) return true;
                 }
                 counter++;
             }
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].weight) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
-                if (counter == index)
-                    return false;
+                if (counter == index) return false;
             } else {
-                if (counter == index)
-                    return true;
+                if (counter == index) return true;
             }
             counter++;
         }
@@ -321,12 +281,11 @@ bool asParametersOptimizationGAs::IsParamLocked(int index)
     return true;
 }
 
-int asParametersOptimizationGAs::GetParamType(int index)
-{
+int asParametersOptimizationGAs::GetParamType(int index) {
     /*
-     * return: 
-     * - 1 for value 
-     * - 2 for advanced list (notion of proximity) 
+     * return:
+     * - 1 for value
+     * - 2 for advanced list (notion of proximity)
      * - 3 for simple list (no proximity between elements)
      */
 
@@ -339,7 +298,6 @@ int asParametersOptimizationGAs::GetParamType(int index)
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         // AnalogsNumber
         if (counter == index) {
             return 1;
@@ -431,25 +389,22 @@ int asParametersOptimizationGAs::GetParamType(int index)
     wxASSERT_MSG(counter <= index, "Couldn't access the desired index in the parameters chromosome.");
 
     asThrowException(_("We should never reach that point..."));
-
 }
 
-double asParametersOptimizationGAs::GetParameterValue(int index)
-{
+double asParametersOptimizationGAs::GetParameterValue(int index) {
     int counter = 0;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            return (double) GetAnalogsIntervalDays();
+            return (double)GetAnalogsIntervalDays();
         }
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
-                return (double) GetAnalogsNumber(i);
+                return (double)GetAnalogsNumber(i);
             }
         }
         counter++;
@@ -463,12 +418,11 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
                             int iPre = -1;
                             for (int r = 0; r < vect.size(); r++) {
-                                if (vect[r].IsSameAs(dat, false))
-                                    iPre = r;
+                                if (vect[r].IsSameAs(dat, false)) iPre = r;
                             }
                             wxASSERT(iPre >= 0);
 
-                            return (double) iPre;
+                            return (double)iPre;
                         }
                     }
                     counter++;
@@ -479,19 +433,18 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                             vf vect = GetPreprocessLevelVector(i, j, k);
                             int iPre = -1;
                             for (int r = 0; r < vect.size(); r++) {
-                                if (vect[r] == dat)
-                                    iPre = r;
+                                if (vect[r] == dat) iPre = r;
                             }
                             wxASSERT(iPre >= 0);
 
-                            return (double) iPre;
+                            return (double)iPre;
                         }
                     }
                     counter++;
 
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessHour(i, j, k);
+                            return (double)GetPreprocessHour(i, j, k);
                         }
                     }
                     counter++;
@@ -503,12 +456,11 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         vwxs vect = GetPredictorDataIdVector(i, j);
                         int iPre = -1;
                         for (int r = 0; r < vect.size(); r++) {
-                            if (vect[r].IsSameAs(dat, false))
-                                iPre = r;
+                            if (vect[r].IsSameAs(dat, false)) iPre = r;
                         }
                         wxASSERT(iPre >= 0);
 
-                        return (double) iPre;
+                        return (double)iPre;
                     }
                 }
                 counter++;
@@ -519,19 +471,18 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                         vf vect = GetPredictorLevelVector(i, j);
                         int iPre = -1;
                         for (int r = 0; r < vect.size(); r++) {
-                            if (vect[r] == dat)
-                                iPre = r;
+                            if (vect[r] == dat) iPre = r;
                         }
                         wxASSERT(iPre >= 0);
 
-                        return (double) iPre;
+                        return (double)iPre;
                     }
                 }
                 counter++;
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorHour(i, j);
+                        return (double)GetPredictorHour(i, j);
                     }
                 }
                 counter++;
@@ -539,35 +490,35 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    return (double) GetPredictorXmin(i, j);
+                    return (double)GetPredictorXmin(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorXptsnb(i, j);
+                    return (double)GetPredictorXptsnb(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    return (double) GetPredictorYmin(i, j);
+                    return (double)GetPredictorYmin(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorYptsnb(i, j);
+                    return (double)GetPredictorYptsnb(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
-                    return (double) GetPredictorWeight(i, j);
+                    return (double)GetPredictorWeight(i, j);
                 }
             }
             counter++;
@@ -581,12 +532,11 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
                     vwxs vect = GetPredictorCriteriaVector(i, j);
                     int iPre = -1;
                     for (int r = 0; r < vect.size(); r++) {
-                        if (vect[r].IsSameAs(dat, false))
-                            iPre = r;
+                        if (vect[r].IsSameAs(dat, false)) iPre = r;
                     }
                     wxASSERT(iPre >= 0);
 
-                    return (double) iPre;
+                    return (double)iPre;
                 }
             }
             counter++;
@@ -601,22 +551,20 @@ double asParametersOptimizationGAs::GetParameterValue(int index)
     return NaNd;
 }
 
-double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
-{
+double asParametersOptimizationGAs::GetParameterUpperLimit(int index) {
     int counter = 0;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            return (double) GetTimeArrayAnalogsIntervalDaysUpperLimit();
+            return (double)GetTimeArrayAnalogsIntervalDaysUpperLimit();
         }
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
-                return (double) GetAnalogsNumberUpperLimit(i);
+                return (double)GetAnalogsNumberUpperLimit(i);
             }
         }
         counter++;
@@ -627,7 +575,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     if (!m_stepsLocks[i].predictors[j].preprocessDataId[k]) {
                         if (counter == index) {
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
-                            return (double) (vect.size() - 1);
+                            return (double)(vect.size() - 1);
                         }
                     }
                     counter++;
@@ -635,14 +583,14 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                     if (!m_stepsLocks[i].predictors[j].preprocessLevels[k]) {
                         if (counter == index) {
                             vf vect = GetPreprocessLevelVector(i, j, k);
-                            return (double) (vect.size() - 1);
+                            return (double)(vect.size() - 1);
                         }
                     }
                     counter++;
 
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessHoursUpperLimit(i, j, k);
+                            return (double)GetPreprocessHoursUpperLimit(i, j, k);
                         }
                     }
                     counter++;
@@ -651,7 +599,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 if (!m_stepsLocks[i].predictors[j].dataId) {
                     if (counter == index) {
                         vwxs vect = GetPredictorDataIdVector(i, j);
-                        return (double) (vect.size() - 1);
+                        return (double)(vect.size() - 1);
                     }
                 }
                 counter++;
@@ -659,14 +607,14 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
                 if (!m_stepsLocks[i].predictors[j].level) {
                     if (counter == index) {
                         vf vect = GetPredictorLevelVector(i, j);
-                        return (double) (vect.size() - 1);
+                        return (double)(vect.size() - 1);
                     }
                 }
                 counter++;
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorHoursUpperLimit(i, j);
+                        return (double)GetPredictorHoursUpperLimit(i, j);
                     }
                 }
                 counter++;
@@ -674,35 +622,35 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    return (double) GetPredictorXminUpperLimit(i, j);
+                    return (double)GetPredictorXminUpperLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorXptsnbUpperLimit(i, j);
+                    return (double)GetPredictorXptsnbUpperLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    return (double) GetPredictorYminUpperLimit(i, j);
+                    return (double)GetPredictorYminUpperLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorYptsnbUpperLimit(i, j);
+                    return (double)GetPredictorYptsnbUpperLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
-                    return (double) GetPredictorWeightUpperLimit(i, j);
+                    return (double)GetPredictorWeightUpperLimit(i, j);
                 }
             }
             counter++;
@@ -710,7 +658,7 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
                     vwxs vect = GetPredictorCriteriaVector(i, j);
-                    return (double) (vect.size() - 1);
+                    return (double)(vect.size() - 1);
                 }
             }
             counter++;
@@ -725,22 +673,20 @@ double asParametersOptimizationGAs::GetParameterUpperLimit(int index)
     return NaNd;
 }
 
-double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
-{
+double asParametersOptimizationGAs::GetParameterLowerLimit(int index) {
     int counter = 0;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            return (double) GetTimeArrayAnalogsIntervalDaysLowerLimit();
+            return (double)GetTimeArrayAnalogsIntervalDaysLowerLimit();
         }
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
-                return (double) GetAnalogsNumberLowerLimit(i);
+                return (double)GetAnalogsNumberLowerLimit(i);
             }
         }
         counter++;
@@ -764,7 +710,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
 
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessHoursLowerLimit(i, j, k);
+                            return (double)GetPreprocessHoursLowerLimit(i, j, k);
                         }
                     }
                     counter++;
@@ -786,7 +732,7 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorHoursLowerLimit(i, j);
+                        return (double)GetPredictorHoursLowerLimit(i, j);
                     }
                 }
                 counter++;
@@ -794,42 +740,42 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    return (double) GetPredictorXminLowerLimit(i, j);
+                    return (double)GetPredictorXminLowerLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorXptsnbLowerLimit(i, j);
+                    return (double)GetPredictorXptsnbLowerLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    return (double) GetPredictorYminLowerLimit(i, j);
+                    return (double)GetPredictorYminLowerLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorYptsnbLowerLimit(i, j);
+                    return (double)GetPredictorYptsnbLowerLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
-                    return (double) GetPredictorWeightLowerLimit(i, j);
+                    return (double)GetPredictorWeightLowerLimit(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
-                    return (double) 0.0;
+                    return (double)0.0;
                 }
             }
             counter++;
@@ -844,22 +790,20 @@ double asParametersOptimizationGAs::GetParameterLowerLimit(int index)
     return NaNd;
 }
 
-double asParametersOptimizationGAs::GetParameterIteration(int index)
-{
+double asParametersOptimizationGAs::GetParameterIteration(int index) {
     int counter = 0;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
-            return (double) GetTimeArrayAnalogsIntervalDaysIteration();
+            return (double)GetTimeArrayAnalogsIntervalDaysIteration();
         }
     }
     counter++;
 
     for (int i = 0; i < GetStepsNb(); i++) {
-
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
-                return (double) GetAnalogsNumberIteration(i);
+                return (double)GetAnalogsNumberIteration(i);
             }
         }
         counter++;
@@ -883,7 +827,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
 
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
-                            return (double) GetPreprocessHoursIteration(i, j, k);
+                            return (double)GetPreprocessHoursIteration(i, j, k);
                         }
                     }
                     counter++;
@@ -905,7 +849,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
 
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
-                        return (double) GetPredictorHoursIteration(i, j);
+                        return (double)GetPredictorHoursIteration(i, j);
                     }
                 }
                 counter++;
@@ -913,42 +857,42 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    return (double) GetPredictorXminIteration(i, j);
+                    return (double)GetPredictorXminIteration(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorXptsnbIteration(i, j);
+                    return (double)GetPredictorXptsnbIteration(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    return (double) GetPredictorYminIteration(i, j);
+                    return (double)GetPredictorYminIteration(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
-                    return (double) GetPredictorYptsnbIteration(i, j);
+                    return (double)GetPredictorYptsnbIteration(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
-                    return (double) GetPredictorWeightIteration(i, j);
+                    return (double)GetPredictorWeightIteration(i, j);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].criteria) {
                 if (counter == index) {
-                    return (double) 1.0;
+                    return (double)1.0;
                 }
             }
             counter++;
@@ -963,8 +907,7 @@ double asParametersOptimizationGAs::GetParameterIteration(int index)
     return NaNd;
 }
 
-void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
-{
+void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
     int counter = 0;
 
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
@@ -998,10 +941,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             int val = asRound(newVal);
 
                             vwxs vect = GetPreprocessDataIdVector(i, j, k);
-                            if (val < 0)
-                                val = 0;
-                            if (val >= vect.size())
-                                val = vect.size() - 1;
+                            if (val < 0) val = 0;
+                            if (val >= vect.size()) val = vect.size() - 1;
 
                             if (!SetPreprocessDataId(i, j, k, vect[val])) {
                                 asThrowException(_("Error in SetPreprocessDataId from GAs."));
@@ -1016,10 +957,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                             int val = asRound(newVal);
 
                             vf vect = GetPreprocessLevelVector(i, j, k);
-                            if (val < 0)
-                                val = 0;
-                            if (val >= vect.size())
-                                val = vect.size() - 1;
+                            if (val < 0) val = 0;
+                            if (val >= vect.size()) val = vect.size() - 1;
 
                             if (!SetPreprocessLevel(i, j, k, vect[val])) {
                                 asThrowException(_("Error in SetPreprocessLevel from GAs."));
@@ -1046,10 +985,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         int val = asRound(newVal);
 
                         vwxs vect = GetPredictorDataIdVector(i, j);
-                        if (val < 0)
-                            val = 0;
-                        if (val >= vect.size())
-                            val = vect.size() - 1;
+                        if (val < 0) val = 0;
+                        if (val >= vect.size()) val = vect.size() - 1;
 
                         if (!SetPredictorDataId(i, j, vect[val])) {
                             asThrowException(_("Error in SetPredictorDataId from GAs."));
@@ -1064,10 +1001,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                         int val = asRound(newVal);
 
                         vf vect = GetPredictorLevelVector(i, j);
-                        if (val < 0)
-                            val = 0;
-                        if (val >= vect.size())
-                            val = vect.size() - 1;
+                        if (val < 0) val = 0;
+                        if (val >= vect.size()) val = vect.size() - 1;
 
                         if (!SetPredictorLevel(i, j, vect[val])) {
                             asThrowException(_("Error in SetPredictorLevel from GAs."));
@@ -1133,7 +1068,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
 
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
-                    float val = (float) newVal;
+                    float val = (float)newVal;
                     if (!SetPredictorWeight(i, j, val)) {
                         asThrowException(_("Error in SetPredictorWeight from GAs."));
                     }
@@ -1147,10 +1082,8 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
                     int val = asRound(newVal);
 
                     vwxs vect = GetPredictorCriteriaVector(i, j);
-                    if (val < 0)
-                        val = 0;
-                    if (val >= vect.size())
-                        val = vect.size() - 1;
+                    if (val < 0) val = 0;
+                    if (val >= vect.size()) val = vect.size() - 1;
 
                     if (!SetPredictorCriteria(i, j, vect[val])) {
                         asThrowException(_("Error in SetPredictorCriteria from GAs."));
@@ -1170,8 +1103,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal)
     return;
 }
 
-void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints)
-{
+void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1206,16 +1138,14 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 // Apply to self-adaptation
                 if (m_hasChromosomeMutationRate) {
                     float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
-                    SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt,
-                                                                otherParam.GetSelfAdaptationMutationRateFromChromosome(
-                                                                        counterSelfAdapt));
+                    SetSelfAdaptationMutationRateFromChromosome(
+                        counterSelfAdapt, otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                 }
                 if (m_hasChromosomeMutationRadius) {
                     float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
-                    SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
-                                                                  otherParam.GetSelfAdaptationMutationRadiusFromChromosome(
-                                                                          counterSelfAdapt));
+                    SetSelfAdaptationMutationRadiusFromChromosome(
+                        counterSelfAdapt, otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, mutRadius);
                 }
             }
@@ -1226,8 +1156,7 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
 }
 
 void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
-                                                    bool shareBeta, double betaMin, double betaMax)
-{
+                                                    bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1289,8 +1218,7 @@ void asParametersOptimizationGAs::BlendingCrossover(asParametersOptimizationGAs 
 }
 
 void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
-                                                     bool shareBeta, double betaMin, double betaMax)
-{
+                                                     bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1349,12 +1277,10 @@ void asParametersOptimizationGAs::HeuristicCrossover(asParametersOptimizationGAs
         }
         counter++;
     } while (!m_parametersListOver);
-
 }
 
 void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints,
-                                                      bool shareBeta, double betaMin, double betaMax)
-{
+                                                      bool shareBeta, double betaMin, double betaMax) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1418,16 +1344,15 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
                     // Apply to self-adaptation
                     if (m_hasChromosomeMutationRate) {
                         float mutRate = GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt);
-                        SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt,
-                                                                    otherParam.GetSelfAdaptationMutationRateFromChromosome(
-                                                                            counterSelfAdapt));
+                        SetSelfAdaptationMutationRateFromChromosome(
+                            counterSelfAdapt, otherParam.GetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt));
                         otherParam.SetSelfAdaptationMutationRateFromChromosome(counterSelfAdapt, mutRate);
                     }
                     if (m_hasChromosomeMutationRadius) {
                         float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
-                        SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
-                                                                      otherParam.GetSelfAdaptationMutationRadiusFromChromosome(
-                                                                              counterSelfAdapt));
+                        SetSelfAdaptationMutationRadiusFromChromosome(
+                            counterSelfAdapt,
+                            otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
                         otherParam.SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, mutRadius);
                     }
                 }
@@ -1436,12 +1361,10 @@ void asParametersOptimizationGAs::BinaryLikeCrossover(asParametersOptimizationGA
         }
         counter++;
     } while (!m_parametersListOver);
-
 }
 
 void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &otherParam,
-                                                  asParametersOptimizationGAs &thirdParam, vi &crossingPoints)
-{
+                                                  asParametersOptimizationGAs &thirdParam, vi &crossingPoints) {
     wxASSERT(!crossingPoints.empty());
 
     // Sort the crossing points vector
@@ -1501,11 +1424,9 @@ void asParametersOptimizationGAs::LinearCrossover(asParametersOptimizationGAs &o
         }
         counter++;
     } while (!m_parametersListOver);
-
 }
 
-void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta)
-{
+void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta) {
     double beta = asRandom(0.0, 1.0);
     int counterSelfAdapt = 0;
     int counter = 0;
@@ -1546,8 +1467,7 @@ void asParametersOptimizationGAs::LinearInterpolation(asParametersOptimizationGA
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateUniformDistribution(double probability, bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateUniformDistribution(double probability, bool &hasMutated) {
     int counter = 0;
 
     do {
@@ -1565,8 +1485,7 @@ void asParametersOptimizationGAs::MutateUniformDistribution(double probability, 
 }
 
 void asParametersOptimizationGAs::MutateNormalDistribution(double probability, double stdDevRatioRange,
-                                                           bool &hasMutated)
-{
+                                                           bool &hasMutated) {
     int counter = 0;
 
     do {
@@ -1575,7 +1494,7 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
                 if (GetParamType(counter) < 3) {
                     double mean = GetParameterValue(counter);
                     double stdDev =
-                            stdDevRatioRange * (GetParameterUpperLimit(counter) - GetParameterLowerLimit(counter));
+                        stdDevRatioRange * (GetParameterUpperLimit(counter) - GetParameterLowerLimit(counter));
                     double step = GetParameterIteration(counter);
                     double newVal = asRandomNormal(mean, stdDev, step);
                     SetParameterValue(counter, newVal);
@@ -1594,11 +1513,10 @@ void asParametersOptimizationGAs::MutateNormalDistribution(double probability, d
 }
 
 void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate,
-                                                   bool &hasMutated)
-{
-    double ratioGens = (double) nbGen / (double) nbGenMax;
+                                                   bool &hasMutated) {
+    double ratioGens = (double)nbGen / (double)nbGenMax;
     double cstFactor =
-            (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate)) * (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate));
+        (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate)) * (1.0 - wxMin(ratioGens, 1.0) * (1.0 - minRate));
 
     int counter = 0;
 
@@ -1634,8 +1552,7 @@ void asParametersOptimizationGAs::MutateNonUniform(double probability, int nbGen
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated) {
     // Mutate mutation probability
     if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
         m_adaptMutationRate = asRandom(0.0, 1.0);
@@ -1643,11 +1560,9 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRate(bool &hasMutated)
 
     // Mutate data
     MutateUniformDistribution(m_adaptMutationRate, hasMutated);
-
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated) {
     // Mutate mutation probability
     if (asRandom(0.0, 1.0) < m_adaptMutationRate) {
         m_adaptMutationRate = asRandom(0.0, 1.0);
@@ -1692,8 +1607,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadius(bool &hasMutated)
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMutated) {
     wxASSERT(!m_chromosomeMutationRate.empty());
     wxASSERT(m_chromosomeMutationRate.size() == GetChromosomeLength());
 
@@ -1702,7 +1616,6 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
         if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[i]) {
             m_chromosomeMutationRate[i] = asRandom(0.0, 1.0);
         }
-
     }
 
     // Mutate data
@@ -1726,8 +1639,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRateChromosome(bool &hasMu
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &hasMutated) {
     wxASSERT(!m_chromosomeMutationRate.empty());
     wxASSERT(!m_chromosomeMutationRadius.empty());
     wxASSERT(m_chromosomeMutationRate.size() == m_chromosomeMutationRadius.size());
@@ -1738,7 +1650,6 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
         if (asRandom(0.0, 1.0) < m_chromosomeMutationRate[i]) {
             m_chromosomeMutationRate[i] = asRandom(0.0, 1.0);
         }
-
     }
 
     // Mutate mutation radius. Use the radius here as a probability !!
@@ -1746,7 +1657,6 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
         if (asRandom(0.0, 1.0) < m_chromosomeMutationRadius[i]) {
             m_chromosomeMutationRadius[i] = asRandom(0.0, 1.0);
         }
-
     }
 
     // Mutate data
@@ -1787,8 +1697,7 @@ void asParametersOptimizationGAs::MutateSelfAdaptationRadiusChromosome(bool &has
     } while (!m_parametersListOver);
 }
 
-void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &hasMutated)
-{
+void asParametersOptimizationGAs::MutateMultiScale(double probability, bool &hasMutated) {
     // Choose the radius
     double radiusChoice = asRandom(0.0, 1.0);
     double radius = 0;

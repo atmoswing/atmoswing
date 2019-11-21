@@ -27,13 +27,10 @@
 
 #include "asPredictorCustomMFvgMeso.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorCustomMFvgMeso::asPredictorCustomMFvgMeso(const wxString &dataId)
-        : asPredictorCustomMFvgSynop(dataId)
-{
+asPredictorCustomMFvgMeso::asPredictorCustomMFvgMeso(const wxString &dataId) : asPredictorCustomMFvgSynop(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Meso";
     m_provider = "ECMWF";
@@ -44,14 +41,12 @@ asPredictorCustomMFvgMeso::asPredictorCustomMFvgMeso(const wxString &dataId)
     m_warnMissingFiles = false;
 }
 
-bool asPredictorCustomMFvgMeso::Init()
-{
+bool asPredictorCustomMFvgMeso::Init() {
     if (!asPredictorCustomMFvgSynop::Init()) {
         return false;
     }
 
     if (m_product.IsSameAs("data", false)) {
-
         if (m_dataId.Contains("2t_sfc")) {
             m_parameter = AirTemperature;
             m_gribCode = {0, 128, 167, 1};
@@ -89,11 +84,11 @@ bool asPredictorCustomMFvgMeso::Init()
     return true;
 }
 
-void asPredictorCustomMFvgMeso::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomMFvgMeso::ListFiles(asTimeArray &timeArray) {
     // Check product directory
     if (!wxDirExists(GetFullDirectoryPath())) {
-        asThrowException(wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
+        asThrowException(
+            wxString::Format(_("Cannot find predictor directory for FVG data (%s)."), GetFullDirectoryPath()));
     }
 
     // Check directory structure

@@ -26,16 +26,14 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "wx/filename.h"
+#include "asAreaCompRegGrid.h"
 #include "asPredictor.h"
 #include "asPreprocessor.h"
-#include "asAreaCompRegGrid.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
+#include "wx/filename.h"
 
-
-TEST(Preprocessor, Gradients)
-{
+TEST(Preprocessor, Gradients) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -195,8 +193,7 @@ TEST(Preprocessor, Gradients)
     wxDELETE(predictor);
 }
 
-TEST(Preprocessor, GradientsMultithreading)
-{
+TEST(Preprocessor, GradientsMultithreading) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", true);
 
@@ -335,8 +332,7 @@ TEST(Preprocessor, GradientsMultithreading)
     wxDELETE(predictor);
 }
 
-TEST(Preprocessor, Addition)
-{
+TEST(Preprocessor, Addition) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -410,7 +406,6 @@ TEST(Preprocessor, Addition)
     EXPECT_NEAR(842.9, adds[0][0](2, 0), 0.05);
     EXPECT_NEAR(822.7, adds[0][0](2, 4), 0.05);
 
-
     /* Values day 5, 00h
     279.7	280.5	280.9	280.5	279.3
     280.5	280.5	279.6	277.9	275.2
@@ -441,7 +436,6 @@ TEST(Preprocessor, Addition)
     EXPECT_NEAR(841.1, adds[4][0](2, 0), 0.05);
     EXPECT_NEAR(820.7, adds[4][0](2, 4), 0.05);
 
-
     wxDELETE(area);
     wxDELETE(addition);
     wxDELETE(predictor1);
@@ -449,8 +443,7 @@ TEST(Preprocessor, Addition)
     wxDELETE(predictor3);
 }
 
-TEST(Preprocessor, Average)
-{
+TEST(Preprocessor, Average) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -520,7 +513,6 @@ TEST(Preprocessor, Average)
     EXPECT_NEAR(281.0, avg[0][0](2, 0), 0.05);
     EXPECT_NEAR(274.2, avg[0][0](2, 4), 0.05);
 
-
     /* Values day 5, 00h
     279.7	280.5	280.9	280.5	279.3
     280.5	280.5	279.6	277.9	275.2
@@ -551,7 +543,6 @@ TEST(Preprocessor, Average)
     EXPECT_NEAR(280.4, avg[4][0](2, 0), 0.05);
     EXPECT_NEAR(273.6, avg[4][0](2, 4), 0.05);
 
-
     wxDELETE(area);
     wxDELETE(average);
     wxDELETE(predictor1);
@@ -559,8 +550,7 @@ TEST(Preprocessor, Average)
     wxDELETE(predictor3);
 }
 
-TEST(Preprocessor, Difference)
-{
+TEST(Preprocessor, Difference) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -620,7 +610,6 @@ TEST(Preprocessor, Difference)
     EXPECT_NEAR(-0.2, diffs[0][0](2, 0), 0.05);
     EXPECT_NEAR(0.4, diffs[0][0](2, 4), 0.05);
 
-
     /* Values day 5, 00h
     279.7	280.5	280.9	280.5	279.3
     280.5	280.5	279.6	277.9	275.2
@@ -646,15 +635,13 @@ TEST(Preprocessor, Difference)
     EXPECT_NEAR(0.2, diffs[4][0](2, 0), 0.05);
     EXPECT_NEAR(0.2, diffs[4][0](2, 4), 0.05);
 
-
     wxDELETE(area);
     wxDELETE(difference);
     wxDELETE(predictor1);
     wxDELETE(predictor2);
 }
 
-TEST(Preprocessor, Multiplication)
-{
+TEST(Preprocessor, Multiplication) {
     wxConfigBase *pConfig = wxFileConfig::Get();
     pConfig->Write("/Processing/AllowMultithreading", false);
 
@@ -714,7 +701,6 @@ TEST(Preprocessor, Multiplication)
     EXPECT_NEAR(78960.99, multi[0][0](2, 0), 0.05);
     EXPECT_NEAR(75350.21, multi[0][0](2, 4), 0.05);
 
-
     /* Values day 5, 00h
     279.7	280.5	280.9	280.5	279.3
     280.5	280.5	279.6	277.9	275.2
@@ -739,7 +725,6 @@ TEST(Preprocessor, Multiplication)
     EXPECT_NEAR(78736.35, multi[4][0](1, 0), 0.05);
     EXPECT_NEAR(78736.35, multi[4][0](2, 0), 0.05);
     EXPECT_NEAR(74966.43, multi[4][0](2, 4), 0.05);
-
 
     wxDELETE(area);
     wxDELETE(multiplication);

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,16 +27,10 @@
 
 #include "asFileText.h"
 
-asFileText::asFileText(const wxString &fileName, const FileMode &fileMode)
-        : asFile(fileName, fileMode)
-{
+asFileText::asFileText(const wxString &fileName, const FileMode &fileMode) : asFile(fileName, fileMode) {}
 
-}
-
-bool asFileText::Open()
-{
-    if (!Find())
-        return false;
+bool asFileText::Open() {
+    if (!Find()) return false;
 
     switch (m_fileMode) {
         case (ReadOnly):
@@ -60,36 +54,32 @@ bool asFileText::Open()
             break;
     }
 
-    if (!m_file.is_open())
-        return false;
+    if (!m_file.is_open()) return false;
 
     m_opened = true;
 
     return true;
 }
 
-bool asFileText::Close()
-{
+bool asFileText::Close() {
     wxASSERT(m_opened);
 
     m_file.close();
     return true;
 }
 
-void asFileText::AddLine(const wxString &lineContent)
-{
+void asFileText::AddLine(const wxString &lineContent) {
     wxASSERT(m_opened);
 
     m_file << lineContent.mb_str();
 
     // Check the state flags
     if (m_file.fail())
-        asThrowException(wxString::Format(_("An error occured while trying to write in file %s"),
-                                          m_fileName.GetFullPath()));
+        asThrowException(
+            wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
 }
 
-wxString asFileText::GetNextLine()
-{
+wxString asFileText::GetNextLine() {
     wxASSERT(m_opened);
 
     std::string tmpLineContent;
@@ -99,8 +89,8 @@ wxString asFileText::GetNextLine()
 
         // Check the state flags
         if ((!m_file.eof()) && (m_file.fail()))
-            asThrowException(wxString::Format(_("An error occured while trying to write in file %s"),
-                                              m_fileName.GetFullPath()));
+            asThrowException(
+                wxString::Format(_("An error occured while trying to write in file %s"), m_fileName.GetFullPath()));
     } else {
         asThrowException(wxString::Format(_("You are trying to read a line after the end of the file %s"),
                                           m_fileName.GetFullPath()));
@@ -111,8 +101,7 @@ wxString asFileText::GetNextLine()
     return lineContent;
 }
 
-int asFileText::GetInt()
-{
+int asFileText::GetInt() {
     wxASSERT(m_opened);
 
     int tmp;
@@ -120,8 +109,7 @@ int asFileText::GetInt()
     return tmp;
 }
 
-float asFileText::GetFloat()
-{
+float asFileText::GetFloat() {
     wxASSERT(m_opened);
 
     float tmp;
@@ -129,8 +117,7 @@ float asFileText::GetFloat()
     return tmp;
 }
 
-double asFileText::GetDouble()
-{
+double asFileText::GetDouble() {
     wxASSERT(m_opened);
 
     double tmp;
@@ -138,8 +125,7 @@ double asFileText::GetDouble()
     return tmp;
 }
 
-bool asFileText::SkipLines(int linesNb)
-{
+bool asFileText::SkipLines(int linesNb) {
     wxASSERT(m_opened);
 
     for (int iLine = 0; iLine < linesNb; iLine++) {
@@ -154,8 +140,7 @@ bool asFileText::SkipLines(int linesNb)
     return true;
 }
 
-bool asFileText::SkipElements(int elementNb)
-{
+bool asFileText::SkipElements(int elementNb) {
     wxASSERT(m_opened);
 
     float tmp;
@@ -172,8 +157,7 @@ bool asFileText::SkipElements(int elementNb)
     return true;
 }
 
-bool asFileText::EndOfFile() const
-{
+bool asFileText::EndOfFile() const {
     wxASSERT(m_opened);
 
     return m_file.eof();

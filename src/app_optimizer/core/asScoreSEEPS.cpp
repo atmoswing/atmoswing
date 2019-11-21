@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,23 +29,16 @@
 #include "asScoreSEEPS.h"
 
 asScoreSEEPS::asScoreSEEPS()
-        : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
-                  _("Stable equitable error in probability space"), Asc, NaNf, NaNf, true),
-          m_p1(NaNf),
-          m_p3(NaNf),
-          m_thresNull(0.2f),
-          m_thresHigh(NaNf)
-{
+    : asScore(asScore::SEEPS, _("Stable equitable error in probability space"),
+              _("Stable equitable error in probability space"), Asc, NaNf, NaNf, true),
+      m_p1(NaNf),
+      m_p3(NaNf),
+      m_thresNull(0.2f),
+      m_thresHigh(NaNf) {}
 
-}
+asScoreSEEPS::~asScoreSEEPS() {}
 
-asScoreSEEPS::~asScoreSEEPS()
-{
-    //dtor
-}
-
-float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
     wxASSERT(!asIsNaN(m_p1));
@@ -93,35 +86,35 @@ float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const
     if (value <= m_thresNull && obs <= m_thresNull) {
         score = 0.0f;
     }
-        // Forecasted 2, observed 1
+    // Forecasted 2, observed 1
     else if (value <= m_thresNull && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.5 * (1.0 / (1.0 - m_p1));
     }
-        // Forecasted 3, observed 1
+    // Forecasted 3, observed 1
     else if (value <= m_thresNull && obs > m_thresHigh) {
         score = 0.5 * ((1.0 / m_p3) + (1.0 / 1.0 - m_p1));
     }
-        // Forecasted 1, observed 2
+    // Forecasted 1, observed 2
     else if (value > m_thresNull && value <= m_thresHigh && obs <= m_thresNull) {
         score = 0.5 * (1.0 / m_p1);
     }
-        // Forecasted 2, observed 2
+    // Forecasted 2, observed 2
     else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.0f;
     }
-        // Forecasted 3, observed 2
+    // Forecasted 3, observed 2
     else if (value > m_thresNull && value <= m_thresHigh && obs > m_thresHigh) {
         score = 0.5 * (1.0 / m_p3);
     }
-        // Forecasted 1, observed 3
+    // Forecasted 1, observed 3
     else if (value > m_thresHigh && obs <= m_thresNull) {
         score = 0.5 * ((1.0 / m_p1) + (1.0 / (1.0 - m_p3)));
     }
-        // Forecasted 2, observed 3
+    // Forecasted 2, observed 3
     else if (value > m_thresHigh && obs > m_thresNull && obs <= m_thresHigh) {
         score = 0.5 * (1.0 / (1.0 - m_p3));
     }
-        // Forecasted 3, observed 3
+    // Forecasted 3, observed 3
     else if (value > m_thresHigh && obs > m_thresHigh) {
         score = 0.0f;
     }
@@ -129,8 +122,7 @@ float asScoreSEEPS::Assess(float obs, const a1f &values, int nbElements) const
     return score;
 }
 
-bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climData)
-{
+bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climData) {
     wxASSERT(!asHasNaN(&refVals[0], &refVals[refVals.size() - 1]));
     wxASSERT(!asHasNaN(&climData[0], &climData[climData.size() - 1]));
 
@@ -148,8 +140,9 @@ bool asScoreSEEPS::ProcessScoreClimatology(const a1f &refVals, const a1f &climDa
         rowAboveThreshold1++;
     }
 
-    // Process probability (without processing the empirical frequencies...). Do not substract 1 because it is in 0 basis.
-    m_p1 = (float) rowAboveThreshold1 / (float) climDataSorted.size();
+    // Process probability (without processing the empirical frequencies...). Do not substract 1 because it is in 0
+    // basis.
+    m_p1 = (float)rowAboveThreshold1 / (float)climDataSorted.size();
 
     m_p3 = (1 - m_p1) / 3.0f;
 

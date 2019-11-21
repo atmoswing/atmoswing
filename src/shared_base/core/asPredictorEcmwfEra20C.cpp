@@ -27,13 +27,10 @@
 
 #include "asPredictorEcmwfEra20C.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_ERA_20C_3h";
     m_provider = "ECMWF";
@@ -46,8 +43,7 @@ asPredictorEcmwfEra20C::asPredictorEcmwfEra20C(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorEcmwfEra20C::Init()
-{
+bool asPredictorEcmwfEra20C::Init() {
     CheckLevelTypeIsDefined();
 
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
@@ -133,16 +129,13 @@ bool asPredictorEcmwfEra20C::Init()
     return true;
 }
 
-void asPredictorEcmwfEra20C::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorEcmwfEra20C::ListFiles(asTimeArray &timeArray) {
     m_files.push_back(GetFullDirectoryPath() + m_fileNamePattern);
 }
 
-double asPredictorEcmwfEra20C::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
+double asPredictorEcmwfEra20C::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1900, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }
-

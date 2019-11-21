@@ -29,10 +29,10 @@
 #ifndef AS_UTILITIES_H
 #define AS_UTILITIES_H
 
+#include <asIncludes.h>
+
 #include <ctime>
 #include <random>
-
-#include <asIncludes.h>
 
 bool asRemoveDir(const wxString &path);
 
@@ -165,17 +165,17 @@ int asFind(const float *pArrStart, const float *pArrEnd, float targetValue, floa
 int asFind(const double *pArrStart, const double *pArrEnd, double targetValue, double tolerance = 0.0,
            int showWarning = asSHOW_WARNINGS);
 
-template<class T>
-int asFindT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0,
-                              int showWarning = asSHOW_WARNINGS);
+template <class T>
+int asFindT(const T *pArrStart, const T *pArrEnd, T targetValue, T tolerance = 0, int showWarning = asSHOW_WARNINGS);
 
 int asFindClosest(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
 
 int asFindClosest(const float *pArrStart, const float *pArrEnd, float targetValue, int showWarning = asSHOW_WARNINGS);
 
-int asFindClosest(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
+int asFindClosest(const double *pArrStart, const double *pArrEnd, double targetValue,
+                  int showWarning = asSHOW_WARNINGS);
 
-template<class T>
+template <class T>
 int asFindClosestT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
 int asFindFloor(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
@@ -184,7 +184,7 @@ int asFindFloor(const float *pArrStart, const float *pArrEnd, float targetValue,
 
 int asFindFloor(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
-template<class T>
+template <class T>
 int asFindFloorT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
 int asFindCeil(const int *pArrStart, const int *pArrEnd, int targetValue, int showWarning = asSHOW_WARNINGS);
@@ -193,7 +193,7 @@ int asFindCeil(const float *pArrStart, const float *pArrEnd, float targetValue, 
 
 int asFindCeil(const double *pArrStart, const double *pArrEnd, double targetValue, int showWarning = asSHOW_WARNINGS);
 
-template<class T>
+template <class T>
 int asFindCeilT(const T *pArrStart, const T *pArrEnd, T targetValue, int showWarning = asSHOW_WARNINGS);
 
 bool asArrayInsert(int *pArrStart, int *pArrEnd, Order order, int val);
@@ -202,7 +202,7 @@ bool asArrayInsert(float *pArrStart, float *pArrEnd, Order order, float val);
 
 bool asArrayInsert(double *pArrStart, double *pArrEnd, Order order, double val);
 
-template<class T>
+template <class T>
 bool asArrayInsertT(T *pArrStart, T *pArrEnd, Order order, T val);
 
 bool asArraysInsert(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order, int valRef,
@@ -224,7 +224,7 @@ bool asSortArray(float *pArrRefStart, float *pArrRefEnd, Order order);
 
 bool asSortArray(double *pArrRefStart, double *pArrRefEnd, Order order);
 
-template<class T>
+template <class T>
 bool asSortArrayT(T *pArrRefStart, T *pArrRefEnd, Order order);
 
 bool asSortArrays(int *pArrRefStart, int *pArrRefEnd, int *pArrOtherStart, int *pArrOtherEnd, Order order);
@@ -233,13 +233,13 @@ bool asSortArrays(float *pArrRefStart, float *pArrRefEnd, float *pArrOtherStart,
 
 bool asSortArrays(double *pArrRefStart, double *pArrRefEnd, double *pArrOtherStart, double *pArrOtherEnd, Order order);
 
-template<class T>
+template <class T>
 bool asSortArraysT(T *pArrRefStart, T *pArrRefEnd, T *pArrOtherStart, T *pArrOtherEnd, Order order);
 
-template<class T>
+template <class T>
 void asQuickSort(T *pArr, int low, int high, Order order);
 
-template<class T>
+template <class T>
 void asQuickSortMulti(T *pArr, T *pArrOther, int low, int high, Order order);
 
 vf asExtractVectorFrom(const wxString &data);

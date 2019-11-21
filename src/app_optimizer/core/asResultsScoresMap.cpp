@@ -28,26 +28,19 @@
 
 #include "asResultsScoresMap.h"
 
-#include <asParametersCalibration.h>
 #include <asFileNetcdf.h>
+#include <asParametersCalibration.h>
 
-
-asResultsScoresMap::asResultsScoresMap()
-        : asResults()
-{
+asResultsScoresMap::asResultsScoresMap() : asResults() {
     m_scores.reserve(100);
     m_lon.reserve(100);
     m_lat.reserve(100);
     m_level.reserve(100);
 }
 
-asResultsScoresMap::~asResultsScoresMap()
-{
-    //dtor
-}
+asResultsScoresMap::~asResultsScoresMap() {}
 
-void asResultsScoresMap::Init()
-{
+void asResultsScoresMap::Init() {
     BuildFileName();
 
     // Resize to 0 to avoid keeping old results
@@ -61,8 +54,7 @@ void asResultsScoresMap::Init()
     m_level.resize(0);
 }
 
-void asResultsScoresMap::BuildFileName()
-{
+void asResultsScoresMap::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
@@ -77,24 +69,21 @@ void asResultsScoresMap::BuildFileName()
     m_filePath.Append(".nc");
 }
 
-bool asResultsScoresMap::Add(asParametersScoring &params, float score)
-{
+bool asResultsScoresMap::Add(asParametersScoring &params, float score) {
     if (!params.GetPredictorGridType(0, 0).IsSameAs("Regular", false))
         asThrowException(_("asResultsScoresMap::Add is not ready to use on unregular grids"));
 
     m_scores.push_back(score);
-    m_lon.push_back((params.GetPredictorXmin(0, 0) +
-                     (params.GetPredictorXptsnb(0, 0) - 1) * params.GetPredictorXstep(0, 0) / 2.0));
-    m_lat.push_back((params.GetPredictorYmin(0, 0) +
-                     (params.GetPredictorYptsnb(0, 0) - 1) * params.GetPredictorYstep(0, 0) / 2.0));
+    m_lon.push_back(
+        (params.GetPredictorXmin(0, 0) + (params.GetPredictorXptsnb(0, 0) - 1) * params.GetPredictorXstep(0, 0) / 2.0));
+    m_lat.push_back(
+        (params.GetPredictorYmin(0, 0) + (params.GetPredictorYptsnb(0, 0) - 1) * params.GetPredictorYstep(0, 0) / 2.0));
     m_level.push_back(params.GetPredictorLevel(0, 0));
 
     return true;
 }
 
-bool asResultsScoresMap::MakeMap()
-{
-
+bool asResultsScoresMap::MakeMap() {
     a1f levels(asExtractUniqueValues(&m_level[0], &m_level[m_level.size() - 1], 0.0001f));
     a1f lons(asExtractUniqueValues(&m_lon[0], &m_lon[m_lon.size() - 1], 0.0001f));
     a1f lats(asExtractUniqueValues(&m_lat[0], &m_lat[m_lat.size() - 1], 0.0001f));
@@ -122,15 +111,14 @@ bool asResultsScoresMap::MakeMap()
     return true;
 }
 
-bool asResultsScoresMap::Save(asParametersCalibration &params)
-{
+bool asResultsScoresMap::Save(asParametersCalibration &params) {
     // Build the map (spatialize the data)
     MakeMap();
 
     // Get the elements size
-    size_t nLon = (size_t) m_mapLon.size();
-    size_t nLat = (size_t) m_mapLat.size();
-    size_t nLevel = (size_t) m_mapLevel.size();
+    size_t nLon = (size_t)m_mapLon.size();
+    size_t nLat = (size_t)m_mapLat.size();
+    size_t nLevel = (size_t)m_mapLevel.size();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 

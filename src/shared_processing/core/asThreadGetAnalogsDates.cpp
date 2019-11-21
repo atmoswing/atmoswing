@@ -28,40 +28,36 @@
 
 #include "asThreadGetAnalogsDates.h"
 
-#include <asPredictor.h>
 #include <asCriteria.h>
-#include <asTimeArray.h>
+#include <asPredictor.h>
 #include <asProcessor.h>
+#include <asTimeArray.h>
+
 #include <utility>
 
-asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
-                                                 std::vector<asPredictor *> predictorsTarget,
-                                                 asTimeArray *timeArrayArchiveData,
-                                                 asTimeArray *timeArrayArchiveSelection,
-                                                 asTimeArray *timeArrayTargetData,
-                                                 asTimeArray *timeArrayTargetSelection,
-                                                 std::vector<asCriteria *> criteria, asParameters *params, int step,
-                                                 a1i &vRowsNb, a1i &vColsNb, int start, int end,
-                                                 a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-                                                 bool *containsNaNs, bool allowDuplicateDates, bool *success)
-        : asThread(asThread::ProcessorGetAnalogsDates),
-          m_pPredictorsArchive(std::move(predictorsArchive)),
-          m_pPredictorsTarget(std::move(predictorsTarget)),
-          m_pTimeArrayArchiveData(timeArrayArchiveData),
-          m_pTimeArrayArchiveSelection(timeArrayArchiveSelection),
-          m_pTimeArrayTargetData(timeArrayTargetData),
-          m_pTimeArrayTargetSelection(timeArrayTargetSelection),
-          m_criteria(std::move(criteria)),
-          m_params(params),
-          m_vTargData(vpa2f(vRowsNb.size())),
-          m_vArchData(vpa2f(vRowsNb.size())),
-          m_vRowsNb(vRowsNb),
-          m_vColsNb(vColsNb),
-          m_pFinalAnalogsCriteria(finalAnalogsCriteria),
-          m_pFinalAnalogsDates(finalAnalogsDates),
-          m_allowDuplicateDates(allowDuplicateDates),
-          m_success(success)
-{
+asThreadGetAnalogsDates::asThreadGetAnalogsDates(
+    std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
+    asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayArchiveSelection, asTimeArray *timeArrayTargetData,
+    asTimeArray *timeArrayTargetSelection, std::vector<asCriteria *> criteria, asParameters *params, int step,
+    a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
+    bool *containsNaNs, bool allowDuplicateDates, bool *success)
+    : asThread(asThread::ProcessorGetAnalogsDates),
+      m_pPredictorsArchive(std::move(predictorsArchive)),
+      m_pPredictorsTarget(std::move(predictorsTarget)),
+      m_pTimeArrayArchiveData(timeArrayArchiveData),
+      m_pTimeArrayArchiveSelection(timeArrayArchiveSelection),
+      m_pTimeArrayTargetData(timeArrayTargetData),
+      m_pTimeArrayTargetSelection(timeArrayTargetSelection),
+      m_criteria(std::move(criteria)),
+      m_params(params),
+      m_vTargData(vpa2f(vRowsNb.size())),
+      m_vArchData(vpa2f(vRowsNb.size())),
+      m_vRowsNb(vRowsNb),
+      m_vColsNb(vColsNb),
+      m_pFinalAnalogsCriteria(finalAnalogsCriteria),
+      m_pFinalAnalogsDates(finalAnalogsDates),
+      m_allowDuplicateDates(allowDuplicateDates),
+      m_success(success) {
     m_step = step;
     m_start = start;
     m_end = end;
@@ -71,16 +67,12 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(std::vector<asPredictor *> pred
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
                  wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int) timeArrayTargetSelection->GetSize()));
+                                  (int)timeArrayTargetSelection->GetSize()));
 }
 
-asThreadGetAnalogsDates::~asThreadGetAnalogsDates()
-{
+asThreadGetAnalogsDates::~asThreadGetAnalogsDates() {}
 
-}
-
-wxThread::ExitCode asThreadGetAnalogsDates::Entry()
-{
+wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
     // Extract time arrays
     a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
     a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
@@ -116,9 +108,8 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
     // Loop through every timestep as target data
     for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
-
-        int iTimeTargRelative = asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart,
-                                                          iDateTarg);
+        int iTimeTargRelative =
+            asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
 
         // Check if a row was found
         if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {
@@ -138,7 +129,6 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
             // Loop over the members
             for (int iMem = 0; iMem < membersNb; ++iMem) {
-
                 // Extract target data
                 for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                     m_vTargData[iPtor] = &(m_pPredictorsTarget)[iPtor]->GetData()[iTimeTarg][iMem];
@@ -149,7 +139,6 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
                 // Loop through the datearray for candidate data
                 for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-
                     int iTimeArchRelative = asProcessor::FindNextDate(dateArrayArchiveSelection, timeArchiveData,
                                                                       iTimeArchStart, iDateArch);
 
@@ -181,30 +170,36 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
                         if (!m_allowDuplicateDates && iMem > 0) {
                             if (counter <= analogsNb - 1) {
                                 wxFAIL;
-                                wxLogError(_("It should not happen that the array of analogue dates is not full when adding members."));
+                                wxLogError(
+                                    _("It should not happen that the array of analogue dates is not full when adding "
+                                      "members."));
                                 *m_success = false;
-                                return (wxThread::ExitCode) -1;
+                                return (wxThread::ExitCode)-1;
                             }
-                            asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float) timeArchiveData[iTimeArch],
+                            asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float)timeArchiveData[iTimeArch],
                                                                    thisScore, scoreArrayOneDay, dateArrayOneDay);
                         } else {
-                            asProcessor::InsertInArrays(isAsc, analogsNb, (float) timeArchiveData[iTimeArch], thisScore,
+                            asProcessor::InsertInArrays(isAsc, analogsNb, (float)timeArchiveData[iTimeArch], thisScore,
                                                         counter, scoreArrayOneDay, dateArrayOneDay);
                         }
 
                         counter++;
                     } else {
-                        wxLogError(_("The date was not found in the array (Analogs Dates fct, multithreaded option). That should not happen."));
+                        wxLogError(
+                            _("The date was not found in the array (Analogs Dates fct, multithreaded option). That "
+                              "should not happen."));
                         wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
                                    timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
                         *m_success = false;
-                        return (wxThread::ExitCode) -1;
+                        return (wxThread::ExitCode)-1;
                     }
                 }
             }
 
             if (counter < analogsNb) {
-                wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asThreadGetAnalogsDates)."));
+                wxLogWarning(
+                    _("There is not enough available data to satisfy the number of analogs (in "
+                      "asThreadGetAnalogsDates)."));
                 wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
             }
 
@@ -216,5 +211,5 @@ wxThread::ExitCode asThreadGetAnalogsDates::Entry()
 
     *m_success = true;
 
-    return (wxThread::ExitCode) 0;
+    return (wxThread::ExitCode)0;
 }

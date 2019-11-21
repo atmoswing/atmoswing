@@ -29,9 +29,8 @@
 #include "asFramePreferencesViewer.h"
 
 asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id)
-        : asFramePreferencesViewerVirtual(parent, id),
-          m_workspace(workspace)
-{
+    : asFramePreferencesViewerVirtual(parent, id),
+      m_workspace(workspace) {
     LoadPreferences();
     Fit();
 
@@ -41,18 +40,15 @@ asFramePreferencesViewer::asFramePreferencesViewer(wxWindow *parent, asWorkspace
 #endif
 }
 
-void asFramePreferencesViewer::CloseFrame(wxCommandEvent &event)
-{
+void asFramePreferencesViewer::CloseFrame(wxCommandEvent &event) {
     Close();
 }
 
-void asFramePreferencesViewer::Update()
-{
+void asFramePreferencesViewer::Update() {
     LoadPreferences();
 }
 
-void asFramePreferencesViewer::LoadPreferences()
-{
+void asFramePreferencesViewer::LoadPreferences() {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -142,8 +138,7 @@ void asFramePreferencesViewer::LoadPreferences()
     m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingViewer.ini");
 }
 
-void asFramePreferencesViewer::SavePreferences()
-{
+void asFramePreferencesViewer::SavePreferences() {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig;
@@ -199,10 +194,8 @@ void asFramePreferencesViewer::SavePreferences()
     wxString alarmsQuantile = m_textCtrlAlarmsQuantile->GetValue();
     double alarmsQuantileVal;
     alarmsQuantile.ToDouble(&alarmsQuantileVal);
-    if (alarmsQuantileVal > 1)
-        alarmsQuantileVal = 0.9;
-    if (alarmsQuantileVal < 0)
-        alarmsQuantileVal = 0.9;
+    if (alarmsQuantileVal > 1) alarmsQuantileVal = 0.9;
+    if (alarmsQuantileVal < 0) alarmsQuantileVal = 0.9;
     m_workspace->SetAlarmsPanelQuantile(alarmsQuantileVal);
 
     /*
@@ -242,19 +235,16 @@ void asFramePreferencesViewer::SavePreferences()
     bool multiViewer = m_checkBoxMultiInstancesViewer->GetValue();
     pConfig->Write("/General/MultiInstances", multiViewer);
 
-
     GetParent()->Update();
     pConfig->Flush();
     m_workspace->Save();
 }
 
-void asFramePreferencesViewer::SaveAndClose(wxCommandEvent &event)
-{
+void asFramePreferencesViewer::SaveAndClose(wxCommandEvent &event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesViewer::ApplyChanges(wxCommandEvent &event)
-{
+void asFramePreferencesViewer::ApplyChanges(wxCommandEvent &event) {
     SavePreferences();
 }

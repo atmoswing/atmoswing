@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,7 @@
 #include "asAreaComp.h"
 #include "gtest/gtest.h"
 
-
-TEST(AreaComp, ConstructorOneArea)
-{
+TEST(AreaComp, ConstructorOneArea) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -46,8 +44,7 @@ TEST(AreaComp, ConstructorOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaComp, ConstructorTwoAreas)
-{
+TEST(AreaComp, ConstructorTwoAreas) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -10;
     cornerUL.y = 40;
@@ -62,8 +59,7 @@ TEST(AreaComp, ConstructorTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaComp, ConstructorAlternativeOneArea)
-{
+TEST(AreaComp, ConstructorAlternativeOneArea) {
     double xMin = 10;
     double xWidth = 20;
     double yMin = 30;
@@ -73,8 +69,7 @@ TEST(AreaComp, ConstructorAlternativeOneArea)
     EXPECT_EQ(1, area.GetNbComposites());
 }
 
-TEST(AreaComp, ConstructorAlternativeTwoAreas)
-{
+TEST(AreaComp, ConstructorAlternativeTwoAreas) {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
@@ -84,8 +79,7 @@ TEST(AreaComp, ConstructorAlternativeTwoAreas)
     EXPECT_EQ(2, area.GetNbComposites());
 }
 
-TEST(AreaComp, CheckConsistency)
-{
+TEST(AreaComp, CheckConsistency) {
     double xMin = -5;
     double xWidth = 20;
     double yMin = 30;
@@ -98,8 +92,7 @@ TEST(AreaComp, CheckConsistency)
     EXPECT_DOUBLE_EQ(15, area.GetCornerLR().x);
 }
 
-TEST(AreaComp, IsSquareTrue)
-{
+TEST(AreaComp, IsSquareTrue) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -114,8 +107,7 @@ TEST(AreaComp, IsSquareTrue)
     EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(AreaComp, IsSquareFalse)
-{
+TEST(AreaComp, IsSquareFalse) {
     wxLogNull noLog;
 
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -131,8 +123,7 @@ TEST(AreaComp, IsSquareFalse)
     EXPECT_THROW(asAreaComp area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
-TEST(AreaComp, GetBounds)
-{
+TEST(AreaComp, GetBounds) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -150,8 +141,7 @@ TEST(AreaComp, GetBounds)
     EXPECT_DOUBLE_EQ(40, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaComp, GetBoundsSplitted)
-{
+TEST(AreaComp, GetBoundsSplitted) {
     double xMin = -10;
     double xWidth = 20;
     double yMin = 30;
@@ -166,8 +156,7 @@ TEST(AreaComp, GetBoundsSplitted)
     EXPECT_DOUBLE_EQ(70, area.GetComposite(0).GetYmax());
 }
 
-TEST(AreaComp, GetCornersSplitted)
-{
+TEST(AreaComp, GetCornersSplitted) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = -40;
     cornerUL.y = 40;

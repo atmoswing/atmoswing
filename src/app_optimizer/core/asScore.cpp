@@ -27,6 +27,7 @@
  */
 
 #include "asScore.h"
+
 #include "asScoreBS.h"
 #include "asScoreBSS.h"
 #include "asScoreCRPSAR.h"
@@ -45,40 +46,33 @@
 #include "asScoreSEEPS.h"
 
 asScore::asScore()
-        : m_score(Undefined),
-          m_order(Asc),
-          m_scaleBest(NaNf),
-          m_scaleWorst(NaNf),
-          m_usesClimatology(false),
-          m_singleValue(true),
-          m_onMean(false),
-          m_scoreClimatology(0),
-          m_threshold(NaNf),
-          m_quantile(NaNf)
-{
-
-}
+    : m_score(Undefined),
+      m_order(Asc),
+      m_scaleBest(NaNf),
+      m_scaleWorst(NaNf),
+      m_usesClimatology(false),
+      m_singleValue(true),
+      m_onMean(false),
+      m_scoreClimatology(0),
+      m_threshold(NaNf),
+      m_quantile(NaNf) {}
 
 asScore::asScore(Score score, const wxString &name, const wxString &fullname, Order order, float scaleBest,
                  float scaleWorst, bool usesClimatology, bool singleValue)
-        : m_score(score),
-          m_name(name),
-          m_fullName(fullname),
-          m_order(order),
-          m_scaleBest(scaleBest),
-          m_scaleWorst(scaleWorst),
-          m_usesClimatology(usesClimatology),
-          m_singleValue(singleValue),
-          m_onMean(false),
-          m_scoreClimatology(0),
-          m_threshold(NaNf),
-          m_quantile(NaNf)
-{
+    : m_score(score),
+      m_name(name),
+      m_fullName(fullname),
+      m_order(order),
+      m_scaleBest(scaleBest),
+      m_scaleWorst(scaleWorst),
+      m_usesClimatology(usesClimatology),
+      m_singleValue(singleValue),
+      m_onMean(false),
+      m_scoreClimatology(0),
+      m_threshold(NaNf),
+      m_quantile(NaNf) {}
 
-}
-
-asScore *asScore::GetInstance(Score scoreEnum)
-{
+asScore *asScore::GetInstance(Score scoreEnum) {
     switch (scoreEnum) {
         case (CRPSS): {
             asScore *score = new asScoreCRPSS();
@@ -203,8 +197,7 @@ asScore *asScore::GetInstance(Score scoreEnum)
     }
 }
 
-asScore *asScore::GetInstance(const wxString &scoreString)
-{
+asScore *asScore::GetInstance(const wxString &scoreString) {
     if (scoreString.CmpNoCase("CRPSSkillScore") == 0) {
         asScore *score = new asScoreCRPSS();
         return score;
@@ -305,15 +298,13 @@ asScore *asScore::GetInstance(const wxString &scoreString)
     }
 }
 
-a1f asScore::AssessOnArray(float obs, const a1f &values, int nbElements) const
-{
+a1f asScore::AssessOnArray(float obs, const a1f &values, int nbElements) const {
     wxLogError(_("This asScore class has no AssessOnArrays method implemented !"));
 
     return a1f();
 }
 
-bool asScore::CheckObservedValue(float obs) const
-{
+bool asScore::CheckObservedValue(float obs) const {
     // Check that the observed value is not a NaN
     if (asIsNaN(obs)) {
         wxLogVerbose(_("The observed value is a NaN for the score calculation."));
@@ -323,8 +314,7 @@ bool asScore::CheckObservedValue(float obs) const
     return true;
 }
 
-bool asScore::CheckVectorLength(const a1f &values, int nbElements) const
-{
+bool asScore::CheckVectorLength(const a1f &values, int nbElements) const {
     // Check the element numbers vs vector length
     wxASSERT_MSG(values.rows() >= nbElements,
                  _("The required elements number is above the vector length in the score calculation."));
@@ -337,8 +327,7 @@ bool asScore::CheckVectorLength(const a1f &values, int nbElements) const
     return true;
 }
 
-int asScore::CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const
-{
+int asScore::CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const {
     // Remove the NaNs and copy content
     int nbPredict = 0, nbNans = 0, iVal = 0;
     while (iVal < nbElements) {

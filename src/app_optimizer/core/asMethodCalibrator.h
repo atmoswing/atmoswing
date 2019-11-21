@@ -29,33 +29,29 @@
 #ifndef AS_METHOD_CALIBRATOR_H
 #define AS_METHOD_CALIBRATOR_H
 
+#include <asAreaCompGrid.h>
+#include <asCriteria.h>
 #include <asIncludes.h>
 #include <asMethodStandard.h>
 #include <asParametersCalibration.h>
-#include <asResultsDates.h>
-#include <asPredictor.h>
-#include <asResultsParametersArray.h>
-#include <asResultsDates.h>
-#include <asResultsValues.h>
-#include <asResultsScores.h>
-#include <asResultsTotalScore.h>
-#include <asResultsScoresMap.h>
-#include <asParametersCalibration.h>
 #include <asParametersOptimization.h>
-#include <asCriteria.h>
-#include <asAreaCompGrid.h>
-#include <asTimeArray.h>
+#include <asPredictor.h>
+#include <asPreprocessor.h>
 #include <asProcessor.h>
 #include <asProcessorScore.h>
-#include <asPreprocessor.h>
+#include <asResultsDates.h>
+#include <asResultsParametersArray.h>
+#include <asResultsScores.h>
+#include <asResultsScoresMap.h>
+#include <asResultsTotalScore.h>
+#include <asResultsValues.h>
 #include <asScore.h>
+#include <asTimeArray.h>
+
 #include <utility>
 
-
-class asMethodCalibrator
-        : public asMethodStandard
-{
-public:
+class asMethodCalibrator : public asMethodStandard {
+   public:
     asMethodCalibrator();
 
     ~asMethodCalibrator() override;
@@ -108,29 +104,24 @@ public:
 
     virtual bool Validate(asParametersCalibration *params);
 
-    void SetScoreOrder(Order val)
-    {
+    void SetScoreOrder(Order val) {
         m_scoreOrder = val;
     }
 
-    vf GetScoreClimatology() const
-    {
+    vf GetScoreClimatology() const {
         return m_scoreClimatology;
     }
 
-    void SetScoreClimatology(vf val)
-    {
+    void SetScoreClimatology(vf val) {
         m_scoreClimatology = std::move(val);
     }
 
-    void SetPredictandStationIds(vi val)
-    {
+    void SetPredictandStationIds(vi val) {
         m_predictandStationIds = std::move(val);
     }
 
-protected:
-    struct ParamExploration
-    {
+   protected:
+    struct ParamExploration {
         double xMinStart;
         double xMinEnd;
         int xPtsNbStart;
@@ -161,8 +152,7 @@ protected:
 
     double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
-private:
-
+   private:
     double GetTimeStartCalibration(asParametersScoring *params) const;
 
     double GetTimeEndCalibration(asParametersScoring *params) const;

@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictorProj.h"
+
 #include "asAreaCompGenGrid.h"
+#include "asPredictorProj.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorProjCmip5, LoadEasy)
-{
+TEST(PredictorProjCmip5, LoadEasy) {
     double xMin = 3.375;
     double xWidth = 3;
     double yMin = 75.7;
@@ -75,8 +74,7 @@ TEST(PredictorProjCmip5, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadComposite)
-{
+TEST(PredictorProjCmip5, LoadComposite) {
     double xMin = -2;
     double xWidth = 4;
     double yMin = 75.5;
@@ -119,8 +117,7 @@ TEST(PredictorProjCmip5, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadBorderLeft)
-{
+TEST(PredictorProjCmip5, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 2;
     double yMin = 75.5;
@@ -161,8 +158,7 @@ TEST(PredictorProjCmip5, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadBorderLeftOn720)
-{
+TEST(PredictorProjCmip5, LoadBorderLeftOn720) {
     double xMin = 360;
     double xWidth = 2;
     double yMin = 75.5;
@@ -203,8 +199,7 @@ TEST(PredictorProjCmip5, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadBorderRight)
-{
+TEST(PredictorProjCmip5, LoadBorderRight) {
     double xMin = -2;
     double xWidth = 3;
     double yMin = 75.5;
@@ -245,8 +240,7 @@ TEST(PredictorProjCmip5, LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadWithPressureLevels)
-{
+TEST(PredictorProjCmip5, LoadWithPressureLevels) {
     double xMin = 0;
     double xWidth = 2;
     double yMin = 1.683;
@@ -297,8 +291,7 @@ TEST(PredictorProjCmip5, LoadWithPressureLevels)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadOver2Years)
-{
+TEST(PredictorProjCmip5, LoadOver2Years) {
     double xMin = 0;
     double xWidth = 2;
     double yMin = 1.683;
@@ -371,8 +364,7 @@ TEST(PredictorProjCmip5, LoadOver2Years)
     wxDELETE(predictor);
 }
 
-TEST(PredictorProjCmip5, LoadAnotherModel)
-{
+TEST(PredictorProjCmip5, LoadAnotherModel) {
     double xMin = 0.01;
     double xWidth = 2.8;
     double yMin = 0.701;

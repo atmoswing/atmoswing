@@ -28,12 +28,10 @@
 
 #include "asFramePreferencesForecaster.h"
 
-
 asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
                                                            wxWindowID id)
-        : asFramePreferencesForecasterVirtual(parent, id),
-          m_batchForecasts(batchForecasts)
-{
+    : asFramePreferencesForecasterVirtual(parent, id),
+      m_batchForecasts(batchForecasts) {
     LoadPreferences();
     Fit();
 
@@ -43,18 +41,15 @@ asFramePreferencesForecaster::asFramePreferencesForecaster(wxWindow *parent, asB
 #endif
 }
 
-void asFramePreferencesForecaster::CloseFrame(wxCommandEvent &event)
-{
+void asFramePreferencesForecaster::CloseFrame(wxCommandEvent &event) {
     Close();
 }
 
-void asFramePreferencesForecaster::Update()
-{
+void asFramePreferencesForecaster::Update() {
     LoadPreferences();
 }
 
-void asFramePreferencesForecaster::LoadPreferences()
-{
+void asFramePreferencesForecaster::LoadPreferences() {
     wxConfigBase *pConfig;
     pConfig = wxFileConfig::Get();
 
@@ -114,7 +109,7 @@ void asFramePreferencesForecaster::LoadPreferences()
 
     // GUI options
     long guiOptions = pConfig->ReadLong("/General/GuiOptions", 1l);
-    m_radioBoxGui->SetSelection((int) guiOptions);
+    m_radioBoxGui->SetSelection((int)guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
     } else {
@@ -139,22 +134,21 @@ void asFramePreferencesForecaster::LoadPreferences()
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     m_checkBoxAllowMultithreading->SetValue(allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads == -1)
-        maxThreads = 2;
+    if (maxThreads == -1) maxThreads = 2;
     m_textCtrlThreadsNb->SetValue(pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
     m_sliderThreadsPriority->SetValue(pConfig->ReadLong("/Processing/ThreadsPriority", 95l));
 
     // Processing
-    long processingMethod = pConfig->ReadLong("/Processing/Method", (long) asMULTITHREADS);
+    long processingMethod = pConfig->ReadLong("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
         m_radioBoxProcessingMethods->Enable(0, false);
-        if (processingMethod == (long) asMULTITHREADS) {
-            processingMethod = (long) asSTANDARD;
+        if (processingMethod == (long)asMULTITHREADS) {
+            processingMethod = (long)asSTANDARD;
         }
     } else {
         m_radioBoxProcessingMethods->Enable(0, true);
     }
-    m_radioBoxProcessingMethods->SetSelection((int) processingMethod);
+    m_radioBoxProcessingMethods->SetSelection((int)processingMethod);
 
     // User directories
     wxString userpath = asConfig::GetUserDataDir();
@@ -163,11 +157,9 @@ void asFramePreferencesForecaster::LoadPreferences()
     logpathForecaster.Append("AtmoSwingForecaster.log");
     m_staticTextLogFile->SetLabel(logpathForecaster);
     m_staticTextPrefFile->SetLabel(asConfig::GetUserDataDir() + "AtmoSwingForecaster.ini");
-
 }
 
-void asFramePreferencesForecaster::SavePreferences()
-{
+void asFramePreferencesForecaster::SavePreferences() {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig;
@@ -222,7 +214,7 @@ void asFramePreferencesForecaster::SavePreferences()
      */
 
     // GUI options
-    auto guiOptions = (long) m_radioBoxGui->GetSelection();
+    auto guiOptions = (long)m_radioBoxGui->GetSelection();
     pConfig->Write("/General/GuiOptions", guiOptions);
     if (guiOptions == 0) {
         g_silentMode = true;
@@ -236,12 +228,10 @@ void asFramePreferencesForecaster::SavePreferences()
 
     // Downloads
     wxString internetMaxPrevStepsNb = m_textCtrlMaxPrevStepsNb->GetValue();
-    if (!internetMaxPrevStepsNb.IsNumber())
-        internetMaxPrevStepsNb = "5";
+    if (!internetMaxPrevStepsNb.IsNumber()) internetMaxPrevStepsNb = "5";
     pConfig->Write("/Internet/MaxPreviousStepsNb", internetMaxPrevStepsNb);
     wxString internetParallelRequestsNb = m_textCtrlMaxRequestsNb->GetValue();
-    if (!internetParallelRequestsNb.IsNumber())
-        internetParallelRequestsNb = "5";
+    if (!internetParallelRequestsNb.IsNumber()) internetParallelRequestsNb = "5";
     pConfig->Write("/Internet/ParallelRequestsNb", internetParallelRequestsNb);
     bool restrictDownloads = m_checkBoxRestrictDownloads->GetValue();
     pConfig->Write("/Internet/RestrictDownloads", restrictDownloads);
@@ -258,16 +248,15 @@ void asFramePreferencesForecaster::SavePreferences()
     bool allowMultithreading = m_checkBoxAllowMultithreading->GetValue();
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     wxString processingMaxThreadNb = m_textCtrlThreadsNb->GetValue();
-    if (!processingMaxThreadNb.IsNumber())
-        processingMaxThreadNb = "2";
+    if (!processingMaxThreadNb.IsNumber()) processingMaxThreadNb = "2";
     pConfig->Write("/Processing/ThreadsNb", processingMaxThreadNb);
-    auto processingThreadsPriority = (long) m_sliderThreadsPriority->GetValue();
+    auto processingThreadsPriority = (long)m_sliderThreadsPriority->GetValue();
     pConfig->Write("/Processing/ThreadsPriority", processingThreadsPriority);
 
     // Processing
-    auto processingMethod = (long) m_radioBoxProcessingMethods->GetSelection();
-    if (!allowMultithreading && processingMethod == (long) asMULTITHREADS) {
-        processingMethod = (long) asSTANDARD;
+    auto processingMethod = (long)m_radioBoxProcessingMethods->GetSelection();
+    if (!allowMultithreading && processingMethod == (long)asMULTITHREADS) {
+        processingMethod = (long)asSTANDARD;
     }
     pConfig->Write("/Processing/Method", processingMethod);
 
@@ -279,8 +268,7 @@ void asFramePreferencesForecaster::SavePreferences()
     m_batchForecasts->Save();
 }
 
-void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent &event)
-{
+void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent &event) {
     if (event.GetInt() == 0) {
         m_radioBoxProcessingMethods->Enable(asMULTITHREADS, false);
         if (m_radioBoxProcessingMethods->GetSelection() == asMULTITHREADS) {
@@ -291,13 +279,11 @@ void asFramePreferencesForecaster::OnChangeMultithreadingCheckBox(wxCommandEvent
     }
 }
 
-void asFramePreferencesForecaster::SaveAndClose(wxCommandEvent &event)
-{
+void asFramePreferencesForecaster::SaveAndClose(wxCommandEvent &event) {
     SavePreferences();
     Close();
 }
 
-void asFramePreferencesForecaster::ApplyChanges(wxCommandEvent &event)
-{
+void asFramePreferencesForecaster::ApplyChanges(wxCommandEvent &event) {
     SavePreferences();
 }

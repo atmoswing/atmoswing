@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,14 +27,9 @@
 
 #include "asTotalScoreMSE.h"
 
-asTotalScoreMSE::asTotalScoreMSE(const wxString &periodString)
-        : asTotalScore(periodString)
-{
+asTotalScoreMSE::asTotalScoreMSE(const wxString &periodString) : asTotalScore(periodString) {}
 
-}
-
-float asTotalScoreMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
-{
+float asTotalScoreMSE::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 
@@ -60,8 +55,8 @@ float asTotalScoreMSE::Assess(const a1f &targetDates, const a1f &scores, const a
             int timeArrayLength = timeArray.GetSize();
 
             // Get first and last common days
-            double firstDay = wxMax((double) targetDates[0], timeArray.GetFirst());
-            double lastDay = wxMin((double) targetDates[targetDatesLength - 1], timeArray.GetLast());
+            double firstDay = wxMax((double)targetDates[0], timeArray.GetFirst());
+            double lastDay = wxMin((double)targetDates[targetDatesLength - 1], timeArray.GetLast());
             a1d dateTime = timeArray.GetTimeArray();
             int indexStart = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), firstDay);
             int indexEnd = asFindClosest(&dateTime(0), &dateTime(timeArrayLength - 1), lastDay);

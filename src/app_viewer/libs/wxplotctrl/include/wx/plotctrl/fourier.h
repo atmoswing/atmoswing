@@ -1,13 +1,13 @@
 /*============================================================================
 
     fourier.h  -  Don Cross <dcross@intersrv.com>
-    
+
     The file FFT.ZIP contains C source code for performing Discrete Fast Fourier
-    Transforms (DFFTs) and inverse DFFTs.  
+    Transforms (DFFTs) and inverse DFFTs.
 
     Please see fouier.txt which was the readme.txt that Don Cross provided.
-    
-    This source code is public domain. Use at your own risk.  
+
+    This source code is public domain. Use at your own risk.
 
     For more information, point your web browser at:  (dead link)
     http://www.intersrv.com/~dcross/fft.html
@@ -18,7 +18,7 @@
 2003 [John Labenski]
     Merged fourierd.c (double), fourierf.c (float), and fftmisc.c into
     fourier.c for simplicity.
-    
+
 ============================================================================*/
 
 #ifndef _FOURIER_FFT_H_
@@ -45,22 +45,21 @@ extern "C" {
 **           wasting memory.
 */
 
-int fft_double(unsigned NumSamples,          /* must be a power of 2 */
-               int InverseTransform,    /* 0=forward FFT, 1=inverse FFT */
-               double *RealIn,              /* array of input's real samples */
-               double *ImaginaryIn,         /* array of input's imag samples */
-               double *RealOut,             /* array of output's reals */
+int fft_double(unsigned NumSamples,  /* must be a power of 2 */
+               int InverseTransform, /* 0=forward FFT, 1=inverse FFT */
+               double *RealIn,       /* array of input's real samples */
+               double *ImaginaryIn,  /* array of input's imag samples */
+               double *RealOut,      /* array of output's reals */
                double *ImaginaryOut);
 
 /* array of output's imaginaries */
 
-
-int fft_float(unsigned NumSamples,          /* must be a power of 2 */
-              int InverseTransform,    /* 0=forward FFT, 1=inverse FFT */
-              float *RealIn,              /* array of input's real samples */
-              float *ImaginaryIn,         /* array of input's imag samples */
-              float *RealOut,             /* array of output's reals */
-              float *ImaginaryOut);      /* array of output's imaginaries */
+int fft_float(unsigned NumSamples,  /* must be a power of 2 */
+              int InverseTransform, /* 0=forward FFT, 1=inverse FFT */
+              float *RealIn,        /* array of input's real samples */
+              float *ImaginaryIn,   /* array of input's imag samples */
+              float *RealOut,       /* array of output's reals */
+              float *ImaginaryOut); /* array of output's imaginaries */
 
 /* IsPowerOfTwo returns 1 if x is a power of two or 0 if not */
 int IsPowerOfTwo(unsigned x);
@@ -81,6 +80,6 @@ double Index_to_frequency(unsigned NumSamples, unsigned Index);
 }
 #endif
 
-#endif // _FOURIER_FFT_H_
+#endif  // _FOURIER_FFT_H_
 
 /*--- end of file fourier.h ---*/

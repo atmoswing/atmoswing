@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,14 +30,10 @@
 
 #include <asIncludes.h>
 
-
 class asPredictor;
 
-class asCriteria
-        : public wxObject
-{
-public:
-
+class asCriteria : public wxObject {
+   public:
     asCriteria(const wxString &name, const wxString &fullname, Order order);
 
     static asCriteria *GetInstance(const wxString &criteriaString);
@@ -54,37 +50,31 @@ public:
 
     static a2f GetGauss2D(int nY, int nX);
 
-    wxString GetName() const
-    {
+    wxString GetName() const {
         return m_name;
     }
 
-    wxString GetFullName() const
-    {
+    wxString GetFullName() const {
         return m_fullName;
     }
 
-    Order GetOrder() const
-    {
+    Order GetOrder() const {
         return m_order;
     }
 
-    int GetMinPointsNb() const
-    {
+    int GetMinPointsNb() const {
         return m_minPointsNb;
     }
 
-    bool CanUseInline() const
-    {
+    bool CanUseInline() const {
         return m_canUseInline;
     }
 
-    bool CheckNans() const
-    {
+    bool CheckNans() const {
         return m_checkNaNs;
     }
 
-protected:
+   protected:
     wxString m_name;
     wxString m_fullName;
     Order m_order;
@@ -94,8 +84,7 @@ protected:
     bool m_canUseInline;
     bool m_checkNaNs;
 
-private:
-
+   private:
 };
 
 #endif

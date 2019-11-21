@@ -27,14 +27,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictorOper.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictorOper.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -120,8 +119,7 @@ TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -207,8 +205,7 @@ TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -258,8 +255,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -309,8 +305,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -360,8 +355,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -411,8 +405,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -462,8 +455,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -513,8 +505,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderRightSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderRightSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -564,8 +555,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderRightSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -615,8 +605,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -668,8 +657,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -721,8 +709,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -772,8 +759,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -823,8 +809,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -877,8 +862,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -931,8 +915,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -980,8 +963,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFil
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -1029,8 +1011,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFil
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -1076,8 +1057,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSm
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile)
-{
+TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -1123,8 +1103,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLa
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadVersion2017)
-{
+TEST(PredictorOperNwsGfsRegular, LoadVersion2017) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS_Forecast.hgt.012.grib2");
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2017/2017121312.NWS_GFS_Forecast.hgt.024.grib2");

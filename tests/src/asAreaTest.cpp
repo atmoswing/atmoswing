@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,7 @@
 #include "asArea.h"
 #include "gtest/gtest.h"
 
-
-TEST(Area, CheckPointWGS84True)
-{
+TEST(Area, CheckPointWGS84True) {
     asArea area;
     Coo point;
     point.x = 10;
@@ -39,8 +37,7 @@ TEST(Area, CheckPointWGS84True)
     EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
-TEST(Area, CheckPointWGS84UVMaxTrue)
-{
+TEST(Area, CheckPointWGS84UVMaxTrue) {
     asArea area;
     Coo point;
     point.x = 360;
@@ -48,8 +45,7 @@ TEST(Area, CheckPointWGS84UVMaxTrue)
     EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
-TEST(Area, CheckPointWGS84UVMinTrue)
-{
+TEST(Area, CheckPointWGS84UVMinTrue) {
     asArea area;
     Coo point;
     point.x = 0;
@@ -57,8 +53,7 @@ TEST(Area, CheckPointWGS84UVMinTrue)
     EXPECT_TRUE(area.CheckPoint(point, asEDIT_FORBIDDEN));
 }
 
-TEST(Area, CheckPointWGS84UTooHigh)
-{
+TEST(Area, CheckPointWGS84UTooHigh) {
     asArea area;
     Coo point;
     point.x = 360.1;
@@ -67,8 +62,7 @@ TEST(Area, CheckPointWGS84UTooHigh)
     EXPECT_DOUBLE_EQ(360.1, point.x);
 }
 
-TEST(Area, CheckPointWGS84UTooLow)
-{
+TEST(Area, CheckPointWGS84UTooLow) {
     asArea area;
     Coo point;
     point.x = -0.1;
@@ -77,8 +71,7 @@ TEST(Area, CheckPointWGS84UTooLow)
     EXPECT_DOUBLE_EQ(-0.1, point.x);
 }
 
-TEST(Area, CheckPointWGS84VTooHigh)
-{
+TEST(Area, CheckPointWGS84VTooHigh) {
     asArea area;
     Coo point;
     point.x = 10;
@@ -87,8 +80,7 @@ TEST(Area, CheckPointWGS84VTooHigh)
     EXPECT_DOUBLE_EQ(90.1, point.y);
 }
 
-TEST(Area, CheckPointWGS84VTooLow)
-{
+TEST(Area, CheckPointWGS84VTooLow) {
     asArea area;
     Coo point;
     point.x = 10;
@@ -97,8 +89,7 @@ TEST(Area, CheckPointWGS84VTooLow)
     EXPECT_DOUBLE_EQ(-90.1, point.y);
 }
 
-TEST(Area, CheckPointWGS84UTooHighCorr)
-{
+TEST(Area, CheckPointWGS84UTooHighCorr) {
     asArea area;
     Coo point;
     point.x = 360.1;
@@ -107,8 +98,7 @@ TEST(Area, CheckPointWGS84UTooHighCorr)
     EXPECT_FLOAT_EQ(0.1f, point.x);
 }
 
-TEST(Area, CheckPointWGS84UTooLowCorr)
-{
+TEST(Area, CheckPointWGS84UTooLowCorr) {
     asArea area;
     Coo point;
     point.x = -0.1;
@@ -117,8 +107,7 @@ TEST(Area, CheckPointWGS84UTooLowCorr)
     EXPECT_DOUBLE_EQ(359.9, point.x);
 }
 
-TEST(Area, CheckPointWGS84VTooHighCorr)
-{
+TEST(Area, CheckPointWGS84VTooHighCorr) {
     asArea area;
     Coo point;
     point.x = 10;
@@ -126,8 +115,7 @@ TEST(Area, CheckPointWGS84VTooHighCorr)
     EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
 }
 
-TEST(Area, CheckPointWGS84VTooLowCorr)
-{
+TEST(Area, CheckPointWGS84VTooLowCorr) {
     asArea area;
     Coo point;
     point.x = 10;
@@ -135,8 +123,7 @@ TEST(Area, CheckPointWGS84VTooLowCorr)
     EXPECT_FALSE(area.CheckPoint(point, asEDIT_ALLOWED));
 }
 
-TEST(Area, ConstructorLimitsException)
-{
+TEST(Area, ConstructorLimitsException) {
     wxLogNull logNo;
 
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -152,8 +139,7 @@ TEST(Area, ConstructorLimitsException)
     ASSERT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
-TEST(Area, ConstructorAlternativeLimitsException)
-{
+TEST(Area, ConstructorAlternativeLimitsException) {
     wxLogNull logNo;
 
     double xMin = -10;
@@ -163,8 +149,7 @@ TEST(Area, ConstructorAlternativeLimitsException)
     ASSERT_THROW(asArea area(xMin, xWidth, yMin, yWidth), std::exception);
 }
 
-TEST(Area, CheckConsistency)
-{
+TEST(Area, CheckConsistency) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 30;
@@ -177,8 +162,7 @@ TEST(Area, CheckConsistency)
     EXPECT_DOUBLE_EQ(40, area.GetCornerUR().y);
 }
 
-TEST(Area, IsRectangleTrue)
-{
+TEST(Area, IsRectangleTrue) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -193,8 +177,7 @@ TEST(Area, IsRectangleTrue)
     EXPECT_TRUE(area.IsRectangle());
 }
 
-TEST(Area, IsRectangleFalse)
-{
+TEST(Area, IsRectangleFalse) {
     wxLogNull logNo;
 
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
@@ -210,8 +193,7 @@ TEST(Area, IsRectangleFalse)
     EXPECT_THROW(asArea area(cornerUL, cornerUR, cornerLL, cornerLR), std::exception);
 }
 
-TEST(Area, GetBounds)
-{
+TEST(Area, GetBounds) {
     Coo cornerUL, cornerUR, cornerLL, cornerLR;
     cornerUL.x = 10;
     cornerUL.y = 40;
@@ -229,8 +211,7 @@ TEST(Area, GetBounds)
     EXPECT_DOUBLE_EQ(10, area.GetYwidth());
 }
 
-TEST(Area, NegativeSize)
-{
+TEST(Area, NegativeSize) {
     double xMin = 10;
     double xWidth = -7;
     double yMin = 46;

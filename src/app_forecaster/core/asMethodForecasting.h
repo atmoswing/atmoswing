@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,23 +29,21 @@
 #ifndef AS_METHOD_FORECASTING_H
 #define AS_METHOD_FORECASTING_H
 
+#include <asBatchForecasts.h>
+#include <asCriteria.h>
 #include <asIncludes.h>
 #include <asMethodStandard.h>
 #include <asParametersForecast.h>
-#include <asPredictorOper.h>
 #include <asPredictor.h>
-#include <asCriteria.h>
-#include <asBatchForecasts.h>
+#include <asPredictorOper.h>
 #include <asResultsForecastAggregator.h>
 
 class asResultsDates;
 
 class asResultsForecast;
 
-class asMethodForecasting
-        : public asMethodStandard
-{
-public:
+class asMethodForecasting : public asMethodStandard {
+   public:
     explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
 
     ~asMethodForecasting() override;
@@ -56,22 +54,19 @@ public:
 
     bool Forecast(asParametersForecast &params);
 
-    double GetForecastDate() const
-    {
+    double GetForecastDate() const {
         return m_forecastDate;
     }
 
-    void SetForecastDate(double val)
-    {
+    void SetForecastDate(double val) {
         m_forecastDate = val;
     }
 
-    vwxs GetResultsFilePaths() const
-    {
+    vwxs GetResultsFilePaths() const {
         return m_resultsFilePaths;
     }
 
-protected:
+   protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
     bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
@@ -92,7 +87,7 @@ protected:
 
     void Cleanup();
 
-private:
+   private:
     asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
     asResultsForecastAggregator m_aggregator;

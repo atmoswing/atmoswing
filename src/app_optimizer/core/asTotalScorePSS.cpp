@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,14 +28,9 @@
 
 #include "asTotalScorePSS.h"
 
-asTotalScorePSS::asTotalScorePSS(const wxString &periodString)
-        : asTotalScore(periodString)
-{
+asTotalScorePSS::asTotalScorePSS(const wxString &periodString) : asTotalScore(periodString) {}
 
-}
-
-float asTotalScorePSS::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
-{
+float asTotalScorePSS::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
     wxASSERT(targetDates.rows() > 1);
     wxASSERT(scores.rows() > 1);
 
@@ -69,10 +64,10 @@ float asTotalScorePSS::Assess(const a1f &targetDates, const a1f &scores, const a
     float score;
 
     if (countTot > 0) {
-        float a = (float) countA;
-        float b = (float) countB;
-        float c = (float) countC;
-        float d = (float) countD;
+        float a = (float)countA;
+        float b = (float)countB;
+        float c = (float)countC;
+        float d = (float)countD;
         if (((a + c) * (b + d)) > 0) {
             score = (a * d - b * c) / ((a + c) * (b + d));
         } else {

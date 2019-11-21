@@ -27,15 +27,12 @@
 
 #include "asPredictorEcmwfEra5.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-
-asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_ERA5";
     m_provider = "ECMWF";
@@ -49,8 +46,7 @@ asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorEcmwfEra5::Init()
-{
+bool asPredictorEcmwfEra5::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
@@ -113,8 +109,7 @@ bool asPredictorEcmwfEra5::Init()
             m_unit = UnitUndefined;
         }
 
-    } else if (IsSurfaceLevel() ||
-               m_product.IsSameAs("single", false)) {
+    } else if (IsSurfaceLevel() || m_product.IsSameAs("single", false)) {
         m_fStr.hasLevelDim = false;
         // Surface analysis
         if (m_dataId.IsSameAs("d2m", false)) {
@@ -211,15 +206,15 @@ bool asPredictorEcmwfEra5::Init()
 
     // Check data ID
     if (m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -229,8 +224,7 @@ bool asPredictorEcmwfEra5::Init()
     return true;
 }
 
-void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".nc";
 
@@ -253,7 +247,6 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (size_t i = 0; i < listFiles.Count(); ++i) {
-
         if (!listFiles.Item(i).StartsWith(GetFullDirectoryPath() + m_fileVarName + ".")) {
             continue;
         }
@@ -284,11 +277,9 @@ void asPredictorEcmwfEra5::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorEcmwfEra5::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
+double asPredictorEcmwfEra5::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1900, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }
-

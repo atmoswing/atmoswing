@@ -15,22 +15,14 @@
 
 #endif
 
-enum awxLedState
-{
-    awxLED_OFF = 0, awxLED_ON, awxLED_BLINK
-};
+enum awxLedState { awxLED_OFF = 0, awxLED_ON, awxLED_BLINK };
 
-enum awxLedColour
-{
-    awxLED_LUCID = 0, awxLED_RED, awxLED_GREEN, awxLED_YELLOW
-};
+enum awxLedColour { awxLED_LUCID = 0, awxLED_RED, awxLED_GREEN, awxLED_YELLOW };
 
 class BlinkTimer;
 
-class awxLed
-        : public wxWindow
-{
-protected:
+class awxLed : public wxWindow {
+   protected:
     // bitmap for double buffering
     wxBitmap *m_bitmap;
     wxBitmap m_icons[2];
@@ -45,44 +37,39 @@ protected:
     awxLedState m_offState;
     awxLedColour m_onColour;
     awxLedColour m_offColour;
-protected:
+
+   protected:
     // protected member functions
     void DrawOnBitmap();
 
-public:
+   public:
     awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxPoint(0, 0), const wxSize &size = wxSize(16, 16),
-            // red LED is default
+           // red LED is default
            awxLedColour color = awxLED_RED, long style = 0, int timerInterval = 500);
 
     ~awxLed() override;
 
     void Blink();
 
-    void OnErase(wxEraseEvent &)
-    {
+    void OnErase(wxEraseEvent &) {
         Redraw();
     };
 
-    void OnPaint(wxPaintEvent &)
-    {
+    void OnPaint(wxPaintEvent &) {
         wxPaintDC dc(this);
         dc.DrawBitmap(*m_bitmap, 0, 0, false);
     };
 
-    void OnSizeEvent(wxSizeEvent &event)
-    {
+    void OnSizeEvent(wxSizeEvent &event) {
         wxSize size = event.GetSize();
         m_x = (size.GetX() - m_icons[0].GetWidth()) >> 1;
         m_y = (size.GetY() - m_icons[0].GetHeight()) >> 1;
-        if (m_x < 0)
-            m_x = 0;
-        if (m_y < 0)
-            m_y = 0;
+        if (m_x < 0) m_x = 0;
+        if (m_y < 0) m_y = 0;
         DrawOnBitmap();
     };
 
-    void Redraw()
-    {
+    void Redraw() {
         wxClientDC dc(this);
         DrawOnBitmap();
         dc.DrawBitmap(*m_bitmap, 0, 0, false);
@@ -108,23 +95,19 @@ public:
 
     bool IsOn();
 
-DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-class BlinkTimer
-        : public wxTimer
-{
-protected:
+class BlinkTimer : public wxTimer {
+   protected:
     awxLed *m_led;
-public:
-    BlinkTimer(awxLed *led)
-            : wxTimer()
-    {
+
+   public:
+    BlinkTimer(awxLed *led) : wxTimer() {
         m_led = led;
     };
 
-    void Notify()
-    {
+    void Notify() {
         m_led->Blink();
     };
 };

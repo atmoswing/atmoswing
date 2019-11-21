@@ -33,19 +33,16 @@
 
 class asPredictor;
 
-
-class asPreprocessor
-        : public wxObject
-{
-public:
-
+class asPreprocessor : public wxObject {
+   public:
     static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
     static bool PreprocessSimpleGradients(std::vector<asPredictor *> predictors, asPredictor *result);
 
     static bool PreprocessRealGradients(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessSimpleGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessSimpleGradientsWithGaussianWeights(std::vector<asPredictor *> predictors,
+                                                             asPredictor *result);
 
     static bool PreprocessRealGradientsWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
 
@@ -53,7 +50,8 @@ public:
 
     static bool PreprocessRealCurvature(std::vector<asPredictor *> predictors, asPredictor *result);
 
-    static bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
+    static bool PreprocessSimpleCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors,
+                                                             asPredictor *result);
 
     static bool PreprocessRealCurvatureWithGaussianWeights(std::vector<asPredictor *> predictors, asPredictor *result);
 
@@ -75,9 +73,8 @@ public:
 
     static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
 
-protected:
-
-private:
+   protected:
+   private:
 };
 
 #endif

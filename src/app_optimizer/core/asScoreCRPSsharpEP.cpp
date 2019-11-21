@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,22 +27,16 @@
  */
 
 #include "asScoreCRPSsharpEP.h"
+
 #include "asScoreCRPSEP.h"
 
 asScoreCRPSsharpEP::asScoreCRPSsharpEP()
-        : asScore(asScore::CRPSsharpnessEP, _("CRPS Sharpness Exact Primitive"),
-                  _("Continuous Ranked Probability Score Sharpness exact solution"), Asc, 0, NaNf)
-{
+    : asScore(asScore::CRPSsharpnessEP, _("CRPS Sharpness Exact Primitive"),
+              _("Continuous Ranked Probability Score Sharpness exact solution"), Asc, 0, NaNf) {}
 
-}
+asScoreCRPSsharpEP::~asScoreCRPSsharpEP() {}
 
-asScoreCRPSsharpEP::~asScoreCRPSsharpEP()
-{
-    //dtor
-}
-
-float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -68,7 +62,7 @@ float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) c
     asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
     // Indices for the left and right part (according to the median) of the distribution
-    float mid = ((float) nbPredict - 1) / (float) 2;
+    float mid = ((float)nbPredict - 1) / (float)2;
     int indLeftEnd = floor(mid);
     int indRightStart = ceil(mid);
 
@@ -85,7 +79,6 @@ float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) c
     return CRPSsharpness;
 }
 
-bool asScoreCRPSsharpEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreCRPSsharpEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }

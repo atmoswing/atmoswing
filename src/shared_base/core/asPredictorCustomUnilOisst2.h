@@ -34,23 +34,20 @@
 
 class asArea;
 
-class asPredictorCustomUnilOisst2
-        : public asPredictor
-{
-public:
+class asPredictorCustomUnilOisst2 : public asPredictor {
+   public:
     explicit asPredictorCustomUnilOisst2(const wxString &dataId);
 
     ~asPredictorCustomUnilOisst2() override = default;
 
     bool Init() override;
 
-protected:
+   protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-private:
-
+   private:
 };
 
 #endif

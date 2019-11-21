@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,26 +28,22 @@
 
 #include "asPredictandTemperature.h"
 
+#include <asCatalogPredictands.h>
 #include <asFileNetcdf.h>
 #include <asTimeArray.h>
-#include <asCatalogPredictands.h>
-
 
 asPredictandTemperature::asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                                                  SpatialAggregation dataSpatialAggregation)
-        : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation)
-{
+    : asPredictand(dataParameter, dataTemporalResolution, dataSpatialAggregation) {
     m_hasNormalizedData = false;
     m_hasReferenceValues = false;
 }
 
-bool asPredictandTemperature::InitContainers()
-{
+bool asPredictandTemperature::InitContainers() {
     return InitBaseContainers();
 }
 
-bool asPredictandTemperature::Load(const wxString &filePath)
-{
+bool asPredictandTemperature::Load(const wxString &filePath) {
     // Open the NetCDF file
     wxLogVerbose(_("Opening the file %s"), filePath);
     asFileNetcdf ncFile(filePath, asFileNetcdf::ReadOnly);
@@ -67,15 +63,13 @@ bool asPredictandTemperature::Load(const wxString &filePath)
     return true;
 }
 
-bool asPredictandTemperature::Save(const wxString &destinationDir) const
-{
+bool asPredictandTemperature::Save(const wxString &destinationDir) const {
     // Get the file path
     wxString predictandDBFilePath = GetDBFilePathSaving(destinationDir);
 
     // Create netCDF dataset: enter define mode
     asFileNetcdf ncFile(predictandDBFilePath, asFileNetcdf::Replace);
-    if (!ncFile.Open())
-        return false;
+    if (!ncFile.Open()) return false;
 
     // Set common definitions
     SetCommonDefinitions(ncFile);
@@ -93,27 +87,22 @@ bool asPredictandTemperature::Save(const wxString &destinationDir) const
 }
 
 bool asPredictandTemperature::BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir,
-                                                const wxString &patternDir, const wxString &destinationDir)
-{
+                                                const wxString &patternDir, const wxString &destinationDir) {
     if (!g_unitTesting) {
         wxLogVerbose(_("Building the predictand DB."));
     }
 
     // Initialize the members
-    if (!InitMembers(catalogFilePath))
-        return false;
+    if (!InitMembers(catalogFilePath)) return false;
 
     // Resize matrices
-    if (!InitContainers())
-        return false;
+    if (!InitContainers()) return false;
 
     // Load data from files
-    if (!ParseData(catalogFilePath, dataDir, patternDir))
-        return false;
+    if (!ParseData(catalogFilePath, dataDir, patternDir)) return false;
 
     if (!destinationDir.IsEmpty()) {
-        if (!Save(destinationDir))
-            return false;
+        if (!Save(destinationDir)) return false;
     }
 
     if (!g_unitTesting) {

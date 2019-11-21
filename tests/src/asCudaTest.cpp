@@ -27,35 +27,26 @@
 
 #ifdef USE_CUDA
 
-#include "asThread.h"
 #include "asCuda.cuh"
+#include "asThread.h"
 #include "gtest/gtest.h"
 
-class asThreadTestCuda
-    : public asThread
-{
-  public:
+class asThreadTestCuda : public asThread {
+   public:
     explicit asThreadTestCuda(const wxString &test);
 
     ~asThreadTestCuda() override = default;
 
     ExitCode Entry() override;
 
-  protected:
-
-  private:
+   protected:
+   private:
     wxString m_test;
-
 };
 
+asThreadTestCuda::asThreadTestCuda(const wxString &test) : asThread(), m_test(test) {}
 
-asThreadTestCuda::asThreadTestCuda(const wxString &test)
-        : asThread(),
-          m_test(test) {
-}
-
-wxThread::ExitCode asThreadTestCuda::Entry()
-{
+wxThread::ExitCode asThreadTestCuda::Entry() {
     if (m_test.IsSameAs("simple")) {
         CudaProcessSum();
     } else if (m_test.IsSameAs("streams")) {
@@ -67,18 +58,16 @@ wxThread::ExitCode asThreadTestCuda::Entry()
     return 0;
 }
 
-TEST(Cuda, UseInSingleThread)
-{
+TEST(Cuda, UseInSingleThread) {
     wxCriticalSection threadCS;
 
-    auto* thread = new asThreadTestCuda("simple");
+    auto *thread = new asThreadTestCuda("simple");
 
     ThreadsManager().AddThread(thread);
     ThreadsManager().Wait(asThread::Undefined);
 }
 
-TEST(Cuda, UseInTwoThreads)
-{
+TEST(Cuda, UseInTwoThreads) {
     auto *thread1 = new asThreadTestCuda("simple");
     auto *thread2 = new asThreadTestCuda("simple");
 
@@ -87,8 +76,7 @@ TEST(Cuda, UseInTwoThreads)
     ThreadsManager().Wait(asThread::Undefined);
 }
 
-TEST(Cuda, UseInManyThreads)
-{
+TEST(Cuda, UseInManyThreads) {
     for (int i = 0; i < 100; ++i) {
         auto thread = new asThreadTestCuda("simple");
         ThreadsManager().AddThread(thread);
@@ -97,8 +85,7 @@ TEST(Cuda, UseInManyThreads)
     ThreadsManager().Wait(asThread::Undefined);
 }
 
-TEST(Cuda, UseInManyThreadsWithStreams)
-{
+TEST(Cuda, UseInManyThreadsWithStreams) {
     for (int i = 0; i < 100; ++i) {
         auto thread = new asThreadTestCuda("streams");
         ThreadsManager().AddThread(thread);

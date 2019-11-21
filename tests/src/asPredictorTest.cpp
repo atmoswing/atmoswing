@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(Predictor, Standardize)
-{
+TEST(Predictor, Standardize) {
     double xMin = 10;
     int xPtsNb = 5;
     double yMin = 35;

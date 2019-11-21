@@ -27,13 +27,10 @@
 
 #include "asPredictorNasaMerra2.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString &dataId) : asPredictor(dataId) {
     // Downloaded from http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Set the basic properties.
     m_datasetId = "NASA_MERRA_2";
@@ -50,13 +47,11 @@ asPredictorNasaMerra2::asPredictorNasaMerra2(const wxString &dataId)
     m_fStr.dimLevelName = "lev";
 }
 
-bool asPredictorNasaMerra2::Init()
-{
+bool asPredictorNasaMerra2::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("inst6_3d_ana_Np", false) ||
-        m_product.IsSameAs("ana", false) ||
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("ana", false) ||
         m_product.IsSameAs("M2I6NPANA", false)) {
         m_fStr.hasLevelDim = true;
         if (IsGeopotentialHeight()) {
@@ -107,8 +102,7 @@ bool asPredictorNasaMerra2::Init()
     return true;
 }
 
-void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -116,9 +110,8 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray)
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-
-            wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year,
-                                                                      t.month, t.day);
+            wxString path =
+                GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.year, t.month, t.day);
             if (t.year < 1992) {
                 path.Replace("MERRA2_*00", "MERRA2_100");
             } else if (t.year < 2001) {
@@ -135,10 +128,9 @@ void asPredictorNasaMerra2::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorNasaMerra2::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorNasaMerra2::ConvertToMjd(double timeValue, double refValue) const {
     wxASSERT(refValue > 30000);
     wxASSERT(refValue < 70000);
 
-    return refValue + (timeValue / 1440.0); // minutes to days
+    return refValue + (timeValue / 1440.0);  // minutes to days
 }

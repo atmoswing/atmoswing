@@ -29,16 +29,14 @@
 #ifndef AS_PARAMETERS_OPTIMIZATION_GAS_H
 #define AS_PARAMETERS_OPTIMIZATION_GAS_H
 
-#include "asIncludes.h"
 #include <asParametersOptimization.h>
+
+#include "asIncludes.h"
 
 class asFileParametersOptimization;
 
-
-class asParametersOptimizationGAs
-        : public asParametersOptimization
-{
-public:
+class asParametersOptimizationGAs : public asParametersOptimization {
+   public:
     asParametersOptimizationGAs();
 
     virtual ~asParametersOptimizationGAs();
@@ -85,54 +83,44 @@ public:
 
     void MutateMultiScale(double probability, bool &hasMutated);
 
-    int GetChromosomeLength()
-    {
+    int GetChromosomeLength() {
         return (int)m_chromosomeIndices.size();
     }
 
-    float GetAdaptMutationRate()
-    {
+    float GetAdaptMutationRate() {
         return m_adaptMutationRate;
     }
 
-    void SetAdaptMutationRate(float val)
-    {
+    void SetAdaptMutationRate(float val) {
         m_adaptMutationRate = val;
     }
 
-    float GetAdaptMutationRadius()
-    {
+    float GetAdaptMutationRadius() {
         return m_adaptMutationRadius;
     }
 
-    void SetAdaptMutationRadius(float val)
-    {
+    void SetAdaptMutationRadius(float val) {
         m_adaptMutationRadius = val;
     }
 
-    vf GetChromosomeMutationRate()
-    {
+    vf GetChromosomeMutationRate() {
         return m_chromosomeMutationRate;
     }
 
-    void SetChromosomeMutationRate(vf &val)
-    {
+    void SetChromosomeMutationRate(vf &val) {
         m_chromosomeMutationRate = val;
     }
 
-    vf GetChromosomeMutationRadius()
-    {
+    vf GetChromosomeMutationRadius() {
         return m_chromosomeMutationRadius;
     }
 
-    void SetChromosomeMutationRadius(vf &val)
-    {
+    void SetChromosomeMutationRadius(vf &val) {
         m_chromosomeMutationRadius = val;
     }
 
-protected:
-
-private:
+   protected:
+   private:
     float m_adaptMutationRate;
     float m_adaptMutationRadius;
     vi m_chromosomeIndices;
@@ -151,7 +139,8 @@ private:
 
     /** Get the parameter type (list of value vs value)
      * \param index The index in the chromosome
-     * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between elements)
+     * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between
+     * elements)
      */
     int GetParamType(int index);
 
@@ -165,26 +154,22 @@ private:
 
     double GetParameterIteration(int index);
 
-    float GetSelfAdaptationMutationRateFromChromosome(int index)
-    {
+    float GetSelfAdaptationMutationRateFromChromosome(int index) {
         wxASSERT(m_chromosomeMutationRate.size() > index);
         return m_chromosomeMutationRate[index];
     }
 
-    void SetSelfAdaptationMutationRateFromChromosome(int index, float val)
-    {
+    void SetSelfAdaptationMutationRateFromChromosome(int index, float val) {
         wxASSERT(m_chromosomeMutationRate.size() > index);
         m_chromosomeMutationRate[index] = val;
     }
 
-    float GetSelfAdaptationMutationRadiusFromChromosome(int index)
-    {
+    float GetSelfAdaptationMutationRadiusFromChromosome(int index) {
         wxASSERT(m_chromosomeMutationRadius.size() > index);
         return m_chromosomeMutationRadius[index];
     }
 
-    void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val)
-    {
+    void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val) {
         wxASSERT(m_chromosomeMutationRadius.size() > index);
         m_chromosomeMutationRadius[index] = val;
     }

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,42 +31,39 @@
 
 #include <asIncludes.h>
 
-class asScore
-        : public wxObject
-{
-public:
-
-    enum Score //!< Enumaration of scores
-    {
-        Undefined, CRPSS, // CRPS skill score using the approximation with the rectangle method
-        CRPSAR, // approximation with the rectangle method
-        CRPSEP, // exact by means of primitive
-        CRPSaccuracyAR, // approximation with the rectangle method (Bontron, 2004)
-        CRPSaccuracyEP, // exact by means of primitive (Bontron, 2004)
-        CRPSsharpnessAR, // approximation with the rectangle method (Bontron, 2004)
-        CRPSsharpnessEP, // exact by means of primitive (Bontron, 2004)
-        CRPSHersbachDecomp, // Hersbach (2000) decomposition of the CRPS
-        CRPSreliability, // reliability of the CRPS (Hersbach, 2000)
-        CRPSpotential, // CRPS potential (Hersbach, 2000)
-        DF0, // absolute difference of the frequency of null precipitations
-        ContingencyTable, // Contingency table
-        PC, // Proportion correct
-        TS, // Threat score
-        BIAS, // Bias
-        FARA, // False alarm ratio
-        H, // Hit rate
-        F, // False alarm rate
-        HSS, // Heidke skill score
-        PSS, // Pierce skill score
-        GSS, // Gilbert skill score
-        MAE, // Mean absolute error
-        MSE, // Mean squared error
-        RMSE, // Root mean squared error
-        BS, // Brier score
-        BSS, // Brier skill score
-        SEEPS, // Stable equitable error in probability space
-        RankHistogram, // The Verification Rank Histogram (Talagrand Diagram)
-        RankHistogramReliability // Reliability of the Verification Rank Histogram (Talagrand Diagram)
+class asScore : public wxObject {
+   public:
+    enum Score  //!< Enumaration of scores
+    { Undefined,
+      CRPSS,                    // CRPS skill score using the approximation with the rectangle method
+      CRPSAR,                   // approximation with the rectangle method
+      CRPSEP,                   // exact by means of primitive
+      CRPSaccuracyAR,           // approximation with the rectangle method (Bontron, 2004)
+      CRPSaccuracyEP,           // exact by means of primitive (Bontron, 2004)
+      CRPSsharpnessAR,          // approximation with the rectangle method (Bontron, 2004)
+      CRPSsharpnessEP,          // exact by means of primitive (Bontron, 2004)
+      CRPSHersbachDecomp,       // Hersbach (2000) decomposition of the CRPS
+      CRPSreliability,          // reliability of the CRPS (Hersbach, 2000)
+      CRPSpotential,            // CRPS potential (Hersbach, 2000)
+      DF0,                      // absolute difference of the frequency of null precipitations
+      ContingencyTable,         // Contingency table
+      PC,                       // Proportion correct
+      TS,                       // Threat score
+      BIAS,                     // Bias
+      FARA,                     // False alarm ratio
+      H,                        // Hit rate
+      F,                        // False alarm rate
+      HSS,                      // Heidke skill score
+      PSS,                      // Pierce skill score
+      GSS,                      // Gilbert skill score
+      MAE,                      // Mean absolute error
+      MSE,                      // Mean squared error
+      RMSE,                     // Root mean squared error
+      BS,                       // Brier score
+      BSS,                      // Brier skill score
+      SEEPS,                    // Stable equitable error in probability space
+      RankHistogram,            // The Verification Rank Histogram (Talagrand Diagram)
+      RankHistogramReliability  // Reliability of the Verification Rank Histogram (Talagrand Diagram)
     };
 
     asScore();
@@ -92,72 +89,59 @@ public:
 
     int CleanNans(const a1f &valuesIn, a1f &valuesOut, int nbElements) const;
 
-    wxString GetName() const
-    {
+    wxString GetName() const {
         return m_name;
     }
 
-    wxString GetFullName() const
-    {
+    wxString GetFullName() const {
         return m_fullName;
     }
 
-    Order GetOrder() const
-    {
+    Order GetOrder() const {
         return m_order;
     }
 
-    float GetScoreClimatology() const
-    {
+    float GetScoreClimatology() const {
         return m_scoreClimatology;
     }
 
-    void SetScoreClimatology(float val)
-    {
+    void SetScoreClimatology(float val) {
         m_scoreClimatology = val;
     }
 
-    bool GetOnMean() const
-    {
+    bool GetOnMean() const {
         return m_onMean;
     }
 
-    void SetOnMean(bool val)
-    {
+    void SetOnMean(bool val) {
         m_onMean = val;
     }
 
-    float GetThreshold() const
-    {
+    float GetThreshold() const {
         return m_threshold;
     }
 
-    void SetThreshold(float val)
-    {
+    void SetThreshold(float val) {
         m_threshold = val;
     }
 
-    float GetQuantile() const
-    {
+    float GetQuantile() const {
         return m_quantile;
     }
 
-    void SetQuantile(float val)
-    {
+    void SetQuantile(float val) {
         m_quantile = val;
     }
 
-    bool UsesClimatology() const
-    {
+    bool UsesClimatology() const {
         return m_usesClimatology;
     }
 
-    bool SingleValue() const
-    {
+    bool SingleValue() const {
         return m_singleValue;
     }
 
-protected:
+   protected:
     Score m_score;
     wxString m_name;
     wxString m_fullName;
@@ -171,8 +155,7 @@ protected:
     float m_threshold;
     float m_quantile;
 
-private:
-
+   private:
 };
 
 #endif

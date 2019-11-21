@@ -27,13 +27,10 @@
 
 #include "asPredictorNoaa20Cr2cEnsemble.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NOAA_20CR_v2c_ens";
     m_provider = "NOAA";
@@ -49,13 +46,11 @@ asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dat
     m_fStr.hasLevelDim = false;
 }
 
-bool asPredictorNoaa20Cr2cEnsemble::Init()
-{
+bool asPredictorNoaa20Cr2cEnsemble::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
     if (m_product.IsSameAs("analysis", false)) {
-
         if (IsSeaLevelPressure()) {
             m_parameter = Pressure;
             m_parameterName = "Sea level pressure";
@@ -115,7 +110,6 @@ bool asPredictorNoaa20Cr2cEnsemble::Init()
         m_fileNamePattern = m_fileVarName + "_%d.nc";
 
     } else if (m_product.IsSameAs("first_guess", false)) {
-
         if (IsPrecipitationRate()) {
             m_parameter = PrecipitationRate;
             m_parameterName = "Precipitation rate";
@@ -154,17 +148,15 @@ bool asPredictorNoaa20Cr2cEnsemble::Init()
     return true;
 }
 
-void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-double asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);        // hours to days
+    timeValue += asTime::GetMJD(1, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }

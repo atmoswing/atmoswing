@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,28 +27,21 @@
 
 #include "asFile.h"
 
-
 asFile::asFile(const wxString &fileName, const FileMode &fileMode)
-        : m_fileName(wxFileName(fileName)),
-          m_fileMode(fileMode),
-          m_exists(false),
-          m_opened(false)
-{
+    : m_fileName(wxFileName(fileName)),
+      m_fileMode(fileMode),
+      m_exists(false),
+      m_opened(false) {}
 
-}
-
-asFile::~asFile()
-{
+asFile::~asFile() {
     DoClose();
 }
 
-bool asFile::Exists(const wxString &filePath)
-{
+bool asFile::Exists(const wxString &filePath) {
     return wxFileName::FileExists(filePath);
 }
 
-bool asFile::Find()
-{
+bool asFile::Find() {
     bool missingFile = false, missingDir = false, mkDir = false, errorRights = false, errorOverwrite = false;
 
     if (!m_fileName.IsOk()) {
@@ -128,7 +121,7 @@ bool asFile::Find()
             }
             break;
 
-        default :
+        default:
             asThrowException(_("The file access is not correctly set."));
     }
 
@@ -163,19 +156,15 @@ bool asFile::Find()
     return true;
 }
 
-bool asFile::DoClose()
-{
+bool asFile::DoClose() {
     Close();
     return true;
 }
 
-bool asFile::Open()
-{
+bool asFile::Open() {
     return false;
 }
 
-bool asFile::Close()
-{
+bool asFile::Close() {
     return false;
 }
-

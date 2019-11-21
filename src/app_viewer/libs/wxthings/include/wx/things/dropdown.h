@@ -46,29 +46,23 @@ class WXDLLIMPEXP_THINGS wxCustomButton;
 
 class WXDLLIMPEXP_THINGS DropDownPopup;
 
-#define DROPDOWN_DROP_WIDTH  14  // these are the default sizes
+#define DROPDOWN_DROP_WIDTH 14  // these are the default sizes
 #define DROPDOWN_DROP_HEIGHT 22
 
 //-----------------------------------------------------------------------------
 // DropDownBase generic combobox type widget that drops down a DropDownPopup
 //-----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_THINGS DropDownBase
-        : public wxControl
-{
-public:
-
-    DropDownBase()
-            : wxControl()
-    {
+class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
+   public:
+    DropDownBase() : wxControl() {
         Init();
     }
 
     DropDownBase(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                  const wxSize &size = wxDefaultSize, long style = 0, const wxValidator &val = wxDefaultValidator,
                  const wxString &name = wxT("DropDownBase"))
-            : wxControl()
-    {
+        : wxControl() {
         Init();
         Create(parent, id, pos, size, style, val, name);
     }
@@ -88,18 +82,16 @@ public:
     // implementation
     void OnDropButton(wxCommandEvent &event);
 
-    wxCustomButton *GetDropDownButton()
-    {
+    wxCustomButton *GetDropDownButton() {
         return m_dropdownButton;
     }
 
     // Get the popup window, NULL when not shown
-    DropDownPopup *GetPopupWindow()
-    {
+    DropDownPopup *GetPopupWindow() {
         return m_popupWin;
     }
 
-protected:
+   protected:
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
 
     void OnSize(wxSizeEvent &event);
@@ -111,39 +103,32 @@ protected:
     // override to set the height of the dropdown box
     //   input max_height is height from bottom of ctrl to bottom of screen
     //   return < 1 to not have the popup displayed
-    virtual int DoGetBestDropHeight(int max_height)
-    {
+    virtual int DoGetBestDropHeight(int max_height) {
         return max_height;
     }
 
     wxCustomButton *m_dropdownButton;
     DropDownPopup *m_popupWin;
 
-private:
+   private:
     void Init();
 
-DECLARE_DYNAMIC_CLASS(DropDownBase)
+    DECLARE_DYNAMIC_CLASS(DropDownBase)
 
-DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 //-----------------------------------------------------------------------------
 // DropDownPopup generic popup window, call SetChild
 //-----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_THINGS DropDownPopup
-        : public wxPopupTransientWindow
-{
-public:
-    DropDownPopup()
-            : wxPopupTransientWindow()
-    {
+class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
+   public:
+    DropDownPopup() : wxPopupTransientWindow() {
         Init();
     }
 
-    DropDownPopup(DropDownBase *parent, int style = wxBORDER_NONE)
-            : wxPopupTransientWindow()
-    {
+    DropDownPopup(DropDownBase *parent, int style = wxBORDER_NONE) : wxPopupTransientWindow() {
         Init();
         Create(parent, style);
     }
@@ -160,15 +145,13 @@ public:
 
     virtual void SetChild(wxWindow *child);
 
-    virtual wxWindow *GetChild() const
-    {
+    virtual wxWindow *GetChild() const {
         return m_childWin;
     }
 
     bool m_ignore_popup;
 
-protected:
-
+   protected:
     // start/stop timer shat pushes and pops handler when the mouse goes over
     //  the scrollbars (if any) of the child window
     void StartTimer();
@@ -187,20 +170,20 @@ protected:
 
     void OnIdle(wxIdleEvent &event);
 
-    wxPoint m_mouse;           // last/current mouse position
-    wxWindow *m_childWin;        // store our own child pointer
+    wxPoint m_mouse;       // last/current mouse position
+    wxWindow *m_childWin;  // store our own child pointer
     DropDownBase *m_owner;
-    wxTimer *m_timer;           // timer for tracking mouse position
+    wxTimer *m_timer;       // timer for tracking mouse position
     bool m_popped_handler;  // state of the event handler
 
-private:
+   private:
     void Init();
 
-DECLARE_DYNAMIC_CLASS(DropDownPopup)
+    DECLARE_DYNAMIC_CLASS(DropDownPopup)
 
-DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-#endif // wxUSE_POPUPWIN
+#endif  // wxUSE_POPUPWIN
 
 #endif  // _WX_DROPDOWNBASE_H_

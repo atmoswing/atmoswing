@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -34,12 +34,11 @@
 
 asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                                            wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebar(parent, id, pos, size, style),
-          m_workspace(workspace),
-          m_forecastManager(forecastManager),
-          m_panelDrawing(nullptr),
-          m_mode(1)
-{
+    : asPanelSidebar(parent, id, pos, size, style),
+      m_workspace(workspace),
+      m_forecastManager(forecastManager),
+      m_panelDrawing(nullptr),
+      m_mode(1) {
     m_header->SetLabelText(_("Alarms"));
     m_sizerContent->Fit(this);
 
@@ -49,18 +48,15 @@ asPanelSidebarAlarms::asPanelSidebarAlarms(wxWindow *parent, asWorkspace *worksp
     m_sizerMain->Fit(this);
 }
 
-asPanelSidebarAlarms::~asPanelSidebarAlarms()
-{
+asPanelSidebarAlarms::~asPanelSidebarAlarms() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarms::OnPaint), nullptr, this);
 }
 
-void asPanelSidebarAlarms::OnPaint(wxPaintEvent &event)
-{
+void asPanelSidebarAlarms::OnPaint(wxPaintEvent &event) {
     event.Skip();
 }
 
-void asPanelSidebarAlarms::Update()
-{
+void asPanelSidebarAlarms::Update() {
     int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
     float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
 
@@ -73,21 +69,16 @@ void asPanelSidebarAlarms::Update()
             wxASSERT(returnPeriodRef >= 2);
             wxASSERT(quantileThreshold > 0);
             wxASSERT(quantileThreshold < 1);
-            if (returnPeriodRef < 2)
-                returnPeriodRef = 2;
-            if (quantileThreshold <= 0)
-                quantileThreshold = (float) 0.9;
-            if (quantileThreshold > 1)
-                quantileThreshold = (float) 0.9;
+            if (returnPeriodRef < 2) returnPeriodRef = 2;
+            if (quantileThreshold <= 0) quantileThreshold = (float)0.9;
+            if (quantileThreshold > 1) quantileThreshold = (float)0.9;
 
             a2f values = a2f::Ones(m_forecastManager->GetMethodsNb(), dates.size());
             values *= NaNf;
 
             for (int methodRow = 0; methodRow < m_forecastManager->GetMethodsNb(); methodRow++) {
-
-                a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(dates, methodRow,
-                                                                                             returnPeriodRef,
-                                                                                             quantileThreshold);
+                a1f methodMaxValues = m_forecastManager->GetAggregator()->GetMethodMaxValues(
+                    dates, methodRow, returnPeriodRef, quantileThreshold);
                 values.row(methodRow) = methodMaxValues;
             }
 
@@ -101,8 +92,7 @@ void asPanelSidebarAlarms::Update()
     }
 }
 
-void asPanelSidebarAlarms::SetData(a1f &dates, a2f &values)
-{
+void asPanelSidebarAlarms::SetData(a1f &dates, a2f &values) {
     vwxs names = m_forecastManager->GetAllMethodNames();
 
     // Required size
@@ -113,8 +103,8 @@ void asPanelSidebarAlarms::SetData(a1f &dates, a2f &values)
 
     // Delete and recreate the panel. Cannot get it work with a resize...
     wxDELETE(m_panelDrawing);
-    m_panelDrawing = new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight),
-                                                     wxTAB_TRAVERSAL);
+    m_panelDrawing =
+        new asPanelSidebarAlarmsDrawing(this, wxID_ANY, wxDefaultPosition, wxSize(width, totHeight), wxTAB_TRAVERSAL);
     m_panelDrawing->SetParent(this);
     m_panelDrawing->Layout();
     m_panelDrawing->DrawAlarms(dates, names, values);
@@ -131,8 +121,7 @@ void asPanelSidebarAlarms::SetData(a1f &dates, a2f &values)
 
 asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWindowID id, const wxPoint &pos,
                                                          const wxSize &size, long style)
-        : wxPanel(parent, id, pos, size, style)
-{
+    : wxPanel(parent, id, pos, size, style) {
     m_bmpAlarms = nullptr;
     m_gdc = nullptr;
     m_parent = nullptr;
@@ -142,24 +131,21 @@ asPanelSidebarAlarmsDrawing::asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWin
     Layout();
 }
 
-asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing()
-{
+asPanelSidebarAlarmsDrawing::~asPanelSidebarAlarmsDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarAlarmsDrawing::OnPaint), nullptr, this);
     wxDELETE(m_bmpAlarms);
 }
 
-void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms *parent)
-{
+void asPanelSidebarAlarmsDrawing::SetParent(asPanelSidebarAlarms *parent) {
     m_parent = parent;
 }
 
-void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f &values)
-{
+void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f &values) {
     // Get sizes
     int cols = dates.size();
     int rows = names.size();
-    wxASSERT_MSG((values.cols() == cols), wxString::Format("values.cols()=%d, cols=%d", (int) values.cols(), cols));
-    wxASSERT_MSG((values.rows() == rows), wxString::Format("values.rows()=%d, rows=%d", (int) values.rows(), rows));
+    wxASSERT_MSG((values.cols() == cols), wxString::Format("values.cols()=%d, cols=%d", (int)values.cols(), cols));
+    wxASSERT_MSG((values.rows() == rows), wxString::Format("values.rows()=%d, rows=%d", (int)values.rows(), rows));
 
     // Height of a grid row
     int cellHeight = 20 * g_ppiScaleDc;
@@ -220,8 +206,7 @@ void asPanelSidebarAlarmsDrawing::DrawAlarms(a1f &dates, const vwxs &names, a2f 
     Refresh();
 }
 
-void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap *bmp)
-{
+void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap *bmp) {
     wxDELETE(m_bmpAlarms);
     wxASSERT(!m_bmpAlarms);
 
@@ -232,8 +217,7 @@ void asPanelSidebarAlarmsDrawing::SetBitmapAlarms(wxBitmap *bmp)
     }
 }
 
-void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event)
-{
+void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event) {
     if (m_bmpAlarms != nullptr) {
         wxPaintDC dc(this);
         dc.DrawBitmap(*m_bmpAlarms, 0, 0, true);
@@ -245,11 +229,10 @@ void asPanelSidebarAlarmsDrawing::OnPaint(wxPaintEvent &event)
 }
 
 void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath &path, const wxPoint &start, int cellWitdh, int cellHeight,
-                                             int iCol, int iRow)
-{
-    double startPointX = (double) start.x + iCol * cellWitdh;
+                                             int iCol, int iRow) {
+    double startPointX = (double)start.x + iCol * cellWitdh;
 
-    double startPointY = (double) start.y + iRow * cellHeight;
+    double startPointY = (double)start.y + iRow * cellHeight;
 
     path.MoveToPoint(startPointX, startPointY);
 
@@ -261,45 +244,41 @@ void asPanelSidebarAlarmsDrawing::CreatePath(wxGraphicsPath &path, const wxPoint
     path.CloseSubpath();
 }
 
-void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value)
-{
+void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value) {
     wxColour colour;
 
     switch (m_parent->GetMode()) {
         case (1): {
-            if (asIsNaN(value)) // NaN -> gray
+            if (asIsNaN(value))  // NaN -> gray
             {
                 colour.Set(150, 150, 150);
-            } else if (value == 0) // No rain -> white
+            } else if (value == 0)  // No rain -> white
             {
                 colour.Set(255, 255, 255);
-            } else if (value <= 0.5) // light green to yellow
+            } else if (value <= 0.5)  // light green to yellow
             {
                 int baseVal = 200;
                 int valColour = ((value / (0.5))) * baseVal;
                 int valColourCompl = ((value / (0.5))) * (255 - baseVal);
-                if (valColour > baseVal)
-                    valColour = baseVal;
-                if (valColourCompl + baseVal > 255)
-                    valColourCompl = 255 - baseVal;
+                if (valColour > baseVal) valColour = baseVal;
+                if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
                 colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
-            } else // Yellow to red
+            } else  // Yellow to red
             {
                 int valColour = ((value - 0.5) / (0.5)) * 255;
-                if (valColour > 255)
-                    valColour = 255;
+                if (valColour > 255) valColour = 255;
                 colour.Set(255, (255 - valColour), 0);
             }
             break;
         }
         case (2): {
-            if (value == 1) // Green
+            if (value == 1)  // Green
             {
                 colour.Set(200, 255, 200);
-            } else if (value == 2) // Yellow
+            } else if (value == 2)  // Yellow
             {
                 colour.Set(255, 255, 118);
-            } else if (value == 3) // Red
+            } else if (value == 3)  // Red
             {
                 colour.Set(255, 80, 80);
             } else {
@@ -318,20 +297,18 @@ void asPanelSidebarAlarmsDrawing::FillPath(wxGraphicsContext *gc, wxGraphicsPath
 }
 
 void asPanelSidebarAlarmsDrawing::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int cellWitdh, int iCol,
-                                                  const wxString &label)
-{
-    double pointX = (double) start.x + iCol * cellWitdh;
-    auto pointY = (double) start.y;
+                                                  const wxString &label) {
+    double pointX = (double)start.x + iCol * cellWitdh;
+    auto pointY = (double)start.y;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);
 }
 
 void asPanelSidebarAlarmsDrawing::CreateNbText(wxGraphicsContext *gc, const wxPoint &start, int cellHeight, int iRow,
-                                               const wxString &label)
-{
-    auto pointX = (double) start.x;
-    double pointY = (double) start.y + iRow * cellHeight;
+                                               const wxString &label) {
+    auto pointX = (double)start.x;
+    double pointY = (double)start.y + iRow * cellHeight;
 
     // Draw text
     gc->DrawText(label, pointX, pointY);

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,13 +28,11 @@
 #ifndef AS_BATCH_FORECASTS_H
 #define AS_BATCH_FORECASTS_H
 
-#include <asIncludes.h>
 #include <asFileBatchForecasts.h>
+#include <asIncludes.h>
 
-class asBatchForecasts
-        : public wxObject
-{
-public:
+class asBatchForecasts : public wxObject {
+   public:
     asBatchForecasts();
 
     ~asBatchForecasts() override = default;
@@ -49,113 +47,92 @@ public:
 
     void AddForecast();
 
-    wxString GetFilePath() const
-    {
+    wxString GetFilePath() const {
         return m_filePath;
     }
 
-    void SetFilePath(const wxString &path)
-    {
+    void SetFilePath(const wxString &path) {
         m_filePath = path;
     }
 
-    bool HasChanged() const
-    {
+    bool HasChanged() const {
         return m_hasChanged;
     }
 
     bool HasExports() const;
 
-    bool ExportSyntheticXml() const
-    {
+    bool ExportSyntheticXml() const {
         return m_exportSyntheticXml;
     }
 
-    void SetExportSyntheticXml(bool val)
-    {
+    void SetExportSyntheticXml(bool val) {
         m_exportSyntheticXml = val;
     }
 
-    void SetHasChanged(bool val)
-    {
+    void SetHasChanged(bool val) {
         m_hasChanged = val;
     }
 
-    wxString GetForecastsOutputDirectory() const
-    {
+    wxString GetForecastsOutputDirectory() const {
         return m_forecastsOutputDirectory;
     }
 
-    void SetForecastsOutputDirectory(const wxString &val)
-    {
+    void SetForecastsOutputDirectory(const wxString &val) {
         m_forecastsOutputDirectory = val;
     }
 
-    wxString GetExportsOutputDirectory() const
-    {
+    wxString GetExportsOutputDirectory() const {
         return m_exportsOutputDirectory;
     }
 
-    void SetExportsOutputDirectory(const wxString &val)
-    {
+    void SetExportsOutputDirectory(const wxString &val) {
         m_exportsOutputDirectory = val;
     }
 
-    wxString GetParametersFileDirectory() const
-    {
+    wxString GetParametersFileDirectory() const {
         return m_parametersFileDirectory;
     }
 
-    void SetParametersFileDirectory(const wxString &val)
-    {
+    void SetParametersFileDirectory(const wxString &val) {
         m_parametersFileDirectory = val;
     }
 
-    wxString GetPredictorsArchiveDirectory() const
-    {
+    wxString GetPredictorsArchiveDirectory() const {
         return m_predictorsArchiveDirectory;
     }
 
-    void SetPredictorsArchiveDirectory(const wxString &val)
-    {
+    void SetPredictorsArchiveDirectory(const wxString &val) {
         m_predictorsArchiveDirectory = val;
     }
 
-    wxString GetPredictorsRealtimeDirectory() const
-    {
+    wxString GetPredictorsRealtimeDirectory() const {
         return m_predictorsRealtimeDirectory;
     }
 
-    void SetPredictorsRealtimeDirectory(const wxString &val)
-    {
+    void SetPredictorsRealtimeDirectory(const wxString &val) {
         m_predictorsRealtimeDirectory = val;
     }
 
-    wxString GetPredictandDBDirectory() const
-    {
+    wxString GetPredictandDBDirectory() const {
         return m_predictandDBDirectory;
     }
 
-    void SetPredictandDBDirectory(const wxString &val)
-    {
+    void SetPredictandDBDirectory(const wxString &val) {
         m_predictandDBDirectory = val;
     }
 
-    wxString GetForecastFileName(int i) const
-    {
-        wxASSERT((int) m_forecastFileNames.size() > i);
+    wxString GetForecastFileName(int i) const {
+        wxASSERT((int)m_forecastFileNames.size() > i);
         return m_forecastFileNames[i];
     }
 
-    void SetForecastFileName(int i, const wxString &val)
-    {
-        wxASSERT((int) m_forecastFileNames.size() > i);
+    void SetForecastFileName(int i, const wxString &val) {
+        wxASSERT((int)m_forecastFileNames.size() > i);
         m_forecastFileNames[i] = val;
     }
 
-protected:
-
-private:
+   protected:
+   private:
     bool m_hasChanged;
     bool m_exportSyntheticXml;
     wxString m_filePath;
@@ -166,7 +143,6 @@ private:
     wxString m_predictorsRealtimeDirectory;
     wxString m_predictandDBDirectory;
     vwxs m_forecastFileNames;
-
 };
 
 #endif

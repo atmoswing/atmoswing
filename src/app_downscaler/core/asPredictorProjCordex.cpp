@@ -27,15 +27,13 @@
 
 #include "asPredictorProjCordex.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-
 asPredictorProjCordex::asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario)
-        : asPredictorProj(dataId, model, scenario)
-{
+    : asPredictorProj(dataId, model, scenario) {
     // Downloaded from https://esgf-index1.ceda.ac.uk/search/cordex-ceda/
     // Set the basic properties.
     m_datasetId = "CORDEX";
@@ -44,21 +42,17 @@ asPredictorProjCordex::asPredictorProjCordex(const wxString &dataId, const wxStr
     m_fileType = asFile::Netcdf;
     m_strideAllowed = true;
     m_parseTimeReference = true;
-    m_fStr.dimLatName = "rlat"; // y will be considered otherwise
-    m_fStr.dimLonName = "rlon"; // x will be considered otherwise
+    m_fStr.dimLatName = "rlat";  // y will be considered otherwise
+    m_fStr.dimLonName = "rlon";  // x will be considered otherwise
     m_fStr.dimTimeName = "time";
     m_fStr.dimLevelName = "plev";
     m_fStr.hasLevelDim = false;
     m_isLatLon = false;
 }
 
-asPredictorProjCordex::~asPredictorProjCordex()
-{
+asPredictorProjCordex::~asPredictorProjCordex() {}
 
-}
-
-bool asPredictorProjCordex::Init()
-{
+bool asPredictorProjCordex::Init() {
     // Identify data ID and set the corresponding properties.
     if (m_dataId.IsSameAs("zg200", false)) {
         m_parameter = GeopotentialHeight;
@@ -186,8 +180,7 @@ bool asPredictorProjCordex::Init()
     return true;
 }
 
-void asPredictorProjCordex::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorProjCordex::ListFiles(asTimeArray &timeArray) {
     wxArrayString listFiles;
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
@@ -203,10 +196,10 @@ void asPredictorProjCordex::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (int i = 0; i < listFiles.Count(); ++i) {
-
         wxRegEx reDates("\\d{8,}-\\d{8,}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
-            asThrowException(wxString::Format(_("The dates sequence was not found in the CORDEX file name : %s."), listFiles.Item(i)));
+            asThrowException(wxString::Format(_("The dates sequence was not found in the CORDEX file name : %s."),
+                                              listFiles.Item(i)));
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
@@ -223,8 +216,7 @@ void asPredictorProjCordex::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorProjCordex::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorProjCordex::ConvertToMjd(double timeValue, double refValue) const {
     wxASSERT(refValue < 70000);
 
     return refValue + timeValue;

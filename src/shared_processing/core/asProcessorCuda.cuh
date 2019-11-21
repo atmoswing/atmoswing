@@ -29,17 +29,17 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#include <vector>
 #include <cuda.h>
-#include <driver_types.h>
 #include <cuda_runtime.h>
-#include <helper_cuda.h>
 #include <device_launch_parameters.h>
+#include <driver_types.h>
+#include <helper_cuda.h>
 
-const int nStreams = 4; // must be a multiple of 2!
+#include <vector>
 
-enum CudaCriteria
-{
+const int nStreams = 4;  // must be a multiple of 2!
+
+enum CudaCriteria {
     S0 = 0,
     S1grads = 1,
     S2grads = 2,
@@ -51,12 +51,12 @@ enum CudaCriteria
     DSD = 8,
 };
 
-class asProcessorCuda
-{
-public:
-    static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg, const int *indicesArch,
-                                float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
-                                std::vector<float> &weights, std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset);
+class asProcessorCuda {
+   public:
+    static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg,
+                                const int *indicesArch, float *dRes, int nbCandidates, std::vector<int> &colsNb,
+                                std::vector<int> &rowsNb, std::vector<float> &weights,
+                                std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset);
 
     static bool SelectBestDevice();
 
@@ -64,11 +64,8 @@ public:
 
     static void SetDevice(int device);
 
-protected:
-
-private:
-
+   protected:
+   private:
 };
-
 
 #endif

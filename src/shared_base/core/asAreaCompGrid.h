@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,24 +29,21 @@
 #ifndef AS_AREA_COMPOSITE_GRID_H
 #define AS_AREA_COMPOSITE_GRID_H
 
-#include <asIncludes.h>
 #include <asAreaComp.h>
+#include <asIncludes.h>
 
 class asParameters;
 
-class asAreaCompGrid
-        : public asAreaComp
-{
-public:
+class asAreaCompGrid : public asAreaComp {
+   public:
+    static asAreaCompGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
 
-    static asAreaCompGrid * GetInstance(const asParameters *params, int iStep, int iPtor);
+    static asAreaCompGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
+                                       int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
+                                       bool isLatLon = true);
 
-    static asAreaCompGrid * GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
-                                        int yPtsNb, double yStep, int flatAllowed = asFLAT_FORBIDDEN,
-                                        bool isLatLon = true);
-
-    static asAreaCompGrid * GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
-                                        int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+    static asAreaCompGrid *GetInstance(double xMin, int xPtsNb, double xStep, double yMin, int yPtsNb, double yStep,
+                                       int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
     asAreaCompGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                    int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
@@ -98,18 +95,15 @@ public:
 
     virtual double GetYstep() const = 0;
 
-    bool IsRegular() const
-    {
+    bool IsRegular() const {
         return m_isRegular;
     }
 
-    void AllowResizeFromData()
-    {
+    void AllowResizeFromData() {
         m_allowResizeFromData = true;
     }
 
-
-protected:
+   protected:
     bool m_isRegular;
     bool m_isInitialized;
     bool m_allowResizeFromData;
@@ -118,8 +112,7 @@ protected:
     int m_xPtsNb;
     int m_yPtsNb;
 
-private:
-
+   private:
     bool CreateCompositeAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
 
     bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);

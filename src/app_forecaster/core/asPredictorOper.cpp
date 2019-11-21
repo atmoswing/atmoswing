@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,62 +28,84 @@
 
 #include "asPredictorOper.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asInternet.h>
+#include <asTimeArray.h>
+
 #include "asPredictorOperGfsForecast.h"
 #include "asPredictorOperIfsForecast.h"
-#include <asInternet.h>
-
 
 asPredictorOper::asPredictorOper(const wxString &dataId)
-        : asPredictor(dataId),
-          m_leadTimeStart(0),
-          m_leadTimeEnd(0),
-          m_leadTimeStep(0),
-          m_runHourStart(0),
-          m_runUpdate(0),
-          m_runDateInUse(0.0),
-          m_commandDownload(),
-          m_restrictDownloads(false),
-          m_restrictHours(0),
-          m_restrictTimeStepHours(0)
-{
+    : asPredictor(dataId),
+      m_leadTimeStart(0),
+      m_leadTimeEnd(0),
+      m_leadTimeStep(0),
+      m_runHourStart(0),
+      m_runUpdate(0),
+      m_runDateInUse(0.0),
+      m_commandDownload(),
+      m_restrictDownloads(false),
+      m_restrictHours(0),
+      m_restrictTimeStepHours(0) {}
 
-}
-
-void asPredictorOper::SetDefaultPredictorsUrls()
-{
+void asPredictorOper::SetDefaultPredictorsUrls() {
     wxConfigBase *pConfig = wxFileConfig::Get();
 
     wxString url;
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_HGT=on&subregion=&"
+        "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/hgt", pConfig->Read("/PredictorsUrl/GFS/hgt", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_TMP=on&subregion=&"
+        "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/temp", pConfig->Read("/PredictorsUrl/GFS/temp", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VVEL=on&subregion=&"
+        "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/vvel", pConfig->Read("/PredictorsUrl/GFS/vvel", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_RH=on&subregion=&leftlon="
+        "-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/rh", pConfig->Read("/PredictorsUrl/GFS/rh", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_UGRD=on&subregion=&"
+        "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/uwnd", pConfig->Read("/PredictorsUrl/GFS/uwnd", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_300_mb=on&lev_400_mb=on&lev_"
+        "500_mb=on&lev_600_mb=on&lev_700_mb=on&lev_850_mb=on&lev_925_mb=on&lev_1000_mb=on&var_VGRD=on&subregion=&"
+        "leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/vwnd", pConfig->Read("/PredictorsUrl/GFS/vwnd", url));
 
-    url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
+    url =
+        "https://nomads.ncep.noaa.gov/cgi-bin/"
+        "filter_gfs_0p50.pl?file=gfs.t[CURRENTDATE-hh]z.pgrb2full.0p50.f[LEADTIME-hhh]&lev_entire_atmosphere_%5C%"
+        "28considered_as_a_single_layer%5C%29=on&var_PWAT=on&subregion=&leftlon=-20&rightlon=30&toplat=70&bottomlat=30&"
+        "dir=%2Fgfs.[CURRENTDATE-YYYYMMDD]/[CURRENTDATE-hh]";
     pConfig->Write("/PredictorsUrl/GFS/pwat", pConfig->Read("/PredictorsUrl/GFS/pwat", url));
 
     pConfig->Flush();
-
 }
 
-asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const wxString &dataId)
-{
+asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const wxString &dataId) {
     asPredictorOper *predictor = nullptr;
 
     if (datasetId.IsSameAs("NWS_GFS_Forecast", false)) {
@@ -102,20 +124,17 @@ asPredictorOper *asPredictorOper::GetInstance(const wxString &datasetId, const w
     return predictor;
 }
 
-int asPredictorOper::Download()
-{
+int asPredictorOper::Download() {
     wxASSERT(!m_predictorsRealtimeDir.IsEmpty());
 
     return asInternet::Download(GetUrls(), GetFileNames(), m_predictorsRealtimeDir);
 }
 
-bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray)
-{
+bool asPredictorOper::CheckTimeArray(asTimeArray &timeArray) {
     return true;
 }
 
-double asPredictorOper::UpdateRunDateInUse()
-{
+double asPredictorOper::UpdateRunDateInUse() {
     m_fileNames.clear();
     m_urls.clear();
 
@@ -125,16 +144,15 @@ double asPredictorOper::UpdateRunDateInUse()
     double hourNow = (m_runDateInUse - floor(m_runDateInUse)) * 24;
     if (runUpdate > 0) {
         double factorUpdate = floor((hourNow - runHourStart) / runUpdate);
-        m_runDateInUse = floor(m_runDateInUse) + (factorUpdate * runUpdate) / (double) 24;
+        m_runDateInUse = floor(m_runDateInUse) + (factorUpdate * runUpdate) / (double)24;
     } else {
-        m_runDateInUse = floor(m_runDateInUse) + runHourStart / (double) 24;
+        m_runDateInUse = floor(m_runDateInUse) + runHourStart / (double)24;
     }
 
     return m_runDateInUse;
 }
 
-double asPredictorOper::SetRunDateInUse(double val)
-{
+double asPredictorOper::SetRunDateInUse(double val) {
     // Get date and time
     if (val == 0) {
         val = asTime::NowMJD(asUTM);
@@ -146,28 +164,25 @@ double asPredictorOper::SetRunDateInUse(double val)
     return m_runDateInUse;
 }
 
-double asPredictorOper::DecrementRunDateInUse()
-{
+double asPredictorOper::DecrementRunDateInUse() {
     m_fileNames.clear();
     m_urls.clear();
-    m_runDateInUse -= m_runUpdate / (double) 24;
+    m_runDateInUse -= m_runUpdate / (double)24;
 
     return m_runDateInUse;
 }
 
-void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb)
-{
+void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb) {
     m_restrictDownloads = true;
-    m_restrictHours = (int) restrictHours;
-    m_restrictTimeStepHours = (int) restrictTimeStepHours;
-    m_leadTimeEnd = (int) 24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
+    m_restrictHours = (int)restrictHours;
+    m_restrictTimeStepHours = (int)restrictTimeStepHours;
+    m_leadTimeEnd = (int)24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictHours > -100);
     wxASSERT(m_restrictHours < 100);
 }
 
-bool asPredictorOper::BuildFilenamesUrls()
-{
+bool asPredictorOper::BuildFilenamesUrls() {
     m_dataDates.clear();
     m_fileNames.clear();
     m_urls.clear();
@@ -181,14 +196,14 @@ bool asPredictorOper::BuildFilenamesUrls()
             break;
         }
         posStart--;
-        auto posStartSt = (size_t) posStart;
-        thisCommand.Remove(posStartSt, 13); // Removes '[CURRENTDATE-'
+        auto posStartSt = (size_t)posStart;
+        thisCommand.Remove(posStartSt, 13);  // Removes '[CURRENTDATE-'
         // Find end
         int posEnd = thisCommand.find("]", posStartSt);
 
         if (posEnd != wxNOT_FOUND && posEnd > posStartSt) {
-            auto posEndSt = (size_t) posEnd;
-            thisCommand.Remove(posEndSt, 1); // Removes ']'
+            auto posEndSt = (size_t)posEnd;
+            thisCommand.Remove(posEndSt, 1);  // Removes ']'
             wxString dateFormat = thisCommand.SubString(posStartSt, posEndSt);
             wxString date = asTime::GetStringTime(m_runDateInUse, dateFormat);
             thisCommand.replace(posStartSt, date.Length(), date);
@@ -201,10 +216,10 @@ bool asPredictorOper::BuildFilenamesUrls()
         double dayRun = floor(m_runDateInUse);
         double desiredTime = dayRun + m_restrictHours / 24.0;
         double diff = desiredTime - m_runDateInUse;
-        m_leadTimeStart = (int) (diff * 24.0);
+        m_leadTimeStart = (int)(diff * 24.0);
         m_leadTimeStep = m_restrictTimeStepHours;
-        m_leadTimeEnd = (int) floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) *
-            m_leadTimeStep + m_leadTimeStart;
+        m_leadTimeEnd =
+            (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) * m_leadTimeStep + m_leadTimeStart;
     }
 
     wxASSERT(m_leadTimeStep > 0);
@@ -228,17 +243,14 @@ bool asPredictorOper::BuildFilenamesUrls()
 
         thisCommandLeadTime.Replace("[LEADTIME-H]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-h]", timeStr);
-        if (timeStr.Length() < 2)
-            timeStr = "0" + timeStr;
+        if (timeStr.Length() < 2) timeStr = "0" + timeStr;
         thisCommandLeadTime.Replace("[LEADTIME-HH]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-hh]", timeStr);
-        if (timeStr.Length() < 3)
-            timeStr = "0" + timeStr;
+        if (timeStr.Length() < 3) timeStr = "0" + timeStr;
         timeStrFileName = timeStr;
         thisCommandLeadTime.Replace("[LEADTIME-HHH]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-hhh]", timeStr);
-        if (timeStr.Length() < 4)
-            timeStr = "0" + timeStr;
+        if (timeStr.Length() < 4) timeStr = "0" + timeStr;
         thisCommandLeadTime.Replace("[LEADTIME-HHHH]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-hhhh]", timeStr);
 
@@ -270,8 +282,7 @@ bool asPredictorOper::BuildFilenamesUrls()
     return true;
 }
 
-void asPredictorOper::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorOper::ListFiles(asTimeArray &timeArray) {
     for (const auto &currfileName : m_fileNames) {
         wxString filePath = wxEmptyString;
 

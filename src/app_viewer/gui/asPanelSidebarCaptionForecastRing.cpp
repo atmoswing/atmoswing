@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -34,13 +34,11 @@
 
 asPanelSidebarCaptionForecastRing::asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id,
                                                                      const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebar(parent, id, pos, size, style)
-{
+    : asPanelSidebar(parent, id, pos, size, style) {
     m_header->SetLabelText(_("Forecast caption"));
 
-    m_panelDrawing = new asPanelSidebarCaptionForecastRingDrawing(this, wxID_ANY, wxDefaultPosition,
-                                                                  wxSize(240 * g_ppiScaleDc, 240 * g_ppiScaleDc),
-                                                                  wxTAB_TRAVERSAL);
+    m_panelDrawing = new asPanelSidebarCaptionForecastRingDrawing(
+        this, wxID_ANY, wxDefaultPosition, wxSize(240 * g_ppiScaleDc, 240 * g_ppiScaleDc), wxTAB_TRAVERSAL);
     m_sizerContent->Add(m_panelDrawing, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
     Connect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
@@ -50,26 +48,21 @@ asPanelSidebarCaptionForecastRing::asPanelSidebarCaptionForecastRing(wxWindow *p
     FitInside();
 }
 
-asPanelSidebarCaptionForecastRing::~asPanelSidebarCaptionForecastRing()
-{
+asPanelSidebarCaptionForecastRing::~asPanelSidebarCaptionForecastRing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRing::OnPaint), nullptr, this);
 }
 
-void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent &event)
-{
+void asPanelSidebarCaptionForecastRing::OnPaint(wxPaintEvent &event) {
     event.Skip();
 }
 
-void asPanelSidebarCaptionForecastRing::SetDates(a1f &dates)
-{
+void asPanelSidebarCaptionForecastRing::SetDates(a1f &dates) {
     m_panelDrawing->DrawDates(dates);
 }
 
-void asPanelSidebarCaptionForecastRing::SetColorbarMax(double valmax)
-{
+void asPanelSidebarCaptionForecastRing::SetColorbarMax(double valmax) {
     m_panelDrawing->DrawColorbar(valmax);
 }
-
 
 /*
  * asPanelSidebarCaptionForecastRingDrawing
@@ -78,8 +71,7 @@ void asPanelSidebarCaptionForecastRing::SetColorbarMax(double valmax)
 asPanelSidebarCaptionForecastRingDrawing::asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id,
                                                                                    const wxPoint &pos,
                                                                                    const wxSize &size, long style)
-        : wxPanel(parent, id, pos, size, style)
-{
+    : wxPanel(parent, id, pos, size, style) {
     m_bmpDates = nullptr;
     m_bmpColorbar = nullptr;
     m_gdc = nullptr;
@@ -93,15 +85,13 @@ asPanelSidebarCaptionForecastRingDrawing::asPanelSidebarCaptionForecastRingDrawi
     Layout();
 }
 
-asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDrawing()
-{
+asPanelSidebarCaptionForecastRingDrawing::~asPanelSidebarCaptionForecastRingDrawing() {
     Disconnect(wxEVT_PAINT, wxPaintEventHandler(asPanelSidebarCaptionForecastRingDrawing::OnPaint), nullptr, this);
     wxDELETE(m_bmpDates);
     wxDELETE(m_bmpColorbar);
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
-{
+void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates) {
     auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(182 * g_ppiScaleDc));
     wxASSERT(bmp);
 
@@ -119,7 +109,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
         gc->SetFont(defFont, *wxBLACK);
         wxGraphicsPath path = gc->CreatePath();
 
-        wxPoint center(120 * g_ppiScaleDc, 91 * g_ppiScaleDc); // Looks better than 105
+        wxPoint center(120 * g_ppiScaleDc, 91 * g_ppiScaleDc);  // Looks better than 105
 
         int segmentsTot = dates.size();
         const double scale = 0.9 * g_ppiScaleDc;
@@ -148,8 +138,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawDates(a1f &dates)
     Refresh();
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax)
-{
+void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax) {
     auto *bmp = new wxBitmap(int(240 * g_ppiScaleDc), int(50 * g_ppiScaleDc));
     wxASSERT(bmp);
 
@@ -184,8 +173,7 @@ void asPanelSidebarCaptionForecastRingDrawing::DrawColorbar(double valmax)
     Refresh();
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap *bmp)
-{
+void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap *bmp) {
     wxDELETE(m_bmpDates);
     wxASSERT(!m_bmpDates);
 
@@ -196,8 +184,7 @@ void asPanelSidebarCaptionForecastRingDrawing::SetBitmapDates(wxBitmap *bmp)
     }
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap *bmp)
-{
+void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap *bmp) {
     wxDELETE(m_bmpColorbar);
     wxASSERT(!m_bmpColorbar);
 
@@ -208,8 +195,7 @@ void asPanelSidebarCaptionForecastRingDrawing::SetBitmapColorbar(wxBitmap *bmp)
     }
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent &event)
-{
+void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent &event) {
     wxPaintDC dc(this);
 
     if (m_bmpDates != nullptr) {
@@ -226,15 +212,14 @@ void asPanelSidebarCaptionForecastRingDrawing::OnPaint(wxPaintEvent &event)
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateDatesPath(wxGraphicsPath &path, const wxPoint &center,
-                                                               double scale, int segmentsTotNb, int segmentNb)
-{
+                                                               double scale, int segmentsTotNb, int segmentNb) {
     const wxDouble radiusOut = 100 * scale;
     const wxDouble radiusIn = 40 * scale;
 
-    wxDouble segmentStart = -0.5 * M_PI + ((double) segmentNb / (double) segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double) (segmentNb + 1) / (double) segmentsTotNb) * (1.5 * M_PI);
-    auto centerX = (wxDouble) center.x;
-    auto centerY = (wxDouble) center.y;
+    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+    auto centerX = (wxDouble)center.x;
+    auto centerY = (wxDouble)center.y;
 
     // Get starting point
     double dX = cos(segmentStart) * radiusOut;
@@ -260,13 +245,12 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateDatesPath(wxGraphicsPath &p
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateDatesText(wxGraphicsContext *gc, const wxPoint &center,
                                                                double scale, int segmentsTotNb, int segmentNb,
-                                                               const wxString &label)
-{
+                                                               const wxString &label) {
     // Get geometric elements
     const wxDouble radiusMean = 70 * scale;
     wxDouble segmentMean = -0.5 * M_PI + ((segmentNb + 0.5) / segmentsTotNb) * (1.5 * M_PI);
-    auto centerX = (wxDouble) center.x;
-    auto centerY = (wxDouble) center.y;
+    auto centerX = (wxDouble)center.x;
+    auto centerY = (wxDouble)center.y;
 
     // Text extent
     wxDouble w, h;
@@ -282,8 +266,7 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateDatesText(wxGraphicsContext
     gc->DrawText(label, newPointX, newPointY);
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarPath(wxGraphicsPath &path)
-{
+void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarPath(wxGraphicsPath &path) {
     int startX = 30;
     int endX = 210 * g_ppiScaleDc;
     int startY = 2 * g_ppiScaleDc;
@@ -296,8 +279,7 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarPath(wxGraphicsPath
     path.CloseSubpath();
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::FillColorbar(wxGraphicsContext *gc, wxGraphicsPath &path)
-{
+void asPanelSidebarCaptionForecastRingDrawing::FillColorbar(wxGraphicsContext *gc, wxGraphicsPath &path) {
     // Get the path box
     wxDouble x, y, w, h;
     path.GetBox(&x, &y, &w, &h);
@@ -310,8 +292,7 @@ void asPanelSidebarCaptionForecastRingDrawing::FillColorbar(wxGraphicsContext *g
 }
 
 void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path,
-                                                                  double valmax)
-{
+                                                                  double valmax) {
     gc->SetPen(*wxBLACK);
 
     // Get the path box
@@ -351,11 +332,9 @@ void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarText(wxGraphicsCont
     gc->DrawText(labelStart, x + 4, y + dy);
     gc->DrawText(labelMid, x + w / 2 + 4, y + dy);
     gc->DrawText(labelEnd, x + w + 4, y + dy);
-
 }
 
-void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path)
-{
+void asPanelSidebarCaptionForecastRingDrawing::CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path) {
     gc->SetPen(*wxBLACK);
 
     // Get the path box

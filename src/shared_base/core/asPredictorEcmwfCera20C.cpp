@@ -27,13 +27,10 @@
 
 #include "asPredictorEcmwfCera20C.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorEcmwfCera20C::asPredictorEcmwfCera20C(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorEcmwfCera20C::asPredictorEcmwfCera20C(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "ECMWF_CERA_20C";
     m_provider = "ECMWF";
@@ -48,8 +45,7 @@ asPredictorEcmwfCera20C::asPredictorEcmwfCera20C(const wxString &dataId)
     m_fStr.dimMemberName = "number";
 }
 
-bool asPredictorEcmwfCera20C::Init()
-{
+bool asPredictorEcmwfCera20C::Init() {
     CheckLevelTypeIsDefined();
 
     // List of variables: http://rda.ucar.edu/datasets/ds627.0/docs/era_interim_grib_table.html
@@ -117,15 +113,15 @@ bool asPredictorEcmwfCera20C::Init()
 
     // Check data ID
     if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
     // Check directory is set
     if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."),
-                   m_dataId, m_datasetName);
+        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+                   m_datasetName);
         return false;
     }
 
@@ -135,18 +131,15 @@ bool asPredictorEcmwfCera20C::Init()
     return true;
 }
 
-void asPredictorEcmwfCera20C::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorEcmwfCera20C::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-double asPredictorEcmwfCera20C::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1900, 1, 1); // to MJD: add a negative time span
+double asPredictorEcmwfCera20C::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);           // hours to days
+    timeValue += asTime::GetMJD(1900, 1, 1);  // to MJD: add a negative time span
 
     return timeValue;
 }
-

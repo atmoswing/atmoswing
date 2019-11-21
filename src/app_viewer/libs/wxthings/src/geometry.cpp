@@ -17,22 +17,19 @@
 
 /*
 2.4 : How do I generate a circle through three points?
-Let the three given points be a, b, c. Use _0 and _1 to represent x and y coordinates. The coordinates of the center p=(p_0,p_1) of the circle determined by a, b, and c are:
-A = b_0 - a_0; B = b_1 - a_1; C = c_0 - a_0; D = c_1 - a_1;
-E = A*(a_0 + b_0) + B*(a_1 + b_1); F = C*(a_0 + c_0) + D*(a_1 + c_1);
-G = 2.0*(A*(c_1 - b_1)-B*(c_0 - b_0));
-p_0 = (D*E - B*F) / G; p_1 = (A*F - C*E) / G;
-If G is zero then the three points are collinear and no finite-radius circle through them exists. Otherwise, the radius of the circle is:
-r^2 = (a_0 - p_0)^2 + (a_1 - p_1)^2
-[O' Rourke (C)] p. 201. Simplified by Jim Ward.
+Let the three given points be a, b, c. Use _0 and _1 to represent x and y coordinates. The coordinates of the center
+p=(p_0,p_1) of the circle determined by a, b, and c are: A = b_0 - a_0; B = b_1 - a_1; C = c_0 - a_0; D = c_1 - a_1; E =
+A*(a_0 + b_0) + B*(a_1 + b_1); F = C*(a_0 + c_0) + D*(a_1 + c_1); G = 2.0*(A*(c_1 - b_1)-B*(c_0 - b_0)); p_0 = (D*E -
+B*F) / G; p_1 = (A*F - C*E) / G; If G is zero then the three points are collinear and no finite-radius circle through
+them exists. Otherwise, the radius of the circle is: r^2 = (a_0 - p_0)^2 + (a_1 - p_1)^2 [O' Rourke (C)] p. 201.
+Simplified by Jim Ward.
 */
 
-wxCircleDouble::wxCircleDouble(const wxPoint2DDouble &p1, const wxPoint2DDouble &p2, const wxPoint2DDouble &p3)
-{
+wxCircleDouble::wxCircleDouble(const wxPoint2DDouble &p1, const wxPoint2DDouble &p2, const wxPoint2DDouble &p3) {
     wxDouble A = p2.m_x - p1.m_x, B = p2.m_y - p1.m_y, C = p3.m_x - p1.m_x, D = p3.m_y - p1.m_y;
 
-    wxDouble E = A * (p1.m_x + p2.m_x) + B * (p1.m_y + p2.m_y), F = C * (p1.m_x + p3.m_x) + D * (p1.m_y + p3.m_y), G =
-            2.0 * (A * (p3.m_y - p2.m_y) - B * (p3.m_x - p2.m_x));
+    wxDouble E = A * (p1.m_x + p2.m_x) + B * (p1.m_y + p2.m_y), F = C * (p1.m_x + p3.m_x) + D * (p1.m_y + p3.m_y),
+             G = 2.0 * (A * (p3.m_y - p2.m_y) - B * (p3.m_x - p2.m_x));
 
     if (G == 0) {
         m_x = m_y = m_r = 0;
@@ -43,16 +40,15 @@ wxCircleDouble::wxCircleDouble(const wxPoint2DDouble &p1, const wxPoint2DDouble 
     m_r = sqrt((p1.m_x - m_x) * (p1.m_x - m_x) + (p1.m_y - m_y) * (p1.m_y - m_y));
 }
 
-int wxCircleDouble::IntersectLine(const wxRay2DDouble &line, wxPoint2DDouble *pt1, wxPoint2DDouble *pt2) const
-{
-    //if (line.GetDistanceToPoint(m_origin) > m_r) return 0;
+int wxCircleDouble::IntersectLine(const wxRay2DDouble &line, wxPoint2DDouble *pt1, wxPoint2DDouble *pt2) const {
+    // if (line.GetDistanceToPoint(m_origin) > m_r) return 0;
 
     wxDouble l1_x = m_x - m_r, l1_y = line.GetYFromX(l1_x);
     wxDouble l2_x = m_x + m_r, l2_y = line.GetYFromX(l2_x);
 
     // quick check to see it it intersects at all
-    //wxDouble top = m_origin.m_y-m_r, bot = m_origin.m_y+m_r;
-    //if (((l1_y < top)&&(l2_y < top))||((l1_y > bot)&&(l2_y > bot))) return 0;
+    // wxDouble top = m_origin.m_y-m_r, bot = m_origin.m_y+m_r;
+    // if (((l1_y < top)&&(l2_y < top))||((l1_y > bot)&&(l2_y > bot))) return 0;
 
     wxDouble l2_l1_x = l2_x - l1_x, l2_l1_y = l2_y - l1_y;
 
@@ -88,13 +84,6 @@ int wxCircleDouble::IntersectLine(const wxRay2DDouble &line, wxPoint2DDouble *pt
 
     return 2;
 }
-
-
-
-
-
-
-
 
 /*
 int wxEllipseInt::IntersectLine( const wxLine2DInt &line,

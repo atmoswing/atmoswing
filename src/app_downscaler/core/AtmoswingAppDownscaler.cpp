@@ -31,7 +31,7 @@
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif  //__BORLANDC__
 
 #include "AtmoswingAppDownscaler.h"
 
@@ -44,7 +44,6 @@
 #include "asMethodDownscalerClassic.h"
 #include "asParameters.h"
 
-
 IMPLEMENT_APP(AtmoswingAppDownscaler)
 
 #include <asFileText.h>
@@ -52,45 +51,46 @@ IMPLEMENT_APP(AtmoswingAppDownscaler)
 
 #if wxUSE_GUI
 
-#include "images.h"
 #include "asParameters.h"
+#include "images.h"
 
 #endif
 
-static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-{
-    {wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
-    {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
-    {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
-    {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
-    {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
-    {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the downscaling parameters"},
-    {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
-    {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
-    {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors",  "The archive predictors directory"},
+static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
+    {wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit"},
+    {wxCMD_LINE_SWITCH, "s", "silent", "Silent mode"},
+    {wxCMD_LINE_SWITCH, "l", "local", "Work in local directory"},
+    {wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use"},
+    {wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run"},
+    {wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the downscaling parameters"},
+    {wxCMD_LINE_OPTION, NULL, "predictand-db", "The predictand DB"},
+    {wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID"},
+    {wxCMD_LINE_OPTION, NULL, "dir-archive-predictors", "The archive predictors directory"},
     {wxCMD_LINE_OPTION, NULL, "dir-scenario-predictors", "The scenario predictors directory"},
-    {wxCMD_LINE_OPTION, NULL, "downscaling-method",      "Choice of the downscaling method"
-                                                         "\n \t\t\t\t\t - classic: classic downscaling"},
-    {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
-                                                         "\n \t\t\t\t\t - 1: errors"
-                                                         "\n \t\t\t\t\t - 2: warnings"
-                                                         "\n \t\t\t\t\t - 3: verbose"},
+    {wxCMD_LINE_OPTION, NULL, "downscaling-method",
+     "Choice of the downscaling method"
+     "\n \t\t\t\t\t - classic: classic downscaling"},
+    {wxCMD_LINE_OPTION, NULL, "log-level",
+     "Set a log level"
+     "\n \t\t\t\t\t - 1: errors"
+     "\n \t\t\t\t\t - 2: warnings"
+     "\n \t\t\t\t\t - 3: verbose"},
 
     {wxCMD_LINE_NONE}};
 
-static const wxString cmdLineLogo = wxT("\n"\
-"_________________________________________\n"\
-"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
-"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
-"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
-"_________________________________________\n"\
-"\n");
+static const wxString cmdLineLogo =
+    wxT("\n"
+        "_________________________________________\n"
+        "____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"
+        "|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"
+        "|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"
+        "_________________________________________\n"
+        "\n");
 
-bool AtmoswingAppDownscaler::OnInit()
-{
+bool AtmoswingAppDownscaler::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 #endif
 
@@ -152,7 +152,7 @@ bool AtmoswingAppDownscaler::OnInit()
     frame->OnInit();
 
 #ifdef __WXMSW__
-    frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon));  // To Set App Icon
 #endif
     frame->Show();
     SetTopWindow(frame);
@@ -161,8 +161,7 @@ bool AtmoswingAppDownscaler::OnInit()
     return true;
 }
 
-wxString AtmoswingAppDownscaler::GetLocalPath()
-{
+wxString AtmoswingAppDownscaler::GetLocalPath() {
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
@@ -175,8 +174,7 @@ wxString AtmoswingAppDownscaler::GetLocalPath()
     return localPath;
 }
 
-bool AtmoswingAppDownscaler::InitLog()
-{
+bool AtmoswingAppDownscaler::InitLog() {
     if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingDownscaler.log");
@@ -205,8 +203,7 @@ bool AtmoswingAppDownscaler::InitLog()
     return true;
 }
 
-bool AtmoswingAppDownscaler::SetUseAsCmdLine()
-{
+bool AtmoswingAppDownscaler::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -216,8 +213,7 @@ bool AtmoswingAppDownscaler::SetUseAsCmdLine()
     return true;
 }
 
-bool AtmoswingAppDownscaler::InitForCmdLineOnly()
-{
+bool AtmoswingAppDownscaler::InitForCmdLineOnly() {
     if (g_local) {
         wxString dirData = wxFileName::GetCwd() + DS + "data" + DS;
 
@@ -231,7 +227,7 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         pConfig->Write("/Paths/DataPredictandDBDir", dirData);
         pConfig->Write("/Paths/DownscalerResultsDir", GetLocalPath() + "results");
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
-        pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
+        pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
         if (pConfig->ReadLong("/Processing/ThreadsNb", 1) > 1) {
@@ -239,14 +235,12 @@ bool AtmoswingAppDownscaler::InitForCmdLineOnly()
         }
 
         pConfig->Flush();
-
     }
 
     return true;
 }
 
-void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser)
-{
+void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -256,8 +250,7 @@ void AtmoswingAppDownscaler::OnInitCmdLine(wxCmdLineParser &parser)
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
-{
+bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Check if runs with GUI or CL
     if (parser.Found("downscaling-method")) {
         SetUseAsCmdLine();
@@ -272,7 +265,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     long runNb = 0;
     if (parser.Found("run-number", &runNbStr)) {
         if (runNbStr.ToLong(&runNb)) {
-            g_runNb = (int) runNb;
+            g_runNb = (int)runNb;
         } else {
             g_runNb = rand();
         }
@@ -313,10 +306,9 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString,
-                                                 asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
-                                                 asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
-                                                 wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig =
+            new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini",
+                             asConfig::GetUserDataDir() + "AtmoSwingDownscaler.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
@@ -399,17 +391,17 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
         }
     }
 
-	// Check for scenario predictors directory
-	if (parser.Found("dir-scenario-predictors", &m_predictorsScenarioDir)) {
-		if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsScenarioDir)) {
-			m_predictorsScenarioDir = wxFileName::GetCwd() + DS + m_predictorsScenarioDir;
-		}
+    // Check for scenario predictors directory
+    if (parser.Found("dir-scenario-predictors", &m_predictorsScenarioDir)) {
+        if (g_local && wxFileName::Exists(wxFileName::GetCwd() + DS + m_predictorsScenarioDir)) {
+            m_predictorsScenarioDir = wxFileName::GetCwd() + DS + m_predictorsScenarioDir;
+        }
 
-		if (!wxFileName::DirExists(m_predictorsScenarioDir)) {
-			wxLogError(_("The given scenario predictors directory (%s) couldn't be found."), m_predictorsScenarioDir);
-			return false;
-		}
-	}
+        if (!wxFileName::DirExists(m_predictorsScenarioDir)) {
+            wxLogError(_("The given scenario predictors directory (%s) couldn't be found."), m_predictorsScenarioDir);
+            return false;
+        }
+    }
 
     // Station ID
     wxString stationIdStr = wxEmptyString;
@@ -442,8 +434,7 @@ bool AtmoswingAppDownscaler::OnCmdLineParsed(wxCmdLineParser &parser)
     return true;
 }
 
-int AtmoswingAppDownscaler::OnRun()
-{
+int AtmoswingAppDownscaler::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
@@ -494,22 +485,20 @@ int AtmoswingAppDownscaler::OnRun()
     return 0;
 }
 
-int AtmoswingAppDownscaler::OnExit()
-{
+int AtmoswingAppDownscaler::OnExit() {
     CleanUp();
 
     return 0;
 }
 
-void AtmoswingAppDownscaler::CleanUp()
-{
+void AtmoswingAppDownscaler::CleanUp() {
 #if wxUSE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) nullptr);
+    delete wxFileConfig::Set((wxFileConfig *)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();
@@ -524,18 +513,15 @@ void AtmoswingAppDownscaler::CleanUp()
     wxApp::CleanUp();
 }
 
-bool AtmoswingAppDownscaler::OnExceptionInMainLoop()
-{
+bool AtmoswingAppDownscaler::OnExceptionInMainLoop() {
     wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
-void AtmoswingAppDownscaler::OnFatalException()
-{
+void AtmoswingAppDownscaler::OnFatalException() {
     wxLogError(_("An fatal exception occured"));
 }
 
-void AtmoswingAppDownscaler::OnUnhandledException()
-{
+void AtmoswingAppDownscaler::OnUnhandledException() {
     wxLogError(_("An unhandled exception occured"));
 }

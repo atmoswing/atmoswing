@@ -34,8 +34,7 @@
 #define UNIT_TESTING
 #endif
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     int resultTest = -2;
 
     try {
@@ -91,7 +90,7 @@ int main(int argc, char **argv)
         wxUninitialize();
         DeleteThreadsManager();
         DeleteLog();
-        delete wxFileConfig::Set((wxFileConfig *) nullptr);
+        delete wxFileConfig::Set((wxFileConfig *)nullptr);
 
     } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);

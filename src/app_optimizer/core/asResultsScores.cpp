@@ -31,18 +31,11 @@
 #include "asFileNetcdf.h"
 #include "asParametersScoring.h"
 
+asResultsScores::asResultsScores() : asResults() {}
 
-asResultsScores::asResultsScores()
-        : asResults()
-{
-}
+asResultsScores::~asResultsScores() {}
 
-asResultsScores::~asResultsScores()
-{
-}
-
-void asResultsScores::Init(asParametersScoring *params)
-{
+void asResultsScores::Init(asParametersScoring *params) {
     m_predictandStationIds = params->GetPredictandStationIds();
 
     // Resize to 0 to avoid keeping old results
@@ -51,8 +44,7 @@ void asResultsScores::Init(asParametersScoring *params)
     m_scores2DArray.resize(0, 0);
 }
 
-void asResultsScores::BuildFileName()
-{
+void asResultsScores::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
@@ -65,14 +57,13 @@ void asResultsScores::BuildFileName()
     m_filePath.Append(".nc");
 }
 
-bool asResultsScores::Save()
-{
+bool asResultsScores::Save() {
     BuildFileName();
 
     wxLogVerbose(_("Saving intermediate file: %s"), m_filePath);
 
     // Get the elements size
-    size_t nTime = (size_t) m_scores.rows();
+    size_t nTime = (size_t)m_scores.rows();
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
@@ -117,12 +108,10 @@ bool asResultsScores::Save()
     return true;
 }
 
-bool asResultsScores::Load()
-{
+bool asResultsScores::Load() {
     BuildFileName();
 
-    if (!Exists())
-        return false;
+    if (!Exists()) return false;
 
     ThreadsManager().CritSectionNetCDF().Enter();
 

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,19 +31,11 @@
 
 wxDEFINE_EVENT(asEVT_ACTION_OPEN_WORKSPACE, wxCommandEvent);
 
-asWizardWorkspace::asWizardWorkspace(wxWindow *parent, wxWindowID id)
-        : asWizardWorkspaceVirtual(parent, id)
-{
+asWizardWorkspace::asWizardWorkspace(wxWindow *parent, wxWindowID id) : asWizardWorkspaceVirtual(parent, id) {}
 
-}
+asWizardWorkspace::~asWizardWorkspace() {}
 
-asWizardWorkspace::~asWizardWorkspace()
-{
-
-}
-
-void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
-{
+void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event) {
     wxString filePath = m_filePickerWorkspaceFile->GetPath();
     m_workspace.SetFilePath(filePath);
     wxString dirPath = m_dirPickerForecastResults->GetPath();
@@ -52,32 +44,32 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
     int baseMapSlct = m_choiceBaseMap->GetSelection();
     wxString baseMapPath = wxEmptyString;
     wxString wmsDir = wxEmptyString;
-#if defined (__WIN32__)
+#if defined(__WIN32__)
     wmsDir = wxStandardPaths::Get().GetDataDir();
 #else
     wmsDir = wxStandardPaths::Get().GetInstallPrefix();
 #endif
     wmsDir = wmsDir + DS + "share" + DS + "atmoswing" + DS + "wms" + DS + "basemaps" + DS;
     switch (baseMapSlct) {
-        case 0: // Custom layers
+        case 0:  // Custom layers
 
             break;
-        case 1: // Terrain from Google maps (recommended)
+        case 1:  // Terrain from Google maps (recommended)
             baseMapPath = wmsDir + "GoogleMaps-mix.xml";
             break;
-        case 2: // Map from Google maps
+        case 2:  // Map from Google maps
             baseMapPath = wmsDir + "GoogleMaps-map.xml";
             break;
-        case 3: // Map from Openstreetmap
+        case 3:  // Map from Openstreetmap
             baseMapPath = wmsDir + "OpenStreetMap.xml";
             break;
-        case 4: // Map from ArcGIS Mapserver
+        case 4:  // Map from ArcGIS Mapserver
             baseMapPath = wmsDir + "ArcgisMapserver.xml";
             break;
-        case 5: // Satellite imagery from Google maps
+        case 5:  // Satellite imagery from Google maps
             baseMapPath = wmsDir + "GoogleMaps-sat.xml";
             break;
-        case 6: // Satellite imagery from VirtualEarth
+        case 6:  // Satellite imagery from VirtualEarth
             baseMapPath = wmsDir + "VirtualEarth.xml";
             break;
         default:
@@ -104,8 +96,7 @@ void asWizardWorkspace::OnWizardFinished(wxWizardEvent &event)
     }
 }
 
-void asWizardWorkspace::OnLoadExistingWorkspace(wxCommandEvent &event)
-{
+void asWizardWorkspace::OnLoadExistingWorkspace(wxCommandEvent &event) {
     wxCommandEvent eventOpen(asEVT_ACTION_OPEN_WORKSPACE);
     GetParent()->ProcessWindowEvent(eventOpen);
     Close();

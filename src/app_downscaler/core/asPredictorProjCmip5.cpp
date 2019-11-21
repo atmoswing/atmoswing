@@ -27,15 +27,13 @@
 
 #include "asPredictorProjCmip5.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-
 asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxString &model, const wxString &scenario)
-        : asPredictorProj(dataId, model, scenario)
-{
+    : asPredictorProj(dataId, model, scenario) {
     // Downloaded from https://esgf-node.llnl.gov/search/cmip5/
     // Set the basic properties.
     m_datasetId = "CMIP5";
@@ -50,13 +48,9 @@ asPredictorProjCmip5::asPredictorProjCmip5(const wxString &dataId, const wxStrin
     m_fStr.dimLevelName = "plev";
 }
 
-asPredictorProjCmip5::~asPredictorProjCmip5()
-{
+asPredictorProjCmip5::~asPredictorProjCmip5() {}
 
-}
-
-bool asPredictorProjCmip5::Init()
-{
+bool asPredictorProjCmip5::Init() {
     // Identify data ID and set the corresponding properties.
     if (IsGeopotentialHeight()) {
         m_parameter = GeopotentialHeight;
@@ -170,15 +164,14 @@ bool asPredictorProjCmip5::Init()
     return true;
 }
 
-void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray) {
     wxArrayString listFiles;
     size_t nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_fileNamePattern);
 
     if (nbFiles == 0) {
         throw std::runtime_error("sdfsdfsdf");
-        //throw "No CMIP5 file found for this pattern : .";
-        //asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
+        // throw "No CMIP5 file found for this pattern : .";
+        // asThrowException(wxString::Format(_("No CMIP5 file found for this pattern : %s."), m_fileNamePattern));
     }
 
     // Sort the list of files
@@ -189,10 +182,10 @@ void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray)
     double lastYear = timeArray.GetEndingYear();
 
     for (int i = 0; i < listFiles.Count(); ++i) {
-
         wxRegEx reDates("\\d{8,}-\\d{8,}", wxRE_ADVANCED);
         if (!reDates.Matches(listFiles.Item(i))) {
-            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file name : %s."), listFiles.Item(i)));
+            asThrowException(wxString::Format(_("The dates sequence was not found in the CMIP5 file name : %s."),
+                                              listFiles.Item(i)));
         }
 
         wxString datesSrt = reDates.GetMatch(listFiles.Item(i));
@@ -209,8 +202,7 @@ void asPredictorProjCmip5::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorProjCmip5::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorProjCmip5::ConvertToMjd(double timeValue, double refValue) const {
     wxASSERT(refValue < 70000);
 
     return refValue + timeValue;

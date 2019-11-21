@@ -29,15 +29,13 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_GAS_H
 #define AS_THREAD_METHOD_OPTIMIZER_GAS_H
 
-#include <asThread.h>
-#include <asParametersOptimization.h>
-#include <asMethodOptimizerGeneticAlgorithms.h>
 #include <asIncludes.h>
+#include <asMethodOptimizerGeneticAlgorithms.h>
+#include <asParametersOptimization.h>
+#include <asThread.h>
 
-class asThreadGeneticAlgorithms
-        : public asThread
-{
-public:
+class asThreadGeneticAlgorithms : public asThread {
+   public:
     asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params,
                               float *finalScoreCalib, vf *scoreClimatology);
 
@@ -45,8 +43,8 @@ public:
 
     ExitCode Entry();
 
-protected:
-private:
+   protected:
+   private:
     asMethodOptimizerGeneticAlgorithms *m_optimizer;
     asParametersOptimization *m_params;
     float *m_finalScoreCalib;

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,19 +29,12 @@
 #include "asScoreCRPSEP.h"
 
 asScoreCRPSEP::asScoreCRPSEP()
-        : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"),
-                  Asc, 0, NaNf)
-{
+    : asScore(asScore::CRPSEP, _("CRPS Exact Primitive"), _("Continuous Ranked Probability Score exact solution"), Asc,
+              0, NaNf) {}
 
-}
+asScoreCRPSEP::~asScoreCRPSEP() {}
 
-asScoreCRPSEP::~asScoreCRPSEP()
-{
-    //dtor
-}
-
-float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const
-{
+float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const {
     wxASSERT(values.size() > 1);
     wxASSERT(nbElements > 0);
 
@@ -82,15 +75,15 @@ float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const
     int indRightEnd = nbPredict - 1;
 
     // Find FxObs, fix xObs and integrate beyond limits
-    if (xObs <= x[0]) // If xObs before the distribution
+    if (xObs <= x[0])  // If xObs before the distribution
     {
         indRightStart = 0;
         crps += x[indRightStart] - xObs;
-    } else if (xObs > x[nbPredict - 1]) // If xObs after the distribution
+    } else if (xObs > x[nbPredict - 1])  // If xObs after the distribution
     {
         indLeftEnd = nbPredict - 1;
         crps += xObs - x[indLeftEnd];
-    } else // If xObs inside the distribution
+    } else  // If xObs inside the distribution
     {
         indLeftEnd = asFindFloor(&x[0], &x[nbPredict - 1], xObs);
         if ((indLeftEnd != nbPredict - 1) & (indLeftEnd != asNOT_FOUND) & (indLeftEnd != asOUT_OF_RANGE)) {
@@ -100,7 +93,7 @@ float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const
                 FxObs = (F(indLeftEnd) + F(indRightStart)) * 0.5;
             } else {
                 FxObs = F(indLeftEnd) + (F(indRightStart) - F(indLeftEnd)) * (xObs - x(indLeftEnd)) /
-                                        (x(indRightStart) - x(indLeftEnd));
+                                            (x(indRightStart) - x(indLeftEnd));
             }
 
             // Integrate the CRPS around FxObs
@@ -162,8 +155,6 @@ float asScoreCRPSEP::Assess(float obs, const a1f &values, int nbElements) const
     return crps;
 }
 
-bool asScoreCRPSEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData)
-{
+bool asScoreCRPSEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
     return true;
 }
-

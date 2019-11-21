@@ -15,9 +15,9 @@
 #pragma interface "plotdata.h"
 #endif
 
-#include "wx/txtstrm.h"            // for wxEOL
 #include "wx/plotctrl/plotcurv.h"  // includes plotdefs.h
 #include "wx/plotctrl/plotfunc.h"
+#include "wx/txtstrm.h"  // for wxEOL
 
 class WXDLLIMPEXP_THINGS wxRangeIntSelection;
 
@@ -30,16 +30,15 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotData;
 // arbitray reasonable max size to avoid malloc errors
 #define wxPLOTDATA_MAX_SIZE 10000000
 
-enum wxPlotDataLoad_Type
-{
+enum wxPlotDataLoad_Type {
     // store the header, ie. any #comment lines BEFORE the first line w/ valid data
     //   use Get(Set)Header() to retrieve it
-            wxPLOTDATA_LOAD_HEADER = 0x0001,
+    wxPLOTDATA_LOAD_HEADER = 0x0001,
     // stop loading datafile if there is a blank line, will continue if a line is merely #commented out
     //  ignores any blank lines before first line w/ data however
-            wxPLOTDATA_LOAD_BREAKONBLANKLINE = 0x0010,
+    wxPLOTDATA_LOAD_BREAKONBLANKLINE = 0x0010,
     // defaults used for loading a data file
-            wxPLOTDATA_LOAD_DEFAULT = wxPLOTDATA_LOAD_HEADER | wxPLOTDATA_LOAD_BREAKONBLANKLINE
+    wxPLOTDATA_LOAD_DEFAULT = wxPLOTDATA_LOAD_HEADER | wxPLOTDATA_LOAD_BREAKONBLANKLINE
 };
 
 //-----------------------------------------------------------------------------
@@ -54,48 +53,35 @@ enum wxPlotDataLoad_Type
 // A uncreated wxPlotCurve for reference
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotData) wxNullPlotData;
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotData
-        : public wxPlotCurve
-{
-public:
-    wxPlotData()
-            : wxPlotCurve()
-    {
-    }
+class WXDLLIMPEXP_PLOTCTRL wxPlotData : public wxPlotCurve {
+   public:
+    wxPlotData() : wxPlotCurve() {}
 
-    wxPlotData(const wxPlotData &plotData)
-    {
+    wxPlotData(const wxPlotData &plotData) {
         Create(plotData);
     }
 
-    wxPlotData(int points, bool zero = true)
-    {
+    wxPlotData(int points, bool zero = true) {
         Create(points, zero);
     }
 
-    wxPlotData(double *x_data, double *y_data, int points, bool static_data = false)
-    {
+    wxPlotData(double *x_data, double *y_data, int points, bool static_data = false) {
         Create(x_data, y_data, points, static_data);
     }
 
-    wxPlotData(const wxString &filename, int x_col, int y_col, int options = wxPLOTDATA_LOAD_DEFAULT)
-    {
+    wxPlotData(const wxString &filename, int x_col, int y_col, int options = wxPLOTDATA_LOAD_DEFAULT) {
         LoadFile(filename, x_col, y_col, options);
     }
 
-    wxPlotData(const wxPlotFunction &plotFunc, double x_start, double dx, int points)
-    {
+    wxPlotData(const wxPlotFunction &plotFunc, double x_start, double dx, int points) {
         Create(plotFunc, x_start, dx, points);
     }
 
-    virtual wxPlotCurve *Clone() const
-    {
+    virtual wxPlotCurve *Clone() const {
         return new wxPlotData(*this);
     }
 
-    virtual ~wxPlotData()
-    {
-    }
+    virtual ~wxPlotData() {}
 
     // Ref the source plotdata
     bool Create(const wxPlotData &plotData);
@@ -109,8 +95,7 @@ public:
     bool Create(int points, bool zero = true);
 
     // Load plotdata from a file, see Loadfile
-    bool Create(const wxString &filename, int x_col, int y_col, int options = wxPLOTDATA_LOAD_DEFAULT)
-    {
+    bool Create(const wxString &filename, int x_col, int y_col, int options = wxPLOTDATA_LOAD_DEFAULT) {
         return LoadFile(filename, x_col, y_col, options);
     }
 
@@ -136,16 +121,14 @@ public:
 
     // Append the source curve to the end, Yi data is copied only if both have it.
     //   returns a new wxPlotData
-    wxPlotData Append(const wxPlotData &source) const
-    {
+    wxPlotData Append(const wxPlotData &source) const {
         return Insert(source, -1);
     }
 
     // Append the single x,y point to the end of the data,
     //   if this data has the imaginary component yi will be used, else ignored.
     //   returns a new wxPlotData
-    wxPlotData Append(double x, double y, double yi = 0) const
-    {
+    wxPlotData Append(double x, double y, double yi = 0) const {
         return Insert(-1, x, y, yi);
     }
 
@@ -260,8 +243,7 @@ public:
 
     void SetValue(int index, double x, double y);
 
-    void SetPoint(int index, const wxPoint2DDouble &pt)
-    {
+    void SetPoint(int index, const wxPoint2DDouble &pt) {
         SetValue(index, pt.m_x, pt.m_y);
     }
 
@@ -277,10 +259,7 @@ public:
 
     void SetYStepValues(int start_index, int count = -1, double y_start = 0.0, double dy = 1.0);
 
-    enum Index_Type
-    {
-        index_round, index_floor, index_ceil
-    };
+    enum Index_Type { index_round, index_floor, index_ceil };
 
     // find the first occurance of an index whose value is closest (index_round),
     //   or the next lower (index_floor), or next higher (index_ceil), to the given value
@@ -339,10 +318,7 @@ public:
 
     void PowerXY(double powerX, double powerY, int start_index = 0, int end_index = -1);
 
-    enum FuncModify_Type
-    {
-        add_x, add_y, mult_x, mult_y, add_yi, mult_yi
-    };
+    enum FuncModify_Type { add_x, add_y, mult_x, mult_y, add_yi, mult_yi };
 
     wxPlotData Resample(double start_x, double dx, int points) const;
 
@@ -404,10 +380,7 @@ public:
     // Return the power spectrum of the FFT of the data
     wxPlotData PowerSpectrum();
 
-    enum FFTFilter_Type
-    {
-        FilterStep, FilterButterworth, FilterGaussian, FilterFermi
-    };
+    enum FFTFilter_Type { FilterStep, FilterButterworth, FilterGaussian, FilterFermi };
 
     // String representation of the equations of the FFT transform filters
     static wxString FFTHiPassFilterFormat(double fc, wxPlotData::FFTFilter_Type filter, double n = 5);
@@ -464,7 +437,6 @@ public:
     wxBitmap CreateSymbol(wxPlotSymbol_Type type, wxPlotPen_Type colour_type = wxPLOTPEN_NORMAL, int width = 5,
                           int height = 5, const wxPen *pen = NULL, const wxBrush *brush = NULL);
 
-
     //-------------------------------------------------------------------------
     // Get/Set Options to use for plotting (draw lines, draw symbols)
     //-------------------------------------------------------------------------
@@ -489,30 +461,26 @@ public:
     //-----------------------------------------------------------------------
     // Operators
 
-    bool operator==(const wxPlotData &plotData) const
-    {
+    bool operator==(const wxPlotData &plotData) const {
         return m_refData == plotData.m_refData;
     }
 
-    bool operator!=(const wxPlotData &plotData) const
-    {
+    bool operator!=(const wxPlotData &plotData) const {
         return m_refData != plotData.m_refData;
     }
 
-    wxPlotData &operator=(const wxPlotData &plotData)
-    {
-        if ((*this) != plotData)
-            Ref(plotData);
+    wxPlotData &operator=(const wxPlotData &plotData) {
+        if ((*this) != plotData) Ref(plotData);
         return *this;
     }
 
-private:
+   private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
     virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-DECLARE_DYNAMIC_CLASS(wxPlotData)
+    DECLARE_DYNAMIC_CLASS(wxPlotData)
 };
 
 // ----------------------------------------------------------------------------
@@ -536,12 +504,10 @@ bool wxClipboardSetPlotData(const wxPlotData &plotData);
 #include "wx/dataobj.h"
 
 //#define wxDF_wxPlotData (wxDF_MAX+1010)  // works w/ GTK 1.2 non unicode
-extern const wxChar *wxDF_wxPlotData;      // wxT("wxDF_wxPlotData");
+extern const wxChar *wxDF_wxPlotData;  // wxT("wxDF_wxPlotData");
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotDataObject
-        : public wxTextDataObject
-{
-public:
+class WXDLLIMPEXP_PLOTCTRL wxPlotDataObject : public wxTextDataObject {
+   public:
     wxPlotDataObject();
 
     wxPlotDataObject(const wxPlotData &plotData);
@@ -551,6 +517,6 @@ public:
     void SetPlotData(const wxPlotData &plotData);
 };
 
-#endif // wxUSE_DATAOBJ && wxUSE_CLIPBOARD
+#endif  // wxUSE_DATAOBJ && wxUSE_CLIPBOARD
 
-#endif // _WX_PLOTDATA_H_
+#endif  // _WX_PLOTDATA_H_

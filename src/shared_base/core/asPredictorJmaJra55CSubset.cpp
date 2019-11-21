@@ -27,24 +27,21 @@
 
 #include "asPredictorJmaJra55CSubset.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorJmaJra55CSubset::asPredictorJmaJra55CSubset(const wxString &dataId)
-        : asPredictorJmaJra55Subset(dataId)
-{
+asPredictorJmaJra55CSubset::asPredictorJmaJra55CSubset(const wxString &dataId) : asPredictorJmaJra55Subset(dataId) {
     // Set the basic properties.
     m_datasetId = "JMA_JRA_55C_subset";
     m_datasetName = "Japanese 55-year Reanalysis Conventional";
     m_fileType = asFile::Netcdf;
 }
 
-bool asPredictorJmaJra55CSubset::Init()
-{
+bool asPredictorJmaJra55CSubset::Init() {
     CheckLevelTypeIsDefined();
 
-    // Get data: http://rda.ucar.edu/datasets/ds628.2/index.html#!cgi-bin/datasets/getSubset?dsnum=628.2&listAction=customize&_da=y
+    // Get data:
+    // http://rda.ucar.edu/datasets/ds628.2/index.html#!cgi-bin/datasets/getSubset?dsnum=628.2&listAction=customize&_da=y
 
     // Identify data ID and set the corresponding properties.
     if (IsPressureLevel() || m_product.IsSameAs("anl_p125", false)) {

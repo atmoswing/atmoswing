@@ -30,6 +30,7 @@
 #include <device_launch_parameters.h>
 #include <driver_types.h>
 #include <helper_cuda.h>
+
 #include <iostream>
 #include <vector>
 

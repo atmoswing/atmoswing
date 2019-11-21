@@ -29,28 +29,21 @@
 #include "asThreadGeneticAlgorithms.h"
 
 #ifdef USE_CUDA
-    #include <asProcessorCuda.cuh>
+#include <asProcessorCuda.cuh>
 #endif
 
 asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,
                                                      asParametersOptimization *params, float *finalScoreCalib,
                                                      vf *scoreClimatology)
-        : asThread(asThread::MethodOptimizerGeneticAlgorithms),
-          m_optimizer(optimizer),
-          m_params(params),
-          m_finalScoreCalib(finalScoreCalib),
-          m_scoreClimatology(scoreClimatology)
-{
+    : asThread(asThread::MethodOptimizerGeneticAlgorithms),
+      m_optimizer(optimizer),
+      m_params(params),
+      m_finalScoreCalib(finalScoreCalib),
+      m_scoreClimatology(scoreClimatology) {}
 
-}
+asThreadGeneticAlgorithms::~asThreadGeneticAlgorithms() {}
 
-asThreadGeneticAlgorithms::~asThreadGeneticAlgorithms()
-{
-    //dtor
-}
-
-wxThread::ExitCode asThreadGeneticAlgorithms::Entry()
-{
+wxThread::ExitCode asThreadGeneticAlgorithms::Entry() {
     // Create results objects. Needs to be in a critical section because of access to the config pointer.
     asResultsDates anaDates;
     asResultsDates anaDatesPrevious;

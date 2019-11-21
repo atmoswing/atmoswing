@@ -30,13 +30,11 @@
 #define AS_RESULTS_FORECAST_H
 
 #include <asIncludes.h>
-#include <asResults.h>
 #include <asParametersForecast.h>
+#include <asResults.h>
 
-class asResultsForecast
-        : public asResults
-{
-public:
+class asResultsForecast : public asResults {
+   public:
     asResultsForecast();
 
     ~asResultsForecast() override = default;
@@ -51,128 +49,104 @@ public:
 
     int GetStationRowFromId(int stationId) const;
 
-    void SetForecastsDirectory(const wxString &val)
-    {
+    void SetForecastsDirectory(const wxString &val) {
         m_forecastsDir = val;
     }
 
-    wxString GetPredictandDatasetId() const
-    {
+    wxString GetPredictandDatasetId() const {
         return m_predictandDatasetId;
     }
 
-    void SetPredictandDatasetId(const wxString &val)
-    {
+    void SetPredictandDatasetId(const wxString &val) {
         m_predictandDatasetId = val;
     }
 
-    wxString GetPredictandDatabase() const
-    {
+    wxString GetPredictandDatabase() const {
         return m_predictandDatabase;
     }
 
-    vi GetPredictandStationIds() const
-    {
+    vi GetPredictandStationIds() const {
         return m_predictandStationIds;
     }
 
-    void SetPredictandStationIds(const vi &val)
-    {
+    void SetPredictandStationIds(const vi &val) {
         m_predictandStationIds = val;
     }
 
     void SetPredictandStationIds(wxString val);
 
-    asPredictand::Parameter GetPredictandParameter() const
-    {
+    asPredictand::Parameter GetPredictandParameter() const {
         return m_predictandParameter;
     }
 
-    void SetPredictandParameter(const asPredictand::Parameter val)
-    {
+    void SetPredictandParameter(const asPredictand::Parameter val) {
         m_predictandParameter = val;
     }
 
-    asPredictand::TemporalResolution GetPredictandTemporalResolution() const
-    {
+    asPredictand::TemporalResolution GetPredictandTemporalResolution() const {
         return m_predictandTemporalResolution;
     }
 
-    void SetPredictandTemporalResolution(const asPredictand::TemporalResolution val)
-    {
+    void SetPredictandTemporalResolution(const asPredictand::TemporalResolution val) {
         m_predictandTemporalResolution = val;
     }
 
-    asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const
-    {
+    asPredictand::SpatialAggregation GetPredictandSpatialAggregation() const {
         return m_predictandSpatialAggregation;
     }
 
-    void SetPredictandSpatialAggregation(const asPredictand::SpatialAggregation val)
-    {
+    void SetPredictandSpatialAggregation(const asPredictand::SpatialAggregation val) {
         m_predictandSpatialAggregation = val;
     }
 
-    bool HasReferenceValues() const
-    {
+    bool HasReferenceValues() const {
         return m_hasReferenceValues;
     }
 
-    wxString GetMethodId() const
-    {
+    wxString GetMethodId() const {
         return m_methodId;
     }
 
-    wxString GetMethodIdDisplay() const
-    {
+    wxString GetMethodIdDisplay() const {
         return m_methodIdDisplay;
     }
 
-    wxString GetSpecificTag() const
-    {
+    wxString GetSpecificTag() const {
         return m_specificTag;
     }
 
-    wxString GetSpecificTagDisplay() const
-    {
+    wxString GetSpecificTagDisplay() const {
         return m_specificTagDisplay;
     }
 
-    wxString GetDescription() const
-    {
+    wxString GetDescription() const {
         return m_description;
     }
 
-    double GetLeadTimeOrigin() const
-    {
+    double GetLeadTimeOrigin() const {
         return m_leadTimeOrigin;
     }
 
-    wxString GetLeadTimeOriginString()
-    {
+    wxString GetLeadTimeOriginString() {
         wxString leadTimeStr = asTime::GetStringTime(m_leadTimeOrigin, "DD.MM.YYYY hh:mm");
         return leadTimeStr;
     }
 
-    int GetStationsNb() const
-    {
-        return (int) m_stationIds.size();
+    int GetStationsNb() const {
+        return (int)m_stationIds.size();
     }
 
-    a1i GetStationIds() const
-    {
+    a1i GetStationIds() const {
         return m_stationIds;
     }
 
-    wxString GetStationOfficialId(int i) const
-    {
+    wxString GetStationOfficialId(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationOfficialIds.size());
         return m_stationOfficialIds[i];
     }
 
-    wxString GetStationName(int i) const
-    {
+    wxString GetStationName(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationNames.size());
         return m_stationNames[i];
@@ -184,77 +158,64 @@ public:
 
     wxString GetStationNameAndHeight(int iStat) const;
 
-    void SetStationNames(const vwxs &stationsNames)
-    {
+    void SetStationNames(const vwxs &stationsNames) {
         m_stationNames = stationsNames;
     }
 
-    int GetStationId(int i) const
-    {
+    int GetStationId(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationIds.size());
         return m_stationIds[i];
     }
 
-    void SetStationIds(const a1i &stationsIds)
-    {
+    void SetStationIds(const a1i &stationsIds) {
         m_stationIds = stationsIds;
     }
 
-    void SetStationOfficialIds(const vwxs &stationsOfficialIds)
-    {
+    void SetStationOfficialIds(const vwxs &stationsOfficialIds) {
         m_stationOfficialIds = stationsOfficialIds;
     }
 
-    float GetStationHeight(int i) const
-    {
+    float GetStationHeight(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationHeights.size());
         return m_stationHeights[i];
     }
 
-    void SetStationHeights(const a1f &stationsHeights)
-    {
+    void SetStationHeights(const a1f &stationsHeights) {
         m_stationHeights = stationsHeights;
     }
 
-    double GetStationXCoord(int i) const
-    {
+    double GetStationXCoord(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationXCoords.size());
         return m_stationXCoords[i];
     }
 
-    void SetStationXCoords(const a1d &stationsXCoords)
-    {
+    void SetStationXCoords(const a1d &stationsXCoords) {
         m_stationXCoords = stationsXCoords;
     }
 
-    double GetStationYCoord(int i) const
-    {
+    double GetStationYCoord(int i) const {
         wxASSERT(i >= 0);
         wxASSERT(i < m_stationYCoords.size());
         return m_stationYCoords[i];
     }
 
-    void SetStationYCoords(const a1d &stationsYCoords)
-    {
+    void SetStationYCoords(const a1d &stationsYCoords) {
         m_stationYCoords = stationsYCoords;
     }
 
-    a1f GetReferenceAxis() const
-    {
+    a1f GetReferenceAxis() const {
         return m_referenceAxis;
     }
 
-    void SetReferenceAxis(const a1f &referenceAxis)
-    {
+    void SetReferenceAxis(const a1f &referenceAxis) {
         m_referenceAxis = referenceAxis;
         m_hasReferenceValues = true;
     }
 
-    float GetReferenceValue(int iStat, int iRef) const
-    {
+    float GetReferenceValue(int iStat, int iRef) const {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValue() should not be called."));
             return NaNf;
@@ -267,8 +228,7 @@ public:
         return m_referenceValues(iStat, iRef);
     }
 
-    a2f GetReferenceValues() const
-    {
+    a2f GetReferenceValues() const {
         if (!m_hasReferenceValues) {
             wxLogWarning(_("The predictand has no reference values. GetReferenceValues() should not be called."));
             a2f nodata(0, 0);
@@ -278,44 +238,37 @@ public:
         return m_referenceValues;
     }
 
-    void SetReferenceValues(const a2f &referenceValues)
-    {
+    void SetReferenceValues(const a2f &referenceValues) {
         m_referenceValues = referenceValues;
     }
 
-    int GetTargetDatesLength() const
-    {
-        return (int) m_targetDates.size();
+    int GetTargetDatesLength() const {
+        return (int)m_targetDates.size();
     }
 
-    a1f &GetTargetDates()
-    {
+    a1f &GetTargetDates() {
         return m_targetDates;
     }
 
-    void SetTargetDates(const a1d &refDates)
-    {
+    void SetTargetDates(const a1d &refDates) {
         m_targetDates.resize(refDates.rows());
         for (int i = 0; i < refDates.size(); i++) {
-            m_targetDates[i] = (float) refDates[i];
+            m_targetDates[i] = (float)refDates[i];
             wxASSERT_MSG(m_targetDates[i] > 1, _("The target time array has unconsistent values"));
         }
     }
 
-    void SetTargetDates(const a1f &refDates)
-    {
+    void SetTargetDates(const a1f &refDates) {
         m_targetDates.resize(refDates.rows());
         m_targetDates = refDates;
     }
 
-    a1f &GetAnalogsCriteria(int i)
-    {
+    a1f &GetAnalogsCriteria(int i) {
         wxASSERT(m_analogsCriteria.size() > i);
         return m_analogsCriteria[i];
     }
 
-    void SetAnalogsCriteria(int i, const a1f &analogsCriteria)
-    {
+    void SetAnalogsCriteria(int i, const a1f &analogsCriteria) {
         if (m_analogsCriteria.size() >= i + 1) {
             m_analogsCriteria[i] = analogsCriteria;
         } else if (m_analogsCriteria.size() == i) {
@@ -325,22 +278,19 @@ public:
         }
     }
 
-    a2f &GetAnalogsValuesRaw(int iLead)
-    {
+    a2f &GetAnalogsValuesRaw(int iLead) {
         wxASSERT(m_analogsValuesRaw.size() > iLead);
         return m_analogsValuesRaw[iLead];
     }
 
-    a1f GetAnalogsValuesRaw(int iLead, int iStat) const
-    {
+    a1f GetAnalogsValuesRaw(int iLead, int iStat) const {
         wxASSERT(m_analogsValuesRaw.size() > iLead);
         wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
         a1f vals = m_analogsValuesRaw[iLead].row(iStat);
         return vals;
     }
 
-    void SetAnalogsValuesRaw(int iLead, int iStat, const a1f &analogsValuesRaw)
-    {
+    void SetAnalogsValuesRaw(int iLead, int iStat, const a1f &analogsValuesRaw) {
         if (m_analogsValuesRaw.size() >= iLead + 1) {
             wxASSERT(m_analogsValuesRaw[iLead].rows() > iStat);
             wxASSERT(m_analogsValuesRaw[iLead].cols() == analogsValuesRaw.size());
@@ -357,20 +307,17 @@ public:
         }
     }
 
-    int GetAnalogsNumber(int i) const
-    {
+    int GetAnalogsNumber(int i) const {
         wxASSERT(m_analogsDates.size() > i);
-        return (int) m_analogsDates[i].size();
+        return (int)m_analogsDates[i].size();
     }
 
-    a1f &GetAnalogsDates(int i)
-    {
+    a1f &GetAnalogsDates(int i) {
         wxASSERT(m_analogsDates.size() > i);
         return m_analogsDates[i];
     }
 
-    void SetAnalogsDates(int i, const a1f &analogsDates)
-    {
+    void SetAnalogsDates(int i, const a1f &analogsDates) {
         if (m_analogsDates.size() >= i + 1) {
             m_analogsDates[i] = analogsDates;
         } else if (m_analogsDates.size() == i) {
@@ -386,10 +333,10 @@ public:
 
     wxString GetPredictandStationIdsString() const;
 
-protected:
+   protected:
     void BuildFileName();
 
-private:
+   private:
     wxString m_methodId;
     wxString m_methodIdDisplay;
     wxString m_specificTag;

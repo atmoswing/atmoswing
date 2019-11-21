@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,29 +28,27 @@
 
 #include "asResultsForecast.h"
 
-#include "asFileNetcdf.h"
 #include <wx/tokenzr.h>
 
-asResultsForecast::asResultsForecast()
-        : asResults(),
-          m_methodId(wxEmptyString),
-          m_methodIdDisplay(wxEmptyString),
-          m_specificTag(wxEmptyString),
-          m_specificTagDisplay(wxEmptyString),
-          m_description(wxEmptyString),
-          m_predictandParameter(asPredictand::Precipitation),
-          m_predictandTemporalResolution(asPredictand::Daily),
-          m_predictandSpatialAggregation(asPredictand::Station),
-          m_predictandDatasetId(wxEmptyString),
-          m_predictandDatabase(wxEmptyString),
-          m_forecastsDir(wxEmptyString),
-          m_hasReferenceValues(false),
-          m_leadTimeOrigin(0.0)
-{
-}
+#include "asFileNetcdf.h"
 
-void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin)
-{
+asResultsForecast::asResultsForecast()
+    : asResults(),
+      m_methodId(wxEmptyString),
+      m_methodIdDisplay(wxEmptyString),
+      m_specificTag(wxEmptyString),
+      m_specificTagDisplay(wxEmptyString),
+      m_description(wxEmptyString),
+      m_predictandParameter(asPredictand::Precipitation),
+      m_predictandTemporalResolution(asPredictand::Daily),
+      m_predictandSpatialAggregation(asPredictand::Station),
+      m_predictandDatasetId(wxEmptyString),
+      m_predictandDatabase(wxEmptyString),
+      m_forecastsDir(wxEmptyString),
+      m_hasReferenceValues(false),
+      m_leadTimeOrigin(0.0) {}
+
+void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin) {
     // Resize to 0 to avoid keeping old results
     m_targetDates.resize(0);
     m_stationNames.resize(0);
@@ -86,8 +84,7 @@ void asResultsForecast::Init(asParametersForecast &params, double leadTimeOrigin
     BuildFileName();
 }
 
-void asResultsForecast::BuildFileName()
-{
+void asResultsForecast::BuildFileName() {
     wxASSERT(!m_forecastsDir.IsEmpty());
 
     if (m_methodId.IsEmpty() || m_specificTag.IsEmpty()) {
@@ -120,8 +117,7 @@ void asResultsForecast::BuildFileName()
     m_filePath.Append(filename);
 }
 
-bool asResultsForecast::Save()
-{
+bool asResultsForecast::Save() {
     wxASSERT(!m_filePath.IsEmpty());
     wxASSERT(m_targetDates.size() > 0);
     wxASSERT(m_analogsNb.size() > 0);
@@ -162,8 +158,10 @@ bool asResultsForecast::Save()
     ncFile.PutAtt("version_major", &m_fileVersionMajor);
     ncFile.PutAtt("version_minor", &m_fileVersionMinor);
     ncFile.PutAtt("predictand_parameter", asPredictand::ParameterEnumToString(m_predictandParameter));
-    ncFile.PutAtt("predictand_temporal_resolution", asPredictand::TemporalResolutionEnumToString(m_predictandTemporalResolution));
-    ncFile.PutAtt("predictand_spatial_aggregation", asPredictand::SpatialAggregationEnumToString(m_predictandSpatialAggregation));
+    ncFile.PutAtt("predictand_temporal_resolution",
+                  asPredictand::TemporalResolutionEnumToString(m_predictandTemporalResolution));
+    ncFile.PutAtt("predictand_spatial_aggregation",
+                  asPredictand::SpatialAggregationEnumToString(m_predictandSpatialAggregation));
     ncFile.PutAtt("predictand_dataset_id", m_predictandDatasetId);
     ncFile.PutAtt("predictand_database", m_predictandDatabase);
     ncFile.PutAtt("predictand_station_ids", GetPredictandStationIdsString());
@@ -317,19 +315,15 @@ bool asResultsForecast::Save()
     return true;
 }
 
-bool asResultsForecast::Load()
-{
-    if (!Exists())
-        return false;
-    if (m_currentStep != 0)
-        return false;
+bool asResultsForecast::Load() {
+    if (!Exists()) return false;
+    if (m_currentStep != 0) return false;
 
     ThreadsManager().CritSectionNetCDF().Enter();
 
     // Open the NetCDF file
     asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
-    if (!ncFile.Open())
-        return false;
+    if (!ncFile.Open()) return false;
 
     // Get global attributes
     int versionMajor = ncFile.GetAttInt("version_major");
@@ -345,8 +339,10 @@ bool asResultsForecast::Load()
         }
     }
 
-    if (versionMajor > m_fileVersionMajor || (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
-        wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot be opened here."),
+    if (versionMajor > m_fileVersionMajor ||
+        (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
+        wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot "
+                     "be opened here."),
                    versionMajor, versionMinor);
         return false;
     }
@@ -393,8 +389,10 @@ bool asResultsForecast::Load()
             }
         } else {
             m_predictandParameter = asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
-            m_predictandTemporalResolution = asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
-            m_predictandSpatialAggregation = asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
+            m_predictandTemporalResolution =
+                asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
+            m_predictandSpatialAggregation =
+                asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
         }
 
         m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
@@ -531,7 +529,7 @@ bool asResultsForecast::Load()
 
     // Set data into the matrices
     int ind = 0;
-    for (int iTime = 0; iTime < (int) nLeadtime; iTime++) {
+    for (int iTime = 0; iTime < (int)nLeadtime; iTime++) {
         a1f analogsCriteriaLeadTime(m_analogsNb[iTime]);
         a1f analogsDatesLeadTime(m_analogsNb[iTime]);
 
@@ -598,8 +596,7 @@ bool asResultsForecast::Load()
     return true;
 }
 
-wxArrayString asResultsForecast::GetStationNamesWxArrayString() const
-{
+wxArrayString asResultsForecast::GetStationNamesWxArrayString() const {
     wxArrayString stationsNames;
     for (const auto &stationName : m_stationNames) {
         stationsNames.Add(stationName);
@@ -607,8 +604,7 @@ wxArrayString asResultsForecast::GetStationNamesWxArrayString() const
     return stationsNames;
 }
 
-wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const
-{
+wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const {
     wxArrayString stationsNames;
     for (int i = 0; i < m_stationNames.size(); i++) {
         wxString label;
@@ -622,8 +618,7 @@ wxArrayString asResultsForecast::GetStationNamesAndHeightsWxArrayString() const
     return stationsNames;
 }
 
-wxString asResultsForecast::GetStationNameAndHeight(int iStat) const
-{
+wxString asResultsForecast::GetStationNameAndHeight(int iStat) const {
     wxString stationName;
     if (!asIsNaN(m_stationHeights[iStat]) && m_stationHeights[iStat] != 0) {
         stationName = wxString::Format("%s (%4.0fm)", m_stationNames[iStat], m_stationHeights[iStat]);
@@ -633,14 +628,13 @@ wxString asResultsForecast::GetStationNameAndHeight(int iStat) const
     return stationName;
 }
 
-wxString asResultsForecast::GetPredictandStationIdsString() const
-{
+wxString asResultsForecast::GetPredictandStationIdsString() const {
     wxString ids;
 
-    for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
+    for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
         ids << m_predictandStationIds[i];
 
-        if (i < (int) m_predictandStationIds.size() - 1) {
+        if (i < (int)m_predictandStationIds.size() - 1) {
             ids.Append(",");
         }
     }
@@ -648,8 +642,7 @@ wxString asResultsForecast::GetPredictandStationIdsString() const
     return ids;
 }
 
-void asResultsForecast::SetPredictandStationIds(wxString val)
-{
+void asResultsForecast::SetPredictandStationIds(wxString val) {
     wxStringTokenizer tokenizer(val, ":,; ");
     while (tokenizer.HasMoreTokens()) {
         wxString token = tokenizer.GetNextToken();
@@ -660,34 +653,24 @@ void asResultsForecast::SetPredictandStationIds(wxString val)
     }
 }
 
-bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
-{
+bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const {
     bool compatible = true;
 
-    if (!m_methodId.IsSameAs(otherForecast->GetMethodId(), false))
-        compatible = false;
-    if (m_predictandParameter != otherForecast->GetPredictandParameter())
-        compatible = false;
-    if (m_predictandTemporalResolution != otherForecast->GetPredictandTemporalResolution())
-        compatible = false;
-    if (m_predictandSpatialAggregation != otherForecast->GetPredictandSpatialAggregation())
-        compatible = false;
-    if (!m_predictandDatasetId.IsSameAs(otherForecast->GetPredictandDatasetId(), false))
-        compatible = false;
-    if (!m_predictandDatabase.IsSameAs(otherForecast->GetPredictandDatabase(), false))
-        compatible = false;
-    if (m_hasReferenceValues != otherForecast->HasReferenceValues())
-        compatible = false;
-    if (m_leadTimeOrigin != otherForecast->GetLeadTimeOrigin())
-        compatible = false;
+    if (!m_methodId.IsSameAs(otherForecast->GetMethodId(), false)) compatible = false;
+    if (m_predictandParameter != otherForecast->GetPredictandParameter()) compatible = false;
+    if (m_predictandTemporalResolution != otherForecast->GetPredictandTemporalResolution()) compatible = false;
+    if (m_predictandSpatialAggregation != otherForecast->GetPredictandSpatialAggregation()) compatible = false;
+    if (!m_predictandDatasetId.IsSameAs(otherForecast->GetPredictandDatasetId(), false)) compatible = false;
+    if (!m_predictandDatabase.IsSameAs(otherForecast->GetPredictandDatabase(), false)) compatible = false;
+    if (m_hasReferenceValues != otherForecast->HasReferenceValues()) compatible = false;
+    if (m_leadTimeOrigin != otherForecast->GetLeadTimeOrigin()) compatible = false;
 
     a1f targetDates = otherForecast->GetTargetDates();
     if (m_targetDates.size() != targetDates.size()) {
         compatible = false;
     } else {
         for (int i = 0; i < m_targetDates.size(); i++) {
-            if (m_targetDates[i] != targetDates[i])
-                compatible = false;
+            if (m_targetDates[i] != targetDates[i]) compatible = false;
         }
     }
 
@@ -696,8 +679,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_stationIds.size(); i++) {
-            if (m_stationIds[i] != stationsIds[i])
-                compatible = false;
+            if (m_stationIds[i] != stationsIds[i]) compatible = false;
         }
     }
 
@@ -706,8 +688,7 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
         compatible = false;
     } else {
         for (int i = 0; i < m_referenceAxis.size(); i++) {
-            if (m_referenceAxis[i] != referenceAxis[i])
-                compatible = false;
+            if (m_referenceAxis[i] != referenceAxis[i]) compatible = false;
         }
     }
 
@@ -720,13 +701,10 @@ bool asResultsForecast::IsCompatibleWith(asResultsForecast *otherForecast) const
     return true;
 }
 
-bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const
-{
-    if (!IsCompatibleWith(otherForecast))
-        return false;
+bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const {
+    if (!IsCompatibleWith(otherForecast)) return false;
 
-    if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false))
-        return false;
+    if (!m_specificTag.IsSameAs(otherForecast->GetSpecificTag(), false)) return false;
 
     vi predictandStationIds = otherForecast->GetPredictandStationIds();
     if (m_predictandStationIds.size() != predictandStationIds.size()) {
@@ -734,8 +712,7 @@ bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const
     }
 
     for (int i = 0; i < m_predictandStationIds.size(); i++) {
-        if (m_predictandStationIds[i] != predictandStationIds[i])
-            return false;
+        if (m_predictandStationIds[i] != predictandStationIds[i]) return false;
     }
 
     a1f targetDates = otherForecast->GetTargetDates();
@@ -744,43 +721,32 @@ bool asResultsForecast::IsSameAs(asResultsForecast *otherForecast) const
     }
 
     for (int i = 0; i < m_targetDates.size(); i++) {
-        if (m_targetDates[i] != targetDates[i])
-            return false;
-        if (m_analogsNb[i] != otherForecast->GetAnalogsNumber(i))
-            return false;
-        if (m_analogsCriteria[i].size() != otherForecast->GetAnalogsCriteria(i).size())
-            return false;
-        if (m_analogsDates[i].size() != otherForecast->GetAnalogsDates(i).size())
-            return false;
-        if (m_analogsValuesRaw[i].size() != otherForecast->GetAnalogsValuesRaw(i).size())
-            return false;
+        if (m_targetDates[i] != targetDates[i]) return false;
+        if (m_analogsNb[i] != otherForecast->GetAnalogsNumber(i)) return false;
+        if (m_analogsCriteria[i].size() != otherForecast->GetAnalogsCriteria(i).size()) return false;
+        if (m_analogsDates[i].size() != otherForecast->GetAnalogsDates(i).size()) return false;
+        if (m_analogsValuesRaw[i].size() != otherForecast->GetAnalogsValuesRaw(i).size()) return false;
 
         for (int j = 0; j < m_analogsCriteria[i].size(); j++) {
-            if (m_analogsCriteria[i][j] != otherForecast->GetAnalogsCriteria(i)[j])
-                return false;
+            if (m_analogsCriteria[i][j] != otherForecast->GetAnalogsCriteria(i)[j]) return false;
         }
         for (int j = 0; j < m_analogsDates[i].size(); j++) {
-            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j])
-                return false;
+            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
         }
         for (int j = 0; j < m_analogsDates[i].size(); j++) {
-            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j])
-                return false;
+            if (m_analogsDates[i][j] != otherForecast->GetAnalogsDates(i)[j]) return false;
         }
         for (int j = 0; j < m_analogsValuesRaw[i].size(); j++) {
-            if (m_analogsValuesRaw[i].rows() != otherForecast->GetAnalogsValuesRaw(i).rows())
-                return false;
-            if (m_analogsValuesRaw[i].cols() != otherForecast->GetAnalogsValuesRaw(i).cols())
-                return false;
+            if (m_analogsValuesRaw[i].rows() != otherForecast->GetAnalogsValuesRaw(i).rows()) return false;
+            if (m_analogsValuesRaw[i].cols() != otherForecast->GetAnalogsValuesRaw(i).cols()) return false;
         }
     }
 
     return true;
 }
 
-bool asResultsForecast::IsSpecificForStationId(int stationId) const
-{
-    for (int i = 0; i < (int) m_predictandStationIds.size(); i++) {
+bool asResultsForecast::IsSpecificForStationId(int stationId) const {
+    for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
         if (m_predictandStationIds[i] == stationId) {
             return true;
         }
@@ -788,8 +754,7 @@ bool asResultsForecast::IsSpecificForStationId(int stationId) const
     return false;
 }
 
-int asResultsForecast::GetStationRowFromId(int stationId) const
-{
+int asResultsForecast::GetStationRowFromId(int stationId) const {
     for (int i = 0; i < m_stationIds.size(); i++) {
         if (m_stationIds[i] == stationId) {
             return i;

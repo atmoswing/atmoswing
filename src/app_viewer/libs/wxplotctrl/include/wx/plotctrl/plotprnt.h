@@ -15,8 +15,8 @@
 #pragma interface "plotprnt.h"
 #endif
 
-#include "wx/print.h"
 #include "wx/plotctrl/plotdefs.h"
+#include "wx/print.h"
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl;
 
@@ -25,31 +25,23 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl;
 //                  on a single page
 //-----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout
-        : public wxPrintout
-{
-public:
+class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
+   public:
     wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title = wxEmptyString);
 
     bool OnPrintPage(int page);
 
-    bool HasPage(int page)
-    {
+    bool HasPage(int page) {
         return page == 1;
     }
 
     bool OnBeginDocument(int startPage, int endPage);
 
-    void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo)
-    {
-        if (minPage)
-            *minPage = 1;
-        if (maxPage)
-            *maxPage = 1;
-        if (selPageFrom)
-            *selPageFrom = 1;
-        if (selPageTo)
-            *selPageTo = 1;
+    void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo) {
+        if (minPage) *minPage = 1;
+        if (maxPage) *maxPage = 1;
+        if (selPageFrom) *selPageFrom = 1;
+        if (selPageTo) *selPageTo = 1;
     }
 
     // Simplified methods to show the standard print dialogs
@@ -61,8 +53,7 @@ public:
 
     bool ShowPrintPageSetupDialog();
 
-    wxPlotCtrl *GetPlotCtrl() const
-    {
+    wxPlotCtrl *GetPlotCtrl() const {
         return m_plotCtrl;
     }
 
@@ -85,7 +76,7 @@ public:
 
     static void SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static);
 
-protected:
+   protected:
     wxPlotCtrl *m_plotCtrl;
 
     static wxPrintData *s_wxPlotPrintData;
@@ -93,8 +84,8 @@ protected:
     static bool s_wxPlotPrintdata_static;
     static bool s_wxPlotPagesetupdata_static;
 
-private:
-DECLARE_ABSTRACT_CLASS(wxPlotPrintout)
+   private:
+    DECLARE_ABSTRACT_CLASS(wxPlotPrintout)
 };
 
-#endif // _WX_PLOTPRINT_H_
+#endif  // _WX_PLOTPRINT_H_

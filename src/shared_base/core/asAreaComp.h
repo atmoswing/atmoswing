@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,13 +29,11 @@
 #ifndef AS_AREA_COMPOSITE_H
 #define AS_AREA_COMPOSITE_H
 
-#include <asIncludes.h>
 #include <asArea.h>
+#include <asIncludes.h>
 
-class asAreaComp
-        : public asArea
-{
-public:
+class asAreaComp : public asArea {
+   public:
     asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
@@ -54,19 +52,17 @@ public:
 
     double GetYmax() const override;
 
-    int GetNbComposites() const
-    {
-        return (int) m_composites.size();
+    int GetNbComposites() const {
+        return (int)m_composites.size();
     }
 
-    asArea GetComposite(int id) const
-    {
+    asArea GetComposite(int id) const {
         wxASSERT(m_composites.size() > id);
 
         return m_composites[id];
     }
 
-protected:
+   protected:
     std::vector<asArea> m_composites;
 
     void Init() override;
@@ -77,7 +73,7 @@ protected:
 
     bool CheckConsistency();
 
-private:
+   private:
 };
 
 #endif

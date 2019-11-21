@@ -31,25 +31,22 @@
 
 #include <asMethodOptimizer.h>
 
-
-class asMethodOptimizerRandomSet
-        : public asMethodOptimizer
-{
-public:
+class asMethodOptimizerRandomSet : public asMethodOptimizer {
+   public:
     asMethodOptimizerRandomSet();
 
     ~asMethodOptimizerRandomSet() override;
 
     bool Manager() override;
 
-protected:
+   protected:
     virtual void InitParameters(asParametersOptimization &params);
 
     virtual asParametersOptimization *GetNextParameters();
 
     bool SetBestParameters(asResultsParametersArray &results) override;
 
-private:
+   private:
     std::vector<asParametersOptimization> m_parameters;
 };
 

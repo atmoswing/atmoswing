@@ -29,65 +29,57 @@
 #ifndef AS_FRAME_FORECAST_H
 #define AS_FRAME_FORECAST_H
 
-#include "AtmoswingViewerGui.h"
-#include "asIncludes.h"
-#include "asLogWindow.h"
-#include "asForecastManager.h"
-#include "wx/dnd.h"
 #include <wx/process.h>
-#include "vroomgis.h"
+
+#include "AtmoswingViewerGui.h"
+#include "asForecastManager.h"
 #include "asForecastViewer.h"
-#include "asPanelSidebarCaptionForecastRing.h"
-#include "asPanelSidebarCaptionForecastDots.h"
-#include "asPanelSidebarCalendar.h"
-#include "asPanelSidebarGisLayers.h"
-#include "asPanelSidebarForecasts.h"
-#include "asPanelSidebarStationsList.h"
+#include "asIncludes.h"
+#include "asLeadTimeSwitcher.h"
+#include "asLogWindow.h"
 #include "asPanelSidebarAlarms.h"
 #include "asPanelSidebarAnalogDates.h"
-#include "asLeadTimeSwitcher.h"
+#include "asPanelSidebarCalendar.h"
+#include "asPanelSidebarCaptionForecastDots.h"
+#include "asPanelSidebarCaptionForecastRing.h"
+#include "asPanelSidebarForecasts.h"
+#include "asPanelSidebarGisLayers.h"
+#include "asPanelSidebarStationsList.h"
 #include "asWorkspace.h"
+#include "vroomgis.h"
+#include "wx/dnd.h"
 
 const int as_POPUP_OFFSET = 50;
 const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 
-
 /** Implementing vroomDropFiles */
 class asFrameForecast;
 
-class vroomDropFiles
-        : public wxFileDropTarget
-{
-private:
+class vroomDropFiles : public wxFileDropTarget {
+   private:
     asFrameForecast *m_loaderFrame;
 
-public:
+   public:
     explicit vroomDropFiles(asFrameForecast *parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
-
 /** Implementing forecastDropFiles */
 class asFrameForecast;
 
-class forecastDropFiles
-        : public wxFileDropTarget
-{
-private:
+class forecastDropFiles : public wxFileDropTarget {
+   private:
     asFrameForecast *m_loaderFrame;
 
-public:
+   public:
     explicit forecastDropFiles(asFrameForecast *parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
-
-class asFrameForecast
-        : public asFrameForecastVirtual
-{
-public:
+class asFrameForecast : public asFrameForecastVirtual {
+   public:
     explicit asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
 
     ~asFrameForecast() override;
@@ -98,14 +90,12 @@ public:
 
     bool OpenForecast(const wxArrayString &names);
 
-    asWorkspace *GetWorkspace()
-    {
+    asWorkspace *GetWorkspace() {
         return &m_workspace;
     }
 
-protected:
-
-private:
+   protected:
+   private:
     wxProcess *m_processForecast;
     vrLayerManager *m_layerManager;
     vrViewerLayerManager *m_viewerLayerManager;
@@ -124,7 +114,7 @@ private:
     asWorkspace m_workspace;
     bool m_launchedPresentForecast;
 
-#if defined (__WIN32__)
+#if defined(__WIN32__)
     wxCriticalSection m_critSectionViewerLayerManager;
 #endif
 
@@ -234,14 +224,11 @@ private:
 
     void UpdatePanelStationsList();
 
-    virtual void OnRightClick(wxMouseEvent &event)
-    {
+    virtual void OnRightClick(wxMouseEvent &event) {
         event.Skip();
     }
 
-
-DECLARE_EVENT_TABLE()
-
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

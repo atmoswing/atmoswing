@@ -28,13 +28,10 @@
 
 #include "asPredictorNcepReanalysis1.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNcepReanalysis1::asPredictorNcepReanalysis1(const wxString &dataId)
-        : asPredictor(dataId)
-{
+asPredictorNcepReanalysis1::asPredictorNcepReanalysis1(const wxString &dataId) : asPredictor(dataId) {
     // Set the basic properties.
     m_datasetId = "NCEP_Reanalysis_v1";
     m_provider = "NCEP/NCAR";
@@ -49,8 +46,7 @@ asPredictorNcepReanalysis1::asPredictorNcepReanalysis1(const wxString &dataId)
     m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorNcepReanalysis1::Init()
-{
+bool asPredictorNcepReanalysis1::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
@@ -172,8 +168,7 @@ bool asPredictorNcepReanalysis1::Init()
             return false;
         }
 
-    } else if (IsSurfaceFluxesLevel() ||
-               m_product.IsSameAs("surface_gauss", false) ||
+    } else if (IsSurfaceFluxesLevel() || m_product.IsSameAs("surface_gauss", false) ||
                m_product.IsSameAs("gauss", false)) {
         m_fStr.hasLevelDim = false;
         if (IsAirTemperature()) {
@@ -433,20 +428,18 @@ bool asPredictorNcepReanalysis1::Init()
     return true;
 }
 
-void asPredictorNcepReanalysis1::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNcepReanalysis1::ListFiles(asTimeArray &timeArray) {
     for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
         m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
     }
 }
 
-double asPredictorNcepReanalysis1::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    if (timeValue < 500 * 365) { // New format
-        timeValue += asTime::GetMJD(1800, 1, 1); // to MJD: add a negative time span
-    } else { // Old format
-        timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorNcepReanalysis1::ConvertToMjd(double timeValue, double refValue) const {
+    timeValue = (timeValue / 24.0);               // hours to days
+    if (timeValue < 500 * 365) {                  // New format
+        timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span
+    } else {                                      // Old format
+        timeValue += asTime::GetMJD(1, 1, 1);     // to MJD: add a negative time span
     }
 
     return timeValue;

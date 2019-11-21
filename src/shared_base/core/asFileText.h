@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,19 +28,15 @@
 #ifndef AS_FILE_TEXT_H
 #define AS_FILE_TEXT_H
 
-#include <iostream>
-#include <fstream>
-
-#include <asIncludes.h>
 #include <asFile.h>
+#include <asIncludes.h>
 
-class asFileText : public asFile
-{
-public:
-    enum FileStructType
-    {
-        ConstantWidth, TabsDelimited
-    };
+#include <fstream>
+#include <iostream>
+
+class asFileText : public asFile {
+   public:
+    enum FileStructType { ConstantWidth, TabsDelimited };
 
     asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
 
@@ -66,11 +62,9 @@ public:
 
     bool EndOfFile() const;
 
-protected:
-
-private:
-    std::fstream m_file; // Not using wxTextFile because it's not optimized for files > 1Mb
-
+   protected:
+   private:
+    std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb
 };
 
 #endif

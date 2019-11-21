@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepCfsrGeneral, LoadEasy)
-{
+TEST(PredictorNcepCfsrGeneral, LoadEasy) {
     double xMin = 10;
     int xPtsNb = 11;
     double yMin = 35;
@@ -121,8 +120,7 @@ TEST(PredictorNcepCfsrGeneral, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrGeneral, LoadComposite)
-{
+TEST(PredictorNcepCfsrGeneral, LoadComposite) {
     double xMin = -3;
     int xPtsNb = 11;
     double yMin = 35;
@@ -188,8 +186,7 @@ TEST(PredictorNcepCfsrGeneral, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrGeneral, LoadBorderLeft)
-{
+TEST(PredictorNcepCfsrGeneral, LoadBorderLeft) {
     double xMin = 0;
     int xPtsNb = 5;
     double yMin = 35;
@@ -251,8 +248,7 @@ TEST(PredictorNcepCfsrGeneral, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrGeneral, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepCfsrGeneral, LoadBorderLeftOn720) {
     double xMin = 360;
     int xPtsNb = 11;
     double yMin = 35;
@@ -314,8 +310,7 @@ TEST(PredictorNcepCfsrGeneral, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrGeneral, LoadBorderRight)
-{
+TEST(PredictorNcepCfsrGeneral, LoadBorderRight) {
     double xMin = -3;
     int xPtsNb = 7;
     double yMin = 35;

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,41 +29,36 @@
 #ifndef AS_PANEL_FORECAST
 #define AS_PANEL_FORECAST
 
+#include <wx/awx/led.h>
+
 #include "AtmoswingForecasterGui.h"
 #include "images.h"
-#include <wx/awx/led.h>
 
 class asPanelsManagerForecasts;
 
-class asPanelForecast
-        : public asPanelForecastVirtual
-{
-public:
+class asPanelForecast : public asPanelForecastVirtual {
+   public:
     explicit asPanelForecast(wxWindow *parent);
 
     bool Layout() override;
 
-    awxLed *GetLed() const
-    {
+    awxLed *GetLed() const {
         return m_led;
     }
 
-    void SetPanelsManager(asPanelsManagerForecasts *panelManager)
-    {
+    void SetPanelsManager(asPanelsManagerForecasts *panelManager) {
         m_panelsManager = panelManager;
     }
 
-    wxString GetParametersFileName() const
-    {
+    wxString GetParametersFileName() const {
         return m_textCtrlParametersFileName->GetValue();
     }
 
-    void SetParametersFileName(const wxString &val)
-    {
+    void SetParametersFileName(const wxString &val) {
         m_textCtrlParametersFileName->SetValue(val);
     }
 
-protected:
+   protected:
     wxWindow *m_parentFrame;
     awxLed *m_led;
 
@@ -71,7 +66,7 @@ protected:
 
     void ChangeForecastName(wxCommandEvent &event);
 
-private:
+   private:
     asPanelsManagerForecasts *m_panelsManager;
 };
 

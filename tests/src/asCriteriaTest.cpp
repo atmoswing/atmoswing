@@ -26,8 +26,6 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "wx/filename.h"
-#include "gtest/gtest.h"
 #include <asAreaCompRegGrid.h>
 #include <asCriteria.h>
 #include <asFileText.h>
@@ -35,8 +33,10 @@
 #include <asPreprocessor.h>
 #include <asTimeArray.h>
 
-TEST(Criteria, S1)
-{
+#include "gtest/gtest.h"
+#include "wx/filename.h"
+
+TEST(Criteria, S1) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_S1.txt"));
@@ -157,11 +157,9 @@ TEST(Criteria, S1)
     }
 
     wxDELETE(criteria);
-
 }
 
-TEST(Criteria, S1preprocessed)
-{
+TEST(Criteria, S1preprocessed) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 35;
@@ -230,11 +228,9 @@ TEST(Criteria, S1preprocessed)
     wxDELETE(gradients);
     wxDELETE(criteria);
     wxDELETE(criteriaGrads);
-
 }
 
-TEST(Criteria, S2preprocessed)
-{
+TEST(Criteria, S2preprocessed) {
     double xMin = 10;
     double xWidth = 10;
     double yMin = 35;
@@ -303,11 +299,9 @@ TEST(Criteria, S2preprocessed)
     wxDELETE(curv);
     wxDELETE(criteria);
     wxDELETE(criteriaGrads);
-
 }
 
-TEST(Criteria, RSE)
-{
+TEST(Criteria, RSE) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
@@ -479,11 +473,9 @@ TEST(Criteria, RSE)
     }
 
     wxDELETE(criteria);
-
 }
 
-TEST(Criteria, RMSE)
-{
+TEST(Criteria, RMSE) {
     // Get the data file
     wxString filepath = wxFileName::GetCwd();
     filepath.Append(_T("/files/criteria_RMSE.txt"));
@@ -651,20 +643,18 @@ TEST(Criteria, RMSE)
     }
 
     wxDELETE(criteria);
-
 }
 
-TEST(Criteria, RMSEwithNaNs)
-{
+TEST(Criteria, RMSEwithNaNs) {
     // Create the containers
     int lons = 4;
     int lats = 4;
     a2f refData(lats, lons), candData(lats, lons);
 
-    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
-            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
     asCriteria *criteria = asCriteria::GetInstance("RMSE");
 
@@ -673,11 +663,9 @@ TEST(Criteria, RMSEwithNaNs)
     EXPECT_FLOAT_EQ(0.3766817f, res);
 
     wxDELETE(criteria);
-
 }
 
-TEST(Criteria, Differences)
-{
+TEST(Criteria, Differences) {
     va2f refData;
     a2f dataTmp(2, 2);
 
@@ -841,26 +829,24 @@ TEST(Criteria, Differences)
     }
 
     wxDELETE(criteriaMD);
-
 }
 
-TEST(Criteria, DMV)
-{
+TEST(Criteria, DMV) {
     // Create the containers
     int lons = 4;
     int lats = 4;
     a2f refData(lats, lons), candData(lats, lons);
     a2f refDataNaN(lats, lons), candDataNaN(lats, lons);
 
-    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
-            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-            0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
-            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
     asCriteria *criteria = asCriteria::GetInstance("DMV");
 
@@ -873,23 +859,22 @@ TEST(Criteria, DMV)
     wxDELETE(criteria);
 }
 
-TEST(Criteria, DSD)
-{
+TEST(Criteria, DSD) {
     // Create the containers
     int lons = 4;
     int lats = 4;
     a2f refData(lats, lons), candData(lats, lons);
     a2f refDataNaN(lats, lons), candDataNaN(lats, lons);
 
-    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
-            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    refData << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, 0.7172f, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candData << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-            0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, 0.7519f;
 
-    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f,
-            0.4553f, 0.2353f, 0.5602f, 0.2524f, 0.8011f;
+    refDataNaN << 0.4903f, 0.1785f, 0.9245f, 0.4212f, 0.6166f, NaNf, 0.4496f, 0.612f, 0.531f, 0.5112f, 0.6155f, 0.4553f,
+        0.2353f, 0.5602f, 0.2524f, 0.8011f;
     candDataNaN << 0.0136f, 0.2671f, 0.3951f, 0.8645f, 0.0489f, 0.0921f, 0.6901f, 0.0887f, 0.5477f, 0.0562f, 0.4862f,
-            0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
+        0.9309f, 0.3185f, 0.2835f, 0.5472f, NaNf;
 
     asCriteria *criteria = asCriteria::GetInstance("DSD");
 
@@ -902,50 +887,48 @@ TEST(Criteria, DSD)
     wxDELETE(criteria);
 }
 
-TEST(Criteria, Gauss2D)
-{
+TEST(Criteria, Gauss2D) {
     // Array 51x31
     a2f surf1 = asCriteria::GetGauss2D(51, 31);
     ASSERT_EQ(51, surf1.rows());
     ASSERT_EQ(31, surf1.cols());
-    EXPECT_NEAR(0.027135, surf1(0,0), 0.00001);
-    EXPECT_NEAR(0.034035, surf1(0,1), 0.00001);
-    EXPECT_NEAR(0.042028, surf1(0,2), 0.00001);
-    EXPECT_NEAR(0.036048, surf1(2,0), 0.00001);
-    EXPECT_NEAR(0.027135, surf1(0,30), 0.00001);
-    EXPECT_NEAR(1, surf1(25,15), 0.00001);
-    EXPECT_NEAR(0.031368, surf1(49,0), 0.00001);
-    EXPECT_NEAR(0.027135, surf1(50,0), 0.00001);
-    EXPECT_NEAR(0.21467, surf1(41,25), 0.00001);
+    EXPECT_NEAR(0.027135, surf1(0, 0), 0.00001);
+    EXPECT_NEAR(0.034035, surf1(0, 1), 0.00001);
+    EXPECT_NEAR(0.042028, surf1(0, 2), 0.00001);
+    EXPECT_NEAR(0.036048, surf1(2, 0), 0.00001);
+    EXPECT_NEAR(0.027135, surf1(0, 30), 0.00001);
+    EXPECT_NEAR(1, surf1(25, 15), 0.00001);
+    EXPECT_NEAR(0.031368, surf1(49, 0), 0.00001);
+    EXPECT_NEAR(0.027135, surf1(50, 0), 0.00001);
+    EXPECT_NEAR(0.21467, surf1(41, 25), 0.00001);
 
     // Array 1x1
     a2f surf2 = asCriteria::GetGauss2D(1, 1);
     ASSERT_EQ(1, surf2.rows());
     ASSERT_EQ(1, surf2.cols());
-    EXPECT_NEAR(1, surf2(0,0), 0.00001);
+    EXPECT_NEAR(1, surf2(0, 0), 0.00001);
 
     // Array 3x3
     a2f surf3 = asCriteria::GetGauss2D(3, 3);
     ASSERT_EQ(3, surf3.rows());
     ASSERT_EQ(3, surf3.cols());
-    EXPECT_NEAR(0.36788, surf3(0,0), 0.00001);
-    EXPECT_NEAR(0.60653, surf3(1,0), 0.00001);
-    EXPECT_NEAR(1, surf3(1,1), 0.00001);
+    EXPECT_NEAR(0.36788, surf3(0, 0), 0.00001);
+    EXPECT_NEAR(0.60653, surf3(1, 0), 0.00001);
+    EXPECT_NEAR(1, surf3(1, 1), 0.00001);
 
     // Array 4x4
     a2f surf4 = asCriteria::GetGauss2D(4, 4);
     ASSERT_EQ(4, surf4.rows());
     ASSERT_EQ(4, surf4.cols());
-    EXPECT_NEAR(0.23693, surf4(0,0), 0.00001);
-    EXPECT_NEAR(0.44933, surf4(1,0), 0.00001);
-    EXPECT_NEAR(0.85214, surf4(1,1), 0.00001);
-    EXPECT_NEAR(0.85214, surf4(1,2), 0.00001);
+    EXPECT_NEAR(0.23693, surf4(0, 0), 0.00001);
+    EXPECT_NEAR(0.44933, surf4(1, 0), 0.00001);
+    EXPECT_NEAR(0.85214, surf4(1, 1), 0.00001);
+    EXPECT_NEAR(0.85214, surf4(1, 2), 0.00001);
 
     // Array 1x4
     a2f surf5 = asCriteria::GetGauss2D(1, 4);
     ASSERT_EQ(1, surf5.rows());
     ASSERT_EQ(4, surf5.cols());
-    EXPECT_NEAR(0.48675, surf5(0,0), 0.00001);
-    EXPECT_NEAR(0.92312, surf5(0,1), 0.00001);
-
+    EXPECT_NEAR(0.48675, surf5(0, 0), 0.00001);
+    EXPECT_NEAR(0.92312, surf5(0, 1), 0.00001);
 }

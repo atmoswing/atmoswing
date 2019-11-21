@@ -29,9 +29,7 @@
 #include "asParametersDownscaling.h"
 #include "gtest/gtest.h"
 
-
-TEST(ParametersDownscaling, ParametersLoadFromFile)
-{
+TEST(ParametersDownscaling, ParametersLoadFromFile) {
     wxString filepath = wxFileName::GetCwd();
     filepath.Append("/files/parameters_downscaling.xml");
 

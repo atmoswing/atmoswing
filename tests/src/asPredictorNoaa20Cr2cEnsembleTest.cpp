@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNoaa20Cr2cEnsembleRegular, Load1stMember)
-{
+TEST(PredictorNoaa20Cr2cEnsembleRegular, Load1stMember) {
     double xMin = 10;
     double xWidth = 8;
     double yMin = 70;
@@ -90,8 +89,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, Load1stMember)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, Load3rdMember)
-{
+TEST(PredictorNoaa20Cr2cEnsembleRegular, Load3rdMember) {
     double xMin = 10;
     double xWidth = 8;
     double yMin = 70;
@@ -148,8 +146,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, Load3rdMember)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadComposite)
-{
+TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadComposite) {
     double xMin = -8;
     double xWidth = 12;
     double yMin = 70;
@@ -210,8 +207,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
-{
+TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderLeft) {
     double xMin = 0;
     double xWidth = 4;
     double yMin = 70;
@@ -264,8 +260,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderRight)
-{
+TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderRight) {
     double xMin = 352;
     double xWidth = 8;
     double yMin = 70;

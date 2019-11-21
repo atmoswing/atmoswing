@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,14 +29,12 @@
 #ifndef AS_THREAD_INTERNET_DOWNLOAD_H
 #define AS_THREAD_INTERNET_DOWNLOAD_H
 
-#include <asThread.h>
 #include <asIncludes.h>
 #include <asInternet.h>
+#include <asThread.h>
 
-class asThreadInternetDownload
-        : public asThread
-{
-public:
+class asThreadInternetDownload : public asThread {
+   public:
     asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir, bool usesProxy,
                              const wxString &proxyAddress, long proxyPort, const wxString &proxyUser,
                              const wxString &proxyPasswd, int start, int end);
@@ -45,9 +43,8 @@ public:
 
     ExitCode Entry() override;
 
-protected:
-
-private:
+   protected:
+   private:
     vwxs m_urls;
     vwxs m_fileNames;
     wxString m_destinationDir;
@@ -58,7 +55,6 @@ private:
     wxString m_proxyPasswd;
     int m_start;
     int m_end;
-
 };
 
 #endif

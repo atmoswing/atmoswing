@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,14 +30,13 @@
 #ifndef AS_FILE_GRIB_H
 #define AS_FILE_GRIB_H
 
-#include "asIncludes.h"
 #include <asFile.h>
+
+#include "asIncludes.h"
 #include "eccodes.h"
 
-class asFileGrib
-        : public asFile
-{
-public:
+class asFileGrib : public asFile {
+   public:
     asFileGrib(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileGrib() override;
@@ -46,7 +45,7 @@ public:
 
     bool Close() override;
 
-    bool SetIndexPosition(const vi& gribCode, const float level, const bool useWarnings = true);
+    bool SetIndexPosition(const vi &gribCode, const float level, const bool useWarnings = true);
 
     bool SetIndexPositionAnyLevel(vi gribCode);
 
@@ -74,9 +73,8 @@ public:
 
     vd GetRealForecastTimeArray() const;
 
-protected:
-
-private:
+   protected:
+   private:
     FILE *m_filtPtr;
     int m_version;
     int m_index;

@@ -32,7 +32,7 @@
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif  //__BORLANDC__
 
 #include "AtmoswingAppOptimizer.h"
 
@@ -44,12 +44,11 @@
 
 #include "asMethodCalibratorClassic.h"
 #include "asMethodCalibratorClassicVarExplo.h"
-#include "asMethodOptimizerRandomSet.h"
-#include "asMethodOptimizerGeneticAlgorithms.h"
 #include "asMethodCalibratorEvaluateAllScores.h"
-#include "asMethodCalibratorSingleOnlyValues.h"
 #include "asMethodCalibratorSingleOnlyDates.h"
-
+#include "asMethodCalibratorSingleOnlyValues.h"
+#include "asMethodOptimizerGeneticAlgorithms.h"
+#include "asMethodOptimizerRandomSet.h"
 
 IMPLEMENT_APP(AtmoswingAppOptimizer)
 
@@ -62,89 +61,94 @@ IMPLEMENT_APP(AtmoswingAppOptimizer)
 
 #endif
 
-static const wxCmdLineEntryDesc g_cmdLineDesc[] =
-{
-    {wxCMD_LINE_SWITCH, "v",  "version",                 "Show version number and quit"},
-    {wxCMD_LINE_SWITCH, "s",  "silent",                  "Silent mode"},
-    {wxCMD_LINE_SWITCH, "l",  "local",                   "Work in local directory"},
-    {wxCMD_LINE_OPTION, "n",  "threads-nb",              "Number of threads to use"},
-    {wxCMD_LINE_OPTION, "g",  "gpus-nb",                 "Number of gpus to use"},
-    {wxCMD_LINE_OPTION, "r",  "run-number",              "Choice of number associated with the run"},
-    {wxCMD_LINE_OPTION, "f",  "file-parameters",         "File containing the calibration parameters"},
-    {wxCMD_LINE_OPTION, NULL, "predictand-db",           "The predictand DB"},
-    {wxCMD_LINE_OPTION, NULL, "station-id",              "The predictand station ID"},
-    {wxCMD_LINE_OPTION, NULL, "dir-predictors",          "The predictors directory"},
-    {wxCMD_LINE_SWITCH, NULL, "skip-valid",              "Skip the validation calculation"},
-    {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates",      "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
-    {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data",     "Dump predictor data to binary files to reduce RAM usage"},
-    {wxCMD_LINE_SWITCH, NULL, "load-from-dumped-data",   "Load dumped predictor data into RAM (faster load)"},
-    {wxCMD_LINE_SWITCH, NULL, "replace-nans",            "Option to replace NaNs with -9999 (faster processing)"},
-    {wxCMD_LINE_SWITCH, NULL, "skip-nans-check",         "Do not check for NaNs (faster processing)"},
-    {wxCMD_LINE_OPTION, NULL, "calibration-method",      "Choice of the calibration method"
-                                                         "\n \t\t\t\t\t - single: single assessment"
-                                                         "\n \t\t\t\t\t - classic: classic calibration"
-                                                         "\n \t\t\t\t\t - classicp: classic+ calibration"
-                                                         "\n \t\t\t\t\t - varexplocp: variables exploration classic+"
-                                                         "\n \t\t\t\t\t - montecarlo: Monte Carlo"
-                                                         "\n \t\t\t\t\t - ga: genetic algorithms"
-                                                         "\n \t\t\t\t\t - evalscores: evaluate all scores"
-                                                         "\n \t\t\t\t\t - onlyvalues: evaluate all scores"
-                                                         "\n \t\t\t\t\t - onlydates: evaluate all scores"},
-    {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration",   "Classic plus: resizing iteration"},
-    {wxCMD_LINE_OPTION, NULL, "cp-lat-step",             "Classic plus: steps in latitudes for the relevance map"},
-    {wxCMD_LINE_OPTION, NULL, "cp-lon-step",             "Classic plus: steps in longitudes for the relevance map"},
+static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
+    {wxCMD_LINE_SWITCH, "v", "version", "Show version number and quit"},
+    {wxCMD_LINE_SWITCH, "s", "silent", "Silent mode"},
+    {wxCMD_LINE_SWITCH, "l", "local", "Work in local directory"},
+    {wxCMD_LINE_OPTION, "n", "threads-nb", "Number of threads to use"},
+    {wxCMD_LINE_OPTION, "g", "gpus-nb", "Number of gpus to use"},
+    {wxCMD_LINE_OPTION, "r", "run-number", "Choice of number associated with the run"},
+    {wxCMD_LINE_OPTION, "f", "file-parameters", "File containing the calibration parameters"},
+    {wxCMD_LINE_OPTION, NULL, "predictand-db", "The predictand DB"},
+    {wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID"},
+    {wxCMD_LINE_OPTION, NULL, "dir-predictors", "The predictors directory"},
+    {wxCMD_LINE_SWITCH, NULL, "skip-valid", "Skip the validation calculation"},
+    {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates",
+     "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
+    {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data", "Dump predictor data to binary files to reduce RAM usage"},
+    {wxCMD_LINE_SWITCH, NULL, "load-from-dumped-data", "Load dumped predictor data into RAM (faster load)"},
+    {wxCMD_LINE_SWITCH, NULL, "replace-nans", "Option to replace NaNs with -9999 (faster processing)"},
+    {wxCMD_LINE_SWITCH, NULL, "skip-nans-check", "Do not check for NaNs (faster processing)"},
+    {wxCMD_LINE_OPTION, NULL, "calibration-method",
+     "Choice of the calibration method"
+     "\n \t\t\t\t\t - single: single assessment"
+     "\n \t\t\t\t\t - classic: classic calibration"
+     "\n \t\t\t\t\t - classicp: classic+ calibration"
+     "\n \t\t\t\t\t - varexplocp: variables exploration classic+"
+     "\n \t\t\t\t\t - montecarlo: Monte Carlo"
+     "\n \t\t\t\t\t - ga: genetic algorithms"
+     "\n \t\t\t\t\t - evalscores: evaluate all scores"
+     "\n \t\t\t\t\t - onlyvalues: evaluate all scores"
+     "\n \t\t\t\t\t - onlydates: evaluate all scores"},
+    {wxCMD_LINE_OPTION, NULL, "cp-resizing-iteration", "Classic plus: resizing iteration"},
+    {wxCMD_LINE_OPTION, NULL, "cp-lat-step", "Classic plus: steps in latitudes for the relevance map"},
+    {wxCMD_LINE_OPTION, NULL, "cp-lon-step", "Classic plus: steps in longitudes for the relevance map"},
     {wxCMD_LINE_SWITCH, NULL, "cp-proceed-sequentially", "Classic plus: proceed sequentially"},
-    {wxCMD_LINE_OPTION, NULL, "ve-step",                 "Variables exploration: step to process"},
-    {wxCMD_LINE_OPTION, NULL, "mc-runs-nb",              "Monte Carlo: number of runs"},
-    {wxCMD_LINE_OPTION, NULL, "ga-config",               "GAs: predefined configuration of options (1-5)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel",          "GAs: operator choice for natural selection"},
-    {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel",         "GAs: operator choice for couples selection"},
-    {wxCMD_LINE_OPTION, NULL, "ga-ope-cross",            "GAs: operator choice for chromosome crossover"},
-    {wxCMD_LINE_OPTION, NULL, "ga-ope-mut",              "GAs: operator choice for mutation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-pop-size",             "GAs: size of the population"},
-    {wxCMD_LINE_OPTION, NULL, "ga-conv-steps",           "GAs: number of generations for convergence"},
-    {wxCMD_LINE_OPTION, NULL, "ga-interm-gen",           "GAs: ratio of the intermediate generation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p",       "GAs: natural selection - tournament probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb",     "GAs: couples selection - tournament candidates (2-3)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb",     "GAs: standard crossover - number of points"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb",     "GAs: blending crossover - number of points"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b",   "GAs: blending crossover - beta shared (1/0)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb",      "GAs: linear crossover - number of points"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb",     "GAs: heuristic crossover - number of points"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b",   "GAs: heuristic crossover - beta shared (1/0)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb",      "GAs: binary-like crossover - number of points"},
-    {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b",    "GAs: binary-like crossover - beta shared (1/0)"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p",       "GAs: uniform mutation - probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p",       "GAs: normal mutation - probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev",     "GAs: normal mutation - standard deviation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens",    "GAs: variable uniform mutation - generations nb"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt",  "GAs: variable uniform mutation - starting probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end",   "GAs: variable uniform mutation - end probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",  "GAs: variable normal mutation - generations nb for probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",  "GAs: variable normal mutation - generations nb for std deviation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt",  "GAs: variable normal mutation - starting probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end",   "GAs: variable normal mutation - end probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt",  "GAs: variable normal mutation - starting std deviation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end",   "GAs: variable normal mutation - end std deviation"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p",        "GAs: non uniform mutation - probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens",     "GAs: non uniform mutation - generations nb"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r",    "GAs: non uniform mutation - minimum rate"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p",    "GAs: multi-scale mutation - probability"},
+    {wxCMD_LINE_OPTION, NULL, "ve-step", "Variables exploration: step to process"},
+    {wxCMD_LINE_OPTION, NULL, "mc-runs-nb", "Monte Carlo: number of runs"},
+    {wxCMD_LINE_OPTION, NULL, "ga-config", "GAs: predefined configuration of options (1-5)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-ope-nat-sel", "GAs: operator choice for natural selection"},
+    {wxCMD_LINE_OPTION, NULL, "ga-ope-coup-sel", "GAs: operator choice for couples selection"},
+    {wxCMD_LINE_OPTION, NULL, "ga-ope-cross", "GAs: operator choice for chromosome crossover"},
+    {wxCMD_LINE_OPTION, NULL, "ga-ope-mut", "GAs: operator choice for mutation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-pop-size", "GAs: size of the population"},
+    {wxCMD_LINE_OPTION, NULL, "ga-conv-steps", "GAs: number of generations for convergence"},
+    {wxCMD_LINE_OPTION, NULL, "ga-interm-gen", "GAs: ratio of the intermediate generation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-nat-sel-tour-p", "GAs: natural selection - tournament probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-coup-sel-tour-nb", "GAs: couples selection - tournament candidates (2-3)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-mult-pt-nb", "GAs: standard crossover - number of points"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-pt-nb", "GAs: blending crossover - number of points"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-blen-share-b", "GAs: blending crossover - beta shared (1/0)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-lin-pt-nb", "GAs: linear crossover - number of points"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-pt-nb", "GAs: heuristic crossover - number of points"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-heur-share-b", "GAs: heuristic crossover - beta shared (1/0)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-pt-nb", "GAs: binary-like crossover - number of points"},
+    {wxCMD_LINE_OPTION, NULL, "ga-cross-bin-share-b", "GAs: binary-like crossover - beta shared (1/0)"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-cst-p", "GAs: uniform mutation - probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-p", "GAs: normal mutation - probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-cst-dev", "GAs: normal mutation - standard deviation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens", "GAs: variable uniform mutation - generations nb"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt", "GAs: variable uniform mutation - starting probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end", "GAs: variable uniform mutation - end probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",
+     "GAs: variable normal mutation - generations nb for probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",
+     "GAs: variable normal mutation - generations nb for std deviation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt", "GAs: variable normal mutation - starting probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end", "GAs: variable normal mutation - end probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt", "GAs: variable normal mutation - starting std deviation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-end", "GAs: variable normal mutation - end std deviation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-p", "GAs: non uniform mutation - probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: non uniform mutation - generations nb"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: non uniform mutation - minimum rate"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: multi-scale mutation - probability"},
 
-    {wxCMD_LINE_OPTION, NULL, "log-level",               "Set a log level"
-                                                         "\n \t\t\t\t\t - 1: errors"
-                                                         "\n \t\t\t\t\t - 2: warnings"
-                                                         "\n \t\t\t\t\t - 3: verbose"},
+    {wxCMD_LINE_OPTION, NULL, "log-level",
+     "Set a log level"
+     "\n \t\t\t\t\t - 1: errors"
+     "\n \t\t\t\t\t - 2: warnings"
+     "\n \t\t\t\t\t - 3: verbose"},
 
     {wxCMD_LINE_NONE}};
 
-static const wxString cmdLineLogo = wxT("\n"\
-"_________________________________________\n"\
-"____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"\
-"|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"\
-"|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"\
-"_________________________________________\n"\
-"\n");
+static const wxString cmdLineLogo =
+    wxT("\n"
+        "_________________________________________\n"
+        "____ ___ _  _ ____ ____ _ _ _ _ _  _ ____ \n"
+        "|__|  |  |\\/| |  | [__  | | | | |\\ | | __ \n"
+        "|  |  |  |  | |__| ___] |_|_| | | \\| |__] \n"
+        "_________________________________________\n"
+        "\n");
 
 /*
 // Alternative:
@@ -158,11 +162,10 @@ static const wxString cmdLineLogo = wxT("\n"\
 "\n");
 */
 
-bool AtmoswingAppOptimizer::OnInit()
-{
+bool AtmoswingAppOptimizer::OnInit() {
 #if _DEBUG
 #ifdef __WXMSW__
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 #endif
 
@@ -223,7 +226,7 @@ bool AtmoswingAppOptimizer::OnInit()
     frame->OnInit();
 
 #ifdef __WXMSW__
-    frame->SetIcon(wxICON(myicon)); // To Set App Icon
+    frame->SetIcon(wxICON(myicon));  // To Set App Icon
 #endif
     frame->Show();
     SetTopWindow(frame);
@@ -232,8 +235,7 @@ bool AtmoswingAppOptimizer::OnInit()
     return true;
 }
 
-wxString AtmoswingAppOptimizer::GetLocalPath()
-{
+wxString AtmoswingAppOptimizer::GetLocalPath() {
     // Prepare local path
     wxString localPath = wxFileName::GetCwd() + DS;
     if (g_runNb > 0) {
@@ -246,8 +248,7 @@ wxString AtmoswingAppOptimizer::GetLocalPath()
     return localPath;
 }
 
-bool AtmoswingAppOptimizer::InitLog()
-{
+bool AtmoswingAppOptimizer::InitLog() {
     if (g_local) {
         wxString fullPath = GetLocalPath();
         fullPath.Append("AtmoSwingOptimizer.log");
@@ -284,8 +285,7 @@ bool AtmoswingAppOptimizer::InitLog()
     return true;
 }
 
-bool AtmoswingAppOptimizer::SetUseAsCmdLine()
-{
+bool AtmoswingAppOptimizer::SetUseAsCmdLine() {
     g_guiMode = false;
     g_unitTesting = false;
     g_silentMode = true;
@@ -295,8 +295,7 @@ bool AtmoswingAppOptimizer::SetUseAsCmdLine()
     return true;
 }
 
-bool AtmoswingAppOptimizer::InitForCmdLineOnly()
-{
+bool AtmoswingAppOptimizer::InitForCmdLineOnly() {
     // Warn the user if reloading previous results
     if (g_resumePreviousRun) {
         wxLogWarning(_("An existing directory was found for the run number %d"), g_runNb);
@@ -318,17 +317,16 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         pConfig->Write("/Paths/ArchivePredictorsDir", dirData);
         pConfig->Write("/Processing/ThreadsPriority", 100);
         pConfig->Write("/Processing/AllowMultithreading", true);
-        pConfig->Write("/Processing/Method", (long) asMULTITHREADS);
+        pConfig->Write("/Processing/Method", (long)asMULTITHREADS);
         if (pConfig->ReadLong("/Processing/GpusNb", 0) > 0) {
-            pConfig->Write("/Processing/Method", (long) asCUDA);
+            pConfig->Write("/Processing/Method", (long)asCUDA);
         }
         if (m_calibMethod.IsSameAs("ga", false)) {
-            pConfig->Write("/Processing/AllowMultithreading", false); // Because we are using parallel evaluations
+            pConfig->Write("/Processing/AllowMultithreading", false);  // Because we are using parallel evaluations
             pConfig->Write("/GAs/AllowElitismForTheBest", true);
         }
 
         pConfig->Flush();
-
     }
 
     // Check that the config files correspond if reloading data
@@ -336,8 +334,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
         wxConfigBase *pConfigNow = wxFileConfig::Get();
         wxString refIniPath = GetLocalPath();
         refIniPath.Append("AtmoSwing.ini");
-        wxFileConfig *pConfigRef = new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath,
-                                                    wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfigRef =
+            new wxFileConfig("AtmoSwing", wxEmptyString, refIniPath, refIniPath, wxCONFIG_USE_LOCAL_FILE);
 
         // Check that the number of groups are identical.
         int groupsNb = pConfigNow->GetNumberOfGroups(true);
@@ -369,7 +367,8 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
                         pConfigRef->Read(entryName, &valRef);
 
                         if (!valNow.IsEmpty() && !valNow.IsSameAs(valRef)) {
-                            wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s != %s)."),
+                            wxLogError(_("The option %s (under Optimizer/%s) differ from the previous config file (%s "
+                                         "!= %s)."),
                                        entryName.c_str(), subGroupName.c_str(), valNow.c_str(), valRef.c_str());
                             return false;
                         }
@@ -387,8 +386,7 @@ bool AtmoswingAppOptimizer::InitForCmdLineOnly()
     return true;
 }
 
-void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
-{
+void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser) {
     wxAppConsole::OnInitCmdLine(parser);
 
     parser.SetDesc(g_cmdLineDesc);
@@ -398,8 +396,7 @@ void AtmoswingAppOptimizer::OnInitCmdLine(wxCmdLineParser &parser)
     parser.SetSwitchChars(wxT("-"));
 }
 
-bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
-{
+bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
     // Check if runs with GUI or CL
     if (parser.Found("calibration-method")) {
         SetUseAsCmdLine();
@@ -414,7 +411,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     long runNb = 0;
     if (parser.Found("run-number", &runNbStr)) {
         if (runNbStr.ToLong(&runNb)) {
-            g_runNb = (int) runNb;
+            g_runNb = (int)runNb;
         } else {
             g_runNb = rand();
         }
@@ -461,10 +458,9 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
         userDir.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
         // Set the local config object
-        wxFileConfig *pConfig = new wxFileConfig("AtmoSwing", wxEmptyString,
-                                                 asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
-                                                 asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
-                                                 wxCONFIG_USE_LOCAL_FILE);
+        wxFileConfig *pConfig =
+            new wxFileConfig("AtmoSwing", wxEmptyString, asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini",
+                             asConfig::GetUserDataDir() + "AtmoSwingOptimizer.ini", wxCONFIG_USE_LOCAL_FILE);
         wxFileConfig::Set(pConfig);
     }
 
@@ -497,7 +493,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
 
         // Check and apply
         if (logLevel >= 1 && logLevel <= 4) {
-            Log()->SetLevel((int) logLevel);
+            Log()->SetLevel((int)logLevel);
         } else {
             Log()->SetLevel(2);
         }
@@ -589,7 +585,6 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     if (parser.Found("skip-nans-check")) {
         wxFileConfig::Get()->Write("/General/SkipNansCheck", true);
     }
-
 
     /*
      * Methods options
@@ -831,8 +826,7 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser)
     return true;
 }
 
-int AtmoswingAppOptimizer::OnRun()
-{
+int AtmoswingAppOptimizer::OnRun() {
     if (g_guiMode) {
         return wxApp::OnRun();
     }
@@ -939,22 +933,20 @@ int AtmoswingAppOptimizer::OnRun()
     return 0;
 }
 
-int AtmoswingAppOptimizer::OnExit()
-{
+int AtmoswingAppOptimizer::OnExit() {
     CleanUp();
 
     return 0;
 }
 
-void AtmoswingAppOptimizer::CleanUp()
-{
+void AtmoswingAppOptimizer::CleanUp() {
 #if wxUSE_GUI
     // Instance checker
     wxDELETE(m_singleInstanceChecker);
 #endif
 
     // Config file (from wxWidgets samples)
-    delete wxFileConfig::Set((wxFileConfig *) nullptr);
+    delete wxFileConfig::Set((wxFileConfig *)nullptr);
 
     // Delete threads manager and log
     DeleteThreadsManager();
@@ -969,18 +961,15 @@ void AtmoswingAppOptimizer::CleanUp()
     wxApp::CleanUp();
 }
 
-bool AtmoswingAppOptimizer::OnExceptionInMainLoop()
-{
+bool AtmoswingAppOptimizer::OnExceptionInMainLoop() {
     wxLogError(_("An exception occured in the main loop"));
     return false;
 }
 
-void AtmoswingAppOptimizer::OnFatalException()
-{
+void AtmoswingAppOptimizer::OnFatalException() {
     wxLogError(_("An fatal exception occured"));
 }
 
-void AtmoswingAppOptimizer::OnUnhandledException()
-{
+void AtmoswingAppOptimizer::OnUnhandledException() {
     wxLogError(_("An unhandled exception occured"));
 }

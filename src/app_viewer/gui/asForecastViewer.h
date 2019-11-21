@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,14 +32,12 @@
 #include "asIncludes.h"
 #include "vroomgis.h"
 
-
 class asForecastManager;
 
 class asFrameForecast;
 
-class asForecastViewer
-{
-public:
+class asForecastViewer {
+   public:
     asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
                      vrViewerLayerManager *viewerLayerManager);
 
@@ -65,54 +63,44 @@ public:
 
     void SetLeadTimeDate(float date);
 
-    wxArrayString GetForecastDisplayStringArray() const
-    {
+    wxArrayString GetForecastDisplayStringArray() const {
         return m_displayForecast;
     }
 
-    wxArrayString GetQuantilesStringArray() const
-    {
+    wxArrayString GetQuantilesStringArray() const {
         return m_displayQuantiles;
     }
 
-    int GetMethodSelection() const
-    {
+    int GetMethodSelection() const {
         return m_methodSelection;
     }
 
-    int GetForecastSelection() const
-    {
+    int GetForecastSelection() const {
         return m_forecastSelection;
     }
 
-    int GetForecastDisplaySelection() const
-    {
+    int GetForecastDisplaySelection() const {
         return m_forecastDisplaySelection;
     }
 
-    int GetQuantileSelection() const
-    {
+    int GetQuantileSelection() const {
         return m_quantileSelection;
     }
 
-    float GetLayerMaxValue() const
-    {
+    float GetLayerMaxValue() const {
         return m_layerMaxValue;
     }
 
-    int GetLeadTimeIndex() const
-    {
+    int GetLeadTimeIndex() const {
         return m_leadTimeIndex;
     }
 
-    float GetLeadTimeDate() const
-    {
+    float GetLeadTimeDate() const {
         return m_leadTimeDate;
     }
 
-protected:
-
-private:
+   protected:
+   private:
     int m_leadTimeIndex;
     float m_leadTimeDate;
     float m_layerMaxValue;
@@ -129,7 +117,6 @@ private:
     int m_quantileSelection;
     int m_methodSelection;
     int m_forecastSelection;
-
 };
 
 #endif

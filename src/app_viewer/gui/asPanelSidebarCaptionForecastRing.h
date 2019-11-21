@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,19 +29,16 @@
 #ifndef AS_PANEL_SIDEBAR_CAPTION_FORECAST_RINGS_H
 #define AS_PANEL_SIDEBAR_CAPTION_FORECAST_RINGS_H
 
-#include "asPanelSidebar.h"
-
-#include "asIncludes.h"
 #include <wx/graphics.h>
 
+#include "asIncludes.h"
+#include "asPanelSidebar.h"
 
-class asPanelSidebarCaptionForecastRingDrawing
-        : public wxPanel
-{
-public:
+class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
+   public:
     explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                                             long style = wxTAB_TRAVERSAL);
+                                                      const wxPoint &pos = wxDefaultPosition,
+                                                      const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarCaptionForecastRingDrawing() override;
 
@@ -49,7 +46,7 @@ public:
 
     void DrawColorbar(double maxval);
 
-private:
+   private:
     wxBitmap *m_bmpDates;
     wxBitmap *m_bmpColorbar;
     wxGraphicsContext *m_gdc;
@@ -74,14 +71,11 @@ private:
     void OnPaint(wxPaintEvent &event);
 };
 
-
-class asPanelSidebarCaptionForecastRing
-        : public asPanelSidebar
-{
-public:
+class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
+   public:
     explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                      const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                                      long style = wxTAB_TRAVERSAL);
+                                               const wxPoint &pos = wxDefaultPosition,
+                                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
     ~asPanelSidebarCaptionForecastRing() override;
 
@@ -89,11 +83,10 @@ public:
 
     void SetColorbarMax(double maxval);
 
-private:
+   private:
     asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
 
     void OnPaint(wxPaintEvent &event);
 };
-
 
 #endif

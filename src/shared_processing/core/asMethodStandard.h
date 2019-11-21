@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,17 +32,13 @@
 #include <asIncludes.h>
 #include <asPredictand.h>
 
-
 class asPredictor;
 class asPredictor;
 class asParameters;
 class asCriteria;
 
-
-class asMethodStandard
-        : public wxObject
-{
-public:
+class asMethodStandard : public wxObject {
+   public:
     asMethodStandard();
 
     ~asMethodStandard() override;
@@ -72,7 +68,8 @@ public:
     bool LoadArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, double timeStartData,
                          double timeEndData);
 
-    bool ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor);
+    bool ExtractPreloadedArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep,
+                                     int iPtor);
 
     bool ExtractArchiveData(std::vector<asPredictor *> &predictors, asParameters *params, int iStep, int iPtor,
                             double timeStartData, double timeEndData);
@@ -84,32 +81,27 @@ public:
 
     bool GetRandomValidData(asParameters *params, int iStep, int iPtor, int iPre);
 
-    void SetParamsFilePath(const wxString &val)
-    {
+    void SetParamsFilePath(const wxString &val) {
         m_paramsFilePath = val;
     }
 
-    void SetPredictandDBFilePath(const wxString &val)
-    {
+    void SetPredictandDBFilePath(const wxString &val) {
         m_predictandDBFilePath = val;
     }
 
-    void SetPredictandDB(asPredictand *pDB)
-    {
+    void SetPredictandDB(asPredictand *pDB) {
         m_predictandDB = pDB;
     }
 
-    void SetPredictorDataDir(const wxString &val)
-    {
+    void SetPredictorDataDir(const wxString &val) {
         m_predictorDataDir = val;
     }
 
-    bool IsArchiveDataPointerCopy(int iStep, int iPtor, int iPre) const
-    {
+    bool IsArchiveDataPointerCopy(int iStep, int iPtor, int iPre) const {
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-protected:
+   protected:
     bool m_cancel;
     bool m_preloaded;
     bool m_warnFailedLoadingData;
@@ -140,8 +132,7 @@ protected:
 
     virtual double GetEffectiveArchiveDataEnd(asParameters *params) const = 0;
 
-
-private:
+   private:
 };
 
 #endif

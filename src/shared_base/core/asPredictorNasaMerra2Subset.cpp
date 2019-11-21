@@ -27,13 +27,10 @@
 
 #include "asPredictorNasaMerra2Subset.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString &dataId)
-        : asPredictorNasaMerra2(dataId)
-{
+asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString &dataId) : asPredictorNasaMerra2(dataId) {
     // Set the basic properties.
     m_initialized = false;
     m_datasetId = "NASA_MERRA_2_subset";
@@ -42,16 +39,14 @@ asPredictorNasaMerra2Subset::asPredictorNasaMerra2Subset(const wxString &dataId)
     m_datasetName = "Modern-Era Retrospective analysis for Research and Applications, Version 2, subset";
 }
 
-bool asPredictorNasaMerra2Subset::Init()
-{
+bool asPredictorNasaMerra2Subset::Init() {
     CheckLevelTypeIsDefined();
 
     // Get data: http://disc.sci.gsfc.nasa.gov/daac-bin/FTPSubset2.pl
     // Data may not be available for lower layers !!
 
     // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("inst6_3d_ana_Np", false) ||
-        m_product.IsSameAs("ana", false) ||
+    if (m_product.IsSameAs("inst6_3d_ana_Np", false) || m_product.IsSameAs("ana", false) ||
         m_product.IsSameAs("M2I6NPANA", false)) {
         // inst6_3d_ana_Np: 3d,6-Hourly,Instantaneous,Pressure-Level,Analysis,Analyzed Meteorological Fields
         m_fStr.hasLevelDim = true;
@@ -100,8 +95,7 @@ bool asPredictorNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst6_3d_ana_Np.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) ||
-               m_product.IsSameAs("asm", false) ||
+    } else if (m_product.IsSameAs("inst3_3d_asm_Np", false) || m_product.IsSameAs("asm", false) ||
                m_product.IsSameAs("M2I3NPASM", false)) {
         // inst3_3d_asm_Np: 3d,3-Hourly,Instantaneous,Pressure-Level,Assimilation,Assimilated Meteorological Fields
         m_fStr.hasLevelDim = true;
@@ -139,8 +133,7 @@ bool asPredictorNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst3_3d_asm_Np.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) ||
-               m_product.IsSameAs("M2I1NXINT", false)) {
+    } else if (m_product.IsSameAs("inst1_2d_int_Nx", false) || m_product.IsSameAs("M2I1NXINT", false)) {
         // inst1_2d_int_Nx: 2d,1-Hourly,Instantaneous,Single-Level,Assimilation,Vertically Integrated Diagnostics
         m_fStr.hasLevelDim = false;
         if (m_dataId.IsSameAs("tqi", false)) {
@@ -166,8 +159,7 @@ bool asPredictorNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_int_Nx.%4d%02d%02d.SUB.nc";
 
-    } else if (m_product.IsSameAs("inst1_2d_asm_Nx", false) ||
-               m_product.IsSameAs("M2I1NXASM", false)) {
+    } else if (m_product.IsSameAs("inst1_2d_asm_Nx", false) || m_product.IsSameAs("M2I1NXASM", false)) {
         // inst1_2d_asm_Nx: 2d,3-Hourly,Instantaneous,Single-Level,Assimilation,Single-Level Diagnostics
         m_fStr.hasLevelDim = false;
         if (m_dataId.IsSameAs("tqi", false)) {
@@ -198,8 +190,7 @@ bool asPredictorNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.inst1_2d_asm_Nx.%4d%02d%02d.SUB.nc4";
 
-    } else if (m_product.IsSameAs("tavg1_2d_flx_Nx", false) ||
-               m_product.IsSameAs("M2T1NXFLX", false)) {
+    } else if (m_product.IsSameAs("tavg1_2d_flx_Nx", false) || m_product.IsSameAs("M2T1NXFLX", false)) {
         // tavg1_2d_flx_Nx:  2d,1-Hourly,Time-Averaged,Single-Level,Assimilation,Surface Flux Diagnostics
         m_fStr.hasLevelDim = false;
         if (IsTotalPrecipitation()) {
@@ -215,8 +206,7 @@ bool asPredictorNasaMerra2Subset::Init()
         }
         m_fileNamePattern = m_fileVarName + "/MERRA2_*00.tavg1_2d_flx_Nx.%4d%02d%02d.SUB.nc4";
 
-    } else if (m_product.IsSameAs("tavg1_2d_lnd_Nx", false) ||
-               m_product.IsSameAs("M2T1NXLND", false)) {
+    } else if (m_product.IsSameAs("tavg1_2d_lnd_Nx", false) || m_product.IsSameAs("M2T1NXLND", false)) {
         // tavg1_2d_lnd_Nx:
         m_fStr.hasLevelDim = false;
         if (IsTotalPrecipitation()) {
@@ -257,8 +247,7 @@ bool asPredictorNasaMerra2Subset::Init()
     return true;
 }
 
-void asPredictorNasaMerra2Subset::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNasaMerra2Subset::ListFiles(asTimeArray &timeArray) {
     a1d tArray = timeArray.GetTimeArray();
 
     Time tLast = asTime::GetTimeStruct(20000);
@@ -266,7 +255,6 @@ void asPredictorNasaMerra2Subset::ListFiles(asTimeArray &timeArray)
     for (int i = 0; i < tArray.size(); i++) {
         Time t = asTime::GetTimeStruct(tArray[i]);
         if (tLast.year != t.year || tLast.month != t.month || tLast.day != t.day) {
-
             wxString path = GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, t.year, t.month, t.day);
             if (t.year < 1992) {
                 path.Replace("MERRA2_*00", "MERRA2_100");

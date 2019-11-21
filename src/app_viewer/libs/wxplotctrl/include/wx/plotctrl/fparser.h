@@ -58,11 +58,9 @@ class FunctionParser;
 // any modification other than adding some code.
 // ----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_PLOTCTRL wxFunctionParser
-{
-public:
-    enum ParseErrorType
-    {
+class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
+   public:
+    enum ParseErrorType {
         SYNTAX_ERROR = 0,
         MISM_PARENTH,
         MISSING_PARENTH,
@@ -117,8 +115,7 @@ public:
     void Optimize();
 
     // Ok is true after a sucessful call to Parse
-    bool Ok() const
-    {
+    bool Ok() const {
         return m_ok;
     }
 
@@ -126,14 +123,12 @@ public:
     int GetNumberVariables() const;
 
     // Get the function string sent to Parse
-    wxString GetFunctionString() const
-    {
+    wxString GetFunctionString() const {
         return m_function;
     }
 
     // Get the variable string sent to Parse
-    wxString GetVariableString() const
-    {
+    wxString GetVariableString() const {
         return m_variables;
     }
 
@@ -147,15 +142,14 @@ public:
     wxFunctionParser &operator=(const wxFunctionParser &);
 
     // implementation
-    FunctionParser *GetFunctionParser() const
-    {
+    FunctionParser *GetFunctionParser() const {
         return m_functionParser;
     }
 
-protected:
+   protected:
     FunctionParser *m_functionParser;
     wxString m_function, m_variables;
     bool m_ok;
 };
 
-#endif // ONCE_wxFPARSER_H_
+#endif  // ONCE_wxFPARSER_H_

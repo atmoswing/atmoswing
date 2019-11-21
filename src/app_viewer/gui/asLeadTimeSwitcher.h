@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,17 +28,16 @@
 #ifndef AS_LEAD_TIME_SWITCHER_H
 #define AS_LEAD_TIME_SWITCHER_H
 
+#include <wx/graphics.h>
+#include <wx/overlay.h>
+#include <wx/panel.h>
+
+#include "asForecastManager.h"
 #include "asIncludes.h"
 #include "asWorkspace.h"
-#include "asForecastManager.h"
-#include <wx/graphics.h>
-#include <wx/panel.h>
-#include <wx/overlay.h>
 
-class asLeadTimeSwitcher
-        : public wxPanel
-{
-public:
+class asLeadTimeSwitcher : public wxPanel {
+   public:
     asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                        wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                        const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
@@ -51,7 +50,7 @@ public:
 
     void SetParent(wxWindow *parent);
 
-private:
+   private:
     wxWindow *m_parent;
     asWorkspace *m_workspace;
     asForecastManager *m_forecastManager;
@@ -78,7 +77,6 @@ private:
     void CreatePathMarker(wxGraphicsPath &path, int iCol);
 
     void OnPaint(wxPaintEvent &event);
-
 };
 
 #endif

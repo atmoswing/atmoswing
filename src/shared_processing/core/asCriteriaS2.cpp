@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,9 +27,7 @@
 
 #include "asCriteriaS2.h"
 
-asCriteriaS2::asCriteriaS2()
-        : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc)
-{
+asCriteriaS2::asCriteriaS2() : asCriteria("S2", _("Derivative of Teweles-Wobus score"), Asc) {
     m_minPointsNb = 3;
     m_scaleWorst = 200;
     m_canUseInline = false;
@@ -37,8 +35,7 @@ asCriteriaS2::asCriteriaS2()
 
 asCriteriaS2::~asCriteriaS2() = default;
 
-float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
-{
+float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() > 2);
@@ -79,7 +76,7 @@ float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
     divisor = (RefGradCols2.abs().max(EvalGradCols2.abs())).sum() + (RefGradRows2.abs().max(EvalGradRows2.abs())).sum();
 
     if (divisor > 0) {
-        return 100.0f * (dividend / divisor); // Can be NaN
+        return 100.0f * (dividend / divisor);  // Can be NaN
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
@@ -88,5 +85,4 @@ float asCriteriaS2::Assess(const a2f &refData, const a2f &evalData, int rowsNb, 
             return m_scaleWorst;
         }
     }
-
 }

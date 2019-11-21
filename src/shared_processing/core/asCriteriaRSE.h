@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,23 +29,19 @@
 #ifndef AS_CRITERIA_RSE_H
 #define AS_CRITERIA_RSE_H
 
-#include <asIncludes.h>
 #include <asCriteria.h>
+#include <asIncludes.h>
 
-class asCriteriaRSE
-        : public asCriteria
-{
-public:
+class asCriteriaRSE : public asCriteria {
+   public:
     asCriteriaRSE();
 
     ~asCriteriaRSE() override;
 
     float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
-protected:
-
-private:
-
+   protected:
+   private:
 };
 
 #endif

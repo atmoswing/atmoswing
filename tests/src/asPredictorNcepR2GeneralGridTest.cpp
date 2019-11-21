@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNcepR2General, LoadEasy)
-{
+TEST(PredictorNcepR2General, LoadEasy) {
     double xMin = 10;
     int xPtsNb = 5;
     double yMin = 35;
@@ -119,8 +118,7 @@ TEST(PredictorNcepR2General, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadComposite)
-{
+TEST(PredictorNcepR2General, LoadComposite) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -214,8 +212,7 @@ TEST(PredictorNcepR2General, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadBorderLeft)
-{
+TEST(PredictorNcepR2General, LoadBorderLeft) {
     double xMin = 0;
     int xPtsNb = 3;
     double yMin = 35;
@@ -281,8 +278,7 @@ TEST(PredictorNcepR2General, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadBorderLeftOn720)
-{
+TEST(PredictorNcepR2General, LoadBorderLeftOn720) {
     double xMin = 360;
     int xPtsNb = 3;
     double yMin = 35;
@@ -348,8 +344,7 @@ TEST(PredictorNcepR2General, LoadBorderLeftOn720)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadBorderRight)
-{
+TEST(PredictorNcepR2General, LoadBorderRight) {
     double xMin = 350;
     int xPtsNb = 5;
     double yMin = 35;
@@ -421,8 +416,7 @@ TEST(PredictorNcepR2General, LoadBorderRight)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadCompositeStepLon)
-{
+TEST(PredictorNcepR2General, LoadCompositeStepLon) {
     double xMin = -10;
     int xPtsNb = 7;
     double yMin = 35;
@@ -496,8 +490,7 @@ TEST(PredictorNcepR2General, LoadCompositeStepLon)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadCompositeStepLonMoved)
-{
+TEST(PredictorNcepR2General, LoadCompositeStepLonMoved) {
     double xMin = -7.5;
     int xPtsNb = 5;
     double yMin = 35;
@@ -552,8 +545,7 @@ TEST(PredictorNcepR2General, LoadCompositeStepLonMoved)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadCompositeStepLonLat)
-{
+TEST(PredictorNcepR2General, LoadCompositeStepLonLat) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;
@@ -617,8 +609,7 @@ TEST(PredictorNcepR2General, LoadCompositeStepLonLat)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNcepR2General, LoadCompositeStepLonLatTime)
-{
+TEST(PredictorNcepR2General, LoadCompositeStepLonLatTime) {
     double xMin = -10;
     int xPtsNb = 4;
     double yMin = 35;

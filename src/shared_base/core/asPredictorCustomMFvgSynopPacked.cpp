@@ -27,15 +27,13 @@
 
 #include "asPredictorCustomMFvgSynopPacked.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 #include <wx/dir.h>
 #include <wx/regex.h>
 
-
 asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxString &dataId)
-        : asPredictorCustomMFvgSynop(dataId)
-{
+    : asPredictorCustomMFvgSynop(dataId) {
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Synop_Packed";
     m_provider = "ECMWF";
@@ -46,8 +44,7 @@ asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxStrin
     m_warnMissingFiles = true;
 }
 
-void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray &timeArray) {
     // Case 1: single file with the variable name
     wxString filePath = GetFullDirectoryPath() + m_fileVarName + ".grib";
 
@@ -63,7 +60,8 @@ void asPredictorCustomMFvgSynopPacked::ListFiles(asTimeArray &timeArray)
     if (nbFiles == 0) {
         nbFiles = wxDir::GetAllFiles(GetFullDirectoryPath(), &listFiles, m_dataId + ".*.grib");
         if (nbFiles == 0) {
-            asThrowException(wxString::Format(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
+            asThrowException(
+                wxString::Format(_("No file found for the FVG packed archive (%s/%s)."), m_product, m_dataId));
         }
     }
 

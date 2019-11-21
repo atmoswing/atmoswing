@@ -27,20 +27,17 @@
 
 #include "asFrameDownscaler.h"
 
-#include "wx/fileconf.h"
-
-#include "asMethodDownscalerClassic.h"
-#include "images.h"
-#include "asFramePreferencesDownscaler.h"
 #include "asFrameAbout.h"
 #include "asFramePredictandDB.h"
-
+#include "asFramePreferencesDownscaler.h"
+#include "asMethodDownscalerClassic.h"
+#include "images.h"
+#include "wx/fileconf.h"
 
 asFrameDownscaler::asFrameDownscaler(wxWindow *parent)
-        : asFrameDownscalerVirtual(parent),
-          m_logWindow(nullptr),
-          m_methodDownscaler(nullptr)
-{
+    : asFrameDownscalerVirtual(parent),
+      m_logWindow(nullptr),
+      m_methodDownscaler(nullptr) {
     // Toolbar
     m_toolBar->AddTool(asID_RUN, wxT("Run"), *_img_run, *_img_run, wxITEM_NORMAL, _("Run downscaler"),
                        _("Run downscaler now"), nullptr);
@@ -64,8 +61,7 @@ asFrameDownscaler::asFrameDownscaler(wxWindow *parent)
 #endif
 }
 
-asFrameDownscaler::~asFrameDownscaler()
-{
+asFrameDownscaler::~asFrameDownscaler() {
     // Disconnect events
     this->Disconnect(asID_RUN, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Launch));
     this->Disconnect(asID_CANCEL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(asFrameDownscaler::Cancel));
@@ -75,8 +71,7 @@ asFrameDownscaler::~asFrameDownscaler()
                      wxCommandEventHandler(asFrameDownscaler::OpenFramePredictandDB));
 }
 
-void asFrameDownscaler::OnInit()
-{
+void asFrameDownscaler::OnInit() {
     wxBusyCursor wait;
 
     // Set the defaults
@@ -84,13 +79,11 @@ void asFrameDownscaler::OnInit()
     DisplayLogLevelMenu();
 }
 
-void asFrameDownscaler::Update()
-{
+void asFrameDownscaler::Update() {
     DisplayLogLevelMenu();
 }
 
-void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent &event)
-{
+void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFramePredictandDB(this);
@@ -98,8 +91,7 @@ void asFrameDownscaler::OpenFramePredictandDB(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)
-{
+void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFramePreferencesDownscaler(this);
@@ -107,8 +99,7 @@ void asFrameDownscaler::OpenFramePreferences(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
-{
+void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     auto *frame = new asFrameAbout(this);
@@ -116,16 +107,14 @@ void asFrameDownscaler::OpenFrameAbout(wxCommandEvent &event)
     frame->Show();
 }
 
-void asFrameDownscaler::OnShowLog(wxCommandEvent &event)
-{
+void asFrameDownscaler::OnShowLog(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     wxASSERT(m_logWindow);
     m_logWindow->DoShow(true);
 }
 
-void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event)
-{
+void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(1);
@@ -136,12 +125,10 @@ void asFrameDownscaler::OnLogLevel1(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 1l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameDownscaler::OnLogLevel2(wxCommandEvent &event)
-{
+void asFrameDownscaler::OnLogLevel2(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(2);
@@ -152,12 +139,10 @@ void asFrameDownscaler::OnLogLevel2(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 2l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameDownscaler::OnLogLevel3(wxCommandEvent &event)
-{
+void asFrameDownscaler::OnLogLevel3(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     Log()->SetLevel(3);
@@ -168,12 +153,10 @@ void asFrameDownscaler::OnLogLevel3(wxCommandEvent &event)
     wxFileConfig::Get()->Write("/General/LogLevel", 3l);
     ThreadsManager().CritSectionConfig().Leave();
     wxWindow *prefFrame = FindWindowById(asWINDOW_PREFERENCES);
-    if (prefFrame)
-        prefFrame->Update();
+    if (prefFrame) prefFrame->Update();
 }
 
-void asFrameDownscaler::DisplayLogLevelMenu()
-{
+void asFrameDownscaler::DisplayLogLevelMenu() {
     // Set log level in the menu
     ThreadsManager().CritSectionConfig().Enter();
     int logLevel = int(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
@@ -200,37 +183,33 @@ void asFrameDownscaler::DisplayLogLevelMenu()
     }
 }
 
-void asFrameDownscaler::Cancel(wxCommandEvent &event)
-{
+void asFrameDownscaler::Cancel(wxCommandEvent &event) {
     if (m_methodDownscaler) {
         m_methodDownscaler->Cancel();
     }
 }
 
-void asFrameDownscaler::LoadOptions()
-{
+void asFrameDownscaler::LoadOptions() {
     wxConfigBase *pConfig = wxFileConfig::Get();
     m_choiceMethod->SetSelection(pConfig->ReadLong("/MethodSelection", 0l));
     m_filePickerParameters->SetPath(pConfig->Read("/ParametersFilePath", wxEmptyString));
     m_filePickerPredictand->SetPath(pConfig->Read("/Paths/PredictandDBFilePath", wxEmptyString));
     m_dirPickerArchivePredictor->SetPath(pConfig->Read("/Paths/ArchivePredictorsDir", wxEmptyString));
     m_dirPickerScenarioPredictor->SetPath(pConfig->Read("/Paths/ScenarioPredictorsDir", wxEmptyString));
-    m_dirPickerDownscalingResults->SetPath(pConfig->Read("/Paths/DownscalerResultsDir",
-                                                         asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
+    m_dirPickerDownscalingResults->SetPath(
+        pConfig->Read("/Paths/DownscalerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
     m_checkBoxParallelEvaluations->SetValue(pConfig->ReadBool("/ParallelEvaluations", false));
 }
 
-void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event)
-{
+void asFrameDownscaler::OnSaveDefault(wxCommandEvent &event) {
     SaveOptions();
 }
 
-void asFrameDownscaler::SaveOptions() const
-{
+void asFrameDownscaler::SaveOptions() const {
     wxBusyCursor wait;
 
     wxConfigBase *pConfig = wxFileConfig::Get();
-    auto methodSelection = (long) m_choiceMethod->GetSelection();
+    auto methodSelection = (long)m_choiceMethod->GetSelection();
     pConfig->Write("/MethodSelection", methodSelection);
     wxString parametersFilePath = m_filePickerParameters->GetPath();
     pConfig->Write("/ParametersFilePath", parametersFilePath);
@@ -255,8 +234,7 @@ void asFrameDownscaler::OnIdle( wxCommandEvent& event )
     m_staticTextState->SetLabel(state);
 }
 */
-void asFrameDownscaler::Launch(wxCommandEvent &event)
-{
+void asFrameDownscaler::Launch(wxCommandEvent &event) {
     wxBusyCursor wait;
 
     SaveOptions();
@@ -267,7 +245,7 @@ void asFrameDownscaler::Launch(wxCommandEvent &event)
                 wxLogError(_("Wrong method selection."));
                 break;
             }
-            case 0: // Classic
+            case 0:  // Classic
             {
                 wxLogVerbose(_("Proceeding to classic downscaling."));
                 m_methodDownscaler = new asMethodDownscalerClassic();

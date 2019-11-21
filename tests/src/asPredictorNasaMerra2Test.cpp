@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictor.h"
+
 #include "asAreaCompRegGrid.h"
+#include "asPredictor.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorNasaMerra2Regular, LoadEasy)
-{
+TEST(PredictorNasaMerra2Regular, LoadEasy) {
     double xMin = 2.5;
     double xWidth = 5;
     double xStep = 0.625;
@@ -103,8 +102,7 @@ TEST(PredictorNasaMerra2Regular, LoadEasy)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadComposite)
-{
+TEST(PredictorNasaMerra2Regular, LoadComposite) {
     double xMin = 177.5;
     double xWidth = 5;
     double xStep = 0.625;
@@ -169,8 +167,7 @@ TEST(PredictorNasaMerra2Regular, LoadComposite)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadCompositeStep)
-{
+TEST(PredictorNasaMerra2Regular, LoadCompositeStep) {
     double xMin = 177.5;
     double xWidth = 5;
     double xStep = 1.25;
@@ -225,8 +222,7 @@ TEST(PredictorNasaMerra2Regular, LoadCompositeStep)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadBorderLeft)
-{
+TEST(PredictorNasaMerra2Regular, LoadBorderLeft) {
     double xMin = 180;
     double xWidth = 2.5;
     double xStep = 0.625;
@@ -289,8 +285,7 @@ TEST(PredictorNasaMerra2Regular, LoadBorderLeft)
     wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadBorderRight)
-{
+TEST(PredictorNasaMerra2Regular, LoadBorderRight) {
     double xMin = 177.5;
     double xWidth = 2.5;
     double xStep = 0.625;

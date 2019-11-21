@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,10 +31,9 @@
 #include "asPanelsManagerForecasts.h"
 
 asPanelForecast::asPanelForecast(wxWindow *parent)
-        : asPanelForecastVirtual(parent),
-          m_parentFrame(nullptr),
-          m_panelsManager(nullptr)
-{
+    : asPanelForecastVirtual(parent),
+      m_parentFrame(nullptr),
+      m_panelsManager(nullptr) {
     // Led
     m_led = new awxLed(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, awxLED_RED, 0);
     m_led->SetState(awxLED_OFF);
@@ -60,18 +59,15 @@ asPanelForecast::asPanelForecast(wxWindow *parent)
 #endif
 }
 
-void asPanelForecast::ClosePanel(wxCommandEvent &event)
-{
+void asPanelForecast::ClosePanel(wxCommandEvent &event) {
     m_panelsManager->RemovePanel(this);
 }
 
-bool asPanelForecast::Layout()
-{
+bool asPanelForecast::Layout() {
     asPanelForecastVirtual::Layout();
     return true;
 }
 
-void asPanelForecast::ChangeForecastName(wxCommandEvent &event)
-{
+void asPanelForecast::ChangeForecastName(wxCommandEvent &event) {
     //
 }

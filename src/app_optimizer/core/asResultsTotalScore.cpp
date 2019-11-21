@@ -31,27 +31,17 @@
 #include "asFileNetcdf.h"
 #include "asParametersScoring.h"
 
+asResultsTotalScore::asResultsTotalScore() : asResults(), m_hasSingleValue(true), m_score(NaNf) {}
 
-asResultsTotalScore::asResultsTotalScore()
-        : asResults(),
-          m_hasSingleValue(true),
-          m_score(NaNf)
-{
-}
+asResultsTotalScore::~asResultsTotalScore() {}
 
-asResultsTotalScore::~asResultsTotalScore()
-{
-}
-
-void asResultsTotalScore::Init()
-{
+void asResultsTotalScore::Init() {
     // Set to nan to avoid keeping old results
     m_score = NaNf;
     m_scoreArray.resize(0);
 }
 
-void asResultsTotalScore::BuildFileName()
-{
+void asResultsTotalScore::BuildFileName() {
     ThreadsManager().CritSectionConfig().Enter();
     m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
     ThreadsManager().CritSectionConfig().Leave();
@@ -64,8 +54,7 @@ void asResultsTotalScore::BuildFileName()
     m_filePath.Append(".nc");
 }
 
-bool asResultsTotalScore::Save()
-{
+bool asResultsTotalScore::Save() {
     BuildFileName();
 
     ThreadsManager().CritSectionNetCDF().Enter();
@@ -108,8 +97,7 @@ bool asResultsTotalScore::Save()
     return true;
 }
 
-bool asResultsTotalScore::Load()
-{
+bool asResultsTotalScore::Load() {
     // Makes no sense to load at this stage.
     return false;
 }

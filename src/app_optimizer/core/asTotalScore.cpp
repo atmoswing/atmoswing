@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,29 +28,28 @@
 
 #include "asTotalScore.h"
 
+#include "asTotalScoreB.h"
+#include "asTotalScoreCRPSpotential.h"
+#include "asTotalScoreCRPSreliability.h"
+#include "asTotalScoreF.h"
+#include "asTotalScoreFAR.h"
+#include "asTotalScoreGSS.h"
+#include "asTotalScoreH.h"
+#include "asTotalScoreHSS.h"
+#include "asTotalScoreMSE.h"
 #include "asTotalScoreMean.h"
 #include "asTotalScoreMeanWithClim.h"
 #include "asTotalScorePC.h"
-#include "asTotalScoreTS.h"
-#include "asTotalScoreB.h"
-#include "asTotalScoreFAR.h"
-#include "asTotalScoreH.h"
-#include "asTotalScoreF.h"
-#include "asTotalScoreHSS.h"
 #include "asTotalScorePSS.h"
-#include "asTotalScoreGSS.h"
-#include "asTotalScoreMSE.h"
 #include "asTotalScoreRMSE.h"
 #include "asTotalScoreRankHistogram.h"
 #include "asTotalScoreRankHistogramReliability.h"
-#include "asTotalScoreCRPSreliability.h"
-#include "asTotalScoreCRPSpotential.h"
+#include "asTotalScoreTS.h"
 
 asTotalScore::asTotalScore(const wxString &periodString)
-        : m_singleValue(true),
-          m_has2DArrayArgument(false),
-          m_ranksNb(0)
-{
+    : m_singleValue(true),
+      m_has2DArrayArgument(false),
+      m_ranksNb(0) {
     if (periodString.CmpNoCase("Total") == 0) {
         m_period = asTotalScore::Total;
     } else if (periodString.CmpNoCase("SpecificPeriod") == 0) {
@@ -69,8 +68,7 @@ asTotalScore::asTotalScore(const wxString &periodString)
     }
 }
 
-asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxString &periodString)
-{
+asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxString &periodString) {
     if (scoreString.CmpNoCase("CRPSSkillScore") == 0) {
         asTotalScore *score = new asTotalScoreMean(periodString);
         return score;
@@ -171,19 +169,14 @@ asTotalScore *asTotalScore::GetInstance(const wxString &scoreString, const wxStr
     }
 }
 
-asTotalScore::~asTotalScore()
-{
-    //dtor
-}
+asTotalScore::~asTotalScore() {}
 
-a1f asTotalScore::AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const
-{
+a1f asTotalScore::AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
     wxLogError(_("This asTotalScore class has no AssessOnArray method implemented !"));
     return a1f();
 }
 
-float asTotalScore::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const
-{
+float asTotalScore::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const {
     wxLogError(_("This asTotalScore class has no Assess method implemented with a 2D array as argument !"));
     return NaNf;
 }

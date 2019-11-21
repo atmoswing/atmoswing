@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,9 +29,7 @@
 #include "asAreaCompRegGrid.h"
 #include "gtest/gtest.h"
 
-
-TEST(AreaCompGrid, ConstructorAlternativeOneArea)
-{
+TEST(AreaCompGrid, ConstructorAlternativeOneArea) {
     double xMin = 10;
     int xPtsNb = 5;
     double yMin = 30;
@@ -44,8 +42,7 @@ TEST(AreaCompGrid, ConstructorAlternativeOneArea)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
-{
+TEST(AreaCompGrid, ConstructorAlternativeTwoAreas) {
     double xMin = -10;
     int xPtsNb = 13;
     double yMin = 30;
@@ -58,8 +55,7 @@ TEST(AreaCompGrid, ConstructorAlternativeTwoAreas)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, CheckConsistency)
-{
+TEST(AreaCompGrid, CheckConsistency) {
     double xMin = -5;
     int xPtsNb = 11;
     double yMin = 30;
@@ -75,8 +71,7 @@ TEST(AreaCompGrid, CheckConsistency)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, CheckConsistencyException)
-{
+TEST(AreaCompGrid, CheckConsistencyException) {
     wxLogNull logNo;
 
     double xMin = 10;
@@ -90,8 +85,7 @@ TEST(AreaCompGrid, CheckConsistencyException)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetBoundsSplitted)
-{
+TEST(AreaCompGrid, GetBoundsSplitted) {
     double xMin = -10;
     int xPtsNb = 13;
     double yMin = 30;
@@ -113,8 +107,7 @@ TEST(AreaCompGrid, GetBoundsSplitted)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetUYaxisCompositeSize)
-{
+TEST(AreaCompGrid, GetUYaxisCompositeSize) {
     double xMin = -40;
     int xPtsNb = 21;
     double yMin = 30;
@@ -134,8 +127,7 @@ TEST(AreaCompGrid, GetUYaxisCompositeSize)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLon)
-{
+TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLon) {
     double xMin = -40;
     int xPtsNb = 11;
     double yMin = 30;
@@ -156,8 +148,7 @@ TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLon)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLonMoved)
-{
+TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLonMoved) {
     double xMin = -7.5;
     int xPtsNb = 4;
     double yMin = 30;
@@ -178,8 +169,7 @@ TEST(AreaCompGrid, GetUYaxisCompositeSizeStepLonMoved)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetUYaxisCompositeLimits)
-{
+TEST(AreaCompGrid, GetUYaxisCompositeLimits) {
     double xMin = -10;
     int xPtsNb = 5;
     double yMin = 30;
@@ -204,8 +194,7 @@ TEST(AreaCompGrid, GetUYaxisCompositeLimits)
     wxDELETE(area);
 }
 
-TEST(AreaCompGrid, GetUYaxisCompositeLimitsMoved)
-{
+TEST(AreaCompGrid, GetUYaxisCompositeLimitsMoved) {
     double xMin = -7.5;
     int xPtsNb = 4;
     double yMin = 30;

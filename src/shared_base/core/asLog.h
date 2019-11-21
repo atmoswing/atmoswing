@@ -29,20 +29,15 @@
 #ifndef AS_LOG_H
 #define AS_LOG_H
 
-#include "wx/log.h"
-
 #include <asIncludes.h>
+
+#include "wx/log.h"
 
 class wxFFile;
 
-class asLog
-        : public wxObject
-{
-public:
-    enum LogTarget
-    {
-        File, Screen, Both
-    };
+class asLog : public wxObject {
+   public:
+    enum LogTarget { File, Screen, Both };
 
     asLog();
 
@@ -62,21 +57,18 @@ public:
 
     static void PrintToConsole(const wxString &msg);
 
-protected:
-private:
+   protected:
+   private:
     wxFFile *m_logFile;
     wxLogChain *m_logChain;
 };
 
 #if wxUSE_GUI
-class asLogGui
-        : public wxLogGui
-{
-protected:
+class asLogGui : public wxLogGui {
+   protected:
     void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
 };
 #endif
-
 
 extern asLog *g_pLog;
 

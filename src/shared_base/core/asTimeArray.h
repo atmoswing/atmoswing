@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -35,22 +35,17 @@
 
 class asPredictand;
 
-
-class asTimeArray
-        : public asTime
-{
-public:
-
-    enum Mode
-    {
-        SingleDay, // A single day
-        Simple, // A simple full time array
-        DJF, // The DJF season
-        MAM, // The MAM season
-        JJA, // The JJA season
-        SON, // The SON season
-        MonthsSelection, // Selection of months
-        DaysInterval, // + or - an amount of days in reference to a date
+class asTimeArray : public asTime {
+   public:
+    enum Mode {
+        SingleDay,        // A single day
+        Simple,           // A simple full time array
+        DJF,              // The DJF season
+        MAM,              // The MAM season
+        JJA,              // The JJA season
+        SON,              // The SON season
+        MonthsSelection,  // Selection of months
+        DaysInterval,     // + or - an amount of days in reference to a date
         PredictandThresholds,
         Custom
     };
@@ -74,8 +69,7 @@ public:
     bool Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
               float maxThreshold);
 
-    double operator[](unsigned int i)
-    {
+    double operator[](unsigned int i) {
         wxASSERT(m_initialized);
         wxASSERT(i < (unsigned)GetSize());
         return m_timeArray[i];
@@ -96,13 +90,11 @@ public:
 
     bool IsYearForbidden(int year) const;
 
-    vi GetForbiddenYears() const
-    {
+    vi GetForbiddenYears() const {
         return m_forbiddenYears;
     }
 
-    void SetForbiddenYears(const vi &years)
-    {
+    void SetForbiddenYears(const vi &years) {
         m_forbiddenYears = years;
     }
 
@@ -110,83 +102,68 @@ public:
 
     bool KeepOnlyYears(vi years);
 
-    double GetStart() const
-    {
+    double GetStart() const {
         return m_start;
     }
 
-    int GetStartingYear() const
-    {
+    int GetStartingYear() const {
         return GetYear(m_start);
     }
 
-    int GetStartingMonth() const
-    {
+    int GetStartingMonth() const {
         return GetMonth(m_start);
     }
 
-    int GetStartingDay() const
-    {
+    int GetStartingDay() const {
         return GetDay(m_start);
     }
 
-    double GetStartingHour() const
-    {
+    double GetStartingHour() const {
         double fractpart, intpart;
         fractpart = modf(m_start, &intpart);
         return fractpart * 24;
     }
 
-    double GetEnd() const
-    {
+    double GetEnd() const {
         return m_end;
     }
 
-    int GetEndingYear() const
-    {
+    int GetEndingYear() const {
         return GetYear(m_end);
     }
 
-    int GetEndingMonth() const
-    {
+    int GetEndingMonth() const {
         return GetMonth(m_end);
     }
 
-    double GetEndingHour() const
-    {
+    double GetEndingHour() const {
         double fractpart, intpart;
         fractpart = modf(m_end, &intpart);
         return fractpart * 24;
     }
 
-    double GetTimeStepHours() const
-    {
+    double GetTimeStepHours() const {
         return m_timeStepDays * 24;
     }
 
-    double GetTimeStepDays() const
-    {
+    double GetTimeStepDays() const {
         return m_timeStepDays;
     }
 
-    a1d GetTimeArray() const
-    {
+    a1d GetTimeArray() const {
         return m_timeArray;
     }
 
-    int GetSize() const
-    {
-        return (int) m_timeArray.size();
+    int GetSize() const {
+        return (int)m_timeArray.size();
     }
 
-    double GetFirst() const
-    {
+    double GetFirst() const {
         wxASSERT(m_initialized);
         return m_timeArray(0);
     }
 
-    double GetLast() const
-    {
+    double GetLast() const {
         wxASSERT(m_initialized);
         return m_timeArray(m_timeArray.rows() - 1);
     }
@@ -197,9 +174,8 @@ public:
 
     int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
-protected:
-
-private:
+   protected:
+   private:
     bool m_initialized;
     Mode m_mode;
     a1d m_timeArray;

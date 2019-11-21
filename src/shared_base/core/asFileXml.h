@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,16 +29,13 @@
 #ifndef AS_FILE_XML_H
 #define AS_FILE_XML_H
 
+#include <asFile.h>
 #include <wx/xml/xml.h>
 
 #include "asIncludes.h"
-#include <asFile.h>
 
-
-class asFileXml
-        : public asFile
-{
-public:
+class asFileXml : public asFile {
+   public:
     asFileXml(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileXml() override = default;
@@ -49,8 +46,7 @@ public:
 
     bool Save();
 
-    wxXmlNode *GetRoot() const
-    {
+    wxXmlNode *GetRoot() const {
         wxASSERT(m_document.GetRoot());
         return m_document.GetRoot();
     }
@@ -96,12 +92,9 @@ public:
 
     wxString GetAttributeString(wxXmlNode *node, const wxString &attribute);
 
-
-protected:
-
-private:
+   protected:
+   private:
     wxXmlDocument m_document;
-
 };
 
 #endif

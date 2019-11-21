@@ -28,37 +28,34 @@
 
 #include "asThreadGetAnalogsSubDates.h"
 
-#include <asPredictor.h>
 #include <asCriteria.h>
+#include <asPredictor.h>
 #include <asTimeArray.h>
+
 #include <utility>
 
-asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
-                                                       std::vector<asPredictor *> predictorsTarget,
-                                                       asTimeArray *timeArrayArchiveData,
-                                                       asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
-                                                       std::vector<asCriteria *> criteria, asParameters *params,
-                                                       int step, vpa2f &vTargData, vpa2f &vArchData, a1i &vRowsNb,
-                                                       a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria,
-                                                       a2f *finalAnalogsDates, a2f *previousAnalogsDates,
-                                                       bool *containsNaNs, bool *success)
-        : asThread(asThread::ProcessorGetAnalogsDates),
-          m_pPredictorsArchive(std::move(predictorsArchive)),
-          m_pPredictorsTarget(std::move(predictorsTarget)),
-          m_pTimeArrayArchiveData(timeArrayArchiveData),
-          m_pTimeArrayTargetData(timeArrayTargetData),
-          m_pTimeTargetSelection(timeTargetSelection),
-          m_criteria(std::move(criteria)),
-          m_params(params),
-          m_vTargData(vTargData),
-          m_vArchData(vArchData),
-          m_vRowsNb(vRowsNb),
-          m_vColsNb(vColsNb),
-          m_pFinalAnalogsCriteria(finalAnalogsCriteria),
-          m_pFinalAnalogsDates(finalAnalogsDates),
-          m_pPreviousAnalogsDates(previousAnalogsDates),
-          m_success(success)
-{
+asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(
+    std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
+    asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
+    std::vector<asCriteria *> criteria, asParameters *params, int step, vpa2f &vTargData, vpa2f &vArchData,
+    a1i &vRowsNb, a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
+    a2f *previousAnalogsDates, bool *containsNaNs, bool *success)
+    : asThread(asThread::ProcessorGetAnalogsDates),
+      m_pPredictorsArchive(std::move(predictorsArchive)),
+      m_pPredictorsTarget(std::move(predictorsTarget)),
+      m_pTimeArrayArchiveData(timeArrayArchiveData),
+      m_pTimeArrayTargetData(timeArrayTargetData),
+      m_pTimeTargetSelection(timeTargetSelection),
+      m_criteria(std::move(criteria)),
+      m_params(params),
+      m_vTargData(vTargData),
+      m_vArchData(vArchData),
+      m_vRowsNb(vRowsNb),
+      m_vColsNb(vColsNb),
+      m_pFinalAnalogsCriteria(finalAnalogsCriteria),
+      m_pFinalAnalogsDates(finalAnalogsDates),
+      m_pPreviousAnalogsDates(previousAnalogsDates),
+      m_success(success) {
     m_step = step;
     m_start = start;
     m_end = end;
@@ -68,16 +65,12 @@ asThreadGetAnalogsSubDates::asThreadGetAnalogsSubDates(std::vector<asPredictor *
                  _("The given time array end is superior to the time array size."));
     wxASSERT_MSG(m_end != m_pTimeTargetSelection->size() - 2,
                  wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int) m_pTimeTargetSelection->size()));
+                                  (int)m_pTimeTargetSelection->size()));
 }
 
-asThreadGetAnalogsSubDates::~asThreadGetAnalogsSubDates()
-{
+asThreadGetAnalogsSubDates::~asThreadGetAnalogsSubDates() {}
 
-}
-
-wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
-{
+wxThread::ExitCode asThreadGetAnalogsSubDates::Entry() {
     // Extract time arrays
     a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
     a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
@@ -93,8 +86,8 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     bool isasc = (m_criteria[0]->GetOrder() == Asc);
 
     wxASSERT(m_end < m_pTimeTargetSelection->size());
-    wxASSERT(timeArchiveDataSize == (int) (m_pPredictorsArchive)[0]->GetData().size());
-    wxASSERT(timeTargetDataSize == (int) (m_pPredictorsTarget)[0]->GetData().size());
+    wxASSERT(timeArchiveDataSize == (int)(m_pPredictorsArchive)[0]->GetData().size());
+    wxASSERT(timeTargetDataSize == (int)(m_pPredictorsTarget)[0]->GetData().size());
     wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
 
     // Containers for daily results
@@ -105,16 +98,17 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
     dateArrayOneDay.fill(NaNf);
 
     // Loop through every timestep as target data
-    // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end); iDateTarg++)
+    // Former, but disabled: for (int iDateTarg=m_start; !ThreadsManager().Cancelled() && (iDateTarg<=m_end);
+    // iDateTarg++)
     for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
         int iTimeTarg = asFind(&timeTargetData[0], &timeTargetData[timeTargetDataSize - 1],
-                               (double) m_pTimeTargetSelection->coeff(iDateTarg), 0.01);
+                               (double)m_pTimeTargetSelection->coeff(iDateTarg), 0.01);
         wxASSERT(m_pTimeTargetSelection->coeff(iDateTarg) > 0);
         wxASSERT(iTimeTarg >= 0);
         if (iTimeTarg < 0) {
             wxLogError(_("An unexpected error occurred."));
             *m_success = false;
-            return (wxThread::ExitCode) -1;
+            return (wxThread::ExitCode)-1;
         }
 
         // Get dates
@@ -128,7 +122,6 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
 
         // Loop over the members
         for (int iMem = 0; iMem < membersNb; ++iMem) {
-
             // Extract target data
             for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
                 m_vTargData[iPtor] = &(m_pPredictorsTarget)[iPtor]->GetData()[iTimeTarg][iMem];
@@ -143,7 +136,7 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                 if (iTimeArch < 0) {
                     wxLogError(_("An unexpected error occurred."));
                     *m_success = false;
-                    return (wxThread::ExitCode) -1;
+                    return (wxThread::ExitCode)-1;
                 }
 
                 // Check if a row was found
@@ -172,45 +165,48 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
                             if (thisscore < scoreArrayOneDay[analogsNb - 1]) {
                                 asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc, thisscore,
-                                               (float) timeArchiveData[iTimeArch]);
+                                               (float)timeArchiveData[iTimeArch]);
                             }
                         } else {
                             if (thisscore > scoreArrayOneDay[analogsNb - 1]) {
                                 asArraysInsert(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc, thisscore,
-                                               (float) timeArchiveData[iTimeArch]);
+                                               (float)timeArchiveData[iTimeArch]);
                             }
                         }
                     } else if (counter < analogsNb - 1) {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
-                        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+                        dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
                     } else if (counter == analogsNb - 1) {
                         // Add score and date to the vectors
                         scoreArrayOneDay[counter] = thisscore;
-                        dateArrayOneDay[counter] = (float) timeArchiveData[iTimeArch];
+                        dateArrayOneDay[counter] = (float)timeArchiveData[iTimeArch];
 
                         // Sort both scores and dates arrays
                         if (isasc) {
-                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
-                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Asc);
+                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                         &dateArrayOneDay[analogsNb - 1], Asc);
                         } else {
-                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1],
-                                                &dateArrayOneDay[0], &dateArrayOneDay[analogsNb - 1], Desc);
+                            asSortArrays(&scoreArrayOneDay[0], &scoreArrayOneDay[analogsNb - 1], &dateArrayOneDay[0],
+                                         &dateArrayOneDay[analogsNb - 1], Desc);
                         }
                     }
 
                     counter++;
                 } else {
-                    wxLogError(_("The date was not found in the array (Analogs subdates fct). That should not happen."));
+                    wxLogError(
+                        _("The date was not found in the array (Analogs subdates fct). That should not happen."));
                     *m_success = false;
-                    return (wxThread::ExitCode) -1;
+                    return (wxThread::ExitCode)-1;
                 }
             }
         }
 
         if (counter < analogsNb) {
-            wxLogWarning(_("There is not enough available data to satisfy the number of analogs (in asThreadGetAnalogsSubDates)."));
+            wxLogWarning(
+                _("There is not enough available data to satisfy the number of analogs (in "
+                  "asThreadGetAnalogsSubDates)."));
             wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
         }
 
@@ -221,5 +217,5 @@ wxThread::ExitCode asThreadGetAnalogsSubDates::Entry()
 
     *m_success = true;
 
-    return (wxThread::ExitCode) 0;
+    return (wxThread::ExitCode)0;
 }

@@ -27,14 +27,12 @@
 
 #include "asPredictorNcepCfsrSubset.h"
 
-#include <asTimeArray.h>
 #include <asAreaCompGrid.h>
+#include <asTimeArray.h>
 
-
-asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString &dataId)
-        : asPredictor(dataId)
-{
-    // Downloaded from http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
+asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString &dataId) : asPredictor(dataId) {
+    // Downloaded from
+    // http://rda.ucar.edu/datasets/ds093.0/index.html#!cgi-bin/datasets/getSubset?dsnum=093.0&action=customize&_da=y
     // Set the basic properties.
     m_datasetId = "NCEP_CFSR_subset";
     m_provider = "NCEP";
@@ -49,8 +47,7 @@ asPredictorNcepCfsrSubset::asPredictorNcepCfsrSubset(const wxString &dataId)
     m_fStr.dimLevelName = "level0";
 }
 
-bool asPredictorNcepCfsrSubset::Init()
-{
+bool asPredictorNcepCfsrSubset::Init() {
     CheckLevelTypeIsDefined();
 
     // Identify data ID and set the corresponding properties.
@@ -144,7 +141,8 @@ bool asPredictorNcepCfsrSubset::Init()
             m_parameterName = "Relative_humidity";
             m_fileVarName = "R_H_L200";
             m_unit = percent;
-        } else if (m_dataId.IsSameAs("cwat", false) || m_dataId.IsSameAs("c_wat", false) || m_dataId.IsSameAs("C_WAT_L200", false)) {
+        } else if (m_dataId.IsSameAs("cwat", false) || m_dataId.IsSameAs("c_wat", false) ||
+                   m_dataId.IsSameAs("C_WAT_L200", false)) {
             m_parameter = CloudWater;
             m_parameterName = "Cloud water";
             m_fileVarName = "C_WAT_L200";
@@ -344,8 +342,7 @@ bool asPredictorNcepCfsrSubset::Init()
     return true;
 }
 
-void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
-{
+void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray) {
     auto firstDay = int(std::floor((timeArray.GetStartingDay() - 1.0) / 5.0) * 5.0 + 1.0);
     double fileStart = asTime::GetMJD(timeArray.GetStartingYear(), timeArray.GetStartingMonth(), firstDay);
     double fileEnd = fileStart + 4;
@@ -354,7 +351,7 @@ void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
         Time t1 = asTime::GetTimeStruct(fileStart);
         Time t2 = asTime::GetTimeStruct(fileEnd);
         m_files.push_back(GetFullDirectoryPath() +
-                        wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
+                          wxString::Format(m_fileNamePattern, t1.year, t1.month, t1.day, t2.year, t2.month, t2.day));
         fileStart = fileEnd + 1;
         fileEnd = fileStart + 4;
 
@@ -377,10 +374,9 @@ void asPredictorNcepCfsrSubset::ListFiles(asTimeArray &timeArray)
     }
 }
 
-double asPredictorNcepCfsrSubset::ConvertToMjd(double timeValue, double refValue) const
-{
+double asPredictorNcepCfsrSubset::ConvertToMjd(double timeValue, double refValue) const {
     wxASSERT(refValue > 30000);
     wxASSERT(refValue < 70000);
 
-    return refValue + (timeValue / 24.0); // hours to days
+    return refValue + (timeValue / 24.0);  // hours to days
 }

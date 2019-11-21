@@ -30,11 +30,7 @@
 
 #include <asFileParametersCalibration.h>
 
-asParametersScoring::asParametersScoring()
-        : asParameters(),
-          m_calibrationStart(NaNd),
-          m_calibrationEnd(NaNd)
-{
+asParametersScoring::asParametersScoring() : asParameters(), m_calibrationStart(NaNd), m_calibrationEnd(NaNd) {
     m_score.name = wxEmptyString;
     m_score.timeArrayMode = wxEmptyString;
     m_score.timeArrayDate = 0;
@@ -47,13 +43,9 @@ asParametersScoring::asParametersScoring()
     m_score.quantile = NaNf;
 }
 
-asParametersScoring::~asParametersScoring()
-{
-    //dtor
-}
+asParametersScoring::~asParametersScoring() {}
 
-void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
-{
+void asParametersScoring::AddPredictorVect(ParamsStepVect &step) {
     ParamsPredictorVect predictor;
 
     predictor.dataId.push_back("");
@@ -69,9 +61,7 @@ void asParametersScoring::AddPredictorVect(ParamsStepVect &step)
     step.predictors.push_back(predictor);
 }
 
-
-bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath) const
-{
+bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath) const {
     wxLogVerbose(_("Generating parameters file."));
 
     if (filePath.IsEmpty()) {
@@ -80,12 +70,10 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     }
 
     asFileParametersCalibration fileParams(filePath, asFile::Replace);
-    if (!fileParams.Open())
-        return false;
+    if (!fileParams.Open()) return false;
 
     // Create root nodes
-    if (!fileParams.EditRootElement())
-        return false;
+    if (!fileParams.EditRootElement()) return false;
 
     // Description
     wxXmlNode *nodeDescr = new wxXmlNode(wxXML_ELEMENT_NODE, "description");
@@ -119,9 +107,9 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         nodeTime->AddChild(nodeTimeValidationPeriod);
         wxString validationYears;
         vi validationYearsVect = GetValidationYearsVector();
-        for (int i = 0; i < (int) validationYearsVect.size(); i++) {
+        for (int i = 0; i < (int)validationYearsVect.size(); i++) {
             validationYears << validationYearsVect[i];
-            if (i != (int) validationYearsVect.size() - 1) {
+            if (i != (int)validationYearsVect.size() - 1) {
                 validationYears << ", ";
             }
         }
@@ -137,11 +125,11 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodeTimeArrayTarget->AddChild(fileParams.CreateNodeWithValue("time_array", GetTimeArrayTargetMode()));
     if (GetTimeArrayTargetMode().IsSameAs("predictand_thresholds")) {
         nodeTimeArrayTarget->AddChild(
-                fileParams.CreateNodeWithValue("predictand_serie_name", GetTimeArrayTargetPredictandSerieName()));
+            fileParams.CreateNodeWithValue("predictand_serie_name", GetTimeArrayTargetPredictandSerieName()));
         nodeTimeArrayTarget->AddChild(
-                fileParams.CreateNodeWithValue("predictand_min_threshold", GetTimeArrayTargetPredictandMinThreshold()));
+            fileParams.CreateNodeWithValue("predictand_min_threshold", GetTimeArrayTargetPredictandMinThreshold()));
         nodeTimeArrayTarget->AddChild(
-                fileParams.CreateNodeWithValue("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
+            fileParams.CreateNodeWithValue("predictand_max_threshold", GetTimeArrayTargetPredictandMaxThreshold()));
     }
 
     wxXmlNode *nodeTimeArrayAnalogs = new wxXmlNode(wxXML_ELEMENT_NODE, "time_array_analogs");
@@ -151,7 +139,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodeTimeArrayAnalogs->AddChild(fileParams.CreateNodeWithValue("exclude_days", GetAnalogsExcludeDays()));
 
     fileParams.AddChild(nodeTime);
-
 
     // Analog dates
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
@@ -171,24 +158,24 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
                 nodePredictor->AddChild(nodePreprocessing);
 
                 nodePreprocessing->AddChild(
-                        fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
+                    fileParams.CreateNodeWithValue("preprocessing_method", GetPreprocessMethod(iStep, iPtor)));
 
                 for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
                     wxXmlNode *nodePreprocessingData = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing_data");
                     nodePreprocessing->AddChild(nodePreprocessingData);
 
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("dataset_id", GetPreprocessDatasetId(iStep, iPtor, iPre)));
+                        fileParams.CreateNodeWithValue("dataset_id", GetPreprocessDatasetId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
+                        fileParams.CreateNodeWithValue("data_id", GetPreprocessDataId(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
+                        fileParams.CreateNodeWithValue("level", GetPreprocessLevel(iStep, iPtor, iPre)));
                     nodePreprocessingData->AddChild(
-                            fileParams.CreateNodeWithValue("time", GetPreprocessHour(iStep, iPtor, iPre)));
+                        fileParams.CreateNodeWithValue("time", GetPreprocessHour(iStep, iPtor, iPre)));
                 }
             } else {
                 nodePredictor->AddChild(
-                        fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
+                    fileParams.CreateNodeWithValue("dataset_id", GetPredictorDatasetId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("data_id", GetPredictorDataId(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("level", GetPredictorLevel(iStep, iPtor)));
                 nodePredictor->AddChild(fileParams.CreateNodeWithValue("time", GetPredictorHour(iStep, iPtor)));
@@ -212,7 +199,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
         fileParams.AddChild(nodeAnalogDates);
     }
 
-
     // Analogs values
     wxXmlNode *nodeAnalogValues = new wxXmlNode(wxXML_ELEMENT_NODE, "analog_values");
 
@@ -224,7 +210,6 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
     nodePredictand->AddChild(fileParams.CreateNodeWithValue("station_id", predictandStationIds));
 
     fileParams.AddChild(nodeAnalogValues);
-
 
     // Forecast scores
     wxXmlNode *nodeAnalogScore = new wxXmlNode(wxXML_ELEMENT_NODE, "evaluation");
@@ -245,19 +230,15 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
     fileParams.AddChild(nodeAnalogScore);
 
-
-    if (!fileParams.Save())
-        return false;
-    if (!fileParams.Close())
-        return false;
+    if (!fileParams.Save()) return false;
+    if (!fileParams.Close()) return false;
 
     wxLogVerbose(_("Parameters file generated."));
 
     return true;
 }
 
-bool asParametersScoring::PreprocessingDataIdsOk()
-{
+bool asParametersScoring::PreprocessingDataIdsOk() {
     for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
         for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
             if (NeedsPreloading(iStep, iPtor) && NeedsPreprocessing(iStep, iPtor)) {
@@ -278,11 +259,10 @@ bool asParametersScoring::PreprocessingDataIdsOk()
     return true;
 }
 
-wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const
-{
+wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictandStationIdsVect) const {
     wxString ids;
 
-    for (int i = 0; i < (int) predictandStationIdsVect.size(); i++) {
+    for (int i = 0; i < (int)predictandStationIdsVect.size(); i++) {
         vi predictandStationIds = predictandStationIdsVect[i];
 
         if (predictandStationIds.size() == 1) {
@@ -290,10 +270,10 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictan
         } else {
             ids.Append("(");
 
-            for (int j = 0; j < (int) predictandStationIds.size(); j++) {
+            for (int j = 0; j < (int)predictandStationIds.size(); j++) {
                 ids << predictandStationIds[j];
 
-                if (j < (int) predictandStationIds.size() - 1) {
+                if (j < (int)predictandStationIds.size() - 1) {
                     ids.Append(",");
                 }
             }
@@ -301,7 +281,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictan
             ids.Append(")");
         }
 
-        if (i < (int) predictandStationIdsVect.size() - 1) {
+        if (i < (int)predictandStationIdsVect.size() - 1) {
             ids.Append(",");
         }
     }
@@ -309,8 +289,7 @@ wxString asParametersScoring::GetPredictandStationIdsVectorString(vvi &predictan
     return ids;
 }
 
-wxString asParametersScoring::Print() const
-{
+wxString asParametersScoring::Print() const {
     // Create content string
     wxString content = asParameters::Print();
 
@@ -326,8 +305,7 @@ wxString asParametersScoring::Print() const
     return content;
 }
 
-bool asParametersScoring::GetValuesFromString(wxString stringVals)
-{
+bool asParametersScoring::GetValuesFromString(wxString stringVals) {
     // Get the parameters values
     if (!asParameters::GetValuesFromString(stringVals)) {
         return false;
@@ -337,8 +315,8 @@ bool asParametersScoring::GetValuesFromString(wxString stringVals)
     wxString strVal = asExtractParamValueAndCut(stringVals, "Score");
     if (!strVal.IsSameAs(GetScoreName())) {
         wxLogError(_("The current score (%s) doesn't correspond to the previous one (%s)."), GetScoreName(), strVal);
-        asLog::PrintToConsole(wxString::Format(_("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"),
-                                               GetScoreName(), strVal));
+        asLog::PrintToConsole(wxString::Format(
+            _("Error: The current score (%s) doesn't correspond to the previous one (%s).\n"), GetScoreName(), strVal));
         return false;
     }
 

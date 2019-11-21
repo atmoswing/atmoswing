@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,14 +32,11 @@
 
 #ifdef __BORLANDC__
 #pragma hdrstop
-#endif //__BORLANDC__
+#endif  //__BORLANDC__
 
 #include "AtmoswingMainForecaster.h"
 
-
-AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
-        : asFrameMain(frame)
-{
+AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame) : asFrameMain(frame) {
 #if wxUSE_STATUSBAR
     wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
@@ -52,37 +49,26 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
 
     // Create log window and file
     delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+    m_logWindow =
+        new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
     Log()->CreateFile("AtmoSwingForecaster.log");
     Log()->SetLevel(wxFileConfig::Get()->ReadLong("/General/LogLevel", 2l));
 
     // Restore frame position and size
     int minHeight = 600, minWidth = 500;
-    int x = (int)pConfig->ReadLong("/MainFrame/x", 50),
-        y = (int)pConfig->ReadLong("/MainFrame/y", 50),
-        w = (int)pConfig->ReadLong("/MainFrame/w",  minWidth),
-        h = (int)pConfig->ReadLong("/MainFrame/h", minHeight);
+    int x = (int)pConfig->ReadLong("/MainFrame/x", 50), y = (int)pConfig->ReadLong("/MainFrame/y", 50),
+        w = (int)pConfig->ReadLong("/MainFrame/w", minWidth), h = (int)pConfig->ReadLong("/MainFrame/h", minHeight);
     wxRect screen = wxGetClientDisplayRect();
-    if (x < screen.x - 10)
-        x = screen.x;
-    if (x > screen.width)
-        x = screen.x;
-    if (y < screen.y - 10)
-        y = screen.y;
-    if (y > screen.height)
-        y = screen.y;
-    if (w + x > screen.width)
-        w = screen.width - x;
-    if (w < minWidth)
-        w = minWidth;
-    if (w + x > screen.width)
-        x = screen.width - w;
-    if (h + y > screen.height)
-        h = screen.height - y;
-    if (h < minHeight)
-        h = minHeight;
-    if (h + y > screen.height)
-        y = screen.height - h;
+    if (x < screen.x - 10) x = screen.x;
+    if (x > screen.width) x = screen.x;
+    if (y < screen.y - 10) y = screen.y;
+    if (y > screen.height) y = screen.y;
+    if (w + x > screen.width) w = screen.width - x;
+    if (w < minWidth) w = minWidth;
+    if (w + x > screen.width) x = screen.width - w;
+    if (h + y > screen.height) h = screen.height - y;
+    if (h < minHeight) h = minHeight;
+    if (h + y > screen.height) y = screen.height - h;
     Move(x, y);
     SetClientSize(w, h);
     Fit();
@@ -98,11 +84,9 @@ AtmoswingFrameForecaster::AtmoswingFrameForecaster(wxFrame *frame)
             g_verboseMode = true;
         }
     }
-
 }
 
-void AtmoswingFrameForecaster::SetDefaultOptions()
-{
+void AtmoswingFrameForecaster::SetDefaultOptions() {
     wxConfigBase *pConfig = wxFileConfig::Get();
 
     // General
@@ -121,44 +105,38 @@ void AtmoswingFrameForecaster::SetDefaultOptions()
     bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
     pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
     int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads == -1)
-        maxThreads = 2;
+    if (maxThreads == -1) maxThreads = 2;
     pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
-    long processingMethod = pConfig->Read("/Processing/Method", (long) asMULTITHREADS);
+    long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
     if (!allowMultithreading) {
-        processingMethod = (long) asMULTITHREADS;
+        processingMethod = (long)asMULTITHREADS;
     }
     pConfig->Write("/Processing/Method", processingMethod);
 
     pConfig->Flush();
 }
 
-AtmoswingFrameForecaster::~AtmoswingFrameForecaster()
-{
+AtmoswingFrameForecaster::~AtmoswingFrameForecaster() {
     // Config file
     wxConfigBase *pConfig = wxFileConfig::Get();
-    if (!pConfig)
-        return;
+    if (!pConfig) return;
 
     // Save the frame position
     int x, y, w, h;
     GetClientSize(&w, &h);
     GetPosition(&x, &y);
-    pConfig->Write("/MainFrame/x", (long) x);
-    pConfig->Write("/MainFrame/y", (long) y);
-    pConfig->Write("/MainFrame/w", (long) w);
-    pConfig->Write("/MainFrame/h", (long) h);
+    pConfig->Write("/MainFrame/x", (long)x);
+    pConfig->Write("/MainFrame/y", (long)y);
+    pConfig->Write("/MainFrame/w", (long)w);
+    pConfig->Write("/MainFrame/h", (long)h);
 
-    //wxDELETE(m_logWindow);
+    // wxDELETE(m_logWindow);
 }
 
-void AtmoswingFrameForecaster::OnClose(wxCloseEvent &event)
-{
+void AtmoswingFrameForecaster::OnClose(wxCloseEvent &event) {
     Close(true);
 }
 
-void AtmoswingFrameForecaster::OnQuit(wxCommandEvent &event)
-{
+void AtmoswingFrameForecaster::OnQuit(wxCommandEvent &event) {
     Close(true);
 }
-

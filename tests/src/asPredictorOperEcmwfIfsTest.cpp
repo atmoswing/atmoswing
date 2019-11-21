@@ -26,14 +26,13 @@
  */
 
 #include <wx/filename.h>
-#include "asPredictorOper.h"
+
 #include "asAreaCompGrid.h"
+#include "asPredictorOper.h"
 #include "asTimeArray.h"
 #include "gtest/gtest.h"
 
-
-TEST(PredictorOperEcmwfIfs, LoadSingleDay)
-{
+TEST(PredictorOperEcmwfIfs, LoadSingleDay) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
 
@@ -83,8 +82,7 @@ TEST(PredictorOperEcmwfIfs, LoadSingleDay)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep)
-{
+TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
 
@@ -134,8 +132,7 @@ TEST(PredictorOperEcmwfIfs, LoadSecondTimeStep)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperEcmwfIfs, LoadLastTimeStep)
-{
+TEST(PredictorOperEcmwfIfs, LoadLastTimeStep) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
 
@@ -185,8 +182,7 @@ TEST(PredictorOperEcmwfIfs, LoadLastTimeStep)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
-{
+TEST(PredictorOperEcmwfIfs, LoadFullTimeArray) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
 
@@ -272,8 +268,7 @@ TEST(PredictorOperEcmwfIfs, LoadFullTimeArray)
     wxDELETE(predictor);
 }
 
-TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst)
-{
+TEST(PredictorOperEcmwfIfs, LoadTimeArrayWithoutFirst) {
     vwxs filepaths;
     filepaths.push_back(wxFileName::GetCwd() + "/files/data-ecmwf-ifs-grib/2019-02-01_z.grib");
 

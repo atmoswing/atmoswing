@@ -28,9 +28,7 @@
 
 #include "asCriteriaS1grads.h"
 
-asCriteriaS1grads::asCriteriaS1grads()
-        : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc)
-{
+asCriteriaS1grads::asCriteriaS1grads() : asCriteria("S1grads", _("Teweles-Wobus on gradients"), Asc) {
     m_minPointsNb = 2;
     m_scaleWorst = 200;
     m_canUseInline = true;
@@ -38,8 +36,7 @@ asCriteriaS1grads::asCriteriaS1grads()
 
 asCriteriaS1grads::~asCriteriaS1grads() = default;
 
-float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
-{
+float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
     wxASSERT(refData.rows() == evalData.rows());
     wxASSERT(refData.cols() == evalData.cols());
     wxASSERT(refData.rows() > 0);
@@ -51,7 +48,6 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
     // but the rest being 0-filled, we can simplify the sum calculation !
 
     if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-
         dividend = ((refData - evalData).abs()).sum();
         divisor = (refData.abs().max(evalData.abs())).sum();
 
@@ -64,7 +60,7 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
     }
 
     if (divisor > 0) {
-        return 100.0f * (dividend / divisor); // Can be NaN
+        return 100.0f * (dividend / divisor);  // Can be NaN
     } else {
         if (dividend == 0) {
             wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
@@ -73,5 +69,4 @@ float asCriteriaS1grads::Assess(const a2f &refData, const a2f &evalData, int row
             return m_scaleWorst;
         }
     }
-
 }
