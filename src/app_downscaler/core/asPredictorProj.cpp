@@ -40,25 +40,25 @@ asPredictorProj::asPredictorProj(const wxString &dataId, const wxString &model, 
 asPredictorProj *asPredictorProj::GetInstance(const wxString &datasetId, const wxString &model,
                                               const wxString &scenario, const wxString &dataId,
                                               const wxString &directory) {
-    asPredictorProj *predictor = nullptr;
+  asPredictorProj *predictor = nullptr;
 
-    if (datasetId.IsSameAs("CMIP5", false)) {
-        predictor = new asPredictorProjCmip5(dataId, model, scenario);
-    } else if (datasetId.IsSameAs("CORDEX", false)) {
-        predictor = new asPredictorProjCordex(dataId, model, scenario);
-    } else {
-        wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
-        return nullptr;
-    }
+  if (datasetId.IsSameAs("CMIP5", false)) {
+    predictor = new asPredictorProjCmip5(dataId, model, scenario);
+  } else if (datasetId.IsSameAs("CORDEX", false)) {
+    predictor = new asPredictorProjCordex(dataId, model, scenario);
+  } else {
+    wxLogError(_("The requested dataset does not exist. Please correct the dataset Id."));
+    return nullptr;
+  }
 
-    if (!directory.IsEmpty()) {
-        predictor->SetDirectoryPath(directory);
-    }
+  if (!directory.IsEmpty()) {
+    predictor->SetDirectoryPath(directory);
+  }
 
-    if (!predictor->Init()) {
-        wxLogError(_("The predictor did not initialize correctly."));
-        return nullptr;
-    }
+  if (!predictor->Init()) {
+    wxLogError(_("The predictor did not initialize correctly."));
+    return nullptr;
+  }
 
-    return predictor;
+  return predictor;
 }

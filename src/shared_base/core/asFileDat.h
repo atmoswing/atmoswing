@@ -34,42 +34,42 @@
 #include "asIncludes.h"
 
 class asFileDat : public asFileText {
-   public:
-    struct Pattern {
-        wxString id;
-        wxString name;
-        FileStructType structType;
-        int headerLines;
-        bool parseTime;
-        int timeYearBegin;
-        int timeYearEnd;
-        int timeMonthBegin;
-        int timeMonthEnd;
-        int timeDayBegin;
-        int timeDayEnd;
-        int timeHourBegin;
-        int timeHourEnd;
-        int timeMinuteBegin;
-        int timeMinuteEnd;
-        int dataBegin;
-        int dataEnd;
-    };
+ public:
+  struct Pattern {
+    wxString id;
+    wxString name;
+    FileStructType structType;
+    int headerLines;
+    bool parseTime;
+    int timeYearBegin;
+    int timeYearEnd;
+    int timeMonthBegin;
+    int timeMonthEnd;
+    int timeDayBegin;
+    int timeDayEnd;
+    int timeHourBegin;
+    int timeHourEnd;
+    int timeMinuteBegin;
+    int timeMinuteEnd;
+    int dataBegin;
+    int dataEnd;
+  };
 
-    asFileDat(const wxString &fileName, const FileMode &fileMode);
+  asFileDat(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileDat() override = default;
+  ~asFileDat() override = default;
 
-    bool Close() override;
+  bool Close() override;
 
-    static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
+  static Pattern GetPattern(const wxString &fileName, const wxString &directory = wxEmptyString);
 
-    static int GetPatternLineMaxCharWidth(const Pattern &pattern);
+  static int GetPatternLineMaxCharWidth(const Pattern &pattern);
 
-   protected:
-   private:
-    static void InitPattern(Pattern &pattern);
+ protected:
+ private:
+  static void InitPattern(Pattern &pattern);
 
-    static FileStructType StringToStructType(const wxString &structTypeStr);
+  static FileStructType StringToStructType(const wxString &structTypeStr);
 };
 
 #endif

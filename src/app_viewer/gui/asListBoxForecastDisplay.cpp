@@ -42,7 +42,7 @@ asListBoxForecastDisplay::asListBoxForecastDisplay(wxWindow *parent, wxWindowID 
     : wxListBox(parent, id, pos, size, n, choices, style) {}
 
 void asListBoxForecastDisplay::OnForecastDisplaySlctChange(wxCommandEvent &event) {
-    wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED);
-    eventSlct.SetInt(event.GetInt());
-    GetParent()->ProcessWindowEvent(eventSlct);
+  wxCommandEvent eventSlct(asEVT_ACTION_FORECAST_RATIO_SELECTION_CHANGED);
+  eventSlct.SetInt(event.GetInt());
+  GetParent()->ProcessWindowEvent(eventSlct);
 }

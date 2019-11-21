@@ -33,17 +33,17 @@
 #include "wx/log.h"
 
 class asLogWindow : public wxLogWindow {
-   public:
-    explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
-                         bool passToOld = true);
+ public:
+  explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
+                       bool passToOld = true);
 
-    ~asLogWindow() override = default;
+  ~asLogWindow() override = default;
 
-    virtual void DoShow(bool bShow);
+  virtual void DoShow(bool bShow);
 
-   protected:
-   private:
-    bool OnFrameClose(wxFrame *frame) override;
+ protected:
+ private:
+  bool OnFrameClose(wxFrame *frame) override;
 };
 
 #endif

@@ -29,24 +29,24 @@
 #include "asFileParametersForecast.h"
 
 asFileParametersForecast::asFileParametersForecast(const wxString &fileName, const FileMode &fileMode)
-    : asFileParameters(fileName, fileMode) {} // FindAndOpen() processed by asFileXml
+    : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 
 asFileParametersForecast::~asFileParametersForecast() {}
 
 bool asFileParametersForecast::EditRootElement() {
-    if (!GetRoot()) return false;
-    GetRoot()->AddAttribute("target", "forecaster");
-    return true;
+  if (!GetRoot()) return false;
+  GetRoot()->AddAttribute("target", "forecaster");
+  return true;
 }
 
 bool asFileParametersForecast::CheckRootElement() const {
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
+  if (!GetRoot()) return false;
+  if (!IsAnAtmoSwingFile()) return false;
+  if (!FileVersionIsOrAbove(1.0)) return false;
 
-    if (!GetRoot()->GetAttribute("target").IsSameAs("forecaster", false)) {
-        wxLogError(_("The file %s is not a parameters file for the Forecaster."), m_fileName.GetFullName());
-        return false;
-    }
-    return true;
+  if (!GetRoot()->GetAttribute("target").IsSameAs("forecaster", false)) {
+    wxLogError(_("The file %s is not a parameters file for the Forecaster."), m_fileName.GetFullName());
+    return false;
+  }
+  return true;
 }

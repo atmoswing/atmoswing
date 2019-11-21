@@ -29,39 +29,39 @@
 #include "asTotalScoreCRPSpotential.h"
 
 asTotalScoreCRPSpotential::asTotalScoreCRPSpotential(const wxString &periodString) : asTotalScore(periodString) {
-    m_has2DArrayArgument = true;
+  m_has2DArrayArgument = true;
 }
 
 float asTotalScoreCRPSpotential::Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const {
-    wxASSERT(targetDates.rows() > 1);
-    wxASSERT(scores.rows() > 1);
-    wxASSERT(scores.cols() > 1);
+  wxASSERT(targetDates.rows() > 1);
+  wxASSERT(scores.rows() > 1);
+  wxASSERT(scores.cols() > 1);
 
-    // Process average on every column
-    a1f means = scores.colwise().mean();
+  // Process average on every column
+  a1f means = scores.colwise().mean();
 
-    // Extract corresponding arrays
-    int binsNbs = means.size() / 3;
-    a1f alpha = means.segment(0, binsNbs);
-    a1f beta = means.segment(binsNbs, binsNbs);
-    a1f g = means.segment(2 * binsNbs, binsNbs);
+  // Extract corresponding arrays
+  int binsNbs = means.size() / 3;
+  a1f alpha = means.segment(0, binsNbs);
+  a1f beta = means.segment(binsNbs, binsNbs);
+  a1f g = means.segment(2 * binsNbs, binsNbs);
 
-    // Compute o (coefficent-wise operations)
-    a1f o = beta / (alpha + beta);
-    wxASSERT(o.size() == alpha.size());
+  // Compute o (coefficent-wise operations)
+  a1f o = beta / (alpha + beta);
+  wxASSERT(o.size() == alpha.size());
 
-    // Create the p array (coefficent-wise operations)
-    a1f p = a1f::LinSpaced(binsNbs, 0, binsNbs - 1);
-    p = p / (binsNbs - 1);
+  // Create the p array (coefficent-wise operations)
+  a1f p = a1f::LinSpaced(binsNbs, 0, binsNbs - 1);
+  p = p / (binsNbs - 1);
 
-    // Compute CRPS potential
-    float potential = 0;
+  // Compute CRPS potential
+  float potential = 0;
 
-    for (int i = 0; i < binsNbs; i++) {
-        if (!asIsNaN(g[i]) && !asIsInf(g[i]) && !asIsNaN(o[i]) && !asIsInf(o[i])) {
-            potential += g[i] * o[i] * (1 - o[i]);
-        }
+  for (int i = 0; i < binsNbs; i++) {
+    if (!asIsNaN(g[i]) && !asIsInf(g[i]) && !asIsNaN(o[i]) && !asIsInf(o[i])) {
+      potential += g[i] * o[i] * (1 - o[i]);
     }
+  }
 
-    return potential;
+  return potential;
 }

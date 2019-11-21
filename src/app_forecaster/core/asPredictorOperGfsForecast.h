@@ -36,15 +36,15 @@
 class asArea;
 
 class asPredictorOperGfsForecast : public asPredictorOper {
-   public:
-    asPredictorOperGfsForecast(const wxString &dataId);
+ public:
+  asPredictorOperGfsForecast(const wxString &dataId);
 
-    virtual ~asPredictorOperGfsForecast();
+  virtual ~asPredictorOperGfsForecast();
 
-    bool Init();
+  bool Init();
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

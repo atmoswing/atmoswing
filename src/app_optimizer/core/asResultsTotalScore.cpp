@@ -36,68 +36,68 @@ asResultsTotalScore::asResultsTotalScore() : asResults(), m_hasSingleValue(true)
 asResultsTotalScore::~asResultsTotalScore() {}
 
 void asResultsTotalScore::Init() {
-    // Set to nan to avoid keeping old results
-    m_score = NaNf;
-    m_scoreArray.resize(0);
+  // Set to nan to avoid keeping old results
+  m_score = NaNf;
+  m_scoreArray.resize(0);
 }
 
 void asResultsTotalScore::BuildFileName() {
-    ThreadsManager().CritSectionConfig().Enter();
-    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-    ThreadsManager().CritSectionConfig().Leave();
-    if (!m_subFolder.IsEmpty()) {
-        m_filePath.Append(DS);
-        m_filePath.Append(m_subFolder);
-    }
+  ThreadsManager().CritSectionConfig().Enter();
+  m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+  ThreadsManager().CritSectionConfig().Leave();
+  if (!m_subFolder.IsEmpty()) {
     m_filePath.Append(DS);
-    m_filePath.Append(wxString::Format("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
-    m_filePath.Append(".nc");
+    m_filePath.Append(m_subFolder);
+  }
+  m_filePath.Append(DS);
+  m_filePath.Append(wxString::Format("TotalScore_id_%s_step_%d", GetPredictandStationIdsList(), m_currentStep));
+  m_filePath.Append(".nc");
 }
 
 bool asResultsTotalScore::Save() {
-    BuildFileName();
+  BuildFileName();
 
-    ThreadsManager().CritSectionNetCDF().Enter();
+  ThreadsManager().CritSectionNetCDF().Enter();
 
-    // Create netCDF dataset: enter define mode
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
-    if (!ncFile.Open()) {
-        ThreadsManager().CritSectionNetCDF().Leave();
-        return false;
-    }
-
-    // Define dimensions.
-    ncFile.DefDim("score");
-
-    // The dimensions name array is used to pass the dimensions to the variable.
-    vstds dimNames1;
-    dimNames1.push_back("score");
-
-    // Define variables
-    ncFile.DefVar("score", NC_FLOAT, 1, dimNames1);
-
-    // Put attributes
-    DefTotalScoreAttributes(ncFile);
-
-    // End definitions: leave define mode
-    ncFile.EndDef();
-
-    // Provide sizes for variables
-    size_t start1D[] = {0};
-    size_t count1D[] = {1};
-
-    // Write data
-    ncFile.PutVarArray("score", start1D, count1D, &m_score);
-
-    // Close:save new netCDF dataset
-    ncFile.Close();
-
+  // Create netCDF dataset: enter define mode
+  asFileNetcdf ncFile(m_filePath, asFileNetcdf::Replace);
+  if (!ncFile.Open()) {
     ThreadsManager().CritSectionNetCDF().Leave();
+    return false;
+  }
 
-    return true;
+  // Define dimensions.
+  ncFile.DefDim("score");
+
+  // The dimensions name array is used to pass the dimensions to the variable.
+  vstds dimNames1;
+  dimNames1.push_back("score");
+
+  // Define variables
+  ncFile.DefVar("score", NC_FLOAT, 1, dimNames1);
+
+  // Put attributes
+  DefTotalScoreAttributes(ncFile);
+
+  // End definitions: leave define mode
+  ncFile.EndDef();
+
+  // Provide sizes for variables
+  size_t start1D[] = {0};
+  size_t count1D[] = {1};
+
+  // Write data
+  ncFile.PutVarArray("score", start1D, count1D, &m_score);
+
+  // Close:save new netCDF dataset
+  ncFile.Close();
+
+  ThreadsManager().CritSectionNetCDF().Leave();
+
+  return true;
 }
 
 bool asResultsTotalScore::Load() {
-    // Makes no sense to load at this stage.
-    return false;
+  // Makes no sense to load at this stage.
+  return false;
 }

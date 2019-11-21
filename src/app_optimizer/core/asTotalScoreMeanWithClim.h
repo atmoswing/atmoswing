@@ -32,15 +32,15 @@
 #include <asTotalScore.h>
 
 class asTotalScoreMeanWithClim : public asTotalScore {
-   public:
-    explicit asTotalScoreMeanWithClim(const wxString &periodString);
+ public:
+  explicit asTotalScoreMeanWithClim(const wxString &periodString);
 
-    ~asTotalScoreMeanWithClim() override = default;
+  ~asTotalScoreMeanWithClim() override = default;
 
-    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
+  float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

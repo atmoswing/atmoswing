@@ -33,26 +33,26 @@
 #include "asIncludes.h"
 
 class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
-   public:
-    asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
+ public:
+  asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
 
-    ~asWizardBatchForecasts() override = default;
+  ~asWizardBatchForecasts() override = default;
 
-    wxWizardPage *GetFirstPage() const {
-        return m_pages.Item(0);
-    }
+  wxWizardPage *GetFirstPage() const {
+    return m_pages.Item(0);
+  }
 
-    wxWizardPage *GetSecondPage() const {
-        return m_pages.Item(1);
-    }
+  wxWizardPage *GetSecondPage() const {
+    return m_pages.Item(1);
+  }
 
-   protected:
-    void OnWizardFinished(wxWizardEvent &event) override;
+ protected:
+  void OnWizardFinished(wxWizardEvent &event) override;
 
-    void OnLoadExistingBatchForecasts(wxCommandEvent &event) override;
+  void OnLoadExistingBatchForecasts(wxCommandEvent &event) override;
 
-   private:
-    asBatchForecasts *m_batchForecasts;
+ private:
+  asBatchForecasts *m_batchForecasts;
 };
 
 #endif

@@ -34,28 +34,28 @@
 #include "asIncludes.h"
 
 class asPanelPlot : public wxPanel {
-   public:
-    explicit asPanelPlot(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                         const wxSize &size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
+ public:
+  explicit asPanelPlot(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                       const wxSize &size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
 
-    void Print();
+  void Print();
 
-    void PrintPreview();
+  void PrintPreview();
 
-    void ExportSVG();
+  void ExportSVG();
 
-    wxPlotCtrl *GetPlotCtrl() const {
-        wxASSERT(m_plotCtrl);
-        return m_plotCtrl;
-    }
+  wxPlotCtrl *GetPlotCtrl() const {
+    wxASSERT(m_plotCtrl);
+    return m_plotCtrl;
+  }
 
-   protected:
-    wxPlotCtrl *m_plotCtrl;
+ protected:
+  wxPlotCtrl *m_plotCtrl;
 
-   private:
-    void OnPlotCtrl(wxPlotCtrlEvent &event);
+ private:
+  void OnPlotCtrl(wxPlotCtrlEvent &event);
 
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

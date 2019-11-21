@@ -28,24 +28,24 @@
 #include "asPanelsManager.h"
 
 void asPanelsManager::LayoutFrame(wxWindow *element) {
-    // Get parent frame for layout
-    wxWindow *parent = element;
-    wxWindow *searchParent = parent;
-    while (searchParent) {
-        parent = searchParent;
-        searchParent = parent->GetParent();
-    }
-    parent->Layout();
+  // Get parent frame for layout
+  wxWindow *parent = element;
+  wxWindow *searchParent = parent;
+  while (searchParent) {
+    parent = searchParent;
+    searchParent = parent->GetParent();
+  }
+  parent->Layout();
 }
 
 wxWindow *asPanelsManager::GetTopFrame(wxWindow *element) const {
-    // Get parent frame for layout
-    wxWindow *parent = element;
-    wxWindow *searchParent = parent;
-    while (searchParent) {
-        parent = searchParent;
-        searchParent = parent->GetParent();
-    }
+  // Get parent frame for layout
+  wxWindow *parent = element;
+  wxWindow *searchParent = parent;
+  while (searchParent) {
+    parent = searchParent;
+    searchParent = parent->GetParent();
+  }
 
-    return parent;
+  return parent;
 }

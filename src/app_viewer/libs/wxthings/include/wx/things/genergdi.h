@@ -40,170 +40,170 @@ WX_DECLARE_OBJARRAY_WITH_DECL(wxGenericBrush, wxArrayGenericBrush, class WXDLLIM
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
-   public:
-    wxGenericColour() {}
+ public:
+  wxGenericColour() {}
 
-    wxGenericColour(const wxGenericColour &c) {
-        Create(c);
-    }
+  wxGenericColour(const wxGenericColour &c) {
+    Create(c);
+  }
 
-    wxGenericColour(const wxColour &c) {
-        Create(c);
-    }
+  wxGenericColour(const wxColour &c) {
+    Create(c);
+  }
 
-    wxGenericColour(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255) {
-        Create(red, green, blue, alpha);
-    }
+  wxGenericColour(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255) {
+    Create(red, green, blue, alpha);
+  }
 
-    wxGenericColour(unsigned long colABGR) {
-        CreateABGR(colABGR);
-    }
+  wxGenericColour(unsigned long colABGR) {
+    CreateABGR(colABGR);
+  }
 
-    // Implicit conversion from the colour name
-    wxGenericColour(const wxString &colourName) {
-        Create(colourName);
-    }
+  // Implicit conversion from the colour name
+  wxGenericColour(const wxString &colourName) {
+    Create(colourName);
+  }
 
-    wxGenericColour(const char *colourName) {
-        Create(wxString::FromAscii(colourName));
-    }
+  wxGenericColour(const char *colourName) {
+    Create(wxString::FromAscii(colourName));
+  }
 
 #if wxUSE_UNICODE
 
-    wxGenericColour(const wxChar *colourName) {
-        Create(wxString(colourName));
-    }
+  wxGenericColour(const wxChar *colourName) {
+    Create(wxString(colourName));
+  }
 
 #endif
 
-    virtual ~wxGenericColour() {}
+  virtual ~wxGenericColour() {}
 
-    // Destroy the refed data
-    void Destroy() {
-        UnRef();
-    }
+  // Destroy the refed data
+  void Destroy() {
+    UnRef();
+  }
 
-    // Is this colour valid, has refed data
-    bool Ok() const {
-        return m_refData != NULL;
-    }
+  // Is this colour valid, has refed data
+  bool Ok() const {
+    return m_refData != NULL;
+  }
 
-    // -----------------------------------------------------------------------
-    // (re)Create this colour, unrefing this colour first.
-    //    Use these to detach this colour from it's refed copies.
-    void Create(const wxGenericColour &c);
+  // -----------------------------------------------------------------------
+  // (re)Create this colour, unrefing this colour first.
+  //    Use these to detach this colour from it's refed copies.
+  void Create(const wxGenericColour &c);
 
-    void Create(const wxColour &c);
+  void Create(const wxColour &c);
 
-    void Create(unsigned char red = 0, unsigned char green = 0, unsigned char blue = 0, unsigned char alpha = 255);
+  void Create(unsigned char red = 0, unsigned char green = 0, unsigned char blue = 0, unsigned char alpha = 255);
 
-    void CreateABGR(unsigned long colABGR);
+  void CreateABGR(unsigned long colABGR);
 
-    void CreateARGB(unsigned long colARGB);
+  void CreateARGB(unsigned long colARGB);
 
-    void Create(const wxString &colourName);
+  void Create(const wxString &colourName);
 
-    // -----------------------------------------------------------------------
-    // Set the colour values of the refed data.
-    //   Use these to adjust the values of all the refed copies.
-    void Set(const wxGenericColour &c);
+  // -----------------------------------------------------------------------
+  // Set the colour values of the refed data.
+  //   Use these to adjust the values of all the refed copies.
+  void Set(const wxGenericColour &c);
 
-    void Set(const wxColour &c);
+  void Set(const wxColour &c);
 
-    void Set(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255);
+  void Set(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255);
 
-    void SetABGR(unsigned long colABGR);
+  void SetABGR(unsigned long colABGR);
 
-    void SetARGB(unsigned long colARGB);
+  void SetARGB(unsigned long colARGB);
 
-    void Set(const wxString &colourName);
+  void Set(const wxString &colourName);
 
-    void SetRed(unsigned char r);
+  void SetRed(unsigned char r);
 
-    void SetGreen(unsigned char g);
+  void SetGreen(unsigned char g);
 
-    void SetBlue(unsigned char b);
+  void SetBlue(unsigned char b);
 
-    void SetAlpha(unsigned char a);
+  void SetAlpha(unsigned char a);
 
-    // -----------------------------------------------------------------------
-    // Get the colour values
+  // -----------------------------------------------------------------------
+  // Get the colour values
 #if wxCHECK_VERSION(2, 8, 0)
 
-    inline wxColour GetColour() const {
-        return wxColour(GetRed(), GetGreen(), GetBlue(), GetAlpha());
-    }
+  inline wxColour GetColour() const {
+    return wxColour(GetRed(), GetGreen(), GetBlue(), GetAlpha());
+  }
 
 #else
-    inline wxColour GetColour() const {
-        return wxColour(GetRed(), GetGreen(), GetBlue());
-    }
+  inline wxColour GetColour() const {
+    return wxColour(GetRed(), GetGreen(), GetBlue());
+  }
 #endif  // wxCHECK_VERSION(2, 8, 0)
 
-    unsigned char GetRed() const;
+  unsigned char GetRed() const;
 
-    unsigned char GetGreen() const;
+  unsigned char GetGreen() const;
 
-    unsigned char GetBlue() const;
+  unsigned char GetBlue() const;
 
-    unsigned char GetAlpha() const;
+  unsigned char GetAlpha() const;
 
-    // wxWidgets wxColour compatibility functions
-    unsigned char Red() const {
-        return GetRed();
-    }
+  // wxWidgets wxColour compatibility functions
+  unsigned char Red() const {
+    return GetRed();
+  }
 
-    unsigned char Green() const {
-        return GetGreen();
-    }
+  unsigned char Green() const {
+    return GetGreen();
+  }
 
-    unsigned char Blue() const {
-        return GetBlue();
-    }
+  unsigned char Blue() const {
+    return GetBlue();
+  }
 
-    unsigned char Alpha() const {
-        return GetAlpha();
-    }
+  unsigned char Alpha() const {
+    return GetAlpha();
+  }
 
-    // -----------------------------------------------------------------------
-    // Equivalency tests
-    bool IsSameAs(const wxGenericColour &c) const;
+  // -----------------------------------------------------------------------
+  // Equivalency tests
+  bool IsSameAs(const wxGenericColour &c) const;
 
-    bool IsSameAs(const wxColour &c) const;
+  bool IsSameAs(const wxColour &c) const;
 
-    // Get a "hot to cold" colour where i ranges from 0 to 255
-    wxGenericColour GetHotColdColour(double i) const;
+  // Get a "hot to cold" colour where i ranges from 0 to 255
+  wxGenericColour GetHotColdColour(double i) const;
 
-    // Read colour to and from string
-    // wxString WriteString(const wxString& format = wxT("%d,%d,%d,%d")) const;
-    // bool ReadString(const wxString& str, const wxString& format = wxT("%d,%d,%d,%d"));
+  // Read colour to and from string
+  // wxString WriteString(const wxString& format = wxT("%d,%d,%d,%d")) const;
+  // bool ReadString(const wxString& str, const wxString& format = wxT("%d,%d,%d,%d"));
 
-    // operators
-    bool operator==(const wxGenericColour &c) const {
-        return m_refData == c.m_refData;
-    }
+  // operators
+  bool operator==(const wxGenericColour &c) const {
+    return m_refData == c.m_refData;
+  }
 
-    bool operator!=(const wxGenericColour &c) const {
-        return m_refData != c.m_refData;
-    }
+  bool operator!=(const wxGenericColour &c) const {
+    return m_refData != c.m_refData;
+  }
 
-    wxGenericColour &operator=(const wxGenericColour &c) {
-        if ((*this) != c) Ref(c);
-        return *this;
-    }
+  wxGenericColour &operator=(const wxGenericColour &c) {
+    if ((*this) != c) Ref(c);
+    return *this;
+  }
 
-    wxGenericColour &operator=(const wxColour &c) {
-        Create(c);
-        return *this;
-    }
+  wxGenericColour &operator=(const wxColour &c) {
+    Create(c);
+    return *this;
+  }
 
-   private:
-    // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+ private:
+  // ref counting code
+  virtual wxObjectRefData *CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+  virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-    DECLARE_DYNAMIC_CLASS(wxGenericColour)
+  DECLARE_DYNAMIC_CLASS(wxGenericColour)
 };
 
 //----------------------------------------------------------------------------
@@ -212,133 +212,133 @@ class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
-   public:
-    wxGenericPen() {}
+ public:
+  wxGenericPen() {}
 
-    wxGenericPen(const wxGenericPen &pen) {
-        Create(pen);
-    }
+  wxGenericPen(const wxGenericPen &pen) {
+    Create(pen);
+  }
 
-    wxGenericPen(const wxPen &pen) {
-        Create(pen);
-    }
+  wxGenericPen(const wxPen &pen) {
+    Create(pen);
+  }
 
-    wxGenericPen(const wxGenericColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                 wxPenJoin join = wxJOIN_ROUND) {
-        Create(colour, width, style, cap, join);
-    }
+  wxGenericPen(const wxGenericColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+               wxPenJoin join = wxJOIN_ROUND) {
+    Create(colour, width, style, cap, join);
+  }
 
-    wxGenericPen(const wxColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                 wxPenJoin join = wxJOIN_ROUND) {
-        Create(colour, width, style, cap, join);
-    }
+  wxGenericPen(const wxColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+               wxPenJoin join = wxJOIN_ROUND) {
+    Create(colour, width, style, cap, join);
+  }
 
-    virtual ~wxGenericPen() {}
+  virtual ~wxGenericPen() {}
 
-    // Destroy the refed data
-    void Destroy() {
-        UnRef();
-    }
+  // Destroy the refed data
+  void Destroy() {
+    UnRef();
+  }
 
-    // Is this colour valid, has refed data
-    bool Ok() const {
-        return m_refData != NULL;
-    }
+  // Is this colour valid, has refed data
+  bool Ok() const {
+    return m_refData != NULL;
+  }
 
-    // -----------------------------------------------------------------------
-    // (re)Create this pen, unrefing this pen first.
-    //    Use these to detach this pen from it's refed copies.
-    void Create(const wxGenericPen &pen);
+  // -----------------------------------------------------------------------
+  // (re)Create this pen, unrefing this pen first.
+  //    Use these to detach this pen from it's refed copies.
+  void Create(const wxGenericPen &pen);
 
-    void Create(const wxPen &pen);
+  void Create(const wxPen &pen);
 
-    void Create(const wxGenericColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                wxPenJoin join = wxJOIN_ROUND);
+  void Create(const wxGenericColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+              wxPenJoin join = wxJOIN_ROUND);
 
-    void Create(const wxColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
-                wxPenJoin join = wxJOIN_ROUND);
+  void Create(const wxColour &colour, int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND,
+              wxPenJoin join = wxJOIN_ROUND);
 
-    // -----------------------------------------------------------------------
-    // Set the values of the refed data.
-    //   Use these to adjust the values of all the refed copies.
-    void Set(const wxGenericPen &pen);
+  // -----------------------------------------------------------------------
+  // Set the values of the refed data.
+  //   Use these to adjust the values of all the refed copies.
+  void Set(const wxGenericPen &pen);
 
-    void Set(const wxPen &pen);
+  void Set(const wxPen &pen);
 
-    void SetColour(const wxGenericColour &colour);
+  void SetColour(const wxGenericColour &colour);
 
-    void SetColour(const wxColour &colour);
+  void SetColour(const wxColour &colour);
 
-    void SetColour(int red, int green, int blue, int alpha = 255);
+  void SetColour(int red, int green, int blue, int alpha = 255);
 
-    void SetCap(wxPenCap capStyle);
+  void SetCap(wxPenCap capStyle);
 
-    void SetJoin(wxPenJoin joinStyle);
+  void SetJoin(wxPenJoin joinStyle);
 
-    void SetStyle(int style);
+  void SetStyle(int style);
 
-    void SetWidth(int width);
+  void SetWidth(int width);
 
-    void SetDashes(int number_of_dashes, const wxDash *dash);
+  void SetDashes(int number_of_dashes, const wxDash *dash);
 
-    // -----------------------------------------------------------------------
-    // Get the pen values
-    wxPen GetPen() const;
+  // -----------------------------------------------------------------------
+  // Get the pen values
+  wxPen GetPen() const;
 
-    wxGenericColour GetGenericColour() const;
+  wxGenericColour GetGenericColour() const;
 
-    wxColour GetColour() const;
+  wxColour GetColour() const;
 
-    int GetWidth() const;
+  int GetWidth() const;
 
-    int GetStyle() const;
+  int GetStyle() const;
 
-    wxPenCap GetCap() const;
+  wxPenCap GetCap() const;
 
-    wxPenJoin GetJoin() const;
+  wxPenJoin GetJoin() const;
 
-    int GetDashes(wxDash **ptr) const;
+  int GetDashes(wxDash **ptr) const;
 
-    int GetDashCount() const;
+  int GetDashCount() const;
 
-    wxDash *GetDash() const;
+  wxDash *GetDash() const;
 
-    // -----------------------------------------------------------------------
-    // Equivalency tests
-    bool IsSameAs(const wxGenericPen &pen) const;
+  // -----------------------------------------------------------------------
+  // Equivalency tests
+  bool IsSameAs(const wxGenericPen &pen) const;
 
-    bool IsSameAs(const wxPen &pen) const;
+  bool IsSameAs(const wxPen &pen) const;
 
-    // Read pen to and from string
-    // wxString WriteString() const;
-    // bool ReadString(const wxString& str);
+  // Read pen to and from string
+  // wxString WriteString() const;
+  // bool ReadString(const wxString& str);
 
-    // operators
-    bool operator==(const wxGenericPen &pen) const {
-        return m_refData == pen.m_refData;
-    }
+  // operators
+  bool operator==(const wxGenericPen &pen) const {
+    return m_refData == pen.m_refData;
+  }
 
-    bool operator!=(const wxGenericPen &pen) const {
-        return m_refData != pen.m_refData;
-    }
+  bool operator!=(const wxGenericPen &pen) const {
+    return m_refData != pen.m_refData;
+  }
 
-    wxGenericPen &operator=(const wxGenericPen &pen) {
-        if ((*this) != pen) Ref(pen);
-        return *this;
-    }
+  wxGenericPen &operator=(const wxGenericPen &pen) {
+    if ((*this) != pen) Ref(pen);
+    return *this;
+  }
 
-    wxGenericPen &operator=(const wxPen &pen) {
-        Create(pen);
-        return *this;
-    }
+  wxGenericPen &operator=(const wxPen &pen) {
+    Create(pen);
+    return *this;
+  }
 
-   private:
-    // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+ private:
+  // ref counting code
+  virtual wxObjectRefData *CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+  virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-    DECLARE_DYNAMIC_CLASS(wxGenericPen)
+  DECLARE_DYNAMIC_CLASS(wxGenericPen)
 };
 
 //----------------------------------------------------------------------------
@@ -347,119 +347,119 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
-   public:
-    wxGenericBrush() {}
+ public:
+  wxGenericBrush() {}
 
-    wxGenericBrush(const wxGenericBrush &brush) {
-        Create(brush);
-    }
+  wxGenericBrush(const wxGenericBrush &brush) {
+    Create(brush);
+  }
 
-    wxGenericBrush(const wxBrush &brush) {
-        Create(brush);
-    }
+  wxGenericBrush(const wxBrush &brush) {
+    Create(brush);
+  }
 
-    wxGenericBrush(const wxGenericColour &colour, int style = wxSOLID) {
-        Create(colour, style);
-    }
+  wxGenericBrush(const wxGenericColour &colour, int style = wxSOLID) {
+    Create(colour, style);
+  }
 
-    wxGenericBrush(const wxColour &colour, int style = wxSOLID) {
-        Create(colour, style);
-    }
+  wxGenericBrush(const wxColour &colour, int style = wxSOLID) {
+    Create(colour, style);
+  }
 
-    wxGenericBrush(const wxBitmap &stipple) {
-        Create(stipple);
-    }
+  wxGenericBrush(const wxBitmap &stipple) {
+    Create(stipple);
+  }
 
-    virtual ~wxGenericBrush() {}
+  virtual ~wxGenericBrush() {}
 
-    // Destroy the refed data
-    void Destroy() {
-        UnRef();
-    }
+  // Destroy the refed data
+  void Destroy() {
+    UnRef();
+  }
 
-    // Is this colour valid, has refed data
-    bool Ok() const {
-        return m_refData != NULL;
-    }
+  // Is this colour valid, has refed data
+  bool Ok() const {
+    return m_refData != NULL;
+  }
 
-    // -----------------------------------------------------------------------
-    // (re)Create this brush, unrefing this pen first.
-    //    Use these to detach this pen from it's refed copies.
-    void Create(const wxGenericBrush &brush);
+  // -----------------------------------------------------------------------
+  // (re)Create this brush, unrefing this pen first.
+  //    Use these to detach this pen from it's refed copies.
+  void Create(const wxGenericBrush &brush);
 
-    void Create(const wxBrush &brush);
+  void Create(const wxBrush &brush);
 
-    void Create(const wxGenericColour &colour, int style = wxSOLID);
+  void Create(const wxGenericColour &colour, int style = wxSOLID);
 
-    void Create(const wxColour &colour, int style = wxSOLID);
+  void Create(const wxColour &colour, int style = wxSOLID);
 
-    void Create(const wxBitmap &stipple);
+  void Create(const wxBitmap &stipple);
 
-    // -----------------------------------------------------------------------
-    // Set the values of the refed data.
-    //   Use these to adjust the values of all the refed copies.
-    void Set(const wxGenericBrush &brush);
+  // -----------------------------------------------------------------------
+  // Set the values of the refed data.
+  //   Use these to adjust the values of all the refed copies.
+  void Set(const wxGenericBrush &brush);
 
-    void Set(const wxBrush &brush);
+  void Set(const wxBrush &brush);
 
-    void SetColour(const wxGenericColour &colour);
+  void SetColour(const wxGenericColour &colour);
 
-    void SetColour(const wxColour &colour);
+  void SetColour(const wxColour &colour);
 
-    void SetColour(int red, int green, int blue, int alpha = 255);
+  void SetColour(int red, int green, int blue, int alpha = 255);
 
-    void SetStyle(int style);
+  void SetStyle(int style);
 
-    void SetStipple(const wxBitmap &stipple);
+  void SetStipple(const wxBitmap &stipple);
 
-    // -----------------------------------------------------------------------
-    // Get the brush values
-    wxBrush GetBrush() const;
+  // -----------------------------------------------------------------------
+  // Get the brush values
+  wxBrush GetBrush() const;
 
-    wxGenericColour GetGenericColour() const;
+  wxGenericColour GetGenericColour() const;
 
-    wxColour GetColour() const;
+  wxColour GetColour() const;
 
-    int GetStyle() const;
+  int GetStyle() const;
 
-    wxBitmap *GetStipple() const;
+  wxBitmap *GetStipple() const;
 
-    bool IsHatch() const {
-        return (GetStyle() >= wxFIRST_HATCH) && (GetStyle() <= wxLAST_HATCH);
-    }
+  bool IsHatch() const {
+    return (GetStyle() >= wxFIRST_HATCH) && (GetStyle() <= wxLAST_HATCH);
+  }
 
-    // -----------------------------------------------------------------------
-    // Equivalency tests
-    bool IsSameAs(const wxGenericBrush &brush) const;
+  // -----------------------------------------------------------------------
+  // Equivalency tests
+  bool IsSameAs(const wxGenericBrush &brush) const;
 
-    bool IsSameAs(const wxBrush &brush) const;
+  bool IsSameAs(const wxBrush &brush) const;
 
-    // operators
-    bool operator==(const wxGenericBrush &brush) const {
-        return m_refData == brush.m_refData;
-    }
+  // operators
+  bool operator==(const wxGenericBrush &brush) const {
+    return m_refData == brush.m_refData;
+  }
 
-    bool operator!=(const wxGenericBrush &brush) const {
-        return m_refData != brush.m_refData;
-    }
+  bool operator!=(const wxGenericBrush &brush) const {
+    return m_refData != brush.m_refData;
+  }
 
-    wxGenericBrush &operator=(const wxGenericBrush &brush) {
-        if ((*this) != brush) Ref(brush);
-        return *this;
-    }
+  wxGenericBrush &operator=(const wxGenericBrush &brush) {
+    if ((*this) != brush) Ref(brush);
+    return *this;
+  }
 
-    wxGenericBrush &operator=(const wxBrush &brush) {
-        Create(brush);
-        return *this;
-    }
+  wxGenericBrush &operator=(const wxBrush &brush) {
+    Create(brush);
+    return *this;
+  }
 
-   private:
-    // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+ private:
+  // ref counting code
+  virtual wxObjectRefData *CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+  virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-    DECLARE_DYNAMIC_CLASS(wxGenericBrush)
+  DECLARE_DYNAMIC_CLASS(wxGenericBrush)
 };
 
 #endif  // _WX_GENERGDI_H_

@@ -39,10 +39,10 @@ asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, do
 
 asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
     : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon) {
-    m_xPtsNb = xPtsNb;
-    m_yPtsNb = yPtsNb;
+  m_xPtsNb = xPtsNb;
+  m_yPtsNb = yPtsNb;
 }
 
 bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherArea) const {
-    return false;
+  return false;
 }

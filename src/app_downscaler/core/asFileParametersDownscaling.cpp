@@ -28,24 +28,24 @@
 #include "asFileParametersDownscaling.h"
 
 asFileParametersDownscaling::asFileParametersDownscaling(const wxString &fileName, const FileMode &fileMode)
-    : asFileParameters(fileName, fileMode) {} // FindAndOpen() processed by asFileXml
+    : asFileParameters(fileName, fileMode) {}  // FindAndOpen() processed by asFileXml
 
 asFileParametersDownscaling::~asFileParametersDownscaling() {}
 
 bool asFileParametersDownscaling::EditRootElement() {
-    if (!GetRoot()) return false;
-    GetRoot()->AddAttribute("target", "downscaler");
-    return true;
+  if (!GetRoot()) return false;
+  GetRoot()->AddAttribute("target", "downscaler");
+  return true;
 }
 
 bool asFileParametersDownscaling::CheckRootElement() const {
-    if (!GetRoot()) return false;
-    if (!IsAnAtmoSwingFile()) return false;
-    if (!FileVersionIsOrAbove(1.0)) return false;
+  if (!GetRoot()) return false;
+  if (!IsAnAtmoSwingFile()) return false;
+  if (!FileVersionIsOrAbove(1.0)) return false;
 
-    if (!GetRoot()->GetAttribute("target").IsSameAs("downscaler", false)) {
-        wxLogError(_("The file %s is not a parameters file for the Downscaler."), m_fileName.GetFullName());
-        return false;
-    }
-    return true;
+  if (!GetRoot()->GetAttribute("target").IsSameAs("downscaler", false)) {
+    wxLogError(_("The file %s is not a parameters file for the Downscaler."), m_fileName.GetFullName());
+    return false;
+  }
+  return true;
 }

@@ -35,31 +35,31 @@
 #include "asIncludes.h"
 
 class asMethodOptimizer : public asMethodCalibrator {
-   public:
-    asMethodOptimizer();
+ public:
+  asMethodOptimizer();
 
-    ~asMethodOptimizer() override;
+  ~asMethodOptimizer() override;
 
-    bool Manager() override = 0;
+  bool Manager() override = 0;
 
-   protected:
-    int m_paramsNb;
-    int m_iterator;
+ protected:
+  int m_paramsNb;
+  int m_iterator;
 
-    bool Calibrate(asParametersCalibration &params) override {
-        wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
-        return false;
-    }
+  bool Calibrate(asParametersCalibration &params) override {
+    wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
+    return false;
+  }
 
-    bool SaveDetails(asParametersOptimization &params);
+  bool SaveDetails(asParametersOptimization &params);
 
-    bool Validate(asParametersOptimization &params);
+  bool Validate(asParametersOptimization &params);
 
-    void IncrementIterator() {
-        m_iterator++;
-    }
+  void IncrementIterator() {
+    m_iterator++;
+  }
 
-   private:
+ private:
 };
 
 #endif

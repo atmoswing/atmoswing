@@ -28,42 +28,42 @@
 #include "asCriteriaDSD.h"
 
 asCriteriaDSD::asCriteriaDSD() : asCriteria("DSD", _("Difference in standard deviation (nonspatial)"), Asc) {
-    m_minPointsNb = 2;
-    m_canUseInline = true;
+  m_minPointsNb = 2;
+  m_canUseInline = true;
 }
 
 asCriteriaDSD::~asCriteriaDSD() = default;
 
 float asCriteriaDSD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-    wxASSERT(refData.rows() == evalData.rows());
-    wxASSERT(refData.cols() == evalData.cols());
-    wxASSERT(refData.rows() == rowsNb);
-    wxASSERT(refData.cols() == colsNb);
-    wxASSERT(evalData.rows() == rowsNb);
-    wxASSERT(evalData.cols() == colsNb);
+  wxASSERT(refData.rows() == evalData.rows());
+  wxASSERT(refData.cols() == evalData.cols());
+  wxASSERT(refData.rows() == rowsNb);
+  wxASSERT(refData.cols() == colsNb);
+  wxASSERT(evalData.rows() == rowsNb);
+  wxASSERT(evalData.cols() == colsNb);
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-        float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float)(refData.size() - 1));
-        float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float)(evalData.size() - 1));
+  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    float refStdDev = std::sqrt((refData - refData.mean()).square().sum() / (float)(refData.size() - 1));
+    float evalStdDev = std::sqrt((evalData - evalData.mean()).square().sum() / (float)(evalData.size() - 1));
 
-        return std::fabs(refStdDev - evalStdDev);
+    return std::fabs(refStdDev - evalStdDev);
 
-    } else {
-        int size = (!evalData.isNaN() && !refData.isNaN()).count();
-        if (size <= 1) {
-            wxLogVerbose(_("Not enough data to process the DSD score."));
-            return m_scaleWorst;
-        }
-
-        float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
-        float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
-
-        a2f refDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(refData - refMean, 0);
-        a2f evalDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(evalData - evalMean, 0);
-
-        float refStdDev = std::sqrt((refDataDiff).square().sum() / (float)(size - 1));
-        float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float)(size - 1));
-
-        return std::fabs(refStdDev - evalStdDev);
+  } else {
+    int size = (!evalData.isNaN() && !refData.isNaN()).count();
+    if (size <= 1) {
+      wxLogVerbose(_("Not enough data to process the DSD score."));
+      return m_scaleWorst;
     }
+
+    float refMean = ((!evalData.isNaN() && !refData.isNaN()).select(refData, 0)).sum() / float(size);
+    float evalMean = ((!evalData.isNaN() && !refData.isNaN()).select(evalData, 0)).sum() / float(size);
+
+    a2f refDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(refData - refMean, 0);
+    a2f evalDataDiff = (!evalData.isNaN() && !refData.isNaN()).select(evalData - evalMean, 0);
+
+    float refStdDev = std::sqrt((refDataDiff).square().sum() / (float)(size - 1));
+    float evalStdDev = std::sqrt((evalDataDiff).square().sum() / (float)(size - 1));
+
+    return std::fabs(refStdDev - evalStdDev);
+  }
 }

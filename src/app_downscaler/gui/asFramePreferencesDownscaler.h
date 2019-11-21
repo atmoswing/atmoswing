@@ -33,23 +33,23 @@
 #include "AtmoswingDownscalerGui.h"
 
 class asFramePreferencesDownscaler : public asFramePreferencesDownscalerVirtual {
-   public:
-    explicit asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
+ public:
+  explicit asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+ protected:
+  void CloseFrame(wxCommandEvent &event) override;
 
-    void Update() override;
+  void Update() override;
 
-    void LoadPreferences();
+  void LoadPreferences();
 
-    void SavePreferences() const;
+  void SavePreferences() const;
 
-    void SaveAndClose(wxCommandEvent &event) override;
+  void SaveAndClose(wxCommandEvent &event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+  void ApplyChanges(wxCommandEvent &event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+  void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 };
 
 #endif

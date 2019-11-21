@@ -34,48 +34,48 @@
 #include <asResults.h>
 
 class asResultsParametersArray : public asResults {
-   public:
-    asResultsParametersArray();
+ public:
+  asResultsParametersArray();
 
-    virtual ~asResultsParametersArray();
+  virtual ~asResultsParametersArray();
 
-    void Init(const wxString &fileTag);
+  void Init(const wxString &fileTag);
 
-    void Add(asParametersScoring &params, float scoreCalib);
+  void Add(asParametersScoring &params, float scoreCalib);
 
-    void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
+  void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid);
+  void Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid);
 
-    void ProcessMedianScores();
+  void ProcessMedianScores();
 
-    bool HasBeenAssessed(asParametersScoring &params, float &score);
+  bool HasBeenAssessed(asParametersScoring &params, float &score);
 
-    bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
+  bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
 
-    void Clear();
+  void Clear();
 
-    bool Print() const;
+  bool Print() const;
 
-    int GetCount() const {
-        return int(m_parameters.size());
-    }
+  int GetCount() const {
+    return int(m_parameters.size());
+  }
 
-    float GetMedianScore() const {
-        return m_medianScore;
-    }
+  float GetMedianScore() const {
+    return m_medianScore;
+  }
 
-   protected:
-    void BuildFileName(const wxString &fileTag);
+ protected:
+  void BuildFileName(const wxString &fileTag);
 
-   private:
-    std::vector<asParametersScoring> m_parameters;
-    vf m_scoresCalib;
-    vf m_scoresValid;
-    std::vector<asParametersScoring> m_parametersForScoreOnArray;
-    va1f m_scoresCalibForScoreOnArray;
-    va1f m_scoresValidForScoreOnArray;
-    float m_medianScore;
+ private:
+  std::vector<asParametersScoring> m_parameters;
+  vf m_scoresCalib;
+  vf m_scoresValid;
+  std::vector<asParametersScoring> m_parametersForScoreOnArray;
+  va1f m_scoresCalibForScoreOnArray;
+  va1f m_scoresValidForScoreOnArray;
+  float m_medianScore;
 };
 
 #endif

@@ -36,44 +36,44 @@
 #include "asMethodCalibrator.h"
 
 class asFrameOptimizer : public asFrameOptimizerVirtual {
-   public:
-    explicit asFrameOptimizer(wxWindow *parent);
+ public:
+  explicit asFrameOptimizer(wxWindow *parent);
 
-    ~asFrameOptimizer() override;
+  ~asFrameOptimizer() override;
 
-    void OnInit();
+  void OnInit();
 
-   protected:
-    asLogWindow *m_logWindow;
-    asMethodCalibrator *m_methodCalibrator;
+ protected:
+  asLogWindow *m_logWindow;
+  asMethodCalibrator *m_methodCalibrator;
 
-    void Update() override;
+  void Update() override;
 
-    void OpenFramePredictandDB(wxCommandEvent &event) override;
+  void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-    void OnSaveDefault(wxCommandEvent &event) override;
+  void OnSaveDefault(wxCommandEvent &event) override;
 
-    void Launch(wxCommandEvent &event);
+  void Launch(wxCommandEvent &event);
 
-    void LoadOptions();
+  void LoadOptions();
 
-    void SaveOptions() const;
+  void SaveOptions() const;
 
-    void OpenFramePreferences(wxCommandEvent &event) override;
+  void OpenFramePreferences(wxCommandEvent &event) override;
 
-    void OpenFrameAbout(wxCommandEvent &event) override;
+  void OpenFrameAbout(wxCommandEvent &event) override;
 
-    void OnShowLog(wxCommandEvent &event) override;
+  void OnShowLog(wxCommandEvent &event) override;
 
-    void OnLogLevel1(wxCommandEvent &event) override;
+  void OnLogLevel1(wxCommandEvent &event) override;
 
-    void OnLogLevel2(wxCommandEvent &event) override;
+  void OnLogLevel2(wxCommandEvent &event) override;
 
-    void OnLogLevel3(wxCommandEvent &event) override;
+  void OnLogLevel3(wxCommandEvent &event) override;
 
-    void DisplayLogLevelMenu();
+  void DisplayLogLevelMenu();
 
-    void Cancel(wxCommandEvent &event);
+  void Cancel(wxCommandEvent &event);
 };
 
 #endif

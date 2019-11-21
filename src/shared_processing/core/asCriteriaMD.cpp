@@ -29,27 +29,27 @@
 #include "asCriteriaMD.h"
 
 asCriteriaMD::asCriteriaMD() : asCriteria("MD", _("Mean Absolute Difference"), Asc) {
-    m_canUseInline = true;
+  m_canUseInline = true;
 }
 
 asCriteriaMD::~asCriteriaMD() = default;
 
 float asCriteriaMD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-    wxASSERT(refData.rows() == evalData.rows());
-    wxASSERT(refData.cols() == evalData.cols());
+  wxASSERT(refData.rows() == evalData.rows());
+  wxASSERT(refData.cols() == evalData.cols());
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-        return (evalData - refData).abs().sum() / (float)refData.size();
+  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    return (evalData - refData).abs().sum() / (float)refData.size();
 
-    } else {
-        a2f diff = evalData - refData;
+  } else {
+    a2f diff = evalData - refData;
 
-        int size = (!diff.isNaN()).count();
-        if (size == 0) {
-            wxLogVerbose(_("Only NaNs in the MD criteria calculation."));
-            return m_scaleWorst;
-        }
-
-        return ((diff.isNaN()).select(0, diff)).abs().sum() / (float)size;
+    int size = (!diff.isNaN()).count();
+    if (size == 0) {
+      wxLogVerbose(_("Only NaNs in the MD criteria calculation."));
+      return m_scaleWorst;
     }
+
+    return ((diff.isNaN()).select(0, diff)).abs().sum() / (float)size;
+  }
 }

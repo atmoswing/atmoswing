@@ -33,47 +33,47 @@
 #include <asIncludes.h>
 
 class asAreaComp : public asArea {
-   public:
-    asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-               int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+ public:
+  asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+             int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
-               bool isLatLon = true);
+  asAreaComp(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+             bool isLatLon = true);
 
-    asAreaComp();
+  asAreaComp();
 
-    ~asAreaComp() override = default;
+  ~asAreaComp() override = default;
 
-    double GetXmin() const override;
+  double GetXmin() const override;
 
-    double GetXmax() const override;
+  double GetXmax() const override;
 
-    double GetYmin() const override;
+  double GetYmin() const override;
 
-    double GetYmax() const override;
+  double GetYmax() const override;
 
-    int GetNbComposites() const {
-        return (int)m_composites.size();
-    }
+  int GetNbComposites() const {
+    return (int)m_composites.size();
+  }
 
-    asArea GetComposite(int id) const {
-        wxASSERT(m_composites.size() > id);
+  asArea GetComposite(int id) const {
+    wxASSERT(m_composites.size() > id);
 
-        return m_composites[id];
-    }
+    return m_composites[id];
+  }
 
-   protected:
-    std::vector<asArea> m_composites;
+ protected:
+  std::vector<asArea> m_composites;
 
-    void Init() override;
+  void Init() override;
 
-    void CreateComposites();
+  void CreateComposites();
 
-    bool DoCheckPoints();
+  bool DoCheckPoints();
 
-    bool CheckConsistency();
+  bool CheckConsistency();
 
-   private:
+ private:
 };
 
 #endif

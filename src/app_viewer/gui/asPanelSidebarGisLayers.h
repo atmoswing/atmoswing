@@ -34,18 +34,18 @@
 #include "vroomgis.h"
 
 class asPanelSidebarGisLayers : public asPanelSidebar {
-   public:
-    asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                            const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+ public:
+  asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                          const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarGisLayers() override = default;
+  ~asPanelSidebarGisLayers() override = default;
 
-    vrViewerTOCList *GetTocCtrl() const {
-        return m_tocCtrl;
-    }
+  vrViewerTOCList *GetTocCtrl() const {
+    return m_tocCtrl;
+  }
 
-   private:
-    vrViewerTOCList *m_tocCtrl;
+ private:
+  vrViewerTOCList *m_tocCtrl;
 };
 
 #endif

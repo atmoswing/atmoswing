@@ -34,13 +34,13 @@ asThreadViewerLayerManagerZoomIn::asThreadViewerLayerManagerZoomIn(vrViewerLayer
       m_viewerLayerManager(viewerLayerManager),
       m_critSectionViewerLayerManager(critSectionViewerLayerManager),
       m_rect(fittedRect) {
-    wxASSERT(m_viewerLayerManager);
+  wxASSERT(m_viewerLayerManager);
 }
 
 wxThread::ExitCode asThreadViewerLayerManagerZoomIn::Entry() {
-    m_critSectionViewerLayerManager->Enter();
-    m_viewerLayerManager->Zoom(m_rect);
-    m_critSectionViewerLayerManager->Leave();
+  m_critSectionViewerLayerManager->Enter();
+  m_viewerLayerManager->Zoom(m_rect);
+  m_critSectionViewerLayerManager->Leave();
 
-    return (wxThread::ExitCode)0;
+  return (wxThread::ExitCode)0;
 }

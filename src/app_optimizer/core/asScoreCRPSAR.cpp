@@ -34,74 +34,74 @@ asScoreCRPSAR::asScoreCRPSAR()
               _("Continuous Ranked Probability Score approximation with the rectangle method"), Asc, 0, NaNf) {}
 
 float asScoreCRPSAR::Assess(float obs, const a1f &values, int nbElements) const {
-    wxASSERT(values.size() > 1);
-    wxASSERT(nbElements > 0);
+  wxASSERT(values.size() > 1);
+  wxASSERT(nbElements > 0);
 
-    // Check inputs
-    if (!CheckObservedValue(obs)) {
-        return NaNf;
-    }
-    if (!CheckVectorLength(values, nbElements)) {
-        wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
-    }
+  // Check inputs
+  if (!CheckObservedValue(obs)) {
+    return NaNf;
+  }
+  if (!CheckVectorLength(values, nbElements)) {
+    wxLogWarning(_("Problems in a vector length."));
+    return NaNf;
+  }
 
-    // Create the container to sort the data
-    a1f x(nbElements);
-    float x0 = obs;
+  // Create the container to sort the data
+  a1f x(nbElements);
+  float x0 = obs;
 
-    // Remove the NaNs and copy content
-    int n = CleanNans(values, x, nbElements);
-    if (n == asNOT_FOUND) {
-        wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-        return NaNf;
-    } else if (n <= 2) {
-        wxLogWarning(_("Not enough elements to process the CRPS."));
-        return NaNf;
-    }
+  // Remove the NaNs and copy content
+  int n = CleanNans(values, x, nbElements);
+  if (n == asNOT_FOUND) {
+    wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+    return NaNf;
+  } else if (n <= 2) {
+    wxLogWarning(_("Not enough elements to process the CRPS."));
+    return NaNf;
+  }
 
-    // Sort the forcast array
-    asSortArray(&x[0], &x[n - 1], Asc);
+  // Sort the forcast array
+  asSortArray(&x[0], &x[n - 1], Asc);
 
-    float crps = 0;
+  float crps = 0;
 
-    // Cumulative frequency
-    a1f Fx = asGetCumulativeFrequency(n);
+  // Cumulative frequency
+  a1f Fx = asGetCumulativeFrequency(n);
 
-    // Add rectangle on right side if observed value is on the right of the distribution
-    if (x0 > x[n - 1]) {
-        crps += x0 - x[n - 1];
-    }
+  // Add rectangle on right side if observed value is on the right of the distribution
+  if (x0 > x[n - 1]) {
+    crps += x0 - x[n - 1];
+  }
 
-    // Add rectangle on the left side if observed value is on the left of the distribution
-    if (x0 < x[0]) {
-        crps += x[0] - x0;
-    }
+  // Add rectangle on the left side if observed value is on the left of the distribution
+  if (x0 < x[0]) {
+    crps += x[0] - x0;
+  }
 
-    // Integrate the distribution
-    if (n > 1) {
-        for (int i = 0; i < n - 1; i++) {
-            if (x[i] < x0) {
-                // Left of the observed value
-                if (x[i + 1] <= x0) {
-                    // Next value also left side of observed value
-                    crps += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
-                } else {
-                    // Observation in between 2 values
-                    float F0 = (Fx[i + 1] - Fx[i]) * (x0 - x[i]) / (x[i + 1] - x[i]) + Fx[i];
-                    crps += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
-                    crps += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
-                }
-            } else {
-                // Right of the observed value
-                crps += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
-            }
+  // Integrate the distribution
+  if (n > 1) {
+    for (int i = 0; i < n - 1; i++) {
+      if (x[i] < x0) {
+        // Left of the observed value
+        if (x[i + 1] <= x0) {
+          // Next value also left side of observed value
+          crps += (x[i + 1] - x[i]) * (Fx[i] * Fx[i] + Fx[i + 1] * Fx[i + 1]) / 2;
+        } else {
+          // Observation in between 2 values
+          float F0 = (Fx[i + 1] - Fx[i]) * (x0 - x[i]) / (x[i + 1] - x[i]) + Fx[i];
+          crps += (x0 - x[i]) * (F0 * F0 + Fx[i] * Fx[i]) / 2;
+          crps += (x[i + 1] - x0) * ((F0 - 1) * (F0 - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
         }
+      } else {
+        // Right of the observed value
+        crps += (x[i + 1] - x[i]) * ((Fx[i] - 1) * (Fx[i] - 1) + (Fx[i + 1] - 1) * (Fx[i + 1] - 1)) / 2;
+      }
     }
+  }
 
-    return crps;
+  return crps;
 }
 
 bool asScoreCRPSAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-    return true;
+  return true;
 }

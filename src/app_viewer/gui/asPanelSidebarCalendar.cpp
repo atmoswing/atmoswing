@@ -33,51 +33,50 @@
 asPanelSidebarCalendar::asPanelSidebarCalendar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size,
                                                long style)
     : asPanelSidebar(parent, id, pos, size, style) {
-    m_header->SetLabelText(_("Day of the forecast"));
+  m_header->SetLabelText(_("Day of the forecast"));
 
-    m_calendarForecastDate =
-        new wxCalendarCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
-                           wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
-    m_sizerContent->Add(m_calendarForecastDate, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
+  m_calendarForecastDate = new wxCalendarCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize,
+                                              wxCAL_MONDAY_FIRST | wxCAL_SHOW_HOLIDAYS | wxCAL_SHOW_SURROUNDING_WEEKS);
+  m_sizerContent->Add(m_calendarForecastDate, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 5);
 
-    wxBoxSizer *bSizer35;
-    bSizer35 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *bSizer35;
+  bSizer35 = new wxBoxSizer(wxHORIZONTAL);
 
-    m_staticTextForecastHour = new wxStaticText(this, wxID_ANY, wxT("Hour (UTM)"), wxDefaultPosition, wxDefaultSize, 0);
-    m_staticTextForecastHour->Wrap(-1);
-    bSizer35->Add(m_staticTextForecastHour, 0, wxTOP | wxBOTTOM | wxLEFT, 5);
+  m_staticTextForecastHour = new wxStaticText(this, wxID_ANY, wxT("Hour (UTM)"), wxDefaultPosition, wxDefaultSize, 0);
+  m_staticTextForecastHour->Wrap(-1);
+  bSizer35->Add(m_staticTextForecastHour, 0, wxTOP | wxBOTTOM | wxLEFT, 5);
 
-    m_textCtrlForecastHour = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(40, -1), 0);
-    m_textCtrlForecastHour->SetMaxLength(2);
-    bSizer35->Add(m_textCtrlForecastHour, 0, wxALL, 5);
+  m_textCtrlForecastHour = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(40, -1), 0);
+  m_textCtrlForecastHour->SetMaxLength(2);
+  bSizer35->Add(m_textCtrlForecastHour, 0, wxALL, 5);
 
-    m_bpButtonNow = new wxBitmapButton(this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize(-1, -1),
-                                       wxBU_AUTODRAW | wxNO_BORDER);
-    m_bpButtonNow->SetToolTip(wxT("Set current date."));
-    m_bpButtonNow->SetBitmapLabel(*_img_update);
+  m_bpButtonNow =
+      new wxBitmapButton(this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxSize(-1, -1), wxBU_AUTODRAW | wxNO_BORDER);
+  m_bpButtonNow->SetToolTip(wxT("Set current date."));
+  m_bpButtonNow->SetBitmapLabel(*_img_update);
 
-    bSizer35->Add(m_bpButtonNow, 0, wxTOP | wxBOTTOM, 5);
+  bSizer35->Add(m_bpButtonNow, 0, wxTOP | wxBOTTOM, 5);
 
-    m_sizerContent->Add(bSizer35, 0, wxALIGN_CENTER_HORIZONTAL, 5);
+  m_sizerContent->Add(bSizer35, 0, wxALIGN_CENTER_HORIZONTAL, 5);
 
-    m_bpButtonNow->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
-                           wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
+  m_bpButtonNow->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate),
+                         nullptr, this);
 }
 
 asPanelSidebarCalendar::~asPanelSidebarCalendar() {
-    m_bpButtonNow->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
-                              wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
+  m_bpButtonNow->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+                            wxCommandEventHandler(asPanelSidebarCalendar::OnSetPresentDate), nullptr, this);
 }
 
 void asPanelSidebarCalendar::OnSetPresentDate(wxCommandEvent &event) {
-    SetPresentDate();
+  SetPresentDate();
 }
 
 void asPanelSidebarCalendar::SetPresentDate() {
-    // Set the present date in the calendar and the hour field
-    wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
-    Time nowStruct = asTime::NowTimeStruct(asUTM);
-    wxString hourStr = wxString::Format("%d", nowStruct.hour);
-    m_calendarForecastDate->SetDate(nowWx);
-    m_textCtrlForecastHour->SetValue(hourStr);
+  // Set the present date in the calendar and the hour field
+  wxDateTime nowWx = asTime::NowWxDateTime(asUTM);
+  Time nowStruct = asTime::NowTimeStruct(asUTM);
+  wxString hourStr = wxString::Format("%d", nowStruct.hour);
+  m_calendarForecastDate->SetDate(nowWx);
+  m_textCtrlForecastHour->SetValue(hourStr);
 }

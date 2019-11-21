@@ -34,35 +34,35 @@
 #include "wx/fileconf.h"  // wxFileConfig
 
 class asConfig : public wxObject {
-   public:
-    asConfig() = default;
+ public:
+  asConfig() = default;
 
-    ~asConfig() override = default;
+  ~asConfig() override = default;
 
-    static wxString GetLogDir();
+  static wxString GetLogDir();
 
-    static wxString GetTempDir();
+  static wxString GetTempDir();
 
-    static wxString CreateTempFileName(const wxString &prefix);
+  static wxString CreateTempFileName(const wxString &prefix);
 
-    static wxString CreateTempDir(const wxString &prefix);
+  static wxString CreateTempDir(const wxString &prefix);
 
-    static wxString GetDataDir();
+  static wxString GetDataDir();
 
-    static wxString GetSoftDir();
+  static wxString GetSoftDir();
 
-    static wxString GetUserDataDir();
+  static wxString GetUserDataDir();
 
-    static wxString GetDocumentsDir();
+  static wxString GetDocumentsDir();
 
-    static wxString GetDefaultUserWorkingDir();
+  static wxString GetDefaultUserWorkingDir();
 
 #if wxUSE_GUI
-    static wxColour GetFrameBgColour();
+  static wxColour GetFrameBgColour();
 #endif
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

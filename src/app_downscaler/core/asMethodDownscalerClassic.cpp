@@ -36,44 +36,44 @@ asMethodDownscalerClassic::asMethodDownscalerClassic() : asMethodDownscaler() {}
 asMethodDownscalerClassic::~asMethodDownscalerClassic() {}
 
 bool asMethodDownscalerClassic::Downscale(asParametersDownscaling &params) {
-    // Extract the stations IDs
-    vvi stationsId = params.GetPredictandStationIdsVector();
+  // Extract the stations IDs
+  vvi stationsId = params.GetPredictandStationIdsVector();
 
-    // Create a analogsdate object to save previous analogs dates selection.
-    asResultsDates anaDatesPrevious;
+  // Create a analogsdate object to save previous analogs dates selection.
+  asResultsDates anaDatesPrevious;
 
-    for (const auto &stationId : stationsId) {
-        ClearAll();
+  for (const auto &stationId : stationsId) {
+    ClearAll();
 
-        // Create results objects
-        asResultsDates anaDates;
-        asResultsValues anaValues;
+    // Create results objects
+    asResultsDates anaDates;
+    asResultsValues anaValues;
 
-        // Set the next station ID
-        params.SetPredictandStationIds(stationId);
+    // Set the next station ID
+    params.SetPredictandStationIds(stationId);
 
-        // Process every step one after the other
-        int stepsNb = params.GetStepsNb();
-        for (int iStep = 0; iStep < stepsNb; iStep++) {
-            bool containsNaNs = false;
-            if (iStep == 0) {
-                if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
-            } else {
-                if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
-            }
-            if (containsNaNs) {
-                wxLogError(_("The dates selection contains NaNs"));
-                return false;
-            }
-            if (!GetAnalogsValues(anaValues, &params, anaDates, iStep)) return false;
+    // Process every step one after the other
+    int stepsNb = params.GetStepsNb();
+    for (int iStep = 0; iStep < stepsNb; iStep++) {
+      bool containsNaNs = false;
+      if (iStep == 0) {
+        if (!GetAnalogsDates(anaDates, &params, iStep, containsNaNs)) return false;
+      } else {
+        if (!GetAnalogsSubDates(anaDates, &params, anaDatesPrevious, iStep, containsNaNs)) return false;
+      }
+      if (containsNaNs) {
+        wxLogError(_("The dates selection contains NaNs"));
+        return false;
+      }
+      if (!GetAnalogsValues(anaValues, &params, anaDates, iStep)) return false;
 
-            // Keep the analogs dates of the best parameters set
-            anaDatesPrevious = anaDates;
-        }
-
-        // Save
-        SaveDetails(&params);
+      // Keep the analogs dates of the best parameters set
+      anaDatesPrevious = anaDates;
     }
 
-    return true;
+    // Save
+    SaveDetails(&params);
+  }
+
+  return true;
 }

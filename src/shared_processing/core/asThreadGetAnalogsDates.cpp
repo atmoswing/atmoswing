@@ -58,158 +58,157 @@ asThreadGetAnalogsDates::asThreadGetAnalogsDates(
       m_pFinalAnalogsDates(finalAnalogsDates),
       m_allowDuplicateDates(allowDuplicateDates),
       m_success(success) {
-    m_step = step;
-    m_start = start;
-    m_end = end;
-    m_pContainsNaNs = containsNaNs;
+  m_step = step;
+  m_start = start;
+  m_end = end;
+  m_pContainsNaNs = containsNaNs;
 
-    wxASSERT_MSG(m_end < timeArrayTargetSelection->GetSize(),
-                 _("The given time array end is superior to the time array size."));
-    wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
-                 wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
-                                  (int)timeArrayTargetSelection->GetSize()));
+  wxASSERT_MSG(m_end < timeArrayTargetSelection->GetSize(),
+               _("The given time array end is superior to the time array size."));
+  wxASSERT_MSG(m_end != timeArrayTargetSelection->GetSize() - 2,
+               wxString::Format(_("The given time array end is missing its last value (end=%d, size=%d)."), m_end,
+                                (int)timeArrayTargetSelection->GetSize()));
 }
 
 asThreadGetAnalogsDates::~asThreadGetAnalogsDates() {}
 
 wxThread::ExitCode asThreadGetAnalogsDates::Entry() {
-    // Extract time arrays
-    a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
-    a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
-    a1d timeTargetSelection = m_pTimeArrayTargetSelection->GetTimeArray();
+  // Extract time arrays
+  a1d timeArchiveData = m_pTimeArrayArchiveData->GetTimeArray();
+  a1d timeTargetData = m_pTimeArrayTargetData->GetTimeArray();
+  a1d timeTargetSelection = m_pTimeArrayTargetSelection->GetTimeArray();
 
-    // Some other variables
-    int iTimeTarg, iTimeArch;
-    int predictorsNb = m_params->GetPredictorsNb(m_step);
-    auto membersNb = (m_pPredictorsTarget)[0]->GetData()[0].size();
-    int analogsNb = m_params->GetAnalogsNumber(m_step);
-    bool isAsc = (m_criteria[0]->GetOrder() == Asc);
+  // Some other variables
+  int iTimeTarg, iTimeArch;
+  int predictorsNb = m_params->GetPredictorsNb(m_step);
+  auto membersNb = (m_pPredictorsTarget)[0]->GetData()[0].size();
+  int analogsNb = m_params->GetAnalogsNumber(m_step);
+  bool isAsc = (m_criteria[0]->GetOrder() == Asc);
 
-    wxASSERT(m_end < timeTargetSelection.size());
-    wxASSERT(timeArchiveData.size() == (m_pPredictorsArchive)[0]->GetData().size());
-    wxASSERT(timeTargetData.size() <= (m_pPredictorsTarget)[0]->GetData().size());
-    wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
+  wxASSERT(m_end < timeTargetSelection.size());
+  wxASSERT(timeArchiveData.size() == (m_pPredictorsArchive)[0]->GetData().size());
+  wxASSERT(timeTargetData.size() <= (m_pPredictorsTarget)[0]->GetData().size());
+  wxASSERT(membersNb == (m_pPredictorsArchive)[0]->GetData()[0].size());
 
-    // Containers for daily results
-    a1f scoreArrayOneDay(analogsNb);
-    scoreArrayOneDay.fill(NaNf);
-    a1f dateArrayOneDay(analogsNb);
-    dateArrayOneDay.fill(NaNf);
+  // Containers for daily results
+  a1f scoreArrayOneDay(analogsNb);
+  scoreArrayOneDay.fill(NaNf);
+  a1f dateArrayOneDay(analogsNb);
+  dateArrayOneDay.fill(NaNf);
 
-    // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
-    // the predictors we are interested in, but which didn't take place at the same time.
-    asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),
-                                          m_pTimeArrayArchiveSelection->GetEnd(), m_params->GetAnalogsTimeStepHours(),
-                                          m_params->GetTimeArrayAnalogsMode());
-    dateArrayArchiveSelection.SetForbiddenYears(m_pTimeArrayArchiveSelection->GetForbiddenYears());
+  // DateArray object instantiation. There is one array for all the predictors, as they are aligned, so it picks
+  // the predictors we are interested in, but which didn't take place at the same time.
+  asTimeArray dateArrayArchiveSelection(m_pTimeArrayArchiveSelection->GetStart(),
+                                        m_pTimeArrayArchiveSelection->GetEnd(), m_params->GetAnalogsTimeStepHours(),
+                                        m_params->GetTimeArrayAnalogsMode());
+  dateArrayArchiveSelection.SetForbiddenYears(m_pTimeArrayArchiveSelection->GetForbiddenYears());
 
-    // Reset the index start target
-    int iTimeTargStart = 0;
+  // Reset the index start target
+  int iTimeTargStart = 0;
 
-    // Loop through every timestep as target data
-    for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
-        int iTimeTargRelative =
-            asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
+  // Loop through every timestep as target data
+  for (int iDateTarg = m_start; iDateTarg <= m_end; iDateTarg++) {
+    int iTimeTargRelative = asProcessor::FindNextDate(timeTargetSelection, timeTargetData, iTimeTargStart, iDateTarg);
 
-        // Check if a row was found
-        if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {
-            // Convert the relative index into an absolute index
-            iTimeTarg = iTimeTargRelative + iTimeTargStart;
-            iTimeTargStart = iTimeTarg;
+    // Check if a row was found
+    if (iTimeTargRelative != asNOT_FOUND && iTimeTargRelative != asOUT_OF_RANGE) {
+      // Convert the relative index into an absolute index
+      iTimeTarg = iTimeTargRelative + iTimeTargStart;
+      iTimeTargStart = iTimeTarg;
 
-            // DateArray object initialization.
-            dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetAnalogsIntervalDays(),
-                                           m_params->GetAnalogsExcludeDays());
+      // DateArray object initialization.
+      dateArrayArchiveSelection.Init(timeTargetSelection[iDateTarg], m_params->GetAnalogsIntervalDays(),
+                                     m_params->GetAnalogsExcludeDays());
 
-            // Counter representing the current index
-            int counter = 0;
+      // Counter representing the current index
+      int counter = 0;
 
-            scoreArrayOneDay.fill(NaNf);
-            dateArrayOneDay.fill(NaNf);
+      scoreArrayOneDay.fill(NaNf);
+      dateArrayOneDay.fill(NaNf);
 
-            // Loop over the members
-            for (int iMem = 0; iMem < membersNb; ++iMem) {
-                // Extract target data
-                for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                    m_vTargData[iPtor] = &(m_pPredictorsTarget)[iPtor]->GetData()[iTimeTarg][iMem];
-                }
-
-                // Reset the index start target
-                int iTimeArchStart = 0;
-
-                // Loop through the datearray for candidate data
-                for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
-                    int iTimeArchRelative = asProcessor::FindNextDate(dateArrayArchiveSelection, timeArchiveData,
-                                                                      iTimeArchStart, iDateArch);
-
-                    // Check if a row was found
-                    if (iTimeArchRelative != asNOT_FOUND && iTimeArchRelative != asOUT_OF_RANGE) {
-                        // Convert the relative index into an absolute index
-                        iTimeArch = iTimeArchRelative + iTimeArchStart;
-                        iTimeArchStart = iTimeArch;
-
-                        // Process the criteria
-                        float thisScore = 0;
-                        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
-                            // Get data
-                            m_vArchData[iPtor] = &(m_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
-
-                            // Assess the criteria
-                            wxASSERT(m_criteria.size() > iPtor);
-                            float tmpScore = m_criteria[iPtor]->Assess(*m_vTargData[iPtor], *m_vArchData[iPtor],
-                                                                       m_vRowsNb[iPtor], m_vColsNb[iPtor]);
-
-                            // Weight and add the score
-                            thisScore += tmpScore * m_params->GetPredictorWeight(m_step, iPtor);
-                        }
-                        if (asIsNaN(thisScore)) {
-                            *m_pContainsNaNs = true;
-                        }
-
-                        // Avoid duplicate analog dates
-                        if (!m_allowDuplicateDates && iMem > 0) {
-                            if (counter <= analogsNb - 1) {
-                                wxFAIL;
-                                wxLogError(
-                                    _("It should not happen that the array of analogue dates is not full when adding "
-                                      "members."));
-                                *m_success = false;
-                                return (wxThread::ExitCode)-1;
-                            }
-                            asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float)timeArchiveData[iTimeArch],
-                                                                   thisScore, scoreArrayOneDay, dateArrayOneDay);
-                        } else {
-                            asProcessor::InsertInArrays(isAsc, analogsNb, (float)timeArchiveData[iTimeArch], thisScore,
-                                                        counter, scoreArrayOneDay, dateArrayOneDay);
-                        }
-
-                        counter++;
-                    } else {
-                        wxLogError(
-                            _("The date was not found in the array (Analogs Dates fct, multithreaded option). That "
-                              "should not happen."));
-                        wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
-                                   timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
-                        *m_success = false;
-                        return (wxThread::ExitCode)-1;
-                    }
-                }
-            }
-
-            if (counter < analogsNb) {
-                wxLogWarning(
-                    _("There is not enough available data to satisfy the number of analogs (in "
-                      "asThreadGetAnalogsDates)."));
-                wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
-            }
-
-            // Copy results
-            m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.transpose();
-            m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.transpose();
+      // Loop over the members
+      for (int iMem = 0; iMem < membersNb; ++iMem) {
+        // Extract target data
+        for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+          m_vTargData[iPtor] = &(m_pPredictorsTarget)[iPtor]->GetData()[iTimeTarg][iMem];
         }
+
+        // Reset the index start target
+        int iTimeArchStart = 0;
+
+        // Loop through the datearray for candidate data
+        for (int iDateArch = 0; iDateArch < dateArrayArchiveSelection.GetSize(); iDateArch++) {
+          int iTimeArchRelative =
+              asProcessor::FindNextDate(dateArrayArchiveSelection, timeArchiveData, iTimeArchStart, iDateArch);
+
+          // Check if a row was found
+          if (iTimeArchRelative != asNOT_FOUND && iTimeArchRelative != asOUT_OF_RANGE) {
+            // Convert the relative index into an absolute index
+            iTimeArch = iTimeArchRelative + iTimeArchStart;
+            iTimeArchStart = iTimeArch;
+
+            // Process the criteria
+            float thisScore = 0;
+            for (int iPtor = 0; iPtor < predictorsNb; iPtor++) {
+              // Get data
+              m_vArchData[iPtor] = &(m_pPredictorsArchive)[iPtor]->GetData()[iTimeArch][iMem];
+
+              // Assess the criteria
+              wxASSERT(m_criteria.size() > iPtor);
+              float tmpScore = m_criteria[iPtor]->Assess(*m_vTargData[iPtor], *m_vArchData[iPtor], m_vRowsNb[iPtor],
+                                                         m_vColsNb[iPtor]);
+
+              // Weight and add the score
+              thisScore += tmpScore * m_params->GetPredictorWeight(m_step, iPtor);
+            }
+            if (asIsNaN(thisScore)) {
+              *m_pContainsNaNs = true;
+            }
+
+            // Avoid duplicate analog dates
+            if (!m_allowDuplicateDates && iMem > 0) {
+              if (counter <= analogsNb - 1) {
+                wxFAIL;
+                wxLogError(
+                    _("It should not happen that the array of analogue dates is not full when adding "
+                      "members."));
+                *m_success = false;
+                return (wxThread::ExitCode)-1;
+              }
+              asProcessor::InsertInArraysNoDuplicate(isAsc, analogsNb, (float)timeArchiveData[iTimeArch], thisScore,
+                                                     scoreArrayOneDay, dateArrayOneDay);
+            } else {
+              asProcessor::InsertInArrays(isAsc, analogsNb, (float)timeArchiveData[iTimeArch], thisScore, counter,
+                                          scoreArrayOneDay, dateArrayOneDay);
+            }
+
+            counter++;
+          } else {
+            wxLogError(
+                _("The date was not found in the array (Analogs Dates fct, multithreaded option). That "
+                  "should not happen."));
+            wxLogError(_("Start: %g, end: %g, desired value: %g."), timeArchiveData[iTimeArchStart],
+                       timeArchiveData[timeArchiveData.size() - 1], dateArrayArchiveSelection[iDateArch]);
+            *m_success = false;
+            return (wxThread::ExitCode)-1;
+          }
+        }
+      }
+
+      if (counter < analogsNb) {
+        wxLogWarning(
+            _("There is not enough available data to satisfy the number of analogs (in "
+              "asThreadGetAnalogsDates)."));
+        wxLogWarning(_("Analogs number (%d) > counter (%d)"), analogsNb, counter);
+      }
+
+      // Copy results
+      m_pFinalAnalogsCriteria->row(iDateTarg) = scoreArrayOneDay.transpose();
+      m_pFinalAnalogsDates->row(iDateTarg) = dateArrayOneDay.transpose();
     }
+  }
 
-    *m_success = true;
+  *m_success = true;
 
-    return (wxThread::ExitCode)0;
+  return (wxThread::ExitCode)0;
 }

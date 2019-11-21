@@ -30,44 +30,44 @@
 #endif
 
 class lsVersion {
-   public:
-    static wxString GetSoftName();
+ public:
+  static wxString GetSoftName();
 
-    static wxString GetSoftGIT();
+  static wxString GetSoftGIT();
 
-    static wxString GetSoftGITBranch();
+  static wxString GetSoftGITBranch();
 
-    static wxString GetSoftGITRevisionHash();
+  static wxString GetSoftGITRevisionHash();
 
-    static wxString GetSoftGITRevisionNb();
+  static wxString GetSoftGITRevisionNb();
 
-    static wxString GetwxWidgetsNumber();
+  static wxString GetwxWidgetsNumber();
 
-    static wxString GetGDALNumber();
+  static wxString GetGDALNumber();
 
-    static wxString GetGEOSNumber();
+  static wxString GetGEOSNumber();
 
-    static wxString GetCurlNumber();
+  static wxString GetCurlNumber();
 
-    static wxString GetSQLiteNumber();
+  static wxString GetSQLiteNumber();
 
-    static wxString GetMySQLNumber();
+  static wxString GetMySQLNumber();
 
-    static wxString GetNetCDFNumber();
+  static wxString GetNetCDFNumber();
 
-    static wxString GetProjNumber();
+  static wxString GetProjNumber();
 
-    static wxString GetEigenNumber();
+  static wxString GetEigenNumber();
 
-    static wxString GetPNGNumber();
+  static wxString GetPNGNumber();
 
-    static wxString GetJpegNumber();
+  static wxString GetJpegNumber();
 
-    static wxString GetJasperNumber();
+  static wxString GetJasperNumber();
 
-    static wxString GetEcCodesNumber();
+  static wxString GetEcCodesNumber();
 
-    static wxString GetAllModules();
+  static wxString GetAllModules();
 };
 
 #endif

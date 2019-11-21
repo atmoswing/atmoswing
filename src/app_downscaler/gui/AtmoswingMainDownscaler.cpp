@@ -37,108 +37,106 @@
 
 AtmoswingFrameDownscaler::AtmoswingFrameDownscaler(wxFrame *frame) : asFrameDownscaler(frame) {
 #if wxUSE_STATUSBAR
-    wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
+  wxLogStatus(_("Welcome to AtmoSwing %s."), asVersion::GetFullString());
 #endif
 
-    // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
+  // Config file
+  wxConfigBase *pConfig = wxFileConfig::Get();
 
-    // Set default options
-    SetDefaultOptions();
+  // Set default options
+  SetDefaultOptions();
 
-    // Create log window and file
-    delete wxLog::SetActiveTarget(new asLogGui());
-    m_logWindow =
-        new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
-    Log()->CreateFile("AtmoSwingDownscaler.log");
+  // Create log window and file
+  delete wxLog::SetActiveTarget(new asLogGui());
+  m_logWindow = new asLogWindow(this, _("AtmoSwing log window"), pConfig->ReadBool("/General/DisplayLogWindow", true));
+  Log()->CreateFile("AtmoSwingDownscaler.log");
 
-    // Restore frame position and size
-    int minHeight = 600, minWidth = 500;
-    int x = pConfig->ReadLong("/MainFrame/x", 50), y = pConfig->ReadLong("/MainFrame/y", 50),
-        w = pConfig->ReadLong("/MainFrame/w", minWidth), h = pConfig->ReadLong("/MainFrame/h", minHeight);
-    wxRect screen = wxGetClientDisplayRect();
-    if (x < screen.x - 10) x = screen.x;
-    if (x > screen.width) x = screen.x;
-    if (y < screen.y - 10) y = screen.y;
-    if (y > screen.height) y = screen.y;
-    if (w + x > screen.width) w = screen.width - x;
-    if (w < minWidth) w = minWidth;
-    if (w + x > screen.width) x = screen.width - w;
-    if (h + y > screen.height) h = screen.height - y;
-    if (h < minHeight) h = minHeight;
-    if (h + y > screen.height) y = screen.height - h;
-    Move(x, y);
-    SetClientSize(w, h);
-    Fit();
+  // Restore frame position and size
+  int minHeight = 600, minWidth = 500;
+  int x = pConfig->ReadLong("/MainFrame/x", 50), y = pConfig->ReadLong("/MainFrame/y", 50),
+      w = pConfig->ReadLong("/MainFrame/w", minWidth), h = pConfig->ReadLong("/MainFrame/h", minHeight);
+  wxRect screen = wxGetClientDisplayRect();
+  if (x < screen.x - 10) x = screen.x;
+  if (x > screen.width) x = screen.x;
+  if (y < screen.y - 10) y = screen.y;
+  if (y > screen.height) y = screen.y;
+  if (w + x > screen.width) w = screen.width - x;
+  if (w < minWidth) w = minWidth;
+  if (w + x > screen.width) x = screen.width - w;
+  if (h + y > screen.height) h = screen.height - y;
+  if (h < minHeight) h = minHeight;
+  if (h + y > screen.height) y = screen.height - h;
+  Move(x, y);
+  SetClientSize(w, h);
+  Fit();
 
-    // Get the GUI mode -> silent or not
-    long guiOptions = pConfig->ReadLong("/General/GuiOptions", 0l);
-    if (guiOptions == 0l) {
-        g_silentMode = true;
-    } else {
-        g_silentMode = false;
-        g_verboseMode = false;
-        if (guiOptions == 2l) {
-            g_verboseMode = true;
-        }
+  // Get the GUI mode -> silent or not
+  long guiOptions = pConfig->ReadLong("/General/GuiOptions", 0l);
+  if (guiOptions == 0l) {
+    g_silentMode = true;
+  } else {
+    g_silentMode = false;
+    g_verboseMode = false;
+    if (guiOptions == 2l) {
+      g_verboseMode = true;
     }
+  }
 }
 
 void AtmoswingFrameDownscaler::SetDefaultOptions() {
-    wxConfigBase *pConfig = wxFileConfig::Get();
+  wxConfigBase *pConfig = wxFileConfig::Get();
 
-    // General
-    pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
-    pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", false));
-    pConfig->Write("/General/LogLevel", pConfig->ReadLong("/General/LogLevel", 1));
-    pConfig->Write("/General/DisplayLogWindow", pConfig->ReadLong("/General/DisplayLogWindow", false));
+  // General
+  pConfig->Write("/General/GuiOptions", pConfig->ReadLong("/General/GuiOptions", 1l));
+  pConfig->Write("/General/Responsive", pConfig->ReadBool("/General/Responsive", false));
+  pConfig->Write("/General/LogLevel", pConfig->ReadLong("/General/LogLevel", 1));
+  pConfig->Write("/General/DisplayLogWindow", pConfig->ReadLong("/General/DisplayLogWindow", false));
 
-    // Paths
-    wxString dirData = asConfig::GetDataDir() + "data" + DS;
-    pConfig->Write("/Paths/DataPredictandDBDir", pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
-    pConfig->Write(
-        "/Paths/DownscalerResultsDir",
-        pConfig->Read("/Paths/DownscalerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
-    pConfig->Write("/Paths/ArchivePredictorsDir", pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
-    pConfig->Write("/Paths/ScenarioPredictorsDir",
-                   pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors"));
+  // Paths
+  wxString dirData = asConfig::GetDataDir() + "data" + DS;
+  pConfig->Write("/Paths/DataPredictandDBDir", pConfig->Read("/Paths/DataPredictandDBDir", dirData + "predictands"));
+  pConfig->Write(
+      "/Paths/DownscalerResultsDir",
+      pConfig->Read("/Paths/DownscalerResultsDir", asConfig::GetDocumentsDir() + "AtmoSwing" + DS + "Downscaler"));
+  pConfig->Write("/Paths/ArchivePredictorsDir", pConfig->Read("/Paths/ArchivePredictorsDir", dirData + "predictors"));
+  pConfig->Write("/Paths/ScenarioPredictorsDir", pConfig->Read("/Paths/ScenarioPredictorsDir", dirData + "predictors"));
 
-    // Processing
-    bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
-    pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
-    int maxThreads = wxThread::GetCPUCount();
-    if (maxThreads == -1) maxThreads = 2;
-    pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
-    long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
-    if (!allowMultithreading) {
-        processingMethod = (long)asSTANDARD;
-    }
-    pConfig->Write("/Processing/Method", processingMethod);
+  // Processing
+  bool allowMultithreading = pConfig->ReadBool("/Processing/AllowMultithreading", true);
+  pConfig->Write("/Processing/AllowMultithreading", allowMultithreading);
+  int maxThreads = wxThread::GetCPUCount();
+  if (maxThreads == -1) maxThreads = 2;
+  pConfig->Write("/Processing/ThreadsNb", pConfig->Read("/Processing/ThreadsNb", wxString::Format("%d", maxThreads)));
+  long processingMethod = pConfig->Read("/Processing/Method", (long)asMULTITHREADS);
+  if (!allowMultithreading) {
+    processingMethod = (long)asSTANDARD;
+  }
+  pConfig->Write("/Processing/Method", processingMethod);
 
-    pConfig->Flush();
+  pConfig->Flush();
 }
 
 AtmoswingFrameDownscaler::~AtmoswingFrameDownscaler() {
-    // Config file
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    if (!pConfig) return;
+  // Config file
+  wxConfigBase *pConfig = wxFileConfig::Get();
+  if (!pConfig) return;
 
-    // Save the frame position
-    int x, y, w, h;
-    GetClientSize(&w, &h);
-    GetPosition(&x, &y);
-    pConfig->Write("/MainFrame/x", (long)x);
-    pConfig->Write("/MainFrame/y", (long)y);
-    pConfig->Write("/MainFrame/w", (long)w);
-    pConfig->Write("/MainFrame/h", (long)h);
+  // Save the frame position
+  int x, y, w, h;
+  GetClientSize(&w, &h);
+  GetPosition(&x, &y);
+  pConfig->Write("/MainFrame/x", (long)x);
+  pConfig->Write("/MainFrame/y", (long)y);
+  pConfig->Write("/MainFrame/w", (long)w);
+  pConfig->Write("/MainFrame/h", (long)h);
 
-    Destroy();
+  Destroy();
 }
 
 void AtmoswingFrameDownscaler::OnClose(wxCloseEvent &event) {
-    Close(true);
+  Close(true);
 }
 
 void AtmoswingFrameDownscaler::OnQuit(wxCommandEvent &event) {
-    Close(true);
+  Close(true);
 }

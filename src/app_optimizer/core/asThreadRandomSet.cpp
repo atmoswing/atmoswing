@@ -39,58 +39,58 @@ asThreadRandomSet::asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asPa
 asThreadRandomSet::~asThreadRandomSet() {}
 
 wxThread::ExitCode asThreadRandomSet::Entry() {
-    // Create results objects. Needs to be in a critical section because of access to the config pointer.
-    asResultsDates anaDates;
-    asResultsDates anaDatesPrevious;
-    asResultsValues anaValues;
-    asResultsScores anaScores;
-    asResultsTotalScore anaScoreFinal;
+  // Create results objects. Needs to be in a critical section because of access to the config pointer.
+  asResultsDates anaDates;
+  asResultsDates anaDatesPrevious;
+  asResultsValues anaValues;
+  asResultsScores anaScores;
+  asResultsTotalScore anaScoreFinal;
 
-    // Set the climatology score value
-    if (m_scoreClimatology->size() != 0) {
-        wxLogVerbose(_("Process score of the climatology"));
-        m_optimizer->SetScoreClimatology(*m_scoreClimatology);
-    }
+  // Set the climatology score value
+  if (m_scoreClimatology->size() != 0) {
+    wxLogVerbose(_("Process score of the climatology"));
+    m_optimizer->SetScoreClimatology(*m_scoreClimatology);
+  }
 
-    // Process every step one after the other
-    int stepsNb = m_params->GetStepsNb();
-    for (int iStep = 0; iStep < stepsNb; iStep++) {
-        bool containsNaNs = false;
-        if (iStep == 0) {
-            if (!m_optimizer->GetAnalogsDates(anaDates, m_params, iStep, containsNaNs)) {
-                wxLogError(_("Failed processing the analogs dates"));
-                return NULL;
-            }
-            anaDatesPrevious = anaDates;
-        } else {
-            if (!m_optimizer->GetAnalogsSubDates(anaDates, m_params, anaDatesPrevious, iStep, containsNaNs)) {
-                wxLogError(_("Failed processing the analogs sub dates"));
-                return NULL;
-            }
-            anaDatesPrevious = anaDates;
-        }
-        if (containsNaNs) {
-            wxLogError(_("The dates selection contains NaNs"));
-            return NULL;
-        }
-    }
-    if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
-        wxLogError(_("Failed processing the analogs values"));
+  // Process every step one after the other
+  int stepsNb = m_params->GetStepsNb();
+  for (int iStep = 0; iStep < stepsNb; iStep++) {
+    bool containsNaNs = false;
+    if (iStep == 0) {
+      if (!m_optimizer->GetAnalogsDates(anaDates, m_params, iStep, containsNaNs)) {
+        wxLogError(_("Failed processing the analogs dates"));
         return NULL;
-    }
-    if (!m_optimizer->GetAnalogsScores(anaScores, m_params, anaValues, stepsNb - 1)) {
-        wxLogError(_("Failed processing the scores"));
+      }
+      anaDatesPrevious = anaDates;
+    } else {
+      if (!m_optimizer->GetAnalogsSubDates(anaDates, m_params, anaDatesPrevious, iStep, containsNaNs)) {
+        wxLogError(_("Failed processing the analogs sub dates"));
         return NULL;
+      }
+      anaDatesPrevious = anaDates;
     }
-    if (!m_optimizer->GetAnalogsTotalScore(anaScoreFinal, m_params, anaScores, stepsNb - 1)) {
-        wxLogError(_("Failed processing the total score"));
-        return NULL;
+    if (containsNaNs) {
+      wxLogError(_("The dates selection contains NaNs"));
+      return NULL;
     }
-    *m_finalScoreCalib = anaScoreFinal.GetScore();
+  }
+  if (!m_optimizer->GetAnalogsValues(anaValues, m_params, anaDates, stepsNb - 1)) {
+    wxLogError(_("Failed processing the analogs values"));
+    return NULL;
+  }
+  if (!m_optimizer->GetAnalogsScores(anaScores, m_params, anaValues, stepsNb - 1)) {
+    wxLogError(_("Failed processing the scores"));
+    return NULL;
+  }
+  if (!m_optimizer->GetAnalogsTotalScore(anaScoreFinal, m_params, anaScores, stepsNb - 1)) {
+    wxLogError(_("Failed processing the total score"));
+    return NULL;
+  }
+  *m_finalScoreCalib = anaScoreFinal.GetScore();
 
-    if (m_scoreClimatology->size() == 0) {
-        *m_scoreClimatology = m_optimizer->GetScoreClimatology();
-    }
+  if (m_scoreClimatology->size() == 0) {
+    *m_scoreClimatology = m_optimizer->GetScoreClimatology();
+  }
 
-    return 0;
+  return 0;
 }

@@ -34,17 +34,17 @@
 #include "asScore.h"
 
 class asScoreDF0 : public asScore {
-   public:
-    asScoreDF0();
+ public:
+  asScoreDF0();
 
-    ~asScoreDF0() override = default;
+  ~asScoreDF0() override = default;
 
-    float Assess(float obs, const a1f &values, int nbElements) const override;
+  float Assess(float obs, const a1f &values, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

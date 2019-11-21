@@ -38,26 +38,26 @@ asScoreCRPSaccurAR::asScoreCRPSaccurAR()
 }
 
 float asScoreCRPSaccurAR::Assess(float obs, const a1f &values, int nbElements) const {
-    wxASSERT(values.size() > 1);
-    wxASSERT(nbElements > 0);
+  wxASSERT(values.size() > 1);
+  wxASSERT(nbElements > 0);
 
-    // Check inputs
-    if (!CheckObservedValue(obs)) {
-        return NaNf;
-    }
-    if (!CheckVectorLength(values, nbElements)) {
-        wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
-    }
+  // Check inputs
+  if (!CheckObservedValue(obs)) {
+    return NaNf;
+  }
+  if (!CheckVectorLength(values, nbElements)) {
+    wxLogWarning(_("Problems in a vector length."));
+    return NaNf;
+  }
 
-    asScoreCRPSAR scoreCRPSAR = asScoreCRPSAR();
-    float CRPS = scoreCRPSAR.Assess(obs, values, nbElements);
-    asScoreCRPSsharpAR scoreCRPSsharpnessAR = asScoreCRPSsharpAR();
-    float CRPSsharpness = scoreCRPSsharpnessAR.Assess(obs, values, nbElements);
+  asScoreCRPSAR scoreCRPSAR = asScoreCRPSAR();
+  float CRPS = scoreCRPSAR.Assess(obs, values, nbElements);
+  asScoreCRPSsharpAR scoreCRPSsharpnessAR = asScoreCRPSsharpAR();
+  float CRPSsharpness = scoreCRPSsharpnessAR.Assess(obs, values, nbElements);
 
-    return CRPS - CRPSsharpness;
+  return CRPS - CRPSsharpness;
 }
 
 bool asScoreCRPSaccurAR::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-    return true;
+  return true;
 }

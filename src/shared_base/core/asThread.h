@@ -32,41 +32,41 @@
 #include <wx/thread.h>
 
 class asThread : public wxThread {
-   public:
-    enum Type {
-        Undefined,
-        PreloadData,
-        ProcessorGetAnalogsDates,
-        ProcessorGetAnalogsSubDates,
-        MethodOptimizerRandomSet,
-        MethodOptimizerGeneticAlgorithms
-    };
+ public:
+  enum Type {
+    Undefined,
+    PreloadData,
+    ProcessorGetAnalogsDates,
+    ProcessorGetAnalogsSubDates,
+    MethodOptimizerRandomSet,
+    MethodOptimizerGeneticAlgorithms
+  };
 
-    explicit asThread(Type type = Undefined);
+  explicit asThread(Type type = Undefined);
 
-    ~asThread() override = default;
+  ~asThread() override = default;
 
-    ExitCode Entry() override;
+  ExitCode Entry() override;
 
-    void OnExit() override;
+  void OnExit() override;
 
-    asThread::Type GetType() const {
-        return m_type;
-    }
+  asThread::Type GetType() const {
+    return m_type;
+  }
 
-    int GetDevice() const {
-        return m_device;
-    }
+  int GetDevice() const {
+    return m_device;
+  }
 
-    void SetDevice(int val) {
-        m_device = val;
-    }
+  void SetDevice(int val) {
+    m_device = val;
+  }
 
-   protected:
-    asThread::Type m_type;
-    int m_device;
+ protected:
+  asThread::Type m_type;
+  int m_device;
 
-   private:
+ private:
 };
 
 #endif

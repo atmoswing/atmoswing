@@ -33,22 +33,22 @@
 #include "AtmoswingSharedGui.h"
 
 class asFramePredictandDB : public asFramePredictandDBVirtual {
-   public:
-    explicit asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
+ public:
+  explicit asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
 
-   protected:
-    void OnClose(wxCloseEvent &);
+ protected:
+  void OnClose(wxCloseEvent &);
 
-    void CloseFrame(wxCommandEvent &event) override;
+  void CloseFrame(wxCommandEvent &event) override;
 
-    void FixFrameSize();
+  void FixFrameSize();
 
-    void OnDataSelection(wxCommandEvent &event) override;
+  void OnDataSelection(wxCommandEvent &event) override;
 
-    void BuildDatabase(wxCommandEvent &event) override;
+  void BuildDatabase(wxCommandEvent &event) override;
 
-   private:
-    wxPanel *m_panelProcessing;
+ private:
+  wxPanel *m_panelProcessing;
 };
 
 #endif

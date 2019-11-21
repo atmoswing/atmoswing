@@ -34,17 +34,17 @@
 #include "asScore.h"
 
 class asScoreCRPSsharpAR : public asScore {
-   public:
-    asScoreCRPSsharpAR();
+ public:
+  asScoreCRPSsharpAR();
 
-    ~asScoreCRPSsharpAR();
+  ~asScoreCRPSsharpAR();
 
-    float Assess(float obs, const a1f &values, int nbElements) const;
+  float Assess(float obs, const a1f &values, int nbElements) const;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

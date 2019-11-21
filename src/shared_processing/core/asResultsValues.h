@@ -33,77 +33,77 @@
 #include <asResults.h>
 
 class asResultsValues : public asResults {
-   public:
-    asResultsValues();
+ public:
+  asResultsValues();
 
-    virtual ~asResultsValues();
+  virtual ~asResultsValues();
 
-    void Init(asParameters *arams);
+  void Init(asParameters *arams);
 
-    a1f &GetTargetDates() {
-        return m_targetDates;
-    }
+  a1f &GetTargetDates() {
+    return m_targetDates;
+  }
 
-    void SetTargetDates(a1f &refDates) {
-        m_targetDates.resize(refDates.rows());
-        m_targetDates = refDates;
-    }
+  void SetTargetDates(a1f &refDates) {
+    m_targetDates.resize(refDates.rows());
+    m_targetDates = refDates;
+  }
 
-    va1f &GetTargetValues() {
-        return m_targetValuesNorm;
-    }
+  va1f &GetTargetValues() {
+    return m_targetValuesNorm;
+  }
 
-    void SetTargetValuesNorm(va1f &targetValuesNorm) {
-        m_targetValuesNorm = targetValuesNorm;
-    }
+  void SetTargetValuesNorm(va1f &targetValuesNorm) {
+    m_targetValuesNorm = targetValuesNorm;
+  }
 
-    void SetTargetValuesRaw(va1f &targetValuesRaw) {
-        m_targetValuesRaw = targetValuesRaw;
-    }
+  void SetTargetValuesRaw(va1f &targetValuesRaw) {
+    m_targetValuesRaw = targetValuesRaw;
+  }
 
-    a2f &GetAnalogsCriteria() {
-        return m_analogsCriteria;
-    }
+  a2f &GetAnalogsCriteria() {
+    return m_analogsCriteria;
+  }
 
-    void SetAnalogsCriteria(a2f &analogsCriteria) {
-        m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
-        m_analogsCriteria = analogsCriteria;
-    }
+  void SetAnalogsCriteria(a2f &analogsCriteria) {
+    m_analogsCriteria.resize(analogsCriteria.rows(), analogsCriteria.cols());
+    m_analogsCriteria = analogsCriteria;
+  }
 
-    va2f &GetAnalogsValues() {
-        return m_analogsValuesNorm;
-    }
+  va2f &GetAnalogsValues() {
+    return m_analogsValuesNorm;
+  }
 
-    void SetAnalogsValuesNorm(va2f &analogsValuesNorm) {
-        m_analogsValuesNorm = analogsValuesNorm;
-    }
+  void SetAnalogsValuesNorm(va2f &analogsValuesNorm) {
+    m_analogsValuesNorm = analogsValuesNorm;
+  }
 
-    va2f GetAnalogsValuesRaw() const {
-        return m_analogsValuesRaw;
-    }
+  va2f GetAnalogsValuesRaw() const {
+    return m_analogsValuesRaw;
+  }
 
-    void SetAnalogsValuesRaw(va2f &analogsValuesRaw) {
-        m_analogsValuesRaw = analogsValuesRaw;
-    }
+  void SetAnalogsValuesRaw(va2f &analogsValuesRaw) {
+    m_analogsValuesRaw = analogsValuesRaw;
+  }
 
-    int GetTargetDatesLength() const {
-        return m_targetDates.size();
-    }
+  int GetTargetDatesLength() const {
+    return m_targetDates.size();
+  }
 
-    bool Save();
+  bool Save();
 
-    bool Load();
+  bool Load();
 
-   protected:
-    void BuildFileName();
+ protected:
+  void BuildFileName();
 
-   private:
-    a1f m_targetDates;         // Dimensions: time
-    va1f m_targetValuesNorm;   // Dimensions: stations x time
-    va1f m_targetValuesRaw;    // Dimensions: stations x time
-    a2f m_analogsCriteria;     // Dimensions: time x analogs
-    va2f m_analogsValuesNorm;  // Dimensions: stations x time x analogs
-    va2f m_analogsValuesRaw;   // Dimensions: stations x time x analogs
+ private:
+  a1f m_targetDates;         // Dimensions: time
+  va1f m_targetValuesNorm;   // Dimensions: stations x time
+  va1f m_targetValuesRaw;    // Dimensions: stations x time
+  a2f m_analogsCriteria;     // Dimensions: time x analogs
+  va2f m_analogsValuesNorm;  // Dimensions: stations x time x analogs
+  va2f m_analogsValuesRaw;   // Dimensions: stations x time x analogs
 };
 
 #endif

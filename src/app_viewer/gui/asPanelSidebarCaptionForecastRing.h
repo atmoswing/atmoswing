@@ -35,58 +35,58 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
-   public:
-    explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                                      const wxPoint &pos = wxDefaultPosition,
-                                                      const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+ public:
+  explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+                                                    const wxPoint &pos = wxDefaultPosition,
+                                                    const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastRingDrawing() override;
+  ~asPanelSidebarCaptionForecastRingDrawing() override;
 
-    void DrawDates(a1f &dates);
+  void DrawDates(a1f &dates);
 
-    void DrawColorbar(double maxval);
+  void DrawColorbar(double maxval);
 
-   private:
-    wxBitmap *m_bmpDates;
-    wxBitmap *m_bmpColorbar;
-    wxGraphicsContext *m_gdc;
+ private:
+  wxBitmap *m_bmpDates;
+  wxBitmap *m_bmpColorbar;
+  wxGraphicsContext *m_gdc;
 
-    void SetBitmapDates(wxBitmap *bmp);
+  void SetBitmapDates(wxBitmap *bmp);
 
-    void SetBitmapColorbar(wxBitmap *bmp);
+  void SetBitmapColorbar(wxBitmap *bmp);
 
-    void CreateDatesPath(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
+  void CreateDatesPath(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
 
-    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb,
-                         const wxString &label);
+  void CreateDatesText(wxGraphicsContext *gc, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb,
+                       const wxString &label);
 
-    void CreateColorbarPath(wxGraphicsPath &path);
+  void CreateColorbarPath(wxGraphicsPath &path);
 
-    void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
+  void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
 
-    void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
+  void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
 
-    void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
+  void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
 
-    void OnPaint(wxPaintEvent &event);
+  void OnPaint(wxPaintEvent &event);
 };
 
 class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
-   public:
-    explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                               const wxPoint &pos = wxDefaultPosition,
-                                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+ public:
+  explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
+                                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+                                             long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastRing() override;
+  ~asPanelSidebarCaptionForecastRing() override;
 
-    void SetDates(a1f &dates);
+  void SetDates(a1f &dates);
 
-    void SetColorbarMax(double maxval);
+  void SetColorbarMax(double maxval);
 
-   private:
-    asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
+ private:
+  asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
 
-    void OnPaint(wxPaintEvent &event);
+  void OnPaint(wxPaintEvent &event);
 };
 
 #endif

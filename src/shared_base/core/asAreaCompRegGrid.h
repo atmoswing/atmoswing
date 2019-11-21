@@ -33,53 +33,53 @@
 #include <asIncludes.h>
 
 class asAreaCompRegGrid : public asAreaCompGrid {
-   public:
-    asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
-                      double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+ public:
+  asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
+                    double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
-                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+  asAreaCompRegGrid(double xMin, double xWidth, double xStep, double yMin, double yWidth, double yStep,
+                    int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-    asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
-                      bool isLatLon = true);
+  asAreaCompRegGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                    bool isLatLon = true);
 
-    ~asAreaCompRegGrid() override = default;
+  ~asAreaCompRegGrid() override = default;
 
-    bool GridsOverlay(asAreaCompGrid *otherArea) const override;
+  bool GridsOverlay(asAreaCompGrid *otherArea) const override;
 
-    bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false) override;
+  bool InitializeAxes(const a1d &lons, const a1d &lats, bool strideAllowed = true, bool getLarger = false) override;
 
-    double GetXstep() const override {
-        return m_xStep;
-    }
+  double GetXstep() const override {
+    return m_xStep;
+  }
 
-    double GetYstep() const override {
-        return m_yStep;
-    }
+  double GetYstep() const override {
+    return m_yStep;
+  }
 
-    int GetXstepStride() const {
-        wxASSERT(m_xStep > 0);
-        wxASSERT(fmod(m_xStep, m_xStepData) == 0);
-        return int(m_xStep / m_xStepData);
-    }
+  int GetXstepStride() const {
+    wxASSERT(m_xStep > 0);
+    wxASSERT(fmod(m_xStep, m_xStepData) == 0);
+    return int(m_xStep / m_xStepData);
+  }
 
-    int GetYstepStride() const {
-        wxASSERT(m_yStep > 0);
-        wxASSERT(fmod(m_yStep, m_yStepData) == 0);
-        return int(m_yStep / m_yStepData);
-    }
+  int GetYstepStride() const {
+    wxASSERT(m_yStep > 0);
+    wxASSERT(fmod(m_yStep, m_yStepData) == 0);
+    return int(m_yStep / m_yStepData);
+  }
 
-    void SetSameStepAsData() {
-        m_xStep = m_xStepData;
-        m_yStep = m_yStepData;
-    }
+  void SetSameStepAsData() {
+    m_xStep = m_xStepData;
+    m_yStep = m_yStepData;
+  }
 
-   protected:
-   private:
-    double m_xStep;
-    double m_yStep;
-    double m_xStepData;
-    double m_yStepData;
+ protected:
+ private:
+  double m_xStep;
+  double m_yStep;
+  double m_xStepData;
+  double m_yStepData;
 };
 
 #endif

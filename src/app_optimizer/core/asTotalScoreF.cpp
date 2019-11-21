@@ -31,47 +31,47 @@
 asTotalScoreF::asTotalScoreF(const wxString &periodString) : asTotalScore(periodString) {}
 
 float asTotalScoreF::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-    wxASSERT(targetDates.rows() > 1);
-    wxASSERT(scores.rows() > 1);
+  wxASSERT(targetDates.rows() > 1);
+  wxASSERT(scores.rows() > 1);
 
-    int countB = 0, countD = 0, countTot = 0;
+  int countB = 0, countD = 0, countTot = 0;
 
-    switch (m_period) {
-        case (asTotalScore::Total): {
-            for (int i = 0; i < scores.size(); i++) {
-                countTot++;
-                if (scores[i] == 1) {
-                    //
-                } else if (scores[i] == 2) {
-                    countB++;
-                } else if (scores[i] == 3) {
-                    //
-                } else if (scores[i] == 4) {
-                    countD++;
-                } else {
-                    wxLogError(_("The F score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
-                }
-            }
-            break;
-        }
-
-        default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreF."));
-        }
-    }
-
-    float score;
-
-    if (countTot > 0) {
-        if (countB + countD > 0) {
-            score = float(countB) / float(countB + countD);
+  switch (m_period) {
+    case (asTotalScore::Total): {
+      for (int i = 0; i < scores.size(); i++) {
+        countTot++;
+        if (scores[i] == 1) {
+          //
+        } else if (scores[i] == 2) {
+          countB++;
+        } else if (scores[i] == 3) {
+          //
+        } else if (scores[i] == 4) {
+          countD++;
         } else {
-            score = 0;
+          wxLogError(_("The F score (%f) is not an authorized value."), scores[i]);
+          return NaNf;
         }
-    } else {
-        score = NaNf;
+      }
+      break;
     }
 
-    return score;
+    default: {
+      asThrowException(_("Period not yet implemented in asTotalScoreF."));
+    }
+  }
+
+  float score;
+
+  if (countTot > 0) {
+    if (countB + countD > 0) {
+      score = float(countB) / float(countB + countD);
+    } else {
+      score = 0;
+    }
+  } else {
+    score = NaNf;
+  }
+
+  return score;
 }

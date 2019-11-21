@@ -29,31 +29,31 @@
 #include "asCriteriaRSE.h"
 
 asCriteriaRSE::asCriteriaRSE() : asCriteria("RSE", _("Root Squared Error"), Asc) {
-    m_canUseInline = true;
+  m_canUseInline = true;
 }
 
 asCriteriaRSE::~asCriteriaRSE() = default;
 
 float asCriteriaRSE::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-    wxASSERT(refData.rows() == evalData.rows());
-    wxASSERT(refData.cols() == evalData.cols());
+  wxASSERT(refData.rows() == evalData.rows());
+  wxASSERT(refData.cols() == evalData.cols());
 
-    float se = 0;
+  float se = 0;
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
-        se = (evalData - refData).pow(2).sum();
+  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    se = (evalData - refData).pow(2).sum();
 
-    } else {
-        a2f diff = evalData - refData;
+  } else {
+    a2f diff = evalData - refData;
 
-        int size = (!diff.isNaN()).count();
-        if (size == 0) {
-            wxLogVerbose(_("Only NaNs in the RSE criteria calculation."));
-            return m_scaleWorst;
-        }
-
-        se = ((diff.isNaN()).select(0, diff)).pow(2).sum();
+    int size = (!diff.isNaN()).count();
+    if (size == 0) {
+      wxLogVerbose(_("Only NaNs in the RSE criteria calculation."));
+      return m_scaleWorst;
     }
 
-    return std::sqrt(se);
+    se = ((diff.isNaN()).select(0, diff)).pow(2).sum();
+  }
+
+  return std::sqrt(se);
 }

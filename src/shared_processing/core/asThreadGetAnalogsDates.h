@@ -40,40 +40,40 @@ class asCriteria;
 class asTimeArray;
 
 class asThreadGetAnalogsDates : public asThread {
-   public:
-    asThreadGetAnalogsDates(std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
-                            asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayArchiveSelection,
-                            asTimeArray *timeArrayTargetData, asTimeArray *timeArrayTargetSelection,
-                            std::vector<asCriteria *> criteria, asParameters *params, int step, a1i &vRowsNb,
-                            a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
-                            bool *containsNaNs, bool allowDuplicateDates, bool *success);
+ public:
+  asThreadGetAnalogsDates(std::vector<asPredictor *> predictorsArchive, std::vector<asPredictor *> predictorsTarget,
+                          asTimeArray *timeArrayArchiveData, asTimeArray *timeArrayArchiveSelection,
+                          asTimeArray *timeArrayTargetData, asTimeArray *timeArrayTargetSelection,
+                          std::vector<asCriteria *> criteria, asParameters *params, int step, a1i &vRowsNb,
+                          a1i &vColsNb, int start, int end, a2f *finalAnalogsCriteria, a2f *finalAnalogsDates,
+                          bool *containsNaNs, bool allowDuplicateDates, bool *success);
 
-    virtual ~asThreadGetAnalogsDates();
+  virtual ~asThreadGetAnalogsDates();
 
-    virtual ExitCode Entry();
+  virtual ExitCode Entry();
 
-   protected:
-   private:
-    std::vector<asPredictor *> m_pPredictorsArchive;
-    std::vector<asPredictor *> m_pPredictorsTarget;
-    asTimeArray *m_pTimeArrayArchiveData;
-    asTimeArray *m_pTimeArrayArchiveSelection;
-    asTimeArray *m_pTimeArrayTargetData;
-    asTimeArray *m_pTimeArrayTargetSelection;
-    std::vector<asCriteria *> m_criteria;
-    asParameters *m_params;
-    int m_step;
-    vpa2f m_vTargData;
-    vpa2f m_vArchData;
-    a1i m_vRowsNb;
-    a1i m_vColsNb;
-    int m_start;
-    int m_end;
-    a2f *m_pFinalAnalogsCriteria;
-    a2f *m_pFinalAnalogsDates;
-    bool *m_pContainsNaNs;
-    bool m_allowDuplicateDates;
-    bool *m_success;
+ protected:
+ private:
+  std::vector<asPredictor *> m_pPredictorsArchive;
+  std::vector<asPredictor *> m_pPredictorsTarget;
+  asTimeArray *m_pTimeArrayArchiveData;
+  asTimeArray *m_pTimeArrayArchiveSelection;
+  asTimeArray *m_pTimeArrayTargetData;
+  asTimeArray *m_pTimeArrayTargetSelection;
+  std::vector<asCriteria *> m_criteria;
+  asParameters *m_params;
+  int m_step;
+  vpa2f m_vTargData;
+  vpa2f m_vArchData;
+  a1i m_vRowsNb;
+  a1i m_vColsNb;
+  int m_start;
+  int m_end;
+  a2f *m_pFinalAnalogsCriteria;
+  a2f *m_pFinalAnalogsDates;
+  bool *m_pContainsNaNs;
+  bool m_allowDuplicateDates;
+  bool *m_success;
 };
 
 #endif

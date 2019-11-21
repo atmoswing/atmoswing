@@ -36,26 +36,26 @@ asScoreCRPSaccurEP::asScoreCRPSaccurEP()
               _("Continuous Ranked Probability Score Accuracy exact solution"), Asc, 0, NaNf) {}
 
 float asScoreCRPSaccurEP::Assess(float obs, const a1f &values, int nbElements) const {
-    wxASSERT(values.size() > 1);
-    wxASSERT(nbElements > 0);
+  wxASSERT(values.size() > 1);
+  wxASSERT(nbElements > 0);
 
-    // Check inputs
-    if (!CheckObservedValue(obs)) {
-        return NaNf;
-    }
-    if (!CheckVectorLength(values, nbElements)) {
-        wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
-    }
+  // Check inputs
+  if (!CheckObservedValue(obs)) {
+    return NaNf;
+  }
+  if (!CheckVectorLength(values, nbElements)) {
+    wxLogWarning(_("Problems in a vector length."));
+    return NaNf;
+  }
 
-    asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
-    float CRPS = scoreCRPSEP.Assess(obs, values, nbElements);
-    asScoreCRPSsharpEP scoreCRPSsharpnessEP = asScoreCRPSsharpEP();
-    float CRPSsharpness = scoreCRPSsharpnessEP.Assess(obs, values, nbElements);
+  asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
+  float CRPS = scoreCRPSEP.Assess(obs, values, nbElements);
+  asScoreCRPSsharpEP scoreCRPSsharpnessEP = asScoreCRPSsharpEP();
+  float CRPSsharpness = scoreCRPSsharpnessEP.Assess(obs, values, nbElements);
 
-    return CRPS - CRPSsharpness;
+  return CRPS - CRPSsharpness;
 }
 
 bool asScoreCRPSaccurEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-    return true;
+  return true;
 }

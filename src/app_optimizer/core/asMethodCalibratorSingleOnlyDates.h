@@ -31,15 +31,15 @@
 #include <asMethodCalibrator.h>
 
 class asMethodCalibratorSingleOnlyDates : public asMethodCalibrator {
-   public:
-    asMethodCalibratorSingleOnlyDates();
+ public:
+  asMethodCalibratorSingleOnlyDates();
 
-    ~asMethodCalibratorSingleOnlyDates() override;
+  ~asMethodCalibratorSingleOnlyDates() override;
 
-   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+ protected:
+  bool Calibrate(asParametersCalibration &params) override;
 
-   private:
+ private:
 };
 
 #endif

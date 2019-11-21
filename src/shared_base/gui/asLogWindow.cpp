@@ -29,28 +29,28 @@
 
 asLogWindow::asLogWindow(wxFrame *parent, const wxString &title, bool show, bool passToOld)
     : wxLogWindow(parent, title, show, passToOld) {
-    // Reduce the font size
-    wxFrame *pFrame = this->GetFrame();
-    wxFont font = pFrame->GetFont();
-    font.SetPointSize(8);
-    wxWindow *pLogTxt = pFrame->GetChildren()[0];
-    pLogTxt->SetFont(font);
+  // Reduce the font size
+  wxFrame *pFrame = this->GetFrame();
+  wxFont font = pFrame->GetFont();
+  font.SetPointSize(8);
+  wxWindow *pLogTxt = pFrame->GetChildren()[0];
+  pLogTxt->SetFont(font);
 }
 
 void asLogWindow::DoShow(bool bShow) {
-    Show(bShow);
+  Show(bShow);
 
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/General/DisplayLogWindow", bShow);
-    ThreadsManager().CritSectionConfig().Leave();
+  ThreadsManager().CritSectionConfig().Enter();
+  wxConfigBase *pConfig = wxFileConfig::Get();
+  pConfig->Write("/General/DisplayLogWindow", bShow);
+  ThreadsManager().CritSectionConfig().Leave();
 }
 
 bool asLogWindow::OnFrameClose(wxFrame *frame) {
-    ThreadsManager().CritSectionConfig().Enter();
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/General/DisplayLogWindow", false);
-    ThreadsManager().CritSectionConfig().Leave();
+  ThreadsManager().CritSectionConfig().Enter();
+  wxConfigBase *pConfig = wxFileConfig::Get();
+  pConfig->Write("/General/DisplayLogWindow", false);
+  ThreadsManager().CritSectionConfig().Leave();
 
-    return true;
+  return true;
 }

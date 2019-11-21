@@ -28,7 +28,7 @@
 #include "asDialogFileSaver.h"
 
 asDialogFileSaver::asDialogFileSaver(wxWindow *parent, const wxString &description) : asDialogFileSaverVirtual(parent) {
-    if (!description.IsEmpty()) {
-        m_staticTextDescription->SetLabelText(description);
-    }
+  if (!description.IsEmpty()) {
+    m_staticTextDescription->SetLabelText(description);
+  }
 }

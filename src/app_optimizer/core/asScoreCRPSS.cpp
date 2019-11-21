@@ -38,53 +38,53 @@ asScoreCRPSS::asScoreCRPSS()
 asScoreCRPSS::~asScoreCRPSS() {}
 
 float asScoreCRPSS::Assess(float obs, const a1f &values, int nbElements) const {
-    wxASSERT(values.size() > 1);
-    wxASSERT(nbElements > 0);
-    wxASSERT(m_scoreClimatology != 0);
+  wxASSERT(values.size() > 1);
+  wxASSERT(nbElements > 0);
+  wxASSERT(m_scoreClimatology != 0);
 
-    // Check inputs
-    if (!CheckObservedValue(obs)) {
-        return NaNf;
-    }
-    if (!CheckVectorLength(values, nbElements)) {
-        wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
-    }
+  // Check inputs
+  if (!CheckObservedValue(obs)) {
+    return NaNf;
+  }
+  if (!CheckVectorLength(values, nbElements)) {
+    wxLogWarning(_("Problems in a vector length."));
+    return NaNf;
+  }
 
-    // First process the CRPS and then the skill score
-    asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
-    scoreCRPS.SetThreshold(GetThreshold());
-    scoreCRPS.SetQuantile(GetQuantile());
-    scoreCRPS.SetOnMean(GetOnMean());
-    float score = scoreCRPS.Assess(obs, values, nbElements);
-    float skillScore = (score - m_scoreClimatology) / ((float)0 - m_scoreClimatology);
+  // First process the CRPS and then the skill score
+  asScoreCRPSAR scoreCRPS = asScoreCRPSAR();
+  scoreCRPS.SetThreshold(GetThreshold());
+  scoreCRPS.SetQuantile(GetQuantile());
+  scoreCRPS.SetOnMean(GetOnMean());
+  float score = scoreCRPS.Assess(obs, values, nbElements);
+  float skillScore = (score - m_scoreClimatology) / ((float)0 - m_scoreClimatology);
 
-    return skillScore;
+  return skillScore;
 }
 
 bool asScoreCRPSS::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-    // Containers for final results
-    a1f scoresClimatology(refVals.size());
+  // Containers for final results
+  a1f scoresClimatology(refVals.size());
 
-    // Set the original score and process
-    asScore *score = asScore::GetInstance(asScore::CRPSAR);
-    score->SetThreshold(GetThreshold());
-    score->SetQuantile(GetQuantile());
-    score->SetOnMean(GetOnMean());
+  // Set the original score and process
+  asScore *score = asScore::GetInstance(asScore::CRPSAR);
+  score->SetThreshold(GetThreshold());
+  score->SetQuantile(GetQuantile());
+  score->SetOnMean(GetOnMean());
 
-    for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
-        if (!asIsNaN(refVals(iReftime))) {
-            scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
-        } else {
-            scoresClimatology(iReftime) = NaNf;
-        }
+  for (int iReftime = 0; iReftime < refVals.size(); iReftime++) {
+    if (!asIsNaN(refVals(iReftime))) {
+      scoresClimatology(iReftime) = score->Assess(refVals(iReftime), climatologyData, climatologyData.size());
+    } else {
+      scoresClimatology(iReftime) = NaNf;
     }
+  }
 
-    wxDELETE(score);
+  wxDELETE(score);
 
-    m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
+  m_scoreClimatology = asMean(&scoresClimatology[0], &scoresClimatology[scoresClimatology.size() - 1]);
 
-    wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
+  wxLogVerbose(_("Score of the climatology: %g."), m_scoreClimatology);
 
-    return true;
+  return true;
 }

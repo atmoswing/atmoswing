@@ -37,18 +37,18 @@
 
 // Coordinates
 typedef struct {
-    double x;  // East
-    double y;  // North
+  double x;  // East
+  double y;  // North
 } Coo;
 
 // A time structure
 typedef struct {
-    int year;
-    int month;
-    int day;
-    int hour;
-    int min;
-    int sec;
+  int year;
+  int month;
+  int day;
+  int hour;
+  int min;
+  int sec;
 } Time;
 
 //---------------------------------

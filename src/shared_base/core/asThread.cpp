@@ -30,20 +30,20 @@
 asThread::asThread(Type type) : wxThread(wxTHREAD_DETACHED), m_type(type), m_device(0) {}
 
 wxThread::ExitCode asThread::Entry() {
-    return nullptr;
+  return nullptr;
 }
 
 void asThread::OnExit() {
-    // Set pointer to null.
-    wxThreadIdType id = GetId();
-    ThreadsManager().SetNull(id);
+  // Set pointer to null.
+  wxThreadIdType id = GetId();
+  ThreadsManager().SetNull(id);
 
-    // Check if the list is empty
-    if (ThreadsManager().GetRunningThreadsNb() == 0) {
-        // Signal the threads manager that there are no more threads left
-        if (ThreadsManager().GetWaitingUntilAllDone()) {
-            ThreadsManager().SetWaitingUntilAllDone(false);
-            //            ThreadsManager().SemAllDone().Post();
-        }
+  // Check if the list is empty
+  if (ThreadsManager().GetRunningThreadsNb() == 0) {
+    // Signal the threads manager that there are no more threads left
+    if (ThreadsManager().GetWaitingUntilAllDone()) {
+      ThreadsManager().SetWaitingUntilAllDone(false);
+      //            ThreadsManager().SemAllDone().Post();
     }
+  }
 }

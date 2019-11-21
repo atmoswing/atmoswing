@@ -33,17 +33,17 @@
 #include <asIncludes.h>
 
 class asFileBatchForecasts : public asFileXml {
-   public:
-    asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
+ public:
+  asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileBatchForecasts() override = default;
+  ~asFileBatchForecasts() override = default;
 
-    bool EditRootElement();
+  bool EditRootElement();
 
-    bool CheckRootElement() const override;
+  bool CheckRootElement() const override;
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

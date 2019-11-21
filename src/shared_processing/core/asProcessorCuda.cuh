@@ -40,32 +40,32 @@
 const int nStreams = 4;  // must be a multiple of 2!
 
 enum CudaCriteria {
-    S0 = 0,
-    S1grads = 1,
-    S2grads = 2,
-    MD = 3,
-    RMSE = 4,
-    RSE = 5,
-    SAD = 6,
-    DMV = 7,
-    DSD = 8,
+  S0 = 0,
+  S1grads = 1,
+  S2grads = 2,
+  MD = 3,
+  RMSE = 4,
+  RSE = 5,
+  SAD = 6,
+  DMV = 7,
+  DSD = 8,
 };
 
 class asProcessorCuda {
-   public:
-    static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg,
-                                const int *indicesArch, float *dRes, int nbCandidates, std::vector<int> &colsNb,
-                                std::vector<int> &rowsNb, std::vector<float> &weights,
-                                std::vector<CudaCriteria> &criteria, cudaStream_t &stream, int offset);
+ public:
+  static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg, const int *indicesArch,
+                              float *dRes, int nbCandidates, std::vector<int> &colsNb, std::vector<int> &rowsNb,
+                              std::vector<float> &weights, std::vector<CudaCriteria> &criteria, cudaStream_t &stream,
+                              int offset);
 
-    static bool SelectBestDevice();
+  static bool SelectBestDevice();
 
-    static int GetDeviceCount();
+  static int GetDeviceCount();
 
-    static void SetDevice(int device);
+  static void SetDevice(int device);
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

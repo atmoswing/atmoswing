@@ -33,117 +33,117 @@
 asPanelsManagerForecasts::asPanelsManagerForecasts() : asPanelsManager() {}
 
 asPanelsManagerForecasts::~asPanelsManagerForecasts() {
-    // Destroy panels
-    for (auto &panel : m_arrayPanels) {
-        panel->Destroy();
-    }
+  // Destroy panels
+  for (auto &panel : m_arrayPanels) {
+    panel->Destroy();
+  }
 }
 
 void asPanelsManagerForecasts::AddPanel(asPanelForecast *panel) {
-    // Set a pointer to the PanelsManager
-    panel->SetPanelsManager(this);
+  // Set a pointer to the PanelsManager
+  panel->SetPanelsManager(this);
 
-    // Add to the array
-    long arraylength = m_arrayPanels.size();
-    panel->SetId((wxWindowID)arraylength);
-    m_arrayPanels.push_back(panel);
+  // Add to the array
+  long arraylength = m_arrayPanels.size();
+  panel->SetId((wxWindowID)arraylength);
+  m_arrayPanels.push_back(panel);
 }
 
 void asPanelsManagerForecasts::RemovePanel(asPanelForecast *panel) {
-    wxWindow *parent = panel->GetParent();
+  wxWindow *parent = panel->GetParent();
 
-    int id = panel->GetId();
+  int id = panel->GetId();
 
-    std::vector<asPanelForecast *> tmpArrayPanels;
-    tmpArrayPanels = m_arrayPanels;
-    m_arrayPanels.clear();
+  std::vector<asPanelForecast *> tmpArrayPanels;
+  tmpArrayPanels = m_arrayPanels;
+  m_arrayPanels.clear();
 
-    for (auto &tmpPanel : tmpArrayPanels) {
-        if (tmpPanel->GetId() != id) {
-            tmpPanel->SetId(m_arrayPanels.size());
-            m_arrayPanels.push_back(tmpPanel);
-        }
+  for (auto &tmpPanel : tmpArrayPanels) {
+    if (tmpPanel->GetId() != id) {
+      tmpPanel->SetId(m_arrayPanels.size());
+      m_arrayPanels.push_back(tmpPanel);
     }
+  }
 
-    // Delete it at least (not before to keep the reference to the Id)
-    panel->Destroy();
+  // Delete it at least (not before to keep the reference to the Id)
+  panel->Destroy();
 
-    LayoutFrame(parent);
+  LayoutFrame(parent);
 }
 
 void asPanelsManagerForecasts::Clear() {
-    // Destroy panels
-    for (auto &arrayPanel : m_arrayPanels) {
-        wxASSERT(arrayPanel);
-        arrayPanel->Destroy();
-    }
-    m_arrayPanels.clear();
+  // Destroy panels
+  for (auto &arrayPanel : m_arrayPanels) {
+    wxASSERT(arrayPanel);
+    arrayPanel->Destroy();
+  }
+  m_arrayPanels.clear();
 }
 
 asPanelForecast *asPanelsManagerForecasts::GetPanel(int i) const {
-    wxASSERT(i < (int)m_arrayPanels.size());
-    return m_arrayPanels[i];
+  wxASSERT(i < (int)m_arrayPanels.size());
+  return m_arrayPanels[i];
 }
 
 int asPanelsManagerForecasts::GetPanelsNb() const {
-    auto nb = (int)m_arrayPanels.size();
-    return nb;
+  auto nb = (int)m_arrayPanels.size();
+  return nb;
 }
 
 void asPanelsManagerForecasts::SetForecastLedRunning(int num) {
-    if (num < m_arrayPanels.size()) {
-        awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led) return;
+  if (num < m_arrayPanels.size()) {
+    awxLed *led = m_arrayPanels[num]->GetLed();
+    if (!led) return;
 
-        led->SetColour(awxLED_YELLOW);
-        led->SetState(awxLED_ON);
-        led->Update();
-        led->Refresh();
-    }
+    led->SetColour(awxLED_YELLOW);
+    led->SetState(awxLED_ON);
+    led->Update();
+    led->Refresh();
+  }
 }
 
 void asPanelsManagerForecasts::SetForecastLedError(int num) {
-    if (num < m_arrayPanels.size()) {
-        awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led) return;
+  if (num < m_arrayPanels.size()) {
+    awxLed *led = m_arrayPanels[num]->GetLed();
+    if (!led) return;
 
-        led->SetColour(awxLED_RED);
-        led->SetState(awxLED_ON);
-        led->Update();
-        led->Refresh();
-    }
+    led->SetColour(awxLED_RED);
+    led->SetState(awxLED_ON);
+    led->Update();
+    led->Refresh();
+  }
 }
 
 void asPanelsManagerForecasts::SetForecastLedDone(int num) {
-    if (num < m_arrayPanels.size()) {
-        awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led) return;
+  if (num < m_arrayPanels.size()) {
+    awxLed *led = m_arrayPanels[num]->GetLed();
+    if (!led) return;
 
-        led->SetColour(awxLED_GREEN);
-        led->SetState(awxLED_ON);
-        led->Update();
-        led->Refresh();
-    }
+    led->SetColour(awxLED_GREEN);
+    led->SetState(awxLED_ON);
+    led->Update();
+    led->Refresh();
+  }
 }
 
 void asPanelsManagerForecasts::SetForecastLedOff(int num) {
-    if (num < m_arrayPanels.size()) {
-        awxLed *led = m_arrayPanels[num]->GetLed();
-        if (!led) return;
+  if (num < m_arrayPanels.size()) {
+    awxLed *led = m_arrayPanels[num]->GetLed();
+    if (!led) return;
 
-        led->SetState(awxLED_OFF);
-        led->Update();
-        led->Refresh();
-    }
+    led->SetState(awxLED_OFF);
+    led->Update();
+    led->Refresh();
+  }
 }
 
 void asPanelsManagerForecasts::SetForecastsAllLedsOff() {
-    for (auto &panel : m_arrayPanels) {
-        awxLed *led = panel->GetLed();
-        if (!led) return;
+  for (auto &panel : m_arrayPanels) {
+    awxLed *led = panel->GetLed();
+    if (!led) return;
 
-        led->SetState(awxLED_OFF);
-        led->Update();
-        led->Refresh();
-    }
+    led->SetState(awxLED_OFF);
+    led->Update();
+    led->Refresh();
+  }
 }

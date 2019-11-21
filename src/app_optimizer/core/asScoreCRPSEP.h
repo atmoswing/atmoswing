@@ -34,17 +34,17 @@
 #include "asScore.h"
 
 class asScoreCRPSEP : public asScore {
-   public:
-    asScoreCRPSEP();
+ public:
+  asScoreCRPSEP();
 
-    ~asScoreCRPSEP() override;
+  ~asScoreCRPSEP() override;
 
-    float Assess(float obs, const a1f &values, int nbElements) const override;
+  float Assess(float obs, const a1f &values, int nbElements) const override;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

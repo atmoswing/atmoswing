@@ -31,9 +31,9 @@
 asThreadsManager *g_pThreadsManager = new asThreadsManager();
 
 asThreadsManager &ThreadsManager() {
-    return *g_pThreadsManager;
+  return *g_pThreadsManager;
 }
 
 void DeleteThreadsManager() {
-    wxDELETE(g_pThreadsManager);
+  wxDELETE(g_pThreadsManager);
 }

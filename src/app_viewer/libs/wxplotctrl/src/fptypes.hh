@@ -10,95 +10,95 @@
 namespace FUNCTIONPARSERTYPES {
 // The functions must be in alphabetical order:
 enum OPCODE {
-    cAbs,
-    cAcos,
+  cAbs,
+  cAcos,
 #ifndef NO_ASINH
-    cAcosh,
+  cAcosh,
 #endif
-    cAsin,
+  cAsin,
 #ifndef NO_ASINH
-    cAsinh,
+  cAsinh,
 #endif
-    cAtan,
-    cAtan2,
+  cAtan,
+  cAtan2,
 #ifndef NO_ASINH
-    cAtanh,
+  cAtanh,
 #endif
-    cCeil,
-    cCos,
-    cCosh,
-    cCot,
-    cCsc,
+  cCeil,
+  cCos,
+  cCosh,
+  cCot,
+  cCsc,
 #ifndef DISABLE_EVAL
-    cEval,
+  cEval,
 #endif
-    cExp,
-    cFloor,
-    cIf,
-    cInt,
-    cLog,
-    cLog10,
-    cMax,
-    cMin,
-    cSec,
-    cSin,
-    cSinh,
-    cSqrt,
-    cTan,
-    cTanh,
+  cExp,
+  cFloor,
+  cIf,
+  cInt,
+  cLog,
+  cLog10,
+  cMax,
+  cMin,
+  cSec,
+  cSin,
+  cSinh,
+  cSqrt,
+  cTan,
+  cTanh,
 
-    // These do not need any ordering:
-    cImmed,
-    cJump,
-    cNeg,
-    cAdd,
-    cSub,
-    cMul,
-    cDiv,
-    cMod,
-    cPow,
-    cEqual,
-    cNEqual,
-    cLess,
-    cLessOrEq,
-    cGreater,
-    cGreaterOrEq,
-    cNot,
-    cAnd,
-    cOr,
+  // These do not need any ordering:
+  cImmed,
+  cJump,
+  cNeg,
+  cAdd,
+  cSub,
+  cMul,
+  cDiv,
+  cMod,
+  cPow,
+  cEqual,
+  cNEqual,
+  cLess,
+  cLessOrEq,
+  cGreater,
+  cGreaterOrEq,
+  cNot,
+  cAnd,
+  cOr,
 
-    cDeg,
-    cRad,
+  cDeg,
+  cRad,
 
-    cFCall,
-    cPCall,
+  cFCall,
+  cPCall,
 
 #ifdef SUPPORT_OPTIMIZER
-    cVar,
-    cDup,
-    cInv,
+  cVar,
+  cDup,
+  cInv,
 #endif
 
-    VarBegin
+  VarBegin
 };
 
 struct FuncDefinition {
-    const char *name;
-    unsigned nameLength;
-    unsigned opcode;
-    unsigned params;
+  const char *name;
+  unsigned nameLength;
+  unsigned opcode;
+  unsigned params;
 
-    // This is basically strcmp(), but taking 'nameLength' as string
-    // length (not ending '\0'):
-    bool operator<(const FuncDefinition &rhs) const {
-        for (unsigned i = 0; i < nameLength; ++i) {
-            if (i == rhs.nameLength) return false;
-            const char c1 = name[i], c2 = rhs.name[i];
-            if (c1 < c2) return true;
-            if (c2 < c1) return false;
-        }
-        return nameLength < rhs.nameLength;
+  // This is basically strcmp(), but taking 'nameLength' as string
+  // length (not ending '\0'):
+  bool operator<(const FuncDefinition &rhs) const {
+    for (unsigned i = 0; i < nameLength; ++i) {
+      if (i == rhs.nameLength) return false;
+      const char c1 = name[i], c2 = rhs.name[i];
+      if (c1 < c2) return true;
+      if (c2 < c1) return false;
     }
+    return nameLength < rhs.nameLength;
+  }
 };
 
 // This list must be in alphabetical order:

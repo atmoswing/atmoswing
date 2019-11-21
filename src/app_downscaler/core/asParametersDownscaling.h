@@ -35,146 +35,146 @@
 class asFileParametersDownscaling;
 
 class asParametersDownscaling : public asParameters {
-   public:
-    typedef struct {
-        wxString datasetId;
-        wxString dataId;
-        int membersNb;
-        vwxs preprocessDatasetIds;
-        vwxs preprocessDataIds;
-        int preprocessMembersNb;
-    } ParamsPredictorProj;
+ public:
+  typedef struct {
+    wxString datasetId;
+    wxString dataId;
+    int membersNb;
+    vwxs preprocessDatasetIds;
+    vwxs preprocessDataIds;
+    int preprocessMembersNb;
+  } ParamsPredictorProj;
 
-    typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
+  typedef std::vector<ParamsPredictorProj> VectorParamsPredictorsProj;
 
-    typedef struct {
-        VectorParamsPredictorsProj predictors;
-    } ParamsStepProj;
+  typedef struct {
+    VectorParamsPredictorsProj predictors;
+  } ParamsStepProj;
 
-    typedef std::vector<ParamsStepProj> VectorParamsStepProj;
+  typedef std::vector<ParamsStepProj> VectorParamsStepProj;
 
-    asParametersDownscaling();
+  asParametersDownscaling();
 
-    virtual ~asParametersDownscaling();
+  virtual ~asParametersDownscaling();
 
-    void AddStep();
+  void AddStep();
 
-    void AddPredictorProj(ParamsStepProj &step);
+  void AddPredictorProj(ParamsStepProj &step);
 
-    bool LoadFromFile(const wxString &filePath);
+  bool LoadFromFile(const wxString &filePath);
 
-    bool InputsOK() const;
+  bool InputsOK() const;
 
-    bool FixTimeLimits();
+  bool FixTimeLimits();
 
-    void InitValues();
+  void InitValues();
 
-    void SetModel(const wxString &model) {
-        m_model = model;
-    }
+  void SetModel(const wxString &model) {
+    m_model = model;
+  }
 
-    wxString GetModel() const {
-        return m_model;
-    }
+  wxString GetModel() const {
+    return m_model;
+  }
 
-    void SetScenario(const wxString &scenario) {
-        m_scenario = scenario;
-    }
+  void SetScenario(const wxString &scenario) {
+    m_scenario = scenario;
+  }
 
-    wxString GetScenario() const {
-        return m_scenario;
-    }
+  wxString GetScenario() const {
+    return m_scenario;
+  }
 
-    vvi GetPredictandStationIdsVector() const {
-        return m_predictandStationIdsVect;
-    }
+  vvi GetPredictandStationIdsVector() const {
+    return m_predictandStationIdsVect;
+  }
 
-    bool SetPredictandStationIdsVector(vvi val);
+  bool SetPredictandStationIdsVector(vvi val);
 
-    wxString GetPredictorProjDatasetId(int iStep, int iPtor) const {
-        return m_stepsProj[iStep].predictors[iPtor].datasetId;
-    }
+  wxString GetPredictorProjDatasetId(int iStep, int iPtor) const {
+    return m_stepsProj[iStep].predictors[iPtor].datasetId;
+  }
 
-    bool SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
+  bool SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPredictorProjDataId(int iStep, int iPtor) const {
-        return m_stepsProj[iStep].predictors[iPtor].dataId;
-    }
+  wxString GetPredictorProjDataId(int iStep, int iPtor) const {
+    return m_stepsProj[iStep].predictors[iPtor].dataId;
+  }
 
-    bool SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
+  bool SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
 
-    wxString GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const;
+  wxString GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+  bool SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    wxString GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const;
+  wxString GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
+  bool SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
-    void SetPredictorProjMembersNb(int iStep, int iPtor, int val) {
-        m_stepsProj[iStep].predictors[iPtor].membersNb = val;
-    }
+  void SetPredictorProjMembersNb(int iStep, int iPtor, int val) {
+    m_stepsProj[iStep].predictors[iPtor].membersNb = val;
+  }
 
-    int GetPredictorProjMembersNb(int iStep, int iPtor) const {
-        return m_stepsProj[iStep].predictors[iPtor].membersNb;
-    }
+  int GetPredictorProjMembersNb(int iStep, int iPtor) const {
+    return m_stepsProj[iStep].predictors[iPtor].membersNb;
+  }
 
-    void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val) {
-        m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb = val;
-    }
+  void SetPreprocessProjMembersNb(int iStep, int iPtor, int iPre, int val) {
+    m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb = val;
+  }
 
-    int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const {
-        return m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
-    }
+  int GetPreprocessProjMembersNb(int iStep, int iPtor, int iPre) const {
+    return m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
+  }
 
-    bool SetDownscalingYearStart(int val) {
-        m_downscalingStart = asTime::GetMJD(val, 1, 1);
-        return true;
-    }
+  bool SetDownscalingYearStart(int val) {
+    m_downscalingStart = asTime::GetMJD(val, 1, 1);
+    return true;
+  }
 
-    bool SetDownscalingYearEnd(int val) {
-        m_downscalingEnd = asTime::GetMJD(val, 12, 31);
-        return true;
-    }
+  bool SetDownscalingYearEnd(int val) {
+    m_downscalingEnd = asTime::GetMJD(val, 12, 31);
+    return true;
+  }
 
-    double GetDownscalingStart() const {
-        return m_downscalingStart;
-    }
+  double GetDownscalingStart() const {
+    return m_downscalingStart;
+  }
 
-    bool SetDownscalingStart(wxString val) {
-        m_downscalingStart = asTime::GetTimeFromString(val);
-        return true;
-    }
+  bool SetDownscalingStart(wxString val) {
+    m_downscalingStart = asTime::GetTimeFromString(val);
+    return true;
+  }
 
-    double GetDownscalingEnd() const {
-        return m_downscalingEnd;
-    }
+  double GetDownscalingEnd() const {
+    return m_downscalingEnd;
+  }
 
-    bool SetDownscalingEnd(wxString val) {
-        m_downscalingEnd = asTime::GetTimeFromString(val);
-        return true;
-    }
+  bool SetDownscalingEnd(wxString val) {
+    m_downscalingEnd = asTime::GetTimeFromString(val);
+    return true;
+  }
 
-   protected:
-    double m_downscalingStart;
-    double m_downscalingEnd;
+ protected:
+  double m_downscalingStart;
+  double m_downscalingEnd;
 
-   private:
-    wxString m_model;
-    wxString m_scenario;
-    vvi m_predictandStationIdsVect;
-    VectorParamsStepProj m_stepsProj;
+ private:
+  wxString m_model;
+  wxString m_scenario;
+  vvi m_predictandStationIdsVect;
+  VectorParamsStepProj m_stepsProj;
 
-    bool ParseDescription(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+  bool ParseDescription(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+  bool ParseTimeProperties(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseAnalogDatesParams(asFileParametersDownscaling &fileParams, int iStep, const wxXmlNode *nodeProcess);
+  bool ParseAnalogDatesParams(asFileParametersDownscaling &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    bool ParsePreprocessedPredictors(asFileParametersDownscaling &fileParams, int iStep, int iPtor,
-                                     const wxXmlNode *nodeParam);
+  bool ParsePreprocessedPredictors(asFileParametersDownscaling &fileParams, int iStep, int iPtor,
+                                   const wxXmlNode *nodeParam);
 
-    bool ParseAnalogValuesParams(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
+  bool ParseAnalogValuesParams(asFileParametersDownscaling &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif

@@ -31,47 +31,47 @@
 asTotalScoreTS::asTotalScoreTS(const wxString &periodString) : asTotalScore(periodString) {}
 
 float asTotalScoreTS::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-    wxASSERT(targetDates.rows() > 1);
-    wxASSERT(scores.rows() > 1);
+  wxASSERT(targetDates.rows() > 1);
+  wxASSERT(scores.rows() > 1);
 
-    int countA = 0, countB = 0, countC = 0, countTot = 0;
+  int countA = 0, countB = 0, countC = 0, countTot = 0;
 
-    switch (m_period) {
-        case (asTotalScore::Total): {
-            for (int i = 0; i < scores.size(); i++) {
-                countTot++;
-                if (scores[i] == 1) {
-                    countA++;
-                } else if (scores[i] == 2) {
-                    countB++;
-                } else if (scores[i] == 3) {
-                    countC++;
-                } else if (scores[i] == 4) {
-                    //
-                } else {
-                    wxLogError(_("The TS score (%f) is not an authorized value."), scores[i]);
-                    return NaNf;
-                }
-            }
-            break;
-        }
-
-        default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreTS."));
-        }
-    }
-
-    float score;
-
-    if (countTot > 0) {
-        if ((countA + countB + countC) > 0) {
-            score = float(countA) / float(countA + countB + countC);
+  switch (m_period) {
+    case (asTotalScore::Total): {
+      for (int i = 0; i < scores.size(); i++) {
+        countTot++;
+        if (scores[i] == 1) {
+          countA++;
+        } else if (scores[i] == 2) {
+          countB++;
+        } else if (scores[i] == 3) {
+          countC++;
+        } else if (scores[i] == 4) {
+          //
         } else {
-            score = 0;
+          wxLogError(_("The TS score (%f) is not an authorized value."), scores[i]);
+          return NaNf;
         }
-    } else {
-        score = NaNf;
+      }
+      break;
     }
 
-    return score;
+    default: {
+      asThrowException(_("Period not yet implemented in asTotalScoreTS."));
+    }
+  }
+
+  float score;
+
+  if (countTot > 0) {
+    if ((countA + countB + countC) > 0) {
+      score = float(countA) / float(countA + countB + countC);
+    } else {
+      score = 0;
+    }
+  } else {
+    score = NaNf;
+  }
+
+  return score;
 }

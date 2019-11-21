@@ -32,15 +32,15 @@
 #include <asMethodCalibrator.h>
 
 class asMethodCalibratorEvaluateAllScores : public asMethodCalibrator {
-   public:
-    asMethodCalibratorEvaluateAllScores();
+ public:
+  asMethodCalibratorEvaluateAllScores();
 
-    ~asMethodCalibratorEvaluateAllScores() override;
+  ~asMethodCalibratorEvaluateAllScores() override;
 
-   protected:
-    bool Calibrate(asParametersCalibration &params) override;
+ protected:
+  bool Calibrate(asParametersCalibration &params) override;
 
-   private:
+ private:
 };
 
 #endif

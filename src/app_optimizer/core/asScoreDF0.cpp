@@ -33,63 +33,63 @@ asScoreDF0::asScoreDF0()
               Asc, 0, NaNf) {}
 
 float asScoreDF0::Assess(float obs, const a1f &values, int nbElements) const {
-    wxASSERT(values.size() > 1);
-    wxASSERT(nbElements > 0);
+  wxASSERT(values.size() > 1);
+  wxASSERT(nbElements > 0);
 
-    // Check inputs
-    if (!CheckObservedValue(obs)) {
-        return NaNf;
+  // Check inputs
+  if (!CheckObservedValue(obs)) {
+    return NaNf;
+  }
+  if (!CheckVectorLength(values, nbElements)) {
+    wxLogWarning(_("Problems in a vector length."));
+    return NaNf;
+  }
+
+  // Create the container to sort the data
+  a1f x(nbElements);
+  float xObs = obs;
+
+  // Remove the NaNs and copy content
+  int nbPredict = CleanNans(values, x, nbElements);
+  if (nbPredict == asNOT_FOUND) {
+    wxLogWarning(_("Only NaNs as inputs in the DF0 processing function."));
+    return NaNf;
+  } else if (nbPredict <= 2) {
+    wxLogWarning(_("Not enough elements to process the DF0."));
+    return NaNf;
+  }
+
+  // Sort the forcast array
+  asSortArray(&x[0], &x[nbPredict - 1], Asc);
+
+  // Cumulative frequency
+  a1f F = asGetCumulativeFrequency(nbPredict);
+
+  // Identify the last 0
+  int indexLastZero = -1;
+  for (int i = 0; i < nbElements; i++) {
+    if (x[i] == 0) {
+      indexLastZero = i;
     }
-    if (!CheckVectorLength(values, nbElements)) {
-        wxLogWarning(_("Problems in a vector length."));
-        return NaNf;
-    }
+  }
 
-    // Create the container to sort the data
-    a1f x(nbElements);
-    float xObs = obs;
+  // Find FxObs, fix xObs and integrate beyond limits
+  float FxObs;
+  if (xObs > 0.0)  // If precipitation
+  {
+    FxObs = 1;
+  } else {
+    FxObs = 0;
+  }
 
-    // Remove the NaNs and copy content
-    int nbPredict = CleanNans(values, x, nbElements);
-    if (nbPredict == asNOT_FOUND) {
-        wxLogWarning(_("Only NaNs as inputs in the DF0 processing function."));
-        return NaNf;
-    } else if (nbPredict <= 2) {
-        wxLogWarning(_("Not enough elements to process the DF0."));
-        return NaNf;
-    }
+  if (indexLastZero < 0) {
+    wxLogError(_("Error processing DF0 score."));
+    return NaNf;
+  }
 
-    // Sort the forcast array
-    asSortArray(&x[0], &x[nbPredict - 1], Asc);
-
-    // Cumulative frequency
-    a1f F = asGetCumulativeFrequency(nbPredict);
-
-    // Identify the last 0
-    int indexLastZero = -1;
-    for (int i = 0; i < nbElements; i++) {
-        if (x[i] == 0) {
-            indexLastZero = i;
-        }
-    }
-
-    // Find FxObs, fix xObs and integrate beyond limits
-    float FxObs;
-    if (xObs > 0.0)  // If precipitation
-    {
-        FxObs = 1;
-    } else {
-        FxObs = 0;
-    }
-
-    if (indexLastZero < 0) {
-        wxLogError(_("Error processing DF0 score."));
-        return NaNf;
-    }
-
-    return std::abs((1.0f - F(indexLastZero)) - FxObs);
+  return std::abs((1.0f - F(indexLastZero)) - FxObs);
 }
 
 bool asScoreDF0::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-    return true;
+  return true;
 }

@@ -35,27 +35,27 @@
 #include "AtmoswingForecasterGui.h"
 
 class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual {
-   public:
-    asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
-                                 wxWindowID id = asWINDOW_PREFERENCES);
+ public:
+  asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
+                               wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
-    void CloseFrame(wxCommandEvent &event) override;
+ protected:
+  void CloseFrame(wxCommandEvent &event) override;
 
-    void Update() override;
+  void Update() override;
 
-    void LoadPreferences();
+  void LoadPreferences();
 
-    void SavePreferences();
+  void SavePreferences();
 
-    void SaveAndClose(wxCommandEvent &event) override;
+  void SaveAndClose(wxCommandEvent &event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+  void ApplyChanges(wxCommandEvent &event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+  void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 
-   private:
-    asBatchForecasts *m_batchForecasts;
+ private:
+  asBatchForecasts *m_batchForecasts;
 };
 
 #endif

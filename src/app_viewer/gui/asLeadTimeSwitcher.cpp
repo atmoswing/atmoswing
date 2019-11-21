@@ -41,269 +41,269 @@ asLeadTimeSwitcher::asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace,
       m_gdc(nullptr),
       m_cellWidth(int(40 * g_ppiScaleDc)),
       m_leadTime(0) {
-    Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
-    Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
-    Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
-    Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Connect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
+  Connect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Connect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Connect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
 
-    Layout();
+  Layout();
 }
 
 asLeadTimeSwitcher::~asLeadTimeSwitcher() {
-    Disconnect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
-    Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
-    Disconnect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
-    Disconnect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Disconnect(wxEVT_PAINT, wxPaintEventHandler(asLeadTimeSwitcher::OnPaint), nullptr, this);
+  Disconnect(wxEVT_LEFT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Disconnect(wxEVT_RIGHT_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
+  Disconnect(wxEVT_MIDDLE_UP, wxMouseEventHandler(asLeadTimeSwitcher::OnLeadTimeSlctChange), nullptr, this);
 
-    wxDELETE(m_bmp);
+  wxDELETE(m_bmp);
 }
 
 void asLeadTimeSwitcher::SetParent(wxWindow *parent) {
-    m_parent = parent;
+  m_parent = parent;
 }
 
 void asLeadTimeSwitcher::OnLeadTimeSlctChange(wxMouseEvent &event) {
-    wxBusyCursor wait;
+  wxBusyCursor wait;
 
-    wxPoint position = event.GetPosition();
-    int val = floor(position.x / m_cellWidth);
-    wxCommandEvent eventSlct(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);
-    eventSlct.SetInt(val);
-    GetParent()->ProcessWindowEvent(eventSlct);
+  wxPoint position = event.GetPosition();
+  int val = floor(position.x / m_cellWidth);
+  wxCommandEvent eventSlct(asEVT_ACTION_LEAD_TIME_SELECTION_CHANGED);
+  eventSlct.SetInt(val);
+  GetParent()->ProcessWindowEvent(eventSlct);
 }
 
 void asLeadTimeSwitcher::Draw(a1f &dates) {
-    // Required size
-    int margin = 5 * g_ppiScaleDc;
-    int width = (dates.size() + 1) * m_cellWidth;
-    int height = m_cellWidth + margin;
+  // Required size
+  int margin = 5 * g_ppiScaleDc;
+  int width = (dates.size() + 1) * m_cellWidth;
+  int height = m_cellWidth + margin;
 
-    // Get color values
-    int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
-    float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
-    a1f values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
-    wxASSERT(values.size() == dates.size());
+  // Get color values
+  int returnPeriodRef = m_workspace->GetAlarmsPanelReturnPeriod();
+  float quantileThreshold = m_workspace->GetAlarmsPanelQuantile();
+  a1f values = m_forecastManager->GetAggregator()->GetOverallMaxValues(dates, returnPeriodRef, quantileThreshold);
+  wxASSERT(values.size() == dates.size());
 
-    // Create bitmap
-    auto *bmp = new wxBitmap(width, height);
-    wxASSERT(bmp);
+  // Create bitmap
+  auto *bmp = new wxBitmap(width, height);
+  wxASSERT(bmp);
 
-    // Create device context
-    wxMemoryDC dc(*bmp);
-    dc.SetBackground(wxBrush(GetBackgroundColour()));
-    dc.Clear();
+  // Create device context
+  wxMemoryDC dc(*bmp);
+  dc.SetBackground(wxBrush(GetBackgroundColour()));
+  dc.Clear();
 
-    // Create graphics context
-    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+  // Create graphics context
+  wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
-    if (gc && values.size() > 0) {
-        gc->SetPen(*wxBLACK);
-        int fontSize = 10;
+  if (gc && values.size() > 0) {
+    gc->SetPen(*wxBLACK);
+    int fontSize = 10;
 #ifdef __LINUX__
-        fontSize = 8;
+    fontSize = 8;
 #endif
-        wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-        gc->SetFont(datesFont, *wxBLACK);
+    wxFont datesFont(fontSize, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    gc->SetFont(datesFont, *wxBLACK);
 
-        wxPoint startText(margin, m_cellWidth / 2 - fontSize);
+    wxPoint startText(margin, m_cellWidth / 2 - fontSize);
 
-        // For every lead time
-        for (int iLead = 0; iLead < dates.size(); iLead++) {
-            gc->SetPen(wxPen(GetBackgroundColour(), 3, wxPENSTYLE_SOLID));
+    // For every lead time
+    for (int iLead = 0; iLead < dates.size(); iLead++) {
+      gc->SetPen(wxPen(GetBackgroundColour(), 3, wxPENSTYLE_SOLID));
 
-            wxGraphicsPath path = gc->CreatePath();
-            CreatePath(path, iLead);
-            FillPath(gc, path, values[iLead]);
+      wxGraphicsPath path = gc->CreatePath();
+      CreatePath(path, iLead);
+      FillPath(gc, path, values[iLead]);
 
-            wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
-            gc->SetFont(datesFont, *wxBLACK);
-            CreateDatesText(gc, startText, iLead, dateStr);
-        }
-
-        // For the global view option
-        gc->SetPen(wxPen(*wxWHITE, 1, wxPENSTYLE_SOLID));
-        wxGraphicsPath path = gc->CreatePath();
-
-        int segmentsTot = 7;
-        const double scale = 0.16;
-        wxPoint center(width - m_cellWidth / 2, m_cellWidth / 2);
-
-        for (int i = 0; i < segmentsTot; i++) {
-            CreatePathRing(path, center, scale, segmentsTot, i);
-        }
-
-        gc->StrokePath(path);
-
-        wxDELETE(gc);
+      wxString dateStr = asTime::GetStringTime(dates[iLead], "DD.MM");
+      gc->SetFont(datesFont, *wxBLACK);
+      CreateDatesText(gc, startText, iLead, dateStr);
     }
 
-    dc.SelectObject(wxNullBitmap);
+    // For the global view option
+    gc->SetPen(wxPen(*wxWHITE, 1, wxPENSTYLE_SOLID));
+    wxGraphicsPath path = gc->CreatePath();
 
-    this->SetBitmap(bmp);
-    wxDELETE(bmp);
-    wxASSERT(!bmp);
+    int segmentsTot = 7;
+    const double scale = 0.16;
+    wxPoint center(width - m_cellWidth / 2, m_cellWidth / 2);
 
-    Refresh();
+    for (int i = 0; i < segmentsTot; i++) {
+      CreatePathRing(path, center, scale, segmentsTot, i);
+    }
+
+    gc->StrokePath(path);
+
+    wxDELETE(gc);
+  }
+
+  dc.SelectObject(wxNullBitmap);
+
+  this->SetBitmap(bmp);
+  wxDELETE(bmp);
+  wxASSERT(!bmp);
+
+  Refresh();
 }
 
 void asLeadTimeSwitcher::SetLeadTime(int leadTime) {
-    m_leadTime = leadTime;
+  m_leadTime = leadTime;
 }
 
 void asLeadTimeSwitcher::SetLeadTimeMarker(int leadTime) {
-    // Clear overlay
-    {
-        wxClientDC dc(this);
-        wxDCOverlay overlaydc(m_overlay, &dc);
-        overlaydc.Clear();
-    }
-    m_overlay.Reset();
-
-    // Get overlay
+  // Clear overlay
+  {
     wxClientDC dc(this);
     wxDCOverlay overlaydc(m_overlay, &dc);
     overlaydc.Clear();
+  }
+  m_overlay.Reset();
 
-    // Create graphics context
-    wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+  // Get overlay
+  wxClientDC dc(this);
+  wxDCOverlay overlaydc(m_overlay, &dc);
+  overlaydc.Clear();
 
-    if (gc && leadTime >= 0) {
-        // Set Lead time marker
-        wxGraphicsPath markerPath = gc->CreatePath();
-        CreatePathMarker(markerPath, leadTime);
-        gc->SetBrush(wxBrush(*wxWHITE, wxBRUSHSTYLE_SOLID));
-        gc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
-        gc->DrawPath(markerPath);
+  // Create graphics context
+  wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
-        wxDELETE(gc);
-    }
+  if (gc && leadTime >= 0) {
+    // Set Lead time marker
+    wxGraphicsPath markerPath = gc->CreatePath();
+    CreatePathMarker(markerPath, leadTime);
+    gc->SetBrush(wxBrush(*wxWHITE, wxBRUSHSTYLE_SOLID));
+    gc->SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_SOLID));
+    gc->DrawPath(markerPath);
+
+    wxDELETE(gc);
+  }
 }
 
 void asLeadTimeSwitcher::SetBitmap(wxBitmap *bmp) {
-    wxDELETE(m_bmp);
-    wxASSERT(!m_bmp);
+  wxDELETE(m_bmp);
+  wxASSERT(!m_bmp);
 
-    if (bmp != nullptr) {
-        wxASSERT(bmp);
-        m_bmp = new wxBitmap(*bmp);
-        wxASSERT(m_bmp);
-    }
+  if (bmp != nullptr) {
+    wxASSERT(bmp);
+    m_bmp = new wxBitmap(*bmp);
+    wxASSERT(m_bmp);
+  }
 }
 
 void asLeadTimeSwitcher::OnPaint(wxPaintEvent &event) {
-    if (m_bmp != nullptr) {
-        wxPaintDC dc(this);
-        dc.DrawBitmap(*m_bmp, 0, 0, true);
-    }
+  if (m_bmp != nullptr) {
+    wxPaintDC dc(this);
+    dc.DrawBitmap(*m_bmp, 0, 0, true);
+  }
 
-    Layout();
+  Layout();
 
-    SetLeadTimeMarker(m_leadTime);
+  SetLeadTimeMarker(m_leadTime);
 
-    event.Skip();
+  event.Skip();
 }
 
 void asLeadTimeSwitcher::CreatePath(wxGraphicsPath &path, int iCol) {
-    wxPoint start(0, 0);
+  wxPoint start(0, 0);
 
-    double startPointX = (double)start.x + iCol * m_cellWidth;
+  double startPointX = (double)start.x + iCol * m_cellWidth;
 
-    auto startPointY = (double)start.y;
+  auto startPointY = (double)start.y;
 
-    path.MoveToPoint(startPointX, startPointY);
+  path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint(startPointX + m_cellWidth, startPointY);
-    path.AddLineToPoint(startPointX + m_cellWidth, startPointY + m_cellWidth - 1);
-    path.AddLineToPoint(startPointX, startPointY + m_cellWidth - 1);
-    path.AddLineToPoint(startPointX, startPointY);
+  path.AddLineToPoint(startPointX + m_cellWidth, startPointY);
+  path.AddLineToPoint(startPointX + m_cellWidth, startPointY + m_cellWidth - 1);
+  path.AddLineToPoint(startPointX, startPointY + m_cellWidth - 1);
+  path.AddLineToPoint(startPointX, startPointY);
 
-    path.CloseSubpath();
+  path.CloseSubpath();
 }
 
 void asLeadTimeSwitcher::CreatePathRing(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb,
                                         int segmentNb) {
-    const wxDouble radiusOut = 100 * g_ppiScaleDc * scale;
-    const wxDouble radiusIn = 40 * g_ppiScaleDc * scale;
+  const wxDouble radiusOut = 100 * g_ppiScaleDc * scale;
+  const wxDouble radiusIn = 40 * g_ppiScaleDc * scale;
 
-    wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
-    wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
-    auto centerX = (wxDouble)center.x;
-    auto centerY = (wxDouble)center.y;
+  wxDouble segmentStart = -0.5 * M_PI + ((double)segmentNb / (double)segmentsTotNb) * (1.5 * M_PI);
+  wxDouble segmentEnd = -0.5 * M_PI + ((double)(segmentNb + 1) / (double)segmentsTotNb) * (1.5 * M_PI);
+  auto centerX = (wxDouble)center.x;
+  auto centerY = (wxDouble)center.y;
 
-    // Get starting point
-    double dX = cos(segmentStart) * radiusOut;
-    double dY = sin(segmentStart) * radiusOut;
-    wxDouble startPointX = centerX + dX;
-    wxDouble startPointY = centerY + dY;
+  // Get starting point
+  double dX = cos(segmentStart) * radiusOut;
+  double dY = sin(segmentStart) * radiusOut;
+  wxDouble startPointX = centerX + dX;
+  wxDouble startPointY = centerY + dY;
 
-    path.MoveToPoint(startPointX, startPointY);
+  path.MoveToPoint(startPointX, startPointY);
 
-    path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
+  path.AddArc(centerX, centerY, radiusOut, segmentStart, segmentEnd, true);
 
-    const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
-    wxPoint2DDouble currentPoint = path.GetCurrentPoint();
-    wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
-    wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
+  const wxDouble radiusRatio = ((radiusOut - radiusIn) / radiusOut);
+  wxPoint2DDouble currentPoint = path.GetCurrentPoint();
+  wxDouble newPointX = currentPoint.m_x - (currentPoint.m_x - centerX) * radiusRatio;
+  wxDouble newPointY = currentPoint.m_y - (currentPoint.m_y - centerY) * radiusRatio;
 
-    path.AddLineToPoint(newPointX, newPointY);
+  path.AddLineToPoint(newPointX, newPointY);
 
-    path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
+  path.AddArc(centerX, centerY, radiusIn, segmentEnd, segmentStart, false);
 
-    path.CloseSubpath();
+  path.CloseSubpath();
 }
 
 void asLeadTimeSwitcher::FillPath(wxGraphicsContext *gc, wxGraphicsPath &path, float value) {
-    wxColour colour;
+  wxColour colour;
 
-    if (asIsNaN(value))  // NaN -> gray
-    {
-        colour.Set(150, 150, 150);
-    } else if (value == 0)  // No rain -> white
-    {
-        colour.Set(255, 255, 255);
-    } else if (value <= 0.5)  // light green to yellow
-    {
-        int baseVal = 200;
-        int valColour = ((value / (0.5))) * baseVal;
-        int valColourCompl = ((value / (0.5))) * (255 - baseVal);
-        if (valColour > baseVal) valColour = baseVal;
-        if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
-        colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
-    } else  // Yellow to red
-    {
-        int valColour = ((value - 0.5) / (0.5)) * 255;
-        if (valColour > 255) valColour = 255;
-        colour.Set(255, (255 - valColour), 0);
-    }
+  if (asIsNaN(value))  // NaN -> gray
+  {
+    colour.Set(150, 150, 150);
+  } else if (value == 0)  // No rain -> white
+  {
+    colour.Set(255, 255, 255);
+  } else if (value <= 0.5)  // light green to yellow
+  {
+    int baseVal = 200;
+    int valColour = ((value / (0.5))) * baseVal;
+    int valColourCompl = ((value / (0.5))) * (255 - baseVal);
+    if (valColour > baseVal) valColour = baseVal;
+    if (valColourCompl + baseVal > 255) valColourCompl = 255 - baseVal;
+    colour.Set((baseVal + valColourCompl), 255, (baseVal - valColour));
+  } else  // Yellow to red
+  {
+    int valColour = ((value - 0.5) / (0.5)) * 255;
+    if (valColour > 255) valColour = 255;
+    colour.Set(255, (255 - valColour), 0);
+  }
 
-    wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
-    gc->SetBrush(brush);
-    gc->DrawPath(path);
+  wxBrush brush(colour, wxBRUSHSTYLE_SOLID);
+  gc->SetBrush(brush);
+  gc->DrawPath(path);
 }
 
 void asLeadTimeSwitcher::CreateDatesText(wxGraphicsContext *gc, const wxPoint &start, int iCol, const wxString &label) {
-    double pointX = (double)start.x + iCol * m_cellWidth;
-    auto pointY = (double)start.y;
+  double pointX = (double)start.x + iCol * m_cellWidth;
+  auto pointY = (double)start.y;
 
-    // Draw text
-    gc->DrawText(label, pointX, pointY);
+  // Draw text
+  gc->DrawText(label, pointX, pointY);
 }
 
 void asLeadTimeSwitcher::CreatePathMarker(wxGraphicsPath &path, int iCol) {
-    int outlier = g_ppiScaleDc * 5;
-    int markerHeight = g_ppiScaleDc * 13;
-    wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);
+  int outlier = g_ppiScaleDc * 5;
+  int markerHeight = g_ppiScaleDc * 13;
+  wxPoint start(m_cellWidth / 2, m_cellWidth - markerHeight);
 
-    double startPointX = (double)start.x + iCol * m_cellWidth;
-    auto startPointY = (double)start.y;
+  double startPointX = (double)start.x + iCol * m_cellWidth;
+  auto startPointY = (double)start.y;
 
-    path.MoveToPoint(startPointX, startPointY);
+  path.MoveToPoint(startPointX, startPointY);
 
-    path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 5),
-                        startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
-    path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 5),
-                        startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
-    path.AddLineToPoint(startPointX, startPointY);
+  path.AddLineToPoint(startPointX - m_cellWidth / (g_ppiScaleDc * 5),
+                      startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
+  path.AddLineToPoint(startPointX + m_cellWidth / (g_ppiScaleDc * 5),
+                      startPointY + markerHeight + outlier - g_ppiScaleDc * 1);
+  path.AddLineToPoint(startPointX, startPointY);
 
-    path.CloseSubpath();
+  path.CloseSubpath();
 }

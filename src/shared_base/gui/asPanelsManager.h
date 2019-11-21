@@ -31,17 +31,17 @@
 #include "asIncludes.h"
 
 class asPanelsManager : public wxObject {
-   public:
-    asPanelsManager() = default;
+ public:
+  asPanelsManager() = default;
 
-    ~asPanelsManager() override = default;
+  ~asPanelsManager() override = default;
 
-    void LayoutFrame(wxWindow *element);
+  void LayoutFrame(wxWindow *element);
 
-    wxWindow *GetTopFrame(wxWindow *element) const;
+  wxWindow *GetTopFrame(wxWindow *element) const;
 
-   protected:
-   private:
+ protected:
+ private:
 };
 
 #endif

@@ -31,14 +31,14 @@ const wxString g_version =
     wxString::Format("%d.%d.%d", ATMOSWING_MAJOR_VERSION, ATMOSWING_MINOR_VERSION, ATMOSWING_PATCH_VERSION);
 
 wxString asVersion::GetFullString() {
-    wxString versionNb = "Version " + g_version;
+  wxString versionNb = "Version " + g_version;
 #if defined(__WXMSW__)
-    versionNb << " - Windows";
+  versionNb << " - Windows";
 #elif defined(__WXMAC__)
-    versionNb << " - Mac";
+  versionNb << " - Mac";
 #elif defined(__UNIX__)
-    versionNb << " - Linux";
+  versionNb << " - Linux";
 #endif
 
-    return versionNb;
+  return versionNb;
 }
