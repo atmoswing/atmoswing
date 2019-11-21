@@ -15,7 +15,8 @@
 
 BEGIN_EVENT_TABLE(awxLed, wxWindow)
 EVT_ERASE_BACKGROUND(awxLed::OnErase)
-EVT_PAINT(awxLed::OnPaint) EVT_SIZE(awxLed::OnSizeEvent) END_EVENT_TABLE()
+EVT_PAINT(awxLed::OnPaint)
+EVT_SIZE(awxLed::OnSizeEvent) END_EVENT_TABLE()
 
     awxLed::awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, awxLedColour color,
                    long style, int timerInterval)

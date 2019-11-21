@@ -33,7 +33,7 @@
 #include "asPreprocessor.h"
 #include "asTimeArray.h"
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "wx/filename.h"
 
 TEST(Criteria, S1) {

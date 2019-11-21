@@ -27,10 +27,10 @@
 
 #include "asPredictorGenericNetcdf.h"
 
-#include "asAreaCompGrid.h"
-#include "asTimeArray.h"
 #include <wx/dir.h>
 #include <wx/regex.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorGenericNetcdf::asPredictorGenericNetcdf(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.

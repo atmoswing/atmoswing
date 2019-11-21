@@ -28,10 +28,10 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asAreaCompRegGrid.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile) {
   vwxs filepaths;

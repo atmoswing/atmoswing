@@ -32,7 +32,7 @@
 
 #ifndef UNIT_TESTING
 
-#include <AtmoswingAppOptimizer.h>
+#include "AtmoswingAppOptimizer.h"
 
 #endif
 

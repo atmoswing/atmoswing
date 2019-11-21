@@ -29,8 +29,8 @@
 #ifndef AS_INTERNET_H
 #define AS_INTERNET_H
 
-#include "asIncludes.h"
 #include <curl/curl.h>
+#include "asIncludes.h"
 
 class asInternet : public wxObject {
  public:

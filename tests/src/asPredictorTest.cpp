@@ -27,10 +27,10 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asAreaCompGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(Predictor, Standardize) {
   double xMin = 10;

@@ -29,7 +29,7 @@
 #include "asThreadGeneticAlgorithms.h"
 
 #ifdef USE_CUDA
-#include <asProcessorCuda.cuh>
+#include "asProcessorCuda.cuh"
 #endif
 
 asThreadGeneticAlgorithms::asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer,

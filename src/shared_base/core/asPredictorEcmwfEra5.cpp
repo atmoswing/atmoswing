@@ -27,10 +27,10 @@
 
 #include "asPredictorEcmwfEra5.h"
 
-#include "asAreaCompGrid.h"
-#include "asTimeArray.h"
 #include <wx/dir.h>
 #include <wx/regex.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorEcmwfEra5::asPredictorEcmwfEra5(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.

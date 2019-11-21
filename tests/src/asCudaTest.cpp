@@ -27,9 +27,9 @@
 
 #ifdef USE_CUDA
 
+#include <gtest/gtest.h>
 #include "asCuda.cuh"
 #include "asThread.h"
-#include "gtest/gtest.h"
 
 class asThreadTestCuda : public asThread {
  public:

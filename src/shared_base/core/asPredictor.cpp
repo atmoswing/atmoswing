@@ -29,6 +29,8 @@
 
 #include "asPredictor.h"
 
+#include <wx/dir.h>
+#include <wx/ffile.h>
 #include "asAreaCompGenGrid.h"
 #include "asAreaCompRegGrid.h"
 #include "asPredictorCustomLtheNR1.h"
@@ -56,8 +58,6 @@
 #include "asPredictorNoaa20Cr2cEnsemble.h"
 #include "asPredictorNoaaOisst2.h"
 #include "asTimeArray.h"
-#include <wx/dir.h>
-#include <wx/ffile.h>
 
 asPredictor::asPredictor(const wxString &dataId)
     : m_initialized(false),

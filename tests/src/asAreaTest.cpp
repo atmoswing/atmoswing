@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include <gtest/gtest.h>
 #include "asArea.h"
-#include "gtest/gtest.h"
 
 TEST(Area, CheckPointWGS84True) {
   asArea area;

@@ -27,10 +27,10 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asAreaCompGenGrid.h"
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(PredictorProjCmip5, LoadEasy) {
   double xMin = 3.375;

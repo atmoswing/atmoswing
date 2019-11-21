@@ -28,9 +28,9 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asFile.h"
 #include "asPredictandPrecipitation.h"
-#include "gtest/gtest.h"
 
 TEST(DataPredictandPrecipitation, GumbelAdjustment) {
   asPredictandPrecipitation predictand(asPredictand::Precipitation, asPredictand::Daily, asPredictand::Station);

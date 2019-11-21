@@ -28,8 +28,8 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asCatalogPredictands.h"
-#include "gtest/gtest.h"
 
 TEST(CatalogPredictand, LoadCatalogProp) {
   wxString filepath = wxFileName::GetCwd();

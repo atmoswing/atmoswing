@@ -29,11 +29,11 @@
 #ifndef AtmoswingAPPOptimizer_H
 #define AtmoswingAPPOptimizer_H
 
-#include "asIncludes.h"
 #include <wx/app.h>
 #include <wx/cmdline.h>
 #include <wx/snglinst.h>
 #include <wx/socket.h>
+#include "asIncludes.h"
 
 #if wxUSE_GUI
 

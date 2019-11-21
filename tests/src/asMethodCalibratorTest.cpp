@@ -29,6 +29,7 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asFileText.h"
 #include "asMethodCalibratorSingle.h"
 #include "asPredictandPrecipitation.h"
@@ -37,7 +38,6 @@
 #include "asResultsScores.h"
 #include "asResultsTotalScore.h"
 #include "asResultsValues.h"
-#include "gtest/gtest.h"
 
 void Ref1(const wxString &paramsFile, bool shortVersion) {
   // Create predictand database

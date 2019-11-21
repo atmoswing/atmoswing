@@ -28,17 +28,16 @@
 
 #include "asMethodOptimizerGeneticAlgorithms.h"
 
-#include "asThreadGeneticAlgorithms.h"
 #include <wx/dir.h>
-
 #include "asFileText.h"
+#include "asThreadGeneticAlgorithms.h"
 
 #ifndef UNIT_TESTING
-#include <AtmoswingAppOptimizer.h>
+#include "AtmoswingAppOptimizer.h"
 #endif
 
 #ifdef USE_CUDA
-#include <asProcessorCuda.cuh>
+#include "asProcessorCuda.cuh"
 #endif
 
 asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()

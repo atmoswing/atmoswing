@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include <gtest/gtest.h>
 #include "asAreaCompRegGrid.h"
-#include "gtest/gtest.h"
 
 TEST(AreaCompGrid, ConstructorAlternativeOneArea) {
   double xMin = 10;

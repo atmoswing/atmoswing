@@ -25,9 +25,9 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include "asParameters.h"
 #include "asParametersDownscaling.h"
-#include "gtest/gtest.h"
 
 TEST(ParametersDownscaling, ParametersLoadFromFile) {
   wxString filepath = wxFileName::GetCwd();

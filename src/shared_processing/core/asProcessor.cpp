@@ -40,13 +40,13 @@
 #include "asTimeArray.h"
 
 #ifdef APP_FORECASTER
-#include <AtmoswingAppForecaster.h>
+#include "AtmoswingAppForecaster.h"
 #endif
 #ifdef APP_OPTIMIZER
-#include <AtmoswingAppOptimizer.h>
+#include "AtmoswingAppOptimizer.h"
 #endif
 #ifdef USE_CUDA
-#include <asProcessorCuda.cuh>
+#include "asProcessorCuda.cuh"
 #endif
 
 bool asProcessor::GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,

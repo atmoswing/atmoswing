@@ -26,11 +26,11 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include <gtest/gtest.h>
 #include "asAreaCompRegGrid.h"
 #include "asPredictor.h"
 #include "asPreprocessor.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 #include "wx/filename.h"
 
 TEST(Preprocessor, Gradients) {

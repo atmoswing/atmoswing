@@ -27,10 +27,10 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asAreaCompGrid.h"
 #include "asPredictor.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(PredictorCustomMeteoFvg, LoadSingleDay) {
   asTimeArray dates(asTime::GetMJD(2011, 7, 18, 06), asTime::GetMJD(2011, 7, 18, 06), 6, "Simple");

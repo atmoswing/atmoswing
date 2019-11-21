@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
+#include <gtest/gtest.h>
 #include "asTime.h"
-#include "gtest/gtest.h"
 
 TEST(Time, IsLeapYearDivisableBy4) {
   EXPECT_TRUE(asTime::IsLeapYear(1972));

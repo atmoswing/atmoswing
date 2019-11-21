@@ -27,10 +27,10 @@
 
 #include <wx/filename.h>
 
+#include <gtest/gtest.h>
 #include "asAreaCompGenGrid.h"
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(PredictorProjCordex, LoadEasy) {
   wxString predictorDataDir = wxFileName::GetCwd();

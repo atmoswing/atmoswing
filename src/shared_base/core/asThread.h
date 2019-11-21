@@ -28,8 +28,8 @@
 #ifndef AS_THREAD_H
 #define AS_THREAD_H
 
-#include "asIncludes.h"
 #include <wx/thread.h>
+#include "asIncludes.h"
 
 class asThread : public wxThread {
  public:

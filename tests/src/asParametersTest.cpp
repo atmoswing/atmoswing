@@ -26,9 +26,9 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
+#include <gtest/gtest.h>
 #include "asParameters.h"
 #include "asParametersCalibration.h"
-#include "gtest/gtest.h"
 
 TEST(Parameters, ParametersLoadFromFile) {
   wxString filepath = wxFileName::GetCwd();

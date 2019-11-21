@@ -27,8 +27,8 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include "asGlobVars.h"
-#include "gtest/gtest.h"
 
 #ifndef UNIT_TESTING
 #define UNIT_TESTING

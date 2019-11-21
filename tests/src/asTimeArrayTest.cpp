@@ -25,8 +25,8 @@
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  */
 
+#include <gtest/gtest.h>
 #include "asTimeArray.h"
-#include "gtest/gtest.h"
 
 TEST(TimeArray, BuildArraySimple) {
   double start = asTime::GetMJD(1950, 1, 1);

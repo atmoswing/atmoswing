@@ -25,8 +25,8 @@
  * Portions Copyright 2015 Pascal Horton, Terranum.
  */
 
+#include <gtest/gtest.h>
 #include "asFileXml.h"
-#include "gtest/gtest.h"
 
 TEST(FileXml, SaveAndLoadXmlFileWxStyle) {
   wxString tmpDir = asConfig::CreateTempFileName("xmlFileTest1");

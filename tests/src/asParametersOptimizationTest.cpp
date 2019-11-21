@@ -27,9 +27,9 @@
  * Portions Copyright 2016 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include "asParameters.h"
 #include "asParametersOptimization.h"
-#include "gtest/gtest.h"
 
 TEST(ParametersOptimization, LoadFromFile) {
   wxString filepath = wxFileName::GetCwd();

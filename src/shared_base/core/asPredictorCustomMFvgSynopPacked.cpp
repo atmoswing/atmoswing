@@ -27,10 +27,10 @@
 
 #include "asPredictorCustomMFvgSynopPacked.h"
 
-#include "asAreaCompGrid.h"
-#include "asTimeArray.h"
 #include <wx/dir.h>
 #include <wx/regex.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
 asPredictorCustomMFvgSynopPacked::asPredictorCustomMFvgSynopPacked(const wxString &dataId)
     : asPredictorCustomMFvgSynop(dataId) {
