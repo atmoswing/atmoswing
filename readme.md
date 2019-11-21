@@ -5,6 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1otp6de8c8go0nxm?svg=true)](https://ci.appveyor.com/project/pascalhorton/atmoswing)
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1107/badge)](https://bestpractices.coreinfrastructure.org/projects/1107)
 [![Documentation Status](https://readthedocs.org/projects/atmoswing/badge/?version=latest)](https://atmoswing.readthedocs.io/en/latest/?badge=latest)
 
 
