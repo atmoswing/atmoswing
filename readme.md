@@ -57,6 +57,8 @@ The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile t
 
 If you want to contribute to the software development, you can fork this repository (keep it public !) and then suggest your improvements by sending pull requests. We would be glad to see a community growing around this project.
 
+When adding a new feature, please write a test along with it.
+
 Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
 
 AtmoSwing will follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) (not the case so far) with a few differences (mainly based on [wxWidgets Coding Guidelines](https://www.wxwidgets.org/develop/coding-guidelines)):
