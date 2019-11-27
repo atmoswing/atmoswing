@@ -32,7 +32,63 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, Load1stMember) {
+TEST(PredictorNoaa20Cr2cEnsemble, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/prmsl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/pwat", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/omega500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/rh850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/rh9950", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/t850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/t9950", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/z200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/z500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/z1000", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "analysis/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "first_guess/prate", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitationRate);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NOAA_20CR_v2c_ens", "first_guess/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorNoaa20Cr2cEnsemble, Load1stMember) {
   double xMin = 10;
   double xWidth = 8;
   double yMin = 70;
@@ -89,7 +145,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, Load1stMember) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, Load3rdMember) {
+TEST(PredictorNoaa20Cr2cEnsemble, Load3rdMember) {
   double xMin = 10;
   double xWidth = 8;
   double yMin = 70;
@@ -146,7 +202,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, Load3rdMember) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadComposite) {
+TEST(PredictorNoaa20Cr2cEnsemble, LoadComposite) {
   double xMin = -8;
   double xWidth = 12;
   double yMin = 70;
@@ -207,7 +263,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderLeft) {
+TEST(PredictorNoaa20Cr2cEnsemble, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 4;
   double yMin = 70;
@@ -260,7 +316,7 @@ TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNoaa20Cr2cEnsembleRegular, LoadBorderRight) {
+TEST(PredictorNoaa20Cr2cEnsemble, LoadBorderRight) {
   double xMin = 352;
   double xWidth = 8;
   double yMin = 70;
