@@ -231,27 +231,27 @@ TEST(PredictorCustomMeteoFvg, GetCorrectMesoPredictors) {
   wxDELETE(predictor);
 
   predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB500850", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
   ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500850"));
   wxDELETE(predictor);
 
   predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB500925", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
   ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500925"));
   wxDELETE(predictor);
 
   predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB700925", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
   ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB700925"));
   wxDELETE(predictor);
 
   predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB850500", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
   ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB850500"));
   wxDELETE(predictor);
 
   predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso_packed", "vertdiff/MB850500", ".");
-  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MaximumBuoyancy);
   ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB850500"));
   wxDELETE(predictor);
 }
