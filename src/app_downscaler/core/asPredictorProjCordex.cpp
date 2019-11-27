@@ -84,20 +84,20 @@ bool asPredictorProjCordex::Init() {
     m_parameterName = "Eastward Wind";
     m_fileVarName = "ua850";
     m_unit = m_s;
-  } else if (m_dataId.IsSameAs("ua200", false)) {
-    m_parameter = Uwind;
+  } else if (m_dataId.IsSameAs("va200", false)) {
+    m_parameter = Vwind;
     m_parameterName = "Eastward Wind";
-    m_fileVarName = "ua200";
+    m_fileVarName = "va200";
     m_unit = m_s;
-  } else if (m_dataId.IsSameAs("ua500", false)) {
-    m_parameter = Uwind;
+  } else if (m_dataId.IsSameAs("va500", false)) {
+    m_parameter = Vwind;
     m_parameterName = "Eastward Wind";
-    m_fileVarName = "ua500";
+    m_fileVarName = "va500";
     m_unit = m_s;
-  } else if (m_dataId.IsSameAs("ua850", false)) {
-    m_parameter = Uwind;
+  } else if (m_dataId.IsSameAs("va850", false)) {
+    m_parameter = Vwind;
     m_parameterName = "Eastward Wind";
-    m_fileVarName = "ua850";
+    m_fileVarName = "va850";
     m_unit = m_s;
   } else if (IsSeaLevelPressure()) {
     m_parameter = Pressure;
