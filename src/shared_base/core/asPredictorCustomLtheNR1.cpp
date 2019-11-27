@@ -53,25 +53,25 @@ bool asPredictorCustomLtheNR1::Init() {
   if (m_dataId.IsSameAs("hgt_500hPa", false)) {
     m_parameter = GeopotentialHeight;
     m_parameterName = "Geopotential height";
-    m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_500hPa.nc";
+    m_fileNamePattern = "NCEP_R1_lthe_hgt_500hPa.nc";
     m_fileVarName = "hgt";
     m_unit = m;
   } else if (m_dataId.IsSameAs("hgt_1000hPa", false)) {
     m_parameter = GeopotentialHeight;
     m_parameterName = "Geopotential height";
-    m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_hgt_1000hPa.nc";
+    m_fileNamePattern = "NCEP_R1_lthe_hgt_1000hPa.nc";
     m_fileVarName = "hgt";
     m_unit = m;
   } else if (IsPrecipitableWater()) {
     m_parameter = PrecipitableWater;
     m_parameterName = "Precipitable water";
-    m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_prwtr.nc";
+    m_fileNamePattern = "NCEP_R1_lthe_prwtr.nc";
     m_fileVarName = "pwa";
     m_unit = mm;
   } else if (IsRelativeHumidity()) {
     m_parameter = RelativeHumidity;
     m_parameterName = "Relative Humidity";
-    m_fileNamePattern = "NCEP_Reanalysis_v1_lthe_rhum.nc";
+    m_fileNamePattern = "NCEP_R1_lthe_rhum.nc";
     m_fileVarName = "rhum";
     m_unit = percent;
   } else {

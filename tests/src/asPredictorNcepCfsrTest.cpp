@@ -32,6 +32,14 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
+TEST(PredictorNcepCfsrGeneral, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+}
+
 TEST(PredictorNcepCfsrRegular, LoadEasy) {
   double xMin = 10;
   double xWidth = 5;

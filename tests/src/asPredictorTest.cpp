@@ -51,7 +51,7 @@ TEST(Predictor, Standardize) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-ncep-r1/v2014/");
 
-  asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+  asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
   predictor->SetStandardize(true);
 

@@ -177,7 +177,7 @@ TEST(Criteria, S1preprocessed) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+  asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
   ASSERT_TRUE(predictor->Load(&area, timearray, level));
   std::vector<asPredictor *> vdata;
@@ -248,7 +248,7 @@ TEST(Criteria, S2preprocessed) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+  asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
   ASSERT_TRUE(predictor->Load(&area, timearray, level));
   std::vector<asPredictor *> vdata;

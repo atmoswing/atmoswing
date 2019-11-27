@@ -52,8 +52,8 @@
 #include "asPredictorNasaMerra2Subset.h"
 #include "asPredictorNcepCfsr.h"
 #include "asPredictorNcepCfsrSubset.h"
-#include "asPredictorNcepReanalysis1.h"
-#include "asPredictorNcepReanalysis2.h"
+#include "asPredictorNcepR1.h"
+#include "asPredictorNcepR2.h"
 #include "asPredictorNoaa20Cr2c.h"
 #include "asPredictorNoaa20Cr2cEnsemble.h"
 #include "asPredictorNoaaOisst2.h"
@@ -114,10 +114,10 @@ asPredictor *asPredictor::GetInstance(const wxString &datasetId, const wxString 
 
   if (datasetId.IsSameAs("GenericNetcdf", false)) {
     predictor = new asPredictorGenericNetcdf(dataId);
-  } else if (datasetId.IsSameAs("NCEP_Reanalysis_v1", false)) {
-    predictor = new asPredictorNcepReanalysis1(dataId);
-  } else if (datasetId.IsSameAs("NCEP_Reanalysis_v2", false)) {
-    predictor = new asPredictorNcepReanalysis2(dataId);
+  } else if (datasetId.IsSameAs("NCEP_R1", false)) {
+    predictor = new asPredictorNcepR1(dataId);
+  } else if (datasetId.IsSameAs("NCEP_R2", false)) {
+    predictor = new asPredictorNcepR2(dataId);
   } else if (datasetId.IsSameAs("NCEP_CFSR", false)) {
     predictor = new asPredictorNcepCfsr(dataId);
   } else if (datasetId.IsSameAs("NCEP_CFSR_subset", false)) {

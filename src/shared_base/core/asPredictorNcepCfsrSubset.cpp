@@ -59,7 +59,7 @@ bool asPredictorNcepCfsrSubset::Init() {
       m_fileVarName = "HGT_L100";
       m_unit = gpm;
     } else if (m_dataId.IsSameAs("gpa", false) || m_dataId.IsSameAs("GP_A_L100", false)) {
-      m_parameter = GeopotentialHeight;
+      m_parameter = GeopotentialHeightAnomaly;
       m_parameterName = "Geopotential height anomaly";
       m_fileVarName = "GP_A_L100";
       m_unit = gpm;
@@ -90,7 +90,7 @@ bool asPredictorNcepCfsrSubset::Init() {
       m_fileVarName = "U_GRD_L100";
       m_unit = m_s;
     } else if (IsVwindComponent() || m_dataId.IsSameAs("V_GRD_L100", false)) {
-      m_parameter = Uwind;
+      m_parameter = Vwind;
       m_parameterName = "Northward wind";
       m_fileVarName = "V_GRD_L100";
       m_unit = m_s;

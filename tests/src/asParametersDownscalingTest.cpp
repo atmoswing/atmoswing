@@ -52,7 +52,7 @@ TEST(ParametersDownscaling, ParametersLoadFromFile) {
   EXPECT_FALSE(params.NeedsPreprocessing(0, 0));
   EXPECT_TRUE(params.GetPredictorProjDatasetId(0, 0).IsSameAs("CORDEX"));
   EXPECT_TRUE(params.GetPredictorProjDataId(0, 0).IsSameAs("zg500"));
-  EXPECT_TRUE(params.GetPredictorDatasetId(0, 0).IsSameAs("NCEP_Reanalysis_v1"));
+  EXPECT_TRUE(params.GetPredictorDatasetId(0, 0).IsSameAs("NCEP_R1"));
   EXPECT_TRUE(params.GetPredictorDataId(0, 0).IsSameAs("hgt"));
   EXPECT_EQ(500, params.GetPredictorLevel(0, 0));
   EXPECT_EQ(24, params.GetPredictorHour(0, 0));
@@ -70,7 +70,7 @@ TEST(ParametersDownscaling, ParametersLoadFromFile) {
   EXPECT_TRUE(params.GetPreprocessMethod(0, 1).IsSameAs("SimpleGradients", false));
   EXPECT_TRUE(params.GetPreprocessProjDatasetId(0, 1, 0).IsSameAs("CORDEX"));
   EXPECT_TRUE(params.GetPreprocessProjDataId(0, 1, 0).IsSameAs("zg850"));
-  EXPECT_TRUE(params.GetPreprocessDatasetId(0, 1, 0).IsSameAs("NCEP_Reanalysis_v1"));
+  EXPECT_TRUE(params.GetPreprocessDatasetId(0, 1, 0).IsSameAs("NCEP_R1"));
   EXPECT_TRUE(params.GetPreprocessDataId(0, 1, 0).IsSameAs("hgt"));
   EXPECT_EQ(850, params.GetPreprocessLevel(0, 1, 0));
   EXPECT_EQ(12, params.GetPreprocessHour(0, 1, 0));

@@ -54,7 +54,7 @@ TEST(Preprocessor, Gradients) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+  asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
   ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -214,7 +214,7 @@ TEST(Preprocessor, GradientsMultithreading) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", predictorDataDir);
+  asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
   ASSERT_TRUE(predictor->Load(&area, timearray, level));
 
@@ -348,9 +348,9 @@ TEST(Preprocessor, Addition) {
   wxString dir = wxFileName::GetCwd();
   dir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor3 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
   ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
   EXPECT_EQ(5, area->GetXaxisCompositePtsnb(0));
@@ -459,9 +459,9 @@ TEST(Preprocessor, Average) {
   wxString dir = wxFileName::GetCwd();
   dir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor3 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor3 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
   ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
   ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -564,8 +564,8 @@ TEST(Preprocessor, Difference) {
   wxString dir = wxFileName::GetCwd();
   dir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
   ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
   ASSERT_TRUE(predictor2->Load(area, timearray2, 0));
@@ -655,8 +655,8 @@ TEST(Preprocessor, Multiplication) {
   wxString dir = wxFileName::GetCwd();
   dir.Append("/files/data-ncep-r1/v2003/");
 
-  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
-  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface_gauss/air", dir);
+  asPredictor *predictor1 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
+  asPredictor *predictor2 = asPredictor::GetInstance("NCEP_R1", "surface_gauss/air", dir);
 
   ASSERT_TRUE(predictor1->Load(area, timearray1, 0));
   ASSERT_TRUE(predictor2->Load(area, timearray2, 0));

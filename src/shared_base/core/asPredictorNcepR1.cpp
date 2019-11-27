@@ -26,14 +26,14 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#include "asPredictorNcepReanalysis1.h"
+#include "asPredictorNcepR1.h"
 
 #include "asAreaCompGrid.h"
 #include "asTimeArray.h"
 
-asPredictorNcepReanalysis1::asPredictorNcepReanalysis1(const wxString &dataId) : asPredictor(dataId) {
+asPredictorNcepR1::asPredictorNcepR1(const wxString &dataId) : asPredictor(dataId) {
   // Set the basic properties.
-  m_datasetId = "NCEP_Reanalysis_v1";
+  m_datasetId = "NCEP_R1";
   m_provider = "NCEP/NCAR";
   m_datasetName = "Reanalysis 1";
   m_fileType = asFile::Netcdf;
@@ -46,7 +46,7 @@ asPredictorNcepReanalysis1::asPredictorNcepReanalysis1(const wxString &dataId) :
   m_fStr.dimLevelName = "level";
 }
 
-bool asPredictorNcepReanalysis1::Init() {
+bool asPredictorNcepR1::Init() {
   CheckLevelTypeIsDefined();
 
   // Identify data ID and set the corresponding properties.
@@ -428,13 +428,13 @@ bool asPredictorNcepReanalysis1::Init() {
   return true;
 }
 
-void asPredictorNcepReanalysis1::ListFiles(asTimeArray &timeArray) {
+void asPredictorNcepR1::ListFiles(asTimeArray &timeArray) {
   for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
     m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
   }
 }
 
-double asPredictorNcepReanalysis1::ConvertToMjd(double timeValue, double refValue) const {
+double asPredictorNcepR1::ConvertToMjd(double timeValue, double refValue) const {
   timeValue = (timeValue / 24.0);             // hours to days
   if (timeValue < 500 * 365) {                // New format
     timeValue += asTime::GetMJD(1800, 1, 1);  // to MJD: add a negative time span

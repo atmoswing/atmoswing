@@ -26,19 +26,19 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTOR_NCEP_R1_H
-#define AS_PREDICTOR_NCEP_R1_H
+#ifndef AS_PREDICTOR_NCEP_R2_H
+#define AS_PREDICTOR_NCEP_R2_H
 
 #include "asIncludes.h"
 #include "asPredictor.h"
 
 class asArea;
 
-class asPredictorNcepReanalysis1 : public asPredictor {
+class asPredictorNcepR2 : public asPredictor {
  public:
-  explicit asPredictorNcepReanalysis1(const wxString &dataId);
+  explicit asPredictorNcepR2(const wxString &dataId);
 
-  ~asPredictorNcepReanalysis1() override = default;
+  ~asPredictorNcepR2() override = default;
 
   bool Init() override;
 

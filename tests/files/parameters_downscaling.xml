@@ -33,7 +33,7 @@
       <preload>1</preload>
       <proj_dataset_id>CORDEX</proj_dataset_id>
       <proj_data_id>zg500</proj_data_id>
-      <archive_dataset_id>NCEP_Reanalysis_v1</archive_dataset_id>
+      <archive_dataset_id>NCEP_R1</archive_dataset_id>
       <archive_data_id>hgt</archive_data_id>
       <level>500</level>
       <time>24</time>
@@ -54,7 +54,7 @@
         <preprocessing_data>
           <proj_dataset_id>CORDEX</proj_dataset_id>
           <proj_data_id>zg850</proj_data_id>
-          <archive_dataset_id>NCEP_Reanalysis_v1</archive_dataset_id>
+          <archive_dataset_id>NCEP_R1</archive_dataset_id>
           <archive_data_id>hgt</archive_data_id>
           <level>850</level>
           <time>12</time>
