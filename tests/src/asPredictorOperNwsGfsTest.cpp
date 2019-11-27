@@ -36,33 +36,33 @@
 
 
 TEST(PredictorOperNwsGfs, GetCorrectPredictors) {
-  asPredictor *predictor;
+  asPredictorOper *predictor;
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "z", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "z");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "t", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "t");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "w", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "w");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "rh", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "rh");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "u", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "u");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "v", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "v");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "pwat", ".");
+  predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "pwat");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
   wxDELETE(predictor);
 }
