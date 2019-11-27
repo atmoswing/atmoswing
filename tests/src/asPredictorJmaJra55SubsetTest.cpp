@@ -32,7 +32,51 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorJmaJra55SubsetRegular, LoadEasy) {
+TEST(PredictorJmaJra55Subset, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/rh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_p125/w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_surf125/msl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_column125/pwat", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "fcst_phy2m125/tprat3h", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "fcst_phy2m125/tprat6h", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_isentrop125/pv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("JMA_JRA_55_subset", "anl_isentrop125/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorJmaJra55Subset, LoadEasy) {
   double xMin = 360;
   double xWidth = 10;
   double xStep = 1.250;
@@ -96,7 +140,7 @@ TEST(PredictorJmaJra55SubsetRegular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorJmaJra55SubsetRegular, Around360) {
+TEST(PredictorJmaJra55Subset, Around360) {
   double xMin = 355;
   double xWidth = 10;
   double xStep = 1.250;

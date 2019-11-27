@@ -32,7 +32,47 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorEcmwfEra20CRegular, LoadEasy) {
+TEST(PredictorEcmwfEra20C, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "pl/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "pl/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "pl/r", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "pl/w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "pl/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "surf/tcw", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "surf/tp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "surf/msl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_20C", "surf/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorEcmwfEra20C, LoadEasy) {
   double xMin = 3;
   double xWidth = 8;
   double yMin = 75;
@@ -111,7 +151,7 @@ TEST(PredictorEcmwfEra20CRegular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEra20CRegular, LoadComposite) {
+TEST(PredictorEcmwfEra20C, LoadComposite) {
   double xMin = -4;
   double xWidth = 8;
   double yMin = 75;
@@ -191,7 +231,7 @@ TEST(PredictorEcmwfEra20CRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEra20CRegular, LoadBorderLeft) {
+TEST(PredictorEcmwfEra20C, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 4;
   double yMin = 75;
@@ -269,7 +309,7 @@ TEST(PredictorEcmwfEra20CRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEra20CRegular, LoadBorderRight) {
+TEST(PredictorEcmwfEra20C, LoadBorderRight) {
   double xMin = -4;
   double xWidth = 4;
   double yMin = 75;

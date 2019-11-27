@@ -32,7 +32,139 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorNasaMerra2Regular, LoadEasy) {
+TEST(PredictorNasaMerra2, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorNasaMerra2Subset, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/sh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/ps", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst6_3d_ana_Np/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/pv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/r", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst3_3d_asm_Np/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_int_Nx/tqi", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_int_Nx/tql", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_int_Nx/tqv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_int_Nx/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_asm_Nx/tqi", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_asm_Nx/tql", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_asm_Nx/tqv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_asm_Nx/t10m", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "inst1_2d_asm_Nx/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "tavg1_2d_flx_Nx/tp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "tavg1_2d_flx_Nx/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "tavg1_2d_lnd_Nx/tp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NASA_MERRA_2_subset", "tavg1_2d_lnd_Nx/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorNasaMerra2, LoadEasy) {
   double xMin = 2.5;
   double xWidth = 5;
   double xStep = 0.625;
@@ -102,7 +234,7 @@ TEST(PredictorNasaMerra2Regular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadComposite) {
+TEST(PredictorNasaMerra2, LoadComposite) {
   double xMin = 177.5;
   double xWidth = 5;
   double xStep = 0.625;
@@ -167,7 +299,7 @@ TEST(PredictorNasaMerra2Regular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadCompositeStep) {
+TEST(PredictorNasaMerra2, LoadCompositeStep) {
   double xMin = 177.5;
   double xWidth = 5;
   double xStep = 1.25;
@@ -222,7 +354,7 @@ TEST(PredictorNasaMerra2Regular, LoadCompositeStep) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadBorderLeft) {
+TEST(PredictorNasaMerra2, LoadBorderLeft) {
   double xMin = 180;
   double xWidth = 2.5;
   double xStep = 0.625;
@@ -285,7 +417,7 @@ TEST(PredictorNasaMerra2Regular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNasaMerra2Regular, LoadBorderRight) {
+TEST(PredictorNasaMerra2, LoadBorderRight) {
   double xMin = 177.5;
   double xWidth = 2.5;
   double xStep = 0.625;

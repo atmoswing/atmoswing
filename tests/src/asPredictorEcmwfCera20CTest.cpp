@@ -32,7 +32,47 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorEcmwfCera20CRegular, Load1stMember) {
+TEST(PredictorEcmwfCera20C, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/r", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "pl/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "surf/tcw", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "surf/tp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "surf/msl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_CERA_20C", "surf/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorEcmwfCera20C, Load1stMember) {
   double xMin = 3;
   double xWidth = 8;
   double yMin = 75;
@@ -97,7 +137,7 @@ TEST(PredictorEcmwfCera20CRegular, Load1stMember) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, Load3rdMember) {
+TEST(PredictorEcmwfCera20C, Load3rdMember) {
   double xMin = 3;
   double xWidth = 8;
   double yMin = 75;
@@ -162,7 +202,7 @@ TEST(PredictorEcmwfCera20CRegular, Load3rdMember) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, Load3Members) {
+TEST(PredictorEcmwfCera20C, Load3Members) {
   double xMin = 3;
   double xWidth = 8;
   double yMin = 75;
@@ -268,7 +308,7 @@ TEST(PredictorEcmwfCera20CRegular, Load3Members) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadComposite) {
+TEST(PredictorEcmwfCera20C, LoadComposite) {
   double xMin = -4;
   double xWidth = 8;
   double yMin = 75;
@@ -335,7 +375,7 @@ TEST(PredictorEcmwfCera20CRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadBorderLeft) {
+TEST(PredictorEcmwfCera20C, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 4;
   double yMin = 75;
@@ -399,7 +439,7 @@ TEST(PredictorEcmwfCera20CRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfCera20CRegular, LoadBorderRight) {
+TEST(PredictorEcmwfCera20C, LoadBorderRight) {
   double xMin = -4;
   double xWidth = 4;
   double yMin = 75;

@@ -32,7 +32,179 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorEcmwfEraIntRegular, LoadEasy) {
+TEST(PredictorEcmwfEraInt, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/d", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Divergence);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/pv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/q", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/r", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/vo", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pl/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/d", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Divergence);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/mont", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MontgomeryPotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/pres", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/pv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/q", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/vo", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "isentropic/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/d2m", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::DewpointTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/msl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/sd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SnowWaterEquivalent);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/sst", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/t2m", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/tcw", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/tcwv", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::WaterVapour);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/u10", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/v10", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/tp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/cape", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::CAPE);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/ie", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MoistureFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/ssr", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/ssrd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/str", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "sfa/strd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/pt", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/pres", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Geopotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("ECMWF_ERA_interim", "pv/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorEcmwfEraInt, LoadEasy) {
   double xMin = 3;
   double xWidth = 6;
   double yMin = 75;
@@ -111,7 +283,7 @@ TEST(PredictorEcmwfEraIntRegular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEraIntRegular, LoadComposite) {
+TEST(PredictorEcmwfEraInt, LoadComposite) {
   double xMin = -3;
   double xWidth = 6;
   double yMin = 75;
@@ -193,7 +365,7 @@ TEST(PredictorEcmwfEraIntRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEraIntRegular, LoadBorderLeft) {
+TEST(PredictorEcmwfEraInt, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 3;
   double yMin = 75;
@@ -269,7 +441,7 @@ TEST(PredictorEcmwfEraIntRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEraIntRegular, LoadBorderLeftOn720) {
+TEST(PredictorEcmwfEraInt, LoadBorderLeftOn720) {
   double xMin = 360;
   double xWidth = 3;
   double yMin = 75;
@@ -345,7 +517,7 @@ TEST(PredictorEcmwfEraIntRegular, LoadBorderLeftOn720) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorEcmwfEraIntRegular, LoadBorderRight) {
+TEST(PredictorEcmwfEraInt, LoadBorderRight) {
   double xMin = -3;
   double xWidth = 3;
   double yMin = 75;
