@@ -32,15 +32,31 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorNcepCfsrGeneral, GetCorrectPredictors) {
+TEST(PredictorNcepCfsr, GetCorrectPredictors) {
   asPredictor *predictor;
 
-  predictor = asPredictor::GetInstance("NASA_MERRA_2", "inst6_3d_ana_Np/z", ".");
+  predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/z", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/pwat", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/r", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR", "pl/t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrRegular, LoadEasy) {
+TEST(PredictorNcepCfsr, LoadEasy) {
   double xMin = 10;
   double xWidth = 5;
   double yMin = 35;
@@ -120,7 +136,7 @@ TEST(PredictorNcepCfsrRegular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrRegular, LoadComposite) {
+TEST(PredictorNcepCfsr, LoadComposite) {
   double xMin = -3;
   double xWidth = 5;
   double yMin = 35;
@@ -184,7 +200,7 @@ TEST(PredictorNcepCfsrRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrRegular, LoadBorderLeft) {
+TEST(PredictorNcepCfsr, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 5;
   double yMin = 35;
@@ -244,7 +260,7 @@ TEST(PredictorNcepCfsrRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrRegular, LoadBorderLeftOn720) {
+TEST(PredictorNcepCfsr, LoadBorderLeftOn720) {
   double xMin = 360;
   double xWidth = 5;
   double yMin = 35;
@@ -304,7 +320,7 @@ TEST(PredictorNcepCfsrRegular, LoadBorderLeftOn720) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrRegular, LoadBorderRight) {
+TEST(PredictorNcepCfsr, LoadBorderRight) {
   double xMin = -3;
   double xWidth = 3;
   double yMin = 35;

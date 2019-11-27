@@ -32,7 +32,175 @@
 #include "asPredictor.h"
 #include "asTimeArray.h"
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadEasy) {
+TEST(PredictorNcepCfsrSubset, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/gpa", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeightAnomaly);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/R_H_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/SPF_H_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/TMP_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/V_VEL_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/U_GRD_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/V_GRD_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/V_POT_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VelocityPotential);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/5WAVH_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/5WAVA_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeightAnomaly);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/ABS_V_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AbsoluteVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/CLWMR_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::CloudWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pl/STRM_L100", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::StreamFunction);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "tc/R_H_L200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "tc/C_WAT_L200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::CloudWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "tc/P_WAT_L200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/pres", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/4LFTX_L1", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SurfaceLiftedIndex);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/LFT_X_L1", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SurfaceLiftedIndex);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/CAPE_L1", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::CAPE);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/CIN_L1", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::CIN);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "sf/HGT_L1", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "msl/PRES_L101", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "msl/PRMSL_L101", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/LAPR_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::LapseRate);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/MNTSF_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::StreamFunction);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/PVORT_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialVorticity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/R_H_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/TMP_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/U_GRD_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/V_GRD_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "isentropic/V_VEL_L107", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/HGT_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/HGT_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/PRES_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/TMP_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/U_GRD_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/V_GRD_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "pv/VW_SH_L109", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::WindShear);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_CFSR_subset", "flux/prate", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitationRate);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorNcepCfsrSubset, LoadEasy) {
   double xMin = 10;
   double xWidth = 5;
   double yMin = 35;
@@ -112,7 +280,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadEasy) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadComposite) {
+TEST(PredictorNcepCfsrSubset, LoadComposite) {
   double xMin = -3;
   double xWidth = 5;
   double yMin = 35;
@@ -176,7 +344,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadComposite) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeft) {
+TEST(PredictorNcepCfsrSubset, LoadBorderLeft) {
   double xMin = 0;
   double xWidth = 5;
   double yMin = 35;
@@ -236,7 +404,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeft) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeftOn720) {
+TEST(PredictorNcepCfsrSubset, LoadBorderLeftOn720) {
   double xMin = 360;
   double xWidth = 5;
   double yMin = 35;
@@ -296,7 +464,7 @@ TEST(PredictorNcepCfsrSubsetRegular, LoadBorderLeftOn720) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorNcepCfsrSubsetRegular, LoadBorderRight) {
+TEST(PredictorNcepCfsrSubset, LoadBorderRight) {
   double xMin = -3;
   double xWidth = 3;
   double yMin = 35;
