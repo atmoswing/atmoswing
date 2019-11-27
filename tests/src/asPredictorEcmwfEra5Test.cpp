@@ -79,67 +79,67 @@ TEST(PredictorEcmwfEra5, GetCorrectPredictors) {
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/d2m", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/d2m", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::DewpointTemperature);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/msl", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/msl", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/sd", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/sd", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::SnowWaterEquivalent);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/sst", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/sst", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::SeaSurfaceTemperature);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/t2m", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/t2m", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/tcw", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/tcw", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/tcwv", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/tcwv", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::WaterVapour);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/u10", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/u10", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/v10", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/v10", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/tp", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/tp", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/cape", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/cape", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::CAPE);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/ie", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/ie", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::MoistureFlux);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/ssr", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/ssr", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/ssrd", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/ssrd", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/str", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/str", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
   wxDELETE(predictor);
 
-  predictor = asPredictor::GetInstance("ECMWF_ERA5", "sfa/strd", ".");
+  predictor = asPredictor::GetInstance("ECMWF_ERA5", "single/strd", ".");
   ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
   wxDELETE(predictor);
 }
