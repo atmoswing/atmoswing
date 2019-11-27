@@ -32,6 +32,70 @@
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
 
+TEST(PredictorProjCmip5, GetCorrectPredictors) {
+  asPredictorProj *predictor;
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "rh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "sh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "huss", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "pr", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "prc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "tas", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "tasmax", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "tasmin", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CMIP5", "MRI-CGCM3", "rcp85", "x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
 TEST(PredictorProjCmip5, LoadEasy) {
   double xMin = 3.375;
   double xWidth = 3;

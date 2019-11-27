@@ -32,6 +32,98 @@
 #include "asPredictorProj.h"
 #include "asTimeArray.h"
 
+TEST(PredictorProjCordex, GetCorrectPredictors) {
+  asPredictorProj *predictor;
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "zg850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ua200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ua500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ua850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "va200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "va500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "va850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "hurs", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "hus850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "huss", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "precip", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "prc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ta200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ta500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "ta850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "tas", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "tasmax", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "tasmin", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictorProj::GetInstance("CORDEX", "CNRM-CERFACS-CNRM-CM5", "rcp85", "x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+}
+
 TEST(PredictorProjCordex, LoadEasy) {
   wxString predictorDataDir = wxFileName::GetCwd();
   predictorDataDir.Append("/files/data-cordex/");
