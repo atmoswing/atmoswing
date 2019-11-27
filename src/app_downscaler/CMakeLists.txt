@@ -68,6 +68,10 @@ endif (USE_CPPCHECK)
 ##### DEFINITIONS
 
 # Global definitions
+if (USE_CUDA)
+    add_definitions(-DUSE_CUDA)
+endif (USE_CUDA)
+
 if (USE_GUI)
     set_target_properties(atmoswing-downscaler PROPERTIES COMPILE_DEFINITIONS "APP_DOWNSCALER; MINIMAL_LINKS; wxUSE_GUI=1")
     set_target_properties(asprocessing PROPERTIES COMPILE_DEFINITIONS "wxUSE_GUI=1")
@@ -84,6 +88,10 @@ target_link_libraries(atmoswing-downscaler asprocessing)
 if (USE_VLD)
     target_link_libraries(atmoswing-downscaler ${VLD_LIBRARIES})
 endif (USE_VLD)
+if (USE_CUDA)
+    add_dependencies(atmoswing-downscaler ascuda)
+    target_link_libraries(atmoswing-downscaler ascuda)
+endif (USE_CUDA)
 
 
 ##### INSTALLER
