@@ -124,12 +124,16 @@ bool asPredictorCustomMFvgSynop::Init() {
     } else if (m_dataId.IsSameAs("LRTE850500", false)) {
       m_gribCode = {0, 3, 113, 100};
     } else if (m_dataId.IsSameAs("MB500850", false)) {
+      m_parameter = MaximumBuoyancy;
       m_gribCode = {0, 3, 114, 100};
     } else if (m_dataId.IsSameAs("MB500925", false)) {
+      m_parameter = MaximumBuoyancy;
       m_gribCode = {0, 3, 114, 100};
     } else if (m_dataId.IsSameAs("MB700925", false)) {
+      m_parameter = MaximumBuoyancy;
       m_gribCode = {0, 3, 114, 100};
     } else if (m_dataId.IsSameAs("MB850500", false)) {
+      m_parameter = MaximumBuoyancy;
       m_gribCode = {0, 3, 114, 100};
     } else {
       wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);

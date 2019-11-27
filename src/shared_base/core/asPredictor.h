@@ -84,6 +84,7 @@ class asPredictor : public wxObject {
     DewpointTemperature,
     WaterVapour,
     MoistureFlux,
+    MaximumBuoyancy,
     Other
   };
 

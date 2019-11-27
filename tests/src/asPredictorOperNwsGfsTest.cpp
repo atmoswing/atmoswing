@@ -29,11 +29,133 @@
 #include <wx/filename.h>
 
 #include <gtest/gtest.h>
+#include "asAreaCompGrid.h"
 #include "asAreaCompRegGrid.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
 
-TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile) {
+
+TEST(PredictorOperNwsGfs, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "z", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "t", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "w", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "rh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "u", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "v", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NWS_GFS_Forecast", "pwat", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadEasySmallFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = 10;
+  int xPtsNb = 6;
+  double yMin = 35;
+  int yPtsNb = 4;
+  double step = 1;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9308	9305	9301	9297	9290	9285
+  9312	9310	9306	9301	9294	9288
+  9321	9317	9314	9310	9303	9295
+  9336	9329	9325	9320	9315	9308
+  */
+  EXPECT_NEAR(9308, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9305, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9301, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9297, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9290, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9285, hgt[0][0](0, 5), 0.5);
+  EXPECT_NEAR(9312, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9321, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9336, hgt[0][0](3, 0), 0.5);
+  EXPECT_NEAR(9308, hgt[0][0](3, 5), 0.5);
+
+  /* Values time step 1 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9302	9299	9297	9295	9291	9289
+  9304	9302	9299	9296	9293	9290
+  9314	9308	9304	9301	9297	9293
+  9326	9321	9313	9308	9304	9300
+  */
+  EXPECT_NEAR(9302, hgt[1][0](0, 0), 0.5);
+  EXPECT_NEAR(9299, hgt[1][0](0, 1), 0.5);
+  EXPECT_NEAR(9297, hgt[1][0](0, 2), 0.5);
+  EXPECT_NEAR(9295, hgt[1][0](0, 3), 0.5);
+  EXPECT_NEAR(9291, hgt[1][0](0, 4), 0.5);
+  EXPECT_NEAR(9289, hgt[1][0](0, 5), 0.5);
+  EXPECT_NEAR(9304, hgt[1][0](1, 0), 0.5);
+  EXPECT_NEAR(9314, hgt[1][0](2, 0), 0.5);
+  EXPECT_NEAR(9326, hgt[1][0](3, 0), 0.5);
+  EXPECT_NEAR(9300, hgt[1][0](3, 5), 0.5);
+
+  /* Values time step 2 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9299	9297	9295	9293	9290	9289
+  9303	9301	9297	9294	9292	9290
+  9311	9308	9304	9298	9294	9291
+  9321	9318	9314	9307	9299	9295
+  */
+  EXPECT_NEAR(9299, hgt[2][0](0, 0), 0.5);
+  EXPECT_NEAR(9297, hgt[2][0](0, 1), 0.5);
+  EXPECT_NEAR(9295, hgt[2][0](0, 2), 0.5);
+  EXPECT_NEAR(9293, hgt[2][0](0, 3), 0.5);
+  EXPECT_NEAR(9290, hgt[2][0](0, 4), 0.5);
+  EXPECT_NEAR(9289, hgt[2][0](0, 5), 0.5);
+  EXPECT_NEAR(9303, hgt[2][0](1, 0), 0.5);
+  EXPECT_NEAR(9311, hgt[2][0](2, 0), 0.5);
+  EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
+  EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadEasySmallFileRegular) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -119,7 +241,7 @@ TEST(PredictorOperNwsGfsRegular, LoadEasySmallFile) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile) {
+TEST(PredictorOperNwsGfs, LoadEasyLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -129,12 +251,13 @@ TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile) {
   dates.Init();
 
   double xMin = 10;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -202,14 +325,119 @@ TEST(PredictorOperNwsGfsRegular, LoadEasyLargeFile) {
   EXPECT_NEAR(9321, hgt[2][0](3, 0), 0.5);
   EXPECT_NEAR(9295, hgt[2][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeSmallFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = -3;
+  int xPtsNb = 6;
+  double yMin = 35;
+  int yPtsNb = 4;
+  double step = 1;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9422	9402	9373	9333	9300	9291
+  9438	9421	9397	9369	9338	9320
+  9451	9436	9421	9402	9379	9364
+  9462	9449	9437	9423	9410	9395
+  */
+  EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9402, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9373, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9333, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9300, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9291, hgt[0][0](0, 5), 0.5);
+  EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+  EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadCompositeLargeFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = -3;
+  int xPtsNb = 6;
+  double yMin = 35;
+  int yPtsNb = 4;
+  double step = 1;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9422	9402	9373	9333	9300	9291
+  9438	9421	9397	9369	9338	9320
+  9451	9436	9421	9402	9379	9364
+  9462	9449	9437	9423	9410	9395
+  */
+  EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9402, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9373, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9333, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9300, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9291, hgt[0][0](0, 5), 0.5);
+  EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
+  EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadCompositeLargeFileRegular) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
 
   asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
   dates.Init();
@@ -255,57 +483,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeSmallFile) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeLargeFile) {
-  vwxs filepaths;
-  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
-  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
-  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.24h.grib2");
-
-  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
-  dates.Init();
-
-  double xMin = -3;
-  double xWidth = 5;
-  double yMin = 35;
-  double yWidth = 3;
-  double step = 1;
-  float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
-
-  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
-  wxASSERT(predictor);
-
-  // Create file names
-  predictor->SetFileNames(filepaths);
-
-  // Load
-  ASSERT_TRUE(predictor->Load(area, dates, level));
-
-  vva2f hgt = predictor->GetData();
-  // hgt[time][mem](lat,lon)
-
-  /* Values time step 0 (horizontal=Lon, vertical=Lat)
-  Extracted from Degrib:
-  9422	9402	9373	9333	9300	9291
-  9438	9421	9397	9369	9338	9320
-  9451	9436	9421	9402	9379	9364
-  9462	9449	9437	9423	9410	9395
-  */
-  EXPECT_NEAR(9422, hgt[0][0](0, 0), 0.5);
-  EXPECT_NEAR(9402, hgt[0][0](0, 1), 0.5);
-  EXPECT_NEAR(9373, hgt[0][0](0, 2), 0.5);
-  EXPECT_NEAR(9333, hgt[0][0](0, 3), 0.5);
-  EXPECT_NEAR(9300, hgt[0][0](0, 4), 0.5);
-  EXPECT_NEAR(9291, hgt[0][0](0, 5), 0.5);
-  EXPECT_NEAR(9438, hgt[0][0](1, 0), 0.5);
-  EXPECT_NEAR(9451, hgt[0][0](2, 0), 0.5);
-  EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
-  EXPECT_NEAR(9395, hgt[0][0](3, 5), 0.5);
-
-  wxDELETE(predictor);
-}
-
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile) {
+TEST(PredictorOperNwsGfs, LoadBorderLeftSmallFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -315,12 +493,13 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile) {
   dates.Init();
 
   double xMin = 0;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -352,10 +531,11 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftSmallFile) {
   EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile) {
+TEST(PredictorOperNwsGfs, LoadBorderLeftLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -365,12 +545,13 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile) {
   dates.Init();
 
   double xMin = 0;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -402,10 +583,11 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftLargeFile) {
   EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile) {
+TEST(PredictorOperNwsGfs, LoadBorderLeftOn720SmallFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -415,12 +597,13 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile) {
   dates.Init();
 
   double xMin = 360;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -452,10 +635,11 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720SmallFile) {
   EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile) {
+TEST(PredictorOperNwsGfs, LoadBorderLeftOn720LargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -465,12 +649,13 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile) {
   dates.Init();
 
   double xMin = 360;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -502,10 +687,63 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderLeftOn720LargeFile) {
   EXPECT_NEAR(9423, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9373, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderRightSmallFile) {
+TEST(PredictorOperNwsGfs, LoadBorderRightSmallFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = 355;
+  int xPtsNb = 6;
+  double yMin = 35;
+  int yPtsNb = 4;
+  double step = 1;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9451	9438	9422	9402	9373	9333
+  9463	9452	9438	9421	9397	9369
+  9475	9465	9451	9436	9421	9402
+  9485	9473	9462	9449	9437	9423
+  */
+  EXPECT_NEAR(9451, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9438, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9422, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9402, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9373, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9333, hgt[0][0](0, 5), 0.5);
+  EXPECT_NEAR(9463, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9475, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
+  EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadBorderRightSmallFileRegular) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -555,7 +793,7 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderRightSmallFile) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile) {
+TEST(PredictorOperNwsGfs, LoadBorderRightLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -565,12 +803,13 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile) {
   dates.Init();
 
   double xMin = 355;
-  double xWidth = 5;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double step = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, step, yMin, yWidth, step);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -602,10 +841,11 @@ TEST(PredictorOperNwsGfsRegular, LoadBorderRightLargeFile) {
   EXPECT_NEAR(9485, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9423, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStepLonSmallFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -615,13 +855,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile) {
   dates.Init();
 
   double xMin = -3;
-  double xWidth = 10;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double xStep = 2;
   double yStep = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -654,10 +895,11 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonSmallFile) {
   EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStepLonLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -667,13 +909,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile) {
   dates.Init();
 
   double xMin = -3;
-  double xWidth = 10;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 3;
+  int yPtsNb = 4;
   double xStep = 2;
   double yStep = 1;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -706,10 +949,63 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLargeFile) {
   EXPECT_NEAR(9462, hgt[0][0](3, 0), 0.5);
   EXPECT_NEAR(9360, hgt[0][0](3, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStepLonLatSmallFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = -3;
+  int xPtsNb = 6;
+  double yMin = 35;
+  int yPtsNb = 3;
+  double xStep = 2;
+  double yStep = 3;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9400	9368	9332	9314	9312	9312
+  9422	9373	9300	9295	9308	9312
+  9462	9437	9410	9385	9373	9360
+  */
+
+  EXPECT_NEAR(9400, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9368, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9314, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9312, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9312, hgt[0][0](0, 5), 0.5);
+  EXPECT_NEAR(9422, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadCompositeStepLonLatSmallFileRegular) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -759,7 +1055,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatSmallFile) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStepLonLatLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -769,13 +1065,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile) {
   dates.Init();
 
   double xMin = -3;
-  double xWidth = 10;
+  int xPtsNb = 6;
   double yMin = 35;
-  double yWidth = 6;
+  int yPtsNb = 3;
   double xStep = 2;
   double yStep = 3;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -806,10 +1103,66 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStepLonLatLargeFile) {
   EXPECT_NEAR(9462, hgt[0][0](2, 0), 0.5);
   EXPECT_NEAR(9360, hgt[0][0](2, 5), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatRoundStartSmallFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = -5;
+  int xPtsNb = 5;
+  double yMin = 35;
+  int yPtsNb = 3;
+  double xStep = 2.5;
+  double yStep = 2.5;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9431	9397.5	9332	9300	9304
+  9457	7536.6	9351	7444.4	9316
+  9485	9455.5	9423	9390	9373
+  */
+
+  EXPECT_NEAR(9431, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9397.5, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9332, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9300, hgt[0][0](0, 3), 0.5);
+  EXPECT_NEAR(9304, hgt[0][0](0, 4), 0.5);
+  EXPECT_NEAR(9457, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9420.75, hgt[0][0](1, 1), 0.5);
+  EXPECT_NEAR(9305.5, hgt[0][0](1, 3), 0.5);
+  EXPECT_NEAR(9485, hgt[0][0](2, 0), 0.5);
+  EXPECT_NEAR(9455.5, hgt[0][0](2, 1), 0.5);
+  EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
+  EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatRoundStartSmallFileRegular) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -862,7 +1215,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartSmallFile) {
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatRoundStartLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -872,13 +1225,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile) {
   dates.Init();
 
   double xMin = -5;
-  double xWidth = 10;
+  int xPtsNb = 5;
   double yMin = 35;
-  double yWidth = 5;
+  int yPtsNb = 3;
   double xStep = 2.5;
   double yStep = 2.5;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -912,10 +1266,11 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatRoundStartLargeFile) {
   EXPECT_NEAR(9390, hgt[0][0](2, 3), 0.5);
   EXPECT_NEAR(9373, hgt[0][0](2, 4), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatIrregularStartSmallFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -925,13 +1280,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFil
   dates.Init();
 
   double xMin = -2.5;
-  double xWidth = 7.5;
+  int xPtsNb = 4;
   double yMin = 37.5;
-  double yWidth = 2.5;
+  int yPtsNb = 2;
   double xStep = 2.5;
   double yStep = 2.5;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -947,23 +1303,24 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartSmallFil
 
   /* Values time step 0 (horizontal=Lon, vertical=Lat)
   Extracted from Degrib:
-  9397.5	9332	9300	9304
-  9420.75	9351	9305.5	9316
+  9397.5   9331.51  9300.15  9303.79
+  9420.71	 9350.67  9305.54  9315.97
   */
 
-  EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
-  EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
-  EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
-  EXPECT_NEAR(9304, hgt[0][0](0, 3), 0.5);
-  EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
-  EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
-  EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
-  EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
+  EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.01);
+  EXPECT_NEAR(9331.51, hgt[0][0](0, 1), 0.01);
+  EXPECT_NEAR(9300.15, hgt[0][0](0, 2), 0.01);
+  EXPECT_NEAR(9303.79, hgt[0][0](0, 3), 0.01);
+  EXPECT_NEAR(9420.71, hgt[0][0](1, 0), 0.01);
+  EXPECT_NEAR(9350.67, hgt[0][0](1, 1), 0.01);
+  EXPECT_NEAR(9305.54, hgt[0][0](1, 2), 0.01);
+  EXPECT_NEAR(9315.97, hgt[0][0](1, 3), 0.01);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatIrregularStartLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -973,13 +1330,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFil
   dates.Init();
 
   double xMin = -2.5;
-  double xWidth = 7.5;
+  int xPtsNb = 4;
   double yMin = 37.5;
-  double yWidth = 2.5;
+  int yPtsNb = 2;
   double xStep = 2.5;
   double yStep = 2.5;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -1008,10 +1366,59 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartLargeFil
   EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
   EXPECT_NEAR(9316, hgt[0][0](1, 3), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatIrregularStartAndEndSmallFile) {
+  vwxs filepaths;
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
+  filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.24h.grib2");
+
+  asTimeArray dates(asTime::GetMJD(2011, 4, 11, 12, 00), asTime::GetMJD(2011, 4, 12, 00, 00), 6, "Simple");
+  dates.Init();
+
+  double xMin = -2.5;
+  int xPtsNb = 3;
+  double yMin = 37.5;
+  int yPtsNb = 2;
+  double xStep = 2.5;
+  double yStep = 2.5;
+  float level = 300;
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
+
+  asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
+  wxASSERT(predictor);
+
+  // Create file names
+  predictor->SetFileNames(filepaths);
+
+  // Load
+  ASSERT_TRUE(predictor->Load(area, dates, level));
+
+  vva2f hgt = predictor->GetData();
+  // hgt[time][mem](lat,lon)
+
+  /* Values time step 0 (horizontal=Lon, vertical=Lat)
+  Extracted from Degrib:
+  9397.5	9332	9300
+  9420.75	9351	9305.5
+  */
+
+  EXPECT_NEAR(9397.5, hgt[0][0](0, 0), 0.5);
+  EXPECT_NEAR(9332, hgt[0][0](0, 1), 0.5);
+  EXPECT_NEAR(9300, hgt[0][0](0, 2), 0.5);
+  EXPECT_NEAR(9420.75, hgt[0][0](1, 0), 0.5);
+  EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
+  EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
+
+  wxDELETE(area);
+  wxDELETE(predictor);
+}
+
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatIrregularStartAndEndSmallFileRegular) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.18h.grib2");
@@ -1057,7 +1464,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndSm
   wxDELETE(predictor);
 }
 
-TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile) {
+TEST(PredictorOperNwsGfs, LoadCompositeStep25LonLatIrregularStartAndEndLargeFile) {
   vwxs filepaths;
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.12h.grib2");
   filepaths.push_back(wxFileName::GetCwd() + "/files/data-nws-gfs/2010/gfs.hgt.L.18h.grib2");
@@ -1067,13 +1474,14 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLa
   dates.Init();
 
   double xMin = -2.5;
-  double xWidth = 5;
+  int xPtsNb = 3;
   double yMin = 37.5;
-  double yWidth = 2.5;
+  int yPtsNb = 2;
   double xStep = 2.5;
   double yStep = 2.5;
   float level = 300;
-  asAreaCompRegGrid area(xMin, xWidth, xStep, yMin, yWidth, yStep);
+  wxString gridType = "Regular";
+  asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep);
 
   asPredictorOper *predictor = asPredictorOper::GetInstance("NWS_GFS_Forecast", "hgt");
   wxASSERT(predictor);
@@ -1100,6 +1508,7 @@ TEST(PredictorOperNwsGfsRegular, LoadCompositeStep25LonLatIrregularStartAndEndLa
   EXPECT_NEAR(9351, hgt[0][0](1, 1), 0.5);
   EXPECT_NEAR(9305.5, hgt[0][0](1, 2), 0.5);
 
+  wxDELETE(area);
   wxDELETE(predictor);
 }
 
