@@ -705,3 +705,231 @@ TEST(PredictorNcepR1v2014General, SetData) {
   wxDELETE(area);
   wxDELETE(predictor);
 }
+
+TEST(PredictorNcepR1v2014General, GetCorrectPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/air", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/hgt", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/rhum", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/shum", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/omega", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/uwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/vwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "pressure/x", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::ParameterUndefined);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/air", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/lftx", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SurfaceLiftedIndex);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/lftx4", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SurfaceLiftedIndex);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/omega", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/pottmp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/pr_wtr", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitableWater);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/pres", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/rhum", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/slp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/uwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "surface/vwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/pevpr", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialEvaporation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/shum", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/soilw0-10", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilMoisture);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/soilw10-200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilMoisture);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/sktmp", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/tmp0-10", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/tmp10-200", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/tmp300", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SoilTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/uwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/vwnd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/weasd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SnowWaterEquivalent);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/tmax2m", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/tmin2m", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/cfnlf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/cfnsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/cprat", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitationRate);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/csdlf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/csdsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/csusf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/dlwrf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/dswrf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/gflux", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/lhtfl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/nbdsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/nddsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/nlwrs", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/nswrs", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/prate", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PrecipitationRate);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/shtfl", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/uflx", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/ugwd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GravityWaveStress);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/ulwrf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/uswrf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/vbdsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/vddsf", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Radiation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/vflx", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("NCEP_Reanalysis_v1", "gauss/vgwd", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GravityWaveStress);
+  wxDELETE(predictor);
+}

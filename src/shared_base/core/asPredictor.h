@@ -193,8 +193,10 @@ class asPredictor : public wxObject {
 
   wxString GetDirectoryPath() const {
     wxString directoryPath = m_directoryPath;
-    if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
-      directoryPath.Append(wxFileName::GetPathSeparator());
+    if (!directoryPath.IsEmpty()) {
+      if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+        directoryPath.Append(wxFileName::GetPathSeparator());
+      }
     }
 
     return directoryPath;
@@ -202,13 +204,15 @@ class asPredictor : public wxObject {
 
   wxString GetFullDirectoryPath() const {
     wxString directoryPath = m_directoryPath;
-    if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
-      directoryPath.Append(wxFileName::GetPathSeparator());
-    }
+    if (!directoryPath.IsEmpty()) {
+      if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+        directoryPath.Append(wxFileName::GetPathSeparator());
+      }
 
-    directoryPath += m_product;
-    if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
-      directoryPath.Append(wxFileName::GetPathSeparator());
+      directoryPath += m_product;
+      if (directoryPath.Last() != '/' && directoryPath.Last() != '\\') {
+        directoryPath.Append(wxFileName::GetPathSeparator());
+      }
     }
 
     return directoryPath;

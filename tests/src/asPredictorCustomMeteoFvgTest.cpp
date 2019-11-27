@@ -471,3 +471,217 @@ TEST(PredictorCustomMeteoFvg, LoadPackedPartial) {
   wxDELETE(area);
   wxDELETE(predictor);
 }
+
+TEST(PredictorCustomMeteoFvg, GetCorrectSynopticPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/gh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/t500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/w500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/r500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/u500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "data/v500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "datader/thetaES850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("thetaES850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "datader/thetaE850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("thetaE850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "datader/vflux850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "datader/uflux850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "datader/q850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/DP500925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("DP500925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/LRT700500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRT700500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/LRT850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRT850500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/LRTE700500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRTE700500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/LRTE850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRTE850500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB500850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB500925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB700925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB700925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_synop", "vertdiff/MB850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB850500"));
+  wxDELETE(predictor);
+}
+
+TEST(PredictorCustomMeteoFvg, GetCorrectMesoPredictors) {
+  asPredictor *predictor;
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/gh", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::GeopotentialHeight);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/t500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/w500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::VerticalVelocity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/r500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::RelativeHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/u500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/v500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/2t_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/10u_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Uwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/10v_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/cp_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Precipitation);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/msl_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Pressure);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "data/tp_sfc", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::AirTemperature);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "datader/thetaES850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("thetaES850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "datader/thetaE850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::PotentialTemperature);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("thetaE850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "datader/vflux850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "datader/uflux850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::MomentumFlux);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "datader/q850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::SpecificHumidity);
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/DP500925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("DP500925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/LRT700500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRT700500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/LRT850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRT850500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/LRTE700500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRTE700500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/LRTE850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("LRTE850500"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB500850", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500850"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB500925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB500925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB700925", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB700925"));
+  wxDELETE(predictor);
+
+  predictor = asPredictor::GetInstance("Custom_MeteoFVG_meso", "vertdiff/MB850500", ".");
+  ASSERT_TRUE(predictor->GetParameter() == asPredictor::Other);
+  ASSERT_TRUE(predictor->GetDataId().IsSameAs("MB850500"));
+  wxDELETE(predictor);
+}
