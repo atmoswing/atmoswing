@@ -174,8 +174,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\eccodes.h") -Or $REBUILD_ECCODES) {
   mkdir bld > $null
   cd bld
   Copy-Item "$PATCH_DIR\grib.oper.an.def" -Destination "$TMP_DIR\eccodes\definitions\mars\grib.oper.an.def"
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_TESTS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR;$BASH_DIR" -DOPENJPEG_INCLUDE_DIR="$LIB_DIR/include/openjpeg-2.3" -DDISABLE_OS_CHECK=ON -DBASH_EXE="$BASH_PATH" #> $null
-  cmake --build . --config release --target eccodes #> $null
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_TESTS=OFF -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DENABLE_ECCODES_THREADS=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR;$BASH_DIR" -DOPENJPEG_INCLUDE_DIR="$LIB_DIR/include/openjpeg-2.3" -DDISABLE_OS_CHECK=ON -DBASH_EXE="$BASH_PATH" > $null
+  cmake --build . --config release --target eccodes > $null
   copy "$TMP_DIR\eccodes\bld\lib\Release\eccodes.lib" "$LIB_DIR\lib\eccodes.lib"
   copy "$TMP_DIR\eccodes\src\*.h" "$LIB_DIR\include\"
   copy "$TMP_DIR\eccodes\bld\src\eccodes_version.h" "$LIB_DIR\include\"
