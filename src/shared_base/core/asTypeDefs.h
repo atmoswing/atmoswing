@@ -29,6 +29,7 @@
 #ifndef AS_TYPE_DEFS_H
 #define AS_TYPE_DEFS_H
 
+#include <limits>
 #include <Eigen/StdVector>
 
 //---------------------------------
