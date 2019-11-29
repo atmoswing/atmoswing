@@ -212,7 +212,7 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
     int indexXmin, indexXmax;
     auto nlons = int(lons.size() - 1);
 
-    if (getLarger) {  // Get larger when interpolation is needed interpolation
+    if (getLarger) {  // Get larger when interpolation is needed
 
       indexXmin = asFindFloor(&lons[0], &lons[nlons], m_composites[i].GetXmin(), asHIDE_WARNINGS);
       if (indexXmin == asOUT_OF_RANGE) {
@@ -329,8 +329,29 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
 
       if (indexYmin > indexYmax) {
         int tmp = indexYmax;
-        indexYmax = indexYmin;
-        indexYmin = tmp;
+        if (IsRegular()) {
+          asAreaCompRegGrid areaReg = dynamic_cast<asAreaCompRegGrid&>(*this);
+          if (areaReg.GetYstep() > areaReg.GetYstepData()) {
+            auto newIndex = (float)indexYmin;
+            float stepIndY = areaReg.GetYstep() / areaReg.GetYstepData();
+            indexYmax = indexYmin;
+            indexYmin = tmp;
+            while (true) {
+              newIndex -= stepIndY;
+              if (newIndex >= tmp) {
+                indexYmin = (int)newIndex;
+              } else {
+                break;
+              }
+            }
+          } else {
+            indexYmax = indexYmin;
+            indexYmin = tmp;
+          }
+        } else {
+          indexYmax = indexYmin;
+          indexYmin = tmp;
+        }
       }
     }
 

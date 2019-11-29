@@ -57,6 +57,10 @@ class asAreaCompRegGrid : public asAreaCompGrid {
     return m_yStep;
   }
 
+  double GetYstepData() const {
+    return m_yStepData;
+  }
+
   int GetXstepStride() const {
     wxASSERT(m_xStep > 0);
     wxASSERT(fmod(m_xStep, m_xStepData) == 0);
