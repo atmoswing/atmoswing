@@ -162,6 +162,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
   cmake --build . --config release --target INSTALL > $null
 }
 
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
+
 # Install ecCodes
 if(!(Test-Path -Path "$LIB_DIR\lib\eccodes.lib") -Or $REBUILD_ECCODES) {
   Init-Build "eccodes"
