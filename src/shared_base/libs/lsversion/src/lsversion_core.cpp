@@ -115,7 +115,7 @@ wxString lsVersion::GetNetCDFNumber() {
 
 wxString lsVersion::GetProjNumber() {
   wxString myProj = wxEmptyString;
-#ifdef PROJ4_INCLUDE_DIR
+#ifdef PROJ_INCLUDE_DIR
 #ifdef PJ_VERSION
   myProj = wxString::Format("%d", PJ_VERSION);
   // Adding points
@@ -223,7 +223,7 @@ wxString lsVersion::GetAllModules() {
   }
 
   if (GetProjNumber() != wxEmptyString) {
-    myModules.Append("Proj4: " + GetProjNumber() + "\n");
+    myModules.Append("Proj: " + GetProjNumber() + "\n");
   }
 
   if (GetEigenNumber() != wxEmptyString) {

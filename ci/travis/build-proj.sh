@@ -2,7 +2,7 @@
 
 REBUILD_PROJ=false
 
-# Build PROJ4
+# Build PROJ
 if [ ! "$(ls -A ${HOME}/.libs/include/proj.h)" ] || [ "$REBUILD_PROJ" = true ]; then
   wget -q -O proj.tar.gz "http://download.osgeo.org/proj/proj-6.2.0.tar.gz" > /dev/null
   tar -xzf proj.tar.gz

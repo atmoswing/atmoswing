@@ -40,7 +40,7 @@ link_libraries(${JASPER_LIBRARY_RELEASE})
 include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
-# Proj4
+# Proj
 find_package(PROJ 4.9 REQUIRED)
 include_directories(${PROJ_INCLUDE_DIR})
 link_libraries(${PROJ_LIBRARIES})
