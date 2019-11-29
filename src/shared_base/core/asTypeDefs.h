@@ -29,7 +29,14 @@
 #ifndef AS_TYPE_DEFS_H
 #define AS_TYPE_DEFS_H
 
-#include <limits>
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
+
 #include <Eigen/StdVector>
 
 //---------------------------------

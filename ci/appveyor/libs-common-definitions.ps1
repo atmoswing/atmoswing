@@ -53,6 +53,7 @@ $PNG_URL="https://github.com/atmoswing/large-files/raw/master/libraries/libpng-1
 $JASPER_URL="https://github.com/mdadams/jasper/archive/version-2.0.16.zip"
 $CURL_URL="https://github.com/curl/curl/archive/curl-7_64_1.zip"
 $PROJ_URL="https://github.com/OSGeo/PROJ/releases/download/6.2.1/proj-6.2.1.zip"
+$LIB_PROJ = "proj_6_2.lib"
 $HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/CMake-hdf5-1.10.5.zip"
 $NETCDF_URL="https://github.com/Unidata/netcdf-c/archive/v4.7.3.zip"
 $GDAL_URL="https://github.com/OSGeo/gdal/releases/download/v3.0.2/gdal302.zip"

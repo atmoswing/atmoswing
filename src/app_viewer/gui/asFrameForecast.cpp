@@ -1042,7 +1042,7 @@ bool asFrameForecast::OpenRecentForecasts() {
     try {
       date = asTime::GetTimeFromString(fileDate, YYYY_MM_DD_hh);
     } catch (std::exception &e) {
-      wxLogWarning(_("Error when parsing the date."));
+      wxLogWarning(_("Error when parsing the date: %s"), e.what());
       continue;
     }
 

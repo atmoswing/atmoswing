@@ -74,6 +74,7 @@ external/
 **/googletest-prefix/
 **/googlebenchmark-prefix/
 **/eccodes-prefix/
+**/x64-Debug/
 **/.vs/
 *.resolve
 *.base

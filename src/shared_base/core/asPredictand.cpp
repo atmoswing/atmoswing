@@ -61,7 +61,7 @@ asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &para
   } else if (parameterStr.CmpNoCase("Wind") == 0) {
     return Wind;
   } else {
-    asThrowException(wxString::Format(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr));
+    wxLogError(_("The Parameter enumeration (%s) entry doesn't exists"), parameterStr);
   }
   return Precipitation;
 }
@@ -98,7 +98,7 @@ asPredictand::Unit asPredictand::StringToUnitEnum(const wxString &unitStr) {
   } else if (unitStr.CmpNoCase("degK") == 0) {
     return degK;
   } else {
-    asThrowException(wxString::Format(_("The Unit enumeration (%s) entry doesn't exists"), unitStr));
+    wxLogError(_("The Unit enumeration (%s) entry doesn't exists"), unitStr);
   }
   return mm;
 }
@@ -137,8 +137,7 @@ asPredictand::TemporalResolution asPredictand::StringToTemporalResolutionEnum(co
   } else if (temporalResolution.CmpNoCase("1 week") == 0) {
     return Weekly;
   } else {
-    asThrowException(
-        wxString::Format(_("The temporalResolution enumeration (%s) entry doesn't exists"), temporalResolution));
+    wxLogError(_("The temporalResolution enumeration (%s) entry doesn't exists"), temporalResolution);
   }
   return Daily;
 }

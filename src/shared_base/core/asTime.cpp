@@ -214,7 +214,7 @@ wxString asTime::GetStringTime(const Time &date, TimeFormat format) {
     case (YYYYMMDD_hhmm):
       return wxString::Format("%4.4d%2.2d%2.2d-%2.2d%2.2d", date.year, date.month, date.day, date.hour, date.min);
     default:
-      asThrowException(_("The date format is not correctly set"));
+      wxLogError(_("The date format is not correctly set"));
   }
 
   return wxEmptyString;

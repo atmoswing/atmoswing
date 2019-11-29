@@ -1314,8 +1314,6 @@ size_t *asPredictor::GetIndexesStartNcdf(int iArea) const {
       return array;
     }
   }
-
-  return nullptr;
 }
 
 size_t *asPredictor::GetIndexesCountNcdf(int iArea) const {
@@ -1356,8 +1354,6 @@ size_t *asPredictor::GetIndexesCountNcdf(int iArea) const {
       return array;
     }
   }
-
-  return nullptr;
 }
 
 ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const {
@@ -1398,8 +1394,6 @@ ptrdiff_t *asPredictor::GetIndexesStrideNcdf() const {
       return array;
     }
   }
-
-  return nullptr;
 }
 
 int *asPredictor::GetIndexesStartGrib(int iArea) const {

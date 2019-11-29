@@ -12,8 +12,8 @@
 #ifndef __WX_PLOTDEF_H__
 #define __WX_PLOTDEF_H__
 
-#include "wx/defs.h"
-#include "wx/geometry.h"
+#include <wx/defs.h>
+#include <wx/geometry.h>
 
 //-----------------------------------------------------------------------------
 // The version of wxPlotCtrl
@@ -68,12 +68,12 @@
 #define WXCOLOUR_TO_LONG(c) ((c.Red() << 16) | (c.Green() << 8) | (c.Blue()))
 
 inline void PRINT_WXRECT(const wxString &str, const wxRect &r) {
-  wxPrintf(wxT("%s xy(%d %d) wh(%d %d) rb(%d %d)\n"), str.c_str(), r.x, r.y, r.width, r.height, r.GetRight(),
+  wxPrintf("%s xy(%d %d) wh(%d %d) rb(%d %d)\n", str.c_str(), r.x, r.y, r.width, r.height, r.GetRight(),
            r.GetBottom());
 }
 
 inline void PRINT_WXRECT2DDOUBLE(const wxString &str, const wxRect2DDouble &r) {
-  wxPrintf(wxT("%s xy(%g %g) wh(%g %g) rb(%g %g)\n"), str.c_str(), r.m_x, r.m_y, r.m_width, r.m_height, r.GetRight(),
+  wxPrintf("%s xy(%g %g) wh(%g %g) rb(%g %g)\n", str.c_str(), r.m_x, r.m_y, r.m_width, r.m_height, r.GetRight(),
            r.GetBottom());
 }
 

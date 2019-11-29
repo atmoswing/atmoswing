@@ -53,7 +53,7 @@
 // asinh, acosh and atanh functions and you want them to be supported. If
 // you are not sure, just leave it (those function will then not be supported).
 //#define NO_ASINH
-#if defined(__VISUALC__) || defined(__BORLANDC__)  // || defined(__WATCOMC__)
+#if defined(__BORLANDC__) // || defined(__VISUALC__)  // || defined(__WATCOMC__)
 
 // use our own asin/cos/tanh functions from since compilier doesn't have them
 // "A Numerical Library in C for Scientists and Engineers", H.T. Lau, 1995
