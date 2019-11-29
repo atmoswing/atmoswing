@@ -239,10 +239,6 @@ TEST(Parameters, IsSameAs) {
   EXPECT_FALSE(params1.IsSameAs(params2));
 
   params2 = params1;
-  params2.SetAnalogsExcludeDays(12);
-  EXPECT_FALSE(params1.IsSameAs(params2));
-
-  params2 = params1;
   params2.SetAnalogsNumber(0, 12);
   EXPECT_FALSE(params1.IsSameAs(params2));
 
@@ -317,4 +313,98 @@ TEST(Parameters, IsSameAsWithMultipleIds) {
   params2 = params1;
   params2.SetPredictandStationIds("35");
   EXPECT_FALSE(params1.IsSameAs(params2));
+}
+
+TEST(Parameters, IsCloseTo) {
+  wxString filepath = wxFileName::GetCwd();
+  filepath.Append("/files/parameters_standard_read.xml");
+
+  asParameters params1;
+  ASSERT_TRUE(params1.LoadFromFile(filepath));
+
+  asParameters params2 = params1;
+
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetAnalogsIntervalDays(10);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetAnalogsIntervalDays(58);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetAnalogsExcludeDays(12);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetAnalogsNumber(0, 12);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetAnalogsNumber(0, 105);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPreprocess(0, 0, true);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorDatasetId(0, 0, "XYZ");
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorDataId(0, 0, "XYZ");
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorLevel(0, 0, 1000);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorHour(0, 0, 12);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorXmin(0, 0, 5);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetPredictorXmin(0, 0, -11);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorXptsnb(0, 1, 5);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetPredictorXptsnb(0, 1, 10);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorXstep(0, 0, 5);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorYmin(0, 0, 5);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetPredictorYmin(0, 0, 28);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorYptsnb(0, 0, 8);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetPredictorYptsnb(0, 0, 6);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorYstep(0, 0, 5);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorCriteria(0, 0, "XYZ");
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictorWeight(0, 0, 0.35);
+  EXPECT_FALSE(params1.IsCloseTo(params2));
+  params2.SetPredictorWeight(0, 0, 0.68);
+  EXPECT_TRUE(params1.IsCloseTo(params2));
+
+  params2 = params1;
+  params2.SetPredictandStationIds("35");
+  EXPECT_FALSE(params1.IsCloseTo(params2));
 }
