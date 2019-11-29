@@ -29,13 +29,13 @@
 #ifndef AS_PROCESSOR_CUDA_H
 #define AS_PROCESSOR_CUDA_H
 
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <device_launch_parameters.h>
-#include <driver_types.h>
-#include <helper_cuda.h>
-
 #include <vector>
+#include <cuda.h>
+#include <driver_types.h>
+#include <cuda_runtime.h>
+#include <helper_cuda.h>
+#include <device_launch_parameters.h>
+
 
 const int nStreams = 4;  // must be a multiple of 2!
 

@@ -32,11 +32,11 @@
 #pragma warning(disable : 4267)  // C4267: conversion from 'size_t' to 'int', possible loss of data
 #endif
 
-#include <stdio.h>
+#include "asProcessorCuda.cuh"
 
+#include <stdio.h>
 #include <cmath>
 
-#include "asProcessorCuda.cuh"
 
 #define FULL_MASK 0xffffffff
 
