@@ -163,7 +163,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
 }
 
 # Install ecCodes
-if(!(Test-Path -Path "$LIB_DIR\include\eccodes.h") -Or $REBUILD_ECCODES) {
+if(!(Test-Path -Path "$LIB_DIR\lib\eccodes.lib") -Or $REBUILD_ECCODES) {
   Init-Build "eccodes"
   Write-Host "`nDownloading eccodes from $ECCODES_URL" -ForegroundColor Yellow
   Invoke-WebRequest -Uri $ECCODES_URL -OutFile "eccodes.tar.gz"
