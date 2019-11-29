@@ -8,15 +8,19 @@
 
 # Include dir
 find_path(OpenJPEG_INCLUDE_DIR
-  NAMES openjpeg.h
+    NAMES
+        openjpeg.h
     PATH_SUFFIXES
-      include
-      include/openjpeg-2.3
-      include/openjpeg-2.4
+        include
+        include/openjpeg-2.3
+        include/openjpeg-2.4
 )
 
 # Finally the library itself
 find_library(OpenJPEG_LIBRARY
-  NAMES openjp2
+    NAMES
+        openjp2
+        openjpeg2
+        openjpeg
 )
 
