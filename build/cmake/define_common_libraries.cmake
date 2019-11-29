@@ -40,6 +40,11 @@ link_libraries(${JASPER_LIBRARY_RELEASE})
 include_directories(${JPEG_INCLUDE_DIR})
 link_libraries(${JPEG_LIBRARY})
 
+# OpenJpeg
+find_package(OpenJPEG REQUIRED)
+include_directories(${OpenJPEG_INCLUDE_DIR})
+link_libraries(${OpenJPEG_LIBRARY})
+
 # Proj
 find_package(PROJ 4.9 REQUIRED)
 include_directories(${PROJ_INCLUDE_DIR})
