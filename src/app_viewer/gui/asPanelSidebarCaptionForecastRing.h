@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,71 +29,64 @@
 #ifndef AS_PANEL_SIDEBAR_CAPTION_FORECAST_RINGS_H
 #define AS_PANEL_SIDEBAR_CAPTION_FORECAST_RINGS_H
 
-#include "asPanelSidebar.h"
-
-#include "asIncludes.h"
 #include <wx/graphics.h>
 
+#include "asIncludes.h"
+#include "asPanelSidebar.h"
 
-class asPanelSidebarCaptionForecastRingDrawing
-        : public wxPanel
-{
-public:
-    explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
+ public:
+  explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
+                                                    const wxPoint &pos = wxDefaultPosition,
+                                                    const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+
+  ~asPanelSidebarCaptionForecastRingDrawing() override;
+
+  void DrawDates(a1f &dates);
+
+  void DrawColorbar(double maxval);
+
+ private:
+  wxBitmap *m_bmpDates;
+  wxBitmap *m_bmpColorbar;
+  wxGraphicsContext *m_gdc;
+
+  void SetBitmapDates(wxBitmap *bmp);
+
+  void SetBitmapColorbar(wxBitmap *bmp);
+
+  void CreateDatesPath(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
+
+  void CreateDatesText(wxGraphicsContext *gc, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb,
+                       const wxString &label);
+
+  void CreateColorbarPath(wxGraphicsPath &path);
+
+  void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
+
+  void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
+
+  void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
+
+  void OnPaint(wxPaintEvent &event);
+};
+
+class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
+ public:
+  explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                              const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                              long style = wxTAB_TRAVERSAL);
 
-    ~asPanelSidebarCaptionForecastRingDrawing() override;
+  ~asPanelSidebarCaptionForecastRing() override;
 
-    void DrawDates(a1f &dates);
+  void SetDates(a1f &dates);
 
-    void DrawColorbar(double maxval);
+  void SetColorbarMax(double maxval);
 
-private:
-    wxBitmap *m_bmpDates;
-    wxBitmap *m_bmpColorbar;
-    wxGraphicsContext *m_gdc;
+ private:
+  asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
 
-    void SetBitmapDates(wxBitmap *bmp);
-
-    void SetBitmapColorbar(wxBitmap *bmp);
-
-    void CreateDatesPath(wxGraphicsPath &path, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb);
-
-    void CreateDatesText(wxGraphicsContext *gc, const wxPoint &center, double scale, int segmentsTotNb, int segmentNb,
-                         const wxString &label);
-
-    void CreateColorbarPath(wxGraphicsPath &path);
-
-    void CreateColorbarText(wxGraphicsContext *gc, wxGraphicsPath &path, double valmax);
-
-    void CreateColorbarOtherClasses(wxGraphicsContext *gc, wxGraphicsPath &path);
-
-    void FillColorbar(wxGraphicsContext *gdc, wxGraphicsPath &path);
-
-    void OnPaint(wxPaintEvent &event);
+  void OnPaint(wxPaintEvent &event);
 };
-
-
-class asPanelSidebarCaptionForecastRing
-        : public asPanelSidebar
-{
-public:
-    explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
-                                      const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
-                                      long style = wxTAB_TRAVERSAL);
-
-    ~asPanelSidebarCaptionForecastRing() override;
-
-    void SetDates(a1f &dates);
-
-    void SetColorbarMax(double maxval);
-
-private:
-    asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
-
-    void OnPaint(wxPaintEvent &event);
-};
-
 
 #endif

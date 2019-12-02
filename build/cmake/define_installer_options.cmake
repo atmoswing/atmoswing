@@ -92,6 +92,7 @@ if (WIN32)
     set(CPACK_WIX_UI_DIALOG "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_bg.jpg")
     set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/installer_top.jpg")
     set(CPACK_WIX_CMAKE_PACKAGE_REGISTRY "AtmoSwing")
+    set(CPACK_WIX_PATCH_FILE "${CMAKE_CURRENT_LIST_DIR}/../cpack/windows/set-env-vars.xml")
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)

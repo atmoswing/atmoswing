@@ -29,28 +29,26 @@
 #ifndef AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 #define AS_THREAD_METHOD_OPTIMIZER_RANDOM_SET_H
 
-#include <asThread.h>
-#include <asParametersOptimization.h>
-#include <asMethodOptimizerRandomSet.h>
-#include <asIncludes.h>
+#include "asIncludes.h"
+#include "asMethodOptimizerRandomSet.h"
+#include "asParametersOptimization.h"
+#include "asThread.h"
 
-class asThreadRandomSet
-        : public asThread
-{
-public:
-    asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
-                      vf *scoreClimatology);
+class asThreadRandomSet : public asThread {
+ public:
+  asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
+                    vf *scoreClimatology);
 
-    virtual ~asThreadRandomSet();
+  virtual ~asThreadRandomSet();
 
-    ExitCode Entry();
+  ExitCode Entry();
 
-protected:
-private:
-    asMethodOptimizerRandomSet *m_optimizer;
-    asParametersOptimization *m_params;
-    float *m_finalScoreCalib;
-    vf *m_scoreClimatology;
+ protected:
+ private:
+  asMethodOptimizerRandomSet *m_optimizer;
+  asParametersOptimization *m_params;
+  float *m_finalScoreCalib;
+  vf *m_scoreClimatology;
 };
 
 #endif

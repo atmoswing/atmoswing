@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,77 +31,70 @@
 
 #include <wx/xml/xml.h>
 
+#include "asFile.h"
 #include "asIncludes.h"
-#include <asFile.h>
 
+class asFileXml : public asFile {
+ public:
+  asFileXml(const wxString &fileName, const FileMode &fileMode);
 
-class asFileXml
-        : public asFile
-{
-public:
-    asFileXml(const wxString &fileName, const FileMode &fileMode);
+  ~asFileXml() override = default;
 
-    ~asFileXml() override = default;
+  bool Open() override;
 
-    bool Open() override;
+  bool Close() override;
 
-    bool Close() override;
+  bool Save();
 
-    bool Save();
+  wxXmlNode *GetRoot() const {
+    wxASSERT(m_document.GetRoot());
+    return m_document.GetRoot();
+  }
 
-    wxXmlNode *GetRoot() const
-    {
-        wxASSERT(m_document.GetRoot());
-        return m_document.GetRoot();
-    }
+  void AddChild(wxXmlNode *node);
 
-    void AddChild(wxXmlNode *node);
+  virtual bool CheckRootElement() const;
 
-    virtual bool CheckRootElement() const;
+  wxXmlNode *CreateNodeWithValue(const wxString &name, const bool &content);
 
-    wxXmlNode *CreateNodeWithValue(const wxString &name, const bool &content);
+  wxXmlNode *CreateNodeWithValue(const wxString &name, const int &content);
 
-    wxXmlNode *CreateNodeWithValue(const wxString &name, const int &content);
+  wxXmlNode *CreateNodeWithValue(const wxString &name, const float &content);
 
-    wxXmlNode *CreateNodeWithValue(const wxString &name, const float &content);
+  wxXmlNode *CreateNodeWithValue(const wxString &name, const double &content);
 
-    wxXmlNode *CreateNodeWithValue(const wxString &name, const double &content);
+  wxXmlNode *CreateNodeWithValue(const wxString &name, const wxString &content);
 
-    wxXmlNode *CreateNodeWithValue(const wxString &name, const wxString &content);
+  bool IsAnAtmoSwingFile() const;
 
-    bool IsAnAtmoSwingFile() const;
+  bool FileVersionIsOrAbove(float version) const;
 
-    bool FileVersionIsOrAbove(float version) const;
+  void UnknownNode(wxXmlNode *node);
 
-    void UnknownNode(wxXmlNode *node);
+  static bool GetBool(wxXmlNode *node, bool defaultValue = false);
 
-    static bool GetBool(wxXmlNode *node, bool defaultValue = false);
+  static int GetInt(wxXmlNode *node, int defaultValue = 0);
 
-    static int GetInt(wxXmlNode *node, int defaultValue = 0);
+  static float GetFloat(wxXmlNode *node, float defaultValue = 0.0f);
 
-    static float GetFloat(wxXmlNode *node, float defaultValue = 0.0f);
+  static double GetDouble(wxXmlNode *node, double defaultValue = 0.0);
 
-    static double GetDouble(wxXmlNode *node, double defaultValue = 0.0);
+  static wxString GetString(wxXmlNode *node, const wxString &defaultValue = wxEmptyString);
 
-    static wxString GetString(wxXmlNode *node, const wxString &defaultValue = wxEmptyString);
+  bool GetAttributeBool(wxXmlNode *node, const wxString &attribute, bool defaultValue = false,
+                        bool raiseWarning = true);
 
-    bool GetAttributeBool(wxXmlNode *node, const wxString &attribute, bool defaultValue = false,
-                          bool raiseWarning = true);
+  int GetAttributeInt(wxXmlNode *node, const wxString &attribute);
 
-    int GetAttributeInt(wxXmlNode *node, const wxString &attribute);
+  float GetAttributeFloat(wxXmlNode *node, const wxString &attribute);
 
-    float GetAttributeFloat(wxXmlNode *node, const wxString &attribute);
+  double GetAttributeDouble(wxXmlNode *node, const wxString &attribute);
 
-    double GetAttributeDouble(wxXmlNode *node, const wxString &attribute);
+  wxString GetAttributeString(wxXmlNode *node, const wxString &attribute);
 
-    wxString GetAttributeString(wxXmlNode *node, const wxString &attribute);
-
-
-protected:
-
-private:
-    wxXmlDocument m_document;
-
+ protected:
+ private:
+  wxXmlDocument m_document;
 };
 
 #endif

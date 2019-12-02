@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,29 +29,27 @@
 #ifndef AS_PANEL_SIDEBAR_CALENDAR_H
 #define AS_PANEL_SIDEBAR_CALENDAR_H
 
-#include "asPanelSidebar.h"
-
-#include "asIncludes.h"
 #include <wx/calctrl.h>
 
-class asPanelSidebarCalendar
-        : public asPanelSidebar
-{
-public:
-    explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                           const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+#include "asIncludes.h"
+#include "asPanelSidebar.h"
 
-    ~asPanelSidebarCalendar() override;
+class asPanelSidebarCalendar : public asPanelSidebar {
+ public:
+  explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                                  const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-    void OnSetPresentDate(wxCommandEvent &event);
+  ~asPanelSidebarCalendar() override;
 
-    void SetPresentDate();
+  void OnSetPresentDate(wxCommandEvent &event);
 
-private:
-    wxCalendarCtrl *m_calendarForecastDate;
-    wxStaticText *m_staticTextForecastHour;
-    wxTextCtrl *m_textCtrlForecastHour;
-    wxBitmapButton *m_bpButtonNow;
+  void SetPresentDate();
+
+ private:
+  wxCalendarCtrl *m_calendarForecastDate;
+  wxStaticText *m_staticTextForecastHour;
+  wxTextCtrl *m_textCtrlForecastHour;
+  wxBitmapButton *m_bpButtonNow;
 };
 
 #endif

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,86 +28,71 @@
 
 #include "asMethodCalibratorClassicVarExplo.h"
 
-asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo()
-        : asMethodCalibratorClassic()
-{
-
-}
+asMethodCalibratorClassicVarExplo::asMethodCalibratorClassicVarExplo() : asMethodCalibratorClassic() {}
 
 asMethodCalibratorClassicVarExplo::~asMethodCalibratorClassicVarExplo() = default;
 
-bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params)
-{
+bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &params) {
+  int iStep;
+  wxFileConfig::Get()->Read("/VariablesExplo/Step", &iStep, params.GetStepsNb() - 1);
 
-    int iStep;
-    wxFileConfig::Get()->Read("/VariablesExplo/Step", &iStep, params.GetStepsNb() - 1);
+  wxLogMessage(_("Processing variables exploration for step %d"), iStep);
+  wxLogMessage(
+      _("Processing %d variables, %d hours, %d levels, %d criteria."),
+      (int)params.GetPredictorDataIdVector(iStep, 0).size(), (int)params.GetPredictorHourVector(iStep, 0).size(),
+      (int)params.GetPredictorLevelVector(iStep, 0).size(), (int)params.GetPredictorCriteriaVector(iStep, 0).size());
 
-    wxLogMessage(_("Processing variables exploration for step %d"), iStep);
-    wxLogMessage(_("Processing %d variables, %d hours, %d levels, %d criteria."),
-                 (int) params.GetPredictorDataIdVector(iStep, 0).size(),
-                 (int) params.GetPredictorHourVector(iStep, 0).size(),
-                 (int) params.GetPredictorLevelVector(iStep, 0).size(),
-                 (int) params.GetPredictorCriteriaVector(iStep, 0).size());
+  if (iStep >= params.GetStepsNb()) {
+    wxLogError(_("The given step number for variables exploration is above available steps."));
+    return false;
+  }
 
-    if (iStep >= params.GetStepsNb()) {
-        wxLogError(_("The given step number for variables exploration is above available steps."));
-        return false;
-    }
+  for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
+    if (params.NeedsPreprocessing(iStep, iPtor)) {
+      wxLogError(_("Calibration method not implemented to work with preprocessed data."));
+      return false;
+    } else {
+      vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
 
-    for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
-        if (params.NeedsPreprocessing(iStep, iPtor)) {
+      for (const auto &dataId : vPredictorDataId) {
+        if (!params.SetPredictorDataId(iStep, iPtor, dataId)) return false;
 
-            wxLogError(_("Calibration method not implemented to work with preprocessed data."));
-            return false;
-        } else {
-            vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
+        vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
 
-            for (const auto &dataId : vPredictorDataId) {
-                if (!params.SetPredictorDataId(iStep, iPtor, dataId))
-                    return false;
+        for (double hour : vPredictorHours) {
+          if (!params.SetPredictorHour(iStep, iPtor, hour)) return false;
 
-                vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
+          vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
 
-                for (double hour : vPredictorHours) {
-                    if (!params.SetPredictorHour(iStep, iPtor, hour))
-                        return false;
+          for (float level : vPredictorLevels) {
+            if (!params.SetPredictorLevel(iStep, iPtor, level)) return false;
 
-                    vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
+            vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
 
-                    for (float level : vPredictorLevels) {
-                        if (!params.SetPredictorLevel(iStep, iPtor, level))
-                            return false;
+            for (const auto &criteria : vPredictorCriteria) {
+              if (!params.SetPredictorCriteria(iStep, iPtor, criteria)) return false;
 
-                        vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
+              vf slctPredictorLevels;
+              slctPredictorLevels.push_back(level);
+              if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels)) return false;
 
-                        for (const auto &criteria : vPredictorCriteria) {
-                            if (!params.SetPredictorCriteria(iStep, iPtor, criteria))
-                                return false;
+              vd slctPreloadHours;
+              slctPreloadHours.push_back(hour);
+              if (!params.SetPreloadHours(iStep, iPtor, slctPreloadHours)) return false;
 
-                            vf slctPredictorLevels;
-                            slctPredictorLevels.push_back(level);
-                            if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels))
-                                return false;
+              m_originalParams = params;
 
-                            vd slctPreloadHours;
-                            slctPreloadHours.push_back(hour);
-                            if (!params.SetPreloadHours(iStep, iPtor, slctPreloadHours))
-                                return false;
+              if (!asMethodCalibratorClassic::Calibrate(params)) return false;
 
-                            m_originalParams = params;
+              params = m_originalParams;
 
-                            if (!asMethodCalibratorClassic::Calibrate(params))
-                                return false;
-
-                            params = m_originalParams;
-
-                            ClearAll();
-                        }
-                    }
-                }
+              ClearAll();
             }
+          }
         }
+      }
     }
+  }
 
-    return true;
+  return true;
 }

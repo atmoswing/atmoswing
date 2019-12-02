@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,37 +29,31 @@
 #ifndef AS_INTERNET_H
 #define AS_INTERNET_H
 
-#include <asIncludes.h>
 #include <curl/curl.h>
+#include "asIncludes.h"
 
+class asInternet : public wxObject {
+ public:
+  asInternet() = default;
 
-class asInternet
-        : public wxObject
-{
-public:
-    asInternet() = default;
+  virtual ~asInternet() = default;
 
-    virtual ~asInternet() = default;
+  static void Init();
 
-    static void Init();
+  static void Cleanup();
 
-    static void Cleanup();
+  static int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
 
-    static int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
+ protected:
+ private:
+  friend class asThreadInternetDownload;
 
-protected:
+  struct HttpFile {
+    const char *fileName;
+    FILE *stream;
+  };
 
-private:
-    friend class asThreadInternetDownload;
-
-    struct HttpFile
-    {
-        const char *fileName;
-        FILE *stream;
-    };
-
-    static size_t WriteFile(void *buffer, size_t size, size_t nmemb, void *stream);
-
+  static size_t WriteFile(void *buffer, size_t size, size_t nmemb, void *stream);
 };
 
 #endif

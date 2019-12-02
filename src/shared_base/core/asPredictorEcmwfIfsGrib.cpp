@@ -27,100 +27,94 @@
 
 #include "asPredictorEcmwfIfsGrib.h"
 
-#include <asTimeArray.h>
-#include <asAreaCompGrid.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
-
-asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId)
-        : asPredictor(dataId)
-{
-    // Set the basic properties.
-    m_datasetId = "ECMWF_IFS_GRIB";
-    m_provider = "ECMWF";
-    m_datasetName = "Integrated Forecasting System (IFS) grib files";
-    m_fileType = asFile::Grib;
-    m_isEnsemble = false;
-    m_strideAllowed = false;
-    m_fStr.hasLevelDim = false;
-    m_fStr.singleTimeStep = true;
-    m_nanValues.push_back(NaNd);
-    m_nanValues.push_back(NaNf);
-    m_parameter = ParameterUndefined;
+asPredictorEcmwfIfsGrib::asPredictorEcmwfIfsGrib(const wxString &dataId) : asPredictor(dataId) {
+  // Set the basic properties.
+  m_datasetId = "ECMWF_IFS_GRIB";
+  m_provider = "ECMWF";
+  m_datasetName = "Integrated Forecasting System (IFS) grib files";
+  m_fileType = asFile::Grib;
+  m_isEnsemble = false;
+  m_strideAllowed = false;
+  m_fStr.hasLevelDim = false;
+  m_fStr.singleTimeStep = true;
+  m_nanValues.push_back(NaNd);
+  m_nanValues.push_back(NaNf);
+  m_parameter = ParameterUndefined;
 }
 
-bool asPredictorEcmwfIfsGrib::Init()
-{
-    // Identify data ID and set the corresponding properties.
-    if (m_dataId.IsSameAs("z", false)) {
-        m_parameter = Geopotential;
-        m_gribCode = {0, 128, 129, 100};
-        m_unit = m2_s2;
-        m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("gh", false)) {
-        m_parameter = GeopotentialHeight;
-        m_gribCode = {0, 128, 156, 100};
-        m_unit = m;
-        m_fStr.hasLevelDim = true;
-    } else if (IsAirTemperature()) {
-        m_parameter = AirTemperature;
-        m_gribCode = {0, 128, 130, 100};
-        m_unit = degK;
-        m_fStr.hasLevelDim = true;
-    } else if (IsVerticalVelocity()) {
-        m_parameter = VerticalVelocity;
-        m_gribCode = {0, 128, 135, 100};
-        m_unit = Pa_s;
-        m_fStr.hasLevelDim = true;
-    } else if (IsRelativeHumidity()) {
-        m_parameter = RelativeHumidity;
-        m_gribCode = {0, 128, 157, 100};
-        m_unit = percent;
-        m_fStr.hasLevelDim = true;
-    } else if (IsSpecificHumidity()) {
-        m_parameter = SpecificHumidity;
-        m_gribCode = {0, 128, 133, 100};
-        m_unit = percent;
-        m_fStr.hasLevelDim = true;
-    } else if (IsUwindComponent()) {
-        m_parameter = Uwind;
-        m_gribCode = {0, 128, 131, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
-    } else if (IsVwindComponent()) {
-        m_parameter = Vwind;
-        m_gribCode = {0, 128, 132, 100};
-        m_unit = m_s;
-        m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("thetaE", false)) {
-        m_parameter = Radiation;
-        m_gribCode = {0, 3, 113, 100};
-        m_unit = W_m2;
-        m_fStr.hasLevelDim = true;
-    } else if (m_dataId.IsSameAs("thetaES", false)) {
-        m_parameter = Radiation;
-        m_gribCode = {0, 3, 114, 100};
-        m_unit = W_m2;
-        m_fStr.hasLevelDim = true;
-    } else if (IsPrecipitableWater()) {
-        m_parameter = PrecipitableWater; // Total column water
-        m_gribCode = {0, 128, 136, 200};
-        m_unit = mm;
-    } else {
-        wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
-        return false;
-    }
+bool asPredictorEcmwfIfsGrib::Init() {
+  // Identify data ID and set the corresponding properties.
+  if (m_dataId.IsSameAs("z", false)) {
+    m_parameter = Geopotential;
+    m_gribCode = {0, 128, 129, 100};
+    m_unit = m2_s2;
+    m_fStr.hasLevelDim = true;
+  } else if (m_dataId.IsSameAs("gh", false)) {
+    m_parameter = GeopotentialHeight;
+    m_gribCode = {0, 128, 156, 100};
+    m_unit = m;
+    m_fStr.hasLevelDim = true;
+  } else if (IsAirTemperature()) {
+    m_parameter = AirTemperature;
+    m_gribCode = {0, 128, 130, 100};
+    m_unit = degK;
+    m_fStr.hasLevelDim = true;
+  } else if (IsVerticalVelocity()) {
+    m_parameter = VerticalVelocity;
+    m_gribCode = {0, 128, 135, 100};
+    m_unit = Pa_s;
+    m_fStr.hasLevelDim = true;
+  } else if (IsRelativeHumidity()) {
+    m_parameter = RelativeHumidity;
+    m_gribCode = {0, 128, 157, 100};
+    m_unit = percent;
+    m_fStr.hasLevelDim = true;
+  } else if (IsSpecificHumidity()) {
+    m_parameter = SpecificHumidity;
+    m_gribCode = {0, 128, 133, 100};
+    m_unit = percent;
+    m_fStr.hasLevelDim = true;
+  } else if (IsUwindComponent()) {
+    m_parameter = Uwind;
+    m_gribCode = {0, 128, 131, 100};
+    m_unit = m_s;
+    m_fStr.hasLevelDim = true;
+  } else if (IsVwindComponent()) {
+    m_parameter = Vwind;
+    m_gribCode = {0, 128, 132, 100};
+    m_unit = m_s;
+    m_fStr.hasLevelDim = true;
+  } else if (m_dataId.IsSameAs("thetaE", false)) {
+    m_parameter = PotentialTemperature;
+    m_gribCode = {0, 3, 113, 100};
+    m_unit = W_m2;
+    m_fStr.hasLevelDim = true;
+  } else if (m_dataId.IsSameAs("thetaES", false)) {
+    m_parameter = PotentialTemperature;
+    m_gribCode = {0, 3, 114, 100};
+    m_unit = W_m2;
+    m_fStr.hasLevelDim = true;
+  } else if (IsPrecipitableWater()) {
+    m_parameter = PrecipitableWater;  // Total column water
+    m_gribCode = {0, 128, 136, 200};
+    m_unit = mm;
+  } else {
+    wxLogError(_("No '%s' parameter identified for the provided level type (%s)."), m_dataId, m_product);
+    return false;
+  }
 
-    // Set to initialized
-    m_initialized = true;
+  // Set to initialized
+  m_initialized = true;
 
-    return true;
+  return true;
 }
 
-double asPredictorEcmwfIfsGrib::ConvertToMjd(double timeValue, double refValue) const
-{
-    wxASSERT(refValue > 30000);
-    wxASSERT(refValue < 70000);
+double asPredictorEcmwfIfsGrib::ConvertToMjd(double timeValue, double refValue) const {
+  wxASSERT(refValue > 30000);
+  wxASSERT(refValue < 70000);
 
-    return refValue + (timeValue / 24.0); // hours to days
+  return refValue + (timeValue / 24.0);  // hours to days
 }
-

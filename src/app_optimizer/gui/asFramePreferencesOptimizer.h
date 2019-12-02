@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,29 +29,28 @@
 #ifndef AS_FRAME_PREFERENCES_OPTIMIZER
 #define AS_FRAME_PREFERENCES_OPTIMIZER
 
+#include "asIncludes.h"
+
 #include "AtmoswingOptimizerGui.h"
-#include <asIncludes.h>
 
-class asFramePreferencesOptimizer
-        : public asFramePreferencesOptimizerVirtual
-{
-public:
-    explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
+class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
+ public:
+  explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
 
-protected:
-    void CloseFrame(wxCommandEvent &event) override;
+ protected:
+  void CloseFrame(wxCommandEvent &event) override;
 
-    void Update() override;
+  void Update() override;
 
-    void LoadPreferences();
+  void LoadPreferences();
 
-    void SavePreferences() const;
+  void SavePreferences() const;
 
-    void SaveAndClose(wxCommandEvent &event) override;
+  void SaveAndClose(wxCommandEvent &event) override;
 
-    void ApplyChanges(wxCommandEvent &event) override;
+  void ApplyChanges(wxCommandEvent &event) override;
 
-    void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
+  void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 };
 
 #endif

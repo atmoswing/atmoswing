@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,6 +26,9 @@
  */
 
 #include "asCriteria.h"
+
+#include "asCriteriaDMV.h"
+#include "asCriteriaDSD.h"
 #include "asCriteriaMD.h"
 #include "asCriteriaRMSE.h"
 #include "asCriteriaRSE.h"
@@ -36,106 +39,97 @@
 #include "asCriteriaS2.h"
 #include "asCriteriaS2grads.h"
 #include "asCriteriaSAD.h"
-#include "asCriteriaDSD.h"
-#include "asCriteriaDMV.h"
 #include "asPredictor.h"
 
-
 asCriteria::asCriteria(const wxString &name, const wxString &fullname, Order order)
-        : m_name(name),
-          m_fullName(fullname),
-          m_order(order),
-          m_minPointsNb(1),
-          m_scaleBest(0),
-          m_scaleWorst(Inff),
-          m_canUseInline(false),
-          m_checkNaNs(true)
-{
-
-}
+    : m_name(name),
+      m_fullName(fullname),
+      m_order(order),
+      m_minPointsNb(1),
+      m_scaleBest(0),
+      m_scaleWorst(Inff),
+      m_canUseInline(false),
+      m_checkNaNs(true) {}
 
 asCriteria::~asCriteria() = default;
 
-asCriteria *asCriteria::GetInstance(const wxString &criteriaString)
-{
-    if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
-        // Teweles-Wobus
-        asCriteria *criteria = new asCriteriaS1();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
-        // Teweles-Wobus with Gaussian weights
-		asCriteria *criteria = new asCriteriaS1G();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("S1grads") == 0) {
-        // Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaS1grads();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("S2") == 0 || criteriaString.CmpNoCase("S2s") == 0) {
-        // Derivative of Teweles-Wobus
-        asCriteria *criteria = new asCriteriaS2();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("S2grads") == 0) {
-        // Derivative of Teweles-Wobus on gradients
-        asCriteria *criteria = new asCriteriaS2grads();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("S0") == 0) {
-        // Teweles-Wobus on raw data
-        asCriteria *criteria = new asCriteriaS0();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("SAD") == 0) {
-        // Sum of absolute differences
-        asCriteria *criteria = new asCriteriaSAD();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("MD") == 0) {
-        // Mean absolute difference
-        asCriteria *criteria = new asCriteriaMD();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("RMSE") == 0) {
-        // Root mean square error
-        asCriteria *criteria = new asCriteriaRMSE();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("RSE") == 0) {
-        // Root square error (According to Bontron. Should not be used !)
-        asCriteria *criteria = new asCriteriaRSE();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("DMV") == 0) {
-        // Difference in mean value (nonspatial)
-        asCriteria *criteria = new asCriteriaDMV();
-        return criteria;
-    } else if (criteriaString.CmpNoCase("DSD") == 0) {
-        // Difference in standard deviation (nonspatial)
-        asCriteria *criteria = new asCriteriaDSD();
-        return criteria;
-    } else {
-        wxLogError(_("The predictor criteria was not correctly defined (%s)."), criteriaString);
-        asCriteria *criteria = new asCriteriaSAD();
-        return criteria;
-    }
+asCriteria *asCriteria::GetInstance(const wxString &criteriaString) {
+  if (criteriaString.CmpNoCase("S1") == 0 || criteriaString.CmpNoCase("S1s") == 0) {
+    // Teweles-Wobus
+    asCriteria *criteria = new asCriteriaS1();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("S1G") == 0 || criteriaString.CmpNoCase("S1sG") == 0) {
+    // Teweles-Wobus with Gaussian weights
+    asCriteria *criteria = new asCriteriaS1G();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("S1grads") == 0) {
+    // Teweles-Wobus on gradients
+    asCriteria *criteria = new asCriteriaS1grads();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("S2") == 0 || criteriaString.CmpNoCase("S2s") == 0) {
+    // Derivative of Teweles-Wobus
+    asCriteria *criteria = new asCriteriaS2();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("S2grads") == 0) {
+    // Derivative of Teweles-Wobus on gradients
+    asCriteria *criteria = new asCriteriaS2grads();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("S0") == 0) {
+    // Teweles-Wobus on raw data
+    asCriteria *criteria = new asCriteriaS0();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("SAD") == 0) {
+    // Sum of absolute differences
+    asCriteria *criteria = new asCriteriaSAD();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("MD") == 0) {
+    // Mean absolute difference
+    asCriteria *criteria = new asCriteriaMD();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("RMSE") == 0) {
+    // Root mean square error
+    asCriteria *criteria = new asCriteriaRMSE();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("RSE") == 0) {
+    // Root square error (According to Bontron. Should not be used !)
+    asCriteria *criteria = new asCriteriaRSE();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("DMV") == 0) {
+    // Difference in mean value (nonspatial)
+    asCriteria *criteria = new asCriteriaDMV();
+    return criteria;
+  } else if (criteriaString.CmpNoCase("DSD") == 0) {
+    // Difference in standard deviation (nonspatial)
+    asCriteria *criteria = new asCriteriaDSD();
+    return criteria;
+  } else {
+    wxLogError(_("The predictor criteria was not correctly defined (%s)."), criteriaString);
+    asCriteria *criteria = new asCriteriaSAD();
+    return criteria;
+  }
 }
 
-void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2)
-{
-    if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
-        m_checkNaNs = false;
-        return;
-    }
+void asCriteria::CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2) {
+  if (wxFileConfig::Get()->ReadBool("/General/SkipNansCheck", false)) {
+    m_checkNaNs = false;
+    return;
+  }
 
-    if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
-        m_checkNaNs = false;
-    }
+  if (!ptor1->HasNaN() && !ptor1->HasNaN()) {
+    m_checkNaNs = false;
+  }
 }
 
-a2f asCriteria::GetGauss2D(int nY, int nX)
-{
-    float A = 1.0;
-    auto x0 = (nX + 1.0f) / 2.0f;
-    auto y0 = (nY + 1.0f) / 2.0f;
+a2f asCriteria::GetGauss2D(int nY, int nX) {
+  float A = 1.0;
+  auto x0 = (nX + 1.0f) / 2.0f;
+  auto y0 = (nY + 1.0f) / 2.0f;
 
-    float a = 1 / (0.5f * std::pow(x0, 2));
-    float c = 1 / (0.5f * std::pow(y0, 2));
+  float a = 1 / (0.5f * std::pow(x0, 2));
+  float c = 1 / (0.5f * std::pow(y0, 2));
 
-    a2f X = Eigen::RowVectorXf::LinSpaced(nX, 1, nX).replicate(nY, 1);
-    a2f Y = Eigen::VectorXf::LinSpaced(nY, 1, nY).replicate(1, nX);
+  a2f X = Eigen::RowVectorXf::LinSpaced(nX, 1, nX).replicate(nY, 1);
+  a2f Y = Eigen::VectorXf::LinSpaced(nY, 1, nY).replicate(1, nX);
 
-    return A * (-(a * (X - x0).pow(2) + c * (Y - y0).pow(2))).exp();
+  return A * (-(a * (X - x0).pow(2) + c * (Y - y0).pow(2))).exp();
 }

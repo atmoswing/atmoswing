@@ -29,55 +29,37 @@
 #ifndef AS_METHOD_OPTIMIZER_H
 #define AS_METHOD_OPTIMIZER_H
 
+#include "asMethodCalibrator.h"
+#include "asParametersOptimization.h"
+
 #include "asIncludes.h"
-#include <asMethodCalibrator.h>
-#include <asParametersOptimization.h>
 
+class asMethodOptimizer : public asMethodCalibrator {
+ public:
+  asMethodOptimizer();
 
-class asMethodOptimizer
-        : public asMethodCalibrator
-{
-public:
-    asMethodOptimizer();
+  ~asMethodOptimizer() override;
 
-    ~asMethodOptimizer() override;
+  bool Manager() override = 0;
 
-    bool Manager() override = 0;
+ protected:
+  int m_paramsNb;
+  int m_iterator;
 
-protected:
-    bool m_isOver;
-    bool m_skipNext;
-    int m_optimizerStage;
-    int m_paramsNb;
-    int m_iterator;
+  bool Calibrate(asParametersCalibration &params) override {
+    wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
+    return false;
+  }
 
-    bool Calibrate(asParametersCalibration &params) override
-    {
-        wxLogError(_("asMethodOptimizer do optimize, not calibrate..."));
-        return false;
-    }
+  bool SaveDetails(asParametersOptimization &params);
 
-    bool SaveDetails(asParametersOptimization &params);
+  bool Validate(asParametersOptimization &params);
 
-    bool Validate(asParametersOptimization &params);
+  void IncrementIterator() {
+    m_iterator++;
+  }
 
-    void IncrementIterator()
-    {
-        m_iterator++;
-    }
-
-    bool IsOver() const
-    {
-        return m_isOver;
-    }
-
-    bool SkipNext() const
-    {
-        return m_skipNext;
-    }
-
-private:
-
+ private:
 };
 
 #endif

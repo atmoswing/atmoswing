@@ -8,46 +8,41 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
-#define AS_PREDICTOR_CUSTOM_METEO_FVG_IFS_H
+#ifndef AS_PREDICTOR_CUSTOM_METEO_FVG_MESO_PACKED_H
+#define AS_PREDICTOR_CUSTOM_METEO_FVG_MESO_PACKED_H
 
-#include <asIncludes.h>
-#include <asPredictorEcmwfIfsGrib.h>
+#include "asIncludes.h"
+#include "asPredictorCustomMFvgMeso.h"
 
 class asArea;
 
-class asPredictorCustomMeteoFvgIfs
-        : public asPredictorEcmwfIfsGrib
-{
-public:
-    explicit asPredictorCustomMeteoFvgIfs(const wxString &dataId);
+class asPredictorCustomMFvgMesoPacked : public asPredictorCustomMFvgMeso {
+ public:
+  explicit asPredictorCustomMFvgMesoPacked(const wxString &dataId);
 
-    ~asPredictorCustomMeteoFvgIfs() override = default;
+  ~asPredictorCustomMFvgMesoPacked() override = default;
 
-    bool Init() override;
+ protected:
+  void ListFiles(asTimeArray &timeArray) override;
 
-protected:
-    void ListFiles(asTimeArray &timeArray) override;
-
-private:
-
+ private:
 };
 
 #endif

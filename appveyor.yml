@@ -1,6 +1,6 @@
 version: 2.1.{build}
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -31,14 +31,8 @@ test_script:
   - ctest -V
 
 after_test:
-  - cd C:\projects\atmoswing\bin
-  - cpack -C release -G ZIP
-  - cpack -C release -G NSIS
-  - cpack -C release -G WIX
   - cd C:\projects\atmoswing
-  - copy bin\*win64.exe .\
-  - copy bin\*win64.zip .\
-  - copy bin\*win64.msi .\
+  - ps: if ($stopwatch.Elapsed.TotalMinutes -lt 40) { Invoke-Expression -Command "ci/appveyor/make-installers.ps1" }
 
 on_failure:
   - cd C:\projects\atmoswing\bin

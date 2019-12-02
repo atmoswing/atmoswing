@@ -23,7 +23,10 @@ endif (UNIX)
 # Version number
 set(VERSION_MAJOR "2")
 set(VERSION_MINOR "1")
-set(VERSION_PATCH "1")
+set(VERSION_PATCH "2")
+add_definitions(-DATMOSWING_MAJOR_VERSION=${VERSION_MAJOR})
+add_definitions(-DATMOSWING_MINOR_VERSION=${VERSION_MINOR})
+add_definitions(-DATMOSWING_PATCH_VERSION=${VERSION_PATCH})
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmake ${CMAKE_MODULE_PATH})
 
@@ -34,11 +37,18 @@ option(BUILD_OPTIMIZER "Do you want to build AtmoSwing Optimizer ?" ON)
 option(BUILD_DOWNSCALER "Do you want to build AtmoSwing Downscaler ?" ON)
 option(CREATE_INSTALLER "Do you want to generate installer packages ?" OFF)
 if (BUILD_FORECASTER OR BUILD_OPTIMIZER OR BUILD_DOWNSCALER)
-    set(BUILD_TESTS ON CACHE BOOL "Do you want to build the tests (recommended) ?" )
+    option(BUILD_TESTS "Do you want to build the tests (recommended) ?" ON)
     mark_as_advanced(CLEAR BUILD_TESTS)
 else ()
     set(BUILD_TESTS OFF)
     mark_as_advanced(BUILD_TESTS)
+endif ()
+if (BUILD_OPTIMIZER)
+    option(BUILD_BENCHMARK "Do you want to build the benchmark suite ?" OFF)
+    mark_as_advanced(CLEAR BUILD_BENCHMARK)
+else ()
+    set(BUILD_BENCHMARK OFF)
+    mark_as_advanced(BUILD_BENCHMARK)
 endif ()
 
 if (NOT BUILD_FORECASTER AND NOT BUILD_VIEWER AND NOT BUILD_OPTIMIZER AND NOT BUILD_DOWNSCALER)
@@ -51,6 +61,9 @@ if (WIN32)
 else (WIN32)
     set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 endif (WIN32)
+
+# Using the Intel MKL
+option(USE_MKL "Do you want to use Intel MKL ?" OFF)
 
 # Libraries version
 set(EIGEN_VERSION 3.3.7)
@@ -178,6 +191,9 @@ endif()
 if (BUILD_TESTS)
     add_subdirectory(tests)
 endif ()
+if (BUILD_BENCHMARK)
+    add_subdirectory(benchmark)
+endif()
 
 
 ##### DISPLAY SOME INFORMATIONS

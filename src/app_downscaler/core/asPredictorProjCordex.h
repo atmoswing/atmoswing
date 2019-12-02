@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,28 +28,25 @@
 #ifndef AS_PREDICTOR_PROJ_CORDEX_H
 #define AS_PREDICTOR_PROJ_CORDEX_H
 
-#include <asIncludes.h>
-#include <asPredictorProj.h>
+#include "asIncludes.h"
+#include "asPredictorProj.h"
 
 class asArea;
 
-class asPredictorProjCordex
-        : public asPredictorProj
-{
-public:
-    asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario);
+class asPredictorProjCordex : public asPredictorProj {
+ public:
+  asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario);
 
-    virtual ~asPredictorProjCordex();
+  virtual ~asPredictorProjCordex();
 
-    bool Init();
+  bool Init();
 
-protected:
-    virtual void ListFiles(asTimeArray &timeArray);
+ protected:
+  virtual void ListFiles(asTimeArray &timeArray);
 
-    double ConvertToMjd(double timeValue, double refValue) const;
+  double ConvertToMjd(double timeValue, double refValue) const;
 
-private:
-
+ private:
 };
 
 #endif

@@ -135,6 +135,22 @@ if (WIN32)
             "${CMAKE_BINARY_DIR}")
     install(FILES ${NETCDF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
+    # OpenJPEG
+    find_file(OpenJPEG_DLL_NAME
+            openjp2.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT NETCDF_DLL_NAME)
+        message(SEND_ERROR "OpenJPEG DLL not found.")
+    endif ()
+    message(STATUS "OpenJPEG DLL: ${OpenJPEG_DLL_NAME}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${OpenJPEG_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${OpenJPEG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
     # Zlib
     find_file(ZLIB_DLL_NAME
             zlib.dll
@@ -169,7 +185,7 @@ if (WIN32)
 
     # Proj
     find_file(PROJ_DLL_NAME
-            proj.dll NAMES proj_6_0.dll proj_6_1.dll
+            proj.dll NAMES proj_6_0.dll proj_6_1.dll proj_6_2.dll proj_6_3.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)

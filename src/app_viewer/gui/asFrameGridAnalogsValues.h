@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -34,36 +34,34 @@
 
 class asForecastManager;
 
-class asFrameGridAnalogsValues
-        : public asFrameGridAnalogsValuesVirtual
-{
-public:
-    asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
-                             wxWindowID id = asWINDOW_GRID_ANALOGS);
+class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual {
+ public:
+  asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
+                           wxWindowID id = asWINDOW_GRID_ANALOGS);
 
-    void Init();
+  void Init();
 
-protected:
-    void OnChoiceForecastChange(wxCommandEvent &event) override;
+ protected:
+  void OnChoiceForecastChange(wxCommandEvent &event) override;
 
-    void OnChoiceStationChange(wxCommandEvent &event) override;
+  void OnChoiceStationChange(wxCommandEvent &event) override;
 
-    void OnChoiceDateChange(wxCommandEvent &event) override;
+  void OnChoiceDateChange(wxCommandEvent &event) override;
 
-    void SortGrid(wxGridEvent &event) override;
+  void SortGrid(wxGridEvent &event) override;
 
-private:
-    asForecastManager *m_forecastManager;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    int m_selectedStation;
-    int m_selectedDate;
-    int m_sortAfterCol;
-    Order m_sortOrder;
+ private:
+  asForecastManager *m_forecastManager;
+  int m_selectedMethod;
+  int m_selectedForecast;
+  int m_selectedStation;
+  int m_selectedDate;
+  int m_sortAfterCol;
+  Order m_sortOrder;
 
-    void RebuildChoiceForecast();
+  void RebuildChoiceForecast();
 
-    bool UpdateGrid();
+  bool UpdateGrid();
 };
 
 #endif

@@ -29,28 +29,25 @@
 #ifndef AS_PREDICTOR_CUSTOM_LTHE_NR1_H
 #define AS_PREDICTOR_CUSTOM_LTHE_NR1_H
 
-#include <asIncludes.h>
-#include <asPredictorCustomUnilNR1.h>
+#include "asIncludes.h"
+#include "asPredictorCustomUnilNR1.h"
 
 class asArea;
 
-class asPredictorCustomLtheNR1
-        : public asPredictorCustomUnilNR1
-{
-public:
-    explicit asPredictorCustomLtheNR1(const wxString &dataId);
+class asPredictorCustomLtheNR1 : public asPredictorCustomUnilNR1 {
+ public:
+  explicit asPredictorCustomLtheNR1(const wxString &dataId);
 
-    ~asPredictorCustomLtheNR1() override = default;
+  ~asPredictorCustomLtheNR1() override = default;
 
-    bool Init() override;
+  bool Init() override;
 
-protected:
-    void ListFiles(asTimeArray &timeArray) override;
+ protected:
+  void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-private:
-
+ private:
 };
 
 #endif

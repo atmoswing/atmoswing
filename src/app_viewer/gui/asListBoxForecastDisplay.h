@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,28 +32,24 @@
 
 class asForecastViewer;
 
-class asListBoxForecastDisplay
-        : public wxListBox
-{
-public:
-    asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
-                             const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
-                             long style = 0);
+class asListBoxForecastDisplay : public wxListBox {
+ public:
+  asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
+                           const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
+                           long style = 0);
 
-    ~asListBoxForecastDisplay() override = default;
+  ~asListBoxForecastDisplay() override = default;
 
-    void SetStringArray(const wxArrayString &options)
-    {
-        Set(options);
-        SetSelection(3);
-    }
+  void SetStringArray(const wxArrayString &options) {
+    Set(options);
+    SetSelection(3);
+  }
 
-protected:
+ protected:
+ private:
+  void OnForecastDisplaySlctChange(wxCommandEvent &event);
 
-private:
-    void OnForecastDisplaySlctChange(wxCommandEvent &event);
-
-DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

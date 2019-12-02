@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -32,104 +32,91 @@
 #include "asIncludes.h"
 #include "vroomgis.h"
 
-
 class asForecastManager;
 
 class asFrameForecast;
 
-class asForecastViewer
-{
-public:
-    asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
-                     vrViewerLayerManager *viewerLayerManager);
+class asForecastViewer {
+ public:
+  asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
+                   vrViewerLayerManager *viewerLayerManager);
 
-    virtual ~asForecastViewer();
+  virtual ~asForecastViewer();
 
-    void FixForecastSelection();
+  void FixForecastSelection();
 
-    void ResetForecastSelection();
+  void ResetForecastSelection();
 
-    void SetForecast(int methodRow, int forecastRow);
+  void SetForecast(int methodRow, int forecastRow);
 
-    float GetSelectedTargetDate();
+  float GetSelectedTargetDate();
 
-    void SetForecastDisplay(int i);
+  void SetForecastDisplay(int i);
 
-    void SetQuantile(int i);
+  void SetQuantile(int i);
 
-    void LoadPastForecast();
+  void LoadPastForecast();
 
-    void Redraw();
+  void Redraw();
 
-    void ChangeLeadTime(int val);
+  void ChangeLeadTime(int val);
 
-    void SetLeadTimeDate(float date);
+  void SetLeadTimeDate(float date);
 
-    wxArrayString GetForecastDisplayStringArray() const
-    {
-        return m_displayForecast;
-    }
+  wxArrayString GetForecastDisplayStringArray() const {
+    return m_displayForecast;
+  }
 
-    wxArrayString GetQuantilesStringArray() const
-    {
-        return m_displayQuantiles;
-    }
+  wxArrayString GetQuantilesStringArray() const {
+    return m_displayQuantiles;
+  }
 
-    int GetMethodSelection() const
-    {
-        return m_methodSelection;
-    }
+  int GetMethodSelection() const {
+    return m_methodSelection;
+  }
 
-    int GetForecastSelection() const
-    {
-        return m_forecastSelection;
-    }
+  int GetForecastSelection() const {
+    return m_forecastSelection;
+  }
 
-    int GetForecastDisplaySelection() const
-    {
-        return m_forecastDisplaySelection;
-    }
+  int GetForecastDisplaySelection() const {
+    return m_forecastDisplaySelection;
+  }
 
-    int GetQuantileSelection() const
-    {
-        return m_quantileSelection;
-    }
+  int GetQuantileSelection() const {
+    return m_quantileSelection;
+  }
 
-    float GetLayerMaxValue() const
-    {
-        return m_layerMaxValue;
-    }
+  float GetLayerMaxValue() const {
+    return m_layerMaxValue;
+  }
 
-    int GetLeadTimeIndex() const
-    {
-        return m_leadTimeIndex;
-    }
+  int GetLeadTimeIndex() const {
+    return m_leadTimeIndex;
+  }
 
-    float GetLeadTimeDate() const
-    {
-        return m_leadTimeDate;
-    }
+  float GetLeadTimeDate() const {
+    return m_leadTimeDate;
+  }
 
-protected:
-
-private:
-    int m_leadTimeIndex;
-    float m_leadTimeDate;
-    float m_layerMaxValue;
-    bool m_opened;
-    asFrameForecast *m_parent;
-    asForecastManager *m_forecastManager;
-    vrLayerManager *m_layerManager;
-    vrViewerLayerManager *m_viewerLayerManager;
-    wxArrayString m_displayForecast;
-    wxArrayString m_displayQuantiles;
-    vf m_returnPeriods;
-    vf m_quantiles;
-    int m_forecastDisplaySelection;
-    int m_quantileSelection;
-    int m_methodSelection;
-    int m_forecastSelection;
-
+ protected:
+ private:
+  int m_leadTimeIndex;
+  float m_leadTimeDate;
+  float m_layerMaxValue;
+  bool m_opened;
+  asFrameForecast *m_parent;
+  asForecastManager *m_forecastManager;
+  vrLayerManager *m_layerManager;
+  vrViewerLayerManager *m_viewerLayerManager;
+  wxArrayString m_displayForecast;
+  wxArrayString m_displayQuantiles;
+  vf m_returnPeriods;
+  vf m_quantiles;
+  int m_forecastDisplaySelection;
+  int m_quantileSelection;
+  int m_methodSelection;
+  int m_forecastSelection;
 };
 
 #endif

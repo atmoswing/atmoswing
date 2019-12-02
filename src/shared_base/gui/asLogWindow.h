@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,26 +28,22 @@
 #ifndef AS_LOG_WINDOW_H
 #define AS_LOG_WINDOW_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #include "wx/log.h"
 
-class asLogWindow
-        : public wxLogWindow
-{
-public:
-    explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
-                bool passToOld = true);
+class asLogWindow : public wxLogWindow {
+ public:
+  explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
+                       bool passToOld = true);
 
-    ~asLogWindow() override = default;
+  ~asLogWindow() override = default;
 
-    virtual void DoShow(bool bShow);
+  virtual void DoShow(bool bShow);
 
-protected:
-
-private:
-    bool OnFrameClose(wxFrame *frame) override;
-
+ protected:
+ private:
+  bool OnFrameClose(wxFrame *frame) override;
 };
 
 #endif

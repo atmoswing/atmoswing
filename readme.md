@@ -5,6 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1otp6de8c8go0nxm?svg=true)](https://ci.appveyor.com/project/pascalhorton/atmoswing)
 [![codecov](https://codecov.io/gh/atmoswing/atmoswing/branch/master/graph/badge.svg)](https://codecov.io/gh/atmoswing/atmoswing)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13133/badge.svg)](https://scan.coverity.com/projects/atmoswing-atmoswing)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1107/badge)](https://bestpractices.coreinfrastructure.org/projects/1107)
 [![Documentation Status](https://readthedocs.org/projects/atmoswing/badge/?version=latest)](https://atmoswing.readthedocs.io/en/latest/?badge=latest)
 
 
@@ -31,6 +32,12 @@ This repository contains 3 separate tools:
 
 Additionally, multiple unit tests are available and are built along with the software. It is highly recommended to run these tests before using AtmoSwing operationally.
 
+## Documentation ##
+
+AtmoSwing documentation can be found here: https://atmoswing.readthedocs.io/en/latest/
+
+The repository of the documentation is https://github.com/atmoswing/user-manual
+
 ## Download AtmoSwing ##
 
 You can download the releases under: https://github.com/atmoswing/atmoswing/releases
@@ -51,7 +58,16 @@ The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile t
 
 If you want to contribute to the software development, you can fork this repository (keep it public !) and then suggest your improvements by sending pull requests. We would be glad to see a community growing around this project.
 
+When adding a new feature, please write a test along with it.
+
 Additionally, you can report issues or suggestions in the issues tracker (https://github.com/atmoswing/atmoswing/issues).
+
+AtmoSwing will follow [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) (not the case so far) with a few differences (mainly based on [wxWidgets Coding Guidelines](https://www.wxwidgets.org/develop/coding-guidelines)):
+* Use ``CamelCase`` for types (classes, structs, enums, unions), methods and functions 
+* Use ``camelCase`` for the variables.
+* Use ``m_`` prefix for member variables.
+* Global variables shouldn’t normally be used at all, but if they are, should have ``g_`` prefix.
+* Use Set/Get prefixes for accessors
 
 ## Credits ##
 

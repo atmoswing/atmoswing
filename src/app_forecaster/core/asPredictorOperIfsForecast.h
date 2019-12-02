@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,28 +29,25 @@
 #ifndef AS_PREDICTOR_OPER_IFS_FORECAST_H
 #define AS_PREDICTOR_OPER_IFS_FORECAST_H
 
-#include <asIncludes.h>
-#include <asPredictorEcmwfIfsGrib.h>
+#include "asIncludes.h"
+#include "asPredictorEcmwfIfsGrib.h"
+
 #include "asPredictorOper.h"
 
 class asArea;
 
-class asPredictorOperIfsForecast
-        : public asPredictorOper
-{
-public:
-    explicit asPredictorOperIfsForecast(const wxString &dataId);
+class asPredictorOperIfsForecast : public asPredictorOper {
+ public:
+  explicit asPredictorOperIfsForecast(const wxString &dataId);
 
-    ~asPredictorOperIfsForecast() override = default;
+  ~asPredictorOperIfsForecast() override = default;
 
-    bool Init() override;
+  bool Init() override;
 
+ protected:
+  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-protected:
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
-
-private:
-
+ private:
 };
 
 #endif

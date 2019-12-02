@@ -29,24 +29,21 @@
 #ifndef AS_FILE_PARAMETERS_OPTIMIZATION_H
 #define AS_FILE_PARAMETERS_OPTIMIZATION_H
 
-#include <asIncludes.h>
-#include <asFileParameters.h>
+#include "asFileParameters.h"
+#include "asIncludes.h"
 
-class asFileParametersOptimization
-        : public asFileParameters
-{
-public:
-    asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+class asFileParametersOptimization : public asFileParameters {
+ public:
+  asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-    virtual ~asFileParametersOptimization();
+  virtual ~asFileParametersOptimization();
 
-    bool EditRootElement();
+  bool EditRootElement();
 
-    bool CheckRootElement() const;
+  bool CheckRootElement() const;
 
-protected:
-
-private:
+ protected:
+ private:
 };
 
 #endif
