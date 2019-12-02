@@ -30,98 +30,84 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction;
 // A uncreated wxPlotCurve for reference
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotFunction) wxNullPlotFunction;
 
-class WXDLLIMPEXP_PLOTCTRL wxPlotFunction
-        : public wxPlotCurve
-{
-public:
-    wxPlotFunction()
-            : wxPlotCurve()
-    {
-    }
+class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
+ public:
+  wxPlotFunction() : wxPlotCurve() {}
 
-    wxPlotFunction(const wxPlotFunction &curve)
-    {
-        Create(curve);
-    }
+  wxPlotFunction(const wxPlotFunction &curve) {
+    Create(curve);
+  }
 
-    wxPlotFunction(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false)
-    {
-        Create(function, vars, useDegrees);
-    }
+  wxPlotFunction(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false) {
+    Create(function, vars, useDegrees);
+  }
 
-    virtual wxPlotCurve *Clone() const
-    {
-        return new wxPlotFunction(*this);
-    }
+  virtual wxPlotCurve *Clone() const {
+    return new wxPlotFunction(*this);
+  }
 
-    virtual ~wxPlotFunction()
-    {
-    }
+  virtual ~wxPlotFunction() {}
 
-    // Initialize curve, returns -1 on sucess and errormsg is wxEmptyString.
-    //   On error, the errormsg contains a message and the character location
-    //   in the 'function' string where the error occurred is returned.
-    //   Check if errormsg != wxEmptyString, or curve.Ok() not the returned int
-    //   vars is a comma delimited list of variables used in the function "x,y,z"
-    //   vars can be wxEmptyString, see GetValue(NULL), the function is a constant
-    int Create(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
+  // Initialize curve, returns -1 on sucess and errormsg is wxEmptyString.
+  //   On error, the errormsg contains a message and the character location
+  //   in the 'function' string where the error occurred is returned.
+  //   Check if errormsg != wxEmptyString, or curve.Ok() not the returned int
+  //   vars is a comma delimited list of variables used in the function "x,y,z"
+  //   vars can be wxEmptyString, see GetValue(NULL), the function is a constant
+  int Create(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
 
-    // Make a copy of the other plotFunction
-    bool Create(const wxPlotFunction &curve);
+  // Make a copy of the other plotFunction
+  bool Create(const wxPlotFunction &curve);
 
-    bool Ok() const;
+  bool Ok() const;
 
-    void Destroy();
+  void Destroy();
 
-    // Parse and use the function, see Create, does not destroy refdata
-    int Parse(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
+  // Parse and use the function, see Create, does not destroy refdata
+  int Parse(const wxString &function, const wxString &vars = wxT("x"), bool useDegrees = false);
 
-    // Get the strings sent to Create
-    wxString GetFunctionString() const;       // the function string "a*(b+3)/2 + c"
-    wxString GetVariableString() const;       // the variable string "a,b,c"
-    wxString GetVariableName(size_t n) const; // a single variable name n=0="a"
-    int GetNumberVariables() const;
+  // Get the strings sent to Create
+  wxString GetFunctionString() const;        // the function string "a*(b+3)/2 + c"
+  wxString GetVariableString() const;        // the variable string "a,b,c"
+  wxString GetVariableName(size_t n) const;  // a single variable name n=0="a"
+  int GetNumberVariables() const;
 
-    bool GetUseDegrees() const;               // was this created to use degrees?
+  bool GetUseDegrees() const;  // was this created to use degrees?
 
-    // Get an error message (if any) if Create does not return -1
-    wxString GetErrorMsg() const;
+  // Get an error message (if any) if Create does not return -1
+  wxString GetErrorMsg() const;
 
-    // Get the f(x) value from the function parser, use this if only have x variable
-    virtual double GetY(double x) const;
+  // Get the f(x) value from the function parser, use this if only have x variable
+  virtual double GetY(double x) const;
 
-    // Get the f(x,y...) using an arbitrary number of vars
-    //   you absolutely MUST pass double x[GetNumberVariables()]
-    //   if you sent in a wxEmptyString for the vars then use NULL
-    double GetValue(double *x) const;
+  // Get the f(x,y...) using an arbitrary number of vars
+  //   you absolutely MUST pass double x[GetNumberVariables()]
+  //   if you sent in a wxEmptyString for the vars then use NULL
+  double GetValue(double *x) const;
 
-    // add a constant to use
-    bool AddConstant(const wxString &name, double value);
+  // add a constant to use
+  bool AddConstant(const wxString &name, double value);
 
-    bool operator==(const wxPlotFunction &plotFunc) const
-    {
-        return m_refData == plotFunc.m_refData;
-    }
+  bool operator==(const wxPlotFunction &plotFunc) const {
+    return m_refData == plotFunc.m_refData;
+  }
 
-    bool operator!=(const wxPlotFunction &plotFunc) const
-    {
-        return m_refData != plotFunc.m_refData;
-    }
+  bool operator!=(const wxPlotFunction &plotFunc) const {
+    return m_refData != plotFunc.m_refData;
+  }
 
-    wxPlotFunction &operator=(const wxPlotFunction &plotFunc)
-    {
-        if ((*this) != plotFunc)
-            Ref(plotFunc);
-        return *this;
-    }
+  wxPlotFunction &operator=(const wxPlotFunction &plotFunc) {
+    if ((*this) != plotFunc) Ref(plotFunc);
+    return *this;
+  }
 
-private :
-    // ref counting code
-    virtual wxObjectRefData *CreateRefData() const;
+ private:
+  // ref counting code
+  virtual wxObjectRefData *CreateRefData() const;
 
-    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+  virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-DECLARE_DYNAMIC_CLASS(wxPlotFunction);
+  DECLARE_DYNAMIC_CLASS(wxPlotFunction);
 };
 
 //-----------------------------------------------------------------------------
@@ -138,6 +124,6 @@ wxPlotFunction wxClipboardGetPlotFunction();
 // returns sucess
 bool wxClipboardSetPlotFunction(const wxPlotFunction &plotFunction);
 
-#endif // wxUSE_DATAOBJ && wxUSE_CLIPBOARD
+#endif  // wxUSE_DATAOBJ && wxUSE_CLIPBOARD
 
-#endif // _WX_PLOTFUNC_H_
+#endif  // _WX_PLOTFUNC_H_

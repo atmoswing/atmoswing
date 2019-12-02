@@ -29,4 +29,3 @@
 #include "asGlobVarsForecaster.h"
 
 wxString g_cmdFileName = "";
-

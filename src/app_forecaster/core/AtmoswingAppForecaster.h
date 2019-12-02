@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,46 +30,43 @@
 #define AS_APP_FORECASTER_H
 
 #include <wx/app.h>
-#include <wx/snglinst.h>
 #include <wx/cmdline.h>
+#include <wx/snglinst.h>
 #include <wx/socket.h>
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #if wxUSE_GUI
 
-class AtmoswingAppForecaster
-        : public wxApp
+class AtmoswingAppForecaster : public wxApp
 #else
 
-class AtmoswingAppForecaster
-        : public wxAppConsole
+class AtmoswingAppForecaster : public wxAppConsole
 #endif
 {
-public:
-    bool OnInit() override;
+ public:
+  bool OnInit() override;
 
-    int OnRun() override;
+  int OnRun() override;
 
-    int OnExit() override;
+  int OnExit() override;
 
-    void OnInitCmdLine(wxCmdLineParser &parser) override;
+  void OnInitCmdLine(wxCmdLineParser &parser) override;
 
-    bool InitLog();
+  bool InitLog();
 
-    bool SetUseAsCmdLine();
+  bool SetUseAsCmdLine();
 
-    bool OnCmdLineParsed(wxCmdLineParser &parser) override;
+  bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
-private:
-    bool m_doConfig;
-    bool m_doForecast;
-    bool m_doForecastPast;
-    double m_forecastDate;
-    int m_forecastPastDays;
+ private:
+  bool m_doConfig;
+  bool m_doForecast;
+  bool m_doForecastPast;
+  double m_forecastDate;
+  int m_forecastPastDays;
 #if wxUSE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
+  wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
-
 };
 
 DECLARE_APP(AtmoswingAppForecaster);

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,6 +29,14 @@
 #ifndef AS_TYPE_DEFS_H
 #define AS_TYPE_DEFS_H
 
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
+
 #include <Eigen/StdVector>
 
 //---------------------------------
@@ -36,24 +44,20 @@
 //---------------------------------
 
 // Coordinates
-typedef struct
-{
-    double x; // East
-    double y; // North
+typedef struct {
+  double x;  // East
+  double y;  // North
 } Coo;
 
 // A time structure
-typedef struct
-{
-    int year;
-    int month;
-    int day;
-    int hour;
-    int min;
-    int sec;
+typedef struct {
+  int year;
+  int month;
+  int day;
+  int hour;
+  int min;
+  int sec;
 } Time;
-
-
 
 //---------------------------------
 // std vector
@@ -74,7 +78,6 @@ typedef std::vector<vf> vvf;
 typedef std::vector<vd> vvd;
 typedef std::vector<vwxs> vvwxs;
 
-
 //---------------------------------
 // Eigen3 arrays
 //---------------------------------
@@ -91,7 +94,6 @@ typedef std::vector<a2f *, Eigen::aligned_allocator<a2f *>> vpa2f;
 typedef std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>> vva2f;
 typedef std::vector<std::vector<std::vector<a2f, Eigen::aligned_allocator<a2f>>>> vvva2f;
 
-
 //---------------------------------
 // NaN & Inf
 //---------------------------------
@@ -106,6 +108,5 @@ static const double NaNd = std::numeric_limits<double>::quiet_NaN();
 const float Inff = std::numeric_limits<float>::infinity();
 const double Infd = std::numeric_limits<double>::infinity();
 const long double Infld = std::numeric_limits<long double>::infinity();
-
 
 #endif

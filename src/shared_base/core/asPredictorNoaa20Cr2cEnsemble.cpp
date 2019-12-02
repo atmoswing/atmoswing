@@ -27,144 +27,136 @@
 
 #include "asPredictorNoaa20Cr2cEnsemble.h"
 
-#include <asTimeArray.h>
-#include <asAreaCompGrid.h>
+#include "asAreaCompGrid.h"
+#include "asTimeArray.h"
 
-
-asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dataId)
-        : asPredictor(dataId)
-{
-    // Set the basic properties.
-    m_datasetId = "NOAA_20CR_v2c_ens";
-    m_provider = "NOAA";
-    m_datasetName = "Twentieth Century Reanalysis (v2c) Ensemble";
-    m_fileType = asFile::Netcdf;
-    m_isEnsemble = true;
-    m_strideAllowed = true;
-    m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
-    m_fStr.dimLatName = "lat";
-    m_fStr.dimLonName = "lon";
-    m_fStr.dimTimeName = "time";
-    m_fStr.dimMemberName = "ensemble_member";
-    m_fStr.hasLevelDim = false;
+asPredictorNoaa20Cr2cEnsemble::asPredictorNoaa20Cr2cEnsemble(const wxString &dataId) : asPredictor(dataId) {
+  // Set the basic properties.
+  m_datasetId = "NOAA_20CR_v2c_ens";
+  m_provider = "NOAA";
+  m_datasetName = "Twentieth Century Reanalysis (v2c) Ensemble";
+  m_fileType = asFile::Netcdf;
+  m_isEnsemble = true;
+  m_strideAllowed = true;
+  m_nanValues.push_back(-9.96921 * std::pow(10.f, 36.f));
+  m_fStr.dimLatName = "lat";
+  m_fStr.dimLonName = "lon";
+  m_fStr.dimTimeName = "time";
+  m_fStr.dimMemberName = "ensemble_member";
+  m_fStr.hasLevelDim = false;
 }
 
-bool asPredictorNoaa20Cr2cEnsemble::Init()
-{
-    CheckLevelTypeIsDefined();
+bool asPredictorNoaa20Cr2cEnsemble::Init() {
+  CheckLevelTypeIsDefined();
 
-    // Identify data ID and set the corresponding properties.
-    if (m_product.IsSameAs("analysis", false)) {
-
-        if (IsSeaLevelPressure()) {
-            m_parameter = Pressure;
-            m_parameterName = "Sea level pressure";
-            m_fileVarName = "prmsl";
-            m_unit = Pa;
-        } else if (IsPrecipitableWater()) {
-            m_parameter = PrecipitableWater;
-            m_parameterName = "Precipitable water";
-            m_fileVarName = "pwat";
-            m_unit = kg_m2;
-        } else if (m_dataId.IsSameAs("omega500", false)) {
-            m_parameter = VerticalVelocity;
-            m_parameterName = "Vertical velocity at 500 hPa";
-            m_fileVarName = "omega500";
-            m_unit = Pa_s;
-        } else if (m_dataId.IsSameAs("rh850", false)) {
-            m_parameter = RelativeHumidity;
-            m_parameterName = "Relative Humidity at 850 hPa";
-            m_fileVarName = "rh850";
-            m_unit = percent;
-        } else if (m_dataId.IsSameAs("rh9950", false)) {
-            m_parameter = RelativeHumidity;
-            m_parameterName = "Relative Humidity at the pressure level 0.995 times the surface pressure";
-            m_fileVarName = "rh850";
-            m_unit = percent;
-        } else if (m_dataId.IsSameAs("t850", false)) {
-            m_parameter = AirTemperature;
-            m_parameterName = "Air Temperature at 850 hPa";
-            m_fileVarName = "t850";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("t9950", false)) {
-            m_parameter = AirTemperature;
-            m_parameterName = "Air Temperature at the pressure level 0.995 times the surface pressure";
-            m_fileVarName = "t9950";
-            m_unit = degK;
-        } else if (m_dataId.IsSameAs("z200", false)) {
-            m_parameter = GeopotentialHeight;
-            m_parameterName = "Geopotential height at 200 hPa";
-            m_fileVarName = "z200";
-            m_unit = m;
-        } else if (m_dataId.IsSameAs("z500", false)) {
-            m_parameter = GeopotentialHeight;
-            m_parameterName = "Geopotential height at 500 hPa";
-            m_fileVarName = "z500";
-            m_unit = m;
-        } else if (m_dataId.IsSameAs("z1000", false)) {
-            m_parameter = GeopotentialHeight;
-            m_parameterName = "Geopotential height at 1000 hPa";
-            m_fileVarName = "z1000";
-            m_unit = m;
-        } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
-        }
-        m_fileNamePattern = m_fileVarName + "_%d.nc";
-
-    } else if (m_product.IsSameAs("first_guess", false)) {
-
-        if (IsPrecipitationRate()) {
-            m_parameter = PrecipitationRate;
-            m_parameterName = "Precipitation rate";
-            m_fileVarName = "prate";
-            m_unit = kg_m2_s;
-        } else {
-            m_parameter = ParameterUndefined;
-            m_parameterName = "Undefined";
-            m_fileVarName = m_dataId;
-            m_unit = UnitUndefined;
-        }
-        m_fileNamePattern = m_fileVarName + "_%d.nc";
-
+  // Identify data ID and set the corresponding properties.
+  if (m_product.IsSameAs("analysis", false)) {
+    if (IsSeaLevelPressure()) {
+      m_parameter = Pressure;
+      m_parameterName = "Sea level pressure";
+      m_fileVarName = "prmsl";
+      m_unit = Pa;
+    } else if (IsPrecipitableWater()) {
+      m_parameter = PrecipitableWater;
+      m_parameterName = "Precipitable water";
+      m_fileVarName = "pwat";
+      m_unit = kg_m2;
+    } else if (m_dataId.IsSameAs("omega500", false)) {
+      m_parameter = VerticalVelocity;
+      m_parameterName = "Vertical velocity at 500 hPa";
+      m_fileVarName = "omega500";
+      m_unit = Pa_s;
+    } else if (m_dataId.IsSameAs("rh850", false)) {
+      m_parameter = RelativeHumidity;
+      m_parameterName = "Relative Humidity at 850 hPa";
+      m_fileVarName = "rh850";
+      m_unit = percent;
+    } else if (m_dataId.IsSameAs("rh9950", false)) {
+      m_parameter = RelativeHumidity;
+      m_parameterName = "Relative Humidity at the pressure level 0.995 times the surface pressure";
+      m_fileVarName = "rh850";
+      m_unit = percent;
+    } else if (m_dataId.IsSameAs("t850", false)) {
+      m_parameter = AirTemperature;
+      m_parameterName = "Air Temperature at 850 hPa";
+      m_fileVarName = "t850";
+      m_unit = degK;
+    } else if (m_dataId.IsSameAs("t9950", false)) {
+      m_parameter = AirTemperature;
+      m_parameterName = "Air Temperature at the pressure level 0.995 times the surface pressure";
+      m_fileVarName = "t9950";
+      m_unit = degK;
+    } else if (m_dataId.IsSameAs("z200", false)) {
+      m_parameter = GeopotentialHeight;
+      m_parameterName = "Geopotential height at 200 hPa";
+      m_fileVarName = "z200";
+      m_unit = m;
+    } else if (m_dataId.IsSameAs("z500", false)) {
+      m_parameter = GeopotentialHeight;
+      m_parameterName = "Geopotential height at 500 hPa";
+      m_fileVarName = "z500";
+      m_unit = m;
+    } else if (m_dataId.IsSameAs("z1000", false)) {
+      m_parameter = GeopotentialHeight;
+      m_parameterName = "Geopotential height at 1000 hPa";
+      m_fileVarName = "z1000";
+      m_unit = m;
     } else {
-        wxLogError(_("Product type not implemented for this reanalysis dataset."));
-        return false;
+      m_parameter = ParameterUndefined;
+      m_parameterName = "Undefined";
+      m_fileVarName = m_dataId;
+      m_unit = UnitUndefined;
     }
+    m_fileNamePattern = m_fileVarName + "_%d.nc";
 
-    // Check data ID
-    if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
-        wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
-                   m_datasetName);
-        return false;
+  } else if (m_product.IsSameAs("first_guess", false)) {
+    if (IsPrecipitationRate()) {
+      m_parameter = PrecipitationRate;
+      m_parameterName = "Precipitation rate";
+      m_fileVarName = "prate";
+      m_unit = kg_m2_s;
+    } else {
+      m_parameter = ParameterUndefined;
+      m_parameterName = "Undefined";
+      m_fileVarName = m_dataId;
+      m_unit = UnitUndefined;
     }
+    m_fileNamePattern = m_fileVarName + "_%d.nc";
 
-    // Check directory is set
-    if (GetDirectoryPath().IsEmpty()) {
-        wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
-                   m_datasetName);
-        return false;
-    }
+  } else {
+    wxLogError(_("Product type not implemented for this reanalysis dataset."));
+    return false;
+  }
 
-    // Set to initialized
-    m_initialized = true;
+  // Check data ID
+  if (m_fileNamePattern.IsEmpty() || m_fileVarName.IsEmpty()) {
+    wxLogError(_("The provided data ID (%s) does not match any possible option in the dataset %s."), m_dataId,
+               m_datasetName);
+    return false;
+  }
 
-    return true;
+  // Check directory is set
+  if (GetDirectoryPath().IsEmpty()) {
+    wxLogError(_("The path to the directory has not been set for the data %s from the dataset %s."), m_dataId,
+               m_datasetName);
+    return false;
+  }
+
+  // Set to initialized
+  m_initialized = true;
+
+  return true;
 }
 
-void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray &timeArray)
-{
-    for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
-        m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
-    }
+void asPredictorNoaa20Cr2cEnsemble::ListFiles(asTimeArray &timeArray) {
+  for (int iYear = timeArray.GetStartingYear(); iYear <= timeArray.GetEndingYear(); iYear++) {
+    m_files.push_back(GetFullDirectoryPath() + wxString::Format(m_fileNamePattern, iYear));
+  }
 }
 
-double asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(double timeValue, double refValue) const
-{
-    timeValue = (timeValue / 24.0); // hours to days
-    timeValue += asTime::GetMJD(1, 1, 1); // to MJD: add a negative time span
+double asPredictorNoaa20Cr2cEnsemble::ConvertToMjd(double timeValue, double refValue) const {
+  timeValue = (timeValue / 24.0);        // hours to days
+  timeValue += asTime::GetMJD(1, 1, 1);  // to MJD: add a negative time span
 
-    return timeValue;
+  return timeValue;
 }

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -26,28 +26,23 @@
  */
 
 #include "asAreaCompGenGrid.h"
+
 #include "asTypeDefs.h"
 
 asAreaCompGenGrid::asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                                      int flatAllowed, bool isLatLon)
-        : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon)
-{
-}
+    : asAreaCompGrid(cornerUL, cornerUR, cornerLL, cornerLR, flatAllowed, isLatLon) {}
 
 asAreaCompGenGrid::asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed,
                                      bool isLatLon)
-        : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon)
-{
-}
+    : asAreaCompGrid(xMin, xWidth, yMin, yWidth, flatAllowed, isLatLon) {}
 
 asAreaCompGenGrid::asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed, bool isLatLon)
-        : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon)
-{
-    m_xPtsNb = xPtsNb;
-    m_yPtsNb = yPtsNb;
+    : asAreaCompGrid(xMin, 0, yMin, 0, flatAllowed, isLatLon) {
+  m_xPtsNb = xPtsNb;
+  m_yPtsNb = yPtsNb;
 }
 
-bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherArea) const
-{
-    return false;
+bool asAreaCompGenGrid::GridsOverlay(asAreaCompGrid *otherArea) const {
+  return false;
 }

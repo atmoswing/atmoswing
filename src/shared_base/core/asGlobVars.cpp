@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -35,13 +35,14 @@ bool g_unitTesting = false;
 bool g_guiMode = true;
 
 // Constants
-const double g_cst_Euler = 0.57721566490153286060651209008240243104215933593992; // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni
-const double g_cst_Pi = 3.14159265358979323846264338327950288419716939937510; // http://fr.wikipedia.org/wiki/Pi
+const double g_cst_Euler =
+    0.57721566490153286060651209008240243104215933593992;  // http://fr.wikipedia.org/wiki/Constante_d%27Euler-Mascheroni
+const double g_cst_Pi = 3.14159265358979323846264338327950288419716939937510;  // http://fr.wikipedia.org/wiki/Pi
 
 // Useful variables
-#if defined (__WIN32__)
-    const wxString DS = "\\";
+#if defined(__WIN32__)
+const wxString DS = "\\";
 #else
-    const wxString DS = "/";
+const wxString DS = "/";
 #endif
 double g_ppiScaleDc = 1.0;

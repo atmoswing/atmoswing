@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -34,83 +34,79 @@
 
 class asForecastManager;
 
-class asFramePlotDistributions
-        : public asFramePlotDistributionsVirutal
-{
-public:
-    asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
-                             wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
+class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
+ public:
+  asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
+                           wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
 
-    ~asFramePlotDistributions() override;
+  ~asFramePlotDistributions() override;
 
-    void Init();
+  void Init();
 
-    bool Plot();
+  bool Plot();
 
-    bool PlotPredictands();
+  bool PlotPredictands();
 
-    bool PlotCriteria();
+  bool PlotCriteria();
 
-protected:
+ protected:
+ private:
+  enum PlotPredictandsData {
+    ClassicQuantiles,
+    AllAnalogsPoints,
+    AllAnalogsCurve,
+    BestAnalogs10Points,
+    BestAnalogs10Curve,
+    BestAnalogs5Points,
+    BestAnalogs5Curve,
+    ClassicReturnPeriod,
+    AllReturnPeriods
+  };
 
-private:
-    enum PlotPredictandsData
-    {
-        ClassicQuantiles,
-        AllAnalogsPoints,
-        AllAnalogsCurve,
-        BestAnalogs10Points,
-        BestAnalogs10Curve,
-        BestAnalogs5Points,
-        BestAnalogs5Curve,
-        ClassicReturnPeriod,
-        AllReturnPeriods
-    };
+  asPanelPlot *m_panelPlotPredictands;
+  asPanelPlot *m_panelPlotCriteria;
+  asForecastManager *m_forecastManager;
+  int m_selectedMethod;
+  int m_selectedForecast;
+  int m_selectedStation;
+  int m_selectedDate;
+  int m_xmaxPredictands;
 
-    asPanelPlot *m_panelPlotPredictands;
-    asPanelPlot *m_panelPlotCriteria;
-    asForecastManager *m_forecastManager;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    int m_selectedStation;
-    int m_selectedDate;
-    int m_xmaxPredictands;
+  void RebuildChoiceForecast();
 
-    void RebuildChoiceForecast();
+  void InitPredictandsCheckListBox();
 
-    void InitPredictandsCheckListBox();
+  void InitPredictandsPlotCtrl();
 
-    void InitPredictandsPlotCtrl();
+  void InitCriteriaPlotCtrl();
 
-    void InitCriteriaPlotCtrl();
+  void PlotAllReturnPeriods();
 
-    void PlotAllReturnPeriods();
+  void PlotReturnPeriod(int returnPeriod);
 
-    void PlotReturnPeriod(int returnPeriod);
+  void PlotAllAnalogsPoints();
 
-    void PlotAllAnalogsPoints();
+  void PlotAllAnalogsCurve();
 
-    void PlotAllAnalogsCurve();
+  void PlotBestAnalogsPoints(int analogsNb);
 
-    void PlotBestAnalogsPoints(int analogsNb);
+  void PlotBestAnalogsCurve(int analogsNb);
 
-    void PlotBestAnalogsCurve(int analogsNb);
+  void PlotClassicQuantiles();
 
-    void PlotClassicQuantiles();
+  void PlotCriteriaCurve();
 
-    void PlotCriteriaCurve();
+  void OnChoiceForecastChange(wxCommandEvent &event) override;
 
-    void OnChoiceForecastChange(wxCommandEvent &event) override;
+  void OnChoiceStationChange(wxCommandEvent &event) override;
 
-    void OnChoiceStationChange(wxCommandEvent &event) override;
+  void OnChoiceDateChange(wxCommandEvent &event) override;
 
-    void OnChoiceDateChange(wxCommandEvent &event) override;
+  void OnTocSelectionChange(wxCommandEvent &event) override;
 
-    void OnTocSelectionChange(wxCommandEvent &event) override;
+  void OnClose(wxCloseEvent &evt);
 
-    void OnClose(wxCloseEvent &evt);
-
-DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

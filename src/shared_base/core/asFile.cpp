@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,155 +27,144 @@
 
 #include "asFile.h"
 
-
 asFile::asFile(const wxString &fileName, const FileMode &fileMode)
-        : m_fileName(wxFileName(fileName)),
-          m_fileMode(fileMode),
-          m_exists(false),
-          m_opened(false)
-{
+    : m_fileName(wxFileName(fileName)),
+      m_fileMode(fileMode),
+      m_exists(false),
+      m_opened(false) {}
 
+asFile::~asFile() {
+  DoClose();
 }
 
-asFile::~asFile()
-{
-    DoClose();
+bool asFile::Exists(const wxString &filePath) {
+  return wxFileName::FileExists(filePath);
 }
 
-bool asFile::Exists(const wxString &filePath)
-{
-    return wxFileName::FileExists(filePath);
-}
+bool asFile::Find() {
+  bool missingFile = false, missingDir = false, mkDir = false, errorRights = false, errorOverwrite = false;
 
-bool asFile::Find()
-{
-    bool missingFile = false, missingDir = false, mkDir = false, errorRights = false, errorOverwrite = false;
+  if (!m_fileName.IsOk()) {
+    wxLogError(_("The file path is not OK %s"), m_fileName.GetFullPath());
+    return false;
+  }
 
-    if (!m_fileName.IsOk()) {
-        wxLogError(_("The file path is not OK %s"), m_fileName.GetFullPath());
-        return false;
-    }
-
-    switch (m_fileMode) {
-        case (ReadOnly):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                missingFile = true;
-            } else {
-                m_exists = true;
-                if (!wxFileName::IsFileReadable(m_fileName.GetFullPath())) {
-                    errorRights = true;
-                }
-            }
-            break;
-
-        case (Write):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
-                    mkDir = true;
-                } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
-                        missingDir = true;
-                    }
-                }
-            } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
-                    errorRights = true;
-                }
-            }
-            break;
-
-        case (Replace):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
-                    mkDir = true;
-                } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
-                        missingDir = true;
-                    }
-                }
-            } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
-                    errorRights = true;
-                }
-            }
-            break;
-
-        case (New):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                if (!wxFileName::DirExists(m_fileName.GetPath())) {
-                    mkDir = true;
-                } else {
-                    if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
-                        missingDir = true;
-                    }
-                }
-            } else {
-                m_exists = true;
-                errorOverwrite = true;
-            }
-            break;
-
-        case (Append):
-            if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
-                missingFile = true;
-            } else {
-                m_exists = true;
-                if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
-                    errorRights = true;
-                }
-            }
-            break;
-
-        default :
-            asThrowException(_("The file access is not correctly set."));
-    }
-
-    if (mkDir) {
-        if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
-            wxLogError(_("The directory %s could not be created."), m_fileName.GetPath());
-            return false;
-        }
+  switch (m_fileMode) {
+    case (ReadOnly):
+      if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+        missingFile = true;
+      } else {
         m_exists = true;
+        if (!wxFileName::IsFileReadable(m_fileName.GetFullPath())) {
+          errorRights = true;
+        }
+      }
+      break;
+
+    case (Write):
+      if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+        if (!wxFileName::DirExists(m_fileName.GetPath())) {
+          mkDir = true;
+        } else {
+          if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+            missingDir = true;
+          }
+        }
+      } else {
+        m_exists = true;
+        if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+          errorRights = true;
+        }
+      }
+      break;
+
+    case (Replace):
+      if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+        if (!wxFileName::DirExists(m_fileName.GetPath())) {
+          mkDir = true;
+        } else {
+          if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+            missingDir = true;
+          }
+        }
+      } else {
+        m_exists = true;
+        if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+          errorRights = true;
+        }
+      }
+      break;
+
+    case (New):
+      if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+        if (!wxFileName::DirExists(m_fileName.GetPath())) {
+          mkDir = true;
+        } else {
+          if (!wxFileName::IsDirWritable(m_fileName.GetPath())) {
+            missingDir = true;
+          }
+        }
+      } else {
+        m_exists = true;
+        errorOverwrite = true;
+      }
+      break;
+
+    case (Append):
+      if (!wxFileName::FileExists(m_fileName.GetFullPath())) {
+        missingFile = true;
+      } else {
+        m_exists = true;
+        if (!wxFileName::IsFileWritable(m_fileName.GetFullPath())) {
+          errorRights = true;
+        }
+      }
+      break;
+
+    default:
+      asThrowException(_("The file access is not correctly set."));
+  }
+
+  if (mkDir) {
+    if (!wxFileName::Mkdir(m_fileName.GetPath(), wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
+      wxLogError(_("The directory %s could not be created."), m_fileName.GetPath());
+      return false;
     }
+    m_exists = true;
+  }
 
-    if (missingFile) {
-        wxLogError(_("Cannot find the file %s"), m_fileName.GetFullPath());
-        return false;
-    }
-
-    if (missingDir) {
-        wxLogError(_("Cannot find the directory %s"), m_fileName.GetFullPath());
-        return false;
-    }
-
-    if (errorRights) {
-        wxLogError(_("The file could not be accessed in the desired mode."));
-        return false;
-    }
-
-    if (errorOverwrite) {
-        wxLogError(_("The file should be overwritten, which is not allowed in the New mode."));
-        return false;
-    }
-
-    return true;
-}
-
-bool asFile::DoClose()
-{
-    Close();
-    return true;
-}
-
-bool asFile::Open()
-{
+  if (missingFile) {
+    wxLogError(_("Cannot find the file %s"), m_fileName.GetFullPath());
     return false;
-}
+  }
 
-bool asFile::Close()
-{
+  if (missingDir) {
+    wxLogError(_("Cannot find the directory %s"), m_fileName.GetFullPath());
     return false;
+  }
+
+  if (errorRights) {
+    wxLogError(_("The file could not be accessed in the desired mode."));
+    return false;
+  }
+
+  if (errorOverwrite) {
+    wxLogError(_("The file should be overwritten, which is not allowed in the New mode."));
+    return false;
+  }
+
+  return true;
 }
 
+bool asFile::DoClose() {
+  Close();
+  return true;
+}
+
+bool asFile::Open() {
+  return false;
+}
+
+bool asFile::Close() {
+  return false;
+}

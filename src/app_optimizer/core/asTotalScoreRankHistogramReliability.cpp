@@ -28,66 +28,61 @@
 #include "asTotalScoreRankHistogramReliability.h"
 
 asTotalScoreRankHistogramReliability::asTotalScoreRankHistogramReliability(const wxString &periodString)
-        : asTotalScore(periodString)
-{
-
-}
+    : asTotalScore(periodString) {}
 
 float asTotalScoreRankHistogramReliability::Assess(const a1f &targetDates, const a1f &scores,
-                                                   const asTimeArray &timeArray) const
-{
-    wxLogWarning(_("Calling asTotalScoreRankHistogramReliability::Assess means it doesn't do bootstraping."));
+                                                   const asTimeArray &timeArray) const {
+  wxLogWarning(_("Calling asTotalScoreRankHistogramReliability::Assess means it doesn't do bootstraping."));
 
-    wxASSERT(targetDates.rows() > 1);
-    wxASSERT(scores.rows() > 1);
-    wxASSERT(m_ranksNb > 1);
+  wxASSERT(targetDates.rows() > 1);
+  wxASSERT(scores.rows() > 1);
+  wxASSERT(m_ranksNb > 1);
 
-    a1i histogram = a1i::Zero(m_ranksNb);
+  a1i histogram = a1i::Zero(m_ranksNb);
 
-    switch (m_period) {
-        case (asTotalScore::Total): {
-            for (int i = 0; i < scores.size(); i++) {
-                int rank = (int) asRound(scores[i]);
-                wxASSERT(rank <= m_ranksNb);
-                histogram[rank - 1]++;
-            }
-            break;
-        }
-
-        default: {
-            asThrowException(_("Period not yet implemented in asTotalScoreRankHistogramReliability."));
-        }
+  switch (m_period) {
+    case (asTotalScore::Total): {
+      for (int i = 0; i < scores.size(); i++) {
+        int rank = (int)asRound(scores[i]);
+        wxASSERT(rank <= m_ranksNb);
+        histogram[rank - 1]++;
+      }
+      break;
     }
 
-    // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
-    // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
-    float delta = 0;
-    float delta_rel = float(scores.size() * (m_ranksNb - 1)) / float(m_ranksNb);
-    for (int i = 0; i < m_ranksNb; i++) {
-        delta += pow(float(histogram[i]) - float(scores.size()) / float(m_ranksNb), 2.0f);
+    default: {
+      asThrowException(_("Period not yet implemented in asTotalScoreRankHistogramReliability."));
     }
+  }
 
-    float reliability = delta / delta_rel;
+  // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
+  // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
+  float delta = 0;
+  float delta_rel = float(scores.size() * (m_ranksNb - 1)) / float(m_ranksNb);
+  for (int i = 0; i < m_ranksNb; i++) {
+    delta += pow(float(histogram[i]) - float(scores.size()) / float(m_ranksNb), 2.0f);
+  }
 
-    return reliability;
+  float reliability = delta / delta_rel;
+
+  return reliability;
 }
 
-float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const
-{
-    wxASSERT(m_ranksNb > 1);
+float asTotalScoreRankHistogramReliability::AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const {
+  wxASSERT(m_ranksNb > 1);
 
-    a1f histogramReal;
-    histogramReal = scoresSize * histogramPercent / 100.0f;
+  a1f histogramReal;
+  histogramReal = scoresSize * histogramPercent / 100.0f;
 
-    // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
-    // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
-    float delta = 0;
-    float delta_rel = float(scoresSize * (m_ranksNb - 1)) / float(m_ranksNb);
-    for (int i = 0; i < m_ranksNb; i++) {
-        delta += pow(float(histogramReal[i]) - float(scoresSize) / float(m_ranksNb), 2.0f);
-    }
+  // Reference: Candille G., Talagrand O., 2005. Evaluation of probabilistic prediction
+  // systems for a scalar variable. Q. J. R. Meteorol. Soc. 131, p. 2131-2150
+  float delta = 0;
+  float delta_rel = float(scoresSize * (m_ranksNb - 1)) / float(m_ranksNb);
+  for (int i = 0; i < m_ranksNb; i++) {
+    delta += pow(float(histogramReal[i]) - float(scoresSize) / float(m_ranksNb), 2.0f);
+  }
 
-    float reliability = delta / delta_rel;
+  float reliability = delta / delta_rel;
 
-    return reliability;
+  return reliability;
 }

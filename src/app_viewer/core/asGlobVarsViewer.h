@@ -29,6 +29,7 @@
 #define AS_GLOB_VARS_VIEWER_H
 
 #include <wx/colour.h>
+
 #include "asIncludes.h"
 
 extern wxString g_cmdFileName;

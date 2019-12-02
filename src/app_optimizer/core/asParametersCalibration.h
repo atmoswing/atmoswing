@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,133 +29,120 @@
 #ifndef AS_PARAMETERS_CALIBRATION_H
 #define AS_PARAMETERS_CALIBRATION_H
 
+#include "asParametersScoring.h"
+
 #include "asIncludes.h"
-#include <asParametersScoring.h>
 
 class asFileParametersCalibration;
 
+class asParametersCalibration : public asParametersScoring {
+ public:
+  asParametersCalibration();
 
-class asParametersCalibration
-        : public asParametersScoring
-{
-public:
+  virtual ~asParametersCalibration();
 
-    asParametersCalibration();
+  void AddStep();
 
-    virtual ~asParametersCalibration();
+  bool LoadFromFile(const wxString &filePath);
 
-    void AddStep();
+  virtual bool SetSpatialWindowProperties();
 
-    bool LoadFromFile(const wxString &filePath);
+  virtual bool SetPreloadingProperties();
 
-    virtual bool SetSpatialWindowProperties();
+  bool InputsOK() const;
 
-    virtual bool SetPreloadingProperties();
+  bool FixTimeLimits();
 
-    bool InputsOK() const;
+  void InitValues();
 
-    bool FixTimeLimits();
+  int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const {
+    return (int)GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
+  }
 
-    void InitValues();
+  vvi GetPredictandStationIdsVector() const {
+    return m_predictandStationIdsVect;
+  }
 
-    int GetPreprocessDataIdVectorSize(int iStep, int iPtor, int iPre) const
-    {
-        return (int) GetPreprocessDataIdVector(iStep, iPtor, iPre).size();
-    }
+  bool SetPredictandStationIdsVector(vvi val);
 
-    vvi GetPredictandStationIdsVector() const
-    {
-        return m_predictandStationIdsVect;
-    }
+  vi GetTimeArrayAnalogsIntervalDaysVector() const {
+    return m_timeArrayAnalogsIntervalDaysVect;
+  }
 
-    bool SetPredictandStationIdsVector(vvi val);
+  bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
 
-    vi GetTimeArrayAnalogsIntervalDaysVector() const
-    {
-        return m_timeArrayAnalogsIntervalDaysVect;
-    }
+  vwxs GetScoreNameVector() const {
+    return m_scoreVect.name;
+  }
 
-    bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
+  bool SetScoreNameVector(vwxs val);
 
-    vwxs GetScoreNameVector() const
-    {
-        return m_scoreVect.name;
-    }
+  vwxs GetScoreTimeArrayModeVector() const {
+    return m_scoreVect.timeArrayMode;
+  }
 
-    bool SetScoreNameVector(vwxs val);
+  bool SetScoreTimeArrayModeVector(vwxs val);
 
-    vwxs GetScoreTimeArrayModeVector() const
-    {
-        return m_scoreVect.timeArrayMode;
-    }
+  vd GetScoreTimeArrayDateVector() const {
+    return m_scoreVect.timeArrayDate;
+  }
 
-    bool SetScoreTimeArrayModeVector(vwxs val);
+  vi GetScoreTimeArrayIntervalDaysVector() const {
+    return m_scoreVect.timeArrayIntervalDays;
+  }
 
-    vd GetScoreTimeArrayDateVector() const
-    {
-        return m_scoreVect.timeArrayDate;
-    }
+  vf GetScorePostprocessDupliExpVector() const {
+    return m_scoreVect.postprocessDupliExp;
+  }
 
-    vi GetScoreTimeArrayIntervalDaysVector() const
-    {
-        return m_scoreVect.timeArrayIntervalDays;
-    }
+  double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const;
 
-    vf GetScorePostprocessDupliExpVector() const
-    {
-        return m_scoreVect.postprocessDupliExp;
-    }
+  double GetPredictorXminLowerLimit(int iStep, int iPtor) const;
 
-    double GetPreprocessHoursLowerLimit(int iStep, int iPtor, int iPre) const;
+  int GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const;
 
-    double GetPredictorXminLowerLimit(int iStep, int iPtor) const;
+  double GetPredictorYminLowerLimit(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbLowerLimit(int iStep, int iPtor) const;
+  int GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const;
 
-    double GetPredictorYminLowerLimit(int iStep, int iPtor) const;
+  double GetPredictorHoursLowerLimit(int iStep, int iPtor) const;
 
-    int GetPredictorYptsnbLowerLimit(int iStep, int iPtor) const;
+  double GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const;
 
-    double GetPredictorHoursLowerLimit(int iStep, int iPtor) const;
+  double GetPredictorXminUpperLimit(int iStep, int iPtor) const;
 
-    double GetPreprocessHoursUpperLimit(int iStep, int iPtor, int iPre) const;
+  int GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorXminUpperLimit(int iStep, int iPtor) const;
+  double GetPredictorYminUpperLimit(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbUpperLimit(int iStep, int iPtor) const;
+  int GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const;
 
-    double GetPredictorYminUpperLimit(int iStep, int iPtor) const;
+  double GetPredictorHoursUpperLimit(int iStep, int iPtor) const;
 
-    int GetPredictorYptsnbUpperLimit(int iStep, int iPtor) const;
+  int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
 
-    double GetPredictorHoursUpperLimit(int iStep, int iPtor) const;
+  int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
-    int GetPredictorXptsnbIteration(int iStep, int iPtor) const;
+ protected:
+ private:
+  vvi m_predictandStationIdsVect;
+  vi m_timeArrayAnalogsIntervalDaysVect;
+  ParamsScoreVect m_scoreVect;
 
-    int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
+  void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocHours) const;
 
-protected:
+  bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
+  bool ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
-private:
-    vvi m_predictandStationIdsVect;
-    vi m_timeArrayAnalogsIntervalDaysVect;
-    ParamsScoreVect m_scoreVect;
+  bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep, const wxXmlNode *nodeProcess);
 
-    void GetAllPreprocessTimesAndLevels(int iStep, int iPtor, vf &preprocLevels, vd &preprocHours) const;
+  bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
+                                   const wxXmlNode *nodeParam);
 
-    bool ParseDescription(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+  bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 
-    bool ParseTimeProperties(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
-
-    bool ParseAnalogDatesParams(asFileParametersCalibration &fileParams, int iStep, const wxXmlNode *nodeProcess);
-
-    bool ParsePreprocessedPredictors(asFileParametersCalibration &fileParams, int iStep, int iPtor,
-                                     const wxXmlNode *nodeParam);
-
-    bool ParseAnalogValuesParams(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
-
-    bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
+  bool ParseScore(asFileParametersCalibration &fileParams, const wxXmlNode *nodeProcess);
 };
 
 #endif

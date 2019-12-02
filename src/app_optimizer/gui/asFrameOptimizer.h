@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,53 +29,51 @@
 #ifndef AS_FRAME_OPTIMIZER
 #define AS_FRAME_OPTIMIZER
 
+#include "asIncludes.h"
+
 #include "AtmoswingOptimizerGui.h"
-#include <asIncludes.h>
-#include "asMethodCalibrator.h"
 #include "asLogWindow.h"
+#include "asMethodCalibrator.h"
 
-class asFrameOptimizer
-        : public asFrameOptimizerVirtual
-{
-public:
-    explicit asFrameOptimizer(wxWindow *parent);
+class asFrameOptimizer : public asFrameOptimizerVirtual {
+ public:
+  explicit asFrameOptimizer(wxWindow *parent);
 
-    ~asFrameOptimizer() override;
+  ~asFrameOptimizer() override;
 
-    void OnInit();
+  void OnInit();
 
-protected:
-    asLogWindow *m_logWindow;
-    asMethodCalibrator *m_methodCalibrator;
+ protected:
+  asLogWindow *m_logWindow;
+  asMethodCalibrator *m_methodCalibrator;
 
-    void Update() override;
+  void Update() override;
 
-    void OpenFramePredictandDB(wxCommandEvent &event) override;
+  void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-    void OnSaveDefault(wxCommandEvent &event) override;
+  void OnSaveDefault(wxCommandEvent &event) override;
 
-    void Launch(wxCommandEvent &event);
+  void Launch(wxCommandEvent &event);
 
-    void LoadOptions();
+  void LoadOptions();
 
-    void SaveOptions() const;
+  void SaveOptions() const;
 
-    void OpenFramePreferences(wxCommandEvent &event) override;
+  void OpenFramePreferences(wxCommandEvent &event) override;
 
-    void OpenFrameAbout(wxCommandEvent &event) override;
+  void OpenFrameAbout(wxCommandEvent &event) override;
 
-    void OnShowLog(wxCommandEvent &event) override;
+  void OnShowLog(wxCommandEvent &event) override;
 
-    void OnLogLevel1(wxCommandEvent &event) override;
+  void OnLogLevel1(wxCommandEvent &event) override;
 
-    void OnLogLevel2(wxCommandEvent &event) override;
+  void OnLogLevel2(wxCommandEvent &event) override;
 
-    void OnLogLevel3(wxCommandEvent &event) override;
+  void OnLogLevel3(wxCommandEvent &event) override;
 
-    void DisplayLogLevelMenu();
+  void DisplayLogLevelMenu();
 
-    void Cancel(wxCommandEvent &event);
-
+  void Cancel(wxCommandEvent &event);
 };
 
 #endif

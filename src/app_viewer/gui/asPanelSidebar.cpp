@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -31,45 +31,40 @@
 #include "images.h"
 
 asPanelSidebar::asPanelSidebar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
-        : asPanelSidebarVirtual(parent, id, pos, size, style)
-{
+    : asPanelSidebarVirtual(parent, id, pos, size, style) {
+  m_bitmapCaret->SetBitmap(*_img_shown);
+}
+
+void asPanelSidebar::OnReducePanel(wxMouseEvent &event) {
+  GetParent()->Freeze();
+
+  if (m_sizerMain->IsShown(m_sizerContent)) {
+    m_sizerMain->Hide(m_sizerContent, true);
+    m_bitmapCaret->SetBitmap(*_img_hidden);
+  } else {
+    m_sizerMain->Show(m_sizerContent, true);
     m_bitmapCaret->SetBitmap(*_img_shown);
+  }
+
+  // Refresh elements
+  m_sizerMain->Layout();
+  Layout();
+
+  GetParent()->FitInside();
+
+  GetParent()->Thaw();
 }
 
-void asPanelSidebar::OnReducePanel(wxMouseEvent &event)
-{
-    GetParent()->Freeze();
-
-    if (m_sizerMain->IsShown(m_sizerContent)) {
-        m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_hidden);
-    } else {
-        m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_shown);
-    }
-
-    // Refresh elements
-    m_sizerMain->Layout();
-    Layout();
-
-    GetParent()->FitInside();
-
-    GetParent()->Thaw();
+void asPanelSidebar::ReducePanel() {
+  if (m_sizerMain->IsShown(m_sizerContent)) {
+    m_sizerMain->Hide(m_sizerContent, true);
+    m_bitmapCaret->SetBitmap(*_img_hidden);
+  } else {
+    m_sizerMain->Show(m_sizerContent, true);
+    m_bitmapCaret->SetBitmap(*_img_shown);
+  }
 }
 
-void asPanelSidebar::ReducePanel()
-{
-    if (m_sizerMain->IsShown(m_sizerContent)) {
-        m_sizerMain->Hide(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_hidden);
-    } else {
-        m_sizerMain->Show(m_sizerContent, true);
-        m_bitmapCaret->SetBitmap(*_img_shown);
-    }
-
-}
-
-void asPanelSidebar::OnPaint(wxCommandEvent &event)
-{
-    event.Skip();
+void asPanelSidebar::OnPaint(wxCommandEvent &event) {
+  event.Skip();
 }

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,46 +29,53 @@
 #ifndef AS_RESULTS_PARAMETERS_ARRAY_H
 #define AS_RESULTS_PARAMETERS_ARRAY_H
 
-#include <asIncludes.h>
-#include <asResults.h>
-#include <asParametersScoring.h>
+#include "asIncludes.h"
+#include "asParametersScoring.h"
+#include "asResults.h"
 
+class asResultsParametersArray : public asResults {
+ public:
+  asResultsParametersArray();
 
-class asResultsParametersArray
-        : public asResults
-{
-public:
-    asResultsParametersArray();
+  virtual ~asResultsParametersArray();
 
-    virtual ~asResultsParametersArray();
+  void Init(const wxString &fileTag);
 
-    void Init(const wxString &fileTag);
+  void Add(asParametersScoring &params, float scoreCalib);
 
-    void Add(asParametersScoring &params, float scoreCalib);
+  void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
-    void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
+  void Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid);
 
-    void Add(asParametersScoring &params, a1f scoreCalib, a1f scoreValid);
+  void ProcessMedianScores();
 
-    void Clear();
+  bool HasBeenAssessed(asParametersScoring &params, float &score);
 
-    bool Print() const;
+  bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
 
-    int GetCount() const
-    {
-        return int(m_parameters.size());
-    }
+  void Clear();
 
-protected:
-    void BuildFileName(const wxString &fileTag);
+  bool Print() const;
 
-private:
-    std::vector<asParametersScoring> m_parameters;
-    vf m_scoresCalib;
-    vf m_scoresValid;
-    std::vector<asParametersScoring> m_parametersForScoreOnArray;
-    va1f m_scoresCalibForScoreOnArray;
-    va1f m_scoresValidForScoreOnArray;
+  int GetCount() const {
+    return int(m_parameters.size());
+  }
+
+  float GetMedianScore() const {
+    return m_medianScore;
+  }
+
+ protected:
+  void BuildFileName(const wxString &fileTag);
+
+ private:
+  std::vector<asParametersScoring> m_parameters;
+  vf m_scoresCalib;
+  vf m_scoresValid;
+  std::vector<asParametersScoring> m_parametersForScoreOnArray;
+  va1f m_scoresCalibForScoreOnArray;
+  va1f m_scoresValidForScoreOnArray;
+  float m_medianScore;
 };
 
 #endif

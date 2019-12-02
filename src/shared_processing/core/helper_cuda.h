@@ -574,11 +574,10 @@ static const char *_cudaGetErrorEnum(NppStatus error) {
 #endif
 
 template <typename T>
-void check(T result, char const *const func, const char *const file,
-           int const line) {
+void check(T result, char const *const func, const char *const file, int const line) {
   if (result) {
-    fprintf(stderr, "CUDA error at %s:%d code=%d(%s) \"%s\" \n", file, line,
-            static_cast<unsigned int>(result), _cudaGetErrorEnum(result), func);
+    fprintf(stderr, "CUDA error at %s:%d code=%d(%s) \"%s\" \n", file, line, static_cast<unsigned int>(result),
+            _cudaGetErrorEnum(result), func);
     DEVICE_RESET
     // Make sure we call CUDA Device Reset before exiting
     exit(EXIT_FAILURE);
@@ -593,16 +592,14 @@ void check(T result, char const *const func, const char *const file,
 // This will output the proper error string when calling cudaGetLastError
 #define getLastCudaError(msg) __getLastCudaError(msg, __FILE__, __LINE__)
 
-inline void __getLastCudaError(const char *errorMessage, const char *file,
-                               const int line) {
+inline void __getLastCudaError(const char *errorMessage, const char *file, const int line) {
   cudaError_t err = cudaGetLastError();
 
   if (cudaSuccess != err) {
     fprintf(stderr,
             "%s(%i) : getLastCudaError() CUDA error :"
             " %s : (%d) %s.\n",
-            file, line, errorMessage, static_cast<int>(err),
-            cudaGetErrorString(err));
+            file, line, errorMessage, static_cast<int>(err), cudaGetErrorString(err));
     DEVICE_RESET
     exit(EXIT_FAILURE);
   }
@@ -612,16 +609,14 @@ inline void __getLastCudaError(const char *errorMessage, const char *file,
 // but not exit program incase error detected.
 #define printLastCudaError(msg) __printLastCudaError(msg, __FILE__, __LINE__)
 
-inline void __printLastCudaError(const char *errorMessage, const char *file,
-                                 const int line) {
+inline void __printLastCudaError(const char *errorMessage, const char *file, const int line) {
   cudaError_t err = cudaGetLastError();
 
   if (cudaSuccess != err) {
     fprintf(stderr,
             "%s(%i) : getLastCudaError() CUDA error :"
             " %s : (%d) %s.\n",
-            file, line, errorMessage, static_cast<int>(err),
-            cudaGetErrorString(err));
+            file, line, errorMessage, static_cast<int>(err), cudaGetErrorString(err));
   }
 }
 #endif
@@ -632,8 +627,7 @@ inline void __printLastCudaError(const char *errorMessage, const char *file,
 
 // Float To Int conversion
 inline int ftoi(float value) {
-  return (value >= 0 ? static_cast<int>(value + 0.5)
-                     : static_cast<int>(value - 0.5));
+  return (value >= 0 ? static_cast<int>(value + 0.5) : static_cast<int>(value - 0.5));
 }
 
 // Beginning of GPU Architecture definitions
@@ -646,21 +640,9 @@ inline int _ConvertSMVer2Cores(int major, int minor) {
     int Cores;
   } sSMtoCores;
 
-  sSMtoCores nGpuArchCoresPerSM[] = {
-      {0x30, 192},
-      {0x32, 192},
-      {0x35, 192},
-      {0x37, 192},
-      {0x50, 128},
-      {0x52, 128},
-      {0x53, 128},
-      {0x60,  64},
-      {0x61, 128},
-      {0x62, 128},
-      {0x70,  64},
-      {0x72,  64},
-      {0x75,  64},
-      {-1, -1}};
+  sSMtoCores nGpuArchCoresPerSM[] = {{0x30, 192}, {0x32, 192}, {0x35, 192}, {0x37, 192}, {0x50, 128},
+                                     {0x52, 128}, {0x53, 128}, {0x60, 64},  {0x61, 128}, {0x62, 128},
+                                     {0x70, 64},  {0x72, 64},  {0x75, 64},  {-1, -1}};
 
   int index = 0;
 
@@ -680,7 +662,7 @@ inline int _ConvertSMVer2Cores(int major, int minor) {
       major, minor, nGpuArchCoresPerSM[index - 1].Cores);
   return nGpuArchCoresPerSM[index - 1].Cores;
 }
-  // end of GPU Architecture definitions
+// end of GPU Architecture definitions
 
 #ifdef __CUDA_RUNTIME_H__
 // General GPU Device CUDA Initialization
@@ -701,8 +683,7 @@ inline int gpuDeviceInit(int devID) {
 
   if (devID > device_count - 1) {
     fprintf(stderr, "\n");
-    fprintf(stderr, ">> %d CUDA capable GPU device(s) detected. <<\n",
-            device_count);
+    fprintf(stderr, ">> %d CUDA capable GPU device(s) detected. <<\n", device_count);
     fprintf(stderr,
             ">> gpuDeviceInit (-device=%d) is not a valid"
             " GPU device. <<\n",
@@ -762,12 +743,10 @@ inline int gpuGetMaxGflopsDeviceId() {
       if (deviceProp.major == 9999 && deviceProp.minor == 9999) {
         sm_per_multiproc = 1;
       } else {
-        sm_per_multiproc =
-            _ConvertSMVer2Cores(deviceProp.major, deviceProp.minor);
+        sm_per_multiproc = _ConvertSMVer2Cores(deviceProp.major, deviceProp.minor);
       }
 
-      uint64_t compute_perf = (uint64_t)deviceProp.multiProcessorCount *
-                              sm_per_multiproc * deviceProp.clockRate;
+      uint64_t compute_perf = (uint64_t)deviceProp.multiProcessorCount * sm_per_multiproc * deviceProp.clockRate;
 
       if (compute_perf > max_compute_perf) {
         max_compute_perf = compute_perf;
@@ -815,8 +794,8 @@ inline int findCudaDevice(int argc, const char **argv) {
     devID = gpuGetMaxGflopsDeviceId();
     checkCudaErrors(cudaSetDevice(devID));
     checkCudaErrors(cudaGetDeviceProperties(&deviceProp, devID));
-    printf("GPU Device %d: \"%s\" with compute capability %d.%d\n\n", devID,
-           deviceProp.name, deviceProp.major, deviceProp.minor);
+    printf("GPU Device %d: \"%s\" with compute capability %d.%d\n\n", devID, deviceProp.name, deviceProp.major,
+           deviceProp.minor);
   }
 
   return devID;
@@ -841,13 +820,11 @@ inline int findIntegratedGPU() {
 
     // If GPU is integrated and is not running on Compute Mode prohibited,
     // then cuda can map to GLES resource
-    if (deviceProp.integrated &&
-        (deviceProp.computeMode != cudaComputeModeProhibited)) {
+    if (deviceProp.integrated && (deviceProp.computeMode != cudaComputeModeProhibited)) {
       checkCudaErrors(cudaSetDevice(current_device));
       checkCudaErrors(cudaGetDeviceProperties(&deviceProp, current_device));
-      printf("GPU Device %d: \"%s\" with compute capability %d.%d\n\n",
-             current_device, deviceProp.name, deviceProp.major,
-             deviceProp.minor);
+      printf("GPU Device %d: \"%s\" with compute capability %d.%d\n\n", current_device, deviceProp.name,
+             deviceProp.major, deviceProp.minor);
 
       return current_device;
     } else {
@@ -877,11 +854,9 @@ inline bool checkCudaCapabilities(int major_version, int minor_version) {
   checkCudaErrors(cudaGetDevice(&dev));
   checkCudaErrors(cudaGetDeviceProperties(&deviceProp, dev));
 
-  if ((deviceProp.major > major_version) ||
-      (deviceProp.major == major_version &&
-       deviceProp.minor >= minor_version)) {
-    printf("  Device %d: <%16s >, Compute SM %d.%d detected\n", dev,
-           deviceProp.name, deviceProp.major, deviceProp.minor);
+  if ((deviceProp.major > major_version) || (deviceProp.major == major_version && deviceProp.minor >= minor_version)) {
+    printf("  Device %d: <%16s >, Compute SM %d.%d detected\n", dev, deviceProp.name, deviceProp.major,
+           deviceProp.minor);
     return true;
   } else {
     printf(
@@ -893,6 +868,6 @@ inline bool checkCudaCapabilities(int major_version, int minor_version) {
 }
 #endif
 
-  // end of CUDA Helper Functions
+// end of CUDA Helper Functions
 
 #endif  // COMMON_HELPER_CUDA_H_

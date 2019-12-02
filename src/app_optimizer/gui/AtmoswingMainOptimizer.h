@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,25 +30,22 @@
 #define AS_MAIN_OPTIMIZER_H
 
 //#include "version.h"
-#include "asIncludes.h"
 #include "AtmoswingAppOptimizer.h"
 #include "asFrameOptimizer.h"
+#include "asIncludes.h"
 
+class AtmoswingFrameOptimizer : public asFrameOptimizer {
+ public:
+  AtmoswingFrameOptimizer(wxFrame *frame);
 
-class AtmoswingFrameOptimizer
-        : public asFrameOptimizer
-{
-public:
-    AtmoswingFrameOptimizer(wxFrame *frame);
+  ~AtmoswingFrameOptimizer() override;
 
-    ~AtmoswingFrameOptimizer() override;
+ private:
+  virtual void OnClose(wxCloseEvent &event);
 
-private:
-    virtual void OnClose(wxCloseEvent &event);
+  virtual void OnQuit(wxCommandEvent &event);
 
-    virtual void OnQuit(wxCommandEvent &event);
-
-    void SetDefaultOptions();
+  void SetDefaultOptions();
 };
 
 #endif

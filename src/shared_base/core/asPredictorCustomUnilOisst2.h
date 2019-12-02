@@ -29,28 +29,25 @@
 #ifndef AS_PREDICTOR_CUSTOM_UNIL_OISST2_H
 #define AS_PREDICTOR_CUSTOM_UNIL_OISST2_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 
-class asPredictorCustomUnilOisst2
-        : public asPredictor
-{
-public:
-    explicit asPredictorCustomUnilOisst2(const wxString &dataId);
+class asPredictorCustomUnilOisst2 : public asPredictor {
+ public:
+  explicit asPredictorCustomUnilOisst2(const wxString &dataId);
 
-    ~asPredictorCustomUnilOisst2() override = default;
+  ~asPredictorCustomUnilOisst2() override = default;
 
-    bool Init() override;
+  bool Init() override;
 
-protected:
-    void ListFiles(asTimeArray &timeArray) override;
+ protected:
+  void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-private:
-
+ private:
 };
 
 #endif

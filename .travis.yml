@@ -25,6 +25,7 @@ matrix:
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
+            - libopenjpeg-dev
     - env:
       - TARGET=linux-server
       - DEPLOY=true
@@ -45,11 +46,12 @@ matrix:
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
-    - env:
-        - TARGET=osx-server
-        - DEPLOY=true
-      os: osx
-      osx_image: xcode10
+            - libopenjpeg-dev
+#    - env:
+#        - TARGET=osx-server
+#        - DEPLOY=true
+#      os: osx
+#      osx_image: xcode10
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
@@ -70,6 +72,7 @@ matrix:
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
+            - libopenjpeg-dev
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
@@ -90,6 +93,7 @@ matrix:
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
+            - libopenjpeg-dev
     - env:
         - TARGET=coverage-scan
         - DEPLOY=false
@@ -109,6 +113,7 @@ matrix:
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
+            - libopenjpeg-dev
             - lcov
     - env:
         - TARGET=coverity-scan
@@ -137,6 +142,7 @@ matrix:
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
+            - libopenjpeg-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing

@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,34 +28,28 @@
 
 #include "asCriteriaSAD.h"
 
-asCriteriaSAD::asCriteriaSAD()
-        : asCriteria("SAD", _("Sum of Absolute Differences"), Asc)
-{
-    m_canUseInline = true;
+asCriteriaSAD::asCriteriaSAD() : asCriteria("SAD", _("Sum of Absolute Differences"), Asc) {
+  m_canUseInline = true;
 }
 
 asCriteriaSAD::~asCriteriaSAD() = default;
 
-float asCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const
-{
-    wxASSERT(refData.rows() == evalData.rows());
-    wxASSERT(refData.cols() == evalData.cols());
+float asCriteriaSAD::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
+  wxASSERT(refData.rows() == evalData.rows());
+  wxASSERT(refData.cols() == evalData.cols());
 
-    if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+  if (!m_checkNaNs || (!refData.hasNaN() && !evalData.hasNaN())) {
+    return (evalData - refData).abs().sum();
 
-        return (evalData - refData).abs().sum();
+  } else {
+    a2f diff = evalData - refData;
 
-    } else {
-
-        a2f diff = evalData - refData;
-
-        int size = (!diff.isNaN()).count();
-        if (size == 0) {
-            wxLogVerbose(_("Only NaNs in the SAD criteria calculation."));
-            return m_scaleWorst;
-        }
-
-        return ((diff.isNaN()).select(0, diff)).abs().sum();
+    int size = (!diff.isNaN()).count();
+    if (size == 0) {
+      wxLogVerbose(_("Only NaNs in the SAD criteria calculation."));
+      return m_scaleWorst;
     }
 
+    return ((diff.isNaN()).select(0, diff)).abs().sum();
+  }
 }

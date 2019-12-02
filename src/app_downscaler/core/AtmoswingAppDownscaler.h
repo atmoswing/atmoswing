@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,62 +29,58 @@
 #define ATMOSWINGAPPDOWNSCALER_H
 
 #include <wx/app.h>
-#include <wx/snglinst.h>
 #include <wx/cmdline.h>
+#include <wx/snglinst.h>
 #include <wx/socket.h>
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 #if wxUSE_GUI
 
-class AtmoswingAppDownscaler
-        : public wxApp
+class AtmoswingAppDownscaler : public wxApp
 #else
 
-class AtmoswingAppDownscaler
-        : public wxAppConsole
+class AtmoswingAppDownscaler : public wxAppConsole
 #endif
 {
-public:
-    virtual ~AtmoswingAppDownscaler()
-    {
-    };
+ public:
+  virtual ~AtmoswingAppDownscaler(){};
 
-    virtual bool OnInit();
+  virtual bool OnInit();
 
-    virtual int OnRun();
+  virtual int OnRun();
 
-    virtual int OnExit();
+  virtual int OnExit();
 
-    void CleanUp();
+  void CleanUp();
 
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
+  virtual void OnInitCmdLine(wxCmdLineParser &parser);
 
-    wxString GetLocalPath();
+  wxString GetLocalPath();
 
-    bool InitLog();
+  bool InitLog();
 
-    bool SetUseAsCmdLine();
+  bool SetUseAsCmdLine();
 
-    bool InitForCmdLineOnly();
+  bool InitForCmdLineOnly();
 
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
+  virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
 
-    virtual bool OnExceptionInMainLoop();
+  virtual bool OnExceptionInMainLoop();
 
-    virtual void OnFatalException();
+  virtual void OnFatalException();
 
-    virtual void OnUnhandledException();
+  virtual void OnUnhandledException();
 
-private:
-    wxString m_downscalingParamsFile;
-    wxString m_downscalingMethod;
-    wxString m_predictandDB;
-    wxString m_predictorsArchiveDir;
-    wxString m_predictorsScenarioDir;
-    vi m_predictandStationIds;
-    bool m_doProcessing;
+ private:
+  wxString m_downscalingParamsFile;
+  wxString m_downscalingMethod;
+  wxString m_predictandDB;
+  wxString m_predictorsArchiveDir;
+  wxString m_predictorsScenarioDir;
+  vi m_predictandStationIds;
+  bool m_doProcessing;
 #if wxUSE_GUI
-    wxSingleInstanceChecker *m_singleInstanceChecker;
+  wxSingleInstanceChecker *m_singleInstanceChecker;
 #endif
 };
 

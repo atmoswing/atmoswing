@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -30,190 +30,166 @@
 #ifndef AS_TIME_ARRAY_H
 #define AS_TIME_ARRAY_H
 
-#include <asIncludes.h>
-#include <asTime.h>
+#include "asIncludes.h"
+#include "asTime.h"
 
 class asPredictand;
 
+class asTimeArray : public asTime {
+ public:
+  enum Mode {
+    SingleDay,        // A single day
+    Simple,           // A simple full time array
+    DJF,              // The DJF season
+    MAM,              // The MAM season
+    JJA,              // The JJA season
+    SON,              // The SON season
+    MonthsSelection,  // Selection of months
+    DaysInterval,     // + or - an amount of days in reference to a date
+    PredictandThresholds,
+    Custom
+  };
 
-class asTimeArray
-        : public asTime
-{
-public:
+  asTimeArray(double start, double end, double timeStepHours, Mode mode);
 
-    enum Mode
-    {
-        SingleDay, // A single day
-        Simple, // A simple full time array
-        DJF, // The DJF season
-        MAM, // The MAM season
-        JJA, // The JJA season
-        SON, // The SON season
-        MonthsSelection, // Selection of months
-        DaysInterval, // + or - an amount of days in reference to a date
-        PredictandThresholds,
-        Custom
-    };
+  asTimeArray(double start, double end, double timeStepHours, const wxString &mode);
 
-    asTimeArray(double start, double end, double timeStepHours, Mode mode);
+  explicit asTimeArray(double date);
 
-    asTimeArray(double start, double end, double timeStepHours, const wxString &mode);
+  explicit asTimeArray(vd &timeArray);
 
-    explicit asTimeArray(double date);
+  explicit asTimeArray(a1d &timeArray);
 
-    explicit asTimeArray(vd &timeArray);
+  ~asTimeArray() override = default;
 
-    explicit asTimeArray(a1d &timeArray);
+  bool Init();
 
-    ~asTimeArray() override = default;
+  bool Init(double targetDate, double intervalDays, double exclusionDays);
 
-    bool Init();
+  bool Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
+            float maxThreshold);
 
-    bool Init(double targetDate, double intervalDays, double exclusionDays);
+  double operator[](unsigned int i) {
+    wxASSERT(m_initialized);
+    wxASSERT(i < (unsigned)GetSize());
+    return m_timeArray[i];
+  }
 
-    bool Init(asPredictand &predictand, const wxString &seriesName, int stationId, float minThreshold,
-              float maxThreshold);
+  void Pop(int index);
 
-    double operator[](unsigned int i)
-    {
-        wxASSERT(m_initialized);
-        wxASSERT(i < (unsigned)GetSize());
-        return m_timeArray[i];
-    }
+  bool BuildArraySimple();
 
-    void Pop(int index);
+  bool BuildArrayDaysInterval(double targetDate, double intervalDays);
 
-    bool BuildArraySimple();
+  bool BuildArraySeason();
 
-    bool BuildArrayDaysInterval(double targetDate, double intervalDays);
+  bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &seriesName, int stationId,
+                                      float minThreshold, float maxThreshold);
 
-    bool BuildArraySeason();
+  bool HasForbiddenYears() const;
 
-    bool BuildArrayPredictandThresholds(asPredictand &predictand, const wxString &seriesName, int stationId,
-                                        float minThreshold, float maxThreshold);
+  bool IsYearForbidden(int year) const;
 
-    bool HasForbiddenYears() const;
+  vi GetForbiddenYears() const {
+    return m_forbiddenYears;
+  }
 
-    bool IsYearForbidden(int year) const;
+  void SetForbiddenYears(const vi &years) {
+    m_forbiddenYears = years;
+  }
 
-    vi GetForbiddenYears() const
-    {
-        return m_forbiddenYears;
-    }
+  bool RemoveYears(vi years);
 
-    void SetForbiddenYears(const vi &years)
-    {
-        m_forbiddenYears = years;
-    }
+  bool KeepOnlyYears(vi years);
 
-    bool RemoveYears(vi years);
+  double GetStart() const {
+    return m_start;
+  }
 
-    bool KeepOnlyYears(vi years);
+  int GetStartingYear() const {
+    return GetYear(m_start);
+  }
 
-    double GetStart() const
-    {
-        return m_start;
-    }
+  int GetStartingMonth() const {
+    return GetMonth(m_start);
+  }
 
-    int GetStartingYear() const
-    {
-        return GetYear(m_start);
-    }
+  int GetStartingDay() const {
+    return GetDay(m_start);
+  }
 
-    int GetStartingMonth() const
-    {
-        return GetMonth(m_start);
-    }
+  double GetStartingHour() const {
+    double fractpart, intpart;
+    fractpart = modf(m_start, &intpart);
+    return fractpart * 24;
+  }
 
-    int GetStartingDay() const
-    {
-        return GetDay(m_start);
-    }
+  double GetEnd() const {
+    return m_end;
+  }
 
-    double GetStartingHour() const
-    {
-        double fractpart, intpart;
-        fractpart = modf(m_start, &intpart);
-        return fractpart * 24;
-    }
+  int GetEndingYear() const {
+    return GetYear(m_end);
+  }
 
-    double GetEnd() const
-    {
-        return m_end;
-    }
+  int GetEndingMonth() const {
+    return GetMonth(m_end);
+  }
 
-    int GetEndingYear() const
-    {
-        return GetYear(m_end);
-    }
+  double GetEndingHour() const {
+    double fractpart, intpart;
+    fractpart = modf(m_end, &intpart);
+    return fractpart * 24;
+  }
 
-    int GetEndingMonth() const
-    {
-        return GetMonth(m_end);
-    }
+  double GetTimeStepHours() const {
+    return m_timeStepDays * 24;
+  }
 
-    double GetEndingHour() const
-    {
-        double fractpart, intpart;
-        fractpart = modf(m_end, &intpart);
-        return fractpart * 24;
-    }
+  double GetTimeStepDays() const {
+    return m_timeStepDays;
+  }
 
-    double GetTimeStepHours() const
-    {
-        return m_timeStepDays * 24;
-    }
+  a1d GetTimeArray() const {
+    return m_timeArray;
+  }
 
-    double GetTimeStepDays() const
-    {
-        return m_timeStepDays;
-    }
+  int GetSize() const {
+    return (int)m_timeArray.size();
+  }
 
-    a1d GetTimeArray() const
-    {
-        return m_timeArray;
-    }
+  double GetFirst() const {
+    wxASSERT(m_initialized);
+    return m_timeArray(0);
+  }
 
-    int GetSize() const
-    {
-        return (int) m_timeArray.size();
-    }
+  double GetLast() const {
+    wxASSERT(m_initialized);
+    return m_timeArray(m_timeArray.rows() - 1);
+  }
 
-    double GetFirst() const
-    {
-        wxASSERT(m_initialized);
-        return m_timeArray(0);
-    }
+  int GetClosestIndex(double date) const;
 
-    double GetLast() const
-    {
-        wxASSERT(m_initialized);
-        return m_timeArray(m_timeArray.rows() - 1);
-    }
+  int GetIndexFirstAfter(double date, double dataTimeStep) const;
 
-    int GetClosestIndex(double date) const;
+  int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
-    int GetIndexFirstAfter(double date, double dataTimeStep) const;
+ protected:
+ private:
+  bool m_initialized;
+  Mode m_mode;
+  a1d m_timeArray;
+  double m_start;
+  double m_end;
+  double m_timeStepDays;
+  vi m_forbiddenYears;
+  wxString m_modeStr;
 
-    int GetIndexFirstBefore(double date, double dataTimeStep) const;
+  void fixStartIfForbidden(double &currentStart) const;
 
-protected:
+  void fixEndIfForbidden(double &currentEnd) const;
 
-private:
-    bool m_initialized;
-    Mode m_mode;
-    a1d m_timeArray;
-    double m_start;
-    double m_end;
-    double m_timeStepDays;
-    vi m_forbiddenYears;
-    wxString m_modeStr;
-
-    void fixStartIfForbidden(double &currentStart) const;
-
-    void fixEndIfForbidden(double &currentEnd) const;
-
-    void RemoveExcludedDates(double targetDate, double exclusionDays);
+  void RemoveExcludedDates(double targetDate, double exclusionDays);
 };
 
 #endif

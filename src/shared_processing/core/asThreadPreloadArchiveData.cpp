@@ -27,36 +27,30 @@
  */
 
 #include "asThreadPreloadArchiveData.h"
+
 #include "asParameters.h"
 
 asThreadPreloadArchiveData::asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep,
                                                        int iPtor, int i)
-        : asThread(asThread::PreloadData),
-          m_method(method), // copy pointer
-          m_params(params),
-          m_iStep(iStep),
-          m_iProt(iPtor),
-          m_iDat(i)
-{
+    : asThread(asThread::PreloadData),
+      m_method(method),  // copy pointer
+      m_params(params),
+      m_iStep(iStep),
+      m_iProt(iPtor),
+      m_iDat(i) {}
 
-}
+asThreadPreloadArchiveData::~asThreadPreloadArchiveData() {}
 
-asThreadPreloadArchiveData::~asThreadPreloadArchiveData()
-{
-    //dtor
-}
-
-wxThread::ExitCode asThreadPreloadArchiveData::Entry()
-{
-    if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
-        if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
-            return (wxThread::ExitCode) -1;
-        }
-    } else {
-        if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
-            return (wxThread::ExitCode) -1;
-        }
+wxThread::ExitCode asThreadPreloadArchiveData::Entry() {
+  if (!m_params->NeedsPreprocessing(m_iStep, m_iProt)) {
+    if (!m_method->PreloadArchiveDataWithoutPreprocessing(m_params, m_iStep, m_iProt, m_iDat)) {
+      return (wxThread::ExitCode)-1;
     }
+  } else {
+    if (!m_method->PreloadArchiveDataWithPreprocessing(m_params, m_iStep, m_iProt)) {
+      return (wxThread::ExitCode)-1;
+    }
+  }
 
-    return (wxThread::ExitCode) 0;
+  return (wxThread::ExitCode)0;
 }

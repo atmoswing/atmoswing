@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -34,78 +34,74 @@
 
 class asForecastManager;
 
-class asFramePlotTimeSeries
-        : public asFramePlotTimeSeriesVirtual
-{
-public:
-    asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast, int selectedStation,
-                          asForecastManager *forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
+class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
+ public:
+  asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast, int selectedStation,
+                        asForecastManager *forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
 
-    ~asFramePlotTimeSeries() override = default;
+  ~asFramePlotTimeSeries() override = default;
 
-    void Init();
+  void Init();
 
-    bool Plot();
+  bool Plot();
 
-protected:
+ protected:
+ private:
+  enum PlotData {
+    ClassicQuantiles,
+    AllQuantiles,
+    AllAnalogs,
+    BestAnalogs10,
+    BestAnalogs5,
+    ClassicReturnPeriod,
+    AllReturnPeriods,
+    PreviousForecasts,
+    Interpretation
+  };
 
-private:
-    enum PlotData
-    {
-        ClassicQuantiles,
-        AllQuantiles,
-        AllAnalogs,
-        BestAnalogs10,
-        BestAnalogs5,
-        ClassicReturnPeriod,
-        AllReturnPeriods,
-        PreviousForecasts,
-        Interpretation
-    };
+  asPanelPlot *m_panelPlot;
+  asForecastManager *m_forecastManager;
+  int m_selectedStation;
+  int m_selectedMethod;
+  int m_selectedForecast;
+  float m_maxVal;
+  vd m_leadTimes;
 
-    asPanelPlot *m_panelPlot;
-    asForecastManager *m_forecastManager;
-    int m_selectedStation;
-    int m_selectedMethod;
-    int m_selectedForecast;
-    float m_maxVal;
-    vd m_leadTimes;
+  void OnClose(wxCloseEvent &evt);
 
-    void OnClose(wxCloseEvent &evt);
+  void OnTocSelectionChange(wxCommandEvent &event) override;
 
-    void OnTocSelectionChange(wxCommandEvent &event) override;
+  void OnExportTXT(wxCommandEvent &event) override;
 
-    void OnExportTXT(wxCommandEvent &event) override;
+  void OnExportSVG(wxCommandEvent &event);
 
-    void OnExportSVG(wxCommandEvent &event);
+  void OnPreview(wxCommandEvent &event) override;
 
-    void OnPreview(wxCommandEvent &event) override;
+  void OnPrint(wxCommandEvent &event) override;
 
-    void OnPrint(wxCommandEvent &event) override;
+  void InitCheckListBox();
 
-    void InitCheckListBox();
+  void InitPlotCtrl();
 
-    void InitPlotCtrl();
+  void PlotAllReturnPeriods();
 
-    void PlotAllReturnPeriods();
+  void PlotReturnPeriod(int returnPeriod);
 
-    void PlotReturnPeriod(int returnPeriod);
+  void PlotAllAnalogs();
 
-    void PlotAllAnalogs();
+  void PlotBestAnalogs(int pointsNb);
 
-    void PlotBestAnalogs(int pointsNb);
+  void PlotClassicQuantiles();
 
-    void PlotClassicQuantiles();
+  void PlotPastForecasts();
 
-    void PlotPastForecasts();
+  void PlotPastForecast(int i);
 
-    void PlotPastForecast(int i);
+  void PlotAllQuantiles();
 
-    void PlotAllQuantiles();
+  void PlotInterpretation();
 
-    void PlotInterpretation();
-
-DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif

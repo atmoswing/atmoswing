@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,74 +28,63 @@
 #ifndef AS_CRITERIA_H
 #define AS_CRITERIA_H
 
-#include <asIncludes.h>
-
+#include "asIncludes.h"
 
 class asPredictor;
 
-class asCriteria
-        : public wxObject
-{
-public:
+class asCriteria : public wxObject {
+ public:
+  asCriteria(const wxString &name, const wxString &fullname, Order order);
 
-    asCriteria(const wxString &name, const wxString &fullname, Order order);
+  static asCriteria *GetInstance(const wxString &criteriaString);
 
-    static asCriteria *GetInstance(const wxString &criteriaString);
+  ~asCriteria() override;
 
-    ~asCriteria() override;
+  virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
 
-    virtual float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const = 0;
+  void SetDataRange(const asPredictor *data);
 
-    void SetDataRange(const asPredictor *data);
+  void SetDataRange(float minValue, float maxValue);
 
-    void SetDataRange(float minValue, float maxValue);
+  void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
 
-    void CheckNaNs(const asPredictor *ptor1, const asPredictor *ptor2);
+  static a2f GetGauss2D(int nY, int nX);
 
-    static a2f GetGauss2D(int nY, int nX);
+  wxString GetName() const {
+    return m_name;
+  }
 
-    wxString GetName() const
-    {
-        return m_name;
-    }
+  wxString GetFullName() const {
+    return m_fullName;
+  }
 
-    wxString GetFullName() const
-    {
-        return m_fullName;
-    }
+  Order GetOrder() const {
+    return m_order;
+  }
 
-    Order GetOrder() const
-    {
-        return m_order;
-    }
+  int GetMinPointsNb() const {
+    return m_minPointsNb;
+  }
 
-    int GetMinPointsNb() const
-    {
-        return m_minPointsNb;
-    }
+  bool CanUseInline() const {
+    return m_canUseInline;
+  }
 
-    bool CanUseInline() const
-    {
-        return m_canUseInline;
-    }
+  bool CheckNans() const {
+    return m_checkNaNs;
+  }
 
-    bool CheckNans() const
-    {
-        return m_checkNaNs;
-    }
+ protected:
+  wxString m_name;
+  wxString m_fullName;
+  Order m_order;
+  int m_minPointsNb;
+  float m_scaleBest;
+  float m_scaleWorst;
+  bool m_canUseInline;
+  bool m_checkNaNs;
 
-protected:
-    wxString m_name;
-    wxString m_fullName;
-    Order m_order;
-    int m_minPointsNb;
-    float m_scaleBest;
-    float m_scaleWorst;
-    bool m_canUseInline;
-    bool m_checkNaNs;
-
-private:
-
+ private:
 };
 
 #endif

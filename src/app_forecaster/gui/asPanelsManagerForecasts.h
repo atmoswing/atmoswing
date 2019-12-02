@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,45 +29,42 @@
 #ifndef AS_PANELS_MANAGER_FORECASTS_H
 #define AS_PANELS_MANAGER_FORECASTS_H
 
-#include "asIncludes.h"
+#include "asPanelsManager.h"
 
-#include <asPanelsManager.h>
+#include "asIncludes.h"
 
 class asPanelForecast;
 
-class asPanelsManagerForecasts
-        : public asPanelsManager
-{
-public:
-    asPanelsManagerForecasts();
+class asPanelsManagerForecasts : public asPanelsManager {
+ public:
+  asPanelsManagerForecasts();
 
-    ~asPanelsManagerForecasts() override;
+  ~asPanelsManagerForecasts() override;
 
-    void AddPanel(asPanelForecast *panel);
+  void AddPanel(asPanelForecast *panel);
 
-    void RemovePanel(asPanelForecast *panel);
+  void RemovePanel(asPanelForecast *panel);
 
-    void Clear();
+  void Clear();
 
-    asPanelForecast *GetPanel(int i) const;
+  asPanelForecast *GetPanel(int i) const;
 
-    int GetPanelsNb() const;
+  int GetPanelsNb() const;
 
-    void SetForecastLedRunning(int num);
+  void SetForecastLedRunning(int num);
 
-    void SetForecastLedError(int num);
+  void SetForecastLedError(int num);
 
-    void SetForecastLedDone(int num);
+  void SetForecastLedDone(int num);
 
-    void SetForecastLedOff(int num);
+  void SetForecastLedOff(int num);
 
-    void SetForecastsAllLedsOff();
+  void SetForecastsAllLedsOff();
 
-protected:
-    std::vector<asPanelForecast *> m_arrayPanels;
+ protected:
+  std::vector<asPanelForecast *> m_arrayPanels;
 
-private:
-
+ private:
 };
 
 #endif

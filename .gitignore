@@ -72,7 +72,9 @@ external/
 **/vroomgis/
 **/eigen-prefix/
 **/googletest-prefix/
+**/googlebenchmark-prefix/
 **/eccodes-prefix/
+**/x64-Debug/
 **/.vs/
 *.resolve
 *.base
@@ -81,3 +83,6 @@ external/
 *.db-wal
 *.db-shm
 *.opendb
+*.nvvp
+benchmark/z.nc
+benchmark/atmoswing-benchmark

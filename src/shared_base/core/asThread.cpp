@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -27,32 +27,23 @@
 
 #include "asThread.h"
 
+asThread::asThread(Type type) : wxThread(wxTHREAD_DETACHED), m_type(type), m_device(0) {}
 
-asThread::asThread(Type type)
-        : wxThread(wxTHREAD_DETACHED),
-          m_type(type)
-{
+wxThread::ExitCode asThread::Entry() {
+  return nullptr;
 }
 
-wxThread::ExitCode asThread::Entry()
-{
-    return nullptr;
-}
+void asThread::OnExit() {
+  // Set pointer to null.
+  wxThreadIdType id = GetId();
+  ThreadsManager().SetNull(id);
 
-void asThread::OnExit()
-{
-    // Set pointer to null.
-    wxThreadIdType id = GetId();
-    ThreadsManager().SetNull(id);
-
-    // Check if the list is empty
-    if (ThreadsManager().GetRunningThreadsNb() == 0) {
-        // Signal the threads manager that there are no more threads left
-        if (ThreadsManager().GetWaitingUntilAllDone()) {
-            ThreadsManager().SetWaitingUntilAllDone(false);
-            //            ThreadsManager().SemAllDone().Post();
-        }
+  // Check if the list is empty
+  if (ThreadsManager().GetRunningThreadsNb() == 0) {
+    // Signal the threads manager that there are no more threads left
+    if (ThreadsManager().GetWaitingUntilAllDone()) {
+      ThreadsManager().SetWaitingUntilAllDone(false);
+      //            ThreadsManager().SemAllDone().Post();
     }
-
-
+  }
 }

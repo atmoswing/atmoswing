@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -28,30 +28,27 @@
 #ifndef AS_PREDICTOR_JMA_JRA55_SUBSET_H
 #define AS_PREDICTOR_JMA_JRA55_SUBSET_H
 
-#include <asIncludes.h>
-#include <asPredictor.h>
+#include "asIncludes.h"
+#include "asPredictor.h"
 
 class asArea;
 
-class asPredictorJmaJra55Subset
-        : public asPredictor
-{
-public:
-    explicit asPredictorJmaJra55Subset(const wxString &dataId);
+class asPredictorJmaJra55Subset : public asPredictor {
+ public:
+  explicit asPredictorJmaJra55Subset(const wxString &dataId);
 
-    ~asPredictorJmaJra55Subset() override = default;
+  ~asPredictorJmaJra55Subset() override = default;
 
-    bool Init() override;
+  bool Init() override;
 
-protected:
-    bool m_monthlyFiles;
+ protected:
+  bool m_monthlyFiles;
 
-    void ListFiles(asTimeArray &timeArray) override;
+  void ListFiles(asTimeArray &timeArray) override;
 
-    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-private:
-
+ private:
 };
 
 #endif

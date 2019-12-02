@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,51 +29,47 @@
 #ifndef AS_FILE_PARAMETERS_H
 #define AS_FILE_PARAMETERS_H
 
-#include <asIncludes.h>
-#include <asFileXml.h>
+#include "asFileXml.h"
+#include "asIncludes.h"
 
-class asFileParameters
-        : public asFileXml
-{
-public:
-    asFileParameters(const wxString &fileName, const FileMode &fileMode);
+class asFileParameters : public asFileXml {
+ public:
+  asFileParameters(const wxString &fileName, const FileMode &fileMode);
 
-    ~asFileParameters() override = default;
+  ~asFileParameters() override = default;
 
-    virtual bool EditRootElement();
+  virtual bool EditRootElement();
 
-    bool CheckRootElement() const override;
+  bool CheckRootElement() const override;
 
-    static vi BuildVectorInt(int min, int max, int step);
+  static vi BuildVectorInt(int min, int max, int step);
 
-    static vi BuildVectorInt(wxString str);
+  static vi BuildVectorInt(wxString str);
 
-    static vf BuildVectorFloat(float min, float max, float step);
+  static vf BuildVectorFloat(float min, float max, float step);
 
-    static vf BuildVectorFloat(wxString str);
+  static vf BuildVectorFloat(wxString str);
 
-    static vd BuildVectorDouble(double min, double max, double step);
+  static vd BuildVectorDouble(double min, double max, double step);
 
-    static vd BuildVectorDouble(wxString str);
+  static vd BuildVectorDouble(wxString str);
 
-    static vwxs BuildVectorString(wxString str);
+  static vwxs BuildVectorString(wxString str);
 
-    static vi GetVectorInt(wxXmlNode *node);
+  static vi GetVectorInt(wxXmlNode *node);
 
-    static vf GetVectorFloat(wxXmlNode *node);
+  static vf GetVectorFloat(wxXmlNode *node);
 
-    static vd GetVectorDouble(wxXmlNode *node);
+  static vd GetVectorDouble(wxXmlNode *node);
 
-    static vwxs GetVectorString(wxXmlNode *node);
+  static vwxs GetVectorString(wxXmlNode *node);
 
-    static vvi GetStationIdsVector(wxXmlNode *node);
+  static vvi GetStationIdsVector(wxXmlNode *node);
 
-    static vi GetStationIds(wxString stationIdsString);
+  static vi GetStationIds(wxString stationIdsString);
 
-protected:
-
-private:
-
+ protected:
+ private:
 };
 
 #endif

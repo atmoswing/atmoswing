@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,25 +29,22 @@
 #ifndef AS_SCORE_CRPS_SHARPNESS_EP_H
 #define AS_SCORE_CRPS_SHARPNESS_EP_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
+
 #include "asScore.h"
 
-class asScoreCRPSsharpEP
-        : public asScore
-{
-public:
-    asScoreCRPSsharpEP();
+class asScoreCRPSsharpEP : public asScore {
+ public:
+  asScoreCRPSsharpEP();
 
-    ~asScoreCRPSsharpEP();
+  ~asScoreCRPSsharpEP();
 
-    float Assess(float obs, const a1f &values, int nbElements) const;
+  float Assess(float obs, const a1f &values, int nbElements) const;
 
-    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
+  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
-protected:
-
-private:
-
+ protected:
+ private:
 };
 
 #endif

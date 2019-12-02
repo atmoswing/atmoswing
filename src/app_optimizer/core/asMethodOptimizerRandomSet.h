@@ -29,32 +29,25 @@
 #ifndef AS_METHOD_OPTIMIZER_RANDOM_SET_H
 #define AS_METHOD_OPTIMIZER_RANDOM_SET_H
 
-#include <asMethodOptimizer.h>
+#include "asMethodOptimizer.h"
 
+class asMethodOptimizerRandomSet : public asMethodOptimizer {
+ public:
+  asMethodOptimizerRandomSet();
 
-class asMethodOptimizerRandomSet
-        : public asMethodOptimizer
-{
-public:
-    asMethodOptimizerRandomSet();
+  ~asMethodOptimizerRandomSet() override;
 
-    ~asMethodOptimizerRandomSet() override;
+  bool Manager() override;
 
-    bool Manager() override;
+ protected:
+  virtual void InitParameters(asParametersOptimization &params);
 
-protected:
-    virtual void InitParameters(asParametersOptimization &params);
+  virtual asParametersOptimization *GetNextParameters();
 
-    virtual asParametersOptimization *GetNextParameters();
+  bool SetBestParameters(asResultsParametersArray &results) override;
 
-    bool SetBestParameters(asResultsParametersArray &results) override;
-
-    virtual bool Optimize(asParametersOptimization &params);
-
-private:
-    std::vector<asParametersOptimization> m_parameters;
-    asParametersOptimization m_originalParams;
-
+ private:
+  std::vector<asParametersOptimization> m_parameters;
 };
 
 #endif

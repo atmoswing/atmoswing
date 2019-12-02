@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 REBUILD_GDAL=false
-GDAL_VERSION=3.0.0
+GDAL_VERSION=3.0.1
 
 # Build GDAL2
 if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; then

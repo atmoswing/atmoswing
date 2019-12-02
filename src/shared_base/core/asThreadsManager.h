@@ -8,17 +8,17 @@
  * You can read the License at http://opensource.org/licenses/CDDL-1.0
  * See the License for the specific language governing permissions
  * and limitations under the License.
- * 
- * When distributing Covered Code, include this CDDL Header Notice in 
- * each file and include the License file (licence.txt). If applicable, 
+ *
+ * When distributing Covered Code, include this CDDL Header Notice in
+ * each file and include the License file (licence.txt). If applicable,
  * add the following below this CDDL Header, with the fields enclosed
  * by brackets [] replaced by your own identifying information:
  * "Portions Copyright [year] [name of copyright owner]"
- * 
+ *
  * The Original Software is AtmoSwing.
  * The Original Software was developed at the University of Lausanne.
  * All Rights Reserved.
- * 
+ *
  */
 
 /*
@@ -29,106 +29,96 @@
 #ifndef AS_THREADS_MANAGER_H
 #define AS_THREADS_MANAGER_H
 
-#include <asIncludes.h>
+#include "asIncludes.h"
 
 class asThread;
 
-class asThreadsManager
-        : public wxObject
-{
-public:
-    asThreadsManager();
+class asThreadsManager : public wxObject {
+ public:
+  asThreadsManager();
 
-    ~asThreadsManager() override;
+  ~asThreadsManager() override;
 
-    void Init();
+  void Init();
 
-    void OnClose(wxCloseEvent &);
+  void OnClose(wxCloseEvent &);
 
-    bool AddThread(asThread *thread);
+  bool AddThread(asThread *thread);
 
-    void Wait(int type);
+  void Wait(int type);
 
-    bool HasFreeThread(int type);
+  bool HasFreeThread(int type);
 
-    void WaitForFreeThread(int type);
+  void WaitForFreeThread(int type);
 
-    void SetNull(wxThreadIdType id);
+  void SetNull(wxThreadIdType id);
 
-    bool CleanArray();
+  bool CleanArray();
 
-    void PauseAll();
+  void PauseAll();
 
-    void ResumeAll();
+  void ResumeAll();
 
-    int GetTotalThreadsNb();
+  int GetTotalThreadsNb();
 
-    int GetRunningThreadsNb(int type = -1);
+  int GetRunningThreadsNb(int type = -1);
 
-    int GetAvailableThreadsNb();
+  int GetFreeDevice(int devicesNb);
 
-    bool Cancelled()
-    {
-        wxCriticalSectionLocker lock(m_critSectionManager);
-        return m_cancelled;
-    }
+  int GetAvailableThreadsNb();
 
-    void Cancel()
-    {
-        wxCriticalSectionLocker lock(m_critSectionManager);
-        m_cancelled = true;
-    }
+  bool Cancelled() {
+    wxCriticalSectionLocker lock(m_critSectionManager);
+    return m_cancelled;
+  }
 
-    wxCriticalSection &CritSectionNetCDF()
-    {
-        return m_critSectionNetCDF;
-    }
+  void Cancel() {
+    wxCriticalSectionLocker lock(m_critSectionManager);
+    m_cancelled = true;
+  }
 
-    wxCriticalSection &CritSectionGrib()
-    {
-        return m_critSectionGrib;
-    }
+  wxCriticalSection &CritSectionNetCDF() {
+    return m_critSectionNetCDF;
+  }
 
-    wxCriticalSection &CritSectionConfig()
-    {
-        return m_critSectionConfig;
-    }
+  wxCriticalSection &CritSectionGrib() {
+    return m_critSectionGrib;
+  }
 
-    wxCriticalSection &CritSectionPreloadedData()
-    {
-        return m_critSectionPreloadedData;
-    }
+  wxCriticalSection &CritSectionConfig() {
+    return m_critSectionConfig;
+  }
 
-    wxSemaphore &SemAllDone()
-    {
-        return m_semAllDone;
-    }
+  wxCriticalSection &CritSectionPreloadedData() {
+    return m_critSectionPreloadedData;
+  }
 
-    bool GetWaitingUntilAllDone()
-    {
-        return m_waitingUntilAllDone;
-    }
+  wxSemaphore &SemAllDone() {
+    return m_semAllDone;
+  }
 
-    void SetWaitingUntilAllDone(bool val)
-    {
-        m_waitingUntilAllDone = val;
-    }
+  bool GetWaitingUntilAllDone() {
+    return m_waitingUntilAllDone;
+  }
 
-protected:
+  void SetWaitingUntilAllDone(bool val) {
+    m_waitingUntilAllDone = val;
+  }
 
-private:
-    int m_idCounter;
-    std::vector<asThread *> m_threads;
-    wxCriticalSection m_critSectionManager;
-    wxCriticalSection m_critSectionPreloadedData;
-    wxCriticalSection m_critSectionNetCDF;
-    wxCriticalSection m_critSectionGrib;
-    wxCriticalSection m_critSectionConfig;
-    wxSemaphore m_semAllDone;
-    bool m_waitingUntilAllDone;
-    bool m_cancelled;
-    int m_maxThreadsNb;
-    int m_priority;
+ protected:
+ private:
+  int m_idCounter;
+  std::vector<asThread *> m_threads;
+  wxCriticalSection m_critSectionManager;
+  wxCriticalSection m_critSectionPreloadedData;
+  wxCriticalSection m_critSectionNetCDF;
+  wxCriticalSection m_critSectionGrib;
+  wxCriticalSection m_critSectionConfig;
+  wxSemaphore m_semAllDone;
+  bool m_waitingUntilAllDone;
+  bool m_cancelled;
+  int m_maxThreadsNb;
+  int m_priority;
 };
 
 #endif
