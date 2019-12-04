@@ -45,6 +45,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   move "$LIB_DIR\include\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h_old"
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\baseu\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h"
   Copy-Item "$TMP_DIR\wxwidgets\lib\*" -Destination "$LIB_DIR\lib" -Recurse
+} else {
+  Write-Host "`nwxWidgets has been found in cache and will not be built" -ForegroundColor Yellow
 }
 $env:WXWIN = "$LIB_DIR"
 

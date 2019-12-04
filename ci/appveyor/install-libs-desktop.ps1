@@ -23,3 +23,4 @@ set CL=/MP
 . $PSScriptRoot\libs-desktop-install.ps1
 
 Get-ChildItem "$LIB_DIR/include"
+Get-ChildItem "$LIB_DIR/lib"
