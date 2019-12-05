@@ -47,6 +47,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   move "$LIB_DIR\include\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h_old"
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h"
   Copy-Item "$TMP_DIR\wxwidgets\lib\*" "$LIB_DIR\lib" -Recurse
+} else {
+  Write-Host "`nwxWidgets has been found in cache and will not be built" -ForegroundColor Yellow
 }
 $env:WXWIN = "$LIB_DIR"
 
@@ -66,4 +68,6 @@ if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=$GDAL_WIN64 GDAL_HOME="$LIB_DIR" PROJ_INCLUDE="-I$LIB_DIR_REV/include" PROJ_LIBRARY="$LIB_DIR_REV/lib/$LIB_PROJ" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=$GDAL_WIN64 GDAL_HOME="$LIB_DIR" PROJ_INCLUDE="-I$LIB_DIR_REV/include" PROJ_LIBRARY="$LIB_DIR_REV/lib/$LIB_PROJ" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB install  > $null
   nmake -f makefile.vc MSVC_VER=$MSC_VER WIN64=$GDAL_WIN64 GDAL_HOME="$LIB_DIR" PROJ_INCLUDE="-I$LIB_DIR_REV/include" PROJ_LIBRARY="$LIB_DIR_REV/lib/$LIB_PROJ" CURL_DIR="$LIB_DIR" CURL_INC="-I$LIB_DIR_REV/include" CURL_LIB="$LIB_DIR_REV/lib/libcurl.lib wsock32.lib wldap32.lib winmm.lib" CURL_CFLAGS=-DCURL_STATICLIB devinstall > $null
+} else {
+  Write-Host "`nGDAL has been found in cache and will not be built" -ForegroundColor Yellow
 }
