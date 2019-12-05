@@ -156,7 +156,7 @@ endif (USE_CODECOV)
 
 # Eigen
 ExternalProject_Add(eigen
-        URL http://bitbucket.org/eigen/eigen/get/${EIGEN_VERSION}.tar.gz
+        URL https://gitlab.com/libeigen/eigen/-/archive/${EIGEN_VERSION}/eigen-${EIGEN_VERSION}.tar.gz
         UPDATE_COMMAND ""
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""

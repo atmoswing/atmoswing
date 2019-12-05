@@ -11,6 +11,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nzlib has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -27,6 +29,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nJpeg has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 # Install Open Jpeg (for ecCodes)
@@ -41,6 +45,8 @@ if(!(Test-Path -Path "$LIB_DIR\lib\openjp2.lib") -Or $REBUILD_JPEG) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nOpenjpeg has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -57,6 +63,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nPng has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -73,6 +81,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DJAS_ENABLE_SHARED=OFF -DJAS_ENABLE_LIBJPEG=ON -DJAS_ENABLE_PROGRAMS=OFF -DCMAKE_INCLUDE_PATH="$LIB_DIR\include" -DCMAKE_LIBRARY_PATH="$LIB_DIR\lib" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nJasper has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -90,6 +100,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
   Copy-Item "$TMP_DIR\curl\builds\libcurl-vc-${TARGET_CPU}-release-dll-ipv6-sspi-winssl\bin\*" "$LIB_DIR\bin" -force
   Copy-Item "$TMP_DIR\curl\builds\libcurl-vc-${TARGET_CPU}-release-dll-ipv6-sspi-winssl\include\*" "$LIB_DIR\include" -recurse -force
   Copy-Item "$TMP_DIR\curl\builds\libcurl-vc-${TARGET_CPU}-release-dll-ipv6-sspi-winssl\lib\*" "$LIB_DIR\lib" -force
+} else {
+  Write-Host "`nCurl has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -111,6 +123,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\sqlite3.h") -Or $REBUILD_SQLITE) {
   copy "$TMP_DIR\sqlitetools\sqlite3.exe" "$LIB_DIR\bin\sqlite3.exe"
   copy "$TMP_DIR\sqlite\sqlite3.h" "$LIB_DIR\include\sqlite3.h"
   copy "$TMP_DIR\sqlite\sqlite3ext.h" "$LIB_DIR\include\sqlite3ext.h"
+} else {
+  Write-Host "`nSqlite has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 # Install Proj
@@ -125,6 +139,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
   cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
   cmake --build . --config Release > $null
   cmake --build . --config Release --target INSTALL > $null
+} else {
+  Write-Host "`nProj has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -143,6 +159,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\hdf5.h") -Or $REBUILD_HDF5) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DHDF5_BUILD_TOOLS=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT=ON -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nHDF5 has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -160,6 +178,8 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
   cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR_REV" -DCMAKE_BUILD_TYPE=Release -DENABLE_NETCDF_4=ON -DENABLE_DAP=OFF -DUSE_DAP=OFF -DBUILD_UTILITIES=OFF -DENABLE_TESTS=OFF -DHDF5_DIR="$LIB_DIR_REV/cmake" -DHDF5_C_LIBRARY="$LIB_DIR_REV/lib/libhdf5.lib" -DHDF5_HL_LIBRARY="$LIB_DIR_REV/lib/libhdf5_hl.lib" -DHDF5_INCLUDE_DIR="$LIB_DIR_REV/include" -DZLIB_INCLUDE_DIR="$LIB_DIR_REV/include" -DZLIB_LIBRARY="$LIB_DIR_REV/lib/zlib.lib" -DCMAKE_INCLUDE_PATH="$LIB_DIR_REV/include" > $null
   cmake --build . --config release > $null
   cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nNetCDF has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
@@ -182,4 +202,6 @@ if(!(Test-Path -Path "$LIB_DIR\lib\eccodes.lib") -Or $REBUILD_ECCODES) {
   copy "$TMP_DIR\eccodes\src\*.h" "$LIB_DIR\include\"
   copy "$TMP_DIR\eccodes\bld\src\eccodes_version.h" "$LIB_DIR\include\"
   Copy-Item "$TMP_DIR\eccodes\definitions" -Destination "$LIB_DIR\share\eccodes\definitions" -Recurse
+} else {
+  Write-Host "`necCodes has been found in cache and will not be built" -ForegroundColor Yellow
 }
