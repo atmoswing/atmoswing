@@ -545,9 +545,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
           } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                      (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(
-                _("The number of predictors do not correspond between the current and the previous "
-                  "parameters."));
+            wxLogError(_("The number of predictors do not correspond between the current "
+                  "and the previous parameters."));
             return false;
           }
 
@@ -563,9 +562,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
           } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                      (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(
-                _("The number of atmospheric levels do not correspond between the current and the previous "
-                  "parameters."));
+            wxLogError(_("The number of atmospheric levels do not correspond between the current "
+                  "and the previous parameters."));
             return false;
           }
 
