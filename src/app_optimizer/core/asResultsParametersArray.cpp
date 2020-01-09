@@ -41,6 +41,8 @@ void asResultsParametersArray::Init(const wxString &fileTag) {
   m_parameters.resize(0);
   m_scoresCalib.resize(0);
   m_scoresValid.resize(0);
+  m_scoresCalibForScoreOnArray.resize(0);
+  m_scoresValidForScoreOnArray.resize(0);
 }
 
 void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
@@ -68,7 +70,7 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid) {
-  m_parametersForScoreOnArray.push_back(params);
+  m_parameters.push_back(params);
   m_scoresCalibForScoreOnArray.push_back(scoreCalib);
   m_scoresValidForScoreOnArray.push_back(scoreValid);
 }
@@ -125,7 +127,7 @@ bool asResultsParametersArray::Print() const {
   wxString content = wxEmptyString;
 
   // Write every parameter one after the other
-  for (int iParam = 0; iParam < m_parameters.size(); iParam++) {
+  for (int iParam = 0; iParam < m_scoresCalib.size(); iParam++) {
     content.Append(m_parameters[iParam].Print());
     content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[iParam]));
     content.Append(wxString::Format("Valid\t%e", m_scoresValid[iParam]));
@@ -133,8 +135,8 @@ bool asResultsParametersArray::Print() const {
   }
 
   // Write every parameter for scores on array one after the other
-  for (int iParam = 0; iParam < m_parametersForScoreOnArray.size(); iParam++) {
-    content.Append(m_parametersForScoreOnArray[iParam].Print());
+  for (int iParam = 0; iParam < m_scoresCalibForScoreOnArray.size(); iParam++) {
+    content.Append(m_parameters[iParam].Print());
     content.Append("Calib\t");
     for (int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {
       content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[iParam][iRow]));

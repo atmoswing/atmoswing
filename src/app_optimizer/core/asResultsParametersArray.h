@@ -72,7 +72,6 @@ class asResultsParametersArray : public asResults {
   std::vector<asParametersScoring> m_parameters;
   vf m_scoresCalib;
   vf m_scoresValid;
-  std::vector<asParametersScoring> m_parametersForScoreOnArray;
   va1f m_scoresCalibForScoreOnArray;
   va1f m_scoresValidForScoreOnArray;
   float m_medianScore;

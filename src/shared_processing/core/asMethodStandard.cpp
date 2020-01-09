@@ -167,6 +167,8 @@ bool asMethodStandard::PreloadArchiveData(asParameters *params) {
     if (!CheckArchiveDataIsPreloaded(params)) return false;
   }
 
+  wxLogMessage(_("Predictor data preloaded."));
+
   return true;
 }
 
