@@ -119,6 +119,8 @@ class asParameters : public wxObject {
 
   wxString GetPredictandStationIdsString() const;
 
+  static wxString PredictandStationIdsToString(const vi &predictandStationIds);
+
   virtual bool FixTimeLimits();
 
   bool FixWeights();
@@ -129,7 +131,11 @@ class asParameters : public wxObject {
 
   bool IsSameAs(const asParameters &params) const;
 
+  bool IsSameAs(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
+
   bool IsCloseTo(const asParameters &params) const;
+
+  bool IsCloseTo(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
 
   bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString) const;
 

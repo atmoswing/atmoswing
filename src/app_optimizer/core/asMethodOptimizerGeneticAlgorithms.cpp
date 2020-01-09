@@ -603,7 +603,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           auto prevScoresCalib = float(scoreVal);
 
           // Add to the new array
-          m_resGenerations.Add(prevParams, prevScoresCalib);
+          m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
           vectScores.push_back(prevScoresCalib);
           if (iLine >= iLastGen) {
             // Restore the last generation

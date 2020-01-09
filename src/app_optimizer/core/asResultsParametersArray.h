@@ -41,8 +41,6 @@ class asResultsParametersArray : public asResults {
 
   void Init(const wxString &fileTag);
 
-  void Reserve(int size);
-
   void StoreValues(asParametersScoring &params);
 
   void Add(asParametersScoring &params, float scoreCalib);
@@ -61,8 +59,10 @@ class asResultsParametersArray : public asResults {
 
   bool Print() const;
 
+  wxString PrintParams(int iParam) const;
+
   int GetCount() const {
-    return int(m_params.size());
+    return int(m_parameters.size());
   }
 
   float GetMedianScore() const {
@@ -73,8 +73,11 @@ class asResultsParametersArray : public asResults {
   void BuildFileName(const wxString &fileTag);
 
  private:
-  std::vector<asParametersScoring::VectorParamsStep> m_params;
-  std::vector<asParametersScoring::ParamsScore> m_scores;
+  std::vector<asParametersScoring::VectorParamsStep> m_parameters;
+  asParametersScoring::ParamsScore m_scores;
+  vvi m_predictandStationIds;
+  vi m_analogsIntervalDays;
+  int m_analogsExcludeDays;
   vf m_scoresCalib;
   vf m_scoresValid;
   va1f m_scoresCalibForScoreOnArray;
