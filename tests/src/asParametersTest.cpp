@@ -235,10 +235,6 @@ TEST(Parameters, IsSameAs) {
   EXPECT_FALSE(params1.IsSameAs(params2));
 
   params2 = params1;
-  params2.SetAnalogsExcludeDays(12);
-  EXPECT_FALSE(params1.IsSameAs(params2));
-
-  params2 = params1;
   params2.SetAnalogsNumber(0, 12);
   EXPECT_FALSE(params1.IsSameAs(params2));
 
@@ -331,10 +327,6 @@ TEST(Parameters, IsCloseTo) {
   EXPECT_FALSE(params1.IsCloseTo(params2));
   params2.SetAnalogsIntervalDays(58);
   EXPECT_TRUE(params1.IsCloseTo(params2));
-
-  params2 = params1;
-  params2.SetAnalogsExcludeDays(12);
-  EXPECT_FALSE(params1.IsCloseTo(params2));
 
   params2 = params1;
   params2.SetAnalogsNumber(0, 12);
