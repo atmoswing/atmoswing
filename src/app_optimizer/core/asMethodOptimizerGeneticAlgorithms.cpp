@@ -506,8 +506,16 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         wxString filePath = filesGen.Last();
         filesGen.Clear();
 
-        wxLogWarning(_("Previous intermediate results were found and will be loaded."));
-        asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
+        // Check that the length is consistent with the population size
+        int nLines = asFileText::CountLines(filePath) - 1;
+        if (nLines % m_popSize != 0) {
+          wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
+          return false;
+        }
+
+        wxString msg = wxString::Format(_("Previous intermediate results were found and will be loaded (%d lines)."), nLines);
+        wxLogWarning(msg);
+        asLog::PrintToConsole(msg);
         asFileText prevResults(filePath, asFile::ReadOnly);
         if (!prevResults.Open()) {
           wxLogError(_("Couldn't open the file %s."), filePath.c_str());
@@ -571,9 +579,13 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           currentParamsPrint.Replace("Level", wxEmptyString, false);
         }
 
+        int genNb = nLines / m_popSize;
+        int iLastGen = (genNb - 1) * m_popSize;
+
         // Parse the parameters data
-        std::vector<asParametersOptimizationGAs> vectParams;
         std::vector<float> vectScores;
+        vectScores.reserve(nLines);
+        int iLine = 0, iVar = 0;
         do {
           if (fileLine.IsEmpty()) break;
 
@@ -592,35 +604,23 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
           // Add to the new array
           m_resGenerations.Add(prevParams, prevScoresCalib);
-          vectParams.push_back(prevParams);
           vectScores.push_back(prevScoresCalib);
+          if (iLine >= iLastGen) {
+            // Restore the last generation
+            m_parameters[iVar] = prevParams;
+            m_scoresCalib[iVar] = prevScoresCalib;
+            iVar++;
+          }
 
           // Get next line
           fileLine = prevResults.GetNextLine();
+          iLine++;
         } while (!prevResults.EndOfFile());
         prevResults.Close();
 
         wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
         asLog::PrintToConsole(
             wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
-
-        // Check that it is consistent with the population size
-        if (vectParams.size() % m_popSize != 0) {
-          wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
-          return false;
-        }
-
-        // Restore the last generation
-        int genNb = vectParams.size() / m_popSize;
-        int iLastGen = (genNb - 1) * m_popSize;
-        for (int iVar = 0; iVar < m_popSize; iVar++) {
-          wxASSERT(vectParams.size() > iLastGen);
-          wxASSERT(vectScores.size() > iLastGen);
-          m_parameters[iVar] = vectParams[iLastGen];
-          m_scoresCalib[iVar] = vectScores[iLastGen];
-
-          iLastGen++;
-        }
 
         // Restore best and mean scores
         m_bestScores.resize(genNb);
