@@ -548,6 +548,10 @@ class asParameters : public wxObject {
     return 1;
   }
 
+  VectorParamsStep GetParameters() const {
+    return m_steps;
+  }
+
  protected:
   wxString m_methodId;
   wxString m_methodIdDisplay;

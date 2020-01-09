@@ -618,6 +618,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         } while (!prevResults.EndOfFile());
         prevResults.Close();
 
+        m_resGenerations.ProcessMedianScores();
+
         wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
         asLog::PrintToConsole(
             wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
@@ -641,8 +643,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         m_generationNb = genNb;
 
         // Restore operators
-        wxString operatorsFilePattern =
-            wxString::Format("*_station_%s_operators.txt", GetPredictandStationIdsList(stationId).c_str());
+        wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
+            GetPredictandStationIdsList(stationId).c_str());
         if (dir.HasFiles(operatorsFilePattern)) {
           wxArrayString filesOper;
           wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
@@ -656,6 +658,12 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           // Copy file to the new target
           wxCopyFile(operFilePath, operatorsFilePath);
 
+          // Check length
+          int nLinesOper = asFileText::CountLines(operFilePath) - 1;
+          if (nLines != nLinesOper) {
+            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), nLines, nLinesOper);
+          }
+
           // Open file
           asFileText prevOperators(operFilePath, asFile::ReadOnly);
           if (!prevOperators.Open()) {
@@ -663,25 +671,18 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             return false;
           }
 
-          // Extract file content
+          // Extract file content for the last generation
+          prevOperators.SkipLines((genNb - 1) * m_popSize);
           wxString fileLineOper = prevOperators.GetNextLine();
-          vwxs operFileContent;
+          iVar = 0;
           do {
             if (fileLineOper.IsEmpty()) break;
-            operFileContent.push_back(fileLineOper);
-            fileLineOper = prevOperators.GetNextLine();
-          } while (!prevOperators.EndOfFile());
-          prevOperators.Close();
 
-          // Restore last generation
-          iLastGen = (genNb - 1) * m_popSize;
-          for (int iVar = 0; iVar < m_popSize; iVar++) {
-            wxASSERT(operFileContent.size() > iLastGen);
-            if (operFileContent.size() <= iLastGen) {
-              wxLogError(_("Cannot restore operators values."));
+            if (iVar >= m_parameters.size()) {
+              wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."),
+                  (int)m_parameters.size(), iVar+1);
               return false;
             }
-            fileLineOper = operFileContent[iLastGen];
 
             switch (m_mutationsModeType) {
               case (RandomUniformConstant):
@@ -743,8 +744,10 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
               }
             }
 
-            iLastGen++;
-          }
+            fileLineOper = prevOperators.GetNextLine();
+            iVar++;
+          } while (!prevOperators.EndOfFile());
+          prevOperators.Close();
         }
       }
     }

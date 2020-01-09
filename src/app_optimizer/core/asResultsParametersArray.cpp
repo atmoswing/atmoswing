@@ -24,6 +24,7 @@
 /*
  * Portions Copyright 2008-2013 Pascal Horton, University of Lausanne.
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
+ * Portions Copyright 2016-2020 Pascal Horton, University of Bern.
  */
 
 #include "asResultsParametersArray.h"
@@ -32,17 +33,21 @@
 
 asResultsParametersArray::asResultsParametersArray() : asResults(), m_medianScore(NaNf) {}
 
-asResultsParametersArray::~asResultsParametersArray() {}
+asResultsParametersArray::~asResultsParametersArray() = default;
 
 void asResultsParametersArray::Init(const wxString &fileTag) {
   BuildFileName(fileTag);
+  wxASSERT(m_scoresCalib.empty());
+}
 
-  // Resize to 0 to avoid keeping old results
-  m_parameters.resize(0);
-  m_scoresCalib.resize(0);
-  m_scoresValid.resize(0);
-  m_scoresCalibForScoreOnArray.resize(0);
-  m_scoresValidForScoreOnArray.resize(0);
+void asResultsParametersArray::Reserve(int size) {
+  m_params.reserve(size);
+  m_scores.reserve(size);
+}
+
+void asResultsParametersArray::StoreValues(asParametersScoring &params) {
+  m_params.push_back(params.GetParameters());
+  m_scores.push_back(params.GetScore());
 }
 
 void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
@@ -54,15 +59,21 @@ void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib) {
-  m_parameters.push_back(params);
+  StoreValues(params);
   m_scoresCalib.push_back(scoreCalib);
   m_scoresValid.push_back(NaNf);
 
   ProcessMedianScores();
 }
 
+void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring &params, float scoreCalib) {
+  StoreValues(params);
+  m_scoresCalib.push_back(scoreCalib);
+  m_scoresValid.push_back(NaNf);
+}
+
 void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib, float scoreValid) {
-  m_parameters.push_back(params);
+  StoreValues(params);
   m_scoresCalib.push_back(scoreCalib);
   m_scoresValid.push_back(scoreValid);
 
@@ -70,7 +81,7 @@ void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid) {
-  m_parameters.push_back(params);
+  StoreValues(params);
   m_scoresCalibForScoreOnArray.push_back(scoreCalib);
   m_scoresValidForScoreOnArray.push_back(scoreValid);
 }
