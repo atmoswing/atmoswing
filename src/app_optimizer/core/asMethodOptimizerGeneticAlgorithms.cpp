@@ -245,6 +245,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
       wxLogError(_("Could not preload the data."));
       return false;
     }
+    wxLogMessage(_("Predictor data preloaded."));
   } catch (std::bad_alloc &ba) {
     wxString msg(ba.what(), wxConvUTF8);
     wxLogError(_("Bad allocation caught during data preloading (in GAs): %s"), msg);
