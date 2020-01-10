@@ -41,18 +41,18 @@ class asFileParameters;
 class asParameters : public wxObject {
  public:
   typedef struct {
-    wxString datasetId;
-    wxString dataId;
     bool preload;
     bool standardize;
+    bool preprocess;
+    wxString datasetId;
+    wxString dataId;
     vwxs preloadDataIds;
     vd preloadHours;
     vf preloadLevels;
     double preloadXmin;
-    int preloadXptsnb;
     double preloadYmin;
+    int preloadXptsnb;
     int preloadYptsnb;
-    bool preprocess;
     wxString preprocessMethod;
     vwxs preprocessDatasetIds;
     vwxs preprocessDataIds;
@@ -62,16 +62,16 @@ class asParameters : public wxObject {
     float level;
     wxString gridType;
     double xMin;
-    int xPtsNb;
     double xStep;
     double xShift;
     double yMin;
-    int yPtsNb;
     double yStep;
     double yShift;
+    int xPtsNb;
+    int yPtsNb;
     int flatAllowed;
-    double hour;
     int membersNb;
+    double hour;
     wxString criteria;
     float weight;
   } ParamsPredictor;
