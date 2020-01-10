@@ -215,7 +215,7 @@ wxString asResultsParametersArray::PrintParams(int iParam) const {
       content.Append(wxString::Format("yPtsNb\t%d\t", ptor.yPtsNb));
       content.Append(wxString::Format("yStep\t%g\t", ptor.yStep));
       content.Append(wxString::Format("Weight\t%e\t", ptor.weight));
-      if (!ptor.preprocessMethod.IsEmpty()) {
+      if (!ptor.preprocessMethod.empty()) {
         content.Append(wxString::Format("%s\t", ptor.preprocessMethod));
       } else {
         content.Append("NoPreprocessing\t");

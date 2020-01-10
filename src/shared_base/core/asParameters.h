@@ -44,23 +44,23 @@ class asParameters : public wxObject {
     bool preload;
     bool standardize;
     bool preprocess;
-    wxString datasetId;
-    wxString dataId;
-    vwxs preloadDataIds;
+    std::string datasetId;
+    std::string dataId;
+    vstds preloadDataIds;
     vd preloadHours;
     vf preloadLevels;
     double preloadXmin;
     double preloadYmin;
     int preloadXptsnb;
     int preloadYptsnb;
-    wxString preprocessMethod;
-    vwxs preprocessDatasetIds;
-    vwxs preprocessDataIds;
+    std::string preprocessMethod;
+    vstds preprocessDatasetIds;
+    vstds preprocessDataIds;
     vf preprocessLevels;
     vd preprocessHours;
     vi preprocessMembersNb;
     float level;
-    wxString gridType;
+    std::string gridType;
     double xMin;
     double xStep;
     double xShift;
@@ -72,7 +72,7 @@ class asParameters : public wxObject {
     int flatAllowed;
     int membersNb;
     double hour;
-    wxString criteria;
+    std::string criteria;
     float weight;
   } ParamsPredictor;
 
@@ -340,7 +340,11 @@ class asParameters : public wxObject {
   }
 
   vwxs GetPreloadDataIds(int iStep, int iPtor) const {
-    return m_steps[iStep].predictors[iPtor].preloadDataIds;
+    vwxs vals;
+    for (const auto & preloadDataId : m_steps[iStep].predictors[iPtor].preloadDataIds) {
+      vals.push_back(preloadDataId);
+    }
+    return vals;
   }
 
   bool SetPreloadDataIds(int iStep, int iPtor, vwxs val);
@@ -445,7 +449,7 @@ class asParameters : public wxObject {
     return m_steps[iStep].predictors[iPtor].dataId;
   }
 
-  bool SetPredictorDataId(int iStep, int iPtor, wxString val);
+  bool SetPredictorDataId(int iStep, int iPtor, const wxString &val);
 
   float GetPredictorLevel(int iStep, int iPtor) const {
     return m_steps[iStep].predictors[iPtor].level;
@@ -457,7 +461,7 @@ class asParameters : public wxObject {
     return m_steps[iStep].predictors[iPtor].gridType;
   }
 
-  bool SetPredictorGridType(int iStep, int iPtor, wxString val);
+  bool SetPredictorGridType(int iStep, int iPtor, const wxString &val);
 
   double GetPredictorXmin(int iStep, int iPtor) const {
     return m_steps[iStep].predictors[iPtor].xMin;

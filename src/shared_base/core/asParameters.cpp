@@ -73,15 +73,12 @@ void asParameters::AddPredictor() {
 void asParameters::AddPredictor(ParamsStep &step) {
   ParamsPredictor predictor;
 
-  predictor.datasetId = wxEmptyString;
-  predictor.dataId = wxEmptyString;
   predictor.preload = false;
   predictor.preloadXmin = 0;
   predictor.preloadXptsnb = 0;
   predictor.preloadYmin = 0;
   predictor.preloadYptsnb = 0;
   predictor.preprocess = false;
-  predictor.preprocessMethod = wxEmptyString;
   predictor.standardize = false;
   predictor.level = 0;
   predictor.xMin = 0;
@@ -94,7 +91,6 @@ void asParameters::AddPredictor(ParamsStep &step) {
   predictor.yShift = 0;
   predictor.flatAllowed = asFLAT_FORBIDDEN;
   predictor.hour = 0;
-  predictor.criteria = wxEmptyString;
   predictor.weight = 1;
   predictor.membersNb = 0;
 
@@ -104,15 +100,12 @@ void asParameters::AddPredictor(ParamsStep &step) {
 void asParameters::AddPredictor(int iStep) {
   ParamsPredictor predictor;
 
-  predictor.datasetId = wxEmptyString;
-  predictor.dataId = wxEmptyString;
   predictor.preload = false;
   predictor.preloadXmin = 0;
   predictor.preloadXptsnb = 0;
   predictor.preloadYmin = 0;
   predictor.preloadYptsnb = 0;
   predictor.preprocess = false;
-  predictor.preprocessMethod = wxEmptyString;
   predictor.standardize = false;
   predictor.level = 0;
   predictor.gridType = "regular";
@@ -126,7 +119,6 @@ void asParameters::AddPredictor(int iStep) {
   predictor.yShift = 0;
   predictor.flatAllowed = asFLAT_FORBIDDEN;
   predictor.hour = 0;
-  predictor.criteria = wxEmptyString;
   predictor.weight = 1;
   predictor.membersNb = 0;
 
@@ -884,7 +876,7 @@ bool asParameters::FixWeights() {
 bool asParameters::FixCoordinates() {
   for (int i = 0; i < GetStepsNb(); i++) {
     for (int j = 0; j < GetPredictorsNb(i); j++) {
-      if (m_steps[i].predictors[j].gridType.IsSameAs("regular", false)) {
+      if (GetPredictorGridType(i, j).IsSameAs("regular", false)) {
         // Check that the coordinates are a multiple of the steps
         if (std::abs(std::fmod(m_steps[i].predictors[j].xMin - m_steps[i].predictors[j].xShift,
                                m_steps[i].predictors[j].xStep)) > 0) {
@@ -1434,7 +1426,10 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
       }
     }
   }
-  m_steps[iStep].predictors[iPtor].preloadDataIds = val;
+  m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
+  for (auto &v : val) {
+    m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(v.ToStdString());
+  }
   return true;
 }
 
@@ -1445,7 +1440,7 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val) {
   }
 
   m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
-  m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(val);
+  m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(val.ToStdString());
 
   return true;
 }
@@ -1545,7 +1540,7 @@ bool asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString &val
     wxLogError(_("The provided value for the preprocess method is null"));
     return false;
   }
-  m_steps[iStep].predictors[iPtor].preprocessMethod = val;
+  m_steps[iStep].predictors[iPtor].preprocessMethod = val.ToStdString();
   return true;
 }
 
@@ -1633,10 +1628,10 @@ bool asParameters::SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const 
   }
 
   if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
-    m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
+    m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val.ToStdString();
   } else {
     wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() == iPre);
-    m_steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
+    m_steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val.ToStdString());
   }
 
   return true;
@@ -1658,10 +1653,10 @@ bool asParameters::SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxS
   }
 
   if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
-    m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
+    m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val.ToStdString();
   } else {
     wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDataIds.size() == iPre);
-    m_steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
+    m_steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val.ToStdString());
   }
 
   return true;
@@ -1752,18 +1747,18 @@ bool asParameters::SetPredictorDatasetId(int iStep, int iPtor, const wxString &v
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].datasetId = val;
+  m_steps[iStep].predictors[iPtor].datasetId = val.ToStdString();
 
   return true;
 }
 
-bool asParameters::SetPredictorDataId(int iStep, int iPtor, wxString val) {
+bool asParameters::SetPredictorDataId(int iStep, int iPtor, const wxString &val) {
   if (val.IsEmpty()) {
     wxLogError(_("The provided value for the predictor data is null"));
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].dataId = val;
+  m_steps[iStep].predictors[iPtor].dataId = val.ToStdString();
 
   return true;
 }
@@ -1779,13 +1774,13 @@ bool asParameters::SetPredictorLevel(int iStep, int iPtor, float val) {
   return true;
 }
 
-bool asParameters::SetPredictorGridType(int iStep, int iPtor, wxString val) {
+bool asParameters::SetPredictorGridType(int iStep, int iPtor, const wxString &val) {
   if (val.IsEmpty()) {
     wxLogError(_("The provided value for the predictor grid type is null"));
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].gridType = val;
+  m_steps[iStep].predictors[iPtor].gridType = val.ToStdString();
 
   return true;
 }
@@ -1916,7 +1911,7 @@ bool asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString &va
     wxLogError(_("The provided value for the predictor criteria is null"));
     return false;
   }
-  m_steps[iStep].predictors[iPtor].criteria = val;
+  m_steps[iStep].predictors[iPtor].criteria = val.ToStdString();
   return true;
 }
 
