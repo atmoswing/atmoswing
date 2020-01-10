@@ -526,7 +526,7 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
     wxDELETE(dataArea);
   } catch (std::bad_alloc &ba) {
     wxString msg(ba.what(), wxConvUTF8);
-    wxLogError(_("Bad allocation caught when loading data: %s"), msg);
+    wxLogError(_("Bad allocation (%s) caught when loading data %s (%s)."), msg, m_dataId, m_datasetName);
     return false;
   } catch (std::exception &e) {
     wxString msg(e.what(), wxConvUTF8);
