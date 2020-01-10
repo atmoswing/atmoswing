@@ -41,7 +41,18 @@ void asResultsParametersArray::Init(const wxString &fileTag) {
 }
 
 void asResultsParametersArray::StoreValues(asParametersScoring &params) {
-  m_parameters.push_back(params.GetParameters());
+
+  asParameters::VectorParamsStep p = params.GetParameters();
+
+  for (auto & steps : p) {
+    for (auto & predictor : steps.predictors) {
+      predictor.preloadDataIds.clear();
+      predictor.preloadHours.clear();
+      predictor.preloadLevels.clear();
+    }
+  }
+
+  m_parameters.push_back(p);
   m_predictandStationIds.push_back(params.GetPredictandStationIds());
   m_analogsIntervalDays.push_back(params.GetAnalogsIntervalDays());
 
