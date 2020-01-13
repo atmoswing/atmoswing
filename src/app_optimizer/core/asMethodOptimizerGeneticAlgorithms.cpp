@@ -660,7 +660,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           wxCopyFile(operFilePath, operatorsFilePath);
 
           // Check length
-          int nLinesOper = asFileText::CountLines(operFilePath) - 1;
+          int nLinesOper = asFileText::CountLines(operFilePath);
           if (nLines != nLinesOper) {
             wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), nLines, nLinesOper);
           }
