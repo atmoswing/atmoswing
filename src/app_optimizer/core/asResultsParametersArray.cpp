@@ -31,7 +31,12 @@
 
 #include "asFileText.h"
 
-asResultsParametersArray::asResultsParametersArray() : asResults(), m_medianScore(NaNf) {}
+asResultsParametersArray::asResultsParametersArray()
+    : asResults(),
+      m_medianScore(NaNf) {
+  m_scores.quantile = NaNf;
+  m_scores.threshold = NaNf;
+}
 
 asResultsParametersArray::~asResultsParametersArray() = default;
 
@@ -146,6 +151,16 @@ bool asResultsParametersArray::Print() const {
   // Write every parameter one after the other
   for (int iParam = 0; iParam < m_scoresCalib.size(); iParam++) {
     content.Append(PrintParams(iParam));
+
+    content.Append(wxString::Format("|||| Score\t%s\t", m_scores.name));
+    if (!asIsNaN(m_scores.quantile)) {
+      content.Append(wxString::Format("quantile\t%f\t", m_scores.quantile));
+    }
+    if (!asIsNaN(m_scores.threshold)) {
+      content.Append(wxString::Format("threshold\t%f\t", m_scores.threshold));
+    }
+    content.Append(wxString::Format("TimeArray\t%s\t", m_scores.timeArrayMode));
+
     content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[iParam]));
     content.Append(wxString::Format("Valid\t%e", m_scoresValid[iParam]));
     content.Append("\n");
