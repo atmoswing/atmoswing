@@ -136,20 +136,28 @@ bool asResultsParametersArray::HasCloseOneBeenAssessed(asParametersScoring &para
   return false;
 }
 
-bool asResultsParametersArray::Print() const {
+bool asResultsParametersArray::Print(int fromIndex) const {
+  bool fileExists = wxFileName::FileExists(m_filePath);
+
+  asFile::FileMode mode = asFile::Replace;
+  if (fileExists) {
+    mode = asFile::Append;
+  }
 
   // Create a file
-  asFileText fileRes(m_filePath, asFileText::Replace);
+  asFileText fileRes(m_filePath, mode);
   if (!fileRes.Open()) return false;
 
-  wxString header;
-  header = wxString::Format(_("Optimization processed %s\n"), asTime::GetStringTime(asTime::NowMJD(asLOCAL)));
-  fileRes.AddLine(header);
+  if (!fileExists) {
+    wxString header;
+    header = wxString::Format(_("Optimization processed %s\n"), asTime::GetStringTime(asTime::NowMJD(asLOCAL)));
+    fileRes.AddLine(header);
+  }
 
   wxString content = wxEmptyString;
 
   // Write every parameter one after the other
-  for (int iParam = 0; iParam < m_scoresCalib.size(); iParam++) {
+  for (int iParam = fromIndex; iParam < m_scoresCalib.size(); iParam++) {
     content.Append(PrintParams(iParam));
 
     content.Append(wxString::Format("|||| Score\t%s\t", m_scores.name));
@@ -167,7 +175,7 @@ bool asResultsParametersArray::Print() const {
   }
 
   // Write every parameter for scores on array one after the other
-  for (int iParam = 0; iParam < m_scoresCalibForScoreOnArray.size(); iParam++) {
+  for (int iParam = fromIndex; iParam < m_scoresCalibForScoreOnArray.size(); iParam++) {
     content.Append(PrintParams(iParam));
     content.Append("Calib\t");
     for (int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {

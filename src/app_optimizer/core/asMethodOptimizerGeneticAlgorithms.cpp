@@ -316,8 +316,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
         return false;
       }
 
-      wxLog::FlushActive();
-
       ThreadsManager().WaitForFreeThread(threadType);
 
 #ifdef USE_CUDA
@@ -394,16 +392,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     // Elitism after mutation must occur after evaluation
     ElitismAfterMutation();
 
-    // Save the full generation
-    for (int i = 0; i < m_parameters.size(); i++) {
-      m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+    if (m_assessmentCounter > 0){ // Skip if is resuming
+
+      // Save the full generation
+      for (int i = 0; i < m_parameters.size(); i++) {
+        m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+      }
+
+      // Save operators status
+      SaveOperators(operatorsFilePath);
+
+      // Print results
+      m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size());
     }
-
-    // Save operators status
-    SaveOperators(operatorsFilePath);
-
-    // Print results
-    m_resGenerations.Print();
 
     // Display stats
     float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
@@ -583,6 +584,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         int genNb = nLines / m_popSize;
         int iLastGen = (genNb - 1) * m_popSize;
 
+        asParametersOptimizationGAs prevParams;
+
         // Parse the parameters data
         std::vector<float> vectScores;
         vectScores.reserve(nLines);
@@ -590,7 +593,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         do {
           if (fileLine.IsEmpty()) break;
 
-          asParametersOptimizationGAs prevParams = m_parameters[0];
+          prevParams = m_parameters[0];
           if (!prevParams.GetValuesFromString(fileLine)) {
             return false;
           }
@@ -642,6 +645,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
         m_iterator = m_paramsNb;
         m_generationNb = genNb;
+
+        // Copy file to the new target
+        wxCopyFile(filePath, m_resGenerations.GetFilePath());
 
         // Restore operators
         wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",

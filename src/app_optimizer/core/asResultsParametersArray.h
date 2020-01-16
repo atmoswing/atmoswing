@@ -57,7 +57,7 @@ class asResultsParametersArray : public asResults {
 
   bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
 
-  bool Print() const;
+  bool Print(int fromIndex = 0) const;
 
   wxString PrintParams(int iParam) const;
 
