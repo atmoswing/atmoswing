@@ -129,7 +129,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: non uniform mutation - generations nb"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: non uniform mutation - minimum rate"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: multi-scale mutation - probability"},
-    {wxCMD_LINE_SWITCH, NULL, "ga-ignore-history", "Ignore the past optimizations and assess all new parameters."},
+    {wxCMD_LINE_SWITCH, NULL, "ga-enable-history", "Keep the previous optimizations in memory and compare to new ones."},
 
     {wxCMD_LINE_OPTION, NULL, "log-level",
      "Set a log level"
@@ -798,8 +798,8 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
     wxFileConfig::Get()->Write("/GAs/MutationsMultiScaleProbability", option);
   }
 
-  if (parser.Found("ga-ignore-history")) {
-    wxFileConfig::Get()->Write("/GAs/IgnoreHistory", true);
+  if (parser.Found("ga-enable-history")) {
+    wxFileConfig::Get()->Write("/GAs/EnableHistory", true);
   }
 
 

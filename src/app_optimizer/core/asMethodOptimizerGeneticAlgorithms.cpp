@@ -52,7 +52,7 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
       m_crossoverType(0),
       m_mutationsModeType(0),
       m_allowElitismForTheBest(true),
-      m_ignoreHistory(false) {
+      m_enableHistory(false) {
   m_warnFailedLoadingData = false;
 }
 
@@ -168,7 +168,7 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
   m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
   m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
   m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
-  m_ignoreHistory = pConfig->ReadBool("/GAs/IgnoreHistory", false);
+  m_enableHistory = pConfig->ReadBool("/GAs/EnableHistory", false);
   ThreadsManager().CritSectionConfig().Leave();
 
   // Reset the score of the climatology
@@ -396,7 +396,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
     if (m_assessmentCounter > 0){ // Skip if is resuming
 
-      if (m_ignoreHistory) {
+      if (!m_enableHistory) {
         m_resGenerations.Clear();
       }
 
@@ -594,14 +594,14 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
         // Parse the parameters data
         std::vector<float> vectScores;
-        if (!m_ignoreHistory) {
+        if (m_enableHistory) {
           vectScores.reserve(nLines);
         }
         int iLine = 0, iVar = 0;
         do {
           if (fileLine.IsEmpty()) break;
 
-          if (m_ignoreHistory && iLine < iLastGen) {
+          if (!m_enableHistory && iLine < iLastGen) {
             // Get next line
             fileLine = prevResults.GetNextLine();
             iLine++;
@@ -638,7 +638,7 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         } while (!prevResults.EndOfFile());
         prevResults.Close();
 
-        if (!m_ignoreHistory) {
+        if (m_enableHistory) {
           m_resGenerations.ProcessMedianScores();
         }
 
@@ -930,7 +930,7 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
       continue;
     }
 
-    if (!m_ignoreHistory) {
+    if (m_enableHistory) {
       // Look for similar parameters sets that were already assessed
       if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
         m_nbSameParams++;
