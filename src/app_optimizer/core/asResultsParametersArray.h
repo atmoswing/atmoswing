@@ -41,6 +41,8 @@ class asResultsParametersArray : public asResults {
 
   void Init(const wxString &fileTag);
 
+  void Clear();
+
   void StoreValues(asParametersScoring &params);
 
   void Add(asParametersScoring &params, float scoreCalib);

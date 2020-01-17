@@ -45,6 +45,16 @@ void asResultsParametersArray::Init(const wxString &fileTag) {
   wxASSERT(m_scoresCalib.empty());
 }
 
+void asResultsParametersArray::Clear() {
+  m_parameters.clear();
+  m_predictandStationIds.clear();
+  m_analogsIntervalDays.clear();
+  m_scoresCalib.clear();
+  m_scoresValid.clear();
+  m_scoresCalibForScoreOnArray.clear();
+  m_scoresValidForScoreOnArray.clear();
+}
+
 void asResultsParametersArray::StoreValues(asParametersScoring &params) {
 
   asParameters::VectorParamsStep p = params.GetParameters();

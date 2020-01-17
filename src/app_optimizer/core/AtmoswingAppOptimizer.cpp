@@ -73,8 +73,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "station-id", "The predictand station ID"},
     {wxCMD_LINE_OPTION, NULL, "dir-predictors", "The predictors directory"},
     {wxCMD_LINE_SWITCH, NULL, "skip-valid", "Skip the validation calculation"},
-    {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates",
-     "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
+    {wxCMD_LINE_SWITCH, NULL, "no-duplicate-dates", "Do not allow to keep several times the same analog dates (e.g. for ensembles)"},
     {wxCMD_LINE_SWITCH, NULL, "dump-predictor-data", "Dump predictor data to binary files to reduce RAM usage"},
     {wxCMD_LINE_SWITCH, NULL, "load-from-dumped-data", "Load dumped predictor data into RAM (faster load)"},
     {wxCMD_LINE_SWITCH, NULL, "replace-nans", "Option to replace NaNs with -9999 (faster processing)"},
@@ -120,10 +119,8 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-gens", "GAs: variable uniform mutation - generations nb"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-strt", "GAs: variable uniform mutation - starting probability"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-unif-var-p-end", "GAs: variable uniform mutation - end probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p",
-     "GAs: variable normal mutation - generations nb for probability"},
-    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d",
-     "GAs: variable normal mutation - generations nb for std deviation"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-p", "GAs: variable normal mutation - generations nb for probability"},
+    {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-gens-d", "GAs: variable normal mutation - generations nb for std deviation"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-strt", "GAs: variable normal mutation - starting probability"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-p-end", "GAs: variable normal mutation - end probability"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-norm-var-d-strt", "GAs: variable normal mutation - starting std deviation"},
@@ -132,6 +129,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc[] = {
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-gens", "GAs: non uniform mutation - generations nb"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-non-uni-min-r", "GAs: non uniform mutation - minimum rate"},
     {wxCMD_LINE_OPTION, NULL, "ga-mut-multi-scale-p", "GAs: multi-scale mutation - probability"},
+    {wxCMD_LINE_SWITCH, NULL, "ga-ignore-history", "Ignore the past optimizations and assess all new parameters."},
 
     {wxCMD_LINE_OPTION, NULL, "log-level",
      "Set a log level"
@@ -799,6 +797,11 @@ bool AtmoswingAppOptimizer::OnCmdLineParsed(wxCmdLineParser &parser) {
   if (parser.Found("ga-mut-multi-scale-p", &option)) {
     wxFileConfig::Get()->Write("/GAs/MutationsMultiScaleProbability", option);
   }
+
+  if (parser.Found("ga-ignore-history")) {
+    wxFileConfig::Get()->Write("/GAs/IgnoreHistory", true);
+  }
+
 
   /*
    * Method choice

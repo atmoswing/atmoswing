@@ -51,7 +51,8 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
       m_couplesSelectionType(0),
       m_crossoverType(0),
       m_mutationsModeType(0),
-      m_allowElitismForTheBest(true) {
+      m_allowElitismForTheBest(true),
+      m_ignoreHistory(false) {
   m_warnFailedLoadingData = false;
 }
 
@@ -167,6 +168,7 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
   m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
   m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
   m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
+  m_ignoreHistory = pConfig->ReadBool("/GAs/IgnoreHistory", false);
   ThreadsManager().CritSectionConfig().Leave();
 
   // Reset the score of the climatology
@@ -394,6 +396,10 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
 
     if (m_assessmentCounter > 0){ // Skip if is resuming
 
+      if (m_ignoreHistory) {
+        m_resGenerations.Clear();
+      }
+
       // Save the full generation
       for (int i = 0; i < m_parameters.size(); i++) {
         m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
@@ -463,7 +469,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
   if (!resFinalPopulation.Print()) return false;
   SetBestParameters(resBestIndividual);
   if (!resBestIndividual.Print()) return false;
-  if (!m_resGenerations.Print()) return false;
+  if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
   // Generate xml file with the best parameters set
   if (!m_parameters[0].GenerateSimpleParametersFile(resXmlFilePath)) {
@@ -588,10 +594,20 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
 
         // Parse the parameters data
         std::vector<float> vectScores;
-        vectScores.reserve(nLines);
+        if (!m_ignoreHistory) {
+          vectScores.reserve(nLines);
+        }
         int iLine = 0, iVar = 0;
         do {
           if (fileLine.IsEmpty()) break;
+
+          if (m_ignoreHistory && iLine < iLastGen) {
+            // Get next line
+            fileLine = prevResults.GetNextLine();
+            iLine++;
+
+            continue;
+          }
 
           prevParams = m_parameters[0];
           if (!prevParams.GetValuesFromString(fileLine)) {
@@ -622,7 +638,9 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         } while (!prevResults.EndOfFile());
         prevResults.Close();
 
-        m_resGenerations.ProcessMedianScores();
+        if (!m_ignoreHistory) {
+          m_resGenerations.ProcessMedianScores();
+        }
 
         wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
         asLog::PrintToConsole(
@@ -912,37 +930,39 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
       continue;
     }
 
-    // Look for similar parameters sets that were already assessed
-    if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-      m_nbSameParams++;
-      m_iterator++;
-      continue;
-    }
+    if (!m_ignoreHistory) {
+      // Look for similar parameters sets that were already assessed
+      if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
+        m_nbSameParams++;
+        m_iterator++;
+        continue;
+      }
 
-    // Look for close parameters sets that were already assessed
-    float scoreCloseParams;
-    if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
-      switch (m_scoreOrder) {
-        case (Asc): {
-          if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
-            m_scoresCalib[m_iterator] = scoreCloseParams;
-            m_nbCloseParams++;
-            m_iterator++;
-            continue;
+      // Look for close parameters sets that were already assessed
+      float scoreCloseParams;
+      if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
+        switch (m_scoreOrder) {
+          case (Asc): {
+            if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
+              m_scoresCalib[m_iterator] = scoreCloseParams;
+              m_nbCloseParams++;
+              m_iterator++;
+              continue;
+            }
+            break;
           }
-          break;
-        }
-        case (Desc): {
-          if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
-            m_scoresCalib[m_iterator] = scoreCloseParams;
-            m_nbCloseParams++;
-            m_iterator++;
-            continue;
+          case (Desc): {
+            if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
+              m_scoresCalib[m_iterator] = scoreCloseParams;
+              m_nbCloseParams++;
+              m_iterator++;
+              continue;
+            }
+            break;
           }
-          break;
-        }
-        default: {
-          wxLogError(_("The given natural selection method couldn't be found."));
+          default: {
+            wxLogError(_("Wrong order in score."));
+          }
         }
       }
     }
