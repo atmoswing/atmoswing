@@ -92,10 +92,13 @@ include(define_common_libraries)
 if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
+if (UNIX)
+    add_definitions(-std=c++11)
+endif (UNIX)
 ExternalProject_Add(googletest
         GIT_REPOSITORY https://github.com/google/googletest
         UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON -Dstd=c++11
+        CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
         BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
         )
 
