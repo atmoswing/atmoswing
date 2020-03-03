@@ -5,9 +5,6 @@ project(vroomgis)
 include(ExternalProject)
 
 ExternalProject_Add(vroomgis
-        URL https://bitbucket.org/terranum/vroomgis/get/tip.tar.gz
-        UPDATE_COMMAND ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
+        GIT_REPOSITORY    https://github.com/terranum-ch/vroomgis.git
+        GIT_TAG           b03655b72c0ecde1caf1d6b15dfa8b8953c609e8
         )
