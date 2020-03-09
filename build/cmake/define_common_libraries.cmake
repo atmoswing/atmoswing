@@ -72,6 +72,11 @@ if (BUILD_VIEWER)
     include_directories(${SQLITE3_INCLUDE_DIR})
     link_libraries(${SQLITE3_LIBRARY})
 
+else()
+
+    unset(GDAL_INCLUDE_DIR CACHE)
+    unset(GDAL_LIBRARIES CACHE)
+
 endif ()
 
 # ecCodes
