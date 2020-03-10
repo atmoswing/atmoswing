@@ -22,13 +22,20 @@ endif (UNIX)
 
 include(FetchContent)
 
-FetchContent_Declare(wxVersion
+FetchContent_Declare(
+        wxVersion
         GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
         GIT_TAG f8424e8c3f79204894cbcbc6184df239f522decc)
 
-FetchContent_Declare(eigen
+FetchContent_Declare(
+        eigen
         GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
         GIT_TAG 3.3.7)
+
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.10.0)
 
 
 ##### OPTIONS
