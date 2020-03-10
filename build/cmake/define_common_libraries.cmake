@@ -5,6 +5,7 @@ if(NOT eigen_POPULATED)
     FetchContent_Populate(eigen)
 endif()
 include_directories(${eigen_SOURCE_DIR})
+set(USE_EIGEN TRUE)
 
 # Intel MKL
 if (USE_MKL)
