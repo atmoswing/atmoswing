@@ -18,6 +18,17 @@ else (UNIX)
 endif (UNIX)
 
 
+##### DEPENDENCIES
+
+include(FetchContent)
+
+FetchContent_Declare(
+        wxVersion
+        GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
+        GIT_TAG 76506abd85d24a7ba834c2ad5d04c5502257a315
+)
+
+
 ##### OPTIONS
 
 # Version number

@@ -12,8 +12,6 @@ _CPack_Packages/*
 *.dir/*
 */CMakeCache.txt
 **/cmake_install.cmake
-*/lsversion_param.h
-lsversion_param\.h
 **/Makefile
 *~
 *.vcxproj*
