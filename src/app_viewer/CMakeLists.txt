@@ -60,18 +60,10 @@ message(STATUS "GDAL libraries: ${GDAL_LIBRARIES}")
 message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
 
 # vroomgis
-set(CMAKE_INSTALL_PREFIX:STRING ${EXTERNAL_DIR})
-set(SEARCH_VROOMGIS_LIBS:BOOL ON)
-set(SEARCH_GDAL:BOOL ON)
-set(SEARCH_GEOS:BOOL OFF)
-set(VROOMGIS_PATH:STRING vroomgis/src)
-set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_PATH})
-configure_file(${CMAKE_SOURCE_DIR}/build/cmake/GetVroomgis.txt ${CMAKE_BINARY_DIR}/vroomgis/CMakeLists.txt)
-execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
-execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
-add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis ${EXTERNAL_DIR})
-include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/src)
-include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/art)
+FetchContent_MakeAvailable(vroomgis)
+include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
+include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
+set(USE_VROOMGIS TRUE)
 
 # wxplotctrl
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})

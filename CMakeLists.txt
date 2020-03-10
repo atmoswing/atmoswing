@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
         wxVersion
         GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
-        GIT_TAG f8424e8c3f79204894cbcbc6184df239f522decc)
+        GIT_TAG 17f658348f5b0d244c4d7e64c18aa82c05fdbd84)
 
 FetchContent_Declare(
         eigen
@@ -37,6 +37,10 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG release-1.10.0)
 
+FetchContent_Declare(
+        vroomgis
+        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
+        GIT_TAG 3b4307cd1f3846417eb37ac6adff856d272b8e40)
 
 ##### OPTIONS
 
@@ -122,14 +126,6 @@ endif (BUILD_VIEWER)
 # Disable testing tree
 set(BUILD_TESTING OFF)
 mark_as_advanced(BUILD_TESTING)
-
-# External projects
-include(ExternalProject)
-set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
-set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${EXTERNAL_DIR}")
-include_directories(${EXTERNAL_DIR}/include)
-link_directories(${EXTERNAL_DIR}/lib)
-link_directories(${EXTERNAL_DIR}/lib64)
 
 # Installer
 if (WIN32)

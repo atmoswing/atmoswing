@@ -67,11 +67,6 @@ cmake-build-debug/
 cmake-build-release/
 cmake-build-relwithdebinfo/
 external/
-**/vroomgis/
-**/eigen-prefix/
-**/googletest-prefix/
-**/googlebenchmark-prefix/
-**/eccodes-prefix/
 **/x64-Debug/
 **/.vs/
 *.resolve

@@ -93,7 +93,7 @@ if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
 FetchContent_MakeAvailable(googletest)
-include_directories(${googletest_SOURCE_DIR})
+include_directories(${googletest_SOURCE_DIR}/googletest/include)
 
 # CUDA
 if (USE_CUDA)
