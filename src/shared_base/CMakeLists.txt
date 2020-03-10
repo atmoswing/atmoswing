@@ -78,8 +78,6 @@ endif (USE_GUI)
 
 ##### LINKING
 
-add_dependencies(asbase eigen)
-
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)

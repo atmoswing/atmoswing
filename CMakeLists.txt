@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12.2) # Bug with VS 2012 and CUDA in previous versions
+cmake_minimum_required(VERSION 3.11) # To support FetchContent
 
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
@@ -22,11 +22,13 @@ endif (UNIX)
 
 include(FetchContent)
 
-FetchContent_Declare(
-        wxVersion
+FetchContent_Declare(wxVersion
         GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
-        GIT_TAG 76506abd85d24a7ba834c2ad5d04c5502257a315
-)
+        GIT_TAG 76506abd85d24a7ba834c2ad5d04c5502257a315)
+
+FetchContent_Declare(eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.3.7)
 
 
 ##### OPTIONS
@@ -75,9 +77,6 @@ endif (WIN32)
 
 # Using the Intel MKL
 option(USE_MKL "Do you want to use Intel MKL ?" OFF)
-
-# Libraries version
-set(EIGEN_VERSION 3.3.7)
 
 # MSYS condition
 if (WIN32)
@@ -161,21 +160,6 @@ if (USE_CODECOV)
     set(COVERAGE_EXCLUDES '/usr/.*' '.*/external/.*' 'tests/.*' '.*/tests/.*' 'tests/src/*' '.*/tests/src/*' '.*/libs/.*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
 endif (USE_CODECOV)
-
-
-##### EXTERNAL PROJECTS
-
-# Eigen
-ExternalProject_Add(eigen
-        URL https://gitlab.com/libeigen/eigen/-/archive/${EIGEN_VERSION}/eigen-${EIGEN_VERSION}.tar.gz
-        UPDATE_COMMAND ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
-        ${EXTERNAL_DIR}/include/Eigen
-        )
 
 
 ##### DISPLAY SOME INFORMATIONS

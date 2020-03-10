@@ -1,4 +1,11 @@
 
+# Eigen
+FetchContent_GetProperties(eigen)
+if(NOT eigen_POPULATED)
+    FetchContent_Populate(eigen)
+endif()
+include_directories(${eigen_SOURCE_DIR})
+
 # Intel MKL
 if (USE_MKL)
     find_package(MKL REQUIRED)
