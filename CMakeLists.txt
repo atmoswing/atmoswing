@@ -25,7 +25,7 @@ include(FetchContent)
 FetchContent_Declare(
         wxVersion
         GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
-        GIT_TAG 17f658348f5b0d244c4d7e64c18aa82c05fdbd84)
+        GIT_TAG a1c38f8da17936e70d7bcb7f1cd21a5b30847c1e)
 
 FetchContent_Declare(
         eigen
@@ -40,7 +40,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
-        GIT_TAG 3b4307cd1f3846417eb37ac6adff856d272b8e40)
+        GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
 
 ##### OPTIONS
 

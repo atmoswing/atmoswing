@@ -63,7 +63,7 @@ message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
 FetchContent_MakeAvailable(vroomgis)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
 include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
-set(USE_VROOMGIS TRUE)
+set(VROOMGIS_PATH ${vroomgis_SOURCE_DIR})
 
 # wxplotctrl
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
