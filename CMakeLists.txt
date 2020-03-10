@@ -33,14 +33,14 @@ FetchContent_Declare(
         GIT_TAG 3.3.7)
 
 FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.10.0)
-
-FetchContent_Declare(
         vroomgis
         GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
         GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
+
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.10.0)
 
 ##### OPTIONS
 
