@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11) # To support FetchContent
+cmake_minimum_required(VERSION 3.14) # To support FetchContent / FetchContent_MakeAvailable
 
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
