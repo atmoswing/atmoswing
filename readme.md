@@ -49,7 +49,7 @@ Nightly (experimental) automatic builds are available for:
 
 ## How to build AtmoSwing ##
 
-The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get Atmoswing compiled, follow these steps:
+The wiki (https://github.com/atmoswing/atmoswing/wiki) explains how to compile the required libraries and the source code of AtmoSwing. In order to get AtmoSwing compiled, follow these steps:
 
 1. [Get the required **libraries**](https://github.com/atmoswing/atmoswing/wiki/Libraries)
 3. [**Configure / build** with CMake](https://github.com/atmoswing/atmoswing/wiki/Build)

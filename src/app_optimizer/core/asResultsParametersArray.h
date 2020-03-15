@@ -37,11 +37,17 @@ class asResultsParametersArray : public asResults {
  public:
   asResultsParametersArray();
 
-  virtual ~asResultsParametersArray();
+  ~asResultsParametersArray() override;
 
   void Init(const wxString &fileTag);
 
+  void Clear();
+
+  void StoreValues(asParametersScoring &params);
+
   void Add(asParametersScoring &params, float scoreCalib);
+
+  void AddWithoutProcessingMedian(asParametersScoring &params, float scoreCalib);
 
   void Add(asParametersScoring &params, float scoreCalib, float scoreValid);
 
@@ -53,9 +59,9 @@ class asResultsParametersArray : public asResults {
 
   bool HasCloseOneBeenAssessed(asParametersScoring &params, float &score);
 
-  void Clear();
+  bool Print(int fromIndex = 0) const;
 
-  bool Print() const;
+  wxString PrintParams(int iParam) const;
 
   int GetCount() const {
     return int(m_parameters.size());
@@ -69,10 +75,13 @@ class asResultsParametersArray : public asResults {
   void BuildFileName(const wxString &fileTag);
 
  private:
-  std::vector<asParametersScoring> m_parameters;
+  std::vector<asParametersScoring::VectorParamsStep> m_parameters;
+  asParametersScoring::ParamsScore m_scores;
+  vvi m_predictandStationIds;
+  vi m_analogsIntervalDays;
+  int m_analogsExcludeDays;
   vf m_scoresCalib;
   vf m_scoresValid;
-  std::vector<asParametersScoring> m_parametersForScoreOnArray;
   va1f m_scoresCalibForScoreOnArray;
   va1f m_scoresValidForScoreOnArray;
   float m_medianScore;

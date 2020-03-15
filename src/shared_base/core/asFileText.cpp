@@ -162,3 +162,24 @@ bool asFileText::EndOfFile() const {
 
   return m_file.eof();
 }
+
+int asFileText::CountLines(const wxString &filePath)  {
+
+  asFileText file(filePath, asFile::ReadOnly);
+  if (!file.Open()) {
+    wxLogError(_("Couldn't open the file %s."), filePath.c_str());
+    return 0;
+  }
+
+  int lines = 0;
+  wxString content;
+  do {
+    content = file.GetNextLine();
+    if (content.Length() > 0) {
+      lines++;
+    }
+  } while (!file.EndOfFile());
+  file.Close();
+
+  return lines;
+}

@@ -21,12 +21,11 @@ elseif (WIN32)
 endif ()
 
 # Global definitions
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_definitions(-DUSE_JPEG2000)
 add_definitions(-DEIGEN_NO_DEBUG)
-
-if (UNIX)
-    add_definitions(-std=c++11)
-endif (UNIX)
 
 if (WIN32)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)

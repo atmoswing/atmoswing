@@ -41,38 +41,38 @@ class asFileParameters;
 class asParameters : public wxObject {
  public:
   typedef struct {
-    wxString datasetId;
-    wxString dataId;
     bool preload;
     bool standardize;
-    vwxs preloadDataIds;
+    bool preprocess;
+    std::string datasetId;
+    std::string dataId;
+    vstds preloadDataIds;
     vd preloadHours;
     vf preloadLevels;
     double preloadXmin;
-    int preloadXptsnb;
     double preloadYmin;
+    int preloadXptsnb;
     int preloadYptsnb;
-    bool preprocess;
-    wxString preprocessMethod;
-    vwxs preprocessDatasetIds;
-    vwxs preprocessDataIds;
+    std::string preprocessMethod;
+    vstds preprocessDatasetIds;
+    vstds preprocessDataIds;
     vf preprocessLevels;
     vd preprocessHours;
     vi preprocessMembersNb;
     float level;
-    wxString gridType;
+    std::string gridType;
     double xMin;
-    int xPtsNb;
     double xStep;
     double xShift;
     double yMin;
-    int yPtsNb;
     double yStep;
     double yShift;
+    int xPtsNb;
+    int yPtsNb;
     int flatAllowed;
-    double hour;
     int membersNb;
-    wxString criteria;
+    double hour;
+    std::string criteria;
     float weight;
   } ParamsPredictor;
 
@@ -119,6 +119,8 @@ class asParameters : public wxObject {
 
   wxString GetPredictandStationIdsString() const;
 
+  static wxString PredictandStationIdsToString(const vi &predictandStationIds);
+
   virtual bool FixTimeLimits();
 
   bool FixWeights();
@@ -129,7 +131,11 @@ class asParameters : public wxObject {
 
   bool IsSameAs(const asParameters &params) const;
 
+  bool IsSameAs(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
+
   bool IsCloseTo(const asParameters &params) const;
+
+  bool IsCloseTo(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const;
 
   bool PrintAndSaveTemp(const wxString &filePath = wxEmptyString) const;
 
@@ -334,7 +340,11 @@ class asParameters : public wxObject {
   }
 
   vwxs GetPreloadDataIds(int iStep, int iPtor) const {
-    return m_steps[iStep].predictors[iPtor].preloadDataIds;
+    vwxs vals;
+    for (const auto & preloadDataId : m_steps[iStep].predictors[iPtor].preloadDataIds) {
+      vals.push_back(preloadDataId);
+    }
+    return vals;
   }
 
   bool SetPreloadDataIds(int iStep, int iPtor, vwxs val);
@@ -439,7 +449,7 @@ class asParameters : public wxObject {
     return m_steps[iStep].predictors[iPtor].dataId;
   }
 
-  bool SetPredictorDataId(int iStep, int iPtor, wxString val);
+  bool SetPredictorDataId(int iStep, int iPtor, const wxString &val);
 
   float GetPredictorLevel(int iStep, int iPtor) const {
     return m_steps[iStep].predictors[iPtor].level;
@@ -451,7 +461,7 @@ class asParameters : public wxObject {
     return m_steps[iStep].predictors[iPtor].gridType;
   }
 
-  bool SetPredictorGridType(int iStep, int iPtor, wxString val);
+  bool SetPredictorGridType(int iStep, int iPtor, const wxString &val);
 
   double GetPredictorXmin(int iStep, int iPtor) const {
     return m_steps[iStep].predictors[iPtor].xMin;
@@ -546,6 +556,10 @@ class asParameters : public wxObject {
 
   virtual int GetPredictorDataIdNb(int iStep, int iPtor) const {
     return 1;
+  }
+
+  VectorParamsStep GetParameters() const {
+    return m_steps;
   }
 
  protected:

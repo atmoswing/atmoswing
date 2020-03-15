@@ -73,15 +73,12 @@ void asParameters::AddPredictor() {
 void asParameters::AddPredictor(ParamsStep &step) {
   ParamsPredictor predictor;
 
-  predictor.datasetId = wxEmptyString;
-  predictor.dataId = wxEmptyString;
   predictor.preload = false;
   predictor.preloadXmin = 0;
   predictor.preloadXptsnb = 0;
   predictor.preloadYmin = 0;
   predictor.preloadYptsnb = 0;
   predictor.preprocess = false;
-  predictor.preprocessMethod = wxEmptyString;
   predictor.standardize = false;
   predictor.level = 0;
   predictor.xMin = 0;
@@ -94,7 +91,6 @@ void asParameters::AddPredictor(ParamsStep &step) {
   predictor.yShift = 0;
   predictor.flatAllowed = asFLAT_FORBIDDEN;
   predictor.hour = 0;
-  predictor.criteria = wxEmptyString;
   predictor.weight = 1;
   predictor.membersNb = 0;
 
@@ -104,15 +100,12 @@ void asParameters::AddPredictor(ParamsStep &step) {
 void asParameters::AddPredictor(int iStep) {
   ParamsPredictor predictor;
 
-  predictor.datasetId = wxEmptyString;
-  predictor.dataId = wxEmptyString;
   predictor.preload = false;
   predictor.preloadXmin = 0;
   predictor.preloadXptsnb = 0;
   predictor.preloadYmin = 0;
   predictor.preloadYptsnb = 0;
   predictor.preprocess = false;
-  predictor.preprocessMethod = wxEmptyString;
   predictor.standardize = false;
   predictor.level = 0;
   predictor.gridType = "regular";
@@ -126,7 +119,6 @@ void asParameters::AddPredictor(int iStep) {
   predictor.yShift = 0;
   predictor.flatAllowed = asFLAT_FORBIDDEN;
   predictor.hour = 0;
-  predictor.criteria = wxEmptyString;
   predictor.weight = 1;
   predictor.membersNb = 0;
 
@@ -812,17 +804,21 @@ vi asParameters::GetFileStationIds(wxString stationIdsString) {
 }
 
 wxString asParameters::GetPredictandStationIdsString() const {
+  return PredictandStationIdsToString(m_predictandStationIds);
+}
+
+wxString asParameters::PredictandStationIdsToString(const vi &predictandStationIds) {
   wxString ids;
 
-  if (m_predictandStationIds.size() == 1) {
-    ids << m_predictandStationIds[0];
+  if (predictandStationIds.size() == 1) {
+    ids << predictandStationIds[0];
   } else {
     ids = "(";
 
-    for (int i = 0; i < (int)m_predictandStationIds.size(); i++) {
-      ids << m_predictandStationIds[i];
+    for (int i = 0; i < (int)predictandStationIds.size(); i++) {
+      ids << predictandStationIds[i];
 
-      if (i < (int)m_predictandStationIds.size() - 1) {
+      if (i < (int)predictandStationIds.size() - 1) {
         ids.Append(",");
       }
     }
@@ -880,7 +876,7 @@ bool asParameters::FixWeights() {
 bool asParameters::FixCoordinates() {
   for (int i = 0; i < GetStepsNb(); i++) {
     for (int j = 0; j < GetPredictorsNb(i); j++) {
-      if (m_steps[i].predictors[j].gridType.IsSameAs("regular", false)) {
+      if (GetPredictorGridType(i, j).IsSameAs("regular", false)) {
         // Check that the coordinates are a multiple of the steps
         if (std::abs(std::fmod(m_steps[i].predictors[j].xMin - m_steps[i].predictors[j].xShift,
                                m_steps[i].predictors[j].xStep)) > 0) {
@@ -976,59 +972,61 @@ wxString asParameters::Print() const {
 }
 
 bool asParameters::IsSameAs(const asParameters &params) const {
-  if (!GetPredictandStationIdsString().IsSameAs(params.GetPredictandStationIdsString())) return false;
+  return IsSameAs(params.GetParameters(), params.GetPredictandStationIds(), params.GetAnalogsIntervalDays());
+}
 
-  if (GetAnalogsIntervalDays() != params.GetAnalogsIntervalDays()) return false;
+bool asParameters::IsSameAs(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const {
+  if (!GetPredictandStationIdsString().IsSameAs(PredictandStationIdsToString(predictandStationIds))) return false;
 
-  if (GetAnalogsExcludeDays() != params.GetAnalogsExcludeDays()) return false;
+  if (GetAnalogsIntervalDays() != analogsIntervalDays) return false;
 
   for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
-    if (GetAnalogsNumber(iStep) != params.GetAnalogsNumber(iStep)) return false;
+    if (GetAnalogsNumber(iStep) != params[iStep].analogsNumber) return false;
 
     for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-      if (NeedsPreprocessing(iStep, iPtor) != params.NeedsPreprocessing(iStep, iPtor)) return false;
+      if (NeedsPreprocessing(iStep, iPtor) != params[iStep].predictors[iPtor].preprocess) return false;
 
       if (NeedsPreprocessing(iStep, iPtor)) {
-        if (!GetPreprocessMethod(iStep, iPtor).IsSameAs(params.GetPreprocessMethod(iStep, iPtor))) return false;
+        if (!GetPreprocessMethod(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].preprocessMethod)) return false;
 
         for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
-          if (!GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDatasetId(iStep, iPtor, iPre)))
+          if (!GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(params[iStep].predictors[iPtor].preprocessDatasetIds[iPre]))
             return false;
 
-          if (!GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDataId(iStep, iPtor, iPre)))
+          if (!GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(params[iStep].predictors[iPtor].preprocessDataIds[iPre]))
             return false;
 
-          if (GetPreprocessLevel(iStep, iPtor, iPre) != params.GetPreprocessLevel(iStep, iPtor, iPre)) return false;
+          if (GetPreprocessLevel(iStep, iPtor, iPre) != params[iStep].predictors[iPtor].preprocessLevels[iPre]) return false;
 
-          if (GetPreprocessHour(iStep, iPtor, iPre) != params.GetPreprocessHour(iStep, iPtor, iPre)) return false;
+          if (GetPreprocessHour(iStep, iPtor, iPre) != params[iStep].predictors[iPtor].preprocessHours[iPre]) return false;
         }
       } else {
-        if (!GetPredictorDatasetId(iStep, iPtor).IsSameAs(params.GetPredictorDatasetId(iStep, iPtor))) return false;
+        if (!GetPredictorDatasetId(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].datasetId)) return false;
 
-        if (!GetPredictorDataId(iStep, iPtor).IsSameAs(params.GetPredictorDataId(iStep, iPtor))) return false;
+        if (!GetPredictorDataId(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].dataId)) return false;
 
-        if (GetPredictorLevel(iStep, iPtor) != params.GetPredictorLevel(iStep, iPtor)) return false;
+        if (GetPredictorLevel(iStep, iPtor) != params[iStep].predictors[iPtor].level) return false;
 
-        if (GetPredictorHour(iStep, iPtor) != params.GetPredictorHour(iStep, iPtor)) return false;
+        if (GetPredictorHour(iStep, iPtor) != params[iStep].predictors[iPtor].hour) return false;
       }
 
-      if (!GetPredictorGridType(iStep, iPtor).IsSameAs(params.GetPredictorGridType(iStep, iPtor))) return false;
+      if (!GetPredictorGridType(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].gridType)) return false;
 
-      if (GetPredictorXmin(iStep, iPtor) != params.GetPredictorXmin(iStep, iPtor)) return false;
+      if (GetPredictorXmin(iStep, iPtor) != params[iStep].predictors[iPtor].xMin) return false;
 
-      if (GetPredictorXptsnb(iStep, iPtor) != params.GetPredictorXptsnb(iStep, iPtor)) return false;
+      if (GetPredictorXptsnb(iStep, iPtor) != params[iStep].predictors[iPtor].xPtsNb) return false;
 
-      if (GetPredictorXstep(iStep, iPtor) != params.GetPredictorXstep(iStep, iPtor)) return false;
+      if (GetPredictorXstep(iStep, iPtor) != params[iStep].predictors[iPtor].xStep) return false;
 
-      if (GetPredictorYmin(iStep, iPtor) != params.GetPredictorYmin(iStep, iPtor)) return false;
+      if (GetPredictorYmin(iStep, iPtor) != params[iStep].predictors[iPtor].yMin) return false;
 
-      if (GetPredictorYptsnb(iStep, iPtor) != params.GetPredictorYptsnb(iStep, iPtor)) return false;
+      if (GetPredictorYptsnb(iStep, iPtor) != params[iStep].predictors[iPtor].yPtsNb) return false;
 
-      if (GetPredictorYstep(iStep, iPtor) != params.GetPredictorYstep(iStep, iPtor)) return false;
+      if (GetPredictorYstep(iStep, iPtor) != params[iStep].predictors[iPtor].yStep) return false;
 
-      if (GetPredictorWeight(iStep, iPtor) != params.GetPredictorWeight(iStep, iPtor)) return false;
+      if (GetPredictorWeight(iStep, iPtor) != params[iStep].predictors[iPtor].weight) return false;
 
-      if (!GetPredictorCriteria(iStep, iPtor).IsSameAs(params.GetPredictorCriteria(iStep, iPtor))) return false;
+      if (!GetPredictorCriteria(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].criteria)) return false;
     }
   }
 
@@ -1036,63 +1034,65 @@ bool asParameters::IsSameAs(const asParameters &params) const {
 }
 
 bool asParameters::IsCloseTo(const asParameters &params) const {
-  if (!GetPredictandStationIdsString().IsSameAs(params.GetPredictandStationIdsString())) return false;
+  return IsCloseTo(params.GetParameters(), params.GetPredictandStationIds(), params.GetAnalogsIntervalDays());
+}
 
-  if (abs(GetAnalogsIntervalDays() - params.GetAnalogsIntervalDays()) > 0.1 * GetAnalogsIntervalDays()) return false;
+bool asParameters::IsCloseTo(const VectorParamsStep &params, const vi &predictandStationIds, int analogsIntervalDays) const {
+  if (!GetPredictandStationIdsString().IsSameAs(PredictandStationIdsToString(predictandStationIds))) return false;
 
-  if (GetAnalogsExcludeDays() != params.GetAnalogsExcludeDays()) return false;
+  if (abs(GetAnalogsIntervalDays() - analogsIntervalDays) > 0.1 * GetAnalogsIntervalDays()) return false;
 
   for (int iStep = 0; iStep < GetStepsNb(); iStep++) {
-    if (abs(GetAnalogsNumber(iStep) - params.GetAnalogsNumber(iStep)) > 0.1 * GetAnalogsNumber(iStep)) return false;
+    if (abs(GetAnalogsNumber(iStep) - params[iStep].analogsNumber) > 0.1 * GetAnalogsNumber(iStep)) return false;
 
     for (int iPtor = 0; iPtor < GetPredictorsNb(iStep); iPtor++) {
-      if (NeedsPreprocessing(iStep, iPtor) != params.NeedsPreprocessing(iStep, iPtor)) return false;
+      if (NeedsPreprocessing(iStep, iPtor) != params[iStep].predictors[iPtor].preprocess) return false;
 
       if (NeedsPreprocessing(iStep, iPtor)) {
-        if (!GetPreprocessMethod(iStep, iPtor).IsSameAs(params.GetPreprocessMethod(iStep, iPtor))) return false;
+        if (!GetPreprocessMethod(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].preprocessMethod)) return false;
 
         for (int iPre = 0; iPre < GetPreprocessSize(iStep, iPtor); iPre++) {
-          if (!GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDatasetId(iStep, iPtor, iPre)))
+          if (!GetPreprocessDatasetId(iStep, iPtor, iPre).IsSameAs(params[iStep].predictors[iPtor].preprocessDatasetIds[iPre]))
             return false;
 
-          if (!GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(params.GetPreprocessDataId(iStep, iPtor, iPre)))
+          if (!GetPreprocessDataId(iStep, iPtor, iPre).IsSameAs(params[iStep].predictors[iPtor].preprocessDataIds[iPre]))
             return false;
 
-          if (GetPreprocessLevel(iStep, iPtor, iPre) != params.GetPreprocessLevel(iStep, iPtor, iPre)) return false;
+          if (GetPreprocessLevel(iStep, iPtor, iPre) != params[iStep].predictors[iPtor].preprocessLevels[iPre]) return false;
 
-          if (GetPreprocessHour(iStep, iPtor, iPre) != params.GetPreprocessHour(iStep, iPtor, iPre)) return false;
+          if (GetPreprocessHour(iStep, iPtor, iPre) != params[iStep].predictors[iPtor].preprocessHours[iPre]) return false;
         }
       } else {
-        if (!GetPredictorDatasetId(iStep, iPtor).IsSameAs(params.GetPredictorDatasetId(iStep, iPtor))) return false;
+        if (!GetPredictorDatasetId(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].datasetId)) return false;
 
-        if (!GetPredictorDataId(iStep, iPtor).IsSameAs(params.GetPredictorDataId(iStep, iPtor))) return false;
+        if (!GetPredictorDataId(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].dataId)) return false;
 
-        if (GetPredictorLevel(iStep, iPtor) != params.GetPredictorLevel(iStep, iPtor)) return false;
+        if (GetPredictorLevel(iStep, iPtor) != params[iStep].predictors[iPtor].level) return false;
 
-        if (GetPredictorHour(iStep, iPtor) != params.GetPredictorHour(iStep, iPtor)) return false;
+        if (GetPredictorHour(iStep, iPtor) != params[iStep].predictors[iPtor].hour) return false;
       }
 
-      if (!GetPredictorGridType(iStep, iPtor).IsSameAs(params.GetPredictorGridType(iStep, iPtor))) return false;
+      if (!GetPredictorGridType(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].gridType)) return false;
 
-      if (fabs(GetPredictorXmin(iStep, iPtor) - params.GetPredictorXmin(iStep, iPtor)) > 2) return false;
+      if (fabs(GetPredictorXmin(iStep, iPtor) - params[iStep].predictors[iPtor].xMin) > 2) return false;
 
-      if (abs(GetPredictorXptsnb(iStep, iPtor) - params.GetPredictorXptsnb(iStep, iPtor)) >
+      if (abs(GetPredictorXptsnb(iStep, iPtor) - params[iStep].predictors[iPtor].xPtsNb) >
           0.1 * GetPredictorXptsnb(iStep, iPtor))
         return false;
 
-      if (GetPredictorXstep(iStep, iPtor) != params.GetPredictorXstep(iStep, iPtor)) return false;
+      if (GetPredictorXstep(iStep, iPtor) != params[iStep].predictors[iPtor].xStep) return false;
 
-      if (fabs(GetPredictorYmin(iStep, iPtor) - params.GetPredictorYmin(iStep, iPtor)) > 2) return false;
+      if (fabs(GetPredictorYmin(iStep, iPtor) - params[iStep].predictors[iPtor].yMin) > 2) return false;
 
-      if (abs(GetPredictorYptsnb(iStep, iPtor) - params.GetPredictorYptsnb(iStep, iPtor)) >
+      if (abs(GetPredictorYptsnb(iStep, iPtor) - params[iStep].predictors[iPtor].yPtsNb) >
           0.1 * GetPredictorYptsnb(iStep, iPtor))
         return false;
 
-      if (GetPredictorYstep(iStep, iPtor) != params.GetPredictorYstep(iStep, iPtor)) return false;
+      if (GetPredictorYstep(iStep, iPtor) != params[iStep].predictors[iPtor].yStep) return false;
 
-      if (fabs(GetPredictorWeight(iStep, iPtor) - params.GetPredictorWeight(iStep, iPtor)) > 0.1) return false;
+      if (fabs(GetPredictorWeight(iStep, iPtor) - params[iStep].predictors[iPtor].weight) > 0.1) return false;
 
-      if (!GetPredictorCriteria(iStep, iPtor).IsSameAs(params.GetPredictorCriteria(iStep, iPtor))) return false;
+      if (!GetPredictorCriteria(iStep, iPtor).IsSameAs(params[iStep].predictors[iPtor].criteria)) return false;
     }
   }
 
@@ -1426,7 +1426,10 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, vwxs val) {
       }
     }
   }
-  m_steps[iStep].predictors[iPtor].preloadDataIds = val;
+  m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
+  for (auto &v : val) {
+    m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(v.ToStdString());
+  }
   return true;
 }
 
@@ -1437,7 +1440,7 @@ bool asParameters::SetPreloadDataIds(int iStep, int iPtor, wxString val) {
   }
 
   m_steps[iStep].predictors[iPtor].preloadDataIds.clear();
-  m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(val);
+  m_steps[iStep].predictors[iPtor].preloadDataIds.push_back(val.ToStdString());
 
   return true;
 }
@@ -1537,7 +1540,7 @@ bool asParameters::SetPreprocessMethod(int iStep, int iPtor, const wxString &val
     wxLogError(_("The provided value for the preprocess method is null"));
     return false;
   }
-  m_steps[iStep].predictors[iPtor].preprocessMethod = val;
+  m_steps[iStep].predictors[iPtor].preprocessMethod = val.ToStdString();
   return true;
 }
 
@@ -1625,10 +1628,10 @@ bool asParameters::SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const 
   }
 
   if (m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
-    m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
+    m_steps[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val.ToStdString();
   } else {
     wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDatasetIds.size() == iPre);
-    m_steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
+    m_steps[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val.ToStdString());
   }
 
   return true;
@@ -1650,10 +1653,10 @@ bool asParameters::SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxS
   }
 
   if (m_steps[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
-    m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
+    m_steps[iStep].predictors[iPtor].preprocessDataIds[iPre] = val.ToStdString();
   } else {
     wxASSERT((int)m_steps[iStep].predictors[iPtor].preprocessDataIds.size() == iPre);
-    m_steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
+    m_steps[iStep].predictors[iPtor].preprocessDataIds.push_back(val.ToStdString());
   }
 
   return true;
@@ -1744,18 +1747,18 @@ bool asParameters::SetPredictorDatasetId(int iStep, int iPtor, const wxString &v
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].datasetId = val;
+  m_steps[iStep].predictors[iPtor].datasetId = val.ToStdString();
 
   return true;
 }
 
-bool asParameters::SetPredictorDataId(int iStep, int iPtor, wxString val) {
+bool asParameters::SetPredictorDataId(int iStep, int iPtor, const wxString &val) {
   if (val.IsEmpty()) {
     wxLogError(_("The provided value for the predictor data is null"));
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].dataId = val;
+  m_steps[iStep].predictors[iPtor].dataId = val.ToStdString();
 
   return true;
 }
@@ -1771,13 +1774,13 @@ bool asParameters::SetPredictorLevel(int iStep, int iPtor, float val) {
   return true;
 }
 
-bool asParameters::SetPredictorGridType(int iStep, int iPtor, wxString val) {
+bool asParameters::SetPredictorGridType(int iStep, int iPtor, const wxString &val) {
   if (val.IsEmpty()) {
     wxLogError(_("The provided value for the predictor grid type is null"));
     return false;
   }
 
-  m_steps[iStep].predictors[iPtor].gridType = val;
+  m_steps[iStep].predictors[iPtor].gridType = val.ToStdString();
 
   return true;
 }
@@ -1908,7 +1911,7 @@ bool asParameters::SetPredictorCriteria(int iStep, int iPtor, const wxString &va
     wxLogError(_("The provided value for the predictor criteria is null"));
     return false;
   }
-  m_steps[iStep].predictors[iPtor].criteria = val;
+  m_steps[iStep].predictors[iPtor].criteria = val.ToStdString();
   return true;
 }
 

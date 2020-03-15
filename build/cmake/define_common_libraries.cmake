@@ -1,4 +1,12 @@
 
+# Eigen
+FetchContent_GetProperties(eigen)
+if(NOT eigen_POPULATED)
+    FetchContent_Populate(eigen)
+endif()
+include_directories(${eigen_SOURCE_DIR})
+set(USE_EIGEN TRUE)
+
 # Intel MKL
 if (USE_MKL)
     find_package(MKL REQUIRED)
@@ -72,6 +80,11 @@ if (BUILD_VIEWER)
     include_directories(${SQLITE3_INCLUDE_DIR})
     link_libraries(${SQLITE3_LIBRARY})
 
+else()
+
+    unset(GDAL_INCLUDE_DIR CACHE)
+    unset(GDAL_LIBRARIES CACHE)
+
 endif ()
 
 # ecCodes
@@ -80,13 +93,7 @@ include_directories(${ECCODES_INCLUDE_DIR})
 include_directories(${ECCODES_INCLUDE_DIRS})
 link_libraries(${ECCODES_LIBRARIES})
 
-# lsversion
-include_directories("${CMAKE_SOURCE_DIR}/src/shared_base/libs/lsversion/src")
-include_directories("${CMAKE_BINARY_DIR}")
-
-# lsversion
-if (USE_GUI)
-    set(USE_VERSION 1)
-else (USE_GUI)
-    set(USE_VERSION 0)
-endif (USE_GUI)
+# wxVersion
+FetchContent_MakeAvailable(wxVersion)
+include_directories(${wxVersion_SOURCE_DIR}/src)
+include_directories(${wxVersion_BINARY_DIR})

@@ -57,10 +57,6 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 
-# lsVersion
-if (USE_GUI)
-    add_subdirectory(libs/lsversion)
-endif (USE_GUI)
 
 ##### DECLARE EXECUTABLE
 
@@ -82,15 +78,11 @@ endif (USE_GUI)
 
 ##### LINKING
 
-add_dependencies(asbase eigen)
-
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
-if (USE_VERSION)
-    target_link_libraries(asbase lsVersion)
-endif (USE_VERSION)
+target_link_libraries(asbase wxVersion)
 
 
 #### INSTALLER

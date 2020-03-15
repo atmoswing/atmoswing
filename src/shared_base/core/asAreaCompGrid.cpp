@@ -355,6 +355,12 @@ bool asAreaCompGrid::CreateCompositeAxes(const a1d &lons, const a1d &lats, bool 
       }
     }
 
+    if (indexYmin < 0 || indexYmax < 0) {
+      wxLogError(_("Cannot find one the corresponding value (%g or %g) on the latitude axis."),
+                 m_composites[i].GetYmin(), m_composites[i].GetYmax());
+      return false;
+    }
+
     wxASSERT(indexYmin >= 0);
     wxASSERT(indexYmax >= 0);
     wxASSERT(indexYmin <= indexYmax);
