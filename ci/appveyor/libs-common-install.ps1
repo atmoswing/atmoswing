@@ -69,6 +69,24 @@ if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
+# Install TIFF
+if(!(Test-Path -Path "$LIB_DIR\include\tiff.h") -Or $REBUILD_TIFF) {
+  Init-Build "tiff"
+  Download-Lib "tiff" $TIFF_URL
+  7z x tiff.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\libtiff*" "$TMP_DIR\libtiff"
+  cd "$TMP_DIR\libtiff"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nPng has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
 # Install Jasper
 if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
   Init-Build "jasper"
@@ -132,11 +150,11 @@ if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
   Init-Build "proj"
   Download-Lib "proj" $PROJ_URL
   7z x proj.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\PROJ-6*" "$TMP_DIR\proj"
+  move "$TMP_DIR\proj-7*" "$TMP_DIR\proj"
   cd "$TMP_DIR\proj"
   mkdir build
   cd build
-  cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
+  cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DBUILD_TESTING=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
   cmake --build . --config Release > $null
   cmake --build . --config Release --target INSTALL > $null
 } else {
