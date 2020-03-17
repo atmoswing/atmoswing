@@ -82,8 +82,9 @@ if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
-target_link_libraries(asbase wxVersion)
-
+if (USE_WXVERSION)
+    target_link_libraries(asbase wxVersion)
+endif ()
 
 #### INSTALLER
 

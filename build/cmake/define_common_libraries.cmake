@@ -80,7 +80,7 @@ if (BUILD_VIEWER)
     include_directories(${SQLITE3_INCLUDE_DIR})
     link_libraries(${SQLITE3_LIBRARY})
 
-else()
+else ()
 
     unset(GDAL_INCLUDE_DIR CACHE)
     unset(GDAL_LIBRARIES CACHE)
@@ -94,6 +94,10 @@ include_directories(${ECCODES_INCLUDE_DIRS})
 link_libraries(${ECCODES_LIBRARIES})
 
 # wxVersion
-FetchContent_MakeAvailable(wxVersion)
-include_directories(${wxVersion_SOURCE_DIR}/src)
-include_directories(${wxVersion_BINARY_DIR})
+if (USE_GUI)
+    FetchContent_MakeAvailable(wxVersion)
+    include_directories(${wxVersion_SOURCE_DIR}/src)
+    include_directories(${wxVersion_BINARY_DIR})
+else()
+    set(USE_WXVERSION 0)
+endif()
