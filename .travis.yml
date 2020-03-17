@@ -11,6 +11,9 @@ matrix:
       - DISTRO=ubuntu64-bionic
       os: linux
       dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
@@ -32,12 +35,8 @@ matrix:
       os: linux
       dist: xenial
       before_install:
-        - sudo apt purge --auto-remove -y cmake
-        - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
-        - sudo mkdir /opt/cmake
-        - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
-        - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
-        - sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
@@ -62,6 +61,9 @@ matrix:
       - DISTRO=ubuntu64-bionic
       os: linux
       dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
@@ -83,12 +85,8 @@ matrix:
       os: linux
       dist: xenial
       before_install:
-        - sudo apt purge --auto-remove -y cmake
-        - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
-        - sudo mkdir /opt/cmake
-        - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
-        - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
-        - sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
@@ -107,6 +105,9 @@ matrix:
         - DEPLOY=false
       os: linux
       dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
@@ -135,6 +136,8 @@ matrix:
         - if [[ "$TRAVIS_BRANCH" != "nightly" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
           CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
