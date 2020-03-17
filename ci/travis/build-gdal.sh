@@ -8,7 +8,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; 
   wget -q -O gdal.tar.gz "http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" > /dev/null
   tar -xzf gdal.tar.gz
   cd gdal-${GDAL_VERSION}
-  ./configure --prefix=${HOME}/.libs --with-proj=${HOME}/.libs --with-sqlite3=no --with-python=no --with-pg=no --with-grass=no --with-jasper=/usr --with-curl=/usr --with-jpeg=internal --with-png=internal --disable-shared --enable-static --silent
+  ./configure --prefix=${HOME}/.libs --with-proj=${HOME}/.libs --with-sqlite3=no --with-python=no --with-pg=no --with-grass=no --with-jasper=${HOME}/.libs --with-curl=/usr --with-jpeg=internal --with-png=internal --disable-shared --enable-static --silent
   make -j6 > /dev/null
   make install
   cd ..
