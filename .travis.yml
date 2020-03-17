@@ -20,18 +20,24 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
     - env:
       - TARGET=linux-server
       - DEPLOY=true
       - DISTRO=ubuntu64-xenial
       os: linux
       dist: xenial
+      before_install:
+        - sudo apt purge --auto-remove -y cmake
+        - cd /temp
+        - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
+        - sudo mkdir /opt/cmake
+        - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
+        - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
       addons:
         apt:
           update: true
@@ -41,7 +47,6 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
             - sqlite3
@@ -67,18 +72,24 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-xenial
       os: linux
       dist: xenial
+      before_install:
+        - sudo apt purge --auto-remove -y cmake
+        - cd /temp
+        - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
+        - sudo mkdir /opt/cmake
+        - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
+        - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
       addons:
         apt:
           update: true
@@ -88,7 +99,6 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
             - sqlite3
@@ -108,12 +118,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
             - lcov
     - env:
         - TARGET=coverity-scan
@@ -137,12 +146,11 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing
