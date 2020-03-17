@@ -37,6 +37,7 @@ matrix:
         - sudo mkdir /opt/cmake
         - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
         - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
+        - sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
       addons:
         apt:
           update: true
@@ -87,6 +88,7 @@ matrix:
         - sudo mkdir /opt/cmake
         - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
         - sudo ln -s /opt/cmake/bin/cmake /usr/bin/cmake
+        - sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
       addons:
         apt:
           update: true
