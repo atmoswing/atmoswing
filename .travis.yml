@@ -33,7 +33,7 @@ matrix:
       dist: xenial
       before_install:
         - sudo apt purge --auto-remove -y cmake
-        - cd /temp
+        - cd /tmp
         - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
         - sudo mkdir /opt/cmake
         - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
@@ -84,7 +84,7 @@ matrix:
       dist: xenial
       before_install:
         - sudo apt purge --auto-remove -y cmake
-        - cd /temp
+        - cd /tmp
         - wget https://github.com/Kitware/CMake/releases/download/v3.17.0-rc3/cmake-3.17.0-rc3-Linux-x86_64.sh
         - sudo mkdir /opt/cmake
         - sudo sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake
