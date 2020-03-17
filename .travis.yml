@@ -20,7 +20,7 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libcurl3
+            - libcurl4
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
@@ -44,7 +44,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl3
@@ -72,7 +71,7 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
@@ -96,7 +95,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl3
@@ -118,7 +116,7 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
@@ -146,7 +144,7 @@ matrix:
             - cmake
             - git
             - libnetcdf-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
