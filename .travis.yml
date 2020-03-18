@@ -168,7 +168,7 @@ cache:
 install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
   - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
-  - travis_wait 45 timeout 2990 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
+  - travis_wait 40 timeout 2990 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 30 ci/travis/run-${TARGET}.sh
