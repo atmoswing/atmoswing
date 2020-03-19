@@ -1,7 +1,7 @@
 . $PSScriptRoot\libs-common-definitions.ps1
 
 # Options
-$CMAKE_URL="https://cmake.org/files/v3.14/cmake-3.14.3-win64-x64.zip"
+$CMAKE_URL="https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.16.5-win64-x64.zip"
 $TARGET_CPU="x64"
 $WX_TARGET_CPU="X64"
 $GDAL_WIN64=1
