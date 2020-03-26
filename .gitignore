@@ -56,8 +56,7 @@ atmoswing-viewer
 atmoswing-optimizer
 atmoswing-downscaler
 bin/
-bin-vs/
-bin-vs-2019/
+bin-*/
 *.rej
 .idea/*
 Test Results *
