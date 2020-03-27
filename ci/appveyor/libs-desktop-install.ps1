@@ -46,7 +46,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\setup.h" "$LIB_DIR\include\wx\setup.h"
   move "$LIB_DIR\include\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h_old"
   copy "$TMP_DIR\wxwidgets\lib\vc_${TARGET_CPU}_lib\mswu\wx\msw\rcdefs.h" "$LIB_DIR\include\wx\msw\rcdefs.h"
-  Copy-Item "$TMP_DIR\wxwidgets\lib\*" "$LIB_DIR\lib" -Recurse
+  Copy-Item "$TMP_DIR\wxwidgets\lib\*" -Destination "$LIB_DIR\lib" -Recurse
 } else {
   Write-Host "`nwxWidgets has been found in cache and will not be built" -ForegroundColor Yellow
 }
@@ -55,7 +55,7 @@ $env:WXWIN = "$LIB_DIR"
 
 . $PSScriptRoot\libs-common-install.ps1
 
-if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
 
 # Install Gdal
 if(!(Test-Path -Path "$LIB_DIR\include\gdal.h") -Or $REBUILD_GDAL) {

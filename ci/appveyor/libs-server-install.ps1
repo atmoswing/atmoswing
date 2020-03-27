@@ -1,3 +1,5 @@
+$stopwatchlibs = [system.diagnostics.stopwatch]::StartNew()
+
 # Install a recent CMake
 if ($APPVEYOR) {
   Write-Host "`nInstalling CMake" -ForegroundColor Yellow
