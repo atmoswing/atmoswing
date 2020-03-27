@@ -35,7 +35,7 @@ if ($APPVEYOR) {
 # Install wxWidgets
 if(!(Test-Path -Path "$LIB_DIR\include\wx") -Or $REBUILD_WX) {
   Init-Build "wxwidgets"
-  Download-Lib "wxwidgets" $WX_URL_NO_GUI
+  Download-Lib "wxwidgets" $WX_URL
   7z x wxwidgets.zip -o"$TMP_DIR\wxwidgets" > $null
   cd "$TMP_DIR\wxwidgets\build\msw"
   nmake -f makefile.vc BUILD=release MONOLITHIC=0 SHARED=0 USE_OPENGL=0 TARGET_CPU=$WX_TARGET_CPU USE_GUI=0 > $null

@@ -47,7 +47,6 @@ $REBUILD_SQLITE=$false
 
 # Libraries URL
 $WX_URL="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.3/wxWidgets-3.1.3.zip"
-$WX_URL_NO_GUI="https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.2/wxWidgets-3.1.2.zip"
 $ZLIB_URL="http://www.zlib.net/zlib1211.zip"
 $JPEG_URL="https://github.com/LuaDist/libjpeg/archive/master.zip"
 $OPENJPEG_URL="https://github.com/uclouvain/openjpeg/archive/v2.3.1.zip"
