@@ -20,7 +20,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl4
@@ -70,7 +69,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl4
@@ -114,7 +112,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl4
@@ -144,7 +141,6 @@ matrix:
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
             - libcurl4
@@ -167,8 +163,8 @@ cache:
     - "$HOME/.libs"
 install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
-  - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
-  - travis_wait 20 timeout 1990 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
+  - chmod +x ci/travis/dependencies-${TARGET}.sh
+  - travis_wait 20 timeout 1990 ci/travis/dependencies-${TARGET}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
   - travis_wait 25 ci/travis/run-${TARGET}.sh

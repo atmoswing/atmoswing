@@ -33,31 +33,10 @@ include("${wxWidgets_USE_FILE}")
 include_directories(${wxWidgets_INCLUDE_DIRS})
 link_libraries(${wxWidgets_LIBRARIES})
 
-# PNG
-set(PNG_FIND_QUIETLY OFF)
-find_package(PNG REQUIRED)
-include_directories(${PNG_INCLUDE_DIRS})
-link_libraries(${PNG_LIBRARIES})
-
-# Jasper
-find_package(Jasper REQUIRED)
-include_directories(${JASPER_INCLUDE_DIR})
-link_libraries(${JASPER_LIBRARIES})
-link_libraries(${JASPER_LIBRARY_RELEASE})
-
-# Jpeg
-include_directories(${JPEG_INCLUDE_DIR})
-link_libraries(${JPEG_LIBRARY})
-
 # OpenJpeg
 find_package(OpenJPEG REQUIRED)
 include_directories(${OpenJPEG_INCLUDE_DIR})
 link_libraries(${OpenJPEG_LIBRARY})
-
-# Proj
-find_package(PROJ 4.9 REQUIRED)
-include_directories(${PROJ_INCLUDE_DIR})
-link_libraries(${PROJ_LIBRARIES})
 
 # NetCDF (has to be before GDAL)
 mark_as_advanced(CLEAR NETCDF_INCLUDE_DIR)
@@ -66,7 +45,33 @@ find_package(NetCDF 4 MODULE REQUIRED)
 include_directories(${NETCDF_INCLUDE_DIRS})
 link_libraries(${NETCDF_LIBRARIES})
 
+# SQLite 3
+find_package(SQLite3 REQUIRED)
+include_directories(${SQLITE3_INCLUDE_DIR})
+link_libraries(${SQLITE3_LIBRARY})
+
+# Proj
+find_package(PROJ 4.9 REQUIRED)
+include_directories(${PROJ_INCLUDE_DIR})
+link_libraries(${PROJ_LIBRARIES})
+
 if (BUILD_VIEWER)
+
+    # PNG
+    set(PNG_FIND_QUIETLY OFF)
+    find_package(PNG REQUIRED)
+    include_directories(${PNG_INCLUDE_DIRS})
+    link_libraries(${PNG_LIBRARIES})
+
+    # Jasper
+    find_package(Jasper REQUIRED)
+    include_directories(${JASPER_INCLUDE_DIR})
+    link_libraries(${JASPER_LIBRARIES})
+    link_libraries(${JASPER_LIBRARY_RELEASE})
+
+    # Jpeg
+    include_directories(${JPEG_INCLUDE_DIR})
+    link_libraries(${JPEG_LIBRARY})
 
     # GDAL
     if (GDAL_PATH)
@@ -75,11 +80,6 @@ if (BUILD_VIEWER)
     find_package(GDAL 2 REQUIRED)
     include_directories(${GDAL_INCLUDE_DIRS})
     link_libraries(${GDAL_LIBRARIES})
-
-    # SQLite 3
-    find_package(SQLite3 REQUIRED)
-    include_directories(${SQLITE3_INCLUDE_DIR})
-    link_libraries(${SQLITE3_LIBRARY})
 
 else ()
 

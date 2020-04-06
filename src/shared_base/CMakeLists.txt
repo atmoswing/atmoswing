@@ -96,22 +96,6 @@ if (WIN32)
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_DIR_BIN})
 
-    # Png
-    find_file(PNG_DLL_NAME
-            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT PNG_DLL_NAME)
-        message(SEND_ERROR "PNG DLL not found.")
-    endif ()
-    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${PNG_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
     # NetCDF
     find_file(NETCDF_DLL_NAME
             netcdf.dll
@@ -144,22 +128,6 @@ if (WIN32)
             "${CMAKE_BINARY_DIR}")
     install(FILES ${OpenJPEG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
-    # Tiff
-    find_file(TIFF_DLL_NAME
-            tiff.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT TIFF_DLL_NAME)
-        message(SEND_ERROR "TIFF DLL not found.")
-    endif ()
-    message(STATUS "TIFF DLL: ${TIFF_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${TIFF_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${TIFF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
     # Zlib
     find_file(ZLIB_DLL_NAME
             zlib.dll
@@ -191,6 +159,38 @@ if (WIN32)
             "${CURL_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
     install(FILES ${CURL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
+    # ecCodes share
+    find_path(ECCODES_SHARE_PATH
+            NAMES definitions
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES share share/eccodes
+            NO_DEFAULT_PATH)
+    if (NOT ECCODES_SHARE_PATH)
+        message(SEND_ERROR "ecCodes share not found.")
+    endif ()
+    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${ECCODES_SHARE_PATH}"
+            "${CMAKE_BINARY_DIR}/share/eccodes")
+    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
+
+    # Tiff
+    find_file(TIFF_DLL_NAME
+            tiff.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT TIFF_DLL_NAME)
+        message(SEND_ERROR "TIFF DLL not found.")
+    endif ()
+    message(STATUS "TIFF DLL: ${TIFF_DLL_NAME}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${TIFF_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${TIFF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # Proj
     find_file(PROJ_DLL_NAME
@@ -239,21 +239,5 @@ if (WIN32)
             "${SQLITE_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
     install(FILES ${SQLITE_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # ecCodes share
-    find_path(ECCODES_SHARE_PATH
-            NAMES definitions
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES share share/eccodes
-            NO_DEFAULT_PATH)
-    if (NOT ECCODES_SHARE_PATH)
-        message(SEND_ERROR "ecCodes share not found.")
-    endif ()
-    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${ECCODES_SHARE_PATH}"
-            "${CMAKE_BINARY_DIR}/share/eccodes")
-    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
 
 endif (WIN32)
