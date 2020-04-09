@@ -3,19 +3,37 @@
 
 FROM ubuntu:18.04 AS builder
 
+ARG LIB_DIR=/app/libs
 ARG CMAKE_VERSION=3.17.0
 ARG PROJ_VERSION=7.0.0
 ARG ECCODES_VERSION=2.17.0
 
 # Copy source code
 WORKDIR /app
+RUN mkdir libs
 RUN mkdir src
 COPY ./ src
 
 # Setup build environment
-RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends git build-essential \
-        gnome-devel make wget unzip ca-certificates
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates\
+    git \
+    gnome-devel \
+    make \
+    unzip \
+    wget
+
+# Install dependencies
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    libcurl4 \
+    libnetcdf-dev \
+    libopenjp2-7-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libtiff5-dev \
+    libwxbase3.0-dev \
+    sqlite3
 
 # Install new CMake version
 RUN wget --no-check-certificate --tries=20 \
@@ -26,19 +44,14 @@ RUN wget --no-check-certificate --tries=20 \
     && ln -s /opt/cmake/bin/cmake /usr/bin/cmake \
     && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
 
-# Install dependencies
-RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends libnetcdf-dev libcurl4 libwxbase3.0-dev \
-        sqlite3 libsqlite3-dev libopenjp2-7-dev libssl-dev libtiff5-dev
-
 # Build Proj
 RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate \
         https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
     && tar -xzf proj.tar.gz \
     && rm -f proj.tar.gz \
     && cd proj-${PROJ_VERSION} \
-    && ./configure \
-    && make -j6 \
+    && ./configure --prefix=${LIB_DIR} \
+    && make -j$(nproc) \
     && make install \
     && cd .. \
     && rm -rf proj-${PROJ_VERSION}
@@ -51,8 +64,8 @@ RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
     && cd eccodes-${ECCODES_VERSION}-Source \
     && mkdir bld \
     && cd bld \
-    && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF \
-    && make -j6 \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF \
+    && make -j$(nproc) \
     && make install \
     && cd .. \
     && cd .. \
@@ -61,7 +74,7 @@ RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
 # Build AtmoSwing
 RUN cd src \
     && cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
-        -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release \
+        -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
     && make -j$(nproc)
 
 # Test
@@ -76,8 +89,11 @@ RUN cd tests \
 FROM ubuntu:18.04 AS runner
 
 # Install dependencies
-RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends sqlite3 libtiff5 libcurl4 \
-        curl unzip ca-certificates
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    curl \
+    libcurl4 \
+    libtiff5 \
+    sqlite3 \
+    unzip
 
 RUN ldconfig

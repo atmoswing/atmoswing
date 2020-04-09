@@ -8,7 +8,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/proj.h)" ] || [ "$REBUILD_PROJ" = true ]; 
   tar -xzf proj.tar.gz
   cd proj-7.0.0
   ./configure --prefix=${HOME}/.libs --silent
-  make -j6 > /dev/null
+  make -j$(nproc) > /dev/null
   make install
   cd ..
   printf 'PROJ has been built.\n'

@@ -9,7 +9,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/gdal.h)" ] || [ "$REBUILD_GDAL" = true ]; 
   tar -xzf gdal.tar.gz
   cd gdal-${GDAL_VERSION}
   ./configure --prefix=${HOME}/.libs --with-proj=${HOME}/.libs --with-sqlite3=no --with-python=no --with-pg=no --with-grass=no --with-jasper=${HOME}/.libs --with-curl=/usr --with-jpeg=internal --with-png=internal --disable-shared --enable-static --silent
-  make -j6 > /dev/null
+  make -j$(nproc) > /dev/null
   make install
   cd ..
   printf 'GDAL has been built.\n'

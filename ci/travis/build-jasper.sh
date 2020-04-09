@@ -10,7 +10,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/jasper/jasper.h)" ] || [ "$REBUILD_JASPER"
   mkdir bld
   cd bld
   cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/.libs -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${HOME}/.libs" > /dev/null
-  make -j6 > /dev/null
+  make -j$(nproc) > /dev/null
   make install
   cd ..
   printf 'Jasper has been built.\n'

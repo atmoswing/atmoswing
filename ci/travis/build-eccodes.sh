@@ -11,7 +11,7 @@ if [ ! "$(ls -A ${HOME}/.libs/include/eccodes.h)" ] || [ "$REBUILD_ECCODES" = tr
   mkdir bld
   cd bld
   cmake .. -DCMAKE_INSTALL_PREFIX=${HOME}/.libs -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_JPG=ON -DENABLE_PYTHON=OFF -DENABLE_FORTRAN=OFF -DCMAKE_PREFIX_PATH="${HOME}/.libs" > /dev/null
-  make -j6 > /dev/null
+  make -j$(nproc) > /dev/null
   make install > /dev/null
   cd ..
   cd ..
