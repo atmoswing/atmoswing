@@ -3,21 +3,26 @@
 
 FROM ubuntu:18.04 AS builder
 
-ARG CMAKE_VERSION=3.17.0-rc3
+ARG CMAKE_VERSION=3.17.0
 ARG PROJ_VERSION=7.0.0
 ARG ECCODES_VERSION=2.17.0
 
-MAINTAINER Pascal Horton <pascal.horton@alumnil.unil.ch>
+# Copy source code
+WORKDIR /app
+RUN mkdir src
+COPY ./ src
 
 # Setup build environment
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends git build-essential \
-        gnome-devel make wget unzip
+        gnome-devel make wget unzip ca-certificates
 
 # Install new CMake version
-RUN wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
+RUN wget --no-check-certificate --tries=20 \
+        https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
     && mkdir /opt/cmake \
-    && sh cmake-3.17.0-rc3-Linux-x86_64.sh --skip-license --prefix=/opt/cmake \
+    && sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix=/opt/cmake \
+    && rm -f sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
     && ln -s /opt/cmake/bin/cmake /usr/bin/cmake \
     && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
 
@@ -27,7 +32,8 @@ RUN apt-get update -y \
         sqlite3 libsqlite3-dev libopenjp2-7-dev libssl-dev libtiff5-dev
 
 # Build Proj
-RUN wget --no-check-certificate -O proj.tar.gz --no-check-certificate https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
+RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate \
+        https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
     && tar -xzf proj.tar.gz \
     && rm -f proj.tar.gz \
     && cd proj-${PROJ_VERSION} \
@@ -38,7 +44,8 @@ RUN wget --no-check-certificate -O proj.tar.gz --no-check-certificate https://do
     && rm -rf proj-${PROJ_VERSION}
 
 # Build ecCodes
-RUN wget --no-check-certificate -O eccodes.tar.gz https://confluence.ecmwf.int/download/attachments/45757960/eccodes-${ECCODES_VERSION}-Source.tar.gz \
+RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
+        https://confluence.ecmwf.int/download/attachments/45757960/eccodes-${ECCODES_VERSION}-Source.tar.gz \
     && tar -xzf eccodes.tar.gz \
     && rm -f eccodes.tar.gz \
     && cd eccodes-${ECCODES_VERSION}-Source \
@@ -52,7 +59,8 @@ RUN wget --no-check-certificate -O eccodes.tar.gz https://confluence.ecmwf.int/d
     && rm -rf eccodes-${ECCODES_VERSION}-Source
 
 # Build AtmoSwing
-RUN cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
+RUN cd src \
+    && cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
         -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release \
     && make -j$(nproc)
 
