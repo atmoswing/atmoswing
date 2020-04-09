@@ -1,5 +1,5 @@
 ##
-# atmoswing/atmoswing:ubuntu-server
+# atmoswing/atmoswing-server:ubuntu
 
 FROM ubuntu:18.04 AS builder
 
@@ -77,23 +77,32 @@ RUN cd src \
         -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
     && make -j$(nproc)
 
-# Test
-RUN cd tests \
-    && ./atmoswing-tests
-
-
-
-
 
 # Build final image
 FROM ubuntu:18.04 AS runner
 
+WORKDIR /app
+
+ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
+
+RUN mkdir /app/tests
+
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    curl \
     libcurl4 \
+    libnetcdf13 \
+    libopenjp2-7 \
     libtiff5 \
+    libwxbase3.0-0v5 \
+    openssl \
     sqlite3 \
     unzip
+
+# Copy from builder
+COPY --from=builder  /app/libs/ /usr/local
+COPY --from=builder  /app/src/data /usr/local/share/atmoswing
+COPY --from=builder  /app/src/Release/* /usr/local/bin/
+#COPY --from=builder  /app/src/tests/atmoswing-tests /usr/local/bin/
+#COPY --from=builder  /app/src/tests/files /usr/local/bin/tests/files
 
 RUN ldconfig
