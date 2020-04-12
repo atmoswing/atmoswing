@@ -1,6 +1,9 @@
 ##
 # atmoswing/atmoswing-server:ubuntu
 
+# Steps ordered them from the less frequently changed to the more frequently
+# changed to ensure the build cache is reused.
+
 FROM ubuntu:18.04 AS builder
 
 ARG LIB_DIR=/app/libs
@@ -8,11 +11,7 @@ ARG CMAKE_VERSION=3.17.0
 ARG PROJ_VERSION=7.0.0
 ARG ECCODES_VERSION=2.17.0
 
-# Copy source code
 WORKDIR /app
-RUN mkdir libs
-RUN mkdir src
-COPY ./ src
 
 # Setup build environment
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
@@ -24,6 +23,15 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip \
     wget
 
+# Install new CMake version
+RUN wget --no-check-certificate --tries=20 \
+        https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
+    && mkdir /opt/cmake \
+    && sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix=/opt/cmake \
+    && rm -f sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
+    && ln -s /opt/cmake/bin/cmake /usr/bin/cmake \
+    && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libcurl4 \
@@ -34,15 +42,6 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libtiff5-dev \
     libwxbase3.0-dev \
     sqlite3
-
-# Install new CMake version
-RUN wget --no-check-certificate --tries=20 \
-        https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
-    && mkdir /opt/cmake \
-    && sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix=/opt/cmake \
-    && rm -f sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
-    && ln -s /opt/cmake/bin/cmake /usr/bin/cmake \
-    && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
 
 # Build Proj
 RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate \
@@ -71,6 +70,11 @@ RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
     && cd .. \
     && rm -rf eccodes-${ECCODES_VERSION}-Source
 
+# Copy source code
+RUN mkdir libs
+RUN mkdir src
+COPY ./ src
+
 # Build AtmoSwing
 RUN cd src \
     && cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
@@ -84,8 +88,6 @@ FROM ubuntu:18.04 AS runner
 WORKDIR /app
 
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
-
-RUN mkdir /app/tests
 
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
