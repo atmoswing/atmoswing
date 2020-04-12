@@ -105,6 +105,7 @@ COPY --from=builder  /app/src/tests/atmoswing-tests /usr/local/bin/
 COPY --from=builder  /app/src/tests/files /usr/local/bin/tests/files
 
 RUN ldconfig
+RUN atmoswing-tests
 
 
 # Build final image
