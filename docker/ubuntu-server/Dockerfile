@@ -82,6 +82,31 @@ RUN cd src \
     && make -j$(nproc)
 
 
+# Build test image
+FROM ubuntu:18.04 AS test
+
+ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
+
+# Install dependencies
+RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    libcurl4 \
+    libnetcdf13 \
+    libopenjp2-7 \
+    libtiff5 \
+    libwxbase3.0-0v5 \
+    openssl \
+    sqlite3 \
+    unzip
+
+# Copy from builder
+COPY --from=builder  /app/libs/ /usr/local
+COPY --from=builder  /app/src/data /usr/local/share/atmoswing
+COPY --from=builder  /app/src/tests/atmoswing-tests /usr/local/bin/
+COPY --from=builder  /app/src/tests/files /usr/local/bin/tests/files
+
+RUN ldconfig
+
+
 # Build final image
 FROM ubuntu:18.04 AS runner
 
@@ -104,7 +129,5 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 COPY --from=builder  /app/libs/ /usr/local
 COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/Release/* /usr/local/bin/
-#COPY --from=builder  /app/src/tests/atmoswing-tests /usr/local/bin/
-#COPY --from=builder  /app/src/tests/files /usr/local/bin/tests/files
 
 RUN ldconfig
