@@ -12,6 +12,7 @@ ARG PROJ_VERSION=7.0.0
 ARG ECCODES_VERSION=2.17.0
 
 WORKDIR /app
+RUN mkdir libs
 
 # Setup build environment
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
@@ -71,7 +72,6 @@ RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
     && rm -rf eccodes-${ECCODES_VERSION}-Source
 
 # Copy source code
-RUN mkdir libs
 RUN mkdir src
 COPY ./ src
 
