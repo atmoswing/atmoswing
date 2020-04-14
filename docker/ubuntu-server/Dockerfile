@@ -85,6 +85,8 @@ RUN cd src \
 # Build test image
 FROM ubuntu:18.04 AS test
 
+WORKDIR /app
+
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 
 # Install dependencies
@@ -99,13 +101,14 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /app/libs/ /usr/local
+COPY --from=builder  /app/libs/lib/*.so /usr/local/lib
+COPY --from=builder  /app/libs/lib/*.so.* /usr/local/lib
 COPY --from=builder  /app/src/data /usr/local/share/atmoswing
-COPY --from=builder  /app/src/tests/atmoswing-tests /usr/local/bin/
-COPY --from=builder  /app/src/tests/files /usr/local/bin/tests/files
+COPY --from=builder  /app/src/tests/atmoswing-tests /app/
+COPY --from=builder  /app/src/tests/files /app/tests/files
 
 RUN ldconfig
-RUN atmoswing-tests
+RUN ./atmoswing-tests
 
 
 # Build final image
