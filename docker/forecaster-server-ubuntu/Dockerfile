@@ -1,5 +1,5 @@
 ##
-# atmoswing/atmoswing-server:ubuntu
+# atmoswing/forecaster-server:ubuntu
 
 # Steps ordered them from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
@@ -77,7 +77,7 @@ COPY ./ src
 
 # Build AtmoSwing
 RUN cd src \
-    && cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=1 -DBUILD_VIEWER=0 \
+    && cmake CMakeLists.txt -DBUILD_OPTIMIZER=0 -DBUILD_FORECASTER=1 -DBUILD_DOWNSCALER=0 -DBUILD_VIEWER=0 \
         -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
     && make -j$(nproc)
 
@@ -136,3 +136,6 @@ COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/Release/* /usr/local/bin/
 
 RUN ldconfig
+
+ENTRYPOINT ["/usr/local/bin/atmoswing-forecaster"]
+CMD ["--help"]
