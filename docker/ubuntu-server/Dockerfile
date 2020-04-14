@@ -127,7 +127,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /app/libs/ /usr/local
+COPY --from=builder  /app/libs/lib/*.so /usr/local/lib
+COPY --from=builder  /app/libs/lib/*.so.* /usr/local/lib
 COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/Release/* /usr/local/bin/
 
