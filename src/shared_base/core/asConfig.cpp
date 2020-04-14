@@ -32,10 +32,14 @@
 #include <wx/stdpaths.h>  // wxStandardPaths returns the standard locations in the file system
 
 wxString asConfig::GetLogDir() {
+#ifdef ON_DOCKER
+  wxString tempDir = "/app/config/"
+#else
   ThreadsManager().CritSectionConfig().Enter();
   wxString tempDir = wxStandardPaths::Get().GetTempDir();
   ThreadsManager().CritSectionConfig().Leave();
   tempDir.Append(DS);
+#endif
   return tempDir;
 }
 
@@ -95,6 +99,9 @@ wxString asConfig::GetSoftDir() {
 }
 
 wxString asConfig::GetUserDataDir() {
+#ifdef ON_DOCKER
+  wxString userDataDir = "/app/config/"
+#else
   ThreadsManager().CritSectionConfig().Enter();
   wxStandardPathsBase &stdPth = wxStandardPaths::Get();
   stdPth.UseAppInfo(0);
@@ -111,19 +118,28 @@ wxString asConfig::GetUserDataDir() {
   stdPth.UseAppInfo(1);
   ThreadsManager().CritSectionConfig().Leave();
   userDataDir.Append(DS);
+#endif
   return userDataDir;
 }
 
 wxString asConfig::GetDocumentsDir() {
+#ifdef ON_DOCKER
+  wxString dirDocs = "/app/config/"
+#else
   ThreadsManager().CritSectionConfig().Enter();
   wxString dirDocs = wxStandardPaths::Get().GetDocumentsDir();
   ThreadsManager().CritSectionConfig().Leave();
   dirDocs.Append(DS);
+#endif
   return dirDocs;
 }
 
 wxString asConfig::GetDefaultUserWorkingDir() {
+#ifdef ON_DOCKER
+  wxString dirData = "/app/config/"
+#else
   wxString dirData = GetUserDataDir() + DS + "Data" + DS;
+#endif
   return dirData;
 }
 
