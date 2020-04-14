@@ -17,7 +17,7 @@ RUN mkdir libs
 # Setup build environment
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     build-essential \
-    ca-certificates\
+    ca-certificates \
     git \
     gnome-devel \
     make \
@@ -91,6 +91,7 @@ ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    ca-certificates \
     libcurl4 \
     libnetcdf13 \
     libopenjp2-7 \
@@ -121,6 +122,7 @@ ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
+    ca-certificates \
     libcurl4 \
     libnetcdf13 \
     libopenjp2-7 \
