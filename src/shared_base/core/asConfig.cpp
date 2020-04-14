@@ -33,7 +33,7 @@
 
 wxString asConfig::GetLogDir() {
 #ifdef ON_DOCKER
-  wxString tempDir = "/app/config/"
+  wxString tempDir = "/app/config/";
 #else
   ThreadsManager().CritSectionConfig().Enter();
   wxString tempDir = wxStandardPaths::Get().GetTempDir();
@@ -100,7 +100,7 @@ wxString asConfig::GetSoftDir() {
 
 wxString asConfig::GetUserDataDir() {
 #ifdef ON_DOCKER
-  wxString userDataDir = "/app/config/"
+  wxString userDataDir = "/app/config/";
 #else
   ThreadsManager().CritSectionConfig().Enter();
   wxStandardPathsBase &stdPth = wxStandardPaths::Get();
@@ -124,7 +124,7 @@ wxString asConfig::GetUserDataDir() {
 
 wxString asConfig::GetDocumentsDir() {
 #ifdef ON_DOCKER
-  wxString dirDocs = "/app/config/"
+  wxString dirDocs = "/app/config/";
 #else
   ThreadsManager().CritSectionConfig().Enter();
   wxString dirDocs = wxStandardPaths::Get().GetDocumentsDir();
@@ -136,7 +136,7 @@ wxString asConfig::GetDocumentsDir() {
 
 wxString asConfig::GetDefaultUserWorkingDir() {
 #ifdef ON_DOCKER
-  wxString dirData = "/app/config/"
+  wxString dirData = "/app/config/";
 #else
   wxString dirData = GetUserDataDir() + DS + "Data" + DS;
 #endif
