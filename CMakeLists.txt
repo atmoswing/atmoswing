@@ -86,6 +86,12 @@ else (WIN32)
     set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 endif (WIN32)
 
+# Docker option
+option(ON_DOCKER "Enable only if AtmoSwing is built for Docker." OFF)
+if (ON_DOCKER)
+    add_definitions(-DON_DOCKER)
+endif(ON_DOCKER)
+
 # Using the Intel MKL
 option(USE_MKL "Do you want to use Intel MKL ?" OFF)
 
