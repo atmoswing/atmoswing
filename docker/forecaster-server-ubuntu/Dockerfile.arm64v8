@@ -1,5 +1,5 @@
 ##
-# atmoswing/forecaster-server:ubuntu
+# atmoswing/forecaster-server:ubuntu:arm64
 
 # Steps ordered them from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
