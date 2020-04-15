@@ -21,6 +21,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     git \
     gnome-devel \
     make \
+    openssl \
     unzip \
     wget
 
