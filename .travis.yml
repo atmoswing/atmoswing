@@ -1,9 +1,8 @@
 language: cpp
 compiler: gcc
-sudo: required
 git:
   depth: 9999999
-matrix:
+jobs:
   include:
     - env:
       - TARGET=linux-server
@@ -178,9 +177,8 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    skip_cleanup: true
+    cleanup: false
     acl: public-read
-    local-dir: deploy
     on:
       repo: atmoswing/atmoswing
       condition: $DEPLOY = true
@@ -190,9 +188,8 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    skip_cleanup: true
+    cleanup: false
     acl: public-read
-    local-dir: deploy
     on:
       repo: atmoswing/atmoswing
       condition: $DEPLOY = true
