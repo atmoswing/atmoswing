@@ -26,12 +26,16 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
 
 # Install new CMake version
 RUN wget --no-check-certificate --tries=20 \
-        https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
-    && mkdir /opt/cmake \
-    && sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix=/opt/cmake \
-    && rm -f sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
-    && ln -s /opt/cmake/bin/cmake /usr/bin/cmake \
-    && ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+        https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
+    && tar -xf cmake-${CMAKE_VERSION}.tar.gz \
+    && rm -f cmake-${CMAKE_VERSION}.tar.gz \
+    && cd cmake-${CMAKE_VERSION} \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && cd .. \
+    && rm -rf cmake-${CMAKE_VERSION} \
+    && ldconfig
 
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
