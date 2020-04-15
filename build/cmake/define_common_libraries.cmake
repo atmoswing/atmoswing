@@ -46,7 +46,7 @@ include_directories(${NETCDF_INCLUDE_DIRS})
 link_libraries(${NETCDF_LIBRARIES})
 
 # SQLite 3
-find_package(SQLite3 REQUIRED)
+find_package(SQLITE3 REQUIRED)
 include_directories(${SQLITE3_INCLUDE_DIR})
 link_libraries(${SQLITE3_LIBRARY})
 
@@ -89,7 +89,7 @@ else ()
 endif ()
 
 # ecCodes
-find_package(eccodes MODULE REQUIRED)
+find_package(ECCODES MODULE REQUIRED)
 include_directories(${ECCODES_INCLUDE_DIR})
 include_directories(${ECCODES_INCLUDE_DIRS})
 link_libraries(${ECCODES_LIBRARIES})
