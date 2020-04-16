@@ -87,8 +87,6 @@ FROM ubuntu:18.04 AS test
 
 WORKDIR /app
 
-ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
-
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -109,6 +107,8 @@ COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/tests/atmoswing-tests /app/
 COPY --from=builder  /app/src/tests/files /app/tests/files
 
+ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
+
 RUN ldconfig
 RUN ./atmoswing-tests
 
@@ -117,8 +117,6 @@ RUN ./atmoswing-tests
 FROM ubuntu:18.04 AS runner
 
 WORKDIR /app
-
-ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 
 # Install dependencies
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
@@ -138,6 +136,8 @@ COPY --from=builder  /app/libs/lib/*.so.* /usr/local/lib/
 COPY --from=builder  /app/libs/share /usr/local/share
 COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/Release/* /usr/local/bin/
+
+ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 
 RUN ldconfig
 
