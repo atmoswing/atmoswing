@@ -6,13 +6,9 @@
 
 FROM ubuntu:18.04 AS builder
 
-ARG LIB_DIR=/app/libs
-ARG CMAKE_VERSION=3.17.0
-ARG PROJ_VERSION=7.0.0
-ARG ECCODES_VERSION=2.17.0
-
 WORKDIR /app
 RUN mkdir libs
+ARG LIB_DIR=/app/libs
 
 # Setup build environment
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
@@ -25,6 +21,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     wget
 
 # Install new CMake version
+ARG CMAKE_VERSION=3.17.0
 RUN wget --no-check-certificate --tries=20 \
         https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh \
     && mkdir /opt/cmake \
@@ -45,6 +42,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     sqlite3
 
 # Build Proj
+ARG PROJ_VERSION=7.0.0
 RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate \
         https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz \
     && tar -xzf proj.tar.gz \
@@ -57,6 +55,7 @@ RUN wget --no-check-certificate --tries=20 -O proj.tar.gz --no-check-certificate
     && rm -rf proj-${PROJ_VERSION}
 
 # Build ecCodes
+ARG ECCODES_VERSION=2.17.0
 RUN wget --no-check-certificate --tries=20 -O eccodes.tar.gz \
         https://confluence.ecmwf.int/download/attachments/45757960/eccodes-${ECCODES_VERSION}-Source.tar.gz \
     && tar -xzf eccodes.tar.gz \
@@ -108,8 +107,8 @@ COPY --from=builder  /app/src/tests/atmoswing-tests /app/
 COPY --from=builder  /app/src/tests/files /app/tests/files
 
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
-
 RUN ldconfig
+
 RUN ./atmoswing-tests
 
 
@@ -138,7 +137,6 @@ COPY --from=builder  /app/src/data /usr/local/share/atmoswing
 COPY --from=builder  /app/src/Release/* /usr/local/bin/
 
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
-
 RUN ldconfig
 
 ENTRYPOINT ["/usr/local/bin/atmoswing-optimizer"]
