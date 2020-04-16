@@ -1,2 +1,9 @@
 bin*
 cmake-build-*
+art/
+benchmark/
+ci/
+.clang-format
+.travis.yml
+appveyor.yml
+readme.md
