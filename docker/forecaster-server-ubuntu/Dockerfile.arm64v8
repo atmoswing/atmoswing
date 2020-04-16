@@ -86,6 +86,14 @@ RUN cd src \
         -DON_DOCKER=ON -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
     && make -j$(nproc)
 
+# Prepare files for deployment
+RUN mkdir /app/deploy
+COPY /app/libs/lib/*.so /app/deploy/lib/
+COPY /app/libs/lib/*.so.* /app/deploy/lib/
+COPY /app/libs/share /app/deploy/share
+COPY /app/src/data /app/deploy/share/atmoswing
+COPY /app/src/Release/* /app/deploy/bin/
+
 
 # Build test image
 FROM arm64v8/ubuntu:18.04 AS test
@@ -104,10 +112,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /app/libs/lib/*.so /usr/local/lib/
-COPY --from=builder  /app/libs/lib/*.so.* /usr/local/lib/
-COPY --from=builder  /app/libs/share /usr/local/share
-COPY --from=builder  /app/src/data /usr/local/share/atmoswing
+COPY --from=builder  /deploy /usr/local
 COPY --from=builder  /app/src/tests/atmoswing-tests /app/
 COPY --from=builder  /app/src/tests/files /app/tests/files
 
@@ -134,11 +139,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /app/libs/lib/*.so /usr/local/lib/
-COPY --from=builder  /app/libs/lib/*.so.* /usr/local/lib/
-COPY --from=builder  /app/libs/share /usr/local/share
-COPY --from=builder  /app/src/data /usr/local/share/atmoswing
-COPY --from=builder  /app/src/Release/* /usr/local/bin/
+COPY --from=builder  /deploy /usr/local
 
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 RUN ldconfig
