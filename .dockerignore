@@ -1,8 +1,10 @@
-bin*
-cmake-build-*
+.git/
+.idea/
 art/
 benchmark/
+bin*
 ci/
+cmake-build-*
 .clang-format
 .travis.yml
 appveyor.yml
