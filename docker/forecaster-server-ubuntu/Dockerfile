@@ -82,8 +82,7 @@ RUN cd src \
 
 # Prepare files for deployment
 RUN mkdir /app/deploy
-COPY /app/libs/lib/*.so /app/deploy/lib/
-COPY /app/libs/lib/*.so.* /app/deploy/lib/
+COPY /app/libs/lib/*.so* /app/deploy/lib/
 COPY /app/libs/share /app/deploy/share
 COPY /app/src/data /app/deploy/share/atmoswing
 COPY /app/src/Release/* /app/deploy/bin/
