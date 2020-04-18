@@ -87,7 +87,7 @@ RUN mkdir /app/deploy \
 RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
     && cp -a /app/libs/share /app/deploy/share \
     && cp -a /app/src/data /app/deploy/share/atmoswing \
-    && cp /app/src/Release/* /app/deploy/bin/
+    && cp -a /app/src/Release/* /app/deploy/bin/
 
 
 # Build test image
