@@ -108,7 +108,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /deploy /usr/local
+COPY --from=builder  /app/deploy /usr/local
 COPY --from=builder  /app/src/tests/atmoswing-tests /app/
 COPY --from=builder  /app/src/tests/files /app/tests/files
 
@@ -136,7 +136,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip
 
 # Copy from builder
-COPY --from=builder  /deploy /usr/local
+COPY --from=builder  /app/deploy /usr/local
 
 ENV ECCODES_DEFINITION_PATH /usr/local/share/eccodes/definitions
 RUN ldconfig
