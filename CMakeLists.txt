@@ -126,7 +126,7 @@ endif ()
 if (BUILD_VIEWER)
     set(USE_GUI ON)
 else (BUILD_VIEWER)
-    option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
+    option(USE_GUI "Sould AtmoSwing be built with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
 # Disable testing tree
