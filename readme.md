@@ -38,6 +38,14 @@ AtmoSwing documentation can be found here: https://atmoswing.readthedocs.io/en/l
 
 The repository of the documentation is https://github.com/atmoswing/user-manual
 
+## Docker images ##
+
+AtmoSwing Forecaster image: https://hub.docker.com/repository/docker/atmoswing/forecaster
+
+AtmoSwing Optimizer image: https://hub.docker.com/repository/docker/atmoswing/optimizer
+
+AtmoSwing Downscaler image: https://hub.docker.com/repository/docker/atmoswing/downscaler
+
 ## Download AtmoSwing ##
 
 You can download the releases under: https://github.com/atmoswing/atmoswing/releases
