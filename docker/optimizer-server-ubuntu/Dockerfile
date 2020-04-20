@@ -4,7 +4,7 @@
 # Steps ordered them from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
-FROM ubuntu:18.04 AS builder
+FROM 10.2-devel-ubuntu18.04 AS builder
 
 WORKDIR /app
 RUN mkdir libs
@@ -78,6 +78,7 @@ COPY ./ src
 RUN cd src \
     && cmake CMakeLists.txt -DBUILD_OPTIMIZER=1 -DBUILD_FORECASTER=0 -DBUILD_DOWNSCALER=0 -DBUILD_VIEWER=0 \
         -DON_DOCKER=ON -DCREATE_INSTALLER=OFF -DUSE_GUI=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$LIB_DIR \
+        -DUSE_CUDA=ON -DTEST_CUDA=OFF \
     && make -j$(nproc)
 
 # Prepare files for deployment
@@ -91,7 +92,7 @@ RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
 
 
 # Build test image
-FROM ubuntu:18.04 AS test
+FROM 10.2-runtime-ubuntu18.04 AS test
 
 WORKDIR /app
 
@@ -119,7 +120,7 @@ RUN ./atmoswing-tests
 
 
 # Build final image
-FROM ubuntu:18.04 AS runner
+FROM 10.2-runtime-ubuntu18.04 AS runner
 
 WORKDIR /app
 
