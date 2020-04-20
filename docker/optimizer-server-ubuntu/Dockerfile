@@ -4,7 +4,7 @@
 # Steps ordered them from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
-FROM 10.2-devel-ubuntu18.04 AS builder
+FROM nvidia/cuda:10.2-devel-ubuntu18.04 AS builder
 
 WORKDIR /app
 RUN mkdir libs
@@ -92,7 +92,7 @@ RUN cp -a /app/libs/lib/*.so* /app/deploy/lib/ \
 
 
 # Build test image
-FROM 10.2-runtime-ubuntu18.04 AS test
+FROM nvidia/cuda:10.2-runtime-ubuntu18.04 AS test
 
 WORKDIR /app
 
@@ -120,7 +120,7 @@ RUN ./atmoswing-tests
 
 
 # Build final image
-FROM 10.2-runtime-ubuntu18.04 AS runner
+FROM nvidia/cuda:10.2-runtime-ubuntu18.04 AS runner
 
 WORKDIR /app
 
