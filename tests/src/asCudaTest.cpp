@@ -26,6 +26,7 @@
  */
 
 #ifdef USE_CUDA
+#ifdef TEST_CUDA
 
 #include <gtest/gtest.h>
 #include "asCuda.cuh"
@@ -94,4 +95,5 @@ TEST(Cuda, UseInManyThreadsWithStreams) {
   ThreadsManager().Wait(asThread::Undefined);
 }
 
+#endif
 #endif

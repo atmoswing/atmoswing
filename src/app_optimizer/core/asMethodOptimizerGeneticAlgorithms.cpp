@@ -51,7 +51,8 @@ asMethodOptimizerGeneticAlgorithms::asMethodOptimizerGeneticAlgorithms()
       m_couplesSelectionType(0),
       m_crossoverType(0),
       m_mutationsModeType(0),
-      m_allowElitismForTheBest(true) {
+      m_allowElitismForTheBest(true),
+      m_enableHistory(false) {
   m_warnFailedLoadingData = false;
 }
 
@@ -167,6 +168,7 @@ bool asMethodOptimizerGeneticAlgorithms::Manager() {
   m_couplesSelectionType = (int)pConfig->ReadLong("/GAs/CouplesSelectionOperator", 0l);
   m_crossoverType = (int)pConfig->ReadLong("/GAs/CrossoverOperator", 0l);
   m_mutationsModeType = (int)pConfig->ReadLong("/GAs/MutationOperator", 0l);
+  m_enableHistory = pConfig->ReadBool("/GAs/EnableHistory", false);
   ThreadsManager().CritSectionConfig().Leave();
 
   // Reset the score of the climatology
@@ -216,18 +218,19 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
   vi stationId = params.GetPredictandStationIds();
   wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
   asResultsParametersArray resFinalPopulation;
-  resFinalPopulation.Init(
-      wxString::Format(_("station_%s_final_population"), GetPredictandStationIdsList(stationId).c_str()));
+  resFinalPopulation.Init(wxString::Format(_("station_%s_final_population"),
+                                           GetPredictandStationIdsList(stationId).c_str()));
   asResultsParametersArray resBestIndividual;
-  resBestIndividual.Init(
-      wxString::Format(_("station_%s_best_individual"), GetPredictandStationIdsList(stationId).c_str()));
-  m_resGenerations.Init(wxString::Format(_("station_%s_generations"), GetPredictandStationIdsList(stationId).c_str()));
+  resBestIndividual.Init(wxString::Format(_("station_%s_best_individual"),
+                                          GetPredictandStationIdsList(stationId).c_str()));
+  m_resGenerations.Init(wxString::Format(_("station_%s_generations"),
+                                         GetPredictandStationIdsList(stationId).c_str()));
   wxString resXmlFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
   resXmlFilePath.Append(wxString::Format("/%s_station_%s_best_parameters.xml", time.c_str(),
                                          GetPredictandStationIdsList(stationId).c_str()));
   wxString operatorsFilePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-  operatorsFilePath.Append(
-      wxString::Format("/%s_station_%s_operators.txt", time.c_str(), GetPredictandStationIdsList(stationId).c_str()));
+  operatorsFilePath.Append(wxString::Format("/%s_station_%s_operators.txt", time.c_str(),
+                                            GetPredictandStationIdsList(stationId).c_str()));
 
   // Initialize parameters before loading data.
   InitParameters(params);
@@ -244,6 +247,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
       wxLogError(_("Could not preload the data."));
       return false;
     }
+    wxLogMessage(_("Predictor data preloaded."));
   } catch (std::bad_alloc &ba) {
     wxString msg(ba.what(), wxConvUTF8);
     wxLogError(_("Bad allocation caught during data preloading (in GAs): %s"), msg);
@@ -313,8 +317,6 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
       if (m_cancel) {
         return false;
       }
-
-      wxLog::FlushActive();
 
       ThreadsManager().WaitForFreeThread(threadType);
 
@@ -392,16 +394,23 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
     // Elitism after mutation must occur after evaluation
     ElitismAfterMutation();
 
-    // Save the full generation
-    for (int i = 0; i < m_parameters.size(); i++) {
-      m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+    if (m_assessmentCounter > 0){ // Skip if is resuming
+
+      if (!m_enableHistory) {
+        m_resGenerations.Clear();
+      }
+
+      // Save the full generation
+      for (int i = 0; i < m_parameters.size(); i++) {
+        m_resGenerations.Add(m_parameters[i], m_scoresCalib[i]);
+      }
+
+      // Save operators status
+      SaveOperators(operatorsFilePath);
+
+      // Print results
+      m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size());
     }
-
-    // Save operators status
-    SaveOperators(operatorsFilePath);
-
-    // Print results
-    m_resGenerations.Print();
 
     // Display stats
     float meanScore = asMean(&m_scoresCalib[0], &m_scoresCalib[m_scoresCalib.size() - 1]);
@@ -460,7 +469,7 @@ bool asMethodOptimizerGeneticAlgorithms::ManageOneRun() {
   if (!resFinalPopulation.Print()) return false;
   SetBestParameters(resBestIndividual);
   if (!resBestIndividual.Print()) return false;
-  if (!m_resGenerations.Print()) return false;
+  if (!m_resGenerations.Print(m_resGenerations.GetCount() - m_parameters.size())) return false;
 
   // Generate xml file with the best parameters set
   if (!m_parameters[0].GenerateSimpleParametersFile(resXmlFilePath)) {
@@ -505,8 +514,16 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         wxString filePath = filesGen.Last();
         filesGen.Clear();
 
-        wxLogWarning(_("Previous intermediate results were found and will be loaded."));
-        asLog::PrintToConsole(_("Previous intermediate results were found and will be loaded.\n"));
+        // Check that the length is consistent with the population size
+        int nLines = asFileText::CountLines(filePath) - 1;
+        if (nLines % m_popSize != 0) {
+          wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
+          return false;
+        }
+
+        wxString msg = wxString::Format(_("Previous intermediate results were found and will be loaded (%d lines)."), nLines);
+        wxLogWarning(msg);
+        asLog::PrintToConsole(msg);
         asFileText prevResults(filePath, asFile::ReadOnly);
         if (!prevResults.Open()) {
           wxLogError(_("Couldn't open the file %s."), filePath.c_str());
@@ -544,9 +561,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
           } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                      (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(
-                _("The number of predictors do not correspond between the current and the previous "
-                  "parameters."));
+            wxLogError(_("The number of predictors do not correspond between the current "
+                  "and the previous parameters."));
             return false;
           }
 
@@ -562,9 +578,8 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             break;
           } else if ((indexInFile != wxNOT_FOUND && indexInParams == wxNOT_FOUND) ||
                      (indexInFile == wxNOT_FOUND && indexInParams != wxNOT_FOUND)) {
-            wxLogError(
-                _("The number of atmospheric levels do not correspond between the current and the previous "
-                  "parameters."));
+            wxLogError(_("The number of atmospheric levels do not correspond between the current "
+                  "and the previous parameters."));
             return false;
           }
 
@@ -572,13 +587,29 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           currentParamsPrint.Replace("Level", wxEmptyString, false);
         }
 
+        int genNb = nLines / m_popSize;
+        int iLastGen = (genNb - 1) * m_popSize;
+
+        asParametersOptimizationGAs prevParams;
+
         // Parse the parameters data
-        std::vector<asParametersOptimizationGAs> vectParams;
         std::vector<float> vectScores;
+        if (m_enableHistory) {
+          vectScores.reserve(nLines);
+        }
+        int iLine = 0, iVar = 0;
         do {
           if (fileLine.IsEmpty()) break;
 
-          asParametersOptimizationGAs prevParams = m_parameters[0];
+          if (!m_enableHistory && iLine < iLastGen) {
+            // Get next line
+            fileLine = prevResults.GetNextLine();
+            iLine++;
+
+            continue;
+          }
+
+          prevParams = m_parameters[0];
           if (!prevParams.GetValuesFromString(fileLine)) {
             return false;
           }
@@ -592,36 +623,28 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           auto prevScoresCalib = float(scoreVal);
 
           // Add to the new array
-          m_resGenerations.Add(prevParams, prevScoresCalib);
-          vectParams.push_back(prevParams);
+          m_resGenerations.AddWithoutProcessingMedian(prevParams, prevScoresCalib);
           vectScores.push_back(prevScoresCalib);
+          if (iLine >= iLastGen) {
+            // Restore the last generation
+            m_parameters[iVar] = prevParams;
+            m_scoresCalib[iVar] = prevScoresCalib;
+            iVar++;
+          }
 
           // Get next line
           fileLine = prevResults.GetNextLine();
+          iLine++;
         } while (!prevResults.EndOfFile());
         prevResults.Close();
+
+        if (m_enableHistory) {
+          m_resGenerations.ProcessMedianScores();
+        }
 
         wxLogMessage(_("%d former results have been reloaded."), m_resGenerations.GetCount());
         asLog::PrintToConsole(
             wxString::Format(_("%d former results have been reloaded.\n"), m_resGenerations.GetCount()));
-
-        // Check that it is consistent with the population size
-        if (vectParams.size() % m_popSize != 0) {
-          wxLogError(_("The number of former results is not consistent with the population size (%d)."), m_popSize);
-          return false;
-        }
-
-        // Restore the last generation
-        int genNb = vectParams.size() / m_popSize;
-        int iLastGen = (genNb - 1) * m_popSize;
-        for (int iVar = 0; iVar < m_popSize; iVar++) {
-          wxASSERT(vectParams.size() > iLastGen);
-          wxASSERT(vectScores.size() > iLastGen);
-          m_parameters[iVar] = vectParams[iLastGen];
-          m_scoresCalib[iVar] = vectScores[iLastGen];
-
-          iLastGen++;
-        }
 
         // Restore best and mean scores
         m_bestScores.resize(genNb);
@@ -641,9 +664,12 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
         m_iterator = m_paramsNb;
         m_generationNb = genNb;
 
+        // Copy file to the new target
+        wxCopyFile(filePath, m_resGenerations.GetFilePath());
+
         // Restore operators
-        wxString operatorsFilePattern =
-            wxString::Format("*_station_%s_operators.txt", GetPredictandStationIdsList(stationId).c_str());
+        wxString operatorsFilePattern = wxString::Format("*_station_%s_operators.txt",
+            GetPredictandStationIdsList(stationId).c_str());
         if (dir.HasFiles(operatorsFilePattern)) {
           wxArrayString filesOper;
           wxDir::GetAllFiles(resultsDir, &filesOper, operatorsFilePattern, wxDIR_FILES);
@@ -657,6 +683,12 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
           // Copy file to the new target
           wxCopyFile(operFilePath, operatorsFilePath);
 
+          // Check length
+          int nLinesOper = asFileText::CountLines(operFilePath);
+          if (nLines != nLinesOper) {
+            wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."), nLines, nLinesOper);
+          }
+
           // Open file
           asFileText prevOperators(operFilePath, asFile::ReadOnly);
           if (!prevOperators.Open()) {
@@ -664,25 +696,18 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
             return false;
           }
 
-          // Extract file content
+          // Extract file content for the last generation
+          prevOperators.SkipLines((genNb - 1) * m_popSize);
           wxString fileLineOper = prevOperators.GetNextLine();
-          vwxs operFileContent;
+          iVar = 0;
           do {
             if (fileLineOper.IsEmpty()) break;
-            operFileContent.push_back(fileLineOper);
-            fileLineOper = prevOperators.GetNextLine();
-          } while (!prevOperators.EndOfFile());
-          prevOperators.Close();
 
-          // Restore last generation
-          iLastGen = (genNb - 1) * m_popSize;
-          for (int iVar = 0; iVar < m_popSize; iVar++) {
-            wxASSERT(operFileContent.size() > iLastGen);
-            if (operFileContent.size() <= iLastGen) {
-              wxLogError(_("Cannot restore operators values."));
+            if (iVar >= m_parameters.size()) {
+              wxLogError(_("Mismatch between number of parameters (%d) and operators (%d)."),
+                  (int)m_parameters.size(), iVar+1);
               return false;
             }
-            fileLineOper = operFileContent[iLastGen];
 
             switch (m_mutationsModeType) {
               case (RandomUniformConstant):
@@ -744,8 +769,10 @@ bool asMethodOptimizerGeneticAlgorithms::ResumePreviousRun(asParametersOptimizat
               }
             }
 
-            iLastGen++;
-          }
+            fileLineOper = prevOperators.GetNextLine();
+            iVar++;
+          } while (!prevOperators.EndOfFile());
+          prevOperators.Close();
         }
       }
     }
@@ -775,7 +802,7 @@ bool asMethodOptimizerGeneticAlgorithms::HasPreviousRunConverged(asParametersOpt
 }
 
 bool asMethodOptimizerGeneticAlgorithms::SaveOperators(const wxString &filePath) {
-  // Create a file
+  // Open the file
   asFileText fileRes(filePath, asFileText::Append);
   if (!fileRes.Open()) return false;
 
@@ -903,37 +930,39 @@ asParametersOptimizationGAs *asMethodOptimizerGeneticAlgorithms::GetNextParamete
       continue;
     }
 
-    // Look for similar parameters sets that were already assessed
-    if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
-      m_nbSameParams++;
-      m_iterator++;
-      continue;
-    }
+    if (m_enableHistory) {
+      // Look for similar parameters sets that were already assessed
+      if (m_resGenerations.HasBeenAssessed(m_parameters[m_iterator], m_scoresCalib[m_iterator])) {
+        m_nbSameParams++;
+        m_iterator++;
+        continue;
+      }
 
-    // Look for close parameters sets that were already assessed
-    float scoreCloseParams;
-    if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
-      switch (m_scoreOrder) {
-        case (Asc): {
-          if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
-            m_scoresCalib[m_iterator] = scoreCloseParams;
-            m_nbCloseParams++;
-            m_iterator++;
-            continue;
+      // Look for close parameters sets that were already assessed
+      float scoreCloseParams;
+      if (!m_bestScores.empty() && m_resGenerations.HasCloseOneBeenAssessed(m_parameters[m_iterator], scoreCloseParams)) {
+        switch (m_scoreOrder) {
+          case (Asc): {
+            if (scoreCloseParams > m_resGenerations.GetMedianScore()) {
+              m_scoresCalib[m_iterator] = scoreCloseParams;
+              m_nbCloseParams++;
+              m_iterator++;
+              continue;
+            }
+            break;
           }
-          break;
-        }
-        case (Desc): {
-          if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
-            m_scoresCalib[m_iterator] = scoreCloseParams;
-            m_nbCloseParams++;
-            m_iterator++;
-            continue;
+          case (Desc): {
+            if (scoreCloseParams < m_resGenerations.GetMedianScore()) {
+              m_scoresCalib[m_iterator] = scoreCloseParams;
+              m_nbCloseParams++;
+              m_iterator++;
+              continue;
+            }
+            break;
           }
-          break;
-        }
-        default: {
-          wxLogError(_("The given natural selection method couldn't be found."));
+          default: {
+            wxLogError(_("Wrong order in score."));
+          }
         }
       }
     }

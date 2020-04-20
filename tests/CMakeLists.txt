@@ -61,11 +61,15 @@ list(REMOVE_ITEM src_tests "${CMAKE_SOURCE_DIR}/src/app_downscaler/core/Atmoswin
 
 # CUDA library
 if (USE_CUDA)
+    option(TEST_CUDA "Should CUDA implementation be tested ?" ON)
     file(GLOB_RECURSE src_tests_cu src/*.cu)
     file(GLOB_RECURSE src_tests_cuh src/*.cuh)
     list(APPEND src_tests_cuda ${src_tests_cu})
     list(APPEND src_tests_cuda ${src_tests_cuh})
     list(APPEND tests ${src_tests_cuh})
+    if (TEST_CUDA)
+        add_definitions(-DTEST_CUDA)
+    endif(TEST_CUDA)
 endif (USE_CUDA)
 
 # Remove eventual duplicates
@@ -92,12 +96,11 @@ include(define_common_libraries)
 if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
-ExternalProject_Add(googletest
-        GIT_REPOSITORY https://github.com/google/googletest
-        UPDATE_COMMAND ""
-        CMAKE_ARGS -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=${EXTERNAL_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -Dgtest_force_shared_crt=ON
-        BUILD_COMMAND cmake --build . --config ${CMAKE_BUILD_TYPE}
-        )
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+include_directories(${googletest_SOURCE_DIR}/googletest/include)
 
 # CUDA
 if (USE_CUDA)
@@ -147,17 +150,12 @@ endif()
 
 ##### LINKING
 
-add_dependencies(atmoswing-tests googletest)
 add_dependencies(atmoswing-tests asbase)
 add_dependencies(atmoswing-tests asprocessing)
+add_dependencies(atmoswing-tests gtest)
 target_link_libraries(atmoswing-tests asbase)
 target_link_libraries(atmoswing-tests asprocessing)
-if(WIN32)
-    target_link_libraries(atmoswing-tests debug gtestd debug gtest_maind)
-    target_link_libraries(atmoswing-tests optimized gtest optimized gtest_main)
-else()
-    target_link_libraries(atmoswing-tests gtest gtest_main)
-endif()
+target_link_libraries(atmoswing-tests gtest gtest_main)
 if (UNIX)
     target_link_libraries(atmoswing-tests pthread)
 endif ()

@@ -1,5 +1,5 @@
 
-# Install Zlib
+# Install Zlib (for NetCDF)
 if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
   Init-Build "zlib"
   Download-Lib "zlib" $ZLIB_URL
@@ -17,22 +17,6 @@ if(!(Test-Path -Path "$LIB_DIR\include\zlib.h") -Or $REBUILD_ZLIB) {
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
-# Install Jpeg
-if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
-  Init-Build "jpeg"
-  Download-Lib "jpeg" $JPEG_URL
-  7z x jpeg.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\libjpeg-*" "$TMP_DIR\jpeg"
-  cd "$TMP_DIR\jpeg"
-  mkdir bld > $null
-  cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
-  cmake --build . --config release > $null
-  cmake --build . --config release --target INSTALL > $null
-} else {
-  Write-Host "`nJpeg has been found in cache and will not be built" -ForegroundColor Yellow
-}
-
 # Install Open Jpeg (for ecCodes)
 if(!(Test-Path -Path "$LIB_DIR\lib\openjp2.lib") -Or $REBUILD_JPEG) {
   Init-Build "openjpeg"
@@ -47,42 +31,6 @@ if(!(Test-Path -Path "$LIB_DIR\lib\openjp2.lib") -Or $REBUILD_JPEG) {
   cmake --build . --config release --target INSTALL > $null
 } else {
   Write-Host "`nOpenjpeg has been found in cache and will not be built" -ForegroundColor Yellow
-}
-
-if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
-
-# Install PNG
-if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
-  Init-Build "png"
-  Download-Lib "png" $PNG_URL
-  7z x png.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\libpng*" "$TMP_DIR\png"
-  cd "$TMP_DIR\png"
-  mkdir bld > $null
-  cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
-  cmake --build . --config release > $null
-  cmake --build . --config release --target INSTALL > $null
-} else {
-  Write-Host "`nPng has been found in cache and will not be built" -ForegroundColor Yellow
-}
-
-if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
-
-# Install Jasper
-if(!(Test-Path -Path "$LIB_DIR\include\jasper") -Or $REBUILD_JASPER) {
-  Init-Build "jasper"
-  Download-Lib "jasper" $JASPER_URL
-  7z x jasper.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\jasper-*" "$TMP_DIR\jasper"
-  cd "$TMP_DIR\jasper"
-  mkdir bld > $null
-  cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_BUILD_TYPE=Release -DJAS_ENABLE_SHARED=OFF -DJAS_ENABLE_LIBJPEG=ON -DJAS_ENABLE_PROGRAMS=OFF -DCMAKE_INCLUDE_PATH="$LIB_DIR\include" -DCMAKE_LIBRARY_PATH="$LIB_DIR\lib" > $null
-  cmake --build . --config release > $null
-  cmake --build . --config release --target INSTALL > $null
-} else {
-  Write-Host "`nJasper has been found in cache and will not be built" -ForegroundColor Yellow
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
@@ -106,46 +54,7 @@ if(!(Test-Path -Path "$LIB_DIR\include\curl\curl.h") -Or $REBUILD_CURL) {
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
-# Install SQLite
-if(!(Test-Path -Path "$LIB_DIR\include\sqlite3.h") -Or $REBUILD_SQLITE) {
-  Init-Build "sqlite"
-  Download-Lib "sqlite_src" $SQLITE_SRC_URL
-  Download-Lib "sqlite_dll" $SQLITE_DLL_URL
-  Download-Lib "sqlite_tools" $SQLITE_TOOLS_URL
-  7z x sqlite_src.zip -o"$TMP_DIR" > $null
-  7z x sqlite_dll.zip -o"$TMP_DIR" > $null
-  7z x sqlite_tools.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\sqlite-tools*" "$TMP_DIR\sqlitetools"
-  move "$TMP_DIR\sqlite-*" "$TMP_DIR\sqlite"
-  lib /def:sqlite3.def
-  copy "$TMP_DIR\sqlite3.dll" "$LIB_DIR\bin\sqlite3.dll"
-  copy "$TMP_DIR\sqlite3.lib" "$LIB_DIR\lib\sqlite3.lib"
-  copy "$TMP_DIR\sqlitetools\sqlite3.exe" "$LIB_DIR\bin\sqlite3.exe"
-  copy "$TMP_DIR\sqlite\sqlite3.h" "$LIB_DIR\include\sqlite3.h"
-  copy "$TMP_DIR\sqlite\sqlite3ext.h" "$LIB_DIR\include\sqlite3ext.h"
-} else {
-  Write-Host "`nSqlite has been found in cache and will not be built" -ForegroundColor Yellow
-}
-
-# Install Proj
-if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
-  Init-Build "proj"
-  Download-Lib "proj" $PROJ_URL
-  7z x proj.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\PROJ-6*" "$TMP_DIR\proj"
-  cd "$TMP_DIR\proj"
-  mkdir build
-  cd build
-  cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DPROJ_TESTS=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_LIBPROJ_SHARED=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
-  cmake --build . --config Release > $null
-  cmake --build . --config Release --target INSTALL > $null
-} else {
-  Write-Host "`nProj has been found in cache and will not be built" -ForegroundColor Yellow
-}
-
-if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
-
-# Install HDF5
+# Install HDF5 (for NetCDF)
 if(!(Test-Path -Path "$LIB_DIR\include\hdf5.h") -Or $REBUILD_HDF5) {
   Init-Build "hdf5"
   Download-Lib "hdf5" $HDF5_URL
@@ -183,6 +92,63 @@ if(!(Test-Path -Path "$LIB_DIR\include\netcdf.h") -Or $REBUILD_NETCDF) {
 }
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
+
+# Install TIFF (for PROJ)
+if(!(Test-Path -Path "$LIB_DIR\include\tiff.h") -Or $REBUILD_TIFF) {
+  Init-Build "tiff"
+  Download-Lib "tiff" $TIFF_URL
+  7z x tiff.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\libtiff*" "$TMP_DIR\libtiff"
+  cd "$TMP_DIR\libtiff"
+  mkdir bld > $null
+  cd bld
+  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DCMAKE_PREFIX_PATH="$LIB_DIR" > $null
+  cmake --build . --config release > $null
+  cmake --build . --config release --target INSTALL > $null
+} else {
+  Write-Host "`nPng has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
+
+# Install SQLite (for PROJ)
+if(!(Test-Path -Path "$LIB_DIR\include\sqlite3.h") -Or $REBUILD_SQLITE) {
+  Init-Build "sqlite"
+  Download-Lib "sqlite_src" $SQLITE_SRC_URL
+  Download-Lib "sqlite_dll" $SQLITE_DLL_URL
+  Download-Lib "sqlite_tools" $SQLITE_TOOLS_URL
+  7z x sqlite_src.zip -o"$TMP_DIR" > $null
+  7z x sqlite_dll.zip -o"$TMP_DIR" > $null
+  7z x sqlite_tools.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\sqlite-tools*" "$TMP_DIR\sqlitetools"
+  move "$TMP_DIR\sqlite-*" "$TMP_DIR\sqlite"
+  lib /def:sqlite3.def
+  copy "$TMP_DIR\sqlite3.dll" "$LIB_DIR\bin\sqlite3.dll"
+  copy "$TMP_DIR\sqlite3.lib" "$LIB_DIR\lib\sqlite3.lib"
+  copy "$TMP_DIR\sqlitetools\sqlite3.exe" "$LIB_DIR\bin\sqlite3.exe"
+  copy "$TMP_DIR\sqlite\sqlite3.h" "$LIB_DIR\include\sqlite3.h"
+  copy "$TMP_DIR\sqlite\sqlite3ext.h" "$LIB_DIR\include\sqlite3ext.h"
+} else {
+  Write-Host "`nSqlite has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+# Install Proj
+if(!(Test-Path -Path "$LIB_DIR\include\proj.h") -Or $REBUILD_PROJ) {
+  Init-Build "proj"
+  Download-Lib "proj" $PROJ_URL
+  7z x proj.zip -o"$TMP_DIR" > $null
+  move "$TMP_DIR\proj-7*" "$TMP_DIR\proj"
+  cd "$TMP_DIR\proj"
+  mkdir build
+  cd build
+  cmake -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_PREFIX_PATH="$LIB_DIR" -DBUILD_TESTING=OFF -DBUILD_PROJINFO=OFF -DBUILD_CCT=OFF -DBUILD_CS2CS=OFF -DBUILD_GEOD=OFF -DBUILD_GIE=OFF -DBUILD_PROJ=OFF -DBUILD_PROJINFO=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$LIB_DIR" .. > $null
+  cmake --build . --config Release > $null
+  cmake --build . --config Release --target INSTALL > $null
+} else {
+  Write-Host "`nProj has been found in cache and will not be built" -ForegroundColor Yellow
+}
+
+if ($stopwatchlibs.Elapsed.TotalMinutes -gt 40) { return }
 
 # Install ecCodes
 if(!(Test-Path -Path "$LIB_DIR\lib\eccodes.lib") -Or $REBUILD_ECCODES) {

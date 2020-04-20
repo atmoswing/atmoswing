@@ -57,10 +57,6 @@ endif (BUILD_FORECASTER OR BUILD_VIEWER)
 # Own libraries
 add_library(asbase STATIC ${src_shared_base})
 
-# lsVersion
-if (USE_GUI)
-    add_subdirectory(libs/lsversion)
-endif (USE_GUI)
 
 ##### DECLARE EXECUTABLE
 
@@ -82,16 +78,13 @@ endif (USE_GUI)
 
 ##### LINKING
 
-add_dependencies(asbase eigen)
-
 if (BUILD_FORECASTER OR BUILD_VIEWER)
     target_link_libraries(asbase ${CURL_LIBRARIES})
 endif (BUILD_FORECASTER OR BUILD_VIEWER)
 
-if (USE_VERSION)
-    target_link_libraries(asbase lsVersion)
-endif (USE_VERSION)
-
+if (USE_WXVERSION)
+    target_link_libraries(asbase wxVersion)
+endif ()
 
 #### INSTALLER
 
@@ -102,22 +95,6 @@ if (WIN32)
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${INSTALL_DIR_BIN})
     include(InstallRequiredSystemLibraries)
     install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_DIR_BIN})
-
-    # Png
-    find_file(PNG_DLL_NAME
-            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES bin
-            NO_DEFAULT_PATH)
-    if (NOT PNG_DLL_NAME)
-        message(SEND_ERROR "PNG DLL not found.")
-    endif ()
-    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${PNG_DLL_NAME}"
-            "${CMAKE_BINARY_DIR}")
-    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # NetCDF
     find_file(NETCDF_DLL_NAME
@@ -141,7 +118,7 @@ if (WIN32)
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)
-    if (NOT NETCDF_DLL_NAME)
+    if (NOT OpenJPEG_DLL_NAME)
         message(SEND_ERROR "OpenJPEG DLL not found.")
     endif ()
     message(STATUS "OpenJPEG DLL: ${OpenJPEG_DLL_NAME}")
@@ -183,9 +160,41 @@ if (WIN32)
             "${CMAKE_BINARY_DIR}")
     install(FILES ${CURL_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
+    # ecCodes share
+    find_path(ECCODES_SHARE_PATH
+            NAMES definitions
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES share share/eccodes
+            NO_DEFAULT_PATH)
+    if (NOT ECCODES_SHARE_PATH)
+        message(SEND_ERROR "ecCodes share not found.")
+    endif ()
+    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${ECCODES_SHARE_PATH}"
+            "${CMAKE_BINARY_DIR}/share/eccodes")
+    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
+
+    # Tiff
+    find_file(TIFF_DLL_NAME
+            tiff.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT TIFF_DLL_NAME)
+        message(SEND_ERROR "TIFF DLL not found.")
+    endif ()
+    message(STATUS "TIFF DLL: ${TIFF_DLL_NAME}")
+    add_custom_command(TARGET asbase POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${TIFF_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${TIFF_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
+
     # Proj
     find_file(PROJ_DLL_NAME
-            proj.dll NAMES proj_6_0.dll proj_6_1.dll proj_6_2.dll proj_6_3.dll
+            proj.dll NAMES proj_7.dll proj_7_0.dll proj_7_1.dll proj_7_2.dll proj_7_3.dll
             HINTS ${CMAKE_PREFIX_PATH}
             PATH_SUFFIXES bin
             NO_DEFAULT_PATH)
@@ -230,21 +239,5 @@ if (WIN32)
             "${SQLITE_DLL_NAME}"
             "${CMAKE_BINARY_DIR}")
     install(FILES ${SQLITE_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
-
-    # ecCodes share
-    find_path(ECCODES_SHARE_PATH
-            NAMES definitions
-            HINTS ${CMAKE_PREFIX_PATH}
-            PATH_SUFFIXES share share/eccodes
-            NO_DEFAULT_PATH)
-    if (NOT ECCODES_SHARE_PATH)
-        message(SEND_ERROR "ecCodes share not found.")
-    endif ()
-    message(STATUS "ecCodes share: ${ECCODES_SHARE_PATH}")
-    add_custom_command(TARGET asbase POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${ECCODES_SHARE_PATH}"
-            "${CMAKE_BINARY_DIR}/share/eccodes")
-    install(DIRECTORY ${ECCODES_SHARE_PATH} DESTINATION share)
 
 endif (WIN32)

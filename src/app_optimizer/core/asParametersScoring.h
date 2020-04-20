@@ -180,6 +180,10 @@ class asParametersScoring : public asParameters {
     return !m_validationYears.empty();
   }
 
+  ParamsScore GetScore() const {
+    return m_score;
+  }
+
   wxString GetScoreName() const {
     return m_score.name;
   }

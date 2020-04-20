@@ -203,6 +203,8 @@ void Ref1(const wxString &paramsFile, bool shortVersion) {
 }
 
 #ifdef USE_CUDA
+#ifdef TEST_CUDA
+
 TEST(MethodCalibrator, Ref1Cuda) {
   wxConfigBase *pConfig = wxFileConfig::Get();
   pConfig->Write("/Processing/AllowMultithreading", true);
@@ -266,6 +268,7 @@ TEST(MethodCalibrator, Ref1Cuda) {
     }
   }
 }
+#endif
 #endif
 
 TEST(MethodCalibrator, Ref1Multithreads) {

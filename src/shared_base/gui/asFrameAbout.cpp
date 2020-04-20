@@ -29,7 +29,7 @@
 
 #include "asIncludes.h"
 #include "images.h"
-#include "lsversion_core.h"
+#include "wxversion_core.h"
 
 asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
   // Icon
@@ -44,12 +44,11 @@ asFrameAbout::asFrameAbout(wxWindow *parent) : asFrameAboutVirtual(parent) {
   m_staticTextVersion->SetLabel(asVersion::GetFullString());
 
   // Set changeset number
-  wxString changesetLabel =
-      wxString::Format("Revision %s (%s)", lsVersion::GetSoftGITRevisionNb(), lsVersion::GetSoftGITRevisionHash());
+  wxString changesetLabel = wxString::Format("Commit %s", wxVersion::GetSoftVersion());
   m_staticTextChangeset->SetLabel(changesetLabel);
 
   // Set libraries versions
-  m_textCtrlLibraries->SetValue(lsVersion::GetAllModules());
+  m_textCtrlLibraries->SetValue(wxVersion::GetAllModuleInfo());
 
   // Set libraries versions
   m_textCtrlLicense->SetValue(asFrameAbout::GetLicense());

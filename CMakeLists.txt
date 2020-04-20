@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12.2) # Bug with VS 2012 and CUDA in previous versions
+cmake_minimum_required(VERSION 3.14) # To support FetchContent / FetchContent_MakeAvailable
 
 if (POLICY CMP0043)
     cmake_policy(SET CMP0043 NEW)
@@ -17,6 +17,30 @@ else (UNIX)
     project(AtmoSwing)
 endif (UNIX)
 
+
+##### DEPENDENCIES
+
+include(FetchContent)
+
+FetchContent_Declare(
+        wxVersion
+        GIT_REPOSITORY https://github.com/terranum-ch/wxVersion.git
+        GIT_TAG a1c38f8da17936e70d7bcb7f1cd21a5b30847c1e)
+
+FetchContent_Declare(
+        eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+        GIT_TAG 3.3.7)
+
+FetchContent_Declare(
+        vroomgis
+        GIT_REPOSITORY https://github.com/terranum-ch/vroomgis.git
+        GIT_TAG e646495f7e83911d91a5ce28c579bd8e97bc52f4)
+
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.10.0)
 
 ##### OPTIONS
 
@@ -62,11 +86,14 @@ else (WIN32)
     set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 endif (WIN32)
 
+# Docker option
+option(ON_DOCKER "Enable only if AtmoSwing is built for Docker." OFF)
+if (ON_DOCKER)
+    add_definitions(-DON_DOCKER)
+endif(ON_DOCKER)
+
 # Using the Intel MKL
 option(USE_MKL "Do you want to use Intel MKL ?" OFF)
-
-# Libraries version
-set(EIGEN_VERSION 3.3.7)
 
 # MSYS condition
 if (WIN32)
@@ -99,20 +126,12 @@ endif ()
 if (BUILD_VIEWER)
     set(USE_GUI ON)
 else (BUILD_VIEWER)
-    option(USE_GUI "Sould we build AtmoSwing with a GUI ?" OFF)
+    option(USE_GUI "Sould AtmoSwing be built with a GUI ?" OFF)
 endif (BUILD_VIEWER)
 
 # Disable testing tree
 set(BUILD_TESTING OFF)
 mark_as_advanced(BUILD_TESTING)
-
-# External projects
-include(ExternalProject)
-set(EXTERNAL_DIR ${CMAKE_BINARY_DIR}/external)
-set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH};${EXTERNAL_DIR}")
-include_directories(${EXTERNAL_DIR}/include)
-link_directories(${EXTERNAL_DIR}/lib)
-link_directories(${EXTERNAL_DIR}/lib64)
 
 # Installer
 if (WIN32)
@@ -150,21 +169,6 @@ if (USE_CODECOV)
     set(COVERAGE_EXCLUDES '/usr/.*' '.*/external/.*' 'tests/.*' '.*/tests/.*' 'tests/src/*' '.*/tests/src/*' '.*/libs/.*')
     setup_target_for_coverage(NAME atmoswing-coverage EXECUTABLE atmoswing-tests DEPENDENCIES atmoswing-tests)
 endif (USE_CODECOV)
-
-
-##### EXTERNAL PROJECTS
-
-# Eigen
-ExternalProject_Add(eigen
-        URL https://gitlab.com/libeigen/eigen/-/archive/${EIGEN_VERSION}/eigen-${EIGEN_VERSION}.tar.gz
-        UPDATE_COMMAND ""
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_BINARY_DIR}/eigen-prefix/src/eigen/Eigen
-        ${EXTERNAL_DIR}/include/Eigen
-        )
 
 
 ##### DISPLAY SOME INFORMATIONS

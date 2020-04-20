@@ -199,6 +199,7 @@ int asInternet::Download(const vwxs &urls, const vwxs &fileNames, const wxString
           if (CURLE_OK != res) {
             wxLogWarning(_("Failed downloading file. Curl error code: %d"), int(res));
             wxLogWarning(_("Curl error message: %s"), errorBfr);
+            wxLogWarning(_("URL: %s"), url);
             wxDELETEA(errorBfr);
             return asFAILED;
           } else {

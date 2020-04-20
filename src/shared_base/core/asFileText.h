@@ -62,6 +62,8 @@ class asFileText : public asFile {
 
   bool EndOfFile() const;
 
+  static int CountLines(const wxString &filePath);
+
  protected:
  private:
   std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb

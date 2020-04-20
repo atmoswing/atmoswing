@@ -1,0 +1,11 @@
+.git/
+.idea/
+art/
+benchmark/
+bin*
+ci/
+cmake-build-*
+.clang-format
+.travis.yml
+appveyor.yml
+readme.md

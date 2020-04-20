@@ -60,18 +60,10 @@ message(STATUS "GDAL libraries: ${GDAL_LIBRARIES}")
 message(STATUS "GDAL include dirs: ${GDAL_INCLUDE_DIRS}")
 
 # vroomgis
-set(CMAKE_INSTALL_PREFIX:STRING ${EXTERNAL_DIR})
-set(SEARCH_VROOMGIS_LIBS:BOOL ON)
-set(SEARCH_GDAL:BOOL ON)
-set(SEARCH_GEOS:BOOL OFF)
-set(VROOMGIS_PATH:STRING vroomgis/src)
-set(SEARCH_GIS_LIB_PATH:STRING ${GDAL_PATH})
-configure_file(${CMAKE_SOURCE_DIR}/build/cmake/GetVroomgis.txt ${CMAKE_BINARY_DIR}/vroomgis/CMakeLists.txt)
-execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
-execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/vroomgis")
-add_subdirectory(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis ${EXTERNAL_DIR})
-include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/src)
-include_directories(${CMAKE_BINARY_DIR}/vroomgis/vroomgis-prefix/src/vroomgis/vroomgis/art)
+FetchContent_MakeAvailable(vroomgis)
+include_directories(${vroomgis_SOURCE_DIR}/vroomgis/src)
+include_directories(${vroomgis_SOURCE_DIR}/vroomgis/art)
+set(VROOMGIS_PATH ${vroomgis_SOURCE_DIR})
 
 # wxplotctrl
 add_library(wxplotctrl STATIC ${src_lib_wxplotctrl})
@@ -132,6 +124,22 @@ install(TARGETS atmoswing-viewer DESTINATION ${INSTALL_DIR_BIN})
 
 # Dlls
 if (WIN32)
+
+    # Png
+    find_file(PNG_DLL_NAME
+            NAMES libpng14.dll libpng15.dll libpng16.dll libpng17.dll libpng18.dll
+            HINTS ${CMAKE_PREFIX_PATH}
+            PATH_SUFFIXES bin
+            NO_DEFAULT_PATH)
+    if (NOT PNG_DLL_NAME)
+        message(SEND_ERROR "PNG DLL not found.")
+    endif ()
+    message(STATUS "PNG DLL: ${PNG_DLL_NAME}")
+    add_custom_command(TARGET atmoswing-viewer POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${PNG_DLL_NAME}"
+            "${CMAKE_BINARY_DIR}")
+    install(FILES ${PNG_DLL_NAME} DESTINATION ${INSTALL_DIR_BIN})
 
     # GDAL DLL
     find_file(GDAL_DLL_NAME

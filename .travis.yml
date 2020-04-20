@@ -1,47 +1,48 @@
 language: cpp
 compiler: gcc
-sudo: required
 git:
   depth: 9999999
-matrix:
+jobs:
   include:
     - env:
       - TARGET=linux-server
       - DEPLOY=true
-      - DISTRO=ubuntu64-trusty
+      - DISTRO=ubuntu64-bionic
       os: linux
-      dist: trusty
+      dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
-            - libcurl3
+            - libcurl4
             - libwxbase3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
     - env:
       - TARGET=linux-server
       - DEPLOY=true
       - DISTRO=ubuntu64-xenial
       os: linux
       dist: xenial
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxbase3.0-dev
             - sqlite3
@@ -55,40 +56,42 @@ matrix:
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
-      - DISTRO=ubuntu64-trusty
+      - DISTRO=ubuntu64-bionic
       os: linux
-      dist: trusty
+      dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
     - env:
       - TARGET=linux-desktop
       - DEPLOY=true
       - DISTRO=ubuntu64-xenial
       os: linux
       dist: xenial
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
             - libcurl3
             - libwxgtk3.0-dev
             - sqlite3
@@ -98,29 +101,30 @@ matrix:
         - TARGET=coverage-scan
         - DEPLOY=false
       os: linux
-      dist: trusty
+      dist: bionic
+      before_install:
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
             - lcov
     - env:
         - TARGET=coverity-scan
         - DEPLOY=false
         - secure: bXqSgc197UXhkRbLXXj/naGt/giYeM4HnOT4wyXLnL30QqXkmHuzA9jalaghnZYZv6nUiySFr+6ZivWs0ofJHYHEbS4vzE2NG11m+bWwmKbWrmX/gw+PBahg27pZXlVXel1yD4QNG2Gf3SU2yLBFdsZa7tLmfOHnddSUeJ/K8X2DZn7KNGGNfh0lm7JsZf7BhGul4q2J7vVlgqJqXBn+UiuXLrdCn/u3NhtWXpf7zFMI+MjVlXGx7hWj1HqVC43MAVOE3DVzupq93BtxDyTHRrdUZrMHf9rZtKRsr+F3F7xKS9ztJnTM16lDGjoZqeIf7kVj3okCPRIRsUSxx9roKu2ynBvBs8ZMtf37iQWcGJTkMZzV+4sK4aNEcmxPZC4LpigQl9WspZ42wNOvCW2pNsLAB7SAG7ktu3FETlZSMyQyHZHvs2zavc8MvRKHRKUOonhv8QKRTnB1aBDCp1bHpPSzhZ2CURjx8VGY5ZaGF8nJUs+YGEbzt2sDSUpW5vwPxX6lSlASVJI7eI5XMpyMlL8nS7zWP+g6CraeCnE/Hz1liWwm7RE/ONAG3a7KG6Ns6xWida/PtwmhE6qvMStRdY/okVIxD1I6f5w5L/Ek7viXuPxURCIktqc0iGEAqalJoCNi/Xhi0BurkEhvcTP2lWErEMGHsAC470tiGr6ZhGc=
       os: linux
-      dist: trusty
+      dist: bionic
       branches:
         only:
           - nightly
@@ -128,21 +132,21 @@ matrix:
         - if [[ "$TRAVIS_BRANCH" != "nightly" ]]; then exit 0; fi
         - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN
           CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+        - chmod +x ci/travis/install-cmake.sh
+        - travis_wait 30 ci/travis/install-cmake.sh
       addons:
         apt:
           update: true
           packages:
             - build-essential
             - gnome-devel
-            - cmake
             - git
             - libnetcdf-dev
-            - libjasper-dev
-            - libcurl3
+            - libcurl4
             - libwxgtk3.0-dev
             - sqlite3
             - libsqlite3-dev
-            - libopenjpeg-dev
+            - libopenjp2-7-dev
         coverity_scan:
           project:
             name: atmoswing/atmoswing
@@ -158,11 +162,11 @@ cache:
     - "$HOME/.libs"
 install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ] ; then sudo ln -s /usr/local/bin/gtimeout /usr/local/bin/timeout ; fi
-  - chmod +x ci/travis/dependencies-${TRAVIS_OS_NAME}.sh
-  - travis_wait 50 timeout 2990 ci/travis/dependencies-${TRAVIS_OS_NAME}.sh || true
+  - chmod +x ci/travis/dependencies-${TARGET}.sh
+  - travis_wait 20 timeout 1990 ci/travis/dependencies-${TARGET}.sh || true
 script:
   - chmod +x ci/travis/run-${TARGET}.sh
-  - travis_wait 30 ci/travis/run-${TARGET}.sh
+  - travis_wait 25 ci/travis/run-${TARGET}.sh
 after_success:
   - if [[ "$DEPLOY" != true ]]; then exit 0; fi
   - chmod +x ci/travis/after-success-${TRAVIS_OS_NAME}.sh
@@ -173,9 +177,8 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    skip_cleanup: true
+    cleanup: false
     acl: public-read
-    local-dir: deploy
     on:
       repo: atmoswing/atmoswing
       condition: $DEPLOY = true
@@ -185,9 +188,8 @@ deploy:
     secret_access_key:
       secure: QVTqXZ54wsQhUu+QcYQATIuwVe27ZIl+3XnccDL7Q2NUalWulj5p4EyQ5+JmKhUYzdRujCH08ASuQiKtb/vW5q0WnNsElFBixLk2rhUTR7AG7v1Tk20fZkAczha5xtC/jfyr1v5DdqzQJYAUnBsV+9Zr2oNLeSj7YbUuJk9GwLdfdc4DKJ4+AKIZR6n9OqtVYVbMZB89W8l2t/20fO/XOuKBLSiG23K9R9dlv6eawF/9nFPx+EcuSBnkOFBa+Cq0xFKRx/N3LHDhFPtpV5s+hH1Oenbcw2l4KwMwwSaVxCerMnyWW0Hu6Mrcn2P7KlCsOBtt1kKxXHDLmwRZdSUVO+DJKt+/jDAjRncqN++rFnb+B7SbHEBiCfUGuW2xfLPr6W5hKxmuHUC+5LnC0uVwPSpvEzMAAU4Xip7M66U1CxwLHH9/CfnNdTXAorYBbDVBEr5PdpVjgtZoih4oeZjrGsIWW98tfrcfOOiLHQnRb2Bc0oOq1lMguRINg1t67kJKuCFKnIQSzYpkVQ7BkXwl0f460cZ24X3lXVCPatNDvT+SI0QL6LJgiF9psPncQGm9olKyBy6jb1MTEl9NTjKoyWLIbi+JIg66ub0hmzDa4IBJtGWm5MCg4O4v5TpL64qcd5HK5U/odMpXgK5DvjBF3NoejKTRTRmy94dYB5/vGpA=
     bucket: atmoswing-deploy
-    skip_cleanup: true
+    cleanup: false
     acl: public-read
-    local-dir: deploy
     on:
       repo: atmoswing/atmoswing
       condition: $DEPLOY = true

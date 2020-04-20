@@ -118,8 +118,9 @@ wxThread::ExitCode asThreadInternetDownload::Entry() {
 
         // Log in case of failure
         if (CURLE_OK != res) {
-          wxLogError(_("Failed downloading file."));
+          wxLogError(_("Failed downloading file. Curl error code: %d"), int(res));
           wxLogError(_("Curl error message: %s"), errorbuffer);
+          wxLogError(_("URL: %s"), url);
           wxDELETEA(errorbuffer);
           return (wxThread::ExitCode)-1;
         } else {
