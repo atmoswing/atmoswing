@@ -1,7 +1,7 @@
 ##
-# atmoswing/optimizer-server:ubuntu
+# atmoswing/optimizer-server:ubuntu:cuda
 
-# Steps ordered them from the less frequently changed to the more frequently
+# Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
 FROM nvidia/cuda:10.2-devel-ubuntu18.04 AS builder

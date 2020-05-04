@@ -1,7 +1,7 @@
 ##
-# atmoswing/forecaster-server:ubuntu:arm64
+# atmoswing/forecaster-server:ubuntu:arm32
 
-# Steps ordered them from the less frequently changed to the more frequently
+# Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
 FROM arm32v7/ubuntu:18.04 AS builder
