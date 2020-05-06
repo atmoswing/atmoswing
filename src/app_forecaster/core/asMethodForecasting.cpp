@@ -330,7 +330,7 @@ bool asMethodForecasting::Forecast(asParametersForecast &params) {
 #if wxUSE_GUI
         if (!g_silentMode) wxMessageBox(msg);
 #else
-        asLog::PrintToConsole(_("Exception caught: %s"), msg);
+        asLog::PrintToConsole(wxString::Format(_("Exception caught: %s"), msg));
 #endif
         if (wxFileExists(results->GetFilePath())) {
           wxRemoveFile(results->GetFilePath());
