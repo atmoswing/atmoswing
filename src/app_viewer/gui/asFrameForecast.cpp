@@ -1248,7 +1248,7 @@ bool asFrameForecast::OpenForecast(const wxArrayString &names) {
 
     bool successOpen = m_forecastManager->Open(names.Item(i), doRefresh);
     if (!successOpen) {
-      wxLogError(_("The forecast file %d could not be opened (%s)."), i, names.Item(i));
+      wxLogError(_("A forecast file could not be opened (%s)."), names.Item(i));
 #if defined(__WIN32__)
       m_critSectionViewerLayerManager.Leave();
 #endif

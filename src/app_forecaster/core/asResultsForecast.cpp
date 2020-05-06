@@ -321,207 +321,219 @@ bool asResultsForecast::Load() {
 
   ThreadsManager().CritSectionNetCDF().Enter();
 
-  // Open the NetCDF file
-  asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
-  if (!ncFile.Open()) return false;
+  int nLeadtime, nAnalogsTot, nStations;
+  int versionMajor, versionMinor;
+  vf analogsCriteria, analogsDates, analogsValuesRaw;
 
-  // Get global attributes
-  int versionMajor = ncFile.GetAttInt("version_major");
-  int versionMinor = ncFile.GetAttInt("version_minor");
-  if (asIsNaN(versionMajor)) {
-    float version = ncFile.GetAttFloat("version");
-    if (asIsNaN(version)) {
-      versionMajor = 1;
-      versionMinor = 0;
-    } else {
-      versionMajor = std::floor(version);
-      versionMinor = asRound(10 * (version - versionMajor));
+  try {
+    // Open the NetCDF file
+    asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
+    if (!ncFile.Open()) return false;
+
+    // Get global attributes
+    versionMajor = ncFile.GetAttInt("version_major");
+    versionMinor = ncFile.GetAttInt("version_minor");
+    if (asIsNaN(versionMajor)) {
+      float version = ncFile.GetAttFloat("version");
+      if (asIsNaN(version)) {
+        versionMajor = 1;
+        versionMinor = 0;
+      } else {
+        versionMajor = std::floor(version);
+        versionMinor = asRound(10 * (version - versionMajor));
+      }
     }
-  }
 
-  if (versionMajor > m_fileVersionMajor || (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
-    wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot "
-                 "be opened here."),
-               versionMajor, versionMinor);
-    return false;
-  }
+    if (versionMajor > m_fileVersionMajor ||
+        (versionMajor >= m_fileVersionMajor && versionMinor > m_fileVersionMinor)) {
+      wxLogError(_("The forecast file was made with more recent version of AtmoSwing (file version %d.%d). It cannot "
+                   "be opened here."),
+                 versionMajor, versionMinor);
+      return false;
+    }
 
-  if (versionMajor == 1 && versionMinor == 0) {
-    wxLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
-    m_predictandParameter = asPredictand::Precipitation;
-    m_predictandTemporalResolution = asPredictand::Daily;
-    m_predictandSpatialAggregation = asPredictand::Station;
-    m_predictandDatasetId = "MeteoSwiss-Rhone";
-    m_methodId = ncFile.GetAttString("modelName");
-    m_methodIdDisplay = ncFile.GetAttString("modelName");
-    m_specificTag = wxEmptyString;
-    m_specificTagDisplay = wxEmptyString;
-    m_description = wxEmptyString;
-    m_dateProcessed = ncFile.GetAttDouble("dateProcessed");
-    m_leadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
-    m_hasReferenceValues = true;
-  } else {
-    if (versionMajor == 1 && versionMinor <= 4) {
-      m_methodId = ncFile.GetAttString("model_name");
-      m_methodIdDisplay = ncFile.GetAttString("model_name");
+    if (versionMajor == 1 && versionMinor == 0) {
+      wxLogWarning(_("The forecast file was made with an older version of AtmoSwing."));
+      m_predictandParameter = asPredictand::Precipitation;
+      m_predictandTemporalResolution = asPredictand::Daily;
+      m_predictandSpatialAggregation = asPredictand::Station;
+      m_predictandDatasetId = "MeteoSwiss-Rhone";
+      m_methodId = ncFile.GetAttString("modelName");
+      m_methodIdDisplay = ncFile.GetAttString("modelName");
       m_specificTag = wxEmptyString;
       m_specificTagDisplay = wxEmptyString;
       m_description = wxEmptyString;
-    } else {
-      m_methodId = ncFile.GetAttString("method_id");
-      m_methodIdDisplay = ncFile.GetAttString("method_id_display");
-      m_specificTag = ncFile.GetAttString("specific_tag");
-      m_specificTagDisplay = ncFile.GetAttString("specific_tag_display");
-      m_description = ncFile.GetAttString("description");
-    }
-
-    if (versionMajor == 1 && versionMinor <= 7) {
-      m_predictandParameter = asPredictand::Precipitation;
-      m_predictandTemporalResolution = asPredictand::Daily;
-      if (ncFile.GetAttInt("predictand_spatial_aggregation") == 0) {
-        m_predictandSpatialAggregation = asPredictand::Station;
-      } else if (ncFile.GetAttInt("predictand_spatial_aggregation") == 1) {
-        m_predictandSpatialAggregation = asPredictand::Groupment;
-      } else {
-        wxLogError(_("The spatial aggregation could not be converted."));
-        return false;
-      }
-    } else {
-      m_predictandParameter = asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
-      m_predictandTemporalResolution =
-          asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
-      m_predictandSpatialAggregation =
-          asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
-    }
-
-    m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
-
-    if (versionMajor > 1 || (versionMajor == 1 && versionMinor >= 5)) {
-      m_predictandDatabase = ncFile.GetAttString("predictand_database");
-      SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
-    }
-
-    m_dateProcessed = ncFile.GetAttDouble("date_processed");
-    m_leadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
-    m_hasReferenceValues = false;
-    if (ncFile.GetAttShort("has_reference_values") == 1) {
+      m_dateProcessed = ncFile.GetAttDouble("dateProcessed");
+      m_leadTimeOrigin = ncFile.GetAttDouble("leadTimeOrigin");
       m_hasReferenceValues = true;
-    }
-  }
-
-  // Get the elements size
-  int nLeadtime;
-  int nAnalogsTot;
-  int nStations;
-  if (versionMajor == 1 && versionMinor == 0) {
-    nLeadtime = ncFile.GetDimLength("leadtime");
-    nAnalogsTot = ncFile.GetDimLength("analogstot");
-    nStations = ncFile.GetDimLength("stations");
-  } else {
-    nLeadtime = ncFile.GetDimLength("lead_time");
-    nAnalogsTot = ncFile.GetDimLength("analogs_tot");
-    nStations = ncFile.GetDimLength("stations");
-  }
-
-  // Get lead time data
-  m_targetDates.resize(nLeadtime);
-  m_analogsNb.resize(nLeadtime);
-  m_stationNames.resize(nStations);
-  m_stationOfficialIds.resize(nStations);
-  m_stationIds.resize(nStations);
-  m_stationHeights.resize(nStations);
-  m_stationXCoords.resize(nStations);
-  m_stationYCoords.resize(nStations);
-
-  if (versionMajor == 1 && versionMinor == 0) {
-    ncFile.GetVar("targetdates", &m_targetDates[0]);
-    ncFile.GetVar("analogsnb", &m_analogsNb[0]);
-    ncFile.GetVar("stationsnames", &m_stationNames[0], nStations);
-    ncFile.GetVar("stationsids", &m_stationIds[0]);
-    ncFile.GetVar("stationsheights", &m_stationHeights[0]);
-    ncFile.GetVar("loccoordu", &m_stationXCoords[0]);
-    ncFile.GetVar("loccoordv", &m_stationYCoords[0]);
-  } else if (versionMajor == 1 && versionMinor <= 3) {
-    ncFile.GetVar("target_dates", &m_targetDates[0]);
-    ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-    ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
-    ncFile.GetVar("stations_ids", &m_stationIds[0]);
-    ncFile.GetVar("stations_heights", &m_stationHeights[0]);
-    ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
-    ncFile.GetVar("loc_coord_v", &m_stationYCoords[0]);
-  } else if (versionMajor == 1 && versionMinor <= 5) {
-    ncFile.GetVar("target_dates", &m_targetDates[0]);
-    ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-    ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
-    ncFile.GetVar("stations_ids", &m_stationIds[0]);
-    ncFile.GetVar("stations_heights", &m_stationHeights[0]);
-    ncFile.GetVar("loc_coord_x", &m_stationXCoords[0]);
-    ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
-  } else {
-    ncFile.GetVar("target_dates", &m_targetDates[0]);
-    ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
-    ncFile.GetVar("station_names", &m_stationNames[0], nStations);
-    ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], nStations);
-    ncFile.GetVar("station_ids", &m_stationIds[0]);
-    ncFile.GetVar("station_heights", &m_stationHeights[0]);
-    ncFile.GetVar("station_x_coords", &m_stationXCoords[0]);
-    ncFile.GetVar("station_y_coords", &m_stationYCoords[0]);
-  }
-
-  // Get return periods properties
-  if (m_hasReferenceValues) {
-    if (versionMajor == 1 && versionMinor == 0) {
-      int referenceAxisLength = ncFile.GetDimLength("returnperiods");
-      m_referenceAxis.resize(referenceAxisLength);
-      ncFile.GetVar("returnperiods", &m_referenceAxis[0]);
-      size_t startReferenceValues[2] = {0, 0};
-      size_t countReferenceValues[2] = {size_t(referenceAxisLength), size_t(nStations)};
-      m_referenceValues.resize(nStations, referenceAxisLength);
-      ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues,
-                         &m_referenceValues(0, 0));
     } else {
-      int referenceAxisLength = ncFile.GetDimLength("reference_axis");
-      m_referenceAxis.resize(referenceAxisLength);
-      ncFile.GetVar("reference_axis", &m_referenceAxis[0]);
-      size_t startReferenceValues[2] = {0, 0};
-      size_t countReferenceValues[2] = {0, 0};
-      if (versionMajor == 1 && versionMinor == 1) {
-        countReferenceValues[0] = size_t(referenceAxisLength);
-        countReferenceValues[1] = size_t(nStations);
+      if (versionMajor == 1 && versionMinor <= 4) {
+        m_methodId = ncFile.GetAttString("model_name");
+        m_methodIdDisplay = ncFile.GetAttString("model_name");
+        m_specificTag = wxEmptyString;
+        m_specificTagDisplay = wxEmptyString;
+        m_description = wxEmptyString;
       } else {
-        countReferenceValues[0] = size_t(nStations);
-        countReferenceValues[1] = size_t(referenceAxisLength);
+        m_methodId = ncFile.GetAttString("method_id");
+        m_methodIdDisplay = ncFile.GetAttString("method_id_display");
+        m_specificTag = ncFile.GetAttString("specific_tag");
+        m_specificTagDisplay = ncFile.GetAttString("specific_tag_display");
+        m_description = ncFile.GetAttString("description");
       }
-      m_referenceValues.resize(nStations, referenceAxisLength);
-      ncFile.GetVarArray("reference_values", startReferenceValues, countReferenceValues, &m_referenceValues(0, 0));
+
+      if (versionMajor == 1 && versionMinor <= 7) {
+        m_predictandParameter = asPredictand::Precipitation;
+        m_predictandTemporalResolution = asPredictand::Daily;
+        if (ncFile.GetAttInt("predictand_spatial_aggregation") == 0) {
+          m_predictandSpatialAggregation = asPredictand::Station;
+        } else if (ncFile.GetAttInt("predictand_spatial_aggregation") == 1) {
+          m_predictandSpatialAggregation = asPredictand::Groupment;
+        } else {
+          wxLogError(_("The spatial aggregation could not be converted."));
+          return false;
+        }
+      } else {
+        m_predictandParameter = asPredictand::StringToParameterEnum(ncFile.GetAttString("predictand_parameter"));
+        m_predictandTemporalResolution =
+            asPredictand::StringToTemporalResolutionEnum(ncFile.GetAttString("predictand_temporal_resolution"));
+        m_predictandSpatialAggregation =
+            asPredictand::StringToSpatialAggregationEnum(ncFile.GetAttString("predictand_spatial_aggregation"));
+      }
+
+      m_predictandDatasetId = ncFile.GetAttString("predictand_dataset_id");
+
+      if (versionMajor > 1 || (versionMajor == 1 && versionMinor >= 5)) {
+        m_predictandDatabase = ncFile.GetAttString("predictand_database");
+        SetPredictandStationIds(ncFile.GetAttString("predictand_station_ids"));
+      }
+
+      m_dateProcessed = ncFile.GetAttDouble("date_processed");
+      m_leadTimeOrigin = ncFile.GetAttDouble("lead_time_origin");
+      m_hasReferenceValues = false;
+      if (ncFile.GetAttShort("has_reference_values") == 1) {
+        m_hasReferenceValues = true;
+      }
     }
+
+    // Get the elements size
+    if (versionMajor == 1 && versionMinor == 0) {
+      nLeadtime = ncFile.GetDimLength("leadtime");
+      nAnalogsTot = ncFile.GetDimLength("analogstot");
+      nStations = ncFile.GetDimLength("stations");
+    } else {
+      nLeadtime = ncFile.GetDimLength("lead_time");
+      nAnalogsTot = ncFile.GetDimLength("analogs_tot");
+      nStations = ncFile.GetDimLength("stations");
+    }
+
+    // Get lead time data
+    m_targetDates.resize(nLeadtime);
+    m_analogsNb.resize(nLeadtime);
+    m_stationNames.resize(nStations);
+    m_stationOfficialIds.resize(nStations);
+    m_stationIds.resize(nStations);
+    m_stationHeights.resize(nStations);
+    m_stationXCoords.resize(nStations);
+    m_stationYCoords.resize(nStations);
+
+    if (versionMajor == 1 && versionMinor == 0) {
+      ncFile.GetVar("targetdates", &m_targetDates[0]);
+      ncFile.GetVar("analogsnb", &m_analogsNb[0]);
+      ncFile.GetVar("stationsnames", &m_stationNames[0], nStations);
+      ncFile.GetVar("stationsids", &m_stationIds[0]);
+      ncFile.GetVar("stationsheights", &m_stationHeights[0]);
+      ncFile.GetVar("loccoordu", &m_stationXCoords[0]);
+      ncFile.GetVar("loccoordv", &m_stationYCoords[0]);
+    } else if (versionMajor == 1 && versionMinor <= 3) {
+      ncFile.GetVar("target_dates", &m_targetDates[0]);
+      ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
+      ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
+      ncFile.GetVar("stations_ids", &m_stationIds[0]);
+      ncFile.GetVar("stations_heights", &m_stationHeights[0]);
+      ncFile.GetVar("loc_coord_u", &m_stationXCoords[0]);
+      ncFile.GetVar("loc_coord_v", &m_stationYCoords[0]);
+    } else if (versionMajor == 1 && versionMinor <= 5) {
+      ncFile.GetVar("target_dates", &m_targetDates[0]);
+      ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
+      ncFile.GetVar("stations_names", &m_stationNames[0], nStations);
+      ncFile.GetVar("stations_ids", &m_stationIds[0]);
+      ncFile.GetVar("stations_heights", &m_stationHeights[0]);
+      ncFile.GetVar("loc_coord_x", &m_stationXCoords[0]);
+      ncFile.GetVar("loc_coord_y", &m_stationYCoords[0]);
+    } else {
+      ncFile.GetVar("target_dates", &m_targetDates[0]);
+      ncFile.GetVar("analogs_nb", &m_analogsNb[0]);
+      ncFile.GetVar("station_names", &m_stationNames[0], nStations);
+      ncFile.GetVar("station_official_ids", &m_stationOfficialIds[0], nStations);
+      ncFile.GetVar("station_ids", &m_stationIds[0]);
+      ncFile.GetVar("station_heights", &m_stationHeights[0]);
+      ncFile.GetVar("station_x_coords", &m_stationXCoords[0]);
+      ncFile.GetVar("station_y_coords", &m_stationYCoords[0]);
+    }
+
+    // Get return periods properties
+    if (m_hasReferenceValues) {
+      if (versionMajor == 1 && versionMinor == 0) {
+        int referenceAxisLength = ncFile.GetDimLength("returnperiods");
+        m_referenceAxis.resize(referenceAxisLength);
+        ncFile.GetVar("returnperiods", &m_referenceAxis[0]);
+        size_t startReferenceValues[2] = {0, 0};
+        size_t countReferenceValues[2] = {size_t(referenceAxisLength), size_t(nStations)};
+        m_referenceValues.resize(nStations, referenceAxisLength);
+        ncFile.GetVarArray("dailyprecipitationsforreturnperiods", startReferenceValues, countReferenceValues,
+                           &m_referenceValues(0, 0));
+      } else {
+        int referenceAxisLength = ncFile.GetDimLength("reference_axis");
+        m_referenceAxis.resize(referenceAxisLength);
+        ncFile.GetVar("reference_axis", &m_referenceAxis[0]);
+        size_t startReferenceValues[2] = {0, 0};
+        size_t countReferenceValues[2] = {0, 0};
+        if (versionMajor == 1 && versionMinor == 1) {
+          countReferenceValues[0] = size_t(referenceAxisLength);
+          countReferenceValues[1] = size_t(nStations);
+        } else {
+          countReferenceValues[0] = size_t(nStations);
+          countReferenceValues[1] = size_t(referenceAxisLength);
+        }
+        m_referenceValues.resize(nStations, referenceAxisLength);
+        ncFile.GetVarArray("reference_values", startReferenceValues, countReferenceValues, &m_referenceValues(0, 0));
+      }
+    }
+
+    // Create vectors for matrices data
+    analogsCriteria.resize(nAnalogsTot);
+    analogsDates.resize(nAnalogsTot);
+    analogsValuesRaw.resize(nAnalogsTot * nStations);
+
+    // Get data
+    size_t indexStart1D[] = {0};
+    size_t indexCount1D[] = {size_t(nAnalogsTot)};
+    size_t indexStart2D[] = {0, 0};
+    size_t indexCount2D[] = {size_t(nStations), size_t(nAnalogsTot)};
+    if (versionMajor == 1 && versionMinor == 0) {
+      ncFile.GetVarArray("analogscriteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
+      ncFile.GetVarArray("analogsdates", indexStart1D, indexCount1D, &analogsDates[0]);
+      ncFile.GetVarArray("analogsvaluesgross", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
+    } else if (versionMajor == 1 && versionMinor <= 5) {
+      ncFile.GetVarArray("analogs_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
+      ncFile.GetVarArray("analogs_dates", indexStart1D, indexCount1D, &analogsDates[0]);
+      ncFile.GetVarArray("analogs_values_gross", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
+    } else {
+      ncFile.GetVarArray("analog_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
+      ncFile.GetVarArray("analog_dates", indexStart1D, indexCount1D, &analogsDates[0]);
+      ncFile.GetVarArray("analog_values", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
+    }
+
+    ncFile.Close();
+
+  } catch (std::exception &e) {
+    wxString msg(e.what(), wxConvUTF8);
+    wxLogError(_("Exception caught: %s"), msg);
+    wxLogError(_("Failed to open file (exception)."));
+    ThreadsManager().CritSectionNetCDF().Leave();
+
+    return false;
   }
-
-  // Create vectors for matrices data
-  vf analogsCriteria(nAnalogsTot);
-  vf analogsDates(nAnalogsTot);
-  vf analogsValuesRaw(nAnalogsTot * nStations);
-
-  // Get data
-  size_t indexStart1D[] = {0};
-  size_t indexCount1D[] = {size_t(nAnalogsTot)};
-  size_t indexStart2D[] = {0, 0};
-  size_t indexCount2D[] = {size_t(nStations), size_t(nAnalogsTot)};
-  if (versionMajor == 1 && versionMinor == 0) {
-    ncFile.GetVarArray("analogscriteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
-    ncFile.GetVarArray("analogsdates", indexStart1D, indexCount1D, &analogsDates[0]);
-    ncFile.GetVarArray("analogsvaluesgross", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
-  } else if (versionMajor == 1 && versionMinor <= 5) {
-    ncFile.GetVarArray("analogs_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
-    ncFile.GetVarArray("analogs_dates", indexStart1D, indexCount1D, &analogsDates[0]);
-    ncFile.GetVarArray("analogs_values_gross", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
-  } else {
-    ncFile.GetVarArray("analog_criteria", indexStart1D, indexCount1D, &analogsCriteria[0]);
-    ncFile.GetVarArray("analog_dates", indexStart1D, indexCount1D, &analogsDates[0]);
-    ncFile.GetVarArray("analog_values", indexStart2D, indexCount2D, &analogsValuesRaw[0]);
-  }
-
-  ncFile.Close();
 
   ThreadsManager().CritSectionNetCDF().Leave();
 

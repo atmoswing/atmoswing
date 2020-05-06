@@ -120,7 +120,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
   // Check extension
   wxFileName fname(filePath);
   wxString extension = fname.GetExt();
-  if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
+  if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst") && !extension.IsSameAs("nc")) {
     wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
     return false;
   }
