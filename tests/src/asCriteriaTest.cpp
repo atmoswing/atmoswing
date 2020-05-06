@@ -853,7 +853,7 @@ TEST(Criteria, DMV) {
   float res = criteria->Assess(refData, candData, refData.rows(), refData.cols());
   float resNaN = criteria->Assess(refDataNaN, candDataNaN, refDataNaN.rows(), refDataNaN.cols());
 
-  EXPECT_FLOAT_EQ(0.1243563f, res);
+  EXPECT_NEAR(0.1243563f, res, 0.00000015f);
   EXPECT_FLOAT_EQ(0.09395714f, resNaN);
 
   wxDELETE(criteria);

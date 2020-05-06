@@ -1,7 +1,7 @@
 ##
 # atmoswing/forecaster-server:ubuntu
 
-# Steps ordered them from the less frequently changed to the more frequently
+# Steps ordered from the less frequently changed to the more frequently
 # changed to ensure the build cache is reused.
 
 FROM ubuntu:18.04 AS builder

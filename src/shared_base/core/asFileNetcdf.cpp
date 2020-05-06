@@ -119,6 +119,15 @@ bool asFileNetcdf::Close() {
   return true;
 }
 
+bool asFileNetcdf::ForceClose() {
+    CheckDefModeClosed();  // Check that the file is not in define mode
+    ClearStruct();
+    m_status = nc_close(m_fileId);
+    m_fileId = 0;
+
+  return true;
+}
+
 void asFileNetcdf::HandleErrorNetcdf() {
   if (m_status != NC_NOERR) {
     std::string tmpmessage = nc_strerror(m_status);
