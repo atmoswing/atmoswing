@@ -325,9 +325,10 @@ bool asResultsForecast::Load() {
   int versionMajor, versionMinor;
   vf analogsCriteria, analogsDates, analogsValuesRaw;
 
+  asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
+
   try {
     // Open the NetCDF file
-    asFileNetcdf ncFile(m_filePath, asFileNetcdf::ReadOnly);
     if (!ncFile.Open()) return false;
 
     // Get global attributes
@@ -529,7 +530,8 @@ bool asResultsForecast::Load() {
   } catch (std::exception &e) {
     wxString msg(e.what(), wxConvUTF8);
     wxLogError(_("Exception caught: %s"), msg);
-    wxLogError(_("Failed to open file (exception)."));
+
+    ncFile.ForceClose();
     ThreadsManager().CritSectionNetCDF().Leave();
 
     return false;

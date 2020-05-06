@@ -326,10 +326,14 @@ bool asMethodForecasting::Forecast(asParametersForecast &params) {
         results->Save();
       } catch (std::exception &e) {
         wxString msg(e.what(), wxConvUTF8);
-        if (!msg.IsEmpty()) {
+        wxLogError(_("Exception caught: %s"), msg);
 #if wxUSE_GUI
-          if (!g_silentMode) wxMessageBox(msg);
+        if (!g_silentMode) wxMessageBox(msg);
+#else
+        asLog::PrintToConsole(_("Exception caught: %s"), msg);
 #endif
+        if (wxFileExists(results->GetFilePath())) {
+          wxRemoveFile(results->GetFilePath());
         }
         wxDELETE(results);
         wxDELETE(resultsPrevious);

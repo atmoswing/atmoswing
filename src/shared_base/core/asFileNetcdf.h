@@ -53,6 +53,8 @@ class asFileNetcdf : public asFile {
 
   bool Close() override;
 
+  bool ForceClose();
+
   void DefDim(const wxString &dimName, const size_t &dimSize = 0);
 
   void DefVar(const wxString &varName, nc_type dataType, const int &varSize, const vstds &dimNames);
