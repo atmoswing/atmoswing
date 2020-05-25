@@ -63,12 +63,6 @@ if (BUILD_VIEWER)
     include_directories(${PNG_INCLUDE_DIRS})
     link_libraries(${PNG_LIBRARIES})
 
-    # Jasper
-    find_package(Jasper REQUIRED)
-    include_directories(${JASPER_INCLUDE_DIR})
-    link_libraries(${JASPER_LIBRARIES})
-    link_libraries(${JASPER_LIBRARY_RELEASE})
-
     # Jpeg
     include_directories(${JPEG_INCLUDE_DIR})
     link_libraries(${JPEG_LIBRARY})
@@ -87,6 +81,12 @@ else ()
     unset(GDAL_LIBRARIES CACHE)
 
 endif ()
+
+# Jasper
+find_package(Jasper REQUIRED)
+include_directories(${JASPER_INCLUDE_DIR})
+link_libraries(${JASPER_LIBRARIES})
+link_libraries(${JASPER_LIBRARY_RELEASE})
 
 # ecCodes
 find_package(eccodes MODULE REQUIRED)
