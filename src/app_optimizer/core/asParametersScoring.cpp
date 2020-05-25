@@ -152,6 +152,7 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
       nodeAnalogDates->AddChild(nodePredictor);
 
       nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(iStep, iPtor)));
+      nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize", GetStandardize(iStep, iPtor)));
 
       if (NeedsPreprocessing(iStep, iPtor)) {
         wxXmlNode *nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");

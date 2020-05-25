@@ -335,7 +335,7 @@ class asParameters : public wxObject {
     m_steps[iStep].predictors[iPtor].standardize = val;
   }
 
-  bool GetStandardize(int iStep, int iPtor) {
+  bool GetStandardize(int iStep, int iPtor) const {
     return m_steps[iStep].predictors[iPtor].standardize;
   }
 

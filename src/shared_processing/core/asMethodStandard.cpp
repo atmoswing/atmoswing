@@ -472,8 +472,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
       double yStep = params->GetPredictorYstep(iStep, iPtor);
       int flatAllowed = params->GetPredictorFlatAllowed(iStep, iPtor);
       bool isLatLon = asPredictor::IsLatLon(params->GetPredictorDatasetId(iStep, iPtor));
-      asAreaCompGrid *area =
-          asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep, flatAllowed, isLatLon);
+      asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, xStep, yMin, yPtsNb, yStep,
+                                                         flatAllowed, isLatLon);
       wxASSERT(area);
       area->AllowResizeFromData();
 
@@ -548,9 +548,12 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
       }
 
       if (m_dumpPredictorData || m_loadFromDumpedData) {
+        // Dumped files do not exist here.
         if (!predictor->SaveDumpFile()) {
           return false;
         }
+        wxLogMessage(_("File dumbed for %s (level %d, %gh)."), preloadDataIds[iDat], (int)preloadLevels[iLevel],
+                     preloadHours[iHour]);
         if (m_dumpPredictorData) {
           predictor->DumpData();
         }
