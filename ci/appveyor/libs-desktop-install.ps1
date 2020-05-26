@@ -57,21 +57,6 @@ $env:WXWIN = "$LIB_DIR"
 
 if ($stopwatchlibs.Elapsed.TotalMinutes -gt 30) { return }
 
-# Install Jpeg (for GDAL)
-if(!(Test-Path -Path "$LIB_DIR\include\jpeglib.h") -Or $REBUILD_JPEG) {
-  Init-Build "jpeg"
-  Download-Lib "jpeg" $JPEG_URL
-  7z x jpeg.zip -o"$TMP_DIR" > $null
-  move "$TMP_DIR\libjpeg-*" "$TMP_DIR\jpeg"
-  cd "$TMP_DIR\jpeg"
-  mkdir bld > $null
-  cd bld
-  cmake .. -G"$VS_VER" $CMAKE_GENERATOR -DCMAKE_INSTALL_PREFIX="$LIB_DIR" -DBUILD_STATIC=ON -DBUILD_EXECUTABLES=OFF > $null
-  cmake --build . --config release > $null
-  cmake --build . --config release --target INSTALL > $null
-} else {
-  Write-Host "`nJpeg has been found in cache and will not be built" -ForegroundColor Yellow
-}
 
 # Install PNG (for GDAL)
 if(!(Test-Path -Path "$LIB_DIR\include\png.h") -Or $REBUILD_PNG) {
