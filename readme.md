@@ -23,7 +23,7 @@ The Viewer displays the forecasts in an interactive GIS environment. It contains
 
 ## What's in there ##
 
-This repository contains 3 separate tools:
+This repository contains 4 different tools:
 
 * The Forecaster: automatically processes the forecast
 * The Viewer: displays the resulting files in a GIS environment
