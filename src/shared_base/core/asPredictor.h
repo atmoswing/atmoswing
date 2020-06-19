@@ -40,7 +40,7 @@ class asGeo;
 class asAreaCompGrid;
 
 class asPredictor : public wxObject {
-   public:
+  public:
     enum Parameter {
         ParameterUndefined,
         AirTemperature,
@@ -363,7 +363,7 @@ class asPredictor : public wxObject {
         return m_wasDumped;
     }
 
-   protected:
+  protected:
     struct FileStructure {
         wxString dimLatName;
         wxString dimLonName;
@@ -537,7 +537,7 @@ class asPredictor : public wxObject {
 
     bool IsPrecipitationRate() const;
 
-   private:
+  private:
     wxString m_directoryPath;
 
     bool ExtractSpatialAxes(asFileNetcdf &ncFile);

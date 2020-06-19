@@ -34,7 +34,7 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarAnalogDates : public asPanelSidebar {
-   public:
+  public:
     asPanelSidebarAnalogDates(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                               const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
@@ -42,7 +42,7 @@ class asPanelSidebarAnalogDates : public asPanelSidebar {
 
     void SetChoices(a1f &arrayDate, a1f &arrayCriteria);
 
-   private:
+  private:
     wxListCtrl *m_listCtrl;
 
     void OnDateSelection(wxListEvent &event);

@@ -48,7 +48,7 @@ enum wxMenuButton_Styles { wxMENUBUT_FLAT = wxCUSTBUT_FLAT };
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxMenuButton : public wxControl {
-   public:
+  public:
     wxMenuButton() : wxControl() {
         Init();
     }
@@ -126,7 +126,7 @@ class WXDLLIMPEXP_THINGS wxMenuButton : public wxControl {
 
     void SetToolTip(wxToolTip *tip);
 
-   protected:
+  protected:
     void OnButton(wxCommandEvent &event);
 
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
@@ -145,7 +145,7 @@ class WXDLLIMPEXP_THINGS wxMenuButton : public wxControl {
     bool m_menu_static;
     long m_style;
 
-   private:
+  private:
     void Init();
 
     DECLARE_DYNAMIC_CLASS(wxMenuButton)

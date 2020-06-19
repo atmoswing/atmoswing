@@ -38,7 +38,7 @@ class asParameters;
 class asCriteria;
 
 class asMethodStandard : public wxObject {
-   public:
+  public:
     asMethodStandard();
 
     ~asMethodStandard() override;
@@ -101,7 +101,7 @@ class asMethodStandard : public wxObject {
         return m_preloadedArchivePointerCopy[iStep][iPtor][iPre];
     }
 
-   protected:
+  protected:
     bool m_cancel;
     bool m_preloaded;
     bool m_warnFailedLoadingData;
@@ -132,7 +132,7 @@ class asMethodStandard : public wxObject {
 
     virtual double GetEffectiveArchiveDataEnd(asParameters *params) const = 0;
 
-   private:
+  private:
 };
 
 #endif

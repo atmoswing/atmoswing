@@ -41,7 +41,8 @@ BEGIN_EVENT_TABLE(wxCustomButton, wxControl)
 EVT_MOUSE_EVENTS(wxCustomButton::OnMouseEvents)
 EVT_PAINT(wxCustomButton::OnPaint)
 EVT_TIMER(wxID_ANY, wxCustomButton::OnTimer)
-EVT_SIZE(wxCustomButton::OnSize) END_EVENT_TABLE()
+EVT_SIZE(wxCustomButton::OnSize)
+END_EVENT_TABLE()
 
     wxCustomButton::~wxCustomButton() {
     if (HasCapture()) ReleaseMouse();

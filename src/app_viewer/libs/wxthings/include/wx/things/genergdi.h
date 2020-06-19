@@ -40,7 +40,7 @@ WX_DECLARE_OBJARRAY_WITH_DECL(wxGenericBrush, wxArrayGenericBrush, class WXDLLIM
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
-   public:
+  public:
     wxGenericColour() {}
 
     wxGenericColour(const wxGenericColour &c) {
@@ -197,7 +197,7 @@ class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
@@ -212,7 +212,7 @@ class WXDLLIMPEXP_THINGS wxGenericColour : public wxObject {
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
-   public:
+  public:
     wxGenericPen() {}
 
     wxGenericPen(const wxGenericPen &pen) {
@@ -332,7 +332,7 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
@@ -347,7 +347,7 @@ class WXDLLIMPEXP_THINGS wxGenericPen : public wxObject {
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
-   public:
+  public:
     wxGenericBrush() {}
 
     wxGenericBrush(const wxGenericBrush &brush) {
@@ -453,7 +453,7 @@ class WXDLLIMPEXP_THINGS wxGenericBrush : public wxObject {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 

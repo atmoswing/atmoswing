@@ -32,15 +32,15 @@
 #include "asMethodCalibratorClassic.h"
 
 class asMethodCalibratorClassicVarExplo : public asMethodCalibratorClassic {
-   public:
+  public:
     asMethodCalibratorClassicVarExplo();
 
     ~asMethodCalibratorClassicVarExplo() override;
 
-   protected:
+  protected:
     bool Calibrate(asParametersCalibration &params) override;
 
-   private:
+  private:
 };
 
 #endif

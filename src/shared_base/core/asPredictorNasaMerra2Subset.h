@@ -34,17 +34,17 @@
 class asArea;
 
 class asPredictorNasaMerra2Subset : public asPredictorNasaMerra2 {
-   public:
+  public:
     explicit asPredictorNasaMerra2Subset(const wxString &dataId);
 
     ~asPredictorNasaMerra2Subset() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
-   private:
+  private:
 };
 
 #endif

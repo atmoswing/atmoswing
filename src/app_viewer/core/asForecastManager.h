@@ -34,7 +34,7 @@
 #include "asWorkspace.h"
 
 class asForecastManager {
-   public:
+  public:
     asForecastManager(wxWindow *parent, asWorkspace *workspace);
 
     virtual ~asForecastManager();
@@ -165,8 +165,8 @@ class asForecastManager {
         return m_aggregator->GetLeadTimes(methodRow, forecastRow);
     }
 
-   protected:
-   private:
+  protected:
+  private:
     wxWindow *m_parent;
     asWorkspace *m_workspace;
     asResultsForecastAggregator *m_aggregator;

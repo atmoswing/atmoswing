@@ -34,12 +34,12 @@
 #include "asIncludes.h"
 
 class AtmoswingFrameDownscaler : public asFrameDownscaler {
-   public:
+  public:
     explicit AtmoswingFrameDownscaler(wxFrame *frame);
 
     ~AtmoswingFrameDownscaler() override;
 
-   private:
+  private:
     virtual void OnClose(wxCloseEvent &event);
 
     virtual void OnQuit(wxCommandEvent &event);

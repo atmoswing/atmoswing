@@ -37,7 +37,7 @@
 class asForecastViewer;
 
 class asForecastTreeItemData : public wxTreeItemData {
-   public:
+  public:
     asForecastTreeItemData(int methodRow, int forecastRow);
 
     int GetMethodRow() const {
@@ -48,13 +48,13 @@ class asForecastTreeItemData : public wxTreeItemData {
         return m_forecastRow;
     }
 
-   private:
+  private:
     int m_methodRow;
     int m_forecastRow;
 };
 
 class asMessageForecastChoice : public wxObject {
-   public:
+  public:
     asMessageForecastChoice(int methodRow, int forecastRow);
 
     int GetMethodRow() const {
@@ -65,13 +65,13 @@ class asMessageForecastChoice : public wxObject {
         return m_forecastRow;
     }
 
-   private:
+  private:
     int m_methodRow;
     int m_forecastRow;
 };
 
 class asListBoxForecasts : public wxTreeCtrl {
-   public:
+  public:
     enum {
         TreeCtrlIcon_Precipitation,
         TreeCtrlIcon_Temperature,
@@ -95,8 +95,8 @@ class asListBoxForecasts : public wxTreeCtrl {
 
     void SelectFirst();
 
-   protected:
-   private:
+  protected:
+  private:
     asForecastManager *m_forecastManager;
     bool m_skipSlctChangeEvent;
 

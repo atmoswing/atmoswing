@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asPanelSidebar : public asPanelSidebarVirtual {
-   public:
+  public:
     explicit asPanelSidebar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                             const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
@@ -43,7 +43,7 @@ class asPanelSidebar : public asPanelSidebarVirtual {
         return !m_sizerMain->IsShown(m_sizerContent);
     }
 
-   protected:
+  protected:
     void OnReducePanel(wxMouseEvent &event) override;
 
     void OnPaint(wxCommandEvent &event);

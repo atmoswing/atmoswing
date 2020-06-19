@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreContingencyTable : public asScore {
-   public:
+  public:
     asScoreContingencyTable();
 
     ~asScoreContingencyTable() override = default;
@@ -42,8 +42,8 @@ class asScoreContingencyTable : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

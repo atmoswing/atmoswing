@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorEcmwfEraInterim : public asPredictor {
-   public:
+  public:
     explicit asPredictorEcmwfEraInterim(const wxString &dataId);
 
     ~asPredictorEcmwfEraInterim() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

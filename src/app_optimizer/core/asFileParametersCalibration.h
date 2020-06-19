@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asFileParametersCalibration : public asFileParameters {
-   public:
+  public:
     asFileParametersCalibration(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersCalibration();
@@ -42,8 +42,8 @@ class asFileParametersCalibration : public asFileParameters {
 
     bool CheckRootElement() const;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

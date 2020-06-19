@@ -59,7 +59,7 @@ inline double Max(double d1, double d2) {
 
 class compres {
     // states: 0=false, 1=true, 2=unknown
-   public:
+  public:
     compres(bool b) : state(b) {}
 
     compres(char v) : state(v) {}
@@ -82,7 +82,7 @@ class compres {
         return (state != 0) != b;
     }
 
-   private:
+  private:
     char state;
 };
 
@@ -98,7 +98,7 @@ class SubTree {
         sign = !sign;
     }
 
-   public:
+  public:
     SubTree();
 
     SubTree(double value);
@@ -154,13 +154,13 @@ typedef list<SubTree> paramlist;
 struct CodeTreeData {
     paramlist args;
 
-   private:
+  private:
     unsigned op;      // Operation
     double value;     // In case of cImmed
     unsigned var;     // In case of cVar
     unsigned funcno;  // In case of cFCall, cPCall
 
-   public:
+  public:
     CodeTreeData() : op(cAdd) {}
 
     ~CodeTreeData() {}
@@ -248,7 +248,7 @@ struct CodeTreeData {
         return !IsInverted() && IsNegated();
     }
 
-   private:
+  private:
     void UpdateValue() {
         value = orig;
         if (IsInverted()) {
@@ -262,7 +262,7 @@ struct CodeTreeData {
     bool inverted;
     bool negated;
 
-   protected:
+  protected:
     // Ensure we don't accidentally copy this
     void operator=(const CodeTreeData &b);
 };
@@ -293,7 +293,7 @@ class CodeTreeDataPtr {
         p = newtree;
     }
 
-   public:
+  public:
     CodeTreeDataPtr() : p(new p_t) {
         p->second = 1;
     }
@@ -339,7 +339,7 @@ class CodeTreeDataPtr {
 struct CodeTree {
     CodeTreeDataPtr data;
 
-   private:
+  private:
     typedef paramlist::iterator pit;
     typedef paramlist::const_iterator pcit;
 
@@ -349,7 +349,7 @@ struct CodeTree {
     }
     */
 
-   public:
+  public:
     const pcit GetBegin() const {
         return data->args.begin();
     }
@@ -467,7 +467,7 @@ struct CodeTree {
         return GetImmed() > 0.0;
     }
 
-   private:
+  private:
     struct ConstList {
         double voidvalue;
         list<pit> cp;
@@ -489,7 +489,7 @@ struct CodeTree {
         if (cl.value == cl.voidvalue || cl.size() > 1) KillConst(cl);
     }
 
-   public:
+  public:
     CodeTree() {}
 
     CodeTree(double v) {
@@ -511,7 +511,7 @@ struct CodeTree {
 
     bool operator<(const CodeTree &b) const;
 
-   private:
+  private:
     bool IsSortable() const {
         switch (GetOp()) {
             case cAdd:
@@ -1164,7 +1164,7 @@ struct CodeTree {
 #endif
     }
 
-   public:
+  public:
     void Optimize();
 
     void Assemble(vector<unsigned> &byteCode, vector<double> &immed) const;

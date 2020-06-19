@@ -32,13 +32,13 @@
 #include "asIncludes.h"
 
 class asCriteriaS2grads : public asCriteriaS1grads {
-   public:
+  public:
     asCriteriaS2grads();
 
     ~asCriteriaS2grads() override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

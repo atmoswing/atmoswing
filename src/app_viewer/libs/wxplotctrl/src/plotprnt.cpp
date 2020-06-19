@@ -251,7 +251,7 @@ bool wxPlotPrintout::ShowPrintPageSetupDialog() {
 class wxPlotCtrlModule : public wxModule {
     DECLARE_DYNAMIC_CLASS(wxPlotCtrlModule)
 
-   public:
+  public:
     wxPlotCtrlModule() : wxModule() {}
 
     bool OnInit() {

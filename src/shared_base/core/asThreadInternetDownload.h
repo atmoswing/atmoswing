@@ -34,7 +34,7 @@
 #include "asThread.h"
 
 class asThreadInternetDownload : public asThread {
-   public:
+  public:
     asThreadInternetDownload(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir, bool usesProxy,
                              const wxString &proxyAddress, long proxyPort, const wxString &proxyUser,
                              const wxString &proxyPasswd, int start, int end);
@@ -43,8 +43,8 @@ class asThreadInternetDownload : public asThread {
 
     ExitCode Entry() override;
 
-   protected:
-   private:
+  protected:
+  private:
     vwxs m_urls;
     vwxs m_fileNames;
     wxString m_destinationDir;

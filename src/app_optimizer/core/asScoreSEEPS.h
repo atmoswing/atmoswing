@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreSEEPS : public asScore {
-   public:
+  public:
     asScoreSEEPS();
 
     ~asScoreSEEPS() override;
@@ -58,8 +58,8 @@ class asScoreSEEPS : public asScore {
         m_thresHigh = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     float m_p1;
     float m_p3;
     float m_thresNull;

@@ -33,7 +33,7 @@
 #include "asResults.h"
 
 class asResultsDates : public asResults {
-   public:
+  public:
     asResultsDates();
 
     virtual ~asResultsDates();
@@ -87,10 +87,10 @@ class asResultsDates : public asResults {
 
     bool Load();
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     a1f m_targetDates;
     a2f m_analogsCriteria;
     a2f m_analogsDates;

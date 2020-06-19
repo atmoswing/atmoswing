@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asThread : public wxThread {
-   public:
+  public:
     enum Type {
         Undefined,
         PreloadData,
@@ -63,11 +63,11 @@ class asThread : public wxThread {
         m_device = val;
     }
 
-   protected:
+  protected:
     asThread::Type m_type;
     int m_device;
 
-   private:
+  private:
 };
 
 #endif

@@ -32,7 +32,7 @@
 #include "asTotalScore.h"
 
 class asTotalScoreRankHistogram : public asTotalScore {
-   public:
+  public:
     explicit asTotalScoreRankHistogram(const wxString &periodString);
 
     ~asTotalScoreRankHistogram() override = default;
@@ -41,8 +41,8 @@ class asTotalScoreRankHistogram : public asTotalScore {
 
     a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

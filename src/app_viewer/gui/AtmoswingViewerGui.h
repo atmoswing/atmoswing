@@ -49,8 +49,8 @@ WX_DEFINE_ARRAY_PTR(wxWizardPageSimple*, WizardPages);
 /// Class asFrameForecastVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameForecastVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelMain;
     wxSplitterWindow* m_splitterGIS;
     wxScrolledWindow* m_scrolledWindowOptions;
@@ -142,7 +142,7 @@ class asFrameForecastVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFrameForecastVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Viewer"),
                            const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(-1, -1),
                            long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
@@ -160,8 +160,8 @@ class asFrameForecastVirtual : public wxFrame {
 /// Class asWizardWorkspaceVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asWizardWorkspaceVirtual : public wxWizard {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticText37;
     wxStaticText* m_staticText35;
     wxButton* m_button4;
@@ -186,7 +186,7 @@ class asWizardWorkspaceVirtual : public wxWizard {
         event.Skip();
     }
 
-   public:
+  public:
     asWizardWorkspaceVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                              const wxString& title = _("Workspace creation wizard"),
                              const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition,
@@ -199,8 +199,8 @@ class asWizardWorkspaceVirtual : public wxWizard {
 /// Class asPanelSidebarVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asPanelSidebarVirtual : public wxPanel {
-   private:
-   protected:
+  private:
+  protected:
     wxBoxSizer* m_sizerMain;
     wxPanel* m_panel28;
     wxPanel* m_panelHeader;
@@ -213,7 +213,7 @@ class asPanelSidebarVirtual : public wxPanel {
         event.Skip();
     }
 
-   public:
+  public:
     asPanelSidebarVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
                           const wxSize& size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL,
                           const wxString& name = wxEmptyString);
@@ -224,8 +224,8 @@ class asPanelSidebarVirtual : public wxPanel {
 /// Class asFramePlotTimeSeriesVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePlotTimeSeriesVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelStationName;
     wxStaticText* m_staticTextStationName;
     wxButton* m_buttonSaveTxt;
@@ -252,7 +252,7 @@ class asFramePlotTimeSeriesVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePlotTimeSeriesVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                  const wxString& title = _("Forecast plots"), const wxPoint& pos = wxDefaultPosition,
                                  const wxSize& size = wxSize(700, 400),
@@ -271,8 +271,8 @@ class asFramePlotTimeSeriesVirtual : public wxFrame {
 /// Class asFramePlotDistributionsVirutal
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePlotDistributionsVirutal : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelOptions;
     wxStaticText* m_staticTextForecast;
     wxStaticText* m_staticTextStation;
@@ -304,7 +304,7 @@ class asFramePlotDistributionsVirutal : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePlotDistributionsVirutal(wxWindow* parent, wxWindowID id = wxID_ANY,
                                     const wxString& title = _("Distribution plots"),
                                     const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(900, 500),
@@ -323,8 +323,8 @@ class asFramePlotDistributionsVirutal : public wxFrame {
 /// Class asFrameGridAnalogsValuesVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameGridAnalogsValuesVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelOptions;
     wxStaticText* m_staticTextForecast;
     wxChoice* m_choiceForecast;
@@ -348,7 +348,7 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFrameGridAnalogsValuesVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                     const wxString& title = _("Analogs details"),
                                     const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(473, 500),
@@ -361,8 +361,8 @@ class asFrameGridAnalogsValuesVirtual : public wxFrame {
 /// Class asFramePredictorsVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePredictorsVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panel15;
     wxSplitterWindow* m_splitterToc;
     wxScrolledWindow* m_scrolledWindowOptions;
@@ -416,7 +416,7 @@ class asFramePredictorsVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePredictorsVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                              const wxString& title = _("Predictors overview"), const wxPoint& pos = wxDefaultPosition,
                              const wxSize& size = wxSize(800, 600),
@@ -435,8 +435,8 @@ class asFramePredictorsVirtual : public wxFrame {
 /// Class asFramePreferencesViewerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePreferencesViewerVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelBase;
     wxNotebook* m_notebookBase;
     wxPanel* m_panelWorkspace;
@@ -492,7 +492,7 @@ class asFramePreferencesViewerVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePreferencesViewerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                     const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition,
                                     const wxSize& size = wxSize(482, 534),

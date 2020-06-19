@@ -32,7 +32,7 @@
 #include "asResultsForecast.h"
 
 class asResultsForecastAggregator : public wxObject {
-   public:
+  public:
     asResultsForecastAggregator();
 
     virtual ~asResultsForecastAggregator();
@@ -99,8 +99,8 @@ class asResultsForecastAggregator : public wxObject {
 
     bool ExportSyntheticXml(const wxString &dirPath) const;
 
-   protected:
-   private:
+  protected:
+  private:
     std::vector<std::vector<asResultsForecast *> > m_forecasts;
     std::vector<std::vector<std::vector<asResultsForecast *> > > m_pastForecasts;
 };

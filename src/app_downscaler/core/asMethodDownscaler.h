@@ -39,7 +39,7 @@ class asPredictorProj;
 class asCriteria;
 
 class asMethodDownscaler : public asMethodStandard {
-   public:
+  public:
     asMethodDownscaler();
 
     ~asMethodDownscaler() override;
@@ -72,7 +72,7 @@ class asMethodDownscaler : public asMethodStandard {
         m_predictorProjectionDataDir = val;
     }
 
-   protected:
+  protected:
     wxString m_predictorProjectionDataDir;
     vi m_predictandStationIds;
     std::vector<asParametersDownscaling> m_parameters;
@@ -99,7 +99,7 @@ class asMethodDownscaler : public asMethodStandard {
 
     void Cleanup(std::vector<asCriteria *> criteria) override;
 
-   private:
+  private:
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictor *> > > > > m_preloadedArchive;
     std::vector<std::vector<std::vector<std::vector<std::vector<asPredictorProj *> > > > > m_preloadedProjection;
     std::vector<vvb> m_preloadedArchivePointerCopy;

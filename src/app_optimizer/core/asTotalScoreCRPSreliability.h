@@ -33,7 +33,7 @@
 #include "asTotalScore.h"
 
 class asTotalScoreCRPSreliability : public asTotalScore {
-   public:
+  public:
     explicit asTotalScoreCRPSreliability(const wxString &periodString);
 
     ~asTotalScoreCRPSreliability() override = default;
@@ -45,8 +45,8 @@ class asTotalScoreCRPSreliability : public asTotalScore {
 
     float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

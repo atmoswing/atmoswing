@@ -34,15 +34,15 @@
 #include "asThread.h"
 
 class asThreadPreloadArchiveData : public asThread {
-   public:
+  public:
     asThreadPreloadArchiveData(asMethodStandard *method, asParameters *params, int iStep, int iPtor, int i);
 
     virtual ~asThreadPreloadArchiveData();
 
     ExitCode Entry();
 
-   protected:
-   private:
+  protected:
+  private:
     asMethodStandard *m_method;
     asParameters *m_params;
     int m_iStep;

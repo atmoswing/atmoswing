@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreCRPSS : public asScore {
-   public:
+  public:
     asScoreCRPSS();
 
     ~asScoreCRPSS() override;
@@ -42,8 +42,8 @@ class asScoreCRPSS : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

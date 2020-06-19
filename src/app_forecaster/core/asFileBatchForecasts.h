@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asFileBatchForecasts : public asFileXml {
-   public:
+  public:
     asFileBatchForecasts(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileBatchForecasts() override = default;
@@ -42,8 +42,8 @@ class asFileBatchForecasts : public asFileXml {
 
     bool CheckRootElement() const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

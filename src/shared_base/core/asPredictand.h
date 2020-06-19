@@ -36,7 +36,7 @@ class asCatalogPredictands;
 class asFileNetcdf;
 
 class asPredictand : public wxObject {
-   public:
+  public:
     enum Parameter { Precipitation, AirTemperature, Lightnings, Wind };
 
     enum Unit { nb, mm, m, in, percent, degC, degK };
@@ -178,7 +178,7 @@ class asPredictand : public wxObject {
 
     int GetStationIndex(int stationId) const;
 
-   protected:
+  protected:
     // Single value
     float m_fileVersion;
     Parameter m_parameter;
@@ -230,7 +230,7 @@ class asPredictand : public wxObject {
     bool GetFileContent(asCatalogPredictands &currentData, size_t stationIndex,
                         const wxString &directory = wxEmptyString, const wxString &patternDir = wxEmptyString);
 
-   private:
+  private:
     float ParseAndCheckDataValue(asCatalogPredictands &currentData, wxString &dataStr) const;
 };
 

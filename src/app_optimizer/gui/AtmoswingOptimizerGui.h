@@ -42,8 +42,8 @@
 /// Class asFrameOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameOptimizerVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelMain;
     wxNotebook* m_notebookBase;
     wxPanel* m_panelControls;
@@ -185,7 +185,7 @@ class asFrameOptimizerVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFrameOptimizerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                             const wxString& title = _("AtmoSwing Optimizer"), const wxPoint& pos = wxDefaultPosition,
                             const wxSize& size = wxSize(-1, -1), long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
@@ -197,8 +197,8 @@ class asFrameOptimizerVirtual : public wxFrame {
 /// Class asFramePreferencesOptimizerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePreferencesOptimizerVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelBase;
     wxNotebook* m_notebookBase;
     wxPanel* m_panelGeneralCommon;
@@ -251,7 +251,7 @@ class asFramePreferencesOptimizerVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePreferencesOptimizerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                        const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition,
                                        const wxSize& size = wxSize(482, 534),

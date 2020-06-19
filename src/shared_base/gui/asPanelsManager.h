@@ -31,7 +31,7 @@
 #include "asIncludes.h"
 
 class asPanelsManager : public wxObject {
-   public:
+  public:
     asPanelsManager() = default;
 
     ~asPanelsManager() override = default;
@@ -40,8 +40,8 @@ class asPanelsManager : public wxObject {
 
     wxWindow *GetTopFrame(wxWindow *element) const;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

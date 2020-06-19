@@ -35,14 +35,14 @@
 #include "asMethodCalibrator.h"
 
 class asFrameOptimizer : public asFrameOptimizerVirtual {
-   public:
+  public:
     explicit asFrameOptimizer(wxWindow *parent);
 
     ~asFrameOptimizer() override;
 
     void OnInit();
 
-   protected:
+  protected:
     asLogWindow *m_logWindow;
     asMethodCalibrator *m_methodCalibrator;
 

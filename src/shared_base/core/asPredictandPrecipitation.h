@@ -33,7 +33,7 @@
 #include "asPredictand.h"
 
 class asPredictandPrecipitation : public asPredictand {
-   public:
+  public:
     asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                               SpatialAggregation dataSpatialAggregation);
 
@@ -69,8 +69,8 @@ class asPredictandPrecipitation : public asPredictand {
         m_isSqrt = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     float m_returnPeriodNormalization;
     bool m_isSqrt;
     // Vector (dim = return periods)

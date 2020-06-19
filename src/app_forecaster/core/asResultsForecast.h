@@ -34,7 +34,7 @@
 #include "asResults.h"
 
 class asResultsForecast : public asResults {
-   public:
+  public:
     asResultsForecast();
 
     ~asResultsForecast() override = default;
@@ -333,10 +333,10 @@ class asResultsForecast : public asResults {
 
     wxString GetPredictandStationIdsString() const;
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     wxString m_methodId;
     wxString m_methodIdDisplay;
     wxString m_specificTag;

@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asScore : public wxObject {
-   public:
+  public:
     enum Score  //!< Enumaration of scores
     {
         Undefined,
@@ -142,7 +142,7 @@ class asScore : public wxObject {
         return m_singleValue;
     }
 
-   protected:
+  protected:
     Score m_score;
     wxString m_name;
     wxString m_fullName;
@@ -156,7 +156,7 @@ class asScore : public wxObject {
     float m_threshold;
     float m_quantile;
 
-   private:
+  private:
 };
 
 #endif

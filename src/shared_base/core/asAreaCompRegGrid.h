@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asAreaCompRegGrid : public asAreaCompGrid {
-   public:
+  public:
     asAreaCompRegGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR, double xStep,
                       double yStep, int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
@@ -78,8 +78,8 @@ class asAreaCompRegGrid : public asAreaCompGrid {
         m_yStep = m_yStepData;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     double m_xStep;
     double m_yStep;
     double m_xStepData;

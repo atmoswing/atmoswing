@@ -35,7 +35,7 @@
 class asForecastManager;
 
 class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
-   public:
+  public:
     asFramePlotDistributions(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
                              wxWindowID id = asWINDOW_PLOTS_DISTRIBUTIONS);
 
@@ -49,8 +49,8 @@ class asFramePlotDistributions : public asFramePlotDistributionsVirutal {
 
     bool PlotCriteria();
 
-   protected:
-   private:
+  protected:
+  private:
     enum PlotPredictandsData {
         ClassicQuantiles,
         AllAnalogsPoints,

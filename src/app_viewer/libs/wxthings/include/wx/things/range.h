@@ -39,7 +39,7 @@ WXDLLIMPEXP_DATA_THINGS(extern const wxRangeDouble) wxEmptyRangeDouble;
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxRangeInt {
-   public:
+  public:
     inline wxRangeInt(int min_ = 0, int max_ = 0) : m_min(min_), m_max(max_) {}
 
     // Get the width of the range
@@ -201,7 +201,7 @@ class WXDLLIMPEXP_THINGS wxRangeInt {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxRangeIntSelection {
-   public:
+  public:
     wxRangeIntSelection() {}
 
     wxRangeIntSelection(const wxRangeInt &range) {
@@ -284,7 +284,7 @@ class WXDLLIMPEXP_THINGS wxRangeIntSelection {
         return *this;
     }
 
-   protected:
+  protected:
     wxArrayRangeInt m_ranges;
 };
 
@@ -293,7 +293,7 @@ class WXDLLIMPEXP_THINGS wxRangeIntSelection {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxRangeDouble {
-   public:
+  public:
     inline wxRangeDouble(wxDouble min_ = 0, wxDouble max_ = 0) : m_min(min_), m_max(max_) {}
 
     // Get the width of the range
@@ -448,7 +448,7 @@ class WXDLLIMPEXP_THINGS wxRangeDouble {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxRangeDoubleSelection {
-   public:
+  public:
     wxRangeDoubleSelection() {}
 
     wxRangeDoubleSelection(const wxRangeDouble &range) {
@@ -528,7 +528,7 @@ class WXDLLIMPEXP_THINGS wxRangeDoubleSelection {
         return *this;
     }
 
-   protected:
+  protected:
     wxArrayRangeDouble m_ranges;
 };
 

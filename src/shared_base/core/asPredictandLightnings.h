@@ -33,7 +33,7 @@
 #include "asPredictand.h"
 
 class asPredictandLightnings : public asPredictand {
-   public:
+  public:
     asPredictandLightnings(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                            SpatialAggregation dataSpatialAggregation);
 
@@ -47,8 +47,8 @@ class asPredictandLightnings : public asPredictand {
                            const wxString &patternDir = wxEmptyString,
                            const wxString &destinationDir = wxEmptyString) override;
 
-   protected:
-   private:
+  protected:
+  private:
     bool InitContainers();
 
     bool BuildDataNormalized();

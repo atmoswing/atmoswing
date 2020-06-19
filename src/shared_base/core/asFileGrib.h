@@ -35,7 +35,7 @@
 #include "eccodes.h"
 
 class asFileGrib : public asFile {
-   public:
+  public:
     asFileGrib(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileGrib() override;
@@ -72,8 +72,8 @@ class asFileGrib : public asFile {
 
     vd GetRealForecastTimeArray() const;
 
-   protected:
-   private:
+  protected:
+  private:
     FILE *m_filtPtr;
     int m_version;
     int m_index;

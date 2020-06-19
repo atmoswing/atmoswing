@@ -52,7 +52,7 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_MENUBUTTON_OPEN)
 // ==========================================================================
 
 class MenuDropButton : public wxCustomButton {
-   public:
+  public:
     MenuDropButton(wxWindow *parent, wxWindowID id, long style) : wxCustomButton() {
         if (!s_dropdownBitmap.Ok()) s_dropdownBitmap = wxBitmap(down_arrow_xpm_data);
 
@@ -87,7 +87,7 @@ class MenuDropButton : public wxCustomButton {
 // ==========================================================================
 
 class MenuLabelButton : public wxCustomButton {
-   public:
+  public:
     MenuLabelButton(wxWindow *parent, wxWindowID id, const wxString &label, const wxBitmap &bitmap, long style)
         : wxCustomButton() {
         Create(parent, id, label, bitmap, wxDefaultPosition, wxDefaultSize, style);

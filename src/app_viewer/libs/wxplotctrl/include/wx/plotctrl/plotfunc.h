@@ -31,7 +31,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction;
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotFunction) wxNullPlotFunction;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
-   public:
+  public:
     wxPlotFunction() : wxPlotCurve() {}
 
     wxPlotFunction(const wxPlotFunction &curve) {
@@ -101,7 +101,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotFunction : public wxPlotCurve {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 

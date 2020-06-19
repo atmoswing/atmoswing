@@ -56,10 +56,10 @@ const int asID_MENU_POPUP_LAYER = wxID_HIGHEST + 2 + as_POPUP_OFFSET;
 class asFrameForecast;
 
 class vroomDropFiles : public wxFileDropTarget {
-   private:
+  private:
     asFrameForecast *m_loaderFrame;
 
-   public:
+  public:
     explicit vroomDropFiles(asFrameForecast *parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
@@ -69,17 +69,17 @@ class vroomDropFiles : public wxFileDropTarget {
 class asFrameForecast;
 
 class forecastDropFiles : public wxFileDropTarget {
-   private:
+  private:
     asFrameForecast *m_loaderFrame;
 
-   public:
+  public:
     explicit forecastDropFiles(asFrameForecast *parent);
 
     bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString &filenames) override;
 };
 
 class asFrameForecast : public asFrameForecastVirtual {
-   public:
+  public:
     explicit asFrameForecast(wxWindow *parent, wxWindowID id = asWINDOW_MAIN);
 
     ~asFrameForecast() override;
@@ -94,8 +94,8 @@ class asFrameForecast : public asFrameForecastVirtual {
         return &m_workspace;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     wxProcess *m_processForecast;
     vrLayerManager *m_layerManager;
     vrViewerLayerManager *m_viewerLayerManager;

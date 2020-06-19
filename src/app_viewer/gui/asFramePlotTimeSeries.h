@@ -35,7 +35,7 @@
 class asForecastManager;
 
 class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
-   public:
+  public:
     asFramePlotTimeSeries(wxWindow *parent, int selectedMethod, int selectedForecast, int selectedStation,
                           asForecastManager *forecastManager, wxWindowID id = asWINDOW_PLOTS_TIMESERIES);
 
@@ -45,8 +45,8 @@ class asFramePlotTimeSeries : public asFramePlotTimeSeriesVirtual {
 
     bool Plot();
 
-   protected:
-   private:
+  protected:
+  private:
     enum PlotData {
         ClassicQuantiles,
         AllQuantiles,

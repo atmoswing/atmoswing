@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asFileDat : public asFileText {
-   public:
+  public:
     struct Pattern {
         wxString id;
         wxString name;
@@ -64,8 +64,8 @@ class asFileDat : public asFileText {
 
     static int GetPatternLineMaxCharWidth(const Pattern &pattern);
 
-   protected:
-   private:
+  protected:
+  private:
     static void InitPattern(Pattern &pattern);
 
     static FileStructType StringToStructType(const wxString &structTypeStr);

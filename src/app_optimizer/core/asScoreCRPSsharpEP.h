@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreCRPSsharpEP : public asScore {
-   public:
+  public:
     asScoreCRPSsharpEP();
 
     ~asScoreCRPSsharpEP();
@@ -42,8 +42,8 @@ class asScoreCRPSsharpEP : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

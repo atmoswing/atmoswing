@@ -35,7 +35,7 @@
 class asFileParametersOptimization;
 
 class asParametersOptimizationGAs : public asParametersOptimization {
-   public:
+  public:
     asParametersOptimizationGAs();
 
     virtual ~asParametersOptimizationGAs();
@@ -118,8 +118,8 @@ class asParametersOptimizationGAs : public asParametersOptimization {
         m_chromosomeMutationRadius = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     float m_adaptMutationRate;
     float m_adaptMutationRadius;
     vi m_chromosomeIndices;

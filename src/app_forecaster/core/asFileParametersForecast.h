@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asFileParametersForecast : public asFileParameters {
-   public:
+  public:
     asFileParametersForecast(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersForecast();
@@ -42,8 +42,8 @@ class asFileParametersForecast : public asFileParameters {
 
     bool CheckRootElement() const;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

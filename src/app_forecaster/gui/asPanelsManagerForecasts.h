@@ -35,7 +35,7 @@
 class asPanelForecast;
 
 class asPanelsManagerForecasts : public asPanelsManager {
-   public:
+  public:
     asPanelsManagerForecasts();
 
     ~asPanelsManagerForecasts() override;
@@ -60,10 +60,10 @@ class asPanelsManagerForecasts : public asPanelsManager {
 
     void SetForecastsAllLedsOff();
 
-   protected:
+  protected:
     std::vector<asPanelForecast *> m_arrayPanels;
 
-   private:
+  private:
 };
 
 #endif

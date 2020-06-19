@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asArea : public wxObject {
-   public:
+  public:
     asArea(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
            int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
@@ -99,7 +99,7 @@ class asArea : public wxObject {
 
     virtual bool IsRectangle() const;
 
-   protected:
+  protected:
     Coo m_cornerUL;
     Coo m_cornerUR;
     Coo m_cornerLL;
@@ -109,7 +109,7 @@ class asArea : public wxObject {
 
     virtual void Init();
 
-   private:
+  private:
     bool DoCheckPoints();
 
     bool CheckConsistency();

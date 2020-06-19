@@ -33,15 +33,15 @@
 const extern wxString g_version;
 
 class asVersion {
-   public:
+  public:
     asVersion() = default;
 
     virtual ~asVersion() = default;
 
     static wxString GetFullString();
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

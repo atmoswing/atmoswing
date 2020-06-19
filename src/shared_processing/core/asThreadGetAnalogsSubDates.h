@@ -40,7 +40,7 @@ class asCriteria;
 class asTimeArray;
 
 class asThreadGetAnalogsSubDates : public asThread {
-   public:
+  public:
     asThreadGetAnalogsSubDates(std::vector<asPredictor *> predictorsArchive,
                                std::vector<asPredictor *> predictorsTarget, asTimeArray *timeArrayArchiveData,
                                asTimeArray *timeArrayTargetData, a1f *timeTargetSelection,
@@ -53,8 +53,8 @@ class asThreadGetAnalogsSubDates : public asThread {
 
     virtual ExitCode Entry();
 
-   protected:
-   private:
+  protected:
+  private:
     std::vector<asPredictor *> m_pPredictorsArchive;
     std::vector<asPredictor *> m_pPredictorsTarget;
     asTimeArray *m_pTimeArrayArchiveData;

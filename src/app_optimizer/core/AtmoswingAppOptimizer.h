@@ -44,7 +44,7 @@ class AtmoswingAppOptimizer : public wxApp
 class AtmoswingAppOptimizer : public wxAppConsole
 #endif
 {
-   public:
+  public:
     virtual ~AtmoswingAppOptimizer(){};
 
     virtual bool OnInit();
@@ -73,7 +73,7 @@ class AtmoswingAppOptimizer : public wxAppConsole
 
     virtual void OnUnhandledException();
 
-   private:
+  private:
     wxString m_calibParamsFile;
     wxString m_predictandDB;
     wxString m_predictorsDir;

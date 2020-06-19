@@ -35,19 +35,19 @@
 class asArea;
 
 class asPredictorCustomLtheNR1 : public asPredictorCustomUnilNR1 {
-   public:
+  public:
     explicit asPredictorCustomLtheNR1(const wxString &dataId);
 
     ~asPredictorCustomLtheNR1() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

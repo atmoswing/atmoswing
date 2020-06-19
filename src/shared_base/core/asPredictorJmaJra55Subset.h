@@ -34,21 +34,21 @@
 class asArea;
 
 class asPredictorJmaJra55Subset : public asPredictor {
-   public:
+  public:
     explicit asPredictorJmaJra55Subset(const wxString &dataId);
 
     ~asPredictorJmaJra55Subset() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     bool m_monthlyFiles;
 
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

@@ -68,7 +68,7 @@ const wxPlotData wxNullPlotData;
 //----------------------------------------------------------------------------
 
 class wxPlotDataRefData : public wxPlotCurveRefData {
-   public:
+  public:
     wxPlotDataRefData();
 
     wxPlotDataRefData(const wxPlotDataRefData &data);
@@ -2702,7 +2702,7 @@ static wxString s_clipboardwxPlotData_data;  // holds wxNow() to match clipboard
 class wxPlotDataModule : public wxModule {
     DECLARE_DYNAMIC_CLASS(wxPlotDataModule)
 
-   public:
+  public:
     wxPlotDataModule() : wxModule() {}
 
     bool OnInit() {

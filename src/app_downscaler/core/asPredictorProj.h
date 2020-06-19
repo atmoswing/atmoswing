@@ -34,7 +34,7 @@
 class asArea;
 
 class asPredictorProj : public asPredictor {
-   public:
+  public:
     asPredictorProj(const wxString &dataId, const wxString &model, const wxString &scenario);
 
     ~asPredictorProj() override = default;
@@ -42,11 +42,11 @@ class asPredictorProj : public asPredictor {
     static asPredictorProj *GetInstance(const wxString &datasetId, const wxString &model, const wxString &scenario,
                                         const wxString &dataId, const wxString &directory = wxEmptyString);
 
-   protected:
+  protected:
     wxString m_model;
     wxString m_scenario;
 
-   private:
+  private:
 };
 
 #endif

@@ -60,7 +60,7 @@ enum wxPlotMarkerType {
 };
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
-   public:
+  public:
     wxPlotMarker() : wxObject() {}
 
     // Create a full marker (see CreateXXX functions)
@@ -216,7 +216,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker : public wxObject {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 

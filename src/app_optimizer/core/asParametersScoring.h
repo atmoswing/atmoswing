@@ -35,7 +35,7 @@
 class asFileParameters;
 
 class asParametersScoring : public asParameters {
-   public:
+  public:
     typedef struct {
         wxString name;
         wxString timeArrayMode;
@@ -548,13 +548,13 @@ class asParametersScoring : public asParameters {
         return true;
     }
 
-   protected:
+  protected:
     double m_calibrationStart;
     double m_calibrationEnd;
     vi m_validationYears;
     VectorParamsStepVect m_stepsVect;
 
-   private:
+  private:
     ParamsScore m_score;
 };
 

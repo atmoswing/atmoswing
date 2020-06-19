@@ -33,7 +33,7 @@
 #include "asPredictand.h"
 
 class asCatalogPredictands : public wxObject {
-   public:
+  public:
     //!< Structure for data information
     struct DataStruct {
         int id;
@@ -149,8 +149,8 @@ class asCatalogPredictands : public wxObject {
         return int(m_stations.size());
     }
 
-   protected:
-   private:
+  protected:
+  private:
     wxString m_catalogFilePath;
     wxString m_setId;
     wxString m_name;

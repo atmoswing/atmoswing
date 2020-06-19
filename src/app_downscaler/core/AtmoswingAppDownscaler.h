@@ -43,7 +43,7 @@ class AtmoswingAppDownscaler : public wxApp
 class AtmoswingAppDownscaler : public wxAppConsole
 #endif
 {
-   public:
+  public:
     virtual ~AtmoswingAppDownscaler(){};
 
     virtual bool OnInit();
@@ -72,7 +72,7 @@ class AtmoswingAppDownscaler : public wxAppConsole
 
     virtual void OnUnhandledException();
 
-   private:
+  private:
     wxString m_downscalingParamsFile;
     wxString m_downscalingMethod;
     wxString m_predictandDB;

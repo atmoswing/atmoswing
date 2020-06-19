@@ -33,7 +33,7 @@
 #include "asTimeArray.h"
 
 class asTotalScore : public wxObject {
-   public:
+  public:
     enum Period  //!< Enumaration of forcast score combinations
     {
         Total,           // total mean
@@ -68,13 +68,13 @@ class asTotalScore : public wxObject {
         m_ranksNb = val;
     }
 
-   protected:
+  protected:
     Period m_period;
     bool m_singleValue;
     bool m_has2DArrayArgument;
     int m_ranksNb;
 
-   private:
+  private:
 };
 
 #endif

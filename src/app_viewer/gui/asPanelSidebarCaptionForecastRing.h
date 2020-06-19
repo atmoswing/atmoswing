@@ -35,7 +35,7 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
-   public:
+  public:
     explicit asPanelSidebarCaptionForecastRingDrawing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                                       const wxPoint &pos = wxDefaultPosition,
                                                       const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
@@ -46,7 +46,7 @@ class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
 
     void DrawColorbar(double maxval);
 
-   private:
+  private:
     wxBitmap *m_bmpDates;
     wxBitmap *m_bmpColorbar;
     wxGraphicsContext *m_gdc;
@@ -72,7 +72,7 @@ class asPanelSidebarCaptionForecastRingDrawing : public wxPanel {
 };
 
 class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
-   public:
+  public:
     explicit asPanelSidebarCaptionForecastRing(wxWindow *parent, wxWindowID id = wxID_ANY,
                                                const wxPoint &pos = wxDefaultPosition,
                                                const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
@@ -83,7 +83,7 @@ class asPanelSidebarCaptionForecastRing : public asPanelSidebar {
 
     void SetColorbarMax(double maxval);
 
-   private:
+  private:
     asPanelSidebarCaptionForecastRingDrawing *m_panelDrawing;
 
     void OnPaint(wxPaintEvent &event);

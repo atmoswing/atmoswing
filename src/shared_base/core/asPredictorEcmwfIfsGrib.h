@@ -34,17 +34,17 @@
 class asArea;
 
 class asPredictorEcmwfIfsGrib : public asPredictor {
-   public:
+  public:
     explicit asPredictorEcmwfIfsGrib(const wxString &dataId);
 
     ~asPredictorEcmwfIfsGrib() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

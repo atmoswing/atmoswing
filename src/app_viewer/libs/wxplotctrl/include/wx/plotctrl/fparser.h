@@ -59,7 +59,7 @@ class FunctionParser;
 // ----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
-   public:
+  public:
     enum ParseErrorType {
         SYNTAX_ERROR = 0,
         MISM_PARENTH,
@@ -146,7 +146,7 @@ class WXDLLIMPEXP_PLOTCTRL wxFunctionParser {
         return m_functionParser;
     }
 
-   protected:
+  protected:
     FunctionParser *m_functionParser;
     wxString m_function, m_variables;
     bool m_ok;

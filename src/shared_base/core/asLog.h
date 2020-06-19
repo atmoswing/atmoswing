@@ -35,7 +35,7 @@
 class wxFFile;
 
 class asLog : public wxObject {
-   public:
+  public:
     enum LogTarget { File, Screen, Both };
 
     asLog();
@@ -56,15 +56,15 @@ class asLog : public wxObject {
 
     static void PrintToConsole(const wxString &msg);
 
-   protected:
-   private:
+  protected:
+  private:
     wxFFile *m_logFile;
     wxLogChain *m_logChain;
 };
 
 #if wxUSE_GUI
 class asLogGui : public wxLogGui {
-   protected:
+  protected:
     void DoLogRecord(wxLogLevel level, const wxString &msg, const wxLogRecordInfo &info) override;
 };
 #endif

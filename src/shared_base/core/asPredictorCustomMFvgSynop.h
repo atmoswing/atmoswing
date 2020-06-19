@@ -34,17 +34,17 @@
 class asArea;
 
 class asPredictorCustomMFvgSynop : public asPredictorEcmwfIfsGrib {
-   public:
+  public:
     explicit asPredictorCustomMFvgSynop(const wxString &dataId);
 
     ~asPredictorCustomMFvgSynop() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
-   private:
+  private:
 };
 
 #endif

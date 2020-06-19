@@ -33,15 +33,15 @@
 #include "asIncludes.h"
 
 class asCriteriaS1G : public asCriteria {
-   public:
+  public:
     asCriteriaS1G();
 
     ~asCriteriaS1G() override;
 
     float Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

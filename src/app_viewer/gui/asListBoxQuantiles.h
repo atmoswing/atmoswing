@@ -34,7 +34,7 @@
 class asForecastViewer;
 
 class asListBoxQuantiles : public wxListBox {
-   public:
+  public:
     asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
                        const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
                        long style = 0);
@@ -46,8 +46,8 @@ class asListBoxQuantiles : public wxListBox {
         SetSelection(1);
     }
 
-   protected:
-   private:
+  protected:
+  private:
     void OnQuantileSlctChange(wxCommandEvent &event);
 
     DECLARE_EVENT_TABLE()

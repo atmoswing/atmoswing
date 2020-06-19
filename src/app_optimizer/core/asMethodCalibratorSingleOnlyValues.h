@@ -32,15 +32,15 @@
 #include "asMethodCalibrator.h"
 
 class asMethodCalibratorSingleOnlyValues : public asMethodCalibrator {
-   public:
+  public:
     asMethodCalibratorSingleOnlyValues();
 
     ~asMethodCalibratorSingleOnlyValues() override;
 
-   protected:
+  protected:
     bool Calibrate(asParametersCalibration &params) override;
 
-   private:
+  private:
 };
 
 #endif

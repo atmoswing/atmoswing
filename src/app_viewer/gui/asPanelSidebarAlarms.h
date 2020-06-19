@@ -39,7 +39,7 @@
 class asPanelSidebarAlarms;
 
 class asPanelSidebarAlarmsDrawing : public wxPanel {
-   public:
+  public:
     asPanelSidebarAlarmsDrawing(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                                 const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
@@ -49,7 +49,7 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
 
     void SetParent(asPanelSidebarAlarms *parent);
 
-   private:
+  private:
     wxBitmap *m_bmpAlarms;
     wxGraphicsContext *m_gdc;
     asPanelSidebarAlarms *m_parent;
@@ -68,7 +68,7 @@ class asPanelSidebarAlarmsDrawing : public wxPanel {
 };
 
 class asPanelSidebarAlarms : public asPanelSidebar {
-   public:
+  public:
     asPanelSidebarAlarms(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                          wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                          const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
@@ -83,7 +83,7 @@ class asPanelSidebarAlarms : public asPanelSidebar {
         return m_mode;
     }
 
-   private:
+  private:
     asWorkspace *m_workspace;
     asForecastManager *m_forecastManager;
     asPanelSidebarAlarmsDrawing *m_panelDrawing;

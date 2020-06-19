@@ -37,7 +37,7 @@ class asForecastManager;
 class asFrameForecast;
 
 class asForecastViewer {
-   public:
+  public:
     asForecastViewer(asFrameForecast *parent, asForecastManager *forecastManager, vrLayerManager *layerManager,
                      vrViewerLayerManager *viewerLayerManager);
 
@@ -99,8 +99,8 @@ class asForecastViewer {
         return m_leadTimeDate;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     int m_leadTimeIndex;
     float m_leadTimeDate;
     float m_layerMaxValue;

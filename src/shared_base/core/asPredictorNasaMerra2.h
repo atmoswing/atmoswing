@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorNasaMerra2 : public asPredictor {
-   public:
+  public:
     explicit asPredictorNasaMerra2(const wxString &dataId);
 
     ~asPredictorNasaMerra2() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

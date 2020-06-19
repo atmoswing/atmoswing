@@ -34,14 +34,14 @@
 #include "asParametersOptimization.h"
 
 class asMethodOptimizer : public asMethodCalibrator {
-   public:
+  public:
     asMethodOptimizer();
 
     ~asMethodOptimizer() override;
 
     bool Manager() override = 0;
 
-   protected:
+  protected:
     int m_paramsNb;
     int m_iterator;
 
@@ -58,7 +58,7 @@ class asMethodOptimizer : public asMethodCalibrator {
         m_iterator++;
     }
 
-   private:
+  private:
 };
 
 #endif

@@ -33,7 +33,7 @@
 #include "wx/fileconf.h"  // wxFileConfig
 
 class asConfig : public wxObject {
-   public:
+  public:
     asConfig() = default;
 
     ~asConfig() override = default;
@@ -60,8 +60,8 @@ class asConfig : public wxObject {
     static wxColour GetFrameBgColour();
 #endif
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

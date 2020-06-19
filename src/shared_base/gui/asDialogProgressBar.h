@@ -32,7 +32,7 @@
 #include "wx/progdlg.h"
 
 class asDialogProgressBar : public wxObject {
-   public:
+  public:
     asDialogProgressBar(const wxString &dialogMessage, int valueMax);
 
     ~asDialogProgressBar() override;
@@ -41,8 +41,8 @@ class asDialogProgressBar : public wxObject {
 
     bool Update(int value, const wxString &message = wxEmptyString);
 
-   protected:
-   private:
+  protected:
+  private:
     wxProgressDialog *m_progressBar;
     bool m_initiated;
     int m_steps;

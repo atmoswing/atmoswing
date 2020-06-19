@@ -39,7 +39,7 @@
 class asThreadsManager;
 
 class AtmoswingAppViewer : public wxApp {
-   public:
+  public:
     bool OnInit() override;
 
     int OnExit() override;
@@ -48,7 +48,7 @@ class AtmoswingAppViewer : public wxApp {
 
     bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
-   private:
+  private:
     wxSingleInstanceChecker *m_singleInstanceChecker;
 };
 

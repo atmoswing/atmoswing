@@ -41,7 +41,7 @@ const wxPlotFunction wxNullPlotFunction;
 //----------------------------------------------------------------------------
 
 class wxPlotFuncRefData : public wxPlotCurveRefData {
-   public:
+  public:
     wxPlotFuncRefData() : wxPlotCurveRefData() {}
 
     wxPlotFuncRefData(const wxPlotFuncRefData &data);

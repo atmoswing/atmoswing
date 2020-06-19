@@ -33,7 +33,7 @@
 #include "asPredictand.h"
 
 class asPredictandTemperature : public asPredictand {
-   public:
+  public:
     asPredictandTemperature(Parameter dataParameter, TemporalResolution dataTemporalResolution,
                             SpatialAggregation dataSpatialAggregation);
 
@@ -47,8 +47,8 @@ class asPredictandTemperature : public asPredictand {
                            const wxString &patternDir = wxEmptyString,
                            const wxString &destinationDir = wxEmptyString) override;
 
-   protected:
-   private:
+  protected:
+  private:
     bool InitContainers();
 };
 

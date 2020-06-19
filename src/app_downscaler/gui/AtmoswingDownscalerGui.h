@@ -42,8 +42,8 @@
 /// Class asFrameDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameDownscalerVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelMain;
     wxPanel* m_panelControls;
     wxStaticText* m_staticTextMethod;
@@ -97,7 +97,7 @@ class asFrameDownscalerVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFrameDownscalerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                              const wxString& title = _("AtmoSwing Downscaler"), const wxPoint& pos = wxDefaultPosition,
                              const wxSize& size = wxSize(606, 500),
@@ -110,8 +110,8 @@ class asFrameDownscalerVirtual : public wxFrame {
 /// Class asFramePreferencesDownscalerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePreferencesDownscalerVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelBase;
     wxNotebook* m_notebookBase;
     wxPanel* m_panelGeneralCommon;
@@ -166,7 +166,7 @@ class asFramePreferencesDownscalerVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePreferencesDownscalerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                         const wxString& title = _("Preferences"),
                                         const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(482, 534),

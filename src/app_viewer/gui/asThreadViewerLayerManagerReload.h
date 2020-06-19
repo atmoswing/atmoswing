@@ -33,7 +33,7 @@
 #include "vroomgis.h"
 
 class asThreadViewerLayerManagerReload : public asThread {
-   public:
+  public:
     asThreadViewerLayerManagerReload(vrViewerLayerManager *viewerLayerManager,
                                      wxCriticalSection *critSectionViewerLayerManager);
 
@@ -41,8 +41,8 @@ class asThreadViewerLayerManagerReload : public asThread {
 
     ExitCode Entry() override;
 
-   protected:
-   private:
+  protected:
+  private:
     vrViewerLayerManager *m_viewerLayerManager;
     wxCriticalSection *m_critSectionViewerLayerManager;
 };

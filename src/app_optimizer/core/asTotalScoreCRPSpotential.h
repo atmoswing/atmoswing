@@ -33,7 +33,7 @@
 #include "asTotalScore.h"
 
 class asTotalScoreCRPSpotential : public asTotalScore {
-   public:
+  public:
     explicit asTotalScoreCRPSpotential(const wxString &periodString);
 
     ~asTotalScoreCRPSpotential() override = default;
@@ -45,8 +45,8 @@ class asTotalScoreCRPSpotential : public asTotalScore {
 
     float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

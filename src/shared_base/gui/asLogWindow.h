@@ -32,7 +32,7 @@
 #include "wx/log.h"
 
 class asLogWindow : public wxLogWindow {
-   public:
+  public:
     explicit asLogWindow(wxFrame *parent, const wxString &title = _("AtmoSwing log window"), bool show = true,
                          bool passToOld = true);
 
@@ -40,8 +40,8 @@ class asLogWindow : public wxLogWindow {
 
     virtual void DoShow(bool bShow);
 
-   protected:
-   private:
+  protected:
+  private:
     bool OnFrameClose(wxFrame *frame) override;
 };
 

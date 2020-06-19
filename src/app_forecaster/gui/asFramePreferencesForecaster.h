@@ -34,11 +34,11 @@
 #include "asIncludes.h"
 
 class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual {
-   public:
+  public:
     asFramePreferencesForecaster(wxWindow *parent, asBatchForecasts *batchForecasts,
                                  wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
+  protected:
     void CloseFrame(wxCommandEvent &event) override;
 
     void Update() override;
@@ -53,7 +53,7 @@ class asFramePreferencesForecaster : public asFramePreferencesForecasterVirtual 
 
     void OnChangeMultithreadingCheckBox(wxCommandEvent &event) override;
 
-   private:
+  private:
     asBatchForecasts *m_batchForecasts;
 };
 

@@ -52,7 +52,7 @@ enum CudaCriteria {
 };
 
 class asProcessorCuda {
-   public:
+  public:
     static bool ProcessCriteria(const float *dData, std::vector<long> ptorStart, int indicesTarg,
                                 const int *indicesArch, float *dRes, int nbCandidates, std::vector<int> &colsNb,
                                 std::vector<int> &rowsNb, std::vector<float> &weights,
@@ -64,8 +64,8 @@ class asProcessorCuda {
 
     static void SetDevice(int device);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

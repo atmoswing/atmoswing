@@ -32,10 +32,10 @@
 #include "asIncludes.h"
 
 class asFramePredictandDB : public asFramePredictandDBVirtual {
-   public:
+  public:
     explicit asFramePredictandDB(wxWindow *parent, wxWindowID id = asWINDOW_PREDICTANDDB);
 
-   protected:
+  protected:
     void OnClose(wxCloseEvent &);
 
     void CloseFrame(wxCommandEvent &event) override;
@@ -46,7 +46,7 @@ class asFramePredictandDB : public asFramePredictandDBVirtual {
 
     void BuildDatabase(wxCommandEvent &event) override;
 
-   private:
+  private:
     wxPanel *m_panelProcessing;
 };
 

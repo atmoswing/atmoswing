@@ -34,14 +34,14 @@
 #include "asMethodDownscaler.h"
 
 class asFrameDownscaler : public asFrameDownscalerVirtual {
-   public:
+  public:
     explicit asFrameDownscaler(wxWindow *parent);
 
     ~asFrameDownscaler() override;
 
     void OnInit();
 
-   protected:
+  protected:
     asLogWindow *m_logWindow;
     asMethodDownscaler *m_methodDownscaler;
 

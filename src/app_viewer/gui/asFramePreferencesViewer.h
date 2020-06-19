@@ -34,10 +34,10 @@
 #include "asWorkspace.h"
 
 class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
-   public:
+  public:
     asFramePreferencesViewer(wxWindow *parent, asWorkspace *workspace, wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
+  protected:
     void CloseFrame(wxCommandEvent &event) override;
 
     void Update() override;
@@ -50,7 +50,7 @@ class asFramePreferencesViewer : public asFramePreferencesViewerVirtual {
 
     void ApplyChanges(wxCommandEvent &event) override;
 
-   private:
+  private:
     asWorkspace *m_workspace;
 };
 

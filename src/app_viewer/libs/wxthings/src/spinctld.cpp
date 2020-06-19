@@ -51,7 +51,7 @@
 
 // the textctrl used for the wxSpinCtrlDbl, needed for keypresses
 class wxSpinCtrlDblTextCtrl : public wxTextCtrl {
-   public:
+  public:
     wxSpinCtrlDblTextCtrl(wxWindow *parent, wxWindowID id, const wxString &value = wxEmptyString,
                           const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = 0,
                           const wxValidator &validator = wxDefaultValidator, const wxString &name = wxTextCtrlNameStr);
@@ -67,7 +67,7 @@ class wxSpinCtrlDblTextCtrl : public wxTextCtrl {
     void OnChar(wxKeyEvent &event);         // pass chars to wxSpinCtrlDbl
     void OnKillFocus(wxFocusEvent &event);  // sync the spin to textctrl
 
-   private:
+  private:
     DECLARE_EVENT_TABLE()
 };
 
@@ -106,7 +106,8 @@ EVT_SPIN_DOWN(wxID_ANY, wxSpinCtrlDbl::OnSpinDown)
 EVT_TEXT_ENTER(wxID_ANY, wxSpinCtrlDbl::OnTextEnter)
 // EVT_TEXT      ( wxID_ANY, wxSpinCtrlDbl::OnText      )
 EVT_SET_FOCUS(wxSpinCtrlDbl::OnFocus)
-EVT_KILL_FOCUS(wxSpinCtrlDbl::OnKillFocus) END_EVENT_TABLE()
+EVT_KILL_FOCUS(wxSpinCtrlDbl::OnKillFocus)
+END_EVENT_TABLE()
 
     void wxSpinCtrlDbl::Init() {
     m_min = 0;

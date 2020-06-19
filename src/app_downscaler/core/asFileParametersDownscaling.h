@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asFileParametersDownscaling : public asFileParameters {
-   public:
+  public:
     asFileParametersDownscaling(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     virtual ~asFileParametersDownscaling();
@@ -41,8 +41,8 @@ class asFileParametersDownscaling : public asFileParameters {
 
     bool CheckRootElement() const;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

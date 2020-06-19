@@ -35,7 +35,7 @@
 class asFileParametersForecast;
 
 class asParametersForecast : public asParameters {
-   public:
+  public:
     typedef struct {
         wxString archiveDatasetId;
         wxString archiveDataId;
@@ -161,8 +161,8 @@ class asParametersForecast : public asParameters {
         return m_stepsForecast[iStep].predictors[iPtor].preprocessRealtimeMembersNb;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     vi m_leadTimeDaysVect;
     VectorParamsStepForecast m_stepsForecast;
     wxString m_predictandDatabase;

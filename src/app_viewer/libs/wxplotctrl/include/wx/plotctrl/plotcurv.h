@@ -77,7 +77,7 @@ enum wxPlotPen_Type { wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wx
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public wxClientDataContainer {
-   public:
+  public:
     wxPlotCurveRefData();
 
     wxPlotCurveRefData(const wxPlotCurveRefData &data);
@@ -108,7 +108,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public w
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotCurve) wxNullPlotCurve;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
-   public:
+  public:
     // see the remmed out code in this function if you subclass it
     wxPlotCurve();
 
@@ -222,7 +222,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 

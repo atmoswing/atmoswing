@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreCRPSHersbachDecomp : public asScore {
-   public:
+  public:
     asScoreCRPSHersbachDecomp();
 
     ~asScoreCRPSHersbachDecomp();
@@ -44,8 +44,8 @@ class asScoreCRPSHersbachDecomp : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

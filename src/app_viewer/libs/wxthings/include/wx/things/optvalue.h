@@ -29,7 +29,7 @@ WX_DECLARE_OBJARRAY_WITH_DECL(wxOptionValue, wxArrayOptionValue, class WXDLLIMPE
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxOptionValue : public wxObject {
-   public:
+  public:
     wxOptionValue(bool create = true) {
         if (create) Create();
     }
@@ -222,7 +222,7 @@ class WXDLLIMPEXP_THINGS wxOptionValue : public wxObject {
         return m_refData != optValue.m_refData;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 

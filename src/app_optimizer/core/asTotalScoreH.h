@@ -33,15 +33,15 @@
 #include "asTotalScore.h"
 
 class asTotalScoreH : public asTotalScore {
-   public:
+  public:
     explicit asTotalScoreH(const wxString &periodString);
 
     ~asTotalScoreH() override = default;
 
     float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

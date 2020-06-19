@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
-   public:
+  public:
     asWizardBatchForecasts(wxWindow *parent, asBatchForecasts *batchForecasts, wxWindowID id = wxID_ANY);
 
     ~asWizardBatchForecasts() override = default;
@@ -46,12 +46,12 @@ class asWizardBatchForecasts : public asWizardBatchForecastsVirtual {
         return m_pages.Item(1);
     }
 
-   protected:
+  protected:
     void OnWizardFinished(wxWizardEvent &event) override;
 
     void OnLoadExistingBatchForecasts(wxCommandEvent &event) override;
 
-   private:
+  private:
     asBatchForecasts *m_batchForecasts;
 };
 

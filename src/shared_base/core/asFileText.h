@@ -35,7 +35,7 @@
 #include "asIncludes.h"
 
 class asFileText : public asFile {
-   public:
+  public:
     enum FileStructType { ConstantWidth, TabsDelimited };
 
     asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
@@ -64,8 +64,8 @@ class asFileText : public asFile {
 
     static int CountLines(const wxString &filePath);
 
-   protected:
-   private:
+  protected:
+  private:
     std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb
 };
 

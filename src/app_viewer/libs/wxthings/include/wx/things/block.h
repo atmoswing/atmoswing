@@ -73,7 +73,7 @@ extern void wxArrayBlockDoubleSort(wxArrayBlockDouble &blocks, wxBlockSort_Type 
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxBlockInt {
-   public:
+  public:
     inline wxBlockInt(wxInt32 x1 = 0, wxInt32 y1 = 0, wxInt32 x2 = 0, wxInt32 y2 = 0)
         : m_x1(x1),
           m_y1(y1),
@@ -224,7 +224,7 @@ class WXDLLIMPEXP_THINGS wxBlockInt {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxBlockDouble {
-   public:
+  public:
     inline wxBlockDouble(wxDouble x1 = 0, wxDouble y1 = 0, wxDouble x2 = 0, wxDouble y2 = 0)
         : m_x1(x1),
           m_y1(y1),
@@ -377,7 +377,7 @@ class WXDLLIMPEXP_THINGS wxBlockDouble {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxBlockIntSelection {
-   public:
+  public:
     wxBlockIntSelection(wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT) : m_sort(sort_type) {}
 
     wxBlockIntSelection(const wxBlockIntSelection &blocks, wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT)
@@ -479,7 +479,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
     // DoMinimize calls this internally
     static bool DoDoMinimize(wxArrayBlockInt &blocks);
 
-   protected:
+  protected:
     wxArrayBlockInt m_blocks;
     wxBlockSort_Type m_sort;
 };
@@ -490,7 +490,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelection {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
-   public:
+  public:
     wxBlockDoubleSelection(wxBlockSort_Type sort_type = wxBLOCKSORT_TOPLEFT_BOTTOMRIGHT) : m_sort(sort_type) {}
 
     wxBlockDoubleSelection(const wxBlockDoubleSelection &blocks,
@@ -591,7 +591,7 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelection {
     // DoMinimize calls this internally
     static bool DoDoMinimize(wxArrayBlockDouble &blocks);
 
-   protected:
+  protected:
     wxArrayBlockDouble m_blocks;
     wxBlockSort_Type m_sort;
 };
@@ -605,7 +605,7 @@ enum wxBLOCKINT_SELITER_Type {
 };
 
 class WXDLLIMPEXP_THINGS wxBlockIntSelectionIterator {
-   public:
+  public:
     wxBlockIntSelectionIterator(const wxBlockIntSelection &sel,
                                 wxBLOCKINT_SELITER_Type type = wxBLOCKINT_SELITER_POINT);
 
@@ -638,7 +638,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelectionIterator {
         return IsInSelection(wxPoint2DInt(x, y));
     }
 
-   protected:
+  protected:
     wxBLOCKINT_SELITER_Type m_type;
     int m_block_index;
     wxPoint2DInt m_pt;
@@ -650,7 +650,7 @@ class WXDLLIMPEXP_THINGS wxBlockIntSelectionIterator {
 //=============================================================================
 
 class WXDLLIMPEXP_THINGS wxBlockDoubleSelectionIterator {
-   public:
+  public:
     wxBlockDoubleSelectionIterator(const wxBlockDoubleSelection &sel);
 
     wxBlockDoubleSelectionIterator(const wxArrayBlockDouble &blocks);
@@ -668,7 +668,7 @@ class WXDLLIMPEXP_THINGS wxBlockDoubleSelectionIterator {
         return IsInSelection(wxPoint2DDouble(x, y));
     }
 
-   protected:
+  protected:
     size_t m_block_index;
     wxArrayBlockDouble m_blocks;
 };

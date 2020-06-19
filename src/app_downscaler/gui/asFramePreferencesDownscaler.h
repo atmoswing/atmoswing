@@ -32,10 +32,10 @@
 #include "asIncludes.h"
 
 class asFramePreferencesDownscaler : public asFramePreferencesDownscalerVirtual {
-   public:
+  public:
     explicit asFramePreferencesDownscaler(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
+  protected:
     void CloseFrame(wxCommandEvent &event) override;
 
     void Update() override;

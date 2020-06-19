@@ -39,7 +39,7 @@
 #endif
 
 class asWorkspace : public wxObject {
-   public:
+  public:
     asWorkspace();
 
     ~asWorkspace() override = default;
@@ -194,8 +194,8 @@ class asWorkspace : public wxObject {
         m_hasChanged = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     bool m_hasChanged;
     wxString m_filePath;
     wxString m_coordinateSys;

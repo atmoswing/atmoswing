@@ -1084,14 +1084,14 @@ IMPLEMENT_DYNAMIC_CLASS(mpWindow, wxWindow)
 BEGIN_EVENT_TABLE(mpWindow, wxWindow)
 EVT_PAINT(mpWindow::OnPaint)
 EVT_SIZE(mpWindow::OnSize)
-EVT_SCROLLWIN_THUMBTRACK(mpWindow::OnScrollThumbTrack) EVT_SCROLLWIN_PAGEUP(mpWindow::OnScrollPageUp)
-    EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown) EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp)
-        EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown) EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop)
-            EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
+EVT_SCROLLWIN_THUMBTRACK(mpWindow::OnScrollThumbTrack)
+EVT_SCROLLWIN_PAGEUP(mpWindow::OnScrollPageUp) EVT_SCROLLWIN_PAGEDOWN(mpWindow::OnScrollPageDown)
+    EVT_SCROLLWIN_LINEUP(mpWindow::OnScrollLineUp) EVT_SCROLLWIN_LINEDOWN(mpWindow::OnScrollLineDown)
+        EVT_SCROLLWIN_TOP(mpWindow::OnScrollTop) EVT_SCROLLWIN_BOTTOM(mpWindow::OnScrollBottom)
 
-                EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
-    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)                   // JLB
-    EVT_MOTION(mpWindow::OnMouseMove)                                                                // JLB
+            EVT_MIDDLE_UP(mpWindow::OnShowPopupMenu) EVT_RIGHT_DOWN(mpWindow::OnMouseRightDown)  // JLB
+    EVT_RIGHT_UP(mpWindow::OnShowPopupMenu) EVT_MOUSEWHEEL(mpWindow::OnMouseWheel)               // JLB
+    EVT_MOTION(mpWindow::OnMouseMove)                                                            // JLB
     EVT_LEFT_DOWN(mpWindow::OnMouseLeftDown) EVT_LEFT_UP(mpWindow::OnMouseLeftRelease)
 
         EVT_MENU(mpID_CENTER, mpWindow::OnCenter) EVT_MENU(mpID_FIT, mpWindow::OnFit)

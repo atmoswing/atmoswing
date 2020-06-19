@@ -20,7 +20,7 @@ class WXDLLIMPEXP_FWD_CORE wxArrayInt;
 //  wxThingsMatrix2D - a generic double valued 2D ref counted matrix class
 //----------------------------------------------------------------------------
 class wxThingsMatrix2D : public wxObject {
-   public:
+  public:
     wxThingsMatrix2D() {}
 
     wxThingsMatrix2D(const wxThingsMatrix2D &matrix, bool full_copy = false) {
@@ -218,7 +218,7 @@ class wxThingsMatrix2D : public wxObject {
         return !(*this == matrix);
     }
 
-   private:
+  private:
     DECLARE_DYNAMIC_CLASS(wxThingsMatrix2D)
 };
 

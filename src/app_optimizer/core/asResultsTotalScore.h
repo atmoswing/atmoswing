@@ -35,7 +35,7 @@
 class asParametersScoring;
 
 class asResultsTotalScore : public asResults {
-   public:
+  public:
     asResultsTotalScore();
 
     virtual ~asResultsTotalScore();
@@ -63,10 +63,10 @@ class asResultsTotalScore : public asResults {
 
     bool Load();
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     bool m_hasSingleValue;
     float m_score;
     a1f m_scoreArray;

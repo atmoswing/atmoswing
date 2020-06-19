@@ -22,7 +22,7 @@ enum awxLedColour { awxLED_LUCID = 0, awxLED_RED, awxLED_GREEN, awxLED_YELLOW };
 class BlinkTimer;
 
 class awxLed : public wxWindow {
-   protected:
+  protected:
     // bitmap for double buffering
     wxBitmap *m_bitmap;
     wxBitmap m_icons[2];
@@ -38,11 +38,11 @@ class awxLed : public wxWindow {
     awxLedColour m_onColour;
     awxLedColour m_offColour;
 
-   protected:
+  protected:
     // protected member functions
     void DrawOnBitmap();
 
-   public:
+  public:
     awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxPoint(0, 0), const wxSize &size = wxSize(16, 16),
            // red LED is default
            awxLedColour color = awxLED_RED, long style = 0, int timerInterval = 500);
@@ -99,10 +99,10 @@ class awxLed : public wxWindow {
 };
 
 class BlinkTimer : public wxTimer {
-   protected:
+  protected:
     awxLed *m_led;
 
-   public:
+  public:
     BlinkTimer(awxLed *led) : wxTimer() {
         m_led = led;
     };

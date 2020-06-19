@@ -51,7 +51,7 @@ enum {
 };
 
 class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
-   public:
+  public:
     wxSpinCtrlDbl() : wxControl() {
         Init();
     }
@@ -196,7 +196,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
         return (wxTextCtrl *)m_textCtrl;
     }
 
-   protected:
+  protected:
     void OnSpinUp(wxSpinEvent &event);
 
     void OnSpinDown(wxSpinEvent &event);
@@ -233,7 +233,7 @@ class WXDLLIMPEXP_THINGS wxSpinCtrlDbl : public wxControl {
     bool m_snap_ticks;       // value is divisible by increment
     wxString m_textFormat;   // used as wxString.Printf(m_textFormat.c_str(), m_value);
 
-   private:
+  private:
     friend class wxSpinCtrlDblTextCtrl;
 
     void Init();

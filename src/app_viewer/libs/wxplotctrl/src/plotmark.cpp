@@ -36,7 +36,7 @@ WX_DEFINE_OBJARRAY(wxArrayPlotMarker);
 //-----------------------------------------------------------------------------
 
 class wxPlotMarkerRefData : public wxObjectRefData {
-   public:
+  public:
     wxPlotMarkerRefData(int type = 0, const wxRect2DDouble &rect = wxRect2DDouble())
         : wxObjectRefData(),
           m_markerType(type),

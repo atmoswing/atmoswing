@@ -54,7 +54,7 @@ enum wxPlotDataLoad_Type {
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotData) wxNullPlotData;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotData : public wxPlotCurve {
-   public:
+  public:
     wxPlotData() : wxPlotCurve() {}
 
     wxPlotData(const wxPlotData &plotData) {
@@ -474,7 +474,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotData : public wxPlotCurve {
         return *this;
     }
 
-   private:
+  private:
     // ref counting code
     virtual wxObjectRefData *CreateRefData() const;
 
@@ -507,7 +507,7 @@ bool wxClipboardSetPlotData(const wxPlotData &plotData);
 extern const wxChar *wxDF_wxPlotData;  // wxT("wxDF_wxPlotData");
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDataObject : public wxTextDataObject {
-   public:
+  public:
     wxPlotDataObject();
 
     wxPlotDataObject(const wxPlotData &plotData);

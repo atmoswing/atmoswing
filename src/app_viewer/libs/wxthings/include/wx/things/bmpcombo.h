@@ -54,7 +54,7 @@ enum wxBmpComboBox_Style {
 };
 
 class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
-   public:
+  public:
     wxBmpComboBox() : DropDownBase() {
         Init();
     }
@@ -169,7 +169,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 
     void DrawItem(wxDC &dc, int n) const;
 
-   protected:
+  protected:
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
 
     void OnSize(wxSizeEvent &event);
@@ -194,7 +194,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
     long m_label_style;
     bool m_frozen;
 
-   private:
+  private:
     void Init();
 
     DECLARE_DYNAMIC_CLASS(wxBmpComboBox)
@@ -206,19 +206,19 @@ class WXDLLIMPEXP_THINGS wxBmpComboBox : public DropDownBase {
 // wxBmpComboLabel - the main "window" to the left of the dropdown button
 // ==========================================================================
 class WXDLLIMPEXP_THINGS wxBmpComboLabel : public wxWindow {
-   public:
+  public:
     wxBmpComboLabel(wxBmpComboBox *parent = NULL, int style = wxSUNKEN_BORDER)
         : wxWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, style),
           m_bmpCombo(parent) {}
 
-   protected:
+  protected:
     void OnPaint(wxPaintEvent &event);
 
     void OnChar(wxKeyEvent &event);
 
     wxBmpComboBox *m_bmpCombo;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxBmpComboLabel)
 
     DECLARE_EVENT_TABLE()
@@ -229,7 +229,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboLabel : public wxWindow {
 // ============================================================================
 
 class WXDLLIMPEXP_THINGS wxBmpComboPopupChild : public wxScrolledWindow {
-   public:
+  public:
     wxBmpComboPopupChild(wxWindow *parent, wxBmpComboBox *owner);
 
     void DrawSelection(int n, wxDC &dc);
@@ -243,7 +243,7 @@ class WXDLLIMPEXP_THINGS wxBmpComboPopupChild : public wxScrolledWindow {
     wxBmpComboBox *m_bmpCombo;
     int m_last_selection;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxBmpComboPopupChild)
 
     DECLARE_EVENT_TABLE()

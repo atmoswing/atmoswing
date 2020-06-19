@@ -34,7 +34,7 @@
 class asThread;
 
 class asThreadsManager : public wxObject {
-   public:
+  public:
     asThreadsManager();
 
     ~asThreadsManager() override;
@@ -105,8 +105,8 @@ class asThreadsManager : public wxObject {
         m_waitingUntilAllDone = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     int m_idCounter;
     std::vector<asThread *> m_threads;
     wxCriticalSection m_critSectionManager;

@@ -154,7 +154,7 @@ typedef enum __mp_Layer_Type {
     These may or may not be used by implementations.
 */
 class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
-   public:
+  public:
     mpLayer();
 
     virtual ~mpLayer(){};
@@ -363,7 +363,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
         m_brush = brush;
     };
 
-   protected:
+  protected:
     wxFont m_font;              //!< Layer's font
     wxPen m_pen;                //!< Layer's pen
     wxBrush m_brush;            //!< Layer's brush
@@ -386,7 +386,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
    used to implement objects like legends.
 */
 class WXDLLIMPEXP_MATHPLOT mpInfoLayer : public mpLayer {
-   public:
+  public:
     /** Default constructor. */
     mpInfoLayer();
 
@@ -449,7 +449,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer : public mpLayer {
         return m_dim;
     };
 
-   protected:
+  protected:
     wxRect m_dim;         //!< The bounding rectangle of the box. It may be resized dynamically by the Plot method.
     wxPoint m_reference;  //!< Holds the reference point for movements
     wxBrush m_brush;      //!< The brush to be used for the background
@@ -463,7 +463,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer : public mpLayer {
     When an mpInfoCoords layer is activated, when mouse is moved over the mpWindow, its coordinates (in mpWindow units,
    not pixels) are continuously reported inside the layer box. */
 class WXDLLIMPEXP_MATHPLOT mpInfoCoords : public mpInfoLayer {
-   public:
+  public:
     /** Default constructor */
     mpInfoCoords();
 
@@ -486,7 +486,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords : public mpInfoLayer {
         @sa mpLayer::Plot */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
     wxString m_content;  //!< string holding the coordinates to be drawn.
 };
 
@@ -495,7 +495,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords : public mpInfoLayer {
     This layer allows you to add a legend to describe the plots in the window. The legend uses the layer name as a
    label, and displays only layers of type mpLAYER_PLOT. */
 class WXDLLIMPEXP_MATHPLOT mpInfoLegend : public mpInfoLayer {
-   public:
+  public:
     /** Default constructor */
     mpInfoLegend();
 
@@ -519,7 +519,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend : public mpInfoLayer {
         @sa mpLayer::Plot */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
 };
 
 //-----------------------------------------------------------------------------
@@ -580,7 +580,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend : public mpInfoLayer {
     to the constructor mpFX::mpFX. If the layer name is empty, no label will be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFX : public mpLayer {
-   public:
+  public:
     /** @param name  Label
         @param flags Label alignment, pass one of #mpALIGN_RIGHT, #mpALIGN_CENTER, #mpALIGN_LEFT.
     */
@@ -599,7 +599,7 @@ class WXDLLIMPEXP_MATHPLOT mpFX : public mpLayer {
     */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     DECLARE_DYNAMIC_CLASS(mpFX)
@@ -611,7 +611,7 @@ class WXDLLIMPEXP_MATHPLOT mpFX : public mpLayer {
     to the constructor mpFY::mpFY. If the layer name is empty, no label will be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFY : public mpLayer {
-   public:
+  public:
     /** @param name  Label
         @param flags Label alignment, pass one of #mpALIGN_BOTTOM, #mpALIGN_CENTER, #mpALIGN_TOP.
     */
@@ -630,7 +630,7 @@ class WXDLLIMPEXP_MATHPLOT mpFY : public mpLayer {
     */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     DECLARE_DYNAMIC_CLASS(mpFY)
@@ -643,7 +643,7 @@ class WXDLLIMPEXP_MATHPLOT mpFY : public mpLayer {
     to the constructor mpFXY::mpFXY. If the layer name is empty, no label will be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFXY : public mpLayer {
-   public:
+  public:
     /** @param name  Label
         @param flags Label alignment, pass one of #mpALIGN_NE, #mpALIGN_NW, #mpALIGN_SW, #mpALIGN_SE.
     */
@@ -667,7 +667,7 @@ class WXDLLIMPEXP_MATHPLOT mpFXY : public mpLayer {
     */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     // Data to calculate label positioning
@@ -691,7 +691,7 @@ class WXDLLIMPEXP_MATHPLOT mpFXY : public mpLayer {
    mpProfile::mpProfile. If the layer name is empty, no label will be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpProfile : public mpLayer {
-   public:
+  public:
     /** @param name  Label
         @param flags Label alignment, pass one of #mpALIGN_BOTTOM, #mpALIGN_CENTER, #mpALIGN_TOP.
     */
@@ -710,7 +710,7 @@ class WXDLLIMPEXP_MATHPLOT mpProfile : public mpLayer {
     */
     virtual void Plot(wxDC &dc, mpWindow &w);
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     DECLARE_DYNAMIC_CLASS(mpProfile)
@@ -731,7 +731,7 @@ class WXDLLIMPEXP_MATHPLOT mpProfile : public mpLayer {
     adjusts to view and zoom factor.
 */
 class WXDLLIMPEXP_MATHPLOT mpScaleX : public mpLayer {
-   public:
+  public:
     /** Full constructor.
         @param name Label to plot by the ruler
         @param flags Set the position of the scale with respect to the window.
@@ -793,7 +793,7 @@ class WXDLLIMPEXP_MATHPLOT mpScaleX : public mpLayer {
         return m_labelFormat;
     };
 
-   protected:
+  protected:
     int m_flags;               //!< Flag for axis alignment
     bool m_ticks;              //!< Flag to toggle between ticks or grid
     unsigned int m_labelType;  //!< Select labels mode: mpX_NORMAL for normal labels, mpX_TIME for time axis in hours,
@@ -809,7 +809,7 @@ class WXDLLIMPEXP_MATHPLOT mpScaleX : public mpLayer {
    plotted at the top-right hand of the ruler. The scale numbering automatically adjusts to view and zoom factor.
 */
 class WXDLLIMPEXP_MATHPLOT mpScaleY : public mpLayer {
-   public:
+  public:
     /** @param name Label to plot by the ruler
         @param flags Set position of the scale respect to the window.
         @param ticks Select ticks or grid. Give TRUE (default) for drawing axis ticks, FALSE for drawing the grid */
@@ -859,7 +859,7 @@ class WXDLLIMPEXP_MATHPLOT mpScaleY : public mpLayer {
         return m_labelFormat;
     };
 
-   protected:
+  protected:
     int m_flags;             //!< Flag for axis alignment
     bool m_ticks;            //!< Flag to toggle between ticks or grid
     wxString m_labelFormat;  //!< Format string used to print labels
@@ -907,7 +907,7 @@ typedef std::deque<mpLayer *> wxLayerList;
 
 */
 class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
-   public:
+  public:
     mpWindow() {}
 
     mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
@@ -1358,7 +1358,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
         return m_axColour;
     };
 
-   protected:
+  protected:
     void OnPaint(wxPaintEvent &event);  //!< Paint handler, will plot all attached layers
     void OnSize(wxSizeEvent &event);    //!< Size handler, will update scroll bar sizes
     // void OnScroll2       (wxScrollWinEvent &event); //!< Scroll handler, will move canvas
@@ -1469,7 +1469,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
      (Added: Jose Luis Blanco, AGO-2007)
 */
 class WXDLLIMPEXP_MATHPLOT mpFXYVector : public mpFXY {
-   public:
+  public:
     /** @param name  Label
         @param flags Label alignment, pass one of #mpALIGN_NE, #mpALIGN_NW, #mpALIGN_SW, #mpALIGN_SE.
     */
@@ -1486,7 +1486,7 @@ class WXDLLIMPEXP_MATHPLOT mpFXYVector : public mpFXY {
      */
     void Clear();
 
-   protected:
+  protected:
     /** The internal copy of the set of data to draw.
      */
     std::vector<double> m_xs, m_ys;
@@ -1551,7 +1551,7 @@ on the plot reguardless of the other layers location and scaling
 factors.
 */
 class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
-   public:
+  public:
     /** @param name text to be drawn in the plot
         @param offsetx holds offset for the X location in percentage (0-100)
         @param offsety holds offset for the Y location in percentage (0-100) */
@@ -1566,7 +1566,7 @@ class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
         return FALSE;
     }
 
-   protected:
+  protected:
     int m_offsetx;  //!< Holds offset for X in percentage
     int m_offsety;  //!< Holds offset for Y in percentage
 
@@ -1582,7 +1582,7 @@ class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
     to print mppWindow objects.
 */
 class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
-   public:
+  public:
     mpPrintout(mpWindow *drawWindow, const wxChar *title = _T("wxMathPlot print output"));
 
     virtual ~mpPrintout(){};
@@ -1595,7 +1595,7 @@ class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
 
     bool HasPage(int page);
 
-   private:
+  private:
     bool drawn;
     mpWindow *plotWindow;
 };
@@ -1610,7 +1610,7 @@ class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
  *  the object updates its shape in m_shape_xs & m_shape_ys.
  */
 class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
-   public:
+  public:
     /** Default constructor (sets location and rotation to (0,0,0))
      */
     mpMovableObject() : m_reference_x(0), m_reference_y(0), m_reference_phi(0), m_shape_xs(0), m_shape_ys(0) {
@@ -1674,7 +1674,7 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
         m_flags = align;
     };
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     /** The coordinates of the object (orientation "phi" is in radians).
@@ -1721,7 +1721,7 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
  * The ellipse will be always centered at the origin. Use mpMovableObject::SetCoordinateBase to move it.
  */
 class WXDLLIMPEXP_MATHPLOT mpCovarianceEllipse : public mpMovableObject {
-   public:
+  public:
     /** Default constructor.
      * Initializes to a unity diagonal covariance matrix, a 95% confidence interval (2 sigmas), 32 segments, and a
      * continuous plot (m_continuous=true).
@@ -1777,7 +1777,7 @@ class WXDLLIMPEXP_MATHPLOT mpCovarianceEllipse : public mpMovableObject {
         RecalculateShape();
     }
 
-   protected:
+  protected:
     /** The elements of the matrix (only 3 since cov(0,1)=cov(1,0) in any positive definite matrix).
      */
     double m_cov_00, m_cov_11, m_cov_01;
@@ -1800,7 +1800,7 @@ class WXDLLIMPEXP_MATHPLOT mpCovarianceEllipse : public mpMovableObject {
  *   passing the appropriate parameters to "setPoints". To draw a point-cloud, call "SetContinuity(false)".
  */
 class WXDLLIMPEXP_MATHPLOT mpPolygon : public mpMovableObject {
-   public:
+  public:
     /** Default constructor.
      */
     mpPolygon(const wxString &layerName = wxT("")) {
@@ -1828,7 +1828,7 @@ class WXDLLIMPEXP_MATHPLOT mpPolygon : public mpMovableObject {
  *  the object updates its shape in m_shape_xs & m_shape_ys.
  */
 class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
-   public:
+  public:
     /** Default constructor.
      */
     mpBitmapLayer() {
@@ -1889,7 +1889,7 @@ class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
         m_flags = align;
     };
 
-   protected:
+  protected:
     int m_flags;  //!< Holds label alignment
 
     /** The internal copy of the Bitmap:

@@ -33,7 +33,7 @@
 #include "vroomgis.h"
 
 class asThreadViewerLayerManagerZoomOut : public asThread {
-   public:
+  public:
     asThreadViewerLayerManagerZoomOut(vrViewerLayerManager *viewerLayerManager,
                                       wxCriticalSection *critSectionViewerLayerManager, const vrRealRect &fittedRect);
 
@@ -41,8 +41,8 @@ class asThreadViewerLayerManagerZoomOut : public asThread {
 
     ExitCode Entry() override;
 
-   protected:
-   private:
+  protected:
+  private:
     vrViewerLayerManager *m_viewerLayerManager;
     wxCriticalSection *m_critSectionViewerLayerManager;
     vrRealRect m_rect;

@@ -33,7 +33,7 @@
 class asPredictor;
 
 class asCriteria : public wxObject {
-   public:
+  public:
     asCriteria(const wxString &name, const wxString &fullname, Order order);
 
     static asCriteria *GetInstance(const wxString &criteriaString);
@@ -74,7 +74,7 @@ class asCriteria : public wxObject {
         return m_checkNaNs;
     }
 
-   protected:
+  protected:
     wxString m_name;
     wxString m_fullName;
     Order m_order;
@@ -84,7 +84,7 @@ class asCriteria : public wxObject {
     bool m_canUseInline;
     bool m_checkNaNs;
 
-   private:
+  private:
 };
 
 #endif

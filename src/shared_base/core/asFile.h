@@ -31,7 +31,7 @@
 #include "asIncludes.h"
 
 class asFile : public wxObject {
-   public:
+  public:
     enum FileMode {
         ReadOnly,  // file exists, open read-only
         Write,     // file exists, open for writing
@@ -60,13 +60,13 @@ class asFile : public wxObject {
         return m_exists;
     }
 
-   protected:
+  protected:
     wxFileName m_fileName;
     FileMode m_fileMode;
     bool m_exists;
     bool m_opened;
 
-   private:
+  private:
 };
 
 #endif

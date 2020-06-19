@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorProjCmip5 : public asPredictorProj {
-   public:
+  public:
     asPredictorProjCmip5(const wxString &dataId, const wxString &model, const wxString &scenario);
 
     virtual ~asPredictorProjCmip5();
 
     bool Init();
 
-   protected:
+  protected:
     virtual void ListFiles(asTimeArray &timeArray);
 
     double ConvertToMjd(double timeValue, double refValue) const;
 
-   private:
+  private:
 };
 
 #endif

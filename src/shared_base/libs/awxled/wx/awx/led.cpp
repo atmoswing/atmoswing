@@ -19,8 +19,8 @@ EVT_PAINT(awxLed::OnPaint)
 EVT_SIZE(awxLed::OnSizeEvent)
 END_EVENT_TABLE()
 
-    awxLed::awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, awxLedColour color,
-                   long style, int timerInterval)
+awxLed::awxLed(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, awxLedColour color, long style,
+               int timerInterval)
     : wxWindow(parent, id, pos, size, wxNO_FULL_REPAINT_ON_RESIZE | style),
       m_bitmap(new wxBitmap(16 * g_ppiScaleDc, 16 * g_ppiScaleDc)),
       m_state(awxLED_OFF),

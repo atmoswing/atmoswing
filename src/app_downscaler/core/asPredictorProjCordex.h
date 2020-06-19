@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorProjCordex : public asPredictorProj {
-   public:
+  public:
     asPredictorProjCordex(const wxString &dataId, const wxString &model, const wxString &scenario);
 
     virtual ~asPredictorProjCordex();
 
     bool Init();
 
-   protected:
+  protected:
     virtual void ListFiles(asTimeArray &timeArray);
 
     double ConvertToMjd(double timeValue, double refValue) const;
 
-   private:
+  private:
 };
 
 #endif

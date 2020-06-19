@@ -34,7 +34,7 @@
 #include "vroomgis.h"
 
 class asPanelSidebarGisLayers : public asPanelSidebar {
-   public:
+  public:
     asPanelSidebarGisLayers(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                             const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
@@ -44,7 +44,7 @@ class asPanelSidebarGisLayers : public asPanelSidebar {
         return m_tocCtrl;
     }
 
-   private:
+  private:
     vrViewerTOCList *m_tocCtrl;
 };
 

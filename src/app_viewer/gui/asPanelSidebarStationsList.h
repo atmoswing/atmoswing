@@ -32,7 +32,7 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarStationsList : public asPanelSidebar {
-   public:
+  public:
     explicit asPanelSidebarStationsList(wxWindow *parent, wxWindowID id = wxID_ANY,
                                         const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                                         long style = wxTAB_TRAVERSAL);
@@ -45,7 +45,7 @@ class asPanelSidebarStationsList : public asPanelSidebar {
         return m_choiceStationSelection;
     }
 
-   private:
+  private:
     wxChoice *m_choiceStationSelection;
 
     void OnStationSelection(wxCommandEvent &event);

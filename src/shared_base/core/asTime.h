@@ -34,7 +34,7 @@
 #include "asIncludes.h"
 
 class asTime : public wxObject {
-   public:
+  public:
     asTime() = default;
 
     ~asTime() override = default;
@@ -102,7 +102,7 @@ class asTime : public wxObject {
 
     static double SubtractYear(double mjd);
 
-   protected:
+  protected:
     static void TimeStructInit(Time &date);
 
     static Time TimeTmToTimeStruct(const struct tm &date);

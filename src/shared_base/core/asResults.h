@@ -35,7 +35,7 @@
 class asFileNetcdf;
 
 class asResults : public wxObject {
-   public:
+  public:
     asResults();
 
     ~asResults() override = default;
@@ -64,7 +64,7 @@ class asResults : public wxObject {
 
     virtual bool Load();
 
-   protected:
+  protected:
     int m_fileVersionMajor;
     int m_fileVersionMinor;
     int m_currentStep;
@@ -103,7 +103,7 @@ class asResults : public wxObject {
 
     bool DefScoresMapAttributes(asFileNetcdf &ncFile) const;
 
-   private:
+  private:
 };
 
 #endif

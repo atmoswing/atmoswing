@@ -44,7 +44,7 @@ class AtmoswingAppForecaster : public wxApp
 class AtmoswingAppForecaster : public wxAppConsole
 #endif
 {
-   public:
+  public:
     bool OnInit() override;
 
     int OnRun() override;
@@ -59,7 +59,7 @@ class AtmoswingAppForecaster : public wxAppConsole
 
     bool OnCmdLineParsed(wxCmdLineParser &parser) override;
 
-   private:
+  private:
     bool m_doConfig;
     bool m_doForecast;
     bool m_doForecastPast;

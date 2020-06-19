@@ -48,7 +48,7 @@ class asPredictand;
 struct CudaCallbackParams;
 
 class asProcessor : public wxObject {
-   public:
+  public:
     static bool GetAnalogsDates(std::vector<asPredictor *> predictorsArchive,
                                 std::vector<asPredictor *> predictorsTarget, asTimeArray &timeArrayArchiveData,
                                 asTimeArray &timeArrayArchiveSelection, asTimeArray &timeArrayTargetData,
@@ -74,8 +74,8 @@ class asProcessor : public wxObject {
 
     static int FindNextDate(a1d &dateArray, a1d &timeData, int iTimeStart, int iDate);
 
-   protected:
-   private:
+  protected:
+  private:
     static bool CheckArchiveTimeArray(const std::vector<asPredictor *> &predictorsArchive, const a1d &timeArchiveData);
 
     static bool CheckTargetTimeArray(const std::vector<asPredictor *> &predictorsTarget, const a1d &timeTargetData);

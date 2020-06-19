@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asAreaComp : public asArea {
-   public:
+  public:
     asAreaComp(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
@@ -62,7 +62,7 @@ class asAreaComp : public asArea {
         return m_composites[id];
     }
 
-   protected:
+  protected:
     std::vector<asArea> m_composites;
 
     void Init() override;
@@ -73,7 +73,7 @@ class asAreaComp : public asArea {
 
     bool CheckConsistency();
 
-   private:
+  private:
 };
 
 #endif

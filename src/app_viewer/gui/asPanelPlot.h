@@ -34,7 +34,7 @@
 #include "asIncludes.h"
 
 class asPanelPlot : public wxPanel {
-   public:
+  public:
     explicit asPanelPlot(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                          const wxSize &size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL);
 
@@ -49,10 +49,10 @@ class asPanelPlot : public wxPanel {
         return m_plotCtrl;
     }
 
-   protected:
+  protected:
     wxPlotCtrl *m_plotCtrl;
 
-   private:
+  private:
     void OnPlotCtrl(wxPlotCtrlEvent &event);
 
     DECLARE_EVENT_TABLE()

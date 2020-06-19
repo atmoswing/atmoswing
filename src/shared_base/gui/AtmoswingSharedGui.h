@@ -37,15 +37,15 @@
 /// Class asDialogFilePickerVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asDialogFilePickerVirtual : public wxDialog {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticTextDescription;
     wxFilePickerCtrl* m_filePicker;
     wxStdDialogButtonSizer* m_buttonsConfirmation;
     wxButton* m_buttonsConfirmationOK;
     wxButton* m_buttonsConfirmationCancel;
 
-   public:
+  public:
     asDialogFilePickerVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Select a file"),
                               const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(374, 130),
                               long style = wxDEFAULT_DIALOG_STYLE);
@@ -56,15 +56,15 @@ class asDialogFilePickerVirtual : public wxDialog {
 /// Class asDialogFileSaverVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asDialogFileSaverVirtual : public wxDialog {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticTextDescription;
     wxFilePickerCtrl* m_filePicker;
     wxStdDialogButtonSizer* m_buttonsConfirmation;
     wxButton* m_buttonsConfirmationSave;
     wxButton* m_buttonsConfirmationCancel;
 
-   public:
+  public:
     asDialogFileSaverVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Save to a file"),
                              const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(374, 130),
                              long style = wxDEFAULT_DIALOG_STYLE);
@@ -75,8 +75,8 @@ class asDialogFileSaverVirtual : public wxDialog {
 /// Class asFramePredictandDBVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePredictandDBVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxBoxSizer* m_sizerMain;
     wxPanel* m_panelMain;
     wxBoxSizer* m_sizerMainPanel;
@@ -110,7 +110,7 @@ class asFramePredictandDBVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePredictandDBVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                const wxString& title = _("Predictand database generator"),
                                const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(-1, -1),
@@ -123,12 +123,12 @@ class asFramePredictandDBVirtual : public wxFrame {
 /// Class asPanelProcessingPrecipitation
 ///////////////////////////////////////////////////////////////////////////////
 class asPanelProcessingPrecipitation : public wxPanel {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticText22;
     wxStaticText* m_staticTextYears;
 
-   public:
+  public:
     wxCheckBox* m_checkBoxReturnPeriod;
     wxTextCtrl* m_textCtrlReturnPeriod;
     wxCheckBox* m_checkBoxSqrt;
@@ -143,11 +143,11 @@ class asPanelProcessingPrecipitation : public wxPanel {
 /// Class asPanelProcessingLightnings
 ///////////////////////////////////////////////////////////////////////////////
 class asPanelProcessingLightnings : public wxPanel {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticText23;
 
-   public:
+  public:
     wxCheckBox* m_checkBoxLog;
 
     asPanelProcessingLightnings(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
@@ -160,8 +160,8 @@ class asPanelProcessingLightnings : public wxPanel {
 /// Class asFrameAboutVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameAboutVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_Panel;
     wxStaticBitmap* m_logo;
     wxStaticText* m_staticTextVersion;
@@ -180,7 +180,7 @@ class asFrameAboutVirtual : public wxFrame {
     wxPanel* m_panelLibraries;
     wxTextCtrl* m_textCtrlLibraries;
 
-   public:
+  public:
     asFrameAboutVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("About"),
                         const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(350, -1),
                         long style = wxDEFAULT_FRAME_STYLE | wxFRAME_FLOAT_ON_PARENT | wxSTAY_ON_TOP | wxTAB_TRAVERSAL);

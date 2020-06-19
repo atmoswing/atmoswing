@@ -34,7 +34,7 @@
 class asPredictor;
 
 class asPreprocessor : public wxObject {
-   public:
+  public:
     static bool Preprocess(std::vector<asPredictor *> predictors, const wxString &method, asPredictor *result);
 
     static bool PreprocessSimpleGradients(std::vector<asPredictor *> predictors, asPredictor *result);
@@ -73,8 +73,8 @@ class asPreprocessor : public wxObject {
 
     static void GetHorizontalDistances(const a1d &lonAxis, const a1d &latAxis, a2f &distXs, a2f &distYs);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

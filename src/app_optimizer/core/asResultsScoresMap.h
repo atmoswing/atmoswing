@@ -37,7 +37,7 @@ class asParametersCalibration;
 class asParametersScoring;
 
 class asResultsScoresMap : public asResults {
-   public:
+  public:
     asResultsScoresMap();
 
     virtual ~asResultsScoresMap();
@@ -50,10 +50,10 @@ class asResultsScoresMap : public asResults {
 
     bool Save(asParametersCalibration &params);
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     a1f m_mapLon;
     a1f m_mapLat;
     a1f m_mapLevel;

@@ -44,7 +44,7 @@
 //----------------------------------------------------------------------------
 
 class wxMatrix2DRefData : public wxObjectRefData {
-   public:
+  public:
     wxMatrix2DRefData();
 
     ~wxMatrix2DRefData();

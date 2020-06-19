@@ -99,7 +99,7 @@ enum wxCustomButton_Style {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
-   public:
+  public:
     wxCustomButton() : wxControl() {
         Init();
     }
@@ -233,7 +233,7 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
         return m_focused;
     }
 
-   protected:
+  protected:
     void OnPaint(wxPaintEvent &event);
 
     void Redraw();
@@ -274,7 +274,7 @@ class WXDLLIMPEXP_THINGS wxCustomButton : public wxControl {
 
     wxEventType m_eventType;  // store the mouse event type
 
-   private:
+  private:
     void Init();
 
     DECLARE_DYNAMIC_CLASS(wxCustomButton)

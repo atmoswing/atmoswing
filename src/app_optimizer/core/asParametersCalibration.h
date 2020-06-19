@@ -35,7 +35,7 @@
 class asFileParametersCalibration;
 
 class asParametersCalibration : public asParametersScoring {
-   public:
+  public:
     asParametersCalibration();
 
     virtual ~asParametersCalibration();
@@ -122,8 +122,8 @@ class asParametersCalibration : public asParametersScoring {
 
     int GetPredictorYptsnbIteration(int iStep, int iPtor) const;
 
-   protected:
-   private:
+  protected:
+  private:
     vvi m_predictandStationIdsVect;
     vi m_timeArrayAnalogsIntervalDaysVect;
     ParamsScoreVect m_scoreVect;

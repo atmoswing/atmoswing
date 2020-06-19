@@ -35,7 +35,7 @@
 class asParametersScoring;
 
 class asResultsScores : public asResults {
-   public:
+  public:
     asResultsScores();
 
     virtual ~asResultsScores();
@@ -88,10 +88,10 @@ class asResultsScores : public asResults {
 
     bool Load();
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     a1f m_targetDates;
     a1f m_scores;
     a2f m_scores2DArray;

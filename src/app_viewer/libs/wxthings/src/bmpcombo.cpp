@@ -45,7 +45,7 @@ EVT_MOUSE_EVENTS(wxBmpComboPopupChild::OnMouse)
 EVT_KEY_DOWN(wxBmpComboPopupChild::OnKeyDown)
 END_EVENT_TABLE()
 
-    wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow *parent, wxBmpComboBox *owner)
+wxBmpComboPopupChild::wxBmpComboPopupChild(wxWindow *parent, wxBmpComboBox *owner)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL) {
     m_bmpCombo = owner;
     m_last_selection = -1;

@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asAreaCompGenGrid : public asAreaCompGrid {
-   public:
+  public:
     asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
                       int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
@@ -54,8 +54,8 @@ class asAreaCompGenGrid : public asAreaCompGrid {
         return 0.0;
     }
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

@@ -85,7 +85,7 @@ extern void SetLM_LeastSquareProgressHandlerTicks(int iterations);
 //=============================================================================
 
 class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
-   public:
+  public:
     LM_LeastSquare();
 
     virtual ~LM_LeastSquare() {
@@ -159,7 +159,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     // Get an informational message about the results
     wxString GetResultMessage() const;
 
-   protected:
+  protected:
     void ReInit();  // only after a call to destroy - reset the vars
     void Destroy();
 
@@ -218,7 +218,7 @@ class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
     int *m_ipvt;          // integer output array of length n
     int m_maxfev;         // maximum number of iterations to try
 
-   private:
+  private:
     void Init();
 };
 

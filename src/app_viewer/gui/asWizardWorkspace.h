@@ -33,7 +33,7 @@
 #include "asWorkspace.h"
 
 class asWizardWorkspace : public asWizardWorkspaceVirtual {
-   public:
+  public:
     asWizardWorkspace(wxWindow *parent, wxWindowID id = wxID_ANY);
 
     ~asWizardWorkspace();
@@ -46,12 +46,12 @@ class asWizardWorkspace : public asWizardWorkspaceVirtual {
         return m_pages.Item(1);
     }
 
-   protected:
+  protected:
     void OnWizardFinished(wxWizardEvent &event);
 
     void OnLoadExistingWorkspace(wxCommandEvent &event);
 
-   private:
+  private:
     asWorkspace m_workspace;
 };
 

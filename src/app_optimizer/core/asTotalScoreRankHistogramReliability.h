@@ -32,7 +32,7 @@
 #include "asTotalScore.h"
 
 class asTotalScoreRankHistogramReliability : public asTotalScore {
-   public:
+  public:
     explicit asTotalScoreRankHistogramReliability(const wxString &periodString);
 
     ~asTotalScoreRankHistogramReliability() override = default;
@@ -41,8 +41,8 @@ class asTotalScoreRankHistogramReliability : public asTotalScore {
 
     float AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

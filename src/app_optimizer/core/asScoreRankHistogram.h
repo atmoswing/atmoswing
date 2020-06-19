@@ -32,7 +32,7 @@
 #include "asScore.h"
 
 class asScoreRankHistogram : public asScore {
-   public:
+  public:
     asScoreRankHistogram();
 
     ~asScoreRankHistogram();
@@ -41,8 +41,8 @@ class asScoreRankHistogram : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

@@ -36,7 +36,7 @@
 class asFileParametersOptimization;
 
 class asParametersOptimization : public asParametersScoring {
-   public:
+  public:
     asParametersOptimization();
 
     virtual ~asParametersOptimization();
@@ -587,7 +587,7 @@ class asParametersOptimization : public asParametersScoring {
         m_stepsLocks[iStep].predictors[iPtor].criteria = val;
     }
 
-   protected:
+  protected:
     int m_variableParamsNb;
     int m_timeArrayAnalogsIntervalDaysIteration;
     int m_timeArrayAnalogsIntervalDaysUpperLimit;
@@ -598,7 +598,7 @@ class asParametersOptimization : public asParametersScoring {
     VectorParamsStep m_stepsLowerLimit;
     VectorParamsStepBool m_stepsLocks;
 
-   private:
+  private:
     bool ParseDescription(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);
 
     bool ParseTimeProperties(asFileParametersOptimization &fileParams, const wxXmlNode *nodeProcess);

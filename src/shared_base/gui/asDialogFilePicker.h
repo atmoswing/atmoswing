@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asDialogFilePicker : public asDialogFilePickerVirtual {
-   public:
+  public:
     asDialogFilePicker(wxWindow *parent, const wxString &description);
 
     wxString GetPath() const {

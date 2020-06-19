@@ -22,7 +22,7 @@
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxRay2DDouble : public wxPoint2DDouble {
-   public:
+  public:
     inline wxRay2DDouble(wxDouble x = 0, wxDouble y = 0, wxDouble slope = 0) {
         m_x = x;
         m_y = y;
@@ -373,7 +373,7 @@ public :
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxCircleDouble : public wxPoint2DDouble {
-   public:
+  public:
     inline wxCircleDouble(const wxCircleDouble &circle) {
         m_x = circle.m_x;
         m_y = circle.m_y;
@@ -552,7 +552,7 @@ class WXDLLIMPEXP_THINGS wxCircleDouble : public wxPoint2DDouble {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxCircleInt : public wxPoint2DInt {
-   public:
+  public:
     inline wxCircleInt(wxInt32 x = 0, wxInt32 y = 0, wxInt32 r = 0) {
         m_x = x;
         m_y = y;
@@ -731,7 +731,7 @@ class WXDLLIMPEXP_THINGS wxCircleInt : public wxPoint2DInt {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS wxEllipseInt {
-   public:
+  public:
     inline wxEllipseInt(wxInt32 x = 0, wxInt32 y = 0, wxInt32 r_x = 0, wxInt32 r_y = 0) {
         m_origin.m_x = x;
         m_origin.m_y = y;

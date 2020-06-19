@@ -35,7 +35,7 @@
 #include "asIncludes.h"
 
 class asFileXml : public asFile {
-   public:
+  public:
     asFileXml(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileXml() override = default;
@@ -92,8 +92,8 @@ class asFileXml : public asFile {
 
     wxString GetAttributeString(wxXmlNode *node, const wxString &attribute);
 
-   protected:
-   private:
+  protected:
+  private:
     wxXmlDocument m_document;
 };
 

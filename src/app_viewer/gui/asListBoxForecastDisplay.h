@@ -33,7 +33,7 @@
 class asForecastViewer;
 
 class asListBoxForecastDisplay : public wxListBox {
-   public:
+  public:
     asListBoxForecastDisplay(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
                              const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
                              long style = 0);
@@ -45,8 +45,8 @@ class asListBoxForecastDisplay : public wxListBox {
         SetSelection(3);
     }
 
-   protected:
-   private:
+  protected:
+  private:
     void OnForecastDisplaySlctChange(wxCommandEvent &event);
 
     DECLARE_EVENT_TABLE()

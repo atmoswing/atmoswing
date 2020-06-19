@@ -33,7 +33,7 @@
 #include "asPredictor.h"
 
 class asPredictorOper : public asPredictor {
-   public:
+  public:
     explicit asPredictorOper(const wxString &dataId);
 
     ~asPredictorOper() override = default;
@@ -82,7 +82,7 @@ class asPredictorOper : public asPredictor {
         m_predictorsRealtimeDir = dir;
     }
 
-   protected:
+  protected:
     wxString m_predictorsRealtimeDir;
     int m_leadTimeStart;
     int m_leadTimeEnd;

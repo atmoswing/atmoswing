@@ -34,7 +34,7 @@
 #include "asResults.h"
 
 class asResultsParametersArray : public asResults {
-   public:
+  public:
     asResultsParametersArray();
 
     ~asResultsParametersArray() override;
@@ -71,10 +71,10 @@ class asResultsParametersArray : public asResults {
         return m_medianScore;
     }
 
-   protected:
+  protected:
     void BuildFileName(const wxString &fileTag);
 
-   private:
+  private:
     std::vector<asParametersScoring::VectorParamsStep> m_parameters;
     asParametersScoring::ParamsScore m_scores;
     vvi m_predictandStationIds;

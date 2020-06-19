@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asFileWorkspace : public asFileXml {
-   public:
+  public:
     explicit asFileWorkspace(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
     ~asFileWorkspace() override = default;
@@ -41,8 +41,8 @@ class asFileWorkspace : public asFileXml {
 
     bool CheckRootElement() const override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

@@ -37,7 +37,7 @@
 class asPanelsManagerForecasts;
 
 class asPanelForecast : public asPanelForecastVirtual {
-   public:
+  public:
     explicit asPanelForecast(wxWindow *parent);
 
     bool Layout() override;
@@ -58,7 +58,7 @@ class asPanelForecast : public asPanelForecastVirtual {
         m_textCtrlParametersFileName->SetValue(val);
     }
 
-   protected:
+  protected:
     wxWindow *m_parentFrame;
     awxLed *m_led;
 
@@ -66,7 +66,7 @@ class asPanelForecast : public asPanelForecastVirtual {
 
     void ChangeForecastName(wxCommandEvent &event);
 
-   private:
+  private:
     asPanelsManagerForecasts *m_panelsManager;
 };
 

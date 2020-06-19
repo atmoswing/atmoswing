@@ -321,7 +321,7 @@ int ClipLineToRect(double &x0, double &y0, double &x1, double &y1, const wxRect2
     y4_ = stack_top->y4;
 
 class SplineDrawer {
-   public:
+  public:
     SplineDrawer() : m_gc(NULL) {}
 
     // the wxRect2DDouble rect is the allowed dc area in pixel coords
@@ -367,7 +367,7 @@ class SplineDrawer {
         }
     }
 
-   private:
+  private:
     typedef struct SplineStack {
         double x1, y1, x2, y2, x3, y3, x4, y4;
     } SplineStack;

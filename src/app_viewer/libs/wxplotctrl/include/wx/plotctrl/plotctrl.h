@@ -211,7 +211,7 @@ enum wxPlotCtrlStyleUse_Type {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlArea : public wxWindow {
-   public:
+  public:
     wxPlotCtrlArea(wxWindow *parent, wxWindowID win_id, const wxPoint &pos = wxDefaultPosition,
                    const wxSize &size = wxSize(100, 100), long style = wxNO_BORDER | wxWANTS_CHARS | wxCLIP_CHILDREN,
                    const wxString &name = wxT("wxPlotCtrlArea"));
@@ -236,7 +236,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlArea : public wxWindow {
     wxBitmap m_bitmap;   // backing bitmap to reduce flicker
     wxPlotCtrl *m_owner;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlArea)
 
     DECLARE_EVENT_TABLE()
@@ -247,7 +247,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlArea : public wxWindow {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
-   public:
+  public:
     wxPlotCtrlAxis(wxPlotCtrlAxis_Type axis_type, wxWindow *parent, wxWindowID win_id,
                    const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                    long style = wxNO_BORDER | wxWANTS_CHARS | wxCLIP_CHILDREN,
@@ -273,7 +273,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
     wxBitmap m_bitmap;                // backing bitmap to reduce flicker
     wxPlotCtrl *m_owner;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlAxis)
 
     DECLARE_EVENT_TABLE()
@@ -289,7 +289,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlAxis : public wxWindow {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
-   public:
+  public:
     wxPlotCtrl() : wxWindow() {
         Init();
     }
@@ -1261,7 +1261,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
         return m_winCapture;
     }
 
-   protected:
+  protected:
     void OnSize(wxSizeEvent &event);
 
     bool m_drawOnScreen;
@@ -1377,7 +1377,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 
     int m_mouse_cursorid;
 
-   private:
+  private:
     void Init();
 
     DECLARE_ABSTRACT_CLASS(wxPlotCtrl)
@@ -1390,7 +1390,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl : public wxWindow {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
-   public:
+  public:
     wxPlotCtrlEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl *window = NULL);
 
     wxPlotCtrlEvent(const wxPlotCtrlEvent &event)
@@ -1460,7 +1460,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
         m_mouse_func = func;
     }
 
-   protected:
+  protected:
     virtual wxEvent *Clone() const {
         return new wxPlotCtrlEvent(*this);
     }
@@ -1471,7 +1471,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
     int m_mouse_func;
     double m_x, m_y;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlEvent)
 };
 
@@ -1480,7 +1480,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlEvent : public wxNotifyEvent {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
-   public:
+  public:
     wxPlotCtrlSelEvent(wxEventType commandType = wxEVT_NULL, wxWindowID id = wxID_ANY, wxPlotCtrl *window = NULL);
 
     wxPlotCtrlSelEvent(const wxPlotCtrlSelEvent &event)
@@ -1533,7 +1533,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
         return m_selecting;
     }
 
-   protected:
+  protected:
     virtual wxEvent *Clone() const {
         return new wxPlotCtrlSelEvent(*this);
     }
@@ -1543,7 +1543,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrlSelEvent : public wxPlotCtrlEvent {
     wxRangeIntSelection m_dataSelection;
     bool m_selecting;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotCtrlSelEvent)
 };
 

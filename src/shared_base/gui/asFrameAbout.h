@@ -32,12 +32,12 @@
 #include "AtmoswingSharedGui.h"
 
 class asFrameAbout : public asFrameAboutVirtual {
-   public:
+  public:
     explicit asFrameAbout(wxWindow *parent);
 
     static wxString GetLicense();
 
-   protected:
+  protected:
 };
 
 #endif

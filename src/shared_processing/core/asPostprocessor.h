@@ -33,7 +33,7 @@
 class asParametersScoring;
 
 class asPostprocessor : public wxObject {
-   public:
+  public:
     enum Postprocesses  //!< Enumaration of integrated postprocesses
     {
         DuplicationOnCriteria,         // Duplication of the analog days based on the criteria
@@ -48,8 +48,8 @@ class asPostprocessor : public wxObject {
        asParametersScoring &params);
     */
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

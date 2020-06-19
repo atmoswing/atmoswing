@@ -34,7 +34,7 @@
 #include "netcdf.h"
 
 class asFileNetcdf : public asFile {
-   public:
+  public:
     enum Type { Byte, Char, Short, Int, Float, Double, String };
 
     enum Format {
@@ -177,8 +177,8 @@ class asFileNetcdf : public asFile {
         return m_struct.vars[varId].dimIds.size();
     }
 
-   protected:
-   private:
+  protected:
+  private:
     struct NcDimStruct {
         int id;
         wxString name;

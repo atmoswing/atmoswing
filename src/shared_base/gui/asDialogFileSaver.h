@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asDialogFileSaver : public asDialogFileSaverVirtual {
-   public:
+  public:
     asDialogFileSaver(wxWindow *parent, const wxString &description);
 
     wxString GetPath() const {

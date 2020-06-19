@@ -32,7 +32,7 @@
 #include "asIncludes.h"
 
 class asBatchForecasts : public wxObject {
-   public:
+  public:
     asBatchForecasts();
 
     ~asBatchForecasts() override = default;
@@ -131,8 +131,8 @@ class asBatchForecasts : public wxObject {
         m_forecastFileNames[i] = val;
     }
 
-   protected:
-   private:
+  protected:
+  private:
     bool m_hasChanged;
     bool m_exportSyntheticXml;
     wxString m_filePath;

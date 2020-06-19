@@ -34,19 +34,19 @@
 class asArea;
 
 class asPredictorGenericNetcdf : public asPredictor {
-   public:
+  public:
     explicit asPredictorGenericNetcdf(const wxString &dataId);
 
     ~asPredictorGenericNetcdf() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     void ListFiles(asTimeArray &timeArray) override;
 
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

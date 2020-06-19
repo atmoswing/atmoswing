@@ -43,7 +43,7 @@ class asResultsDates;
 class asResultsForecast;
 
 class asMethodForecasting : public asMethodStandard {
-   public:
+  public:
     explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
 
     ~asMethodForecasting() override;
@@ -66,7 +66,7 @@ class asMethodForecasting : public asMethodStandard {
         return m_resultsFilePaths;
     }
 
-   protected:
+  protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
     bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
@@ -87,7 +87,7 @@ class asMethodForecasting : public asMethodStandard {
 
     void Cleanup();
 
-   private:
+  private:
     asBatchForecasts *m_batchForecasts;
     double m_forecastDate;
     asResultsForecastAggregator m_aggregator;

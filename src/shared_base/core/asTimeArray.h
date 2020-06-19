@@ -36,7 +36,7 @@
 class asPredictand;
 
 class asTimeArray : public asTime {
-   public:
+  public:
     enum Mode {
         SingleDay,        // A single day
         Simple,           // A simple full time array
@@ -174,8 +174,8 @@ class asTimeArray : public asTime {
 
     int GetIndexFirstBefore(double date, double dataTimeStep) const;
 
-   protected:
-   private:
+  protected:
+  private:
     bool m_initialized;
     Mode m_mode;
     a1d m_timeArray;

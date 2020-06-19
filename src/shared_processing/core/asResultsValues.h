@@ -33,7 +33,7 @@
 #include "asResults.h"
 
 class asResultsValues : public asResults {
-   public:
+  public:
     asResultsValues();
 
     virtual ~asResultsValues();
@@ -94,10 +94,10 @@ class asResultsValues : public asResults {
 
     bool Load();
 
-   protected:
+  protected:
     void BuildFileName();
 
-   private:
+  private:
     a1f m_targetDates;         // Dimensions: time
     va1f m_targetValuesNorm;   // Dimensions: stations x time
     va1f m_targetValuesRaw;    // Dimensions: stations x time

@@ -37,7 +37,7 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarForecasts : public asPanelSidebar {
-   public:
+  public:
     asPanelSidebarForecasts(wxWindow *parent, asForecastManager *forecastManager, wxWindowID id = wxID_ANY,
                             const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
                             long style = wxTAB_TRAVERSAL);
@@ -60,7 +60,7 @@ class asPanelSidebarForecasts : public asPanelSidebar {
         return m_forecastDisplayCtrl;
     }
 
-   private:
+  private:
     asListBoxForecasts *m_forecastsCtrl;
     asListBoxQuantiles *m_quantilesCtrl;
     asListBoxForecastDisplay *m_forecastDisplayCtrl;

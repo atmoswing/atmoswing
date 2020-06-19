@@ -240,7 +240,7 @@ EVT_BUTTON(IDD_DROPDOWN_BUTTON, DropDownBase::OnDropButton)
 EVT_SIZE(DropDownBase::OnSize)
 END_EVENT_TABLE()
 
-    DropDownBase::~DropDownBase() {}
+DropDownBase::~DropDownBase() {}
 
 void DropDownBase::Init() {
     m_popupWin = NULL;

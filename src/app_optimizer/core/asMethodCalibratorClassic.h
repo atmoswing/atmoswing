@@ -32,7 +32,7 @@
 #include "asMethodCalibrator.h"
 
 class asMethodCalibratorClassic : public asMethodCalibrator {
-   public:
+  public:
     asMethodCalibratorClassic();
 
     ~asMethodCalibratorClassic() override;
@@ -41,10 +41,10 @@ class asMethodCalibratorClassic : public asMethodCalibrator {
         m_plus = val;
     }
 
-   protected:
+  protected:
     bool Calibrate(asParametersCalibration &params) override;
 
-   private:
+  private:
     bool m_plus;
     int m_stepsLatPertinenceMap;
     int m_stepsLonPertinenceMap;

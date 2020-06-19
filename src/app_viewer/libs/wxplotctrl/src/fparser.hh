@@ -28,7 +28,7 @@
 #endif
 
 class FunctionParser {
-   public:
+  public:
     enum ParseErrorType {
         SYNTAX_ERROR = 0,
         MISM_PARENTH,
@@ -92,7 +92,7 @@ class FunctionParser {
 #endif
 
     //========================================================================
-   private:
+  private:
     //========================================================================
 
     // Private data:

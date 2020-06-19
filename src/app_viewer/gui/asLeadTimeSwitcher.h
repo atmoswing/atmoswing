@@ -37,7 +37,7 @@
 #include "asWorkspace.h"
 
 class asLeadTimeSwitcher : public wxPanel {
-   public:
+  public:
     asLeadTimeSwitcher(wxWindow *parent, asWorkspace *workspace, asForecastManager *forecastManager,
                        wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                        const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
@@ -50,7 +50,7 @@ class asLeadTimeSwitcher : public wxPanel {
 
     void SetParent(wxWindow *parent);
 
-   private:
+  private:
     wxWindow *m_parent;
     asWorkspace *m_workspace;
     asForecastManager *m_forecastManager;

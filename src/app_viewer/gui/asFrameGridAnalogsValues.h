@@ -35,13 +35,13 @@
 class asForecastManager;
 
 class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual {
-   public:
+  public:
     asFrameGridAnalogsValues(wxWindow *parent, int methodRow, int forecastRow, asForecastManager *forecastManager,
                              wxWindowID id = asWINDOW_GRID_ANALOGS);
 
     void Init();
 
-   protected:
+  protected:
     void OnChoiceForecastChange(wxCommandEvent &event) override;
 
     void OnChoiceStationChange(wxCommandEvent &event) override;
@@ -50,7 +50,7 @@ class asFrameGridAnalogsValues : public asFrameGridAnalogsValuesVirtual {
 
     void SortGrid(wxGridEvent &event) override;
 
-   private:
+  private:
     asForecastManager *m_forecastManager;
     int m_selectedMethod;
     int m_selectedForecast;

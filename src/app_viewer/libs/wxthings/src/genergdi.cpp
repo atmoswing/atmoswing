@@ -36,7 +36,7 @@ WX_DEFINE_OBJARRAY(wxArrayGenericBrush)
 IMPLEMENT_DYNAMIC_CLASS(wxGenericColour, wxObject)
 
 class wxGenericColourRefData : public wxObjectRefData {
-   public:
+  public:
     wxGenericColourRefData(unsigned char r = 0, unsigned char g = 0, unsigned char b = 0, unsigned char a = 255)
         : wxObjectRefData(),
           m_r(r),
@@ -247,7 +247,7 @@ bool wxGenericColour::ReadString(const wxString& str, const wxString& format)
 IMPLEMENT_DYNAMIC_CLASS(wxGenericPen, wxObject)
 
 class wxGenericPenRefData : public wxObjectRefData {
-   public:
+  public:
     wxGenericPenRefData(int width = 1, int style = wxSOLID, wxPenCap cap = wxCAP_ROUND, wxPenJoin join = wxJOIN_ROUND)
         : wxObjectRefData(),
           m_width(width),
@@ -543,7 +543,7 @@ bool wxGenericPen::ReadString(const wxString& str)
 IMPLEMENT_DYNAMIC_CLASS(wxGenericBrush, wxObject)
 
 class wxGenericBrushRefData : public wxObjectRefData {
-   public:
+  public:
     wxGenericBrushRefData(const wxGenericColour &c = wxNullGenericColour, int style = wxSOLID)
         : wxObjectRefData(),
           m_colour(c),

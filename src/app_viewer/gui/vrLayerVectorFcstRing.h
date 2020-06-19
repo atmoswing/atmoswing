@@ -47,7 +47,7 @@ class vrLabel;
 
 // For dealing with GIS data stored into Fcst projects.
 class vrLayerVectorFcstRing : public vrLayerVectorOGR {
-   public:
+  public:
     vrLayerVectorFcstRing();
 
     virtual ~vrLayerVectorFcstRing();
@@ -64,7 +64,7 @@ class vrLayerVectorFcstRing : public vrLayerVectorOGR {
         m_valueMax = val;
     }
 
-   protected:
+  protected:
     double m_valueMax;
 
     virtual void _DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry, const wxRect2DDouble &coord,

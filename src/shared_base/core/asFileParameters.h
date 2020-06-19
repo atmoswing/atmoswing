@@ -33,7 +33,7 @@
 #include "asIncludes.h"
 
 class asFileParameters : public asFileXml {
-   public:
+  public:
     asFileParameters(const wxString &fileName, const FileMode &fileMode);
 
     ~asFileParameters() override = default;
@@ -68,8 +68,8 @@ class asFileParameters : public asFileXml {
 
     static vi GetStationIds(wxString stationIdsString);
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

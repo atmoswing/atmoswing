@@ -39,7 +39,7 @@
 class asFileParameters;
 
 class asParameters : public wxObject {
-   public:
+  public:
     typedef struct {
         bool preload;
         bool standardize;
@@ -562,7 +562,7 @@ class asParameters : public wxObject {
         return m_steps;
     }
 
-   protected:
+  protected:
     wxString m_methodId;
     wxString m_methodIdDisplay;
     wxString m_specificTag;
@@ -575,7 +575,7 @@ class asParameters : public wxObject {
     double m_timeMinHours;
     double m_timeMaxHours;
 
-   private:
+  private:
     VectorParamsStep m_steps;  // Set as private to force use of setters.
     wxString m_dateProcessed;
     wxString m_timeArrayTargetMode;

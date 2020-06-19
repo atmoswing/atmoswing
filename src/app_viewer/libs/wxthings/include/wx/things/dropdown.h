@@ -54,7 +54,7 @@ class WXDLLIMPEXP_THINGS DropDownPopup;
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
-   public:
+  public:
     DropDownBase() : wxControl() {
         Init();
     }
@@ -91,7 +91,7 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
         return m_popupWin;
     }
 
-   protected:
+  protected:
     virtual void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
 
     void OnSize(wxSizeEvent &event);
@@ -110,7 +110,7 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
     wxCustomButton *m_dropdownButton;
     DropDownPopup *m_popupWin;
 
-   private:
+  private:
     void Init();
 
     DECLARE_DYNAMIC_CLASS(DropDownBase)
@@ -123,7 +123,7 @@ class WXDLLIMPEXP_THINGS DropDownBase : public wxControl {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
-   public:
+  public:
     DropDownPopup() : wxPopupTransientWindow() {
         Init();
     }
@@ -151,7 +151,7 @@ class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
 
     bool m_ignore_popup;
 
-   protected:
+  protected:
     // start/stop timer shat pushes and pops handler when the mouse goes over
     //  the scrollbars (if any) of the child window
     void StartTimer();
@@ -176,7 +176,7 @@ class WXDLLIMPEXP_THINGS DropDownPopup : public wxPopupTransientWindow {
     wxTimer *m_timer;       // timer for tracking mouse position
     bool m_popped_handler;  // state of the event handler
 
-   private:
+  private:
     void Init();
 
     DECLARE_DYNAMIC_CLASS(DropDownPopup)

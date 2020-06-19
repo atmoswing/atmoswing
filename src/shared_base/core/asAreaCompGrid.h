@@ -35,7 +35,7 @@
 class asParameters;
 
 class asAreaCompGrid : public asAreaComp {
-   public:
+  public:
     static asAreaCompGrid *GetInstance(const asParameters *params, int iStep, int iPtor);
 
     static asAreaCompGrid *GetInstance(const wxString &type, double xMin, int xPtsNb, double xStep, double yMin,
@@ -103,7 +103,7 @@ class asAreaCompGrid : public asAreaComp {
         m_allowResizeFromData = true;
     }
 
-   protected:
+  protected:
     bool m_isRegular;
     bool m_isInitialized;
     bool m_allowResizeFromData;
@@ -112,7 +112,7 @@ class asAreaCompGrid : public asAreaComp {
     int m_xPtsNb;
     int m_yPtsNb;
 
-   private:
+  private:
     bool CreateCompositeAxes(const a1d &lons, const a1d &lats, bool getLarger = false);
 
     bool AreaDefinedByPointsNb(const a1d &lons, const a1d &lats);

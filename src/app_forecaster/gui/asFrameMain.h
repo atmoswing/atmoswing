@@ -39,7 +39,7 @@
 #include "asPanelsManagerForecasts.h"
 
 class asFrameMain : public asFrameMainVirtual {
-   public:
+  public:
     explicit asFrameMain(wxWindow *parent);
 
     ~asFrameMain() override;
@@ -50,7 +50,7 @@ class asFrameMain : public asFrameMainVirtual {
 
     void SetForecastDate(double date);
 
-   protected:
+  protected:
     asLogWindow *m_logWindow;
     asMethodForecasting *m_forecaster;
     awxLed *m_ledDownloading;
@@ -109,7 +109,7 @@ class asFrameMain : public asFrameMainVirtual {
 
     void IncrementOverallProgress();
 
-   private:
+  private:
     asPanelsManagerForecasts *m_panelsManager;
 
     DECLARE_EVENT_TABLE()

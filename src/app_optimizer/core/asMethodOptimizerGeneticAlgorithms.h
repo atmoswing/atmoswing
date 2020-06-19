@@ -33,7 +33,7 @@
 #include "asParametersOptimizationGAs.h"
 
 class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
-   public:
+  public:
     enum NaturalSelectionType { RatioElitism, Tournament };
     enum CouplesSelectionType { RankPairing, Random, RouletteWheelRank, RouletteWheelScore, TournamentCompetition };
     enum CrossoverType {
@@ -70,11 +70,11 @@ class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
 
     bool ManageOneRun();
 
-   protected:
+  protected:
     int m_nbSameParams;
     int m_nbCloseParams;
 
-   private:
+  private:
     std::vector<asParametersOptimizationGAs> m_parameters;
     std::vector<asParametersOptimizationGAs> m_parametersTemp;
     asResultsParametersArray m_resGenerations;

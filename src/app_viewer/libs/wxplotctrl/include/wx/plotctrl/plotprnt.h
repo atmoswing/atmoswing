@@ -26,7 +26,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl;
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
-   public:
+  public:
     wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title = wxEmptyString);
 
     bool OnPrintPage(int page);
@@ -76,7 +76,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
 
     static void SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static);
 
-   protected:
+  protected:
     wxPlotCtrl *m_plotCtrl;
 
     static wxPrintData *s_wxPlotPrintData;
@@ -84,7 +84,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
     static bool s_wxPlotPrintdata_static;
     static bool s_wxPlotPagesetupdata_static;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotPrintout)
 };
 

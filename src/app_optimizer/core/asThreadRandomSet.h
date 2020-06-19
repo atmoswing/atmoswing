@@ -35,7 +35,7 @@
 #include "asThread.h"
 
 class asThreadRandomSet : public asThread {
-   public:
+  public:
     asThreadRandomSet(asMethodOptimizerRandomSet *optimizer, asParametersOptimization *params, float *finalScoreCalib,
                       vf *scoreClimatology);
 
@@ -43,8 +43,8 @@ class asThreadRandomSet : public asThread {
 
     ExitCode Entry();
 
-   protected:
-   private:
+  protected:
+  private:
     asMethodOptimizerRandomSet *m_optimizer;
     asParametersOptimization *m_params;
     float *m_finalScoreCalib;

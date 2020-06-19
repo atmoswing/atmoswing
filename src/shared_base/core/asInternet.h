@@ -34,7 +34,7 @@
 #include "asIncludes.h"
 
 class asInternet : public wxObject {
-   public:
+  public:
     asInternet() = default;
 
     virtual ~asInternet() = default;
@@ -45,8 +45,8 @@ class asInternet : public wxObject {
 
     static int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
 
-   protected:
-   private:
+  protected:
+  private:
     friend class asThreadInternetDownload;
 
     struct HttpFile {

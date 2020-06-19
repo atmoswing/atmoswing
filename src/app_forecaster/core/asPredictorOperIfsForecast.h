@@ -36,17 +36,17 @@
 class asArea;
 
 class asPredictorOperIfsForecast : public asPredictorOper {
-   public:
+  public:
     explicit asPredictorOperIfsForecast(const wxString &dataId);
 
     ~asPredictorOperIfsForecast() override = default;
 
     bool Init() override;
 
-   protected:
+  protected:
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
-   private:
+  private:
 };
 
 #endif

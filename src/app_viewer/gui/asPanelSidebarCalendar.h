@@ -35,7 +35,7 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCalendar : public asPanelSidebar {
-   public:
+  public:
     explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
                                     const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
@@ -45,7 +45,7 @@ class asPanelSidebarCalendar : public asPanelSidebar {
 
     void SetPresentDate();
 
-   private:
+  private:
     wxCalendarCtrl *m_calendarForecastDate;
     wxStaticText *m_staticTextForecastHour;
     wxTextCtrl *m_textCtrlForecastHour;

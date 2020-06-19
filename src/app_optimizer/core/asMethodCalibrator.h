@@ -51,7 +51,7 @@
 #include "asTimeArray.h"
 
 class asMethodCalibrator : public asMethodStandard {
-   public:
+  public:
     asMethodCalibrator();
 
     ~asMethodCalibrator() override;
@@ -120,7 +120,7 @@ class asMethodCalibrator : public asMethodStandard {
         m_predictandStationIds = std::move(val);
     }
 
-   protected:
+  protected:
     struct ParamExploration {
         double xMinStart;
         double xMinEnd;
@@ -152,7 +152,7 @@ class asMethodCalibrator : public asMethodStandard {
 
     double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
-   private:
+  private:
     double GetTimeStartCalibration(asParametersScoring *params) const;
 
     double GetTimeEndCalibration(asParametersScoring *params) const;

@@ -33,10 +33,10 @@
 #include "asIncludes.h"
 
 class asFramePreferencesOptimizer : public asFramePreferencesOptimizerVirtual {
-   public:
+  public:
     explicit asFramePreferencesOptimizer(wxWindow *parent, wxWindowID id = asWINDOW_PREFERENCES);
 
-   protected:
+  protected:
     void CloseFrame(wxCommandEvent &event) override;
 
     void Update() override;

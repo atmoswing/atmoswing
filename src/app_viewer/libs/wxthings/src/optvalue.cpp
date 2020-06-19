@@ -60,7 +60,7 @@ wxArrayString wxStringToWords( const wxString &string )
 //----------------------------------------------------------------------------
 
 class wxOptionValueRefData : public wxObjectRefData {
-   public:
+  public:
     wxOptionValueRefData() : wxObjectRefData() {}
 
     wxOptionValueRefData(const wxOptionValueRefData &data) : wxObjectRefData() {

@@ -33,7 +33,7 @@
 #include "asScore.h"
 
 class asScoreCRPSaccurEP : public asScore {
-   public:
+  public:
     asScoreCRPSaccurEP();
 
     ~asScoreCRPSaccurEP() override = default;
@@ -42,8 +42,8 @@ class asScoreCRPSaccurEP : public asScore {
 
     bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
-   protected:
-   private:
+  protected:
+  private:
 };
 
 #endif

@@ -223,11 +223,11 @@ BEGIN_EVENT_TABLE(wxPlotCtrlArea, wxWindow)
 EVT_ERASE_BACKGROUND(wxPlotCtrlArea::OnEraseBackground)
 EVT_PAINT(wxPlotCtrlArea::OnPaint)
 EVT_MOUSE_EVENTS(wxPlotCtrlArea::OnMouse)
-EVT_CHAR(wxPlotCtrlArea::OnChar) EVT_KEY_DOWN(wxPlotCtrlArea::OnKeyDown) EVT_KEY_UP(wxPlotCtrlArea::OnKeyUp)
-    END_EVENT_TABLE()
+EVT_CHAR(wxPlotCtrlArea::OnChar)
+EVT_KEY_DOWN(wxPlotCtrlArea::OnKeyDown) EVT_KEY_UP(wxPlotCtrlArea::OnKeyUp) END_EVENT_TABLE()
 
-        wxPlotCtrlArea::wxPlotCtrlArea(wxWindow *parent, wxWindowID win_id, const wxPoint &pos, const wxSize &size,
-                                       long style, const wxString &name) {
+    wxPlotCtrlArea::wxPlotCtrlArea(wxWindow *parent, wxWindowID win_id, const wxPoint &pos, const wxSize &size,
+                                   long style, const wxString &name) {
     m_owner = wxDynamicCast(parent, wxPlotCtrl);
 
     if (!wxWindow::Create(parent, win_id, pos, size, style, name)) return;
@@ -271,7 +271,8 @@ BEGIN_EVENT_TABLE(wxPlotCtrlAxis, wxWindow)
 EVT_ERASE_BACKGROUND(wxPlotCtrlAxis::OnEraseBackground)
 EVT_PAINT(wxPlotCtrlAxis::OnPaint)
 EVT_MOUSE_EVENTS(wxPlotCtrlAxis::OnMouse)
-EVT_CHAR(wxPlotCtrlAxis::OnChar) END_EVENT_TABLE()
+EVT_CHAR(wxPlotCtrlAxis::OnChar)
+END_EVENT_TABLE()
 
     wxPlotCtrlAxis::wxPlotCtrlAxis(wxPlotCtrlAxis_Type axis_type, wxWindow *parent, wxWindowID win_id,
                                    const wxPoint &pos, const wxSize &size, long style, const wxString &name) {
@@ -315,12 +316,12 @@ BEGIN_EVENT_TABLE(wxPlotCtrl, wxWindow)
 EVT_SIZE(wxPlotCtrl::OnSize)
 EVT_PAINT(wxPlotCtrl::OnPaint)
 EVT_CHAR(wxPlotCtrl::OnChar)
-EVT_SCROLL(wxPlotCtrl::OnScroll) EVT_IDLE(wxPlotCtrl::OnIdle) EVT_MOUSE_EVENTS(wxPlotCtrl::OnMouse)
-    EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
+EVT_SCROLL(wxPlotCtrl::OnScroll)
+EVT_IDLE(wxPlotCtrl::OnIdle) EVT_MOUSE_EVENTS(wxPlotCtrl::OnMouse) EVT_TIMER(wxID_ANY, wxPlotCtrl::OnTimer)
 
-        EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter) END_EVENT_TABLE()
+    EVT_TEXT_ENTER(wxID_ANY, wxPlotCtrl::OnTextEnter) END_EVENT_TABLE()
 
-            void wxPlotCtrl::Init() {
+        void wxPlotCtrl::Init() {
     m_drawOnScreen = true;
 
     m_activeCurve = NULL;

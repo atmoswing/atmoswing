@@ -48,8 +48,8 @@ WX_DEFINE_ARRAY_PTR(wxWizardPageSimple*, WizardPages);
 /// Class asFrameMainVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFrameMainVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelMain;
     wxStaticText* m_staticText41;
     wxCalendarCtrl* m_calendarForecastDate;
@@ -119,7 +119,7 @@ class asFrameMainVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFrameMainVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AtmoSwing Forecaster"),
                        const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(600, 700),
                        long style = wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
@@ -131,10 +131,10 @@ class asFrameMainVirtual : public wxFrame {
 /// Class asPanelForecastVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asPanelForecastVirtual : public wxPanel {
-   private:
+  private:
     wxBoxSizer* m_sizerFilename;
 
-   protected:
+  protected:
     wxBoxSizer* m_sizerPanel;
     wxBoxSizer* m_sizerHeader;
     wxTextCtrl* m_textCtrlParametersFileName;
@@ -145,7 +145,7 @@ class asPanelForecastVirtual : public wxPanel {
         event.Skip();
     }
 
-   public:
+  public:
     asPanelForecastVirtual(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
                            const wxSize& size = wxSize(-1, -1), long style = wxTAB_TRAVERSAL,
                            const wxString& name = wxEmptyString);
@@ -156,8 +156,8 @@ class asPanelForecastVirtual : public wxPanel {
 /// Class asFramePreferencesForecasterVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asFramePreferencesForecasterVirtual : public wxFrame {
-   private:
-   protected:
+  private:
+  protected:
     wxPanel* m_panelBase;
     wxNotebook* m_notebookBase;
     wxPanel* m_panelPathsCommon;
@@ -234,7 +234,7 @@ class asFramePreferencesForecasterVirtual : public wxFrame {
         event.Skip();
     }
 
-   public:
+  public:
     asFramePreferencesForecasterVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                         const wxString& title = _("Preferences"),
                                         const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(482, 534),
@@ -247,8 +247,8 @@ class asFramePreferencesForecasterVirtual : public wxFrame {
 /// Class asWizardBatchForecastsVirtual
 ///////////////////////////////////////////////////////////////////////////////
 class asWizardBatchForecastsVirtual : public wxWizard {
-   private:
-   protected:
+  private:
+  protected:
     wxStaticText* m_staticText37;
     wxStaticText* m_staticText35;
     wxButton* m_button4;
@@ -266,7 +266,7 @@ class asWizardBatchForecastsVirtual : public wxWizard {
         event.Skip();
     }
 
-   public:
+  public:
     asWizardBatchForecastsVirtual(wxWindow* parent, wxWindowID id = wxID_ANY,
                                   const wxString& title = _("Batch file creation wizard"),
                                   const wxBitmap& bitmap = wxNullBitmap, const wxPoint& pos = wxDefaultPosition,

@@ -34,7 +34,7 @@
 class asFileParametersDownscaling;
 
 class asParametersDownscaling : public asParameters {
-   public:
+  public:
     typedef struct {
         wxString datasetId;
         wxString dataId;
@@ -154,11 +154,11 @@ class asParametersDownscaling : public asParameters {
         return true;
     }
 
-   protected:
+  protected:
     double m_downscalingStart;
     double m_downscalingEnd;
 
-   private:
+  private:
     wxString m_model;
     wxString m_scenario;
     vvi m_predictandStationIdsVect;

@@ -49,7 +49,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotMarker;
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
-   public:
+  public:
     wxPlotDrawerBase(wxPlotCtrl *owner) : wxObject(), m_owner(owner), m_pen_scale(1), m_font_scale(1) {}
 
     virtual void Draw(wxDC *dc, bool refresh) = 0;
@@ -98,14 +98,14 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
         return m_font_scale;
     }
 
-   protected:
+  protected:
     wxPlotCtrl *m_owner;
     wxRect m_dcRect;
     wxRect2DDouble m_plotViewRect;
     double m_pen_scale;   // width scaling factor for pens
     double m_font_scale;  // scaling factor for font sizes
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerBase)
 };
 
@@ -114,12 +114,12 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerBase : public wxObject {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerArea : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerArea(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
     virtual void Draw(wxDC *dc, bool refresh);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerArea)
 };
 
@@ -128,7 +128,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerArea : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerAxisBase(wxPlotCtrl *owner);
 
     virtual void Draw(wxDC *dc, bool refresh) = 0;
@@ -183,7 +183,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
     wxGenericPen m_tickPen;
     wxGenericBrush m_backgroundBrush;
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerAxisBase)
 };
 
@@ -192,12 +192,12 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerAxisBase : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerXAxis : public wxPlotDrawerAxisBase {
-   public:
+  public:
     wxPlotDrawerXAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
 
     virtual void Draw(wxDC *dc, bool refresh);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerXAxis)
 };
 
@@ -206,12 +206,12 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerXAxis : public wxPlotDrawerAxisBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerYAxis : public wxPlotDrawerAxisBase {
-   public:
+  public:
     wxPlotDrawerYAxis(wxPlotCtrl *owner) : wxPlotDrawerAxisBase(owner) {}
 
     virtual void Draw(wxDC *dc, bool refresh);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerYAxis)
 };
 
@@ -220,7 +220,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerYAxis : public wxPlotDrawerAxisBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerKey(wxPlotCtrl *owner);
 
     virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
@@ -249,7 +249,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
     int m_key_line_width;   // length of line to draw for curve
     int m_key_line_margin;  // margin between line and key text
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerKey)
 };
 
@@ -258,7 +258,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerKey : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerCurve : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
     virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
@@ -266,7 +266,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerCurve : public wxPlotDrawerBase {
 
     virtual void Draw(wxDC *dc, wxPlotCurve *curve, int curve_index);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerCurve)
 };
 
@@ -275,7 +275,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerCurve : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerDataCurve : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerDataCurve(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
     virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
@@ -283,7 +283,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerDataCurve : public wxPlotDrawerBase {
 
     virtual void Draw(wxDC *dc, wxPlotData *plotData, int curve_index);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerDataCurve)
 };
 
@@ -292,7 +292,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerDataCurve : public wxPlotDrawerBase {
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerMarker : public wxPlotDrawerBase {
-   public:
+  public:
     wxPlotDrawerMarker(wxPlotCtrl *owner) : wxPlotDrawerBase(owner) {}
 
     virtual void Draw(wxDC *WXUNUSED(dc), bool WXUNUSED(refresh)) {}  // unused
@@ -300,7 +300,7 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotDrawerMarker : public wxPlotDrawerBase {
 
     virtual void Draw(wxDC *dc, const wxPlotMarker &marker);
 
-   private:
+  private:
     DECLARE_ABSTRACT_CLASS(wxPlotDrawerMarker)
 };
 
