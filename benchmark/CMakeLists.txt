@@ -40,7 +40,7 @@ include(define_common_libraries)
 if (MINGW OR MSYS)
     set(gtest_disable_pthreads ON CACHE BOOL "" FORCE)
 endif ()
-set(BENCHMARK_ENABLE_TESTING OFF)
+set(BENCHMARK_DOWNLOAD_DEPENDENCIES ON)
 FetchContent_MakeAvailable(googlebenchmark)
 
 
