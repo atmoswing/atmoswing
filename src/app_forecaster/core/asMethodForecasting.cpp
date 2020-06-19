@@ -476,11 +476,58 @@ bool asMethodForecasting::GetFiles(asParametersForecast &params, asPredictorOper
             return false;
         }
 
-        // Download predictor
-        int resDownload = predictorRealtime->Download();
-        if (resDownload == asSUCCESS) {
-            break;
-        } else if (resDownload == asFAILED) {
+        if (predictorRealtime->ShouldDownload()) {
+            // Download predictor
+            int resDownload = predictorRealtime->Download();
+            if (resDownload == asSUCCESS) {
+                break;
+            } else if (resDownload == asFAILED) {
+                if (counterFails < maxPrevStepsNb) {
+                    // Try to download older data
+                    m_forecastDate = predictorRealtime->DecrementRunDateInUse();
+                    // Check if result already exists
+                    resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
+                    resultsCheck.Init(params, m_forecastDate);
+                    if (resultsCheck.Exists()) {
+                        wxLogVerbose(_("Forecast already exists."));
+#if wxUSE_GUI
+                        if (g_responsive) wxGetApp().Yield();
+#endif
+                        wxDELETE(predictorRealtime);
+                        return true;
+                    }
+                    forecastDateChanged = true;
+                    predictorRealtime->BuildFilenamesUrls();
+                    counterFails++;
+                } else {
+                    wxLogError(_("The maximum attempts is reached to download the real-time predictor. Forecasting "
+                                 "failed."));
+                    wxDELETE(predictorRealtime);
+                    return false;
+                }
+            } else {
+                // Canceled for example.
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+        } else {
+            // Check that files exist
+            bool fileMissing = false;
+
+            vwxs fileNames = predictorRealtime->GetFileNames();
+
+            for (int iFile = 0; iFile < fileNames.size(); iFile++) {
+                wxString fileName = fileNames[iFile];
+                wxString filePath = m_batchForecasts->GetPredictorsRealtimeDirectory() + DS + fileName;
+                if (!wxFileName::FileExists(filePath)) {
+                    fileMissing = true;
+                }
+            }
+
+            if (!fileMissing) {
+                break;
+            }
+
             if (counterFails < maxPrevStepsNb) {
                 // Try to download older data
                 m_forecastDate = predictorRealtime->DecrementRunDateInUse();
@@ -499,16 +546,13 @@ bool asMethodForecasting::GetFiles(asParametersForecast &params, asPredictorOper
                 predictorRealtime->BuildFilenamesUrls();
                 counterFails++;
             } else {
-                wxLogError(_("The maximum attempts is reached to download the real-time predictor. Forecasting "
-                          "failed."));
+                wxLogError(_("The maximum attempts is reached to search for the real-time predictor. Forecasting "
+                             "failed."));
                 wxDELETE(predictorRealtime);
                 return false;
             }
-        } else {
-            // Canceled for example.
-            wxDELETE(predictorRealtime);
-            return false;
         }
+
     }
     m_forecastDate = predictorRealtime->GetRunDateInUse();
 

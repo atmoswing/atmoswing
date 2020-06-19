@@ -78,8 +78,16 @@ class asPredictorOper : public asPredictor {
         return m_dataDates;
     }
 
+    wxString GetPredictorsRealtimeDirectory() {
+        return m_predictorsRealtimeDir;
+    }
+
     void SetPredictorsRealtimeDirectory(const wxString &dir) {
         m_predictorsRealtimeDir = dir;
+    }
+
+    bool ShouldDownload() {
+        return m_shouldDownload;
     }
 
   protected:
@@ -91,6 +99,7 @@ class asPredictorOper : public asPredictor {
     int m_runUpdate;
     double m_runDateInUse;
     wxString m_commandDownload;
+    bool m_shouldDownload;
     bool m_restrictDownloads;
     int m_restrictHours;
     int m_restrictTimeStepHours;

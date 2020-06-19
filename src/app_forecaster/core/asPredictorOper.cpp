@@ -44,6 +44,7 @@ asPredictorOper::asPredictorOper(const wxString &dataId)
       m_runUpdate(0),
       m_runDateInUse(0.0),
       m_commandDownload(),
+      m_shouldDownload(false),
       m_restrictDownloads(false),
       m_restrictHours(0),
       m_restrictTimeStepHours(0) {}
