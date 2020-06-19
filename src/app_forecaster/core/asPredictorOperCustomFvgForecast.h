@@ -25,20 +25,20 @@
  * Portions Copyright 2019-2020 Pascal Horton, University of Bern.
  */
 
-#ifndef AS_PREDICTOR_OPER_IFS_FORECAST_H
-#define AS_PREDICTOR_OPER_IFS_FORECAST_H
+#ifndef AS_PREDICTOR_OPER_FVG_FORECAST_H
+#define AS_PREDICTOR_OPER_FVG_FORECAST_H
 
 #include "asIncludes.h"
 #include "asPredictorEcmwfIfsGrib.h"
-#include "asPredictorOper.h"
+#include "asPredictorOperIfsForecast.h"
 
 class asArea;
 
-class asPredictorOperIfsForecast : public asPredictorOper {
+class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
   public:
-    explicit asPredictorOperIfsForecast(const wxString &dataId);
+    explicit asPredictorOperCustomFvgForecast(const wxString &dataId);
 
-    ~asPredictorOperIfsForecast() override = default;
+    ~asPredictorOperCustomFvgForecast() override = default;
 
     bool Init() override;
 
