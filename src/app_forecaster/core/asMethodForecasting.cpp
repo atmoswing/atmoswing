@@ -365,9 +365,6 @@ bool asMethodForecasting::Forecast(asParametersForecast &params) {
 
 bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &params, int iStep,
                                                      bool &forecastDateChanged) {
-    // Get preferences
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    long maxPrevStepsNb = pConfig->ReadLong("/Internet/MaxPreviousStepsNb", 5);
 
     for (int iPtor = 0; iPtor < params.GetPredictorsNb(iStep); iPtor++) {
 #if wxUSE_GUI
@@ -382,90 +379,21 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 #endif
 
         if (!params.NeedsPreprocessing(iStep, iPtor)) {
-            // Instanciate a predictor object
+            // Instantiate a predictor object
             asPredictorOper *predictorRealtime = asPredictorOper::GetInstance(
-                params.GetPredictorRealtimeDatasetId(iStep, iPtor), params.GetPredictorRealtimeDataId(iStep, iPtor));
+                params.GetPredictorRealtimeDatasetId(iStep, iPtor),
+                params.GetPredictorRealtimeDataId(iStep, iPtor));
+
             if (!predictorRealtime) {
                 wxDELETE(predictorRealtime);
                 return false;
             }
-            predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
 
-            // Set the desired forecasting date
-            m_forecastDate = predictorRealtime->SetRunDateInUse(m_forecastDate);
-
-            // Check if result already exists
-            asResultsForecast resultsCheck;
-            resultsCheck.SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
-            resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
-            resultsCheck.Init(params, m_forecastDate);
-            if (resultsCheck.Exists()) {
-                wxLogVerbose(_("Forecast already exists."));
-#if wxUSE_GUI
-                if (g_responsive) wxGetApp().Yield();
-#endif
-                wxDELETE(predictorRealtime);
-                return true;
-            }
-
-            // Restriction needed
-            wxASSERT(params.GetTargetTimeStepHours() > 0);
-            predictorRealtime->RestrictTimeArray(params.GetPredictorHour(iStep, iPtor), params.GetTargetTimeStepHours(),
-                                                 params.GetLeadTimeNb());
-
-            // Update forecasting date
-            if (!predictorRealtime->BuildFilenamesUrls()) {
+            if (!GetFiles(params, predictorRealtime, forecastDateChanged, params.GetPredictorHour(iStep, iPtor))) {
                 wxDELETE(predictorRealtime);
                 return false;
             }
 
-            // Realtime data downloading
-            int counterFails = 0;
-            while (true) {
-#if wxUSE_GUI
-                if (g_responsive) wxGetApp().Yield();
-#endif
-                if (m_cancel) {
-                    wxDELETE(predictorRealtime);
-                    return false;
-                }
-
-                // Download predictor
-                int resDownload = predictorRealtime->Download();
-                if (resDownload == asSUCCESS) {
-                    break;
-                } else if (resDownload == asFAILED) {
-                    if (counterFails < maxPrevStepsNb) {
-                        // Try to download older data
-                        m_forecastDate = predictorRealtime->DecrementRunDateInUse();
-                        // Check if result already exists
-                        resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
-                        resultsCheck.Init(params, m_forecastDate);
-                        if (resultsCheck.Exists()) {
-                            wxLogVerbose(_("Forecast already exists."));
-#if wxUSE_GUI
-                            if (g_responsive) wxGetApp().Yield();
-#endif
-                            wxDELETE(predictorRealtime);
-                            return true;
-                        }
-                        forecastDateChanged = true;
-                        predictorRealtime->BuildFilenamesUrls();
-                        counterFails++;
-                    } else {
-                        wxLogError(
-                            _("The maximum attempts is reached to download the real-time predictor. Forecasting "
-                              "failed."));
-                        wxDELETE(predictorRealtime);
-                        return false;
-                    }
-                } else {
-                    // Canceled for example.
-                    wxDELETE(predictorRealtime);
-                    return false;
-                }
-            }
-            m_forecastDate = predictorRealtime->GetRunDateInUse();
             wxDELETE(predictorRealtime);
         } else {
             int preprocessSize = params.GetPreprocessSize(iStep, iPtor);
@@ -476,73 +404,113 @@ bool asMethodForecasting::DownloadRealtimePredictors(asParametersForecast &param
 #endif
                 if (m_cancel) return false;
 
-                // Instanciate a predictor object
-                asPredictorOper *predictorRealtimePreprocess =
-                    asPredictorOper::GetInstance(params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
-                                                 params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+                // Instantiate a predictor object
+                asPredictorOper *predictorRealtimePreprocess = asPredictorOper::GetInstance(
+                    params.GetPreprocessRealtimeDatasetId(iStep, iPtor, iPre),
+                    params.GetPreprocessRealtimeDataId(iStep, iPtor, iPre));
+
                 if (!predictorRealtimePreprocess) {
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
                 }
-                predictorRealtimePreprocess->SetPredictorsRealtimeDirectory(
-                    m_batchForecasts->GetPredictorsRealtimeDirectory());
 
-                // Set the desired forecasting date
-                m_forecastDate = predictorRealtimePreprocess->SetRunDateInUse(m_forecastDate);
-
-                // Restriction needed
-                wxASSERT(params.GetTargetTimeStepHours() > 0);
-                predictorRealtimePreprocess->RestrictTimeArray(params.GetPreprocessHour(iStep, iPtor, iPre),
-                                                               params.GetTargetTimeStepHours(), params.GetLeadTimeNb());
-
-                // Update forecasting date
-                if (!predictorRealtimePreprocess->BuildFilenamesUrls()) {
+                if (!GetFiles(params, predictorRealtimePreprocess, forecastDateChanged, params.GetPreprocessHour(iStep, iPtor, iPre))) {
                     wxDELETE(predictorRealtimePreprocess);
                     return false;
                 }
 
-                // Realtime data downloading
-                int counterFails = 0;
-                while (true) {
-#if wxUSE_GUI
-                    if (g_responsive) wxGetApp().Yield();
-#endif
-                    if (m_cancel) {
-                        wxDELETE(predictorRealtimePreprocess);
-                        return false;
-                    }
-
-                    // Download predictor
-                    int resDownload = predictorRealtimePreprocess->Download();
-                    if (resDownload == asSUCCESS) {
-                        break;
-                    } else if (resDownload == asFAILED) {
-                        if (counterFails < maxPrevStepsNb) {
-                            // Try to download older data
-                            m_forecastDate = predictorRealtimePreprocess->DecrementRunDateInUse();
-                            forecastDateChanged = true;
-                            predictorRealtimePreprocess->BuildFilenamesUrls();
-                            counterFails++;
-                        } else {
-                            wxLogError(
-                                _("The maximum attempts is reached to download the real-time predictor. Forecasting "
-                                  "failed."));
-                            wxDELETE(predictorRealtimePreprocess);
-                            return false;
-                        }
-                    } else {
-                        // Canceled for example.
-                        wxDELETE(predictorRealtimePreprocess);
-                        return false;
-                    }
-                }
-                m_forecastDate = predictorRealtimePreprocess->GetRunDateInUse();
                 wxDELETE(predictorRealtimePreprocess);
             }
         }
 
         wxLogVerbose(_("Data downloaded."));
     }
+
+    return true;
+}
+
+bool asMethodForecasting::GetFiles(asParametersForecast &params, asPredictorOper *predictorRealtime,
+                                   bool &forecastDateChanged, double hour) {
+    // Get preferences
+    wxConfigBase *pConfig = wxFileConfig::Get();
+    long maxPrevStepsNb = pConfig->ReadLong("/Internet/MaxPreviousStepsNb", 5);
+
+    predictorRealtime->SetPredictorsRealtimeDirectory(m_batchForecasts->GetPredictorsRealtimeDirectory());
+
+    // Set the desired forecasting date
+    m_forecastDate = predictorRealtime->SetRunDateInUse(m_forecastDate);
+
+    // Check if result already exists
+    asResultsForecast resultsCheck;
+    resultsCheck.SetForecastsDirectory(m_batchForecasts->GetForecastsOutputDirectory());
+    resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
+    resultsCheck.Init(params, m_forecastDate);
+    if (resultsCheck.Exists()) {
+        wxLogVerbose(_("Forecast already exists."));
+#if wxUSE_GUI
+        if (g_responsive) wxGetApp().Yield();
+#endif
+        wxDELETE(predictorRealtime);
+        return true;
+    }
+
+    // Restriction needed
+    wxASSERT(params.GetTargetTimeStepHours() > 0);
+    predictorRealtime->RestrictTimeArray(hour, params.GetTargetTimeStepHours(),
+                                         params.GetLeadTimeNb());
+
+    // Update forecasting date
+    if (!predictorRealtime->BuildFilenamesUrls()) {
+        wxDELETE(predictorRealtime);
+        return false;
+    }
+
+    // Realtime data downloading
+    int counterFails = 0;
+    while (true) {
+#if wxUSE_GUI
+        if (g_responsive) wxGetApp().Yield();
+#endif
+        if (m_cancel) {
+            wxDELETE(predictorRealtime);
+            return false;
+        }
+
+        // Download predictor
+        int resDownload = predictorRealtime->Download();
+        if (resDownload == asSUCCESS) {
+            break;
+        } else if (resDownload == asFAILED) {
+            if (counterFails < maxPrevStepsNb) {
+                // Try to download older data
+                m_forecastDate = predictorRealtime->DecrementRunDateInUse();
+                // Check if result already exists
+                resultsCheck.SetCurrentStep(params.GetStepsNb() - 1);
+                resultsCheck.Init(params, m_forecastDate);
+                if (resultsCheck.Exists()) {
+                    wxLogVerbose(_("Forecast already exists."));
+#if wxUSE_GUI
+                    if (g_responsive) wxGetApp().Yield();
+#endif
+                    wxDELETE(predictorRealtime);
+                    return true;
+                }
+                forecastDateChanged = true;
+                predictorRealtime->BuildFilenamesUrls();
+                counterFails++;
+            } else {
+                wxLogError(_("The maximum attempts is reached to download the real-time predictor. Forecasting "
+                          "failed."));
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+        } else {
+            // Canceled for example.
+            wxDELETE(predictorRealtime);
+            return false;
+        }
+    }
+    m_forecastDate = predictorRealtime->GetRunDateInUse();
 
     return true;
 }

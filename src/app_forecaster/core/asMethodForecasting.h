@@ -69,6 +69,8 @@ class asMethodForecasting : public asMethodStandard {
   protected:
     bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
+    bool GetFiles(asParametersForecast &params, asPredictorOper *predictorRealtime, bool &forecastDateChanged, double hour);
+
     bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
                                       asPredictor *result);
 
