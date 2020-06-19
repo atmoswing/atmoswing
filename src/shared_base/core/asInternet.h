@@ -30,30 +30,31 @@
 #define AS_INTERNET_H
 
 #include <curl/curl.h>
+
 #include "asIncludes.h"
 
 class asInternet : public wxObject {
- public:
-  asInternet() = default;
+   public:
+    asInternet() = default;
 
-  virtual ~asInternet() = default;
+    virtual ~asInternet() = default;
 
-  static void Init();
+    static void Init();
 
-  static void Cleanup();
+    static void Cleanup();
 
-  static int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
+    static int Download(const vwxs &urls, const vwxs &fileNames, const wxString &destinationDir);
 
- protected:
- private:
-  friend class asThreadInternetDownload;
+   protected:
+   private:
+    friend class asThreadInternetDownload;
 
-  struct HttpFile {
-    const char *fileName;
-    FILE *stream;
-  };
+    struct HttpFile {
+        const char *fileName;
+        FILE *stream;
+    };
 
-  static size_t WriteFile(void *buffer, size_t size, size_t nmemb, void *stream);
+    static size_t WriteFile(void *buffer, size_t size, size_t nmemb, void *stream);
 };
 
 #endif

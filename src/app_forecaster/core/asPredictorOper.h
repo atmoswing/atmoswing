@@ -33,74 +33,74 @@
 #include "asPredictor.h"
 
 class asPredictorOper : public asPredictor {
- public:
-  explicit asPredictorOper(const wxString &dataId);
+   public:
+    explicit asPredictorOper(const wxString &dataId);
 
-  ~asPredictorOper() override = default;
+    ~asPredictorOper() override = default;
 
-  static void SetDefaultPredictorsUrls();
+    static void SetDefaultPredictorsUrls();
 
-  static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
+    static asPredictorOper *GetInstance(const wxString &datasetId, const wxString &dataId);
 
-  int Download();
+    int Download();
 
-  double UpdateRunDateInUse();
+    double UpdateRunDateInUse();
 
-  double SetRunDateInUse(double val = 0);
+    double SetRunDateInUse(double val = 0);
 
-  double DecrementRunDateInUse();
+    double DecrementRunDateInUse();
 
-  bool BuildFilenamesUrls();
+    bool BuildFilenamesUrls();
 
-  void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
+    void RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb);
 
-  double GetForecastLeadTimeEnd() const {
-    return m_leadTimeEnd;
-  }
+    double GetForecastLeadTimeEnd() const {
+        return m_leadTimeEnd;
+    }
 
-  double GetRunDateInUse() const {
-    return m_runDateInUse;
-  }
+    double GetRunDateInUse() const {
+        return m_runDateInUse;
+    }
 
-  vwxs GetUrls() const {
-    return m_urls;
-  }
+    vwxs GetUrls() const {
+        return m_urls;
+    }
 
-  vwxs GetFileNames() const {
-    return m_fileNames;
-  }
+    vwxs GetFileNames() const {
+        return m_fileNames;
+    }
 
-  void SetFileNames(const vwxs &val) {
-    m_fileNames = val;
-  }
+    void SetFileNames(const vwxs &val) {
+        m_fileNames = val;
+    }
 
-  vd GetDataDates() const {
-    return m_dataDates;
-  }
+    vd GetDataDates() const {
+        return m_dataDates;
+    }
 
-  void SetPredictorsRealtimeDirectory(const wxString &dir) {
-    m_predictorsRealtimeDir = dir;
-  }
+    void SetPredictorsRealtimeDirectory(const wxString &dir) {
+        m_predictorsRealtimeDir = dir;
+    }
 
- protected:
-  wxString m_predictorsRealtimeDir;
-  int m_leadTimeStart;
-  int m_leadTimeEnd;
-  int m_leadTimeStep;
-  int m_runHourStart;
-  int m_runUpdate;
-  double m_runDateInUse;
-  wxString m_commandDownload;
-  bool m_restrictDownloads;
-  int m_restrictHours;
-  int m_restrictTimeStepHours;
-  vwxs m_fileNames;
-  vwxs m_urls;
-  vd m_dataDates;
+   protected:
+    wxString m_predictorsRealtimeDir;
+    int m_leadTimeStart;
+    int m_leadTimeEnd;
+    int m_leadTimeStep;
+    int m_runHourStart;
+    int m_runUpdate;
+    double m_runDateInUse;
+    wxString m_commandDownload;
+    bool m_restrictDownloads;
+    int m_restrictHours;
+    int m_restrictTimeStepHours;
+    vwxs m_fileNames;
+    vwxs m_urls;
+    vd m_dataDates;
 
-  void ListFiles(asTimeArray &timeArray) override;
+    void ListFiles(asTimeArray &timeArray) override;
 
-  bool CheckTimeArray(asTimeArray &timeArray) override;
+    bool CheckTimeArray(asTimeArray &timeArray) override;
 };
 
 #endif

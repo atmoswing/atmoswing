@@ -26,66 +26,66 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCtrl;
 //-----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotPrintout : public wxPrintout {
- public:
-  wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title = wxEmptyString);
+   public:
+    wxPlotPrintout(wxPlotCtrl *plotCtrl, const wxString &title = wxEmptyString);
 
-  bool OnPrintPage(int page);
+    bool OnPrintPage(int page);
 
-  bool HasPage(int page) {
-    return page == 1;
-  }
+    bool HasPage(int page) {
+        return page == 1;
+    }
 
-  bool OnBeginDocument(int startPage, int endPage);
+    bool OnBeginDocument(int startPage, int endPage);
 
-  void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo) {
-    if (minPage) *minPage = 1;
-    if (maxPage) *maxPage = 1;
-    if (selPageFrom) *selPageFrom = 1;
-    if (selPageTo) *selPageTo = 1;
-  }
+    void GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo) {
+        if (minPage) *minPage = 1;
+        if (maxPage) *maxPage = 1;
+        if (selPageFrom) *selPageFrom = 1;
+        if (selPageTo) *selPageTo = 1;
+    }
 
-  // Simplified methods to show the standard print dialogs
-  bool ShowPrintDialog();
+    // Simplified methods to show the standard print dialogs
+    bool ShowPrintDialog();
 
-  bool ShowPrintPreviewDialog(const wxString &frameTitle = wxT("Plot print preview"));
+    bool ShowPrintPreviewDialog(const wxString &frameTitle = wxT("Plot print preview"));
 
-  bool ShowPrintSetupDialog();
+    bool ShowPrintSetupDialog();
 
-  bool ShowPrintPageSetupDialog();
+    bool ShowPrintPageSetupDialog();
 
-  wxPlotCtrl *GetPlotCtrl() const {
-    return m_plotCtrl;
-  }
+    wxPlotCtrl *GetPlotCtrl() const {
+        return m_plotCtrl;
+    }
 
-  // Get/Set the wxPrintData/wxPageSetupData that will be used
-  //   if NULL then one will be created on first use and deleted when the
-  //   program exits. It may make sense to create a single instance of your
-  //   printdata in the wxApp for all your program's printing needs and use
-  //   SetPrintData/PageSetupData to share it with this.
-  static wxPrintData *GetPrintData(bool create_on_demand = false);
+    // Get/Set the wxPrintData/wxPageSetupData that will be used
+    //   if NULL then one will be created on first use and deleted when the
+    //   program exits. It may make sense to create a single instance of your
+    //   printdata in the wxApp for all your program's printing needs and use
+    //   SetPrintData/PageSetupData to share it with this.
+    static wxPrintData *GetPrintData(bool create_on_demand = false);
 
-  static wxPageSetupData *GetPageSetupData(bool create_on_demand = false);
+    static wxPageSetupData *GetPageSetupData(bool create_on_demand = false);
 
-  static bool GetPrintDataStatic();
+    static bool GetPrintDataStatic();
 
-  static bool GetPageSetupDataStatic();
+    static bool GetPageSetupDataStatic();
 
-  // Set the wxPrintData/PageSetupData, if !is_static then it will be deleted
-  //   when the program exits
-  static void SetPrintData(wxPrintData *printData, bool is_static);
+    // Set the wxPrintData/PageSetupData, if !is_static then it will be deleted
+    //   when the program exits
+    static void SetPrintData(wxPrintData *printData, bool is_static);
 
-  static void SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static);
+    static void SetPageSetupData(wxPageSetupData *pageSetupData, bool is_static);
 
- protected:
-  wxPlotCtrl *m_plotCtrl;
+   protected:
+    wxPlotCtrl *m_plotCtrl;
 
-  static wxPrintData *s_wxPlotPrintData;
-  static wxPageSetupData *s_wxPlotPageSetupData;
-  static bool s_wxPlotPrintdata_static;
-  static bool s_wxPlotPagesetupdata_static;
+    static wxPrintData *s_wxPlotPrintData;
+    static wxPageSetupData *s_wxPlotPageSetupData;
+    static bool s_wxPlotPrintdata_static;
+    static bool s_wxPlotPagesetupdata_static;
 
- private:
-  DECLARE_ABSTRACT_CLASS(wxPlotPrintout)
+   private:
+    DECLARE_ABSTRACT_CLASS(wxPlotPrintout)
 };
 
 #endif  // _WX_PLOTPRINT_H_

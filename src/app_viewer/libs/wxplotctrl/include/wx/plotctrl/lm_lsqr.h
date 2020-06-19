@@ -85,141 +85,141 @@ extern void SetLM_LeastSquareProgressHandlerTicks(int iterations);
 //=============================================================================
 
 class WXDLLIMPEXP_PLOTCTRL LM_LeastSquare {
- public:
-  LM_LeastSquare();
+   public:
+    LM_LeastSquare();
 
-  virtual ~LM_LeastSquare() {
-    Destroy();
-  }
+    virtual ~LM_LeastSquare() {
+        Destroy();
+    }
 
-  // Initialize everything, returns sucess, on failure GetResultMessage()
-  //   you may call Create and then Fit on a single instance on this
-  //   as many times as you like.
-  bool Create(const wxPlotData &plotData, const wxPlotFunction &plotFunc);
+    // Initialize everything, returns sucess, on failure GetResultMessage()
+    //   you may call Create and then Fit on a single instance on this
+    //   as many times as you like.
+    bool Create(const wxPlotData &plotData, const wxPlotFunction &plotFunc);
 
-  // Has this been sucessfully created and is ready to be Fit()
-  bool Ok() const {
-    return m_ok;
-  }
+    // Has this been sucessfully created and is ready to be Fit()
+    bool Ok() const {
+        return m_ok;
+    }
 
-  // After creation fit the plotFunc's vars to the plotData, returns # iterations
-  //   initial_vals are initial guesses for the variables which may be NULL
-  //   specify the number of initial variables with init_count
-  int Fit(const double *initial_vals = NULL, int init_count = 0);
+    // After creation fit the plotFunc's vars to the plotData, returns # iterations
+    //   initial_vals are initial guesses for the variables which may be NULL
+    //   specify the number of initial variables with init_count
+    int Fit(const double *initial_vals = NULL, int init_count = 0);
 
-  // returns true if this is currently fitting
-  bool IsFitting() const {
-    return m_fitting;
-  }
+    // returns true if this is currently fitting
+    bool IsFitting() const {
+        return m_fitting;
+    }
 
-  // abort a currently running fit, this may take a cycle or two so check
-  //   IsFitting to determine when it is done.
-  void AbortFitting() {
-    m_abort_fitting = true;
-  }
+    // abort a currently running fit, this may take a cycle or two so check
+    //   IsFitting to determine when it is done.
+    void AbortFitting() {
+        m_abort_fitting = true;
+    }
 
-  // was the last fit aborted, reset when Create or Fit is called again
-  bool GetAbortFitting() const {
-    return m_abort_fitting;
-  }
+    // was the last fit aborted, reset when Create or Fit is called again
+    bool GetAbortFitting() const {
+        return m_abort_fitting;
+    }
 
-  // If you don't cal Fit(some_vars, count) then the variables are all
-  // initialized with this value, default = 0.1
-  double GetInitValue() const {
-    return m_init_value;
-  }
+    // If you don't cal Fit(some_vars, count) then the variables are all
+    // initialized with this value, default = 0.1
+    double GetInitValue() const {
+        return m_init_value;
+    }
 
-  void SetInitValue(double init_val) {
-    m_init_value = init_val;
-  }
+    void SetInitValue(double init_val) {
+        m_init_value = init_val;
+    }
 
-  // Get the number of evaluations performed to find best fit
-  int GetNumberIterations() const {
-    return m_nfev;
-  }
+    // Get the number of evaluations performed to find best fit
+    int GetNumberIterations() const {
+        return m_nfev;
+    }
 
-  // Get the euclidean norm of errors between data and function points
-  double GetEuclideanNorm() const {
-    return m_fnorm;
-  }
+    // Get the euclidean norm of errors between data and function points
+    double GetEuclideanNorm() const {
+        return m_fnorm;
+    }
 
-  // Get the number of variables, i.e. (plotFunc.GetNumberVars() - 1, x is excluded)
-  int GetNumberVariables() const {
-    return m_n;
-  }
+    // Get the number of variables, i.e. (plotFunc.GetNumberVars() - 1, x is excluded)
+    int GetNumberVariables() const {
+        return m_n;
+    }
 
-  // Get the evaluated variables, size is (plotFunc.GetNumberVars() - 1, x is excluded)
-  double *GetVariables() const {
-    return m_x;
-  }
+    // Get the evaluated variables, size is (plotFunc.GetNumberVars() - 1, x is excluded)
+    double *GetVariables() const {
+        return m_x;
+    }
 
-  // Get a single evaluated variable, 0 to GetNumberVariables()-1
-  double GetVariable(int n);
+    // Get a single evaluated variable, 0 to GetNumberVariables()-1
+    double GetVariable(int n);
 
-  // Get an informational message about the results
-  wxString GetResultMessage() const;
+    // Get an informational message about the results
+    wxString GetResultMessage() const;
 
- protected:
-  void ReInit();  // only after a call to destroy - reset the vars
-  void Destroy();
+   protected:
+    void ReInit();  // only after a call to destroy - reset the vars
+    void Destroy();
 
-  wxPlotData *m_plotData;
-  wxPlotFunction *m_plotFunc;
-  double m_init_value;
-  wxString m_resultMsg;
-  bool m_ok;
-  bool m_fitting;
-  bool m_abort_fitting;
+    wxPlotData *m_plotData;
+    wxPlotFunction *m_plotFunc;
+    double m_init_value;
+    wxString m_resultMsg;
+    bool m_ok;
+    bool m_fitting;
+    bool m_abort_fitting;
 
-  // this is the function to calculate the difference
-  virtual void fcn(int m, int n, double x[], double fvec[], int *iflag);
+    // this is the function to calculate the difference
+    virtual void fcn(int m, int n, double x[], double fvec[], int *iflag);
 
-  void lmdif(int m, int n, double x[], double fvec[], double ftol, double xtol, double gtol, int maxfev, double epsfcn,
-             double diag[], int mode, double factor, int nprint, int *info, int *nfev, double fjac[], int ldfjac,
-             int ipvt[], double qtf[], double wa1[], double wa2[], double wa3[], double wa4[]);
+    void lmdif(int m, int n, double x[], double fvec[], double ftol, double xtol, double gtol, int maxfev,
+               double epsfcn, double diag[], int mode, double factor, int nprint, int *info, int *nfev, double fjac[],
+               int ldfjac, int ipvt[], double qtf[], double wa1[], double wa2[], double wa3[], double wa4[]);
 
-  // implementation - you probably don't want to mess with these!
+    // implementation - you probably don't want to mess with these!
 
-  void lmpar(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double delta, double *par, double x[],
-             double sdiag[], double wa1[], double wa2[]);
+    void lmpar(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double delta, double *par,
+               double x[], double sdiag[], double wa1[], double wa2[]);
 
-  void qrfac(int m, int n, double a[], int lda, int pivot, int ipvt[], int lipvt, double rdiag[], double acnorm[],
-             double wa[]);
+    void qrfac(int m, int n, double a[], int lda, int pivot, int ipvt[], int lipvt, double rdiag[], double acnorm[],
+               double wa[]);
 
-  void qrsolv(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double x[], double sdiag[],
-              double wa[]);
+    void qrsolv(int n, double r[], int ldr, int ipvt[], double diag[], double qtb[], double x[], double sdiag[],
+                double wa[]);
 
-  double enorm(int n, double x[]);
+    double enorm(int n, double x[]);
 
-  void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int *iflag, double epsfcn,
-              double wa[]);
+    void fdjac2(int m, int n, double x[], double fvec[], double fjac[], int ldfjac, int *iflag, double epsfcn,
+                double wa[]);
 
-  int m_n;              // # of variables of plotFunc
-  int m_m;              // # of functions = points in plotData
-  int m_info;           // index of info message strings
-  double m_fnorm;       // euclidean norm of errors
-  double m_eps;         // resolution of arithmetic
-  double m_dwarf;       // smallest nonzero number
-  int m_nfev;           // # iterations completed
-  unsigned long m_nan;  // # if times function evaluation had a NaN
-  double m_ftol;        // relative error in the sum of the squares, if less done
-  double m_xtol;        // relative error between two iterations, if less done
-  double m_gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
-  double m_epsfcn;      // step length for the forward-difference approximation
-  double m_factor;      // initial step bound
-  double *m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
-  double *m_x;          // variables (size m_n)
-  double *m_fvec;       // output of evaluated functions (size m_m)
-  double *m_diag;       // multiplicative scale factors for the variables, see m_mode
-  int m_mode;           // =1 the vars scaled internally. if 2, scaling specified by m_diag.
-  double *m_fjac;       // output m by n array
-  int m_ldfjac;         // the leading dimension of the array fjac >= m_m
-  double *m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
-  int *m_ipvt;          // integer output array of length n
-  int m_maxfev;         // maximum number of iterations to try
+    int m_n;              // # of variables of plotFunc
+    int m_m;              // # of functions = points in plotData
+    int m_info;           // index of info message strings
+    double m_fnorm;       // euclidean norm of errors
+    double m_eps;         // resolution of arithmetic
+    double m_dwarf;       // smallest nonzero number
+    int m_nfev;           // # iterations completed
+    unsigned long m_nan;  // # if times function evaluation had a NaN
+    double m_ftol;        // relative error in the sum of the squares, if less done
+    double m_xtol;        // relative error between two iterations, if less done
+    double m_gtol;        // cosine of the angle between fvec and any column of the jacobian, if less done
+    double m_epsfcn;      // step length for the forward-difference approximation
+    double m_factor;      // initial step bound
+    double *m_vars;       // variables + 1, where last is var 'x' for wxPlotFunction
+    double *m_x;          // variables (size m_n)
+    double *m_fvec;       // output of evaluated functions (size m_m)
+    double *m_diag;       // multiplicative scale factors for the variables, see m_mode
+    int m_mode;           // =1 the vars scaled internally. if 2, scaling specified by m_diag.
+    double *m_fjac;       // output m by n array
+    int m_ldfjac;         // the leading dimension of the array fjac >= m_m
+    double *m_qtf;        // output array the first n elements of the vector (q transpose)*fvec
+    int *m_ipvt;          // integer output array of length n
+    int m_maxfev;         // maximum number of iterations to try
 
- private:
-  void Init();
+   private:
+    void Init();
 };
 
 #endif  // _LM_LEASTSQUARE_H_

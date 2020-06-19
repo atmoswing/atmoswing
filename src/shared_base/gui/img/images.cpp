@@ -32,26 +32,26 @@
 #include "images.h"
 
 void initialize_images(double ppiScaling) {
-  if (ppiScaling <= 1.25) {
-    initialize_img_misc_s();
-    initialize_img_toolbar_s();
-    initialize_img_treectrl_s();
-  } else if (ppiScaling > 1.25 && ppiScaling <= 1.75) {
-    initialize_img_misc_m();
-    initialize_img_toolbar_m();
-    initialize_img_treectrl_m();
-  } else {
-    initialize_img_misc_l();
-    initialize_img_toolbar_l();
-    initialize_img_treectrl_l();
-  }
+    if (ppiScaling <= 1.25) {
+        initialize_img_misc_s();
+        initialize_img_toolbar_s();
+        initialize_img_treectrl_s();
+    } else if (ppiScaling > 1.25 && ppiScaling <= 1.75) {
+        initialize_img_misc_m();
+        initialize_img_toolbar_m();
+        initialize_img_treectrl_m();
+    } else {
+        initialize_img_misc_l();
+        initialize_img_toolbar_l();
+        initialize_img_treectrl_l();
+    }
 
-  initialize_img_logo();
+    initialize_img_logo();
 }
 
 void cleanup_images() {
-  cleanup_img_misc();
-  cleanup_img_toolbar();
-  cleanup_img_treectrl();
-  cleanup_img_logo();
+    cleanup_img_misc();
+    cleanup_img_toolbar();
+    cleanup_img_treectrl();
+    cleanup_img_logo();
 }

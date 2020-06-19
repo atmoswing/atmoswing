@@ -35,41 +35,41 @@
 class asParametersScoring;
 
 class asResultsTotalScore : public asResults {
- public:
-  asResultsTotalScore();
+   public:
+    asResultsTotalScore();
 
-  virtual ~asResultsTotalScore();
+    virtual ~asResultsTotalScore();
 
-  void Init();
+    void Init();
 
-  float GetScore() const {
-    return m_score;
-  }
+    float GetScore() const {
+        return m_score;
+    }
 
-  void SetScore(float val) {
-    m_score = val;
-  }
+    void SetScore(float val) {
+        m_score = val;
+    }
 
-  a1f GetScoreArray() const {
-    return m_scoreArray;
-  }
+    a1f GetScoreArray() const {
+        return m_scoreArray;
+    }
 
-  void SetScore(a1f val) {
-    m_scoreArray = val;
-    m_hasSingleValue = false;
-  }
+    void SetScore(a1f val) {
+        m_scoreArray = val;
+        m_hasSingleValue = false;
+    }
 
-  bool Save();
+    bool Save();
 
-  bool Load();
+    bool Load();
 
- protected:
-  void BuildFileName();
+   protected:
+    void BuildFileName();
 
- private:
-  bool m_hasSingleValue;
-  float m_score;
-  a1f m_scoreArray;
+   private:
+    bool m_hasSingleValue;
+    float m_score;
+    a1f m_scoreArray;
 };
 
 #endif

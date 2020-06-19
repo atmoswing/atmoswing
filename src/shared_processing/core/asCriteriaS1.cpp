@@ -29,74 +29,74 @@
 #include "asCriteriaS1.h"
 
 asCriteriaS1::asCriteriaS1() : asCriteria("S1", _("Teweles-Wobus score"), Asc) {
-  m_minPointsNb = 2;
-  m_scaleWorst = 200;
-  m_canUseInline = false;
+    m_minPointsNb = 2;
+    m_scaleWorst = 200;
+    m_canUseInline = false;
 }
 
 asCriteriaS1::~asCriteriaS1() = default;
 
 float asCriteriaS1::Assess(const a2f &refData, const a2f &evalData, int rowsNb, int colsNb) const {
-  wxASSERT(refData.rows() == evalData.rows());
-  wxASSERT(refData.cols() == evalData.cols());
-  wxASSERT(refData.rows() == rowsNb);
-  wxASSERT(refData.cols() == colsNb);
-  wxASSERT(refData.rows() > 1);
-  wxASSERT(refData.cols() > 1);
+    wxASSERT(refData.rows() == evalData.rows());
+    wxASSERT(refData.cols() == evalData.cols());
+    wxASSERT(refData.rows() == rowsNb);
+    wxASSERT(refData.cols() == colsNb);
+    wxASSERT(refData.rows() > 1);
+    wxASSERT(refData.cols() > 1);
 
-  if (m_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
-    wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
-    return NaNf;
-  }
-
-  float dividend = 0, divisor = 0;
-
-  dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
-               (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
-                  .abs())
-                 .sum() +
-             (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
-               (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
-                  .abs())
-                 .sum();
-
-  divisor =
-      ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1))
-           .abs()
-           .max((evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs()))
-          .sum() +
-      ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb))
-           .abs()
-           .max((evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs()))
-          .sum();
-
-  /* More readable version
-  Array2DFloat RefGradCols(rowsNb, colsNb - 1);
-  Array2DFloat RefGradRows(rowsNb - 1, colsNb);
-  Array2DFloat EvalGradCols(evalData.rows(), evalData.cols() - 1);
-  Array2DFloat EvalGradRows(evalData.rows() - 1, evalData.cols());
-
-  RefGradCols = (refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1));
-  RefGradRows = (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb));
-  EvalGradCols = (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
-                  evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1));
-  EvalGradRows = (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
-                  evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()));
-
-  dividend = ((RefGradCols - EvalGradCols).abs()).sum() + ((RefGradRows - EvalGradRows).abs()).sum();
-  divisor = (RefGradCols.abs().max(EvalGradCols.abs())).sum() +
-            (RefGradRows.abs().max(EvalGradRows.abs())).sum();
-
-  */
-
-  if (divisor > 0) {
-    return 100.0f * (dividend / divisor);  // Can be NaN
-  } else {
-    if (dividend == 0) {
-      wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
-      return m_scaleWorst;
-    } else {
-      return m_scaleWorst;
+    if (m_checkNaNs && (refData.hasNaN() || evalData.hasNaN())) {
+        wxLogWarning(_("NaNs are not handled in with S1 without preprocessing."));
+        return NaNf;
     }
-  }
+
+    float dividend = 0, divisor = 0;
+
+    dividend = (((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1)) -
+                 (evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)))
+                    .abs())
+                   .sum() +
+               (((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb)) -
+                 (evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)))
+                    .abs())
+                   .sum();
+
+    divisor =
+        ((refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1))
+             .abs()
+             .max((evalData.topRightCorner(rowsNb, colsNb - 1) - evalData.topLeftCorner(rowsNb, colsNb - 1)).abs()))
+            .sum() +
+        ((refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb))
+             .abs()
+             .max((evalData.bottomLeftCorner(rowsNb - 1, colsNb) - evalData.topLeftCorner(rowsNb - 1, colsNb)).abs()))
+            .sum();
+
+    /* More readable version
+    Array2DFloat RefGradCols(rowsNb, colsNb - 1);
+    Array2DFloat RefGradRows(rowsNb - 1, colsNb);
+    Array2DFloat EvalGradCols(evalData.rows(), evalData.cols() - 1);
+    Array2DFloat EvalGradRows(evalData.rows() - 1, evalData.cols());
+
+    RefGradCols = (refData.topRightCorner(rowsNb, colsNb - 1) - refData.topLeftCorner(rowsNb, colsNb - 1));
+    RefGradRows = (refData.bottomLeftCorner(rowsNb - 1, colsNb) - refData.topLeftCorner(rowsNb - 1, colsNb));
+    EvalGradCols = (evalData.topRightCorner(evalData.rows(), evalData.cols() - 1) -
+                    evalData.topLeftCorner(evalData.rows(), evalData.cols() - 1));
+    EvalGradRows = (evalData.bottomLeftCorner(evalData.rows() - 1, evalData.cols()) -
+                    evalData.topLeftCorner(evalData.rows() - 1, evalData.cols()));
+
+    dividend = ((RefGradCols - EvalGradCols).abs()).sum() + ((RefGradRows - EvalGradRows).abs()).sum();
+    divisor = (RefGradCols.abs().max(EvalGradCols.abs())).sum() +
+              (RefGradRows.abs().max(EvalGradRows.abs())).sum();
+
+    */
+
+    if (divisor > 0) {
+        return 100.0f * (dividend / divisor);  // Can be NaN
+    } else {
+        if (dividend == 0) {
+            wxLogVerbose(_("Both dividend and divisor are equal to zero in the predictor criteria."));
+            return m_scaleWorst;
+        } else {
+            return m_scaleWorst;
+        }
+    }
 }

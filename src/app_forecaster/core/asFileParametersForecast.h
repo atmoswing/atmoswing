@@ -33,17 +33,17 @@
 #include "asIncludes.h"
 
 class asFileParametersForecast : public asFileParameters {
- public:
-  asFileParametersForecast(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+   public:
+    asFileParametersForecast(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-  virtual ~asFileParametersForecast();
+    virtual ~asFileParametersForecast();
 
-  bool EditRootElement();
+    bool EditRootElement();
 
-  bool CheckRootElement() const;
+    bool CheckRootElement() const;
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

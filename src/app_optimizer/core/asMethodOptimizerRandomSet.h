@@ -32,22 +32,22 @@
 #include "asMethodOptimizer.h"
 
 class asMethodOptimizerRandomSet : public asMethodOptimizer {
- public:
-  asMethodOptimizerRandomSet();
+   public:
+    asMethodOptimizerRandomSet();
 
-  ~asMethodOptimizerRandomSet() override;
+    ~asMethodOptimizerRandomSet() override;
 
-  bool Manager() override;
+    bool Manager() override;
 
- protected:
-  virtual void InitParameters(asParametersOptimization &params);
+   protected:
+    virtual void InitParameters(asParametersOptimization &params);
 
-  virtual asParametersOptimization *GetNextParameters();
+    virtual asParametersOptimization *GetNextParameters();
 
-  bool SetBestParameters(asResultsParametersArray &results) override;
+    bool SetBestParameters(asResultsParametersArray &results) override;
 
- private:
-  std::vector<asParametersOptimization> m_parameters;
+   private:
+    std::vector<asParametersOptimization> m_parameters;
 };
 
 #endif

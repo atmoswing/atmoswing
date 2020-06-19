@@ -37,31 +37,31 @@ class asParametersCalibration;
 class asParametersScoring;
 
 class asResultsScoresMap : public asResults {
- public:
-  asResultsScoresMap();
+   public:
+    asResultsScoresMap();
 
-  virtual ~asResultsScoresMap();
+    virtual ~asResultsScoresMap();
 
-  void Init();
+    void Init();
 
-  bool Add(asParametersScoring &params, float score);
+    bool Add(asParametersScoring &params, float score);
 
-  bool MakeMap();
+    bool MakeMap();
 
-  bool Save(asParametersCalibration &params);
+    bool Save(asParametersCalibration &params);
 
- protected:
-  void BuildFileName();
+   protected:
+    void BuildFileName();
 
- private:
-  a1f m_mapLon;
-  a1f m_mapLat;
-  a1f m_mapLevel;
-  va2f m_mapScores;
-  vf m_scores;
-  vf m_lon;
-  vf m_lat;
-  vf m_level;
+   private:
+    a1f m_mapLon;
+    a1f m_mapLat;
+    a1f m_mapLevel;
+    va2f m_mapScores;
+    vf m_scores;
+    vf m_lon;
+    vf m_lat;
+    vf m_level;
 };
 
 #endif

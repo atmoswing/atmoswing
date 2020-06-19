@@ -32,30 +32,30 @@
 #include "asIncludes.h"
 
 class asAreaCompGenGrid : public asAreaCompGrid {
- public:
-  asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
-                    int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
+   public:
+    asAreaCompGenGrid(const Coo &cornerUL, const Coo &cornerUR, const Coo &cornerLL, const Coo &cornerLR,
+                      int flatAllowed = asFLAT_FORBIDDEN, bool isLatLon = true);
 
-  asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
-                    bool isLatLon = true);
+    asAreaCompGenGrid(double xMin, double xWidth, double yMin, double yWidth, int flatAllowed = asFLAT_FORBIDDEN,
+                      bool isLatLon = true);
 
-  asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
-                    bool isLatLon = true);
+    asAreaCompGenGrid(double xMin, int xPtsNb, double yMin, int yPtsNb, int flatAllowed = asFLAT_FORBIDDEN,
+                      bool isLatLon = true);
 
-  ~asAreaCompGenGrid() override = default;
+    ~asAreaCompGenGrid() override = default;
 
-  bool GridsOverlay(asAreaCompGrid *otherArea) const override;
+    bool GridsOverlay(asAreaCompGrid *otherArea) const override;
 
-  double GetXstep() const override {
-    return 0.0;
-  }
+    double GetXstep() const override {
+        return 0.0;
+    }
 
-  double GetYstep() const override {
-    return 0.0;
-  }
+    double GetYstep() const override {
+        return 0.0;
+    }
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

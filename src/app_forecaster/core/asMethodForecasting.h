@@ -43,61 +43,61 @@ class asResultsDates;
 class asResultsForecast;
 
 class asMethodForecasting : public asMethodStandard {
- public:
-  explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
+   public:
+    explicit asMethodForecasting(asBatchForecasts *batchForecasts, wxWindow *parent = nullptr);
 
-  ~asMethodForecasting() override;
+    ~asMethodForecasting() override;
 
-  void ClearForecasts();
+    void ClearForecasts();
 
-  bool Manager() override;
+    bool Manager() override;
 
-  bool Forecast(asParametersForecast &params);
+    bool Forecast(asParametersForecast &params);
 
-  double GetForecastDate() const {
-    return m_forecastDate;
-  }
+    double GetForecastDate() const {
+        return m_forecastDate;
+    }
 
-  void SetForecastDate(double val) {
-    m_forecastDate = val;
-  }
+    void SetForecastDate(double val) {
+        m_forecastDate = val;
+    }
 
-  vwxs GetResultsFilePaths() const {
-    return m_resultsFilePaths;
-  }
+    vwxs GetResultsFilePaths() const {
+        return m_resultsFilePaths;
+    }
 
- protected:
-  bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
+   protected:
+    bool DownloadRealtimePredictors(asParametersForecast &params, int iStep, bool &forecastDateChanged);
 
-  bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
-                                    asPredictor *result);
+    bool PreprocessRealtimePredictors(std::vector<asPredictorOper *> predictors, const wxString &method,
+                                      asPredictor *result);
 
-  bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
+    bool GetAnalogsDates(asResultsForecast &results, asParametersForecast &params, int iStep);
 
-  bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params, asResultsForecast &resultsPrev,
-                          int iStep);
+    bool GetAnalogsSubDates(asResultsForecast &results, asParametersForecast &params, asResultsForecast &resultsPrev,
+                            int iStep);
 
-  bool GetAnalogsValues(asResultsForecast &results, asParametersForecast &params, int iStep);
+    bool GetAnalogsValues(asResultsForecast &results, asParametersForecast &params, int iStep);
 
-  void DeletePreprocessData();
+    void DeletePreprocessData();
 
-  double GetEffectiveArchiveDataStart(asParameters *params) const override;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-  double GetEffectiveArchiveDataEnd(asParameters *params) const override;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
-  void Cleanup();
+    void Cleanup();
 
- private:
-  asBatchForecasts *m_batchForecasts;
-  double m_forecastDate;
-  asResultsForecastAggregator m_aggregator;
-  vwxs m_resultsFilePaths;
-  wxWindow *m_parent;
-  std::vector<asPredictor *> m_storagePredictorsArchivePreprocess;
-  std::vector<asPredictorOper *> m_storagePredictorsRealtimePreprocess;
-  std::vector<asPredictor *> m_storagePredictorsArchive;
-  std::vector<asPredictor *> m_storagePredictorsRealtime;
-  std::vector<asCriteria *> m_storageCriteria;
+   private:
+    asBatchForecasts *m_batchForecasts;
+    double m_forecastDate;
+    asResultsForecastAggregator m_aggregator;
+    vwxs m_resultsFilePaths;
+    wxWindow *m_parent;
+    std::vector<asPredictor *> m_storagePredictorsArchivePreprocess;
+    std::vector<asPredictorOper *> m_storagePredictorsRealtimePreprocess;
+    std::vector<asPredictor *> m_storagePredictorsArchive;
+    std::vector<asPredictor *> m_storagePredictorsRealtime;
+    std::vector<asCriteria *> m_storageCriteria;
 };
 
 #endif

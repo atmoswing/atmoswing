@@ -35,21 +35,21 @@
 #include "asPanelSidebar.h"
 
 class asPanelSidebarCalendar : public asPanelSidebar {
- public:
-  explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
-                                  const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
+   public:
+    explicit asPanelSidebarCalendar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition,
+                                    const wxSize &size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
 
-  ~asPanelSidebarCalendar() override;
+    ~asPanelSidebarCalendar() override;
 
-  void OnSetPresentDate(wxCommandEvent &event);
+    void OnSetPresentDate(wxCommandEvent &event);
 
-  void SetPresentDate();
+    void SetPresentDate();
 
- private:
-  wxCalendarCtrl *m_calendarForecastDate;
-  wxStaticText *m_staticTextForecastHour;
-  wxTextCtrl *m_textCtrlForecastHour;
-  wxBitmapButton *m_bpButtonNow;
+   private:
+    wxCalendarCtrl *m_calendarForecastDate;
+    wxStaticText *m_staticTextForecastHour;
+    wxTextCtrl *m_textCtrlForecastHour;
+    wxBitmapButton *m_bpButtonNow;
 };
 
 #endif

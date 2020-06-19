@@ -33,96 +33,96 @@
 #include "asParametersOptimizationGAs.h"
 
 class asMethodOptimizerGeneticAlgorithms : public asMethodOptimizer {
- public:
-  enum NaturalSelectionType { RatioElitism, Tournament };
-  enum CouplesSelectionType { RankPairing, Random, RouletteWheelRank, RouletteWheelScore, TournamentCompetition };
-  enum CrossoverType {
-    SinglePointCrossover,
-    DoublePointsCrossover,
-    MultiplePointsCrossover,
-    UniformCrossover,
-    LimitedBlending,
-    LinearCrossover,
-    HeuristicCrossover,
-    BinaryLikeCrossover,
-    LinearInterpolation,
-    FreeInterpolation
-  };
-  enum MutationsModeType {
-    RandomUniformConstant,
-    RandomUniformVariable,
-    RandomNormalConstant,
-    RandomNormalVariable,
-    NonUniform,
-    SelfAdaptationRate,
-    SelfAdaptationRadius,
-    SelfAdaptationRateChromosome,
-    SelfAdaptationRadiusChromosome,
-    MultiScale,
-    NoMutation
-  };
+   public:
+    enum NaturalSelectionType { RatioElitism, Tournament };
+    enum CouplesSelectionType { RankPairing, Random, RouletteWheelRank, RouletteWheelScore, TournamentCompetition };
+    enum CrossoverType {
+        SinglePointCrossover,
+        DoublePointsCrossover,
+        MultiplePointsCrossover,
+        UniformCrossover,
+        LimitedBlending,
+        LinearCrossover,
+        HeuristicCrossover,
+        BinaryLikeCrossover,
+        LinearInterpolation,
+        FreeInterpolation
+    };
+    enum MutationsModeType {
+        RandomUniformConstant,
+        RandomUniformVariable,
+        RandomNormalConstant,
+        RandomNormalVariable,
+        NonUniform,
+        SelfAdaptationRate,
+        SelfAdaptationRadius,
+        SelfAdaptationRateChromosome,
+        SelfAdaptationRadiusChromosome,
+        MultiScale,
+        NoMutation
+    };
 
-  asMethodOptimizerGeneticAlgorithms();
+    asMethodOptimizerGeneticAlgorithms();
 
-  ~asMethodOptimizerGeneticAlgorithms() override;
+    ~asMethodOptimizerGeneticAlgorithms() override;
 
-  bool Manager() override;
+    bool Manager() override;
 
-  bool ManageOneRun();
+    bool ManageOneRun();
 
- protected:
-  int m_nbSameParams;
-  int m_nbCloseParams;
+   protected:
+    int m_nbSameParams;
+    int m_nbCloseParams;
 
- private:
-  std::vector<asParametersOptimizationGAs> m_parameters;
-  std::vector<asParametersOptimizationGAs> m_parametersTemp;
-  asResultsParametersArray m_resGenerations;
-  int m_generationNb;
-  int m_assessmentCounter;
-  int m_popSize;
-  int m_naturalSelectionType;
-  int m_couplesSelectionType;
-  int m_crossoverType;
-  int m_mutationsModeType;
-  bool m_allowElitismForTheBest;
-  bool m_enableHistory;
-  vf m_bestScores;
-  vf m_meanScores;
+   private:
+    std::vector<asParametersOptimizationGAs> m_parameters;
+    std::vector<asParametersOptimizationGAs> m_parametersTemp;
+    asResultsParametersArray m_resGenerations;
+    int m_generationNb;
+    int m_assessmentCounter;
+    int m_popSize;
+    int m_naturalSelectionType;
+    int m_couplesSelectionType;
+    int m_crossoverType;
+    int m_mutationsModeType;
+    bool m_allowElitismForTheBest;
+    bool m_enableHistory;
+    vf m_bestScores;
+    vf m_meanScores;
 
-  void ClearAll() override;
+    void ClearAll() override;
 
-  void ClearTemp() override;
+    void ClearTemp() override;
 
-  void SortScoresAndParameters();
+    void SortScoresAndParameters();
 
-  bool SortScoresAndParametersTemp() override;
+    bool SortScoresAndParametersTemp() override;
 
-  bool SetBestParameters(asResultsParametersArray &results) override;
+    bool SetBestParameters(asResultsParametersArray &results) override;
 
-  bool ResumePreviousRun(asParametersOptimizationGAs &params, const wxString &operatorsFilePath);
+    bool ResumePreviousRun(asParametersOptimizationGAs &params, const wxString &operatorsFilePath);
 
-  bool HasPreviousRunConverged(asParametersOptimizationGAs &params);
+    bool HasPreviousRunConverged(asParametersOptimizationGAs &params);
 
-  bool SaveOperators(const wxString &filePath);
+    bool SaveOperators(const wxString &filePath);
 
-  void InitParameters(asParametersOptimizationGAs &params);
+    void InitParameters(asParametersOptimizationGAs &params);
 
-  asParametersOptimizationGAs *GetNextParameters();
+    asParametersOptimizationGAs *GetNextParameters();
 
-  bool Optimize();
+    bool Optimize();
 
-  bool HasConverged();
+    bool HasConverged();
 
-  bool ElitismAfterSelection();
+    bool ElitismAfterSelection();
 
-  bool ElitismAfterMutation();
+    bool ElitismAfterMutation();
 
-  bool NaturalSelection();
+    bool NaturalSelection();
 
-  bool Mating();
+    bool Mating();
 
-  bool Mutation();
+    bool Mutation();
 };
 
 #endif

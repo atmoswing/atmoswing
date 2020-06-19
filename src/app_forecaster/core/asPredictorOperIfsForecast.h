@@ -31,23 +31,22 @@
 
 #include "asIncludes.h"
 #include "asPredictorEcmwfIfsGrib.h"
-
 #include "asPredictorOper.h"
 
 class asArea;
 
 class asPredictorOperIfsForecast : public asPredictorOper {
- public:
-  explicit asPredictorOperIfsForecast(const wxString &dataId);
+   public:
+    explicit asPredictorOperIfsForecast(const wxString &dataId);
 
-  ~asPredictorOperIfsForecast() override = default;
+    ~asPredictorOperIfsForecast() override = default;
 
-  bool Init() override;
+    bool Init() override;
 
- protected:
-  double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
+   protected:
+    double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 
- private:
+   private:
 };
 
 #endif

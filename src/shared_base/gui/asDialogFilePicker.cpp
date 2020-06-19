@@ -30,7 +30,7 @@
 
 asDialogFilePicker::asDialogFilePicker(wxWindow *parent, const wxString &description)
     : asDialogFilePickerVirtual(parent) {
-  if (!description.IsEmpty()) {
-    m_staticTextDescription->SetLabelText(description);
-  }
+    if (!description.IsEmpty()) {
+        m_staticTextDescription->SetLabelText(description);
+    }
 }

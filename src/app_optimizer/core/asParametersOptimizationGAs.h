@@ -29,150 +29,149 @@
 #ifndef AS_PARAMETERS_OPTIMIZATION_GAS_H
 #define AS_PARAMETERS_OPTIMIZATION_GAS_H
 
-#include "asParametersOptimization.h"
-
 #include "asIncludes.h"
+#include "asParametersOptimization.h"
 
 class asFileParametersOptimization;
 
 class asParametersOptimizationGAs : public asParametersOptimization {
- public:
-  asParametersOptimizationGAs();
+   public:
+    asParametersOptimizationGAs();
 
-  virtual ~asParametersOptimizationGAs();
+    virtual ~asParametersOptimizationGAs();
 
-  void BuildChromosomes();
+    void BuildChromosomes();
 
-  void InitIndividualSelfAdaptationMutationRate();
+    void InitIndividualSelfAdaptationMutationRate();
 
-  void InitIndividualSelfAdaptationMutationRadius();
+    void InitIndividualSelfAdaptationMutationRadius();
 
-  void InitChromosomeSelfAdaptationMutationRate();
+    void InitChromosomeSelfAdaptationMutationRate();
 
-  void InitChromosomeSelfAdaptationMutationRadius();
+    void InitChromosomeSelfAdaptationMutationRadius();
 
-  void SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints);
+    void SimpleCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints);
 
-  void BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
-                         double betaMin = 0.0, double betaMax = 1.0);
-
-  void HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
-                          double betaMin = 0.0, double betaMax = 1.0);
-
-  void BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+    void BlendingCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
                            double betaMin = 0.0, double betaMax = 1.0);
 
-  void LinearCrossover(asParametersOptimizationGAs &otherParam, asParametersOptimizationGAs &thirdParam,
-                       vi &crossingPoints);
+    void HeuristicCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+                            double betaMin = 0.0, double betaMax = 1.0);
 
-  void LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta);
+    void BinaryLikeCrossover(asParametersOptimizationGAs &otherParam, vi &crossingPoints, bool shareBeta,
+                             double betaMin = 0.0, double betaMax = 1.0);
 
-  void MutateUniformDistribution(double probability, bool &hasMutated);
+    void LinearCrossover(asParametersOptimizationGAs &otherParam, asParametersOptimizationGAs &thirdParam,
+                         vi &crossingPoints);
 
-  void MutateNormalDistribution(double probability, double stdDevRatioRange, bool &hasMutated);
+    void LinearInterpolation(asParametersOptimizationGAs &otherParam, bool shareBeta);
 
-  void MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate, bool &hasMutated);
+    void MutateUniformDistribution(double probability, bool &hasMutated);
 
-  void MutateSelfAdaptationRate(bool &hasMutated);
+    void MutateNormalDistribution(double probability, double stdDevRatioRange, bool &hasMutated);
 
-  void MutateSelfAdaptationRadius(bool &hasMutated);
+    void MutateNonUniform(double probability, int nbGen, int nbGenMax, double minRate, bool &hasMutated);
 
-  void MutateSelfAdaptationRateChromosome(bool &hasMutated);
+    void MutateSelfAdaptationRate(bool &hasMutated);
 
-  void MutateSelfAdaptationRadiusChromosome(bool &hasMutated);
+    void MutateSelfAdaptationRadius(bool &hasMutated);
 
-  void MutateMultiScale(double probability, bool &hasMutated);
+    void MutateSelfAdaptationRateChromosome(bool &hasMutated);
 
-  int GetChromosomeLength() {
-    return (int)m_chromosomeIndices.size();
-  }
+    void MutateSelfAdaptationRadiusChromosome(bool &hasMutated);
 
-  float GetAdaptMutationRate() {
-    return m_adaptMutationRate;
-  }
+    void MutateMultiScale(double probability, bool &hasMutated);
 
-  void SetAdaptMutationRate(float val) {
-    m_adaptMutationRate = val;
-  }
+    int GetChromosomeLength() {
+        return (int)m_chromosomeIndices.size();
+    }
 
-  float GetAdaptMutationRadius() {
-    return m_adaptMutationRadius;
-  }
+    float GetAdaptMutationRate() {
+        return m_adaptMutationRate;
+    }
 
-  void SetAdaptMutationRadius(float val) {
-    m_adaptMutationRadius = val;
-  }
+    void SetAdaptMutationRate(float val) {
+        m_adaptMutationRate = val;
+    }
 
-  vf GetChromosomeMutationRate() {
-    return m_chromosomeMutationRate;
-  }
+    float GetAdaptMutationRadius() {
+        return m_adaptMutationRadius;
+    }
 
-  void SetChromosomeMutationRate(vf &val) {
-    m_chromosomeMutationRate = val;
-  }
+    void SetAdaptMutationRadius(float val) {
+        m_adaptMutationRadius = val;
+    }
 
-  vf GetChromosomeMutationRadius() {
-    return m_chromosomeMutationRadius;
-  }
+    vf GetChromosomeMutationRate() {
+        return m_chromosomeMutationRate;
+    }
 
-  void SetChromosomeMutationRadius(vf &val) {
-    m_chromosomeMutationRadius = val;
-  }
+    void SetChromosomeMutationRate(vf &val) {
+        m_chromosomeMutationRate = val;
+    }
 
- protected:
- private:
-  float m_adaptMutationRate;
-  float m_adaptMutationRadius;
-  vi m_chromosomeIndices;
-  vf m_chromosomeMutationRate;
-  vf m_chromosomeMutationRadius;
-  bool m_hasChromosomeMutationRate;
-  bool m_hasChromosomeMutationRadius;
-  int m_timeArrayAnalogsIntervalDaysIteration;
-  int m_timeArrayAnalogsIntervalDaysUpperLimit;
-  int m_timeArrayAnalogsIntervalDaysLowerLimit;
-  bool m_timeArrayAnalogsIntervalDaysLocks;
-  int m_allParametersCount;
-  bool m_parametersListOver;
+    vf GetChromosomeMutationRadius() {
+        return m_chromosomeMutationRadius;
+    }
 
-  bool IsParamLocked(int index);
+    void SetChromosomeMutationRadius(vf &val) {
+        m_chromosomeMutationRadius = val;
+    }
 
-  /** Get the parameter type (list of value vs value)
-   * \param index The index in the chromosome
-   * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between
-   * elements)
-   */
-  int GetParamType(int index);
+   protected:
+   private:
+    float m_adaptMutationRate;
+    float m_adaptMutationRadius;
+    vi m_chromosomeIndices;
+    vf m_chromosomeMutationRate;
+    vf m_chromosomeMutationRadius;
+    bool m_hasChromosomeMutationRate;
+    bool m_hasChromosomeMutationRadius;
+    int m_timeArrayAnalogsIntervalDaysIteration;
+    int m_timeArrayAnalogsIntervalDaysUpperLimit;
+    int m_timeArrayAnalogsIntervalDaysLowerLimit;
+    bool m_timeArrayAnalogsIntervalDaysLocks;
+    int m_allParametersCount;
+    bool m_parametersListOver;
 
-  double GetParameterValue(int index);
+    bool IsParamLocked(int index);
 
-  void SetParameterValue(int index, double newVal);
+    /** Get the parameter type (list of value vs value)
+     * \param index The index in the chromosome
+     * \return A code: 1 for value - 2 for advanced list (notion of proximity) - 3 for simple list (no proximity between
+     * elements)
+     */
+    int GetParamType(int index);
 
-  double GetParameterLowerLimit(int index);
+    double GetParameterValue(int index);
 
-  double GetParameterUpperLimit(int index);
+    void SetParameterValue(int index, double newVal);
 
-  double GetParameterIteration(int index);
+    double GetParameterLowerLimit(int index);
 
-  float GetSelfAdaptationMutationRateFromChromosome(int index) {
-    wxASSERT(m_chromosomeMutationRate.size() > index);
-    return m_chromosomeMutationRate[index];
-  }
+    double GetParameterUpperLimit(int index);
 
-  void SetSelfAdaptationMutationRateFromChromosome(int index, float val) {
-    wxASSERT(m_chromosomeMutationRate.size() > index);
-    m_chromosomeMutationRate[index] = val;
-  }
+    double GetParameterIteration(int index);
 
-  float GetSelfAdaptationMutationRadiusFromChromosome(int index) {
-    wxASSERT(m_chromosomeMutationRadius.size() > index);
-    return m_chromosomeMutationRadius[index];
-  }
+    float GetSelfAdaptationMutationRateFromChromosome(int index) {
+        wxASSERT(m_chromosomeMutationRate.size() > index);
+        return m_chromosomeMutationRate[index];
+    }
 
-  void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val) {
-    wxASSERT(m_chromosomeMutationRadius.size() > index);
-    m_chromosomeMutationRadius[index] = val;
-  }
+    void SetSelfAdaptationMutationRateFromChromosome(int index, float val) {
+        wxASSERT(m_chromosomeMutationRate.size() > index);
+        m_chromosomeMutationRate[index] = val;
+    }
+
+    float GetSelfAdaptationMutationRadiusFromChromosome(int index) {
+        wxASSERT(m_chromosomeMutationRadius.size() > index);
+        return m_chromosomeMutationRadius[index];
+    }
+
+    void SetSelfAdaptationMutationRadiusFromChromosome(int index, float val) {
+        wxASSERT(m_chromosomeMutationRadius.size() > index);
+        m_chromosomeMutationRadius[index] = val;
+    }
 };
 
 #endif

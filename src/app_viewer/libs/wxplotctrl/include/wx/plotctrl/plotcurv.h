@@ -48,12 +48,12 @@ WX_DEFINE_USER_EXPORTED_ARRAY_DOUBLE(double, wxArrayDouble, class WXDLLIMPEXP_PL
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxRect2DDouble) wxNullPlotBounds;
 
 enum wxPlotSymbol_Type {
-  wxPLOTSYMBOL_CIRCLE,
-  wxPLOTSYMBOL_ELLIPSE,
-  wxPLOTSYMBOL_RECTANGLE,
-  wxPLOTSYMBOL_CROSS,
-  wxPLOTSYMBOL_PLUS,
-  wxPLOTSYMBOL_MAXTYPE
+    wxPLOTSYMBOL_CIRCLE,
+    wxPLOTSYMBOL_ELLIPSE,
+    wxPLOTSYMBOL_RECTANGLE,
+    wxPLOTSYMBOL_CROSS,
+    wxPLOTSYMBOL_PLUS,
+    wxPLOTSYMBOL_MAXTYPE
 };
 
 enum wxPlotPen_Type { wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wxPLOTPEN_MAXTYPE };
@@ -77,25 +77,25 @@ enum wxPlotPen_Type { wxPLOTPEN_NORMAL, wxPLOTPEN_ACTIVE, wxPLOTPEN_SELECTED, wx
 //----------------------------------------------------------------------------
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public wxClientDataContainer {
- public:
-  wxPlotCurveRefData();
+   public:
+    wxPlotCurveRefData();
 
-  wxPlotCurveRefData(const wxPlotCurveRefData &data);
+    wxPlotCurveRefData(const wxPlotCurveRefData &data);
 
-  virtual ~wxPlotCurveRefData() {}
+    virtual ~wxPlotCurveRefData() {}
 
-  void Copy(const wxPlotCurveRefData &source);
+    void Copy(const wxPlotCurveRefData &source);
 
-  wxRect2DDouble m_boundingRect;  // bounds the curve or part to draw
-  // if width or height <= 0 then no bounds
+    wxRect2DDouble m_boundingRect;  // bounds the curve or part to draw
+    // if width or height <= 0 then no bounds
 
-  wxArrayGenericPen m_pens;
-  static wxArrayGenericPen sm_defaultPens;
+    wxArrayGenericPen m_pens;
+    static wxArrayGenericPen sm_defaultPens;
 
-  wxBrush m_brush;
+    wxBrush m_brush;
 
-  wxSortedArrayString m_optionNames;
-  wxArrayString m_optionValues;
+    wxSortedArrayString m_optionNames;
+    wxArrayString m_optionValues;
 };
 
 //-----------------------------------------------------------------------------
@@ -108,127 +108,127 @@ class WXDLLIMPEXP_PLOTCTRL wxPlotCurveRefData : public wxObjectRefData, public w
 WXDLLIMPEXP_DATA_PLOTCTRL(extern const wxPlotCurve) wxNullPlotCurve;
 
 class WXDLLIMPEXP_PLOTCTRL wxPlotCurve : public wxObject {
- public:
-  // see the remmed out code in this function if you subclass it
-  wxPlotCurve();
+   public:
+    // see the remmed out code in this function if you subclass it
+    wxPlotCurve();
 
-  virtual ~wxPlotCurve() {}
+    virtual ~wxPlotCurve() {}
 
-  // Make a clone of this curve, same as increasing the ref count, but
-  // the new object is created on the heap. See wxPlotFunction, wxPlotData
-  // Note: Cannot be pure virtual because of the wxArray of wxPlotCurves.
-  virtual wxPlotCurve *Clone() const {
-    return new wxPlotCurve;
-  }
+    // Make a clone of this curve, same as increasing the ref count, but
+    // the new object is created on the heap. See wxPlotFunction, wxPlotData
+    // Note: Cannot be pure virtual because of the wxArray of wxPlotCurves.
+    virtual wxPlotCurve *Clone() const {
+        return new wxPlotCurve;
+    }
 
-  // override as necessary so that Ok means that GetY works
-  virtual bool Ok() const;
+    // override as necessary so that Ok means that GetY works
+    virtual bool Ok() const;
 
-  // This *is* the output of the curve y = f(x)
-  virtual double GetY(double WXUNUSED(x)) const {
-    return 0.0;
-  }
+    // This *is* the output of the curve y = f(x)
+    virtual double GetY(double WXUNUSED(x)) const {
+        return 0.0;
+    }
 
-  // Bounding rect used for drawing the curve and...
-  //   if the width or height <= 0 then there's no bounds (or unknown)
-  //   wxPlotCurve/Function : may be unknown and should probably be (0,0,0,0)
-  //                you can limit the extent by setting to a smaller rect
-  //   wxPlotData : calculated from CalcBoundingRect and is well defined
-  //                DON'T call SetBoundingRect unless you know what you're doing
-  virtual wxRect2DDouble GetBoundingRect() const;
+    // Bounding rect used for drawing the curve and...
+    //   if the width or height <= 0 then there's no bounds (or unknown)
+    //   wxPlotCurve/Function : may be unknown and should probably be (0,0,0,0)
+    //                you can limit the extent by setting to a smaller rect
+    //   wxPlotData : calculated from CalcBoundingRect and is well defined
+    //                DON'T call SetBoundingRect unless you know what you're doing
+    virtual wxRect2DDouble GetBoundingRect() const;
 
-  virtual void SetBoundingRect(const wxRect2DDouble &rect);
+    virtual void SetBoundingRect(const wxRect2DDouble &rect);
 
-  // Get/Set Pens for Normal, Active, Selected drawing
-  //  if these are not set it resorts to the defaults
-  wxGenericPen GetPen(wxPlotPen_Type colour_type) const;
+    // Get/Set Pens for Normal, Active, Selected drawing
+    //  if these are not set it resorts to the defaults
+    wxGenericPen GetPen(wxPlotPen_Type colour_type) const;
 
-  void SetPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
+    void SetPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
 
-  // Get/Set Default Pens for Normal, Active, Selected drawing for all curves
-  //   these are the pens that are used when a wxPlotCurve/Function/Data is created
-  //   default: Normal(0,0,0,1,wxSOLID), Active(0,0,255,1,wxSOLID), Selected(255,0,0,1,wxSOLID)
-  static wxGenericPen GetDefaultPen(wxPlotPen_Type colour_type);
+    // Get/Set Default Pens for Normal, Active, Selected drawing for all curves
+    //   these are the pens that are used when a wxPlotCurve/Function/Data is created
+    //   default: Normal(0,0,0,1,wxSOLID), Active(0,0,255,1,wxSOLID), Selected(255,0,0,1,wxSOLID)
+    static wxGenericPen GetDefaultPen(wxPlotPen_Type colour_type);
 
-  static void SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
+    static void SetDefaultPen(wxPlotPen_Type colour_type, const wxGenericPen &pen);
 
-  // Get/Set Pens for Normal, Active, Selected drawing
-  //  if these are not set it resorts to the defaults
-  wxBrush GetBrush() const;
+    // Get/Set Pens for Normal, Active, Selected drawing
+    //  if these are not set it resorts to the defaults
+    wxBrush GetBrush() const;
 
-  void SetBrush(const wxBrush &brush);
+    void SetBrush(const wxBrush &brush);
 
-  //-------------------------------------------------------------------------
-  // Get/Set Option names/values
-  //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // Get/Set Option names/values
+    //-------------------------------------------------------------------------
 
-  // Get the number of options set
-  size_t GetOptionCount() const;
+    // Get the number of options set
+    size_t GetOptionCount() const;
 
-  // return the index of the option or wxNOT_FOUND (-1)
-  int HasOption(const wxString &name) const;
+    // return the index of the option or wxNOT_FOUND (-1)
+    int HasOption(const wxString &name) const;
 
-  // Get the name/value at the index position
-  wxString GetOptionName(size_t index) const;
+    // Get the name/value at the index position
+    wxString GetOptionName(size_t index) const;
 
-  wxString GetOptionValue(size_t index) const;
+    wxString GetOptionValue(size_t index) const;
 
-  // Set an option, if update=true then force it, else only set it if not found
-  //   returns the index of the option
-  int SetOption(const wxString &name, const wxString &value, bool update = true);
+    // Set an option, if update=true then force it, else only set it if not found
+    //   returns the index of the option
+    int SetOption(const wxString &name, const wxString &value, bool update = true);
 
-  int SetOption(const wxString &name, int option, bool update = true);
+    int SetOption(const wxString &name, int option, bool update = true);
 
-  // Get an option returns the index if found
-  //   returns wxNOT_FOUND (-1) if it doesn't exist and value isn't changed
-  int GetOption(const wxString &name, wxString &value) const;
+    // Get an option returns the index if found
+    //   returns wxNOT_FOUND (-1) if it doesn't exist and value isn't changed
+    int GetOption(const wxString &name, wxString &value) const;
 
-  // returns wxEmptyString if not found
-  wxString GetOption(const wxString &name) const;
+    // returns wxEmptyString if not found
+    wxString GetOption(const wxString &name) const;
 
-  // returns 0 if not found
-  int GetOptionInt(const wxString &name) const;
+    // returns 0 if not found
+    int GetOptionInt(const wxString &name) const;
 
-  // get the arrays of option values
-  wxArrayString GetOptionNames() const;
+    // get the arrays of option values
+    wxArrayString GetOptionNames() const;
 
-  wxArrayString GetOptionValues() const;
+    wxArrayString GetOptionValues() const;
 
-  //-------------------------------------------------------------------------
-  // Get/Set the ClientData in the ref data - see wxClientDataContainer
-  //  You can store any extra info here.
-  //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // Get/Set the ClientData in the ref data - see wxClientDataContainer
+    //  You can store any extra info here.
+    //-------------------------------------------------------------------------
 
-  void SetClientObject(wxClientData *data);
+    void SetClientObject(wxClientData *data);
 
-  wxClientData *GetClientObject() const;
+    wxClientData *GetClientObject() const;
 
-  void SetClientData(void *data);
+    void SetClientData(void *data);
 
-  void *GetClientData() const;
+    void *GetClientData() const;
 
-  //-------------------------------------------------------------------------
-  // operators
-  bool operator==(const wxPlotCurve &plotCurve) const {
-    return m_refData == plotCurve.m_refData;
-  }
+    //-------------------------------------------------------------------------
+    // operators
+    bool operator==(const wxPlotCurve &plotCurve) const {
+        return m_refData == plotCurve.m_refData;
+    }
 
-  bool operator!=(const wxPlotCurve &plotCurve) const {
-    return m_refData != plotCurve.m_refData;
-  }
+    bool operator!=(const wxPlotCurve &plotCurve) const {
+        return m_refData != plotCurve.m_refData;
+    }
 
-  wxPlotCurve &operator=(const wxPlotCurve &plotCurve) {
-    if ((*this) != plotCurve) Ref(plotCurve);
-    return *this;
-  }
+    wxPlotCurve &operator=(const wxPlotCurve &plotCurve) {
+        if ((*this) != plotCurve) Ref(plotCurve);
+        return *this;
+    }
 
- private:
-  // ref counting code
-  virtual wxObjectRefData *CreateRefData() const;
+   private:
+    // ref counting code
+    virtual wxObjectRefData *CreateRefData() const;
 
-  virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
+    virtual wxObjectRefData *CloneRefData(const wxObjectRefData *data) const;
 
-  DECLARE_DYNAMIC_CLASS(wxPlotCurve);
+    DECLARE_DYNAMIC_CLASS(wxPlotCurve);
 };
 
 #endif  // _WX_PLOTCURVE_H_

@@ -37,48 +37,48 @@ asScoreCRPSsharpEP::asScoreCRPSsharpEP()
 asScoreCRPSsharpEP::~asScoreCRPSsharpEP() {}
 
 float asScoreCRPSsharpEP::Assess(float obs, const a1f &values, int nbElements) const {
-  wxASSERT(values.size() > 1);
-  wxASSERT(nbElements > 0);
+    wxASSERT(values.size() > 1);
+    wxASSERT(nbElements > 0);
 
-  // Check inputs
-  if (!CheckObservedValue(obs)) {
-    return NaNf;
-  }
-  if (!CheckVectorLength(values, nbElements)) {
-    wxLogWarning(_("Problems in a vector length."));
-    return NaNf;
-  }
+    // Check inputs
+    if (!CheckObservedValue(obs)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(values, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
-  // The median
-  float xmed = 0;
+    // The median
+    float xmed = 0;
 
-  // Create the container to sort the data
-  a1f x(nbElements);
+    // Create the container to sort the data
+    a1f x(nbElements);
 
-  // Remove the NaNs and copy content
-  int nbPredict = CleanNans(values, x, nbElements);
+    // Remove the NaNs and copy content
+    int nbPredict = CleanNans(values, x, nbElements);
 
-  // Sort the forcast array
-  asSortArray(&x[0], &x[nbPredict - 1], Asc);
+    // Sort the forcast array
+    asSortArray(&x[0], &x[nbPredict - 1], Asc);
 
-  // Indices for the left and right part (according to the median) of the distribution
-  float mid = ((float)nbPredict - 1) / (float)2;
-  int indLeftEnd = floor(mid);
-  int indRightStart = ceil(mid);
+    // Indices for the left and right part (according to the median) of the distribution
+    float mid = ((float)nbPredict - 1) / (float)2;
+    int indLeftEnd = floor(mid);
+    int indRightStart = ceil(mid);
 
-  // Get the median value
-  if (indLeftEnd != indRightStart) {
-    xmed = x(indLeftEnd) + (x(indRightStart) - x(indLeftEnd)) * 0.5;
-  } else {
-    xmed = x(indLeftEnd);
-  }
+    // Get the median value
+    if (indLeftEnd != indRightStart) {
+        xmed = x(indLeftEnd) + (x(indRightStart) - x(indLeftEnd)) * 0.5;
+    } else {
+        xmed = x(indLeftEnd);
+    }
 
-  asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
-  float CRPSsharpness = scoreCRPSEP.Assess(xmed, x, nbElements);
+    asScoreCRPSEP scoreCRPSEP = asScoreCRPSEP();
+    float CRPSsharpness = scoreCRPSEP.Assess(xmed, x, nbElements);
 
-  return CRPSsharpness;
+    return CRPSsharpness;
 }
 
 bool asScoreCRPSsharpEP::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-  return true;
+    return true;
 }

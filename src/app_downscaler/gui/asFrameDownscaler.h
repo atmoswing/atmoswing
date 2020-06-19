@@ -28,51 +28,50 @@
 #ifndef AS_FRAME_DOWNSCALER
 #define AS_FRAME_DOWNSCALER
 
-#include "asIncludes.h"
-
 #include "AtmoswingDownscalerGui.h"
+#include "asIncludes.h"
 #include "asLogWindow.h"
 #include "asMethodDownscaler.h"
 
 class asFrameDownscaler : public asFrameDownscalerVirtual {
- public:
-  explicit asFrameDownscaler(wxWindow *parent);
+   public:
+    explicit asFrameDownscaler(wxWindow *parent);
 
-  ~asFrameDownscaler() override;
+    ~asFrameDownscaler() override;
 
-  void OnInit();
+    void OnInit();
 
- protected:
-  asLogWindow *m_logWindow;
-  asMethodDownscaler *m_methodDownscaler;
+   protected:
+    asLogWindow *m_logWindow;
+    asMethodDownscaler *m_methodDownscaler;
 
-  void Update() override;
+    void Update() override;
 
-  void OpenFramePredictandDB(wxCommandEvent &event) override;
+    void OpenFramePredictandDB(wxCommandEvent &event) override;
 
-  void OnSaveDefault(wxCommandEvent &event) override;
+    void OnSaveDefault(wxCommandEvent &event) override;
 
-  void Launch(wxCommandEvent &event);
+    void Launch(wxCommandEvent &event);
 
-  void LoadOptions();
+    void LoadOptions();
 
-  void SaveOptions() const;
+    void SaveOptions() const;
 
-  void OpenFramePreferences(wxCommandEvent &event) override;
+    void OpenFramePreferences(wxCommandEvent &event) override;
 
-  void OpenFrameAbout(wxCommandEvent &event) override;
+    void OpenFrameAbout(wxCommandEvent &event) override;
 
-  void OnShowLog(wxCommandEvent &event) override;
+    void OnShowLog(wxCommandEvent &event) override;
 
-  void OnLogLevel1(wxCommandEvent &event) override;
+    void OnLogLevel1(wxCommandEvent &event) override;
 
-  void OnLogLevel2(wxCommandEvent &event) override;
+    void OnLogLevel2(wxCommandEvent &event) override;
 
-  void OnLogLevel3(wxCommandEvent &event) override;
+    void OnLogLevel3(wxCommandEvent &event) override;
 
-  void DisplayLogLevelMenu();
+    void DisplayLogLevelMenu();
 
-  void Cancel(wxCommandEvent &event);
+    void Cancel(wxCommandEvent &event);
 };
 
 #endif

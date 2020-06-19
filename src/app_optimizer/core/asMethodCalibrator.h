@@ -29,6 +29,8 @@
 #ifndef AS_METHOD_CALIBRATOR_H
 #define AS_METHOD_CALIBRATOR_H
 
+#include <utility>
+
 #include "asAreaCompGrid.h"
 #include "asCriteria.h"
 #include "asIncludes.h"
@@ -48,116 +50,114 @@
 #include "asScore.h"
 #include "asTimeArray.h"
 
-#include <utility>
-
 class asMethodCalibrator : public asMethodStandard {
- public:
-  asMethodCalibrator();
+   public:
+    asMethodCalibrator();
 
-  ~asMethodCalibrator() override;
+    ~asMethodCalibrator() override;
 
-  bool PreloadDataOnly(asParametersScoring *params);
+    bool PreloadDataOnly(asParametersScoring *params);
 
-  bool GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep, bool &containsNaNs);
+    bool GetAnalogsDates(asResultsDates &results, asParametersScoring *params, int iStep, bool &containsNaNs);
 
-  bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring *params, asResultsDates &anaDates, int iStep,
-                          bool &containsNaNs);
+    bool GetAnalogsSubDates(asResultsDates &results, asParametersScoring *params, asResultsDates &anaDates, int iStep,
+                            bool &containsNaNs);
 
-  bool GetAnalogsValues(asResultsValues &results, asParametersScoring *params, asResultsDates &anaDates, int iStep);
+    bool GetAnalogsValues(asResultsValues &results, asParametersScoring *params, asResultsDates &anaDates, int iStep);
 
-  bool GetAnalogsScores(asResultsScores &results, asParametersScoring *params, asResultsValues &anaValues, int iStep);
+    bool GetAnalogsScores(asResultsScores &results, asParametersScoring *params, asResultsValues &anaValues, int iStep);
 
-  bool GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring *params, asResultsScores &anaScores,
-                            int iStep);
+    bool GetAnalogsTotalScore(asResultsTotalScore &results, asParametersScoring *params, asResultsScores &anaScores,
+                              int iStep);
 
-  bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep = 0);
+    bool SubProcessAnalogsNumber(asParametersCalibration &params, asResultsDates &anaDatesPrevious, int iStep = 0);
 
-  virtual void ClearAll();
+    virtual void ClearAll();
 
-  virtual void ClearTemp();
+    virtual void ClearTemp();
 
-  bool PushBackBestTemp();
+    bool PushBackBestTemp();
 
-  void RemoveNaNsInTemp();
+    void RemoveNaNsInTemp();
 
-  void KeepBestTemp();
+    void KeepBestTemp();
 
-  void PushBackFirstTemp();
+    void PushBackFirstTemp();
 
-  void KeepFirstTemp();
+    void KeepFirstTemp();
 
-  virtual bool SortScoresAndParametersTemp();
+    virtual bool SortScoresAndParametersTemp();
 
-  bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
+    bool PushBackInTempIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
-  bool KeepIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
+    bool KeepIfBetter(asParametersCalibration &params, asResultsTotalScore &scoreFinal);
 
-  bool SetSelectedParameters(asResultsParametersArray &results);
+    bool SetSelectedParameters(asResultsParametersArray &results);
 
-  virtual bool SetBestParameters(asResultsParametersArray &results);
+    virtual bool SetBestParameters(asResultsParametersArray &results);
 
-  wxString GetPredictandStationIdsList(vi &stationIds) const;
+    wxString GetPredictandStationIdsList(vi &stationIds) const;
 
-  bool Manager() override;
+    bool Manager() override;
 
-  bool SaveDetails(asParametersCalibration *params);
+    bool SaveDetails(asParametersCalibration *params);
 
-  virtual bool Validate(asParametersCalibration *params);
+    virtual bool Validate(asParametersCalibration *params);
 
-  void SetScoreOrder(Order val) {
-    m_scoreOrder = val;
-  }
+    void SetScoreOrder(Order val) {
+        m_scoreOrder = val;
+    }
 
-  vf GetScoreClimatology() const {
-    return m_scoreClimatology;
-  }
+    vf GetScoreClimatology() const {
+        return m_scoreClimatology;
+    }
 
-  void SetScoreClimatology(vf val) {
-    m_scoreClimatology = std::move(val);
-  }
+    void SetScoreClimatology(vf val) {
+        m_scoreClimatology = std::move(val);
+    }
 
-  void SetPredictandStationIds(vi val) {
-    m_predictandStationIds = std::move(val);
-  }
+    void SetPredictandStationIds(vi val) {
+        m_predictandStationIds = std::move(val);
+    }
 
- protected:
-  struct ParamExploration {
-    double xMinStart;
-    double xMinEnd;
-    int xPtsNbStart;
-    int xPtsNbEnd;
-    int xPtsNbIter;
-    double yMinStart;
-    double yMinEnd;
-    int yPtsNbIter;
-    int yPtsNbStart;
-    int yPtsNbEnd;
-  };
-  vi m_predictandStationIds;
-  vf m_scoresCalib;
-  vf m_scoresCalibTemp;
-  Order m_scoreOrder;
-  float m_scoreValid;
-  vf m_scoreClimatology;
-  std::vector<asParametersCalibration> m_parameters;
-  std::vector<asParametersCalibration> m_parametersTemp;
-  asParametersCalibration m_originalParams;
-  bool m_validationMode;
+   protected:
+    struct ParamExploration {
+        double xMinStart;
+        double xMinEnd;
+        int xPtsNbStart;
+        int xPtsNbEnd;
+        int xPtsNbIter;
+        double yMinStart;
+        double yMinEnd;
+        int yPtsNbIter;
+        int yPtsNbStart;
+        int yPtsNbEnd;
+    };
+    vi m_predictandStationIds;
+    vf m_scoresCalib;
+    vf m_scoresCalibTemp;
+    Order m_scoreOrder;
+    float m_scoreValid;
+    vf m_scoreClimatology;
+    std::vector<asParametersCalibration> m_parameters;
+    std::vector<asParametersCalibration> m_parametersTemp;
+    asParametersCalibration m_originalParams;
+    bool m_validationMode;
 
-  virtual bool Calibrate(asParametersCalibration &params) = 0;
+    virtual bool Calibrate(asParametersCalibration &params) = 0;
 
-  va1f GetClimatologyData(asParametersScoring *params);
+    va1f GetClimatologyData(asParametersScoring *params);
 
-  double GetEffectiveArchiveDataStart(asParameters *params) const override;
+    double GetEffectiveArchiveDataStart(asParameters *params) const override;
 
-  double GetEffectiveArchiveDataEnd(asParameters *params) const override;
+    double GetEffectiveArchiveDataEnd(asParameters *params) const override;
 
- private:
-  double GetTimeStartCalibration(asParametersScoring *params) const;
+   private:
+    double GetTimeStartCalibration(asParametersScoring *params) const;
 
-  double GetTimeEndCalibration(asParametersScoring *params) const;
+    double GetTimeEndCalibration(asParametersScoring *params) const;
 
-  void LoadScoreOrder(asParametersCalibration &params);
+    void LoadScoreOrder(asParametersCalibration &params);
 };
 
 #endif

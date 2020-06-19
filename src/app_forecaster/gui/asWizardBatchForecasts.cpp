@@ -36,23 +36,23 @@ asWizardBatchForecasts::asWizardBatchForecasts(wxWindow *parent, asBatchForecast
       m_batchForecasts(batchForecasts) {}
 
 void asWizardBatchForecasts::OnWizardFinished(wxWizardEvent &event) {
-  wxString filePath = m_filePickerBatchFile->GetPath();
-  m_batchForecasts->SetFilePath(filePath);
-  m_batchForecasts->Save();
+    wxString filePath = m_filePickerBatchFile->GetPath();
+    m_batchForecasts->SetFilePath(filePath);
+    m_batchForecasts->Save();
 
-  if (!filePath.IsEmpty()) {
-    wxConfigBase *pConfig = wxFileConfig::Get();
-    pConfig->Write("/BatchForecasts/LastOpened", filePath);
-  }
+    if (!filePath.IsEmpty()) {
+        wxConfigBase *pConfig = wxFileConfig::Get();
+        pConfig->Write("/BatchForecasts/LastOpened", filePath);
+    }
 
-  // Open the preferences frame
-  auto *frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
-  frame->Fit();
-  frame->Show();
+    // Open the preferences frame
+    auto *frame = new asFramePreferencesForecaster(nullptr, m_batchForecasts);
+    frame->Fit();
+    frame->Show();
 }
 
 void asWizardBatchForecasts::OnLoadExistingBatchForecasts(wxCommandEvent &event) {
-  wxCommandEvent eventOpen(asEVT_ACTION_OPEN_BATCHFORECASTS);
-  GetParent()->ProcessWindowEvent(eventOpen);
-  Close();
+    wxCommandEvent eventOpen(asEVT_ACTION_OPEN_BATCHFORECASTS);
+    GetParent()->ProcessWindowEvent(eventOpen);
+    Close();
 }

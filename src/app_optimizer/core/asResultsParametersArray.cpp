@@ -31,231 +31,228 @@
 
 #include "asFileText.h"
 
-asResultsParametersArray::asResultsParametersArray()
-    : asResults(),
-      m_medianScore(NaNf) {
-  m_scores.quantile = NaNf;
-  m_scores.threshold = NaNf;
+asResultsParametersArray::asResultsParametersArray() : asResults(), m_medianScore(NaNf) {
+    m_scores.quantile = NaNf;
+    m_scores.threshold = NaNf;
 }
 
 asResultsParametersArray::~asResultsParametersArray() = default;
 
 void asResultsParametersArray::Init(const wxString &fileTag) {
-  BuildFileName(fileTag);
-  wxASSERT(m_scoresCalib.empty());
+    BuildFileName(fileTag);
+    wxASSERT(m_scoresCalib.empty());
 }
 
 void asResultsParametersArray::Clear() {
-  m_parameters.clear();
-  m_predictandStationIds.clear();
-  m_analogsIntervalDays.clear();
-  m_scoresCalib.clear();
-  m_scoresValid.clear();
-  m_scoresCalibForScoreOnArray.clear();
-  m_scoresValidForScoreOnArray.clear();
+    m_parameters.clear();
+    m_predictandStationIds.clear();
+    m_analogsIntervalDays.clear();
+    m_scoresCalib.clear();
+    m_scoresValid.clear();
+    m_scoresCalibForScoreOnArray.clear();
+    m_scoresValidForScoreOnArray.clear();
 }
 
 void asResultsParametersArray::StoreValues(asParametersScoring &params) {
+    asParameters::VectorParamsStep p = params.GetParameters();
 
-  asParameters::VectorParamsStep p = params.GetParameters();
-
-  for (auto & steps : p) {
-    for (auto & predictor : steps.predictors) {
-      predictor.preloadDataIds.clear();
-      predictor.preloadHours.clear();
-      predictor.preloadLevels.clear();
+    for (auto &steps : p) {
+        for (auto &predictor : steps.predictors) {
+            predictor.preloadDataIds.clear();
+            predictor.preloadHours.clear();
+            predictor.preloadLevels.clear();
+        }
     }
-  }
 
-  m_parameters.push_back(p);
-  m_predictandStationIds.push_back(params.GetPredictandStationIds());
-  m_analogsIntervalDays.push_back(params.GetAnalogsIntervalDays());
+    m_parameters.push_back(p);
+    m_predictandStationIds.push_back(params.GetPredictandStationIds());
+    m_analogsIntervalDays.push_back(params.GetAnalogsIntervalDays());
 
-  if (m_scores.name.IsEmpty()) {
-    m_scores = params.GetScore();
-    m_analogsExcludeDays = params.GetAnalogsExcludeDays();
-  }
+    if (m_scores.name.IsEmpty()) {
+        m_scores = params.GetScore();
+        m_analogsExcludeDays = params.GetAnalogsExcludeDays();
+    }
 }
 
 void asResultsParametersArray::BuildFileName(const wxString &fileTag) {
-  ThreadsManager().CritSectionConfig().Enter();
-  m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
-  ThreadsManager().CritSectionConfig().Leave();
-  wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
-  m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
+    ThreadsManager().CritSectionConfig().Enter();
+    m_filePath = wxFileConfig::Get()->Read("/Paths/ResultsDir", asConfig::GetDefaultUserWorkingDir());
+    ThreadsManager().CritSectionConfig().Leave();
+    wxString time = asTime::GetStringTime(asTime::NowMJD(asLOCAL), YYYYMMDD_hhmm);
+    m_filePath.Append(wxString::Format("/%s_%s.txt", time, fileTag));
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib) {
-  StoreValues(params);
-  m_scoresCalib.push_back(scoreCalib);
-  m_scoresValid.push_back(NaNf);
+    StoreValues(params);
+    m_scoresCalib.push_back(scoreCalib);
+    m_scoresValid.push_back(NaNf);
 
-  ProcessMedianScores();
+    ProcessMedianScores();
 }
 
 void asResultsParametersArray::AddWithoutProcessingMedian(asParametersScoring &params, float scoreCalib) {
-  StoreValues(params);
-  m_scoresCalib.push_back(scoreCalib);
-  m_scoresValid.push_back(NaNf);
+    StoreValues(params);
+    m_scoresCalib.push_back(scoreCalib);
+    m_scoresValid.push_back(NaNf);
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, float scoreCalib, float scoreValid) {
-  StoreValues(params);
-  m_scoresCalib.push_back(scoreCalib);
-  m_scoresValid.push_back(scoreValid);
+    StoreValues(params);
+    m_scoresCalib.push_back(scoreCalib);
+    m_scoresValid.push_back(scoreValid);
 
-  ProcessMedianScores();
+    ProcessMedianScores();
 }
 
 void asResultsParametersArray::Add(asParametersScoring &params, const a1f &scoreCalib, const a1f &scoreValid) {
-  StoreValues(params);
-  m_scoresCalibForScoreOnArray.push_back(scoreCalib);
-  m_scoresValidForScoreOnArray.push_back(scoreValid);
+    StoreValues(params);
+    m_scoresCalibForScoreOnArray.push_back(scoreCalib);
+    m_scoresValidForScoreOnArray.push_back(scoreValid);
 }
 
 void asResultsParametersArray::ProcessMedianScores() {
-  vf scores = m_scoresCalib;
+    vf scores = m_scoresCalib;
 
-  // Does not need to be super precise, so no need to handle even numbers.
-  unsigned long mid = scores.size() / 2;
-  auto median_it = scores.begin() + mid;
-  std::nth_element(scores.begin(), median_it, scores.end());
+    // Does not need to be super precise, so no need to handle even numbers.
+    unsigned long mid = scores.size() / 2;
+    auto median_it = scores.begin() + mid;
+    std::nth_element(scores.begin(), median_it, scores.end());
 
-  m_medianScore = scores[mid];
+    m_medianScore = scores[mid];
 }
 
 bool asResultsParametersArray::HasBeenAssessed(asParametersScoring &params, float &score) {
-  for (int i = 0; i < m_parameters.size(); ++i) {
-    if (params.IsSameAs(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
-      score = m_scoresCalib[i];
-      return true;
+    for (int i = 0; i < m_parameters.size(); ++i) {
+        if (params.IsSameAs(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
+            score = m_scoresCalib[i];
+            return true;
+        }
     }
-  }
 
-  return false;
+    return false;
 }
 
 bool asResultsParametersArray::HasCloseOneBeenAssessed(asParametersScoring &params, float &score) {
-  for (int i = 0; i < m_parameters.size(); ++i) {
-    if (params.IsCloseTo(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
-      score = m_scoresCalib[i];
-      return true;
+    for (int i = 0; i < m_parameters.size(); ++i) {
+        if (params.IsCloseTo(m_parameters[i], m_predictandStationIds[i], m_analogsIntervalDays[i])) {
+            score = m_scoresCalib[i];
+            return true;
+        }
     }
-  }
 
-  return false;
+    return false;
 }
 
 bool asResultsParametersArray::Print(int fromIndex) const {
-  bool fileExists = wxFileName::FileExists(m_filePath);
+    bool fileExists = wxFileName::FileExists(m_filePath);
 
-  asFile::FileMode mode = asFile::Replace;
-  if (fileExists) {
-    mode = asFile::Append;
-  }
-
-  // Create a file
-  asFileText fileRes(m_filePath, mode);
-  if (!fileRes.Open()) return false;
-
-  if (!fileExists) {
-    wxString header;
-    header = wxString::Format(_("Optimization processed %s\n"), asTime::GetStringTime(asTime::NowMJD(asLOCAL)));
-    fileRes.AddLine(header);
-  }
-
-  wxString content = wxEmptyString;
-
-  // Write every parameter one after the other
-  for (int iParam = fromIndex; iParam < m_scoresCalib.size(); iParam++) {
-    content.Append(PrintParams(iParam));
-
-    content.Append(wxString::Format("|||| Score\t%s\t", m_scores.name));
-    if (!asIsNaN(m_scores.quantile)) {
-      content.Append(wxString::Format("quantile\t%f\t", m_scores.quantile));
+    asFile::FileMode mode = asFile::Replace;
+    if (fileExists) {
+        mode = asFile::Append;
     }
-    if (!asIsNaN(m_scores.threshold)) {
-      content.Append(wxString::Format("threshold\t%f\t", m_scores.threshold));
+
+    // Create a file
+    asFileText fileRes(m_filePath, mode);
+    if (!fileRes.Open()) return false;
+
+    if (!fileExists) {
+        wxString header;
+        header = wxString::Format(_("Optimization processed %s\n"), asTime::GetStringTime(asTime::NowMJD(asLOCAL)));
+        fileRes.AddLine(header);
     }
-    content.Append(wxString::Format("TimeArray\t%s\t", m_scores.timeArrayMode));
 
-    content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[iParam]));
-    content.Append(wxString::Format("Valid\t%e", m_scoresValid[iParam]));
-    content.Append("\n");
-  }
+    wxString content = wxEmptyString;
 
-  // Write every parameter for scores on array one after the other
-  for (int iParam = fromIndex; iParam < m_scoresCalibForScoreOnArray.size(); iParam++) {
-    content.Append(PrintParams(iParam));
-    content.Append("Calib\t");
-    for (int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {
-      content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[iParam][iRow]));
+    // Write every parameter one after the other
+    for (int iParam = fromIndex; iParam < m_scoresCalib.size(); iParam++) {
+        content.Append(PrintParams(iParam));
+
+        content.Append(wxString::Format("|||| Score\t%s\t", m_scores.name));
+        if (!asIsNaN(m_scores.quantile)) {
+            content.Append(wxString::Format("quantile\t%f\t", m_scores.quantile));
+        }
+        if (!asIsNaN(m_scores.threshold)) {
+            content.Append(wxString::Format("threshold\t%f\t", m_scores.threshold));
+        }
+        content.Append(wxString::Format("TimeArray\t%s\t", m_scores.timeArrayMode));
+
+        content.Append(wxString::Format("Calib\t%e\t", m_scoresCalib[iParam]));
+        content.Append(wxString::Format("Valid\t%e", m_scoresValid[iParam]));
+        content.Append("\n");
     }
-    content.Append("Valid\t");
-    for (int iRow = 0; iRow < m_scoresValidForScoreOnArray[iParam].size(); iRow++) {
-      content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[iParam][iRow]));
+
+    // Write every parameter for scores on array one after the other
+    for (int iParam = fromIndex; iParam < m_scoresCalibForScoreOnArray.size(); iParam++) {
+        content.Append(PrintParams(iParam));
+        content.Append("Calib\t");
+        for (int iRow = 0; iRow < m_scoresCalibForScoreOnArray[iParam].size(); iRow++) {
+            content.Append(wxString::Format("%e\t", m_scoresCalibForScoreOnArray[iParam][iRow]));
+        }
+        content.Append("Valid\t");
+        for (int iRow = 0; iRow < m_scoresValidForScoreOnArray[iParam].size(); iRow++) {
+            content.Append(wxString::Format("%e\t", m_scoresValidForScoreOnArray[iParam][iRow]));
+        }
+        content.Append("\n");
     }
-    content.Append("\n");
-  }
 
-  fileRes.AddLine(content);
+    fileRes.AddLine(content);
 
-  fileRes.Close();
+    fileRes.Close();
 
-  return true;
+    return true;
 }
 
 wxString asResultsParametersArray::PrintParams(int iParam) const {
-  // Create content string
-  wxString content = wxEmptyString;
+    // Create content string
+    wxString content = wxEmptyString;
 
-  content.Append(wxString::Format("Station\t%s\t", asParameters::PredictandStationIdsToString(m_predictandStationIds[iParam])));
-  content.Append(wxString::Format("DaysInt\t%d\t", m_analogsIntervalDays[iParam]));
-  content.Append(wxString::Format("ExcludeDays\t%d\t", m_analogsExcludeDays));
+    content.Append(
+        wxString::Format("Station\t%s\t", asParameters::PredictandStationIdsToString(m_predictandStationIds[iParam])));
+    content.Append(wxString::Format("DaysInt\t%d\t", m_analogsIntervalDays[iParam]));
+    content.Append(wxString::Format("ExcludeDays\t%d\t", m_analogsExcludeDays));
 
-  asParametersScoring::VectorParamsStep params = m_parameters[iParam];
+    asParametersScoring::VectorParamsStep params = m_parameters[iParam];
 
-  for (int iStep = 0; iStep < params.size(); iStep++) {
-    content.Append(wxString::Format("|||| Step(%d)\t", iStep));
-    content.Append(wxString::Format("Anb\t%d\t", params[iStep].analogsNumber));
+    for (int iStep = 0; iStep < params.size(); iStep++) {
+        content.Append(wxString::Format("|||| Step(%d)\t", iStep));
+        content.Append(wxString::Format("Anb\t%d\t", params[iStep].analogsNumber));
 
-    for (int iPtor = 0; iPtor < params[iStep].predictors.size(); iPtor++) {
-      content.Append(wxString::Format("|| Ptor(%d)\t", iPtor));
+        for (int iPtor = 0; iPtor < params[iStep].predictors.size(); iPtor++) {
+            content.Append(wxString::Format("|| Ptor(%d)\t", iPtor));
 
-      asParameters::ParamsPredictor ptor = params[iStep].predictors[iPtor];
+            asParameters::ParamsPredictor ptor = params[iStep].predictors[iPtor];
 
-      if (ptor.preprocess) {
-        content.Append(wxString::Format("%s\t", ptor.preprocessMethod));
+            if (ptor.preprocess) {
+                content.Append(wxString::Format("%s\t", ptor.preprocessMethod));
 
-        for (int iPre = 0; iPre < ptor.preprocessDataIds.size(); iPre++) {
-          content.Append(wxString::Format("| %s %s\t", ptor.preprocessDatasetIds[iPre],
-                                          ptor.preprocessDataIds[iPre]));
-          content.Append(wxString::Format("Level\t%g\t", ptor.preprocessLevels[iPre]));
-          content.Append(wxString::Format("Time\t%g\t", ptor.preprocessHours[iPre]));
+                for (int iPre = 0; iPre < ptor.preprocessDataIds.size(); iPre++) {
+                    content.Append(
+                        wxString::Format("| %s %s\t", ptor.preprocessDatasetIds[iPre], ptor.preprocessDataIds[iPre]));
+                    content.Append(wxString::Format("Level\t%g\t", ptor.preprocessLevels[iPre]));
+                    content.Append(wxString::Format("Time\t%g\t", ptor.preprocessHours[iPre]));
+                }
+            } else {
+                content.Append(wxString::Format("%s %s\t", ptor.datasetId, ptor.dataId));
+                content.Append(wxString::Format("Level\t%g\t", ptor.level));
+                content.Append(wxString::Format("Time\t%g\t", ptor.hour));
+            }
+
+            content.Append(wxString::Format("GridType\t%s\t", ptor.gridType));
+            content.Append(wxString::Format("xMin\t%g\t", ptor.xMin));
+            content.Append(wxString::Format("xPtsNb\t%d\t", ptor.xPtsNb));
+            content.Append(wxString::Format("xStep\t%g\t", ptor.xStep));
+            content.Append(wxString::Format("yMin\t%g\t", ptor.yMin));
+            content.Append(wxString::Format("yPtsNb\t%d\t", ptor.yPtsNb));
+            content.Append(wxString::Format("yStep\t%g\t", ptor.yStep));
+            content.Append(wxString::Format("Weight\t%e\t", ptor.weight));
+            if (!ptor.preprocessMethod.empty()) {
+                content.Append(wxString::Format("%s\t", ptor.preprocessMethod));
+            } else {
+                content.Append("NoPreprocessing\t");
+            }
+            content.Append(wxString::Format("Criteria\t%s\t", ptor.criteria));
         }
-      } else {
-        content.Append(
-            wxString::Format("%s %s\t", ptor.datasetId, ptor.dataId));
-        content.Append(wxString::Format("Level\t%g\t", ptor.level));
-        content.Append(wxString::Format("Time\t%g\t", ptor.hour));
-      }
-
-      content.Append(wxString::Format("GridType\t%s\t", ptor.gridType));
-      content.Append(wxString::Format("xMin\t%g\t", ptor.xMin));
-      content.Append(wxString::Format("xPtsNb\t%d\t", ptor.xPtsNb));
-      content.Append(wxString::Format("xStep\t%g\t", ptor.xStep));
-      content.Append(wxString::Format("yMin\t%g\t", ptor.yMin));
-      content.Append(wxString::Format("yPtsNb\t%d\t", ptor.yPtsNb));
-      content.Append(wxString::Format("yStep\t%g\t", ptor.yStep));
-      content.Append(wxString::Format("Weight\t%e\t", ptor.weight));
-      if (!ptor.preprocessMethod.empty()) {
-        content.Append(wxString::Format("%s\t", ptor.preprocessMethod));
-      } else {
-        content.Append("NoPreprocessing\t");
-      }
-      content.Append(wxString::Format("Criteria\t%s\t", ptor.criteria));
     }
-  }
 
-  return content;
+    return content;
 }

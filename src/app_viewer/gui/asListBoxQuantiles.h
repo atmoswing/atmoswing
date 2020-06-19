@@ -34,22 +34,23 @@
 class asForecastViewer;
 
 class asListBoxQuantiles : public wxListBox {
- public:
-  asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
-                     const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr, long style = 0);
+   public:
+    asListBoxQuantiles(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition,
+                       const wxSize &size = wxDefaultSize, int n = 0, const wxString choices[] = nullptr,
+                       long style = 0);
 
-  ~asListBoxQuantiles() override = default;
+    ~asListBoxQuantiles() override = default;
 
-  void SetStringArray(const wxArrayString &options) {
-    Set(options);
-    SetSelection(1);
-  }
+    void SetStringArray(const wxArrayString &options) {
+        Set(options);
+        SetSelection(1);
+    }
 
- protected:
- private:
-  void OnQuantileSlctChange(wxCommandEvent &event);
+   protected:
+   private:
+    void OnQuantileSlctChange(wxCommandEvent &event);
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

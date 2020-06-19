@@ -32,17 +32,17 @@
 #include "asTotalScore.h"
 
 class asTotalScoreRankHistogramReliability : public asTotalScore {
- public:
-  explicit asTotalScoreRankHistogramReliability(const wxString &periodString);
+   public:
+    explicit asTotalScoreRankHistogramReliability(const wxString &periodString);
 
-  ~asTotalScoreRankHistogramReliability() override = default;
+    ~asTotalScoreRankHistogramReliability() override = default;
 
-  float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
+    float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const override;
 
-  float AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const;
+    float AssessOnBootstrap(a1f &histogramPercent, int scoresSize) const;
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

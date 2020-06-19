@@ -31,49 +31,49 @@
 asScoreMAE::asScoreMAE() : asScore(asScore::MAE, _("Mean absolute error"), _("Mean absolute error"), Asc, 0, NaNf) {}
 
 float asScoreMAE::Assess(float obs, const a1f &values, int nbElements) const {
-  wxASSERT(values.size() > 1);
-  wxASSERT(nbElements > 0);
+    wxASSERT(values.size() > 1);
+    wxASSERT(nbElements > 0);
 
-  // Check inputs
-  if (!CheckObservedValue(obs)) {
-    return NaNf;
-  }
-  if (!CheckVectorLength(values, nbElements)) {
-    wxLogWarning(_("Problems in a vector length."));
-    return NaNf;
-  }
+    // Check inputs
+    if (!CheckObservedValue(obs)) {
+        return NaNf;
+    }
+    if (!CheckVectorLength(values, nbElements)) {
+        wxLogWarning(_("Problems in a vector length."));
+        return NaNf;
+    }
 
-  // Create the container to sort the data
-  a1f x(nbElements);
+    // Create the container to sort the data
+    a1f x(nbElements);
 
-  // Remove the NaNs and copy content
-  int nbPredict = CleanNans(values, x, nbElements);
-  if (nbPredict == asNOT_FOUND) {
-    wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
-    return NaNf;
-  } else if (nbPredict <= 2) {
-    wxLogWarning(_("Not enough elements to process the MAE."));
-    return NaNf;
-  }
+    // Remove the NaNs and copy content
+    int nbPredict = CleanNans(values, x, nbElements);
+    if (nbPredict == asNOT_FOUND) {
+        wxLogWarning(_("Only NaNs as inputs in the CRPS processing function."));
+        return NaNf;
+    } else if (nbPredict <= 2) {
+        wxLogWarning(_("Not enough elements to process the MAE."));
+        return NaNf;
+    }
 
-  a1f cleanValues = x.head(nbPredict);
-  float value = 0;
+    a1f cleanValues = x.head(nbPredict);
+    float value = 0;
 
-  if (m_onMean) {
-    value = cleanValues.mean();
-  } else {
-    // Get value for quantile
-    wxASSERT(!asIsNaN(m_quantile));
-    wxASSERT(m_quantile > 0);
-    wxASSERT(m_quantile < 1);
-    value = asGetValueForQuantile(cleanValues, m_quantile);
-  }
+    if (m_onMean) {
+        value = cleanValues.mean();
+    } else {
+        // Get value for quantile
+        wxASSERT(!asIsNaN(m_quantile));
+        wxASSERT(m_quantile > 0);
+        wxASSERT(m_quantile < 1);
+        value = asGetValueForQuantile(cleanValues, m_quantile);
+    }
 
-  float score = std::abs(obs - value);
+    float score = std::abs(obs - value);
 
-  return score;
+    return score;
 }
 
 bool asScoreMAE::ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) {
-  return true;
+    return true;
 }

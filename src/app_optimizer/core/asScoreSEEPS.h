@@ -30,41 +30,40 @@
 #define AS_SCORE_SEEPS_H
 
 #include "asIncludes.h"
-
 #include "asScore.h"
 
 class asScoreSEEPS : public asScore {
- public:
-  asScoreSEEPS();
+   public:
+    asScoreSEEPS();
 
-  ~asScoreSEEPS() override;
+    ~asScoreSEEPS() override;
 
-  float Assess(float obs, const a1f &values, int nbElements) const override;
+    float Assess(float obs, const a1f &values, int nbElements) const override;
 
-  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climData) override;
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climData) override;
 
-  void SetP1(float val) {
-    m_p1 = val;
-  }
+    void SetP1(float val) {
+        m_p1 = val;
+    }
 
-  void SetP3(float val) {
-    m_p3 = val;
-  }
+    void SetP3(float val) {
+        m_p3 = val;
+    }
 
-  void SetThresNull(float val) {
-    m_thresNull = val;
-  }
+    void SetThresNull(float val) {
+        m_thresNull = val;
+    }
 
-  void SetThresHigh(float val) {
-    m_thresHigh = val;
-  }
+    void SetThresHigh(float val) {
+        m_thresHigh = val;
+    }
 
- protected:
- private:
-  float m_p1;
-  float m_p3;
-  float m_thresNull;
-  float m_thresHigh;
+   protected:
+   private:
+    float m_p1;
+    float m_p3;
+    float m_thresNull;
+    float m_thresHigh;
 };
 
 #endif

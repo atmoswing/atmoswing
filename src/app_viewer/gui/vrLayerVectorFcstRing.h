@@ -47,32 +47,32 @@ class vrLabel;
 
 // For dealing with GIS data stored into Fcst projects.
 class vrLayerVectorFcstRing : public vrLayerVectorOGR {
- public:
-  vrLayerVectorFcstRing();
+   public:
+    vrLayerVectorFcstRing();
 
-  virtual ~vrLayerVectorFcstRing();
+    virtual ~vrLayerVectorFcstRing();
 
-  virtual long AddFeature(OGRGeometry *geometry, void *data = nullptr);
+    virtual long AddFeature(OGRGeometry *geometry, void *data = nullptr);
 
-  void SetMaxValue(double val) {
-    if (val < 0.1) {
-      wxLogWarning(
-          _("The given maximum value for the vrLayerVectorFcstRing class was too small, so it has been "
-            "increased."));
-      val = 0.1;
+    void SetMaxValue(double val) {
+        if (val < 0.1) {
+            wxLogWarning(
+                _("The given maximum value for the vrLayerVectorFcstRing class was too small, so it has been "
+                  "increased."));
+            val = 0.1;
+        }
+        m_valueMax = val;
     }
-    m_valueMax = val;
-  }
 
- protected:
-  double m_valueMax;
+   protected:
+    double m_valueMax;
 
-  virtual void _DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry, const wxRect2DDouble &coord,
-                          const vrRender *render, vrLabel *label, double pxsize);
+    virtual void _DrawPoint(wxDC *dc, OGRFeature *feature, OGRGeometry *geometry, const wxRect2DDouble &coord,
+                            const vrRender *render, vrLabel *label, double pxsize);
 
-  void _CreatePath(wxGraphicsPath &path, const wxPoint &center, int segmentsTotNb, int segmentNb);
+    void _CreatePath(wxGraphicsPath &path, const wxPoint &center, int segmentsTotNb, int segmentNb);
 
-  void _Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value);
+    void _Paint(wxGraphicsContext *gdc, wxGraphicsPath &path, double value);
 };
 
 #endif

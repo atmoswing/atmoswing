@@ -31,21 +31,20 @@
 #define AS_SCORE_MSE_H
 
 #include "asIncludes.h"
-
 #include "asScore.h"
 
 class asScoreMSE : public asScore {
- public:
-  asScoreMSE();
+   public:
+    asScoreMSE();
 
-  ~asScoreMSE() override = default;
+    ~asScoreMSE() override = default;
 
-  float Assess(float obs, const a1f &values, int nbElements) const override;
+    float Assess(float obs, const a1f &values, int nbElements) const override;
 
-  bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
+    bool ProcessScoreClimatology(const a1f &refVals, const a1f &climatologyData) override;
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

@@ -29,28 +29,27 @@
 #define AS_DIALOG_PROGRESS_BAR_H
 
 #include "asIncludes.h"
-
 #include "wx/progdlg.h"
 
 class asDialogProgressBar : public wxObject {
- public:
-  asDialogProgressBar(const wxString &dialogMessage, int valueMax);
+   public:
+    asDialogProgressBar(const wxString &dialogMessage, int valueMax);
 
-  ~asDialogProgressBar() override;
+    ~asDialogProgressBar() override;
 
-  void Destroy();
+    void Destroy();
 
-  bool Update(int value, const wxString &message = wxEmptyString);
+    bool Update(int value, const wxString &message = wxEmptyString);
 
- protected:
- private:
-  wxProgressDialog *m_progressBar;
-  bool m_initiated;
-  int m_steps;
-  int m_delayUpdate;
-  int m_valueMax;
-  vi m_vectorSteps;
-  int m_currentStepIndex;
+   protected:
+   private:
+    wxProgressDialog *m_progressBar;
+    bool m_initiated;
+    int m_steps;
+    int m_delayUpdate;
+    int m_valueMax;
+    vi m_vectorSteps;
+    int m_currentStepIndex;
 };
 
 #endif

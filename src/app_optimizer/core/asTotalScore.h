@@ -33,47 +33,48 @@
 #include "asTimeArray.h"
 
 class asTotalScore : public wxObject {
- public:
-  enum Period        //!< Enumaration of forcast score combinations
-  { Total,           // total mean
-    SpecificPeriod,  // partial mean
-    Summer,          // partial mean on summer only
-    Fall,            // partial mean on fall only
-    Winter,          // partial mean on winter only
-    Spring,          // partial mean on spring only
-  };
+   public:
+    enum Period  //!< Enumaration of forcast score combinations
+    {
+        Total,           // total mean
+        SpecificPeriod,  // partial mean
+        Summer,          // partial mean on summer only
+        Fall,            // partial mean on fall only
+        Winter,          // partial mean on winter only
+        Spring,          // partial mean on spring only
+    };
 
-  explicit asTotalScore(const wxString &periodString);
+    explicit asTotalScore(const wxString &periodString);
 
-  ~asTotalScore() override;
+    ~asTotalScore() override;
 
-  static asTotalScore *GetInstance(const wxString &scoreString, const wxString &periodString);
+    static asTotalScore *GetInstance(const wxString &scoreString, const wxString &periodString);
 
-  virtual float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const = 0;
+    virtual float Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const = 0;
 
-  virtual float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const;
+    virtual float Assess(const a1f &targetDates, const a2f &scores, const asTimeArray &timeArray) const;
 
-  virtual a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
+    virtual a1f AssessOnArray(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const;
 
-  bool SingleValue() const {
-    return m_singleValue;
-  }
+    bool SingleValue() const {
+        return m_singleValue;
+    }
 
-  bool Has2DArrayArgument() const {
-    return m_has2DArrayArgument;
-  }
+    bool Has2DArrayArgument() const {
+        return m_has2DArrayArgument;
+    }
 
-  void SetRanksNb(int val) {
-    m_ranksNb = val;
-  }
+    void SetRanksNb(int val) {
+        m_ranksNb = val;
+    }
 
- protected:
-  Period m_period;
-  bool m_singleValue;
-  bool m_has2DArrayArgument;
-  int m_ranksNb;
+   protected:
+    Period m_period;
+    bool m_singleValue;
+    bool m_has2DArrayArgument;
+    int m_ranksNb;
 
- private:
+   private:
 };
 
 #endif

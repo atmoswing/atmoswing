@@ -33,17 +33,17 @@
 #include "asIncludes.h"
 
 class asFileParametersOptimization : public asFileParameters {
- public:
-  asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
+   public:
+    asFileParametersOptimization(const wxString &fileName, const FileMode &fileMode = asFile::Replace);
 
-  virtual ~asFileParametersOptimization();
+    virtual ~asFileParametersOptimization();
 
-  bool EditRootElement();
+    bool EditRootElement();
 
-  bool CheckRootElement() const;
+    bool CheckRootElement() const;
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

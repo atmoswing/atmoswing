@@ -129,8 +129,6 @@
 
 #define asThrowException(msg) throw std::runtime_error((const char*)msg.ToUTF8())
 
-#include "asTypeDefs.h"
-
 #include "asConfig.h"
 #include "asGlobEnums.h"
 #include "asGlobVars.h"
@@ -138,6 +136,7 @@
 #include "asThreadsManager.h"
 #include "asThreadsManagerGlobalFunctions.h"
 #include "asTime.h"
+#include "asTypeDefs.h"
 #include "asUtilities.h"
 #include "asVersion.h"
 

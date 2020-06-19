@@ -30,32 +30,32 @@
 asTotalScoreMeanWithClim::asTotalScoreMeanWithClim(const wxString &periodString) : asTotalScore(periodString) {}
 
 float asTotalScoreMeanWithClim::Assess(const a1f &targetDates, const a1f &scores, const asTimeArray &timeArray) const {
-  wxASSERT(targetDates.rows() > 1);
-  wxASSERT(scores.rows() > 1);
+    wxASSERT(targetDates.rows() > 1);
+    wxASSERT(scores.rows() > 1);
 
-  switch (m_period) {
-    case (asTotalScore::Total): {
-      int targetDatesLength = targetDates.rows();
+    switch (m_period) {
+        case (asTotalScore::Total): {
+            int targetDatesLength = targetDates.rows();
 
-      // Loop through the targetDates
-      float score = 0, divisor = 0;
+            // Loop through the targetDates
+            float score = 0, divisor = 0;
 
-      for (int iTime = 0; iTime < targetDatesLength; iTime++) {
-        if (!asIsNaN(scores(iTime))) {
-          score += scores(iTime);
-          divisor++;
+            for (int iTime = 0; iTime < targetDatesLength; iTime++) {
+                if (!asIsNaN(scores(iTime))) {
+                    score += scores(iTime);
+                    divisor++;
+                }
+            }
+
+            return (score / divisor);
         }
-      }
 
-      return (score / divisor);
-    }
+        case (asTotalScore::SpecificPeriod): {
+            asThrowException(_("You cannot process a score using the climatology on a binned period."));
+        }
 
-    case (asTotalScore::SpecificPeriod): {
-      asThrowException(_("You cannot process a score using the climatology on a binned period."));
+        default: {
+            asThrowException(_("Period not yet implemented in asTotalScoreMeanWithClim."));
+        }
     }
-
-    default: {
-      asThrowException(_("Period not yet implemented in asTotalScoreMeanWithClim."));
-    }
-  }
 }

@@ -28,45 +28,45 @@
 #ifndef AS_FILE_TEXT_H
 #define AS_FILE_TEXT_H
 
-#include "asFile.h"
-#include "asIncludes.h"
-
 #include <fstream>
 #include <iostream>
 
+#include "asFile.h"
+#include "asIncludes.h"
+
 class asFileText : public asFile {
- public:
-  enum FileStructType { ConstantWidth, TabsDelimited };
+   public:
+    enum FileStructType { ConstantWidth, TabsDelimited };
 
-  asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
+    asFileText(const wxString &fileName, const asFile::FileMode &fileMode);
 
-  ~asFileText() override = default;
+    ~asFileText() override = default;
 
-  bool Open() override;
+    bool Open() override;
 
-  bool Close() override;
+    bool Close() override;
 
-  void AddLine(const wxString &lineContent = wxEmptyString);
+    void AddLine(const wxString &lineContent = wxEmptyString);
 
-  wxString GetNextLine();
+    wxString GetNextLine();
 
-  int GetInt();
+    int GetInt();
 
-  float GetFloat();
+    float GetFloat();
 
-  double GetDouble();
+    double GetDouble();
 
-  bool SkipLines(int linesNb);
+    bool SkipLines(int linesNb);
 
-  bool SkipElements(int elementNb);
+    bool SkipElements(int elementNb);
 
-  bool EndOfFile() const;
+    bool EndOfFile() const;
 
-  static int CountLines(const wxString &filePath);
+    static int CountLines(const wxString &filePath);
 
- protected:
- private:
-  std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb
+   protected:
+   private:
+    std::fstream m_file;  // Not using wxTextFile because it's not optimized for files > 1Mb
 };
 
 #endif

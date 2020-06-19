@@ -33,62 +33,62 @@
 #include "asPredictand.h"
 
 class asPredictandPrecipitation : public asPredictand {
- public:
-  asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
-                            SpatialAggregation dataSpatialAggregation);
+   public:
+    asPredictandPrecipitation(Parameter dataParameter, TemporalResolution dataTemporalResolution,
+                              SpatialAggregation dataSpatialAggregation);
 
-  ~asPredictandPrecipitation() override = default;
+    ~asPredictandPrecipitation() override = default;
 
-  bool Load(const wxString &filePath) override;
+    bool Load(const wxString &filePath) override;
 
-  bool Save(const wxString &destinationDir = wxEmptyString) const override;
+    bool Save(const wxString &destinationDir = wxEmptyString) const override;
 
-  bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
-                         const wxString &patternDir = wxEmptyString,
-                         const wxString &destinationDir = wxEmptyString) override;
+    bool BuildPredictandDB(const wxString &catalogFilePath, const wxString &dataDir = wxEmptyString,
+                           const wxString &patternDir = wxEmptyString,
+                           const wxString &destinationDir = wxEmptyString) override;
 
-  a1f GetReferenceAxis() const override {
-    return m_returnPeriods;
-  }
+    a1f GetReferenceAxis() const override {
+        return m_returnPeriods;
+    }
 
-  float GetReferenceValue(int iStat, double duration, float reference) const override {
-    return GetPrecipitationOfReturnPeriod(iStat, duration, reference);
-  }
+    float GetReferenceValue(int iStat, double duration, float reference) const override {
+        return GetPrecipitationOfReturnPeriod(iStat, duration, reference);
+    }
 
-  a2f GetReferenceValuesArray() const override {
-    return m_dailyPrecipitationsForReturnPeriods;
-  }
+    a2f GetReferenceValuesArray() const override {
+        return m_dailyPrecipitationsForReturnPeriods;
+    }
 
-  float GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const;
+    float GetPrecipitationOfReturnPeriod(int iStat, double duration, float returnPeriod) const;
 
-  void SetReturnPeriodNormalization(float val) {
-    m_returnPeriodNormalization = val;
-  }
+    void SetReturnPeriodNormalization(float val) {
+        m_returnPeriodNormalization = val;
+    }
 
-  void SetIsSqrt(bool val) {
-    m_isSqrt = val;
-  }
+    void SetIsSqrt(bool val) {
+        m_isSqrt = val;
+    }
 
- protected:
- private:
-  float m_returnPeriodNormalization;
-  bool m_isSqrt;
-  // Vector (dim = return periods)
-  a1f m_returnPeriods;
-  // Matrix data
-  a2f m_gumbelDuration;  // Values of the Precipitation duration
-  a2f m_gumbelParamA;    // Values of the a parameter of the Gumbel adjustment
-  a2f m_gumbelParamB;    // Values of the b parameter of the Gumbel adjustment
-  // Matrix with other axes
-  a2f m_dailyPrecipitationsForReturnPeriods;
+   protected:
+   private:
+    float m_returnPeriodNormalization;
+    bool m_isSqrt;
+    // Vector (dim = return periods)
+    a1f m_returnPeriods;
+    // Matrix data
+    a2f m_gumbelDuration;  // Values of the Precipitation duration
+    a2f m_gumbelParamA;    // Values of the a parameter of the Gumbel adjustment
+    a2f m_gumbelParamB;    // Values of the b parameter of the Gumbel adjustment
+    // Matrix with other axes
+    a2f m_dailyPrecipitationsForReturnPeriods;
 
-  bool InitContainers();
+    bool InitContainers();
 
-  bool MakeGumbelAdjustment();
+    bool MakeGumbelAdjustment();
 
-  bool BuildDataNormalized();
+    bool BuildDataNormalized();
 
-  bool BuildDailyPrecipitationsForAllReturnPeriods();
+    bool BuildDailyPrecipitationsForAllReturnPeriods();
 };
 
 #endif

@@ -33,43 +33,43 @@
 #include "asIncludes.h"
 
 class asFileParameters : public asFileXml {
- public:
-  asFileParameters(const wxString &fileName, const FileMode &fileMode);
+   public:
+    asFileParameters(const wxString &fileName, const FileMode &fileMode);
 
-  ~asFileParameters() override = default;
+    ~asFileParameters() override = default;
 
-  virtual bool EditRootElement();
+    virtual bool EditRootElement();
 
-  bool CheckRootElement() const override;
+    bool CheckRootElement() const override;
 
-  static vi BuildVectorInt(int min, int max, int step);
+    static vi BuildVectorInt(int min, int max, int step);
 
-  static vi BuildVectorInt(wxString str);
+    static vi BuildVectorInt(wxString str);
 
-  static vf BuildVectorFloat(float min, float max, float step);
+    static vf BuildVectorFloat(float min, float max, float step);
 
-  static vf BuildVectorFloat(wxString str);
+    static vf BuildVectorFloat(wxString str);
 
-  static vd BuildVectorDouble(double min, double max, double step);
+    static vd BuildVectorDouble(double min, double max, double step);
 
-  static vd BuildVectorDouble(wxString str);
+    static vd BuildVectorDouble(wxString str);
 
-  static vwxs BuildVectorString(wxString str);
+    static vwxs BuildVectorString(wxString str);
 
-  static vi GetVectorInt(wxXmlNode *node);
+    static vi GetVectorInt(wxXmlNode *node);
 
-  static vf GetVectorFloat(wxXmlNode *node);
+    static vf GetVectorFloat(wxXmlNode *node);
 
-  static vd GetVectorDouble(wxXmlNode *node);
+    static vd GetVectorDouble(wxXmlNode *node);
 
-  static vwxs GetVectorString(wxXmlNode *node);
+    static vwxs GetVectorString(wxXmlNode *node);
 
-  static vvi GetStationIdsVector(wxXmlNode *node);
+    static vvi GetStationIdsVector(wxXmlNode *node);
 
-  static vi GetStationIds(wxString stationIdsString);
+    static vi GetStationIds(wxString stationIdsString);
 
- protected:
- private:
+   protected:
+   private:
 };
 
 #endif

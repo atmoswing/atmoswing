@@ -35,20 +35,20 @@
 #include "asThread.h"
 
 class asThreadGeneticAlgorithms : public asThread {
- public:
-  asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params,
-                            float *finalScoreCalib, vf *scoreClimatology);
+   public:
+    asThreadGeneticAlgorithms(asMethodOptimizerGeneticAlgorithms *optimizer, asParametersOptimization *params,
+                              float *finalScoreCalib, vf *scoreClimatology);
 
-  virtual ~asThreadGeneticAlgorithms();
+    virtual ~asThreadGeneticAlgorithms();
 
-  ExitCode Entry();
+    ExitCode Entry();
 
- protected:
- private:
-  asMethodOptimizerGeneticAlgorithms *m_optimizer;
-  asParametersOptimization *m_params;
-  float *m_finalScoreCalib;
-  vf *m_scoreClimatology;
+   protected:
+   private:
+    asMethodOptimizerGeneticAlgorithms *m_optimizer;
+    asParametersOptimization *m_params;
+    float *m_finalScoreCalib;
+    vf *m_scoreClimatology;
 };
 
 #endif
