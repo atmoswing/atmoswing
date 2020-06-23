@@ -43,6 +43,8 @@ class asParameters : public wxObject {
     typedef struct {
         bool preload;
         bool standardize;
+        double standardizeMean;
+        double standardizeSd;
         bool preprocess;
         std::string datasetId;
         std::string dataId;
@@ -337,6 +339,22 @@ class asParameters : public wxObject {
 
     bool GetStandardize(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].standardize;
+    }
+
+    void SetStandardizeMean(int iStep, int iPtor, double val) {
+        m_steps[iStep].predictors[iPtor].standardizeMean = val;
+    }
+
+    double GetStandardizeMean(int iStep, int iPtor) const {
+        return m_steps[iStep].predictors[iPtor].standardizeMean;
+    }
+
+    void SetStandardizeSd(int iStep, int iPtor, double val) {
+        m_steps[iStep].predictors[iPtor].standardizeSd = val;
+    }
+
+    double GetStandardizeSd(int iStep, int iPtor) const {
+        return m_steps[iStep].predictors[iPtor].standardizeSd;
     }
 
     vwxs GetPreloadDataIds(int iStep, int iPtor) const {

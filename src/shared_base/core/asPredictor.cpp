@@ -1667,30 +1667,33 @@ bool asPredictor::TransformData(vvva2f &compositeData) {
     return true;
 }
 
-bool asPredictor::StandardizeData() {
-    // Get the mean
-    double sum = 0;
-    int count = 0;
+bool asPredictor::StandardizeData(double mean, double sd) {
 
-    for (auto &datTime : m_data) {
-        for (auto &datMem : datTime) {
-            sum += datMem.isNaN().select(0, datMem).sum();
-            count += datMem.size() - datMem.isNaN().count();
+    if (asIsNaN(mean) || asIsNaN(sd)) {
+        // Get the mean
+        double sum = 0;
+        int count = 0;
+
+        for (auto &datTime : m_data) {
+            for (auto &datMem : datTime) {
+                sum += datMem.isNaN().select(0, datMem).sum();
+                count += datMem.size() - datMem.isNaN().count();
+            }
         }
-    }
 
-    double mean = sum / (double)count;
+        mean = sum / (double)count;
 
-    // Get the standard deviation
-    double sd = 0;
+        // Get the standard deviation
+        sd = 0;
 
-    for (auto &datTime : m_data) {
-        for (auto &datMem : datTime) {
-            sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+        for (auto &datTime : m_data) {
+            for (auto &datMem : datTime) {
+                sd += (datMem - mean).isNaN().select(0, datMem - mean).cwiseAbs2().sum();
+            }
         }
-    }
 
-    sd = std::sqrt(sd / (double)(count - 1));
+        sd = std::sqrt(sd / (double)(count - 1));
+    }
 
     // Standardize
     for (auto &datTime : m_data) {

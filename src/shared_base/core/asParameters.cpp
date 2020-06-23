@@ -80,6 +80,8 @@ void asParameters::AddPredictor(ParamsStep &step) {
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.standardize = false;
+    predictor.standardizeMean = NaNd;
+    predictor.standardizeSd = NaNd;
     predictor.level = 0;
     predictor.xMin = 0;
     predictor.xPtsNb = 1;
@@ -107,6 +109,8 @@ void asParameters::AddPredictor(int iStep) {
     predictor.preloadYptsnb = 0;
     predictor.preprocess = false;
     predictor.standardize = false;
+    predictor.standardizeMean = NaNd;
+    predictor.standardizeSd = NaNd;
     predictor.level = 0;
     predictor.gridType = "regular";
     predictor.xMin = 0;
@@ -298,6 +302,10 @@ bool asParameters::ParsePredictors(asFileParameters &fileParams, int iStep, int 
             SetPreload(iStep, iPtor, asFileParameters::GetBool(nodeParam));
         } else if (nodeParam->GetName() == "standardize") {
             SetStandardize(iStep, iPtor, asFileParameters::GetBool(nodeParam));
+        } else if (nodeParam->GetName() == "standardize_mean") {
+            SetStandardizeMean(iStep, iPtor, asFileParameters::GetDouble(nodeParam));
+        } else if (nodeParam->GetName() == "standardize_sd") {
+            SetStandardizeSd(iStep, iPtor, asFileParameters::GetDouble(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam)) return false;

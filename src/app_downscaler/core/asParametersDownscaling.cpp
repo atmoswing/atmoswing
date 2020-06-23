@@ -227,6 +227,10 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     SetPreload(iStep, iPtor, asFileParametersDownscaling::GetBool(nodeParam));
                 } else if (nodeParam->GetName() == "standardize") {
                     SetStandardize(iStep, iPtor, asFileParametersDownscaling::GetBool(nodeParam));
+                } else if (nodeParam->GetName() == "standardize_mean") {
+                    SetStandardizeMean(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam));
+                } else if (nodeParam->GetName() == "standardize_sd") {
+                    SetStandardizeSd(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam));
                 } else if (nodeParam->GetName() == "preprocessing") {
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam)) return false;

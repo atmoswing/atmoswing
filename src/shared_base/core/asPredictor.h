@@ -142,7 +142,7 @@ class asPredictor : public wxObject {
 
     bool ClipToArea(asAreaCompGrid *desiredArea);
 
-    bool StandardizeData();
+    bool StandardizeData(double mean = NaNd, double sd = NaNd);
 
     bool Inline();
 

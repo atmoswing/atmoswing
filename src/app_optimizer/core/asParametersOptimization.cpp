@@ -362,6 +362,10 @@ bool asParametersOptimization::ParsePredictors(asFileParametersOptimization &fil
             SetPreload(iStep, iPtor, fileParams.GetBool(nodeParam));
         } else if (nodeParam->GetName() == "standardize") {
             SetStandardize(iStep, iPtor, fileParams.GetBool(nodeParam));
+        } else if (nodeParam->GetName() == "standardize_mean") {
+            SetStandardizeMean(iStep, iPtor, fileParams.GetDouble(nodeParam));
+        } else if (nodeParam->GetName() == "standardize_sd") {
+            SetStandardizeSd(iStep, iPtor, fileParams.GetDouble(nodeParam));
         } else if (nodeParam->GetName() == "preprocessing") {
             SetPreprocess(iStep, iPtor, true);
             if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam)) return false;
