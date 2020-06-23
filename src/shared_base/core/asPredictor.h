@@ -237,8 +237,8 @@ class asPredictor : public wxObject {
         return m_lonPtsnb;
     }
 
-    void SetStandardize(bool val = true) {
-        m_standardize = val;
+    void SetStandardized(bool val = true) {
+        m_standardized = val;
     }
 
     static bool IsLatLon(const wxString &datasetId);
@@ -407,7 +407,7 @@ class asPredictor : public wxObject {
     FileIndexes m_fInd;
     asFile::FileType m_fileType;
     bool m_initialized;
-    bool m_standardize;
+    bool m_standardized;
     bool m_axesChecked;
     bool m_wasDumped;
     wxString m_dataId;

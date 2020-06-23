@@ -371,11 +371,6 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
         return false;
     }
 
-    // Set standardize option
-    if (params->GetStandardize(iStep, iPtor)) {
-        predictor->SetStandardize(true);
-    }
-
     // Select the number of members for ensemble data.
     if (predictor->IsEnsemble()) {
         predictor->SelectMembers(params->GetPredictorProjMembersNb(iStep, iPtor));
@@ -393,6 +388,15 @@ bool asMethodDownscaler::ExtractProjectionDataWithoutPreprocessing(std::vector<a
         return false;
     }
     wxDELETE(area);
+
+    // Standardize data
+    if (params->GetStandardize(iStep, iPtor) &&
+        !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+        wxLogError(_("Data standardisation has failed."));
+        wxFAIL;
+        return false;
+    }
+
     predictors.push_back(predictor);
 
     return true;
@@ -455,9 +459,12 @@ bool asMethodDownscaler::ExtractProjectionDataWithPreprocessing(std::vector<asPr
         return false;
     }
 
-    // Standardize
-    if (params->GetStandardize(iStep, iPtor)) {
-        predictor->StandardizeData();
+    // Standardize data
+    if (params->GetStandardize(iStep, iPtor) &&
+        !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+        wxLogError(_("Data standardisation has failed."));
+        wxFAIL;
+        return false;
     }
 
     Cleanup(predictorsPreprocess);

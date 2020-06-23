@@ -777,6 +777,18 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 return false;
             }
 
+            // Standardize data
+            if (params.GetArchiveStandardize(iStep, iPtor) &&
+                !predictorArchive->StandardizeData(params.GetArchiveStandardizeMean(iStep, iPtor),
+                                                   params.GetArchiveStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(area);
+                wxDELETE(predictorArchive);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+
             wxASSERT(predictorArchive->GetData().size() > 1);
             m_storagePredictorsArchive.push_back(predictorArchive);
 
@@ -784,6 +796,17 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
             wxLogVerbose(_("Loading GCM forecast data."));
             if (!predictorRealtime->Load(area, timeArrayDataTarget, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Real-time data (%s) could not be loaded."), predictorRealtime->GetDataId());
+                wxDELETE(area);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+
+            // Standardize data
+            if (params.GetRealtimeStandardize(iStep, iPtor) &&
+                !predictorRealtime->StandardizeData(params.GetRealtimeStandardizeMean(iStep, iPtor),
+                                                    params.GetRealtimeStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
                 wxDELETE(area);
                 wxDELETE(predictorRealtime);
                 return false;
@@ -931,7 +954,7 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 return false;
             }
 
-            // Instanciate an realtime predictor object
+            // Instantiate an realtime predictor object
             auto *predictorRealtime = new asPredictorOper(*m_storagePredictorsRealtimePreprocess[0]);
             if (!predictorRealtime) {
                 wxDELETE(predictorArchive);
@@ -947,9 +970,22 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
                 return false;
             }
 
-            // Standardize
-            if (params.GetStandardize(iStep, iPtor)) {
-                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
+            // Standardize data
+            if (params.GetArchiveStandardize(iStep, iPtor) &&
+                !predictorArchive->StandardizeData(params.GetArchiveStandardizeMean(iStep, iPtor),
+                                                   params.GetArchiveStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(predictorArchive);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+            if (params.GetRealtimeStandardize(iStep, iPtor) &&
+                !predictorRealtime->StandardizeData(params.GetRealtimeStandardizeMean(iStep, iPtor),
+                                                    params.GetRealtimeStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(predictorRealtime);
                 return false;
             }
 
@@ -1222,12 +1258,6 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
             // Area object instantiation
             asAreaCompGrid *area = asAreaCompGrid::GetInstance(&params, iStep, iPtor);
 
-            // Standardize
-            if (params.GetStandardize(iStep, iPtor)) {
-                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
-                return false;
-            }
-
             // Archive data loading
             if (!predictorArchive->Load(area, timeArrayDataArchive, params.GetPredictorLevel(iStep, iPtor))) {
                 wxLogError(_("Archive data (%s) could not be loaded."), predictorArchive->GetDataId());
@@ -1236,6 +1266,19 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            // Standardize data
+            if (params.GetArchiveStandardize(iStep, iPtor) &&
+                !predictorArchive->StandardizeData(params.GetArchiveStandardizeMean(iStep, iPtor),
+                                                   params.GetArchiveStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(area);
+                wxDELETE(predictorArchive);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+
             m_storagePredictorsArchive.push_back(predictorArchive);
 
             // Realtime data loading
@@ -1245,6 +1288,18 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 wxDELETE(predictorRealtime);
                 return false;
             }
+
+            // Standardize data
+            if (params.GetRealtimeStandardize(iStep, iPtor) &&
+                !predictorRealtime->StandardizeData(params.GetRealtimeStandardizeMean(iStep, iPtor),
+                                                    params.GetRealtimeStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(area);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+
             wxDELETE(area);
             m_storagePredictorsRealtime.push_back(predictorRealtime);
         } else {
@@ -1405,9 +1460,22 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
                 return false;
             }
 
-            // Standardize
-            if (params.GetStandardize(iStep, iPtor)) {
-                wxLogError(_("Data standardization is not yet implemented in operational forecasting."));
+            // Standardize data
+            if (params.GetArchiveStandardize(iStep, iPtor) &&
+                !predictorArchive->StandardizeData(params.GetArchiveStandardizeMean(iStep, iPtor),
+                                                   params.GetArchiveStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(predictorArchive);
+                wxDELETE(predictorRealtime);
+                return false;
+            }
+            if (params.GetRealtimeStandardize(iStep, iPtor) &&
+                !predictorRealtime->StandardizeData(params.GetRealtimeStandardizeMean(iStep, iPtor),
+                                                    params.GetRealtimeStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                wxDELETE(predictorRealtime);
                 return false;
             }
 

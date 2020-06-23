@@ -153,6 +153,8 @@ bool asParametersScoring::GenerateSimpleParametersFile(const wxString &filePath)
 
             nodePredictor->AddChild(fileParams.CreateNodeWithValue("preload", NeedsPreloading(iStep, iPtor)));
             nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize", GetStandardize(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize_mean", GetStandardizeMean(iStep, iPtor)));
+            nodePredictor->AddChild(fileParams.CreateNodeWithValue("standardize_sd", GetStandardizeSd(iStep, iPtor)));
 
             if (NeedsPreprocessing(iStep, iPtor)) {
                 wxXmlNode *nodePreprocessing = new wxXmlNode(wxXML_ELEMENT_NODE, "preprocessing");

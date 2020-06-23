@@ -62,7 +62,7 @@
 
 asPredictor::asPredictor(const wxString &dataId)
     : m_initialized(false),
-      m_standardize(false),
+      m_standardized(false),
       m_axesChecked(false),
       m_wasDumped(false),
       m_dataId(dataId),
@@ -323,7 +323,7 @@ wxString asPredictor::GetDumpFileName() const {
 
 size_t asPredictor::CreateHash() const {
     wxString hash;
-    hash << m_standardize;
+    hash << m_standardized;
     hash << m_parameter;
     hash << m_product;
     hash << m_unit;
@@ -504,13 +504,6 @@ bool asPredictor::Load(asAreaCompGrid *desiredArea, asTimeArray &timeArray, floa
         if (desiredArea && desiredArea->IsRegular() && !InterpolateOnGrid(dataArea, desiredArea)) {
             wxLogError(_("Interpolation failed."));
             wxDELETE(dataArea);
-            return false;
-        }
-
-        // Normalize data
-        if (m_standardize && !StandardizeData()) {
-            wxLogError(_("Data normalization has failed."));
-            wxFAIL;
             return false;
         }
 
@@ -1701,6 +1694,8 @@ bool asPredictor::StandardizeData(double mean, double sd) {
             datMem = (datMem - mean) / sd;
         }
     }
+
+    m_standardized = true;
 
     return true;
 }

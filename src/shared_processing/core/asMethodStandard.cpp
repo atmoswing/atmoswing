@@ -553,6 +553,15 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
                 predictorSize = predictor->GetData().size();
             }
 
+            // Standardize data
+            if (params->GetStandardize(iStep, iPtor) &&
+                !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor),
+                                            params->GetStandardizeSd(iStep, iPtor))) {
+                wxLogError(_("Data standardisation has failed."));
+                wxFAIL;
+                return false;
+            }
+
             if (m_dumpPredictorData || m_loadFromDumpedData) {
                 // Dumped files do not exist here.
                 if (!predictor->SaveDumpFile()) {
@@ -681,8 +690,7 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                     predictorPreprocess->SelectMembers(params->GetPreprocessMembersNb(iStep, iPtor, iPre));
                 }
 
-                double yMax =
-                    params->GetPreloadYmin(iStep, iPtor) +
+                double yMax = params->GetPreloadYmin(iStep, iPtor) +
                     params->GetPredictorYstep(iStep, iPtor) * double(params->GetPreloadYptsnb(iStep, iPtor) - 1);
 
                 if (predictorPreprocess->IsLatLon() && yMax > 90) {
@@ -732,9 +740,12 @@ bool asMethodStandard::PreloadArchiveDataWithPreprocessing(asParameters *params,
                     return false;
                 }
 
-                // Standardize
-                if (params->GetStandardize(iStep, iPtor)) {
-                    predictor->StandardizeData();
+                // Standardize data
+                if (params->GetStandardize(iStep, iPtor) &&
+                    !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+                    wxLogError(_("Data standardisation has failed."));
+                    wxFAIL;
+                    return false;
                 }
 
                 m_preloadedArchive[iStep][iPtor][0][iLevel][iHour] = predictor;
@@ -1040,11 +1051,6 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(params, iStep, iPtor);
     wxASSERT(area);
 
-    // Set standardize option
-    if (params->GetStandardize(iStep, iPtor)) {
-        predictor->SetStandardize(true);
-    }
-
     // Data loading
     if (!predictor->Load(area, timeArray, params->GetPredictorLevel(iStep, iPtor))) {
         wxLogError(_("The data could not be loaded."));
@@ -1053,6 +1059,14 @@ bool asMethodStandard::ExtractArchiveData(std::vector<asPredictor *> &predictors
         return false;
     }
     wxDELETE(area);
+
+    // Standardize data
+    if (params->GetStandardize(iStep, iPtor) &&
+        !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+        wxLogError(_("Data standardisation has failed."));
+        wxFAIL;
+        return false;
+    }
 
     if (params->IsCriteriaUsingGradients(iStep, iPtor)) {
         std::vector<asPredictor *> predictorsPreprocess;
@@ -1137,9 +1151,12 @@ bool asMethodStandard::PreprocessArchiveData(std::vector<asPredictor *> &predict
         return false;
     }
 
-    // Standardize
-    if (params->GetStandardize(iStep, iPtor)) {
-        predictor->StandardizeData();
+    // Standardize data
+    if (params->GetStandardize(iStep, iPtor) &&
+        !predictor->StandardizeData(params->GetStandardizeMean(iStep, iPtor), params->GetStandardizeSd(iStep, iPtor))) {
+        wxLogError(_("Data standardisation has failed."));
+        wxFAIL;
+        return false;
     }
 
     Cleanup(predictorsPreprocess);
