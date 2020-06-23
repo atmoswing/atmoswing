@@ -153,7 +153,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
     double yMin = 45;
     int yPtsNb = 5;
     double step = 0.125;
-    float level = 0;
+    float level = 500;
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
@@ -204,7 +204,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     double yMin = 45;
     int yPtsNb = 5;
     double step = 0.125;
-    float level = 0;
+    float level = 500;
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
@@ -222,22 +222,22 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
 
     /* Values time 90h (horizontal=Lon, vertical=Lat)
     Extracted:
-    -7.7	-10.0	-13.9	-15.9	-14.1	-10.7
-    -12.2	-13.0	-14.8	-14.5	-11.0	-8.1
-    -14.2	-13.3	-12.7	-12.0	-9.7	-7.1
-    -15.7	-12.8	-9.8	-8.6	-9.0	-8.6
-    -14.8	-11.8	-7.0	-5.1	-7.3	-9.9
+    -7.667	-9.976	-13.864	-15.870	-14.057	-10.746
+    -12.172	-13.010	-14.806	-14.507	-10.971	-8.071
+    -14.181	-13.320	-12.670	-12.046	-9.670	-7.123
+    -15.720	-12.759	-9.788	-8.628	-8.952	-8.637
+    -14.759	-11.781	-7.036	-5.073	-7.305	-9.857
     */
-    EXPECT_NEAR(-7.7, data[0][0](0, 0), 0.002);
-    EXPECT_NEAR(-10.0, data[0][0](0, 1), 0.002);
-    EXPECT_NEAR(-13.9, data[0][0](0, 2), 0.002);
-    EXPECT_NEAR(-15.9, data[0][0](0, 3), 0.002);
-    EXPECT_NEAR(-14.1, data[0][0](0, 4), 0.002);
-    EXPECT_NEAR(-10.7, data[0][0](0, 5), 0.002);
-    EXPECT_NEAR(-12.2, data[0][0](1, 0), 0.002);
-    EXPECT_NEAR(-14.2, data[0][0](2, 0), 0.002);
-    EXPECT_NEAR(-14.8, data[0][0](4, 0), 0.002);
-    EXPECT_NEAR(-9.9, data[0][0](4, 5), 0.002);
+    EXPECT_NEAR(-7.667, data[0][0](0, 0), 0.002);
+    EXPECT_NEAR(-9.976, data[0][0](0, 1), 0.002);
+    EXPECT_NEAR(-13.864, data[0][0](0, 2), 0.002);
+    EXPECT_NEAR(-15.870, data[0][0](0, 3), 0.002);
+    EXPECT_NEAR(-14.057, data[0][0](0, 4), 0.002);
+    EXPECT_NEAR(-10.746, data[0][0](0, 5), 0.002);
+    EXPECT_NEAR(-12.172, data[0][0](1, 0), 0.002);
+    EXPECT_NEAR(-14.181, data[0][0](2, 0), 0.002);
+    EXPECT_NEAR(-14.759, data[0][0](4, 0), 0.002);
+    EXPECT_NEAR(-9.857, data[0][0](4, 5), 0.002);
 
     wxDELETE(area);
     wxDELETE(predictor);
@@ -256,7 +256,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
     double yMin = 45;
     int yPtsNb = 5;
     double step = 0.125;
-    float level = 0;
+    float level = 500;
     wxString gridType = "Regular";
     asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
 
@@ -293,22 +293,22 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
 
     /* Values time 90h (horizontal=Lon, vertical=Lat)
     Extracted:
-    -7.7	-10.0	-13.9	-15.9	-14.1	-10.7
-    -12.2	-13.0	-14.8	-14.5	-11.0	-8.1
-    -14.2	-13.3	-12.7	-12.0	-9.7	-7.1
-    -15.7	-12.8	-9.8	-8.6	-9.0	-8.6
-    -14.8	-11.8	-7.0	-5.1	-7.3	-9.9
+    -7.667	-9.976	-13.864	-15.870	-14.057	-10.746
+    -12.172	-13.010	-14.806	-14.507	-10.971	-8.071
+    -14.181	-13.320	-12.670	-12.046	-9.670	-7.123
+    -15.720	-12.759	-9.788	-8.628	-8.952	-8.637
+    -14.759	-11.781	-7.036	-5.073	-7.305	-9.857
     */
-    EXPECT_NEAR(-7.7, data[1][0](0, 0), 0.002);
-    EXPECT_NEAR(-10.0, data[1][0](0, 1), 0.002);
-    EXPECT_NEAR(-13.9, data[1][0](0, 2), 0.002);
-    EXPECT_NEAR(-15.9, data[1][0](0, 3), 0.002);
-    EXPECT_NEAR(-14.1, data[1][0](0, 4), 0.002);
-    EXPECT_NEAR(-10.7, data[1][0](0, 5), 0.002);
-    EXPECT_NEAR(-12.2, data[1][0](1, 0), 0.002);
-    EXPECT_NEAR(-14.2, data[1][0](2, 0), 0.002);
-    EXPECT_NEAR(-14.8, data[1][0](4, 0), 0.002);
-    EXPECT_NEAR(-9.9, data[1][0](4, 5), 0.002);
+    EXPECT_NEAR(-7.667, data[1][0](0, 0), 0.002);
+    EXPECT_NEAR(-9.976, data[1][0](0, 1), 0.002);
+    EXPECT_NEAR(-13.864, data[1][0](0, 2), 0.002);
+    EXPECT_NEAR(-15.870, data[1][0](0, 3), 0.002);
+    EXPECT_NEAR(-14.057, data[1][0](0, 4), 0.002);
+    EXPECT_NEAR(-10.746, data[1][0](0, 5), 0.002);
+    EXPECT_NEAR(-12.172, data[1][0](1, 0), 0.002);
+    EXPECT_NEAR(-14.181, data[1][0](2, 0), 0.002);
+    EXPECT_NEAR(-14.759, data[1][0](4, 0), 0.002);
+    EXPECT_NEAR(-9.857, data[1][0](4, 5), 0.002);
 
     wxDELETE(area);
     wxDELETE(predictor);

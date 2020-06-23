@@ -35,6 +35,7 @@ asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxStrin
     // Set the basic properties.
     m_datasetId = "Custom_MeteoFVG_Forecast";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
+    m_fStr.hasLevelDim = true;
 }
 
 bool asPredictorOperCustomFvgForecast::Init() {
@@ -134,7 +135,7 @@ bool asPredictorOperCustomFvgForecast::Init() {
     } else {
         wxLogError(_("No '%s' parameter identified."), m_dataId);
         return false;
-    } else
+    }
 
     m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
 

@@ -1085,6 +1085,11 @@ bool asPredictor::HasDesiredLevel(bool useWarnings) {
         }
     }
 
+    if (m_fStr.levels.size() == 1 && m_level == 0) {
+        wxLogWarning(_("Level %f was requested and %f was found in file (single level)"), m_level, m_fStr.levels[0]);
+        return true;
+    }
+
     if (useWarnings) {
         wxLogWarning(_("Cannot find level %f"), m_level);
     } else {
