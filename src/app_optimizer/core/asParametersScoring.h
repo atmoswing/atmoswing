@@ -127,52 +127,37 @@ class asParametersScoring : public asParameters {
 
     bool GetValuesFromString(wxString stringVals) override;  // We copy the string as we'll modify it.
 
-    bool SetCalibrationYearStart(int val) {
+    void SetCalibrationYearStart(int val) {
         m_calibrationStart = asTime::GetMJD(val, 1, 1);
-        return true;
     }
 
-    bool SetCalibrationYearEnd(int val) {
+    void SetCalibrationYearEnd(int val) {
         m_calibrationEnd = asTime::GetMJD(val, 12, 31);
-        return true;
     }
 
     double GetCalibrationStart() const {
         return m_calibrationStart;
     }
 
-    bool SetCalibrationStart(const wxString &val) {
+    void SetCalibrationStart(const wxString &val) {
         m_calibrationStart = asTime::GetTimeFromString(val);
-        return true;
     }
 
     double GetCalibrationEnd() const {
         return m_calibrationEnd;
     }
 
-    bool SetCalibrationEnd(const wxString &val) {
+    void SetCalibrationEnd(const wxString &val) {
         m_calibrationEnd = asTime::GetTimeFromString(val);
-        return true;
     }
 
     vi GetValidationYearsVector() const {
         return m_validationYears;
     }
 
-    bool SetValidationYearsVector(vi val) {
-        if (val.empty()) {
-            wxLogError(_("The provided validation years vector is empty."));
-            return false;
-        } else {
-            for (int y : val) {
-                if (asIsNaN(y)) {
-                    wxLogError(_("There are NaN values in the provided validation years vector."));
-                    return false;
-                }
-            }
-        }
+    void SetValidationYearsVector(vi val) {
+        wxASSERT(!val.empty());
         m_validationYears = val;
-        return true;
     }
 
     bool HasValidationPeriod() const {
@@ -187,13 +172,9 @@ class asParametersScoring : public asParameters {
         return m_score.name;
     }
 
-    bool SetScoreName(const wxString &val) {
-        if (val.IsEmpty()) {
-            wxLogError(_("The provided score is null"));
-            return false;
-        }
+    void SetScoreName(const wxString &val) {
+        wxASSERT(!val.IsEmpty());
         m_score.name = val;
-        return true;
     }
 
     float GetScoreThreshold() const {
@@ -228,13 +209,9 @@ class asParametersScoring : public asParameters {
         return m_score.timeArrayMode;
     }
 
-    bool SetScoreTimeArrayMode(const wxString &val) {
-        if (val.IsEmpty()) {
-            wxLogError(_("The provided time array mode for the score is null"));
-            return false;
-        }
+    void SetScoreTimeArrayMode(const wxString &val) {
+        wxASSERT(!val.IsEmpty());
         m_score.timeArrayMode = val;
-        return true;
     }
 
     bool ScoreNeedsPostprocessing() const {
@@ -247,163 +224,73 @@ class asParametersScoring : public asParameters {
         return m_stepsVect[iStep].analogsNumber;
     }
 
-    bool SetAnalogsNumberVector(int iStep, vi val) {
-        if (val.empty()) {
-            wxLogError(_("The provided analogs number vector is empty."));
-            return false;
-        } else {
-            for (int n : val) {
-                if (asIsNaN(n)) {
-                    wxLogError(_("There are NaN values in the provided analogs number vector."));
-                    return false;
-                }
-            }
-        }
+    void SetAnalogsNumberVector(int iStep, vi val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].analogsNumber = val;
-        return true;
     }
 
-    bool SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val) {
-        if (val.empty()) {
-            wxLogError(_("The provided preprocess time (hours) vector is empty."));
-            return false;
-        } else {
-            for (double v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided preprocess time (hours) vector."));
-                    return false;
-                }
-            }
-        }
-
+    void SetPreprocessHourVector(int iStep, int iPtor, int iPre, vd val) {
+        wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessHours.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessHours[iPre] = val;
         } else {
             m_stepsVect[iStep].predictors[iPtor].preprocessHours.push_back(val);
         }
-
-        return true;
     }
 
     vd GetPredictorXminVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].xMin;
     }
 
-    bool SetPredictorXminVector(int iStep, int iPtor, vd val) {
-        if (val.empty()) {
-            wxLogError(_("The provided xMin vector is empty."));
-            return false;
-        } else {
-            for (double v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided xMin vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorXminVector(int iStep, int iPtor, vd val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].xMin = val;
-        return true;
     }
 
     vi GetPredictorXptsnbVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].xPtsNb;
     }
 
-    bool SetPredictorXptsnbVector(int iStep, int iPtor, vi val) {
-        if (val.empty()) {
-            wxLogError(_("The provided xPtsNb vector is empty."));
-            return false;
-        } else {
-            for (int v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided xPtsNb vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorXptsnbVector(int iStep, int iPtor, vi val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].xPtsNb = val;
-        return true;
     }
 
     vd GetPredictorYminVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].yMin;
     }
 
-    bool SetPredictorYminVector(int iStep, int iPtor, vd val) {
-        if (val.empty()) {
-            wxLogError(_("The provided yMin vector is empty."));
-            return false;
-        } else {
-            for (double v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided yMin vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorYminVector(int iStep, int iPtor, vd val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].yMin = val;
-        return true;
     }
 
     vi GetPredictorYptsnbVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].yPtsNb;
     }
 
-    bool SetPredictorYptsnbVector(int iStep, int iPtor, vi val) {
-        if (val.empty()) {
-            wxLogError(_("The provided yPtsNb vector is empty."));
-            return false;
-        } else {
-            for (int v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided yPtsNb vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorYptsnbVector(int iStep, int iPtor, vi val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].yPtsNb = val;
-        return true;
     }
 
     vd GetPredictorHourVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].hours;
     }
 
-    bool SetPredictorHoursVector(int iStep, int iPtor, vd val) {
-        if (val.empty()) {
-            wxLogError(_("The provided predictor time (hours) vector is empty."));
-            return false;
-        } else {
-            for (double v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided predictor time (hours) vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorHoursVector(int iStep, int iPtor, vd val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].hours = val;
-        return true;
     }
 
     vf GetPredictorWeightVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].weight;
     }
 
-    bool SetPredictorWeightVector(int iStep, int iPtor, vf val) {
-        if (val.empty()) {
-            wxLogError(_("The provided predictor weights vector is empty."));
-            return false;
-        } else {
-            for (float v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided predictor weights vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorWeightVector(int iStep, int iPtor, vf val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].weight = val;
-        return true;
     }
 
     vwxs GetPreprocessDataIdVector(int iStep, int iPtor, int iPre) const {
@@ -416,27 +303,14 @@ class asParametersScoring : public asParameters {
         }
     }
 
-    bool SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val) {
-        if (val.empty()) {
-            wxLogError(_("The provided preprocess data ID vector is empty."));
-            return false;
-        } else {
-            for (auto &v : val) {
-                if (v.IsEmpty()) {
-                    wxLogError(_("There are NaN values in the provided preprocess data ID vector."));
-                    return false;
-                }
-            }
-        }
-
+    void SetPreprocessDataIdVector(int iStep, int iPtor, int iPre, vwxs val) {
+        wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessDataId.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId[iPre] = val;
         } else {
             m_stepsVect[iStep].predictors[iPtor].preprocessDataId.push_back(val);
         }
-
-        return true;
     }
 
     vf GetPreprocessLevelVector(int iStep, int iPtor, int iPre) const {
@@ -449,27 +323,14 @@ class asParametersScoring : public asParameters {
         }
     }
 
-    bool SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val) {
-        if (val.empty()) {
-            wxLogError(_("The provided preprocess levels vector is empty."));
-            return false;
-        } else {
-            for (float v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided preprocess levels vector."));
-                    return false;
-                }
-            }
-        }
-
+    void SetPreprocessLevelVector(int iStep, int iPtor, int iPre, vf val) {
+        wxASSERT(!val.empty());
         if (m_stepsVect[iStep].predictors[iPtor].preprocessLevels.size() >= iPre + 1) {
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre].clear();
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels[iPre] = val;
         } else {
             m_stepsVect[iStep].predictors[iPtor].preprocessLevels.push_back(val);
         }
-
-        return true;
     }
 
     vd GetPreprocessHourVector(int iStep, int iPtor, int iPre) const {
@@ -492,60 +353,27 @@ class asParametersScoring : public asParameters {
         return (int)m_stepsVect[iStep].predictors[iPtor].dataId.size();
     }
 
-    bool SetPredictorDataIdVector(int iStep, int iPtor, vwxs val) {
-        if (val.empty()) {
-            wxLogError(_("The provided data ID vector is empty."));
-            return false;
-        } else {
-            for (auto &v : val) {
-                if (v.IsEmpty()) {
-                    wxLogError(_("There are NaN values in the provided data ID vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorDataIdVector(int iStep, int iPtor, vwxs val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].dataId = val;
-        return true;
     }
 
     vf GetPredictorLevelVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].level;
     }
 
-    bool SetPredictorLevelVector(int iStep, int iPtor, vf val) {
-        if (val.empty()) {
-            wxLogError(_("The provided predictor levels vector is empty."));
-            return false;
-        } else {
-            for (float v : val) {
-                if (asIsNaN(v)) {
-                    wxLogError(_("There are NaN values in the provided predictor levels vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorLevelVector(int iStep, int iPtor, vf val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].level = val;
-        return true;
     }
 
     vwxs GetPredictorCriteriaVector(int iStep, int iPtor) const {
         return m_stepsVect[iStep].predictors[iPtor].criteria;
     }
 
-    bool SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val) {
-        if (val.empty()) {
-            wxLogError(_("The provided predictor criteria vector is empty."));
-            return false;
-        } else {
-            for (auto &v : val) {
-                if (v.IsEmpty()) {
-                    wxLogError(_("There are NaN values in the provided predictor criteria vector."));
-                    return false;
-                }
-            }
-        }
+    void SetPredictorCriteriaVector(int iStep, int iPtor, vwxs val) {
+        wxASSERT(!val.empty());
         m_stepsVect[iStep].predictors[iPtor].criteria = val;
-        return true;
     }
 
   protected:

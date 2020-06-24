@@ -140,15 +140,15 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
-                    if (!SetArchiveYearStart(fileParams.GetInt(nodeParam))) return false;
+                    SetArchiveYearStart(fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "end_year") {
-                    if (!SetArchiveYearEnd(fileParams.GetInt(nodeParam))) return false;
+                    SetArchiveYearEnd(fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "start") {
-                    if (!SetArchiveStart(fileParams.GetString(nodeParam))) return false;
+                    SetArchiveStart(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "end") {
-                    if (!SetArchiveEnd(fileParams.GetString(nodeParam))) return false;
+                    SetArchiveEnd(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam))) return false;
+                    SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -158,30 +158,30 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "start_year") {
-                    if (!SetDownscalingYearStart(fileParams.GetInt(nodeParam))) return false;
+                    SetDownscalingYearStart(fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "end_year") {
-                    if (!SetDownscalingYearEnd(fileParams.GetInt(nodeParam))) return false;
+                    SetDownscalingYearEnd(fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "start") {
-                    if (!SetDownscalingStart(fileParams.GetString(nodeParam))) return false;
+                    SetDownscalingStart(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "end") {
-                    if (!SetDownscalingEnd(fileParams.GetString(nodeParam))) return false;
+                    SetDownscalingEnd(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "time_step") {
-                    if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParam))) return false;
+                    SetTargetTimeStepHours(fileParams.GetDouble(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
                 nodeParam = nodeParam->GetNext();
             }
         } else if (nodeParamBlock->GetName() == "time_step") {
-            if (!SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
-            if (!SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock))) return false;
+            SetTargetTimeStepHours(fileParams.GetDouble(nodeParamBlock));
+            SetAnalogsTimeStepHours(fileParams.GetDouble(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "time_array_target") {
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayTargetMode(fileParams.GetString(nodeParam))) return false;
+                    SetTimeArrayTargetMode(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "predictand_serie_name") {
-                    if (!SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam))) return false;
+                    SetTimeArrayTargetPredictandSerieName(fileParams.GetString(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -191,11 +191,11 @@ bool asParametersDownscaling::ParseTimeProperties(asFileParametersDownscaling &f
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "time_array") {
-                    if (!SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam))) return false;
+                    SetTimeArrayAnalogsMode(fileParams.GetString(nodeParam));
                 } else if (nodeParam->GetName() == "interval_days") {
-                    if (!SetAnalogsIntervalDays(fileParams.GetInt(nodeParam))) return false;
+                    SetAnalogsIntervalDays(fileParams.GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "exclude_days") {
-                    if (!SetAnalogsExcludeDays(fileParams.GetInt(nodeParam))) return false;
+                    SetAnalogsExcludeDays(fileParams.GetInt(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -215,7 +215,7 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
     wxXmlNode *nodeParamBlock = nodeProcess->GetChildren();
     while (nodeParamBlock) {
         if (nodeParamBlock->GetName() == "analogs_number") {
-            if (!SetAnalogsNumber(iStep, asFileParametersDownscaling::GetInt(nodeParamBlock))) return false;
+            SetAnalogsNumber(iStep, asFileParametersDownscaling::GetInt(nodeParamBlock));
         } else if (nodeParamBlock->GetName() == "predictor") {
             AddPredictor(iStep);
             AddPredictorProj(m_stepsProj[iStep]);
@@ -235,62 +235,45 @@ bool asParametersDownscaling::ParseAnalogDatesParams(asFileParametersDownscaling
                     SetPreprocess(iStep, iPtor, true);
                     if (!ParsePreprocessedPredictors(fileParams, iStep, iPtor, nodeParam)) return false;
                 } else if (nodeParam->GetName() == "proj_dataset_id") {
-                    if (!SetPredictorProjDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
-                        return false;
+                    SetPredictorProjDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam));
                 } else if (nodeParam->GetName() == "proj_data_id") {
-                    if (!SetPredictorProjDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
-                        return false;
+                    SetPredictorProjDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam));
                 } else if (nodeParam->GetName() == "archive_dataset_id") {
-                    if (!SetPredictorDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
-                        return false;
+                    SetPredictorDatasetId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam));
                 } else if (nodeParam->GetName() == "archive_data_id") {
-                    if (!SetPredictorDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
-                        return false;
+                    SetPredictorDataId(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam));
                 } else if (nodeParam->GetName() == "level") {
-                    if (!SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
-                        return false;
+                    SetPredictorLevel(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam));
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictorHour(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam)))
-                        return false;
+                    SetPredictorHour(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeParam));
                 } else if (nodeParam->GetName() == "members") {
-                    if (!SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam)))
-                        return false;
+                    SetPredictorMembersNb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeParam));
                 } else if (nodeParam->GetName() == "spatial_window") {
                     wxXmlNode *nodeWindow = nodeParam->GetChildren();
                     while (nodeWindow) {
                         if (nodeWindow->GetName() == "grid_type") {
-                            if (!SetPredictorGridType(iStep, iPtor,
-                                                      asFileParametersDownscaling::GetString(nodeWindow, "regular")))
-                                return false;
+                            SetPredictorGridType(iStep, iPtor,asFileParametersDownscaling::GetString(nodeWindow, "regular"));
                         } else if (nodeWindow->GetName() == "x_min") {
-                            if (!SetPredictorXmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
-                                return false;
+                            SetPredictorXmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow));
                         } else if (nodeWindow->GetName() == "x_points_nb") {
-                            if (!SetPredictorXptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow)))
-                                return false;
+                            SetPredictorXptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow));
                         } else if (nodeWindow->GetName() == "x_step") {
-                            if (!SetPredictorXstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
-                                return false;
+                            SetPredictorXstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow));
                         } else if (nodeWindow->GetName() == "y_min") {
-                            if (!SetPredictorYmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
-                                return false;
+                            SetPredictorYmin(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow));
                         } else if (nodeWindow->GetName() == "y_points_nb") {
-                            if (!SetPredictorYptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow)))
-                                return false;
+                            SetPredictorYptsnb(iStep, iPtor, asFileParametersDownscaling::GetInt(nodeWindow));
                         } else if (nodeWindow->GetName() == "y_step") {
-                            if (!SetPredictorYstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow)))
-                                return false;
+                            SetPredictorYstep(iStep, iPtor, asFileParametersDownscaling::GetDouble(nodeWindow));
                         } else {
                             fileParams.UnknownNode(nodeWindow);
                         }
                         nodeWindow = nodeWindow->GetNext();
                     }
                 } else if (nodeParam->GetName() == "criteria") {
-                    if (!SetPredictorCriteria(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam)))
-                        return false;
+                    SetPredictorCriteria(iStep, iPtor, asFileParametersDownscaling::GetString(nodeParam));
                 } else if (nodeParam->GetName() == "weight") {
-                    if (!SetPredictorWeight(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam)))
-                        return false;
+                    SetPredictorWeight(iStep, iPtor, asFileParametersDownscaling::GetFloat(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -311,29 +294,24 @@ bool asParametersDownscaling::ParsePreprocessedPredictors(asFileParametersDownsc
     wxXmlNode *nodePreprocess = nodeParam->GetChildren();
     while (nodePreprocess) {
         if (nodePreprocess->GetName() == "preprocessing_method") {
-            if (!SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess))) return false;
+            SetPreprocessMethod(iStep, iPtor, fileParams.GetString(nodePreprocess));
         } else if (nodePreprocess->GetName() == "preprocessing_data") {
             wxXmlNode *nodeParamPreprocess = nodePreprocess->GetChildren();
             while (nodeParamPreprocess) {
                 if (nodeParamPreprocess->GetName() == "proj_dataset_id") {
-                    if (!SetPreprocessProjDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
-                        return false;
+                    SetPreprocessProjDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "proj_data_id") {
-                    if (!SetPreprocessProjDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
-                        return false;
+                    SetPreprocessProjDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "archive_dataset_id") {
-                    if (!SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
-                        return false;
+                    SetPreprocessDatasetId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "archive_data_id") {
-                    if (!SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess)))
-                        return false;
+                    SetPreprocessDataId(iStep, iPtor, iPre, fileParams.GetString(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "level") {
-                    if (!SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess))) return false;
+                    SetPreprocessLevel(iStep, iPtor, iPre, fileParams.GetFloat(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "time") {
-                    if (!SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess))) return false;
+                    SetPreprocessHour(iStep, iPtor, iPre, fileParams.GetDouble(nodeParamPreprocess));
                 } else if (nodeParamPreprocess->GetName() == "members") {
-                    if (!SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess)))
-                        return false;
+                    SetPreprocessMembersNb(iStep, iPtor, iPre, fileParams.GetInt(nodeParamPreprocess));
                 } else {
                     fileParams.UnknownNode(nodeParamPreprocess);
                 }
@@ -359,7 +337,7 @@ bool asParametersDownscaling::ParseAnalogValuesParams(asFileParametersDownscalin
                 if (nodeParam->GetName() == "station_id" || nodeParam->GetName() == "station_ids") {
                     if (!SetPredictandStationIdsVector(fileParams.GetStationIdsVector(nodeParam))) return false;
                 } else if (nodeParam->GetName() == "time") {
-                    if (!SetPredictandTimeHours(fileParams.GetDouble(nodeParam))) return false;
+                    SetPredictandTimeHours(fileParams.GetDouble(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -582,22 +560,14 @@ bool asParametersDownscaling::SetPredictandStationIdsVector(vvi val) {
     return true;
 }
 
-bool asParametersDownscaling::SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val) {
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor projection dataset ID is null"));
-        return false;
-    }
+void asParametersDownscaling::SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val) {
+    wxASSERT(!val.IsEmpty());
     m_stepsProj[iStep].predictors[iPtor].datasetId = val;
-    return true;
 }
 
-bool asParametersDownscaling::SetPredictorProjDataId(int iStep, int iPtor, const wxString &val) {
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the predictor projection data ID is null"));
-        return false;
-    }
+void asParametersDownscaling::SetPredictorProjDataId(int iStep, int iPtor, const wxString &val) {
+    wxASSERT(!val.IsEmpty());
     m_stepsProj[iStep].predictors[iPtor].dataId = val;
-    return true;
 }
 
 wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const {
@@ -609,19 +579,13 @@ wxString asParametersDownscaling::GetPreprocessProjDatasetId(int iStep, int iPto
     }
 }
 
-bool asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val) {
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess projection dataset ID is null"));
-        return false;
-    }
-
+void asParametersDownscaling::SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val) {
+    wxASSERT(!val.IsEmpty());
     if (m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDatasetIds.push_back(val);
     }
-
-    return true;
 }
 
 wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const {
@@ -633,17 +597,11 @@ wxString asParametersDownscaling::GetPreprocessProjDataId(int iStep, int iPtor, 
     }
 }
 
-bool asParametersDownscaling::SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val) {
-    if (val.IsEmpty()) {
-        wxLogError(_("The provided value for the preprocess proj data ID is null"));
-        return false;
-    }
-
+void asParametersDownscaling::SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val) {
+    wxASSERT(!val.IsEmpty());
     if (m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.size() >= iPre + 1) {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds[iPre] = val;
     } else {
         m_stepsProj[iStep].predictors[iPtor].preprocessDataIds.push_back(val);
     }
-
-    return true;
 }

@@ -84,13 +84,13 @@ class asParametersForecast : public asParameters {
         return (int)m_leadTimeDaysVect.size();
     }
 
-    bool SetLeadTimeDaysVector(vi val);
+    void SetLeadTimeDaysVector(vi val);
 
     vi GetLeadTimeDaysVector() const {
         return m_leadTimeDaysVect;
     }
 
-    bool SetAnalogsNumberLeadTimeVector(int iStep, vi val);
+    void SetAnalogsNumberLeadTimeVector(int iStep, vi val);
 
     vi GetAnalogsNumberLeadTimeVector(int iStep) const {
         return m_stepsForecast[iStep].analogsNumberLeadTime;
@@ -105,25 +105,25 @@ class asParametersForecast : public asParameters {
         return m_stepsForecast[iStep].predictors[iPtor].archiveDatasetId;
     }
 
-    bool SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorArchiveDataId(int iStep, int iPtor) const {
         return m_stepsForecast[iStep].predictors[iPtor].archiveDataId;
     }
 
-    bool SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorArchiveDataId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorRealtimeDatasetId(int iStep, int iPtor) const {
         return m_stepsForecast[iStep].predictors[iPtor].realtimeDatasetId;
     }
 
-    bool SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorRealtimeDatasetId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorRealtimeDataId(int iStep, int iPtor) const {
         return m_stepsForecast[iStep].predictors[iPtor].realtimeDataId;
     }
 
-    bool SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorRealtimeDataId(int iStep, int iPtor, const wxString &val);
 
     int GetPreprocessSize(int iStep, int iPtor) const override {
         return (int)m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
@@ -131,19 +131,19 @@ class asParametersForecast : public asParameters {
 
     wxString GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessArchiveDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessArchiveDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessRealtimeDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessRealtimeDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
     int GetPredictorArchiveMembersNb(int iStep, int iPtor) const {
         return m_stepsForecast[iStep].predictors[iPtor].archiveMembersNb;

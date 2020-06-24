@@ -125,7 +125,7 @@ class asParameters : public wxObject {
 
     virtual bool FixTimeLimits();
 
-    bool FixWeights();
+    virtual bool FixWeights();
 
     bool FixCoordinates();
 
@@ -143,7 +143,7 @@ class asParameters : public wxObject {
 
     virtual bool GetValuesFromString(wxString stringVals);  // We copy the string as we'll modify it.
 
-    bool SetPredictandStationIds(wxString val);
+    void SetPredictandStationIds(wxString val);
 
     VectorParamsPredictors GetVectorParamsPredictors(int iStep) const {
         wxASSERT(iStep < GetStepsNb());
@@ -203,32 +203,28 @@ class asParameters : public wxObject {
         m_dateProcessed = val;
     }
 
-    bool SetArchiveYearStart(int val) {
+    void SetArchiveYearStart(int val) {
         m_archiveStart = asTime::GetMJD(val, 1, 1);
-        return true;
     }
 
-    bool SetArchiveYearEnd(int val) {
+    void SetArchiveYearEnd(int val) {
         m_archiveEnd = asTime::GetMJD(val, 12, 31);
-        return true;
     }
 
     double GetArchiveStart() const {
         return m_archiveStart;
     }
 
-    bool SetArchiveStart(const wxString &val) {
+    void SetArchiveStart(const wxString &val) {
         m_archiveStart = asTime::GetTimeFromString(val);
-        return true;
     }
 
     double GetArchiveEnd() const {
         return m_archiveEnd;
     }
 
-    bool SetArchiveEnd(const wxString &val) {
+    void SetArchiveEnd(const wxString &val) {
         m_archiveEnd = asTime::GetTimeFromString(val);
-        return true;
     }
 
     double GetTimeShiftDays() const {
@@ -251,55 +247,55 @@ class asParameters : public wxObject {
         return m_targetTimeStepHours;
     }
 
-    bool SetTargetTimeStepHours(double val);
+    void SetTargetTimeStepHours(double val);
 
     double GetAnalogsTimeStepHours() const {
         return m_analogsTimeStepHours;
     }
 
-    bool SetAnalogsTimeStepHours(double val);
+    void SetAnalogsTimeStepHours(double val);
 
     wxString GetTimeArrayTargetMode() const {
         return m_timeArrayTargetMode;
     }
 
-    bool SetTimeArrayTargetMode(const wxString &val);
+    void SetTimeArrayTargetMode(const wxString &val);
 
     wxString GetTimeArrayTargetPredictandSerieName() const {
         return m_timeArrayTargetPredictandSerieName;
     }
 
-    bool SetTimeArrayTargetPredictandSerieName(const wxString &val);
+    void SetTimeArrayTargetPredictandSerieName(const wxString &val);
 
     float GetTimeArrayTargetPredictandMinThreshold() const {
         return m_timeArrayTargetPredictandMinThreshold;
     }
 
-    bool SetTimeArrayTargetPredictandMinThreshold(float val);
+    void SetTimeArrayTargetPredictandMinThreshold(float val);
 
     float GetTimeArrayTargetPredictandMaxThreshold() const {
         return m_timeArrayTargetPredictandMaxThreshold;
     }
 
-    bool SetTimeArrayTargetPredictandMaxThreshold(float val);
+    void SetTimeArrayTargetPredictandMaxThreshold(float val);
 
     wxString GetTimeArrayAnalogsMode() const {
         return m_timeArrayAnalogsMode;
     }
 
-    bool SetTimeArrayAnalogsMode(const wxString &val);
+    void SetTimeArrayAnalogsMode(const wxString &val);
 
     int GetAnalogsExcludeDays() const {
         return m_analogsExcludeDays;
     }
 
-    bool SetAnalogsExcludeDays(int val);
+    void SetAnalogsExcludeDays(int val);
 
     int GetAnalogsIntervalDays() const {
         return m_analogsIntervalDays;
     }
 
-    bool SetAnalogsIntervalDays(int val);
+    void SetAnalogsIntervalDays(int val);
 
     vi GetPredictandStationIds() const {
         return m_predictandStationIds;
@@ -311,19 +307,19 @@ class asParameters : public wxObject {
         return vec;
     }
 
-    bool SetPredictandStationIds(vi val);
+    void SetPredictandStationIds(vi val);
 
     double GetPredictandTimeHours() const {
         return m_predictandTimeHours;
     }
 
-    bool SetPredictandTimeHours(double val);
+    void SetPredictandTimeHours(double val);
 
     int GetAnalogsNumber(int iStep) const {
         return m_steps[iStep].analogsNumber;
     }
 
-    bool SetAnalogsNumber(int iStep, int val);
+    void SetAnalogsNumber(int iStep, int val);
 
     bool NeedsPreloading(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preload;
@@ -367,7 +363,7 @@ class asParameters : public wxObject {
 
     bool SetPreloadDataIds(int iStep, int iPtor, vwxs val);
 
-    bool SetPreloadDataIds(int iStep, int iPtor, wxString val);
+    void SetPreloadDataIds(int iStep, int iPtor, wxString val);
 
     vd GetPreloadHours(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadHours;
@@ -375,7 +371,7 @@ class asParameters : public wxObject {
 
     bool SetPreloadHours(int iStep, int iPtor, vd val);
 
-    bool SetPreloadHours(int iStep, int iPtor, double val);
+    void SetPreloadHours(int iStep, int iPtor, double val);
 
     vf GetPreloadLevels(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadLevels;
@@ -383,31 +379,31 @@ class asParameters : public wxObject {
 
     bool SetPreloadLevels(int iStep, int iPtor, vf val);
 
-    bool SetPreloadLevels(int iStep, int iPtor, float val);
+    void SetPreloadLevels(int iStep, int iPtor, float val);
 
     double GetPreloadXmin(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadXmin;
     }
 
-    bool SetPreloadXmin(int iStep, int iPtor, double val);
+    void SetPreloadXmin(int iStep, int iPtor, double val);
 
     int GetPreloadXptsnb(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadXptsnb;
     }
 
-    bool SetPreloadXptsnb(int iStep, int iPtor, int val);
+    void SetPreloadXptsnb(int iStep, int iPtor, int val);
 
     double GetPreloadYmin(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadYmin;
     }
 
-    bool SetPreloadYmin(int iStep, int iPtor, double val);
+    void SetPreloadYmin(int iStep, int iPtor, double val);
 
     int GetPreloadYptsnb(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preloadYptsnb;
     }
 
-    bool SetPreloadYptsnb(int iStep, int iPtor, int val);
+    void SetPreloadYptsnb(int iStep, int iPtor, int val);
 
     bool NeedsPreprocessing(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].preprocess;
@@ -425,7 +421,7 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].preprocessMethod;
     }
 
-    bool SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
+    void SetPreprocessMethod(int iStep, int iPtor, const wxString &val);
 
     bool NeedsGradientPreprocessing(int iStep, int iPtor) const;
 
@@ -437,103 +433,103 @@ class asParameters : public wxObject {
 
     wxString GetPreprocessDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
     float GetPreprocessLevel(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessLevel(int iStep, int iPtor, int iPre, float val);
+    void SetPreprocessLevel(int iStep, int iPtor, int iPre, float val);
 
     double GetPreprocessHour(int iStep, int iPtor, int iPre) const;
 
     double GetPreprocessTimeAsDays(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessHour(int iStep, int iPtor, int iPre, double val);
+    void SetPreprocessHour(int iStep, int iPtor, int iPre, double val);
 
     int GetPreprocessMembersNb(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int val);
+    void SetPreprocessMembersNb(int iStep, int iPtor, int iPre, int val);
 
     wxString GetPredictorDatasetId(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].datasetId;
     }
 
-    bool SetPredictorDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorDatasetId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorDataId(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].dataId;
     }
 
-    bool SetPredictorDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorDataId(int iStep, int iPtor, const wxString &val);
 
     float GetPredictorLevel(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].level;
     }
 
-    bool SetPredictorLevel(int iStep, int iPtor, float val);
+    void SetPredictorLevel(int iStep, int iPtor, float val);
 
     wxString GetPredictorGridType(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].gridType;
     }
 
-    bool SetPredictorGridType(int iStep, int iPtor, const wxString &val);
+    void SetPredictorGridType(int iStep, int iPtor, const wxString &val);
 
     double GetPredictorXmin(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].xMin;
     }
 
-    bool SetPredictorXmin(int iStep, int iPtor, double val);
+    void SetPredictorXmin(int iStep, int iPtor, double val);
 
     int GetPredictorXptsnb(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].xPtsNb;
     }
 
-    bool SetPredictorXptsnb(int iStep, int iPtor, int val);
+    void SetPredictorXptsnb(int iStep, int iPtor, int val);
 
     double GetPredictorXstep(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].xStep;
     }
 
-    bool SetPredictorXstep(int iStep, int iPtor, double val);
+    void SetPredictorXstep(int iStep, int iPtor, double val);
 
     double GetPredictorXshift(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].xShift;
     }
 
-    bool SetPredictorXshift(int iStep, int iPtor, double val);
+    void SetPredictorXshift(int iStep, int iPtor, double val);
 
     double GetPredictorYmin(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].yMin;
     }
 
-    bool SetPredictorYmin(int iStep, int iPtor, double val);
+    void SetPredictorYmin(int iStep, int iPtor, double val);
 
     int GetPredictorYptsnb(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].yPtsNb;
     }
 
-    bool SetPredictorYptsnb(int iStep, int iPtor, int val);
+    void SetPredictorYptsnb(int iStep, int iPtor, int val);
 
     double GetPredictorYstep(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].yStep;
     }
 
-    bool SetPredictorYstep(int iStep, int iPtor, double val);
+    void SetPredictorYstep(int iStep, int iPtor, double val);
 
     double GetPredictorYshift(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].yShift;
     }
 
-    bool SetPredictorYshift(int iStep, int iPtor, double val);
+    void SetPredictorYshift(int iStep, int iPtor, double val);
 
     int GetPredictorFlatAllowed(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].flatAllowed;
     }
 
-    bool SetPredictorFlatAllowed(int iStep, int iPtor, int val);
+    void SetPredictorFlatAllowed(int iStep, int iPtor, int val);
 
     double GetPredictorHour(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].hour;
@@ -543,25 +539,25 @@ class asParameters : public wxObject {
         return m_steps[iStep].predictors[iPtor].hour / 24.0;
     }
 
-    bool SetPredictorHour(int iStep, int iPtor, double val);
+    void SetPredictorHour(int iStep, int iPtor, double val);
 
     int GetPredictorMembersNb(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].membersNb;
     }
 
-    bool SetPredictorMembersNb(int iStep, int iPtor, int val);
+    void SetPredictorMembersNb(int iStep, int iPtor, int val);
 
     wxString GetPredictorCriteria(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].criteria;
     }
 
-    bool SetPredictorCriteria(int iStep, int iPtor, const wxString &val);
+    void SetPredictorCriteria(int iStep, int iPtor, const wxString &val);
 
     float GetPredictorWeight(int iStep, int iPtor) const {
         return m_steps[iStep].predictors[iPtor].weight;
     }
 
-    bool SetPredictorWeight(int iStep, int iPtor, float val);
+    void SetPredictorWeight(int iStep, int iPtor, float val);
 
     int GetStepsNb() const {
         return (int)m_steps.size();

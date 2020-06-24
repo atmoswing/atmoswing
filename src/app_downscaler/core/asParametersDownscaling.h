@@ -94,21 +94,21 @@ class asParametersDownscaling : public asParameters {
         return m_stepsProj[iStep].predictors[iPtor].datasetId;
     }
 
-    bool SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorProjDatasetId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPredictorProjDataId(int iStep, int iPtor) const {
         return m_stepsProj[iStep].predictors[iPtor].dataId;
     }
 
-    bool SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
+    void SetPredictorProjDataId(int iStep, int iPtor, const wxString &val);
 
     wxString GetPreprocessProjDatasetId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessProjDatasetId(int iStep, int iPtor, int iPre, const wxString &val);
 
     wxString GetPreprocessProjDataId(int iStep, int iPtor, int iPre) const;
 
-    bool SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
+    void SetPreprocessProjDataId(int iStep, int iPtor, int iPre, const wxString &val);
 
     void SetPredictorProjMembersNb(int iStep, int iPtor, int val) {
         m_stepsProj[iStep].predictors[iPtor].membersNb = val;
@@ -126,32 +126,28 @@ class asParametersDownscaling : public asParameters {
         return m_stepsProj[iStep].predictors[iPtor].preprocessMembersNb;
     }
 
-    bool SetDownscalingYearStart(int val) {
+    void SetDownscalingYearStart(int val) {
         m_downscalingStart = asTime::GetMJD(val, 1, 1);
-        return true;
     }
 
-    bool SetDownscalingYearEnd(int val) {
+    void SetDownscalingYearEnd(int val) {
         m_downscalingEnd = asTime::GetMJD(val, 12, 31);
-        return true;
     }
 
     double GetDownscalingStart() const {
         return m_downscalingStart;
     }
 
-    bool SetDownscalingStart(wxString val) {
+    void SetDownscalingStart(wxString val) {
         m_downscalingStart = asTime::GetTimeFromString(val);
-        return true;
     }
 
     double GetDownscalingEnd() const {
         return m_downscalingEnd;
     }
 
-    bool SetDownscalingEnd(wxString val) {
+    void SetDownscalingEnd(wxString val) {
         m_downscalingEnd = asTime::GetTimeFromString(val);
-        return true;
     }
 
   protected:

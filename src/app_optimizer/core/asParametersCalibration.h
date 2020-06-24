@@ -68,7 +68,7 @@ class asParametersCalibration : public asParametersScoring {
         return m_timeArrayAnalogsIntervalDaysVect;
     }
 
-    bool SetTimeArrayAnalogsIntervalDaysVector(vi val);
+    void SetTimeArrayAnalogsIntervalDaysVector(vi val);
 
     vwxs GetScoreNameVector() const {
         return m_scoreVect.name;
@@ -80,7 +80,7 @@ class asParametersCalibration : public asParametersScoring {
         return m_scoreVect.timeArrayMode;
     }
 
-    bool SetScoreTimeArrayModeVector(vwxs val);
+    void SetScoreTimeArrayModeVector(vwxs val);
 
     vd GetScoreTimeArrayDateVector() const {
         return m_scoreVect.timeArrayDate;
