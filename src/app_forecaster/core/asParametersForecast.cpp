@@ -47,6 +47,10 @@ void asParametersForecast::AddPredictorForecast(ParamsStepForecast &step) {
     predictor.archiveDataId = wxEmptyString;
     predictor.realtimeDatasetId = wxEmptyString;
     predictor.realtimeDataId = wxEmptyString;
+    predictor.archiveStandardizeMean = NaNd;
+    predictor.archiveStandardizeSd = NaNd;
+    predictor.realtimeStandardizeMean = NaNd;
+    predictor.realtimeStandardizeSd = NaNd;
 
     step.predictors.push_back(predictor);
 }

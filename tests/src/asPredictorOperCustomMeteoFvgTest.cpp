@@ -141,8 +141,8 @@ TEST(PredictorOperCustomMeteoFvg, GetCorrectPredictors) {
 }
 
 TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
-    vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
+    vwxs filePaths;
+    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
 
     asTimeArray dates(asTime::GetMJD(2020, 6, 21, 06), asTime::GetMJD(2020, 6, 21, 06), 6, "Simple");
     dates.Init();
@@ -160,7 +160,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
     wxASSERT(predictor);
 
     // Create file names
-    predictor->SetFileNames(filepaths);
+    predictor->SetFileNames(filePaths);
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));
@@ -192,8 +192,8 @@ TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
 }
 
 TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
-    vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062190.grib");
+    vwxs filePaths;
+    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062190.grib");
 
     asTimeArray dates(asTime::GetMJD(2020, 6, 24, 18), asTime::GetMJD(2020, 6, 24, 18), 6, "Simple");
     dates.Init();
@@ -211,7 +211,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
     wxASSERT(predictor);
 
     // Create file names
-    predictor->SetFileNames(filepaths);
+    predictor->SetFileNames(filePaths);
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));
@@ -243,9 +243,9 @@ TEST(PredictorOperCustomMeteoFvg, LoadLastTimeStep) {
 }
 
 TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
-    vwxs filepaths;
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
-    filepaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062190.grib");
+    vwxs filePaths;
+    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
+    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062190.grib");
 
     asTimeArray dates(asTime::GetMJD(2020, 6, 21, 06), asTime::GetMJD(2020, 6, 24, 18), 84, "Simple");
     dates.Init();
@@ -263,7 +263,7 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
     wxASSERT(predictor);
 
     // Create file names
-    predictor->SetFileNames(filepaths);
+    predictor->SetFileNames(filePaths);
 
     // Load
     ASSERT_TRUE(predictor->Load(area, dates, level));
@@ -308,6 +308,59 @@ TEST(PredictorOperCustomMeteoFvg, LoadFullTimeArray) {
     EXPECT_NEAR(-14.181, data[1][0](2, 0), 0.002);
     EXPECT_NEAR(-14.759, data[1][0](4, 0), 0.002);
     EXPECT_NEAR(-9.857, data[1][0](4, 5), 0.002);
+
+    wxDELETE(area);
+    wxDELETE(predictor);
+}
+
+TEST(PredictorOperCustomMeteoFvg, StandardizeWithProvidedMeanAndSd) {
+    vwxs filePaths;
+    filePaths.push_back(wxFileName::GetCwd() + "/files/data-custom-meteo-fvg-operational/MB500925.2020062106.grib");
+
+    asTimeArray dates(asTime::GetMJD(2020, 6, 21, 06), asTime::GetMJD(2020, 6, 21, 06), 6, "Simple");
+    dates.Init();
+
+    double xMin = 6;
+    int xPtsNb = 6;
+    double yMin = 45;
+    int yPtsNb = 5;
+    double step = 0.125;
+    float level = 500;
+    wxString gridType = "Regular";
+    asAreaCompGrid *area = asAreaCompGrid::GetInstance(gridType, xMin, xPtsNb, step, yMin, yPtsNb, step);
+
+    asPredictorOper *predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "MB500925");
+    wxASSERT(predictor);
+
+    // Create file names
+    predictor->SetFileNames(filePaths);
+
+    // Load
+    ASSERT_TRUE(predictor->Load(area, dates, level));
+
+    predictor->StandardizeData(4.858158690266188, 7.742704912270005);
+
+    vva2f data = predictor->GetData();
+    // hgt[time][mem](lat,lon)
+
+    /* Values time 06h (horizontal=Lon, vertical=Lat)
+    Extracted:
+    0.7828	0.5708	0.3838	0.3428	0.3552	0.2265
+    0.6581	0.5519	0.4112	0.3483	0.3703	0.3956
+    0.4537	0.4645	0.4671	0.4737	0.5441	0.6370
+    0.5039	0.4909	0.5326	0.4940	0.5987	0.7327
+    0.6429	0.7085	0.6935	0.5608	0.5645	0.6445
+    */
+    EXPECT_NEAR(0.7828, data[0][0](0, 0), 0.002);
+    EXPECT_NEAR(0.5708, data[0][0](0, 1), 0.002);
+    EXPECT_NEAR(0.3838, data[0][0](0, 2), 0.002);
+    EXPECT_NEAR(0.3428, data[0][0](0, 3), 0.002);
+    EXPECT_NEAR(0.3552, data[0][0](0, 4), 0.002);
+    EXPECT_NEAR(0.2265, data[0][0](0, 5), 0.002);
+    EXPECT_NEAR(0.6581, data[0][0](1, 0), 0.002);
+    EXPECT_NEAR(0.4537, data[0][0](2, 0), 0.002);
+    EXPECT_NEAR(0.6429, data[0][0](4, 0), 0.002);
+    EXPECT_NEAR(0.6445, data[0][0](4, 5), 0.002);
 
     wxDELETE(area);
     wxDELETE(predictor);
