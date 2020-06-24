@@ -913,10 +913,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
     if (!m_timeArrayAnalogsIntervalDaysLocks) {
         if (counter == index) {
             int val = asRound(newVal);
-            if (!SetAnalogsIntervalDays(val)) {
-                asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
-            }
-            return;
+            SetAnalogsIntervalDays(val);
         }
     }
     counter++;
@@ -925,10 +922,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
         if (!m_stepsLocks[i].analogsNumber) {
             if (counter == index) {
                 int val = asRound(newVal);
-                if (!SetAnalogsNumber(i, val)) {
-                    asThrowException(_("Error in SetAnalogsNumber from GAs."));
-                }
-                return;
+                SetAnalogsNumber(i, val);
             }
         }
         counter++;
@@ -944,10 +938,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                             if (val < 0) val = 0;
                             if (val >= vect.size()) val = vect.size() - 1;
 
-                            if (!SetPreprocessDataId(i, j, k, vect[val])) {
-                                asThrowException(_("Error in SetPreprocessDataId from GAs."));
-                            }
-                            return;
+                            SetPreprocessDataId(i, j, k, vect[val]);
                         }
                     }
                     counter++;
@@ -960,10 +951,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                             if (val < 0) val = 0;
                             if (val >= vect.size()) val = vect.size() - 1;
 
-                            if (!SetPreprocessLevel(i, j, k, vect[val])) {
-                                asThrowException(_("Error in SetPreprocessLevel from GAs."));
-                            }
-                            return;
+                            SetPreprocessLevel(i, j, k, vect[val]);
                         }
                     }
                     counter++;
@@ -971,10 +959,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                     if (!m_stepsLocks[i].predictors[j].preprocessHours[k]) {
                         if (counter == index) {
                             int val = asRound(newVal);
-                            if (!SetPreprocessHour(i, j, k, val)) {
-                                asThrowException(_("Error in SetPreprocessHour from GAs."));
-                            }
-                            return;
+                            SetPreprocessHour(i, j, k, val);
                         }
                     }
                     counter++;
@@ -988,10 +973,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                         if (val < 0) val = 0;
                         if (val >= vect.size()) val = vect.size() - 1;
 
-                        if (!SetPredictorDataId(i, j, vect[val])) {
-                            asThrowException(_("Error in SetPredictorDataId from GAs."));
-                        }
-                        return;
+                        SetPredictorDataId(i, j, vect[val]);
                     }
                 }
                 counter++;
@@ -1004,10 +986,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                         if (val < 0) val = 0;
                         if (val >= vect.size()) val = vect.size() - 1;
 
-                        if (!SetPredictorLevel(i, j, vect[val])) {
-                            asThrowException(_("Error in SetPredictorLevel from GAs."));
-                        }
-                        return;
+                        SetPredictorLevel(i, j, vect[val]);
                     }
                 }
                 counter++;
@@ -1015,10 +994,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                 if (!m_stepsLocks[i].predictors[j].hours) {
                     if (counter == index) {
                         int val = asRound(newVal);
-                        if (!SetPredictorHour(i, j, val)) {
-                            asThrowException(_("Error in SetAnalogsIntervalDays from GAs."));
-                        }
-                        return;
+                        SetPredictorHour(i, j, val);
                     }
                 }
                 counter++;
@@ -1026,10 +1002,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
 
             if (!m_stepsLocks[i].predictors[j].xMin) {
                 if (counter == index) {
-                    if (!SetPredictorXmin(i, j, newVal)) {
-                        asThrowException(_("Error in SetPredictorXmin from GAs."));
-                    }
-                    return;
+                    SetPredictorXmin(i, j, newVal);
                 }
             }
             counter++;
@@ -1037,20 +1010,14 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (!m_stepsLocks[i].predictors[j].xPtsNb) {
                 if (counter == index) {
                     int val = asRound(newVal);
-                    if (!SetPredictorXptsnb(i, j, val)) {
-                        asThrowException(_("Error in SetPredictorXptsnb from GAs."));
-                    }
-                    return;
+                    SetPredictorXptsnb(i, j, val);
                 }
             }
             counter++;
 
             if (!m_stepsLocks[i].predictors[j].yMin) {
                 if (counter == index) {
-                    if (!SetPredictorYmin(i, j, newVal)) {
-                        asThrowException(_("Error in SetPredictorYmin from GAs."));
-                    }
-                    return;
+                    SetPredictorYmin(i, j, newVal);
                 }
             }
             counter++;
@@ -1058,10 +1025,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (!m_stepsLocks[i].predictors[j].yPtsNb) {
                 if (counter == index) {
                     int val = asRound(newVal);
-                    if (!SetPredictorYptsnb(i, j, val)) {
-                        asThrowException(_("Error in SetPredictorYptsnb from GAs."));
-                    }
-                    return;
+                    SetPredictorYptsnb(i, j, val);
                 }
             }
             counter++;
@@ -1069,10 +1033,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
             if (!m_stepsLocks[i].predictors[j].weight) {
                 if (counter == index) {
                     float val = (float)newVal;
-                    if (!SetPredictorWeight(i, j, val)) {
-                        asThrowException(_("Error in SetPredictorWeight from GAs."));
-                    }
-                    return;
+                    SetPredictorWeight(i, j, val);
                 }
             }
             counter++;
@@ -1085,10 +1046,7 @@ void asParametersOptimizationGAs::SetParameterValue(int index, double newVal) {
                     if (val < 0) val = 0;
                     if (val >= vect.size()) val = vect.size() - 1;
 
-                    if (!SetPredictorCriteria(i, j, vect[val])) {
-                        asThrowException(_("Error in SetPredictorCriteria from GAs."));
-                    }
-                    return;
+                    SetPredictorCriteria(i, j, vect[val]);
                 }
             }
             counter++;
@@ -1144,8 +1102,8 @@ void asParametersOptimizationGAs::SimpleCrossover(asParametersOptimizationGAs &o
                 }
                 if (m_hasChromosomeMutationRadius) {
                     float mutRadius = GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt);
-                    SetSelfAdaptationMutationRadiusFromChromosome(
-                        counterSelfAdapt, otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
+                    SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt,
+                        otherParam.GetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt));
                     otherParam.SetSelfAdaptationMutationRadiusFromChromosome(counterSelfAdapt, mutRadius);
                 }
             }

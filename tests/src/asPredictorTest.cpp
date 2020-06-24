@@ -53,9 +53,9 @@ TEST(Predictor, Standardize) {
 
   asPredictor *predictor = asPredictor::GetInstance("NCEP_R1", "pressure/hgt", predictorDataDir);
 
-  predictor->SetStandardize(true);
-
   ASSERT_TRUE(predictor->Load(area, timearray, level));
+
+  predictor->StandardizeData();
 
   vva2f hgt = predictor->GetData();
   // hgt[time][mem](lat,lon)

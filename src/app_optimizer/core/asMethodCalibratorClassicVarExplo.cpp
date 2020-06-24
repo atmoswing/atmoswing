@@ -55,30 +55,30 @@ bool asMethodCalibratorClassicVarExplo::Calibrate(asParametersCalibration &param
             vwxs vPredictorDataId = params.GetPredictorDataIdVector(iStep, iPtor);
 
             for (const auto &dataId : vPredictorDataId) {
-                if (!params.SetPredictorDataId(iStep, iPtor, dataId)) return false;
+                params.SetPredictorDataId(iStep, iPtor, dataId);
 
                 vd vPredictorHours = params.GetPredictorHourVector(iStep, iPtor);
 
                 for (double hour : vPredictorHours) {
-                    if (!params.SetPredictorHour(iStep, iPtor, hour)) return false;
+                    params.SetPredictorHour(iStep, iPtor, hour);
 
                     vf vPredictorLevels = params.GetPredictorLevelVector(iStep, iPtor);
 
                     for (float level : vPredictorLevels) {
-                        if (!params.SetPredictorLevel(iStep, iPtor, level)) return false;
+                        params.SetPredictorLevel(iStep, iPtor, level);
 
                         vwxs vPredictorCriteria = params.GetPredictorCriteriaVector(iStep, iPtor);
 
                         for (const auto &criteria : vPredictorCriteria) {
-                            if (!params.SetPredictorCriteria(iStep, iPtor, criteria)) return false;
+                            params.SetPredictorCriteria(iStep, iPtor, criteria);
 
                             vf slctPredictorLevels;
                             slctPredictorLevels.push_back(level);
-                            if (!params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels)) return false;
+                            params.SetPreloadLevels(iStep, iPtor, slctPredictorLevels);
 
                             vd slctPreloadHours;
                             slctPreloadHours.push_back(hour);
-                            if (!params.SetPreloadHours(iStep, iPtor, slctPreloadHours)) return false;
+                            params.SetPreloadHours(iStep, iPtor, slctPreloadHours);
 
                             m_originalParams = params;
 
