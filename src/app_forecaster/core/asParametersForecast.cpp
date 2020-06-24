@@ -483,7 +483,6 @@ void asParametersForecast::InitValues() {
 void asParametersForecast::SetLeadTimeDaysVector(vi val) {
     wxASSERT(val.size() > 0);
     m_leadTimeDaysVect = val;
-    return true;
 }
 
 void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val) {

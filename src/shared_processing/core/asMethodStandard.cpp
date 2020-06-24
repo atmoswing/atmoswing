@@ -484,8 +484,8 @@ bool asMethodStandard::PreloadArchiveDataWithoutPreprocessing(asParameters *para
             area->AllowResizeFromData();
 
             // Set standardize option
-            if (params->GetStandardize(iStep, iPtor)) {
-                predictor->SetStandardize(true);
+            if ((m_dumpPredictorData || m_loadFromDumpedData) && params->GetStandardize(iStep, iPtor)) {
+                predictor->SetStandardized(true);
             }
 
             if (m_dumpPredictorData) {

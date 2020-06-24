@@ -39,9 +39,15 @@ class asParametersForecast : public asParameters {
     typedef struct {
         wxString archiveDatasetId;
         wxString archiveDataId;
+        bool archiveStandardize;
+        double archiveStandardizeMean;
+        double archiveStandardizeSd;
         int archiveMembersNb;
         wxString realtimeDatasetId;
         wxString realtimeDataId;
+        bool realtimeStandardize;
+        double realtimeStandardizeMean;
+        double realtimeStandardizeSd;
         int realtimeMembersNb;
         vwxs preprocessArchiveDatasetIds;
         vwxs preprocessArchiveDataIds;
@@ -127,6 +133,54 @@ class asParametersForecast : public asParameters {
 
     int GetPreprocessSize(int iStep, int iPtor) const override {
         return (int)m_stepsForecast[iStep].predictors[iPtor].preprocessArchiveDatasetIds.size();
+    }
+
+    void SetRealtimeStandardize(int iStep, int iPtor, const bool &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardize = val;
+    }
+
+    bool GetRealtimeStandardize(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardize;
+    }
+
+    void SetRealtimeStandardizeMean(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeMean = val;
+    }
+
+    double GetRealtimeStandardizeMean(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeMean;
+    }
+
+    void SetRealtimeStandardizeSd(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeSd = val;
+    }
+
+    double GetRealtimeStandardizeSd(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].realtimeStandardizeSd;
+    }
+
+    void SetArchiveStandardize(int iStep, int iPtor, const bool &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardize = val;
+    }
+
+    bool GetArchiveStandardize(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardize;
+    }
+
+    void SetArchiveStandardizeMean(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeMean = val;
+    }
+
+    double GetArchiveStandardizeMean(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeMean;
+    }
+
+    void SetArchiveStandardizeSd(int iStep, int iPtor, const double &val) {
+        m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeSd = val;
+    }
+
+    double GetArchiveStandardizeSd(int iStep, int iPtor) {
+        return m_stepsForecast[iStep].predictors[iPtor].archiveStandardizeSd;
     }
 
     wxString GetPreprocessArchiveDatasetId(int iStep, int iPtor, int iPre) const;
