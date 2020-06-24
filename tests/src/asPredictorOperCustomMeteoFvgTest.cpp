@@ -25,9 +25,9 @@
  * Portions Copyright 2019 Pascal Horton, University of Bern.
  */
 
+#include <gtest/gtest.h>
 #include <wx/filename.h>
 
-#include <gtest/gtest.h>
 #include "asAreaCompGrid.h"
 #include "asPredictorOper.h"
 #include "asTimeArray.h"
@@ -138,7 +138,6 @@ TEST(PredictorOperCustomMeteoFvg, GetCorrectPredictors) {
     predictor = asPredictorOper::GetInstance("Custom_MeteoFVG_Forecast", "v");
     ASSERT_TRUE(predictor->GetParameter() == asPredictor::Vwind);
     wxDELETE(predictor);
-
 }
 
 TEST(PredictorOperCustomMeteoFvg, LoadSingleDay) {
