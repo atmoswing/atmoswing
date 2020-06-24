@@ -37,7 +37,6 @@ asParametersForecast::~asParametersForecast() {}
 void asParametersForecast::AddStep() {
     asParameters::AddStep();
     ParamsStepForecast stepForecast;
-    stepForecast.analogsNumberLeadTime.push_back(0);
     m_stepsForecast.push_back(stepForecast);
 }
 
@@ -158,7 +157,9 @@ bool asParametersForecast::ParseTimeProperties(asFileParametersForecast &filePar
             wxXmlNode *nodeParam = nodeParamBlock->GetChildren();
             while (nodeParam) {
                 if (nodeParam->GetName() == "lead_time_days") {
-                    SetLeadTimeDaysVector(fileParams.GetVectorInt(nodeParam));
+                    SetLeadTimeDaysVector(fileParams.GetVectorDouble(nodeParam));
+                } else if (nodeParam->GetName() == "lead_time_hours") {
+                    SetLeadTimeHoursVector(fileParams.GetVectorDouble(nodeParam));
                 } else {
                     fileParams.UnknownNode(nodeParam);
                 }
@@ -480,14 +481,30 @@ void asParametersForecast::InitValues() {
     FixAnalogsNb();
 }
 
-void asParametersForecast::SetLeadTimeDaysVector(vi val) {
+void asParametersForecast::SetLeadTimeDaysVector(vd val) {
     wxASSERT(val.size() > 0);
     m_leadTimeDaysVect = val;
 }
 
+void asParametersForecast::SetLeadTimeHoursVector(vd val) {
+    wxASSERT(val.size() > 0);
+    for (float hour: val) {
+        m_leadTimeDaysVect.push_back(hour / 24.0);
+    }
+}
+
 void asParametersForecast::SetAnalogsNumberLeadTimeVector(int iStep, vi val) {
     wxASSERT(val.size() > 0);
-    m_stepsForecast[iStep].analogsNumberLeadTime = val;
+
+    if (val.size() == GetLeadTimeDaysVector().size()) {
+        m_stepsForecast[iStep].analogsNumberLeadTime = val;
+    } else if (val.size() == 1) {
+        for (int i = 0; i < GetLeadTimeDaysVector().size(); i++) {
+            m_stepsForecast[iStep].analogsNumberLeadTime.push_back(val[0]);
+        }
+    } else {
+        wxLogError(_("The lengths of the lead time and the number of analogs arrays are not consistent."));
+    }
 }
 
 void asParametersForecast::SetPredictorArchiveDatasetId(int iStep, int iPtor, const wxString &val) {

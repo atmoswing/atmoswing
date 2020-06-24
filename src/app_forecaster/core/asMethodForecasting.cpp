@@ -615,9 +615,9 @@ bool asMethodForecasting::GetAnalogsDates(asResultsForecast &results, asParamete
     }
 
     // Target time array
-    vi leadTime = params.GetLeadTimeDaysVector();
+    vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
-    for (int i : leadTime) {
+    for (double i : leadTime) {
         if (i > lastLeadTime) break;
 
         double tmpDate = floor(m_forecastDate) + i;
@@ -1116,9 +1116,9 @@ bool asMethodForecasting::GetAnalogsSubDates(asResultsForecast &results, asParam
     }
 
     // Target time array
-    vi leadTime = params.GetLeadTimeDaysVector();
+    vd leadTime = params.GetLeadTimeDaysVector();
     vd tmpTimeArray;
-    for (int time : leadTime) {
+    for (double time : leadTime) {
         if (time > lastLeadTime) break;
 
         double tmpDate = floor(m_forecastDate) + time;

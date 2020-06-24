@@ -90,9 +90,11 @@ class asParametersForecast : public asParameters {
         return (int)m_leadTimeDaysVect.size();
     }
 
-    void SetLeadTimeDaysVector(vi val);
+    void SetLeadTimeDaysVector(vd val);
 
-    vi GetLeadTimeDaysVector() const {
+    void SetLeadTimeHoursVector(vd val);
+
+    vd GetLeadTimeDaysVector() const {
         return m_leadTimeDaysVect;
     }
 
@@ -217,7 +219,7 @@ class asParametersForecast : public asParameters {
 
   protected:
   private:
-    vi m_leadTimeDaysVect;
+    vd m_leadTimeDaysVect;
     VectorParamsStepForecast m_stepsForecast;
     wxString m_predictandDatabase;
 
