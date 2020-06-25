@@ -42,6 +42,10 @@ class asPredictorOperCustomFvgForecast : public asPredictorOperIfsForecast {
 
     bool Init() override;
 
+    wxString GetDirStructure(const double date) override;
+
+    wxString GetFileName(const double date, const int leadTime) override;
+
   protected:
     double ConvertToMjd(double timeValue, double refValue = NaNd) const override;
 

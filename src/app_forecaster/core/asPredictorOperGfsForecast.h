@@ -42,6 +42,8 @@ class asPredictorOperGfsForecast : public asPredictorOper {
 
     bool Init();
 
+    wxString GetDirStructure();
+
   protected:
   private:
 };

@@ -169,10 +169,9 @@ double asPredictorOper::DecrementRunDateInUse() {
 }
 
 void asPredictorOper::RestrictTimeArray(double restrictHours, double restrictTimeStepHours, int leadTimeNb) {
-    m_restrictDownloads = true;
     m_restrictHours = (int)restrictHours;
     m_restrictTimeStepHours = (int)restrictTimeStepHours;
-    m_leadTimeEnd = (int)24 * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
+    m_leadTimeEnd = m_leadTimeStep * (leadTimeNb + floor(restrictHours / restrictTimeStepHours));
     wxASSERT(m_restrictTimeStepHours > 0);
     wxASSERT(m_restrictHours > -100);
     wxASSERT(m_restrictHours < 100);
@@ -214,28 +213,26 @@ bool asPredictorOper::BuildFilenamesUrls() {
         double diff = desiredTime - m_runDateInUse;
         m_leadTimeStart = (int)(diff * 24.0);
         m_leadTimeStep = m_restrictTimeStepHours;
-        m_leadTimeEnd =
-            (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) * m_leadTimeStep + m_leadTimeStart;
+        m_leadTimeEnd = (int)floor((m_leadTimeEnd - m_leadTimeStart) / m_leadTimeStep) *
+                            m_leadTimeStep + m_leadTimeStart;
     }
 
     wxASSERT(m_leadTimeStep > 0);
     wxASSERT(m_leadTimeEnd >= m_leadTimeStart);
 
-    // Change the leadtimes
-    for (int leadtime = m_leadTimeStart; leadtime <= m_leadTimeEnd; leadtime += m_leadTimeStep) {
-        int currentLeadtime = leadtime;
+    // Change the lead times
+    for (int leadTime = m_leadTimeStart; leadTime <= m_leadTimeEnd; leadTime += m_leadTimeStep) {
         double runDateInUse = m_runDateInUse;
 
-        // Manage if ledtime if negative -> get previous download
-        while (currentLeadtime < 0) {
-            currentLeadtime += m_runUpdate;
+        // Manage if lead time if negative -> get previous download
+        while (leadTime < 0) {
+            leadTime += m_runUpdate;
             runDateInUse -= m_runUpdate / 24.0;
         }
 
         wxString thisCommandLeadTime = thisCommand;
 
-        wxString timeStr = wxString::Format("%d", currentLeadtime);
-        wxString timeStrFileName = wxEmptyString;
+        wxString timeStr = wxString::Format("%d", leadTime);
 
         thisCommandLeadTime.Replace("[LEADTIME-H]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-h]", timeStr);
@@ -243,7 +240,6 @@ bool asPredictorOper::BuildFilenamesUrls() {
         thisCommandLeadTime.Replace("[LEADTIME-HH]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-hh]", timeStr);
         if (timeStr.Length() < 3) timeStr = "0" + timeStr;
-        timeStrFileName = timeStr;
         thisCommandLeadTime.Replace("[LEADTIME-HHH]", timeStr);
         thisCommandLeadTime.Replace("[LEADTIME-hhh]", timeStr);
         if (timeStr.Length() < 4) timeStr = "0" + timeStr;
@@ -251,24 +247,13 @@ bool asPredictorOper::BuildFilenamesUrls() {
         thisCommandLeadTime.Replace("[LEADTIME-hhhh]", timeStr);
 
         // Filename
-        wxString dirstructure = "YYYY";
-        dirstructure.Append(DS);
-        dirstructure.Append("MM");
-        dirstructure.Append(DS);
-        dirstructure.Append("DD");
-        wxString directory = asTime::GetStringTime(runDateInUse, dirstructure);
-        wxString nowstr = asTime::GetStringTime(runDateInUse, "YYYYMMDDhh");
-        wxString leadtimestr = timeStrFileName;
-        wxString ext = m_fileExtension;
+        wxString filePath = GetDirStructure(runDateInUse) + DS + GetFileName(runDateInUse, leadTime);
 
-        wxString filename = wxString::Format("%s.%s.%s.%s.%s", nowstr, m_datasetId, m_dataId, leadtimestr, ext);
-        wxString filenameres = directory + DS + filename;
-
-        double dataDate = runDateInUse + currentLeadtime / 24.0;
+        double dataDate = runDateInUse + leadTime / 24.0;
 
         // Save resulting strings
         m_urls.push_back(thisCommandLeadTime);
-        m_fileNames.push_back(filenameres);
+        m_fileNames.push_back(filePath);
         m_dataDates.push_back(dataDate);
     }
 
@@ -292,4 +277,24 @@ void asPredictorOper::ListFiles(asTimeArray &timeArray) {
 
         m_files.push_back(filePath);
     }
+}
+
+wxString asPredictorOper::GetDirStructure(const double date) {
+    wxString dirStructure = "YYYY";
+    dirStructure.Append(DS);
+    dirStructure.Append("MM");
+    dirStructure.Append(DS);
+    dirStructure.Append("DD");
+
+    return asTime::GetStringTime(date, dirStructure);
+}
+
+wxString asPredictorOper::GetFileName(const double date, const int leadTime) {
+    wxString timeStr = wxString::Format("%d", leadTime);
+    if (timeStr.Length() < 2) timeStr = "0" + timeStr;
+    if (timeStr.Length() < 3) timeStr = "0" + timeStr;
+
+    wxString dateStr = asTime::GetStringTime(date, "YYYYMMDDhh");
+
+    return wxString::Format("%s.%s.%s.%s.%s", dateStr, m_datasetId, m_dataId, timeStr, m_fileExtension);
 }

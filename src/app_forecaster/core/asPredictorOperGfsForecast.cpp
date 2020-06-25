@@ -47,6 +47,7 @@ asPredictorOperGfsForecast::asPredictorOperGfsForecast(const wxString &dataId) :
     m_nanValues.push_back(NaNd);
     m_nanValues.push_back(NaNf);
     m_shouldDownload = true;
+    m_restrictDownloads = true;
     m_restrictHours = 0;
     m_restrictTimeStepHours = 24;
     m_fileExtension = "grib2";

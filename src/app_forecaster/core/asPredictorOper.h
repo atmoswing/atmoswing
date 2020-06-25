@@ -90,6 +90,10 @@ class asPredictorOper : public asPredictor {
         return m_shouldDownload;
     }
 
+    virtual wxString GetDirStructure(const double date);
+
+    virtual wxString GetFileName(const double date, const int leadTime);
+
   protected:
     wxString m_predictorsRealtimeDir;
     int m_leadTimeStart;

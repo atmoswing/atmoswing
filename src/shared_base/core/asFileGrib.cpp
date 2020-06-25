@@ -609,8 +609,8 @@ bool asFileGrib::GetVarArray(const int IndexStart[], const int IndexCount[], flo
                 return false;
             }
             if (count > 0) {
-                wxLogError(_("Multiple messages found in GRIB file for the given constraints."));
-                return false;
+                wxLogWarning(_("Multiple messages found in GRIB file for the given constraints."));
+                return true;
             }
             count++;
 

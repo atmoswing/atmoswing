@@ -36,6 +36,10 @@ asPredictorOperCustomFvgForecast::asPredictorOperCustomFvgForecast(const wxStrin
     m_datasetId = "Custom_MeteoFVG_Forecast";
     m_datasetName = "Integrated Forecasting System (IFS) grib files at Meteo FVG";
     m_fStr.hasLevelDim = true;
+    m_leadTimeStart = 6;
+    m_restrictDownloads = false;
+    m_runHourStart = 0;
+    m_runUpdate = 24;
 }
 
 bool asPredictorOperCustomFvgForecast::Init() {
@@ -137,9 +141,6 @@ bool asPredictorOperCustomFvgForecast::Init() {
         return false;
     }
 
-    m_fileNamePattern = m_dataId + ".%4d%02d%02d%02d.grib";
-
-    // Set to initialized
     m_initialized = true;
 
     return true;
@@ -150,4 +151,21 @@ double asPredictorOperCustomFvgForecast::ConvertToMjd(double timeValue, double r
     wxASSERT(refValue < 70000);
 
     return refValue + (timeValue / 24.0);  // hours to days
+}
+
+wxString asPredictorOperCustomFvgForecast::GetDirStructure(const double date) {
+    wxString dirStructure = "YYYYMMDD";
+    dirStructure.Append(DS);
+    dirStructure.Append("grib");
+
+    return asTime::GetStringTime(date, dirStructure);
+}
+
+wxString asPredictorOperCustomFvgForecast::GetFileName(const double date, const int leadTime) {
+    wxString timeStr = wxString::Format("%d", leadTime);
+    if (timeStr.Length() < 2) timeStr = "0" + timeStr;
+
+    wxString dateStr = asTime::GetStringTime(date, "YYYYMMDD");
+
+    return wxString::Format("%s.%s%s.%s", m_dataId, dateStr, timeStr, m_fileExtension);
 }

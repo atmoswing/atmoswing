@@ -858,19 +858,22 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
     // Time dimension takes ages to load !! Avoid and get the first value.
     m_fStr.timeLength = ncFile.GetVarLength(m_fStr.dimTimeName);
 
-    double timeFirstVal, timeLastVal;
+    double timeFirstVal, timeSecondVal, timeLastVal;
     nc_type ncTypeTime = ncFile.GetVarType(m_fStr.dimTimeName);
     switch (ncTypeTime) {
         case NC_DOUBLE:
             timeFirstVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, 0);
+            timeSecondVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, 1);
             timeLastVal = ncFile.GetVarOneDouble(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         case NC_FLOAT:
             timeFirstVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, 0);
+            timeSecondVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, 1);
             timeLastVal = (double)ncFile.GetVarOneFloat(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         case NC_INT:
             timeFirstVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, 0);
+            timeSecondVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, 1);
             timeLastVal = (double)ncFile.GetVarOneInt(m_fStr.dimTimeName, m_fStr.timeLength - 1);
             break;
         default:
@@ -897,7 +900,7 @@ bool asPredictor::ExtractTimeAxis(asFileNetcdf &ncFile) {
 
     m_fStr.timeStart = ConvertToMjd(timeFirstVal, refValue);
     m_fStr.timeEnd = ConvertToMjd(timeLastVal, refValue);
-    m_fStr.timeStep = asRound(24 * (m_fStr.timeEnd - m_fStr.timeStart) / (m_fStr.timeLength - 1));
+    m_fStr.timeStep = 24.0 * (ConvertToMjd(timeSecondVal, refValue) - m_fStr.timeStart);
     m_fStr.firstHour = 24 * fmod(m_fStr.timeStart, 1);
 
     return true;
