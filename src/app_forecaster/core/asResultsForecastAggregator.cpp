@@ -470,7 +470,7 @@ wxArrayString asResultsForecastAggregator::GetLeadTimes(int methodRow, int forec
     a1f dates = m_forecasts[methodRow][forecastRow]->GetTargetDates();
 
     for (int i = 0; i < dates.size(); i++) {
-        leadTimes.Add(asTime::GetStringTime(dates[i], "DD.MM.YYYY"));
+        leadTimes.Add(asTime::GetStringTime(dates[i], "DD.MM.YYYY HH"));
     }
 
     return leadTimes;
@@ -612,7 +612,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         if (!fileExport.Open()) return false;
 
         // General attributes
-        fileExport.GetRoot()->AddAttribute("created", asTime::GetStringTime(asTime::NowMJD(), "DD.MM.YYYY"));
+        fileExport.GetRoot()->AddAttribute("created", asTime::GetStringTime(asTime::NowMJD(), "DD.MM.YYYY HH"));
 
         // Method description
         wxXmlNode *nodeMethod = new wxXmlNode(wxXML_ELEMENT_NODE, "method");
@@ -637,7 +637,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
         wxXmlNode *nodeTargetDates = new wxXmlNode(wxXML_ELEMENT_NODE, "target_dates");
         for (int i = 0; i < targetDates.size(); i++) {
             wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
-            nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY")));
+            nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(targetDates[i], "DD.MM.YYYY HH")));
             nodeTargetDate->AddChild(fileExport.CreateNodeWithValue("analogs_nb", m_forecasts[methodRow][0]->GetAnalogsNumber(i)));
             nodeTargetDates->AddChild(nodeTargetDate);
         }
@@ -695,7 +695,7 @@ bool asResultsForecastAggregator::ExportSyntheticXml(const wxString &dirPath) co
                 wxXmlNode *nodeTargetDate = new wxXmlNode(wxXML_ELEMENT_NODE, "target_date");
                 for (int k = 0; k < wxMin(10, analogValues.size()); k++) {
                     wxXmlNode *nodeAnalog = new wxXmlNode(wxXML_ELEMENT_NODE, "analog");
-                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY")));
+                    nodeAnalog->AddChild(fileExport.CreateNodeWithValue("date", asTime::GetStringTime(analogDates[k], "DD.MM.YYYY HH")));
                     nodeAnalog->AddChild(fileExport.CreateNodeWithValue("value", wxString::Format("%.1f", analogValues[k])));
                     nodeAnalog->AddChild(fileExport.CreateNodeWithValue("criteria", wxString::Format("%.1f", analogCriteria[k])));
 
