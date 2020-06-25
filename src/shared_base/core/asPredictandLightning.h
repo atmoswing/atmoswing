@@ -26,8 +26,8 @@
  * Portions Copyright 2013-2015 Pascal Horton, Terranum.
  */
 
-#ifndef AS_PREDICTAND_LIGHTNINGS_H
-#define AS_PREDICTAND_LIGHTNINGS_H
+#ifndef AS_PREDICTAND_LIGHTNING_H
+#define AS_PREDICTAND_LIGHTNING_H
 
 #include "asIncludes.h"
 #include "asPredictand.h"

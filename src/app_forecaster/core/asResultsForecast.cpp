@@ -112,7 +112,7 @@ void asResultsForecast::BuildFileName() {
     // Filename
     wxString forecastname = m_methodId + '.' + m_specificTag;
     wxString nowstr = asTime::GetStringTime(m_leadTimeOrigin, "YYYY-MM-DD_hh");
-    wxString ext = "asff";
+    wxString ext = "nc";
     wxString filename = wxString::Format("%s.%s.%s", nowstr, forecastname, ext);
     m_filePath.Append(filename);
 }

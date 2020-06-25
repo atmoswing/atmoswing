@@ -121,7 +121,7 @@ bool asForecastManager::Open(const wxString &filePath, bool doRefresh) {
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
     if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst") && !extension.IsSameAs("nc")) {
-        wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
+        wxLogError(_("The file extension (%s) is not correct."), extension);
         return false;
     }
 
@@ -173,8 +173,8 @@ bool asForecastManager::OpenPastForecast(int methodRow, int forecastRow, const w
     // Check extension
     wxFileName fname(filePath);
     wxString extension = fname.GetExt();
-    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst")) {
-        wxLogError(_("The file extension (%s) is not correct (must be .asff)."), extension);
+    if (!extension.IsSameAs("asff") && !extension.IsSameAs("fcst") && !extension.IsSameAs("nc")) {
+        wxLogError(_("The file extension (%s) is not correct."), extension);
         return false;
     }
 
@@ -236,6 +236,8 @@ void asForecastManager::LoadPastForecast(int methodRow, int forecastRow) {
             wxString nowstrV3 = asTime::GetStringTime(currentTimeHour, "YYYY-MM-DD_hh");
             wxString forecastname = m_aggregator->GetForecast(methodRow, forecastRow)->GetMethodId() + '.' +
                                     m_aggregator->GetForecast(methodRow, forecastRow)->GetSpecificTag();
+            wxString filenameV4 = wxString::Format("%s.%s.nc", nowstrV3, forecastname);
+            wxString fullPathV4 = currentDirPath + filenameV4;
             wxString filenameV3 = wxString::Format("%s.%s.asff", nowstrV3, forecastname);
             wxString fullPathV3 = currentDirPath + filenameV3;
             wxString filenameV2 = wxString::Format("%s.%s.asff", nowstrV1, forecastname);

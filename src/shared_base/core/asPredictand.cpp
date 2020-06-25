@@ -56,7 +56,8 @@ asPredictand::Parameter asPredictand::StringToParameterEnum(const wxString &para
         return Precipitation;
     } else if (parameterStr.CmpNoCase("AirTemperature") == 0) {
         return AirTemperature;
-    } else if (parameterStr.CmpNoCase("Lightning") == 0) {
+    } else if (parameterStr.CmpNoCase("Lightning") == 0 ||
+               parameterStr.CmpNoCase("Lightnings") == 0) {
         return Lightning;
     } else if (parameterStr.CmpNoCase("Wind") == 0) {
         return Wind;

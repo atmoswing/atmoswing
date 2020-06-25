@@ -335,7 +335,7 @@ void asFrameForecast::Init() {
         int strSize = g_cmdFileName.size();
         int strExt = g_cmdFileName.size() - 4;
         wxString ext = g_cmdFileName.SubString((size_t)(strExt - 1), (size_t)(strSize - 1));
-        if (ext.IsSameAs(".asff", false)) {
+        if (ext.IsSameAs(".asff", false) || ext.IsSameAs(".nc", false)) {
             forecastFilesProvided = true;
         } else if (ext.IsSameAs(".asvw", false)) {
             workspaceFilePath = g_cmdFileName;
@@ -946,7 +946,7 @@ void asFrameForecast::OnCloseLayer(wxCommandEvent &event) {
 
 void asFrameForecast::OnOpenForecast(wxCommandEvent &event) {
     wxFileDialog myFileDlg(this, _("Select a forecast file"), wxEmptyString, wxEmptyString,
-                           "Forecast files (*.asff)|*.asff|Former forecast files (*.fcst)|*.fcst",
+                           "Forecast files (*.nc)|*.nc|Former forecast files (*.asff)|*.asff|Former forecast files (*.fcst)|*.fcst",
                            wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR | wxFD_MULTIPLE);
 
     wxArrayString pathsFileName;
@@ -1125,7 +1125,7 @@ void asFrameForecast::SwitchForecast(double increment) {
     // Look for former files
     wxString basePath = forecastsBaseDirectory + wxFileName::GetPathSeparator();
     wxFileName fullPathV3(basePath);
-    wxFileName fullPathV1, fullPathV2;
+    wxFileName fullPathV1, fullPathV2, fullPathV4;
     for (int i = 0; i < 100; i++) {
         date += increment;
         fullPathV3 = wxFileName(basePath);
@@ -1138,6 +1138,12 @@ void asFrameForecast::SwitchForecast(double increment) {
         prefixFileName = wxString::Format(patternFileNameV3, asTime::GetYear(date), asTime::GetMonth(date),
                                           asTime::GetDay(date), asTime::GetHour(date));
         fullPathV3.SetName(prefixFileName + partialFileNameV3);
+
+        fullPathV4 = fullPathV3;
+        fullPathV4.SetExt("nc");
+
+        if (fullPathV4.Exists()) break;
+
         fullPathV3.SetExt("asff");
 
         if (fullPathV3.Exists()) break;

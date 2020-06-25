@@ -103,7 +103,7 @@ void asFramePredictandDB::OnDataSelection(wxCommandEvent &event) {
             m_sizerProcessing->Add(m_panelProcessing, 1, wxALL | wxEXPAND, 5);
             break;
         }
-        case 2:  // lightnings
+        case 2:  // lightning
         {
             m_panelProcessing =
                 new asPanelProcessingLightning(m_panelMain, wxID_ANY, wxDefaultPosition, wxDefaultSize);
